@@ -66,8 +66,22 @@ public partial class FlareDataGrid<TItem>
     // Infinite scroll takes precedence over the known-total virtual window.
     private bool _infiniteMode => _effectiveInfiniteScroll && _provider is not null;
     private bool _shouldVirtualize => !_infiniteMode && _effectiveVirtual;
-    // Both modes need a fixed-height scroll container with a sticky header.
-    private bool _scrollContainer => _shouldVirtualize || _infiniteMode;
+    // All rows in the DOM, no pager. The other two scroll modes win: each already replaces paging,
+    // and both do it by recycling rows, which is the opposite of what this mode promises.
+    private bool _scrollAll => Scroll && !_shouldVirtualize && !_infiniteMode;
+    // Every mode that scrolls instead of paging needs the same container: bounded height, its own
+    // scrollbar, a sticky header.
+    private bool _scrollContainer => _shouldVirtualize || _infiniteMode || _scrollAll;
+    // FillHeight bounds the container from the layout rather than from Height, which makes it a
+    // scroll box too - even on a paged grid, whose page can outgrow the space it was given.
+    private bool _scrollBox => _scrollContainer || FillHeight;
+    // A provider is paged by its own contract, so "no pager" has to be said in the request: scroll
+    // mode asks for the whole set at once rather than silently showing page one with no way to
+    // reach page two.
+    private int _requestPageSize => _scrollAll ? int.MaxValue : _effectivePageSize;
+    // Row number of the first rendered row, for aria-rowindex. Scroll mode renders the whole set, so
+    // there is no page to offset by - and multiplying by the request size would overflow.
+    private int _rowIndexOffset => _scrollAll ? 0 : _page * _effectivePageSize;
 
     // Dim the table only for the overlay indicators; ProgressLine/Skeleton keep the table at full opacity.
     private bool _dimTable => _loading &&
@@ -81,6 +95,7 @@ public partial class FlareDataGrid<TItem>
     private string? _hoverable => _effectiveHoverable ? Css.Classes.DataGrid.Hoverable : null;
     private string? _dense => _effectiveDense ? Css.Classes.DataGrid.Dense : null;
     private string? _bordered => Bordered ? Css.Classes.DataGrid.Bordered : null;
+    private string? _fill => FillHeight ? Css.Classes.DataGrid.Fill : null;
 
     // Stable render key for a row (RowKey selector, else the item reference).
     private object _rowKey(TItem item) => RowKey?.Invoke(item) ?? item!;
@@ -97,12 +112,13 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
-    private string _wrapperClass => _scrollContainer
-        ? $"{Css.Classes.DataGrid.Wrapper} {Css.Classes.DataGrid.WrapperVirtual}"
+    private string _wrapperClass => _scrollBox
+        ? $"{Css.Classes.DataGrid.Wrapper} {Css.Classes.DataGrid.WrapperScroll}"
         : Css.Classes.DataGrid.Wrapper;
 
-    private string? _wrapperStyle => _scrollContainer
-        ? $"--_virtual-height:{_effectiveHeight}"
+    // The height cap is pointless under FillHeight, which replaces it with the layout's own answer.
+    private string? _wrapperStyle => _scrollContainer && !FillHeight
+        ? $"--_flare-datagrid-height:{_effectiveHeight}"
         : null;
 
     private int _totalRows => _provider is not null ? _serverTotalCount : (Items?.Count() ?? 0);
@@ -346,7 +362,7 @@ public partial class FlareDataGrid<TItem>
             IReadOnlyDictionary<string, string>? activeFilters = _filters.Count > 0
                 ? new Dictionary<string, string>(_filters)
                 : null;
-            var req = new DataGridRequest(_page, _effectivePageSize, sortKey, _sortDir, Filters: activeFilters)
+            var req = new DataGridRequest(_scrollAll ? 0 : _page, _requestPageSize, sortKey, _sortDir, Filters: activeFilters)
             {
                 Sorts = BuildSorts(),
                 FilterModel = BuildFilters(),

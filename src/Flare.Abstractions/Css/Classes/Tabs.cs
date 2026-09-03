@@ -65,4 +65,6 @@ public static class Tabs
     public const string Label = "flare-tabs__label";
     /// <summary>The <c>flare-tabs--rotated</c> CSS class.</summary>
     public const string Rotated = "flare-tabs--rotated";
+    /// <summary>The <c>flare-tabs--fill</c> CSS class.</summary>
+    public const string Fill = "flare-tabs--fill";
 }

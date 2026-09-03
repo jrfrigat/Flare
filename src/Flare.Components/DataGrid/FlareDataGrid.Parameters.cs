@@ -41,7 +41,31 @@ public partial class FlareDataGrid<TItem>
     /// The provider is called with successive <c>Page</c> values; loading stops when a page returns
     /// fewer than <see cref="PageSize"/> rows or the reported total is reached.</summary>
     [Parameter] public bool InfiniteScroll { get; set; }
-    /// <summary>CSS height of the table container. Works with or without virtualization.</summary>
+    /// <summary>
+    /// Renders every row inside the grid's own scroll box instead of paging: no pager, a sticky
+    /// header, and one scrollbar on the table container. The middle ground between pagination and
+    /// <see cref="Virtual"/>, and the right choice from a few hundred to a few thousand rows - every
+    /// row is in the DOM, so browser find, keyboard navigation and printing reach all of them, which
+    /// row recycling cannot offer. Past that, prefer <see cref="Virtual"/>. Bound by
+    /// <see cref="Height"/> unless <see cref="FillHeight"/> takes over. With an
+    /// <see cref="ItemsProvider"/> or <see cref="Queryable"/> the whole set is requested in one call,
+    /// so use <see cref="Virtual"/> or <see cref="InfiniteScroll"/> when the source is large and
+    /// remote. Ignored while <see cref="Virtual"/> or <see cref="InfiniteScroll"/> is on.
+    /// </summary>
+    [Parameter] public bool Scroll { get; set; }
+    /// <summary>
+    /// Makes the grid spend the height it is given rather than the height in <see cref="Height"/>:
+    /// the grid fills its parent, and the table container takes whatever is left under the toolbar
+    /// and over the pager, scrolling inside it with a sticky header. This is the screen-fit case -
+    /// a grid in a tab panel, beside a chart, under a filter bar - where the available height is the
+    /// layout's answer and not a number the page can write down. Every link of the chain above it needs
+    /// the same switch - a <c>FlareLayoutContent</c> and any <c>FlareTabs</c> in between - because one
+    /// ancestor resolving to <c>auto</c> collapses the whole chain back to content height. Default
+    /// false keeps <see cref="Height"/> as the cap.
+    /// </summary>
+    [Parameter] public bool FillHeight { get; set; }
+    /// <summary>CSS height of the table container. Works with or without virtualization. Ignored
+    /// when <see cref="FillHeight"/> is set.</summary>
     [Parameter] public string Height { get; set; } = "400px";
     /// <summary>How the loading state is shown: a circular ring (default), skeleton rows, or text only.</summary>
     [Parameter] public DataGridLoadingIndicator LoadingIndicator { get; set; } = DataGridLoadingIndicator.Spinner;

@@ -111,16 +111,37 @@
   padding: var(--flare-spacing-6) 0;
 }
 
-.flare-datagrid__wrapper--virtual {
+.flare-datagrid__wrapper--scroll {
   overflow-y: auto;
-  max-height: var(--_virtual-height, 400px);
+  max-height: var(--_flare-datagrid-height, 400px);
+}
+
+/* ---- FillHeight: the grid takes the height of its box instead of setting one ----
+   Height is a cap measured in CSS units, which a screen-fit page cannot know: the space left over
+   under a toolbar, beside a chart, inside a tab panel is whatever the layout leaves. Fill drops the
+   cap and lets the flex chain hand the number down - the grid fills its parent, and the table
+   container takes what is left after the toolbar, the pager and the footer. `min-block-size: 0` is
+   the load-bearing half: a flex item will not shrink below its content without it, so the container
+   would grow the page rather than scroll inside it. Child combinator: a grid nested in a cell of
+   another one keeps its own sizing. */
+.flare-datagrid--fill {
+  /* Fills a flex parent through flex-basis and a block parent through the percentage; whichever of
+     the two applies, the other is ignored by that formatting context. */
+  flex: 1 1 0;
+  block-size: 100%;
+  min-block-size: 0;
+}
+.flare-datagrid--fill > .flare-datagrid__wrapper {
+  flex: 1 1 0;
+  min-block-size: 0;
+  max-block-size: none;
 }
 
 /* Sticky header inside a scroll container. Stick the whole <thead> (not individual <th>):
    per-cell sticky is unreliable for table cells and, with a multi-row header (column bands,
    banded composite), every row would pin at top:0 and overlap. A sticky thead keeps all
    header rows together above the scrolling body. z-index 3 keeps it over frozen body cells (2). */
-.flare-datagrid__wrapper--virtual thead {
+.flare-datagrid__wrapper--scroll thead {
   position: sticky;
   top: 0;
   z-index: 3;
@@ -490,12 +511,12 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 /* Sticky footer aggregate row in scrolling/virtualized grids (mirrors the sticky header). */
-.flare-datagrid__wrapper--virtual tfoot {
+.flare-datagrid__wrapper--scroll tfoot {
   position: sticky;
   bottom: 0;
   z-index: 3;
 }
-.flare-datagrid__wrapper--virtual tfoot .flare-datagrid__td {
+.flare-datagrid__wrapper--scroll tfoot .flare-datagrid__td {
   background: var(--flare-color-surface-container-low);
 }
 

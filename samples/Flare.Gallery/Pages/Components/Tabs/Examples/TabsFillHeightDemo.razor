@@ -1,0 +1,50 @@
+@* The screen-fit chain, end to end. The box below has a height; FillHeight makes the tab set spend it
+   instead of growing to its content, and the grid inside takes what is left under the bar and scrolls
+   in its own box with a sticky header. Turn the switch off to see the default: the panel is as tall as
+   its content, the grid keeps its own 400px cap, and the box's height means nothing.
+
+   In an application the box is FlareLayoutContent, which already has a height of its own - so a
+   full-screen page is FillHeight on the tab set and FillHeight on the grid, and no CSS. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareSwitch @bind-Value="_fill" Label="FillHeight on the tab set and the grid" />
+
+    <FlarePaper Elevation="1" Style="height:24rem">
+        <FlareTabs FillHeight="_fill">
+            <FlareTab Label="Orders">
+                <FlareDataGrid Items="@_orders" Scroll="true" FillHeight="_fill" Striped="true" Hoverable="true">
+                    <Columns>
+                        <FlareColumn Title="Order" Field="@(o => o.Number)" Width="120px" />
+                        <FlareColumn Title="Customer" Field="@(o => o.Customer)" Sortable="true" />
+                        <FlareColumn Title="Placed" Field="@(o => o.Placed.ToString("yyyy-MM-dd"))" Width="140px" />
+                    </Columns>
+                </FlareDataGrid>
+            </FlareTab>
+            <FlareTab Label="Notes">
+                <FlareText Typo="TypographyScale.BodyMedium">
+                    A panel that holds ordinary content is unaffected: it is a flex column with one child,
+                    which lays out exactly as a block would.
+                </FlareText>
+            </FlareTab>
+        </FlareTabs>
+    </FlarePaper>
+</FlareStack>
+
+@code {
+    private sealed record Order(string Number, string Customer, DateTime Placed);
+
+    private static readonly string[] _customers =
+        ["Northwind", "Contoso", "Fabrikam", "Adventure Works", "Tailspin"];
+
+    private bool _fill = true;
+
+    private readonly List<Order> _orders = BuildOrders();
+
+    private static List<Order> BuildOrders()
+    {
+        var placed = new DateTime(2026, 2, 1, 0, 0, 0, DateTimeKind.Utc);
+        var list = new List<Order>(120);
+        for (var i = 1; i <= 120; i++)
+            list.Add(new Order($"SO-{i:000}", _customers[i % _customers.Length], placed.AddDays(i)));
+        return list;
+    }
+}

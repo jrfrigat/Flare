@@ -319,6 +319,38 @@
 
 .flare-tabs__panels { padding-top: var(--flare-spacing-8); }
 
+/* ---- FillHeight: the tab set spends the height it is given instead of its content's ----
+   A tab set is a flex column, but its panels container had no share of the free space and the panel
+   itself was a plain block, so a child asking for `height: 100%` or `flex: 1` measured against
+   `auto` and collapsed to its content. The failure is worse than short: give that collapsed child
+   `overflow`, and a zero-height box with a scrollbar clips everything away.
+
+   Three declarations do it, and all three have to be here rather than in the page: the container
+   takes the free space, `min-block-size: 0` lets it shrink below its content (a flex item refuses
+   to by default, which is what makes an inner scroller grow the page instead of scrolling), and the
+   visible panel repeats both so the chain reaches whatever the panel holds. The `:not()` keeps the
+   inactive panels hidden - `display: flex` here would otherwise outrank their `display: none`.
+   Child combinators throughout: a nested tab set inside a panel decides its own fill. */
+.flare-tabs--fill {
+  /* Fills a flex parent through flex-basis and a block parent through the percentage; whichever of
+     the two applies, the other is ignored by that formatting context. */
+  flex: 1 1 0;
+  block-size: 100%;
+  min-block-size: 0;
+}
+.flare-tabs--fill > .flare-tabs__panels {
+  flex: 1 1 0;
+  min-block-size: 0;
+  display: flex;
+  flex-direction: column;
+}
+.flare-tabs--fill > .flare-tabs__panels > .flare-tabs__panel:not(.flare-tab-panel--hidden) {
+  flex: 1 1 0;
+  min-block-size: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Vertical orientation */
 .flare-tabs--vertical { flex-direction: row; }
 

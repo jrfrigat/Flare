@@ -16,7 +16,7 @@
    ToolbarContent, FooterContent or any nested fragment finds it without an explicit Context/Grid. Not
    IsFixed: the Context parameter may be swapped, and a stale binding would drive the wrong grid. *@
 <CascadingValue TValue="DataGridContext<TItem>" Value="@ActiveContext">
-<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill)" style="@Style" @attributes="AdditionalAttributes">
     @* Screen-reader announcements for sort/filter/page changes. *@
     <div role="status" aria-live="polite" class="flare-visually-hidden">@_ariaAnnouncement</div>
     <!-- Column descriptors render nothing visually -->
@@ -330,7 +330,7 @@
                         var rowIdx = _rowIdx++;
                         var isEditing = _inlineEditEnabled && _editingItem is not null && ReferenceEquals(_editingItem, item);
                         // aria-rowindex is 1-based; +2 accounts for the header row and the 1-based offset.
-                        var ariaRowIndex = _page * _effectivePageSize + rowIdx + 2;
+                        var ariaRowIndex = _rowIndexOffset + rowIdx + 2;
                         <tr @key="_rowKey(item)"
                             role="row"
                             aria-rowindex="@ariaRowIndex"

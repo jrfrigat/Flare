@@ -21,6 +21,9 @@ public static class Layout
     public const string AppbarToggleOpen = "flare-layout-appbar__toggle--open";
     /// <summary>The <c>flare-layout-content</c> CSS class: the main content region (the flexible track).</summary>
     public const string Content = "flare-layout-content";
+    /// <summary>The <c>flare-layout-content--fill</c> CSS class, giving the content frame the height of
+    /// the visible area so a page inside it can size itself to the screen.</summary>
+    public const string ContentFill = "flare-layout-content--fill";
     /// <summary>The <c>flare-layout__content-frame</c> CSS class.</summary>
     public const string ContentFrame = "flare-layout__content-frame";
     /// <summary>The <c>flare-layout__scrim</c> CSS class.</summary>

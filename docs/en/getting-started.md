@@ -308,7 +308,55 @@ The dialog body closes itself through a cascaded `FlareDialogInstance`:
 
 ---
 
-## 10. Docker
+## 10. A screen-fit page
+
+A page that fills the window instead of scrolling - a grid under a filter bar, two halves side by
+side, a chart above a table - is layout, and layout is where a component library usually hands you
+back a stylesheet. In Flare it is three parameters and no CSS.
+
+The chain is one of definite heights. `FlareLayout` is `100dvh`, its content area is a `1fr` row of
+that grid. What was missing is the frame around the page, which had no height of its own - so every
+percentage below it resolved against `auto`. `FillHeight` supplies it, and it is the same word all the
+way down: a component saying "spend the height I was given rather than growing to my content".
+
+```razor
+<FlareLayoutContent FillHeight="true">
+    <FlareTabs FillHeight="true">
+        <FlareTab Label="Orders">
+            @* Scroll: every row, no pager, a sticky header.
+               FillHeight: the box is whatever the tab panel had left. *@
+            <FlareDataGrid Items="@_orders" Scroll="true" FillHeight="true">
+                <Columns>
+                    <FlareColumn Title="Order" Field="@(o => o.Number)" />
+                    <FlareColumn Title="Customer" Field="@(o => o.Customer)" />
+                </Columns>
+            </FlareDataGrid>
+        </FlareTab>
+    </FlareTabs>
+</FlareLayoutContent>
+```
+
+Three rules of thumb:
+
+- **`FillHeight` needs an ancestor with a height.** `FlareLayoutContent FillHeight` is where a page
+  gets one. Anywhere else - a demo, a card - give the container one (`Style="height:24rem"`).
+- **Every link in the chain needs it.** A grid inside a tab panel needs `FillHeight` on the grid, on
+  the tab set *and* on the content region; one missing link resolves to `auto` and the whole chain
+  collapses to content height.
+- **`Height` and `FillHeight` are alternatives.** `Height="400px"` is a number you wrote down;
+  `FillHeight` is the number the layout works out. When both are set, `FillHeight` wins.
+
+The three row modes of `FlareDataGrid` answer three different questions:
+
+| Mode | What it renders | When |
+| :-- | :-- | :-- |
+| paging (default) | one page, plus a pager | the user navigates by page |
+| `Scroll="true"` | every row, no pager, sticky header | a few hundred to a few thousand rows; browser find and printing must reach every row |
+| `Virtual="true"` | only the rows in view | tens of thousands of rows |
+
+---
+
+## 11. Docker
 
 ```sh
 # Run the Gallery PWA

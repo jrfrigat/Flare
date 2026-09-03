@@ -157,6 +157,20 @@
 /* Content frame: full width by default; the size modifiers cap and center it while the scrollbar
    stays on the scrolling <main> at the window edge. */
 .flare-layout__content-frame { width: 100%; }
+
+/* FillHeight: the frame is the shell's last missing definite height. `main` is a 1fr row of a 100dvh
+   grid, so it has one; the frame does not, and a percentage height resolves against the nearest
+   ancestor that does - so `height: 100%` on a page collapsed to `auto` right here, one level above
+   whatever the page put inside it. Every screen-fit page patched that with this exact rule in its own
+   stylesheet.
+
+   It is opt-in rather than always on, and the reason is measured: when the frame is exactly the
+   visible height and the content overflows it, the overflow comes from a DESCENDANT escaping the
+   frame rather than from the frame itself, and the browser then leaves `main`'s block-end padding out
+   of the scrollable region - the last element of a long page ends flush against the window edge
+   instead of 24px above it. A page that fills the screen never overflows, so it never pays that; a
+   page that scrolls has no use for the height and would pay it on every screen. */
+.flare-layout-content--fill > .flare-layout__content-frame { height: 100%; }
 .flare-layout-content--xs { max-width: 480px; }
 .flare-layout-content--sm { max-width: 600px; }
 .flare-layout-content--md { max-width: 960px; }

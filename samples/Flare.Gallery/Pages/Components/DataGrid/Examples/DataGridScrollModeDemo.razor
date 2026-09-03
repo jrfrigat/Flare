@@ -1,0 +1,42 @@
+@* The middle ground between paging and virtualization: Scroll renders every row, hides the pager and
+   scrolls inside the grid's own box with a sticky header. Every row is really in the DOM, so browser
+   find and printing reach all of them - which row recycling cannot offer. A few hundred to a few
+   thousand rows is the range; past that Virtual is the answer. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareSwitch @bind-Value="_scroll" Label="Scroll (all rows) instead of paging" />
+
+    <FlareDataGrid Items="@_invoices" Scroll="_scroll" PageSize="10" Height="340px" Striped="true" Hoverable="true">
+        <Columns>
+            <FlareColumn Title="Invoice" Field="@(i => i.Number)" Width="120px" />
+            <FlareColumn Title="Customer" Field="@(i => i.Customer)" Sortable="true" />
+            <FlareColumn Title="Issued" Field="@(i => i.Issued.ToString("yyyy-MM-dd"))" Sortable="true" SortKey="Issued" Width="140px" />
+            <FlareColumn Title="Total" Field="@(i => i.Total)" Type="ColumnDataType.Number" Format="N2" Sortable="true" Width="130px" />
+        </Columns>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    private sealed record Invoice(string Number, string Customer, DateTime Issued, decimal Total);
+
+    private static readonly string[] _customers =
+        ["Northwind", "Contoso", "Fabrikam", "Adventure Works", "Tailspin", "Proseware", "Litware"];
+
+    private bool _scroll = true;
+
+    private readonly List<Invoice> _invoices = BuildInvoices();
+
+    private static List<Invoice> BuildInvoices()
+    {
+        var issued = new DateTime(2026, 1, 5, 0, 0, 0, DateTimeKind.Utc);
+        var list = new List<Invoice>(240);
+        for (var i = 1; i <= 240; i++)
+        {
+            list.Add(new Invoice(
+                $"INV-{i:0000}",
+                _customers[i % _customers.Length],
+                issued.AddDays(i),
+                120m + i % 37 * 48.5m));
+        }
+        return list;
+    }
+}

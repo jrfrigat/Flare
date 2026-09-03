@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<main class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<main class="@BuildCssClass(_fillClass)" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Layout.ContentFrame @_maxWidthClass @_alignClass">
         @ChildContent
     </div>
@@ -24,8 +24,21 @@
     /// </summary>
     [Parameter] public LayoutContentAlignment Alignment { get; set; } = LayoutContentAlignment.Center;
 
+    /// <summary>
+    /// Gives the page the height of the visible area instead of the height of its own content. This is
+    /// the first link of the screen-fit chain: the shell is <c>100dvh</c> and this region is a
+    /// <c>1fr</c> row of it, but the frame around the page had no height of its own, so a page asking
+    /// for <c>height: 100%</c> - or a <c>FlareTabs</c>/<c>FlareDataGrid</c> with <c>FillHeight</c> -
+    /// resolved against <c>auto</c> here and collapsed to its content. Set it on a page that fills the
+    /// screen and scrolls inside its own panes. Leave it off for an ordinary page that scrolls as a
+    /// whole: a scrolling page has no use for the height, and pinning the frame to the visible area
+    /// costs it the padding under its last element.
+    /// </summary>
+    [Parameter] public bool FillHeight { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Layout.Content;
 
     private string _maxWidthClass => LayoutContentWidth.ToClass(MaxWidth);
     private string _alignClass => LayoutContentWidth.ToAlignClass(Alignment);
+    private string? _fillClass => FillHeight ? Css.Classes.Layout.ContentFill : null;
 }

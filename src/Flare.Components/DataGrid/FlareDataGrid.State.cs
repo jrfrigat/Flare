@@ -410,9 +410,13 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
+    // Scroll mode has no pages, so the row set is the whole filtered list; the provider path already
+    // holds it, because its request asked for every row (see _requestPageSize).
     private IEnumerable<TItem> _pageItems => _provider is not null
         ? (_sortedCache ?? [])
-        : SortedUnpaged().Skip(_page * _effectivePageSize).Take(_effectivePageSize);
+        : _scrollAll
+            ? SortedUnpaged()
+            : SortedUnpaged().Skip(_page * _effectivePageSize).Take(_effectivePageSize);
 
     // Frozen sticky class for a body cell: left-frozen, right-frozen, or none.
     private static string _tdFrozenClass(DataGridColumn<TItem> col) =>

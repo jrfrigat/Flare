@@ -31,8 +31,12 @@ public static class DataGrid
     public const string Bordered = "flare-datagrid--bordered";
     /// <summary>The <c>flare-datagrid__wrapper</c> CSS class.</summary>
     public const string Wrapper = "flare-datagrid__wrapper";
-    /// <summary>The <c>flare-datagrid__wrapper--virtual</c> CSS class.</summary>
-    public const string WrapperVirtual = "flare-datagrid__wrapper--virtual";
+    /// <summary>The <c>flare-datagrid__wrapper--scroll</c> CSS class, marking the table container as
+    /// its own scroll box with a sticky header. Shared by every mode that scrolls instead of paging
+    /// (virtual, infinite, and all-rows scroll).</summary>
+    public const string WrapperScroll = "flare-datagrid__wrapper--scroll";
+    /// <summary>The <c>flare-datagrid--fill</c> CSS class.</summary>
+    public const string Fill = "flare-datagrid--fill";
     /// <summary>The <c>flare-datagrid__toolbar</c> CSS class.</summary>
     public const string Toolbar = "flare-datagrid__toolbar";
     /// <summary>The <c>flare-datagrid__toolbar-end</c> CSS class.</summary>
