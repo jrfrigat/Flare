@@ -2564,7 +2564,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Attributes", @"IReadOnlyDictionary<string, object>?", null, @"Extra attributes splatted onto the root element (inline Style comes from the base).", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"ComponentClass", @"string?", null, @"The field's own root modifier class (e.g. flare-select); appended after the shared flare-input root so component-specific CSS still keys off it.", null, false, false, false, @"FlareFieldChrome"),
-                new ApiParameterInfo(@"CounterContent", @"RenderFragment?", null, @"Optional trailing content for the support row (a character counter).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"CounterContent", @"RenderFragment?", null, @"Optional trailing content for the support row (a character counter). Its presence is what decides that the support row exists at all, so a field with no counter to show must pass null here rather than a fragment whose body is conditional -- an empty row still costs the column gap.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disabled state; emits the shared flare-input--disabled modifier.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"ErrorId", @"string?", null, @"The error element id, referenced via aria-describedby.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it replaces the helper and is announced as an alert.", null, false, false, false, @"FlareFieldChrome"),
