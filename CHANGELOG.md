@@ -3,6 +3,54 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.26.3] - 2026-09-03
+
+### Fixed
+
+- **A virtualized client-side `FlareDataGrid` showed only the first page.** `Virtual="true"` with an
+  `Items` list and no banded composite fed `Virtualize` the output of `Sorted()`, which is paged: the grid
+  handed over `PageSize` rows - ten by default - and Blazor correctly reported it had rendered all of them,
+  leaving a zero-height end spacer and nothing to scroll. Sorting and filtering ran over the whole set and
+  were then paged back down to ten, so the order looked right while the data was missing. The path now
+  takes `SortedUnpaged()`, as the other two `Virtualize` call sites already did, and passes
+  `ItemSize` - which also makes the documented `VirtualItemSize` parameter take effect there.
+- **The TSV and Markdown exporters did not encode their cells.** A tab or newline in a value added a column
+  or a row to the TSV, changing the file's shape rather than one value; a pipe broke a Markdown row and a
+  newline ended it early, shifting every later value into the wrong column. TSV now writes `\`, `\t`, `\r`
+  and `\n` escapes, which are reversible and keep the record count exact, and applies the same
+  leading-character guard against spreadsheet formula injection that the CSV exporter already had. The
+  Markdown exporter escapes pipes per the GFM tables extension and flattens newlines, leaving emphasis and
+  other non-structural markdown alone.
+- **`FlareSelect` and `FlareMultiSelect` were shorter than every field beside them.** The combobox trigger
+  set its own `--flare-spacing-6`/`-8` padding instead of the family's `--flare-input-padding-md`, and the
+  shared size ramp had no `md` entry to correct it, so the default and an explicit `Size="Md"` both missed
+  the token - 6px shorter than a text field in MD3, 8px in Aero, and unreachable for a theme.
+- **A striped `FlareDataGrid` hid the selection on even rows.** The stripe selector scored (0,3,2) against
+  the selected row's (0,1,0) and won the cascade, so clicking an even row changed its state and not its
+  appearance - except while hovered, where the selected-hover compound happens to tie the stripe and win on
+  source order, which made selection appear under the cursor and vanish when it left. The stripe is now
+  wrapped in `:where()`, which zeroes its specificity and leaves it as the row's base paint with the state
+  layers above it.
+- **`FlareAccordionPanel` ignored the `Expanded` parameter after the first render** and could not be driven
+  by a controlled parent at all. It now runs the same mirror as `FlareCollapse`: a controlled panel follows
+  the parameter on every set, an uncontrolled one keeps local state until the parameter itself changes - so
+  a sibling-driven re-render still passes through without reopening a panel the accordion just collapsed.
+- **Single-expand auto-collapse bypassed `OnBeforeToggle`.** Opening a sibling called straight into
+  `CollapseAsync`, so "confirm before closing a panel with unsaved edits" did nothing in exactly the case
+  that fires it. The guard now runs, and a refusal keeps the old panel open *and* stops the new one opening,
+  rather than leaving two open. A panel declared `Expanded` in markup also registers with the accordion,
+  which it never did - previously the first toggle of another panel found nothing to close.
+- **`FlareField` and `FlareTextArea` rendered an empty supporting-text row.** Both always supplied the
+  chrome a named `CounterContent` fragment whose body was conditional; the chrome decides the row exists by
+  testing that fragment for null, and a fragment that renders nothing is still not null. The row and its
+  column gap added 4px to every text field with no helper, error or counter. Both now pass the fragment
+  only when there is a counter to show.
+
+### Changed
+
+- Gallery: a **Virtual Scrolling** demo on the DataGrid page - 2000 client-side rows, no pager, scrolling
+  in its own box. The configuration that broke above had no demo, which is why it broke unnoticed.
+
 ## [0.26.2] - 2026-08-31
 
 ### Fixed
