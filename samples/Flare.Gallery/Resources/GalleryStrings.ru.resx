@@ -546,6 +546,9 @@
   <data name="Charts_Annotations" xml:space="preserve">
     <value>Аннотации: пороги, полосы, стрелки и выноски</value>
   </data>
+  <data name="Charts_Gaps" xml:space="preserve">
+    <value>Серии с пропусками: разрыв вместо нуля</value>
+  </data>
   <data name="Charts_Grid" xml:space="preserve">
     <value>Плотность сетки: число линий, округление и промежуточные деления</value>
   </data>
@@ -932,6 +935,12 @@
   </data>
   <data name="DataGrid_BandedVirtualDesc" xml:space="preserve">
     <value>500 полосатых записей с Virtual=true - каждая запись занимает несколько строк, отображаются только видимые.</value>
+  </data>
+  <data name="DataGrid_ScrollModeTitle" xml:space="preserve">
+    <value>Все строки со своей прокруткой</value>
+  </data>
+  <data name="DataGrid_ScrollModeDesc" xml:space="preserve">
+    <value>Scroll=true рисует все строки, прячет пагинатор и прокручивает таблицу внутри её рамки с прилипшей шапкой - середина между пагинацией и виртуализацией, на несколько сотен - несколько тысяч строк.</value>
   </data>
   <data name="DataGrid_CompositeCardTitle" xml:space="preserve">
     <value>Составная карточка</value>
@@ -2012,6 +2021,9 @@
   </data>
   <data name="Tabs_HeaderZones" xml:space="preserve">
     <value>Зоны заголовка и типографика</value>
+  </data>
+  <data name="Tabs_FillHeight" xml:space="preserve">
+    <value>Панели во всю высоту (FillHeight)</value>
   </data>
   <data name="TagInput_Title" xml:space="preserve">
     <value>Поле тегов</value>

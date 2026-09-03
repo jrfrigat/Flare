@@ -3,6 +3,86 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.28.0] - 2026-09-03
+
+### Added
+
+- **A screen-fit page is now three parameters and no CSS.** A page that fills the window instead of
+  scrolling - a grid under a filter bar, two halves side by side - used to require four rules in the
+  application's own stylesheet, each of them knowledge of a Flare internal: `min-height: 0` on the
+  right flex item, `:not(.flare-tab-panel--hidden)` to keep inactive panels hidden, percentages
+  against a definite parent. The chain is one of definite heights, and it was broken in three places,
+  so each gets the same switch under the same name. `FlareLayoutContent.FillHeight` gives the frame
+  around the page the height of the visible area - the shell is `100dvh` and the content region is a
+  `1fr` row of it, but the frame between them had none, so every percentage below resolved against
+  `auto`. `FlareTabs.FillHeight` stretches the panel container and makes the visible panel a flex
+  column. `FlareDataGrid.FillHeight` drops the `Height` cap and lets the table container take what is
+  left under the toolbar and over the pager. Each needs the one above it: a missing link resolves to
+  `auto` and the whole chain collapses back to content height. Documented as a pattern in
+  [Getting started](docs/en/getting-started.md), demonstrated on the Tabs page.
+- **`FlareDataGrid.Scroll`: every row, no pager, one scrollbar and a sticky header.** Between paging
+  and `Virtual` there was no supported middle, so applications reached it with `PageSize="100000"` and
+  a copy of the library's own virtual-wrapper recipe. It is the right mode from a few hundred to a few
+  thousand rows, and not only for the scrollbar: every row is really in the DOM, so browser find,
+  keyboard navigation and printing reach all of them, which row recycling cannot offer. `Virtual` and
+  `InfiniteScroll` still win when both are set - each already replaces paging, and both do it by
+  recycling, which is the opposite of what this mode promises.
+- **A chart series can now be absent from part of the axis.** `double.NaN` in `ChartSeries.Values`
+  marks a missing point: the line breaks rather than dropping to the axis, no bar is drawn, the point
+  is left out of the axis range and out of the tooltip. That is what lets a seasonal product share a
+  twelve-month axis with a year-round one without a run of zeros reading as "sold none" - a zero is a
+  value, and it drags the scale down to it. `ChartSeries.Gaps` builds the list from nullable data, so
+  the series is written the way it is held: `[null, null, 12, 18, null]`. A value alone between two
+  gaps has no segment to be drawn as, so it is marked with a dot rather than being silently invisible.
+  Line, area, bar, stacked bar and combo; the radial types still read a gap as zero.
+- **`ChartAnnotation.Layer`** decides which side of the data an overlay is on. Annotations always drew
+  on top, which is wrong for the band kinds: a translucent "fact / plan" band over the values washes
+  out the numbers it was drawn to frame, while the same band behind them reads as the background of
+  the period. `ChartAnnotationLayer.Under` draws it after the grid and before the series; `Over`
+  remains the default, so nothing moves unless it is asked to.
+- **`FlareCsv`: the export pipeline without a grid.** The exporters take the grid's columns and the
+  grid's rows, which is right for "export what I see" and has no answer for the two other ordinary
+  cases - the full set behind a filtered view, and data that has no grid at all. `FlareCsv.Build`
+  writes CSV from any rows and columns with the same escaping and CSV-injection guard the grid
+  exporter uses, and `FlareCsv.DownloadAsync` hands it to the browser in one call.
+- **`FlareCsvOptions`: separator, line ending, formula guard, culture and byte order mark.** The
+  standard exporter was comma-only, so a spreadsheet in a locale whose decimal mark is a comma opened
+  the file through an import wizard and applications wrote their own CSV to avoid it.
+  `FlareCsvOptions.Spreadsheet` reads the current culture's list separator and number format and asks
+  for the byte order mark; `FlareCsvOptions.Rfc4180` is the machine-readable end. `DataGridExporters.Csv(options)`
+  passes either to the grid.
+- **`FlareAccordion.HeadingLevel` / `FlareAccordionPanel.HeadingLevel`.** The panel titles were bare
+  buttons, so screen reader heading navigation - the way a screen reader user skims a page - walked
+  straight past the accordion's structure. The toggle now sits inside an element with heading
+  semantics, as the WAI-ARIA accordion pattern requires. The level is a parameter because the right
+  one depends on the surrounding document; 0 drops the semantics for an accordion that is a control
+  rather than a section of the document.
+- **`FlareCollapse.RegionLabel`** names the content region so it becomes a landmark a screen reader
+  can navigate to.
+
+### Fixed
+
+- **A headerless `FlareCollapse` announced an unnamed landmark.** It emitted `role="region"`
+  unconditionally, and in headerless mode there was no header id to point `aria-labelledby` at - which
+  put an entry in the screen reader's landmark list with nothing to identify it by. The role is now
+  emitted only when the region has a name: its header, or the new `RegionLabel`.
+
+### Changed
+
+- **Breaking: `DataGridExportColumn<TItem>` is now `FlareExportColumn<TRow>`.** The standalone export
+  path needs the same column descriptor the grid path uses - a title, a value accessor and an optional
+  formatter - and two parallel types would have meant a formatter written for one was unusable in the
+  other. Rename at the call site; the shape is unchanged, plus a `TextOf(row, provider)` overload and
+  an `Of(title, text)` shorthand.
+- **Breaking for stylesheets that target grid internals: `.flare-datagrid__wrapper--virtual` is now
+  `.flare-datagrid__wrapper--scroll`** (and `Css.Classes.DataGrid.WrapperVirtual` is `WrapperScroll`).
+  The class marks a table container that scrolls in its own box with a sticky header, which three
+  modes now share; naming it after one of them was already misleading before the third arrived.
+- **Test guard: a slot container may not render empty.** The empty support row that shipped in 0.26.2
+  survived because the tests asked whether the fragment was passed, not whether it drew anything - and
+  a non-null fragment whose body is conditional passes that question. `EmptySlotGuardTests` reads the
+  rendered DOM instead, and proves itself by catching a fragment that was passed and drew nothing.
+
 ## [0.27.0] - 2026-09-03
 
 ### Fixed

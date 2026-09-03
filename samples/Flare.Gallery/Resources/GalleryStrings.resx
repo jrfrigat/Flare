@@ -546,6 +546,9 @@
   <data name="Charts_Annotations" xml:space="preserve">
     <value>Annotations: Thresholds, Bands, Arrows and Callouts</value>
   </data>
+  <data name="Charts_Gaps" xml:space="preserve">
+    <value>Partial Series: Gaps Instead of Zeros</value>
+  </data>
   <data name="Charts_Grid" xml:space="preserve">
     <value>Grid Density: Line Count, Rounding and Minor Ticks</value>
   </data>
@@ -932,6 +935,12 @@
   </data>
   <data name="DataGrid_BandedVirtualDesc" xml:space="preserve">
     <value>500 banded records with Virtual=true - each record spans several rows, only the visible ones render.</value>
+  </data>
+  <data name="DataGrid_ScrollModeTitle" xml:space="preserve">
+    <value>All Rows with Their Own Scroll</value>
+  </data>
+  <data name="DataGrid_ScrollModeDesc" xml:space="preserve">
+    <value>Scroll=true renders every row, hides the pager and scrolls inside the grid with a sticky header - the middle ground between paging and virtualization, for a few hundred to a few thousand rows.</value>
   </data>
   <data name="DataGrid_CompositeCardTitle" xml:space="preserve">
     <value>Composite Card</value>
@@ -2012,6 +2021,9 @@
   </data>
   <data name="Tabs_HeaderZones" xml:space="preserve">
     <value>Header zones &amp; typography</value>
+  </data>
+  <data name="Tabs_FillHeight" xml:space="preserve">
+    <value>Screen-fit panels (FillHeight)</value>
   </data>
   <data name="TagInput_Title" xml:space="preserve">
     <value>Tag Field</value>

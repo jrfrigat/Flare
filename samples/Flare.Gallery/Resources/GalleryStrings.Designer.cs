@@ -1690,6 +1690,14 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Partial Series: Gaps Instead of Zeros.
+        /// </summary>
+        public static string Charts_Gaps {
+            get {
+                return ResourceManager.GetString("Charts_Gaps", resourceCulture);
+            }
+        }
+                /// <summary>
         ///   Ищет локализованную строку, похожую на Grid Density: Line Count, Rounding and Minor Ticks.
         /// </summary>
         public static string Charts_Grid {
@@ -2536,6 +2544,22 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на All Rows with Their Own Scroll.
+        /// </summary>
+        public static string DataGrid_ScrollModeTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ScrollModeTitle", resourceCulture);
+            }
+        }
+                /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll=true renders every row, hides the pager and scrolls inside the grid with a sticky header..
+        /// </summary>
+        public static string DataGrid_ScrollModeDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ScrollModeDesc", resourceCulture);
+            }
+        }
+                /// <summary>
         ///   Ищет локализованную строку, похожую на Virtual Scrolling.
         /// </summary>
         public static string DataGrid_VirtualScrollTitle {
@@ -8467,6 +8491,14 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Screen-fit panels (FillHeight).
+        /// </summary>
+        public static string Tabs_FillHeight {
+            get {
+                return ResourceManager.GetString("Tabs_FillHeight", resourceCulture);
+            }
+        }
+                /// <summary>
         ///   Ищет локализованную строку, похожую на Header zones &amp; typography.
         /// </summary>
         public static string Tabs_HeaderZones {
