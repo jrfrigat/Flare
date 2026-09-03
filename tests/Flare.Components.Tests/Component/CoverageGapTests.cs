@@ -550,6 +550,76 @@ public class C_DataGridExporterTests
         Assert.Contains("\"Name\"", json.Text);
     }
 
+    // One row carrying every character that is structural in a text table format.
+    private static DataGridExportData<Row> OneRow(string name) => new()
+    {
+        Columns = [new("Name", r => r.Name), new("Score", r => r.Score)],
+        Rows = [new Row(name, 1)],
+        FileName = "x",
+    };
+
+    private static string[] Lines(string text) =>
+        text.TrimEnd('\r', '\n').Split('\n').Select(l => l.TrimEnd('\r')).ToArray();
+
+    // A tab used to add a column and a newline used to add a row: the file changed SHAPE, which is worse
+    // than a wrong value because nothing downstream can detect it.
+    [Fact]
+    public async Task Tsv_EscapesTabsAndNewlines_SoTheRecordShapeSurvives()
+    {
+        var dl = new CaptureDownload();
+        await DataGridExporters.Tsv<Row>().ExportAsync(OneRow("a\tb\nc"), dl);
+
+        var lines = Lines(dl.Text!);
+        Assert.Equal(2, lines.Length);                 // header + exactly one data row
+        Assert.Equal(2, lines[1].Split('\t').Length);  // still two fields
+        Assert.Contains("a\\tb\\nc", lines[1]);
+    }
+
+    // A backslash has to be escaped first, or "a\tb" typed by a user is indistinguishable from a real tab.
+    [Fact]
+    public async Task Tsv_EscapesTheBackslashItself()
+    {
+        var dl = new CaptureDownload();
+        await DataGridExporters.Tsv<Row>().ExportAsync(OneRow("a\\tb"), dl);
+        Assert.Contains("a\\\\tb", Lines(dl.Text!)[1]);
+    }
+
+    // TSV opens in the same spreadsheet CSV does, so it needs the same OWASP formula guard.
+    [Theory]
+    [InlineData("=SUM(A1)")]
+    [InlineData("+1")]
+    [InlineData("-1+2")]
+    [InlineData("@import")]
+    public async Task Tsv_PrefixesFormulaLeads_LikeCsv(string value)
+    {
+        var dl = new CaptureDownload();
+        await DataGridExporters.Tsv<Row>().ExportAsync(OneRow(value), dl);
+        Assert.Contains("'" + value, dl.Text);
+    }
+
+    // GFM gives a table cell one escape (backslash-pipe) and defines a row as a single line.
+    [Fact]
+    public async Task Markdown_EscapesPipesAndFlattensNewlines_SoTheTableSurvives()
+    {
+        var dl = new CaptureDownload();
+        await DataGridExporters.Markdown<Row>().ExportAsync(OneRow("a|b\nc"), dl);
+
+        var lines = Lines(dl.Text!);
+        Assert.Equal(3, lines.Length);                             // header, separator, one data row
+        Assert.Contains("a\\|b c", lines[2]);
+        // Three UNESCAPED pipes delimit two cells; the one inside the value is escaped and does not count.
+        Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(lines[2], @"(?<!\\)\|").Count);
+    }
+
+    // Emphasis is content in a markdown export, not structure - over-escaping would ruin the output.
+    [Fact]
+    public async Task Markdown_LeavesNonStructuralMarkdownAlone()
+    {
+        var dl = new CaptureDownload();
+        await DataGridExporters.Markdown<Row>().ExportAsync(OneRow("**total**"), dl);
+        Assert.Contains("**total**", Lines(dl.Text!)[2]);
+    }
+
     [Fact]
     public async Task Excel_DownloadsValidXlsxBytes()
     {
@@ -2152,6 +2222,54 @@ public class C_FlareAccordionToggleTests : FlareTestContext
             .Add(x => x.OnBeforeToggle, _ => Task.FromResult(false)));
         await cut.InvokeAsync(() => cut.Find("button[aria-expanded]").Click());
         Assert.Equal("false", cut.Find("button[aria-expanded]").GetAttribute("aria-expanded"));
+    }
+
+    // The guard exists for "confirm before closing a panel with unsaved edits", and single-expand is the
+    // case that fires it: opening a sibling is what closes you. Auto-collapse used to skip it entirely.
+    [Fact]
+    public async Task VetoedAutoCollapse_KeepsTheOldPanelOpen_AndStopsTheNewOneOpening()
+    {
+        var cut = Render<FlareAccordion>(p => p.AddChildContent(b =>
+        {
+            b.OpenComponent<FlareAccordionPanel>(0);
+            b.AddAttribute(1, nameof(FlareAccordionPanel.Header), (object)"P0");
+            b.AddAttribute(2, nameof(FlareAccordionPanel.OnBeforeToggle),
+                (Func<bool, Task<bool>>)(next => Task.FromResult(next)));  // refuses to collapse, allows expand
+            b.CloseComponent();
+            b.OpenComponent<FlareAccordionPanel>(3);
+            b.AddAttribute(4, nameof(FlareAccordionPanel.Header), (object)"P1");
+            b.CloseComponent();
+        }));
+
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[0].Click());  // P0 opens
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[1].Click());  // P1 blocked by P0's veto
+
+        var buttons = cut.FindAll("button[aria-expanded]");
+        Assert.Equal("true", buttons[0].GetAttribute("aria-expanded"));
+        Assert.Equal("false", buttons[1].GetAttribute("aria-expanded"));
+    }
+
+    // A panel declared Expanded in markup never registered with the coordinator, so the first toggle of
+    // another panel found nothing to close and single-expand quietly became multi-expand.
+    [Fact]
+    public async Task InitiallyExpandedPanel_IsCollapsedByTheFirstSiblingToOpen()
+    {
+        var cut = Render<FlareAccordion>(p => p.AddChildContent(b =>
+        {
+            b.OpenComponent<FlareAccordionPanel>(0);
+            b.AddAttribute(1, nameof(FlareAccordionPanel.Header), (object)"P0");
+            b.AddAttribute(2, nameof(FlareAccordionPanel.Expanded), true);
+            b.CloseComponent();
+            b.OpenComponent<FlareAccordionPanel>(3);
+            b.AddAttribute(4, nameof(FlareAccordionPanel.Header), (object)"P1");
+            b.CloseComponent();
+        }));
+
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[1].Click());
+
+        var buttons = cut.FindAll("button[aria-expanded]");
+        Assert.Equal("false", buttons[0].GetAttribute("aria-expanded"));
+        Assert.Equal("true", buttons[1].GetAttribute("aria-expanded"));
     }
 }
 
