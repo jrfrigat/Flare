@@ -89,3 +89,6 @@ api/**/*.yml
 api/.manifest
 !api/index.md
 docfx.log
+
+## Backlog triage (generated report) ##
+docs/backlog/*.html
