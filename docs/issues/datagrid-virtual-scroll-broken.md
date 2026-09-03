@@ -1,6 +1,6 @@
 # DataGrid: Virtual renders ~10 rows and never scrolls
 
-**Status: OPEN. Hard bug. Found in a real app (OrderingPlatform) on Flare 0.26.2,
+**Status: FIXED in 0.26.3. Was a hard bug. Found in a real app (OrderingPlatform) on Flare 0.26.2,
 Blazor WASM, .NET 10, Chromium.**
 
 

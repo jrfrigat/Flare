@@ -1,6 +1,6 @@
 # Markdown: inline code inside bold is not parsed
 
-**Status: OPEN. Small parser bug, visible on the Gallery's own /changelog page. Found 2026-09-03 while
+**Status: FIXED in 0.26.4 (emphasis bodies now recurse through RenderInline). Found 2026-09-03 while
 verifying the 0.26.3 release; pre-existing, and every changelog entry written since at least 0.26.2
 hits it.**
 

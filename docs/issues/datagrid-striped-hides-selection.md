@@ -1,6 +1,6 @@
 # DataGrid: Striped hides the selected-row background on even rows
 
-**Status: OPEN. CSS specificity bug, datagrid.css, 0.26.2.**
+**Status: FIXED in 0.26.3 (`:where()` on the stripe). CSS specificity bug, datagrid.css.**
 
 On a `Striped` grid the selection highlight only ever shows on ODD rows. Even rows keep
 their stripe when selected, so clicking them changes state but not appearance - to the

@@ -1,6 +1,6 @@
 # DataGrid: the client virtual path is fed the PAGED list, so it caps at PageSize rows
 
-**Status: OPEN. Confirmed root cause of [datagrid-virtual-scroll-broken.md](datagrid-virtual-scroll-broken.md),
+**Status: FIXED in 0.26.3. Root cause of [datagrid-virtual-scroll-broken.md](datagrid-virtual-scroll-broken.md),
 which reported the symptom and guessed the mechanism wrong. One-line fix. Found 2026-09-03 by reading the
 three `Virtualize` call sites in `FlareDataGrid.razor`; the reporting app (OrderingPlatform) hit it on 0.26.2.**
 

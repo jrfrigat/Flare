@@ -1,6 +1,6 @@
 # DataGrid: Auto type resolution invokes Field selectors - one throwing row kills the render
 
-**Status: OPEN. Robustness bug found via a real crash (OrderingPlatform, 0.26.2).**
+**Status: FIXED in 0.26.4 (a throwing row is skipped; the inferred type is now cached per column).**
 
 `ResolveColumnDataType` (Filtering.cs), when a column's type is `Auto`, samples the data:
 
