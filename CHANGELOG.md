@@ -3,6 +3,44 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.26.4] - 2026-09-03
+
+### Fixed
+
+- **Inline code inside bold was not parsed.** `MarkdownParser` encoded an emphasis body flat instead of
+  parsing it, so anything nested inside came out as literal markers: `` **`FlareSelect` was shorter** ``
+  rendered the backticks as text. Emphasis bodies now recurse through the inline renderer, the way link
+  text always did - code, italic-inside-bold and bold-inside-italic all resolve. Literal text still
+  reaches the encoder on the way through, so nesting is not a hole in it, and a code span still binds
+  tighter than emphasis, leaving `**` inside backticks alone. Measured on the Gallery's own `/changelog`:
+  56 of 104 `<strong>` elements now carry a `<code>` child and none carry a raw backtick.
+- **One row that threw took down a whole `FlareDataGrid` render.** An `Auto`-typed column infers its type
+  by running the caller's `Field` lambda, and it scans `Items` - the whole set - while the grid renders
+  only the current page. A selector like `s => s.Latest!.Value` against an optional parent is safe for
+  every row on screen and still threw on one the user could not see, killing the render batch with no
+  hint of which column caused it. A throwing row is now skipped during inference; the app still sees the
+  exception if it renders that row's cell, which is where it can act on it. The inferred type is also
+  memoized per column now - the filter row was re-running an O(rows) scan for every column on every
+  render.
+- **An `FlareAccordionPanel` clipped content taller than a theme's ceiling.** The panel animated
+  `max-height` to `--flare-accordion-content-max-height`, which had to be a number big enough for any
+  content - both shipped themes named the same `2000px` - and anything taller stayed cut off while
+  expanded. It now animates a grid track from `0fr` to `1fr`, the technique `FlareCollapse` already used,
+  which expands to the content's own height whatever that is. The block padding animates with the track,
+  because padding is part of a grid item's minimum contribution and would otherwise hold a closed panel
+  open at exactly its own padding. Verified at 3672px of content: opens in full, closes to zero.
+- **`FlareScrollTop` ignored its parameters after the first render.** The subscription was built once, so
+  a parent that later moved `Selector` left the listener watching the old container while the click
+  scrolled the new one, and a changed `ThrottleMs` never reached the listener at all. Both now
+  resubscribe, and a changed `Threshold` re-tests the position already known instead of waiting for the
+  next scroll event. A re-render that touches none of the three still keeps the same subscription.
+
+### Removed
+
+- `AccordionTokens.ContentMaxHeight` (`--flare-accordion-content-max-height`). It existed only to give
+  the old `max-height` animation a target, both themes set it to the same arbitrary `2000px`, and the
+  grid-track animation that replaced it needs no ceiling. A theme that set it can drop the line.
+
 ## [0.26.3] - 2026-09-03
 
 ### Fixed
