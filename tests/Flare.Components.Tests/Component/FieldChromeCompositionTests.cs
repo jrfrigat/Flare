@@ -72,4 +72,42 @@ public sealed class FieldChromeCompositionTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll(".flare-input .flare-input__support .flare-input__helper--error"));
         Assert.Single(cut.FindAll(".flare-input"));
     }
+
+    // No helper, no error, no counter asked for => no support row at all. The frame decides the row
+    // exists by testing CounterContent for null, and these two fields used to hand it a named fragment
+    // whose BODY was conditional: non-null, renders nothing, still buys a row and the column gap above
+    // it. That is the 4px by which a text field outgrew the select standing beside it.
+    [Fact]
+    public void BareField_RendersNoSupportRow() =>
+        Assert.Empty(Render<FlareField<string>>(p => p.Add(x => x.Label, "L"))
+            .FindAll(".flare-input__support"));
+
+    [Fact]
+    public void BareTextArea_RendersNoSupportRow() =>
+        Assert.Empty(Render<FlareTextArea>(p => p.Add(x => x.Label, "L"))
+            .FindAll(".flare-input__support"));
+
+    // A select never had the problem, and is the control the two above are measured against: all three
+    // must agree on when the row exists, or the family stops lining up.
+    [Fact]
+    public void BareSelect_RendersNoSupportRow() =>
+        Assert.Empty(Render<FlareSelect<string>>(p => p.Add(x => x.Label, "L"))
+            .FindAll(".flare-input__support"));
+
+    // ...and the row comes back the moment there is something to put in it.
+    [Fact]
+    public void FieldWithACounter_RendersTheSupportRow()
+    {
+        var cut = Render<FlareField<string>>(p => p.Add(x => x.Label, "L").Add(x => x.MaxLength, 10));
+        Assert.Single(cut.FindAll(".flare-input__support"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__support .flare-input__counter"));
+    }
+
+    [Fact]
+    public void TextAreaWithACounter_RendersTheSupportRow()
+    {
+        var cut = Render<FlareTextArea>(p => p.Add(x => x.Label, "L").Add(x => x.MaxLength, 10));
+        Assert.Single(cut.FindAll(".flare-input__support"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__support .flare-input__counter"));
+    }
 }

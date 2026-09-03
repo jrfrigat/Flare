@@ -8,6 +8,12 @@
    (a <textarea>), so it shares the family chrome + input logic and only adds the textarea-specific rows /
    auto-grow / max-lines. *@
 
+@* Null unless _showCounter -- see the same note on FlareField: a named fragment that renders nothing is
+   still not null, so wrapping the @if inside it left the chrome building an empty support row. *@
+@{
+    RenderFragment _counter = @<span class="@Css.Classes.Input.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>;
+}
+
 <FlareFieldChrome Variant="Variant" Size="Size"
                   Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -15,7 +21,8 @@
                   Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
-                  Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
+                  Class="@Class" Style="@Style" Attributes="AdditionalAttributes"
+                  CounterContent="@(_showCounter ? _counter : null)">
     <Field>
         <div class="@Css.Classes.Input.Field">
             <FlareTextInput @ref="_input"
@@ -53,12 +60,6 @@
             }
         </div>
     </Field>
-    <CounterContent>
-        @if (_showCounter)
-        {
-            <span class="@Css.Classes.Input.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
-        }
-    </CounterContent>
 </FlareFieldChrome>
 
 @code {

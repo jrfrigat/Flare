@@ -90,7 +90,9 @@
     /// <summary>The field content (the well: control + adornments), rendered between the label and the support row.</summary>
     [Parameter, EditorRequired] public RenderFragment? Field { get; set; }
 
-    /// <summary>Optional trailing content for the support row (a character counter).</summary>
+    /// <summary>Optional trailing content for the support row (a character counter). Its presence is what
+    /// decides that the support row exists at all, so a field with no counter to show must pass null here
+    /// rather than a fragment whose body is conditional -- an empty row still costs the column gap.</summary>
     [Parameter] public RenderFragment? CounterContent { get; set; }
 
     private ElementReference _root;

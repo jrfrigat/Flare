@@ -12,6 +12,14 @@
    (string <-> TValue conversion), the adornments/icons/clear that sit inside the well, and the floating
    label. *@
 
+@* Handed to the chrome only when _showCounter, rather than wrapped in an @if inside a named fragment:
+   the chrome decides whether the support row exists by asking whether this fragment is null, and a
+   fragment that renders nothing is still not null. That built an empty support row whose column gap made
+   every text field 4px taller than the select beside it. *@
+@{
+    RenderFragment _counter = @<span class="@Css.Classes.Input.Counter" aria-hidden="true">@_charCount@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>;
+}
+
 <FlareFieldChrome Variant="Variant" Size="Size"
                   Invalid="_hasError" Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@_extraClass"
@@ -19,7 +27,8 @@
                   Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
                   HelperText="@_effectiveHelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
-                  Class="@Class" Style="@_inlineStyle" Attributes="AdditionalAttributes">
+                  Class="@Class" Style="@_inlineStyle" Attributes="AdditionalAttributes"
+                  CounterContent="@(_showCounter ? _counter : null)">
     <Field>
         <div class="@Css.Classes.Input.Field">
             @if (AdornmentStart is not null)
@@ -80,12 +89,6 @@
             }
         </div>
     </Field>
-    <CounterContent>
-        @if (_showCounter)
-        {
-            <span class="@Css.Classes.Input.Counter" aria-hidden="true">@_charCount@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
-        }
-    </CounterContent>
 </FlareFieldChrome>
 
 @code {
