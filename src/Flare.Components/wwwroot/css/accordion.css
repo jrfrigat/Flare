@@ -12,6 +12,15 @@
   border-top: var(--flare-accordion-panel-divider);
 }
 
+/* The heading around the toggle is semantics, not a box: it must add no space of its own and inherit
+   the panel's type, so the header button keeps deciding what the row looks like. The declarations are
+   also what makes swapping it for a real h1..h6 element a safe change for a theme to make. */
+.flare-accordion-panel__heading {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
 .flare-accordion-panel__header {
   position: relative;
   display: flex;

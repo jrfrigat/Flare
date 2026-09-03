@@ -2,23 +2,32 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_expanded ? Css.Classes.Accordion.Expanded : null, Disabled ? Css.Classes.Accordion.PanelDisabled : null)" style="@Style" @attributes="AdditionalAttributes">
-    <button class="@Css.Classes.Accordion.Header" type="button" @onclick="Toggle"
-            id="@_headerId"
-            disabled="@Disabled"
-            aria-expanded="@_expanded.ToString().ToLowerInvariant()"
-            aria-controls="@_contentId">
-        <span class="@Css.Classes.Accordion.PanelHeaderText">
-            @if (HeaderContent is not null)
-            {
-                @HeaderContent
-            }
-            else
-            {
-                @Header
-            }
-        </span>
-        <span class="@Css.Classes.Accordion.Icon" aria-hidden="true">▾</span>
-    </button>
+    @* The toggle is wrapped in a heading, as the WAI-ARIA accordion pattern requires: without one the
+       panel titles are buttons and nothing else, so heading navigation - the way a screen reader user
+       skims a page - walks straight past the accordion's structure. role="heading" rather than a real
+       h1..h6 element because the level is a parameter, and because a generic element carries no user
+       agent margins to undo. The button stays the heading's only content, which the pattern also asks
+       for: anything else inside it would be unreachable by that navigation. *@
+    <div class="@Css.Classes.Accordion.Heading" role="@(_headingLevel > 0 ? "heading" : null)"
+         aria-level="@(_headingLevel > 0 ? _headingLevel.ToString(System.Globalization.CultureInfo.InvariantCulture) : null)">
+        <button class="@Css.Classes.Accordion.Header" type="button" @onclick="Toggle"
+                id="@_headerId"
+                disabled="@Disabled"
+                aria-expanded="@_expanded.ToString().ToLowerInvariant()"
+                aria-controls="@_contentId">
+            <span class="@Css.Classes.Accordion.PanelHeaderText">
+                @if (HeaderContent is not null)
+                {
+                    @HeaderContent
+                }
+                else
+                {
+                    @Header
+                }
+            </span>
+            <span class="@Css.Classes.Accordion.Icon" aria-hidden="true">▾</span>
+        </button>
+    </div>
     <div class="@Css.Classes.Accordion.Content"
          id="@_contentId"
          role="region"
@@ -46,6 +55,9 @@
     /// <summary>Async guard fired before the panel toggles (the argument is the proposed expanded
     /// state); return false to block it -- e.g. confirm before collapsing a panel with unsaved edits.</summary>
     [Parameter] public Func<bool, Task<bool>>? OnBeforeToggle { get; set; }
+    /// <summary>Heading level of this panel's title, overriding the accordion's
+    /// <see cref="FlareAccordion.HeadingLevel"/>. Null (default) inherits it.</summary>
+    [Parameter] public int? HeadingLevel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Accordion.Panel;
 
@@ -53,6 +65,9 @@
     private bool _lastExpanded;
     private bool _initialised;
     private readonly string _panelId = Guid.NewGuid().ToString("N")[..8];
+    // The panel's own level wins over the accordion's; a standalone panel falls back to the same
+    // default the accordion carries.
+    private int _headingLevel => HeadingLevel ?? Accordion?.HeadingLevel ?? FlareAccordion.DefaultHeadingLevel;
     private string _headerId => $"flare-accordion-hdr-{_panelId}";
     private string _contentId => $"flare-accordion-cnt-{_panelId}";
 

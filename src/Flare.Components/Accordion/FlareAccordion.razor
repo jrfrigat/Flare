@@ -12,6 +12,17 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>When true, multiple panels can be expanded simultaneously.</summary>
     [Parameter] public bool AllowMultiple { get; set; }
+    /// <summary>
+    /// Heading level announced for the panel titles, so screen reader heading navigation reaches the
+    /// accordion's sections. The right level depends on the surrounding document - an accordion under
+    /// an <c>h2</c> section title wants 3 - which is why it is a parameter and not a fixed tag. Set 0
+    /// to drop the heading semantics for an accordion that is a control rather than a section of the
+    /// document. Default 3. A panel may override it with its own <c>HeadingLevel</c>.
+    /// </summary>
+    [Parameter] public int HeadingLevel { get; set; } = DefaultHeadingLevel;
+
+    /// <summary>Heading level used when neither the accordion nor the panel names one.</summary>
+    internal const int DefaultHeadingLevel = 3;
 
     protected override string ComponentCssClass => Css.Classes.Accordion.Root;
 

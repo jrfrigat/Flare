@@ -9,6 +9,9 @@ public static class Accordion
     public const string Panel = "flare-accordion-panel";
     /// <summary>The <c>flare-accordion-panel--expanded</c> CSS class.</summary>
     public const string Expanded = "flare-accordion-panel--expanded";
+    /// <summary>The <c>flare-accordion-panel__heading</c> CSS class, on the heading element that wraps
+    /// the panel's toggle button.</summary>
+    public const string Heading = "flare-accordion-panel__heading";
     /// <summary>The <c>flare-accordion-panel__header</c> CSS class.</summary>
     public const string Header = "flare-accordion-panel__header";
     /// <summary>The <c>flare-accordion-panel__body</c> CSS class.</summary>

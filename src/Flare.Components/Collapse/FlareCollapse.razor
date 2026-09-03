@@ -29,10 +29,14 @@
             <FlareIconView Value="@(_expanded ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" Class="@Css.Classes.Collapse.Icon" />
         </button>
     }
+    @* The landmark exists only once it has a name. A `region` without one is an entry in the screen
+       reader's landmark list that says nothing about where it leads, so headerless content is plain
+       content unless the caller names it through RegionLabel. *@
     <div class="@Css.Classes.Collapse.Region"
          id="@_regionId"
-         role="region"
-         aria-labelledby="@(_hasHeader ? _headerId : null)">
+         role="@_regionRole"
+         aria-label="@RegionLabel"
+         aria-labelledby="@(_hasHeader && RegionLabel is null ? _headerId : null)">
         <div class="@Css.Classes.Collapse.Inner">
             @ChildContent
         </div>
@@ -55,6 +59,15 @@
     /// <summary>Disables the built-in header toggle. A headerless collapse is unaffected (it is controlled
     /// only through <see cref="Expanded"/>).</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>
+    /// Accessible name for the content region, making it a named landmark a screen reader can jump to.
+    /// A collapse with a built-in header already has one - its header - so this is for the headerless
+    /// case, where the alternative is no landmark at all: an unnamed one is worse than none, because it
+    /// appears in the landmark list with nothing to identify it by. Set it when the content is a
+    /// distinct section of the page ("Advanced filters"); leave it null when the content is just more
+    /// of what surrounds it.
+    /// </summary>
+    [Parameter] public string? RegionLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Collapse.Root;
 
@@ -64,6 +77,7 @@
     private string _headerId => $"flare-collapse-hdr-{_id}";
     private string _regionId => $"flare-collapse-rgn-{_id}";
     private bool _hasHeader => HeaderContent is not null || !string.IsNullOrEmpty(Header);
+    private string? _regionRole => _hasHeader || !string.IsNullOrWhiteSpace(RegionLabel) ? "region" : null;
 
     // Two-way state contract (docs/ru/component-conventions.md): controlled follows the parameter,
     // uncontrolled follows local state until the parameter itself changes. _lastExpanded mirrors the
