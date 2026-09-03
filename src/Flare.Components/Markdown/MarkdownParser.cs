@@ -334,6 +334,11 @@ public static partial class MarkdownParser
 
     #region Inline Rendering
 
+    // Emphasis and link bodies recurse through here rather than being encoded flat, so a construct
+    // nested in another is parsed: `code` inside **bold** is the common one, and it is what technical
+    // prose is written in. Recursion is safe on both counts - every span it consumes is strictly shorter
+    // than its parent, and literal text still reaches HtmlEncode on the fallback path below, so nesting
+    // cannot smuggle raw markup through.
     private static string RenderInline(string text)
     {
         if (string.IsNullOrEmpty(text)) return string.Empty;
@@ -391,7 +396,7 @@ public static partial class MarkdownParser
                 int close = text.IndexOf(tag3, pos + 3, StringComparison.Ordinal);
                 if (close > pos)
                 {
-                    result.Append($"<strong><em>{HtmlEncode(text[(pos + 3)..close])}</em></strong>");
+                    result.Append($"<strong><em>{RenderInline(text[(pos + 3)..close])}</em></strong>");
                     pos = close + 3;
                     continue;
                 }
@@ -407,7 +412,7 @@ public static partial class MarkdownParser
                 int close = text.IndexOf(tag2, pos + 2, StringComparison.Ordinal);
                 if (close > pos)
                 {
-                    result.Append($"<strong>{HtmlEncode(text[(pos + 2)..close])}</strong>");
+                    result.Append($"<strong>{RenderInline(text[(pos + 2)..close])}</strong>");
                     pos = close + 2;
                     continue;
                 }
@@ -420,7 +425,7 @@ public static partial class MarkdownParser
                 int close = text.IndexOf(marker, pos + 1);
                 if (close > pos)
                 {
-                    result.Append($"<em>{HtmlEncode(text[(pos + 1)..close])}</em>");
+                    result.Append($"<em>{RenderInline(text[(pos + 1)..close])}</em>");
                     pos = close + 1;
                     continue;
                 }
