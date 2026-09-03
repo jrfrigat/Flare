@@ -95,6 +95,12 @@ public sealed class ScreenFitTests : FlareTestContext
 
     // Virtual and infinite scroll already replace paging by recycling rows; scroll mode's promise is the
     // opposite - every row in the DOM - so it must not quietly turn one of them off.
+    //
+    // Asserted through the spacer rows Virtualize emits around its window, not through how many rows it
+    // decided to render: that number is the framework's business and it differs by target framework -
+    // net8's Virtualize renders the whole set in a headless host, where net9 and net10 render a window.
+    // A count assertion passed here on two targets and failed on the third for a reason that had nothing
+    // to do with the behaviour under test.
     [Fact]
     public void DataGrid_Scroll_YieldsToVirtual()
     {
@@ -104,7 +110,22 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Virtual, true)
             .Add(x => x.Columns, OneColumn()));
 
-        Assert.True(cut.FindAll("tbody tr").Count < 500);
+        Assert.True(cut.FindAll("tbody tr").Count > cut.FindAll("tbody tr.flare-datagrid__row").Count,
+            "The virtual path renders Virtualize's spacer rows around its window; scroll mode renders "
+            + "nothing but data rows. Only spacers tell the two apart without depending on how many rows "
+            + "Virtualize chose to build.");
+    }
+
+    [Fact]
+    public void DataGrid_Scroll_RendersNoSpacerRows()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(500))
+            .Add(x => x.Scroll, true)
+            .Add(x => x.Columns, OneColumn()));
+
+        Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(500, cut.FindAll("tbody tr.flare-datagrid__row").Count);
     }
 
     [Fact]
