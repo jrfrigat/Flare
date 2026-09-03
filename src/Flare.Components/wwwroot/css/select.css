@@ -13,7 +13,11 @@
 .flare-multiselect__control {
     justify-content: space-between;
     gap: var(--flare-spacing-4);
-    padding: var(--flare-spacing-6) var(--flare-spacing-8);
+    /* Same medium step of the Xs..Xl ramp the inner-input fields apply (input.css), applied here for
+       the same reason: the combobox trigger is a structurally different control, so it needs its own
+       declaration, but it must consume the family token rather than pick a spacing of its own or the
+       default size stops matching the text field beside it - and a theme loses the size entirely. */
+    padding: var(--flare-input-padding-md);
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);
