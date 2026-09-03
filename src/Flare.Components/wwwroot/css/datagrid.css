@@ -53,13 +53,17 @@
 }
 
 /* Appearance modifiers */
-.flare-datagrid--striped tbody tr.flare-datagrid__row:nth-of-type(even) {
+/* :where() zeroes the stripe's specificity so it stays the row's BASE paint and every state layer
+   below can win with a plain single-class selector. Written out, this selector scores (0,3,2) and beat
+   .flare-datagrid__row--selected at (0,1,0): on a striped grid the selection was invisible on even
+   rows at rest, and appeared only under the cursor, because the selected-hover compound happens to tie
+   the stripe and win on source order. Hover and selected are states; the stripe is decoration. */
+:where(.flare-datagrid--striped tbody tr.flare-datagrid__row:nth-of-type(even)) {
   background: var(--flare-stripe-bg);
 }
 
-/* Row hover paints on the ROW, immediately after the stripe so it wins the tie between two equally
-   specific selectors. It used to paint twice - a second rule mixed the wash itself from the state
-   opacity scale on every cell, and covered this one. Both are now the theme's single hover layer.
+/* Row hover paints on the ROW. It used to paint twice - a second rule mixed the wash itself from the
+   state opacity scale on every cell, and covered this one. Both are now the theme's single hover layer.
    See table.css for why the row is the right element and what a cell with a background of its own
    means for it. */
 .flare-datagrid--hoverable tbody tr.flare-datagrid__row:hover {
