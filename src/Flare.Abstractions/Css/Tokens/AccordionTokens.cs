@@ -35,6 +35,4 @@ public static class AccordionField
     public const string BodyPaddingInline = "--flare-accordion-body-padding-inline";
     /// <summary>CSS custom-property name for the panel body foreground token.</summary>
     public const string BodyColor = "--flare-accordion-body-color";
-    /// <summary>CSS custom-property name for the ceiling the expanded panel animates to token.</summary>
-    public const string ContentMaxHeight = "--flare-accordion-content-max-height";
 }

@@ -351,7 +351,6 @@ public class FluentUI2Tokens
         BodyPaddingBlock = "var(--flare-spacing-8)",
         BodyPaddingInline = "var(--flare-spacing-12)",
         BodyColor = "var(--flare-color-on-surface-variant)",
-        ContentMaxHeight = "2000px",
     };
 
     /// <summary>Standalone collapse header tokens.</summary>

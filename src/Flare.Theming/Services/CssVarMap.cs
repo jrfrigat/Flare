@@ -617,7 +617,6 @@ public static class CssVarMap
         v[Css.Tokens.AccordionField.BodyPaddingBlock] = t.Accordion.BodyPaddingBlock;
         v[Css.Tokens.AccordionField.BodyPaddingInline] = t.Accordion.BodyPaddingInline;
         v[Css.Tokens.AccordionField.BodyColor] = t.Accordion.BodyColor;
-        v[Css.Tokens.AccordionField.ContentMaxHeight] = t.Accordion.ContentMaxHeight;
 
         v[Css.Tokens.CollapseField.HeaderBg] = t.Collapse.HeaderBg;
         v[Css.Tokens.CollapseField.HeaderColor] = t.Collapse.HeaderColor;

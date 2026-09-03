@@ -95,17 +95,36 @@
   transform: rotate(180deg);
 }
 
+/* Disclosure animation, shared in technique with .flare-collapse__region (collapse.css): a grid track
+   animated 0fr -> 1fr expands to the content's OWN height, whatever that is. The panel used to animate
+   max-height to a theme token, which meant the theme had to name a number big enough for any content -
+   both shipped themes named the same 2000px - and anything taller stayed clipped while expanded. */
 .flare-accordion-panel__content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
 
 .flare-accordion-panel--expanded .flare-accordion-panel__content {
-  max-height: var(--flare-accordion-content-max-height);
+  grid-template-rows: 1fr;
 }
 
+/* min-height:0 lets the grid item shrink below its own content height, which a grid item otherwise
+   refuses to do - without it the 0fr track is forced open by the content and never closes.
+   The BLOCK padding has to travel with the track for the same reason it cannot simply sit here:
+   padding is part of an item's minimum contribution and is never reduced, so a padded item holds a
+   0fr track open at exactly its own padding - the panel would close to a 32px gap instead of to
+   nothing. flare-collapse__inner avoids this by carrying no padding at all. Both properties animate
+   over the same duration, so the block still opens and closes as one movement. */
 .flare-accordion-panel__body {
-  padding: var(--flare-accordion-body-padding-block) var(--flare-accordion-body-padding-inline);
+  min-height: 0;
+  overflow: hidden;
+  padding-block: 0;
+  padding-inline: var(--flare-accordion-body-padding-inline);
   color: var(--flare-accordion-body-color);
+  transition: padding-block var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+}
+
+.flare-accordion-panel--expanded .flare-accordion-panel__body {
+  padding-block: var(--flare-accordion-body-padding-block);
 }

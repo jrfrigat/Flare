@@ -48,9 +48,4 @@ public sealed record AccordionTokens
     [CssVar(AccordionField.BodyPaddingInline)] public required string BodyPaddingInline { get; init; }
     /// <summary>Foreground of a panel body.</summary>
     [CssVar(AccordionField.BodyColor)] public required string BodyColor { get; init; }
-    /// <summary>Ceiling the expanded panel's height animates to. The panel opens by growing
-    /// <c>max-height</c>, which needs a concrete target, so this has to clear the tallest body a theme
-    /// expects to hold; raising it slows the visible part of the open, which is why it belongs to the
-    /// theme rather than to the core.</summary>
-    [CssVar(AccordionField.ContentMaxHeight)] public required string ContentMaxHeight { get; init; }
 }
