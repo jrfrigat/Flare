@@ -1,23 +1,36 @@
+using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace Flare.Components;
 
-// Everything that reacts to the browser rather than to the data: the fluid width measurement, and the
-// zoom/pan window with its pointer, wheel and toolbar gestures.
+// Everything that reacts to the browser rather than to the data: the fluid width measurement, the
+// tooltip's place in the page, and the zoom/pan window with its pointer, wheel and toolbar gestures.
 public partial class FlareChart
 {
     [Inject] private IBrowserViewportService Viewport { get; set; } = default!;
+    [Inject] private IOverlayJsService Overlay { get; set; } = default!;
 
     private ElementReference _plotRef;
+    private ElementReference _tooltipRef;
     private IAsyncDisposable? _sizeSubscription;
     private int? _measuredWidth;
     private bool _observing;
 
+    // Distance from the data point to the bubble. A number rather than a token because it is an input to
+    // the placement engine, which works in pixels - the same reason ICollisionService.Offset is one.
+    private const int TooltipGap = 8;
+
+    private readonly string _tooltipLayerId = $"flare-chart-tooltip-{Guid.NewGuid():N}";
+    private bool _tooltipLayered;
+    private double _placedXPct = double.NaN;
+    private double _placedYPct = double.NaN;
+
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await SyncTooltipLayerAsync();
         if (!(_fluidActive || Zoomable) || _observing) return;
         _observing = true;
         try
@@ -28,6 +41,46 @@ public partial class FlareChart
         catch (InvalidOperationException) { _observing = false; }
         catch (JSDisconnectedException) { _observing = false; }
         catch (JSException) { _observing = false; }
+    }
+
+    // The bubble is lifted clear of the plot box by design - centred on the point and sitting above it -
+    // so any ancestor that hides its overflow used to cut it in half, and a card does exactly that. The
+    // placement engine positions it against the point instead, escaping every clipping ancestor and
+    // flipping below the point when there is no room above.
+    //
+    // The anchor is the plot ELEMENT plus the point as a percentage of it, not a viewport rectangle:
+    // percentages are what the hover handlers already compute, and re-measuring the element on scroll
+    // then keeps the bubble on its point without the chart re-sending anything.
+    private async Task SyncTooltipLayerAsync()
+    {
+        try
+        {
+            if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
+            {
+                // Moving to a neighbouring point re-renders the chart; re-placing on a point that did not
+                // move would be a JS call per repaint.
+                if (_tooltipLayered && _placedXPct == _hoverXPct && _placedYPct == _hoverYPct) return;
+                await Overlay.PositionAnchoredPanelAsync(_tooltipLayerId, _plotRef, _tooltipRef,
+                    new AnchoredPanelOptions
+                    {
+                        Placement = PanelPlacement.Top,
+                        Gap = TooltipGap,
+                        AnchorPoint = new PanelAnchorPoint(_hoverXPct, _hoverYPct),
+                    });
+                _tooltipLayered = true;
+                _placedXPct = _hoverXPct;
+                _placedYPct = _hoverYPct;
+            }
+            else if (_tooltipLayered)
+            {
+                await Overlay.RemoveAnchoredPanelAsync(_tooltipLayerId);
+                _tooltipLayered = false;
+                _placedXPct = _placedYPct = double.NaN;
+            }
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     // Only an integer change matters: the viewBox is written in whole units, so re-rendering on sub-pixel
@@ -43,6 +96,14 @@ public partial class FlareChart
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        if (_tooltipLayered)
+        {
+            try { await Overlay.RemoveAnchoredPanelAsync(_tooltipLayerId); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _tooltipLayered = false;
+        }
         if (_sizeSubscription is not null)
         {
             try { await _sizeSubscription.DisposeAsync(); }

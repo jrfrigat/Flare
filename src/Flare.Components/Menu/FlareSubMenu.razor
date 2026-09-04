@@ -1,8 +1,9 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" aria-expanded="@_open.ToString().ToLowerInvariant()">
-    <div class="@Css.Classes.Menu.Item @Css.Classes.Menu.SubmenuActivator"
+    <div class="@Css.Classes.Menu.Item @Css.Classes.Menu.SubmenuActivator" @ref="_activatorEl"
          @onmouseenter="ShowSubmenu"
          @onmouseleave="ScheduleHide"
          @onclick:preventDefault="true"
@@ -22,7 +23,8 @@
         <div id="@_panelId"
              class="@Css.Classes.Menu.SubmenuPanel @_placementClass"
              role="menu"
-             tabindex="-1" 
+             tabindex="-1"
+             @ref="_panelEl"
              @onmouseenter="ShowSubmenu" 
              @onmouseleave="ScheduleHide"
              @onkeydown="HandleSubmenuKeyDown">
@@ -61,10 +63,29 @@
         _ => Css.Classes.Menu.SubmenuPanelEnd,
     };
 
+    // Which side the placement engine is asked for. It flips to the opposite one when the flyout does
+    // not fit, which is the whole reason a submenu near the right edge of the window used to be
+    // unreadable: it opened off-screen and only the page's own scrollbar could reach it.
+    private string _placement => Placement switch
+    {
+        SubmenuPlacement.Start => PanelPlacement.LeftStart,
+        SubmenuPlacement.Bottom => PanelPlacement.BottomStart,
+        SubmenuPlacement.Top => PanelPlacement.TopStart,
+        _ => PanelPlacement.RightStart,
+    };
+
     private bool _open;
     private FlareMenuItem? _focusedItem;
+    private ElementReference _activatorEl;
+    private ElementReference _panelEl;
+    private readonly AnchoredLayer _layer = new();
     private readonly List<FlareMenuItem> _items = [];
     private readonly string _panelId = "flare-submenu-" + Guid.NewGuid().ToString("N")[..8];
+
+    /// <inheritdoc />
+    protected override Task OnAfterRenderAsync(bool firstRender) =>
+        _layer.SyncAsync(Overlay, _open, _activatorEl, _panelEl,
+            new AnchoredPanelOptions { Placement = _placement }).AsTask();
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
 
@@ -138,6 +159,7 @@
     public override async ValueTask DisposeAsync()
     {
         _hideCts.Dispose();
+        await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }
 }

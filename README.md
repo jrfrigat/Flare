@@ -17,6 +17,14 @@
 
 A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-first, also targeting **.NET 8 and .NET 9** - with **zero baked-in styling**. Build your own design system with semantic tokens, or start instantly with one of seven production-ready preset themes (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), all shipped as independent, optional packages. Runtime theme switching, no page reload, no flash of unstyled content.
 
+**Built by backend developers, for backend developers.** You should not need to know HTML or CSS to
+build any screen you want with Flare - a dashboard, an admin grid, a wizard, a split editor is
+assembled from components and their parameters, with no stylesheet of your own and no DevTools. And
+nothing is locked: every visual is a semantic token a theme can repaint, and every component forwards
+`Class`, `Style` and arbitrary HTML attributes. Both halves, on every component - the first is the
+promise, the second is what keeps it from being a cage. Anywhere the first half fails is a bug, and is
+filed as one.
+
 **[Live demo / component gallery ->](https://jrfrigat.github.io/Flare/)**
 
 **130+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**

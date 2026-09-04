@@ -57,7 +57,8 @@ public partial class FlarePopup
             if (Open)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await Overlay.PositionAnchoredPanelAsync(_id, Anchor, _panel, new { matchWidth = MatchWidth });
+                await Overlay.PositionAnchoredPanelAsync(_id, Anchor, _panel,
+                    new AnchoredPanelOptions { MatchWidth = MatchWidth });
                 await Overlay.RegisterDismissAsync(_id, DismissRoot, _selfRef, nameof(DismissFromJs));
                 _registered = true;
             }

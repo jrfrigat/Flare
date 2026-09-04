@@ -193,9 +193,12 @@
 
 .flare-chart__tooltip {
     position: absolute;
-    /* left/top are a % of the SVG box at the data point; lift the bubble above
-       and centre it horizontally on that point */
-    transform: translate(-50%, calc(-100% - var(--flare-tooltip-offset)));
+    /* left/top are a % of the plot box at the data point, and they hold the bubble for the single frame
+       before the placement engine positions it. The lift that used to live here - a translate of -50%
+       and -100% onto the point - is the engine's job now: the bubble sits outside the plot box by
+       design, so anything that hides its overflow (a card, most of all) cut it in half, and only a
+       panel in the top layer escapes that. Re-adding a transform here would fight the engine's
+       coordinates, which are for the bubble's own box. */
     pointer-events: none;
     background: var(--flare-color-surface-container-highest);
     color: var(--flare-color-on-surface);

@@ -91,25 +91,30 @@
   content-visibility: hidden;
 }
 
-.flare-tooltip--top .flare-tooltip__content {
+/* Where the bubble rests until the placement engine positions it against the trigger - which it does
+   the moment the trigger is hovered or focused, through one delegated listener for the whole page.
+   `data-flare-placed` is the engine's mark, and these rules switch themselves off against it: their
+   edges and centring transforms are for the box in its wrapper, and they would fight the viewport
+   coordinates the engine writes. Without script they are the whole behaviour, unchanged. */
+.flare-tooltip--top .flare-tooltip__content:not([data-flare-placed]) {
   bottom: calc(100% + var(--flare-tooltip-offset));
   left: 50%;
   transform: translateX(-50%);
 }
 
-.flare-tooltip--bottom .flare-tooltip__content {
+.flare-tooltip--bottom .flare-tooltip__content:not([data-flare-placed]) {
   top: calc(100% + var(--flare-tooltip-offset));
   left: 50%;
   transform: translateX(-50%);
 }
 
-.flare-tooltip--left .flare-tooltip__content {
+.flare-tooltip--left .flare-tooltip__content:not([data-flare-placed]) {
   right: calc(100% + var(--flare-tooltip-offset));
   top: 50%;
   transform: translateY(-50%);
 }
 
-.flare-tooltip--right .flare-tooltip__content {
+.flare-tooltip--right .flare-tooltip__content:not([data-flare-placed]) {
   left: calc(100% + var(--flare-tooltip-offset));
   top: 50%;
   transform: translateY(-50%);
@@ -130,25 +135,29 @@
   background: var(--flare-color-surface-container);
 }
 
-.flare-tooltip--top.flare-tooltip--arrow .flare-tooltip__content::after {
+/* The arrow points away from the side the bubble is ON, which is not always the side that was asked
+   for - a top tooltip near the top of the window ends up below its trigger. So these key off
+   `data-flare-side`, which the component renders with the requested side and the placement engine
+   rewrites with the side it actually used. */
+.flare-tooltip--arrow .flare-tooltip__content[data-flare-side="top"]::after {
   bottom: -0.25rem;
   left: 50%;
   margin-left: -0.25rem;
 }
 
-.flare-tooltip--bottom.flare-tooltip--arrow .flare-tooltip__content::after {
+.flare-tooltip--arrow .flare-tooltip__content[data-flare-side="bottom"]::after {
   top: -0.25rem;
   left: 50%;
   margin-left: -0.25rem;
 }
 
-.flare-tooltip--left.flare-tooltip--arrow .flare-tooltip__content::after {
+.flare-tooltip--arrow .flare-tooltip__content[data-flare-side="left"]::after {
   right: -0.25rem;
   top: 50%;
   margin-top: -0.25rem;
 }
 
-.flare-tooltip--right.flare-tooltip--arrow .flare-tooltip__content::after {
+.flare-tooltip--arrow .flare-tooltip__content[data-flare-side="right"]::after {
   left: -0.25rem;
   top: 50%;
   margin-top: -0.25rem;

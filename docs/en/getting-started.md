@@ -345,6 +345,10 @@ Three rules of thumb:
   collapses to content height.
 - **`Height` and `FillHeight` are alternatives.** `Height="400px"` is a number you wrote down;
   `FillHeight` is the number the layout works out. When both are set, `FillHeight` wins.
+- **`Height` takes an absolute length, and it is a cap.** `Height="50%"` looks reasonable and does
+  nothing at all: it becomes a percentage `max-height` against a box sized by its own content, which
+  CSS resolves to `none`. The grid then has no cap, never scrolls, and a `Virtual` grid is handed a
+  scroller that cannot scroll. A percentage height is `FillHeight`'s job.
 
 The three row modes of `FlareDataGrid` answer three different questions:
 

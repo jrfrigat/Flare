@@ -32,19 +32,52 @@ public interface IOverlayJsService : IAsyncDisposable
 
     /// <summary>
     /// Positions <paramref name="panel"/> as a fixed popup anchored to <paramref name="anchor"/>,
-    /// flipping above when there is not enough room below and re-positioning on scroll/resize.
+    /// flipping to the opposite side when there is not enough room, re-positioning on scroll/resize,
+    /// and promoting the panel to the browser's top layer so no ancestor can clip or overpaint it.
+    /// This is the single positioning path for every floating surface in the library.
     /// </summary>
     /// <param name="id">A stable id identifying this anchored panel.</param>
-    /// <param name="anchor">The element the panel is positioned against.</param>
-    /// <param name="panel">The popup element to position.</param>
-    /// <param name="options">
-    /// Optional placement options. <c>matchWidth</c> keeps the panel at least as wide as the anchor
-    /// while still letting its content widen it; <c>gap</c> sets the distance from the anchor.
+    /// <param name="anchor">
+    /// The element the panel is positioned against. Ignored when
+    /// <see cref="AnchoredPanelOptions.AnchorRect"/> supplies viewport coordinates instead.
     /// </param>
-    ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel, object? options = null);
+    /// <param name="panel">The popup element to position.</param>
+    /// <param name="options">Placement options; the defaults place the panel below the anchor.</param>
+    ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel,
+        AnchoredPanelOptions? options = null);
 
-    /// <summary>Stops positioning and detaches listeners for the anchored panel under <paramref name="id"/>.</summary>
+    /// <summary>
+    /// Same as <see cref="PositionAnchoredPanelAsync"/>, with the anchor named by its DOM id. For a
+    /// panel whose anchor is one of many rendered in a loop - a per-column filter button - where a
+    /// single captured <see cref="ElementReference"/> would hold whichever one rendered last.
+    /// </summary>
+    /// <param name="id">A stable id identifying this anchored panel.</param>
+    /// <param name="anchorElementId">The <c>id</c> attribute of the anchor element.</param>
+    /// <param name="panel">The popup element to position.</param>
+    /// <param name="options">Placement options; the defaults place the panel below the anchor.</param>
+    ValueTask PositionAnchoredPanelByIdAsync(string id, string anchorElementId, ElementReference panel,
+        AnchoredPanelOptions? options = null);
+
+    /// <summary>Stops positioning, releases the top layer and detaches listeners for the panel under <paramref name="id"/>.</summary>
     ValueTask RemoveAnchoredPanelAsync(string id);
+
+    /// <summary>
+    /// Promotes <paramref name="panel"/> to the browser's top layer without positioning it, for a
+    /// panel that computes its own coordinates. A browser without the popover API is left unchanged.
+    /// </summary>
+    /// <param name="panel">The popup element to raise.</param>
+    ValueTask RaiseToTopLayerAsync(ElementReference panel);
+
+    /// <summary>Returns <paramref name="panel"/> from the top layer to the normal painting order.</summary>
+    /// <param name="panel">The popup element to lower.</param>
+    ValueTask DropFromTopLayerAsync(ElementReference panel);
+
+    /// <summary>
+    /// Installs the page-wide delegated listeners that place tooltip bubbles when their trigger is
+    /// hovered or focused. Idempotent, and cheap to call from every tooltip instance: the browser side
+    /// installs one pair of listeners for the whole document however many tooltips ask for it.
+    /// </summary>
+    ValueTask InitFloatingTooltipsAsync();
 
     /// <summary>
     /// Scrolls the option element with the given id into view within its scroll container. Used to keep the

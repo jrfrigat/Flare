@@ -64,8 +64,21 @@ public partial class FlareDataGrid<TItem>
     /// false keeps <see cref="Height"/> as the cap.
     /// </summary>
     [Parameter] public bool FillHeight { get; set; }
-    /// <summary>CSS height of the table container. Works with or without virtualization. Ignored
-    /// when <see cref="FillHeight"/> is set.</summary>
+    /// <summary>
+    /// How tall the scrolling table container may grow, as a CSS length. It is a CAP
+    /// (<c>max-height</c>), not a height: a grid with fewer rows than that is as tall as its rows.
+    /// Applies in every mode that scrolls instead of paging - <see cref="Scroll"/>,
+    /// <see cref="Virtual"/>, <see cref="InfiniteScroll"/> - and is ignored when
+    /// <see cref="FillHeight"/> is set.
+    /// <para>
+    /// Use an ABSOLUTE length. A percentage resolves against the grid's own box, which is sized by its
+    /// content unless something above it says otherwise, and a percentage <c>max-height</c> against a
+    /// content-sized box computes to <c>none</c> - so the cap silently does not exist, the container
+    /// never scrolls, and a virtual grid is handed a scroller that cannot scroll. When the height is
+    /// the layout's answer rather than a number you can write down, that is what
+    /// <see cref="FillHeight"/> is for.
+    /// </para>
+    /// </summary>
     [Parameter] public string Height { get; set; } = "400px";
     /// <summary>How the loading state is shown: a circular ring (default), skeleton rows, or text only.</summary>
     [Parameter] public DataGridLoadingIndicator LoadingIndicator { get; set; } = DataGridLoadingIndicator.Spinner;

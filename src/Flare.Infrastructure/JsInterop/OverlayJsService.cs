@@ -28,11 +28,35 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     public ValueTask FocusFirstAsync(ElementReference container) => InvokeVoidAsync("focusFirstInDialog", container);
 
     /// <inheritdoc />
-    public ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel, object? options = null)
-        => InvokeVoidAsync("positionAnchoredPanel", id, anchor, panel, options ?? new { });
+    public ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel,
+        AnchoredPanelOptions? options = null)
+        => InvokeVoidAsync("positionAnchoredPanel", id, anchor, panel, options ?? new AnchoredPanelOptions());
+
+    /// <inheritdoc />
+    public ValueTask PositionAnchoredPanelByIdAsync(string id, string anchorElementId, ElementReference panel,
+        AnchoredPanelOptions? options = null)
+        => InvokeVoidAsync("positionAnchoredPanelById", id, anchorElementId, panel, options ?? new AnchoredPanelOptions());
 
     /// <inheritdoc />
     public ValueTask RemoveAnchoredPanelAsync(string id) => InvokeVoidAsync("removeAnchoredPanel", id);
+
+    /// <inheritdoc />
+    public ValueTask RaiseToTopLayerAsync(ElementReference panel) => InvokeVoidAsync("raiseToTopLayer", panel);
+
+    /// <inheritdoc />
+    public ValueTask DropFromTopLayerAsync(ElementReference panel) => InvokeVoidAsync("dropFromTopLayer", panel);
+
+    // One call per circuit rather than one per tooltip: the browser side is idempotent already, but a
+    // page of two hundred tooltips would still make two hundred round trips to find that out.
+    private bool _tooltipsRequested;
+
+    /// <inheritdoc />
+    public ValueTask InitFloatingTooltipsAsync()
+    {
+        if (_tooltipsRequested) return ValueTask.CompletedTask;
+        _tooltipsRequested = true;
+        return InvokeVoidAsync("initFloatingTooltips");
+    }
 
     /// <inheritdoc />
     public ValueTask ScrollIntoViewAsync(string optionId, string block = "nearest")

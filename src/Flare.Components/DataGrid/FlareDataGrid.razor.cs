@@ -186,6 +186,13 @@ public partial class FlareDataGrid<TItem>
     // Excel-style value checklist state: the set of currently checked distinct values + the search box.
     private readonly HashSet<string> _filterMenuValues = new(StringComparer.Ordinal);
     private string _filterMenuSearch = "";
+    // Only one menu is open at a time, so one panel element and one layer serve every column.
+    private ElementReference _filterMenuRef;
+    private readonly AnchoredLayer _filterMenuLayer = new();
+    private readonly string _filterTriggerPrefix = $"flare-grid-filter-{Guid.NewGuid():N}-";
+
+    // The DOM id of a column's filter trigger, which is what the open panel is anchored to.
+    private string FilterTriggerId(string? columnKey) => _filterTriggerPrefix + Uri.EscapeDataString(columnKey ?? "");
 
     // Active group-by keys (server contract), populated from the effective grouping levels.
     private readonly List<string> _groupKeys = [];
@@ -551,6 +558,15 @@ public partial class FlareDataGrid<TItem>
             }
         }
 
+        // The filter menu drops out of the header into the body area and is taller than most grids, so
+        // both the grid's own scroll container and whatever the grid sits in (a card, most of all) used
+        // to cut it off - and the actions row is at the far end of it, which made "Apply" the part that
+        // disappeared. It is placed against its trigger and raised into the top layer instead. The anchor
+        // goes by DOM id because the triggers are rendered one per column: a captured reference would
+        // hold the last column's button rather than the one that was clicked.
+        await _filterMenuLayer.SyncByIdAsync(Overlay, _filterMenuOpen is not null,
+            FilterTriggerId(_filterMenuOpen), _filterMenuRef);
+
         // (Re)attach the IntersectionObserver to the sentinel while in infinite mode.
         if (_infiniteMode && !_infiniteObserverReady)
         {
@@ -587,6 +603,7 @@ public partial class FlareDataGrid<TItem>
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _filterDebounceTimer?.Dispose();
+        await _filterMenuLayer.ReleaseAsync(Overlay);
         await DisposeInfiniteObserverAsync();
         _infiniteRef?.Dispose();
         await base.DisposeAsync();

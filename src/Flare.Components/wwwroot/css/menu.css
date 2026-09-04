@@ -50,14 +50,24 @@
     to   { opacity: 1; transform: translateY(0);         }
 }
 
-/* Animation origin depends on the anchor (expand "from" the activator corner) */
-.flare-menu__panel--bottom-left  { top: calc(100% + 0.25rem); left: 0;  transform-origin: top left; }
-.flare-menu__panel--bottom-right { top: calc(100% + 0.25rem); right: 0; transform-origin: top right; }
-.flare-menu__panel--top-left     { bottom: calc(100% + 0.25rem); left: 0;  transform-origin: bottom left; }
-.flare-menu__panel--top-right    { bottom: calc(100% + 0.25rem); right: 0; transform-origin: bottom right; }
+/* Where the panel rests for the one frame between being rendered and being placed. The four anchor
+   classes used to carry an edge each (`right: 0` for an end-aligned menu, `bottom` for one opening
+   upwards); that cannot stay now that the placement engine writes `top`/`left` inline, because a fixed
+   box constrained from both sides stretches between them instead of sitting at one. What the anchor
+   still decides is the corner the open animation expands FROM - and only that, since where the panel
+   lands can differ from the parameter (a menu near the window's bottom edge flips above its button). */
+.flare-menu__panel--bottom-left,
+.flare-menu__panel--bottom-right,
+.flare-menu__panel--top-left,
+.flare-menu__panel--top-right { top: calc(100% + 0.25rem); left: 0; }
 
-/* Context menu: the panel is pinned to the pointer via a fixed top/left inline style (set from the
-   triggering event), so it drops the anchor's absolute edges and just carries the expand origin. */
+.flare-menu__panel--bottom-left  { transform-origin: top left; }
+.flare-menu__panel--bottom-right { transform-origin: top right; }
+.flare-menu__panel--top-left     { transform-origin: bottom left; }
+.flare-menu__panel--top-right    { transform-origin: bottom right; }
+
+/* Context menu: anchored to the pointer rather than to the activator's box, so it has no resting edge
+   of its own and just carries the expand origin. */
 .flare-menu__panel--at-cursor { position: fixed; transform-origin: top left; }
 
 /* A MaxHeight-capped menu scrolls its items instead of overflowing the viewport. */
@@ -99,7 +109,11 @@
     padding: var(--flare-menu-panel-padding-block) var(--flare-menu-panel-padding-inline);
 }
 
-/* Submenu placement variants */
+/* Where a flyout rests for the frame before the placement engine positions it. One edge each and never
+   two, for the same reason as the menu panel above: the engine writes `top` and `left` inline, and a
+   fixed box constrained from both sides stretches instead of moving. The side here is the PREFERRED
+   one - the engine flips it when the flyout would open off-screen, which a submenu near the right edge
+   of the window always did. */
 .flare-submenu__panel--end {
     top: 0;
     left: calc(100% + 0.25rem);
@@ -107,7 +121,7 @@
 
 .flare-submenu__panel--start {
     top: 0;
-    right: calc(100% + 0.25rem);
+    left: 0;
 }
 
 .flare-submenu__panel--bottom {
@@ -116,6 +130,6 @@
 }
 
 .flare-submenu__panel--top {
-    bottom: calc(100% + 0.25rem);
+    top: 0;
     left: 0;
 }

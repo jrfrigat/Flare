@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IHighlightJsService Highlight
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@_rootClass" style="@(_heightStyle + Style)" @attributes="AdditionalAttributes">
     @if (LineNumbers)
@@ -48,7 +49,7 @@
     }
     @if (_open && _suggestions.Count > 0)
     {
-        <div class="@Css.Classes.Codeblock.Suggestions" style="@_suggestionsStyle" role="listbox">
+        <div class="@Css.Classes.Codeblock.Suggestions" style="@_suggestionsStyle" role="listbox" @ref="_suggestionsRef">
             @for (var i = 0; i < _suggestions.Count; i++)
             {
                 var index = i;
@@ -146,6 +147,11 @@
     private int _selected;
     private int _caret;
     private string _suggestionsStyle = string.Empty;
+    private ElementReference _suggestionsRef;
+    private readonly AnchoredLayer _suggestLayer = new();
+    private double _caretLeft;
+    private double _caretTop;
+    private (double Left, double Top)? _placedCaret;
 
     private string _rootClass
     {
@@ -181,6 +187,30 @@
                 }
             }
             catch { _jsReady = false; /* JS interop not available (prerender) */ }
+        }
+
+        // The completion list is anchored to the caret, which the JS side reports in pixels inside the
+        // textarea's own box - so it goes to the engine as a pixel offset and is re-measured on scroll.
+        // Placing it there rather than absolutely inside the editor is what keeps it readable when the
+        // editor is in a card or a panel that hides its overflow, and above whatever is stacked over it.
+        // Re-placed on every caret move, which is why the offset is compared first.
+        if (_open && _suggestions.Count > 0)
+        {
+            if (_placedCaret != (_caretLeft, _caretTop))
+            {
+                _placedCaret = (_caretLeft, _caretTop);
+                await _suggestLayer.ForceAsync(Overlay, _textarea, _suggestionsRef, new AnchoredPanelOptions
+                {
+                    Placement = PanelPlacement.BottomStart,
+                    Gap = 0,
+                    AnchorOffset = new PanelAnchorOffset(_caretLeft, _caretTop),
+                });
+            }
+        }
+        else if (_suggestLayer.Placed)
+        {
+            _placedCaret = null;
+            await _suggestLayer.ReleaseAsync(Overlay);
         }
 
         var prev = _highlightedHtml;
@@ -256,11 +286,15 @@
             // jumping back to the first one is what makes arrow keys feel broken.
             if (!SameAsOffered(_suggestions, previous)) _selected = 0;
             else _selected = Math.Min(_selected, Math.Max(_suggestions.Count - 1, 0));
-            // Placed one line below the caret so the list never covers what is being typed.
+            // One line below the caret, so the list never covers what is being typed. The style is where
+            // it rests for the frame before the placement engine takes over; the same two numbers go to
+            // the engine as an offset inside the textarea.
+            _caretLeft = caret.Left;
+            _caretTop = caret.Top + caret.LineHeight;
             _suggestionsStyle = _open
                 ? string.Create(
                     System.Globalization.CultureInfo.InvariantCulture,
-                    $"left:{caret.Left:0.##}px;top:{caret.Top + caret.LineHeight:0.##}px")
+                    $"left:{_caretLeft:0.##}px;top:{_caretTop:0.##}px")
                 : string.Empty;
         }
         catch
@@ -448,6 +482,7 @@
             }
         }
         catch { /* ignored */ }
+        await _suggestLayer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }
 }

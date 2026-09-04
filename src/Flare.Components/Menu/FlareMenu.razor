@@ -1,8 +1,9 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes">
-    <div class="@Css.Classes.Menu.Activator"
+    <div class="@Css.Classes.Menu.Activator" @ref="_activatorEl"
          @onclick="HandleActivatorClick"
          @oncontextmenu="HandleActivatorContextMenu"
          @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)"
@@ -73,6 +74,10 @@
     private double? _cursorX;
     private double? _cursorY;
     private ElementReference _panelEl;
+    private ElementReference _activatorEl;
+    private readonly AnchoredLayer _layer = new();
+    // Matches the 0.25rem the panel rests at before the engine places it.
+    private const int MenuGap = 4;
     private FlareMenuItem? _focusedItem;
     // Whether this opening came from the keyboard, which decides if an item starts out active. A pointer
     // user is looking at where they clicked and has no use for a highlight on the first item; a keyboard
@@ -92,6 +97,19 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // A menu is the plainest case of a panel that has to leave its component: it is anchored to a
+        // button that can be anywhere - in a card, in a grid cell, in a dialog - and it opens outside
+        // whatever box that button sits in. The placement engine positions it and raises it into the top
+        // layer; the CSS below only says what it looks like and where it rests for one frame.
+        await _layer.SyncAsync(Overlay, _open, _activatorEl, _panelEl, new AnchoredPanelOptions
+        {
+            Placement = _placement,
+            Gap = MenuGap,
+            AnchorRect = _cursorX is not null && _cursorY is not null
+                ? new PanelAnchorRect(_cursorX.Value, _cursorY.Value)
+                : null,
+        });
+
         if (_open && !_wasOpen)
         {
             _wasOpen = true;
@@ -109,8 +127,9 @@
         }
     }
 
-    // When opened at the pointer the panel is fixed-positioned (via inline style), so it uses the neutral
-    // at-cursor class rather than an activator-corner anchor.
+    // The anchor class now carries only the corner the open animation expands FROM; where the panel
+    // actually lands is the placement engine's answer, and it can differ (a menu near the bottom of the
+    // window flips above the button whatever the parameter says).
     private string _anchorClass => _cursorX is not null ? Css.Classes.Menu.AtCursor : Anchor switch
     {
         MenuAnchor.BottomRight => Css.Classes.Menu.BottomRight,
@@ -120,23 +139,26 @@
         _                      => Css.Classes.Menu.BottomLeft,
     };
 
+    private string _placement => Anchor switch
+    {
+        MenuAnchor.BottomRight => PanelPlacement.BottomEnd,
+        MenuAnchor.TopLeft     => PanelPlacement.TopStart,
+        MenuAnchor.TopRight    => PanelPlacement.TopEnd,
+        _                      => PanelPlacement.BottomStart,
+    };
+
     private string _scrollClass => string.IsNullOrEmpty(MaxHeight) ? string.Empty : Css.Classes.Menu.PanelScroll;
 
-    // Cursor coordinates (context menu) and/or a MaxHeight cap ride on an inline style; sanitize the
-    // caller-supplied length before injecting it.
+    // Only the MaxHeight cap rides on an inline style; sanitize the caller-supplied length before
+    // injecting it. The cursor coordinates used to be written here too and are now handed to the
+    // placement engine as an anchor rectangle - one owner for top/left, or the two overwrite each other.
     private string? _panelStyle
     {
         get
         {
-            var parts = new List<string>(2);
-            if (_cursorX is not null && _cursorY is not null)
-                parts.Add(FormattableString.Invariant($"left:{_cursorX.Value:F0}px;top:{_cursorY.Value:F0}px"));
-            if (!string.IsNullOrEmpty(MaxHeight))
-            {
-                var safe = Flare.Components.Security.CssValidator.StripDangerous(MaxHeight);
-                if (!string.IsNullOrEmpty(safe)) parts.Add($"max-height:{safe}");
-            }
-            return parts.Count == 0 ? null : string.Join(';', parts);
+            if (string.IsNullOrEmpty(MaxHeight)) return null;
+            var safe = Flare.Components.Security.CssValidator.StripDangerous(MaxHeight);
+            return string.IsNullOrEmpty(safe) ? null : $"max-height:{safe}";
         }
     }
 

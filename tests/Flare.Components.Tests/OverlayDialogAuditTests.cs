@@ -112,12 +112,13 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         cut.Find(".flare-menu__activator").Click();
         Assert.Empty(cut.FindAll(".flare-menu__panel"));
 
+        // The pointer coordinates go to the placement engine as an anchor rectangle rather than into an
+        // inline style, so the marker of "opened at the cursor" is the class, not a pair of pixels: two
+        // owners for top/left is exactly what the engine was brought in to end.
         cut.Find(".flare-menu__activator").ContextMenu(new MouseEventArgs { ClientX = 120, ClientY = 240 });
         var panel = cut.Find(".flare-menu__panel");
         Assert.Contains("flare-menu__panel--at-cursor", panel.ClassList);
-        var style = panel.GetAttribute("style") ?? "";
-        Assert.Contains("left:120px", style);
-        Assert.Contains("top:240px", style);
+        Assert.DoesNotContain("left:", panel.GetAttribute("style") ?? "");
     }
 
     [Fact]
