@@ -20,6 +20,13 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A rich tooltip laid itself out as a column the width of its trigger.** The plain bubble is
+  `white-space: nowrap`, so it sizes to its text whatever surrounds it; the rich one wraps, and a
+  wrapping absolutely positioned box shrink-to-fits against its containing block - which here is the
+  tooltip wrapper, that is, the trigger. On a 133px button the panel came out 96px wide and 168px tall,
+  one or two words per line, and `--flare-tooltip-max-width` never bound because the available width was
+  already under it. It sizes to its own text first now, with the cap applied to that: measured on the
+  Gallery's own rich tooltip, 96x168 becomes 256x84.
 - **Dropping a file on `FlareFileUploadZone` had never worked.** The zone gets its drag-and-drop from
   the browser rather than from its own code - the hidden file input is stretched over the drop area for
   exactly that reason - and a file input takes a dropped file as the DEFAULT ACTION of the `drop` event.

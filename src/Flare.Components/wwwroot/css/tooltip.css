@@ -58,6 +58,13 @@
   border-radius: var(--flare-shape-medium);
   pointer-events: auto;
   white-space: normal;
+  /* The plain bubble is `white-space: nowrap`, so it sizes to its text whatever is around it. This one
+     wraps, and a wrapping absolutely positioned box shrink-to-fits against its CONTAINING BLOCK - which
+     is the .flare-tooltip wrapper, i.e. the trigger. A rich tooltip on a 133px button therefore laid
+     itself out 96px wide and 168px tall, one or two words per line, and `max-width` never bound because
+     the available width was already under it. `max-content` sizes it to its text first; the cap then
+     applies to that. Measured on the Gallery's own rich tooltip: 96x168 -> 256x84. */
+  width: max-content;
   max-width: var(--flare-tooltip-max-width);
   padding: var(--flare-spacing-6) var(--flare-spacing-8);
 }
