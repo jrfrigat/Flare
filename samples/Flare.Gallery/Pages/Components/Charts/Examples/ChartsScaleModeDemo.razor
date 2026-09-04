@@ -1,0 +1,32 @@
+@* Click "Ice cream" in the legend under either chart. On the left the plot refits to what is left -
+   the axis window, the grid values and every remaining point move. On the right the axis spans the
+   whole dataset, so the series disappears and nothing else does. The same rule governs the bar
+   group: refit closes the gap, hold keeps each series in its slot. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareGrid Columns="2" Gap="FlareSpacing.Large">
+        <FlareChart Type="ChartType.Line" Data="_data" Height="260" ShowMarkers="true"
+                    ScaleMode="ChartScaleMode.FitVisible"
+                    Title="FitVisible (default) - the plot refits" />
+        <FlareChart Type="ChartType.Line" Data="_data" Height="260" ShowMarkers="true"
+                    ScaleMode="ChartScaleMode.FitAll"
+                    Title="FitAll - only the series disappears" />
+    </FlareGrid>
+
+    <FlareGrid Columns="2" Gap="FlareSpacing.Large">
+        <FlareChart Type="ChartType.Bar" Data="_data" Height="240"
+                    ScaleMode="ChartScaleMode.FitVisible"
+                    Title="FitVisible - the group closes the gap" />
+        <FlareChart Type="ChartType.Bar" Data="_data" Height="240"
+                    ScaleMode="ChartScaleMode.FitAll"
+                    Title="FitAll - each series keeps its slot" />
+    </FlareGrid>
+</FlareStack>
+
+@code {
+    private static readonly ChartData _data = new(
+        [
+            new ChartSeries("Coffee", [42, 38, 45, 51, 55, 62, 68, 64]),
+            new ChartSeries("Ice cream", [8, 12, 21, 38, 64, 96, 118, 87]),
+        ],
+        ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]);
+}

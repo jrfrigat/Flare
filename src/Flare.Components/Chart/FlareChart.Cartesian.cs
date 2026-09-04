@@ -10,7 +10,7 @@ public partial class FlareChart
     private RenderFragment RenderLine() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var visVals = Plotted(series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values));
+        var visVals = ScaleValues(series);
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(visVals.Min(), visVals.Max(), _valueExtent);
         double min = axis.Min, max = axis.Max;
@@ -155,7 +155,7 @@ public partial class FlareChart
     private RenderFragment RenderBar() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var visVals = Plotted(series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values));
+        var visVals = ScaleValues(series);
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0), _valueExtent);
         double min = axis.Min, max = axis.Max;
@@ -180,10 +180,16 @@ public partial class FlareChart
                 builder.AddMarkupContent(seq++, g.ToString());
             }
             double groupH = _plotH / (double)pts;
-            double slotH = groupH / (series.Count + 1);
+            // Slots, not series indices: under FitVisible a hidden series gives its slot up and the
+            // group closes over it, under FitAll it keeps it and the gap stays. Positioning by the
+            // absolute index would always leave the gap, which is what the combo renderer already
+            // disagreed with.
+            var slots = SlotIndices(series.Count);
+            double slotH = groupH / (slots.Count + 1);
             double zeroX = _padL + (0 - min) / (max - min) * _plotW;
-            for (int si = 0; si < series.Count; si++)
+            for (int slot = 0; slot < slots.Count; slot++)
             {
+                int si = slots[slot];
                 if (IsHidden(si)) continue;
                 var vals = series[si].Values; var color = GetColor(si);
                 for (int i = 0; i < vals.Count; i++)
@@ -191,7 +197,7 @@ public partial class FlareChart
                     // A gap draws nothing: the category keeps its slot, this series just has no bar in it.
                     if (IsGap(vals[i])) continue;
                     double sv = SafeValue(vals[i]);
-                    double y = _padT + i * groupH + si * slotH + slotH * 0.25;
+                    double y = _padT + i * groupH + slot * slotH + slotH * 0.25;
                     double w = Math.Abs(sv / (max - min) * _plotW);
                     double x = sv >= 0 ? zeroX : zeroX - w;
                     double bh = slotH * BarWidthRatio;
@@ -214,15 +220,17 @@ public partial class FlareChart
         }
 
         double groupW = SlotWidth;
-        double barW = groupW / (series.Count + 1);
+        var barSlots = SlotIndices(series.Count);
+        double barW = groupW / (barSlots.Count + 1);
         if (_showGrid || _showY)
             builder.AddMarkupContent(seq++, GridLines(axis));
         if (ShowVerticalGrid)
             builder.AddMarkupContent(seq++, VerticalGrid(pts));
 
         var marks = new System.Text.StringBuilder();
-        for (int si = 0; si < series.Count; si++)
+        for (int slot = 0; slot < barSlots.Count; slot++)
         {
+            int si = barSlots[slot];
             if (IsHidden(si)) continue;
             var vals = series[si].Values;
             var color = GetColor(si);
@@ -230,7 +238,7 @@ public partial class FlareChart
             {
                 if (IsGap(vals[i])) continue;
                 double sv = SafeValue(vals[i]);
-                double x = XOfIndex(i) - groupW / 2 + si * barW + barW * 0.25;
+                double x = XOfIndex(i) - groupW / 2 + slot * barW + barW * 0.25;
                 double zeroY = _padT + _plotH - (0 - min) / (max - min) * _plotH;
                 double barH = Math.Abs(sv / (max - min) * _plotH);
                 double y = sv >= 0 ? zeroY - barH : zeroY;
@@ -260,7 +268,9 @@ public partial class FlareChart
         {
             double sum = 0;
             for (int si = 0; si < series.Count; si++)
-                if (!IsHidden(si) && i < series[si].Values.Count && !IsGap(series[si].Values[i]))
+                // Under FitAll a hidden band still counts towards the tallest stack, so the axis keeps
+                // room for it and the stacks that remain do not grow into the space it freed.
+                if (CountsTowardsScale(si) && i < series[si].Values.Count && !IsGap(series[si].Values[i]))
                     sum += Math.Max(0, SafeValue(series[si].Values[i]));
             max = Math.Max(max, sum);
         }
@@ -360,7 +370,7 @@ public partial class FlareChart
     {
         if (Data?.Series is not { Count: > 0 } series) return;
         var vis = Enumerable.Range(0, series.Count).Where(i => !IsHidden(i)).ToList();
-        var visVals = Plotted(vis.SelectMany(i => series[i].Values));
+        var visVals = ScaleValues(series);
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0), _valueExtent);
         double min = axis.Min, max = axis.Max;
@@ -371,10 +381,13 @@ public partial class FlareChart
         if (ShowVerticalGrid) builder.AddMarkupContent(seq++, VerticalGrid(pts));
 
         double groupW = SlotWidth;
-        var barIdx = vis.Where(i => (series[i].Kind ?? ChartSeriesKind.Bar) == ChartSeriesKind.Bar).ToList();
+        // Slots are owned by the series that count towards the plot, so the position of a bar is a
+        // lookup rather than a running counter - which is also what makes it agree with the grouped
+        // bar chart in both modes.
+        var barIdx = SlotIndices(series.Count)
+            .Where(i => (series[i].Kind ?? ChartSeriesKind.Bar) == ChartSeriesKind.Bar).ToList();
         double barW = barIdx.Count > 0 ? groupW / (barIdx.Count + 1) : 0;
         double LineX(int i) => XOfIndex(i);
-        int barSlot = 0;
         double baseline = _padT + _plotH;
         var marks = new System.Text.StringBuilder();
 
@@ -385,6 +398,7 @@ public partial class FlareChart
             var color = GetColor(si);
             if (kind == ChartSeriesKind.Bar)
             {
+                int barSlot = barIdx.IndexOf(si);
                 for (int i = 0; i < vals.Count; i++)
                 {
                     if (IsGap(vals[i])) continue;
@@ -395,7 +409,6 @@ public partial class FlareChart
                     double y = sv >= 0 ? zeroY - barH : zeroY;
                     marks.Append(string.Create(_inv, $"<rect class=\"{Css.Classes.Chart.Bar}\" x=\"{x:F1}\" y=\"{y:F1}\" width=\"{barW * BarWidthRatio:F1}\" height=\"{barH:F1}\" rx=\"{barR:F2}\" style=\"fill:{color}\"/>"));
                 }
-                barSlot++;
             }
             else
             {

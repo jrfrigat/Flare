@@ -75,6 +75,18 @@ public partial class FlareChart
     [Parameter] public bool ShowLegend { get; set; } = true;
     /// <summary>Where the legend sits relative to the plot.</summary>
     [Parameter] public ChartLegendPosition LegendPosition { get; set; } = ChartLegendPosition.Bottom;
+    /// <summary>
+    /// Whether hiding a series through the legend refits the plot or leaves it standing. The default
+    /// <see cref="ChartScaleMode.FitVisible"/> measures the value axis from the series still shown, so
+    /// one click moves the axis window, the grid lines and every remaining mark;
+    /// <see cref="ChartScaleMode.FitAll"/> measures it from the whole dataset, so the series disappears
+    /// and nothing else moves. Applies to the cartesian types and to radar; the radial types
+    /// (<see cref="ChartType.Pie"/>, <see cref="ChartType.Donut"/>, <see cref="ChartType.Rose"/>,
+    /// <see cref="ChartType.PolarArea"/>) divide a total rather than span an axis, so hiding a slice
+    /// necessarily changes the rest and this has no effect on them. <see cref="YMin"/> and
+    /// <see cref="YMax"/> still win where they are set.
+    /// </summary>
+    [Parameter] public ChartScaleMode ScaleMode { get; set; }
     /// <summary>Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.</summary>
     [Parameter] public int? Padding { get; set; }
     /// <summary>Sparkline preset: a compact, chromeless line (no grid, axes, legend or title) that stretches
@@ -161,6 +173,20 @@ public partial class FlareChart
     // Series toggled off via the interactive legend.
     private readonly HashSet<int> _hidden = new();
     private bool IsHidden(int si) => _hidden.Contains(si);
+
+    // Whether a hidden series still counts when the plot is measured. Under FitAll it does, which is
+    // what keeps the axis, the grid and the bar slots still while a series is switched off; the
+    // per-mark IsHidden guards are untouched either way, so a hidden series is never drawn.
+    private bool CountsTowardsScale(int si) => ScaleMode == ChartScaleMode.FitAll || !IsHidden(si);
+
+    // The values the value axis is measured from.
+    private List<double> ScaleValues(IReadOnlyList<ChartSeries> series) =>
+        Plotted(series.Where((_, i) => CountsTowardsScale(i)).SelectMany(s => s.Values));
+
+    // Indices that own a slot in a grouped bar chart. Under FitVisible only the drawn series do, so the
+    // group closes over a hidden one; under FitAll every series keeps its slot and the gap stays.
+    private List<int> SlotIndices(int count) =>
+        [.. Enumerable.Range(0, count).Where(CountsTowardsScale)];
     private void ToggleSeries(int si) { if (!_hidden.Remove(si)) _hidden.Add(si); }
     private bool _legendRow => _showLegend && LegendPosition is ChartLegendPosition.Left or ChartLegendPosition.Right;
     private Task HandlePointClick(int index) => OnPointClick.InvokeAsync(index);

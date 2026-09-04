@@ -35,7 +35,7 @@ public partial class FlareChart
         if (Data?.Series is not { Count: > 0 } series) return;
         int axes = series.Max(s => s.Values.Count);
         if (axes < 3) return; // a radar needs at least 3 axes
-        double max = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).DefaultIfEmpty(0).Max();
+        double max = ScaleValues(series).DefaultIfEmpty(0).Max();
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
         double r = Math.Min(cx, cy) - 24;

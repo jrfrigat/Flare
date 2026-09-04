@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.28.0] - 2026-09-03
+## [0.28.0] - 2026-09-04
 
 ### Added
 
@@ -35,6 +35,16 @@ All notable changes to Flare are documented here. This project adheres to
   the series is written the way it is held: `[null, null, 12, 18, null]`. A value alone between two
   gaps has no segment to be drawn as, so it is marked with a dot rather than being silently invisible.
   Line, area, bar, stacked bar and combo; the radial types still read a gap as zero.
+- **`FlareChart.ScaleMode`: switching a series off no longer rebuilds the chart around what is left.**
+  Clicking a legend entry asks to see the rest without that series; what it did was measure the value
+  axis from the visible series only, so one click moved the axis window, re-rounded the grid lines and
+  shifted every remaining mark - the reader lost the picture they were comparing against.
+  `ChartScaleMode.FitAll` measures the axis from the whole dataset instead, so the series disappears
+  and nothing else does. The default `FitVisible` is the old behaviour, unchanged. The same switch
+  governs the bar group, because "does hiding a series re-flow the plot" is one question in two
+  dimensions: `FitVisible` closes the gap the hidden series left, `FitAll` keeps every series in its
+  slot. Applies to line, area, bar, stacked bar, combo and radar; the radial types divide a total
+  rather than span an axis, so it does not apply to them.
 - **`ChartAnnotation.Layer`** decides which side of the data an overlay is on. Annotations always drew
   on top, which is wrong for the band kinds: a translucent "fact / plan" band over the values washes
   out the numbers it was drawn to frame, while the same band behind them reads as the background of

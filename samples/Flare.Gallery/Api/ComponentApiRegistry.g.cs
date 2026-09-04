@@ -799,6 +799,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"NiceScale", @"bool", @"true", @"Rounds the value axis outward to whole steps of the 1/2/2.5/5/10 progression, so the labels read 0, 100, 200 rather than 0, 94, 188, and the data no longer touches the top edge of the plot. Default true. An axis pinned by both YMin and YMax is taken literally and never rounded; pinning one end rounds only the other.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"OnPointClick", @"EventCallback<int>", null, @"Raised with the category (or slice) index when a data point is clicked.", null, false, true, false, @"FlareChart"),
                 new ApiParameterInfo(@"Padding", @"int?", null, @"Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"ScaleMode", @"ChartScaleMode", @"ChartScaleMode.FitVisible", @"Whether hiding a series through the legend refits the plot or leaves it standing. The default FitVisible measures the value axis from the series still shown, so one click moves the axis window, the grid lines and every remaining mark; FitAll measures it from the whole dataset, so the series disappears and nothing else moves. Applies to the cartesian types and to radar; the radial types (Pie, Donut, Rose, PolarArea) divide a total rather than span an axis, so hiding a slice necessarily changes the rest and this has no effect on them. YMin and YMax still win where they are set.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowGrid", @"bool", @"true", @"Shows the horizontal grid lines behind an axis chart. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowLegend", @"bool", @"true", @"Shows the series legend. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowMarkers", @"bool", @"false", @"Draws a marker dot at each line data point. A series can override this through ShowMarkers.", null, false, false, false, @"FlareChart"),
@@ -7286,6 +7287,22 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Dashed", @"1", @"Evenly spaced dashes."),
                 new ApiEnumMember(@"Dotted", @"2", @"Round-ended dots."),
                 new ApiEnumMember(@"DashDot", @"3", @"Alternating dash and dot."),
+            },
+            new string[]
+            {
+                @"FlareChart",
+            });
+
+        e[@"ChartScaleMode"] = new ApiEnumInfo(
+            @"ChartScaleMode",
+            @"Flare.Components.ChartScaleMode",
+            @"Flare.Components",
+            @"What the plot does when a series is switched off in the legend.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"FitVisible", @"0", @"The plot refits to what is left: the value axis is measured from the visible series, its grid lines are recomputed, and a grouped bar chart closes the gap the hidden series left. Every remaining mark moves (the default)."),
+                new ApiEnumMember(@"FitAll", @"1", @"The plot holds still: the value axis spans every series, hidden ones included, its grid lines stay where the full data put them, and a grouped bar chart keeps each series' slot. Switching a series off then removes that series and nothing else - which is what the reader asked for when they clicked the legend to see the rest without it."),
             },
             new string[]
             {

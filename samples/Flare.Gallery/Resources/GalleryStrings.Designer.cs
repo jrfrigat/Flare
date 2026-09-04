@@ -1537,6 +1537,14 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Hiding a Series: Refit the Plot or Hold It Still.
+        /// </summary>
+        public static string Charts_ScaleMode {
+            get {
+                return ResourceManager.GetString("Charts_ScaleMode", resourceCulture);
+            }
+        }
+                /// <summary>
         ///   Ищет локализованную строку, похожую на Sizing: Fluid and Fixed Aspect Ratio.
         /// </summary>
         public static string Charts_Sizing {

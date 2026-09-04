@@ -77,6 +77,24 @@ public enum ChartAnnotationKind
     Point,
 }
 
+/// <summary>What the plot does when a series is switched off in the legend.</summary>
+public enum ChartScaleMode
+{
+    /// <summary>
+    /// The plot refits to what is left: the value axis is measured from the visible series, its grid
+    /// lines are recomputed, and a grouped bar chart closes the gap the hidden series left. Every
+    /// remaining mark moves (the default).
+    /// </summary>
+    FitVisible,
+    /// <summary>
+    /// The plot holds still: the value axis spans every series, hidden ones included, its grid lines
+    /// stay where the full data put them, and a grouped bar chart keeps each series' slot. Switching a
+    /// series off then removes that series and nothing else - which is what the reader asked for when
+    /// they clicked the legend to see the rest without it.
+    /// </summary>
+    FitAll,
+}
+
 /// <summary>Which side of the data an annotation is drawn on.</summary>
 public enum ChartAnnotationLayer
 {

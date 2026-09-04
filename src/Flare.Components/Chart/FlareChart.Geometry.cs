@@ -98,7 +98,7 @@ public partial class FlareChart
 
     private (double Min, double Max) _scale()
     {
-        var all = Plotted(Data!.Series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values));
+        var all = ScaleValues(Data!.Series);
         if (all.Count == 0) return (0, 1);
         double min = all.Min(), max = all.Max();
         if (Type is ChartType.Bar or ChartType.StackedBar) { max = Math.Max(max, 0); min = Math.Min(min, 0); }

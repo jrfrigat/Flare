@@ -549,6 +549,9 @@
   <data name="Charts_Gaps" xml:space="preserve">
     <value>Серии с пропусками: разрыв вместо нуля</value>
   </data>
+  <data name="Charts_ScaleMode" xml:space="preserve">
+    <value>Выключение серии: перестроить график или оставить как есть</value>
+  </data>
   <data name="Charts_Grid" xml:space="preserve">
     <value>Плотность сетки: число линий, округление и промежуточные деления</value>
   </data>
