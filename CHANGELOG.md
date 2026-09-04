@@ -53,6 +53,27 @@ All notable changes to Flare are documented here. This project adheres to
   veil was stacked by source order - under anything positioned later in the same container.
 - **The DataGrid's menu filter caps its own height** and scrolls, so a column with more distinct values
   than the screen has room for still shows its buttons.
+- **A scrolling grid's sticky header lost the line under it the moment the body moved**, so the data ran
+  up flush against the column titles - or, with the filter row on, against the filter inputs, which is
+  what the report described as rows going "under" the filters. Under `border-collapse: collapse` the
+  TABLE owns and paints every collapsed border, and a sticky cell moves while the table does not: the
+  header kept its background and left its divider behind with the first row. Measured in Chrome on two
+  identical sticky-header tables side by side - with `collapse` the rule vanishes on scroll, with
+  `separate` it stays. The header, the bordered grid's column dividers and the aggregate footer now draw
+  their edges as inset shadows, which belong to the element and travel with it; the whole table is
+  deliberately NOT switched to `border-collapse: separate`, which would double every cell edge and
+  change how the frozen columns paint. A theme still sets the width and the colour.
+
+### Documentation
+
+- **Flare's positioning is stated in both READMEs**: built by backend developers, for backend
+  developers - you should not need HTML or CSS to build any screen, and full CSS customization stays
+  available. It is written down so that a screen which cannot be built from parameters is a bug rather
+  than a matter of taste.
+- **`FlareDataGrid.Height` says what it is**: a `max-height` cap in an ABSOLUTE length, not a height.
+  A percentage there resolves against a content-sized box, which CSS computes to `none` - so the cap
+  silently does not exist, the container never scrolls, and a `Virtual` grid gets a scroller that cannot
+  scroll. `FillHeight` is what a percentage height was reaching for. Also in getting-started, EN and RU.
 
 ## [0.29.0] - 2026-09-04
 

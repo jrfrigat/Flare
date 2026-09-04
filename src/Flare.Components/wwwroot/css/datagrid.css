@@ -147,6 +147,34 @@
   z-index: 3;
 }
 
+/* The header's own edge, drawn by the CELL. Under `border-collapse: collapse` the TABLE owns and paints
+   every collapsed border, and a sticky cell moves while the table does not - so a scrolling grid kept
+   its opaque header and left the divider behind with the first row, and the data ran up flush against
+   the column titles (or, with the filter row on, against the filter inputs). Measured in Chrome on two
+   identical sticky-header tables: with `collapse` the rule under the last header row vanishes the moment
+   the body scrolls; with `separate` it stays put.
+   The border is dropped and redrawn as an inset shadow, which belongs to the element and travels with
+   it. Switching the whole table to `separate` would be the other fix and is worse: it doubles every cell
+   edge in the grid and changes how the frozen columns paint. The shadow composes the same primitives the
+   divider does, so a theme still sets the width and the colour - only `--flare-border-style` cannot
+   apply, because a shadow is always solid. Scoped to the scroll wrapper: a paged grid never sticks, so
+   it keeps its ordinary border. */
+.flare-datagrid__wrapper--scroll thead th {
+  border-bottom: none;
+  box-shadow: inset 0 calc(-1 * var(--flare-border-width)) 0 var(--flare-color-outline-variant);
+}
+
+/* The footer sticks to the other edge and loses the rule above it for the same reason. Its divider is
+   declared on the ROW and has a width token of its own, so the shadow is composed from that one - the
+   two lines must not disagree about how thick the grid's aggregate rule is. */
+.flare-datagrid__wrapper--scroll tfoot .flare-datagrid__aggregate-row {
+  border-top: none;
+}
+
+.flare-datagrid__wrapper--scroll tfoot .flare-datagrid__aggregate-row > .flare-datagrid__td {
+  box-shadow: inset 0 var(--flare-datagrid-aggregate-divider-width) 0 var(--flare-color-outline-variant);
+}
+
 /* Spinner/text loading overlay: centered over the (dimmed) table. */
 .flare-datagrid__loading {
   position: absolute;
@@ -967,6 +995,18 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid--bordered .flare-datagrid__th:last-child,
 .flare-datagrid--bordered .flare-datagrid__td:last-child {
   border-right: none;
+}
+
+/* Same collapsed-border problem as the sticky header's own edge, one axis over: on a bordered scrolling
+   grid the column dividers BETWEEN the header cells are collapsed borders too, so they scroll away with
+   the body and leave the titles running together. Redrawn from the cell, next to the header's own
+   shadow - a second inset shadow rather than a second rule, because one declaration replaces the other
+   and both edges have to survive. */
+.flare-datagrid--bordered .flare-datagrid__wrapper--scroll thead th:not(:last-child) {
+  border-right: none;
+  box-shadow:
+    inset 0 calc(-1 * var(--flare-border-width)) 0 var(--flare-color-outline-variant),
+    inset calc(-1 * var(--flare-border-width)) 0 0 var(--flare-color-outline-variant);
 }
 
 .flare-datagrid--bordered .flare-datagrid__th {
