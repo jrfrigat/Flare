@@ -158,8 +158,8 @@ public partial class FlareDataGrid<TItem>
     private bool _loading;
     private ElementReference _tableRef;
     // Virtualize refs for RefreshDataAsync() calls
-    private Virtualize<TItem>? _virtualizeProviderRef;
-    private Virtualize<TItem>? _virtualizeClientRef;
+    private Virtualize<IndexedRow<TItem>>? _virtualizeProviderRef;
+    private Virtualize<IndexedRow<TItem>>? _virtualizeClientRef;
     // CancellationToken for async provider calls — cancelled on new request or dispose
     private CancellationTokenSource? _providerCts;
     // State persistence (localStorage)
@@ -183,7 +183,9 @@ public partial class FlareDataGrid<TItem>
     private readonly List<(DataGridColumn<TItem> Column, SortDirection Direction)> _sortStack = [];
     private int _focusRow = -1;
     private int _focusCol = -1;
-    private readonly HashSet<int> _expandedRows = new();
+    // Keyed by the ROW, not by its position: a row index stops meaning anything the moment the grid is
+    // sorted, filtered or paged - the wrong row opens - and means less than nothing in a recycled window.
+    private readonly HashSet<object> _expandedRows = new();
 
     // Pinned (always-visible, unsorted/unfiltered/unpaged) rows.
     private IReadOnlyList<TItem> _pinnedTop => PinnedTopRows ?? [];
@@ -327,9 +329,9 @@ public partial class FlareDataGrid<TItem>
 
     // Virtualize ItemsProvider: maps a windowed (StartIndex/Count) request onto the user's
     // DataGridRequest/DataGridResult contract so rows load as the user scrolls.
-    private async ValueTask<ItemsProviderResult<TItem>> ProvideVirtualItems(ItemsProviderRequest request)
+    private async ValueTask<ItemsProviderResult<IndexedRow<TItem>>> ProvideVirtualItems(ItemsProviderRequest request)
     {
-        if (_provider is null) return new ItemsProviderResult<TItem>([], 0);
+        if (_provider is null) return new ItemsProviderResult<IndexedRow<TItem>>([], 0);
         var sortKey = _sortStack.Count > 0 ? _sortStack[0].Column.Key : null;
         IReadOnlyDictionary<string, string>? activeFilters = _filters.Count > 0
             ? new Dictionary<string, string>(_filters)
@@ -345,13 +347,16 @@ public partial class FlareDataGrid<TItem>
         };
         var result = await _provider!(req);
         _serverTotalCount = result.TotalCount;
-        return new ItemsProviderResult<TItem>(result.Items, result.TotalCount);
+        // The window's own offset is what makes a row's number absolute rather than window-relative.
+        return new ItemsProviderResult<IndexedRow<TItem>>(
+            result.Items.Select((item, i) => new IndexedRow<TItem>(request.StartIndex + i, item)),
+            result.TotalCount);
     }
 
-    private void ToggleRowDetail(int rowIndex)
+    private void ToggleRowDetail(object rowKey)
     {
-        if (!_expandedRows.Remove(rowIndex))
-            _expandedRows.Add(rowIndex);
+        if (!_expandedRows.Remove(rowKey))
+            _expandedRows.Add(rowKey);
     }
 
     private async Task LoadFromProviderAsync()
