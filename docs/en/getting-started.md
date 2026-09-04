@@ -360,7 +360,12 @@ or not.
 | `Height` / `FillHeight` | how tall the component is, and so whether it scrolls | `400px` |
 | `PageSize` | `0` puts every row on one page; a positive size adds the pager | `0` |
 | `StickyHeader` | whether the header stays put while the rows scroll under it | `true` |
-| `Virtual` | only the rows in view live in the DOM; still replaces paging | off |
+| `Virtual` | only the rows in view live in the DOM - and nothing else changes | auto |
+
+`Virtual` composes with all of the above: a virtualized grid pages, groups, indents its tree, expands
+detail rows and reorders exactly like one that is not. Left unset it decides for itself - an in-memory
+set of more than 500 rows, in a grid with a height to scroll in, is recycled. Set it to `false` when
+every row must be in the DOM for the browser's own find or for printing.
 
 ---
 

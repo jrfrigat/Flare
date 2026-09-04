@@ -32,14 +32,32 @@ All notable changes to Flare are documented here. This project adheres to
   Setting it to `false` also restores the ordinary border under the header, instead of the inset shadow
   a sticky header needs.
 
-- **Every data row is rendered by one fragment.** The grid carried two row renderers - one for the plain
-  path and a poorer one for the virtual path - so turning on `Virtual`, which is supposed to decide only
-  how many rows live in the DOM, changed what a row WAS: no `role="row"`, no `aria-rowindex`, no
-  `aria-selected`, no row reorder and no expandable detail row. The split cut the other way too, and
-  worse: the tree indent and the expand/collapse toggle existed ONLY in the virtual renderer, so an
-  ordinary paged tree grid - the Gallery's own demo included - rendered a flat list with no expanders.
-  Both paths now render the same fragment, and the row's index travels with the item so `Virtualize` can
-  hand its window the same row the plain loop does.
+- **Every data row is rendered by one fragment.** The grid carried THREE row renderers - the plain path,
+  a poorer one for the virtual path and a poorer one still for the grouped path - so turning on
+  `Virtual` or a grouping level, neither of which is supposed to change what a row is, changed it:
+  no `role="row"`, no `aria-rowindex`, no `aria-selected`, no row reorder, no expandable detail row, and
+  in the grouped case no inline editing either, because it called the read-only cell renderer. The split
+  cut the other way too, and worse: the tree indent and the expand/collapse toggle existed ONLY in the
+  virtual renderer, so an ordinary paged tree grid - the Gallery's own demo included - rendered a flat
+  list with no expanders. All three paths now render the same fragment, and the row's index travels with
+  the item so `Virtualize` can hand its window the same row the plain loop does.
+
+- **`Virtual` decides how many rows are in the DOM, and nothing else.** It used to replace paging,
+  outrank grouping and be cancelled by `InfiniteScroll`; now it composes with all three. A virtualized
+  grid pages, and recycles the rows of its current page - a provider is asked for the window inside the
+  page rather than the window inside the set. A grouped grid virtualizes over its render LINES, group
+  headers included, instead of silently losing the grouping. An infinite list recycles what it has
+  accumulated, which is the combination a long one needs, since accumulating without recycling ends with
+  the whole set in the DOM.
+
+  Two things follow. Column widths are now resolved from the header while rows are recycled
+  (`table-layout: fixed`), because automatic layout measures the cells that exist and a recycled window
+  is a different set of cells at every scroll position - measured here at 97px against 432px for one
+  column, depending only on which rows were in view. And `Virtual` is now `bool?`: left unset, the grid
+  recycles an in-memory source of more than 500 rows when it has a height to scroll in. Set it to
+  `false` when every row must be in the DOM for the browser's own find or for printing. With an
+  `ItemsProvider` the choice stays yours, since deciding would mean fetching the whole set to find out
+  how big it is.
 
 ### Fixed
 
@@ -52,6 +70,10 @@ All notable changes to Flare are documented here. This project adheres to
 - `Scroll="true"` - delete it. It is what the default does: `PageSize` `0` renders every row with no
   pager. Note that `FlareDataGrid` captures unmatched attributes, so a left-over `Scroll="true"` does
   NOT fail the build - it lands silently on the root element and does nothing.
+- `Virtual` is `bool?`. `Virtual="true"` and `Virtual="false"` are unchanged; a grid that left it unset
+  and relied on "no recycling" now recycles above 500 rows, and says so with `Virtual="false"`.
+- `Virtual="true"` no longer hides the pager. A grid that used `Virtual` as a way to switch paging off
+  needs `PageSize="0"` as well - which, with the new default, usually means deleting the page size.
 - `PageSize` defaults to `0`, not `10`. A grid that relied on the default now shows every row; set
   `PageSize` explicitly to keep a pager.
 - `Height` applies to paged grids too, and bounds the component rather than the table container. Grids

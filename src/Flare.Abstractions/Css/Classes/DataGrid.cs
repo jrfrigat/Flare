@@ -228,6 +228,10 @@ public static class DataGrid
     public const string Table = "flare-datagrid__table";
     /// <summary>The <c>flare-datagrid__table--scroll-x</c> CSS class.</summary>
     public const string TableScrollX = "flare-datagrid__table--scroll-x";
+    /// <summary>The <c>flare-datagrid__table--fixed</c> CSS class, resolving column widths from the
+    /// header instead of from the rendered rows - required while rows are recycled, since the rendered
+    /// rows change as the user scrolls.</summary>
+    public const string TableFixed = "flare-datagrid__table--fixed";
     /// <summary>The <c>flare-datagrid__td--edit-actions</c> CSS class.</summary>
     public const string TdEditActions = "flare-datagrid__td--edit-actions";
     /// <summary>The <c>flare-datagrid__th--edit-actions</c> CSS class.</summary>

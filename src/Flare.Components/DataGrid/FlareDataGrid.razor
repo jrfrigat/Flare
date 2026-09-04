@@ -77,7 +77,7 @@
         <table @ref="_tableRef"
                tabindex="0"
                role="grid"
-               class="@Css.Classes.DataGrid.Table @(_dimTable ? Css.Classes.DataGrid.TableLoading : "") @(_hasFrozen ? Css.Classes.DataGrid.TableScrollX : "") @(CellSelection ? Css.Classes.DataGrid.CellSelectMode : "")"
+               class="@Css.Classes.DataGrid.Table @(_dimTable ? Css.Classes.DataGrid.TableLoading : "") @(_hasFrozen ? Css.Classes.DataGrid.TableScrollX : "") @(_shouldVirtualize ? Css.Classes.DataGrid.TableFixed : "") @(CellSelection ? Css.Classes.DataGrid.CellSelectMode : "")"
                aria-rowcount="@_totalRows"
                aria-colcount="@_totalColumnCount"
                @onkeydown="HandleGridKeyDown"
@@ -243,6 +243,48 @@
                     }
                 </text>;
 
+                // A line in a GROUPED grid: either a group header or a data row. Grouping changes which
+                // lines there are, never what a data row looks like - so the data half goes straight
+                // through DataRow. It used to be a third copy of the row markup, and the poorest of the
+                // three: no aria, no reorder, no detail row, no tree, no cell selection, and RenderCell
+                // instead of RenderCellOrInput, so a grouped grid could not be edited in place either.
+                RenderFragment<IndexedRow<object>> LineRow = line =>
+                @<text>
+                    @if (line.Item is GroupLine gl)
+                    {
+                        var colSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                        var collapsed = _collapsedGroups.Contains(gl.Path);
+                        <tr class="@Css.Classes.DataGrid.GroupHeader" data-level="@gl.Level">
+                            <td colspan="@(colSpan == 0 ? 1 : colSpan)">
+                                <button type="button" class="@Css.Classes.DataGrid.GroupToggle"
+                                        style="--_group-indent:@(gl.Level)"
+                                        aria-expanded="@((!collapsed).ToString().ToLowerInvariant())"
+                                        @onclick="@(() => ToggleGroup(gl.Path))">
+                                    <FlareIconView Value="@(collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandMore)" Class="@Css.Classes.DataGrid.GroupChevron" />
+                                    @if (gl.HeaderTemplate is not null)
+                                    {
+                                        <span class="@Css.Classes.DataGrid.GroupLabel">@gl.HeaderTemplate</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="@Css.Classes.DataGrid.GroupLabel">@gl.Display</span>
+                                    }
+                                    <span class="@Css.Classes.DataGrid.GroupCount">@gl.Count</span>
+                                    @foreach (var (title, value) in gl.Aggregates)
+                                    {
+                                        <span class="@Css.Classes.DataGrid.GroupAggregate">@title: @value</span>
+                                    }
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @DataRow(new IndexedRow<TItem>(line.Index, (TItem)line.Item))
+                    }
+                </text>;
+
+
                 // Skeleton placeholder row (per virtual row not yet loaded, or while loading in skeleton mode).
                 RenderFragment SkeletonRow =
                 @<tr class="@Css.Classes.DataGrid.Row @Css.Classes.DataGrid.PlaceholderRow">
@@ -260,6 +302,36 @@
                         <td class="@Css.Classes.DataGrid.Td"></td>
                     }
                 </tr>;
+
+                // What follows the rows in infinite mode: the "loading more" row and the sentinel the
+                // IntersectionObserver watches. It sits AFTER whatever produced the rows, so recycled
+                // rows and plain ones can both be followed by it - the sentinel then intersects at the
+                // true bottom of the accumulated set either way.
+                RenderFragment InfiniteTail =
+                @<text>
+                    @if (_infiniteLoading)
+                    {
+                        @if (LoadingIndicator == DataGridLoadingIndicator.Skeleton)
+                        {
+                            for (var i = 0; i < 3; i++) { @SkeletonRow }
+                        }
+                        else
+                        {
+                            var moreColSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                            <tr class="@Css.Classes.DataGrid.PlaceholderRow">
+                                <td colspan="@(moreColSpan == 0 ? 1 : moreColSpan)" class="@Css.Classes.DataGrid.InfiniteMore">
+                                    <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Xs" />
+                                    <span>@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    <tr aria-hidden="true">
+                        <td class="@Css.Classes.DataGrid.SentinelCell">
+                            <div @ref="_infiniteSentinel" class="@Css.Classes.DataGrid.Sentinel"></div>
+                        </td>
+                    </tr>
+                </text>;
             }
             <tbody>
                 @if (_hasBandedComposite)
@@ -268,7 +340,7 @@
                        (record-rows * row-height) so multi-row records virtualize correctly. *@
                     @if (_shouldVirtualize && _provider is null)
                     {
-                        <Virtualize @ref="_virtualizeClientRef" TItem="IndexedRow<TItem>" Items="@(new IndexedRows<TItem>(SortedUnpaged()))"
+                        <Virtualize @ref="_virtualizeClientRef" TItem="IndexedRow<TItem>" Items="@(new IndexedRows<TItem>(_pageItems))"
                                     SpacerElement="tr" Context="row"
                                     OverscanCount="_effectiveOverscanCount" ItemSize="@_recordItemSize">
                             @RenderBandedCompositeRecord(row.Item)
@@ -291,6 +363,48 @@
                         </tr>
                     }
                 }
+                else if (_loading && LoadingIndicator == DataGridLoadingIndicator.Skeleton && !_shouldVirtualize)
+                {
+                    for (var i = 0; i < 5; i++)
+                    {
+                        @SkeletonRow
+                    }
+                }
+                @* Grouping is the SHAPE of the rows; virtualization is where they come from. Deciding the
+                   shape first is why a grouped grid can now be virtualized at all - the virtual branch
+                   used to sit above this one and silently rendered a flat list instead. *@
+                else if (_effectiveGroups.Count > 0)
+                {
+                    BuildGroupedLines();
+                    @if (_shouldVirtualize)
+                    {
+                        <Virtualize @ref="_virtualizeLineRef" TItem="IndexedRow<object>" Items="@(new IndexedRows<object>(_groupedLines))"
+                                    SpacerElement="tr" Context="line"
+                                    OverscanCount="_effectiveOverscanCount" ItemSize="@_effectiveVirtualItemSize">
+                            @LineRow(line)
+                        </Virtualize>
+                    }
+                    else
+                    {
+                        var _lineIdx = 0;
+                        @foreach (var line in _groupedLines)
+                        {
+                            @LineRow(new IndexedRow<object>(_lineIdx++, line))
+                        }
+                    }
+                }
+                @* Infinite scroll accumulates rows as the user reaches the bottom; virtualization decides
+                   how many of the accumulated rows are in the DOM. They compose - the sentinel simply
+                   follows the recycled window - and it is the combination a long infinite list needs,
+                   since accumulating without recycling is what eventually fills the DOM. *@
+                else if (_shouldVirtualize && _infiniteMode)
+                {
+                    <Virtualize @ref="_virtualizeClientRef" TItem="IndexedRow<TItem>" Items="@(new IndexedRows<TItem>(_pageItems))" SpacerElement="tr" Context="row"
+                                OverscanCount="_effectiveOverscanCount" ItemSize="@_effectiveVirtualItemSize">
+                        @DataRow(row)
+                    </Virtualize>
+                    @InfiniteTail
+                }
                 else if (_shouldVirtualize && _provider is not null)
                 {
                     <Virtualize @ref="_virtualizeProviderRef" TItem="IndexedRow<TItem>" ItemsProvider="ProvideVirtualItems" SpacerElement="tr"
@@ -302,83 +416,13 @@
                 }
                 else if (_shouldVirtualize)
                 {
-                    @* SortedUnpaged, not Sorted: client-side virtualization renders its own window, so a
-                       paged source would hand Virtualize one page and hide every row past it. *@
-                    <Virtualize @ref="_virtualizeClientRef" TItem="IndexedRow<TItem>" Items="@(new IndexedRows<TItem>(SortedUnpaged()))" SpacerElement="tr" Context="row"
+                    @* _pageItems, which is the whole filtered set when the grid does not page and the
+                       current page when it does. Virtualization recycles whatever set it is handed; it
+                       does not decide what that set is. *@
+                    <Virtualize @ref="_virtualizeClientRef" TItem="IndexedRow<TItem>" Items="@(new IndexedRows<TItem>(_pageItems))" SpacerElement="tr" Context="row"
                                 OverscanCount="_effectiveOverscanCount" ItemSize="@_effectiveVirtualItemSize">
                         @DataRow(row)
                     </Virtualize>
-                }
-                else if (_loading && LoadingIndicator == DataGridLoadingIndicator.Skeleton)
-                {
-                    for (var i = 0; i < 5; i++)
-                    {
-                        @SkeletonRow
-                    }
-                }
-                else if (_effectiveGroups.Count > 0)
-                {
-                    var colSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
-                    if (colSpan == 0) { colSpan = 1; }
-                    BuildGroupedLines();
-                    @foreach (var line in _groupedLines)
-                    {
-                        if (line is GroupLine gl)
-                        {
-                            var collapsed = _collapsedGroups.Contains(gl.Path);
-                            <tr class="@Css.Classes.DataGrid.GroupHeader" data-level="@gl.Level">
-                                <td colspan="@colSpan">
-                                    <button type="button" class="@Css.Classes.DataGrid.GroupToggle"
-                                            style="--_group-indent:@(gl.Level)"
-                                            aria-expanded="@((!collapsed).ToString().ToLowerInvariant())"
-                                            @onclick="@(() => ToggleGroup(gl.Path))">
-                                        <FlareIconView Value="@(collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandMore)" Class="@Css.Classes.DataGrid.GroupChevron" />
-                                        @if (gl.HeaderTemplate is not null)
-                                        {
-                                            <span class="@Css.Classes.DataGrid.GroupLabel">@gl.HeaderTemplate</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="@Css.Classes.DataGrid.GroupLabel">@gl.Display</span>
-                                        }
-                                        <span class="@Css.Classes.DataGrid.GroupCount">@gl.Count</span>
-                                        @foreach (var (title, value) in gl.Aggregates)
-                                        {
-                                            <span class="@Css.Classes.DataGrid.GroupAggregate">@title: @value</span>
-                                        }
-                                    </button>
-                                </td>
-                            </tr>
-                        }
-                        else
-                        {
-                            var item = (TItem)line;
-                            <tr @key="_rowKey(item)" class="@Css.Classes.DataGrid.Row @(_selection.Contains(item) ? Css.Classes.DataGrid.RowSelected : "")
-                                       @(_editingItem is not null && ReferenceEquals(_editingItem, item) ? Css.Classes.DataGrid.RowEditing : "")
-                                       @(RowClassFunc?.Invoke(item) ?? "")"
-                                style="@(RowStyleFunc?.Invoke(item))"
-                                @onclick="@(() => HandleRowClickAsync(item))">
-                                @if (SelectionMode == SelectionMode.Multiple)
-                                {
-                                    <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox Value="@_selection.Contains(item)" ValueChanged="@(_ => HandleRowClickAsync(item))" /></td>
-                                }
-                                @foreach (var col in _gridColumns)
-                                {
-                                    @if (_hiddenColumns.Contains(col.Key)) { continue; }
-                                    <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @AlignClass(col) @(col.ClassFunc?.Invoke(item) ?? "")"
-                                         style="@(col.StyleFunc?.Invoke(item))">
-                                        @RenderCell(col, item)
-                                    </td>
-                                }
-                                @if (_inlineEditEnabled)
-                                {
-                                    <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdEditActions" @onclick:stopPropagation="true">
-                                        @RenderEditActions(item)
-                                    </td>
-                                }
-                            </tr>
-                        }
-                    }
                 }
                 else
                 {
@@ -404,33 +448,7 @@
                             </td>
                         </tr>
                     }
-                    @if (_infiniteMode)
-                    {
-                        @* "Loading more" row honoring the loading indicator. *@
-                        @if (_infiniteLoading)
-                        {
-                            @if (LoadingIndicator == DataGridLoadingIndicator.Skeleton)
-                            {
-                                for (var i = 0; i < 3; i++) { @SkeletonRow }
-                            }
-                            else
-                            {
-                                var moreColSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
-                                <tr class="@Css.Classes.DataGrid.PlaceholderRow">
-                                    <td colspan="@(moreColSpan == 0 ? 1 : moreColSpan)" class="@Css.Classes.DataGrid.InfiniteMore">
-                                        <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Xs" />
-                                        <span>@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        @* Sentinel observed by IntersectionObserver to trigger the next page. *@
-                        <tr aria-hidden="true">
-                            <td class="@Css.Classes.DataGrid.SentinelCell">
-                                <div @ref="_infiniteSentinel" class="@Css.Classes.DataGrid.Sentinel"></div>
-                            </td>
-                        </tr>
-                    }
+                    @if (_infiniteMode) { @InfiniteTail }
                 }
             </tbody>
             @if (_pinnedBottom.Count > 0 || Aggregates is { Count: > 0 })

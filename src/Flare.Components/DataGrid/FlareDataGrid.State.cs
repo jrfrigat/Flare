@@ -281,6 +281,8 @@ public partial class FlareDataGrid<TItem>
                 await _virtualizeProviderRef.RefreshDataAsync();
             else if (_virtualizeClientRef is not null)
                 await _virtualizeClientRef.RefreshDataAsync();
+            else if (_virtualizeLineRef is not null)
+                await _virtualizeLineRef.RefreshDataAsync();
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
@@ -412,12 +414,14 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
-    // An unpaged grid's row set is the whole filtered list; the provider path already holds it, because
-    // its request asked for every row (see _requestPageSize).
-    private IEnumerable<TItem> _pageItems => _provider is not null
+    // The rows this render is responsible for: one page when paging, the whole filtered set otherwise.
+    // A window rather than a Skip/Take chain - the same rows are read several times per render (the
+    // aggregate footer, select-all, the group builder, the row loop), and each read would re-walk the
+    // skipped prefix. An IList also lets Virtualize reach its window in one step.
+    private IList<TItem> _pageItems => _provider is not null
         ? (_sortedCache ?? [])
         : _paged
-            ? SortedUnpaged().Skip(_page * _effectivePageSize).Take(_effectivePageSize)
+            ? new ListWindow<TItem>(SortedUnpaged(), _page * _effectivePageSize, _effectivePageSize)
             : SortedUnpaged();
 
     // Frozen sticky class for a body cell: left-frozen, right-frozen, or none.

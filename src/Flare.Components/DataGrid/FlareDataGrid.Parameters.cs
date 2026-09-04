@@ -28,9 +28,15 @@ public partial class FlareDataGrid<TItem>
     /// one page and the grid scrolls inside whatever height it was given. Paging and scrolling are
     /// independent - a paged grid still scrolls when its page is taller than <see cref="Height"/>.
     /// <para>
+    /// Composes with <see cref="Virtual"/>: a virtualized grid recycles the rows of its current page.
+    /// <see cref="InfiniteScroll"/> is the exception - loading the next page on scroll IS a paging
+    /// strategy, so it replaces the pager.
+    /// </para>
+    /// <para>
     /// With an <see cref="ItemsProvider"/> or <see cref="Queryable"/>, <c>0</c> means one request for
-    /// the whole set. That is what "no paging" can mean against a remote source, so set a page size,
-    /// <see cref="Virtual"/> or <see cref="InfiniteScroll"/> when the source is large.
+    /// the whole set unless <see cref="Virtual"/> is on, which fetches a window at a time. That is what
+    /// "no paging" has to mean against a remote source, so set a page size, <see cref="Virtual"/> or
+    /// <see cref="InfiniteScroll"/> when the source is large.
     /// </para>
     /// </summary>
     [Parameter] public int PageSize { get; set; }
@@ -42,16 +48,27 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public string? FilterPlaceholder { get; set; }
     /// <summary>Overrides the rows-per-page label shown next to the page size selector.</summary>
     [Parameter] public string? RowsLabel { get; set; }
-    /// <summary>Recycles rows: only the visible window plus an overscan margin lives in the DOM
-    /// (consistent with FlareList.Virtual). Combine with an <see cref="ItemsProvider"/> to load rows on
-    /// demand as the user scrolls. Replaces paging for now - <see cref="PageSize"/> is ignored and no
-    /// pager is shown - which is the one place where virtualization still changes more than how many
-    /// rows are rendered.</summary>
-    [Parameter] public bool Virtual { get; set; }
+    /// <summary>
+    /// Recycles rows: only the visible window plus an overscan margin lives in the DOM. It decides
+    /// nothing else - paging, grouping, the tree, detail rows, row reorder and cell selection all behave
+    /// exactly as they do without it, and a paged grid recycles the rows of its current page.
+    /// <para>
+    /// <c>null</c> (the default) lets the grid decide: it recycles an in-memory source of more than 500
+    /// rows when it has a height to scroll in (<see cref="Height"/> or <see cref="FillHeight"/>). Set it
+    /// explicitly to <c>true</c> or <c>false</c> to take the decision yourself - <c>false</c> is the
+    /// answer when every row must be in the DOM for the browser's own find or for printing. With an
+    /// <see cref="ItemsProvider"/> the choice is always yours, since the grid would have to fetch the
+    /// whole set once to find out how big it is; combine the two to load rows on demand as the user
+    /// scrolls.
+    /// </para>
+    /// </summary>
+    [Parameter] public bool? Virtual { get; set; }
     /// <summary>Infinite scrolling: with an <see cref="ItemsProvider"/>, rows accumulate page by page
-    /// as the user scrolls to the bottom (instead of pagination or a known-total virtual window).
-    /// The provider is called with successive <c>Page</c> values; loading stops when a page returns
-    /// fewer than <see cref="PageSize"/> rows or the reported total is reached.</summary>
+    /// as the user scrolls to the bottom, and no pager is shown - this is a paging strategy of its own,
+    /// so it replaces <see cref="PageSize"/>'s. The provider is called with successive <c>Page</c>
+    /// values; loading stops when a page returns fewer than <see cref="PageSize"/> rows or the reported
+    /// total is reached. Combine with <see cref="Virtual"/> to recycle the rows that have accumulated -
+    /// otherwise a long enough scroll ends with the whole set in the DOM.</summary>
     [Parameter] public bool InfiniteScroll { get; set; }
     /// <summary>
     /// Keeps the header group - band rows, column titles and the filter row - pinned to the top of

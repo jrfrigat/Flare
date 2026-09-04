@@ -186,16 +186,16 @@ public sealed class ScreenFitTests : FlareTestContext
         Assert.DoesNotContain("sticky-head", loose.Find(".flare-datagrid__wrapper").ClassName, StringComparison.Ordinal);
     }
 
-    // Virtual still replaces paging - it renders its own window over the whole set - so a page size is
-    // ignored and no pager appears. Orthogonal virtualization is the next piece of work, not this one.
+    // Virtualization recycles the rows of whatever set it is given; it does not decide what that set is.
+    // With a page size the set is the page, and the pager stays - the two answer different questions.
     //
-    // Asserted through the spacer rows Virtualize emits around its window, not through how many rows it
-    // decided to render: that number is the framework's business and it differs by target framework -
-    // net8's Virtualize renders the whole set in a headless host, where net9 and net10 render a window.
-    // A count assertion passed here on two targets and failed on the third for a reason that had nothing
-    // to do with the behaviour under test.
+    // The virtual path is asserted through the spacer rows Virtualize emits around its window, not
+    // through how many rows it decided to render: that number is the framework's business and it differs
+    // by target framework - net8's Virtualize renders the whole set in a headless host, where net9 and
+    // net10 render a window. A count assertion passed here on two targets and failed on the third for a
+    // reason that had nothing to do with the behaviour under test.
     [Fact]
-    public void DataGrid_Virtual_StillReplacesPaging()
+    public void DataGrid_Virtual_ComposesWithPaging()
     {
         var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(500))
@@ -204,10 +204,49 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Columns, OneColumn()));
 
         Assert.True(cut.FindAll("tbody tr").Count > cut.FindAll("tbody tr.flare-datagrid__row").Count,
-            "The virtual path renders Virtualize's spacer rows around its window; an unpaged grid renders "
-            + "nothing but data rows. Only spacers tell the two apart without depending on how many rows "
-            + "Virtualize chose to build.");
-        Assert.Empty(cut.FindAll(".flare-datagrid__pagination"));
+            "The virtual path renders Virtualize's spacer rows around its window; an unvirtualized grid "
+            + "renders nothing but data rows. Only spacers tell the two apart without depending on how "
+            + "many rows Virtualize chose to build.");
+        Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
+        Assert.Equal(10, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        // Recycling changes how many rows exist, so the columns must stop being measured from them.
+        Assert.Contains("flare-datagrid__table--fixed", cut.Find("table").ClassName, StringComparison.Ordinal);
+    }
+
+    // Recycling no longer changes anything but the number of rows in the DOM, so the grid can decide for
+    // itself. It only decides YES with a height to scroll in - Virtualize derives its window from a
+    // scroll container, and an unbounded one has no extent - and only for a set worth recycling. Both
+    // guards matter: switching it on where it cannot work is the 0.26.2 bug, arrived at by accident.
+    [Theory]
+    [InlineData(600, "400px", null, true)]   // large set, a height: recycle
+    [InlineData(600, null, null, false)]     // no height: nothing to scroll in, so no window to compute
+    [InlineData(100, "400px", null, false)]  // small set: every row in the DOM is cheaper than the machinery
+    [InlineData(600, "400px", false, false)] // an explicit no is a no
+    [InlineData(600, "400px", true, true)]   // an explicit yes is a yes
+    public void DataGrid_DecidesWhetherToRecycleRows(int rows, string? height, bool? @virtual, bool expected)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(rows))
+            .Add(x => x.Height, height)
+            .Add(x => x.Virtual, @virtual)
+            .Add(x => x.Columns, OneColumn()));
+
+        var recycling = cut.FindAll("tbody tr").Count > cut.FindAll("tbody tr.flare-datagrid__row").Count;
+        Assert.Equal(expected, recycling);
+    }
+
+    // The decision is made about the rows this render is responsible for, which is the PAGE when there
+    // is one - fifty rows on screen is fifty rows, however many pages sit behind them.
+    [Fact]
+    public void DataGrid_DoesNotAutoRecycle_ASmallPageOfALargeSet()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5000))
+            .Add(x => x.PageSize, 50)
+            .Add(x => x.Columns, OneColumn()));
+
+        Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(50, cut.FindAll("tbody tr.flare-datagrid__row").Count);
     }
 
     [Fact]
