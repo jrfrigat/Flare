@@ -28,9 +28,15 @@ public partial class FlareDataGrid<TItem>
     /// one page and the grid scrolls inside whatever height it was given. Paging and scrolling are
     /// independent - a paged grid still scrolls when its page is taller than <see cref="Height"/>.
     /// <para>
+    /// Composes with <see cref="Virtual"/>: a virtualized grid recycles the rows of its current page.
+    /// <see cref="InfiniteScroll"/> is the exception - loading the next page on scroll IS a paging
+    /// strategy, so it replaces the pager.
+    /// </para>
+    /// <para>
     /// With an <see cref="ItemsProvider"/> or <see cref="Queryable"/>, <c>0</c> means one request for
-    /// the whole set. That is what "no paging" can mean against a remote source, so set a page size,
-    /// <see cref="Virtual"/> or <see cref="InfiniteScroll"/> when the source is large.
+    /// the whole set unless <see cref="Virtual"/> is on, which fetches a window at a time. That is what
+    /// "no paging" has to mean against a remote source, so set a page size, <see cref="Virtual"/> or
+    /// <see cref="InfiniteScroll"/> when the source is large.
     /// </para>
     /// </summary>
     [Parameter] public int PageSize { get; set; }
@@ -58,9 +64,11 @@ public partial class FlareDataGrid<TItem>
     /// </summary>
     [Parameter] public bool? Virtual { get; set; }
     /// <summary>Infinite scrolling: with an <see cref="ItemsProvider"/>, rows accumulate page by page
-    /// as the user scrolls to the bottom (instead of pagination or a known-total virtual window).
-    /// The provider is called with successive <c>Page</c> values; loading stops when a page returns
-    /// fewer than <see cref="PageSize"/> rows or the reported total is reached.</summary>
+    /// as the user scrolls to the bottom, and no pager is shown - this is a paging strategy of its own,
+    /// so it replaces <see cref="PageSize"/>'s. The provider is called with successive <c>Page</c>
+    /// values; loading stops when a page returns fewer than <see cref="PageSize"/> rows or the reported
+    /// total is reached. Combine with <see cref="Virtual"/> to recycle the rows that have accumulated -
+    /// otherwise a long enough scroll ends with the whole set in the DOM.</summary>
     [Parameter] public bool InfiniteScroll { get; set; }
     /// <summary>
     /// Keeps the header group - band rows, column titles and the filter row - pinned to the top of
