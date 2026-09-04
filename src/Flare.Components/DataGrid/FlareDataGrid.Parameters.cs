@@ -23,8 +23,17 @@ public partial class FlareDataGrid<TItem>
     /// first (their band structure fixes their header positions), then these, and a definition whose
     /// <see cref="DataGridColumn{TItem}.Key"/> a markup column already uses is ignored.</summary>
     [Parameter] public IEnumerable<DataGridColumn<TItem>>? ColumnDefinitions { get; set; }
-    /// <summary>Number of rows displayed per page.</summary>
-    [Parameter] public int PageSize { get; set; } = 10;
+    /// <summary>
+    /// Number of rows on a page, or <c>0</c> (the default) for no paging at all: every row goes into
+    /// one page and the grid scrolls inside whatever height it was given. Paging and scrolling are
+    /// independent - a paged grid still scrolls when its page is taller than <see cref="Height"/>.
+    /// <para>
+    /// With an <see cref="ItemsProvider"/> or <see cref="Queryable"/>, <c>0</c> means one request for
+    /// the whole set. That is what "no paging" can mean against a remote source, so set a page size,
+    /// <see cref="Virtual"/> or <see cref="InfiniteScroll"/> when the source is large.
+    /// </para>
+    /// </summary>
+    [Parameter] public int PageSize { get; set; }
     /// <summary>Custom content displayed when no data rows are available. Defaults to FlareEmptyState.</summary>
     [Parameter] public RenderFragment? EmptyStateContent { get; set; }
     /// <summary>Overrides the loading indicator text.</summary>
@@ -33,8 +42,11 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public string? FilterPlaceholder { get; set; }
     /// <summary>Overrides the rows-per-page label shown next to the page size selector.</summary>
     [Parameter] public string? RowsLabel { get; set; }
-    /// <summary>Enables virtual scrolling instead of pagination (consistent with FlareList.Virtual).
-    /// Combine with an <see cref="ItemsProvider"/> to load rows on demand as the user scrolls.</summary>
+    /// <summary>Recycles rows: only the visible window plus an overscan margin lives in the DOM
+    /// (consistent with FlareList.Virtual). Combine with an <see cref="ItemsProvider"/> to load rows on
+    /// demand as the user scrolls. Replaces paging for now - <see cref="PageSize"/> is ignored and no
+    /// pager is shown - which is the one place where virtualization still changes more than how many
+    /// rows are rendered.</summary>
     [Parameter] public bool Virtual { get; set; }
     /// <summary>Infinite scrolling: with an <see cref="ItemsProvider"/>, rows accumulate page by page
     /// as the user scrolls to the bottom (instead of pagination or a known-total virtual window).
@@ -42,17 +54,15 @@ public partial class FlareDataGrid<TItem>
     /// fewer than <see cref="PageSize"/> rows or the reported total is reached.</summary>
     [Parameter] public bool InfiniteScroll { get; set; }
     /// <summary>
-    /// Renders every row inside the grid's own scroll box instead of paging: no pager, a sticky
-    /// header, and one scrollbar on the table container. The middle ground between pagination and
-    /// <see cref="Virtual"/>, and the right choice from a few hundred to a few thousand rows - every
-    /// row is in the DOM, so browser find, keyboard navigation and printing reach all of them, which
-    /// row recycling cannot offer. Past that, prefer <see cref="Virtual"/>. Bound by
-    /// <see cref="Height"/> unless <see cref="FillHeight"/> takes over. With an
-    /// <see cref="ItemsProvider"/> or <see cref="Queryable"/> the whole set is requested in one call,
-    /// so use <see cref="Virtual"/> or <see cref="InfiniteScroll"/> when the source is large and
-    /// remote. Ignored while <see cref="Virtual"/> or <see cref="InfiniteScroll"/> is on.
+    /// Keeps the header group - band rows, column titles and the filter row - pinned to the top of
+    /// the table container while the rows scroll under it. Default <c>true</c>. Turn it off for a
+    /// tall multi-row header that would eat the visible area, or for a print-shaped view where the
+    /// header should scroll away with its rows. Has no visible effect on a grid with no height of its
+    /// own, which does not scroll on its own to begin with. Pinned rows
+    /// (<see cref="PinnedTopRows"/>, <see cref="PinnedBottomRows"/>) and the aggregate footer are separate
+    /// promises and are not affected.
     /// </summary>
-    [Parameter] public bool Scroll { get; set; }
+    [Parameter] public bool StickyHeader { get; set; } = true;
     /// <summary>
     /// Makes the grid spend the height it is given rather than the height in <see cref="Height"/>:
     /// the grid fills its parent, and the table container takes whatever is left under the toolbar
@@ -65,21 +75,19 @@ public partial class FlareDataGrid<TItem>
     /// </summary>
     [Parameter] public bool FillHeight { get; set; }
     /// <summary>
-    /// How tall the scrolling table container may grow, as a CSS length. It is a CAP
-    /// (<c>max-height</c>), not a height: a grid with fewer rows than that is as tall as its rows.
-    /// Applies in every mode that scrolls instead of paging - <see cref="Scroll"/>,
-    /// <see cref="Virtual"/>, <see cref="InfiniteScroll"/> - and is ignored when
-    /// <see cref="FillHeight"/> is set.
+    /// How tall the whole component may be, as a CSS length - the toolbar, the pager and the footer
+    /// are inside the budget, and the table container scrolls in what is left. Applies in EVERY mode,
+    /// paged or not, virtualized or not; <c>null</c>, <c>"auto"</c> or <c>"none"</c> removes it and the
+    /// grid grows with its rows so the page scrolls instead. Ignored when <see cref="FillHeight"/> is set.
     /// <para>
-    /// Use an ABSOLUTE length. A percentage resolves against the grid's own box, which is sized by its
-    /// content unless something above it says otherwise, and a percentage <c>max-height</c> against a
-    /// content-sized box computes to <c>none</c> - so the cap silently does not exist, the container
-    /// never scrolls, and a virtual grid is handed a scroller that cannot scroll. When the height is
-    /// the layout's answer rather than a number you can write down, that is what
-    /// <see cref="FillHeight"/> is for.
+    /// An absolute length is a CAP: a grid with fewer rows than that is as tall as its rows. A
+    /// PERCENTAGE is a height rather than a cap, because a percentage cap against a content-sized
+    /// parent computes to <c>none</c>; it needs an ancestor with a definite height, and falls back to
+    /// content height where there is none. When the height is the layout's answer rather than a number
+    /// the page can write down, <see cref="FillHeight"/> says so without a number.
     /// </para>
     /// </summary>
-    [Parameter] public string Height { get; set; } = "400px";
+    [Parameter] public string? Height { get; set; } = "400px";
     /// <summary>How the loading state is shown: a circular ring (default), skeleton rows, or text only.</summary>
     [Parameter] public DataGridLoadingIndicator LoadingIndicator { get; set; } = DataGridLoadingIndicator.Spinner;
     /// <summary>

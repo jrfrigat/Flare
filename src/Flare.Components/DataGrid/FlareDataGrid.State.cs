@@ -368,10 +368,12 @@ public partial class FlareDataGrid<TItem>
         return _unpagedMemo = result.Items.ToList();
     }
 
-    private int _effectivePageSize => _currentPageSize > 0 ? _currentPageSize : (PageSize > 0 ? PageSize : 10);
+    // Zero is a real answer here - "one page, every row" - so it is passed through rather than
+    // replaced by a default. Only the pager's own selection outranks the parameter.
+    private int _effectivePageSize => _currentPageSize > 0 ? _currentPageSize : Math.Max(0, PageSize);
 
-    /// <summary>Current page size in effect (the user-selected size, else <c>PageSize</c>, else 10).
-    /// Used by a bound <see cref="FlareDataGridPager{TItem}"/>.</summary>
+    /// <summary>Current page size in effect (the user-selected size, else <see cref="PageSize"/>);
+    /// <c>0</c> when the grid does not page. Used by a bound <see cref="FlareDataGridPager{TItem}"/>.</summary>
     public int EffectivePageSize => _effectivePageSize;
 
     /// <summary>Total number of pages for the current data and page size. Used by a bound
@@ -382,10 +384,10 @@ public partial class FlareDataGrid<TItem>
     /// <see cref="FlareDataGridPager{TItem}"/>.</summary>
     public int CurrentPageIndex => _page;
 
-    /// <summary>True when client-side paging applies (i.e. not a virtualized or infinite-scroll grid,
-    /// which scroll instead of paging). A bound <see cref="FlareDataGridPager{TItem}"/> renders nothing
-    /// when this is false.</summary>
-    public bool PagingEnabled => !_scrollContainer;
+    /// <summary>True when the grid pages: <see cref="PageSize"/> is positive and neither
+    /// <see cref="Virtual"/> nor <see cref="InfiniteScroll"/> has replaced paging with its own window.
+    /// A bound <see cref="FlareDataGridPager{TItem}"/> renders nothing when this is false.</summary>
+    public bool PagingEnabled => _paged;
 
     /// <summary>Navigates to a zero-based page index (clamped to the valid range). Used by a bound
     /// <see cref="FlareDataGridPager{TItem}"/>.</summary>
@@ -410,13 +412,13 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
-    // Scroll mode has no pages, so the row set is the whole filtered list; the provider path already
-    // holds it, because its request asked for every row (see _requestPageSize).
+    // An unpaged grid's row set is the whole filtered list; the provider path already holds it, because
+    // its request asked for every row (see _requestPageSize).
     private IEnumerable<TItem> _pageItems => _provider is not null
         ? (_sortedCache ?? [])
-        : _scrollAll
-            ? SortedUnpaged()
-            : SortedUnpaged().Skip(_page * _effectivePageSize).Take(_effectivePageSize);
+        : _paged
+            ? SortedUnpaged().Skip(_page * _effectivePageSize).Take(_effectivePageSize)
+            : SortedUnpaged();
 
     // Frozen sticky class for a body cell: left-frozen, right-frozen, or none.
     private static string _tdFrozenClass(DataGridColumn<TItem> col) =>

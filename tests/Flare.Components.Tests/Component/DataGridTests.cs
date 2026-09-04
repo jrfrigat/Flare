@@ -1220,8 +1220,9 @@ public class C_FlareDataGridBandedSortTests : FlareTestContext
             b.CloseComponent();
         });
 
-        // Uses the fixed-height virtual scroll container (no pagination) and renders the banded header.
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__wrapper--scroll"));
+        // Height caps the component so the table container has something to scroll in, and the banded
+        // header still renders inside it.
+        Assert.NotEmpty(cut.FindAll(".flare-datagrid--bounded"));
         Assert.NotEmpty(cut.FindAll("th.flare-datagrid__th--composite"));
     }
 }

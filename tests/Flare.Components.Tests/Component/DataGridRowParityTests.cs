@@ -1,0 +1,147 @@
+using Microsoft.AspNetCore.Components;
+
+namespace Flare.Components.Tests.Component;
+
+/// <summary>
+/// A row is the same row whichever branch decided to render it. The grid used to carry two row
+/// renderers - one for the plain path, a poorer one for the virtual path - and the second silently
+/// lacked the tree indent and toggle, the detail row, row reorder and every aria attribute. Turning on
+/// a parameter that only decides how many rows live in the DOM changed what a row WAS.
+///
+/// These tests pin the parity down from both sides: what the virtual path was missing, and what the
+/// plain path was missing - the tree toggle lived only in the virtual renderer, so the Gallery's own
+/// tree demo (paged, not virtual) rendered a flat list with no expanders at all.
+/// </summary>
+public sealed class DataGridRowParityTests : FlareTestContext
+{
+    private sealed record Row(string Name);
+
+    private sealed class Node
+    {
+        public required string Name { get; init; }
+        public List<Node> Children { get; init; } = [];
+    }
+
+    private static IEnumerable<Row> Rows(int count) =>
+        Enumerable.Range(1, count).Select(i => new Row("row " + i));
+
+    private static RenderFragment NameColumn() => b =>
+    {
+        b.OpenComponent<FlareColumn<Row>>(0);
+        b.AddAttribute(1, "Title", "Name");
+        b.AddAttribute(2, "Field", (Func<Row, object?>)(r => r.Name));
+        b.AddAttribute(3, "Sortable", true);
+        b.CloseComponent();
+    };
+
+    private static RenderFragment NodeColumn() => b =>
+    {
+        b.OpenComponent<FlareColumn<Node>>(0);
+        b.AddAttribute(1, "Title", "Name");
+        b.AddAttribute(2, "Field", (Func<Node, object?>)(n => n.Name));
+        b.CloseComponent();
+    };
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void EveryRow_CarriesItsAriaAttributes(bool virtualized)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(20))
+            .Add(x => x.Virtual, virtualized)
+            .Add(x => x.SelectionMode, SelectionMode.Multiple)
+            .Add(x => x.Columns, NameColumn()));
+
+        var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
+        Assert.Equal("row", row.GetAttribute("role"));
+        Assert.Equal("2", row.GetAttribute("aria-rowindex"));
+        Assert.Equal("false", row.GetAttribute("aria-selected"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void EveryRow_IsDraggableWhenReorderable(bool virtualized)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(20))
+            .Add(x => x.Virtual, virtualized)
+            .Add(x => x.RowReorderable, true)
+            .Add(x => x.Columns, NameColumn()));
+
+        var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
+        Assert.Equal("true", row.GetAttribute("draggable"));
+        Assert.Contains("flare-datagrid__row--draggable", row.ClassName, StringComparison.Ordinal);
+    }
+
+    // The tree toggle used to exist only in the virtual renderer, so a paged tree grid - which is what
+    // the Gallery demo and any ordinary page builds - rendered a flattened list with no way to collapse
+    // anything and no indentation.
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void TreeRows_HaveTheirToggleInEveryPath(bool virtualized)
+    {
+        var root = new Node
+        {
+            Name = "root",
+            Children = [new Node { Name = "child a" }, new Node { Name = "child b" }],
+        };
+
+        var cut = Render<FlareDataGrid<Node>>(p => p
+            .Add(x => x.Items, new[] { root }.AsEnumerable())
+            .Add(x => x.Virtual, virtualized)
+            .Add(x => x.Tree, new DataGridTreeConfig<Node>
+            {
+                ChildrenSelector = n => n.Children,
+                InitiallyExpanded = _ => true,
+            })
+            .Add(x => x.Columns, NodeColumn()));
+
+        Assert.NotEmpty(cut.FindAll(".flare-datagrid__tree-toggle"));
+        Assert.Contains("child a", cut.Markup, StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void DetailRows_ExpandInEveryPath(bool virtualized)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(20))
+            .Add(x => x.Virtual, virtualized)
+            .Add(x => x.RowDetailTemplate, (RenderFragment<Row>)(r => b => b.AddContent(0, "detail of " + r.Name)))
+            .Add(x => x.Columns, NameColumn()));
+
+        Assert.Empty(cut.FindAll("tr.flare-datagrid__detail-row"));
+
+        cut.FindAll("button.flare-datagrid__detail-btn")[0].Click();
+
+        Assert.Single(cut.FindAll("tr.flare-datagrid__detail-row"));
+        Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
+    }
+
+    // Expansion used to be stored by the row's POSITION on the page, so sorting kept the same slot open
+    // and the wrong row's detail appeared under a different row's data.
+    [Fact]
+    public void DetailRow_StaysWithItsRowAcrossSorting()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(3))
+            .Add(x => x.RowKey, (Func<Row, object>)(r => r.Name))
+            .Add(x => x.RowDetailTemplate, (RenderFragment<Row>)(r => b => b.AddContent(0, "detail of " + r.Name)))
+            .Add(x => x.Columns, NameColumn()));
+
+        cut.FindAll("button.flare-datagrid__detail-btn")[0].Click();
+        Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
+
+        // Sort descending: row 1 moves to the bottom, and its detail must move with it.
+        cut.Find("th.flare-datagrid__th--sortable").Click();
+        cut.Find("th.flare-datagrid__th--sortable").Click();
+
+        Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
+        Assert.DoesNotContain("detail of row 3", cut.Markup, StringComparison.Ordinal);
+        Assert.Equal("true", cut.FindAll("button.flare-datagrid__detail-btn")[^1].GetAttribute("aria-expanded"));
+    }
+}

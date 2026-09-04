@@ -940,10 +940,10 @@
     <value>500 полосатых записей с Virtual=true - каждая запись занимает несколько строк, отображаются только видимые.</value>
   </data>
   <data name="DataGrid_ScrollModeTitle" xml:space="preserve">
-    <value>Все строки со своей прокруткой</value>
+    <value>Размер, пагинация и липкая шапка</value>
   </data>
   <data name="DataGrid_ScrollModeDesc" xml:space="preserve">
-    <value>Scroll=true рисует все строки, прячет пагинатор и прокручивает таблицу внутри её рамки с прилипшей шапкой - середина между пагинацией и виртуализацией, на несколько сотен - несколько тысяч строк.</value>
+    <value>Три независимых вопроса. Height ограничивает весь компонент, поэтому грид прокручивается всегда, когда строки не помещаются - с пагинацией или без. PageSize только нарезает строки: 0 кладёт все строки на одну страницу. StickyHeader решает, едет ли шапка вместе с ними.</value>
   </data>
   <data name="DataGrid_CompositeCardTitle" xml:space="preserve">
     <value>Составная карточка</value>

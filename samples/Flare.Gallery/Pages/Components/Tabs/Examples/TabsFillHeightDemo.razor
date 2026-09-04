@@ -11,7 +11,7 @@
     <FlarePaper Elevation="1" Style="height:24rem">
         <FlareTabs FillHeight="_fill">
             <FlareTab Label="Orders">
-                <FlareDataGrid Items="@_orders" Scroll="true" FillHeight="_fill" Striped="true" Hoverable="true">
+                <FlareDataGrid Items="@_orders" FillHeight="_fill" Striped="true" Hoverable="true">
                     <Columns>
                         <FlareColumn Title="Order" Field="@(o => o.Number)" Width="120px" />
                         <FlareColumn Title="Customer" Field="@(o => o.Customer)" Sortable="true" />

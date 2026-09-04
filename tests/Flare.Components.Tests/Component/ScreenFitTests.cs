@@ -60,41 +60,134 @@ public sealed class ScreenFitTests : FlareTestContext
         Assert.Contains("flare-tabs--fill", filled.Find(".flare-tabs").ClassName, StringComparison.Ordinal);
     }
 
+    // Paging is a page size, not a mode. Nothing is set here, so every row is on one page and there is
+    // no pager to show - which is what a business grid handed a list is expected to do.
     [Fact]
-    public void DataGrid_Scroll_RendersEveryRowAndHidesThePager()
+    public void DataGrid_WithoutAPageSize_RendersEveryRowAndNoPager()
     {
-        var paged = Render<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(30))
-            .Add(x => x.PageSize, 10)
             .Add(x => x.Columns, OneColumn()));
-        Assert.Equal(10, paged.FindAll("tbody tr").Count);
-        Assert.NotEmpty(paged.FindAll(".flare-datagrid__pagination"));
 
-        var scrolling = Render<FlareDataGrid<Row>>(p => p
-            .Add(x => x.Items, Rows(30))
-            .Add(x => x.PageSize, 10)
-            .Add(x => x.Scroll, true)
-            .Add(x => x.Columns, OneColumn()));
-        Assert.Equal(30, scrolling.FindAll("tbody tr").Count);
-        Assert.Empty(scrolling.FindAll(".flare-datagrid__pagination"));
+        Assert.Equal(30, cut.FindAll("tbody tr").Count);
+        Assert.Empty(cut.FindAll(".flare-datagrid__pagination"));
     }
 
     [Fact]
-    public void DataGrid_Scroll_TakesTheScrollBoxAndTheHeightCap()
+    public void DataGrid_PageSize_BringsThePagerBack()
     {
         var cut = Render<FlareDataGrid<Row>>(p => p
-            .Add(x => x.Items, Rows(5))
-            .Add(x => x.Scroll, true)
+            .Add(x => x.Items, Rows(30))
+            .Add(x => x.PageSize, 10)
+            .Add(x => x.Columns, OneColumn()));
+
+        Assert.Equal(10, cut.FindAll("tbody tr").Count);
+        Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
+    }
+
+    // The defect this whole model change started from: the height was gated on a mode flag, so a paged
+    // grid ignored the parameter it declares a default for. Both shapes must carry the same cap, and it
+    // must sit on the ROOT - the toolbar and the pager are inside the budget the page asked for.
+    [Theory]
+    [InlineData(0)]
+    [InlineData(10)]
+    public void DataGrid_Height_CapsTheComponentPagedOrNot(int pageSize)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(30))
+            .Add(x => x.PageSize, pageSize)
             .Add(x => x.Height, "320px")
             .Add(x => x.Columns, OneColumn()));
 
-        var wrapper = cut.Find(".flare-datagrid__wrapper");
-        Assert.Contains("flare-datagrid__wrapper--scroll", wrapper.ClassName, StringComparison.Ordinal);
-        Assert.Contains("--_flare-datagrid-height:320px", wrapper.GetAttribute("style"), StringComparison.Ordinal);
+        var root = cut.Find(".flare-datagrid");
+        Assert.Contains("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        Assert.Contains("--_flare-datagrid-height:320px", root.GetAttribute("style"), StringComparison.Ordinal);
+        Assert.DoesNotContain("--_flare-datagrid-height", cut.Find(".flare-datagrid__wrapper").GetAttribute("style") ?? "", StringComparison.Ordinal);
     }
 
-    // Virtual and infinite scroll already replace paging by recycling rows; scroll mode's promise is the
-    // opposite - every row in the DOM - so it must not quietly turn one of them off.
+    // A percentage cap against a content-sized parent computes to `none`, so a percentage has to size
+    // the component instead of capping it. It used to be emitted as max-height and silently do nothing.
+    [Fact]
+    public void DataGrid_Height_InPercent_SizesRatherThanCaps()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5))
+            .Add(x => x.Height, "50%")
+            .Add(x => x.Columns, OneColumn()));
+
+        var root = cut.Find(".flare-datagrid");
+        Assert.Contains("flare-datagrid--sized", root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        Assert.Contains("--_flare-datagrid-height:50%", root.GetAttribute("style"), StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("auto")]
+    [InlineData("none")]
+    public void DataGrid_Height_Unset_LeavesTheGridToGrow(string? height)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5))
+            .Add(x => x.Height, height)
+            .Add(x => x.Columns, OneColumn()));
+
+        var root = cut.Find(".flare-datagrid");
+        Assert.DoesNotContain("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("flare-datagrid--sized", root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("--_flare-datagrid-height", root.GetAttribute("style") ?? "", StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void DataGrid_FillHeight_ReplacesTheHeightWithTheLayoutsAnswer()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5))
+            .Add(x => x.FillHeight, true)
+            .Add(x => x.Height, "320px")
+            .Add(x => x.Columns, OneColumn()));
+
+        var root = cut.Find(".flare-datagrid");
+        Assert.Contains("flare-datagrid--fill", root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("--_flare-datagrid-height", root.GetAttribute("style") ?? "", StringComparison.Ordinal);
+    }
+
+    // The user-supplied Style has to survive the custom property the grid writes next to it.
+    [Fact]
+    public void DataGrid_Height_KeepsTheCallersOwnStyle()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5))
+            .Add(x => x.Height, "320px")
+            .Add(x => x.Style, "margin-top:8px")
+            .Add(x => x.Columns, OneColumn()));
+
+        var style = cut.Find(".flare-datagrid").GetAttribute("style");
+        Assert.Contains("--_flare-datagrid-height:320px", style, StringComparison.Ordinal);
+        Assert.Contains("margin-top:8px", style, StringComparison.Ordinal);
+    }
+
+    // Sticky is a question of its own - "the grid scrolls" and "the header stays" are different things -
+    // so it is a parameter rather than a side effect of the mode, and it is on unless asked otherwise.
+    [Fact]
+    public void DataGrid_StickyHeader_IsOnByDefaultAndCanBeTurnedOff()
+    {
+        var sticky = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5))
+            .Add(x => x.Columns, OneColumn()));
+        Assert.Contains("flare-datagrid__wrapper--sticky-head", sticky.Find(".flare-datagrid__wrapper").ClassName, StringComparison.Ordinal);
+
+        var loose = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(5))
+            .Add(x => x.StickyHeader, false)
+            .Add(x => x.Columns, OneColumn()));
+        Assert.DoesNotContain("sticky-head", loose.Find(".flare-datagrid__wrapper").ClassName, StringComparison.Ordinal);
+    }
+
+    // Virtual still replaces paging - it renders its own window over the whole set - so a page size is
+    // ignored and no pager appears. Orthogonal virtualization is the next piece of work, not this one.
     //
     // Asserted through the spacer rows Virtualize emits around its window, not through how many rows it
     // decided to render: that number is the framework's business and it differs by target framework -
@@ -102,26 +195,26 @@ public sealed class ScreenFitTests : FlareTestContext
     // A count assertion passed here on two targets and failed on the third for a reason that had nothing
     // to do with the behaviour under test.
     [Fact]
-    public void DataGrid_Scroll_YieldsToVirtual()
+    public void DataGrid_Virtual_StillReplacesPaging()
     {
         var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(500))
-            .Add(x => x.Scroll, true)
+            .Add(x => x.PageSize, 10)
             .Add(x => x.Virtual, true)
             .Add(x => x.Columns, OneColumn()));
 
         Assert.True(cut.FindAll("tbody tr").Count > cut.FindAll("tbody tr.flare-datagrid__row").Count,
-            "The virtual path renders Virtualize's spacer rows around its window; scroll mode renders "
+            "The virtual path renders Virtualize's spacer rows around its window; an unpaged grid renders "
             + "nothing but data rows. Only spacers tell the two apart without depending on how many rows "
             + "Virtualize chose to build.");
+        Assert.Empty(cut.FindAll(".flare-datagrid__pagination"));
     }
 
     [Fact]
-    public void DataGrid_Scroll_RendersNoSpacerRows()
+    public void DataGrid_WithoutAPageSize_RendersNoSpacerRows()
     {
         var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(500))
-            .Add(x => x.Scroll, true)
             .Add(x => x.Columns, OneColumn()));
 
         Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll("tbody tr.flare-datagrid__row").Count);
@@ -129,42 +222,10 @@ public sealed class ScreenFitTests : FlareTestContext
     }
 
     [Fact]
-    public void DataGrid_FillHeight_ReplacesTheHeightCapWithTheLayoutsAnswer()
-    {
-        var cut = Render<FlareDataGrid<Row>>(p => p
-            .Add(x => x.Items, Rows(5))
-            .Add(x => x.Scroll, true)
-            .Add(x => x.FillHeight, true)
-            .Add(x => x.Height, "320px")
-            .Add(x => x.Columns, OneColumn()));
-
-        Assert.Contains("flare-datagrid--fill", cut.Find(".flare-datagrid").ClassName, StringComparison.Ordinal);
-        var wrapper = cut.Find(".flare-datagrid__wrapper");
-        Assert.Contains("flare-datagrid__wrapper--scroll", wrapper.ClassName, StringComparison.Ordinal);
-        Assert.DoesNotContain("--_flare-datagrid-height", wrapper.GetAttribute("style") ?? "", StringComparison.Ordinal);
-    }
-
-    // A paged grid given a height by the layout still needs the sticky header and the scrollbar: its
-    // page can be taller than the space it was handed.
-    [Fact]
-    public void DataGrid_FillHeight_AloneStillMakesAScrollBox()
+    public void DataGrid_WithoutAPageSize_NumbersEveryRowFromTheTop()
     {
         var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(30))
-            .Add(x => x.FillHeight, true)
-            .Add(x => x.Columns, OneColumn()));
-
-        Assert.Contains("flare-datagrid__wrapper--scroll", cut.Find(".flare-datagrid__wrapper").ClassName, StringComparison.Ordinal);
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
-    }
-
-    [Fact]
-    public void DataGrid_Scroll_NumbersEveryRowFromTheTop()
-    {
-        var cut = Render<FlareDataGrid<Row>>(p => p
-            .Add(x => x.Items, Rows(30))
-            .Add(x => x.PageSize, 10)
-            .Add(x => x.Scroll, true)
             .Add(x => x.Columns, OneColumn()));
 
         var rows = cut.FindAll("tbody tr");

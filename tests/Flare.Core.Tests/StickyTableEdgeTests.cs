@@ -7,7 +7,7 @@ namespace Flare.Core.Tests;
 ///
 /// `.flare-datagrid__table` is `border-collapse: collapse`, and under collapse the TABLE owns and paints
 /// every collapsed border - not the cell it was declared on. A sticky cell moves; the table does not. So
-/// a scrolling grid kept its opaque header and left the divider behind with the first row, and the data
+/// a grid with a sticky header kept it opaque and left the divider behind with the first row, and the data
 /// ran up flush against the column titles - or, with the filter row on, against the filter inputs.
 ///
 /// Measured in Chrome on two identical sticky-header tables side by side: with `collapse` the rule under
@@ -28,21 +28,21 @@ public class StickyTableEdgeTests
     {
         // The header's bottom edge.
         {
-            ".flare-datagrid__wrapper--scroll thead th",
+            ".flare-datagrid__wrapper--sticky-head thead th",
             "inset 0 calc(-1 * var(--flare-border-width)) 0",
-            ".flare-datagrid__wrapper--scroll thead th"
+            ".flare-datagrid__wrapper--sticky-head thead th"
         },
         // The column dividers between header cells on a bordered grid.
         {
-            ".flare-datagrid--bordered .flare-datagrid__wrapper--scroll thead th:not(:last-child)",
+            ".flare-datagrid--bordered .flare-datagrid__wrapper--sticky-head thead th:not(:last-child)",
             "inset calc(-1 * var(--flare-border-width)) 0 0",
-            ".flare-datagrid--bordered .flare-datagrid__wrapper--scroll thead th:not(:last-child)"
+            ".flare-datagrid--bordered .flare-datagrid__wrapper--sticky-head thead th:not(:last-child)"
         },
         // The aggregate footer's top edge, from the footer's own width token.
         {
-            ".flare-datagrid__wrapper--scroll tfoot .flare-datagrid__aggregate-row > .flare-datagrid__td",
+            ".flare-datagrid__wrapper tfoot .flare-datagrid__aggregate-row > .flare-datagrid__td",
             "inset 0 var(--flare-datagrid-aggregate-divider-width) 0",
-            ".flare-datagrid__wrapper--scroll tfoot .flare-datagrid__aggregate-row"
+            ".flare-datagrid__wrapper tfoot .flare-datagrid__aggregate-row"
         },
     };
 

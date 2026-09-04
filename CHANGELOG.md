@@ -3,6 +3,65 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.31.0] - 2026-09-05
+
+### Changed
+
+- **`FlareDataGrid`'s size, paging and sticky header are three independent parameters, and `Scroll` is
+  gone.** Scrolling was never a mode: a grid scrolls when its rows do not fit the height it was given.
+  Modelling it as a flag produced a matrix in which `Height` was gated on that flag - so a PAGED grid
+  ignored the parameter it declares a `400px` default for, grew to the full height of its page, and the
+  only way out was application CSS. That is the defect this release starts from; the rest follows from
+  taking the three questions apart.
+
+  `Height` is now a budget for the WHOLE component - toolbar, pager and footer inside it, only the rows
+  scrolling - and it applies in every mode, paged or not, virtualized or not. An absolute length is
+  still a cap: a grid with fewer rows is as tall as its rows. A PERCENTAGE now works, because it sizes
+  the component rather than capping it (a percentage `max-height` against a content-sized parent
+  computes to `none`, which is why `Height="50%"` used to do nothing at all). `Height` is `string?`, and
+  `null`, `"auto"` or `"none"` remove the cap so the page scrolls instead.
+
+  `PageSize` is a page size rather than a mode: `0` - the new default - puts every row on one page and
+  shows no pager, and a positive size brings the pager back WITHOUT taking the scrollbar away. A paged
+  grid that is taller than its budget scrolls inside it, which is the combination the old flag made
+  impossible.
+
+  `StickyHeader` (new, default `true`) is the third question. Sticky used to be a side effect of the
+  scroll mode and could not be turned off; it now answers only itself, covers the whole header group -
+  band rows, column titles and the filter row - and leaves pinned rows and the aggregate footer alone.
+  Setting it to `false` also restores the ordinary border under the header, instead of the inset shadow
+  a sticky header needs.
+
+- **Every data row is rendered by one fragment.** The grid carried two row renderers - one for the plain
+  path and a poorer one for the virtual path - so turning on `Virtual`, which is supposed to decide only
+  how many rows live in the DOM, changed what a row WAS: no `role="row"`, no `aria-rowindex`, no
+  `aria-selected`, no row reorder and no expandable detail row. The split cut the other way too, and
+  worse: the tree indent and the expand/collapse toggle existed ONLY in the virtual renderer, so an
+  ordinary paged tree grid - the Gallery's own demo included - rendered a flat list with no expanders.
+  Both paths now render the same fragment, and the row's index travels with the item so `Virtualize` can
+  hand its window the same row the plain loop does.
+
+### Fixed
+
+- **A row's expanded detail follows the row, not the row's position.** Expansion was stored by index
+  within the page, so sorting, filtering or paging left the same SLOT open and the detail of one row
+  appeared under another. It is keyed by `RowKey` now.
+
+### Migration
+
+- `Scroll="true"` - delete it. It is what the default does: `PageSize` `0` renders every row with no
+  pager. Note that `FlareDataGrid` captures unmatched attributes, so a left-over `Scroll="true"` does
+  NOT fail the build - it lands silently on the root element and does nothing.
+- `PageSize` defaults to `0`, not `10`. A grid that relied on the default now shows every row; set
+  `PageSize` explicitly to keep a pager.
+- `Height` applies to paged grids too, and bounds the component rather than the table container. Grids
+  that used to grow freely now scroll at `400px` unless given `Height="auto"`; grids with an explicit
+  `Height` are that tall in total, toolbar and pager included, rather than that tall plus their chrome.
+- With an `ItemsProvider` or `Queryable`, `PageSize="0"` is one request for the whole set. Set a page
+  size, `Virtual` or `InfiniteScroll` when the source is large and remote.
+- CSS: `.flare-datagrid__wrapper--scroll` is replaced by `.flare-datagrid__wrapper--sticky-head` (the
+  sticky header) plus `.flare-datagrid--bounded` / `.flare-datagrid--sized` on the root (the height).
+
 ## [0.30.0] - 2026-09-04
 
 ### Changed
