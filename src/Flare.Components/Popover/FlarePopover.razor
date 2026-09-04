@@ -1,10 +1,9 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject ICollisionService CollisionService
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" @ref="_anchorRef"
      @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave">
     @if (Trigger == PopoverTrigger.Click)
     {
@@ -20,8 +19,11 @@
         {
             <div class="@Css.Classes.Popover.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
         }
+        @* data-flare-side starts at the requested side and is rewritten by the placement engine with the
+           side the panel actually landed on, which is what the arrow points away from. *@
         <div @ref="_floatingRef"
              class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass @_matchWidthClass"
+             data-flare-side="@_sideName"
              style="@_paperStyle">
             <CascadingValue Value="@((Func<Task>)CloseAsync)" Name="ClosePopover">
                 @ChildContent
@@ -51,13 +53,12 @@
     [Parameter] public string?              MinWidth      { get; set; }
     /// <summary>CSS max-height applied to the panel; taller content scrolls inside it.</summary>
     [Parameter] public string?              MaxHeight     { get; set; }
-    /// <summary>Sizes the panel to the anchor's width (like a dropdown). Overrides <see cref="MinWidth"/>/
-    /// <see cref="MaxWidth"/> and applies to the default (non-<see cref="SmartPosition"/>) positioning.</summary>
+    /// <summary>Keeps the panel at least as wide as the anchor (like a dropdown). It still grows past
+    /// that when its content needs the room, and never past the viewport; overrides
+    /// <see cref="MinWidth"/> and <see cref="MaxWidth"/>.</summary>
     [Parameter] public bool                 MatchAnchorWidth { get; set; }
     /// <summary>Shows a directional arrow pointing to the anchor.</summary>
     [Parameter] public bool                 Arrow         { get; set; }
-    /// <summary>Enables collision detection (flip/shift) to keep the popover within viewport.</summary>
-    [Parameter] public bool                 SmartPosition { get; set; }
     /// <summary>Offset in pixels between anchor and popover.</summary>
     [Parameter] public int                  Offset        { get; set; } = 8;
     /// <summary>For <see cref="PopoverTrigger.Hover"/>: milliseconds to wait before opening on hover.</summary>
@@ -69,8 +70,8 @@
     protected override string ComponentCssClass => Css.Classes.Popover.Anchor;
 
     private ElementReference _floatingRef;
-    private string? _floatingStyle;
-    private bool _initialized;
+    private ElementReference _anchorRef;
+    private readonly AnchoredLayer _layer = new();
     private bool _wasOpen;
     // Debounce guard: each hover enter/leave bumps this so a stale delayed open/close is discarded.
     private int _hoverGen;
@@ -95,14 +96,33 @@
     private string _arrowClass => Arrow ? Css.Classes.Popover.Arrow : string.Empty;
     private string _matchWidthClass => MatchAnchorWidth ? Css.Classes.Popover.PaperMatchWidth : string.Empty;
 
-    // Width/height caps ride on the panel style, merged with the JS position (when SmartPosition).
+    // The twelve placements collapse to the four sides the engine and the arrow work in; the alignment
+    // half travels in the placement string.
+    private string _placement => Placement switch
+    {
+        PopoverPlacement.Top         => PanelPlacement.Top,
+        PopoverPlacement.TopStart    => PanelPlacement.TopStart,
+        PopoverPlacement.TopEnd      => PanelPlacement.TopEnd,
+        PopoverPlacement.Bottom      => PanelPlacement.Bottom,
+        PopoverPlacement.BottomEnd   => PanelPlacement.BottomEnd,
+        PopoverPlacement.Left        => PanelPlacement.Left,
+        PopoverPlacement.LeftStart   => PanelPlacement.LeftStart,
+        PopoverPlacement.LeftEnd     => PanelPlacement.LeftEnd,
+        PopoverPlacement.Right       => PanelPlacement.Right,
+        PopoverPlacement.RightStart  => PanelPlacement.RightStart,
+        PopoverPlacement.RightEnd    => PanelPlacement.RightEnd,
+        _                            => PanelPlacement.BottomStart,
+    };
+
+    private string _sideName => _placement.Split('-')[0];
+
+    // Width/height caps ride on the panel style.
     // MatchAnchorWidth owns the width, so the min/max-width params are skipped in that mode.
     private string? _paperStyle
     {
         get
         {
             var parts = new List<string>(4);
-            if (!string.IsNullOrEmpty(_floatingStyle)) parts.Add(_floatingStyle!);
             if (!MatchAnchorWidth)
             {
                 AddLength(parts, "min-width", MinWidth);
@@ -122,14 +142,19 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Placed against the anchor and raised into the top layer whenever it is open, so a popover on a
+        // button inside a card, a grid cell or a dialog is readable rather than half of one. Collision
+        // handling is not a switch any more: a panel that hangs off the screen is never what was wanted.
+        await _layer.SyncAsync(Overlay, Open, _anchorRef, _floatingRef, new AnchoredPanelOptions
+        {
+            Placement = _placement,
+            Gap = Offset,
+            MatchWidth = MatchAnchorWidth,
+        });
+
         if (Open && !_wasOpen)
         {
             _wasOpen = true;
-            if (SmartPosition)
-            {
-                await UpdatePositionAsync();
-                _initialized = true;
-            }
             // A hover popover is not modal: it must not trap focus (that would steal focus on hover).
             // Click/Manual popovers trap Tab focus and refocus the trigger on close.
             if (Trigger != PopoverTrigger.Hover)
@@ -140,40 +165,8 @@
         else if (!Open && _wasOpen)
         {
             _wasOpen = false;
-            _initialized = false;
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
         }
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (Open && SmartPosition && _initialized)
-        {
-            await UpdatePositionAsync();
-        }
-    }
-
-    private async Task UpdatePositionAsync()
-    {
-        try
-        {
-            var placement = Placement.ToString().ToLowerInvariant();
-            var result = await CollisionService.CalculatePlacementAsync(
-                _floatingRef,
-                _floatingRef,
-                placement,
-                new CollisionOptions
-                {
-                    Offset = Offset,
-                    Flip = true,
-                    Shift = true,
-                    ArrowSize = Arrow ? 8 : 0
-                });
-
-            _floatingStyle = $"position:fixed;top:{result.Top:F0}px;left:{result.Left:F0}px;z-index:9999";
-            StateHasChanged();
-        }
-        catch (InvalidOperationException) { }
     }
 
     private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
@@ -225,6 +218,7 @@
         {
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
         }
+        await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }
 }

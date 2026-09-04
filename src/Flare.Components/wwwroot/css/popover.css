@@ -23,10 +23,11 @@
     animation: flare-popover-in var(--flare-motion-duration-short3) var(--flare-motion-easing-decelerate);
 }
 
-/* MatchAnchorWidth: the panel tracks the anchor's width (an absolutely-positioned child fills its
-   relatively-positioned .flare-popover-anchor). Drops the min/max clamps so it neither grows nor shrinks
-   past the trigger. Applies to the default (non-SmartPosition) positioning. */
-.flare-popover__paper--match-width {
+/* MatchAnchorWidth: the panel tracks the anchor's width. Once the placement engine has it, the engine
+   measures the anchor and sets the width itself (and lets a long line grow it, capped at the viewport);
+   this is the resting form for the frame before that, where the panel is still a child of the
+   relatively-positioned .flare-popover-anchor and a percentage means the anchor. */
+.flare-popover__paper--match-width:not([data-flare-placed]) {
     width: 100%;
     min-width: 0;
     max-width: none;
@@ -37,25 +38,29 @@
     to   { opacity: 1; }
 }
 
+/* Where the panel rests until the placement engine positions it in the viewport and raises it into the
+   top layer. Every one of these is switched off by `data-flare-placed`, the engine's mark: half of them
+   constrain the box from BOTH sides (`right: 0` with the engine's `left`, `bottom` with its `top`), and
+   a fixed box constrained twice stretches between the two instead of sitting at one. */
 /* -- Bottom -- */
-.flare-popover__paper--bottom-start { top: calc(100% + 0.5rem); left: 0; }
-.flare-popover__paper--bottom       { top: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
-.flare-popover__paper--bottom-end   { top: calc(100% + 0.5rem); right: 0; }
+.flare-popover__paper--bottom-start:not([data-flare-placed]) { top: calc(100% + 0.5rem); left: 0; }
+.flare-popover__paper--bottom:not([data-flare-placed])       { top: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
+.flare-popover__paper--bottom-end:not([data-flare-placed])   { top: calc(100% + 0.5rem); right: 0; }
 
 /* -- Top -- */
-.flare-popover__paper--top-start { bottom: calc(100% + 0.5rem); left: 0; }
-.flare-popover__paper--top       { bottom: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
-.flare-popover__paper--top-end   { bottom: calc(100% + 0.5rem); right: 0; }
+.flare-popover__paper--top-start:not([data-flare-placed]) { bottom: calc(100% + 0.5rem); left: 0; }
+.flare-popover__paper--top:not([data-flare-placed])       { bottom: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
+.flare-popover__paper--top-end:not([data-flare-placed])   { bottom: calc(100% + 0.5rem); right: 0; }
 
 /* -- Right -- */
-.flare-popover__paper--right-start { left: calc(100% + 0.5rem); top: 0; }
-.flare-popover__paper--right       { left: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); }
-.flare-popover__paper--right-end   { left: calc(100% + 0.5rem); bottom: 0; }
+.flare-popover__paper--right-start:not([data-flare-placed]) { left: calc(100% + 0.5rem); top: 0; }
+.flare-popover__paper--right:not([data-flare-placed])       { left: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); }
+.flare-popover__paper--right-end:not([data-flare-placed])   { left: calc(100% + 0.5rem); bottom: 0; }
 
 /* -- Left -- */
-.flare-popover__paper--left-start { right: calc(100% + 0.5rem); top: 0; }
-.flare-popover__paper--left       { right: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); }
-.flare-popover__paper--left-end   { right: calc(100% + 0.5rem); bottom: 0; }
+.flare-popover__paper--left-start:not([data-flare-placed]) { right: calc(100% + 0.5rem); top: 0; }
+.flare-popover__paper--left:not([data-flare-placed])       { right: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); }
+.flare-popover__paper--left-end:not([data-flare-placed])   { right: calc(100% + 0.5rem); bottom: 0; }
 
 /* -- Arrow -- */
 .flare-popover__paper.flare-popover--arrow::before {
@@ -67,30 +72,26 @@
     transform: rotate(45deg);
 }
 
-.flare-popover__paper--bottom-start.flare-popover--arrow::before,
-.flare-popover__paper--bottom.flare-popover--arrow::before,
-.flare-popover__paper--bottom-end.flare-popover--arrow::before {
+/* The arrow points away from the side the panel is ON, which the placement engine can change: a panel
+   asked for the bottom of an anchor near the window's lower edge ends up above it. `data-flare-side`
+   carries the requested side from the component and the resolved one from the engine, so one set of
+   rules serves both, and twelve placements collapse to the four sides an arrow can have. */
+.flare-popover__paper.flare-popover--arrow[data-flare-side="bottom"]::before {
     top: -0.3125rem;
     left: 1rem;
 }
 
-.flare-popover__paper--top-start.flare-popover--arrow::before,
-.flare-popover__paper--top.flare-popover--arrow::before,
-.flare-popover__paper--top-end.flare-popover--arrow::before {
+.flare-popover__paper.flare-popover--arrow[data-flare-side="top"]::before {
     bottom: -0.3125rem;
     left: 1rem;
 }
 
-.flare-popover__paper--right-start.flare-popover--arrow::before,
-.flare-popover__paper--right.flare-popover--arrow::before,
-.flare-popover__paper--right-end.flare-popover--arrow::before {
+.flare-popover__paper.flare-popover--arrow[data-flare-side="right"]::before {
     left: -0.3125rem;
     top: 1rem;
 }
 
-.flare-popover__paper--left-start.flare-popover--arrow::before,
-.flare-popover__paper--left.flare-popover--arrow::before,
-.flare-popover__paper--left-end.flare-popover--arrow::before {
+.flare-popover__paper.flare-popover--arrow[data-flare-side="left"]::before {
     right: -0.3125rem;
     top: 1rem;
 }

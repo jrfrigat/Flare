@@ -1,8 +1,10 @@
 @namespace Flare.Components
 @typeparam TItem
 @inherits FlareDataGridControl<TItem>
+@implements IAsyncDisposable
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@Css.Classes.DataGrid.FilterBuilder">
+<div class="@Css.Classes.DataGrid.FilterBuilder" @ref="_wrapRef">
     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle"
                  Color="@(_advancedCount > 0 ? FlareColor.Primary : FlareColor.Default)">
         <LeadingIcon><FlareIconView Value="FlareIcons.FilterAlt" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
@@ -17,7 +19,7 @@
     @if (_open)
     {
         @* Outlined variant, same as the simple filter row - see FlareDataGrid.razor. *@
-        <div class="@Css.Classes.DataGrid.FilterBuilderPanel @Css.Classes.Input.VariantOutlined">
+        <div class="@Css.Classes.DataGrid.FilterBuilderPanel @Css.Classes.Input.VariantOutlined" @ref="_panelRef">
             <div class="@Css.Classes.DataGrid.FilterBuilderTree">
                 @RenderGroup((_root, null))
             </div>
@@ -53,6 +55,23 @@
     private bool _open;
     private FilterGroupNode _root = new() { Conditions = { new() } };
     private int _advancedCount => CountConditions(_root);
+    private ElementReference _wrapRef;
+    private ElementReference _panelRef;
+    private readonly AnchoredLayer _layer = new();
+
+    // The widest panel the grid has (34rem) opening from a toolbar button. It has always escaped the
+    // grid's own scroll container and never escaped a card around it.
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await _layer.SyncAsync(Overlay, _open, _wrapRef, _panelRef,
+            new AnchoredPanelOptions { Placement = PanelPlacement.BottomEnd });
+    }
+
+    /// <summary>Releases the panel's placement listeners.</summary>
+    /// <returns>A task that completes when the layer has been released.</returns>
+    public ValueTask DisposeAsync() => _layer.ReleaseAsync(Overlay);
 
     // Filter fields as (Key, Title): explicit AvailableColumns (Key == Title), else the grid's columns.
     private IReadOnlyList<(string Key, string Title)> _columns =>

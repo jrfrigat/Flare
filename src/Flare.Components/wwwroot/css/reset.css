@@ -86,3 +86,24 @@
 :where(p, h1, h2, h3, h4, h5, h6) {
     overflow-wrap: break-word;
 }
+
+/* Floating panels are promoted to the browser's top layer through the `popover` attribute, which the
+   overlay module adds when it positions them - that is how a menu, a dropdown or a tooltip escapes a
+   card's `overflow: hidden` AND every stacking context above it, a modal scrim included.
+
+   The attribute brings a UA style block with it: a centred fixed box with a solid border, its own
+   padding, its own colours and `inset: 0`. None of that is wanted - a Flare panel already carries its
+   own surface, and the module writes its `top`/`left` itself. Zero specificity, so every component
+   stylesheet still describes its own panel; this only has to beat the UA origin, which any author rule
+   does regardless of specificity. */
+:where([popover]) {
+    inset: auto;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    background: none;
+    color: inherit;
+}

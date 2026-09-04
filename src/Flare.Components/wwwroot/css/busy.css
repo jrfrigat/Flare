@@ -24,7 +24,10 @@
   align-items: center;
   justify-content: center;
   gap: var(--flare-spacing-4);
-  z-index: var(--flare-z-overlay);
+  /* The fallback is load-bearing, not decoration: nothing in the library or in any theme defines
+     --flare-z-overlay, so the declaration resolved to nothing at all and the veil was stacked by
+     source order - which put it under anything positioned later in the same container. */
+  z-index: var(--flare-z-overlay, 2);
   background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
   animation: flare-busy-in var(--flare-motion-duration-short4) var(--flare-motion-easing-standard);
 }

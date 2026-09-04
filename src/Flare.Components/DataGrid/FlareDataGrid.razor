@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.Rendering
 @inject Flare.Components.Services.IDataGridJsService Grid
+@inject Flare.Components.Services.IOverlayJsService Overlay
 @inject IFlareDownload Download
 @inject IFlareClipboard Clipboard
 @inject IBrowserStorage Storage
@@ -579,6 +580,7 @@
         {
             var filterActive = _typedFilters.ContainsKey(col.Key);
             <button type="button"
+                    id="@FilterTriggerId(col.Key)"
                     class="@Css.Classes.DataGrid.FilterTrigger @(filterActive ? Css.Classes.DataGrid.FilterTriggerActive : "")"
                     aria-label="@FlareStrings.DataGrid_Filter"
                     aria-haspopup="dialog"
@@ -592,7 +594,7 @@
                 @* stopPropagation: keep clicks inside the menu (operator/value/buttons) from bubbling
                    to the th and toggling the column sort. *@
                 <div class="@Css.Classes.DataGrid.FilterMenu" role="dialog" aria-label="@FlareStrings.DataGrid_Filter"
-                     @onclick:stopPropagation="true">
+                     @ref="_filterMenuRef" @onclick:stopPropagation="true">
                     <span class="@Css.Classes.DataGrid.FilterMenuLabel">@col.Title</span>
                     @* Excel-style value checklist: search + (Select all) + the distinct values. *@
                     <div class="@Css.Classes.DataGrid.FilterMenuField">

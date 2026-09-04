@@ -100,9 +100,12 @@
                       width="@F(_selectionRect.Width)" height="@F(_plotH)" />
             }
         </svg>
+        @* The inline percentages are the bubble's place for the one frame before the placement engine
+           takes over, so it never paints at the plot's origin first. From then on the engine owns
+           top/left - see SyncTooltipLayerAsync for why it has to. *@
         @if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {
-            <div class="@Css.Classes.Chart.Tooltip"
+            <div class="@Css.Classes.Chart.Tooltip" @ref="_tooltipRef"
                  style="@(string.Create(_inv, $"left:{_hoverXPct:F2}%;top:{_hoverYPct:F2}%"))">
                 @_tooltipText
             </div>

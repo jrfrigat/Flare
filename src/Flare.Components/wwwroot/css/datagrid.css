@@ -368,10 +368,14 @@
   font-weight: 600;
 }
 
-.flare-datagrid__filter-builder-panel {
-  position: absolute;
+/* Resting form only - see the column picker above and FloatingPanelPlacementTests. */
+.flare-datagrid__filter-builder-panel:not([data-flare-placed]) {
   top: calc(100% + 0.25rem);
   right: 0;
+}
+
+.flare-datagrid__filter-builder-panel {
+  position: absolute;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -785,10 +789,15 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   position: relative;
 }
 
-.flare-datagrid__column-picker {
-  position: absolute;
+/* Resting form only - the placement engine takes over the moment the picker opens, and `right` is one
+   of the two edges it cannot override. See FloatingPanelPlacementTests. */
+.flare-datagrid__column-picker:not([data-flare-placed]) {
   right: 0;
   top: calc(100% + 4px);
+}
+
+.flare-datagrid__column-picker {
+  position: absolute;
   background: var(--flare-color-surface);
   border: var(--flare-border-outline);
   border-radius: var(--flare-shape-small);
@@ -852,15 +861,25 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   color: var(--flare-color-primary);
 }
 
+/* Placed and raised into the top layer by the placement engine (see FlareDataGrid.OnAfterRenderAsync):
+   the panel is taller than most grids and drops from the header into the body, so the grid's own scroll
+   container and any card around it used to cut off the end of it - which is where the actions row is.
+   The rules below are what the panel looks like and where it rests for the frame before the engine
+   places it; `left` rather than `inset-inline-start` because the engine writes `left` inline, and in RTL
+   the logical property would resolve to `right` and leave the box constrained from both sides.
+   The height cap is not about clipping: a filter list longer than the screen has to scroll somewhere,
+   and the panel is the right place, so the actions row stays reachable. */
 .flare-datagrid__filter-menu {
   position: absolute;
-  inset-inline-start: 0;
+  left: 0;
   top: calc(100% + 4px);
   z-index: 10;
   display: flex;
   flex-direction: column;
   gap: var(--flare-spacing-4);
   min-width: 13rem;
+  max-block-size: calc(100vh - 2rem);
+  overflow-y: auto;
   padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container);
   border: var(--flare-border-divider);

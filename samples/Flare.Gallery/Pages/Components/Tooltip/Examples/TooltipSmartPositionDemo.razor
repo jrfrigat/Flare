@@ -1,29 +1,39 @@
 <FlareStack Gap="FlareSpacing.Large">
-    <FlareText Typo="TypographyScale.TitleMedium">Smart Positioning</FlareText>
     <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
-        Tooltips automatically flip to stay within the viewport.
+        A tooltip is placed against its trigger in the viewport and raised into the browser's top layer,
+        so it flips to the opposite side rather than hanging off the screen - and stays readable inside a
+        card, a scrolling grid or a dialog, all of which clip what their children paint outside them.
+        Nothing to switch on.
     </FlareText>
-    
-    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Top">
-            <FlareButton>Top (Smart)</FlareButton>
+
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareCardContent>
+            <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.Center">
+                <FlareTooltip Content="Readable from inside a card">
+                    <FlareButton Variant="ButtonVariant.Outlined">Top</FlareButton>
+                </FlareTooltip>
+                <FlareTooltip Content="Readable from inside a card" Placement="TooltipPlacement.Bottom">
+                    <FlareButton Variant="ButtonVariant.Outlined">Bottom</FlareButton>
+                </FlareTooltip>
+                <FlareTooltip Content="Readable from inside a card" Placement="TooltipPlacement.Left">
+                    <FlareButton Variant="ButtonVariant.Outlined">Left</FlareButton>
+                </FlareTooltip>
+                <FlareTooltip Content="Readable from inside a card" Placement="TooltipPlacement.Right">
+                    <FlareButton Variant="ButtonVariant.Outlined">Right</FlareButton>
+                </FlareTooltip>
+            </FlareStack>
+        </FlareCardContent>
+    </FlareCard>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareTooltip Content="Default distance, from the theme's token">
+            <FlareButton>Theme offset</FlareButton>
         </FlareTooltip>
-        
-        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Bottom">
-            <FlareButton>Bottom (Smart)</FlareButton>
+        <FlareTooltip Content="16px from the trigger" Offset="16">
+            <FlareButton>Offset 16</FlareButton>
         </FlareTooltip>
-        
-        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Left">
-            <FlareButton>Left (Smart)</FlareButton>
+        <FlareTooltip Content="Arrows point away from the side the bubble landed on" Arrow>
+            <FlareButton>With an arrow</FlareButton>
         </FlareTooltip>
-        
-        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Right">
-            <FlareButton>Right (Smart)</FlareButton>
-        </FlareTooltip>
-    </div>
-    
-    <FlareText Typo="TypographyScale.TitleMedium">Custom Offset</FlareText>
-    <FlareTooltip Content="16px offset" SmartPosition="true" Offset="16" Placement="TooltipPlacement.Top">
-        <FlareButton>16px Offset</FlareButton>
-    </FlareTooltip>
+    </FlareStack>
 </FlareStack>

@@ -3,6 +3,57 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.30.0] - 2026-09-04
+
+### Changed
+
+- **Every floating panel in the library now escapes whatever its component was placed in.** A menu, a
+  dropdown, a tooltip or a filter panel is drawn outside the box it belongs to by definition - that is
+  what makes it a popup - and a `FlareCard`, a scrolling grid and a dialog all hide what their children
+  paint outside them. So a chart's tooltip lost its top half inside a card, and a DataGrid menu filter
+  lost the row that carries "Apply", which made the filter impossible to apply with a mouse. Both were
+  reported from a real application, and both are one defect: an absolutely-positioned panel is clipped
+  by its ancestors and there was no way out.
+
+  There is one now, and every panel goes through it. `IOverlayJsService.PositionAnchoredPanelAsync`
+  measures the anchor, places the panel in viewport coordinates - flipping to the opposite side when it
+  does not fit and clamping to the screen when it still does not - and promotes it to the browser's top
+  layer, where nothing on the page can clip it or paint over it, a modal scrim included. It follows the
+  anchor on scroll and resize. `AnchoredPanelOptions` carries the placement, the gap, an anchor that is
+  a point inside an element (a chart's data point, a code editor's caret) or a viewport rectangle (a
+  context menu on the pointer), and the option to stay out of the top layer.
+
+  Converted: `FlareMenu` and `FlareSubMenu`, `FlareTooltip`, `FlarePopover`, the DataGrid's menu filter,
+  column picker and advanced filter builder, `FlareChart`'s hover tooltip, and `FlareCodeBlock`'s
+  completion list. The select family and the date, time and colour pickers were already on the
+  positioning half and gain the top layer. A browser without the popover API keeps the fixed panel,
+  which is what those five shipped before.
+
+- **`FlareTooltip` and `FlarePopover` are always collision-aware; `SmartPosition` is gone.** It was a
+  switch for behaviour nobody would decline - a bubble hanging off the screen is never what was wanted -
+  and on the tooltip it never applied to hover at all, only to a controlled `Open`. Hover and focus are
+  now placed by two delegated listeners for the whole document, so a page with two hundred tooltips
+  costs two listeners and one interop call rather than one registration each. `SmartPosition` also
+  never worked as advertised where it did apply: it wrote viewport coordinates while the stylesheet kept
+  the resting `transform: translateX(-50%)`, so the panel landed half its own width to one side.
+
+- **`FlareTooltip.Offset` is `int?` and defaults to the theme's token.** It used to be `int` = 8, which
+  quietly overrode `--flare-tooltip-offset`; unset, the theme decides, and setting it overrides the
+  token on that one instance so the resting CSS and the placement engine cannot disagree.
+
+- **`FlarePopover.MatchAnchorWidth` grows past the anchor when its content needs the room** (capped at
+  the viewport), matching the select family, instead of pinning the panel to the anchor's width.
+
+### Fixed
+
+- **A tooltip arrow pointed at the wrong side after a flip.** The arrow was keyed off the placement
+  that was ASKED for; it follows the side the bubble actually landed on now (`data-flare-side`).
+- **`FlareBusy`'s veil had no stacking order.** It declared `z-index: var(--flare-z-overlay)` and
+  nothing in the library or in any theme defines that variable, so the declaration was invalid and the
+  veil was stacked by source order - under anything positioned later in the same container.
+- **The DataGrid's menu filter caps its own height** and scrolls, so a column with more distinct values
+  than the screen has room for still shows its buttons.
+
 ## [0.29.0] - 2026-09-04
 
 ### Added

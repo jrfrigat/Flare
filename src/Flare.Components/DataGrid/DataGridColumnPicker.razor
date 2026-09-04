@@ -1,15 +1,17 @@
 @namespace Flare.Components
 @typeparam TItem
 @inherits FlareDataGridControl<TItem>
+@implements IAsyncDisposable
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@Css.Classes.DataGrid.ColumnPickerWrap">
+<div class="@Css.Classes.DataGrid.ColumnPickerWrap" @ref="_wrapRef">
     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@FlareStrings.DataGrid_ToggleColumns">
         <LeadingIcon><FlareIconView Value="FlareIcons.ViewColumn" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
         <ChildContent>@(Label ?? FlareStrings.DataGrid_ColumnsLabel)</ChildContent>
     </FlareButton>
     @if (_open)
     {
-        <div class="@Css.Classes.DataGrid.ColumnPicker @Css.Classes.DataGrid.ColumnPickerOpen" role="menu">
+        <div class="@Css.Classes.DataGrid.ColumnPicker @Css.Classes.DataGrid.ColumnPickerOpen" role="menu" @ref="_panelRef">
             @foreach (var col in _columns)
             {
                 var key = col.Key;
@@ -42,6 +44,23 @@
     [Parameter] public EventCallback<string> OnToggle { get; set; }
 
     private bool _open;
+    private ElementReference _wrapRef;
+    private ElementReference _panelRef;
+    private readonly AnchoredLayer _layer = new();
+
+    // The picker lives in the grid's toolbar, so the grid's own scroll container never reached it - but a
+    // card around the grid does, and the panel opens downwards into exactly that clip.
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await _layer.SyncAsync(Overlay, _open, _wrapRef, _panelRef,
+            new AnchoredPanelOptions { Placement = PanelPlacement.BottomEnd });
+    }
+
+    /// <summary>Releases the panel's placement listeners.</summary>
+    /// <returns>A task that completes when the layer has been released.</returns>
+    public ValueTask DisposeAsync() => _layer.ReleaseAsync(Overlay);
 
     private IReadOnlyList<(string Key, string Title)> _columns =>
         Columns ?? Owner?.PickableColumns ?? [];

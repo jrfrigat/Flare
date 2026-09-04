@@ -101,23 +101,96 @@ export function focusFirstInDialog(dialogEl) {
     focusable?.focus();
 }
 
-// --- Outside-click dismiss (e.g. close an open Select when clicking elsewhere) ---
-// -- Anchored fixed-position panel (Select / DatePicker / TimePicker / ColorPicker) --
-// Positions a popup panel as position:fixed under (or above) its anchor element so it escapes
-// any ancestor clipping context -- most notably a Card's overflow:hidden, which would otherwise
-// crop the dropdown. Re-positions on scroll (capture phase, so nested scrollers count) and resize
-// until removeAnchoredPanel(id) is called. Pass matchWidth:true to size the panel to the anchor.
+// --- The browser's top layer ---
+// A floating panel has to be readable wherever its component was placed - in a Card, in a scrolling
+// grid, in a dialog. `position: fixed` is only half of that: it escapes an ancestor's `overflow`, and
+// it still loses to a later stacking context. The top layer is the other half - it paints above every
+// stacking context on the page and is clipped by nothing - and the `popover` attribute is how a plain
+// element is put in it.
+//
+// The attribute is added HERE and not in the markup on purpose. An element carrying `popover` is
+// `display: none` until something shows it, so a page whose JS never ran would render no panel at all;
+// adding it from the code that immediately shows it means a failed interop degrades to the plain fixed
+// panel, which is what the select family shipped before this. `manual` rather than `auto`: light
+// dismiss and the Escape handling stay with the component, which already owns both.
+function promote(panel) {
+    if (typeof panel.showPopover !== 'function') return;
+    if (!panel.hasAttribute('popover')) panel.setAttribute('popover', 'manual');
+    // Showing an already-shown popover throws, and a re-position on an open panel hits that every time.
+    try { if (!panel.matches(':popover-open')) panel.showPopover(); } catch { }
+}
+
+function demote(panel) {
+    if (!panel || !panel.hasAttribute('popover')) return;
+    // A panel removed from the DOM leaves the top layer on its own; one still connected has to be told.
+    try { if (panel.isConnected && panel.matches(':popover-open')) panel.hidePopover(); } catch { }
+    panel.removeAttribute('popover');
+}
+
+// -- Anchored fixed-position panel (every floating surface in the library) --
+// Positions a popup panel as position:fixed against its anchor so it escapes any ancestor clipping
+// context -- a Card's overflow:hidden, a grid's scroll container, a dialog -- and promotes it to the
+// top layer so nothing paints over it. Re-positions on scroll (capture phase, so nested scrollers
+// count) and resize until removeAnchoredPanel(id) is called.
+//
+// options:
+//   placement   'bottom-start' (default) | 'bottom' | 'bottom-end' | the same for top/left/right.
+//               The side flips when the panel does not fit and the opposite side has more room;
+//               the alignment does not flip, it is clamped to the viewport like everything else.
+//   gap         distance from the anchor in px (default 4).
+//   matchWidth  keep the panel at least as wide as the anchor.
+//   anchorPoint {xPct, yPct} - anchor to a POINT inside the anchor element rather than to its box,
+//               given as a percentage of that box. This is how a chart tooltip anchors to a data
+//               point: the percentage is what the component already knows, and re-measuring the
+//               element on scroll keeps the point correct without the caller re-sending it.
+//   anchorRect  {x, y, width, height} in viewport coordinates - an anchor with no element at all
+//               (a context menu pinned to the pointer). Static by nature, so it does not follow
+//               scrolling; nothing that uses it did before either.
+//   topLayer    false to keep the panel out of the top layer (default true).
 const _anchoredPanels = registry();
+// id -> the element currently held in the top layer. Separate from the listener registry because the
+// two have different lifetimes: a panel that follows a moving anchor (a chart tooltip tracking the
+// pointer) re-registers its listeners on every move, and hiding and re-showing the popover each time
+// would restart its animation and flicker. The top layer is released when the panel CHANGES or when
+// the caller removes it, not on every re-position.
+const _topLayer = new Map();
+
+const SIDES = ['bottom', 'top', 'left', 'right'];
 
 export function positionAnchoredPanel(id, anchor, panel, options) {
-    removeAnchoredPanel(id);
-    if (!anchor || !panel) return;
+    _anchoredPanels.drop(id);
+    const held = _topLayer.get(id);
+    if (held && held !== panel) { _topLayer.delete(id); demote(held); }
+    if (!panel) return;
     const opts = options || {};
+    const fixedRect = opts.anchorRect;
+    if (!anchor && !fixedRect) return;
     const gap = opts.gap ?? 4;
     const margin = 4; // keep this far from the viewport edge
+    const point = opts.anchorPoint;
+    const offset = opts.anchorOffset;
+    const parts = String(opts.placement || 'bottom-start').split('-');
+    const wantSide = SIDES.includes(parts[0]) ? parts[0] : 'bottom';
+    const align = parts[1] === 'start' || parts[1] === 'end' ? parts[1] : (parts.length > 1 ? 'start' : 'center');
+
+    const anchorBox = () => {
+        if (fixedRect) {
+            const w = fixedRect.width ?? 0, h = fixedRect.height ?? 0;
+            return { left: fixedRect.x, top: fixedRect.y, right: fixedRect.x + w, bottom: fixedRect.y + h, width: w, height: h };
+        }
+        const r = anchor.getBoundingClientRect();
+        if (!point && !offset) return r;
+        // Collapse the anchor to the requested point inside it - the panel then treats that point as a
+        // zero-size anchor, so every placement and flip rule below applies to it unchanged. Percentages
+        // suit a caller that thinks in the element's own coordinate space (a chart's viewBox); pixels
+        // suit one that has already measured (a code editor's caret).
+        const x = offset ? r.left + (offset.x ?? 0) : r.left + r.width * ((point.xPct ?? 0) / 100);
+        const y = offset ? r.top + (offset.y ?? 0) : r.top + r.height * ((point.yPct ?? 0) / 100);
+        return { left: x, top: y, right: x, bottom: y, width: 0, height: 0 };
+    };
 
     const place = () => {
-        const a = anchor.getBoundingClientRect();
+        const a = anchorBox();
         const vh = window.innerHeight, vw = window.innerWidth;
         panel.style.position = 'fixed';
         panel.style.margin = '0';
@@ -131,26 +204,133 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
             panel.style.maxWidth = `${vw - 2 * margin}px`;
         }
         const p = panel.getBoundingClientRect();
-        const below = vh - a.bottom, above = a.top;
-        // Flip above only when there is not enough room below and more room above.
-        let top = (below >= p.height + gap || below >= above)
-            ? a.bottom + gap
-            : a.top - p.height - gap;
-        top = Math.max(margin, Math.min(top, vh - p.height - margin));
-        const left = Math.max(margin, Math.min(a.left, vw - p.width - margin));
-        panel.style.top = `${top}px`;
-        panel.style.left = `${left}px`;
+        const room = { top: a.top, bottom: vh - a.bottom, left: a.left, right: vw - a.right };
+        const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
+        const need = (s) => (s === 'top' || s === 'bottom' ? p.height : p.width) + gap;
+        // Flip only when the preferred side is short AND the opposite one is roomier: a panel taller
+        // than the viewport fits nowhere, and flipping it would just move the clipped half.
+        const side = room[wantSide] >= need(wantSide) || room[wantSide] >= room[opposite[wantSide]]
+            ? wantSide
+            : opposite[wantSide];
+
+        let top, left;
+        if (side === 'bottom' || side === 'top') {
+            top = side === 'bottom' ? a.bottom + gap : a.top - p.height - gap;
+            left = align === 'end' ? a.right - p.width
+                : align === 'center' ? a.left + a.width / 2 - p.width / 2
+                    : a.left;
+        } else {
+            left = side === 'right' ? a.right + gap : a.left - p.width - gap;
+            top = align === 'end' ? a.bottom - p.height
+                : align === 'center' ? a.top + a.height / 2 - p.height / 2
+                    : a.top;
+        }
+        panel.style.top = `${Math.max(margin, Math.min(top, vh - p.height - margin))}px`;
+        panel.style.left = `${Math.max(margin, Math.min(left, vw - p.width - margin))}px`;
+        // Two facts the stylesheet needs back. `flarePlaced` switches a panel's resting CSS off - the
+        // edges and centring transforms that put it under its anchor without script, and that would
+        // otherwise fight these coordinates. `flareSide` is where it ACTUALLY landed, which is what an
+        // arrow has to point away from; the component's own placement parameter is only a preference.
+        panel.dataset.flarePlaced = '';
+        panel.dataset.flareSide = side;
     };
 
+    if (opts.topLayer !== false) { promote(panel); _topLayer.set(id, panel); }
     place();
+
     _anchoredPanels.keep(id, all(
         listen(window, 'scroll', place, { passive: true, capture: true }),
         listen(window, 'resize', place, { passive: true }),
     ));
 }
 
+// The anchor named by its DOM id, for a panel whose anchor is one of many rendered in a loop: a single
+// captured element reference there holds whichever one rendered last, which is not the one that opened.
+export function positionAnchoredPanelById(id, anchorElementId, panel, options) {
+    positionAnchoredPanel(id, document.getElementById(anchorElementId), panel, options);
+}
+
 export function removeAnchoredPanel(id) {
     _anchoredPanels.drop(id);
+    const held = _topLayer.get(id);
+    if (held) { _topLayer.delete(id); demote(held); }
+}
+
+// The top layer on its own, for a panel that computes its own coordinates.
+export function raiseToTopLayer(panel) {
+    if (panel) promote(panel);
+}
+
+export function dropFromTopLayer(panel) {
+    demote(panel);
+}
+
+// -- Tooltips: two delegated listeners for the whole page --
+// A tooltip is revealed by CSS (:hover / :focus-within), which is why it costs nothing until somebody
+// uses it - and also why it cannot leave the box it was declared in. Placing it needs script, but not a
+// registration per instance: one delegated listener finds the bubble from the event's target, so a page
+// with two hundred tooltips pays for two listeners and one interop call in total.
+//
+// There is no matching leave handler on purpose. The panel keeps its coordinates while it fades out -
+// releasing it there would drop it back to its resting position mid-fade, in full view - and the next
+// hover simply places it again.
+let _tooltipsReady = false;
+
+const TOOLTIP_SIDES = [
+    ['flare-tooltip--bottom', 'bottom'],
+    ['flare-tooltip--left', 'left'],
+    ['flare-tooltip--right', 'right'],
+];
+
+// A CSS length resolved to pixels, so a theme's token keeps deciding the distance from the trigger
+// rather than a number baked into this file. px, rem and em cover every unit the tokens use.
+function cssLengthPx(el, name, fallback) {
+    const raw = getComputedStyle(el).getPropertyValue(name).trim();
+    const n = parseFloat(raw);
+    if (!Number.isFinite(n)) return fallback;
+    if (raw.endsWith('rem')) return n * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    if (raw.endsWith('em')) return n * parseFloat(getComputedStyle(el).fontSize);
+    return n;
+}
+
+function placeTooltip(e) {
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    const root = target.closest('.flare-tooltip');
+    if (!root || root.classList.contains('flare-tooltip--disabled')) return;
+    const bubble = root.querySelector(':scope > .flare-tooltip__content');
+    if (!bubble?.id) return;
+    let side = 'top';
+    for (const [cls, name] of TOOLTIP_SIDES) { if (root.classList.contains(cls)) { side = name; break; } }
+
+    // A bubble at rest is `content-visibility: hidden`, so it measures as if it had no contents: 24px
+    // wide instead of 181 on the Gallery's own tooltip. Placed from that measurement, a centred bubble
+    // lands half its width out and a side-placed one lands on top of the trigger it was meant to sit
+    // beside. Both lines below are needed and were measured: clearing the containment alone changes
+    // nothing, because the stylesheet TRANSITIONS `content-visibility` (with `allow-discrete`, so it can
+    // fade rather than vanish), and a transitioned property does not take its new value until the
+    // transition starts a frame or two later. Dropping it from the transition list makes the change
+    // discrete and immediate.
+    //
+    // Both stay set for the life of the bubble, which is correct: the containment exists to stop a
+    // HIDDEN bubble giving its scroll container overflow (see HiddenOverlayFootprintTests), and the next
+    // line takes this one out of flow and into the top layer, where it contributes to no container at
+    // all. The fade still runs - opacity and visibility keep their transitions.
+    bubble.style.transitionProperty = 'opacity, visibility';
+    bubble.style.contentVisibility = 'visible';
+    positionAnchoredPanel(bubble.id, root, bubble, {
+        placement: side,
+        gap: cssLengthPx(bubble, '--flare-tooltip-offset', 8),
+    });
+}
+
+export function initFloatingTooltips() {
+    if (_tooltipsReady) return;
+    _tooltipsReady = true;
+    // Capture phase: pointerover does not bubble out of a shadow root or a disabled control, and the
+    // trigger may be either.
+    document.addEventListener('pointerover', placeTooltip, true);
+    document.addEventListener('focusin', placeTooltip, true);
 }
 
 // -- Scroll the keyboard-highlighted option into view within its listbox scroll container. --
