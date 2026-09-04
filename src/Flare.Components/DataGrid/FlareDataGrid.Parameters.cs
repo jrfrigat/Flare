@@ -42,12 +42,21 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public string? FilterPlaceholder { get; set; }
     /// <summary>Overrides the rows-per-page label shown next to the page size selector.</summary>
     [Parameter] public string? RowsLabel { get; set; }
-    /// <summary>Recycles rows: only the visible window plus an overscan margin lives in the DOM
-    /// (consistent with FlareList.Virtual). Combine with an <see cref="ItemsProvider"/> to load rows on
-    /// demand as the user scrolls. Replaces paging for now - <see cref="PageSize"/> is ignored and no
-    /// pager is shown - which is the one place where virtualization still changes more than how many
-    /// rows are rendered.</summary>
-    [Parameter] public bool Virtual { get; set; }
+    /// <summary>
+    /// Recycles rows: only the visible window plus an overscan margin lives in the DOM. It decides
+    /// nothing else - paging, grouping, the tree, detail rows, row reorder and cell selection all behave
+    /// exactly as they do without it, and a paged grid recycles the rows of its current page.
+    /// <para>
+    /// <c>null</c> (the default) lets the grid decide: it recycles an in-memory source of more than 500
+    /// rows when it has a height to scroll in (<see cref="Height"/> or <see cref="FillHeight"/>). Set it
+    /// explicitly to <c>true</c> or <c>false</c> to take the decision yourself - <c>false</c> is the
+    /// answer when every row must be in the DOM for the browser's own find or for printing. With an
+    /// <see cref="ItemsProvider"/> the choice is always yours, since the grid would have to fetch the
+    /// whole set once to find out how big it is; combine the two to load rows on demand as the user
+    /// scrolls.
+    /// </para>
+    /// </summary>
+    [Parameter] public bool? Virtual { get; set; }
     /// <summary>Infinite scrolling: with an <see cref="ItemsProvider"/>, rows accumulate page by page
     /// as the user scrolls to the bottom (instead of pagination or a known-total virtual window).
     /// The provider is called with successive <c>Page</c> values; loading stops when a page returns

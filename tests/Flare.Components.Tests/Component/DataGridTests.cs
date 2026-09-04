@@ -563,16 +563,21 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll(".flare-datagrid"));
     }
 
-    // The virtual grid must be handed the WHOLE row set: it renders its own window from a scroll
-    // position, so a paged source silently caps it. This asserts the row COUNT, which is what the
-    // "renders without throwing" test above could never see - and the client path did feed Virtualize
-    // the paged list, so every grid stopped at PageSize (default 10) rows.
+    // The virtual grid must be handed the row set it is RESPONSIBLE for, whole. It renders its own
+    // window from a scroll position, so being handed less than that set caps it silently - which is the
+    // 0.26.3 bug: the client path fed Virtualize a paged list while paging was switched off, so the grid
+    // stopped at ten rows with no pager and no way to reach row eleven.
+    //
+    // Which set that is depends on the page size, and both answers are asserted here: with no paging the
+    // set is everything, and with a page size it is the page - reachable past its end through the pager,
+    // which is the part the bug did not have.
     // bUnit has no JS measurement, so Virtualize here renders every item it is given: that is exactly
     // what makes the count a usable assertion about the SOURCE.
     [Theory]
-    [InlineData(null)]      // default PageSize (10) - the configuration the bug shipped in
-    [InlineData(25)]
-    public void Virtual_RendersEveryRow_NotOnlyTheFirstPage(int? pageSize)
+    [InlineData(null, 100)]
+    [InlineData(0, 100)]
+    [InlineData(25, 25)]
+    public void Virtual_IsHandedTheWholeSetItRenders(int? pageSize, int expectedRows)
     {
         var data = Enumerable.Range(1, 100).Select(i => new GroupedPerson($"R{i}", "C", i)).ToList();
         var cut = Render<FlareDataGrid<GroupedPerson>>(p =>
@@ -584,7 +589,11 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             if (pageSize is not null) p.Add(x => x.PageSize, pageSize.Value);
         });
 
-        Assert.Equal(100, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(expectedRows, cut.FindAll("tr.flare-datagrid__row").Count);
+        // Every row past the window is reachable: by scrolling when there is one page, by the pager when
+        // there are several.
+        if (expectedRows < 100)
+            Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
     }
 
     private sealed record Reading(int? Value);

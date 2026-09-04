@@ -26,6 +26,16 @@
   flex: 0 0 auto;
 }
 
+/* Column widths resolved from the HEADER rather than from the rendered rows. Automatic table layout
+   measures the cells that exist, and a recycled window is a different set of cells at every scroll
+   position - so the columns re-measure and jump as the user scrolls, which is the one thing row
+   recycling must not be allowed to change. Fixed layout takes its widths from the first row (the
+   header, whose `th` carry any explicit Width) and divides what is left equally, which is stable
+   whatever the body currently holds. */
+.flare-datagrid__table--fixed {
+  table-layout: fixed;
+}
+
 .flare-datagrid__table {
   width: 100%;
   border-collapse: collapse;

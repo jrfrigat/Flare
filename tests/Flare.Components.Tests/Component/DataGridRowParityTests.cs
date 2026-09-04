@@ -34,6 +34,15 @@ public sealed class DataGridRowParityTests : FlareTestContext
         b.CloseComponent();
     };
 
+    // Two groups over twenty rows: "row 1".."row 9" and "row 10".."row 20".
+    private static RenderFragment GroupByFirstWord() => b =>
+    {
+        b.OpenComponent<DataGridGroup<Row>>(0);
+        b.AddAttribute(1, "Key", "Length");
+        b.AddAttribute(2, "Selector", (Func<Row, object?>)(r => r.Name.Length));
+        b.CloseComponent();
+    };
+
     private static RenderFragment NodeColumn() => b =>
     {
         b.OpenComponent<FlareColumn<Node>>(0);
@@ -120,6 +129,44 @@ public sealed class DataGridRowParityTests : FlareTestContext
 
         Assert.Single(cut.FindAll("tr.flare-datagrid__detail-row"));
         Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
+    }
+
+    // Grouping decides which LINES there are; virtualization decides how many of them are in the DOM.
+    // The virtual branch used to sit above the grouped one, so switching virtualization on threw the
+    // grouping away without a word and rendered a flat list.
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Grouping_SurvivesVirtualization(bool virtualized)
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(20))
+            .Add(x => x.Virtual, virtualized)
+            .Add(x => x.Height, "300px")
+            .Add(x => x.Grouping, GroupByFirstWord())
+            .Add(x => x.Columns, NameColumn()));
+
+        Assert.NotEmpty(cut.FindAll("tr.flare-datagrid__group-header"));
+    }
+
+    // The grouped branch carried a THIRD copy of the row markup, and the poorest of the three: no aria,
+    // no reorder, no detail row, no cell selection, and RenderCell instead of RenderCellOrInput - so a
+    // grouped grid could not be edited in place either.
+    [Fact]
+    public void GroupedRows_AreOrdinaryRows()
+    {
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, Rows(6))
+            .Add(x => x.RowReorderable, true)
+            .Add(x => x.SelectionMode, SelectionMode.Multiple)
+            .Add(x => x.Grouping, GroupByFirstWord())
+            .Add(x => x.Columns, NameColumn()));
+
+        var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
+        Assert.Equal("row", row.GetAttribute("role"));
+        Assert.NotNull(row.GetAttribute("aria-rowindex"));
+        Assert.Equal("false", row.GetAttribute("aria-selected"));
+        Assert.Equal("true", row.GetAttribute("draggable"));
     }
 
     // Expansion used to be stored by the row's POSITION on the page, so sorting kept the same slot open

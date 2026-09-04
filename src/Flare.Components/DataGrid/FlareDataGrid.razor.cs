@@ -21,7 +21,21 @@ public partial class FlareDataGrid<TItem>
 
     // -- Helper methods to resolve effective values --
 
-    private bool _effectiveVirtual => Virtual;
+    // Virtual is a three-state opt-in: true always recycles, false never does, null (the default) lets
+    // the grid decide. Deciding is only safe because recycling no longer changes anything but the number
+    // of rows in the DOM - and it is only USEFUL under two conditions.
+    //
+    // A height, because Virtualize derives its window from a scroll container: an unbounded grid's
+    // container has no scrollable extent, so the window is computed once, comes out tiny and never
+    // grows. That failure is the 0.26.2 bug, and switching it on by accident is worse than not
+    // switching it on at all.
+    //
+    // An in-memory source, because the total is what the decision is made from. A provider reports its
+    // total only after a load, so an auto decision would fetch the whole set once, discover it is large,
+    // switch to windowed fetching and throw the first fetch away. With a provider, Virtual stays a
+    // decision the page makes.
+    private const int AutoVirtualizeThreshold = 500;
+    private bool _effectiveVirtual => Virtual ?? (_provider is null && (_hasHeight || FillHeight) && _pageItems.Count > AutoVirtualizeThreshold);
     private bool _effectiveInfiniteScroll => InfiniteScroll;
     private string? _effectiveHeight => Height;
     // Virtualize rejects a non-positive ItemSize, so fall back to a sensible default row height
@@ -65,10 +79,12 @@ public partial class FlareDataGrid<TItem>
     private int? _itemsCount;
     // Infinite scroll takes precedence over the known-total virtual window.
     private bool _infiniteMode => _effectiveInfiniteScroll && _provider is not null;
-    private bool _shouldVirtualize => !_infiniteMode && _effectiveVirtual;
-    // Paging is a page size, not a mode: a positive size pages, zero puts every row on one page. The
-    // two row-recycling modes still replace it, because each renders its own window over the whole set.
-    private bool _paged => _effectivePageSize > 0 && !_shouldVirtualize && !_infiniteMode;
+    private bool _shouldVirtualize => _effectiveVirtual;
+    // Paging is a page size, not a mode: a positive size pages, zero puts every row on one page.
+    // Virtualization is orthogonal to it - it recycles the rows of whatever set it is given, and that
+    // set is the page when there is one. Infinite scroll is the exception, because "load the next page
+    // when you reach the bottom" IS a paging strategy and cannot coexist with a pager.
+    private bool _paged => _effectivePageSize > 0 && !_infiniteMode;
     // A provider is paged by its own contract, so "no pager" has to be said in the request: an unpaged
     // grid asks for the whole set at once rather than silently showing page one with no way to
     // reach page two.
@@ -160,6 +176,9 @@ public partial class FlareDataGrid<TItem>
     // Virtualize refs for RefreshDataAsync() calls
     private Virtualize<IndexedRow<TItem>>? _virtualizeProviderRef;
     private Virtualize<IndexedRow<TItem>>? _virtualizeClientRef;
+    // A grouped grid virtualizes over render LINES - group headers and data rows in one list - so it
+    // needs a ref of its own type.
+    private Virtualize<IndexedRow<object>>? _virtualizeLineRef;
     // CancellationToken for async provider calls — cancelled on new request or dispose
     private CancellationTokenSource? _providerCts;
     // State persistence (localStorage)
@@ -336,8 +355,16 @@ public partial class FlareDataGrid<TItem>
         IReadOnlyDictionary<string, string>? activeFilters = _filters.Count > 0
             ? new Dictionary<string, string>(_filters)
             : null;
-        var req = new DataGridRequest(0, request.Count, sortKey, _sortDir,
-            StartIndex: request.StartIndex, Count: request.Count, Filters: activeFilters)
+        // Two windows compose: the page the pager is on, and the window Virtualize wants inside it. The
+        // request is the page's offset plus the window's, clipped to the end of the page - otherwise a
+        // virtualized page two would fetch rows from the top of the set and the last page would fetch
+        // past its own end.
+        var pageOffset = _paged ? _page * _effectivePageSize : 0;
+        var count = _paged
+            ? Math.Clamp(_effectivePageSize - request.StartIndex, 0, request.Count)
+            : request.Count;
+        var req = new DataGridRequest(0, count, sortKey, _sortDir,
+            StartIndex: pageOffset + request.StartIndex, Count: count, Filters: activeFilters)
         {
             Sorts = BuildSorts(),
             FilterModel = BuildFilters(),
@@ -346,11 +373,16 @@ public partial class FlareDataGrid<TItem>
             QuickFilter = _quickFilterText,
         };
         var result = await _provider!(req);
+        // The pager needs the count of the whole set; Virtualize needs the count it can scroll through,
+        // which is the page when there is one.
         _serverTotalCount = result.TotalCount;
-        // The window's own offset is what makes a row's number absolute rather than window-relative.
+        var scrollable = _paged
+            ? Math.Clamp(result.TotalCount - pageOffset, 0, _effectivePageSize)
+            : result.TotalCount;
+        // Indices are page-relative, like the plain loop's; _rowIndexOffset adds the page back on.
         return new ItemsProviderResult<IndexedRow<TItem>>(
             result.Items.Select((item, i) => new IndexedRow<TItem>(request.StartIndex + i, item)),
-            result.TotalCount);
+            scrollable);
     }
 
     private void ToggleRowDetail(object rowKey)
