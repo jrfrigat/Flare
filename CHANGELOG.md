@@ -3,7 +3,61 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.28.0] - 2026-09-04
+## [0.29.0] - 2026-09-04
+
+### Added
+
+- **`FlareChart.ScaleMode`: switching a series off no longer rebuilds the chart around what is left.**
+  Clicking a legend entry asks to see the rest without that series; what it did was measure the value
+  axis from the visible series only, so one click moved the axis window, re-rounded the grid lines and
+  shifted every remaining mark - the reader lost the picture they were comparing against.
+  `ChartScaleMode.FitAll` measures the axis from the whole dataset instead, so the series disappears
+  and nothing else does. The default `FitVisible` is the old behaviour, unchanged. The same switch
+  governs the bar group, because "does hiding a series re-flow the plot" is one question in two
+  dimensions: `FitVisible` closes the gap the hidden series left, `FitAll` keeps every series in its
+  slot. Applies to line, area, bar, stacked bar, combo and radar; the radial types divide a total
+  rather than span an axis, so it does not apply to them.
+
+### Fixed
+
+- **`FlareTimeSpanPicker` was the one field in the family with no field around it.** It put its
+  segments straight into the chrome's field slot, so it had no border, no background, no edge padding
+  and no height from the family ramp - beside any other field it did not read as a field at all, and
+  its own stylesheet claimed the opposite ("segments inside the shared field frame"). It now draws the
+  shared `.flare-input__field` well like every sibling: measured at 30 / 36 / 56 / 64 / 76px across the
+  Xs..Xl ramp, matching the field next to it. Its segment row is the family's third structurally
+  different control - beside TagField's chip input and the combobox trigger - so it joins them in the
+  size grid and takes the same edge padding; the first digit used to sit against the border.
+  `FieldGeometryContractTests` now names it, which is why it was missed: the contract that exists to
+  catch exactly this shape did not list the component.
+- **A hidden tooltip and a closed speed dial still took up the room they occupy when open, and gave a
+  phone a sideways scrollbar.** Both are hidden by paint - `visibility: hidden` on the bubble, a faded
+  item in the dial - which leaves the box in the layout at whatever its PLACEMENT put it. For a
+  right-hand placement on an anchor near the window edge that is off the edge, and the collision engine
+  only moves the bubble once it is shown. Measured at 375px: the tooltip page had 13px of horizontal
+  scroll and the speed-dial page 91px, with nothing open on either. Both now collapse while hidden
+  (`content-visibility`, restored before the show so the collision engine and the first painted frame
+  still measure the real size) and both pages measure 0, closed and open. The close still animates -
+  `transition-behavior: allow-discrete` holds the collapse until the fade has finished. Guarded by
+  `HiddenOverlayFootprintTests`. This was the last of the thirteen horizontal-overflow findings in the
+  mobile sweep; the two it left open were recorded as demo problems, and the measurement says one of
+  them was this bug in a second component.
+
+### Changed
+
+- **`IScrollService`'s listener contract was written three ways and only one of them was true.** The
+  interface said one throttled listener per subscription; the JS backend's own header and the service's
+  remarks said one per scroll target, fanned out. The code did the first. Per subscription is now the
+  chosen contract everywhere, and it is the right one on the numbers: sharing a listener between the
+  subscribers of a target saves exactly one passive registration per extra subscriber and nothing else,
+  because each subscription carries its own throttle - so the timers cannot be shared - and each already
+  receives its own small position per window. What it would cost is a refcounted registry on the path
+  where a disposed circuit and a live one have to unwind independently. Pinned by
+  `Each_subscription_owns_its_own_listener` rather than by a comment: two subscribers on one target
+  register two listeners, and disposing one unsubscribes exactly that one while the other keeps
+  delivering.
+
+## [0.28.0] - 2026-09-03
 
 ### Added
 
@@ -35,16 +89,6 @@ All notable changes to Flare are documented here. This project adheres to
   the series is written the way it is held: `[null, null, 12, 18, null]`. A value alone between two
   gaps has no segment to be drawn as, so it is marked with a dot rather than being silently invisible.
   Line, area, bar, stacked bar and combo; the radial types still read a gap as zero.
-- **`FlareChart.ScaleMode`: switching a series off no longer rebuilds the chart around what is left.**
-  Clicking a legend entry asks to see the rest without that series; what it did was measure the value
-  axis from the visible series only, so one click moved the axis window, re-rounded the grid lines and
-  shifted every remaining mark - the reader lost the picture they were comparing against.
-  `ChartScaleMode.FitAll` measures the axis from the whole dataset instead, so the series disappears
-  and nothing else does. The default `FitVisible` is the old behaviour, unchanged. The same switch
-  governs the bar group, because "does hiding a series re-flow the plot" is one question in two
-  dimensions: `FitVisible` closes the gap the hidden series left, `FitAll` keeps every series in its
-  slot. Applies to line, area, bar, stacked bar, combo and radar; the radial types divide a total
-  rather than span an axis, so it does not apply to them.
 - **`ChartAnnotation.Layer`** decides which side of the data an overlay is on. Annotations always drew
   on top, which is wrong for the band kinds: a translucent "fact / plan" band over the values washes
   out the numbers it was drawn to frame, while the same band behind them reads as the background of
@@ -72,28 +116,6 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
-- **A hidden tooltip and a closed speed dial still took up the room they occupy when open, and gave a
-  phone a sideways scrollbar.** Both are hidden by paint - `visibility: hidden` on the bubble, a faded
-  item in the dial - which leaves the box in the layout at whatever its PLACEMENT put it. For a
-  right-hand placement on an anchor near the window edge that is off the edge, and the collision engine
-  only moves the bubble once it is shown. Measured at 375px: the tooltip page had 13px of horizontal
-  scroll and the speed-dial page 91px, with nothing open on either. Both now collapse while hidden
-  (`content-visibility`, restored before the show so the collision engine and the first painted frame
-  still measure the real size) and both pages measure 0, closed and open. The close still animates -
-  `transition-behavior: allow-discrete` holds the collapse until the fade has finished. Guarded by
-  `HiddenOverlayFootprintTests`. This was the last of the thirteen horizontal-overflow findings in the
-  mobile sweep; the two it left open were recorded as demo problems, and the measurement says one of
-  them was this bug in a second component.
-- **`FlareTimeSpanPicker` was the one field in the family with no field around it.** It put its
-  segments straight into the chrome's field slot, so it had no border, no background, no edge padding
-  and no height from the family ramp - beside any other field it did not read as a field at all, and
-  its own stylesheet claimed the opposite ("segments inside the shared field frame"). It now draws the
-  shared `.flare-input__field` well like every sibling: measured at 30 / 36 / 56 / 64 / 76px across the
-  Xs..Xl ramp, matching the field next to it. Its segment row is the family's third structurally
-  different control - beside TagField's chip input and the combobox trigger - so it joins them in the
-  size grid and takes the same edge padding; the first digit used to sit against the border.
-  `FieldGeometryContractTests` now names it, which is why it was missed: the contract that exists to
-  catch exactly this shape did not list the component.
 - **A headerless `FlareCollapse` announced an unnamed landmark.** It emitted `role="region"`
   unconditionally, and in headerless mode there was no header id to point `aria-labelledby` at - which
   put an entry in the screen reader's landmark list with nothing to identify it by. The role is now
@@ -101,17 +123,6 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
-- **`IScrollService`'s listener contract was written three ways and only one of them was true.** The
-  interface said one throttled listener per subscription; the JS backend's own header and the service's
-  remarks said one per scroll target, fanned out. The code did the first. Per subscription is now the
-  chosen contract everywhere, and it is the right one on the numbers: sharing a listener between the
-  subscribers of a target saves exactly one passive registration per extra subscriber and nothing else,
-  because each subscription carries its own throttle - so the timers cannot be shared - and each already
-  receives its own small position per window. What it would cost is a refcounted registry on the path
-  where a disposed circuit and a live one have to unwind independently. Pinned by
-  `Each_subscription_owns_its_own_listener` rather than by a comment: two subscribers on one target
-  register two listeners, and disposing one unsubscribes exactly that one while the other keeps
-  delivering.
 - **Breaking: `DataGridExportColumn<TItem>` is now `FlareExportColumn<TRow>`.** The standalone export
   path needs the same column descriptor the grid path uses - a title, a value accessor and an optional
   formatter - and two parallel types would have meant a formatter written for one was unusable in the
