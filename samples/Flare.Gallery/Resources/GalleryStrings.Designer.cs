@@ -2552,7 +2552,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на All Rows with Their Own Scroll.
+        ///   Ищет локализованную строку, похожую на Size, Paging and the Sticky Header.
         /// </summary>
         public static string DataGrid_ScrollModeTitle {
             get {
@@ -2560,7 +2560,7 @@ namespace Flare.Gallery.Resources {
             }
         }
                 /// <summary>
-        ///   Ищет локализованную строку, похожую на Scroll=true renders every row, hides the pager and scrolls inside the grid with a sticky header..
+        ///   Ищет локализованную строку, похожую на Three independent questions. Height caps the whole component, so the grid scrolls whenever its rows do not fit - paged or not..
         /// </summary>
         public static string DataGrid_ScrollModeDesc {
             get {

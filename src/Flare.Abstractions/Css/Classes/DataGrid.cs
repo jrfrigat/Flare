@@ -31,10 +31,15 @@ public static class DataGrid
     public const string Bordered = "flare-datagrid--bordered";
     /// <summary>The <c>flare-datagrid__wrapper</c> CSS class.</summary>
     public const string Wrapper = "flare-datagrid__wrapper";
-    /// <summary>The <c>flare-datagrid__wrapper--scroll</c> CSS class, marking the table container as
-    /// its own scroll box with a sticky header. Shared by every mode that scrolls instead of paging
-    /// (virtual, infinite, and all-rows scroll).</summary>
-    public const string WrapperScroll = "flare-datagrid__wrapper--scroll";
+    /// <summary>The <c>flare-datagrid__wrapper--sticky-head</c> CSS class, pinning the whole header
+    /// group (band rows, column titles and the filter row) to the top of the scrolling table container.</summary>
+    public const string WrapperStickyHead = "flare-datagrid__wrapper--sticky-head";
+    /// <summary>The <c>flare-datagrid--bounded</c> CSS class, capping the component's height with
+    /// an absolute length so the table container scrolls inside what is left.</summary>
+    public const string Bounded = "flare-datagrid--bounded";
+    /// <summary>The <c>flare-datagrid--sized</c> CSS class, giving the component a height expressed
+    /// as a percentage of its parent rather than a cap.</summary>
+    public const string Sized = "flare-datagrid--sized";
     /// <summary>The <c>flare-datagrid--fill</c> CSS class.</summary>
     public const string Fill = "flare-datagrid--fill";
     /// <summary>The <c>flare-datagrid__toolbar</c> CSS class.</summary>

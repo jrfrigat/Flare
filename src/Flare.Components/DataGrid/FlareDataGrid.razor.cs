@@ -23,7 +23,7 @@ public partial class FlareDataGrid<TItem>
 
     private bool _effectiveVirtual => Virtual;
     private bool _effectiveInfiniteScroll => InfiniteScroll;
-    private string _effectiveHeight => Height;
+    private string? _effectiveHeight => Height;
     // Virtualize rejects a non-positive ItemSize, so fall back to a sensible default row height
     // (matches the Virtualize default) when VirtualItemSize is unset or non-positive.
     private float _effectiveVirtualItemSize => VirtualItemSize > 0 ? VirtualItemSize.Value : DefaultVirtualItemSize;
@@ -66,22 +66,16 @@ public partial class FlareDataGrid<TItem>
     // Infinite scroll takes precedence over the known-total virtual window.
     private bool _infiniteMode => _effectiveInfiniteScroll && _provider is not null;
     private bool _shouldVirtualize => !_infiniteMode && _effectiveVirtual;
-    // All rows in the DOM, no pager. The other two scroll modes win: each already replaces paging,
-    // and both do it by recycling rows, which is the opposite of what this mode promises.
-    private bool _scrollAll => Scroll && !_shouldVirtualize && !_infiniteMode;
-    // Every mode that scrolls instead of paging needs the same container: bounded height, its own
-    // scrollbar, a sticky header.
-    private bool _scrollContainer => _shouldVirtualize || _infiniteMode || _scrollAll;
-    // FillHeight bounds the container from the layout rather than from Height, which makes it a
-    // scroll box too - even on a paged grid, whose page can outgrow the space it was given.
-    private bool _scrollBox => _scrollContainer || FillHeight;
-    // A provider is paged by its own contract, so "no pager" has to be said in the request: scroll
-    // mode asks for the whole set at once rather than silently showing page one with no way to
+    // Paging is a page size, not a mode: a positive size pages, zero puts every row on one page. The
+    // two row-recycling modes still replace it, because each renders its own window over the whole set.
+    private bool _paged => _effectivePageSize > 0 && !_shouldVirtualize && !_infiniteMode;
+    // A provider is paged by its own contract, so "no pager" has to be said in the request: an unpaged
+    // grid asks for the whole set at once rather than silently showing page one with no way to
     // reach page two.
-    private int _requestPageSize => _scrollAll ? int.MaxValue : _effectivePageSize;
-    // Row number of the first rendered row, for aria-rowindex. Scroll mode renders the whole set, so
-    // there is no page to offset by - and multiplying by the request size would overflow.
-    private int _rowIndexOffset => _scrollAll ? 0 : _page * _effectivePageSize;
+    private int _requestPageSize => _paged ? _effectivePageSize : int.MaxValue;
+    // Row number of the first rendered row, for aria-rowindex. An unpaged grid renders the whole set,
+    // so there is no page to offset by - and multiplying by the request size would overflow.
+    private int _rowIndexOffset => _paged ? _page * _effectivePageSize : 0;
 
     // Dim the table only for the overlay indicators; ProgressLine/Skeleton keep the table at full opacity.
     private bool _dimTable => _loading &&
@@ -112,14 +106,30 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
-    private string _wrapperClass => _scrollBox
-        ? $"{Css.Classes.DataGrid.Wrapper} {Css.Classes.DataGrid.WrapperScroll}"
+    private string _wrapperClass => StickyHeader
+        ? $"{Css.Classes.DataGrid.Wrapper} {Css.Classes.DataGrid.WrapperStickyHead}"
         : Css.Classes.DataGrid.Wrapper;
 
-    // The height cap is pointless under FillHeight, which replaces it with the layout's own answer.
-    private string? _wrapperStyle => _scrollContainer && !FillHeight
-        ? $"--_flare-datagrid-height:{_effectiveHeight}"
-        : null;
+    // "auto"/"none" are the CSS words for "no height of my own"; null and empty say the same thing in
+    // C#. All four mean the grid grows with its rows and the page scrolls.
+    private bool _hasHeight => !FillHeight
+        && !string.IsNullOrWhiteSpace(_effectiveHeight)
+        && !_effectiveHeight!.Equals("auto", StringComparison.OrdinalIgnoreCase)
+        && !_effectiveHeight!.Equals("none", StringComparison.OrdinalIgnoreCase);
+
+    // A percentage sizes the component; anything else caps it. The distinction is not cosmetic: a
+    // percentage max-height against a content-sized parent computes to none, so a cap written in
+    // percent is no cap at all - see datagrid.css.
+    private bool _relativeHeight => _hasHeight && _effectiveHeight!.TrimEnd().EndsWith('%');
+
+    private string? _bounded => _hasHeight && !_relativeHeight ? Css.Classes.DataGrid.Bounded : null;
+    private string? _sized => _relativeHeight ? Css.Classes.DataGrid.Sized : null;
+
+    // The height travels on the ROOT, so the toolbar and the pager are inside the budget the page asked
+    // for and only the rows scroll.
+    private string? _rootStyle => _hasHeight
+        ? $"--_flare-datagrid-height:{_effectiveHeight};{Style}"
+        : Style;
 
     private int _totalRows => _provider is not null ? _serverTotalCount : (Items?.Count() ?? 0);
 
@@ -369,7 +379,7 @@ public partial class FlareDataGrid<TItem>
             IReadOnlyDictionary<string, string>? activeFilters = _filters.Count > 0
                 ? new Dictionary<string, string>(_filters)
                 : null;
-            var req = new DataGridRequest(_scrollAll ? 0 : _page, _requestPageSize, sortKey, _sortDir, Filters: activeFilters)
+            var req = new DataGridRequest(_paged ? _page : 0, _requestPageSize, sortKey, _sortDir, Filters: activeFilters)
             {
                 Sorts = BuildSorts(),
                 FilterModel = BuildFilters(),

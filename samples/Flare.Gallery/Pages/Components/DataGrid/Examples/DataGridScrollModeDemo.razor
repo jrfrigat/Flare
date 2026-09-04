@@ -1,11 +1,15 @@
-@* The middle ground between paging and virtualization: Scroll renders every row, hides the pager and
-   scrolls inside the grid's own box with a sticky header. Every row is really in the DOM, so browser
-   find and printing reach all of them - which row recycling cannot offer. A few hundred to a few
-   thousand rows is the range; past that Virtual is the answer. *@
+@* Size, paging and the sticky header are three independent questions. Height caps the whole component
+   in both states below - the grid scrolls because it ran out of room, not because a mode was switched
+   on - and turning paging on only slices the rows; the scrollbar and the header stay exactly where they
+   were. StickyHeader is the third question and answers only itself. *@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareSwitch @bind-Value="_scroll" Label="Scroll (all rows) instead of paging" />
+    <FlareStack Row="true" Gap="FlareSpacing.Large" Wrap="true">
+        <FlareSwitch @bind-Value="_paged" Label="PageSize 25 (off: one page, every row)" />
+        <FlareSwitch @bind-Value="_sticky" Label="StickyHeader" />
+    </FlareStack>
 
-    <FlareDataGrid Items="@_invoices" Scroll="_scroll" PageSize="10" Height="340px" Striped="true" Hoverable="true">
+    <FlareDataGrid Items="@_invoices" PageSize="@(_paged ? 25 : 0)" StickyHeader="_sticky"
+                   Height="340px" Striped="true" Hoverable="true">
         <Columns>
             <FlareColumn Title="Invoice" Field="@(i => i.Number)" Width="120px" />
             <FlareColumn Title="Customer" Field="@(i => i.Customer)" Sortable="true" />
@@ -21,7 +25,8 @@
     private static readonly string[] _customers =
         ["Northwind", "Contoso", "Fabrikam", "Adventure Works", "Tailspin", "Proseware", "Litware"];
 
-    private bool _scroll = true;
+    private bool _paged;
+    private bool _sticky = true;
 
     private readonly List<Invoice> _invoices = BuildInvoices();
 

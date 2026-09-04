@@ -323,9 +323,9 @@ way down: a component saying "spend the height I was given rather than growing t
 <FlareLayoutContent FillHeight="true">
     <FlareTabs FillHeight="true">
         <FlareTab Label="Orders">
-            @* Scroll: every row, no pager, a sticky header.
+            @* No PageSize: every row on one page, no pager, sticky header.
                FillHeight: the box is whatever the tab panel had left. *@
-            <FlareDataGrid Items="@_orders" Scroll="true" FillHeight="true">
+            <FlareDataGrid Items="@_orders" FillHeight="true">
                 <Columns>
                     <FlareColumn Title="Order" Field="@(o => o.Number)" />
                     <FlareColumn Title="Customer" Field="@(o => o.Customer)" />
@@ -345,18 +345,22 @@ Three rules of thumb:
   collapses to content height.
 - **`Height` and `FillHeight` are alternatives.** `Height="400px"` is a number you wrote down;
   `FillHeight` is the number the layout works out. When both are set, `FillHeight` wins.
-- **`Height` takes an absolute length, and it is a cap.** `Height="50%"` looks reasonable and does
-  nothing at all: it becomes a percentage `max-height` against a box sized by its own content, which
-  CSS resolves to `none`. The grid then has no cap, never scrolls, and a `Virtual` grid is handed a
-  scroller that cannot scroll. A percentage height is `FillHeight`'s job.
+- **`Height` caps the WHOLE component, in every mode.** Toolbar, pager and footer are inside the
+  budget; only the rows scroll. An absolute length is a cap - a grid with fewer rows than that is as
+  tall as its rows. A percentage is a height rather than a cap, and still needs an ancestor with a
+  definite height, which is what `FillHeight` says without a number. `Height="auto"` (or `null`)
+  removes the cap and lets the page scroll instead.
 
-The three row modes of `FlareDataGrid` answer three different questions:
+Size, paging and row recycling are three separate questions in `FlareDataGrid`, not one mode switch.
+Scrolling is not among them: a grid scrolls when its rows do not fit the height it was given, paged
+or not.
 
-| Mode | What it renders | When |
+| Parameter | What it decides | Default |
 | :-- | :-- | :-- |
-| paging (default) | one page, plus a pager | the user navigates by page |
-| `Scroll="true"` | every row, no pager, sticky header | a few hundred to a few thousand rows; browser find and printing must reach every row |
-| `Virtual="true"` | only the rows in view | tens of thousands of rows |
+| `Height` / `FillHeight` | how tall the component is, and so whether it scrolls | `400px` |
+| `PageSize` | `0` puts every row on one page; a positive size adds the pager | `0` |
+| `StickyHeader` | whether the header stays put while the rows scroll under it | `true` |
+| `Virtual` | only the rows in view live in the DOM; still replaces paging | off |
 
 ---
 

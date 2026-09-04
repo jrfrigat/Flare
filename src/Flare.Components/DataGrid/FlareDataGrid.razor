@@ -17,7 +17,7 @@
    ToolbarContent, FooterContent or any nested fragment finds it without an explicit Context/Grid. Not
    IsFixed: the Context parameter may be swapped, and a stale binding would drive the wrong grid. *@
 <CascadingValue TValue="DataGridContext<TItem>" Value="@ActiveContext">
-<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill, _bounded, _sized)" style="@_rootStyle" @attributes="AdditionalAttributes">
     @* Screen-reader announcements for sort/filter/page changes. *@
     <div role="status" aria-live="polite" class="flare-visually-hidden">@_ariaAnnouncement</div>
     <!-- Column descriptors render nothing visually -->
@@ -57,7 +57,7 @@
         </div>
     }
 
-    <div class="@_wrapperClass" style="@_wrapperStyle" @ref="_wrapperRef">
+    <div class="@_wrapperClass" @ref="_wrapperRef">
         @if (_loading && LoadingIndicator == DataGridLoadingIndicator.ProgressLine)
         {
             <div class="@Css.Classes.DataGrid.ProgressLine">
