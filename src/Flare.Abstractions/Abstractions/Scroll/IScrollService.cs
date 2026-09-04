@@ -16,7 +16,10 @@ namespace Flare.Components;
 /// Subscriptions return an <see cref="IAsyncDisposable"/> token - dispose it to unsubscribe. There is
 /// no observer interface to implement, no <c>DotNetObjectReference</c> to create and no subscription id
 /// to track: the service owns one throttled JS listener per subscription and derives direction,
-/// progress and the edge flags server-side. Inject it with <c>@inject IScrollService Scroll</c>.
+/// progress and the edge flags server-side. Per subscription, not per target: two subscribers watching
+/// the same container are independent in every way that matters - their own throttle, their own
+/// direction threshold, their own baseline - and disposing one cannot disturb the other.
+/// Inject it with <c>@inject IScrollService Scroll</c>.
 /// </para>
 /// <para>
 /// Register it with <c>AddFlare()</c>. On a prerendered or disconnected circuit the getters return a

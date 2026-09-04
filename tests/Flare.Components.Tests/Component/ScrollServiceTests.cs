@@ -149,6 +149,42 @@ public class C_ScrollServiceTests : FlareTestContext
         Assert.Equal(1, count);
     }
 
+    // The listener contract, pinned. It used to be described three ways - the interface said one listener
+    // per subscription, the JS header and the service remarks said one per target fanned out - and only
+    // the interface matched the code. Per subscription is the chosen contract, so it is asserted rather
+    // than left to a comment: two subscribers on one target register two listeners, and disposing one
+    // unsubscribes exactly that one and leaves the other delivering.
+    [Fact]
+    public async Task Each_subscription_owns_its_own_listener()
+    {
+        var service = (ScrollService)Scroll;
+        var a = new List<double>();
+        var b = new List<double>();
+        var ct = Xunit.TestContext.Current.CancellationToken;
+
+        var tokenA = await service.SubscribeAsync(
+            c => a.Add(c.Position.Top), options: new ScrollSubscribeOptions { FireImmediately = false }, cancellationToken: ct);
+        var idA = LastSubscriptionId();
+        var tokenB = await service.SubscribeAsync(
+            c => b.Add(c.Position.Top), options: new ScrollSubscribeOptions { FireImmediately = false }, cancellationToken: ct);
+        var idB = LastSubscriptionId();
+
+        Assert.Equal(2, _module.Invocations["subscribe"].Count);
+        Assert.NotEqual(idA, idB);
+
+        await tokenA.DisposeAsync();
+
+        var unsubscribed = _module.Invocations["unsubscribe"].Select(i => (string)i.Arguments[0]!).ToList();
+        Assert.Equal([idA], unsubscribed);
+
+        // B is untouched by A's disposal - the point of not sharing.
+        await service.OnScrolled(idB, At(120));
+        Assert.Equal([120], b);
+        Assert.Empty(a);
+
+        await tokenB.DisposeAsync();
+    }
+
     [Fact]
     public async Task Two_subscribers_on_one_target_each_keep_their_own_baseline()
     {

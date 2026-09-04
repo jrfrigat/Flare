@@ -6,11 +6,13 @@ namespace Flare.Components.Services;
 
 /// <inheritdoc cref="IScrollService" />
 /// <remarks>
-/// Owns a single <see cref="DotNetObjectReference{T}"/> to itself and one JS listener per scroll target,
-/// and fans out to every subscription server-side. Direction, delta and the reversal flag are derived
-/// here rather than in JS: each subscription carries its own direction threshold, and keeping the
-/// derivation on this side lets the browser send one small position per throttle window regardless of
-/// how many subscribers are watching or what each of them asked for.
+/// Owns a single <see cref="DotNetObjectReference{T}"/> to itself and one JS listener per SUBSCRIPTION,
+/// which is what <see cref="IScrollService"/> documents and what the JS backend does. Sharing a listener
+/// between the subscribers of one target would save a single passive registration per extra subscriber
+/// and nothing more - the throttles differ per subscription, so the timers cannot be shared either.
+/// Direction, delta and the reversal flag are derived here rather than in JS: each subscription carries
+/// its own direction threshold, and keeping the derivation on this side lets the browser send one small
+/// position per throttle window instead of a stream of computed events.
 /// </remarks>
 public sealed class ScrollService : FlareJsModule, IScrollService
 {

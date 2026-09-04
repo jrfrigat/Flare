@@ -101,6 +101,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **`IScrollService`'s listener contract was written three ways and only one of them was true.** The
+  interface said one throttled listener per subscription; the JS backend's own header and the service's
+  remarks said one per scroll target, fanned out. The code did the first. Per subscription is now the
+  chosen contract everywhere, and it is the right one on the numbers: sharing a listener between the
+  subscribers of a target saves exactly one passive registration per extra subscriber and nothing else,
+  because each subscription carries its own throttle - so the timers cannot be shared - and each already
+  receives its own small position per window. What it would cost is a refcounted registry on the path
+  where a disposed circuit and a live one have to unwind independently. Pinned by
+  `Each_subscription_owns_its_own_listener` rather than by a comment: two subscribers on one target
+  register two listeners, and disposing one unsubscribes exactly that one while the other keeps
+  delivering.
 - **Breaking: `DataGridExportColumn<TItem>` is now `FlareExportColumn<TRow>`.** The standalone export
   path needs the same column descriptor the grid path uses - a title, a value accessor and an optional
   formatter - and two parallel types would have meant a formatter written for one was unusable in the

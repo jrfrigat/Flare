@@ -1,8 +1,14 @@
-// Flare scroll service backend. Backs Flare.Components.IScrollService: one throttled listener per
-// scroll target - the page, or a given element - fanned out to every C# subscriber, plus programmatic
-// scrolling and a reference-counted body lock. Direction, progress and the at-start/at-end flags are
-// computed in C# from the position this module reports, so the wire payload stays one small object per
-// throttle window no matter how many subscribers there are.
+// Flare scroll service backend. Backs Flare.Components.IScrollService: one throttled listener PER
+// SUBSCRIPTION, on the page or on a given element, plus programmatic scrolling and a reference-counted
+// body lock. Direction, progress and the at-start/at-end flags are computed in C# from the position
+// this module reports, so the wire payload stays one small object per throttle window per subscriber.
+//
+// Per subscription rather than per target, deliberately. Sharing one listener across the subscribers
+// of a target would save exactly one passive listener registration per extra subscriber and nothing
+// else: each subscription carries its own ThrottleMs, so the timers cannot be shared, and each already
+// receives its own small payload. What it would cost is a refcounted registry between subscribe and
+// unsubscribe, on the path where a disposed circuit and a live one have to unwind independently. The
+// header used to claim the opposite of what the code does; the interface always documented this one.
 
 import { listen, pageTarget, listenTarget, resolve } from './flare-dom.js';
 
