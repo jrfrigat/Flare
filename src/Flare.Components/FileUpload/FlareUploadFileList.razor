@@ -6,7 +6,14 @@
    rows are name + size, exactly what they were before; with one, each row also carries its state class, a
    progress bar and the cancel/retry affordances. The state lives in the parent - this only paints it. *@
 
-<ul class="@Css.Classes.FileUpload.List">
+@* The list refuses the browser's own drop, wherever it is used. The zone's hidden input covers the drop
+   area and takes a dropped file as that event's DEFAULT ACTION, so the zone cannot cancel `drop` at its
+   root without cancelling the very thing it exists to receive - it used to, and drag-and-drop had never
+   worked. The list is the part of the zone with no input beneath it, and there the browser default is to
+   navigate away to the dropped file, so the cancel belongs here instead. *@
+<ul class="@Css.Classes.FileUpload.List"
+    @ondragover:preventDefault="true"
+    @ondrop:preventDefault="true">
     @foreach (var item in Items)
     {
         <li class="@Css.Classes.FileUpload.File @StateClass(item.State)">

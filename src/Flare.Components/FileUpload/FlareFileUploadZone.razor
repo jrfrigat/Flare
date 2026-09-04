@@ -7,15 +7,23 @@
 
    This absorbed the old FlareDropZone, which was the same component written twice - same hidden input, same
    drag state, same default upload glyph + label + accept hint - down to being demoed on this very page
-   beside it. ChildContent and MaxFileSize came across from it. *@
+   beside it. ChildContent and MaxFileSize came across from it.
+
+   On the root's drag handlers: `dragover`/`dragenter` MUST be cancelled - without it the region is not
+   a drop target at all. `drop` must NOT be. The hidden input below covers the drop area and takes the
+   dropped file as that event's DEFAULT ACTION, so cancelling it here killed the drop this component
+   exists to receive, and with it the `change` that was the only path to HandleDropAsync - which is also
+   why the highlight stayed lit afterwards. The list region, the one part with no input beneath it,
+   cancels its own drop (see FlareUploadFileList); nothing else here has a browser default worth
+   stopping. *@
 <div class="@BuildCssClass(_draggingClass, _disabledClass)"
      style="@Style"
      aria-label="@(AriaLabel ?? FlareStrings.DropZone_Label)"
      @ondragover:preventDefault="true"
      @ondragenter:preventDefault="true"
-     @ondragover="@(() => _isDragging = true)"
+     @ondragover="StartDragging"
      @ondragleave="@(() => _isDragging = false)"
-     @ondrop:preventDefault="true"
+     @ondrop="@(() => _isDragging = false)"
      @attributes="AdditionalAttributes">
     <div class="@Css.Classes.FileUpload.DropWrap">
         <label class="@Css.Classes.FileUpload.Zone" for="@InputId">
@@ -80,7 +88,16 @@
     private string _draggingClass => _isDragging ? Css.Classes.FileUpload.Dragging : string.Empty;
     private string _disabledClass => Disabled ? Css.Classes.FileUpload.Disabled : string.Empty;
 
-    // The drag highlight has to clear on drop as well as on dragleave, so the zone does not stay lit.
+    // The browser fires dragover continuously while a file is held over the zone. The assignment is
+    // idempotent but the render is not skipped, so a drag cost one render per event; the guard makes it
+    // one render per drag.
+    private void StartDragging()
+    {
+        if (!_isDragging) _isDragging = true;
+    }
+
+    // The drag highlight is cleared by the root's own drop handler now. This still clears it because the
+    // file can also arrive through the click-and-pick dialog, which raises change with no drop at all.
     private async Task HandleDropAsync(InputFileChangeEventArgs e)
     {
         _isDragging = false;

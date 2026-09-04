@@ -20,6 +20,22 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **Dropping a file on `FlareFileUploadZone` had never worked.** The zone gets its drag-and-drop from
+  the browser rather than from its own code - the hidden file input is stretched over the drop area for
+  exactly that reason - and a file input takes a dropped file as the DEFAULT ACTION of the `drop` event.
+  The root cancelled that event, so the drop was thrown away before the input could assign `files`: no
+  files, no `change`, and `change` was the only path to the handler. The stuck highlight was the same
+  cause seen from the other end - `drop` and `dragleave` are mutually exclusive, so after a cancelled
+  drop nothing was left to clear it. Clicking the zone and picking the same file always worked, which is
+  why it read as "drag-and-drop is broken" rather than "upload is broken". The root now cancels
+  `dragover`/`dragenter` only - without those the region is not a drop target at all - and clears the
+  highlight from its own `drop`; the file list, the one part of the zone with no input beneath it,
+  cancels its own drop so a miss there still cannot navigate the app away to the dropped file. Measured
+  in the page: `drop.defaultPrevented` was `true`, it is `false` now, and `dragover` is still cancelled.
+  Guarded by `FileUploadDropTests`, checked against the reintroduced attribute.
+- **A drag over the zone re-rendered it on every `dragover` event**, which the browser fires
+  continuously while a file is held there. The assignment was idempotent but the render was not skipped;
+  it now costs one render per drag instead of one per event.
 - **`FlareTimeSpanPicker` was the one field in the family with no field around it.** It put its
   segments straight into the chrome's field slot, so it had no border, no background, no edge padding
   and no height from the family ramp - beside any other field it did not read as a field at all, and
