@@ -21,6 +21,14 @@
     display: flex;
     gap: var(--flare-spacing-6);
     margin: 0;
+    /* A closed speed dial must not take up its OPEN footprint. Only the items fade out; the list stays
+       laid out at its direction's offset, so a right-opening menu on a narrow screen reached 91px past
+       the edge and gave the page horizontal scroll while nothing was open. Size containment collapses
+       the closed list to nothing; `allow-discrete` holds the collapse until the items have finished
+       animating out, so the close still animates. Same fix, same reason as the hidden tooltip bubble. */
+    content-visibility: hidden;
+    transition: content-visibility var(--flare-motion-duration-short2);
+    transition-behavior: allow-discrete;
 }
 .flare-fab-menu__list--up    { bottom: calc(100% + 0.75rem); left: 50%; transform: translateX(-50%); flex-direction: column-reverse; align-items: center; }
 .flare-fab-menu__list--down  { top:    calc(100% + 0.75rem); left: 50%; transform: translateX(-50%); flex-direction: column;         align-items: center; }
@@ -38,6 +46,8 @@
     transition: opacity var(--flare-motion-duration-short2),
                 transform var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
 }
+.flare-fab-menu__list--open { content-visibility: visible; }
+
 .flare-fab-menu__list--open .flare-fab-menu__item {
     opacity: 1;
     /* `none`, not `scale(1)`: a settled item that keeps a transform is the containing block for any

@@ -30,8 +30,22 @@
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
+  /* A tooltip nobody can see must not take up room either. `visibility: hidden` keeps the box in the
+     layout, and the box sits wherever its PLACEMENT puts it - which for a `right` tooltip on an anchor
+     near the window edge is off the edge. The collision engine moves it, but only once it is shown, so
+     until then the resting position gave the scrolling content real horizontal overflow: measured at
+     375px, one hidden bubble 13px past the edge made the whole page slide sideways.
+
+     `content-visibility` is what removes the contribution: size containment sizes the box as if it had
+     no contents, so a hidden bubble collapses to its own padding and can no longer reach past anything.
+     `allow-discrete` holds the flip until the fade-out has finished, so hiding still fades instead of
+     collapsing mid-transition; a browser without it fades out at a collapsed width, which is the same
+     pixels nobody looks at. */
+  content-visibility: hidden;
   transition: opacity var(--flare-motion-duration-short1),
-              visibility var(--flare-motion-duration-short1);
+              visibility var(--flare-motion-duration-short1),
+              content-visibility var(--flare-motion-duration-short1);
+  transition-behavior: allow-discrete;
 }
 
 /* Rich tooltip: surface container, on-surface text, elevation, medium shape, wraps. Unlike the plain
@@ -57,6 +71,9 @@
 .flare-tooltip__content--visible {
   opacity: 1;
   visibility: visible;
+  /* Restored before the fade starts, so the bubble is at its real size when the collision engine
+     measures it and when the first frame paints. */
+  content-visibility: visible;
   transition-delay: var(--fc-tt-delay, 0ms);
 }
 
@@ -64,6 +81,7 @@
 .flare-tooltip--disabled .flare-tooltip__content {
   opacity: 0;
   visibility: hidden;
+  content-visibility: hidden;
 }
 
 .flare-tooltip--top .flare-tooltip__content {

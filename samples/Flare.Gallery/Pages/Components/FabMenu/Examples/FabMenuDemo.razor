@@ -15,16 +15,24 @@
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Up</FlareText>
     </FlareStack>
 
-    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="Actions (right)">
-            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreHoriz" /></IconContent>
-            <ChildContent>
-                <FlareFloatingActionMenu Direction="FabMenuDirection.Right">
-                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Download" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />
-                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Print" Label="Print" OnClick="@(() => Snackbar.Show("Printing…"))" />
-                </FlareFloatingActionMenu>
-            </ChildContent>
-        </FlareFloatingActionButton>
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Right</FlareText>
-    </FlareStack>
+    @* The direction is the author's call, and a horizontal one needs the room to open into: two labelled
+       actions beside the button are wider than a phone. So the direction follows the breakpoint - which
+       is what a real screen does, rather than opening off the edge and giving the page a sideways
+       scroll. FlareMediaQuery reports the active breakpoint; nothing here is CSS. *@
+    <FlareMediaQuery Context="bp">
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="Actions (right)">
+                <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreHoriz" /></IconContent>
+                <ChildContent>
+                    <FlareFloatingActionMenu Direction="@(bp <= Breakpoint.Sm ? FabMenuDirection.Up : FabMenuDirection.Right)">
+                        <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Download" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />
+                        <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Print" Label="Print" OnClick="@(() => Snackbar.Show("Printing…"))" />
+                    </FlareFloatingActionMenu>
+                </ChildContent>
+            </FlareFloatingActionButton>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+                @(bp <= Breakpoint.Sm ? "Right (Up on a phone)" : "Right")
+            </FlareText>
+        </FlareStack>
+    </FlareMediaQuery>
 </FlareStack>

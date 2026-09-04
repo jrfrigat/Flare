@@ -72,6 +72,18 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A hidden tooltip and a closed speed dial still took up the room they occupy when open, and gave a
+  phone a sideways scrollbar.** Both are hidden by paint - `visibility: hidden` on the bubble, a faded
+  item in the dial - which leaves the box in the layout at whatever its PLACEMENT put it. For a
+  right-hand placement on an anchor near the window edge that is off the edge, and the collision engine
+  only moves the bubble once it is shown. Measured at 375px: the tooltip page had 13px of horizontal
+  scroll and the speed-dial page 91px, with nothing open on either. Both now collapse while hidden
+  (`content-visibility`, restored before the show so the collision engine and the first painted frame
+  still measure the real size) and both pages measure 0, closed and open. The close still animates -
+  `transition-behavior: allow-discrete` holds the collapse until the fade has finished. Guarded by
+  `HiddenOverlayFootprintTests`. This was the last of the thirteen horizontal-overflow findings in the
+  mobile sweep; the two it left open were recorded as demo problems, and the measurement says one of
+  them was this bug in a second component.
 - **`FlareTimeSpanPicker` was the one field in the family with no field around it.** It put its
   segments straight into the chrome's field slot, so it had no border, no background, no edge padding
   and no height from the family ramp - beside any other field it did not read as a field at all, and
