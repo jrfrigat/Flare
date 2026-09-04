@@ -72,6 +72,16 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **`FlareTimeSpanPicker` was the one field in the family with no field around it.** It put its
+  segments straight into the chrome's field slot, so it had no border, no background, no edge padding
+  and no height from the family ramp - beside any other field it did not read as a field at all, and
+  its own stylesheet claimed the opposite ("segments inside the shared field frame"). It now draws the
+  shared `.flare-input__field` well like every sibling: measured at 30 / 36 / 56 / 64 / 76px across the
+  Xs..Xl ramp, matching the field next to it. Its segment row is the family's third structurally
+  different control - beside TagField's chip input and the combobox trigger - so it joins them in the
+  size grid and takes the same edge padding; the first digit used to sit against the border.
+  `FieldGeometryContractTests` now names it, which is why it was missed: the contract that exists to
+  catch exactly this shape did not list the component.
 - **A headerless `FlareCollapse` announced an unnamed landmark.** It emitted `role="region"`
   unconditionally, and in headerless mode there was no header id to point `aria-labelledby` at - which
   put an entry in the screen reader's landmark list with nothing to identify it by. The role is now

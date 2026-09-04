@@ -18,6 +18,11 @@
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
     <Field>
+        @* The shared well. Every other field in the family draws one, and this component was the single
+           exception: it put its segments straight into the chrome's Field slot, so it had no border, no
+           background, no padding and no height from the family ramp - beside any other field it did not
+           read as a field at all. *@
+        <div class="@Css.Classes.Input.Field">
         <div class="@Css.Classes.TimeSpanField.Segments" role="group" aria-label="@(Label ?? FlareStrings.TimeSpan_Duration)">
             @if (Negatable)
             {
@@ -53,6 +58,7 @@
                     <span class="@Css.Classes.TimeSpanField.Unit" aria-hidden="true">@UnitSuffix(unit)</span>
                 </span>
             }
+        </div>
         </div>
     </Field>
 </FlareFieldChrome>

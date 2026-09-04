@@ -164,20 +164,24 @@
    of truth for the WHOLE field family, keyed on the shared .flare-input--* modifier. The inner-input
    fields (FlareField/NumericField/MaskedField/TextArea + Autocomplete/DatePicker/TimePicker/
    DateTimePicker) all render .flare-input__control, so they need no per-component entry; only the
-   two structurally different controls -- TagField's chip input and the combobox trigger (shared by
-   Select/MultiSelect) -- carry their own control element. */
+   three structurally different controls -- TagField's chip input, the combobox trigger (shared by
+   Select/MultiSelect) and the TimeSpanPicker's segment row -- carry their own control element. */
 .flare-input--xs .flare-input__control,
 .flare-input--xs .flare-select__control,
-.flare-input--xs .flare-multiselect__control { padding: var(--flare-input-padding-xs);  font-size: var(--flare-typescale-label-medium-size); }
+.flare-input--xs .flare-multiselect__control,
+.flare-input--xs .flare-timespan__segments { padding: var(--flare-input-padding-xs);  font-size: var(--flare-typescale-label-medium-size); }
 .flare-input--sm .flare-input__control,
 .flare-input--sm .flare-select__control,
-.flare-input--sm .flare-multiselect__control { padding: var(--flare-input-padding-sm); font-size: var(--flare-typescale-body-medium-size); }
+.flare-input--sm .flare-multiselect__control,
+.flare-input--sm .flare-timespan__segments { padding: var(--flare-input-padding-sm); font-size: var(--flare-typescale-body-medium-size); }
 .flare-input--lg .flare-input__control,
 .flare-input--lg .flare-select__control,
-.flare-input--lg .flare-multiselect__control { padding: var(--flare-input-padding-lg); font-size: var(--flare-typescale-title-medium-size); }
+.flare-input--lg .flare-multiselect__control,
+.flare-input--lg .flare-timespan__segments { padding: var(--flare-input-padding-lg); font-size: var(--flare-typescale-title-medium-size); }
 .flare-input--xl .flare-input__control,
 .flare-input--xl .flare-select__control,
-.flare-input--xl .flare-multiselect__control { padding: var(--flare-input-padding-xl);  font-size: var(--flare-typescale-title-large-size); }
+.flare-input--xl .flare-multiselect__control,
+.flare-input--xl .flare-timespan__segments { padding: var(--flare-input-padding-xl);  font-size: var(--flare-typescale-title-large-size); }
 
 /* The height half of the same grid. Keyed on the shared .flare-input--* modifier like the padding
    above, and applied to the WELL rather than the control, so it covers every field in the family at

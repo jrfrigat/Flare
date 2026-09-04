@@ -3,17 +3,24 @@
    segments out and take the browser's spinner off the number inputs, which would otherwise put four
    sets of arrows in one field. */
 
-/* The frame owns the field's look; the root only has to stop the picker collapsing to its segments'
-   intrinsic width inside a flex parent, which is what a bare inline-flex chrome would do. */
+/* The well owns the field's look - border, background, padding and the height from the family ramp;
+   the root only has to stop the picker collapsing to its segments' intrinsic width inside a flex
+   parent, which is what a bare inline-flex chrome would do. */
 .flare-timespan {
   min-width: 0;
 }
 
+/* The segment row IS this field's control - the third structurally different one in the family, beside
+   the chip input and the combobox trigger - so it carries the family's edge padding the way they do.
+   Without it the first digit sat flush against the well's border. The size grid in input.css overrides
+   the step; this is the medium default, applied unconditionally so a picker with no size modifier
+   still has one. */
 .flare-timespan__segments {
   display: flex;
   align-items: baseline;
   gap: var(--flare-spacing-1);
   width: 100%;
+  padding: var(--flare-input-padding-md);
 }
 
 .flare-timespan__segment {

@@ -73,6 +73,13 @@ public sealed class FieldGeometryContractTests : FlareTestContext
     public void DateTimePicker_CarriesTheSharedWell() =>
         AssertOneSharedWell(Render<FlareDateTimePicker>(p => p.Add(x => x.Label, "L")), grows: false);
 
+    // Added after the sweep found it outside the family: it drew its segments straight into the chrome
+    // with no well at all, which is exactly the shape this contract exists to catch, and it went unseen
+    // because it was the one field the contract did not name.
+    [Fact]
+    public void TimeSpanPicker_CarriesTheSharedWell() =>
+        AssertOneSharedWell(Render<FlareTimeSpanPicker>(p => p.Add(x => x.Label, "L")), grows: false);
+
     // The two wells whose height is legitimately their content.
     [Fact]
     public void TextArea_CarriesTheSharedWellAndGrows() =>
