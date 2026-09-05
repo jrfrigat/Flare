@@ -20,7 +20,13 @@ public partial class FlareChart
 {
     /// <summary>Chart rendering type: Line, Bar, Pie, or Donut.</summary>
     [Parameter] public ChartType Type { get; set; } = ChartType.Line;
-    /// <summary>Data series and labels to visualize in the chart.</summary>
+    /// <summary>Data series and labels to visualize in the chart.
+    /// <para>
+    /// Replacing it re-derives the value axis from the new data, so a chart fed a fresh dataset on a
+    /// timer rescales on every tick and one new point among twenty moves the other nineteen. That is
+    /// what <see cref="StickyDomain"/> is for; <see cref="YMin"/> and <see cref="YMax"/> are the other
+    /// answer where the range is known in advance.
+    /// </para></summary>
     [Parameter] public ChartData? Data { get; set; }
     /// <summary>Optional title displayed above the chart and used as the SVG accessible name.</summary>
     [Parameter] public string? Title { get; set; }
@@ -92,6 +98,22 @@ public partial class FlareChart
     /// <summary>Sparkline preset: a compact, chromeless line (no grid, axes, legend or title) that stretches
     /// edge-to-edge with a crisp stroke - for inline metric cards. Combine with <see cref="Area"/> for a fill.</summary>
     [Parameter] public bool Sparkline { get; set; }
+
+    /// <summary>
+    /// Keeps the value axis from shrinking back, so a chart fed live data only rescales when it has to.
+    /// The domain grows to fit whatever arrives and holds the widest range it has seen; a new dataset
+    /// that fits inside it leaves the plot exactly where it was, and one new point among twenty stops
+    /// moving the other nineteen.
+    /// <para>
+    /// It does give the space back, but only when the data has genuinely moved into a smaller range -
+    /// less than half the range being held. A domain that never shrinks is ruined for good by a single
+    /// spike; one that shrinks on any decrease is the jitter this exists to remove. Call
+    /// <see cref="ResetDomain"/> when the caller knows the scale has changed for good - a different
+    /// metric in the same chart, say. <see cref="YMin"/> and <see cref="YMax"/> still win where they are
+    /// set, and pinning both makes this moot.
+    /// </para>
+    /// </summary>
+    [Parameter] public bool StickyDomain { get; set; }
 
     /// <summary>Overrides the automatic minimum of the value axis.</summary>
     [Parameter] public double? YMin { get; set; }
@@ -243,8 +265,56 @@ public partial class FlareChart
     // lines were asked for, and the count that is finally drawn depends on where the rounding landed. Split
     // them across the projection and the grid writer and the two drift out of alignment - which is the
     // defect that made a tick-count parameter useless on its own.
+    // The widest value range seen while StickyDomain has been on. It outlives the render, which is the
+    // whole point: a chart handed a new dataset every three seconds re-derives its domain from that
+    // dataset alone, so one new point among twenty moves the other nineteen.
+    private double _stickyMin = double.NaN;
+    private double _stickyMax = double.NaN;
+
+    /// <summary>Forgets the range <see cref="StickyDomain"/> is holding, so the next update sizes the
+    /// value axis from the data alone. For when the caller knows the scale has changed for good.</summary>
+    public void ResetDomain()
+    {
+        _stickyMin = double.NaN;
+        _stickyMax = double.NaN;
+        StateHasChanged();
+    }
+
+    private (double Min, double Max) ApplySticky(double min, double max)
+    {
+        if (!StickyDomain)
+        {
+            _stickyMin = _stickyMax = double.NaN;
+            return (min, max);
+        }
+
+        if (double.IsNaN(_stickyMin))
+        {
+            (_stickyMin, _stickyMax) = (min, max);
+            return (min, max);
+        }
+
+        // Half, and not "any decrease": a domain that never shrinks is ruined for good by one spike,
+        // and one that follows every dip back down is the jitter this exists to remove. Half is the
+        // point at which the reader would rather have the resolution back than the stillness.
+        double held = _stickyMax - _stickyMin;
+        if (held > 0 && max - min < held / 2)
+        {
+            (_stickyMin, _stickyMax) = (min, max);
+            return (min, max);
+        }
+
+        _stickyMin = Math.Min(_stickyMin, min);
+        _stickyMax = Math.Max(_stickyMax, max);
+        return (_stickyMin, _stickyMax);
+    }
+
     private AxisScale ResolveAxis(double min, double max, double extent, bool honorMin = true)
     {
+        // Before the pins and the rounding: the held range is a range of DATA, and comparing it with a
+        // rounded one would let the rounding creep outward a step at a time.
+        if (!(YMin.HasValue && YMax.HasValue)) (min, max) = ApplySticky(min, max);
+
         bool pinLo = honorMin && YMin.HasValue;
         if (pinLo) min = YMin!.Value;
         if (YMax.HasValue) max = YMax.Value;

@@ -3,6 +3,35 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **`FlareChart.StickyDomain`: a value axis that does not shrink back, so a live chart holds still.**
+  A chart handed a fresh dataset on a timer re-derives its domain from that dataset alone, which puts
+  the top of the plot at the current maximum - so the value that CHANGED stays glued to the top and the
+  values nobody touched slide around underneath it. That is the wrong way round, and it is why a live
+  chart reads as noise: the points that move are the ones that did not change. `YMin`/`YMax` pin the
+  window, but a metric whose range is not known in advance cannot use them, and `ScaleMode` (0.29.0)
+  chooses which SERIES the domain is measured from rather than whether it is re-measured at all.
+
+  `StickyDomain` holds the widest range it has seen and grows to fit; a dataset that fits inside it
+  leaves the plot exactly where it was. It gives the space back only when the data has genuinely moved
+  into a smaller range - less than half the range being held - because a domain that never shrinks is
+  ruined for good by a single spike while one that follows every dip back down is the jitter this
+  exists to remove. `ResetDomain()` forgets it outright, for when the caller knows the scale has
+  changed. `Data` now documents that replacing it refits the axis, which is the trap underneath all of
+  this.
+
+### Fixed
+
+- **Every "fit the screen" cap in the library uses `dvh` rather than `vh`.** The dialog fix in 0.31.0
+  moved its own caps; the same unit was still sizing the DataGrid's filter menu, its filter-builder
+  tree and the shortcuts panel. On a phone `100vh` counts the space behind the browser chrome, so a
+  `vh` cap is too generous exactly where a cap is needed - the filter menu promised in its own comment
+  that "the actions row stays reachable" and then measured against a viewport taller than the screen.
+  A guard now fails on any `vh` in any component stylesheet.
+
 ## [0.31.0] - 2026-09-05
 
 ### Changed

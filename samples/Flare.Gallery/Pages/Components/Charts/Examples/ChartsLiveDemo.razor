@@ -1,0 +1,67 @@
+@implements IDisposable
+
+@* A chart handed a fresh dataset on a timer re-derives its value axis from that dataset alone, so the
+   top of the plot is always the current maximum: the value that changed stays glued to the top and the
+   values nobody touched slide around under it. That reads as noise, and it is the wrong way round.
+
+   StickyDomain holds the widest range seen, so the plot only moves when the data genuinely leaves it.
+   It does give the space back - once the data is inside half the held range - so one spike does not
+   flatten the chart for good. Watch the left chart reshape wholesale and the right one stand still. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row="true" Gap="FlareSpacing.Large" Wrap="true" Align="FlareAlignItems.Center">
+        <FlareSwitch @bind-Value="_running" Label="Live (a new reading every second)" />
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Spike">Send a spike</FlareButton>
+    </FlareStack>
+
+    <FlareGrid Gap="FlareSpacing.Large">
+        <FlareCol Xs="12" Md="6">
+            <FlareChart Type="ChartType.Line" Height="220" Title="Refits every update" Data="@_data" />
+        </FlareCol>
+        <FlareCol Xs="12" Md="6">
+            <FlareChart Type="ChartType.Line" Height="220" Title="StickyDomain" StickyDomain="true" Data="@_data" />
+        </FlareCol>
+    </FlareGrid>
+</FlareStack>
+
+@code {
+    private const int Window = 20;
+
+    private Timer? _timer;
+    private bool _running = true;
+    private readonly Random _random = new(7);
+    private readonly List<double> _values = [];
+    private ChartData? _data;
+
+    protected override void OnInitialized()
+    {
+        for (var i = 0; i < Window; i++) _values.Add(Next());
+        Rebuild();
+        _timer = new Timer(_ => Tick(), null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+    }
+
+    // A rolling window: one reading in at the tail, one out at the head - the shape a dashboard tile
+    // has, and the shape where a refitting axis is most visible.
+    private void Tick()
+    {
+        if (!_running) return;
+        _values.Add(Next());
+        _values.RemoveAt(0);
+        Rebuild();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void Spike()
+    {
+        _values[^1] = 180 + _random.Next(40);
+        Rebuild();
+    }
+
+    private double Next() => 40 + _random.Next(25);
+
+    private void Rebuild() =>
+        _data = new ChartData(
+            [new ChartSeries("req/s", [.. _values])],
+            [.. Enumerable.Range(0, _values.Count).Select(i => i.ToString())]);
+
+    public void Dispose() => _timer?.Dispose();
+}
