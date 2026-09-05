@@ -54,7 +54,7 @@ public partial class FlareDataGrid<TItem>
     /// exactly as they do without it, and a paged grid recycles the rows of its current page.
     /// <para>
     /// <c>null</c> (the default) lets the grid decide: it recycles an in-memory source of more than 500
-    /// rows when it has a height to scroll in (<see cref="Height"/> or <see cref="FillHeight"/>). Set it
+    /// rows when it has a height to scroll in (<see cref="Height"/> or <see cref="FlareContainerBase.FillHeight"/>). Set it
     /// explicitly to <c>true</c> or <c>false</c> to take the decision yourself - <c>false</c> is the
     /// answer when every row must be in the DOM for the browser's own find or for printing. With an
     /// <see cref="ItemsProvider"/> the choice is always yours, since the grid would have to fetch the
@@ -81,27 +81,16 @@ public partial class FlareDataGrid<TItem>
     /// </summary>
     [Parameter] public bool StickyHeader { get; set; } = true;
     /// <summary>
-    /// Makes the grid spend the height it is given rather than the height in <see cref="Height"/>:
-    /// the grid fills its parent, and the table container takes whatever is left under the toolbar
-    /// and over the pager, scrolling inside it with a sticky header. This is the screen-fit case -
-    /// a grid in a tab panel, beside a chart, under a filter bar - where the available height is the
-    /// layout's answer and not a number the page can write down. Every link of the chain above it needs
-    /// the same switch - a <c>FlareLayoutContent</c> and any <c>FlareTabs</c> in between - because one
-    /// ancestor resolving to <c>auto</c> collapses the whole chain back to content height. Default
-    /// false keeps <see cref="Height"/> as the cap.
-    /// </summary>
-    [Parameter] public bool FillHeight { get; set; }
-    /// <summary>
     /// How tall the whole component may be, as a CSS length - the toolbar, the pager and the footer
     /// are inside the budget, and the table container scrolls in what is left. Applies in EVERY mode,
     /// paged or not, virtualized or not; <c>null</c>, <c>"auto"</c> or <c>"none"</c> removes it and the
-    /// grid grows with its rows so the page scrolls instead. Ignored when <see cref="FillHeight"/> is set.
+    /// grid grows with its rows so the page scrolls instead. Ignored when <see cref="FlareContainerBase.FillHeight"/> is set.
     /// <para>
     /// An absolute length is a CAP: a grid with fewer rows than that is as tall as its rows. A
     /// PERCENTAGE is a height rather than a cap, because a percentage cap against a content-sized
     /// parent computes to <c>none</c>; it needs an ancestor with a definite height, and falls back to
     /// content height where there is none. When the height is the layout's answer rather than a number
-    /// the page can write down, <see cref="FillHeight"/> says so without a number.
+    /// the page can write down, <see cref="FlareContainerBase.FillHeight"/> says so without a number.
     /// </para>
     /// </summary>
     [Parameter] public string? Height { get; set; } = "400px";

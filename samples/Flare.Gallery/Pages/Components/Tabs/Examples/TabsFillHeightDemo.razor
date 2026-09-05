@@ -6,9 +6,13 @@
    In an application the box is FlareLayoutContent, which already has a height of its own - so a
    full-screen page is FillHeight on the tab set and FillHeight on the grid, and no CSS. *@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareSwitch @bind-Value="_fill" Label="FillHeight on the tab set and the grid" />
+    <FlareSwitch @bind-Value="_fill" Label="FillHeight on every link of the chain" />
 
+    @* The chain in full. The outer box SUPPLIES the first height and therefore does NOT fill - in a page
+       that box is FlareLayoutContent. Everything below it spends what it was given: card, tab set, grid.
+       Miss one link and the chain collapses back to content height, which is what the switch shows. *@
     <FlarePaper Elevation="1" Style="height:24rem">
+        <FlareCard Variant="CardVariant.Text" FillHeight="_fill">
         <FlareTabs FillHeight="_fill">
             <FlareTab Label="Orders">
                 <FlareDataGrid Items="@_orders" FillHeight="_fill" Striped="true" Hoverable="true">
@@ -26,6 +30,7 @@
                 </FlareText>
             </FlareTab>
         </FlareTabs>
+        </FlareCard>
     </FlarePaper>
 </FlareStack>
 

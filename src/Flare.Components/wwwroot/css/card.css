@@ -215,3 +215,19 @@
 }
 .flare-card__content + .flare-card__actions,
 .flare-card__footer + .flare-card__actions { padding-top: 0; }
+
+/* FillHeight: a card that spends the height it was given has to pass it on, and its own layout is a
+   block of stacked parts - so it becomes a flex column and its content region takes what the media,
+   header, footer and actions leave. Without the second rule the card would be the right height with
+   its content still sized to itself, which looks identical until the content is meant to scroll. */
+.flare-card.flare-fill {
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-card.flare-fill > .flare-card__content {
+    flex: 1 1 0;
+    min-block-size: 0;
+    display: flex;
+    flex-direction: column;
+}

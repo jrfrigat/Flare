@@ -339,10 +339,15 @@ way down: a component saying "spend the height I was given rather than growing t
 Three rules of thumb:
 
 - **`FillHeight` needs an ancestor with a height.** `FlareLayoutContent FillHeight` is where a page
-  gets one. Anywhere else - a demo, a card - give the container one (`Style="height:24rem"`).
-- **Every link in the chain needs it.** A grid inside a tab panel needs `FillHeight` on the grid, on
-  the tab set *and* on the content region; one missing link resolves to `auto` and the whole chain
-  collapses to content height.
+  gets one. Anywhere else - a demo, a dialog - give the outermost box one (`Style="height:24rem"`).
+- **The box that SUPPLIES the height does not take `FillHeight`.** Filling replaces an element's own
+  height with a share of its parent's, so setting both on the same box means the height you wrote is
+  the one that loses.
+- **Every link below it needs it.** A grid in a tab set in a card needs `FillHeight` on the grid, on
+  the tab set, on the card *and* on the content region; one missing link resolves to `auto` and the
+  whole chain collapses to content height. The switch is on the container family - `FlareCard`,
+  `FlarePaper`, `FlareStack`, `FlareGrid`, `FlareCol`, `FlareTabs`, `FlareDataGrid`,
+  `FlareLayoutContent` - and means the same thing on all of them.
 - **`Height` and `FillHeight` are alternatives.** `Height="400px"` is a number you wrote down;
   `FillHeight` is the number the layout works out. When both are set, `FillHeight` wins.
 - **`Height` caps the WHOLE component, in every mode.** Toolbar, pager and footer are inside the

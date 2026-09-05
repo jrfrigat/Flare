@@ -105,7 +105,7 @@ public partial class FlareDataGrid<TItem>
     private string? _hoverable => _effectiveHoverable ? Css.Classes.DataGrid.Hoverable : null;
     private string? _dense => _effectiveDense ? Css.Classes.DataGrid.Dense : null;
     private string? _bordered => Bordered ? Css.Classes.DataGrid.Bordered : null;
-    private string? _fill => FillHeight ? Css.Classes.DataGrid.Fill : null;
+    private string? _fill => FillHeight ? $"{Css.Classes.Fill.Root} {Css.Classes.DataGrid.Fill}" : null;
 
     // Stable render key for a row (RowKey selector, else the item reference).
     private object _rowKey(TItem item) => RowKey?.Invoke(item) ?? item!;

@@ -155,19 +155,11 @@
 
 /* ---- FillHeight: the grid takes the height of its box instead of setting one ----
    Height is a cap measured in CSS units, which a screen-fit page cannot know: the space left over
-   under a toolbar, beside a chart, inside a tab panel is whatever the layout leaves. Fill drops the
-   cap and lets the flex chain hand the number down - the grid fills its parent, and the table
-   container takes what is left after the toolbar, the pager and the footer. `min-block-size: 0` is
-   the load-bearing half: a flex item will not shrink below its content without it, so the container
-   would grow the page rather than scroll inside it. Child combinator: a grid nested in a cell of
+   under a toolbar, beside a chart, inside a tab panel is whatever the layout leaves. Filling drops the
+   cap and lets the flex chain hand the number down; the shared `.flare-fill` is what makes the grid
+   itself spend the height, and this is the component-specific half - the table container takes what is
+   left after the toolbar, the pager and the footer. Child combinator: a grid nested in a cell of
    another one keeps its own sizing. */
-.flare-datagrid--fill {
-  /* Fills a flex parent through flex-basis and a block parent through the percentage; whichever of
-     the two applies, the other is ignored by that formatting context. */
-  flex: 1 1 0;
-  block-size: 100%;
-  min-block-size: 0;
-}
 .flare-datagrid--fill > .flare-datagrid__wrapper {
   flex: 1 1 0;
 }

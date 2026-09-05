@@ -59,6 +59,28 @@ All notable changes to Flare are documented here. This project adheres to
   `ItemsProvider` the choice stays yours, since deciding would mean fetching the whole set to find out
   how big it is.
 
+### Added
+
+- **`FillHeight` is one contract on the container family, not a parameter three components happen to
+  have.** A screen-fit page is a chain of definite heights, and every container between the shell and
+  the thing that scrolls has to spend the height it was given rather than growing to its content. The
+  switch existed on `FlareDataGrid`, `FlareTabs` and `FlareLayoutContent` and nowhere else, so a grid
+  inside a card, a stack or a layout column had no way to participate and the documentation's own
+  advice was a magic number in an inline style.
+
+  `FlareContainerBase` now declares the parameter once - same name, same default, same documentation -
+  and `FlareCard`, `FlarePaper`, `FlareStack`, `FlareGrid` and `FlareCol` join the three that had it.
+  The shared half of the behaviour is one CSS rule (`.flare-fill`); the half only a component knows -
+  a tab set's panels, a data grid's table container, a card's content region - stays with that
+  component. A guard test asserts every member of the family inherits the parameter rather than
+  re-declaring it, which is how the chain came to cover three components and stop.
+
+  Measured end to end in the Gallery: a box of `24rem`, a filling card inside it at 384px, a tab set at
+  352px, a grid at 289px whose table container scrolls 7843px of rows in 272px - and no application
+  CSS anywhere in the chain. One rule is worth writing down: the box that SUPPLIES the first height
+  does not take `FillHeight`, because filling replaces an element's own height with a share of its
+  parent's.
+
 ### Fixed
 
 - **A row's expanded detail follows the row, not the row's position.** Expansion was stored by index

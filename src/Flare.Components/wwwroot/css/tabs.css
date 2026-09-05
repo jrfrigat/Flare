@@ -325,19 +325,13 @@
    `auto` and collapsed to its content. The failure is worse than short: give that collapsed child
    `overflow`, and a zero-height box with a scrollbar clips everything away.
 
-   Three declarations do it, and all three have to be here rather than in the page: the container
-   takes the free space, `min-block-size: 0` lets it shrink below its content (a flex item refuses
-   to by default, which is what makes an inner scroller grow the page instead of scrolling), and the
-   visible panel repeats both so the chain reaches whatever the panel holds. The `:not()` keeps the
-   inactive panels hidden - `display: flex` here would otherwise outrank their `display: none`.
-   Child combinators throughout: a nested tab set inside a panel decides its own fill. */
-.flare-tabs--fill {
-  /* Fills a flex parent through flex-basis and a block parent through the percentage; whichever of
-     the two applies, the other is ignored by that formatting context. */
-  flex: 1 1 0;
-  block-size: 100%;
-  min-block-size: 0;
-}
+   The tab set's own share of the height is the shared `.flare-fill`; what follows is the part only a
+   tab set knows: the panels container takes the free space, `min-block-size: 0` lets it shrink below
+   its content (a flex item refuses to by default, which is what makes an inner scroller grow the page
+   instead of scrolling), and the visible panel repeats both so the chain reaches whatever the panel
+   holds. The `:not()` keeps the inactive panels hidden - `display: flex` here would otherwise outrank
+   their `display: none`. Child combinators throughout: a nested tab set inside a panel decides its
+   own fill. */
 .flare-tabs--fill > .flare-tabs__panels {
   flex: 1 1 0;
   min-block-size: 0;

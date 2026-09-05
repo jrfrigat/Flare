@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareContainerBase
 @using Microsoft.AspNetCore.Components.Web
 
 @if (Href is not null)
@@ -81,7 +81,7 @@ else
     }
 
     private string CssClass => BuildCssClass(
-        _variantClass, _sizeClass,
+        _variantClass, _sizeClass, FillClass,
         Compact ? Css.Classes.Card.Compact : string.Empty,
         _interactive ? Css.Classes.Card.Clickable : string.Empty,
         Selectable ? Css.Classes.Card.Selectable : string.Empty,
