@@ -128,7 +128,15 @@
     {
         base.OnParametersSet();
 
-        _anchorClass = $"flare-drawer--{Anchor.ToString().ToLowerInvariant()}";
+        // Named, not built: Flare.CssAudit can only match a name it can read, and a name assembled
+        // from an enum is one it cannot.
+        _anchorClass = Anchor switch
+        {
+            DrawerAnchor.Right => Css.Classes.Drawer.Right,
+            DrawerAnchor.Top => Css.Classes.Drawer.Top,
+            DrawerAnchor.Bottom => Css.Classes.Drawer.Bottom,
+            _ => Css.Classes.Drawer.Left,
+        };
 
         // The overlay variants slide in on a transform; the in-flow ones grow from zero width. Those
         // are different CSS mechanisms, so "open" is a different class. Responsive is BOTH: which

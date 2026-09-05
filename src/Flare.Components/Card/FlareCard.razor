@@ -75,10 +75,22 @@ else
         get
         {
             if (Elevation is not { } level) return Style;
-            var shadow = $"{Css.Tokens.CardField.Elevation}:var(--flare-elevation-{Math.Clamp(level, 0, 5)});";
+            var shadow = $"{Css.Tokens.CardField.Elevation}:var({ElevationToken(level)});";
             return string.IsNullOrEmpty(Style) ? shadow : shadow + Style;
         }
     }
+
+    // Named, not built: an elevation level interpolated into a token name is a name the CSS audit
+    // cannot read, so it can neither confirm the level exists nor catch one that does not.
+    private static string ElevationToken(int level) => Math.Clamp(level, 0, 5) switch
+    {
+        1 => Css.Tokens.Elevation.Level1,
+        2 => Css.Tokens.Elevation.Level2,
+        3 => Css.Tokens.Elevation.Level3,
+        4 => Css.Tokens.Elevation.Level4,
+        5 => Css.Tokens.Elevation.Level5,
+        _ => Css.Tokens.Elevation.Level0,
+    };
 
     private string CssClass => BuildCssClass(
         _variantClass, _sizeClass, FillClass,

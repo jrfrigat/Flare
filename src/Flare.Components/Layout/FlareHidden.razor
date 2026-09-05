@@ -23,15 +23,77 @@
     // so with no breakpoint set the component is a plain pass-through wrapper.
     protected override string ComponentCssClass => "";
 
-    private string _hiddenClass
+    // Named, not built. Assembling the class from the enum could also assemble one that does not
+    // exist - "below xs" is below the smallest tier and "above xxl" is above the largest, so neither
+    // has a rule - and the element then simply stayed visible with nothing to say why. Spelling the
+    // names out makes the gap explicit here AND lets Flare.CssAudit check every one of them.
+    private string _hiddenClass => Invert
+        ? (Only.HasValue ? InvertOnly(Only.Value)
+           : Below.HasValue ? InvertBelow(Below.Value)
+           : Above.HasValue ? InvertAbove(Above.Value) : string.Empty)
+        : (Only.HasValue ? Only_(Only.Value)
+           : Below.HasValue ? Below_(Below.Value)
+           : Above.HasValue ? Above_(Above.Value) : string.Empty);
+
+    private static string Only_(Breakpoint bp) => bp switch
     {
-        get
-        {
-            var inv = Invert ? "invert-" : string.Empty;
-            if (Only.HasValue)  return $"flare-hidden--{inv}only-{Only.Value.ToString().ToLowerInvariant()}";
-            if (Below.HasValue) return $"flare-hidden--{inv}below-{Below.Value.ToString().ToLowerInvariant()}";
-            if (Above.HasValue) return $"flare-hidden--{inv}above-{Above.Value.ToString().ToLowerInvariant()}";
-            return string.Empty;
-        }
-    }
+        Breakpoint.Xs => Css.Classes.Hidden.OnlyXs,
+        Breakpoint.Sm => Css.Classes.Hidden.OnlySm,
+        Breakpoint.Md => Css.Classes.Hidden.OnlyMd,
+        Breakpoint.Lg => Css.Classes.Hidden.OnlyLg,
+        Breakpoint.Xl => Css.Classes.Hidden.OnlyXl,
+        _ => Css.Classes.Hidden.OnlyXxl,
+    };
+
+    // Below the smallest tier is nothing, so there is no rule and nothing to emit.
+    private static string Below_(Breakpoint bp) => bp switch
+    {
+        Breakpoint.Sm => Css.Classes.Hidden.BelowSm,
+        Breakpoint.Md => Css.Classes.Hidden.BelowMd,
+        Breakpoint.Lg => Css.Classes.Hidden.BelowLg,
+        Breakpoint.Xl => Css.Classes.Hidden.BelowXl,
+        Breakpoint.Xxl => Css.Classes.Hidden.BelowXxl,
+        _ => string.Empty,
+    };
+
+    // Above the largest tier is nothing, likewise.
+    private static string Above_(Breakpoint bp) => bp switch
+    {
+        Breakpoint.Xs => Css.Classes.Hidden.AboveXs,
+        Breakpoint.Sm => Css.Classes.Hidden.AboveSm,
+        Breakpoint.Md => Css.Classes.Hidden.AboveMd,
+        Breakpoint.Lg => Css.Classes.Hidden.AboveLg,
+        Breakpoint.Xl => Css.Classes.Hidden.AboveXl,
+        _ => string.Empty,
+    };
+
+    private static string InvertOnly(Breakpoint bp) => bp switch
+    {
+        Breakpoint.Xs => Css.Classes.Hidden.InvertOnlyXs,
+        Breakpoint.Sm => Css.Classes.Hidden.InvertOnlySm,
+        Breakpoint.Md => Css.Classes.Hidden.InvertOnlyMd,
+        Breakpoint.Lg => Css.Classes.Hidden.InvertOnlyLg,
+        Breakpoint.Xl => Css.Classes.Hidden.InvertOnlyXl,
+        _ => Css.Classes.Hidden.InvertOnlyXxl,
+    };
+
+    private static string InvertBelow(Breakpoint bp) => bp switch
+    {
+        Breakpoint.Sm => Css.Classes.Hidden.InvertBelowSm,
+        Breakpoint.Md => Css.Classes.Hidden.InvertBelowMd,
+        Breakpoint.Lg => Css.Classes.Hidden.InvertBelowLg,
+        Breakpoint.Xl => Css.Classes.Hidden.InvertBelowXl,
+        Breakpoint.Xxl => Css.Classes.Hidden.InvertBelowXxl,
+        _ => string.Empty,
+    };
+
+    private static string InvertAbove(Breakpoint bp) => bp switch
+    {
+        Breakpoint.Xs => Css.Classes.Hidden.InvertAboveXs,
+        Breakpoint.Sm => Css.Classes.Hidden.InvertAboveSm,
+        Breakpoint.Md => Css.Classes.Hidden.InvertAboveMd,
+        Breakpoint.Lg => Css.Classes.Hidden.InvertAboveLg,
+        Breakpoint.Xl => Css.Classes.Hidden.InvertAboveXl,
+        _ => string.Empty,
+    };
 }

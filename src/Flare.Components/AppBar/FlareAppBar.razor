@@ -43,6 +43,15 @@
     protected override string ComponentCssClass => Css.Classes.AppBar.Root;
 
     private string _stickyClass     => Sticky ? Css.Classes.AppBar.Sticky : string.Empty;
-    private string _elevationClass  => $"flare-appbar--elevation-{Math.Clamp(Elevation, 0, 5)}";
+    // Named, not built - see FlarePaper: the CSS audit can only check a name it can read.
+    private string _elevationClass => Math.Clamp(Elevation, 0, 5) switch
+    {
+        1 => Css.Classes.AppBar.Elevation1,
+        2 => Css.Classes.AppBar.Elevation2,
+        3 => Css.Classes.AppBar.Elevation3,
+        4 => Css.Classes.AppBar.Elevation4,
+        5 => Css.Classes.AppBar.Elevation5,
+        _ => Css.Classes.AppBar.Elevation0,
+    };
     private string _denseClass      => Dense ? Css.Classes.AppBar.Dense : string.Empty;
 }

@@ -24,7 +24,17 @@
 
     protected override string ComponentCssClass => Css.Classes.Paper.Root;
 
-    private string _elevationClass => Outlined ? Css.Classes.Paper.Elevation0 : $"flare-paper--elevation-{Math.Clamp(Elevation, 0, 5)}";
+    // Named, not built: a class assembled from a number is invisible to the CSS audit, which then
+    // cannot tell that every level a component can ask for actually exists.
+    private string _elevationClass => Outlined ? Css.Classes.Paper.Elevation0 : Math.Clamp(Elevation, 0, 5) switch
+    {
+        1 => Css.Classes.Paper.Elevation1,
+        2 => Css.Classes.Paper.Elevation2,
+        3 => Css.Classes.Paper.Elevation3,
+        4 => Css.Classes.Paper.Elevation4,
+        5 => Css.Classes.Paper.Elevation5,
+        _ => Css.Classes.Paper.Elevation0,
+    };
     private string _squareClass    => Square ? Css.Classes.Paper.Square : string.Empty;
     private string _outlinedClass  => Outlined ? Css.Classes.Paper.Outlined : string.Empty;
 
