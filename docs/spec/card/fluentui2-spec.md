@@ -3,7 +3,7 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-card`
 (`useCardStyles.styles.ts`, плюс `useCardHeaderStyles`, `useCardFooterStyles`, `useCardPreviewStyles`).
-В колонке `Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешённое значение.
+В колонке `Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешенное значение.
 Hover/Pressed применяются только к интерактивной карточке (`interactive`/`selectable`); `:active` в CSS
 соответствует Pressed. Граница карточки рисуется псевдоэлементом `::after` (`strokeWidthThin`).
 
@@ -414,5 +414,5 @@ Hover/Pressed применяются только к интерактивной 
 
 # Card - Motion
 
-Исходник `@fluentui/react-card` не задаёт токены перехода (`transition`) для смены состояний
+Исходник `@fluentui/react-card` не задает токены перехода (`transition`) для смены состояний
 (hover/pressed опираются на изменение фоновых/теневых токенов без явной анимации).

@@ -50,7 +50,7 @@
 # Tooltip - Shadow (контекст: Default, Light/Dark)
 
 `filter: drop-shadow(0 0 2px <ambient>) drop-shadow(0 4px 8px <key>)`. Значения цвета -
-разрешённые shadow-color токены. Столбец "shadow16 (box-shadow эквивалент)" приведён как
+разрешенные shadow-color токены. Столбец "shadow16 (box-shadow эквивалент)" приведен как
 ближайший готовый elevation-токен для справки.
 
 | Display Name | Token Name | Value (Light) | Value (Dark) |

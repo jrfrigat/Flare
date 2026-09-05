@@ -292,10 +292,10 @@
     <value>Значок (Badge)</value>
   </data>
   <data name="Badge_Subtitle" xml:space="preserve">
-    <value>FlareBadge для счётчиков, точек и автономных статус-меток.</value>
+    <value>FlareBadge для счетчиков, точек и автономных статус-меток.</value>
   </data>
   <data name="Badge_Basic" xml:space="preserve">
-    <value>Счётчик, переполнение и точка</value>
+    <value>Счетчик, переполнение и точка</value>
   </data>
   <data name="Badge_Standalone" xml:space="preserve">
     <value>Автономные метки и цвета</value>
@@ -319,7 +319,7 @@
     <value>Размеры, цвета и клик</value>
   </data>
   <data name="Chip_Disabled" xml:space="preserve">
-    <value>Отключённые</value>
+    <value>Отключенные</value>
   </data>
   <data name="BottomNav_Title" xml:space="preserve">
     <value>Нижняя навигация</value>
@@ -331,10 +331,10 @@
     <value>Базовая нижняя навигация</value>
   </data>
   <data name="BottomNav_Shell" xml:space="preserve">
-    <value>Оболочка приложения: закреплённая панель резервирует место под себя</value>
+    <value>Оболочка приложения: закрепленная панель резервирует место под себя</value>
   </data>
   <data name="BottomNav_Disabled" xml:space="preserve">
-    <value>Отключённый элемент и своя aria-label</value>
+    <value>Отключенный элемент и своя aria-label</value>
   </data>
   <data name="Breadcrumb_Title" xml:space="preserve">
     <value>Хлебные крошки</value>
@@ -349,7 +349,7 @@
     <value>Разделитель, отключение и aria-label</value>
   </data>
   <data name="Breadcrumb_Custom" xml:space="preserve">
-    <value>Своё содержимое (ChildContent)</value>
+    <value>Свое содержимое (ChildContent)</value>
   </data>
   <data name="Breadcrumb_Collapse" xml:space="preserve">
     <value>Схлопывание длинных цепочек (MaxItems)</value>
@@ -439,7 +439,7 @@
     <value>Type, aria-pressed и отключение</value>
   </data>
   <data name="Buttons_PressMorph" xml:space="preserve">
-    <value>Морф формы (задаёт тема)</value>
+    <value>Морф формы (задает тема)</value>
   </data>
   <data name="Buttons_PressMorph_Hint" xml:space="preserve">
     <value>Нажмите и удерживайте. Едут ли углы вообще - решает тема, а не кнопка: MD3 Expressive поджимает их в квадрат на время нажатия и возвращает после, сохраняя под указателем форму покоя, как того требует спека, а Fluent 2 и остальные держат одну форму и меняют только заливку. Переключите тему выше и сравните.</value>
@@ -598,7 +598,7 @@
     <value>Прокрутка</value>
   </data>
   <data name="Services_ScrollSubtitle" xml:space="preserve">
-    <value>Единый порт для наблюдения за прокруткой и управления ею: подписки с троттлингом на страницу или любой контейнер, программная прокрутка и блокировка со счётчиком ссылок.</value>
+    <value>Единый порт для наблюдения за прокруткой и управления ею: подписки с троттлингом на страницу или любой контейнер, программная прокрутка и блокировка со счетчиком ссылок.</value>
   </data>
   <data name="Services_Scroll_Offset" xml:space="preserve">
     <value>Смещение:</value>
@@ -622,7 +622,7 @@
     <value>Обе оси</value>
   </data>
   <data name="Services_Scroll_HorizontalHint" xml:space="preserve">
-    <value>Этот блок прокручивается в обе стороны, и за ним следит одна подписка на самом элементе. Всё, что ниже, вычисляет Flare, а не эта страница.</value>
+    <value>Этот блок прокручивается в обе стороны, и за ним следит одна подписка на самом элементе. Все, что ниже, вычисляет Flare, а не эта страница.</value>
   </data>
   <data name="Services_Scroll_HScroll" xml:space="preserve">
     <value>Слева:</value>
@@ -637,7 +637,7 @@
     <value>Переполнение:</value>
   </data>
   <data name="Services_Scroll_AtEdges" xml:space="preserve">
-    <value>У краёв:</value>
+    <value>У краев:</value>
   </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Группа чипов</value>
@@ -691,7 +691,7 @@
     <value>Переключатель темы</value>
   </data>
   <data name="ColorModeToggle_Subtitle" xml:space="preserve">
-    <value>FlareColorModeToggle - кнопка переключения между светлой и тёмной темой через FlareThemeProvider.</value>
+    <value>FlareColorModeToggle - кнопка переключения между светлой и темной темой через FlareThemeProvider.</value>
   </data>
   <data name="ColorModeToggle_IconOnly" xml:space="preserve">
     <value>Только иконка</value>
@@ -706,7 +706,7 @@
     <value>Замечание по использованию</value>
   </data>
   <data name="ColorModeToggle_UsageText" xml:space="preserve">
-    <value>FlareColorModeToggle требует наличия FlareThemeProvider в дереве компонентов. Переключатель читает и записывает активную тему через внедрённый IThemeService.</value>
+    <value>FlareColorModeToggle требует наличия FlareThemeProvider в дереве компонентов. Переключатель читает и записывает активную тему через внедренный IThemeService.</value>
   </data>
   <data name="ColorPicker_Title" xml:space="preserve">
     <value>Выбор цвета</value>
@@ -739,7 +739,7 @@
     <value>Вкладки документов</value>
   </data>
   <data name="Ide_DocTabs_Desc" xml:space="preserve">
-    <value>FlareDocumentTabs - вкладки в стиле редактора со значками, индикатором изменений, закрываемыми и закреплёнными вкладками и обработкой переполнения.</value>
+    <value>FlareDocumentTabs - вкладки в стиле редактора со значками, индикатором изменений, закрываемыми и закрепленными вкладками и обработкой переполнения.</value>
   </data>
   <data name="Ide_ToolPanel_Title" xml:space="preserve">
     <value>Панель инструментов</value>
@@ -769,7 +769,7 @@
     <value>Строка состояния</value>
   </data>
   <data name="Ide_StatusBar_Desc" xml:space="preserve">
-    <value>FlareStatusBar - строка из трёх секций (слева / по центру / справа) для статуса, значков и элементов управления.</value>
+    <value>FlareStatusBar - строка из трех секций (слева / по центру / справа) для статуса, значков и элементов управления.</value>
   </data>
   <data name="Ide_PropertyGrid_Title" xml:space="preserve">
     <value>Сетка свойств</value>
@@ -835,7 +835,7 @@
     <value>Предустановки фильтров</value>
   </data>
   <data name="DataGrid_FilterPresetsDesc" xml:space="preserve">
-    <value>FlareDataGridFilterPresets - список именованных предустановок расширенных фильтров; выбор одной применяет её условия к таблице.</value>
+    <value>FlareDataGridFilterPresets - список именованных предустановок расширенных фильтров; выбор одной применяет ее условия к таблице.</value>
   </data>
   <data name="DataGrid_MultiSortTitle" xml:space="preserve">
     <value>Множественная сортировка</value>
@@ -877,7 +877,7 @@
     <value>Управление таблицей извне</value>
   </data>
   <data name="DataGrid_ExternalControlDesc" xml:space="preserve">
-    <value>Передайте таблице DataGridContext - и любой элемент вокруг неё, встроенный или ваш собственный, сможет читать, менять и отслеживать её состояние. Свои компоненты наследуют FlareDataGridControl и объявляют, на какие изменения перерисовываться.</value>
+    <value>Передайте таблице DataGridContext - и любой элемент вокруг нее, встроенный или ваш собственный, сможет читать, менять и отслеживать ее состояние. Свои компоненты наследуют FlareDataGridControl и объявляют, на какие изменения перерисовываться.</value>
   </data>
   <data name="DataGrid_ExternalSearch" xml:space="preserve">
     <value>Поиск по всем колонкам</value>
@@ -904,7 +904,7 @@
     <value>Без сортировки</value>
   </data>
   <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
-    <value>Закреплённые колонки</value>
+    <value>Закрепленные колонки</value>
   </data>
   <data name="DataGrid_FrozenColumnsDesc" xml:space="preserve">
     <value>Закрепляйте колонки у левого края через Frozen или у правого через FrozenRight; обе стороны складываются с накопительными отступами.</value>
@@ -943,7 +943,7 @@
     <value>Размер, пагинация и липкая шапка</value>
   </data>
   <data name="DataGrid_ScrollModeDesc" xml:space="preserve">
-    <value>Три независимых вопроса. Height ограничивает весь компонент, поэтому грид прокручивается всегда, когда строки не помещаются - с пагинацией или без. PageSize только нарезает строки: 0 кладёт все строки на одну страницу. StickyHeader решает, едет ли шапка вместе с ними.</value>
+    <value>Три независимых вопроса. Height ограничивает весь компонент, поэтому грид прокручивается всегда, когда строки не помещаются - с пагинацией или без. PageSize только нарезает строки: 0 кладет все строки на одну страницу. StickyHeader решает, едет ли шапка вместе с ними.</value>
   </data>
   <data name="DataGrid_CompositeCardTitle" xml:space="preserve">
     <value>Составная карточка</value>
@@ -952,7 +952,7 @@
     <value>CompositeMode.Card складывает те же поля внутри одной ячейки (карточка на запись).</value>
   </data>
   <data name="DataGrid_PinnedRowsTitle" xml:space="preserve">
-    <value>Закреплённые строки</value>
+    <value>Закрепленные строки</value>
   </data>
   <data name="DataGrid_PinnedRowsDesc" xml:space="preserve">
     <value>PinnedTopRows / PinnedBottomRows остаются видимыми над и под прокручиваемыми данными, вне сортировки, фильтрации и пагинации (например, выделенная строка и строка итогов).</value>
@@ -985,7 +985,7 @@
     <value>Типы колонок</value>
   </data>
   <data name="DataGrid_ColumnTypesDesc" xml:space="preserve">
-    <value>Рендеринг с учётом типа: булево значение как значок флажка, даты и числа с учётом культуры и формата через FlareColumn.Type/Format. Тип определяется автоматически, если не задан; редакторы фильтров и выравнивание текста (числа вправо, булевы по центру) следуют типу колонки. Переопределяется для каждой колонки через FlareColumn.Align.</value>
+    <value>Рендеринг с учетом типа: булево значение как значок флажка, даты и числа с учетом культуры и формата через FlareColumn.Type/Format. Тип определяется автоматически, если не задан; редакторы фильтров и выравнивание текста (числа вправо, булевы по центру) следуют типу колонки. Переопределяется для каждой колонки через FlareColumn.Align.</value>
   </data>
   <data name="DataGrid_QueryableTitle" xml:space="preserve">
     <value>Queryable (IQueryable / EF Core)</value>
@@ -1027,7 +1027,7 @@
     <value>Экспорт</value>
   </data>
   <data name="DataGrid_ExportDesc" xml:space="preserve">
-    <value>Компонент DataGridExport с экспортёрами CSV, JSON, TSV, Excel.</value>
+    <value>Компонент DataGridExport с экспортерами CSV, JSON, TSV, Excel.</value>
   </data>
   <data name="DataGrid_FooterPagerTitle" xml:space="preserve">
     <value>Подвал и отдельный пейджер</value>
@@ -1063,7 +1063,7 @@
     <value>Отменено</value>
   </data>
   <data name="Dialog_ProfileSaved" xml:space="preserve">
-    <value>Профиль сохранён: {0}</value>
+    <value>Профиль сохранен: {0}</value>
   </data>
   <data name="Dialog_Inline" xml:space="preserve">
     <value>Встроенный</value>
@@ -1096,13 +1096,13 @@
     <value>Открыть расширенный диалог</value>
   </data>
   <data name="Dialog_AdvancedBody" xml:space="preserve">
-    <value>Перетащите за заголовок, измените размер за нижний правый угол или закройте крестиком. Включите "несохранённые изменения", чтобы блокировать случайное закрытие.</value>
+    <value>Перетащите за заголовок, измените размер за нижний правый угол или закройте крестиком. Включите "несохраненные изменения", чтобы блокировать случайное закрытие.</value>
   </data>
   <data name="Dialog_UnsavedToggle" xml:space="preserve">
-    <value>Имитировать несохранённые изменения</value>
+    <value>Имитировать несохраненные изменения</value>
   </data>
   <data name="Dialog_UnsavedBlocked" xml:space="preserve">
-    <value>Заблокировано: есть несохранённые изменения</value>
+    <value>Заблокировано: есть несохраненные изменения</value>
   </data>
   <data name="Drawer_Title" xml:space="preserve">
     <value>Боковая панель</value>
@@ -1144,7 +1144,7 @@
     <value>Вариант-кнопка (компактный триггер)</value>
   </data>
   <data name="FileUpload_DropZoneCustom" xml:space="preserve">
-    <value>Зона перетаскивания - своё содержимое</value>
+    <value>Зона перетаскивания - свое содержимое</value>
   </data>
   <data name="FileUpload_Multiple" xml:space="preserve">
     <value>Множественный выбор</value>
@@ -1177,7 +1177,7 @@
     <value>Иконка</value>
   </data>
   <data name="Icon_Subtitle" xml:space="preserve">
-    <value>FlareIcon - обёртка над Material Symbols Rounded.</value>
+    <value>FlareIcon - обертка над Material Symbols Rounded.</value>
   </data>
   <data name="Icon_Basic" xml:space="preserve">
     <value>Основной</value>
@@ -1213,7 +1213,7 @@
     <value>Открой меня</value>
   </data>
   <data name="Icon_MorphScopeBody" xml:space="preserve">
-    <value>Шеврон в заголовке - это собственный хром Flare. Он берёт режим из области: в этой разметке нет ни одного параметра иконки.</value>
+    <value>Шеврон в заголовке - это собственный хром Flare. Он берет режим из области: в этой разметке нет ни одного параметра иконки.</value>
   </data>
   <data name="Image_Title" xml:space="preserve">
     <value>Изображение</value>
@@ -1282,10 +1282,10 @@
     <value>Флажок (Checkbox)</value>
   </data>
   <data name="Checkbox_Subtitle" xml:space="preserve">
-    <value>FlareCheckbox - флажок с тремя состояниями (да/нет/неопределённо).</value>
+    <value>FlareCheckbox - флажок с тремя состояниями (да/нет/неопределенно).</value>
   </data>
   <data name="Checkbox_Basic" xml:space="preserve">
-    <value>Отмечен, неопределённый и отключён</value>
+    <value>Отмечен, неопределенный и отключен</value>
   </data>
   <data name="Switch_Title" xml:space="preserve">
     <value>Переключатель (Switch)</value>
@@ -1429,7 +1429,7 @@
     <value>Контейнер (Container)</value>
   </data>
   <data name="Container_Subtitle" xml:space="preserve">
-    <value>FlareContainer - центрированная обёртка контента с макс. шириной.</value>
+    <value>FlareContainer - центрированная обертка контента с макс. шириной.</value>
   </data>
   <data name="Divider_Title" xml:space="preserve">
     <value>Разделитель (Divider)</value>
@@ -1516,19 +1516,19 @@
     <value>Плотный / произвольная высота app bar</value>
   </data>
   <data name="LayoutShell_DensityDesc" xml:space="preserve">
-    <value>Dense рисует более узкий app bar (48px вместо стандартных 64px) для оконных / IDE-подобных оболочек; Height задаёт любую CSS-длину. Оба задают токен --flare-layout-appbar-height, так что темы тоже могут его переопределить.</value>
+    <value>Dense рисует более узкий app bar (48px вместо стандартных 64px) для оконных / IDE-подобных оболочек; Height задает любую CSS-длину. Оба задают токен --flare-layout-appbar-height, так что темы тоже могут его переопределить.</value>
   </data>
   <data name="Link_Title" xml:space="preserve">
     <value>Ссылка</value>
   </data>
   <data name="Link_Subtitle" xml:space="preserve">
-    <value>FlareLink с вариантами цвета и подчёркивания.</value>
+    <value>FlareLink с вариантами цвета и подчеркивания.</value>
   </data>
   <data name="Link_Colors" xml:space="preserve">
     <value>Цвета</value>
   </data>
   <data name="Link_Underline" xml:space="preserve">
-    <value>Подчёркивание</value>
+    <value>Подчеркивание</value>
   </data>
   <data name="Link_States" xml:space="preserve">
     <value>Target, title и отключение</value>
@@ -1606,7 +1606,7 @@
     <value>На этой странице</value>
   </data>
   <data name="OnThisPage_Subtitle" xml:space="preserve">
-    <value>FlareOnThisPage - оглавление со scroll-spy, которое собирает (и авто-создаёт) якоря страницы.</value>
+    <value>FlareOnThisPage - оглавление со scroll-spy, которое собирает (и авто-создает) якоря страницы.</value>
   </data>
   <data name="OnThisPage_Demo" xml:space="preserve">
     <value>Оглавление с авто-якорями</value>
@@ -1618,10 +1618,10 @@
     <value>Оверлей</value>
   </data>
   <data name="Overlay_Subtitle" xml:space="preserve">
-    <value>FlareOverlay - полноэкранная подложка со светлым и тёмным вариантами.</value>
+    <value>FlareOverlay - полноэкранная подложка со светлым и темным вариантами.</value>
   </data>
   <data name="Overlay_Overlay" xml:space="preserve">
-    <value>Тёмный и локальный оверлей</value>
+    <value>Темный и локальный оверлей</value>
   </data>
   <data name="Overlay_Light" xml:space="preserve">
     <value>Светлый фон, прозрачность и z-index</value>
@@ -1801,7 +1801,7 @@
     <value>Рейтинг</value>
   </data>
   <data name="Rating_Subtitle" xml:space="preserve">
-    <value>FlareRating - 5 звёзд, 10 звёзд, только чтение и отключённый.</value>
+    <value>FlareRating - 5 звезд, 10 звезд, только чтение и отключенный.</value>
   </data>
   <data name="Rating_ReadOnly" xml:space="preserve">
     <value>Только чтение</value>
@@ -1825,7 +1825,7 @@
     <value>FlareSelect - стилизованный список с шаблонами пунктов, группировкой и валидацией.</value>
   </data>
   <data name="Select_Basic" xml:space="preserve">
-    <value>Базовый и отключённый</value>
+    <value>Базовый и отключенный</value>
   </data>
   <data name="Select_ItemTemplate" xml:space="preserve">
     <value>Свой шаблон пункта</value>
@@ -1855,7 +1855,7 @@
     <value>Шаблон элемента и опции</value>
   </data>
   <data name="Autocomplete_Fuzzy" xml:space="preserve">
-    <value>Ранжирование нечётким поиском</value>
+    <value>Ранжирование нечетким поиском</value>
   </data>
   <data name="SignaturePad_Title" xml:space="preserve">
     <value>Поле подписи</value>
@@ -1888,7 +1888,7 @@
     <value>Иконки начала и конца</value>
   </data>
   <data name="Slider_Steps" xml:space="preserve">
-    <value>Индикаторы шагов и пузырёк значения</value>
+    <value>Индикаторы шагов и пузырек значения</value>
   </data>
   <data name="Slider_Init" xml:space="preserve">
     <value>Якорь Init (баланс)</value>
@@ -1915,7 +1915,7 @@
     <value>Перемотка медиа</value>
   </data>
   <data name="Slider_Scrubber_Hint" xml:space="preserve">
-    <value>Полоса перемотки плеера без второго компонента: HandleOnHover убирает ползунок с глаз, пока к нему не тянутся, зона рисует буферизованный диапазон, а MouseWheel перематывает колесом. Ползунок скрывается только там, где указатель умеет наводиться: на тач-устройствах он остаётся на месте и из порядка обхода не уходит никогда.</value>
+    <value>Полоса перемотки плеера без второго компонента: HandleOnHover убирает ползунок с глаз, пока к нему не тянутся, зона рисует буферизованный диапазон, а MouseWheel перематывает колесом. Ползунок скрывается только там, где указатель умеет наводиться: на тач-устройствах он остается на месте и из порядка обхода не уходит никогда.</value>
   </data>
   <data name="Slider_Scrubber_Buffered" xml:space="preserve">
     <value>буферизовано</value>
@@ -1969,7 +1969,7 @@
     <value>Таблица</value>
   </data>
   <data name="Table_Subtitle" xml:space="preserve">
-    <value>FlareTable - стандартный, полосатый+компактный, с рамкой, прикреплённым заголовком, группировкой строк и итоговой строкой.</value>
+    <value>FlareTable - стандартный, полосатый+компактный, с рамкой, прикрепленным заголовком, группировкой строк и итоговой строкой.</value>
   </data>
   <data name="Table_Default" xml:space="preserve">
     <value>По умолчанию (с подсветкой)</value>
@@ -1981,7 +1981,7 @@
     <value>С рамкой</value>
   </data>
   <data name="Table_StickyHeader" xml:space="preserve">
-    <value>Прикреплённый заголовок</value>
+    <value>Прикрепленный заголовок</value>
   </data>
   <data name="Table_GroupedRows" xml:space="preserve">
     <value>Группировка строк</value>
@@ -2173,13 +2173,13 @@
     <value>Ленивый рендер</value>
   </data>
   <data name="Lazy_Subtitle" xml:space="preserve">
-    <value>FlareLazy откладывает построение поддерева, пока оно не приблизится к видимой области - можно отрисовать страницу из тяжёлых элементов, а реально существовать будут только видимые.</value>
+    <value>FlareLazy откладывает построение поддерева, пока оно не приблизится к видимой области - можно отрисовать страницу из тяжелых элементов, а реально существовать будут только видимые.</value>
   </data>
   <data name="Lazy_Defer" xml:space="preserve">
     <value>Отложенный рендер по прокрутке</value>
   </data>
   <data name="Lazy_Defer_Desc" xml:space="preserve">
-    <value>Дерево компонентов каждой панели строится только при приближении к видимой области. Следите, как растёт счётчик смонтированных при прокрутке.</value>
+    <value>Дерево компонентов каждой панели строится только при приближении к видимой области. Следите, как растет счетчик смонтированных при прокрутке.</value>
   </data>
   <data name="Lazy_DataLoad" xml:space="preserve">
     <value>Ленивая загрузка данных</value>
@@ -2251,7 +2251,7 @@
     <value>Нижний лист</value>
   </data>
   <data name="Color_RolesDesc" xml:space="preserve">
-    <value>Каждый компонент с цветом принимает один параметр Color типа FlareColor. Семантическая роль рендерится через общий кэшируемый CSS-класс и остаётся тема-зависимой в Material Design 3 и Fluent UI 2.</value>
+    <value>Каждый компонент с цветом принимает один параметр Color типа FlareColor. Семантическая роль рендерится через общий кэшируемый CSS-класс и остается тема-зависимой в Material Design 3 и Fluent UI 2.</value>
   </data>
   <data name="Color_UsageTitle" xml:space="preserve">
     <value>Применение цвета в коде</value>
@@ -2302,7 +2302,7 @@
     <value>Панель навигации</value>
   </data>
   <data name="Nav_Drawer_Desc" xml:space="preserve">
-    <value>Выберите вид свёрнутой панели: подпись под каждой иконкой или только иконки.</value>
+    <value>Выберите вид свернутой панели: подпись под каждой иконкой или только иконки.</value>
   </data>
   <data name="Nav_Rail_Labeled" xml:space="preserve">
     <value>С подписями</value>
@@ -2335,7 +2335,7 @@
     <value>Сгенерировать палитру из цвета</value>
   </data>
   <data name="Theming_GenerateDesc" xml:space="preserve">
-    <value>Выберите бренд-цвет; Palette.FromColors выведет полную палитру light + dark (бренд-роли, тонированные нейтрали, читаемые on-цвета) и применит её на лету.</value>
+    <value>Выберите бренд-цвет; Palette.FromColors выведет полную палитру light + dark (бренд-роли, тонированные нейтрали, читаемые on-цвета) и применит ее на лету.</value>
   </data>
   <data name="Theming_GenerateBtn" xml:space="preserve">
     <value>Сгенерировать и применить</value>
@@ -2344,10 +2344,10 @@
     <value>Локальная тема (FlareThemeScope)</value>
   </data>
   <data name="Theming_ScopeDesc" xml:space="preserve">
-    <value>FlareThemeScope меняет тему только для своего поддерева. Любая неуказанная ось наследуется от внешней темы - здесь переопределён только Mode, поэтому этот островок всегда тёмный (или светлый) независимо от темы приложения.</value>
+    <value>FlareThemeScope меняет тему только для своего поддерева. Любая неуказанная ось наследуется от внешней темы - здесь переопределен только Mode, поэтому этот островок всегда темный (или светлый) независимо от темы приложения.</value>
   </data>
   <data name="Theming_ScopeDark" xml:space="preserve">
-    <value>Всегда тёмный островок</value>
+    <value>Всегда темный островок</value>
   </data>
   <data name="Theming_ScopeLight" xml:space="preserve">
     <value>Всегда светлый островок</value>
@@ -2359,7 +2359,7 @@
     <value>Светлая</value>
   </data>
   <data name="Theme_ModeDark" xml:space="preserve">
-    <value>Тёмная</value>
+    <value>Темная</value>
   </data>
   <data name="Theme_ModeAuto" xml:space="preserve">
     <value>Авто</value>
@@ -2410,7 +2410,7 @@
     <value>Оберните в провайдер темы</value>
   </data>
   <data name="GettingStarted_ThemeProviderDesc" xml:space="preserve">
-    <value>Оберните роутер в FlareThemeProvider. Автоматический тёмный режим включён по умолчанию (следит за prefers-color-scheme); отключить можно через RespectSystemColorScheme="false".</value>
+    <value>Оберните роутер в FlareThemeProvider. Автоматический темный режим включен по умолчанию (следит за prefers-color-scheme); отключить можно через RespectSystemColorScheme="false".</value>
   </data>
   <data name="GettingStarted_GlobalImports" xml:space="preserve">
     <value>Глобальные using</value>
@@ -2455,10 +2455,10 @@
     <value>Активная</value>
   </data>
   <data name="Theming_AutoDarkMode" xml:space="preserve">
-    <value>Автоматический тёмный режим</value>
+    <value>Автоматический темный режим</value>
   </data>
   <data name="Theming_AutoDarkModeDesc" xml:space="preserve">
-    <value>FlareThemeProvider по умолчанию имеет RespectSystemColorScheme="true". Если тема не была выбрана вручную, провайдер подписывается на медиазапрос prefers-color-scheme через matchMedia. Если пользователь меняет оформление системы во время работы приложения, тема автоматически переключается между зарегистрированными светлым и тёмным вариантами - без перезагрузки страницы.</value>
+    <value>FlareThemeProvider по умолчанию имеет RespectSystemColorScheme="true". Если тема не была выбрана вручную, провайдер подписывается на медиазапрос prefers-color-scheme через matchMedia. Если пользователь меняет оформление системы во время работы приложения, тема автоматически переключается между зарегистрированными светлым и темным вариантами - без перезагрузки страницы.</value>
   </data>
   <data name="Theming_AutoDarkModeNote" xml:space="preserve">
     <value>После того как пользователь вручную выбирает тему (сохраняется в хранилище), автопереключение отключается для данной сессии до очистки хранилища.</value>
@@ -2470,7 +2470,7 @@
     <value>Все компоненты Flare используют CSS-переменные (--flare-*). При вызове ThemeService.SetThemeAsync(id) один вызов JavaScript обновляет все значения токенов в корне документа - без повторного рендеринга компонентов и перезагрузки страницы.</value>
   </data>
   <data name="Theming_CustomThemeDesc" xml:space="preserve">
-    <value>Чтобы создать свою тему, реализуйте интерфейс ITheme и заполните ThemeTokenSet значениями токенов. Назначьте её темой по умолчанию через AddFlare(opts =&gt; opts.DefaultTheme = new MyTheme()) или зарегистрируйте при старте как дополнительную выбираемую тему через IThemeService.RegisterTheme(new MyTheme()).</value>
+    <value>Чтобы создать свою тему, реализуйте интерфейс ITheme и заполните ThemeTokenSet значениями токенов. Назначьте ее темой по умолчанию через AddFlare(opts =&gt; opts.DefaultTheme = new MyTheme()) или зарегистрируйте при старте как дополнительную выбираемую тему через IThemeService.RegisterTheme(new MyTheme()).</value>
   </data>
   <data name="Theming_CreateTheme" xml:space="preserve">
     <value>Создание своей темы</value>
@@ -2656,7 +2656,7 @@
     <value>Только иконка</value>
   </data>
   <data name="ToggleButton_SizesDisabled" xml:space="preserve">
-    <value>Размеры и отключённое состояние</value>
+    <value>Размеры и отключенное состояние</value>
   </data>
   <data name="ToggleButton_Group" xml:space="preserve">
     <value>Группа переключателей</value>
@@ -2731,7 +2731,7 @@
     <value>С подписью</value>
   </data>
   <data name="AvatarGroup_Subtitle" xml:space="preserve">
-    <value>FlareAvatarGroup - группа перекрывающихся аватаров со счётчиком остатка.</value>
+    <value>FlareAvatarGroup - группа перекрывающихся аватаров со счетчиком остатка.</value>
   </data>
   <data name="AvatarGroup_BasicGroup" xml:space="preserve">
     <value>Обычная группа</value>
@@ -2753,7 +2753,7 @@
   <data name="IconButton_Title" xml:space="preserve"><value>Кнопка-иконка</value></data>
   <data name="IconButton_Subtitle" xml:space="preserve"><value>Компактные кнопки только с иконкой: standard, filled, tonal и outlined.</value></data>
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Группа кнопок</value></data>
-  <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Связанные наборы кнопок с общими variant, color и size. В теме MD3 Expressive сегменты разделены зазором со скруглёнными внутренними углами и превращаются в капсулу при взаимодействии.</value></data>
+  <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Связанные наборы кнопок с общими variant, color и size. В теме MD3 Expressive сегменты разделены зазором со скругленными внутренними углами и превращаются в капсулу при взаимодействии.</value></data>
   <data name="ButtonGroup_Connected" xml:space="preserve"><value>Стандартная и связанная</value></data>
   <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Сворачивание</value></data>
   <data name="ButtonGroup_Basic" xml:space="preserve"><value>Базовый</value></data>
@@ -2814,9 +2814,9 @@
   <data name="Services_DynamicTrack" xml:space="preserve"><value>Midnight Drive</value></data>
   <data name="Services_DynamicArtist" xml:space="preserve"><value>The Flares</value></data>
   <data name="Services_ScopeTitle" xml:space="preserve"><value>Локальная тема</value></data>
-  <data name="Services_ScopeSubtitle" xml:space="preserve"><value>FlareThemeScope перетемизирует поддерево. Одни и те же компоненты в разных темах, палитрах и режимах - всё на одной странице.</value></data>
+  <data name="Services_ScopeSubtitle" xml:space="preserve"><value>FlareThemeScope перетемизирует поддерево. Одни и те же компоненты в разных темах, палитрах и режимах - все на одной странице.</value></data>
   <data name="Services_ClipboardTitle" xml:space="preserve"><value>Сервис буфера обмена</value></data>
-  <data name="Services_ClipboardSubtitle" xml:space="preserve"><value>IFlareClipboard - копирование и чтение текста (с запасным вариантом вне защищённого контекста) без обращения к IJSRuntime.</value></data>
+  <data name="Services_ClipboardSubtitle" xml:space="preserve"><value>IFlareClipboard - копирование и чтение текста (с запасным вариантом вне защищенного контекста) без обращения к IJSRuntime.</value></data>
   <data name="Services_SnackbarTitle" xml:space="preserve"><value>Сервис снэкбара</value></data>
   <data name="Services_SnackbarSubtitle" xml:space="preserve"><value>ISnackbarService.Show(...) показывает всплывающее уведомление из любого места - severity, длительность и необязательное действие.</value></data>
   <data name="Services_DownloadTitle" xml:space="preserve"><value>Сервис скачивания</value></data>
@@ -2839,7 +2839,7 @@
   <data name="Services_VersionCheckSubtitle" xml:space="preserve"><value>IVersionCheckService периодически проверяет выход новой версии приложения и поднимает событие - сам он ничего не отображает.</value></data>
   <data name="Services_VersionCheckBody" xml:space="preserve"><value>Зарегистрируйте через AddFlareVersionCheck (периодичность, текущая версия, способ получения последней), подпишитесь на NewVersionAvailable в layout и выводите уведомление как угодно - здесь это toast.</value></data>
   <data name="Services_VersionCheckDetected" xml:space="preserve"><value>Обнаружена последняя версия:</value></data>
-  <data name="Services_VersionCheckNote" xml:space="preserve"><value>В этом демо проверка идёт каждые 10 секунд в режиме service worker: toast появится только после публикации новой сборки (меняется версия в assets-манифесте).</value></data>
+  <data name="Services_VersionCheckNote" xml:space="preserve"><value>В этом демо проверка идет каждые 10 секунд в режиме service worker: toast появится только после публикации новой сборки (меняется версия в assets-манифесте).</value></data>
   <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Текущая версия</value></data>
   <data name="Services_VersionCheckUpToDate" xml:space="preserve"><value>Актуальная версия - обновлений нет</value></data>
   <data name="Services_VersionCheckChecking" xml:space="preserve"><value>Проверка обновлений...</value></data>
@@ -2849,7 +2849,7 @@
   <data name="Services_VersionCheckUpdatedTo" xml:space="preserve"><value>Обновлено до</value></data>
   <data name="Services_VersionCheckSimNote" xml:space="preserve"><value>Демо-симуляция: локальный пробник сообщает о новой версии через пару проверок, чтобы показать полный цикл (актуально -&gt; новая версия -&gt; обновление) без публикации новой сборки.</value></data>
   <data name="Services_VersionCheckSetupTitle" xml:space="preserve"><value>Настройка: чтобы автообновление работало полностью</value></data>
-  <data name="Services_VersionCheckSetupIntro" xml:space="preserve"><value>В режиме service worker сервис сам регистрирует worker и применяет обновление. От вас нужны только сам PWA service worker, одна небольшая правка в нём и корректные заголовки кэширования на хосте.</value></data>
+  <data name="Services_VersionCheckSetupIntro" xml:space="preserve"><value>В режиме service worker сервис сам регистрирует worker и применяет обновление. От вас нужны только сам PWA service worker, одна небольшая правка в нем и корректные заголовки кэширования на хосте.</value></data>
   <data name="Services_VersionCheckSetupStep1Title" xml:space="preserve"><value>1. Включите PWA service worker</value></data>
   <data name="Services_VersionCheckSetupStep1" xml:space="preserve"><value>Включите офлайн-поддержку Blazor в WASM-проекте, чтобы сборка создавала service-worker.js и service-worker-assets.js - манифест ресурсов, версия-хэш которого меняется при каждой публикации (именно его читает пробник).</value></data>
   <data name="Services_VersionCheckSetupStep2Title" xml:space="preserve"><value>2. Добавьте clients.claim() в worker (обязательно)</value></data>
@@ -2893,7 +2893,7 @@
   <data name="Responsive_NoneYet" xml:space="preserve"><value>(пока нет)</value></data>
   <data name="Responsive_ShownMd" xml:space="preserve"><value>Видно только на md (Only + Invert).</value></data>
   <data name="Responsive_ViewportTitle" xml:space="preserve"><value>Сервис вьюпорта (C#)</value></data>
-  <data name="Responsive_ViewportDesc" xml:space="preserve"><value>IBrowserViewportService отдаёт актуальный размер в пикселях, контрольную точку и ориентацию из одного внедряемого сервиса - без DotNetObjectReference и JS-взаимодействия, с одним throttle-слушателем resize на всех подписчиков.</value></data>
+  <data name="Responsive_ViewportDesc" xml:space="preserve"><value>IBrowserViewportService отдает актуальный размер в пикселях, контрольную точку и ориентацию из одного внедряемого сервиса - без DotNetObjectReference и JS-взаимодействия, с одним throttle-слушателем resize на всех подписчиков.</value></data>
   <data name="Responsive_ViewportSize" xml:space="preserve"><value>Размер вьюпорта:</value></data>
   <data name="Responsive_ViewportOrientation" xml:space="preserve"><value>Ориентация:</value></data>
   <data name="Responsive_Portrait" xml:space="preserve"><value>Портретная</value></data>
@@ -2915,10 +2915,10 @@
   <data name="Cards_Elevation" xml:space="preserve"><value>Высота тени (elevation)</value></data>
   <data name="Link_Typo" xml:space="preserve"><value>Типографика</value></data>
   <data name="Snackbar_Options" xml:space="preserve"><value>Перегрузка с опциями</value></data>
-  <data name="Snackbar_Manage" xml:space="preserve"><value>Дедупликация, очистка и своё содержимое</value></data>
+  <data name="Snackbar_Manage" xml:space="preserve"><value>Дедупликация, очистка и свое содержимое</value></data>
   <data name="Snackbar_Duplicate" xml:space="preserve"><value>Показать дубль (дедуп)</value></data>
-  <data name="Snackbar_Custom" xml:space="preserve"><value>Своё содержимое</value></data>
-  <data name="Snackbar_CustomBody" xml:space="preserve"><value>Своё тело с иконкой</value></data>
+  <data name="Snackbar_Custom" xml:space="preserve"><value>Свое содержимое</value></data>
+  <data name="Snackbar_CustomBody" xml:space="preserve"><value>Свое тело с иконкой</value></data>
   <data name="Snackbar_ClearAll" xml:space="preserve"><value>Очистить все</value></data>
   <data name="Query_Lbl_Source" xml:space="preserve"><value>Источник</value></data>
   <data name="Query_Lbl_Columns" xml:space="preserve"><value>Колонки</value></data>
@@ -3060,7 +3060,7 @@
     <value>Изменение ширины колонок</value>
   </data>
   <data name="DataGrid_ColumnResizeDesc" xml:space="preserve">
-    <value>Resizable у колонки добавляет в её заголовок маркер перетаскивания. Ширина применяется на лету, а закреплённые колонки сохраняют правильные sticky-отступы прямо во время перетаскивания.</value>
+    <value>Resizable у колонки добавляет в ее заголовок маркер перетаскивания. Ширина применяется на лету, а закрепленные колонки сохраняют правильные sticky-отступы прямо во время перетаскивания.</value>
   </data>
   <data name="DataGrid_LoadingIndicatorTitle" xml:space="preserve">
     <value>Индикаторы загрузки</value>
@@ -3072,13 +3072,13 @@
     <value>Экспорт в Excel, JSON и TSV</value>
   </data>
   <data name="DataGrid_MultiFormatExportDesc" xml:space="preserve">
-    <value>Экспортёр Excel формирует настоящий .xlsx (OOXML с жирной строкой заголовка) без сторонних зависимостей - рядом с экспортёрами JSON и TSV.</value>
+    <value>Экспортер Excel формирует настоящий .xlsx (OOXML с жирной строкой заголовка) без сторонних зависимостей - рядом с экспортерами JSON и TSV.</value>
   </data>
   <data name="DataGrid_CustomExporterTitle" xml:space="preserve">
-    <value>Свой экспортёр</value>
+    <value>Свой экспортер</value>
   </data>
   <data name="DataGrid_CustomExporterDesc" xml:space="preserve">
-    <value>Exporters - это обычный список, поэтому ваш собственный IDataGridExporter&lt;T&gt; встаёт рядом со стандартными. Здесь экспортёр в Markdown добавлен рядом с Excel.</value>
+    <value>Exporters - это обычный список, поэтому ваш собственный IDataGridExporter&lt;T&gt; встает рядом со стандартными. Здесь экспортер в Markdown добавлен рядом с Excel.</value>
   </data>
   <data name="Gauge_Title" xml:space="preserve">
     <value>Датчик (Gauge)</value>
@@ -3090,7 +3090,7 @@
     <value>Три формы</value>
   </data>
   <data name="Gauge_ShapesDesc" xml:space="preserve">
-    <value>Один компонент с параметром Shape, а не три компонента: шкала, диапазоны, деления, отметка цели и показание одинаковы во всех трёх, различается только проекция значения на экран. viewBox вычисляется из StartAngle и EndAngle, поэтому четверть дуги рисуется в полный размер, а не висит в пустом квадрате.</value>
+    <value>Один компонент с параметром Shape, а не три компонента: шкала, диапазоны, деления, отметка цели и показание одинаковы во всех трех, различается только проекция значения на экран. viewBox вычисляется из StartAngle и EndAngle, поэтому четверть дуги рисуется в полный размер, а не висит в пустом квадрате.</value>
   </data>
   <data name="Gauge_Live" xml:space="preserve">
     <value>Меняющееся значение</value>
@@ -3102,7 +3102,7 @@
     <value>На дашборде</value>
   </data>
   <data name="Gauge_DashboardDesc" xml:space="preserve">
-    <value>Датчики рядом со спарклайном: датчик говорит, где значение сейчас, спарклайн - как оно туда пришло. Развёртка на 360 градусов даёт кольцо прогресса из того же компонента, а не из отдельного типа.</value>
+    <value>Датчики рядом со спарклайном: датчик говорит, где значение сейчас, спарклайн - как оно туда пришло. Развертка на 360 градусов дает кольцо прогресса из того же компонента, а не из отдельного типа.</value>
   </data>
   <data name="Gauge_Load" xml:space="preserve">
     <value>Нагрузка</value>
@@ -3147,7 +3147,7 @@
     <value>Семь символик</value>
   </data>
   <data name="Barcode_SymbologiesDesc" xml:space="preserve">
-    <value>Code 128 стоит по умолчанию, потому что кодирует весь ASCII и сам переключается в подмножество, упаковывающее по две цифры в символ, - те же данные в Code 39 выходят примерно втрое шире. EAN, UPC и ITF-14 сами считают контрольную цифру и принимают значение как с ней, так и без неё.</value>
+    <value>Code 128 стоит по умолчанию, потому что кодирует весь ASCII и сам переключается в подмножество, упаковывающее по две цифры в символ, - те же данные в Code 39 выходят примерно втрое шире. EAN, UPC и ITF-14 сами считают контрольную цифру и принимают значение как с ней, так и без нее.</value>
   </data>
   <data name="Barcode_Live" xml:space="preserve">
     <value>Привязка к полю</value>
@@ -3171,31 +3171,31 @@
     <value>Утилиты форм и состояния</value>
   </data>
   <data name="Parity_Subtitle" xml:space="preserve">
-    <value>Пять небольших компонентов, которые иначе каждое приложение пишет вручную: оверлей занятости с настоящими таймингами, поле длительности, индикатор надёжности пароля, защита от потери несохранённого и pull-to-refresh.</value>
+    <value>Пять небольших компонентов, которые иначе каждое приложение пишет вручную: оверлей занятости с настоящими таймингами, поле длительности, индикатор надежности пароля, защита от потери несохраненного и pull-to-refresh.</value>
   </data>
   <data name="Parity_Busy" xml:space="preserve">
     <value>Оверлей занятости</value>
   </data>
   <data name="Parity_BusyDesc" xml:space="preserve">
-    <value>Два таймера - вся причина, по которой это компонент, а не div со спиннером. Delay не даёт быстрой работе мигнуть индикатором; MinDuration не даёт индикатору мигнуть, когда он уже показан. Задайте работу короче задержки - и не появится ничего: это поведение, а не отсутствующая функция.</value>
+    <value>Два таймера - вся причина, по которой это компонент, а не div со спиннером. Delay не дает быстрой работе мигнуть индикатором; MinDuration не дает индикатору мигнуть, когда он уже показан. Задайте работу короче задержки - и не появится ничего: это поведение, а не отсутствующая функция.</value>
   </data>
   <data name="Parity_TimeSpan" xml:space="preserve">
     <value>Поле длительности</value>
   </data>
   <data name="Parity_TimeSpanDesc" xml:space="preserve">
-    <value>У Flare четыре пикера, отвечающих на «когда», и не было ни одного на «сколько». Сегменты, а не одно текстовое поле: «2d 03:15» разбирается шестью способами, а четыре числа - одним. Старший показанный сегмент вбирает всё, что выше, поэтому поле только с часами читается как 50, а не как 2.</value>
+    <value>У Flare четыре пикера, отвечающих на «когда», и не было ни одного на «сколько». Сегменты, а не одно текстовое поле: «2d 03:15» разбирается шестью способами, а четыре числа - одним. Старший показанный сегмент вбирает все, что выше, поэтому поле только с часами читается как 50, а не как 2.</value>
   </data>
   <data name="Parity_Password" xml:space="preserve">
-    <value>Надёжность пароля</value>
+    <value>Надежность пароля</value>
   </data>
   <data name="Parity_PasswordDesc" xml:space="preserve">
     <value>Параметр поля, а не отдельный компонент рядом: отдельному пришлось бы сообщать пароль второй раз. Правило - делегат, потому что политика паролей это решение приложения; правило по умолчанию считает прежде всего длину, а разнообразие измеряет числом различных символов, поэтому парольная фраза обходит Passw0rd!.</value>
   </data>
   <data name="Parity_NavGuard" xml:space="preserve">
-    <value>Защита несохранённого</value>
+    <value>Защита несохраненного</value>
   </data>
   <data name="Parity_NavGuardDesc" xml:space="preserve">
-    <value>Две половины. Уход с САЙТА даёт браузерное окно, формулировку которого страница не выбирает с 2016 года. Уход со СТРАНИЦЫ даёт диалог Flare через IDialogService, поэтому выглядит как остальное приложение - именно этой половины у эталонных библиотек нет.</value>
+    <value>Две половины. Уход с САЙТА дает браузерное окно, формулировку которого страница не выбирает с 2016 года. Уход со СТРАНИЦЫ дает диалог Flare через IDialogService, поэтому выглядит как остальное приложение - именно этой половины у эталонных библиотек нет.</value>
   </data>
   <data name="Parity_Ptr" xml:space="preserve">
     <value>Pull to refresh</value>
@@ -3279,7 +3279,7 @@
     <value>Напечатайте что-нибудь и попробуйте уйти со страницы.</value>
   </data>
   <data name="NavGuardDemo_Dirty" xml:space="preserve">
-    <value>Есть несохранённое</value>
+    <value>Есть несохраненное</value>
   </data>
   <data name="NavGuardDemo_Guarded" xml:space="preserve">
     <value>Под защитой</value>
@@ -3300,7 +3300,7 @@
     <value>Переработка строк, решает грид</value>
   </data>
   <data name="DataGrid_AutoVirtualDesc" xml:space="preserve">
-    <value>Virtual трёхпозиционный: если его не задать, грид сам перерабатывает строки набора в памяти больше 500 строк, когда у него есть высота, в которой есть что прокручивать. Больше не меняется ничего - пагинация, группировка, детальные строки и дерево ведут себя одинаково.</value>
+    <value>Virtual трехпозиционный: если его не задать, грид сам перерабатывает строки набора в памяти больше 500 строк, когда у него есть высота, в которой есть что прокручивать. Больше не меняется ничего - пагинация, группировка, детальные строки и дерево ведут себя одинаково.</value>
   </data>
   <data name="Charts_Live" xml:space="preserve">
     <value>Живые данные и ось, которая стоит на месте</value>

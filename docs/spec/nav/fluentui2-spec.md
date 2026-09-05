@@ -5,12 +5,12 @@
 (`sharedNavStyles.styles.ts`, `NavItem/useNavItemStyles.styles.ts`,
 `NavCategoryItem/useNavCategoryItem.styles.ts`, `NavSubItem/useNavSubItemStyles.styles.ts`,
 `NavDrawer/useNavDrawerStyles.styles.ts`, `NavDrawerBody/useNavDrawerBodyStyles.styles.ts`).
-В колонке `Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешённое значение.
+В колонке `Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешенное значение.
 
 Корневой класс всех пунктов (NavItem, NavCategoryItem, NavSubItem, AppItem) один и тот же -
 `useRootDefaultClassName`. У пунктов нет собственного `:active`/pressed-фона в текущем
-исходнике: определён токен `navItemTokens.backgroundColorPressed` (= `colorNeutralBackground4Pressed`),
-но он НЕ подключён к CSS. Значение приведено в разделе Pressed как намеренная привязка (флаг ниже).
+исходнике: определен токен `navItemTokens.backgroundColorPressed` (= `colorNeutralBackground4Pressed`),
+но он НЕ подключен к CSS. Значение приведено в разделе Pressed как намеренная привязка (флаг ниже).
 
 # NavItem - Color (контекст: Default, Light)
 
@@ -30,7 +30,7 @@
 
 ## Pressed
 
-Токен определён в `navItemTokens.backgroundColorPressed`, но в текущем исходнике не привязан к `:active`.
+Токен определен в `navItemTokens.backgroundColorPressed`, но в текущем исходнике не привязан к `:active`.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
@@ -39,7 +39,7 @@
 ## Selected
 
 Выбранный пункт не меняет фон; он получает "french fry"-индикатор (::after), жирный текст
-(`body1Strong`) и заполненную (filled) brand-иконку. Фон остаётся `colorNeutralBackground4`.
+(`body1Strong`) и заполненную (filled) brand-иконку. Фон остается `colorNeutralBackground4`.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
@@ -72,7 +72,7 @@
 
 ## Pressed
 
-Токен определён в `navItemTokens.backgroundColorPressed`, но в текущем исходнике не привязан к `:active`.
+Токен определен в `navItemTokens.backgroundColorPressed`, но в текущем исходнике не привязан к `:active`.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
@@ -109,7 +109,7 @@
 # NavCategoryItem (заголовок группы)
 
 Тот же корневой класс, что и у NavItem, плюс слот `expandIcon` (шеврон, `margin-inline-start:auto`).
-Индикатор выбора и жирный текст показываются ТОЛЬКО когда категория выбрана И свёрнута
+Индикатор выбора и жирный текст показываются ТОЛЬКО когда категория выбрана И свернута
 (`selected && open === false`). Цвета/фон/hover идентичны NavItem (см. таблицы выше).
 
 | Display Name | Token Name | Value |
@@ -149,7 +149,7 @@ NavItem (см. таблицы выше); отличается только ге�
 
 # NavDrawerBody
 
-Прокручиваемое тело drawer; своего фона не задаёт (наследует поверхность NavDrawer).
+Прокручиваемое тело drawer; своего фона не задает (наследует поверхность NavDrawer).
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|

@@ -57,7 +57,7 @@ appearance (filled/ghost/outline/tint) x color (brand/danger/important/informati
 
 # Badge - Appearance - Ghost (контекст: Default, Light)
 
-`ghost` не имеет фона и рамки (`::after` скрыт); задаётся только цвет метки.
+`ghost` не имеет фона и рамки (`::after` скрыт); задается только цвет метки.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
@@ -249,7 +249,7 @@ appearance (filled/ghost/outline/tint) x color (brand/danger/important/informati
 # PresenceBadge (контекст: Default, Light)
 
 `usePresenceBadgeStyles.styles.ts` - контейнер круглый, фон `colorNeutralBackground1`,
-цвет иконки задаётся статусом присутствия.
+цвет иконки задается статусом присутствия.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|

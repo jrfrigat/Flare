@@ -9,9 +9,9 @@
 **DEV** (значение/модель расходятся) / **GAP** (состояния/оси нет) / **N/A**.
 
 > **ВАЖНО (поправка метода, 2026-07-13).** Первая версия этого аудита читала типизированные
-> записи `*Tokens` и переоценила расхождения. Эффективный рендер зависит ещё от (а) словаря
+> записи `*Tokens` и переоценила расхождения. Эффективный рендер зависит еще от (а) словаря
 > `Extended`, который применяется ПОСЛЕДНИМ в `CssVarMap.FlattenDesign` и перекрывает
-> одноимённые CSS-переменные, и (б) того, какой ВАРИАНТ/СОСТОЯНИЕ в базовом CSS реально
+> одноименные CSS-переменные, и (б) того, какой ВАРИАНТ/СОСТОЯНИЕ в базовом CSS реально
 > потребляет токен. Проверка по CSS/Extended показала, что как минимум **Switch и Tabs уже
 > Fluent-корректны** (см. ниже). Значения, помеченные [verified], сверены с CSS-использованием;
 > остальные - кандидаты, требующие проверки в рантайме (Gallery) до правок.
@@ -30,7 +30,7 @@
    (`colorNeutralBackground1Hover` = конкретный серый, `...Disabled` = плоская палитра). => для любого
    интерактивного компонента hover/pressed/disabled - **APPROX**, а не токен-в-токен.
 
-3. **Дискретные state-цвета, что всё же заданы, выражены MD3-моделью.** `SelectedBg = secondary-container`,
+3. **Дискретные state-цвета, что все же заданы, выражены MD3-моделью.** `SelectedBg = secondary-container`,
    `ActiveColor = primary`, `DisabledBg = on-surface 4%`, `Disabled* = on-surface 12%/38% mix`. Значение
    иногда совпадает (secondary-container = #EBEBEB = Fluent selected), но модель - MD3.
 
@@ -39,7 +39,7 @@
      (thumb 1.75rem на press, halo, focus 3px secondary), НО словарь `Extended` перекрывает те же
      CSS-переменные Fluent-значениями (pressed=normal, hover-shadow=none, focus=нейтральный
      double-ring) и применяется последним. Рантайм = **Fluent-корректный статичный свитч. OK.**
-     Остаётся лишь code smell: типизированная запись содержит мёртвые MD3-значения.
+     Остается лишь code smell: типизированная запись содержит мертвые MD3-значения.
    - **Tabs [verified: ЛОЖНАЯ ТРЕВОГА].** Дефолтные/underline табы в `tabs.css` рисуют активный
      таб как brand-индикатор (`--flare-tabs-active-color` = primary, border-bottom 3px). `SelectedBg`
      = secondary-container применяется ТОЛЬКО вариантом-пилюлей (segmented), где залитый фон уместен.
@@ -47,14 +47,14 @@
    - **Slider [verified]** - MD3 state-halo 28px @ 6%/8% вокруг thumb реально рендерится
      (`slider.css` :hover/:active ::thumb). Fluent thumb halo не имеет. **APPROX** (мелко).
 
-5. **Focus-ring непоследователен.** `Extended` задаёт корректный нейтральный double-ring Fluent
+5. **Focus-ring непоследователен.** `Extended` задает корректный нейтральный double-ring Fluent
    (`FocusStrokeColor #000` / `FocusStrokeOuter #FFF`), и Button/Checkbox его используют. Но **Switch**
    (`FocusOutline 3px secondary`), **Menu** (`ItemFocusRingColor secondary 3px`), **Slider** используют
    3px `secondary`-кольцо (MD3-стиль), а не нейтральный 2px+внешний Fluent. **DEV** у этих.
 
 6. **disabled везде = opacity 0.40 всего элемента** (или on-surface-mix), а Fluent = дискретная плоская
    палитра (`colorNeutralBackgroundDisabled #f0f0f0` / `Foreground #bdbdbd` / `Stroke #e0e0e0`).
-   Поблёкший rest != плоский серый. **APPROX/DEV системно.**
+   Поблекший rest != плоский серый. **APPROX/DEV системно.**
 
 ## Матрица (по осям; акцент - состояния)
 
@@ -94,7 +94,7 @@
 Отсортировано по достоверности. Switch и Tabs УБРАНЫ - проверка показала, что они уже Fluent-корректны.
 
 1. **[verified] disabled = opacity вместо дискретной disabled-палитры** (системно, база). Fluent:
-   bg #f0f0f0 / text #bdbdbd / border #e0e0e0. Сейчас: поблёкший rest @ 0.40. Крупнейший реальный отход.
+   bg #f0f0f0 / text #bdbdbd / border #e0e0e0. Сейчас: поблекший rest @ 0.40. Крупнейший реальный отход.
 2. **[verified] Дискретная state-модель Fluent не реализована** (системно, база): hover/pressed =
    полупрозрачный overlay, а не `colorNeutralBackground1Hover/Pressed`. Заметно на secondary/subtle
    кнопках, menu/list item, input. (Это большая архитектурная правка - трогает общий state-движок.)

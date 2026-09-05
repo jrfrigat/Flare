@@ -8,7 +8,7 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки взяты из исходников `@fluentui/react-toolbar` (`useToolbarStyles.styles.ts`) и
 `@fluentui/react-button` (`useButtonStyles.styles.ts`, ветка `subtle`). В колонке `Token Name` -
-реальный Fluent alias-токен, в колонке `Value` - разрешённое значение. Состояние `Pressed`
+реальный Fluent alias-токен, в колонке `Value` - разрешенное значение. Состояние `Pressed`
 в CSS соответствует `:hover:active, :active:focus-visible`.
 
 **Важно:** сам Fluent Toolbar - это только flex-контейнер с горизонтальным padding; у него

@@ -3,11 +3,11 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходников `@fluentui/react-button`
 (`useSplitButtonStyles.styles.ts` + `useMenuButtonStyles.styles.ts`). В колонке `Token Name` -
-реальный Fluent alias-токен, в колонке `Value` - его разрешённое значение.
+реальный Fluent alias-токен, в колонке `Value` - его разрешенное значение.
 Состояние `Pressed` в CSS соответствует `:hover:active, :active:focus-visible`.
 
 SplitButton состоит из двух кнопок: `primaryActionButton` (основное действие) и `menuButton`
-(триггер меню, `MenuButton`), разделённых вертикальным делителем. Обе кнопки - это обычный
+(триггер меню, `MenuButton`), разделенных вертикальным делителем. Обе кнопки - это обычный
 `Button`, поэтому цвета лица (фон/текст/иконка/обводка) каждого appearance берутся ЦЕЛИКОМ из
 таблиц Button (см. `docs/spec/button/fluentui2-spec.md`, разделы Primary/Secondary/Outline/
 Subtle/Transparent). Ниже задокументированы только СПЕЦИФИЧНЫЕ для SplitButton слоты: делитель
@@ -72,7 +72,7 @@ selected), иконка-шеврон меню, геометрия стыка и 
 # SplitButton - Divider - Secondary / Outline (контекст: Default, Light)
 
 Secondary и Outline не переопределяют делитель (в исходнике `secondary`/`outline` пусты),
-поэтому делитель = обычная правая граница кнопки Button (`colorNeutralStroke1` и её
+поэтому делитель = обычная правая граница кнопки Button (`colorNeutralStroke1` и ее
 hover/pressed-варианты).
 
 ## Enabled

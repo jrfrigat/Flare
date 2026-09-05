@@ -72,7 +72,7 @@
 # Spinner (круговой прогресс) - Color (контекст: Default, Light)
 
 `Spinner` (`@fluentui/react-spinner`, `useSpinnerStyles.styles.ts`) - кольцо-маска: фон-трек
-`colorBrandStroke2Contrast`, дуга `colorBrandStroke1`; inverted-вариант для тёмных подложек.
+`colorBrandStroke2Contrast`, дуга `colorBrandStroke1`; inverted-вариант для темных подложек.
 
 ## Default
 

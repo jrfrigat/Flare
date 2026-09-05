@@ -1,6 +1,6 @@
 # Fluent UI 2 - палитра
 
-Разрешённые семантические alias-токены цвета из `@fluentui/tokens` (webLightTheme / webDarkTheme, версия 1.0.0-alpha.23). В отличие от MD3, у Fluent НЕТ per-component цветовых токенов - компоненты потребляют эти alias-роли напрямую.
+Разрешенные семантические alias-токены цвета из `@fluentui/tokens` (webLightTheme / webDarkTheme, версия 1.0.0-alpha.23). В отличие от MD3, у Fluent НЕТ per-component цветовых токенов - компоненты потребляют эти alias-роли напрямую.
 
 ## Семантические alias-роли (light / dark)
 

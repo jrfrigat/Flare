@@ -4,8 +4,8 @@
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-carousel`
 (`useCarouselStyles`, `useCarouselNavButtonStyles`, `useCarouselButtonStyles`,
 `useCarouselCardStyles`, `useCarouselNavStyles`). В колонке `Token Name` - реальный Fluent
-alias-токен, в колонке `Value` - его разрешённое значение. `:active` в CSS соответствует Pressed;
-непрозрачность точки навигации (`opacity`) задаётся литералами по состояниям.
+alias-токен, в колонке `Value` - его разрешенное значение. `:active` в CSS соответствует Pressed;
+непрозрачность точки навигации (`opacity`) задается литералами по состояниям.
 
 # Carousel - Root (контекст: Default, Light/Dark)
 
@@ -209,6 +209,6 @@ alias-токен, в колонке `Value` - его разрешённое зн
 
 # Carousel - Motion
 
-Исходник `@fluentui/react-carousel` не задаёт токены темы для перехода слайдов
+Исходник `@fluentui/react-carousel` не задает токены темы для перехода слайдов
 (прокрутка реализована библиотекой Embla, а не CSS-`transition` на токенах);
 изменения точек навигации анимируются только через `opacity` без явных motion-токенов.

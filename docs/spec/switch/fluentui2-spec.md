@@ -3,7 +3,7 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-switch`
 (`useSwitchStyles.styles.ts`). В колонке `Token Name` - реальный Fluent alias-токен
-(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешённое значение.
+(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешенное значение.
 Состояние `Pressed` в CSS соответствует `:hover:active`. Слот `indicator` = дорожка (track:
 `background` + `border`), бегунок (thumb, внутренний `<i>`) окрашен `color`/`fill` индикатора.
 
@@ -145,7 +145,7 @@
 
 # Switch - Focus (контекст: Default, Light/Dark)
 
-Фокус применён к root по `:focus-within` через `createFocusOutlineStyle` (Fluent 2 -
+Фокус применен к root по `:focus-within` через `createFocusOutlineStyle` (Fluent 2 -
 двойное кольцо: внутреннее `colorStrokeFocus2`, внешнее `colorStrokeFocus1`).
 
 | Display Name | Token Name | Value (Light) | Value (Dark) |
