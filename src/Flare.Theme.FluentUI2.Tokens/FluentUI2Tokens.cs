@@ -879,6 +879,20 @@ public class FluentUI2Tokens
         Level5 = "0 16px 32px var(--flare-shadow-umbra), 0 2px 4px var(--flare-shadow-penumbra)",
     };
 
+    // Drag: Fluent lifts a dragged object on shadow 16 (elevation 4 here) and shows it at reduced
+    // opacity rather than dimming what it left behind as hard as MD3 does; the drop target is a subtle
+    // brand tint with a brand outline.
+    internal static readonly DragTokens Drag = new()
+    {
+        SourceOpacity = "0.5",
+        PreviewElevation = "var(--flare-elevation-4)",
+        PreviewOpacity = "0.85",
+        ZoneActiveBackground =
+            "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        ZoneActiveOutline = "var(--flare-color-primary)",
+        IndicatorColor = "var(--flare-color-primary)",
+    };
+
     // Rating: same neutral baseline (Size defers to the size classes; filled = primary via --fc-main).
     internal static readonly RatingTokens Rating = new()
     {
@@ -1345,6 +1359,7 @@ public class FluentUI2Tokens
         Nav = Nav,
         Switch = Switch,
         DataGrid = DataGrid,
+        Drag = Drag,
         Rating = Rating,
         Pagination = Pagination,
         Timeline = Timeline,

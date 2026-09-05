@@ -1,0 +1,11 @@
+@page "/components/drag-drop"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.DragDrop_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDragContext`1">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.DragDrop_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.DragDrop_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.DragDrop_Board" DemoType="typeof(Examples.DragDropBoardDemo)" />

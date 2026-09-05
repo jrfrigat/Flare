@@ -940,6 +940,20 @@ public class MaterialDesignTokens
         LoadingDim = "0.6",
     };
 
+    // Drag: MD3 gives a dragged object elevation 4 and leaves a dimmed silhouette behind it. The drop
+    // target reads the primary state layer at the DRAGGED opacity - the one MD3 already defines for
+    // exactly this state - so the target's tint and a card's own dragged state stay in step.
+    internal static readonly DragTokens Drag = new()
+    {
+        SourceOpacity = "0.4",
+        PreviewElevation = "var(--flare-elevation-4)",
+        PreviewOpacity = "1",
+        ZoneActiveBackground =
+            "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
+        ZoneActiveOutline = "var(--flare-color-primary)",
+        IndicatorColor = "var(--flare-color-primary)",
+    };
+
     // Rating: Size = initial defers to the component size classes; empty star = outline-variant,
     // filled default = primary (the Color parameter overrides via --fc-main), hover scale 1.15.
     internal static readonly RatingTokens Rating = new()
@@ -1277,6 +1291,7 @@ public class MaterialDesignTokens
         Scrollbar = Scrollbar,
         Switch = Switch,
         DataGrid = DataGrid,
+        Drag = Drag,
         Rating = Rating,
         Pagination = Pagination,
         Timeline = Timeline,

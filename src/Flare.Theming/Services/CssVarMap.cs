@@ -485,6 +485,13 @@ public static class CssVarMap
         v[Css.Tokens.Slider.DisabledActiveColor] = t.Slider.DisabledActiveColor;
         v[Css.Tokens.Slider.DisabledInactiveColor] = t.Slider.DisabledInactiveColor;
 
+        v[Css.Tokens.Drag.SourceOpacity] = t.Drag.SourceOpacity;
+        v[Css.Tokens.Drag.PreviewElevation] = t.Drag.PreviewElevation;
+        v[Css.Tokens.Drag.PreviewOpacity] = t.Drag.PreviewOpacity;
+        v[Css.Tokens.Drag.ZoneActiveBackground] = t.Drag.ZoneActiveBackground;
+        v[Css.Tokens.Drag.ZoneActiveOutline] = t.Drag.ZoneActiveOutline;
+        v[Css.Tokens.Drag.IndicatorColor] = t.Drag.IndicatorColor;
+
         v[Css.Tokens.Rating.Size.Xs] = t.Rating.SizeXs;
         v[Css.Tokens.Rating.Size.Sm] = t.Rating.SizeSm;
         v[Css.Tokens.Rating.Size.Md] = t.Rating.SizeMd;

@@ -123,6 +123,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
         services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
         services.AddScoped<Flare.Components.Services.IDialogDragJsService, Flare.Components.Services.DialogDragJsService>();
+        services.AddScoped<Flare.Components.Services.IDragDropJsService, Flare.Components.Services.DragDropJsService>();
         services.AddScoped<Flare.Components.IBrowserViewportService, Flare.Components.Services.BrowserViewportService>();
         services.AddScoped<Flare.Components.IScrollService, Flare.Components.Services.ScrollService>();
         services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();

@@ -1,0 +1,73 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_disabledClass)"
+     style="@Style"
+     data-flare-drag="@ItemId"
+     data-flare-drag-group="@_group"
+     data-flare-drag-disabled="@(Disabled ? "true" : null)"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>The value handed to <c>OnDrop</c> when this item is dropped.</summary>
+    [Parameter] public object? Payload { get; set; }
+
+    /// <summary>
+    /// Stable identity for this item. Generated when omitted; supply one when the same logical item is
+    /// re-rendered into a different element and a drag must survive it.
+    /// </summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>
+    /// Which drags this item takes part in. Defaults to the enclosing context's group. Zones of another
+    /// group never light up for it, so one context can hold two unrelated sets of things.
+    /// </summary>
+    [Parameter] public string? Group { get; set; }
+
+    /// <summary>Whether the item refuses to be picked up.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>The item's content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter] private DragCoordinator? Coordinator { get; set; }
+    [CascadingParameter] private FlareDropZone? Owner { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Drag.Item;
+
+    private readonly string _generatedId = $"fd-{Guid.NewGuid():N}";
+    private DragCoordinator? _registeredWith;
+    private string? _registeredId;
+
+    private string? _disabledClass => Disabled ? Css.Classes.Drag.ItemDisabled : null;
+    private string _group => Group ?? Coordinator?.Group ?? "";
+
+    /// <summary>The id this item is known by inside its drag context.</summary>
+    internal string ItemId => Id ?? _generatedId;
+
+    /// <summary>The zone this item was declared in, which is where a drag reports it started from.</summary>
+    internal FlareDropZone? Zone => Owner;
+
+    /// <summary>The value handed to <c>OnDrop</c>, read by the context after a drop resolves.</summary>
+    internal object? PayloadValue => Payload;
+
+    protected override void OnParametersSet()
+    {
+        if (ReferenceEquals(_registeredWith, Coordinator) && _registeredId == ItemId) return;
+        if (_registeredWith is not null && _registeredId is not null)
+            _registeredWith.UnregisterItem(this, _registeredId);
+        Coordinator?.RegisterItem(this);
+        _registeredWith = Coordinator;
+        _registeredId = ItemId;
+    }
+
+    /// <summary>Removes this item from its drag context.</summary>
+    public override ValueTask DisposeAsync()
+    {
+        if (_registeredWith is not null && _registeredId is not null)
+            _registeredWith.UnregisterItem(this, _registeredId);
+        return base.DisposeAsync();
+    }
+}

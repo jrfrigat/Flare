@@ -1544,7 +1544,10 @@ public static class ComponentApiRegistry
                 @"FlareDivider",
                 @"FlareDocumentTab",
                 @"FlareDocumentTabs",
+                @"FlareDragContext",
+                @"FlareDraggable",
                 @"FlareDrawer",
+                @"FlareDropZone",
                 @"FlareEmptyState",
                 @"FlareField",
                 @"FlareFieldChrome",
@@ -2417,6 +2420,81 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareDragContext"] = new ApiComponentInfo(
+            @"FlareDragContext",
+            @"Flare.Components.FlareDragContext",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"CanDrop", @"Func<TPayload?, string, bool>?", null, @"Whether a payload may be dropped in a given target, asked once per drag for every zone. A zone that says no never lights up and cannot receive the drop. Use it for what only the caller knows: a tree node cannot go inside its own descendant, a column is full, a card is locked. Accepts says the same thing per zone; both must agree.", null, false, false, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The content that declares the draggables and drop zones.", null, false, false, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Group", @"string?", null, @"Default group for the draggables and zones beneath this context. Items only see zones of their own group, so one context can hold two unrelated sets of things.", null, false, false, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"OnDrop", @"EventCallback<FlareDropEventArgs<TPayload?>>", null, @"Raised once when a drag lands on a zone that accepted it. Not raised when the drop was cancelled, dropped on nothing, or dropped back onto the item itself.", null, false, true, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Detaches the context's pointer gesture.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnDragStartAsync", @"OnDragStartAsync(string sourceId)", @"Task<string[]>", null, @"Which zones will take the item that has just been picked up. Called by the browser once per drag; null means every zone in the item's group, which is the common case and saves marshalling a list that says the same thing.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"sourceId", @"string", @"The dragged item's id."),
+                    }),
+                new ApiMethodInfo(@"OnDropAsync", @"OnDropAsync(string sourceId, string targetId, int index, string edge, string overId)", @"Task", null, @"Reports where a drag landed. Called by the browser once per completed drop.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"sourceId", @"string", @"The dragged item's id."),
+                        new ApiMethodParameter(@"targetId", @"string", @"The zone the drop landed in."),
+                        new ApiMethodParameter(@"index", @"int", @"The position the item takes, counted without the dragged item; -1 when the drop was into a zone or onto an item rather than between items."),
+                        new ApiMethodParameter(@"edge", @"string", @"Where the drop landed relative to the item under the pointer."),
+                        new ApiMethodParameter(@"overId", @"string", @"The id of the item under the pointer, when there was one."),
+                    }),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareDraggable"] = new ApiComponentInfo(
+            @"FlareDraggable",
+            @"Flare.Components.FlareDraggable",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The item's content.", null, false, false, false, @"FlareDraggable"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Whether the item refuses to be picked up.", null, false, false, false, @"FlareDraggable"),
+                new ApiParameterInfo(@"Group", @"string?", null, @"Which drags this item takes part in. Defaults to the enclosing context's group. Zones of another group never light up for it, so one context can hold two unrelated sets of things.", null, false, false, false, @"FlareDraggable"),
+                new ApiParameterInfo(@"Id", @"string?", null, @"Stable identity for this item. Generated when omitted; supply one when the same logical item is re-rendered into a different element and a drag must survive it.", null, false, false, false, @"FlareDraggable"),
+                new ApiParameterInfo(@"Payload", @"object?", null, @"The value handed to OnDrop when this item is dropped.", null, false, false, false, @"FlareDraggable"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Removes this item from its drag context.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareDrawer"] = new ApiComponentInfo(
             @"FlareDrawer",
             @"Flare.Components.FlareDrawer",
@@ -2448,6 +2526,37 @@ public static class ComponentApiRegistry
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareDropZone"] = new ApiComponentInfo(
+            @"FlareDropZone",
+            @"Flare.Components.FlareDropZone",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Accepts", @"Func<object?, bool>?", null, @"Whether this zone accepts a given payload. Evaluated once when a drag starts, so a zone that says no never lights up and never takes a drop. Use it for what only the caller knows - a tree node cannot be dropped into its own descendant, a column is full, a card is locked.", null, false, false, false, @"FlareDropZone"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The zone's content, normally the FlareDraggable items it holds.", null, false, false, false, @"FlareDropZone"),
+                new ApiParameterInfo(@"Group", @"string?", null, @"Which drags this zone takes part in. Defaults to the enclosing context's group.", null, false, false, false, @"FlareDropZone"),
+                new ApiParameterInfo(@"Placement", @"DropPlacement", @"DropPlacement.Into", @"What the zone accepts, and therefore what a drop into it resolves to.", null, false, false, false, @"FlareDropZone"),
+                new ApiParameterInfo(@"Target", @"string", @"""""", @"Identifies this zone in OnDrop. A column id, a folder key, a list name - whatever the caller needs back to perform the move.", null, false, false, false, @"FlareDropZone"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Removes this zone from its drag context.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -7794,6 +7903,37 @@ public static class ComponentApiRegistry
             {
                 @"FlareDrawer",
                 @"FlareLayoutDrawer",
+            });
+
+        e[@"DropEdge"] = new ApiEnumInfo(
+            @"DropEdge",
+            @"Flare.Components.DropEdge",
+            @"Flare.Components",
+            @"Where a drop landed relative to the item under the pointer.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Before", @"0", @"In front of the item under the pointer."),
+                new ApiEnumMember(@"Into", @"1", @"On the item itself, or - when no item was under the pointer - in the zone."),
+                new ApiEnumMember(@"After", @"2", @"Behind the item under the pointer."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"DropPlacement"] = new ApiEnumInfo(
+            @"DropPlacement",
+            @"Flare.Components.DropPlacement",
+            @"Flare.Components",
+            @"What a FlareDropZone accepts, which is also what the drop resolves to.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Into", @"0", @"The zone itself is the destination: a column that holds cards, a folder that holds files. The drop reports the zone and nothing else - the order inside it is not the caller's to decide here."),
+                new ApiEnumMember(@"Between", @"1", @"The zone holds an ordered list, and a drop resolves to a position in it. Each item is split in half: the near half puts the dragged item before it, the far half after."),
+                new ApiEnumMember(@"Both", @"2", @"Both: each item is split into thirds, so a drop can land before it, inside it, or after it. This is what a tree needs, where a node is at once a position in its parent's order and a container of its own."),
+            },
+            new string[]
+            {
+                @"FlareDropZone",
             });
 
         e[@"DynamicVariant"] = new ApiEnumInfo(

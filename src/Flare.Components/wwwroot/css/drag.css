@@ -1,0 +1,77 @@
+/* Drag-and-drop: one look for every surface that reorders, painted from one token family. */
+
+/* The context exists to own a pointer gesture and cascade a coordinator - it is not a box. A board that
+   is a flex row must not gain a block between it and its columns, so the element is layout-transparent
+   and the author's own layout is what the browser sees. */
+.flare-drag-context {
+    display: contents;
+}
+
+.flare-draggable {
+    /* A press that turns into a drag must not also pan the page. Declared HERE and not on the context:
+       a scrolling list still has to scroll everywhere the items are not. */
+    touch-action: none;
+    cursor: grab;
+}
+
+.flare-draggable--disabled {
+    cursor: inherit;
+    touch-action: auto;
+}
+
+/* The item stays where it is and dims; the thing that follows the pointer is a copy. */
+.flare-draggable--dragging {
+    opacity: var(--flare-drag-source-opacity);
+}
+
+/* The zone paints nothing at rest - it is whatever the author put there - but it has to arrive at its
+   drag states rather than snap to them, or a pointer crossing a board reads as flicker. */
+.flare-drop-zone {
+    transition:
+        background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
+        outline-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+/* A zone the item in flight could land in. Marked while the drag lasts and not only on hover, because
+   a finger has no hover: on a touch screen this outline is the only thing that says where the card may
+   go before it is let go of. Thin for "possible", emphasis-width and filled for "here". */
+.flare-drop-zone--candidate {
+    outline: var(--flare-border-width) var(--flare-border-style) var(--flare-drag-zone-active-outline);
+    outline-offset: calc(-1 * var(--flare-border-width));
+}
+
+.flare-drop-zone--over {
+    background: var(--flare-drag-zone-active-background);
+    outline: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-drag-zone-active-outline);
+    outline-offset: calc(-1 * var(--flare-border-width-emphasis));
+}
+
+/* Above the dialog (1000): a reorder inside a modal must still show what is being dragged. */
+.flare-drag-preview {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 1100;
+    /* The hit test is elementFromPoint, and it has to see the drop zone under the pointer rather than
+       the copy hanging off it. */
+    pointer-events: none;
+    opacity: var(--flare-drag-preview-opacity);
+    box-shadow: var(--flare-drag-preview-elevation);
+}
+
+/* Where an ordered drop would land. Straddles the edge it marks rather than sitting after it, so the
+   line reads as "between these two" and not as "belonging to that one". */
+.flare-drag-indicator {
+    position: fixed;
+    z-index: 1100;
+    pointer-events: none;
+    background: var(--flare-drag-indicator-color);
+    inline-size: var(--flare-border-width-emphasis);
+    transform: translateX(-50%);
+}
+
+.flare-drag-indicator--horizontal {
+    inline-size: auto;
+    block-size: var(--flare-border-width-emphasis);
+    transform: translateY(-50%);
+}
