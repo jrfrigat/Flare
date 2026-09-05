@@ -3320,4 +3320,10 @@
   <data name="Charts_AnimateUpdates" xml:space="preserve">
     <value>An update you can follow, not a new picture</value>
   </data>
+  <data name="DragDrop_Surfaces" xml:space="preserve">
+    <value>A board, a tree and a grid on one model</value>
+  </data>
+  <data name="DragDrop_SurfacesDesc" xml:space="preserve">
+    <value>Three surfaces that share nothing visually and reorder through the same context. The tree and the grid render their own li and tr, so they join the model by attribute rather than by wrapper - and a tree refuses a drop inside its own subtree.</value>
+  </data>
 </root>
