@@ -2284,6 +2284,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"VisibleChanged", @"EventCallback<bool>", null, @"Callback raised when visibility should change.", null, false, true, false, @"FlareDialog"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly. The box that SUPPLIES a height does not fill: when Style declares a height of its own, that height wins and this switch is ignored, because the two are contradictory instructions and the written number is the one you can see in the markup.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
@@ -2295,6 +2296,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",

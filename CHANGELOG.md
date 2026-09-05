@@ -75,6 +75,12 @@ All notable changes to Flare are documented here. This project adheres to
   component. A guard test asserts every member of the family inherits the parameter rather than
   re-declaring it, which is how the chain came to cover three components and stop.
 
+  `FlareDialog` joins them with a mechanism of its own, because the scrim it sits on is a ROW flex
+  container and the shared rule would take over the panel's width rather than its height:
+  `FillHeight` there means the panel spends the whole height available to it instead of the height of
+  its content - what a dialog holding a data grid wants, where a content-sized panel leaves the grid a
+  few rows tall in the middle of an empty screen.
+
   Measured end to end in the Gallery: a box of `24rem`, a filling card inside it at 384px, a tab set at
   352px, a grid at 289px whose table container scrolls 7843px of rows in 272px - and no application
   CSS anywhere in the chain.
@@ -88,6 +94,22 @@ All notable changes to Flare are documented here. This project adheres to
   beside it.
 
 ### Fixed
+
+- **A tall dialog no longer hangs off both ends of the screen.** `FlareDialog` had no height cap and
+  sits on a scrim that is `position: fixed` and does not scroll, so a panel taller than the window did
+  not push a scrollbar anywhere - it simply overflowed in both directions with its title and its
+  buttons past the edge, unreachable. Measured in Chrome on Flare's own stylesheet at a viewport of
+  1274px: a dialog of eighty paragraphs came out 2862px tall with its top 794px ABOVE the window, its
+  content region reporting `overflow-y: visible`, and nothing scrolling anywhere. The same probe now:
+  the panel is 1226px, its top is at 24px, header and actions are both on screen, and the content
+  region scrolls 2758px of content in 1122px.
+
+  The panel is a flex column capped at `calc(100dvh - 3rem)`, the header and the actions keep their
+  size, and the content region is what gives way and scrolls. Dynamic viewport units rather than `vh`
+  throughout the file, including the two rules that already had a cap: on a phone `100vh` counts the
+  space behind the browser chrome, which puts the top and bottom of the dialog under the URL bar - the
+  exact failure the cap exists to prevent. The small-screen rule had this fix for phones only, which is
+  why it went unnoticed on a desktop.
 
 - **Infinite scroll loads without being told a page size.** It reads `PageSize` as a CHUNK size, which
   is a different question from "how many rows are on a page" - and the two stopped agreeing the moment

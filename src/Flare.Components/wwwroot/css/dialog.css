@@ -8,16 +8,43 @@
     z-index: 1000;
 }
 
+/* The panel never grows past the screen it is centred on. Without the cap it simply kept growing:
+   measured at a viewport of 1274px, a dialog of eighty paragraphs came out 2862px tall with its top
+   794px ABOVE the top of the window and its actions the same distance below - and nothing scrolled,
+   because the scrim is fixed and the panel is `overflow: hidden`. The title and the buttons were simply
+   unreachable. The small-screen rule below had this fix for phones only.
+
+   Dynamic viewport units, not `vh`: on a phone `100vh` counts the space behind the browser chrome, so a
+   `vh` cap leaves exactly the top and bottom of the dialog under the URL bar - the failure this rule
+   exists to prevent. */
 .flare-dialog {
     position: relative;
+    display: flex;
+    flex-direction: column;
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
     border-radius: var(--flare-dialog-radius);
     min-width: 17.5rem;
     max-width: 35rem;
     width: 100%;
+    max-block-size: calc(100dvh - 3rem);
     box-shadow: var(--flare-elevation-3);
     overflow: hidden;
+}
+
+/* The header and the actions keep their size; the content region is what gives way and scrolls. */
+.flare-dialog__header,
+.flare-dialog__divider,
+.flare-dialog__actions,
+.flare-dialog__grabber,
+.flare-dialog__icon {
+    flex: 0 0 auto;
+}
+
+.flare-dialog__content {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow: auto;
 }
 
 /* Built-in header close (X) button, pinned to the top corner of the panel. */
@@ -133,14 +160,14 @@
 .flare-dialog--md   { max-width: 35rem; }
 .flare-dialog--lg   { max-width: 50rem; }
 .flare-dialog--xl   { max-width: 70rem; }
-.flare-dialog--full      { max-width: calc(100vw - 3rem); max-height: calc(100vh - 3rem); }
+.flare-dialog--full      { max-width: calc(100vw - 3rem); max-block-size: calc(100dvh - 3rem); }
 .flare-dialog--fullwidth { width: calc(100vw - 3rem); max-width: calc(100vw - 3rem); }
 
 /* On small screens: nearly full-screen and bottom-sheet aligned. */
 @media (max-width: 599px) {
     .flare-dialog {
         max-width: calc(100vw - 2rem) !important;
-        max-height: calc(100vh - 2rem) !important;
+        max-block-size: calc(100dvh - 2rem) !important;
         border-radius: var(--flare-dialog-radius);
     }
     .flare-dialog-scrim {
@@ -189,4 +216,12 @@
 
 @media (prefers-reduced-motion: reduce) {
     .flare-dialog--bottom { animation: none; }
+}
+
+/* FillHeight: the panel takes the whole height available to it instead of the height of its content.
+   The cap above already stops a tall dialog from running off the screen; this is the other half - a
+   dialog that HOLDS something which should spend the room, a data grid most often, where a panel sized
+   to its content would leave the grid a few rows tall in the middle of an empty screen. */
+.flare-dialog--fill {
+    block-size: calc(100dvh - 3rem);
 }
