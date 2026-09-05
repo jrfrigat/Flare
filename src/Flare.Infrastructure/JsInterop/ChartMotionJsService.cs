@@ -11,8 +11,8 @@ public sealed class ChartMotionJsService : FlareJsModule, IChartMotionJsService
         : base(js, "./_content/Flare.Components/js/flare-chart-motion.js") { }
 
     /// <inheritdoc />
-    public ValueTask ObservePlotAsync(ElementReference plot)
-        => InvokeVoidAsync("observePlot", plot);
+    public ValueTask ObservePlotAsync(ElementReference plot, string durationVar, string easingVar)
+        => InvokeVoidAsync("observePlot", plot, durationVar, easingVar);
 
     /// <inheritdoc />
     public ValueTask UnobservePlotAsync(ElementReference plot)

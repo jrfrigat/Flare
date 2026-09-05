@@ -15,7 +15,11 @@ public interface IChartMotionJsService : IAsyncDisposable
 {
     /// <summary>Starts watching a plot's geometry.</summary>
     /// <param name="plot">The chart's plot element.</param>
-    ValueTask ObservePlotAsync(ElementReference plot);
+    /// <param name="durationVar">Name of the custom property holding how long a move takes. Passed in
+    /// rather than written into the script, so the name lives once, in the token registry, where the
+    /// CSS audit can prove it exists.</param>
+    /// <param name="easingVar">Name of the custom property holding the curve the move follows.</param>
+    ValueTask ObservePlotAsync(ElementReference plot, string durationVar, string easingVar);
 
     /// <summary>Stops watching, abandoning anything still in flight.</summary>
     /// <param name="plot">The chart's plot element.</param>
