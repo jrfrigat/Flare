@@ -57,7 +57,7 @@ public partial class FlareChart
                 string gid = $"{_uid}-a{si}";
                 marks.Append(
                     $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">" +
-                    $"<stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var(--flare-chart-area-opacity)\"/>" +
+                    $"<stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var({Css.Tokens.Chart.AreaOpacity})\"/>" +
                     $"<stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
                 // Each run closes down to the baseline on its own; one shared close would fill the gap.
                 string areaPath = string.Concat(runs.Select(r => string.Create(_inv,
@@ -346,7 +346,7 @@ public partial class FlareChart
                 double y = _padT + _plotH - (p.Y - yMin) / (yMax - yMin) * _plotH;
                 pixels.Add((x, y));
                 double r = _bubble ? bubbleMin + bubbleSpan * Math.Sqrt(p.R / rWeightMax) : ptR;
-                sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{r:F1}\" style=\"fill:{color};opacity:var(--flare-chart-point-opacity)\"/>"));
+                sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{r:F1}\" style=\"fill:{color};opacity:var({Css.Tokens.Chart.PointOpacity})\"/>"));
             }
             if (TrendLine) sb.Append(TrendLineMarkup(pixels, color));
             builder.AddMarkupContent(seq++, Clipped(sb.ToString()));
@@ -425,7 +425,7 @@ public partial class FlareChart
                 {
                     string gid = $"{_uid}-c{si}";
                     marks.Append(
-                        $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var(--flare-chart-area-opacity)\"/><stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
+                        $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var({Css.Tokens.Chart.AreaOpacity})\"/><stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
                     string comboArea = string.Concat(comboRuns.Select(r => string.Create(_inv,
                         $"{(comboSmooth ? SmoothPath(r) : StraightPath(r))} L {r[^1].X:F1} {baseline:F1} L {r[0].X:F1} {baseline:F1} Z ")));
                     marks.Append($"<path d=\"{comboArea}\" stroke=\"none\" fill=\"url(#{gid})\"/>");

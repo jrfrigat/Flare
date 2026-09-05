@@ -455,21 +455,21 @@ public partial class FlareChart
     // Style fragments shared by the renderers, so a grid line drawn by the cartesian, radar and polar
     // renderers cannot end up with three different treatments.
     private const string _gridStyle =
-        "stroke:var(--flare-chart-grid-color);stroke-width:var(--flare-chart-grid-width);stroke-dasharray:var(--flare-chart-grid-dash)";
+        $"stroke:var({Css.Tokens.Chart.GridColor});stroke-width:var({Css.Tokens.Chart.GridWidth});stroke-dasharray:var({Css.Tokens.Chart.GridDash})";
     // A minor line reuses the major dash so a theme that dashes its grid dashes all of it, and carries its
     // own color and width so it can be pushed as far back as the theme wants - or hidden outright.
     private const string _gridMinorStyle =
-        "stroke:var(--flare-chart-grid-minor-color);stroke-width:var(--flare-chart-grid-minor-width);stroke-dasharray:var(--flare-chart-grid-dash)";
+        $"stroke:var({Css.Tokens.Chart.GridMinorColor});stroke-width:var({Css.Tokens.Chart.GridMinorWidth});stroke-dasharray:var({Css.Tokens.Chart.GridDash})";
     private const string _labelStyle =
-        "fill:var(--flare-chart-label-color);font-size:var(--flare-chart-label-size)";
+        $"fill:var({Css.Tokens.Chart.LabelColor});font-size:var({Css.Tokens.Chart.LabelSize})";
     private const string _valueStyle =
-        "fill:var(--flare-chart-value-color);font-size:var(--flare-chart-value-size)";
+        $"fill:var({Css.Tokens.Chart.ValueColor});font-size:var({Css.Tokens.Chart.ValueSize})";
     private const string _valueOnFillStyle =
-        "fill:var(--flare-chart-value-on-fill-color);font-size:var(--flare-chart-value-size)";
+        $"fill:var({Css.Tokens.Chart.ValueOnFillColor});font-size:var({Css.Tokens.Chart.ValueSize})";
     private const string _axisTitleStyle =
-        "fill:var(--flare-chart-axis-title-color);font-size:var(--flare-chart-axis-title-size)";
+        $"fill:var({Css.Tokens.Chart.AxisTitleColor});font-size:var({Css.Tokens.Chart.AxisTitleSize})";
     private const string _sliceStrokeStyle =
-        "stroke:var(--flare-chart-slice-stroke-color);stroke-width:var(--flare-chart-slice-stroke-width)";
+        $"stroke:var({Css.Tokens.Chart.SliceStrokeColor});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})";
 
     /// <summary>Clamps NaN/Infinity data values to 0 to prevent SVG coordinate corruption. Gaps are
     /// recognized before this point; anything reaching it is a value the renderer decided to draw.</summary>

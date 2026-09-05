@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<li class="@Css.Classes.TableOfContents.Item" style="@($"--flare-toc-depth:{Math.Max(0, Level)}")">
+<li class="@Css.Classes.TableOfContents.Item" style="@($"{Css.Tokens.LocalVars.TocDepth}:{Math.Max(0, Level)}")">
     <a class="@BuildCssClass(_activeClass)"
        href="@Href"
        aria-current="@(Active ? "true" : null)"

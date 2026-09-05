@@ -80,8 +80,8 @@
     public bool IsOpen => _open;
 
     private bool IsMobileNow => Layout?.IsMobile ?? false;
-    private string OpenWidth => Width ?? "var(--flare-layout-drawer-width, 16rem)";
-    private string RailWidthValue => RailWidth ?? "var(--flare-layout-drawer-rail-width, 3.5rem)";
+    private string OpenWidth => Width ?? $"var({Css.Tokens.LayoutField.DrawerWidth}, 16rem)";
+    private string RailWidthValue => RailWidth ?? $"var({Css.Tokens.LayoutField.DrawerRailWidth}, 3.5rem)";
 
     // Floating = out of normal flow (position:fixed): the Temporary variant always, and every push
     // drawer once the layout is mobile (off-canvas).

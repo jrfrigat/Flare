@@ -26,7 +26,7 @@
 <FlareDragContext TPayload="object" ResolveItem="TryResolveDragItem" OnDrop="OnDragDropped">
 <div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill, _bounded, _sized)" style="@_rootStyle" @attributes="AdditionalAttributes">
     @* Screen-reader announcements for sort/filter/page changes. *@
-    <div role="status" aria-live="polite" class="flare-visually-hidden">@_ariaAnnouncement</div>
+    <div role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@_ariaAnnouncement</div>
     <!-- Column descriptors render nothing visually -->
     <CascadingValue Value="@this" IsFixed="true">
         @Columns

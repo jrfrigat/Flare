@@ -75,7 +75,7 @@ else
         get
         {
             if (Elevation is not { } level) return Style;
-            var shadow = $"--flare-card-elevation:var(--flare-elevation-{Math.Clamp(level, 0, 5)});";
+            var shadow = $"{Css.Tokens.CardField.Elevation}:var(--flare-elevation-{Math.Clamp(level, 0, 5)});";
             return string.IsNullOrEmpty(Style) ? shadow : shadow + Style;
         }
     }

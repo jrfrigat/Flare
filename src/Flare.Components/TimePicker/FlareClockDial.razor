@@ -31,7 +31,7 @@
      @onpointerdown="OnDown" @onpointermove="OnMove" @onpointerup="OnUp" @onpointerleave="OnUp">
     <div class="@Css.Classes.ClockDial.Center"></div>
     <div class="@Css.Classes.ClockDial.Hand"
-         style="--flare-dial-angle:@(_handAngle.ToString(CultureInfo.InvariantCulture))deg;--flare-dial-len:@(_handLen.ToString(CultureInfo.InvariantCulture))"></div>
+         style="@($"{Css.Tokens.LocalVars.DialAngle}:{_handAngle.ToString(CultureInfo.InvariantCulture)}deg;{Css.Tokens.LocalVars.DialLength}:{_handLen.ToString(CultureInfo.InvariantCulture)}")"></div>
     @foreach (var n in DialNumbers())
     {
         <span class="@Css.Classes.ClockDial.Num @(n.Selected ? Css.Classes.ClockDial.NumSelected : "")"

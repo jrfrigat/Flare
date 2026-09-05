@@ -146,7 +146,7 @@
         get
         {
             var parts = new List<string>();
-            if (MaxLines > 0) parts.Add($"--flare-textarea-max-lines:{MaxLines}");
+            if (MaxLines > 0) parts.Add($"{Css.Tokens.LocalVars.TextAreaMaxLines}:{MaxLines}");
             var resize = ResizeCss();
             if (resize is not null) parts.Add(resize);
             if (_typoStyle is not null) parts.Add(_typoStyle);

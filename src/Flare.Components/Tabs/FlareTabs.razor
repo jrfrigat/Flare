@@ -152,16 +152,16 @@
 
     // When Typo is set, repoint the tab-label font tokens at the chosen type scale.
     private string? _typoVars => Typo is { } t
-        ? $"--flare-tabs-label-font:var(--flare-typescale-{FlareTypography.Slug(t)}-font);"
-          + $"--flare-tabs-label-size:var(--flare-typescale-{FlareTypography.Slug(t)}-size);"
-          + $"--flare-tabs-label-weight:var(--flare-typescale-{FlareTypography.Slug(t)}-weight)"
+        ? $"{Css.Tokens.Tabs.LabelFont}:var(--flare-typescale-{FlareTypography.Slug(t)}-font);"
+          + $"{Css.Tokens.Tabs.LabelSize}:var(--flare-typescale-{FlareTypography.Slug(t)}-size);"
+          + $"{Css.Tokens.Tabs.LabelWeight}:var(--flare-typescale-{FlareTypography.Slug(t)}-weight)"
         : null;
 
     // Cached in OnParametersSet - depends only on parameters (LabelRotation, Typo, Style), so it need
     // not be re-joined on every render (runtime state like overflow/active-tab does not affect it).
     private string _rootStyle = "";
     private string BuildRootStyle() =>
-        string.Join(";", new[] { $"--flare-tab-label-rotation:{_rotationDeg}deg", _typoVars, Style }.Where(s => !string.IsNullOrEmpty(s)));
+        string.Join(";", new[] { $"{Css.Tokens.LocalVars.TabLabelRotation}:{_rotationDeg}deg", _typoVars, Style }.Where(s => !string.IsNullOrEmpty(s)));
 
     // Overflow scrolling (horizontal only): JS reports overflow + edge state.
     private ElementReference _barRef;

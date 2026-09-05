@@ -9,7 +9,7 @@
    drawer so the content is pushed aside rather than covered. *@
 <CascadingValue Value="_ctx" IsFixed="true">
     <div class="@BuildCssClass(_mobileClass, _scrimClass)"
-         style="--flare-layout-cols:@_ctx.GridTemplateColumns;@Style"
+         style="@($"{Css.Tokens.LocalVars.LayoutCols}:{_ctx.GridTemplateColumns};{Style}")"
          @attributes="AdditionalAttributes">
         @ChildContent
         @* Scrim: dims the content and closes any floating drawer on tap. Hidden by CSS unless a
