@@ -29,7 +29,7 @@
                    id="@ControlId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="@(_useTextMode ? "text" : "number")"
-                   inputmode="@(_useTextMode ? "decimal" : null)"
+                   inputmode="@_inputMode"
                    value="@_inputDisplay"
                    placeholder="@Placeholder"
                    disabled="@Disabled"
@@ -164,6 +164,23 @@
 
     // Format set -> focus-swap text mode (separators/currency/percent cannot live in type=number).
     private bool _useTextMode => !string.IsNullOrEmpty(Format);
+
+    // The on-screen keyboard, chosen from the TYPE the field is bound to rather than from the input's
+    // html type. `type="number"` raises a numeric keypad on its own, but not the same one everywhere -
+    // on Android it is `inputmode` that decides whether the decimal separator is on it at all, and a
+    // decimal field that cannot type a separator is unusable in every locale that has one. An integral
+    // field gets `numeric` for the same reason in reverse: a separator it cannot accept is a key that
+    // only produces an error.
+    private static readonly HashSet<Type> _integralTypes =
+    [
+        typeof(byte), typeof(sbyte), typeof(short), typeof(ushort),
+        typeof(int), typeof(uint), typeof(long), typeof(ulong),
+    ];
+
+    private string _inputMode =>
+        _integralTypes.Contains(Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue))
+            ? "numeric"
+            : "decimal";
     private bool _focused;
     private string _text = string.Empty;
     private CultureInfo _fmtCulture => Culture ?? CultureInfo.CurrentCulture;

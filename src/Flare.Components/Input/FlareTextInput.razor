@@ -53,7 +53,8 @@ else
            required="@Required"
            type="@Type"
            maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
-           inputmode="@InputMode"
+           inputmode="@_inputMode"
+           enterkeyhint="@_enterKeyHint"
            pattern="@Pattern"
            autocomplete="@Autocomplete"
            spellcheck="@(Spellcheck?.ToString().ToLowerInvariant())"
@@ -93,8 +94,35 @@ else
     /// <summary>The HTML <c>type</c> attribute (single-line only).</summary>
     [Parameter] public string Type { get; set; } = "text";
 
-    /// <summary>The HTML <c>inputmode</c> hint (single-line only).</summary>
+    /// <summary>The HTML <c>inputmode</c> hint, which chooses the on-screen keyboard (single-line only).
+    /// Left unset it is derived from <see cref="Type"/>, so a phone, email, url, search or number field
+    /// asks for the right keyboard without the page having to say the same thing twice.</summary>
     [Parameter] public string? InputMode { get; set; }
+
+    /// <summary>The HTML <c>enterkeyhint</c>, which labels the on-screen keyboard's action key
+    /// (single-line only). Left unset, only a search field gets one - <c>search</c>. The others are
+    /// deliberately not guessed: whether Enter means "go", "next" or "done" is the FORM's question, and
+    /// a wrong label is worse than the plain one.</summary>
+    [Parameter] public string? EnterKeyHint { get; set; }
+
+    // The keyboard a phone raises is decided by inputmode, not by type: `type="tel"` alone gets the
+    // phone keypad in some browsers and a full QWERTY in others, and `type="email"` differs again. The
+    // type is the semantic; this is the keyboard. An explicit InputMode always wins - a masked field
+    // derives one from its mask, which is better than either.
+    private string? _inputMode => InputMode ?? Type?.ToLowerInvariant() switch
+    {
+        "tel" => "tel",
+        "email" => "email",
+        "url" => "url",
+        "search" => "search",
+        // `decimal` rather than `numeric`: numeric is digits only, and a number field that cannot type
+        // a decimal separator is a defect on every locale that has one.
+        "number" => "decimal",
+        _ => null,
+    };
+
+    private string? _enterKeyHint => EnterKeyHint
+        ?? (string.Equals(Type, "search", StringComparison.OrdinalIgnoreCase) ? "search" : null);
 
     /// <summary>The HTML <c>pattern</c> regex the value must match (single-line only).</summary>
     [Parameter] public string? Pattern { get; set; }

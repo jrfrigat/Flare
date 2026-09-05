@@ -102,6 +102,20 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A field asks the phone for the right keyboard.** Which on-screen keyboard appears is decided by
+  `inputmode`, not by the input's html type: `type="tel"` alone gets the phone keypad in some browsers
+  and a full QWERTY in others, and on Android it is `inputmode` that decides whether the decimal
+  separator is on the keypad at all - so a decimal field could not be filled in in any locale that uses
+  one. Nothing derived it, so every field got the keyboard its browser happened to pick.
+
+  `FlareField` and `FlareTextInput` now derive it from `Type` (tel, email, url, search, number), and
+  `FlareNumericField` derives it from the type it is BOUND to - `numeric` for an integral field, which
+  must not offer a separator it cannot accept, and `decimal` for the rest. An explicit `InputMode`
+  still wins, which is how `FlareMaskedField` keeps deriving a better one from its mask. A search field
+  also gets `enterkeyhint="search"`; the other types are deliberately left alone, because whether Enter
+  means "go", "next" or "done" is the form's question and a wrong label is worse than the plain one.
+  `EnterKeyHint` is a parameter for the cases the page does know.
+
 - **A tall dialog no longer hangs off both ends of the screen.** `FlareDialog` had no height cap and
   sits on a scrim that is `position: fixed` and does not scroll, so a panel taller than the window did
   not push a scrollbar anywhere - it simply overflowed in both directions with its title and its
