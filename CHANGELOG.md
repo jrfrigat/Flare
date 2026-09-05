@@ -87,12 +87,14 @@ All notable changes to Flare are documented here. This project adheres to
   changed. `Data` now documents that replacing it refits the axis, which is the trap underneath all of
   this.
 
-### Changed
+### Fixed
 
-- **Russian text drops the letter yo.** `U+0451` is spelled `U+0435` throughout - the RU resx
-  values, the RU documentation, the theme readmes and this changelog. The letter is optional in Russian
-  orthography, so either convention is defensible, but the repository held both at once: one term looked
-  like two to anyone searching the Gallery, and to any translation memory.
+- **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
+  threshold rather than the press, and by then pointer capture has been taken - so every pointer event
+  is retargeted to the capturing container and `e.target` is the container, never what was pressed. The
+  drag-and-drop layer reads `e.target` to learn which item was picked up, found nothing, and returned.
+  It only ever worked where capture silently failed. `onStart` now receives the press, whose
+  coordinates are also what a grab offset is measured from.
 
 ### Fixed
 

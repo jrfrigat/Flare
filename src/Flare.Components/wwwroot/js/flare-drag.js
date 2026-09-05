@@ -29,23 +29,29 @@ export function startDrag(handle, opts) {
     const button = o.button ?? 0;
     const threshold = o.threshold ?? 0;
     let armed = false, active = false, startX = 0, startY = 0, pid = null, prevCursor = '', prevSelect = '';
+    let downEvent = null;
 
     // A drag handle should not also pan/scroll the page on touch.
     if (o.touchAction !== null) handle.style.touchAction = o.touchAction || 'none';
 
-    function begin(e) {
+    // onStart is handed the PRESS, never the move that crossed the threshold. Pointer capture is taken
+    // on pointerdown, and from then on every pointer event is retargeted to the handle - so the move's
+    // `target` is the container, not what was pressed. A thresholded gesture that read `e.target` in
+    // onStart would find the container every time and start nothing. Its clientX/clientY are the press
+    // point too, which is what a grab offset is measured from.
+    function begin() {
         active = true;
         if (o.cursor) { prevCursor = document.body.style.cursor; document.body.style.cursor = o.cursor; }
         prevSelect = document.body.style.userSelect; document.body.style.userSelect = 'none';
-        o.onStart && o.onStart(e);
+        o.onStart && o.onStart(downEvent);
     }
     function down(e) {
         if (e.pointerType === 'mouse' && e.button !== button) return;
         if (o.filter && !o.filter(e)) return;
-        armed = true; startX = e.clientX; startY = e.clientY; pid = e.pointerId;
+        armed = true; startX = e.clientX; startY = e.clientY; pid = e.pointerId; downEvent = e;
         try { handle.setPointerCapture(e.pointerId); } catch (_) { }
         if (threshold) return;   // the press stays a press until the pointer travels
-        begin(e);
+        begin();
         e.preventDefault();
     }
     function move(e) {
@@ -53,7 +59,7 @@ export function startDrag(handle, opts) {
         const dx = e.clientX - startX, dy = e.clientY - startY;
         if (!active) {
             if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
-            begin(e);
+            begin();
         }
         o.onMove && o.onMove(dx, dy, e);
         e.preventDefault();
@@ -61,6 +67,7 @@ export function startDrag(handle, opts) {
     function end(e) {
         if (!armed || e.pointerId !== pid) return;
         armed = false;
+        downEvent = null;
         try { handle.releasePointerCapture(pid); } catch (_) { }
         if (!active) return;     // never passed the threshold: nothing was started, nothing to end
         active = false;
