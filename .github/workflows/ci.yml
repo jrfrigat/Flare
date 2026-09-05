@@ -42,7 +42,9 @@ jobs:
       - name: Build (Release)
         run: dotnet build Flare.slnx -c Release --no-restore
 
-      # One run over the solution exercises every test project on every TFM it targets:
+      # One run over the solution exercises every test project on every TFM it targets, which is now
+      # twelve of them: the component suite, the nine optional packages that ship on their own, and the
+      # two net10-only suites below.
       # Flare.Components.Tests multi-targets, so this covers the net8.0/net9.0/net10.0 library builds;
       # Flare.Core.Tests is net10-only (it references the net10 CssAudit tool), and so is
       # Flare.Guards.Tests, which reads the repository rather than running it.

@@ -43,6 +43,15 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Flare.Components.Tests/Flare.Components.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Barcode.Tests/Flare.Components.Barcode.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Carousel.Tests/Flare.Components.Carousel.Tests.csproj" />
+    <Project Path="tests/Flare.Components.IDE.Tests/Flare.Components.IDE.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Kanban.Tests/Flare.Components.Kanban.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Media.Tests/Flare.Components.Media.Tests.csproj" />
+    <Project Path="tests/Flare.Components.QrCode.Tests/Flare.Components.QrCode.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Query.Tests/Flare.Components.Query.Tests.csproj" />
+    <Project Path="tests/Flare.Components.RichTextEditor.Tests/Flare.Components.RichTextEditor.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Transfer.Tests/Flare.Components.Transfer.Tests.csproj" />
     <Project Path="tests/Flare.Core.Tests/Flare.Core.Tests.csproj" />
     <Project Path="tests/Flare.Guards.Tests/Flare.Guards.Tests.csproj" />
   </Folder>

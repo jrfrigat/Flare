@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Flare.Components.Tests" />
+    <InternalsVisibleTo Include="Flare.Components.QrCode.Tests" />
   </ItemGroup>
 
   <ItemGroup>

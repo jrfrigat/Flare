@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
+  <!-- Tests for the optional Flare.Components.IDE package. It ships separately, so it is tested
+       separately: the core suite does not reference it, and this suite does not carry the core's. -->
+
   <PropertyGroup>
-    <!-- Multi-targeted so the bUnit suite actually runs against the net8.0/net9.0/net10.0 library builds.
-         Clearing the inherited singular TargetFramework (net10.0, from Directory.Build.props) is required:
-         when both that and TargetFrameworks are set the singular wins and only net10.0 builds, so the
-         net8.0/net9.0 outputs never appear. -->
+    <!-- The same three runtimes the package itself targets. Clearing the inherited singular
+         TargetFramework is required - when both are set the singular one wins. -->
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <TargetFramework></TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -27,17 +28,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Flare.Abstractions\Flare.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Icons.FontAwesome.Symbols\Flare.Icons.FontAwesome.Symbols.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Icons.FluentUI.Svg\Flare.Icons.FluentUI.Svg.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Symbols\Flare.Icons.MaterialDesign3.Symbols.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Svg\Flare.Icons.MaterialDesign3.Svg.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
+    <!-- The bUnit context and its stub services, shared as SOURCE rather than through a library: the
+         culture pin is a [ModuleInitializer], which runs per assembly, so every suite needs its own. -->
+    <Compile Include="..\Flare.Components.Tests\TestHelpers.cs" Link="TestHelpers.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Flare.Icons" />
+    <ProjectReference Include="..\..\src\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
   </ItemGroup>
+
 </Project>
