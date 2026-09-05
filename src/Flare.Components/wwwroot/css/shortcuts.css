@@ -10,7 +10,8 @@
     min-width: 320px;
     max-width: 480px;
     width: 90%;
-    max-height: 80vh;
+    /* dvh rather than vh: the panel has to fit the visible screen, which on a phone is less than 100vh. */
+    max-block-size: 80dvh;
     overflow-y: auto;
     outline: none;
 }

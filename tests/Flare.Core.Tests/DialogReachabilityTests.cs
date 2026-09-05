@@ -28,15 +28,22 @@ public class DialogReachabilityTests
         Assert.Matches(@"flex-direction\s*:\s*column", Normalize(body!));
     }
 
-    // Dynamic viewport units, not `vh`: on a phone `100vh` counts the space behind the browser chrome,
-    // so a `vh` cap leaves the top and bottom of the dialog under the URL bar - the exact failure the
-    // cap exists to prevent.
+    // Dynamic viewport units, not `vh`, ANYWHERE a cap exists so that something fits the screen. On a
+    // phone `vh` counts the space behind the browser chrome, so the one place a cap is needed is the one
+    // place it is too generous - the dialog left its top and bottom under the URL bar, and the grid's
+    // filter menu made the same promise about its actions row in the same comment that broke it.
     [Fact]
-    public void EveryHeightCapUsesDynamicViewportUnits()
+    public void NoStylesheetCapsWithStaticViewportHeight()
     {
-        var css = StripComments(File.ReadAllText(Path.Combine(CssDir, "dialog.css")));
+        var offenders = Directory.EnumerateFiles(CssDir, "*.css")
+            .Select(path => (Name: Path.GetFileName(path), Css: StripComments(File.ReadAllText(path))))
+            .Where(f => Regex.IsMatch(f.Css, @"ds*vh"))
+            .Select(f => f.Name)
+            .ToList();
 
-        Assert.DoesNotContain("100vh", css, StringComparison.Ordinal);
+        Assert.True(offenders.Count == 0,
+            "These stylesheets size something in , which overshoots the visible area on a phone; use "
+            + ": " + string.Join(", ", offenders));
     }
 
     [Fact]
