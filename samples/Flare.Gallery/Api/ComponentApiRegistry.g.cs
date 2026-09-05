@@ -2434,6 +2434,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Group", @"string?", null, @"Default group for the draggables and zones beneath this context. Items only see zones of their own group, so one context can hold two unrelated sets of things.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"OnDrop", @"EventCallback<FlareDropEventArgs<TPayload?>>", null, @"Raised once when a drag lands on a zone that accepted it. Not raised when the drop was cancelled, dropped on nothing, or dropped back onto the item itself.", null, false, true, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"ResolveItem", @"DragItemResolver<TPayload?>?", null, @"Resolves an id to its payload for items that are NOT FlareDraggable components - a data grid's tr, a tree's li, anything that cannot take a wrapper element without producing invalid markup. Such an element carries the model's data attributes itself and this answers for it. Consulted only when no registered draggable owns the id. SourceTargetId is null for these, since there is no component to have been declared inside a zone.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
@@ -3358,11 +3359,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Releases the imported JS module reference.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",

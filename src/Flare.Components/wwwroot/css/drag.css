@@ -14,6 +14,10 @@
     cursor: grab;
 }
 
+.flare-draggable:active {
+    cursor: grabbing;
+}
+
 .flare-draggable--disabled {
     cursor: inherit;
     touch-action: auto;

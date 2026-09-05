@@ -20,6 +20,19 @@ public enum DropPlacement
     Both,
 }
 
+/// <summary>
+/// Resolves a draggable id to its payload, for a component that renders its own rows rather than
+/// wrapping them in <see cref="FlareDraggable"/>. A data grid's row is a <c>tr</c> and a tree's node is
+/// an <c>li</c>; neither can take a wrapper element without producing invalid markup, so they emit the
+/// model's data attributes on their own element and answer this instead.
+/// </summary>
+/// <typeparam name="TPayload">The type carried by the dragged item.</typeparam>
+/// <param name="id">The value the element's <c>data-flare-drag</c> attribute carries.</param>
+/// <param name="payload">The item that id stands for.</param>
+/// <returns><c>true</c> when the id was recognised. An unrecognised id is refused rather than dropped
+/// as a default, which is what makes this correct for a value-type payload too.</returns>
+public delegate bool DragItemResolver<TPayload>(string id, out TPayload payload);
+
 /// <summary>Where a drop landed relative to the item under the pointer.</summary>
 public enum DropEdge
 {

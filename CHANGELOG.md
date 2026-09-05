@@ -42,6 +42,18 @@ All notable changes to Flare are documented here. This project adheres to
   which the old "drop into a column" handler had nowhere to express: it filtered a flat list by column
   id and a drop carried no position.
 
+- **A data grid can be reordered on a phone.** Both grid reorders - rows and columns - moved onto the
+  shared drag model, and both were previously HTML5 drag-and-drop with no touch path at all, so neither
+  worked on a touch screen. The grid keeps its own `tr` and `th` (a wrapper element between `tbody`
+  and `tr` is markup the browser hoists straight back out): it declares the model's attributes on its
+  own elements and answers `FlareDragContext.ResolveItem`, which is new for exactly this.
+
+  The insertion line finds its axis by MEASURING where the first two items sit rather than reading a
+  declaration, because neither `table-header-group` nor `table-row-group` says which way its children
+  run - so a column drop draws a vertical line between headers and a row drop a horizontal one between
+  rows, with nothing to configure. `_dragRow`, `_dragColumn` and four now-duplicate CSS classes are
+  gone.
+
 - **`FlareChart.StickyDomain`: a value axis that does not shrink back, so a live chart holds still.**
   A chart handed a fresh dataset on a timer re-derives its domain from that dataset alone, which puts
   the top of the plot at the current maximum - so the value that CHANGED stays glued to the top and the

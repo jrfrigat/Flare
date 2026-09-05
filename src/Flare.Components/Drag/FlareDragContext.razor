@@ -30,6 +30,16 @@
     /// </summary>
     [Parameter] public string? Group { get; set; }
 
+    /// <summary>
+    /// Resolves an id to its payload for items that are NOT <see cref="FlareDraggable"/> components -
+    /// a data grid's <c>tr</c>, a tree's <c>li</c>, anything that cannot take a wrapper element without
+    /// producing invalid markup. Such an element carries the model's data attributes itself and this
+    /// answers for it. Consulted only when no registered draggable owns the id.
+    /// <see cref="FlareDropEventArgs{TPayload}.SourceTargetId"/> is null for these, since there is no
+    /// component to have been declared inside a zone.
+    /// </summary>
+    [Parameter] public DragItemResolver<TPayload>? ResolveItem { get; set; }
+
     /// <summary>The content that declares the draggables and drop zones.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -65,20 +75,22 @@
     [JSInvokable]
     public Task<string[]?> OnDragStartAsync(string sourceId)
     {
-        var item = _coordinator.Item(sourceId);
-        if (item is null || !TryPayload(item, out var payload))
+        if (!TryResolve(sourceId, out var payload, out _))
             return Task.FromResult<string[]?>([]);
 
         var allowed = new List<string>();
         var everyZone = true;
         foreach (var zone in _coordinator.Zones)
         {
-            if (zone.AcceptsPayload(item.PayloadValue) && (CanDrop is null || CanDrop(payload, zone.Target)))
+            if (zone.AcceptsPayload(payload) && (CanDrop is null || CanDrop(payload, zone.Target)))
                 allowed.Add(zone.Target);
             else
                 everyZone = false;
         }
 
+        // A context whose zones are all declared as markup rather than as components registers none of
+        // them, and "all of them" is then the only answer that can be given - the browser already knows
+        // the zones from the DOM, and it is the group that keeps them apart.
         return Task.FromResult(everyZone ? null : allowed.ToArray());
     }
 
@@ -92,24 +104,39 @@
     [JSInvokable]
     public async Task OnDropAsync(string sourceId, string targetId, int index, string edge, string? overId)
     {
-        var item = _coordinator.Item(sourceId);
-        if (item is null || !OnDrop.HasDelegate || !TryPayload(item, out var payload)) return;
+        if (!OnDrop.HasDelegate || !TryResolve(sourceId, out var payload, out var sourceZone)) return;
 
-        var over = _coordinator.Item(overId);
-        var hasOver = over is not null && TryPayload(over, out _);
-        TPayload? overPayload = default;
-        if (hasOver) TryPayload(over!, out overPayload!);
+        var hasOver = TryResolve(overId, out var overPayload, out _);
 
         await OnDrop.InvokeAsync(new FlareDropEventArgs<TPayload>
         {
             Payload = payload,
             TargetId = targetId,
-            SourceTargetId = item.Zone?.Target,
+            SourceTargetId = sourceZone?.Target,
             Index = index,
             Edge = ParseEdge(edge),
-            OverPayload = overPayload,
+            OverPayload = hasOver ? overPayload : default,
             HasOverPayload = hasOver,
         });
+    }
+
+    // A declared FlareDraggable first, then the caller's resolver for the rows a component renders
+    // itself. Both paths are one lookup, and both refuse an id they do not know rather than answering
+    // with a default.
+    private bool TryResolve(string? id, out TPayload payload, out FlareDropZone? zone)
+    {
+        payload = default!;
+        zone = null;
+        if (id is null) return false;
+
+        var item = _coordinator.Item(id);
+        if (item is not null)
+        {
+            zone = item.Zone;
+            return TryPayload(item, out payload);
+        }
+
+        return ResolveItem is not null && ResolveItem(id, out payload);
     }
 
     private static DropEdge ParseEdge(string edge) => edge switch

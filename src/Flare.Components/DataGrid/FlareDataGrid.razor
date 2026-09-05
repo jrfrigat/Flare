@@ -17,6 +17,13 @@
    ToolbarContent, FooterContent or any nested fragment finds it without an explicit Context/Grid. Not
    IsFixed: the Context parameter may be swapped, and a stale binding would drive the wrong grid. *@
 <CascadingValue TValue="DataGridContext<TItem>" Value="@ActiveContext">
+@* Rows and columns reorder through the shared pointer-based drag model. One context covers both, with
+   the payload typed as object: the two are different things (a row is a TItem, a column is a key) and
+   the grid resolves each from the id it put in the DOM. Nothing is exposed - the public surface stays
+   OnRowReordered and the column order. Declared unconditionally because it costs one element that lays
+   out as display:contents; the gesture only ever fires on an element that carries data-flare-drag, and
+   those exist only when reordering is switched on. *@
+<FlareDragContext TPayload="object" ResolveItem="TryResolveDragItem" OnDrop="OnDragDropped">
 <div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered, _fill, _bounded, _sized)" style="@_rootStyle" @attributes="AdditionalAttributes">
     @* Screen-reader announcements for sort/filter/page changes. *@
     <div role="status" aria-live="polite" class="flare-visually-hidden">@_ariaAnnouncement</div>
@@ -83,7 +90,9 @@
                @onkeydown="HandleGridKeyDown"
                @onmouseup="OnCellMouseUp"
                @onmouseleave="OnCellMouseUp">
-            <thead>
+            <thead data-flare-drop="@ColumnZone"
+                   data-flare-drag-group="@ColumnZone"
+                   data-flare-drop-placement="between">
                 @if (_hasBandedComposite)
                 {
                     @RenderBandedCompositeHead()
@@ -178,15 +187,11 @@
                         aria-selected="@(SelectionMode != SelectionMode.None ? _selection.Contains(item).ToString().ToLowerInvariant() : null)"
                         class="@Css.Classes.DataGrid.Row @(_selection.Contains(item) ? Css.Classes.DataGrid.RowSelected : "")
                                @(isEditing ? Css.Classes.DataGrid.RowEditing : "")
-                               @(RowReorderable ? Css.Classes.DataGrid.RowDraggable : "")
-                               @(_dragRow is not null && EqualityComparer<TItem>.Default.Equals(_dragRow, item) ? Css.Classes.DataGrid.RowDragging : "")
+                               @(RowReorderable ? Css.Classes.Drag.Item : "")
                                @(RowClassFunc?.Invoke(item) ?? "")"
                         style="@(RowStyleFunc?.Invoke(item))"
-                        draggable="@(RowReorderable ? "true" : null)"
-                        @ondragstart="@(() => OnRowDragStart(item))"
-                        @ondragover:preventDefault="RowReorderable"
-                        @ondrop="@(() => OnRowDrop(item))"
-                        @ondragend="OnRowDragEnd"
+                        data-flare-drag="@(RowReorderable ? RowDragId(rowIdx) : null)"
+                        data-flare-drag-group="@(RowReorderable ? RowZone : null)"
                         @onclick="@(() => HandleRowClickAsync(item))">
                         @if (RowDetailTemplate != null)
                         {
@@ -333,7 +338,9 @@
                     </tr>
                 </text>;
             }
-            <tbody>
+            <tbody data-flare-drop="@RowZone"
+                   data-flare-drag-group="@RowZone"
+                   data-flare-drop-placement="between">
                 @if (_hasBandedComposite)
                 {
                     @* Each record spans several <tr>; Virtualize uses a fixed per-record ItemSize
@@ -501,6 +508,7 @@
         </div>
     }
 </div>
+</FlareDragContext>
 </CascadingValue>
 
 @code {
@@ -558,16 +566,12 @@
     // Shared leaf column header th (used by both the flat header row and the banded header).
     private RenderFragment RenderColumnHeaderTh(DataGridColumn<TItem> col, int rowSpan) =>
     @<th role="columnheader"
-        class="@_thClass(col) @(ReorderableColumns ? Css.Classes.DataGrid.ThDraggable : "") @(_dragColumn == col.Key ? Css.Classes.DataGrid.ThDragging : "")"
+        class="@_thClass(col) @(ReorderableColumns ? Css.Classes.Drag.Item : "")"
         style="@(col.Width is not null ? $"width:{col.Width}" : null)"
         rowspan="@(rowSpan > 1 ? rowSpan.ToString() : null)"
         aria-sort="@_ariaSort(col)"
-        draggable="@(ReorderableColumns ? "true" : null)"
-        @ondragstart="@(() => OnColumnDragStart(col.Key))"
-        @ondragenter="@(() => OnColumnDragEnter(col.Key))"
-        @ondragover:preventDefault="ReorderableColumns"
-        @ondrop="@(() => OnColumnDrop(col.Key))"
-        @ondragend="OnColumnDragEnd"
+        data-flare-drag="@(ReorderableColumns ? ColumnDragId(col.Key) : null)"
+        data-flare-drag-group="@(ReorderableColumns ? ColumnZone : null)"
         @onclick="@(async (e) => await OnHeaderClick(col, e))">
         @if (col.TitleContent is not null) { @col.TitleContent } else { @col.Title }
         @if (col.Sortable)

@@ -787,8 +787,9 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
     {
         var cut = Render(ReorderGrid(reorderableColumns: true));
         var th = cut.FindAll("th[role=columnheader]")[0];
-        Assert.Equal("true", th.GetAttribute("draggable"));
-        Assert.Contains("flare-datagrid__th--draggable", th.ClassName);
+        Assert.Equal("c:Name", th.GetAttribute("data-flare-drag"));
+        Assert.Equal("flare-datagrid-columns", th.GetAttribute("data-flare-drag-group"));
+        Assert.Contains("flare-draggable", th.ClassName);
     }
 
     [Fact]
@@ -796,7 +797,7 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
     {
         var cut = Render(ReorderGrid(reorderableColumns: false));
         var th = cut.FindAll("th[role=columnheader]")[0];
-        Assert.Null(th.GetAttribute("draggable"));
+        Assert.Null(th.GetAttribute("data-flare-drag"));
     }
 
     [Fact]
@@ -813,9 +814,10 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
         IReadOnlyList<string>? reported = null;
         var cut = Render(ReorderGrid(reorderableColumns: true, onColumnOrderChanged: o => reported = o));
 
-        // Drag "Dept" (index 1) onto "Name" (index 0) -> Dept first.
-        cut.FindAll("th[role=columnheader]")[1].TriggerEvent("ondragstart", new Microsoft.AspNetCore.Components.Web.DragEventArgs());
-        cut.FindAll("th[role=columnheader]")[0].TriggerEvent("ondrop", new Microsoft.AspNetCore.Components.Web.DragEventArgs());
+        // Drag "Dept" onto the front of the header row. The browser reports the index the column ends
+        // up at, counted with the dragged one already taken out.
+        var drag = cut.FindComponent<FlareDragContext<object>>();
+        cut.InvokeAsync(() => drag.Instance.OnDropAsync("c:Dept", "flare-datagrid-columns", 0, "before", "c:Name")).Wait();
 
         var titles = cut.FindAll("th[role=columnheader]").Select(t => t.TextContent.Trim()).ToList();
         Assert.Equal(["Dept", "Name"], titles);
@@ -828,8 +830,9 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
     {
         var cut = Render(ReorderGrid(rowReorderable: true));
         var row = cut.FindAll("tr.flare-datagrid__row")[0];
-        Assert.Equal("true", row.GetAttribute("draggable"));
-        Assert.Contains("flare-datagrid__row--draggable", row.ClassName);
+        Assert.Equal("0", row.GetAttribute("data-flare-drag"));
+        Assert.Equal("flare-datagrid-rows", row.GetAttribute("data-flare-drag-group"));
+        Assert.Contains("flare-draggable", row.ClassName);
     }
 
     [Fact]
@@ -838,9 +841,9 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
         DataGridRowReorder<Person>? reported = null;
         var cut = Render(ReorderGrid(rowReorderable: true, onRowReordered: e => reported = e));
 
-        // Drag row 1 (Bob) onto row 0 (Alice).
-        cut.FindAll("tr.flare-datagrid__row")[1].TriggerEvent("ondragstart", new Microsoft.AspNetCore.Components.Web.DragEventArgs());
-        cut.FindAll("tr.flare-datagrid__row")[0].TriggerEvent("ondrop", new Microsoft.AspNetCore.Components.Web.DragEventArgs());
+        // Drag row 1 (Bob) in front of row 0 (Alice).
+        var drag = cut.FindComponent<FlareDragContext<object>>();
+        cut.InvokeAsync(() => drag.Instance.OnDropAsync("1", "flare-datagrid-rows", 0, "before", "0")).Wait();
 
         Assert.NotNull(reported);
         Assert.Equal(1, reported!.OldIndex);

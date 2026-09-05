@@ -171,7 +171,6 @@ public partial class FlareDataGrid<TItem>
 
     // Column reorder state (display order overlay by Title; survives RebuildGridColumns).
     private readonly List<string> _columnOrder = [];
-    private string? _dragColumn;
     private readonly Dictionary<string, string> _filters = new();
     private SortDirection _sortDir = SortDirection.None;
     private int _page;

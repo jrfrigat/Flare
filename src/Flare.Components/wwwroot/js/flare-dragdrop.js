@@ -19,13 +19,22 @@ import { startDrag } from './flare-drag.js';
 
 const ITEM = '[data-flare-drag]';
 const ZONE = '[data-flare-drop]';
+const CONTEXT = '.flare-drag-context';
 
 const _contexts = registry();
 
-// Which way a zone lays its items out, so "before/after" means the right edge. Read from the zone's own
-// computed style rather than declared in C#: the layout already knows, and a parameter would be a
-// second source of truth that a theme could contradict.
-function _isRow(zoneEl) {
+// Which way a zone lays its items out, so "before/after" means the right edge. MEASURED, not declared:
+// where the first two items actually sit answers for every layout there is, including the ones a
+// declaration would get wrong - a row of table headers is `display: table-row`, which says nothing
+// about direction, and a grid's rows are `table-row-group`. Falling back to the computed style covers
+// a zone holding fewer than two items, where there is no arrangement to read.
+function _isRow(zoneEl, items) {
+    if (items && items.length >= 2) {
+        const a = items[0].getBoundingClientRect();
+        const b = items[1].getBoundingClientRect();
+        if (b.top >= a.bottom - 1) return false;
+        if (b.left >= a.right - 1) return true;
+    }
     const s = getComputedStyle(zoneEl);
     if (s.display === 'flex' || s.display === 'inline-flex')
         return s.flexDirection === 'row' || s.flexDirection === 'row-reverse';
@@ -69,21 +78,21 @@ function _hitTest(drag, x, y) {
     // here is a no-op rather than a move to a position it already occupies.
     if (itemEl === drag.sourceEl) return null;
 
-    // Over the zone but not over any item: an ordered zone appends, a container zone just takes it.
-    if (!itemEl || !zoneEl.contains(itemEl)) {
-        if (placement === 'into') return { zone, edge: 'into', index: -1, overEl: null };
-        const tail = _ownItems(zoneEl).filter(i => i !== drag.sourceEl);
-        return { zone, edge: 'into', index: tail.length, overEl: null };
-    }
-
-    const row = _isRow(zoneEl);
-    const edge = placement === 'into' ? 'into' : _edgeOf(itemEl, placement, x, y, row);
-    if (edge === 'into') return { zone, edge, index: -1, overEl: itemEl, row };
-
     // The index is reported in the list WITHOUT the dragged item, so it is the index the item ends up
     // at - which is what a reorder callback wants, and what an index counted in the current DOM (where
     // the source is still sitting somewhere earlier) would not be.
     const items = _ownItems(zoneEl).filter(i => i !== drag.sourceEl);
+
+    // Over the zone but not over any item: an ordered zone appends, a container zone just takes it.
+    if (!itemEl || !zoneEl.contains(itemEl)) {
+        if (placement === 'into') return { zone, edge: 'into', index: -1, overEl: null };
+        return { zone, edge: 'into', index: items.length, overEl: null };
+    }
+
+    const row = _isRow(zoneEl, items);
+    const edge = placement === 'into' ? 'into' : _edgeOf(itemEl, placement, x, y, row);
+    if (edge === 'into') return { zone, edge, index: -1, overEl: itemEl, row };
+
     let index = items.indexOf(itemEl);
     if (index < 0) index = items.length;
     else if (edge === 'after') index += 1;
@@ -151,9 +160,13 @@ export function registerDragContext(root, dotNetRef) {
     const off = startDrag(root, {
         threshold: 4,
         touchAction: null,   // .flare-draggable declares its own; the context may be a scroll container
+        // Contexts nest - a data grid declares one for its rows and another for its columns - and the
+        // gesture of an outer context sees the presses of an inner one bubble through it. The INNERMOST
+        // context owns the item, so exactly one of them starts a drag.
         filter(e) {
             const item = e.target instanceof Element ? e.target.closest(ITEM) : null;
-            return !!item && item.dataset.flareDragDisabled !== 'true' && root.contains(item);
+            if (!item || item.dataset.flareDragDisabled === 'true') return false;
+            return item.closest(CONTEXT) === root;
         },
         onStart(e) {
             const sourceEl = e.target.closest(ITEM);
@@ -165,6 +178,7 @@ export function registerDragContext(root, dotNetRef) {
             const zones = new Map();
             for (const zoneEl of root.querySelectorAll(ZONE)) {
                 if ((zoneEl.dataset.flareDragGroup || '') !== group) continue;
+                if (zoneEl.closest(CONTEXT) !== root) continue;   // belongs to a nested context
                 zones.set(zoneEl, {
                     el: zoneEl,
                     id: zoneEl.dataset.flareDrop,
