@@ -64,6 +64,34 @@ public sealed class FillHeightFamilyTests : FlareTestContext
         Assert.Contains("flare-datagrid--fill", gridClass, StringComparison.Ordinal);
     }
 
+    // The dialog is the second member with a mechanism of its own: it is centred on a scrim that is a
+    // ROW flex container, so the shared `flex: 1 1 0` would set its flex-basis on the HORIZONTAL axis
+    // and take over the panel's width. Height is the only axis a dialog fills.
+    [Fact]
+    public void Dialog_FillsWithItsOwnRule()
+    {
+        var plain = Render<FlareDialog>(p => p.Add(x => x.Visible, true));
+        Assert.DoesNotContain("--fill", plain.Find(".flare-dialog").ClassName, StringComparison.Ordinal);
+
+        var filled = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.FillHeight, true));
+
+        var cls = filled.Find(".flare-dialog").ClassName;
+        Assert.Contains("flare-dialog--fill", cls, StringComparison.Ordinal);
+        Assert.DoesNotContain("flare-fill", cls, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Dialog_InheritsTheSharedContract()
+    {
+        var declaredBy = typeof(FlareDialog)
+            .GetProperty(nameof(FlareContainerBase.FillHeight))!.DeclaringType;
+
+        Assert.True(typeof(FlareContainerBase).IsAssignableFrom(typeof(FlareDialog)));
+        Assert.Equal(typeof(FlareContainerBase), declaredBy);
+    }
+
     // A container with a definite height of its own passes it down without joining the family at all:
     // it is a plain block box, so a filling child's `block-size: 100%` resolves against it. Measured in
     // Chrome on Flare's own stylesheet - a 300px resizable box, a filling grid at 300px, its table

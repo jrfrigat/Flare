@@ -3293,4 +3293,13 @@
   <data name="Ptr_Refreshed" xml:space="preserve">
     <value>Refreshes:</value>
   </data>
+  <data name="Dialog_FillHeight" xml:space="preserve">
+    <value>Full-height dialog</value>
+  </data>
+  <data name="DataGrid_AutoVirtualTitle" xml:space="preserve">
+    <value>Row recycling, decided by the grid</value>
+  </data>
+  <data name="DataGrid_AutoVirtualDesc" xml:space="preserve">
+    <value>Virtual is three-state: left unset the grid recycles an in-memory set of more than 500 rows when it has a height to scroll in. Nothing else changes - paging, grouping, detail rows and the tree behave identically either way.</value>
+  </data>
 </root>
