@@ -11,7 +11,7 @@
     max-width: 480px;
     width: 90%;
     /* dvh rather than vh: the panel has to fit the visible screen, which on a phone is less than 100vh. */
-    max-block-size: 80dvh;
+    max-block-size: var(--flare-overlay-panel-max-block-size);
     overflow-y: auto;
     outline: none;
 }

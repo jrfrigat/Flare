@@ -485,6 +485,10 @@ public static class CssVarMap
         v[Css.Tokens.Slider.DisabledActiveColor] = t.Slider.DisabledActiveColor;
         v[Css.Tokens.Slider.DisabledInactiveColor] = t.Slider.DisabledInactiveColor;
 
+        v[Css.Tokens.Overlay.ViewportInset] = t.Overlay.ViewportInset;
+        v[Css.Tokens.Overlay.ViewportInsetCompact] = t.Overlay.ViewportInsetCompact;
+        v[Css.Tokens.Overlay.PanelMaxBlockSize] = t.Overlay.PanelMaxBlockSize;
+
         v[Css.Tokens.Drag.SourceOpacity] = t.Drag.SourceOpacity;
         v[Css.Tokens.Drag.PreviewElevation] = t.Drag.PreviewElevation;
         v[Css.Tokens.Drag.PreviewOpacity] = t.Drag.PreviewOpacity;

@@ -114,6 +114,23 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A guard added in 0.31.0 asserted nothing at all.** `NoStylesheetCapsWithStaticViewportHeight` was
+  written with a control character inside its regex, so the pattern could never match and the test was
+  green from the day it was added - while being reported as cover for the `vh`/`dvh` rule it was
+  supposed to hold. It is repaired, and every guard in that file is now proved by injecting the
+  violation it is meant to catch and watching it fail.
+
+- **A theme can set how much of the screen a surface takes.** Nine rules across the dialog, the data
+  grid's filter menu and filter-builder tree and the shortcuts panel carried the measurement as a
+  number - `calc(100dvh - 3rem)`, `max-block-size: 60dvh`, `max-width: 90vw` - which a theme has no way
+  to repoint. They read `OverlayTokens` now: MD3 keeps 3rem of air (2rem on a phone) and lets a panel
+  take 70% of the screen, FluentUI 2 runs tighter at 2rem/1.5rem and 75%. That difference was the point.
+
+  The literals spread precisely because they were literals: the dialog cap added in 0.31.0 took its
+  `3rem` from the rule beside it. Three guards keep them out - a literal subtracted from the viewport,
+  a literal share of the viewport, and a literal percentage in a `color-mix`.
+
+
 - **Two components could emit a CSS class that does not exist.** `FlareHidden` built its class from the
   breakpoint name, so `Below="Breakpoint.Xs"` produced `flare-hidden--below-xs` and
   `Above="Breakpoint.Xxl"` produced `flare-hidden--above-xxl` - there is nothing below the smallest tier

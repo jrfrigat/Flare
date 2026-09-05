@@ -437,7 +437,7 @@
   flex-direction: column;
   gap: var(--flare-spacing-4);
   min-width: 34rem;
-  max-width: 90vw;
+  max-width: calc(100vw - var(--flare-overlay-viewport-inset));
   padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container-high);
   color: var(--flare-color-on-surface);
@@ -451,7 +451,7 @@
   flex-direction: column;
   /* dvh: the cap exists so the tree fits the SCREEN, and on a phone  counts the space behind the
      browser chrome - the one place the cap is needed is the one place it would be too generous. */
-  max-block-size: 60dvh;
+  max-block-size: var(--flare-overlay-panel-max-block-size);
   overflow: auto;
 }
 
@@ -929,7 +929,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   flex-direction: column;
   gap: var(--flare-spacing-4);
   min-width: 13rem;
-  max-block-size: calc(100dvh - 2rem);
+  max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset-compact));
   overflow-y: auto;
   padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container);
