@@ -84,3 +84,27 @@ public sealed class FlareDropEventArgs<TPayload>
     /// <see cref="OverPayload"/> meaningful even for a payload type whose default is not null.</summary>
     public bool HasOverPayload { get; init; }
 }
+
+/// <summary>
+/// Which zones a drag that has just begun may land in, answered once per drag and applied by the
+/// browser to the zones it found in the DOM.
+///
+/// Two lists rather than one, because the two sides know different things. <see cref="Allow"/> is
+/// this side's list and can only name zones registered as <see cref="FlareDropZone"/> components;
+/// <see cref="Deny"/> names zones a component declared as markup, which only the browser can
+/// enumerate and which are therefore in play unless refused.
+/// </summary>
+public sealed class DragTargetRuling
+{
+    /// <summary>Zone ids that may take the item; <c>null</c> means every zone in the item's group.</summary>
+    public string[]? Allow { get; init; }
+
+    /// <summary>Zone ids that must not take the item, applied after <see cref="Allow"/>.</summary>
+    public string[]? Deny { get; init; }
+
+    /// <summary>Whether a zone survives both lists.</summary>
+    /// <param name="target">The zone id to test.</param>
+    public bool Permits(string target) =>
+        (Allow is null || Allow.Contains(target, StringComparer.Ordinal))
+        && (Deny is null || !Deny.Contains(target, StringComparer.Ordinal));
+}

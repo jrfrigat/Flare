@@ -11,12 +11,14 @@ public partial class FlareChart
 {
     [Inject] private IBrowserViewportService Viewport { get; set; } = default!;
     [Inject] private IOverlayJsService Overlay { get; set; } = default!;
+    [Inject] private IChartMotionJsService Motion { get; set; } = default!;
 
     private ElementReference _plotRef;
     private ElementReference _tooltipRef;
     private IAsyncDisposable? _sizeSubscription;
     private int? _measuredWidth;
     private bool _observing;
+    private bool _motionObserving;
 
     // Distance from the data point to the bubble. A number rather than a token because it is an input to
     // the placement engine, which works in pixels - the same reason ICollisionService.Offset is one.
@@ -31,6 +33,7 @@ public partial class FlareChart
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await SyncTooltipLayerAsync();
+        await SyncMotionAsync();
         if (!(_fluidActive || Zoomable) || _observing) return;
         _observing = true;
         try
@@ -41,6 +44,24 @@ public partial class FlareChart
         catch (InvalidOperationException) { _observing = false; }
         catch (JSDisconnectedException) { _observing = false; }
         catch (JSException) { _observing = false; }
+    }
+
+    // Started and stopped where the parameter changes, not once at first render, so a dashboard can turn
+    // the motion on with the same switch that starts its timer. Watching costs one call for the life of
+    // the chart and nothing per update: the browser reads the geometry it wrote itself, so an update
+    // that moves rather than jumps marshals nothing at all.
+    private async Task SyncMotionAsync()
+    {
+        if (AnimateUpdates == _motionObserving) return;
+        _motionObserving = AnimateUpdates;
+        try
+        {
+            if (AnimateUpdates) await Motion.ObservePlotAsync(_plotRef);
+            else await Motion.UnobservePlotAsync(_plotRef);
+        }
+        catch (InvalidOperationException) { _motionObserving = false; }
+        catch (JSDisconnectedException) { _motionObserving = false; }
+        catch (JSException) { _motionObserving = false; }
     }
 
     // The bubble is lifted clear of the plot box by design - centred on the point and sitting above it -
@@ -111,6 +132,14 @@ public partial class FlareChart
             catch (JSDisconnectedException) { }
             catch (JSException) { }
             _sizeSubscription = null;
+        }
+        if (_motionObserving)
+        {
+            try { await Motion.UnobservePlotAsync(_plotRef); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _motionObserving = false;
         }
         await base.DisposeAsync();
     }

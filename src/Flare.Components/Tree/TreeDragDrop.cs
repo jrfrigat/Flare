@@ -30,13 +30,74 @@ public sealed class TreeDragEventArgs
 /// </summary>
 internal sealed class TreeDragRegistry
 {
-    private readonly Dictionary<string, object> _items = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, Node> _items = new(StringComparer.Ordinal);
 
-    public void Register(string id, object item) => _items[id] = item;
+    // The way back from a payload to the id it was registered under. A drag hands the caller a payload
+    // and nothing else, and ancestry is a question about ids. Reference identity, because two nodes
+    // holding the same data object are the same node as far as any of this can tell.
+    private readonly Dictionary<object, string> _ids = new(ReferenceEqualityComparer.Instance);
 
-    public void Unregister(string id) => _items.Remove(id);
+    private readonly record struct Node(object Item, string? ParentId);
 
-    public bool TryGet(string id, out object item) => _items.TryGetValue(id, out item!);
+    public void Register(string id, object item, string? parentId)
+    {
+        if (_items.TryGetValue(id, out var prior) && !ReferenceEquals(prior.Item, item))
+            _ids.Remove(prior.Item);
+
+        _items[id] = new Node(item, parentId);
+        _ids[item] = id;
+    }
+
+    public void Unregister(string id)
+    {
+        if (!_items.Remove(id, out var node)) return;
+        if (_ids.TryGetValue(node.Item, out var owner) && string.Equals(owner, id, StringComparison.Ordinal))
+            _ids.Remove(node.Item);
+    }
+
+    public bool TryGet(string id, out object item)
+    {
+        var found = _items.TryGetValue(id, out var node);
+        item = found ? node.Item : null!;
+        return found;
+    }
+
+    public bool TryGetId(object item, out string id) => _ids.TryGetValue(item, out id!);
+
+    /// <summary>
+    /// Every drop zone inside the given node, including its own branch - which is to say the node and
+    /// each descendant that has children of its own, since a zone is a branch and a leaf has none.
+    /// Leaves are left out because the list is marshalled to the browser and a subtree is mostly leaves.
+    ///
+    /// The child map is built here rather than kept: it is asked for once at the start of a drag, and
+    /// keeping it would mean an invariant to maintain across every expand, collapse and re-registration
+    /// of a live tree.
+    /// </summary>
+    public List<string> Branches(string id)
+    {
+        var children = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        foreach (var (childId, node) in _items)
+        {
+            if (node.ParentId is not { } parent) continue;
+            if (!children.TryGetValue(parent, out var siblings)) children[parent] = siblings = [];
+            siblings.Add(childId);
+        }
+
+        var branches = new List<string> { id };
+        var walk = new List<string> { id };
+        var seen = new HashSet<string>(StringComparer.Ordinal) { id };
+        for (var i = 0; i < walk.Count; i++)
+        {
+            if (!children.TryGetValue(walk[i], out var next)) continue;
+            foreach (var child in next)
+            {
+                if (!seen.Add(child)) continue;
+                walk.Add(child);
+                if (children.ContainsKey(child)) branches.Add(child);
+            }
+        }
+        return branches;
+    }
 }
 
 /// <summary>Position where an item is dropped relative to the target.</summary>

@@ -3317,4 +3317,7 @@
   <data name="Charts_Live" xml:space="preserve">
     <value>Live data, and an axis that holds still</value>
   </data>
+  <data name="Charts_AnimateUpdates" xml:space="preserve">
+    <value>An update you can follow, not a new picture</value>
+  </data>
 </root>

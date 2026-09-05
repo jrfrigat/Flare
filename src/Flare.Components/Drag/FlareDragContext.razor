@@ -34,12 +34,25 @@
     [Parameter] public EventCallback OnDragEnd { get; set; }
 
     /// <summary>
-    /// Whether a payload may be dropped in a given target, asked once per drag for every zone. A zone
-    /// that says no never lights up and cannot receive the drop. Use it for what only the caller knows:
-    /// a tree node cannot go inside its own descendant, a column is full, a card is locked.
+    /// Whether a payload may be dropped in a given target, asked once per drag for every zone declared
+    /// as a <see cref="FlareDropZone"/>. A zone that says no never lights up and cannot receive the
+    /// drop. Use it for what only the caller knows: a column is full, a card is locked.
     /// <see cref="FlareDropZone.Accepts"/> says the same thing per zone; both must agree.
+    /// <para>
+    /// Zones a component declares as markup are NOT asked - the context cannot enumerate them, only the
+    /// browser can. Refuse those by naming them in <see cref="RefusedTargets"/>.
+    /// </para>
     /// </summary>
     [Parameter] public Func<TPayload, string, bool>? CanDrop { get; set; }
+
+    /// <summary>
+    /// Zones that must not take the payload, named by id, asked once per drag. This is the answer for a
+    /// component that declares its zones as markup rather than as <see cref="FlareDropZone"/> components:
+    /// the context has no list of those to run <see cref="CanDrop"/> over, so it takes a refusal instead.
+    /// A tree refusing its own subtree is the case this exists for - the branches inside a dragged node
+    /// belong to it, and a drop there detaches the whole branch from the tree.
+    /// </summary>
+    [Parameter] public Func<TPayload, IEnumerable<string>>? RefusedTargets { get; set; }
 
     /// <summary>
     /// Default group for the draggables and zones beneath this context. Items only see zones of their
@@ -108,20 +121,21 @@
     /// </summary>
     /// <param name="sourceId">The dragged item's id.</param>
     [JSInvokable]
-    public async Task<string[]?> OnDragStartAsync(string sourceId)
+    public async Task<DragTargetRuling?> OnDragStartAsync(string sourceId)
     {
         if (!TryResolve(sourceId, out var payload, out _))
-            return [];
+            return new DragTargetRuling { Allow = [] };
 
         if (OnDragStart.HasDelegate) await OnDragStart.InvokeAsync(payload);
 
         return AllowedTargets(payload);
     }
 
-    // null means "every zone in the group". A context whose zones are all declared as markup rather
-    // than as components registers none of them, and that is then the only answer that can be given -
-    // the browser already knows the zones from the DOM, and it is the group that keeps them apart.
-    private string[]? AllowedTargets(TPayload payload)
+    // null means "every zone in the group", which is what a context whose zones are all registered and
+    // all willing has to say. The allow-list can only cover zones this side knows about, so a component
+    // that declared its zones as markup refuses by name instead - the browser holds the full list, and
+    // the group already keeps unrelated sets apart.
+    private DragTargetRuling? AllowedTargets(TPayload payload)
     {
         var allowed = new List<string>();
         var everyZone = true;
@@ -132,7 +146,13 @@
             else
                 everyZone = false;
         }
-        return everyZone ? null : allowed.ToArray();
+
+        var refused = RefusedTargets?.Invoke(payload).ToArray();
+        if (refused is { Length: 0 }) refused = null;
+
+        return everyZone && refused is null
+            ? null
+            : new DragTargetRuling { Allow = everyZone ? null : allowed.ToArray(), Deny = refused };
     }
 
     /// <summary>Reports that a drag finished. Called by the browser once per drag, landed or not.</summary>
@@ -258,7 +278,7 @@
 
         foreach (var zone in order)
         {
-            if (allowed is not null && !allowed.Contains(zone.Target, StringComparer.Ordinal)) continue;
+            if (allowed is not null && !allowed.Permits(zone.Target)) continue;
             var others = zone.Items.Where(i => !string.Equals(i, item.ItemId, StringComparison.Ordinal)).ToList();
             for (var i = 0; i <= others.Count; i++)
                 _slots.Add(new KeyboardSlot(zone.Target, i, i < others.Count ? others[i] : null));

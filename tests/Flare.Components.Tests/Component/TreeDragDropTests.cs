@@ -109,6 +109,68 @@ public class C_TreeDragDropTests : FlareTestContext
         Assert.Equal(1, ended);
     }
 
+    // A node dropped inside its own subtree takes the subtree with it: the branch leaves the tree and
+    // nothing in the UI puts it back. The zone id of a branch IS the drag id of the node that owns it,
+    // so the refusal is a list of those ids - and it has to be a refusal rather than CanDrop, because
+    // the tree declares its zones as markup and the context can only ask a predicate about the zones
+    // registered with it as components.
+    private IRenderedComponent<FlareTreeView> RenderNestedTree() =>
+        Render<FlareTreeView>(p => p
+            .Add(x => x.Draggable, true)
+            .AddChildContent<FlareTreeItem>(ip => ip
+                .Add(i => i.Label, "Parent").Add(i => i.Expanded, true).Add(i => i.ItemData, "parent")
+                .AddChildContent<FlareTreeItem>(cp => cp
+                    .Add(c => c.Label, "Child").Add(c => c.Expanded, true).Add(c => c.ItemData, "child")
+                    .AddChildContent<FlareTreeItem>(gp => gp
+                        .Add(g => g.Label, "Grandchild").Add(g => g.ItemData, "grand"))))
+            .AddChildContent<FlareTreeItem>(ip => ip
+                .Add(i => i.Label, "Uncle").Add(i => i.Expanded, true).Add(i => i.ItemData, "uncle")
+                .AddChildContent<FlareTreeItem>(cp => cp
+                    .Add(c => c.Label, "Cousin").Add(c => c.ItemData, "cousin"))));
+
+    [Fact]
+    public async Task ANodeRefusesEveryBranchInsideItself()
+    {
+        var cut = RenderNestedTree();
+        var drag = cut.FindComponent<FlareDragContext<object>>();
+
+        DragTargetRuling? ruling = null;
+        await cut.InvokeAsync(async () => ruling = await drag.Instance.OnDragStartAsync(DragId(cut, 0)));
+
+        Assert.NotNull(ruling?.Deny);
+        Assert.False(ruling!.Permits(DragId(cut, 0)),
+            "Its own branch would make the node its own child.");
+        Assert.False(ruling.Permits(DragId(cut, 1)),
+            "A branch deeper inside is the same move one level down.");
+    }
+
+    [Fact]
+    public async Task ANodeStillReachesEverythingOutsideItself()
+    {
+        var cut = RenderNestedTree();
+        var drag = cut.FindComponent<FlareDragContext<object>>();
+
+        DragTargetRuling? ruling = null;
+        await cut.InvokeAsync(async () => ruling = await drag.Instance.OnDragStartAsync(DragId(cut, 0)));
+
+        Assert.True(ruling!.Permits(RootZone(cut)), "The tree root is where a node goes to leave its parent.");
+        Assert.True(ruling.Permits(DragId(cut, 3)), "An unrelated branch is a legitimate destination.");
+    }
+
+    // A leaf owns no branch, so naming it would only pad a list that crosses to the browser on every
+    // drag - and a subtree is mostly leaves.
+    [Fact]
+    public async Task TheRefusalNamesBranchesAndNotLeaves()
+    {
+        var cut = RenderNestedTree();
+        var drag = cut.FindComponent<FlareDragContext<object>>();
+
+        DragTargetRuling? ruling = null;
+        await cut.InvokeAsync(async () => ruling = await drag.Instance.OnDragStartAsync(DragId(cut, 0)));
+
+        Assert.Equal(new[] { DragId(cut, 0), DragId(cut, 1) }, ruling!.Deny);
+    }
+
     // A branch is its own zone, so a node dropped between two children lands among THEM rather than
     // among their parent's siblings. Nothing said that before: the tree had one flat set of rows.
     [Fact]

@@ -1,4 +1,5 @@
 using AngleSharp.Dom;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests.Component;
 
@@ -43,6 +44,39 @@ public sealed class FileUploadDropTests : FlareTestContext
         Assert.True(root.HasAttribute(PreventDragOver),
             "Without a cancelled `dragover` the browser never treats the region as a drop target, and "
             + "no drop is delivered anywhere.");
+    }
+
+    // The other side of the same attribute, and a regression of the fix above: a disabled zone renders
+    // its input `disabled`, a disabled file input takes no dropped file, and an uncancelled drop that
+    // nobody consumes is the browser navigating away from the application to the dropped file.
+    [Fact]
+    public void Zone_CancelsTheDropItCannotAcceptWhileDisabled()
+    {
+        var root = Root(Render<FlareFileUploadZone>(p => p.Add(x => x.Disabled, true)));
+
+        Assert.True(root.HasAttribute(PreventDrop),
+            "A disabled zone has no input default left to protect, so an uncancelled drop reaches the "
+            + "browser's own - which opens the file and takes the application off the screen.");
+    }
+
+    [Fact]
+    public void Zone_StaysADropTargetWhileDisabled()
+    {
+        var root = Root(Render<FlareFileUploadZone>(p => p.Add(x => x.Disabled, true)));
+
+        Assert.True(root.HasAttribute(PreventDragOver),
+            "The zone refuses the file itself rather than stopping being a target: a region that is not "
+            + "a drop target leaves the drop to the page, where the browser default applies again.");
+    }
+
+    [Fact]
+    public void Zone_DoesNotLightUpWhileDisabled()
+    {
+        var cut = Render<FlareFileUploadZone>(p => p.Add(x => x.Disabled, true));
+
+        Root(cut).TriggerEvent("ondragover", new DragEventArgs());
+
+        Assert.DoesNotContain("flare-file-upload--dragging", Root(cut).ClassName);
     }
 
     [Fact]

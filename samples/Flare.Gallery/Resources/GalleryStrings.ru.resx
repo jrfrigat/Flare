@@ -3317,4 +3317,7 @@
   <data name="Charts_Live" xml:space="preserve">
     <value>Живые данные и ось, которая стоит на месте</value>
   </data>
+  <data name="Charts_AnimateUpdates" xml:space="preserve">
+    <value>Обновление, за которым можно проследить, а не новая картинка</value>
+  </data>
 </root>

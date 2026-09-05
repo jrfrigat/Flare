@@ -1,0 +1,79 @@
+@implements IDisposable
+
+@* Both charts hold the same data and the same axis - the only difference is AnimateUpdates, so what
+   you are watching is the update itself. The left one replaces the drawing: every point is somewhere
+   else the instant the data arrives, and the eye has nothing to follow. The right one walks the
+   geometry to its new place, so the value that CHANGED is the thing that moves.
+
+   It is not Animate. That one replays the enter animation, redrawing the series from nothing on every
+   refresh - on a chart fed by a timer it is worse than no animation at all. Turn it on below and watch
+   the third chart start over twice a second while the second one just moves.
+
+   The update costs nothing to animate: the browser is told once, when the chart appears, to watch the
+   plot's geometry - after that it reads what it wrote itself, and no data crosses to .NET at all. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row="true" Gap="FlareSpacing.Large" Wrap="true" Align="FlareAlignItems.Center">
+        <FlareSwitch @bind-Value="_running" Label="Live (a new reading every two seconds)" />
+        <FlareSwitch @bind-Value="_showAnimate" Label="Also show Animate, for the contrast" />
+    </FlareStack>
+
+    <FlareGrid Gap="FlareSpacing.Large">
+        <FlareCol Xs="12" Md="@(_showAnimate ? 4 : 6)">
+            <FlareChart Type="ChartType.Line" Height="220" StickyDomain="true"
+                        Title="The drawing is replaced" Data="@_data" />
+        </FlareCol>
+        <FlareCol Xs="12" Md="@(_showAnimate ? 4 : 6)">
+            <FlareChart Type="ChartType.Line" Height="220" StickyDomain="true" AnimateUpdates="true"
+                        Title="AnimateUpdates - the points move" Data="@_data" />
+        </FlareCol>
+        @if (_showAnimate)
+        {
+            <FlareCol Xs="12" Md="4">
+                <FlareChart Type="ChartType.Line" Height="220" StickyDomain="true" Animate="true"
+                            Title="Animate - drawn again from nothing" Data="@_data" />
+            </FlareCol>
+        }
+    </FlareGrid>
+
+    <FlareChart Type="ChartType.Bar" Height="200" StickyDomain="true" AnimateUpdates="true"
+                Title="Bars move too - it is every number the chart draws, not just the line"
+                Data="@_data" ShowValues="true" />
+</FlareStack>
+
+@code {
+    private const int Window = 12;
+
+    private Timer? _timer;
+    private bool _running = true;
+    private bool _showAnimate;
+    private readonly Random _random = new(11);
+    private readonly List<double> _values = [];
+    private ChartData? _data;
+
+    protected override void OnInitialized()
+    {
+        for (var i = 0; i < Window; i++) _values.Add(Next());
+        Rebuild();
+        _timer = new Timer(_ => Tick(), null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
+    }
+
+    // Every reading is replaced rather than the window rolling, so the point count never changes and
+    // every point has somewhere to move to. A series that gained or lost a point is a different path,
+    // and that one jumps by design.
+    private void Tick()
+    {
+        if (!_running) return;
+        for (var i = 0; i < _values.Count; i++) _values[i] = Next();
+        Rebuild();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private double Next() => 30 + _random.Next(70);
+
+    private void Rebuild() =>
+        _data = new ChartData(
+            [new ChartSeries("req/s", [.. _values])],
+            [.. Enumerable.Range(1, _values.Count).Select(i => i.ToString())]);
+
+    public void Dispose() => _timer?.Dispose();
+}

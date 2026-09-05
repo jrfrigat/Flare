@@ -159,6 +159,25 @@ public partial class FlareChart
     [Parameter] public EventCallback<int> OnPointClick { get; set; }
     /// <summary>Plays a CSS enter animation (bars grow, lines draw in). Honors <c>prefers-reduced-motion</c>.</summary>
     [Parameter] public bool Animate { get; set; }
+
+    /// <summary>
+    /// Moves the drawing from one dataset to the next instead of replacing it, so a value that changed
+    /// reads as a movement rather than as a different picture. For a chart fed on a timer this is what
+    /// makes an update legible - and it is NOT <see cref="Animate"/>, which replays the enter animation
+    /// and so redraws the whole series from nothing on every refresh.
+    /// <para>
+    /// It covers everything the chart draws, not just the line: bars, slices, radar spokes and the value
+    /// labels that travel with them. A drawing whose SHAPE changed still jumps - a series that gained or
+    /// lost a point is a different path, and walking one into the other would slide every point into its
+    /// neighbour's place and read as data that did not actually change.
+    /// </para>
+    /// <para>
+    /// Duration and easing come from the theme's motion scale, and a reader who asked for reduced motion
+    /// gets the jump. This is the one part of the chart that needs the browser: it costs one call when
+    /// the chart appears and nothing per update.
+    /// </para>
+    /// </summary>
+    [Parameter] public bool AnimateUpdates { get; set; }
     /// <summary>Also renders a visually-hidden data <c>&lt;table&gt;</c> after the chart, so screen readers
     /// can read the underlying values (an accessibility fallback for the SVG).</summary>
     [Parameter] public bool DataTable { get; set; }

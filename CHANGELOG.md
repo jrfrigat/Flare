@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.32.0] - 2026-09-05
 
 ### Added
 
@@ -22,8 +22,8 @@ All notable changes to Flare are documented here. This project adheres to
   a zone that refuses never lights up and never takes a drop; `Group` keeps two unrelated sets of
   things apart inside one context. Escape abandons a drag.
 
-  **The interop budget is two calls per drag** - one to ask which targets accept the item, one to
-  report where it landed - and nothing in between. The browser owns the gesture: hit-testing, the
+  **The interop budget is three calls per drag, and it is a constant** - which targets accept the
+  item, where it landed, that the gesture ended - and nothing in between. The browser owns the gesture: hit-testing, the
   preview that follows the pointer, the insertion line, the hover classes. That is not an optimisation
   detail, it is the difference between a drag and a network round trip per `pointermove` on Blazor
   Server; the tree's HTML5 handler had already grown a "one measurement in flight at a time" coalescer
@@ -87,6 +87,25 @@ All notable changes to Flare are documented here. This project adheres to
   changed. `Data` now documents that replacing it refits the axis, which is the trap underneath all of
   this.
 
+- **`FlareChart.AnimateUpdates`: the chart moves to the new data instead of being replaced by it.**
+  A new `Data` swaps the whole drawing, so every point is somewhere else the instant it arrives and
+  the one value that actually changed is invisible among nineteen that did not. This walks the geometry
+  to its new place, so a change reads as a movement. It is not `Animate`: that one replays the ENTER
+  animation, redrawing the series from nothing, which on a chart fed by a three-second timer is worse
+  than no animation at all.
+
+  It covers everything the chart draws - bars, slices, radar spokes, and the value labels that travel
+  with them - because all of a chart's geometry is numbers inside attributes. A drawing whose SHAPE
+  changed still jumps: a series that gained or lost a point is a different path, and walking one into
+  the other would slide every point into its neighbour's place and read as data that did not change.
+
+  **The interop cost of an animated update is zero.** The browser is told once, when the chart appears,
+  to watch the plot; after that it reads geometry it wrote itself and nothing crosses to .NET per
+  update. Not `transition: d` in CSS either - that property is not carried by every engine, and a
+  library cannot ship motion that works in two of the three. Duration and easing come from the theme's
+  motion scale, a reader who asked for reduced motion gets the jump, and a chart that did not ask for
+  this loads no script at all.
+
 - **A `FlareDraggable` can be reordered from the keyboard.** Tab to it, space picks it up, the arrows
   walk it through every position it could take, space drops it there, escape lets it go. None of the
   four surfaces that reordered had this, and a control only a pointer can operate is one half the
@@ -113,6 +132,29 @@ All notable changes to Flare are documented here. This project adheres to
   the pointer has not moved, but what is under it has.
 
 ### Fixed
+
+- **A disabled file-upload zone handed the dropped file to the browser, and the application went with
+  it.** Drop a file on a `FlareFileUploadZone` whose `Disabled` is true and the browser navigated away
+  to the file: the page the reader was on was simply gone. Nothing was uploaded, which is right for a
+  disabled control; losing the page is not. The zone declared itself a drop target unconditionally, but
+  the thing that ACCEPTS a drop is the hidden input, and a disabled input takes no file - so the drop
+  was permitted, nobody consumed it, and the browser fell back to its own default. It is reachable
+  without meaning to: `Disabled="_busy"` is the normal way to lock the zone while the previous file is
+  being read, so a second file dropped during a slow read took the application off the screen. A
+  disabled zone now refuses the drop itself, and no longer lights up for one it cannot accept.
+
+  Introduced by the 0.29.0 drop fix, which stopped the root cancelling `drop` - correct, it was killing
+  the input's own default action, but a disabled zone has no input default left to protect.
+
+- **A tree node could be dropped inside its own subtree.** The branch left the tree with everything in
+  it and nothing in the interface put it back. Every branch under the dragged node is refused before
+  the drag is even visible now, so those zones never light up and cannot take the drop.
+
+  `FlareDragContext.RefusedTargets` is new, and it is what made this expressible. `CanDrop` is only
+  asked about zones registered as `FlareDropZone` components; a tree declares its zones as markup on
+  its own `ul` elements, because a div between a `ul` and its `li` is markup the browser rearranges -
+  so the predicate existed and was never consulted for a tree at all. A component in that position now
+  names the zones that must refuse, which is the smaller list anyway.
 
 - **A guard added in 0.31.0 asserted nothing at all.** `NoStylesheetCapsWithStaticViewportHeight` was
   written with a control character inside its regex, so the pattern could never match and the test was
