@@ -789,7 +789,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Annotations", @"IReadOnlyList<ChartAnnotation>?", null, @"Threshold, band, segment, arrow and point overlays drawn over a cartesian chart. Build them with the ChartAnnotation factories.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Area", @"bool", @"false", @"Fills the area under each line series with a soft fade from the series color to transparent (line charts only). A series can override this through Area.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"BarWidthRatio", @"double", @"0.85", @"Bar width as a fraction of its slot (0..1). Default 0.85.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"Data", @"ChartData?", null, @"Data series and labels to visualize in the chart.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Data", @"ChartData?", null, @"Data series and labels to visualize in the chart. Replacing it re-derives the value axis from the new data, so a chart fed a fresh dataset on a timer rescales on every tick and one new point among twenty moves the other nineteen. That is what StickyDomain is for; YMin and YMax are the other answer where the range is known in advance.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"DataTable", @"bool", @"false", @"Also renders a visually-hidden data <table> after the chart, so screen readers can read the underlying values (an accessibility fallback for the SVG).", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Description", @"string?", null, @"Optional description for the SVG <desc> element, improving screen-reader context.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"DonutRingRatio", @"double", @"0.55", @"Donut hole size as a fraction of the radius (0..1). Default 0.55.", null, false, false, false, @"FlareChart"),
@@ -812,6 +812,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowZoomToolbar", @"bool", @"true", @"Shows the zoom in / out / reset buttons above the plot. Default true when Zoomable is set.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Smooth", @"bool", @"false", @"Draws line series as smooth curves instead of straight segments. A series can override this through Smooth, so one chart can mix straight and smoothed lines.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Sparkline", @"bool", @"false", @"Sparkline preset: a compact, chromeless line (no grid, axes, legend or title) that stretches edge-to-edge with a crisp stroke - for inline metric cards. Combine with Area for a fill.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"StickyDomain", @"bool", @"false", @"Keeps the value axis from shrinking back, so a chart fed live data only rescales when it has to. The domain grows to fit whatever arrives and holds the widest range it has seen; a new dataset that fits inside it leaves the plot exactly where it was, and one new point among twenty stops moving the other nineteen. It does give the space back, but only when the data has genuinely moved into a smaller range - less than half the range being held. A domain that never shrinks is ruined for good by a single spike; one that shrinks on any decrease is the jitter this exists to remove. Call ResetDomain when the caller knows the scale has changed for good - a different metric in the same chart, say. YMin and YMax still win where they are set, and pinning both makes this moot.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Optional title displayed above the chart and used as the SVG accessible name.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"TrendLine", @"bool", @"false", @"Overlays a linear-regression trend line on each line/area/scatter series.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Type", @"ChartType", @"ChartType.Line", @"Chart rendering type: Line, Bar, Pie, or Donut.", null, false, false, false, @"FlareChart"),
@@ -833,6 +834,8 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"ResetDomain", @"ResetDomain()", @"void", null, @"Forgets the range StickyDomain is holding, so the next update sizes the value axis from the data alone. For when the caller knows the scale has changed for good.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]

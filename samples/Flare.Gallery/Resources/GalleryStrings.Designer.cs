@@ -10854,5 +10854,14 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_AutoVirtualDesc", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Live data, and an axis that holds still.
+        /// </summary>
+        public static string Charts_Live {
+            get {
+                return ResourceManager.GetString("Charts_Live", resourceCulture);
+            }
+        }
     }
 }
