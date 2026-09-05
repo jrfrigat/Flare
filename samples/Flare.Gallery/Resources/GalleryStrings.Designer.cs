@@ -5088,6 +5088,33 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Board.
+        /// </summary>
+        public static string DragDrop_Board {
+            get {
+                return ResourceManager.GetString("DragDrop_Board", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDragContext, FlareDraggable and FlareDropZone - one pointer-based model behind every surface that reorders, so it works with a finger too.
+        /// </summary>
+        public static string DragDrop_Subtitle {
+            get {
+                return ResourceManager.GetString("DragDrop_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag and Drop.
+        /// </summary>
+        public static string DragDrop_Title {
+            get {
+                return ResourceManager.GetString("DragDrop_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Kanban Board.
         /// </summary>
         public static string Kanban_Title {

@@ -4,8 +4,8 @@
 // handle, the sibling splitter, and the colour-picker canvas. Before this module each of these
 // re-implemented the same pointerdown -> track delta -> apply -> notify .NET skeleton (with subtly
 // different mouse-vs-pointer and capture handling). Centralising it here means one touch-capable,
-// pointer-captured implementation. Pure geometry helpers used by drag-and-drop reorder
-// (tree drop-zone, kanban column hit-test) live here too, next to the gestures they serve.
+// pointer-captured implementation. The drag-and-drop TRANSFER layer that rides on startDrag lives in
+// flare-dragdrop.js.
 
 import { registry } from './flare-dom.js';
 
@@ -13,35 +13,57 @@ import { registry } from './flare-dom.js';
 // Attach a drag gesture to `handle`. On press it captures the pointer (so tracking continues even
 // when the cursor leaves the element and works for mouse/pen/touch alike) and reports the delta from
 // the press point. Returns an unsubscribe function.
-//   opts: { onStart(e)?, onMove(dx, dy, e)?, onEnd(e)?, cursor?: string, button?: number }
+//   opts: { onStart(e)?, onMove(dx, dy, e)?, onEnd(e)?, cursor?: string, button?: number,
+//           filter?(e): boolean, threshold?: number, touchAction?: string | null }
 // `cursor` (when set) is applied to <body> for the duration; `button` (default 0) filters mouse button.
+// `filter` decides whether a press starts a gesture at all - the drag-and-drop layer binds ONE gesture
+// to a container and uses it to accept only presses that landed on a draggable descendant.
+// `threshold` (px, default 0) delays the gesture until the pointer has actually travelled: below it the
+// press is left alone, so a click on a draggable is still a click. A gesture with a threshold does not
+// preventDefault the press, for the same reason.
+// `touchAction` is written to the handle so a drag does not also pan the page; pass null when the
+// handle is a container whose scrolling must survive and the draggable children declare it themselves.
 export function startDrag(handle, opts) {
     if (!handle) return () => { };
     const o = opts || {};
     const button = o.button ?? 0;
-    let active = false, startX = 0, startY = 0, pid = null, prevCursor = '', prevSelect = '';
+    const threshold = o.threshold ?? 0;
+    let armed = false, active = false, startX = 0, startY = 0, pid = null, prevCursor = '', prevSelect = '';
 
     // A drag handle should not also pan/scroll the page on touch.
-    handle.style.touchAction = 'none';
+    if (o.touchAction !== null) handle.style.touchAction = o.touchAction || 'none';
 
-    function down(e) {
-        if (e.pointerType === 'mouse' && e.button !== button) return;
-        active = true; startX = e.clientX; startY = e.clientY; pid = e.pointerId;
-        try { handle.setPointerCapture(e.pointerId); } catch (_) { }
+    function begin(e) {
+        active = true;
         if (o.cursor) { prevCursor = document.body.style.cursor; document.body.style.cursor = o.cursor; }
         prevSelect = document.body.style.userSelect; document.body.style.userSelect = 'none';
         o.onStart && o.onStart(e);
+    }
+    function down(e) {
+        if (e.pointerType === 'mouse' && e.button !== button) return;
+        if (o.filter && !o.filter(e)) return;
+        armed = true; startX = e.clientX; startY = e.clientY; pid = e.pointerId;
+        try { handle.setPointerCapture(e.pointerId); } catch (_) { }
+        if (threshold) return;   // the press stays a press until the pointer travels
+        begin(e);
         e.preventDefault();
     }
     function move(e) {
-        if (!active || e.pointerId !== pid) return;
-        o.onMove && o.onMove(e.clientX - startX, e.clientY - startY, e);
+        if (!armed || e.pointerId !== pid) return;
+        const dx = e.clientX - startX, dy = e.clientY - startY;
+        if (!active) {
+            if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
+            begin(e);
+        }
+        o.onMove && o.onMove(dx, dy, e);
         e.preventDefault();
     }
     function end(e) {
-        if (!active || e.pointerId !== pid) return;
-        active = false;
+        if (!armed || e.pointerId !== pid) return;
+        armed = false;
         try { handle.releasePointerCapture(pid); } catch (_) { }
+        if (!active) return;     // never passed the threshold: nothing was started, nothing to end
+        active = false;
         if (o.cursor) document.body.style.cursor = prevCursor;
         document.body.style.userSelect = prevSelect;
         o.onEnd && o.onEnd(e);
@@ -335,25 +357,3 @@ export const flareColorPicker = (() => {
     };
 })();
 
-// -- Drag-and-drop reorder geometry helpers ----------------------------------
-// These serve native HTML5 drag-and-drop (driven in C#), which reports the cursor position but not
-// the target's bounds -- so the "which zone / which column" decision must be made here.
-
-// FlareTreeItem: given a row element and the cursor's clientY, return which third of the row the
-// cursor is over: top ~25% -> 'before', bottom ~25% -> 'after', middle -> 'inside'.
-export function getDropZone(rowEl, clientY) {
-    if (!rowEl) return 'inside';
-    const rect = rowEl.getBoundingClientRect();
-    if (rect.height <= 0) return 'inside';
-    const offset = clientY - rect.top;
-    if (offset < rect.height * 0.25) return 'before';
-    if (offset > rect.height * 0.75) return 'after';
-    return 'inside';
-}
-
-// FlareKanban touch drop: native DnD does not fire on touch, so the board hit-tests the column under
-// the lifted finger itself. Returns the data-kanban-column id at the given point, or null.
-export function getKanbanColumnAtPoint(x, y) {
-    const el = document.elementFromPoint(x, y);
-    return el ? (el.closest('[data-kanban-column]')?.dataset?.kanbanColumn ?? null) : null;
-}

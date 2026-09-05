@@ -5,8 +5,6 @@ public static class Tree
 {
     /// <summary>CSS custom-property name for the toggle hover bg token.</summary>
     public const string ToggleHoverBg = "--flare-tree-toggle-hover-bg";
-    /// <summary>CSS custom-property name for the drop inside bg token.</summary>
-    public const string DropInsideBg = "--flare-tree-drop-inside-bg";
     /// <summary>CSS custom-property name for the child-level indent token.</summary>
     public const string Indent = "--flare-tree-indent";
     /// <summary>CSS custom-property name for the expander / drag-handle square size token.</summary>
@@ -17,6 +15,4 @@ public static class Tree
     public const string SelectedBg = "--flare-tree-selected-bg";
     /// <summary>CSS custom-property name for the selected-row foreground token.</summary>
     public const string SelectedColor = "--flare-tree-selected-color";
-    /// <summary>CSS custom-property name for the drag-and-drop indicator color token.</summary>
-    public const string DropIndicatorColor = "--flare-tree-drop-indicator-color";
 }

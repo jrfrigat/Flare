@@ -102,10 +102,6 @@ public static class DataGrid
     public const string ThSortable = "flare-datagrid__th--sortable";
     /// <summary>The <c>flare-datagrid__th--frozen</c> CSS class.</summary>
     public const string ThFrozen = "flare-datagrid__th--frozen";
-    /// <summary>The <c>flare-datagrid__th--draggable</c> CSS class.</summary>
-    public const string ThDraggable = "flare-datagrid__th--draggable";
-    /// <summary>The <c>flare-datagrid__th--dragging</c> CSS class.</summary>
-    public const string ThDragging = "flare-datagrid__th--dragging";
     /// <summary>The <c>flare-datagrid__th--band</c> CSS class.</summary>
     public const string ThBand = "flare-datagrid__th--band";
     /// <summary>The <c>flare-datagrid__bool</c> CSS class (read-only boolean cell icon).</summary>
@@ -171,9 +167,6 @@ public static class DataGrid
     /// <summary>The <c>flare-datagrid__row--editing</c> CSS class.</summary>
     public const string RowEditing = "flare-datagrid__row--editing";
     /// <summary>The <c>flare-datagrid__row--draggable</c> CSS class.</summary>
-    public const string RowDraggable = "flare-datagrid__row--draggable";
-    /// <summary>The <c>flare-datagrid__row--dragging</c> CSS class.</summary>
-    public const string RowDragging = "flare-datagrid__row--dragging";
     /// <summary>The <c>flare-datagrid__group-header</c> CSS class.</summary>
     public const string GroupHeader = "flare-datagrid__group-header";
     /// <summary>The <c>flare-datagrid__group-toggle</c> CSS class.</summary>

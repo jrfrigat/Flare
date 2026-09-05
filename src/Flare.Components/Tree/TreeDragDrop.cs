@@ -19,14 +19,24 @@ public sealed class TreeDragEventArgs
 }
 
 /// <summary>
-/// Per-tree coordinator shared from <see cref="FlareTreeView"/> down to each
-/// <see cref="FlareTreeItem"/> via a cascading value. It remembers the item picked up at
-/// drag start so the drop target can report the real source (rather than itself).
+/// Per-tree map from a drag id to the item it stands for, shared from <see cref="FlareTreeView"/> down
+/// to each <see cref="FlareTreeItem"/> via a cascading value.
+///
+/// A tree node is an <c>li</c> and cannot be wrapped in a <c>FlareDraggable</c> without producing
+/// markup a browser rearranges, so each item puts the drag model's attributes on its own element and
+/// registers here; the view answers <c>FlareDragContext.ResolveItem</c> from this. It replaces a
+/// coordinator that held one field - the item picked up at drag start - which existed only because
+/// HTML5 drag-and-drop tells the drop target nothing about where the drag began.
 /// </summary>
-internal sealed class TreeDragDropCoordinator
+internal sealed class TreeDragRegistry
 {
-    /// <summary>The item currently being dragged; set on drag start, cleared on drag end.</summary>
-    public object? DraggedItem { get; set; }
+    private readonly Dictionary<string, object> _items = new(StringComparer.Ordinal);
+
+    public void Register(string id, object item) => _items[id] = item;
+
+    public void Unregister(string id) => _items.Remove(id);
+
+    public bool TryGet(string id, out object item) => _items.TryGetValue(id, out item!);
 }
 
 /// <summary>Position where an item is dropped relative to the target.</summary>

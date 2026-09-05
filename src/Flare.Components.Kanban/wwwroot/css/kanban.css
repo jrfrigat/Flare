@@ -52,8 +52,7 @@
     border: 1px solid var(--flare-color-outline-variant);
     border-radius: var(--flare-shape-small);
     padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
-    cursor: grab;
-    touch-action: none;
+    /* cursor and touch-action come from .flare-draggable now, with the rest of the drag model. */
     transition: box-shadow var(--flare-motion-duration-short2, 150ms),
                 opacity var(--flare-motion-duration-short2, 150ms);
     display: flex;
@@ -68,11 +67,6 @@
 .flare-kanban__card:focus-visible {
     outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
     outline-offset: 2px;
-}
-
-.flare-kanban__card--dragging {
-    opacity: 0.4;
-    cursor: grabbing;
 }
 
 .flare-kanban__tag {

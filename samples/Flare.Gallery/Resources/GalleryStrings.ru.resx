@@ -1404,6 +1404,15 @@
   <data name="Query_Sql_Distinct" xml:space="preserve">
     <value>Уникальные строки</value>
   </data>
+  <data name="DragDrop_Title" xml:space="preserve">
+    <value>Перетаскивание</value>
+  </data>
+  <data name="DragDrop_Subtitle" xml:space="preserve">
+    <value>FlareDragContext, FlareDraggable и FlareDropZone - одна модель на указателях под каждой поверхностью, где что-то переставляют, поэтому работает и пальцем.</value>
+  </data>
+  <data name="DragDrop_Board" xml:space="preserve">
+    <value>Доска</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Канбан-доска</value>
   </data>

@@ -1,0 +1,194 @@
+@namespace Flare.Components
+@typeparam TPayload
+@inherits FlareComponentBase
+@inject Flare.Components.Services.IDragDropJsService DragDrop
+
+<CascadingValue Value="_coordinator" IsFixed="true">
+    <div @ref="_root" class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    /// <summary>
+    /// Raised once when a drag lands on a zone that accepted it. Not raised when the drop was cancelled,
+    /// dropped on nothing, or dropped back onto the item itself.
+    /// </summary>
+    [Parameter] public EventCallback<FlareDropEventArgs<TPayload>> OnDrop { get; set; }
+
+    /// <summary>
+    /// Raised when an item is picked up, before it has moved anywhere. Free: the browser already asks
+    /// which targets accept the item, and this rides on that call.
+    /// </summary>
+    [Parameter] public EventCallback<TPayload> OnDragStart { get; set; }
+
+    /// <summary>
+    /// Raised when a drag finishes, whether it landed or not - after <see cref="OnDrop"/> when it did.
+    /// This is where a hint put up in <see cref="OnDragStart"/> comes down.
+    /// </summary>
+    [Parameter] public EventCallback OnDragEnd { get; set; }
+
+    /// <summary>
+    /// Whether a payload may be dropped in a given target, asked once per drag for every zone. A zone
+    /// that says no never lights up and cannot receive the drop. Use it for what only the caller knows:
+    /// a tree node cannot go inside its own descendant, a column is full, a card is locked.
+    /// <see cref="FlareDropZone.Accepts"/> says the same thing per zone; both must agree.
+    /// </summary>
+    [Parameter] public Func<TPayload, string, bool>? CanDrop { get; set; }
+
+    /// <summary>
+    /// Default group for the draggables and zones beneath this context. Items only see zones of their
+    /// own group, so one context can hold two unrelated sets of things.
+    /// </summary>
+    [Parameter] public string? Group { get; set; }
+
+    /// <summary>
+    /// Resolves an id to its payload for items that are NOT <see cref="FlareDraggable"/> components -
+    /// a data grid's <c>tr</c>, a tree's <c>li</c>, anything that cannot take a wrapper element without
+    /// producing invalid markup. Such an element carries the model's data attributes itself and this
+    /// answers for it. Consulted only when no registered draggable owns the id.
+    /// <see cref="FlareDropEventArgs{TPayload}.SourceTargetId"/> is null for these, since there is no
+    /// component to have been declared inside a zone.
+    /// </summary>
+    [Parameter] public DragItemResolver<TPayload>? ResolveItem { get; set; }
+
+    /// <summary>The content that declares the draggables and drop zones.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Drag.Context;
+
+    private DragCoordinator _coordinator = null!;
+    private ElementReference _root;
+    private DotNetObjectReference<FlareDragContext<TPayload>>? _selfRef;
+    private bool _registered;
+
+    protected override void OnInitialized() =>
+        _coordinator = new DragCoordinator { Group = Group ?? "" };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        _selfRef = DotNetObjectReference.Create(this);
+        try
+        {
+            await DragDrop.RegisterContextAsync(_root, _selfRef);
+            _registered = true;
+        }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
+
+    /// <summary>
+    /// Which zones will take the item that has just been picked up. Called by the browser once per drag;
+    /// <c>null</c> means every zone in the item's group, which is the common case and saves marshalling
+    /// a list that says the same thing.
+    /// </summary>
+    /// <param name="sourceId">The dragged item's id.</param>
+    [JSInvokable]
+    public async Task<string[]?> OnDragStartAsync(string sourceId)
+    {
+        if (!TryResolve(sourceId, out var payload, out _))
+            return [];
+
+        if (OnDragStart.HasDelegate) await OnDragStart.InvokeAsync(payload);
+
+        var allowed = new List<string>();
+        var everyZone = true;
+        foreach (var zone in _coordinator.Zones)
+        {
+            if (zone.AcceptsPayload(payload) && (CanDrop is null || CanDrop(payload, zone.Target)))
+                allowed.Add(zone.Target);
+            else
+                everyZone = false;
+        }
+
+        // A context whose zones are all declared as markup rather than as components registers none of
+        // them, and "all of them" is then the only answer that can be given - the browser already knows
+        // the zones from the DOM, and it is the group that keeps them apart.
+        return everyZone ? null : allowed.ToArray();
+    }
+
+    /// <summary>Reports that a drag finished. Called by the browser once per drag, landed or not.</summary>
+    [JSInvokable]
+    public Task OnDragEndAsync() => OnDragEnd.HasDelegate ? OnDragEnd.InvokeAsync() : Task.CompletedTask;
+
+    /// <summary>Reports where a drag landed. Called by the browser once per completed drop.</summary>
+    /// <param name="sourceId">The dragged item's id.</param>
+    /// <param name="targetId">The zone the drop landed in.</param>
+    /// <param name="index">The position the item takes, counted without the dragged item; -1 when the
+    /// drop was into a zone or onto an item rather than between items.</param>
+    /// <param name="edge">Where the drop landed relative to the item under the pointer.</param>
+    /// <param name="overId">The id of the item under the pointer, when there was one.</param>
+    [JSInvokable]
+    public async Task OnDropAsync(string sourceId, string targetId, int index, string edge, string? overId)
+    {
+        if (!OnDrop.HasDelegate || !TryResolve(sourceId, out var payload, out var sourceZone)) return;
+
+        var hasOver = TryResolve(overId, out var overPayload, out _);
+
+        await OnDrop.InvokeAsync(new FlareDropEventArgs<TPayload>
+        {
+            Payload = payload,
+            TargetId = targetId,
+            SourceTargetId = sourceZone?.Target,
+            Index = index,
+            Edge = ParseEdge(edge),
+            OverPayload = hasOver ? overPayload : default,
+            HasOverPayload = hasOver,
+        });
+    }
+
+    // A declared FlareDraggable first, then the caller's resolver for the rows a component renders
+    // itself. Both paths are one lookup, and both refuse an id they do not know rather than answering
+    // with a default.
+    private bool TryResolve(string? id, out TPayload payload, out FlareDropZone? zone)
+    {
+        payload = default!;
+        zone = null;
+        if (id is null) return false;
+
+        var item = _coordinator.Item(id);
+        if (item is not null)
+        {
+            zone = item.Zone;
+            return TryPayload(item, out payload);
+        }
+
+        return ResolveItem is not null && ResolveItem(id, out payload);
+    }
+
+    private static DropEdge ParseEdge(string edge) => edge switch
+    {
+        "before" => DropEdge.Before,
+        "after" => DropEdge.After,
+        _ => DropEdge.Into,
+    };
+
+    // An item whose payload is not this context's type is not this context's item, so it is refused
+    // rather than handed to the caller as a default. A null payload is allowed through only when the
+    // declared type can hold null.
+    private static bool TryPayload(FlareDraggable item, out TPayload payload)
+    {
+        if (item.PayloadValue is TPayload typed)
+        {
+            payload = typed;
+            return true;
+        }
+        payload = default!;
+        return item.PayloadValue is null && default(TPayload) is null;
+    }
+
+    /// <summary>Detaches the context's pointer gesture.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        if (_registered)
+        {
+            try { await DragDrop.RemoveContextAsync(_root); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

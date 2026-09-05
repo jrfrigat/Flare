@@ -1,0 +1,64 @@
+@* One drag model, pointer-based, so it works with a mouse, a pen and a finger alike - native HTML5
+   drag-and-drop fires nothing at all on a touch screen. Drag a card within a column to reorder it, or
+   across to another column to move it. "Archive" refuses every card through Accepts, so it never lights
+   up and never takes a drop.
+
+   The whole handler is three statements, and it can be, because the drop reports the index the card
+   ENDS UP at - counted with the dragged card already taken out. *@
+<FlareDragContext TPayload="Card" Group="cards" OnDrop="Moved">
+    <FlareStack Row="true" Gap="FlareSpacing.Medium" Wrap="true" Align="FlareAlignItems.Start">
+        @foreach (var column in _order)
+        {
+            <FlarePaper Elevation="1" Style="inline-size:13rem;padding:0.75rem">
+                <FlareStack Gap="FlareSpacing.Small">
+                    <FlareText Typo="TypographyScale.LabelLarge">@column</FlareText>
+                    <FlareDropZone Target="@column"
+                                   Placement="DropPlacement.Between"
+                                   Accepts="@(_ => column != Archive)"
+                                   Style="min-block-size:5rem;border-radius:var(--flare-shape-small)">
+                        <FlareStack Gap="FlareSpacing.Small">
+                            @foreach (var card in _columns[column])
+                            {
+                                <FlareDraggable @key="card.Id" Id="@card.Id" Payload="card">
+                                    <FlareCard Variant="CardVariant.Filled" Style="padding:0.5rem 0.75rem">
+                                        <FlareText Typo="TypographyScale.BodyMedium">@card.Title</FlareText>
+                                    </FlareCard>
+                                </FlareDraggable>
+                            }
+                        </FlareStack>
+                    </FlareDropZone>
+                </FlareStack>
+            </FlarePaper>
+        }
+    </FlareStack>
+</FlareDragContext>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+    @_last
+</FlareText>
+
+@code {
+    private const string Archive = "Archive";
+
+    private sealed record Card(string Id, string Title);
+
+    private readonly List<string> _order = ["Backlog", "In progress", "Done", Archive];
+
+    private readonly Dictionary<string, List<Card>> _columns = new()
+    {
+        ["Backlog"] = [new("c1", "Rework the export"), new("c2", "Audit the tokens"), new("c3", "Split the tests")],
+        ["In progress"] = [new("c4", "Drag model")],
+        ["Done"] = [new("c5", "Sticky domain")],
+        [Archive] = [],
+    };
+
+    private string _last = "Nothing moved yet.";
+
+    private void Moved(FlareDropEventArgs<Card> e)
+    {
+        foreach (var list in _columns.Values) list.Remove(e.Payload);
+        if (!_columns.TryGetValue(e.TargetId, out var target)) return;
+        target.Insert(Math.Clamp(e.Index < 0 ? target.Count : e.Index, 0, target.Count), e.Payload);
+        _last = $"\"{e.Payload.Title}\": {e.SourceTargetId} -> {e.TargetId}, position {target.IndexOf(e.Payload) + 1}";
+    }
+}

@@ -517,10 +517,6 @@
 }
 
 /* Reorderable column headers (drag-and-drop) */
-.flare-datagrid__th--draggable { cursor: grab; }
-.flare-datagrid__th--draggable:active { cursor: grabbing; }
-.flare-datagrid__th--dragging { opacity: 0.5; }
-.flare-datagrid__th--draggable.flare-datagrid__th--dragging { cursor: grabbing; }
 
 /* Composite cell: stacked fields laid out as a CSS grid inside one cell */
 .flare-datagrid__composite {
@@ -631,9 +627,6 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 /* Reorderable rows (drag-and-drop) */
-.flare-datagrid__row--draggable { cursor: grab; }
-.flare-datagrid__row--draggable:active { cursor: grabbing; }
-.flare-datagrid__row--dragging { opacity: 0.5; }
 
 /* Frozen / sticky columns. With frozen columns the table grows to its natural width
    (instead of compressing to 100%) so it scrolls horizontally and the sticky columns

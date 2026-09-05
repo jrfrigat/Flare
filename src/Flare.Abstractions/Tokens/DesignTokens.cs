@@ -81,6 +81,9 @@ public sealed record DesignTokens
     /// <summary>Dialog modal tokens.</summary>
     public required DialogTokens Dialog { get; init; }
 
+    /// <summary>Drag-and-drop tokens, shared by every surface that reorders.</summary>
+    public required DragTokens Drag { get; init; }
+
     /// <summary>Drawer navigation tokens.</summary>
     public required DrawerTokens Drawer { get; init; }
 

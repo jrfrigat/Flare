@@ -212,6 +212,7 @@ public static class ComponentCatalog
         // -- Utilities ------------------------------------------------------------
         new ComponentEntry("components/clipboard",         "Clipboard",               "Clipboard_Title",       ComponentGroup.Utilities),
         new ComponentEntry("components/color-mode-toggle", "Color Mode Toggle",       "ColorModeToggle_Title", ComponentGroup.Utilities),
+        new ComponentEntry("components/drag-drop",         "Drag and Drop",           "DragDrop_Title",        ComponentGroup.Utilities),
         new ComponentEntry("components/highlighter",       "Highlighter",             "Highlighter_Title",     ComponentGroup.Utilities),
         new ComponentEntry("components/infinite-scroll",   "Infinite Scroll",         "InfiniteScroll_Title",  ComponentGroup.Utilities),
         new ComponentEntry("components/lazy",              "Lazy Render",             "Lazy_Title",            ComponentGroup.Utilities),

@@ -1404,6 +1404,15 @@
   <data name="Query_Sql_Distinct" xml:space="preserve">
     <value>Distinct rows</value>
   </data>
+  <data name="DragDrop_Title" xml:space="preserve">
+    <value>Drag and Drop</value>
+  </data>
+  <data name="DragDrop_Subtitle" xml:space="preserve">
+    <value>FlareDragContext, FlareDraggable and FlareDropZone - one pointer-based model behind every surface that reorders, so it works with a finger too.</value>
+  </data>
+  <data name="DragDrop_Board" xml:space="preserve">
+    <value>Board</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Kanban Board</value>
   </data>

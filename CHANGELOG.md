@@ -7,6 +7,70 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- **A drag-and-drop model in the core: `FlareDragContext` / `FlareDraggable` / `FlareDropZone`,
+  built on pointer events.** Flare did not have a drag model - it had four, and three of them did not
+  work on a touch screen at all. Kanban, the tree, data-grid rows and data-grid columns each reached
+  for native HTML5 drag-and-drop, which fires no event on any mobile browser; only the board wrote a
+  touch path, so reordering a grid column or a tree node was impossible on a phone. Pointer events
+  cover mouse, pen and touch in one code path, which is the thing HTML5 drag-and-drop cannot do.
+
+  `FlareDropZone.Placement` says what a zone accepts and therefore what a drop means: `Into` (a column
+  that holds cards), `Between` (an ordered list, where the drop resolves to an index) or `Both` (each
+  item split into thirds - before it, inside it, after it - which is what a tree needs). The index is
+  reported WITHOUT the dragged item, so it is the position the item ends up at and goes straight into
+  `List.Insert`. `CanDrop` on the context and `Accepts` on a zone are asked once when a drag begins, so
+  a zone that refuses never lights up and never takes a drop; `Group` keeps two unrelated sets of
+  things apart inside one context. Escape abandons a drag.
+
+  **The interop budget is two calls per drag** - one to ask which targets accept the item, one to
+  report where it landed - and nothing in between. The browser owns the gesture: hit-testing, the
+  preview that follows the pointer, the insertion line, the hover classes. That is not an optimisation
+  detail, it is the difference between a drag and a network round trip per `pointermove` on Blazor
+  Server; the tree's HTML5 handler had already grown a "one measurement in flight at a time" coalescer
+  to survive exactly that. One gesture is bound per context rather than one per item, so a list of a
+  thousand draggables registers once.
+
+  New `DragTokens`, so a dragged card, a dragged row and a dragged tree node finally look related -
+  each surface used to paint its own dragging state from its own component tokens. The four existing
+  implementations have not moved onto this yet; that is the next step, and the value is not a fifth
+  implementation but four fewer.
+
+- **`FlareKanban` is the first surface on the shared drag model, and it gained card ordering.** It
+  loses its own `_dragging` field, its HTML5 `dragstart`/`drop` pair, the hand-written
+  `ontouchstart`/`ontouchend` pair it needed because that pair fires on nothing but a mouse, the JS
+  hit-test helper only it used, and its module import. Cards can now be reordered WITHIN a column,
+  which the old "drop into a column" handler had nowhere to express: it filtered a flat list by column
+  id and a drop carried no position.
+
+- **A data grid can be reordered on a phone.** Both grid reorders - rows and columns - moved onto the
+  shared drag model, and both were previously HTML5 drag-and-drop with no touch path at all, so neither
+  worked on a touch screen. The grid keeps its own `tr` and `th` (a wrapper element between `tbody`
+  and `tr` is markup the browser hoists straight back out): it declares the model's attributes on its
+  own elements and answers `FlareDragContext.ResolveItem`, which is new for exactly this.
+
+  The insertion line finds its axis by MEASURING where the first two items sit rather than reading a
+  declaration, because neither `table-header-group` nor `table-row-group` says which way its children
+  run - so a column drop draws a vertical line between headers and a row drop a horizontal one between
+  rows, with nothing to configure. `_dragRow`, `_dragColumn` and four now-duplicate CSS classes are
+  gone.
+
+- **The tree is the last of the four on the shared drag model, and it loses an interop call per
+  `dragover`.** It asked the browser, on every single drag-over event, which third of the row the
+  cursor was in - so continuous that it had grown a "one measurement in flight at a time" coalescer to
+  stay usable. Those thirds ARE `DropPlacement.Both`, resolved in the browser now, and the whole drag
+  costs three calls. `ITreeJsService` and its module export are deleted outright.
+
+  An expanded branch is its own drop zone, so a node dropped between two children lands among THEM
+  rather than among their parent's siblings - the old flat handler had no way to say that. `TreeTokens`
+  loses `DropInsideBg` and `DropIndicatorColor`: they were the tree's private copy of what `DragTokens`
+  now says once for every surface.
+
+  Two behaviour changes worth naming. A drop on the empty part of a branch raises nothing, where the
+  old code reported the target as its own source when no drag was in flight - a state that could only
+  be reached by dispatching `ondrop` at it, and never meant anything. And the thirds are measured on
+  the ROW rather than the `li`, which is as tall as the whole expanded subtree; with a 300px branch
+  every point in it used to be in its "top third".
+
 - **`FlareChart.StickyDomain`: a value axis that does not shrink back, so a live chart holds still.**
   A chart handed a fresh dataset on a timer re-derives its domain from that dataset alone, which puts
   the top of the plot at the current maximum - so the value that CHANGED stays glued to the top and the

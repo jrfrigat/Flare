@@ -80,8 +80,9 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.Columns, NameColumn()));
 
         var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
-        Assert.Equal("true", row.GetAttribute("draggable"));
-        Assert.Contains("flare-datagrid__row--draggable", row.ClassName, StringComparison.Ordinal);
+        Assert.NotNull(row.GetAttribute("data-flare-drag"));
+        Assert.Equal("flare-datagrid-rows", row.GetAttribute("data-flare-drag-group"));
+        Assert.Contains("flare-draggable", row.ClassName, StringComparison.Ordinal);
     }
 
     // The tree toggle used to exist only in the virtual renderer, so a paged tree grid - which is what
@@ -166,7 +167,7 @@ public sealed class DataGridRowParityTests : FlareTestContext
         Assert.Equal("row", row.GetAttribute("role"));
         Assert.NotNull(row.GetAttribute("aria-rowindex"));
         Assert.Equal("false", row.GetAttribute("aria-selected"));
-        Assert.Equal("true", row.GetAttribute("draggable"));
+        Assert.NotNull(row.GetAttribute("data-flare-drag"));
     }
 
     // Expansion used to be stored by the row's POSITION on the page, so sorting kept the same slot open

@@ -1,0 +1,76 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@BuildCssClass()"
+         style="@Style"
+         data-flare-drop="@Target"
+         data-flare-drag-group="@_group"
+         data-flare-drop-placement="@_placement"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    /// <summary>
+    /// Identifies this zone in <c>OnDrop</c>. A column id, a folder key, a list name - whatever the
+    /// caller needs back to perform the move.
+    /// </summary>
+    [Parameter] public string Target { get; set; } = "";
+
+    /// <summary>What the zone accepts, and therefore what a drop into it resolves to.</summary>
+    [Parameter] public DropPlacement Placement { get; set; } = DropPlacement.Into;
+
+    /// <summary>
+    /// Which drags this zone takes part in. Defaults to the enclosing context's group.
+    /// </summary>
+    [Parameter] public string? Group { get; set; }
+
+    /// <summary>
+    /// Whether this zone accepts a given payload. Evaluated once when a drag starts, so a zone that
+    /// says no never lights up and never takes a drop. Use it for what only the caller knows - a tree
+    /// node cannot be dropped into its own descendant, a column is full, a card is locked.
+    /// </summary>
+    [Parameter] public Func<object?, bool>? Accepts { get; set; }
+
+    /// <summary>The zone's content, normally the <see cref="FlareDraggable"/> items it holds.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [CascadingParameter] private DragCoordinator? Coordinator { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Drag.Zone;
+
+    private DragCoordinator? _registeredWith;
+    private string? _registeredTarget;
+
+    private string _group => Group ?? Coordinator?.Group ?? "";
+
+    private string _placement => Placement switch
+    {
+        DropPlacement.Between => "between",
+        DropPlacement.Both => "both",
+        _ => "into",
+    };
+
+    /// <summary>Whether this zone will take the given payload, asked once per drag.</summary>
+    internal bool AcceptsPayload(object? payload) => Accepts is null || Accepts(payload);
+
+    protected override void OnParametersSet()
+    {
+        if (ReferenceEquals(_registeredWith, Coordinator) && _registeredTarget == Target) return;
+        if (_registeredWith is not null && _registeredTarget is not null)
+            _registeredWith.UnregisterZone(this, _registeredTarget);
+        Coordinator?.RegisterZone(this);
+        _registeredWith = Coordinator;
+        _registeredTarget = Target;
+    }
+
+    /// <summary>Removes this zone from its drag context.</summary>
+    public override ValueTask DisposeAsync()
+    {
+        if (_registeredWith is not null && _registeredTarget is not null)
+            _registeredWith.UnregisterZone(this, _registeredTarget);
+        return base.DisposeAsync();
+    }
+}

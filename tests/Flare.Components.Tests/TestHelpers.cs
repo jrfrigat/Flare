@@ -204,12 +204,12 @@ public class FlareTestContext : BunitContext
         Services.AddScoped<ICollisionService, StubCollisionService>();
         Services.AddScoped<IThemeJsService, StubThemeJsService>();
         Services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();
-        Services.AddScoped<Flare.Components.Services.ITreeJsService, Flare.Components.Services.TreeJsService>();
         Services.AddScoped<Flare.Components.Services.IOverlayJsService, Flare.Components.Services.OverlayJsService>();
         Services.AddScoped<Flare.Components.IScrollService, Flare.Components.Services.ScrollService>();
         Services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
         Services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
         Services.AddScoped<Flare.Components.Services.IDialogDragJsService, Flare.Components.Services.DialogDragJsService>();
+        Services.AddScoped<Flare.Components.Services.IDragDropJsService, Flare.Components.Services.DragDropJsService>();
         Services.AddScoped<Flare.Components.IBrowserViewportService, Flare.Components.Services.BrowserViewportService>();
         Services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
         Services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();

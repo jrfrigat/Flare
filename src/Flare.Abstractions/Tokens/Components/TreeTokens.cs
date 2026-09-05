@@ -12,8 +12,6 @@ public sealed record TreeTokens
 {
     /// <summary>Toggle hover bg.</summary>
     [CssVar(Tree.ToggleHoverBg)] public required string ToggleHoverBg { get; init; }
-    /// <summary>Drop inside bg.</summary>
-    [CssVar(Tree.DropInsideBg)] public required string DropInsideBg { get; init; }
     /// <summary>Horizontal indent applied per nesting level.</summary>
     [CssVar(Tree.Indent)] public required string Indent { get; init; }
 
@@ -28,7 +26,4 @@ public sealed record TreeTokens
 
     /// <summary>Foreground (text/icon) color of a selected row.</summary>
     [CssVar(Tree.SelectedColor)] public required string SelectedColor { get; init; }
-
-    /// <summary>Color of the drag-and-drop insertion indicator (before/after lines).</summary>
-    [CssVar(Tree.DropIndicatorColor)] public required string DropIndicatorColor { get; init; }
 }

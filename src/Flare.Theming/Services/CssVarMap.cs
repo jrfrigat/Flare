@@ -485,6 +485,13 @@ public static class CssVarMap
         v[Css.Tokens.Slider.DisabledActiveColor] = t.Slider.DisabledActiveColor;
         v[Css.Tokens.Slider.DisabledInactiveColor] = t.Slider.DisabledInactiveColor;
 
+        v[Css.Tokens.Drag.SourceOpacity] = t.Drag.SourceOpacity;
+        v[Css.Tokens.Drag.PreviewElevation] = t.Drag.PreviewElevation;
+        v[Css.Tokens.Drag.PreviewOpacity] = t.Drag.PreviewOpacity;
+        v[Css.Tokens.Drag.ZoneActiveBackground] = t.Drag.ZoneActiveBackground;
+        v[Css.Tokens.Drag.ZoneActiveOutline] = t.Drag.ZoneActiveOutline;
+        v[Css.Tokens.Drag.IndicatorColor] = t.Drag.IndicatorColor;
+
         v[Css.Tokens.Rating.Size.Xs] = t.Rating.SizeXs;
         v[Css.Tokens.Rating.Size.Sm] = t.Rating.SizeSm;
         v[Css.Tokens.Rating.Size.Md] = t.Rating.SizeMd;
@@ -525,12 +532,10 @@ public static class CssVarMap
 
         v[Css.Tokens.Tree.Indent] = t.Tree.Indent;
         v[Css.Tokens.Tree.ToggleHoverBg] = t.Tree.ToggleHoverBg;
-        v[Css.Tokens.Tree.DropInsideBg] = t.Tree.DropInsideBg;
         v[Css.Tokens.Tree.ToggleSize] = t.Tree.ToggleSize;
         v[Css.Tokens.Tree.IconSize] = t.Tree.IconSize;
         v[Css.Tokens.Tree.SelectedBg] = t.Tree.SelectedBg;
         v[Css.Tokens.Tree.SelectedColor] = t.Tree.SelectedColor;
-        v[Css.Tokens.Tree.DropIndicatorColor] = t.Tree.DropIndicatorColor;
 
         v[Css.Tokens.Calendar.MaxWidth] = t.Calendar.MaxWidth;
         v[Css.Tokens.Calendar.EventPadY] = t.Calendar.EventPadY;
