@@ -1,11 +1,18 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_disabledClass)"
+@* Focusable when the context reorders from the keyboard, because an item you can only move with a
+   pointer is a control half the readers cannot use. aria-roledescription is what tells a screen reader
+   that this div is a thing you can pick up - the role itself cannot say it. *@
+<div class="@BuildCssClass(_disabledClass, _pickedClass)"
      style="@Style"
      data-flare-drag="@ItemId"
      data-flare-drag-group="@_group"
      data-flare-drag-disabled="@(Disabled ? "true" : null)"
+     tabindex="@(_keyboard ? "0" : null)"
+     aria-roledescription="@(_keyboard ? FlareStrings.Drag_Reorderable : null)"
+     aria-grabbed="@(_keyboard ? (_picked ? "true" : "false") : null)"
+     @onkeydown="HandleKeyAsync"
      @attributes="AdditionalAttributes">
     @ChildContent
 </div>
@@ -41,8 +48,27 @@
     private DragCoordinator? _registeredWith;
     private string? _registeredId;
 
+    private bool _picked;
+
     private string? _disabledClass => Disabled ? Css.Classes.Drag.ItemDisabled : null;
+    private string? _pickedClass => _picked ? Css.Classes.Drag.ItemPicked : null;
     private string _group => Group ?? Coordinator?.Group ?? "";
+    private bool _keyboard => Coordinator?.Keyboard == true && !Disabled;
+
+    /// <summary>The group this item drags in, resolved against the context's default.</summary>
+    internal string GroupName => _group;
+
+    /// <summary>Marks the item as held by a keyboard reorder. Called by the context, which owns the
+    /// interaction; the cascaded coordinator is fixed, so the item has to be told rather than asked.</summary>
+    internal void SetPicked(bool picked)
+    {
+        if (_picked == picked) return;
+        _picked = picked;
+        StateHasChanged();
+    }
+
+    private Task HandleKeyAsync(KeyboardEventArgs e) =>
+        _keyboard && Coordinator?.ItemKey is { } handler ? handler(this, e) : Task.CompletedTask;
 
     /// <summary>The id this item is known by inside its drag context.</summary>
     internal string ItemId => Id ?? _generatedId;

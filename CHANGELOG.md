@@ -107,6 +107,20 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.31.0] - 2026-09-05
 
+- **A `FlareDraggable` can be reordered from the keyboard.** Tab to it, space picks it up, the arrows
+  walk it through every position it could take, space drops it there, escape lets it go. None of the
+  four surfaces that reordered had this, and a control only a pointer can operate is one half the
+  readers cannot use at all. On by default (`FlareDragContext.KeyboardReorder`), because an item that
+  can be dragged and cannot be reached is a defect rather than a preference - turn it off for a list
+  long enough that a tab stop per item is worse than no keyboard path.
+
+  The positions come from the DOM, asked for once when the item is picked up: registration order on
+  the .NET side is not render order once a list has been reordered. A refused zone is not among them,
+  so the arrows skip it exactly as the pointer does. The insertion line is the same one a pointer
+  draws, and the position is also spoken through a live region, because a keyboard move has no preview
+  to watch. Space never scrolls the page under a draggable; the arrows only stop scrolling it once
+  something is actually picked up.
+
 - **A drag scrolls the container it is running out of.** Hold the pointer near the edge of a scrolling
   board, list or page and it scrolls, so a card can reach a column that was off-screen when the drag
   began. Without it that was impossible rather than awkward: `elementFromPoint` outside the viewport

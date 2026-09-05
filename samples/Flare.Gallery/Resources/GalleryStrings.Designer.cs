@@ -5088,7 +5088,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Drag a card within a column to reorder it, or across to another column to move it - with a mouse, a pen or a finger, because the model is built on pointer events. &quot;Archive&quot; refuses every card through Accepts, so it never lights up as a target and never takes a drop.
+        ///   Ищет локализованную строку, похожую на Drag a card within a column to reorder it, or across to another column to move it - with a mouse, a pen or a finger, because the model is built on pointer events. Tab to a card and press space to move it with the arrow keys instead. &quot;Archive&quot; refuses every card through Accepts, so it never lights up as a target, and the arrow keys skip it too.
         /// </summary>
         public static string DragDrop_BoardDesc {
             get {

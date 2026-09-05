@@ -1,3 +1,5 @@
+using Flare.Components.Services;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -274,4 +276,150 @@ public sealed class DragModelTests : FlareTestContext
         var afterRemoval = await cut.Instance.OnDragStartAsync("c1");
         Assert.Empty(afterRemoval!);
     }
+
+    // -- Keyboard reorder ----------------------------------------------------
+    // None of the four drag surfaces had one, and a reorder only a pointer can perform is a control
+    // half the readers cannot use. The browser is asked for the DOM order, because registration order
+    // on this side is not render order once a list has been reordered.
+
+    private const string Module = "./_content/Flare.Components/js/flare-dragdrop.js";
+
+    private Bunit.BunitJSModuleInterop Board()
+    {
+        var module = JSInterop.SetupModule(Module);
+        module.Setup<DragZoneOrder[]>("dragItemOrder", _ => true).SetResult(
+        [
+            new DragZoneOrder("todo", ["c1", "c2"]),
+            new DragZoneOrder("done", []),
+        ]);
+        return module;
+    }
+
+    private static void Press(IRenderedComponent<FlareDragContext<Card>> cut, string id, string key) =>
+        cut.Find($"[data-flare-drag='{id}']").KeyDown(new KeyboardEventArgs { Key = key });
+
+    [Fact]
+    public void EveryItemIsATabStopAndSaysWhatItIs()
+    {
+        var cut = RenderBoard();
+        var item = cut.Find("[data-flare-drag='c1']");
+
+        Assert.Equal("0", item.GetAttribute("tabindex"));
+        Assert.Equal("false", item.GetAttribute("aria-grabbed"));
+        Assert.False(string.IsNullOrWhiteSpace(item.GetAttribute("aria-roledescription")));
+    }
+
+    // The escape hatch for a list long enough that a tab stop per item is worse than no keyboard path.
+    [Fact]
+    public void KeyboardReorderCanBeTurnedOff()
+    {
+        var cut = Render<FlareDragContext<Card>>(p => p
+            .Add(x => x.KeyboardReorder, false)
+            .Add(x => x.ChildContent, Board(DropPlacement.Between)));
+
+        Assert.Null(cut.Find("[data-flare-drag='c1']").GetAttribute("tabindex"));
+    }
+
+    [Fact]
+    public void SpacePicksTheItemUp()
+    {
+        Board();
+        var cut = RenderBoard();
+
+        Press(cut, "c1", " ");
+
+        var item = cut.Find("[data-flare-drag='c1']");
+        Assert.Contains(Css.Classes.Drag.ItemPicked, item.ClassName);
+        Assert.Equal("true", item.GetAttribute("aria-grabbed"));
+    }
+
+    // The arrows walk positions, and the position is announced because there is no preview to watch.
+    [Fact]
+    public void TheArrowsWalkThePositionsAndSayWhereTheyAre()
+    {
+        Board();
+        var cut = RenderBoard();
+
+        Press(cut, "c1", " ");
+        Press(cut, "c1", "ArrowDown");
+
+        // c1 out of the way leaves one other item in "todo", so "todo" holds two slots and "done" one.
+        Assert.Contains("2", cut.Find("[role=status]").TextContent);
+        Assert.Contains("3", cut.Find("[role=status]").TextContent);
+    }
+
+    [Fact]
+    public async Task SpaceAgainDropsItWhereTheArrowsLeftIt()
+    {
+        Board();
+        FlareDropEventArgs<Card>? drop = null;
+        var cut = RenderBoard(onDrop: e => drop = e);
+
+        Press(cut, "c1", " ");
+        Press(cut, "c1", "ArrowDown");
+        Press(cut, "c1", " ");
+        await Task.Yield();
+
+        // "todo" holds c2 once c1 is out of it, so it offers two positions: before c2 and after it.
+        // One arrow from where c1 started is the second, which is past every item - hence no item to
+        // land beside, and an index that is simply the length of what is left.
+        Assert.NotNull(drop);
+        Assert.Equal(_first, drop!.Payload);
+        Assert.Equal("todo", drop.TargetId);
+        Assert.Equal("todo", drop.SourceTargetId);
+        Assert.Equal(1, drop.Index);
+        Assert.False(drop.HasOverPayload);
+        Assert.DoesNotContain(Css.Classes.Drag.ItemPicked, cut.Find("[data-flare-drag='c1']").ClassName);
+    }
+
+    // The last slot of the last zone is past every item, which is how an empty zone is reachable at all.
+    [Fact]
+    public async Task TheItemCanWalkIntoAnEmptyZone()
+    {
+        Board();
+        FlareDropEventArgs<Card>? drop = null;
+        var cut = RenderBoard(onDrop: e => drop = e);
+
+        Press(cut, "c1", " ");
+        for (var i = 0; i < 5; i++) Press(cut, "c1", "ArrowDown");
+        Press(cut, "c1", " ");
+        await Task.Yield();
+
+        Assert.Equal("done", drop!.TargetId);
+        Assert.Equal(0, drop.Index);
+        Assert.False(drop.HasOverPayload);
+    }
+
+    [Fact]
+    public void EscapeLetsItGoWithoutMovingAnything()
+    {
+        Board();
+        var dropped = false;
+        var cut = RenderBoard(onDrop: _ => dropped = true);
+
+        Press(cut, "c1", " ");
+        Press(cut, "c1", "ArrowDown");
+        Press(cut, "c1", "Escape");
+
+        Assert.False(dropped);
+        Assert.DoesNotContain(Css.Classes.Drag.ItemPicked, cut.Find("[data-flare-drag='c1']").ClassName);
+    }
+
+    // A zone that refuses the payload is not a place the arrows can walk to either - the keyboard path
+    // asks the same question the pointer path asks.
+    [Fact]
+    public async Task ARefusedZoneIsNotReachableByKeyboard()
+    {
+        Board();
+        FlareDropEventArgs<Card>? drop = null;
+        var cut = RenderBoard(onDrop: e => drop = e, canDrop: (_, target) => target != "done");
+
+        Press(cut, "c1", " ");
+        for (var i = 0; i < 5; i++) Press(cut, "c1", "ArrowDown");
+        Press(cut, "c1", " ");
+        await Task.Yield();
+
+        Assert.Equal("todo", drop!.TargetId);
+    }
+
 }

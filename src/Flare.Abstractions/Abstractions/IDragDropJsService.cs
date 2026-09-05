@@ -29,6 +29,15 @@ public interface IDragDropJsService : IAsyncDisposable
     /// the browser what the order actually is.
     /// </summary>
     ValueTask<IReadOnlyList<DragZoneOrder>> ItemOrderAsync(ElementReference root, string group);
+
+    /// <summary>
+    /// Draws the insertion line at a position named as (zone, index), for the keyboard reorder - which
+    /// has no pointer to find a position under, and still has to show one.
+    /// </summary>
+    ValueTask ShowDropHintAsync(ElementReference root, string targetId, int index, string sourceId);
+
+    /// <summary>Removes the keyboard reorder's insertion line.</summary>
+    ValueTask HideDropHintAsync(ElementReference root);
 }
 
 /// <summary>One drop zone's draggable ids, in DOM order.</summary>
