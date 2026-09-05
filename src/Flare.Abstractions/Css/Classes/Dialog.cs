@@ -29,6 +29,9 @@ public static class Dialog
     public const string Actions = "flare-dialog__actions";
     /// <summary>The <c>flare-dialog--fullwidth</c> CSS class.</summary>
     public const string Fullwidth = "flare-dialog--fullwidth";
+    /// <summary>The <c>flare-dialog--fill</c> CSS class, giving the panel the whole height available to
+    /// it rather than the height of its content.</summary>
+    public const string Fill = "flare-dialog--fill";
     /// <summary>The <c>flare-dialog-provider__message</c> CSS class.</summary>
     public const string ProviderMessage = "flare-dialog-provider__message";
     /// <summary>The <c>flare-dialog__divider</c> CSS class.</summary>
