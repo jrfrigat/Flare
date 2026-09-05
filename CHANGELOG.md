@@ -75,6 +75,13 @@ All notable changes to Flare are documented here. This project adheres to
   component. A guard test asserts every member of the family inherits the parameter rather than
   re-declaring it, which is how the chain came to cover three components and stop.
 
+  Two containers deliberately stay out. `FlareResizable` already hands its height down as an ordinary
+  block box - measured at a 300px box with a filling grid at 300px whose table container scrolls 2699px
+  of rows in 218px - so a switch there would turn on something that already happens, and it would
+  contradict the component's own purpose, which is a height the user drags. An accordion panel animates
+  its height open and closed, and "spend the height you were given" has no meaning while that number is
+  moving; making it work is an animation question, not a parameter.
+
   `FlareDialog` joins them with a mechanism of its own, because the scrim it sits on is a ROW flex
   container and the shared rule would take over the panel's width rather than its height:
   `FillHeight` there means the panel spends the whole height available to it instead of the height of

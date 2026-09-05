@@ -3,7 +3,9 @@
 @implements IAsyncDisposable
 @inject Flare.Components.Services.IResizeJsService Resize
 
-<div class="@BuildCssClass() @Css.Classes.Resizable.Root flare-resizable--@Edge.ToString().ToLower()"
+@* BuildCssClass already emits ComponentCssClass, which IS the root class - naming it again put
+   `flare-resizable` in the attribute twice. *@
+<div class="@BuildCssClass() flare-resizable--@Edge.ToString().ToLower()"
      style="@BuildStyle()"
      @attributes="AdditionalAttributes"
      @ref="_container">

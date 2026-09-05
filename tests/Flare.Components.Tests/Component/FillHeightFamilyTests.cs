@@ -64,6 +64,19 @@ public sealed class FillHeightFamilyTests : FlareTestContext
         Assert.Contains("flare-datagrid--fill", gridClass, StringComparison.Ordinal);
     }
 
+    // A container with a definite height of its own passes it down without joining the family at all:
+    // it is a plain block box, so a filling child's `block-size: 100%` resolves against it. Measured in
+    // Chrome on Flare's own stylesheet - a 300px resizable box, a filling grid at 300px, its table
+    // container scrolling 2699px of rows in 218px - which is why FlareResizable does NOT get the
+    // parameter. Adding one there would be a switch for something that already happens.
+    [Fact]
+    public void AContainerWithItsOwnHeightNeedsNoSwitch()
+    {
+        Assert.False(typeof(FlareContainerBase).IsAssignableFrom(typeof(FlareResizable)),
+            "FlareResizable sizes itself from InitialSize and the user's drag, and hands that height to "
+            + "its content as an ordinary block box. FillHeight there would contradict its own purpose.");
+    }
+
     // FlareLayoutContent is the one member whose mechanism differs: `main` is a row of the shell's grid
     // rather than a flex item, so the shared triple would be wrong there and it hands the height down
     // through its own frame rule instead. The parameter is still the same parameter.
