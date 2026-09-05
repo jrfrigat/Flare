@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Architecture guard for the field-family chrome consolidation: the supporting-text row

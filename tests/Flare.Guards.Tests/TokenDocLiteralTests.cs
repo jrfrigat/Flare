@@ -1,12 +1,12 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Enforces the token mandate <b>in prose</b>: a core token's XML doc must not state what a theme sets it to.
 ///
-/// The sibling guards cover the code - <see cref="DeadFallbackTests"/> forbids a theme default hiding in a CSS
+/// The sibling guards cover the code - <c>DeadFallbackTests</c> forbids a theme default hiding in a CSS
 /// fallback, and the token-record guard forbids a literal default on the member itself. The docs were the hole
 /// left over: nothing stopped <c>/// &lt;summary&gt;Gap xs token (&lt;c&gt;0.25rem&lt;/c&gt;).&lt;/summary&gt;</c>,
 /// which asserts a value the core does not own and cannot keep true. It did not keep true: when this guard was

@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// No component may render a Material Symbols <em>ligature span</em> - a

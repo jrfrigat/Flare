@@ -44,7 +44,8 @@ jobs:
 
       # One run over the solution exercises every test project on every TFM it targets:
       # Flare.Components.Tests multi-targets, so this covers the net8.0/net9.0/net10.0 library builds;
-      # Flare.Core.Tests is net10-only (it references the net10 CssAudit tool).
+      # Flare.Core.Tests is net10-only (it references the net10 CssAudit tool), and so is
+      # Flare.Guards.Tests, which reads the repository rather than running it.
       # MTP options, not VSTest ones: xunit.v3 4.0.0 test projects run on Microsoft.Testing.Platform
       # (global.json picks the runner), where VSTest's --logger is accepted and then silently
       # ignored - it would leave the upload below with nothing to collect. The report filename is

@@ -4,7 +4,7 @@ using Flare.Abstractions.Tokens.Components;
 using Flare.Theme.FluentUI2.Tokens;
 using Flare.Theme.MaterialDesign3.Tokens;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// The field family's height is one token per size, applied to the shared well, and this fixes the class

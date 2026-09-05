@@ -1,4 +1,4 @@
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Guards the state-layer model against sliding back into the one it replaced.

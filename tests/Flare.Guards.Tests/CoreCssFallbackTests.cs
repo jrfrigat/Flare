@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Guards the last hole in the core/theme split: a <c>var(--flare-x, &lt;fallback&gt;)</c> in a core
