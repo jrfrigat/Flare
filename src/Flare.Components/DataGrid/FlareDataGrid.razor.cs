@@ -89,6 +89,12 @@ public partial class FlareDataGrid<TItem>
     // grid asks for the whole set at once rather than silently showing page one with no way to
     // reach page two.
     private int _requestPageSize => _paged ? _effectivePageSize : int.MaxValue;
+    // Infinite scroll reads PageSize as a CHUNK size, which is not the same question as "how many rows
+    // are on a page" - and zero is a real answer to the second one ("do not page") while being no
+    // answer at all to the first: a chunk of zero asks the provider for nothing and never reaches the
+    // short chunk that ends the accumulation. So the chunk has a size of its own when none was given.
+    private const int DefaultInfiniteChunkSize = 50;
+    private int _infiniteChunkSize => _effectivePageSize > 0 ? _effectivePageSize : DefaultInfiniteChunkSize;
     // Row number of the first rendered row, for aria-rowindex. An unpaged grid renders the whole set,
     // so there is no page to offset by - and multiplying by the request size would overflow.
     private int _rowIndexOffset => _paged ? _page * _effectivePageSize : 0;
@@ -475,7 +481,7 @@ public partial class FlareDataGrid<TItem>
             IReadOnlyDictionary<string, string>? activeFilters = _filters.Count > 0
                 ? new Dictionary<string, string>(_filters)
                 : null;
-            var req = new DataGridRequest(_infinitePage, _effectivePageSize, sortKey, _sortDir, Filters: activeFilters)
+            var req = new DataGridRequest(_infinitePage, _infiniteChunkSize, sortKey, _sortDir, Filters: activeFilters)
             {
                 Sorts = BuildSorts(),
                 FilterModel = BuildFilters(),
@@ -489,7 +495,7 @@ public partial class FlareDataGrid<TItem>
             (_sortedCache ??= []).AddRange(items);
             _serverTotalCount = result.TotalCount;
             _infinitePage++;
-            if (items.Count < _effectivePageSize || (result.TotalCount > 0 && _sortedCache.Count >= result.TotalCount))
+            if (items.Count < _infiniteChunkSize || (result.TotalCount > 0 && _sortedCache.Count >= result.TotalCount))
                 _infiniteHasMore = false;
         }
         catch (OperationCanceledException) { }

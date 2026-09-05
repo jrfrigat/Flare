@@ -77,11 +77,24 @@ All notable changes to Flare are documented here. This project adheres to
 
   Measured end to end in the Gallery: a box of `24rem`, a filling card inside it at 384px, a tab set at
   352px, a grid at 289px whose table container scrolls 7843px of rows in 272px - and no application
-  CSS anywhere in the chain. One rule is worth writing down: the box that SUPPLIES the first height
-  does not take `FillHeight`, because filling replaces an element's own height with a share of its
-  parent's.
+  CSS anywhere in the chain.
+
+  A box that declares a `height` in its `Style` keeps it: filling works by replacing an element's
+  height with a share of its parent's, so the two are contradictory, and the written number - the one
+  visible in the markup - wins while the fill is dropped. Without that rule the contradiction resolved
+  into a third thing that is neither: a `24rem` box measured 104px, and every link below it collapsed
+  with it. Basing the flex on the height instead of on zero would fix the same case and break a
+  commoner one, because an item whose basis is its full height takes its shrink out of the toolbar
+  beside it.
 
 ### Fixed
+
+- **Infinite scroll loads without being told a page size.** It reads `PageSize` as a CHUNK size, which
+  is a different question from "how many rows are on a page" - and the two stopped agreeing the moment
+  `PageSize` started defaulting to `0`, meaning "do not page". A chunk of zero asks the provider for
+  nothing and never reaches the short chunk that ends the accumulation, so the grid loaded forever and
+  showed nothing. The chunk falls back to 50 when no page size is given. Both the Gallery demo and the
+  existing test set `PageSize` explicitly, which is exactly why the regression was invisible.
 
 - **A row's expanded detail follows the row, not the row's position.** Expansion was stored by index
   within the page, so sorting, filtering or paging left the same SLOT open and the detail of one row

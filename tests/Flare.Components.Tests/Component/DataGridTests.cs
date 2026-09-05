@@ -520,6 +520,37 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         Assert.Equal(20, cut.FindAll("tr.flare-datagrid__row").Count);
     }
 
+    // Infinite scroll uses PageSize as its CHUNK size, which is a different question from "how many
+    // rows are on a page" - and the two stopped agreeing when PageSize started defaulting to 0, meaning
+    // "no paging". A chunk of zero asks the provider for nothing and never reaches the short page that
+    // ends the accumulation, so the grid loads forever and shows nothing.
+    [Fact]
+    public async Task InfiniteScroll_LoadsWithoutAnExplicitPageSize()
+    {
+        var data = Enumerable.Range(1, 500).Select(i => new GroupedPerson($"R{i}", "C", i)).ToList();
+        var asked = new List<int>();
+        Task<DataGridResult<GroupedPerson>> Provider(DataGridRequest r)
+        {
+            asked.Add(r.PageSize);
+            return Task.FromResult(new DataGridResult<GroupedPerson>(
+                data.Skip(r.Page * r.PageSize).Take(r.PageSize), data.Count));
+        }
+
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
+            .Add(x => x.ItemsProvider, Provider)
+            .Add(x => x.InfiniteScroll, true)
+            .Add(x => x.Virtual, false)
+            .Add(x => x.Columns, GroupedCols));
+
+        Assert.All(asked, size => Assert.True(size > 0, "A chunk of zero rows asks the provider for nothing."));
+        var first = cut.FindAll("tr.flare-datagrid__row").Count;
+        Assert.True(first > 0, "The first chunk has to arrive without the page telling the grid how big it is.");
+
+        await cut.InvokeAsync(() => cut.Instance.TriggerLoad());
+        Assert.True(cut.FindAll("tr.flare-datagrid__row").Count > first,
+            "Reaching the bottom appends the next chunk.");
+    }
+
     [Fact]
     public void Loading_ProgressLineMode_ShowsThinLineWithoutOverlay()
     {

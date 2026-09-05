@@ -79,6 +79,32 @@ public sealed class FillHeightFamilyTests : FlareTestContext
         Assert.DoesNotContain("flare-fill", cls, StringComparison.Ordinal);
     }
 
+    // "Be 24rem tall" and "fill your parent" are contradictory, and the contradiction used to resolve
+    // into a third thing that is neither: filling sets `flex-basis: 0`, which replaces the height on a
+    // flex parent's main axis, so the box came out at its content height and every link below it
+    // collapsed with it. The written number wins now, and the fill is dropped.
+    [Theory]
+    [InlineData("height:24rem", false)]
+    [InlineData("height : 24rem", false)]
+    [InlineData("block-size:24rem", false)]
+    [InlineData("margin:0;height:100%", false)]
+    [InlineData("max-height:24rem", true)]
+    [InlineData("min-height:24rem", true)]
+    [InlineData("line-height:1.5", true)]
+    [InlineData("--height:24rem", true)]
+    [InlineData("padding:8px", true)]
+    [InlineData("", true)]
+    public void AnOwnHeightWinsOverFilling(string style, bool fills)
+    {
+        var cut = Render<FlareCard>(p => p
+            .Add(x => x.FillHeight, true)
+            .Add(x => x.Style, style)
+            .AddChildContent("content"));
+
+        var cls = cut.Find(".flare-card").ClassName;
+        Assert.Equal(fills, cls.Contains("flare-fill", StringComparison.Ordinal));
+    }
+
     // The parameter itself is declared once, on the base every container shares. A component that
     // re-declared it would drift in name, default or documentation - which is how the chain came to
     // cover three components and no more.

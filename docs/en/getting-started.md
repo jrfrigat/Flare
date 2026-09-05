@@ -340,9 +340,10 @@ Three rules of thumb:
 
 - **`FillHeight` needs an ancestor with a height.** `FlareLayoutContent FillHeight` is where a page
   gets one. Anywhere else - a demo, a dialog - give the outermost box one (`Style="height:24rem"`).
-- **The box that SUPPLIES the height does not take `FillHeight`.** Filling replaces an element's own
-  height with a share of its parent's, so setting both on the same box means the height you wrote is
-  the one that loses.
+- **A box with a height of its own keeps it.** Filling and "be this tall" are contradictory - filling
+  works by replacing the element's height with a share of its parent's - so when `Style` declares a
+  `height`, that height wins and `FillHeight` is ignored on that box. You do not have to get the
+  combination right; the written number is what you get.
 - **Every link below it needs it.** A grid in a tab set in a card needs `FillHeight` on the grid, on
   the tab set, on the card *and* on the content region; one missing link resolves to `auto` and the
   whole chain collapses to content height. The switch is on the container family - `FlareCard`,
