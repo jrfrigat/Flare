@@ -28,7 +28,7 @@ All notable changes to Flare are documented here. This project adheres to
 - **Russian text drops the letter yo.** `U+0451` is spelled `U+0435` throughout - the RU resx
   values, the RU documentation, the theme readmes and this changelog. The letter is optional in Russian
   orthography, so either convention is defensible, but the repository held both at once: one term looked
-  like two to anyone searching the Gallery, and to any translation memory. A guard test keeps it out.
+  like two to anyone searching the Gallery, and to any translation memory.
 
 ### Fixed
 
