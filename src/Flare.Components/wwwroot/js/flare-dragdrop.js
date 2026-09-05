@@ -209,7 +209,9 @@ function _autoScroll(x, y) {
 // Register a context root. Every draggable and every drop zone under it is found through the DOM, so
 // adding a thousand rows costs nothing here - there is one gesture for the whole subtree, not one per
 // item.
-//   dotNetRef: OnDragStartAsync(sourceId) -> string[] | null   (null = every zone in the group)
+//   dotNetRef: OnDragStartAsync(sourceId) -> { allow?: string[], deny?: string[] } | null
+//              (null = every zone in the group; allow is the .NET side's list and can only name zones
+//               registered there, deny names zones it knows of but only this side can enumerate)
 //              OnDropAsync(sourceId, targetId, index, edge, overId)
 //              OnDragEndAsync()   - once at the end of every drag, dropped or not
 export function registerDragContext(root, dotNetRef) {
@@ -331,11 +333,13 @@ export function registerDragContext(root, dotNetRef) {
             // The one call at the start. Until it answers, every zone in the group is a candidate; the
             // answer narrows them. A drag that is over before the answer lands simply used the wider
             // set, which is the same set HTML5 drag-and-drop would have offered.
-            dotNetRef.invokeMethodAsync('OnDragStartAsync', drag.sourceId).then(allowed => {
-                if (!drag || allowed == null) return;
-                const keep = new Set(allowed);
+            dotNetRef.invokeMethodAsync('OnDragStartAsync', drag.sourceId).then(ruling => {
+                if (!drag || ruling == null) return;
+                const allow = ruling.allow ? new Set(ruling.allow) : null;
+                const deny = ruling.deny ? new Set(ruling.deny) : null;
+                if (!allow && !deny) return;
                 for (const [zoneEl, zone] of [...drag.zones]) {
-                    if (keep.has(zone.id)) continue;
+                    if ((!allow || allow.has(zone.id)) && !(deny && deny.has(zone.id))) continue;
                     drag.zones.delete(zoneEl);
                     zoneEl.classList.remove('flare-drop-zone--candidate', 'flare-drop-zone--over');
                 }

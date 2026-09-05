@@ -53,8 +53,12 @@
             data-flare-drop="@(Draggable ? _dragId : null)"
             data-flare-drag-group="@(Draggable ? FlareTreeView.DragGroup : null)"
             data-flare-drop-placement="both">
-            <CascadingValue Value="@(Level + 1)" Name="Level" IsFixed="false">
-                @ChildContent
+            @* Children learn who their parent is, which is the only way the tree can answer "is this
+               zone inside the node being dragged". *@
+            <CascadingValue Value="this" IsFixed="true">
+                <CascadingValue Value="@(Level + 1)" Name="Level" IsFixed="false">
+                    @ChildContent
+                </CascadingValue>
             </CascadingValue>
         </ul>
     }
@@ -84,6 +88,9 @@
     /// <summary>Group-wide tree state (drag config and registry) from <see cref="FlareTreeView"/>.</summary>
     [CascadingParameter] private FlareTreeContext? TreeContext { get; set; }
 
+    /// <summary>The item this one is nested in, or null for a top-level item.</summary>
+    [CascadingParameter] private FlareTreeItem? ParentItem { get; set; }
+
     private bool Draggable => TreeContext?.Draggable == true;
 
     protected override string ComponentCssClass => Css.Classes.TreeView.Item;
@@ -92,6 +99,10 @@
     private bool _expandedInitialized;
     private readonly string _dragId = $"ft-{Guid.NewGuid():N}";
     private TreeDragRegistry? _registeredWith;
+
+    // Also the id of the drop zone this item's expanded branch declares: one node, one id, which is
+    // what lets a refusal name a whole subtree.
+    internal string DragId => _dragId;
 
     private string? _draggableClass => Draggable ? Css.Classes.Drag.Item : null;
 
@@ -108,7 +119,7 @@
         var registry = Draggable ? TreeContext?.DragRegistry : null;
         if (ReferenceEquals(registry, _registeredWith)) return;
         _registeredWith?.Unregister(_dragId);
-        registry?.Register(_dragId, ItemData ?? this);
+        registry?.Register(_dragId, ItemData ?? this, ParentItem?.DragId);
         _registeredWith = registry;
     }
 

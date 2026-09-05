@@ -8,6 +8,7 @@
 <FlareDragContext TPayload="object"
                   Group="@DragGroup"
                   ResolveItem="TryResolveDragItem"
+                  RefusedTargets="RefusedZones"
                   OnDrop="HandleDropAsync"
                   OnDragStart="HandleDragStartAsync"
                   OnDragEnd="HandleDragEndAsync">
@@ -68,6 +69,16 @@
     }
 
     private bool TryResolveDragItem(string id, out object item) => _dragRegistry.TryGet(id, out item);
+
+    // A node cannot land inside itself. Every branch under it is a drop zone whose id IS the id of the
+    // node that owns it, so refusing the dragged node's subtree is naming those ids: its own branch
+    // (which would make it its own child) and every branch below (which would take the whole subtree
+    // out of the tree with it, and nothing in the UI puts it back).
+    //
+    // A refusal rather than CanDrop because the tree's zones are markup on its own `ul` elements: the
+    // context has no list of them to ask a predicate about, only the browser does.
+    private IEnumerable<string> RefusedZones(object item) =>
+        _dragRegistry.TryGetId(item, out var id) ? _dragRegistry.Branches(id) : [];
 
     private Task HandleDragStartAsync(object item) =>
         OnItemDragStart.HasDelegate

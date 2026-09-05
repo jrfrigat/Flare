@@ -106,7 +106,7 @@ public sealed class DragModelTests : FlareTestContext
         var cut = RenderBoard(canDrop: (card, target) => target != "done" || card.Id == "c2");
 
         var forFirst = await cut.Instance.OnDragStartAsync("c1");
-        Assert.Equal(new[] { "todo" }, forFirst);
+        Assert.Equal(new[] { "todo" }, forFirst!.Allow);
         Assert.Null(await cut.Instance.OnDragStartAsync("c2"));
     }
 
@@ -131,7 +131,7 @@ public sealed class DragModelTests : FlareTestContext
             }));
 
         var allowed = await cut.Instance.OnDragStartAsync("c1");
-        Assert.Equal(new[] { "todo" }, allowed);
+        Assert.Equal(new[] { "todo" }, allowed!.Allow);
     }
 
     // An unknown id is what a drag of an item that has just been removed looks like. It must refuse
@@ -141,7 +141,7 @@ public sealed class DragModelTests : FlareTestContext
     {
         var cut = RenderBoard();
         var allowed = await cut.Instance.OnDragStartAsync("gone");
-        Assert.Empty(allowed!);
+        Assert.Empty(allowed!.Allow!);
     }
 
     [Fact]
@@ -201,7 +201,7 @@ public sealed class DragModelTests : FlareTestContext
             }));
 
         var allowed = await cut.Instance.OnDragStartAsync("stranger");
-        Assert.Empty(allowed!);
+        Assert.Empty(allowed!.Allow!);
         await cut.InvokeAsync(() => cut.Instance.OnDropAsync("stranger", "todo", 0, "before", null));
         Assert.False(dropped);
     }
@@ -274,7 +274,7 @@ public sealed class DragModelTests : FlareTestContext
         cut.Render();
 
         var afterRemoval = await cut.Instance.OnDragStartAsync("c1");
-        Assert.Empty(afterRemoval!);
+        Assert.Empty(afterRemoval!.Allow!);
     }
 
     // -- Keyboard reorder ----------------------------------------------------

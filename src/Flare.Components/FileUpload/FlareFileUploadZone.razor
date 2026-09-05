@@ -10,17 +10,24 @@
    beside it. ChildContent and MaxFileSize came across from it.
 
    On the root's drag handlers: `dragover`/`dragenter` MUST be cancelled - without it the region is not
-   a drop target at all. `drop` must NOT be. The hidden input below covers the drop area and takes the
-   dropped file as that event's DEFAULT ACTION, so cancelling it here killed the drop this component
-   exists to receive, and with it the `change` that was the only path to HandleDropAsync - which is also
-   why the highlight stayed lit afterwards. The list region, the one part with no input beneath it,
-   cancels its own drop (see FlareUploadFileList); nothing else here has a browser default worth
-   stopping. *@
+   a drop target at all. `drop` must NOT be, WHILE THE ZONE CAN ACCEPT ONE. The hidden input below covers
+   the drop area and takes the dropped file as that event's DEFAULT ACTION, so cancelling it here killed
+   the drop this component exists to receive, and with it the `change` that was the only path to
+   HandleDropAsync - which is also why the highlight stayed lit afterwards.
+
+   Disabled inverts exactly that: the input is rendered `disabled` and a disabled file input takes no
+   dropped file, so there is no default action left to protect - and an uncancelled drop nobody consumes
+   is a navigation away from the application to the dropped file. The two halves are one decision and are
+   written here once: the zone stays a drop target, and refuses the file itself while disabled.
+
+   The list region, the one part with no input beneath it, cancels its own drop (see
+   FlareUploadFileList); nothing else here has a browser default worth stopping. *@
 <div class="@BuildCssClass(_draggingClass, _disabledClass)"
      style="@Style"
      aria-label="@(AriaLabel ?? FlareStrings.DropZone_Label)"
      @ondragover:preventDefault="true"
      @ondragenter:preventDefault="true"
+     @ondrop:preventDefault="Disabled"
      @ondragover="StartDragging"
      @ondragleave="@(() => _isDragging = false)"
      @ondrop="@(() => _isDragging = false)"
@@ -90,10 +97,11 @@
 
     // The browser fires dragover continuously while a file is held over the zone. The assignment is
     // idempotent but the render is not skipped, so a drag cost one render per event; the guard makes it
-    // one render per drag.
+    // one render per drag. A disabled zone never lights up: the highlight promises a drop that cannot
+    // happen.
     private void StartDragging()
     {
-        if (!_isDragging) _isDragging = true;
+        if (!_isDragging && !Disabled) _isDragging = true;
     }
 
     // The drag highlight is cleared by the root's own drop handler now. This still clears it because the
