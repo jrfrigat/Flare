@@ -196,7 +196,7 @@ public partial class FlareDataGrid<TItem>
         if (cells.Count == 0) return;
 
         await OnPaste.InvokeAsync(new DataGridPaste<TItem>(cells));
-        _sortedCache = null;
+        InvalidateData();
         StateHasChanged();
     }
 

@@ -281,7 +281,7 @@ public partial class FlareDataGrid<TItem>
         SyncContext();
         // Client (in-memory) mode recomputes on every parameter change; provider modes manage the
         // cache via their load methods (and infinite scroll accumulates across pages).
-        if (_provider is null) _sortedCache = null;
+        if (_provider is null) InvalidateData();
         _selection = SelectedItems ?? _selection;
         // Controlled column order: sync the internal overlay when the parameter differs.
         if (ColumnOrder is not null && !ColumnOrder.SequenceEqual(_columnOrder))
@@ -347,7 +347,7 @@ public partial class FlareDataGrid<TItem>
             && (!Equals(_provider, _lastProvider) || queryableChanged))
         {
             _lastProvider = _provider;
-            _sortedCache = null;
+            InvalidateData();
             await LoadFromProviderAsync();
         }
     }
@@ -571,25 +571,14 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
-    /// <summary>Always renders; also drops the per-render <c>SortedUnpaged()</c> memo before the
-    /// render so each render recomputes a fresh list for the client Virtualize.</summary>
-    // ShouldRender fires before every render bar the first (where the field starts null); this is the
-    // "start" render-cycle boundary that clears the memo (the "end" boundary is OnAfterRenderAsync),
-    // so it never survives into the next render or an event handler (see SortedUnpaged in State.cs).
-    protected override bool ShouldRender()
-    {
-        _unpagedMemo = null;
-        return true;
-    }
+    /// <summary>Always renders.</summary>
+    // The sorted/filtered projection is no longer dropped here: it is cached until the data changes
+    // rather than until the render ends (see SortedUnpaged in State.cs).
+    protected override bool ShouldRender() => true;
 
     /// <summary>Wires up JS interop (sticky headers, observers) after the first render.</summary>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // "End" boundary for the per-render SortedUnpaged() memo: drop it as soon as the render
-        // completes so any event handler that runs before the next render (CurrentResultCount,
-        // _totalPages, export) recomputes against current data rather than a stale snapshot.
-        _unpagedMemo = null;
-
         // Resize handles and frozen-column offsets only change with the column layout (set, order,
         // visibility, width), so sync them when the layout signature changes - not on every render.
         if (_layoutSignature != _lastSyncedLayout)

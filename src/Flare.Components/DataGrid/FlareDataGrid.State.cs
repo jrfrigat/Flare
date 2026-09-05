@@ -110,7 +110,7 @@ public partial class FlareDataGrid<TItem>
             }
         }
 
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseSortChangedAsync();
@@ -128,7 +128,7 @@ public partial class FlareDataGrid<TItem>
         else
             _filters[columnKey] = value;
 
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -146,7 +146,7 @@ public partial class FlareDataGrid<TItem>
         var normalized = string.IsNullOrWhiteSpace(text) ? null : text.Trim();
         if (_quickFilterText == normalized) return;
         _quickFilterText = normalized;
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -163,7 +163,7 @@ public partial class FlareDataGrid<TItem>
         _typedFilters.Clear();
         _advancedTree = null;
         _quickFilterText = null;
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -237,7 +237,7 @@ public partial class FlareDataGrid<TItem>
     public async Task ApplyAdvancedFilter(DataGridFilterGroup filterTree)
     {
         _advancedTree = filterTree;
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -251,7 +251,7 @@ public partial class FlareDataGrid<TItem>
     public async Task ClearAdvancedFilter()
     {
         _advancedTree = null;
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -273,7 +273,7 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Invalidates the sorted cache and refreshes Virtualize if present.</summary>
     private async Task InvalidateAndRefreshAsync()
     {
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         try
         {
@@ -290,6 +290,17 @@ public partial class FlareDataGrid<TItem>
         // Non-virtualized grids render rows from _pageItems, which Virtualize.RefreshDataAsync does
         // not touch - request a render so the recomputed rows reach the DOM.
         StateHasChanged();
+    }
+
+    // One place to say "the data changed". There are two caches over the same source - the paged list
+    // the provider path fills, and the sorted/filtered projection the client path works from - and they
+    // are cleared together or not at all. Twenty-two call sites cleared the first by hand; a second
+    // cache added next to it would have been correct in twenty-two places and stale in the twenty-third,
+    // which is the whole reason the projection used to be thrown away on every render instead.
+    private void InvalidateData()
+    {
+        _sortedCache = null;
+        _unpagedMemo = null;
     }
 
     private List<TItem> Sorted()
@@ -339,12 +350,17 @@ public partial class FlareDataGrid<TItem>
     // virtual path, _pageItems, _totalPages, CurrentResultCount and BuildGroupedLines - 2-4 reads per
     // render, each otherwise re-running the full O(N log N) filter+sort.
     //
-    // Memoized PER RENDER only: _unpagedMemo is cleared at both render-cycle boundaries (ShouldRender
-    // before, OnAfterRenderAsync after - see FlareDataGrid.razor.cs), so every render still computes a
-    // FRESH list, identical to the previous compute-each-call behaviour. That freshness is load-bearing:
-    // the client Virtualize (`Items="@SortedUnpaged()"`) needs a new list reference each render, and a
-    // stable cross-render reference makes the banded-composite mutation path spin. The memo captures
-    // only the within-render duplicate reads; it never survives into the next render or an event handler.
+    // Cached until the data changes, not until the render ends. It used to be thrown away at both
+    // render-cycle boundaries, which made every render - including one caused by a hover class or an
+    // expanded detail row - re-run the whole O(N log N) filter and sort over the entire set. On a
+    // hundred rows that is invisible; on the sets this grid is now expected to hold it is the render.
+    //
+    // Two things made the per-render memo necessary and neither is true any more. Virtualize was handed
+    // this list directly and needed a new reference each render; it is now handed a fresh IndexedRows
+    // wrapper over it, so the reference it sees changes whether or not the list does. And an event
+    // handler running between renders could read a stale snapshot; it cannot now, because every path
+    // that changes the data goes through InvalidateData - the parameter set included, which is what
+    // catches an application mutating its own list.
     private List<TItem>? _unpagedMemo;
 
     private List<TItem> SortedUnpaged()
@@ -478,7 +494,7 @@ public partial class FlareDataGrid<TItem>
     {
         if (size <= 0) return;
         _currentPageSize = size;
-        if (_provider is null) _sortedCache = null;
+        if (_provider is null) InvalidateData();
         await SetPage(0);
     }
 

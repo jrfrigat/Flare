@@ -69,7 +69,7 @@ public partial class FlareDataGrid<TItem>
         if (_groupComponents.Contains(group)) return;
         _groupComponents.Add(group);
         RebuildGroupKeys();
-        _sortedCache = null;
+        InvalidateData();
         // Groups self-register from the <Grouping> fragment while the grid's render is still in flight,
         // so request a re-render to pick them up (mirrors AddColumn).
         StateHasChanged();
@@ -80,7 +80,7 @@ public partial class FlareDataGrid<TItem>
     {
         if (!_groupComponents.Remove(group)) return;
         RebuildGroupKeys();
-        _sortedCache = null;
+        InvalidateData();
         StateHasChanged();
     }
 
