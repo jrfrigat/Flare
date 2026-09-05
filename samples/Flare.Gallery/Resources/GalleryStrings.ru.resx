@@ -3293,4 +3293,13 @@
   <data name="Ptr_Refreshed" xml:space="preserve">
     <value>Обновлений:</value>
   </data>
+  <data name="Dialog_FillHeight" xml:space="preserve">
+    <value>Диалог во всю высоту</value>
+  </data>
+  <data name="DataGrid_AutoVirtualTitle" xml:space="preserve">
+    <value>Переработка строк, решает грид</value>
+  </data>
+  <data name="DataGrid_AutoVirtualDesc" xml:space="preserve">
+    <value>Virtual трёхпозиционный: если его не задать, грид сам перерабатывает строки набора в памяти больше 500 строк, когда у него есть высота, в которой есть что прокручивать. Больше не меняется ничего - пагинация, группировка, детальные строки и дерево ведут себя одинаково.</value>
+  </data>
 </root>

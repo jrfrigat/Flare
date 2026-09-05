@@ -1,0 +1,39 @@
+@* Virtual is a three-state switch. Left unset the grid decides: an in-memory set of more than 500 rows,
+   in a grid with a height to scroll in, has its rows recycled - only the visible window plus an overscan
+   margin lives in the DOM. Set it to false and every row is really there, which is what the browser's
+   own find (Ctrl+F) and printing need.
+
+   Nothing else changes either way, which is the point: sort a column, open the pager, group the rows -
+   the two behave identically. The difference is visible only in the developer tools, as the number of
+   <tr> elements under the table, and in how a set ten times this size feels to scroll. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row="true" Gap="FlareSpacing.Large" Wrap="true" Align="FlareAlignItems.Center">
+        <FlareSwitch @bind-Value="_recycle" Label="Let the grid decide (off: Virtual=false)" />
+        <FlareChip Label="@($"{_rows.Count} rows, page size {_pageSize}")" />
+    </FlareStack>
+
+    <FlareDataGrid Items="@_rows" Virtual="@(_recycle ? null : false)" PageSize="_pageSize"
+                   Height="320px" Striped="true" Hoverable="true">
+        <Columns>
+            <FlareColumn Title="#" Field="@(r => r.Id)" Type="ColumnDataType.Number" Width="90px" />
+            <FlareColumn Title="Station" Field="@(r => r.Station)" Sortable="true" />
+            <FlareColumn Title="Reading" Field="@(r => r.Reading)" Type="ColumnDataType.Number" Format="N1" Sortable="true" Width="130px" />
+        </Columns>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    private sealed record Sample(int Id, string Station, decimal Reading);
+
+    private static readonly string[] _stations = ["Bergen", "Tromso", "Kirkenes", "Bodo", "Alta"];
+
+    private bool _recycle = true;
+
+    // Well over the 500-row threshold, so the automatic decision is a yes - and paged, so the decision
+    // is made about the page the grid is responsible for rather than about the whole set.
+    private const int _pageSize = 1000;
+
+    private readonly List<Sample> _rows = Enumerable.Range(1, 2000)
+        .Select(i => new Sample(i, _stations[i % _stations.Length], 5m + i % 47 * 0.7m))
+        .ToList();
+}

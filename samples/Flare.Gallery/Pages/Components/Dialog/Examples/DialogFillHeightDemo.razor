@@ -1,0 +1,45 @@
+@* A dialog is capped at the screen whatever it holds - the header and the actions stay put and the
+   content region scrolls, so a long dialog can never put its own buttons past the edge. FillHeight is
+   the other half: without it the panel is as tall as its content, which leaves a grid a few rows tall
+   in the middle of an empty screen; with it the panel spends the whole height it has and the grid
+   spends what the panel leaves. *@
+<FlareStack Row="true" Gap="FlareSpacing.Medium" Wrap="true">
+    <FlareSwitch @bind-Value="_fill" Label="FillHeight on the dialog and the grid" />
+    <FlareButton OnClick="@(() => _visible = true)">Open</FlareButton>
+</FlareStack>
+
+<FlareDialog @bind-Visible="_visible" Title="Invoices" Size="DialogSize.Lg" FillHeight="_fill">
+    <ChildContent>
+        <FlareDataGrid Items="@_invoices" FillHeight="_fill" Height="@(_fill ? null : "260px")"
+                       Striped="true" Hoverable="true">
+            <Columns>
+                <FlareColumn Title="Invoice" Field="@(i => i.Number)" Width="120px" />
+                <FlareColumn Title="Customer" Field="@(i => i.Customer)" Sortable="true" />
+                <FlareColumn Title="Total" Field="@(i => i.Total)" Type="ColumnDataType.Number" Format="N2" Sortable="true" Width="130px" />
+            </Columns>
+        </FlareDataGrid>
+    </ChildContent>
+    <ActionsContent>
+        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _visible = false)">Close</FlareButton>
+    </ActionsContent>
+</FlareDialog>
+
+@code {
+    private sealed record Invoice(string Number, string Customer, decimal Total);
+
+    private static readonly string[] _customers =
+        ["Northwind", "Contoso", "Fabrikam", "Adventure Works", "Tailspin"];
+
+    private bool _visible;
+    private bool _fill = true;
+
+    private readonly List<Invoice> _invoices = BuildInvoices();
+
+    private static List<Invoice> BuildInvoices()
+    {
+        var list = new List<Invoice>(120);
+        for (var i = 1; i <= 120; i++)
+            list.Add(new Invoice($"INV-{i:0000}", _customers[i % _customers.Length], 120m + i % 37 * 48.5m));
+        return list;
+    }
+}

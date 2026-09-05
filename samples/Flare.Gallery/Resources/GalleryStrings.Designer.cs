@@ -10827,5 +10827,32 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Full-height dialog.
+        /// </summary>
+        public static string Dialog_FillHeight {
+            get {
+                return ResourceManager.GetString("Dialog_FillHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row recycling, decided by the grid.
+        /// </summary>
+        public static string DataGrid_AutoVirtualTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_AutoVirtualTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Virtual is three-state: left unset the grid recycles an in-memory set of more than 500 rows when it has a height to scroll in..
+        /// </summary>
+        public static string DataGrid_AutoVirtualDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_AutoVirtualDesc", resourceCulture);
+            }
+        }
     }
 }
