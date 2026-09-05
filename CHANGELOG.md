@@ -35,6 +35,13 @@ All notable changes to Flare are documented here. This project adheres to
   implementations have not moved onto this yet; that is the next step, and the value is not a fifth
   implementation but four fewer.
 
+- **`FlareKanban` is the first surface on the shared drag model, and it gained card ordering.** It
+  loses its own `_dragging` field, its HTML5 `dragstart`/`drop` pair, the hand-written
+  `ontouchstart`/`ontouchend` pair it needed because that pair fires on nothing but a mouse, the JS
+  hit-test helper only it used, and its module import. Cards can now be reordered WITHIN a column,
+  which the old "drop into a column" handler had nowhere to express: it filtered a flat list by column
+  id and a drop carried no position.
+
 - **`FlareChart.StickyDomain`: a value axis that does not shrink back, so a live chart holds still.**
   A chart handed a fresh dataset on a timer re-derives its domain from that dataset alone, which puts
   the top of the plot at the current maximum - so the value that CHANGED stays glued to the top and the

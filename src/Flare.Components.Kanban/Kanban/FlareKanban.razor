@@ -1,55 +1,52 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@implements IAsyncDisposable
-@inject IJSRuntime JS
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="group">
-    @if (Columns != null)
-    {
-        @foreach (var col in Columns)
+@* The board no longer owns a drag. It declares one - a context, a zone per column, a draggable per
+   card - and the shared model does the rest. What went with it: an HTML5 dragstart/drop pair that fired
+   on nothing but a mouse, a hand-written ontouchstart/ontouchend pair to make up for that, a JS
+   hit-test helper only this component used, a module import, and a `_dragging` field. *@
+<FlareDragContext TPayload="KanbanCard" Group="kanban" OnDrop="MoveCard">
+    <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="group">
+        @if (Columns != null)
         {
-            var colCards = CardsForColumn(col.Id);
-            <div class="flare-kanban__column"
-                 role="region"
-                 aria-label="@col.Title"
-                 data-kanban-column="@col.Id"
-                 @ondragover:preventDefault="true"
-                 @ondrop="@(() => DropCard(col.Id))">
-                <div class="flare-kanban__col-header"
-                     style="@(col.Color != null ? $"border-top:3px solid {col.Color}" : "")">
-                    <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
-                    <span class="flare-kanban__count" aria-label="@colCards.Count cards">@colCards.Count</span>
-                </div>
-                <div class="flare-kanban__cards" role="list">
-                    @foreach (var card in colCards)
-                    {
-                        var c = card;
-                        <div class="flare-kanban__card @(_dragging == c.Id ? "flare-kanban__card--dragging" : "")"
-                             role="listitem"
-                             aria-grabbed="@(_dragging == c.Id ? "true" : "false")"
-                             draggable="true"
-                             @ondragstart="@(() => StartDrag(c.Id))"
-                             @ondragend="EndDrag"
-                             @ontouchstart="@((TouchEventArgs te) => OnCardTouchStart(c.Id))"
-                             @ontouchend="@((TouchEventArgs te) => OnCardTouchEnd(te))">
-                            @if (c.Tag is not null)
-                            {
-                                <span class="flare-kanban__tag"
-                                      style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
-                            }
-                            <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
-                            @if (c.Description is not null)
-                            {
-                                <FlareText Typo="TypographyScale.BodySmall"
-                                           Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
-                            }
-                        </div>
-                    }
-                </div>
-            </div>
+            @foreach (var col in Columns)
+            {
+                var colCards = CardsForColumn(col.Id);
+                <FlareDropZone Target="@col.Id"
+                               Placement="DropPlacement.Between"
+                               Class="flare-kanban__column"
+                               role="region"
+                               aria-label="@col.Title">
+                    <div class="flare-kanban__col-header"
+                         style="@(col.Color != null ? $"border-top:3px solid {col.Color}" : "")">
+                        <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
+                        <span class="flare-kanban__count" aria-label="@colCards.Count cards">@colCards.Count</span>
+                    </div>
+                    <div class="flare-kanban__cards" role="list">
+                        @foreach (var card in colCards)
+                        {
+                            var c = card;
+                            <FlareDraggable @key="c.Id" Id="@c.Id" Payload="c"
+                                            Class="flare-kanban__card" role="listitem">
+                                @if (c.Tag is not null)
+                                {
+                                    <span class="flare-kanban__tag"
+                                          style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
+                                }
+                                <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
+                                @if (c.Description is not null)
+                                {
+                                    <FlareText Typo="TypographyScale.BodySmall"
+                                               Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
+                                }
+                            </FlareDraggable>
+                        }
+                    </div>
+                </FlareDropZone>
+            }
         }
-    }
-</div>
+    </div>
+</FlareDragContext>
 
 @code {
     /// <summary>Column definitions that structure the Kanban board.</summary>
@@ -62,63 +59,26 @@
     protected override string ComponentCssClass => "flare-kanban";
 
     private List<KanbanCard> _cards = [];
-    private string? _dragging;
-    private IJSObjectReference? _module;
-
-    // The touch hit-test helper lives in the shared drag module (served from Flare.Components).
-    private async Task<IJSObjectReference> ModuleAsync() =>
-        _module ??= await JS.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Flare.Components/js/flare-drag.js");
 
     protected override void OnParametersSet() => _cards = Cards?.ToList() ?? [];
 
     private List<KanbanCard> CardsForColumn(string colId) =>
         _cards.Where(c => c.ColumnId == colId).ToList();
 
-    private void StartDrag(string cardId) => _dragging = cardId;
-    private void EndDrag() => _dragging = null;
-
-    private void OnCardTouchStart(string cardId) => _dragging = cardId;
-
-    private async Task OnCardTouchEnd(TouchEventArgs e)
+    // Cards live in one flat list and a column is a filter over it, so a move is a remove and an
+    // insert at the position the target column's Nth card occupies in that list. The drop reports the
+    // index the card ends up at, which is what makes the second half of that a lookup rather than
+    // arithmetic over what was just removed.
+    private async Task MoveCard(FlareDropEventArgs<KanbanCard> e)
     {
-        if (_dragging is null) return;
-        if (e.ChangedTouches.Length > 0)
-        {
-            var touch = e.ChangedTouches[0];
-            try
-            {
-                // getKanbanColumnAtPoint is an ES-module export (not a window global), so it must be
-                // reached through the imported module, not an unqualified JS.InvokeAsync.
-                var module = await ModuleAsync();
-                var colId = await module.InvokeAsync<string?>(
-                    "getKanbanColumnAtPoint", touch.ClientX, touch.ClientY);
-                if (!string.IsNullOrEmpty(colId))
-                {
-                    await DropCard(colId);
-                    return;
-                }
-            }
-            catch { /* JS interop not available */ }
-        }
-        _dragging = null;
-    }
+        _cards.Remove(e.Payload);
+        var moved = e.Payload with { ColumnId = e.TargetId };
 
-    private async Task DropCard(string colId)
-    {
-        if (_dragging is null) return;
-        var idx = _cards.FindIndex(c => c.Id == _dragging);
-        if (idx >= 0)
-            _cards[idx] = _cards[idx] with { ColumnId = colId };
-        _dragging = null;
+        var inColumn = CardsForColumn(e.TargetId);
+        var index = e.Index < 0 || e.Index > inColumn.Count ? inColumn.Count : e.Index;
+        var insertAt = index < inColumn.Count ? _cards.IndexOf(inColumn[index]) : _cards.Count;
+
+        _cards.Insert(insertAt, moved);
         await CardsChanged.InvokeAsync(_cards.AsReadOnly());
-    }
-
-    /// <summary>Releases the imported JS module reference.</summary>
-    public override async ValueTask DisposeAsync()
-    {
-        try { if (_module is not null) await _module.DisposeAsync(); }
-        catch { }
-        await base.DisposeAsync();
     }
 }

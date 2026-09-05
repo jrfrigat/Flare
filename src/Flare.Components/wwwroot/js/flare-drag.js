@@ -4,8 +4,8 @@
 // handle, the sibling splitter, and the colour-picker canvas. Before this module each of these
 // re-implemented the same pointerdown -> track delta -> apply -> notify .NET skeleton (with subtly
 // different mouse-vs-pointer and capture handling). Centralising it here means one touch-capable,
-// pointer-captured implementation. Pure geometry helpers used by drag-and-drop reorder
-// (tree drop-zone, kanban column hit-test) live here too, next to the gestures they serve.
+// pointer-captured implementation. The drag-and-drop TRANSFER layer that rides on startDrag lives in
+// flare-dragdrop.js; what is left here is one geometry helper the tree's HTML5 handler still needs.
 
 import { registry } from './flare-dom.js';
 
@@ -359,7 +359,8 @@ export const flareColorPicker = (() => {
 
 // -- Drag-and-drop reorder geometry helpers ----------------------------------
 // These serve native HTML5 drag-and-drop (driven in C#), which reports the cursor position but not
-// the target's bounds -- so the "which zone / which column" decision must be made here.
+// the target's bounds -- so the "which zone" decision must be made here. The tree is the last caller;
+// flare-dragdrop.js resolves the same thirds without a round trip, and this goes when the tree moves.
 
 // FlareTreeItem: given a row element and the cursor's clientY, return which third of the row the
 // cursor is over: top ~25% -> 'before', bottom ~25% -> 'after', middle -> 'inside'.
@@ -373,9 +374,3 @@ export function getDropZone(rowEl, clientY) {
     return 'inside';
 }
 
-// FlareKanban touch drop: native DnD does not fire on touch, so the board hit-tests the column under
-// the lifted finger itself. Returns the data-kanban-column id at the given point, or null.
-export function getKanbanColumnAtPoint(x, y) {
-    const el = document.elementFromPoint(x, y);
-    return el ? (el.closest('[data-kanban-column]')?.dataset?.kanbanColumn ?? null) : null;
-}
