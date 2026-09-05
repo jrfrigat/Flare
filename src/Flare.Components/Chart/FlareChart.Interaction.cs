@@ -56,7 +56,8 @@ public partial class FlareChart
         _motionObserving = AnimateUpdates;
         try
         {
-            if (AnimateUpdates) await Motion.ObservePlotAsync(_plotRef);
+            if (AnimateUpdates)
+                await Motion.ObservePlotAsync(_plotRef, Css.Tokens.Motion.DurationMedium2, Css.Tokens.Motion.EasingStandard);
             else await Motion.UnobservePlotAsync(_plotRef);
         }
         catch (InvalidOperationException) { _motionObserving = false; }

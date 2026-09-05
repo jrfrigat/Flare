@@ -103,11 +103,11 @@ function _easing(value) {
     };
 }
 
-function _onMutations(plot, records) {
+function _onMutations(plot, vars, records) {
     const style = getComputedStyle(plot);
-    const duration = _ms(style.getPropertyValue('--flare-motion-duration-medium2'));
+    const duration = _ms(style.getPropertyValue(vars.duration));
     if (!duration || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ease = _easing(style.getPropertyValue('--flare-motion-easing-standard'));
+    const ease = _easing(style.getPropertyValue(vars.easing));
 
     // The FIRST old value in the batch is where the element visually is; the last new value is where
     // it is going, and that one is simply what the DOM holds now. An attribute written twice in one
@@ -159,10 +159,14 @@ function _tick(now) {
 }
 
 // Starts watching a chart's plot. One observer per chart, for the life of the component.
-export function observePlot(plot) {
-    if (!plot || _plots.has(plot)) return;
+//
+// The two token names are handed in rather than written here: a name spelled in a script is a name the
+// CSS audit cannot read, and it exists already as a constant on the .NET side.
+export function observePlot(plot, durationVar, easingVar) {
+    if (!plot || !durationVar || !easingVar || _plots.has(plot)) return;
 
-    const observer = new MutationObserver(records => _onMutations(plot, records));
+    const vars = { duration: durationVar, easing: easingVar };
+    const observer = new MutationObserver(records => _onMutations(plot, vars, records));
     observer.observe(plot, { subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ATTRS });
     _observers.set(plot, observer);
 
