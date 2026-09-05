@@ -148,6 +148,64 @@ function _placeIndicator(node, hit) {
     node.hidden = false;
 }
 
+// -- Auto-scroll at a container's edge ---------------------------------------
+// A board that scrolls sideways keeps columns off-screen, and `elementFromPoint` outside the viewport
+// returns null - so without this a card cannot be moved to a column you cannot see, which on a phone is
+// most of them. It runs on a FRAME loop rather than on pointermove: a pointer held still at the edge
+// stops firing moves, and that is exactly when the scrolling has to keep going.
+const SCROLL_EDGE = 56;   // px band at a container's edge where scrolling starts
+const SCROLL_MAX = 20;    // px per frame at the very edge, tapering to 0 at the band's inner rim
+
+function _scrollsOn(el, axis) {
+    const s = getComputedStyle(el);
+    const overflow = axis === 'x' ? s.overflowX : s.overflowY;
+    if (overflow !== 'auto' && overflow !== 'scroll') return false;
+    return axis === 'x' ? el.scrollWidth > el.clientWidth + 1 : el.scrollHeight > el.clientHeight + 1;
+}
+
+function _scroller(from, axis) {
+    for (let n = from; n && n !== document.body; n = n.parentElement)
+        if (_scrollsOn(n, axis)) return n;
+    return null;
+}
+
+function _velocity(pos, min, max) {
+    if (pos < min + SCROLL_EDGE) return -Math.ceil(SCROLL_MAX * Math.min(1, (min + SCROLL_EDGE - pos) / SCROLL_EDGE));
+    if (pos > max - SCROLL_EDGE) return Math.ceil(SCROLL_MAX * Math.min(1, (pos - (max - SCROLL_EDGE)) / SCROLL_EDGE));
+    return 0;
+}
+
+// Returns whether anything actually moved, which is the signal to re-run the hit test: the pointer has
+// not moved, but what is under it has.
+function _autoScroll(x, y) {
+    const cx = Math.max(0, Math.min(x, innerWidth - 1));
+    const cy = Math.max(0, Math.min(y, innerHeight - 1));
+    const under = document.elementFromPoint(cx, cy);
+    if (!under) return false;
+    let moved = false;
+
+    const sx = _scroller(under, 'x');
+    if (sx) {
+        const b = sx.getBoundingClientRect();
+        const v = _velocity(cx, b.left, b.right);
+        if (v) { const was = sx.scrollLeft; sx.scrollLeft += v; moved = moved || sx.scrollLeft !== was; }
+    }
+
+    const sy = _scroller(under, 'y');
+    if (sy) {
+        const b = sy.getBoundingClientRect();
+        const v = _velocity(cy, b.top, b.bottom);
+        if (v) { const was = sy.scrollTop; sy.scrollTop += v; moved = moved || sy.scrollTop !== was; }
+    }
+    else {
+        // The page itself is the outermost container: a long list scrolls the document, not a box.
+        const v = _velocity(cy, 0, innerHeight);
+        if (v) { const was = scrollY; scrollBy(0, v); moved = moved || scrollY !== was; }
+    }
+
+    return moved;
+}
+
 // Register a context root. Every draggable and every drop zone under it is found through the DOM, so
 // adding a thousand rows costs nothing here - there is one gesture for the whole subtree, not one per
 // item.
@@ -160,6 +218,7 @@ export function registerDragContext(root, dotNetRef) {
 
     function cleanup() {
         if (!drag) return;
+        cancelAnimationFrame(drag.raf);
         drag.preview?.node.remove();
         drag.indicator?.remove();
         drag.hit?.hitEl?.classList.remove('flare-draggable--drop-into');
@@ -168,6 +227,34 @@ export function registerDragContext(root, dotNetRef) {
             zoneEl.classList.remove('flare-drop-zone--candidate', 'flare-drop-zone--over');
         document.removeEventListener('keydown', drag.onKey, true);
         drag = null;
+    }
+
+    // Everything the drag shows for a given pointer position. Called from pointermove AND from the
+    // frame loop after an auto-scroll, where the pointer has not moved but the page under it has.
+    function update() {
+        if (!drag) return;
+        const { x, y } = drag.pointer;
+        const p = drag.preview;
+        p.node.style.transform = `translate(${x - p.grabX}px, ${y - p.grabY}px)`;
+
+        const hit = _hitTest(drag, x, y);
+        if (drag.hit?.zone.el !== hit?.zone.el) {
+            drag.hit?.zone.el.classList.remove('flare-drop-zone--over');
+            hit?.zone.el.classList.add('flare-drop-zone--over');
+        }
+        // "Into" an item is the one state a zone highlight and an insertion line cannot express.
+        if (drag.hit?.overEl !== hit?.overEl || drag.hit?.edge !== hit?.edge) {
+            drag.hit?.hitEl?.classList.remove('flare-draggable--drop-into');
+            if (hit?.edge === 'into' && hit.hitEl) hit.hitEl.classList.add('flare-draggable--drop-into');
+        }
+        drag.hit = hit;
+        _placeIndicator(drag.indicator, hit);
+    }
+
+    function tick() {
+        if (!drag) return;
+        if (_autoScroll(drag.pointer.x, drag.pointer.y)) update();
+        drag.raf = requestAnimationFrame(tick);
     }
 
     const off = startDrag(root, {
@@ -225,6 +312,8 @@ export function registerDragContext(root, dotNetRef) {
                 indicator: _makeIndicator(),
                 hit: null,
                 onKey,
+                pointer: { x: e.clientX, y: e.clientY },
+                raf: requestAnimationFrame(tick),
             };
 
             // The one call at the start. Until it answers, every zone in the group is a candidate; the
@@ -242,22 +331,9 @@ export function registerDragContext(root, dotNetRef) {
         },
         onMove(dx, dy, e) {
             if (!drag) return;
-            const p = drag.preview;
-            p.node.style.transform =
-                `translate(${e.clientX - p.grabX}px, ${e.clientY - p.grabY}px)`;
-
-            const hit = _hitTest(drag, e.clientX, e.clientY);
-            if (drag.hit?.zone.el !== hit?.zone.el) {
-                drag.hit?.zone.el.classList.remove('flare-drop-zone--over');
-                hit?.zone.el.classList.add('flare-drop-zone--over');
-            }
-            // "Into" an item is the one state a zone highlight and an insertion line cannot express.
-            if (drag.hit?.overEl !== hit?.overEl || drag.hit?.edge !== hit?.edge) {
-                drag.hit?.hitEl?.classList.remove('flare-draggable--drop-into');
-                if (hit?.edge === 'into' && hit.hitEl) hit.hitEl.classList.add('flare-draggable--drop-into');
-            }
-            drag.hit = hit;
-            _placeIndicator(drag.indicator, hit);
+            drag.pointer.x = e.clientX;
+            drag.pointer.y = e.clientY;
+            update();
         },
         onEnd() {
             if (!drag) return;
