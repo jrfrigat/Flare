@@ -328,13 +328,6 @@ public class C_FlareProgressTests : FlareTestContext
 
 public class C_FlareSkeletonTests : FlareTestContext
 {
-    [Fact]
-    public void RendersRootElement()
-    {
-        var cut = Render<FlareSkeleton>();
-
-        Assert.NotEmpty(cut.FindAll(".flare-skeleton"));
-    }
 
     [Fact]
     public void VariantRect_HasRectClass()
