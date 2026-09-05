@@ -1,0 +1,27 @@
+/* ---- The height chain, in one rule ----
+   A screen-fit page is a chain of definite heights: the shell has one, and every container between it
+   and the thing that scrolls has to spend the height it was given instead of growing to its content.
+   One link resolving to `auto` collapses the whole chain, and the failure is silent - worse than
+   silent, because a collapsed box with `overflow` clips its content away rather than showing less of
+   it.
+
+   Three declarations do it, and they are the same three for every container, which is why they live
+   here rather than being copied per component:
+
+   - `flex: 1 1 0` fills a FLEX parent. The basis is 0 rather than auto so siblings share the space by
+     their flex factors instead of by their content.
+   - `block-size: 100%` fills a BLOCK parent. Whichever of the two applies, the other is ignored by
+     that formatting context, so both can be declared unconditionally.
+   - `min-block-size: 0` is the load-bearing one: a flex item refuses to shrink below its content
+     without it, so an inner scroller would grow the page instead of scrolling inside it.
+
+   What it deliberately does NOT do is set `display`. A stack is already a flex row or column by its
+   own parameters, a layout grid is a CSS grid, and forcing a column here would fight both. Passing the
+   height on to the children is each container's own rule (`.flare-card.flare-fill` below the card's
+   own styles, a tab set's panels, a data grid's table container) - the shared part is only what it
+   means to spend the height you were given. */
+.flare-fill {
+  flex: 1 1 0;
+  block-size: 100%;
+  min-block-size: 0;
+}

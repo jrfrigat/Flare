@@ -25,3 +25,11 @@
 .flare-paper--elevation-3 { box-shadow: var(--flare-elevation-3); }
 .flare-paper--elevation-4 { box-shadow: var(--flare-elevation-4); }
 .flare-paper--elevation-5 { box-shadow: var(--flare-elevation-5); }
+
+/* FillHeight: same as the card - a surface that spends its height becomes a flex column so whatever
+   it holds can ask for the remainder. Paper has no structural parts of its own, so its children do
+   the asking. */
+.flare-paper.flare-fill {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareContainerBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.IUiJsService Ui
 
@@ -107,16 +107,6 @@
     /// panel state across switches at the cost of building all panels at once.
     /// </summary>
     [Parameter] public bool Lazy { get; set; }
-    /// <summary>
-    /// Makes the tab set spend the height it is given rather than the height of its content: the tab
-    /// set fills its parent, the panel container takes the space left under the bar, and the visible
-    /// panel becomes a flex column. A child of the panel that asks for <c>flex: 1</c> or
-    /// <c>height: 100%</c> - a data grid scrolling in its own box, a chart, a split pane - then has a
-    /// real height to measure against instead of collapsing to its content. Needs an ancestor that has
-    /// a height of its own: a <see cref="FlareLayoutContent"/> with its own <c>FillHeight</c>, or any
-    /// box given one. Default false leaves the tab set as tall as its tallest panel.
-    /// </summary>
-    [Parameter] public bool FillHeight { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Tabs.Root;
 
@@ -158,7 +148,7 @@
         _ => 0,
     };
     private string? _rotatedClass => _rotationDeg is 90 or 270 ? Css.Classes.Tabs.Rotated : null;
-    private string? _fillClass => FillHeight ? Css.Classes.Tabs.Fill : null;
+    private string? _fillClass => FillHeight ? $"{Css.Classes.Fill.Root} {Css.Classes.Tabs.Fill}" : null;
 
     // When Typo is set, repoint the tab-label font tokens at the chosen type scale.
     private string? _typoVars => Typo is { } t

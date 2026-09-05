@@ -602,11 +602,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Variant", @"CardVariant", @"CardVariant.Elevated", @"Visual variant - Elevated (default), Filled, Outlined, Tonal, or Text. Mirrors ButtonVariant.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1118,11 +1120,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Xxl", @"int?", null, @"Column span at the xxl breakpoint (>=2560px).", null, false, false, false, @"FlareCol"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1730,7 +1734,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Dense", @"bool", null, @"Compact row height and cell padding for dense tables.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"EditMode", @"DataGridEditMode", null, @"Edit mode: None (default), Inline (row), or Cell (click individual cells).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"EmptyStateContent", @"RenderFragment?", null, @"Custom content displayed when no data rows are available. Defaults to FlareEmptyState.", null, false, false, false, @"FlareDataGrid"),
-                new ApiParameterInfo(@"FillHeight", @"bool", null, @"Makes the grid spend the height it is given rather than the height in Height: the grid fills its parent, and the table container takes whatever is left under the toolbar and over the pager, scrolling inside it with a sticky header. This is the screen-fit case - a grid in a tab panel, beside a chart, under a filter bar - where the available height is the layout's answer and not a number the page can write down. Every link of the chain above it needs the same switch - a FlareLayoutContent and any FlareTabs in between - because one ancestor resolving to auto collapses the whole chain back to content height. Default false keeps Height as the cap.", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"FillHeight", @"bool", null, @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"FilterMode", @"DataGridFilterMode", null, @"Controls how column filters are displayed: Simple (text inputs), Menu (dropdowns), or Both.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"FilterPlaceholder", @"string?", null, @"Overrides the placeholder text shown in filter inputs.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"FooterContent", @"RenderFragment?", null, @"Custom content rendered in the footer area below the table (the toolbar's counterpart at the bottom). Like ToolbarContent, child components placed here resolve the grid automatically via the cascade. Use it to position grid controls (e.g. a FlareDataGridPager) below the data.", null, false, false, false, @"FlareDataGrid"),
@@ -1899,6 +1903,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2964,11 +2969,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"RowGap", @"string?", null, @"Overrides the row gap independently (raw CSS value, e.g. ""0.5rem"").", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3315,15 +3322,16 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Alignment", @"LayoutContentAlignment", @"LayoutContentAlignment.Center", @"Horizontal placement of the content when MaxWidth caps it. Defaults to Center.", null, false, false, false, @"FlareLayoutContent"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered in the layout content area.", null, false, false, false, @"FlareLayoutContent"),
-                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Gives the page the height of the visible area instead of the height of its own content. This is the first link of the screen-fit chain: the shell is 100dvh and this region is a 1fr row of it, but the frame around the page had no height of its own, so a page asking for height: 100% - or a FlareTabs/FlareDataGrid with FillHeight - resolved against auto here and collapsed to its content. Set it on a page that fills the screen and scrolls inside its own panes. Leave it off for an ordinary page that scrolls as a whole: a scrolling page has no use for the height, and pinning the frame to the visible area costs it the padding under its last element.", null, false, false, false, @"FlareLayoutContent"),
                 new ApiParameterInfo(@"MaxWidth", @"ContainerMaxWidth", @"ContainerMaxWidth.Full", @"Optional readable-width cap for the content; the content is centered horizontally while the scrollbar stays at the window edge. Defaults to Full (no constraint -- full width with padding).", null, false, false, false, @"FlareLayoutContent"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4380,11 +4388,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Square", @"bool", @"false", @"When true, removes border-radius for a flat rectangular shape.", null, false, false, false, @"FlarePaper"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5526,11 +5536,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Wrap", @"bool", @"false", @"Allows children to wrap onto multiple lines.", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5832,7 +5844,6 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ActiveIndex", @"int", @"0", @"Zero-based index of the active tab. Supports two-way binding (@bind-ActiveIndex).", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"ActiveIndexChanged", @"EventCallback<int>", null, @"Fired with the new active-tab index whenever the selection changes.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"FlareTab panels rendered inside the tab container.", null, false, false, false, @"FlareTabs"),
-                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the tab set spend the height it is given rather than the height of its content: the tab set fills its parent, the panel container takes the space left under the bar, and the visible panel becomes a flex column. A child of the panel that asks for flex: 1 or height: 100% - a data grid scrolling in its own box, a chart, a split pane - then has a real height to measure against instead of collapsing to its content. Needs an ancestor that has a height of its own: a FlareLayoutContent with its own FillHeight, or any box given one. Default false leaves the tab set as tall as its tallest panel.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"HeaderEnd", @"RenderFragment?", null, @"Custom content rendered at the end (right/bottom) of the tab header, after the tabs - e.g. action buttons. The tab bar grows to push this to the far edge.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"HeaderStart", @"RenderFragment?", null, @"Custom content rendered at the start (left/top) of the tab header, before the tabs - e.g. a title or action buttons.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"LabelRotation", @"TabLabelRotation", @"TabLabelRotation.None", @"Rotation applied to each tab label (0/90/180/270 degrees). Default none.", null, false, false, false, @"FlareTabs"),
@@ -5844,6 +5855,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Variant", @"TabsVariant", @"TabsVariant.Default", @"Visual variant of the tab bar (theme-independent). Default keeps the active theme's style.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
@@ -5860,6 +5872,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareContainerBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",

@@ -1,7 +1,7 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareContainerBase
 
-<div class="@BuildCssClass(_gapClass, _alignClass, _justifyClass)" style="@_gridStyle" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_gapClass, _alignClass, _justifyClass, FillClass)" style="@_gridStyle" @attributes="AdditionalAttributes">
     @ChildContent
 </div>
 
