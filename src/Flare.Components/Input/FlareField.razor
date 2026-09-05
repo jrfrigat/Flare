@@ -49,6 +49,7 @@
                                Required="Required"
                                Type="@Type"
                                InputMode="@InputMode"
+                               EnterKeyHint="@EnterKeyHint"
                                Pattern="@Pattern"
                                Autocomplete="@Autocomplete"
                                Spellcheck="@Spellcheck"
@@ -157,9 +158,14 @@
     [Parameter] public bool HelperTextOnFocus { get; set; }
     /// <summary>The HTML <c>pattern</c> regex the value must match (native constraint validation).</summary>
     [Parameter] public string? Pattern { get; set; }
-    /// <summary>The HTML <c>inputmode</c> hint that selects the mobile virtual keyboard
-    /// (e.g. <c>email</c>, <c>numeric</c>, <c>tel</c>, <c>url</c>).</summary>
+    /// <summary>The HTML <c>inputmode</c> hint, which chooses the on-screen keyboard. Left unset it is
+    /// derived from <see cref="Type"/> - tel, email, url, search and number each ask for their own
+    /// keyboard - so the page only says it when it wants something other than the obvious.</summary>
     [Parameter] public string? InputMode { get; set; }
+
+    /// <summary>The HTML <c>enterkeyhint</c>, which labels the on-screen keyboard's action key. Left
+    /// unset, only a search field gets one.</summary>
+    [Parameter] public string? EnterKeyHint { get; set; }
     /// <summary>The HTML <c>autocomplete</c> token (e.g. <c>email</c>, <c>username</c>, <c>off</c>) for browser/password-manager autofill.</summary>
     [Parameter] public string? Autocomplete { get; set; }
     /// <summary>The HTML <c>spellcheck</c> attribute; null (default) leaves the browser default.</summary>
