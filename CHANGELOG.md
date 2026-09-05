@@ -133,6 +133,22 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **Two controls were invisible on a touch screen, and one of them was still tappable.** A tree row's
+  drag handle and the deep-link anchor beside a `FlareText` heading were both drawn at `opacity: 0`
+  and faded in on hover. A phone has no hover, so neither could ever appear - and a transparent
+  element still takes taps, which made the heading anchor a control nobody could see and anybody
+  could hit by accident, navigating the page for no visible reason.
+
+  Both now follow what the data grid's resize handle and the slider's hover thumb already did: the
+  fade-in lives inside `@media (hover: hover)`, so a coarse pointer keeps the control visible. The
+  tree handle had a comment saying it was hidden deliberately, because the reorder ran on HTML5
+  drag-and-drop and could not be performed by touch at all - that stopped being true in this release.
+
+  A guard now holds the rule across the library: anything hidden at `opacity: 0` has to be revealed by
+  something a finger can produce. A second trigger counts - the slider's value bubble comes up on
+  `:focus-within`, which dragging with a finger produces - but `:focus-visible` does not, since that
+  one is the keyboard's.
+
 - **A disabled file-upload zone handed the dropped file to the browser, and the application went with
   it.** Drop a file on a `FlareFileUploadZone` whose `Disabled` is true and the browser navigated away
   to the file: the page the reader was on was simply gone. Nothing was uploaded, which is right for a

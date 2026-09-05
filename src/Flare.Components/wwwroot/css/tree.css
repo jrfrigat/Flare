@@ -118,15 +118,22 @@
     height: var(--flare-tree-toggle-size);
     cursor: grab;
     color: var(--flare-color-on-surface-variant);
-    opacity: 0;
+    opacity: 1;
     transition: opacity var(--flare-motion-duration-short1);
 }
 
-/* Deliberately NOT revealed on a coarse pointer. Tree reorder runs on native HTML5 drag-and-drop,
-   which does not fire on touch at all, so showing the handle there would advertise a gesture that
-   cannot be performed. It becomes visible when the reorder does - see docs/issues/drag-model.md. */
-.flare-tree-item__row:hover .flare-tree-item__drag-handle {
-    opacity: 1;
+/* The reorder now runs on pointer events and works with a finger, so the handle is no longer hidden
+   from the readers who have no hover to uncover it with - the promise the previous version of this
+   comment made. It fades in on hover where a hover exists, and simply stays visible where it does not:
+   a gesture nothing advertises is a gesture nobody finds. */
+@media (hover: hover) {
+    .flare-tree-item__drag-handle {
+        opacity: 0;
+    }
+
+    .flare-tree-item__row:hover .flare-tree-item__drag-handle {
+        opacity: 1;
+    }
 }
 
 .flare-tree-item__drag-handle:active {

@@ -107,7 +107,11 @@
 .flare-text--weight-extra-bold  { font-weight: 800; }
 .flare-text--weight-black       { font-weight: 900; }
 
-/* Hover-revealed deep link rendered by FlareText when AnchorId is set. */
+/* Deep link rendered by FlareText when AnchorId is set.
+   The fade-in is gated on a fine pointer, the same way the data grid's resize handle and the slider's
+   hover thumb are. A touch reader has no hover to uncover it with, and a transparent link is still a
+   tap target - so it was an invisible control beside every heading, hittable by accident and findable
+   by nobody. On a coarse pointer it simply stays visible. */
 .flare-text__anchor {
     margin-inline-start: 0.4em;
     color: var(--flare-color-primary);
@@ -116,11 +120,14 @@
     font-weight: 600;
     line-height: 1;
     vertical-align: baseline;
-    opacity: 0;
+    opacity: 0.7;
     transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
-.flare-text:hover > .flare-text__anchor,
-.flare-text__anchor:focus-visible { opacity: 0.7; }
+@media (hover: hover) {
+    .flare-text__anchor { opacity: 0; }
+    .flare-text:hover > .flare-text__anchor,
+    .flare-text__anchor:focus-visible { opacity: 0.7; }
+}
 .flare-text__anchor:hover { opacity: 1; text-decoration: underline; }
 
 /* Text alignment overrides (FlareText Align). */
