@@ -27,7 +27,7 @@
     min-width: 17.5rem;
     max-width: 35rem;
     width: 100%;
-    max-block-size: calc(100dvh - 3rem);
+    max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
     box-shadow: var(--flare-elevation-3);
     overflow: hidden;
 }
@@ -160,14 +160,14 @@
 .flare-dialog--md   { max-width: 35rem; }
 .flare-dialog--lg   { max-width: 50rem; }
 .flare-dialog--xl   { max-width: 70rem; }
-.flare-dialog--full      { max-width: calc(100vw - 3rem); max-block-size: calc(100dvh - 3rem); }
-.flare-dialog--fullwidth { width: calc(100vw - 3rem); max-width: calc(100vw - 3rem); }
+.flare-dialog--full      { max-width: calc(100vw - var(--flare-overlay-viewport-inset)); max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset)); }
+.flare-dialog--fullwidth { width: calc(100vw - var(--flare-overlay-viewport-inset)); max-width: calc(100vw - var(--flare-overlay-viewport-inset)); }
 
 /* On small screens: nearly full-screen and bottom-sheet aligned. */
 @media (max-width: 599px) {
     .flare-dialog {
-        max-width: calc(100vw - 2rem) !important;
-        max-block-size: calc(100dvh - 2rem) !important;
+        max-width: calc(100vw - var(--flare-overlay-viewport-inset-compact)) !important;
+        max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset-compact)) !important;
         border-radius: var(--flare-dialog-radius);
     }
     .flare-dialog-scrim {
@@ -223,5 +223,5 @@
    dialog that HOLDS something which should spend the room, a data grid most often, where a panel sized
    to its content would leave the grid a few rows tall in the middle of an empty screen. */
 .flare-dialog--fill {
-    block-size: calc(100dvh - 3rem);
+    block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
 }

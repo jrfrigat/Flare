@@ -32,18 +32,56 @@ public class DialogReachabilityTests
     // phone `vh` counts the space behind the browser chrome, so the one place a cap is needed is the one
     // place it is too generous - the dialog left its top and bottom under the URL bar, and the grid's
     // filter menu made the same promise about its actions row in the same comment that broke it.
+    // NOTE: this guard was written with a mangled pattern and asserted nothing at all until it was
+    // repaired - a stray control character in the regex meant it could never match anything. A guard
+    // that passes for the wrong reason is worse than none, because it gets reported as cover.
     [Fact]
     public void NoStylesheetCapsWithStaticViewportHeight()
     {
+        // "100vh" but not "100dvh": in the static form the digits sit directly before the unit.
+        AssertNoMatch(@"\d+vh\b",
+            "size something in static vh, which overshoots the visible area on a phone; use dvh");
+    }
+
+    // A number subtracted from the viewport is a theme's opinion about how much air a surface keeps
+    // at the screen edge, and a theme cannot repoint a number. It also spreads: the 0.31.0 dialog cap
+    // took its 3rem from the rule next to it, because copying a literal is easier than adding a token.
+    [Fact]
+    public void NoLiteralInsetSubtractedFromTheViewport()
+    {
+        AssertNoMatch(@"calc\(\s*100d?v[hw]\s*-\s*[\d.]",
+            "subtract a literal length from the viewport; use --flare-overlay-viewport-inset");
+    }
+
+    // A share of the screen is the same kind of opinion. 100 is not - that IS the viewport.
+    [Fact]
+    public void NoLiteralShareOfTheViewport()
+    {
+        AssertNoMatch(@"(?<![\d.])(?!100d?v[hw]\b)\d+(\.\d+)?d?v[hw]\b",
+            "take a literal share of the viewport; use --flare-overlay-panel-max-block-size");
+    }
+
+    // A percentage inside color-mix is how strongly one colour is laid over another - a state layer,
+    // a veil, a tint. Written as a number it is core deciding what "hover" or "selected" LOOKS like
+    // for every theme. Every one of them reads a token now; this keeps it that way. The one literal
+    // that stays legitimate is the `* 100%` that turns a 0..1 opacity token into a percentage.
+    [Fact]
+    public void NoLiteralPercentageInAColorMix()
+    {
+        AssertNoMatch(@"color-mix\([^;{}]*?(?<![\d.])(?!100%)\d+(\.\d+)?%",
+            "mix a colour at a literal strength; the percentage belongs in a token");
+    }
+
+    private static void AssertNoMatch(string pattern, string what)
+    {
         var offenders = Directory.EnumerateFiles(CssDir, "*.css")
             .Select(path => (Name: Path.GetFileName(path), Css: StripComments(File.ReadAllText(path))))
-            .Where(f => Regex.IsMatch(f.Css, @"ds*vh"))
+            .Where(f => Regex.IsMatch(f.Css, pattern))
             .Select(f => f.Name)
             .ToList();
 
         Assert.True(offenders.Count == 0,
-            "These stylesheets size something in , which overshoots the visible area on a phone; use "
-            + ": " + string.Join(", ", offenders));
+            "These stylesheets " + what + ": " + string.Join(", ", offenders));
     }
 
     [Fact]

@@ -940,6 +940,15 @@ public class MaterialDesignTokens
         LoadingDim = "0.6",
     };
 
+    // Overlay: MD3 is the airier of the two, so a dialog keeps a full 3rem off the edge and drops to
+    // 2rem on a phone, where the screen cannot spare it. A floating panel takes at most 70% of it.
+    internal static readonly OverlayTokens Overlay = new()
+    {
+        ViewportInset = "3rem",
+        ViewportInsetCompact = "2rem",
+        PanelMaxBlockSize = "70dvh",
+    };
+
     // Drag: MD3 gives a dragged object elevation 4 and leaves a dimmed silhouette behind it. The drop
     // target reads the primary state layer at the DRAGGED opacity - the one MD3 already defines for
     // exactly this state - so the target's tint and a card's own dragged state stay in step.
@@ -1289,6 +1298,7 @@ public class MaterialDesignTokens
         Scrollbar = Scrollbar,
         Switch = Switch,
         DataGrid = DataGrid,
+        Overlay = Overlay,
         Drag = Drag,
         Rating = Rating,
         Pagination = Pagination,

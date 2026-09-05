@@ -879,6 +879,15 @@ public class FluentUI2Tokens
         Level5 = "0 16px 32px var(--flare-shadow-umbra), 0 2px 4px var(--flare-shadow-penumbra)",
     };
 
+    // Overlay: Fluent runs denser than MD3 - a dialog sits closer to the edge, and a panel is allowed
+    // a little more of the screen because it carries less padding of its own.
+    internal static readonly OverlayTokens Overlay = new()
+    {
+        ViewportInset = "2rem",
+        ViewportInsetCompact = "1.5rem",
+        PanelMaxBlockSize = "75dvh",
+    };
+
     // Drag: Fluent lifts a dragged object on shadow 16 (elevation 4 here) and shows it at reduced
     // opacity rather than dimming what it left behind as hard as MD3 does; the drop target is a subtle
     // brand tint with a brand outline.
@@ -1357,6 +1366,7 @@ public class FluentUI2Tokens
         Nav = Nav,
         Switch = Switch,
         DataGrid = DataGrid,
+        Overlay = Overlay,
         Drag = Drag,
         Rating = Rating,
         Pagination = Pagination,

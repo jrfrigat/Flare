@@ -93,6 +93,9 @@ public sealed record DesignTokens
     /// <summary>Tooltip tokens.</summary>
     public required TooltipTokens Tooltip { get; init; }
 
+    /// <summary>Measurements shared by every surface that has to fit the screen.</summary>
+    public required OverlayTokens Overlay { get; init; }
+
     /// <summary>Popover tokens.</summary>
     public required PopoverTokens Popover { get; init; }
 
