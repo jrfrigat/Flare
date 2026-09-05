@@ -3320,4 +3320,10 @@
   <data name="Charts_AnimateUpdates" xml:space="preserve">
     <value>Обновление, за которым можно проследить, а не новая картинка</value>
   </data>
+  <data name="DragDrop_Surfaces" xml:space="preserve">
+    <value>Доска, дерево и таблица на одной модели</value>
+  </data>
+  <data name="DragDrop_SurfacesDesc" xml:space="preserve">
+    <value>Три поверхности, у которых нет ничего общего внешне, переупорядочиваются через один и тот же контекст. Дерево и таблица рисуют собственные li и tr, поэтому подключаются к модели атрибутом, а не оберткой, - а дерево отказывает броску внутрь собственного поддерева.</value>
+  </data>
 </root>

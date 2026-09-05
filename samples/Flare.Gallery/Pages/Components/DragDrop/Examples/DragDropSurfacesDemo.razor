@@ -1,0 +1,126 @@
+@* Three surfaces that look nothing alike, reordering through ONE model. A board is components inside
+   drop zones; a tree and a data grid render their own `li` and `tr` and cannot take a wrapper element
+   without producing markup the browser rearranges, so they join by attribute and answer
+   FlareDragContext.ResolveItem instead. Nothing here keeps drag state of its own.
+
+   All three work with a finger. That is the point of the model rather than a feature of it: the four
+   implementations this replaced used HTML5 drag-and-drop, which fires no event at all on a touch
+   screen, so a phone could reorder none of them.
+
+   A tree also refuses its own subtree - drag "Documents" and every branch inside it stops lighting up,
+   because a node dropped into itself takes the branch out of the tree with nothing to put it back. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareGrid Gap="FlareSpacing.Large">
+        <FlareCol Xs="12" Md="5">
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleSmall">A tree: drop between nodes, or into a branch</FlareText>
+                <FlareTreeView Draggable="true" OnItemDrop="TreeDropped" AriaLabel="Folders">
+                    @foreach (var node in _tree)
+                    {
+                        <FlareTreeItem Label="@node.Label" ItemData="node" Expanded="true">
+                            @foreach (var child in node.Children)
+                            {
+                                <FlareTreeItem Label="@child.Label" ItemData="child" />
+                            }
+                        </FlareTreeItem>
+                    }
+                </FlareTreeView>
+                <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@_treeLast</FlareText>
+            </FlareStack>
+        </FlareCol>
+
+        <FlareCol Xs="12" Md="7">
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleSmall">A data grid: drag a row, or drag a column header</FlareText>
+                <FlareDataGrid Items="_rows" TItem="Release"
+                               RowReorderable="true" OnRowReordered="RowMoved"
+                               ReorderableColumns="true" ColumnOrder="_columnOrder"
+                               OnColumnOrderChanged="ColumnsMoved"
+                               Dense="true" Height="15rem">
+                    <Columns>
+                        <FlareColumn TItem="Release" Title="Version" Field="@(r => r.Version)" />
+                        <FlareColumn TItem="Release" Title="Shipped" Field="@(r => r.Shipped)" />
+                        <FlareColumn TItem="Release" Title="Headline" Field="@(r => r.Headline)" />
+                    </Columns>
+                </FlareDataGrid>
+                <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@_gridLast</FlareText>
+            </FlareStack>
+        </FlareCol>
+    </FlareGrid>
+</FlareStack>
+
+@code {
+    private sealed record Release(string Version, string Shipped, string Headline);
+
+    private sealed class Node(string label)
+    {
+        public string Label { get; } = label;
+        public List<Node> Children { get; } = [];
+    }
+
+    private readonly List<Node> _tree =
+    [
+        new("Documents") { Children = { new("Contracts"), new("Invoices") } },
+        new("Pictures") { Children = { new("Trips"), new("Screenshots") } },
+    ];
+
+    private readonly List<Release> _rows =
+    [
+        new("0.32.0", "2026-09-05", "One drag model, and a chart that moves"),
+        new("0.31.0", "2026-09-05", "The data grid gets its axes apart"),
+        new("0.30.0", "2026-09-04", "Every floating panel escapes its clipping parent"),
+        new("0.29.0", "2026-09-04", "A dropped file reaches the input again"),
+    ];
+
+    private IReadOnlyList<string> _columnOrder = ["Version", "Shipped", "Headline"];
+
+    private string _treeLast = "Drag a folder onto another one, or between two.";
+    private string _gridLast = "Drag a row by its handle, or a column by its header.";
+
+    // The tree reports the node under the pointer and which third of the row the drop landed in, which
+    // is exactly what a move needs: two thirds mean "beside this one", the middle means "inside it".
+    private void TreeDropped(TreeDropEventArgs e)
+    {
+        if (e.SourceItem is not Node source || e.TargetItem is not Node target || ReferenceEquals(source, target)) return;
+
+        Detach(source);
+        if (e.Position == TreeDropPosition.Inside)
+        {
+            target.Children.Add(source);
+        }
+        else
+        {
+            var siblings = Owner(target);
+            var at = siblings.IndexOf(target) + (e.Position == TreeDropPosition.After ? 1 : 0);
+            siblings.Insert(Math.Clamp(at, 0, siblings.Count), source);
+        }
+
+        _treeLast = $"\"{source.Label}\" {e.Position.ToString().ToLowerInvariant()} \"{target.Label}\"";
+    }
+
+    private List<Node> Owner(Node node) =>
+        _tree.SelectMany(n => n.Children).Contains(node)
+            ? _tree.First(n => n.Children.Contains(node)).Children
+            : _tree;
+
+    private void Detach(Node node)
+    {
+        _tree.Remove(node);
+        foreach (var parent in _tree) parent.Children.Remove(node);
+    }
+
+    // The grid does not mutate Items - it reports the move and the page owns the list, which is what
+    // lets the same grid be bound to a server source.
+    private void RowMoved(DataGridRowReorder<Release> e)
+    {
+        _rows.Remove(e.Item);
+        _rows.Insert(Math.Clamp(e.NewIndex, 0, _rows.Count), e.Item);
+        _gridLast = $"Row \"{e.Item.Version}\": {e.OldIndex + 1} -> {e.NewIndex + 1}";
+    }
+
+    private void ColumnsMoved(IReadOnlyList<string> order)
+    {
+        _columnOrder = order;
+        _gridLast = "Columns: " + string.Join(", ", order);
+    }
+}

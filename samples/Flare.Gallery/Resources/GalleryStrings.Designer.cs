@@ -10908,5 +10908,23 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Charts_AnimateUpdates", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A board, a tree and a grid on one model.
+        /// </summary>
+        public static string DragDrop_Surfaces {
+            get {
+                return ResourceManager.GetString("DragDrop_Surfaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Three surfaces that share nothing visually and reorder through the same context. The tree and the grid render their own li and tr, so they join the model by attribute rather than by wrapper - and a tree refuses a drop inside its own subtree..
+        /// </summary>
+        public static string DragDrop_SurfacesDesc {
+            get {
+                return ResourceManager.GetString("DragDrop_SurfacesDesc", resourceCulture);
+            }
+        }
     }
 }
