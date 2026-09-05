@@ -112,28 +112,6 @@ All notable changes to Flare are documented here. This project adheres to
   moves - which is exactly the moment the scrolling has to continue. Each scroll re-runs the hit test:
   the pointer has not moved, but what is under it has.
 
-### Changed
-
-- **Russian text drops the letter yo.** `U+0451` is spelled `U+0435` throughout - the RU resx values,
-  the RU documentation, the theme readmes and this changelog. The letter is optional in Russian
-  orthography, so either convention is defensible, but the repository held both at once: one term looked
-  like two to anyone searching the Gallery, and to any translation memory.
-
-- **Every CSS custom-property name a component writes now comes from the registry, not from a string.**
-  `Flare.Abstractions` owns the names so that a rename is a compile error; component code spelled 58
-  lines of them by hand, where nothing checked. The half that mattered was the per-instance channels - a
-  clock hand's angle, a tree row's indent, a grid cell's span - because their CSS reads them WITH a
-  fallback, so a drift is not a broken element, it is a component that quietly stops moving. Those, the
-  component tokens that had a constant all along (starting with `--flare-avatar-group-spacing`, which is
-  what raised this) and 27 chart names are on constants now. The chart emits byte-identical markup; that
-  was checked in the browser rather than assumed.
-
-  Fifteen literals remain and all fifteen are meant to: prefix construction
-  (`--flare-typescale-{scale}-*` and friends, which IS the registry's mechanism) and doc comments. A
-  blanket "no literals" guard was planned and is deliberately not written - the two ways a name can fail
-  silently are already covered, everything else is visible the moment it is wrong, and a rule about
-  housekeeping does not belong in the build.
-
 ### Fixed
 
 - **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
