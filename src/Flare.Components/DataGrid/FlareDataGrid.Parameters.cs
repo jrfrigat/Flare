@@ -63,12 +63,26 @@ public partial class FlareDataGrid<TItem>
     /// </para>
     /// </summary>
     [Parameter] public bool? Virtual { get; set; }
-    /// <summary>Infinite scrolling: with an <see cref="ItemsProvider"/>, rows accumulate page by page
-    /// as the user scrolls to the bottom, and no pager is shown - this is a paging strategy of its own,
-    /// so it replaces <see cref="PageSize"/>'s. The provider is called with successive <c>Page</c>
-    /// values; loading stops when a page returns fewer than <see cref="PageSize"/> rows or the reported
-    /// total is reached. Combine with <see cref="Virtual"/> to recycle the rows that have accumulated -
-    /// otherwise a long enough scroll ends with the whole set in the DOM.</summary>
+    /// <summary>
+    /// Accumulates rows chunk by chunk as the user reaches the bottom, instead of paging. No pager is
+    /// shown: this is a paging strategy of its own and it replaces <see cref="PageSize"/>'s.
+    /// <para>
+    /// It differs from <see cref="Virtual"/> in what it asks of the source, which is the whole reason
+    /// both exist. A virtualized provider is asked for an arbitrary window - "rows 4000 to 4050" - and
+    /// has to report a total, because the scrollbar cannot be sized without one. This one walks
+    /// sequentially from the first chunk and learns where the end is by getting a short one, so it works
+    /// against a source that can neither seek nor count: a cursor- or keyset-paginated API, a search
+    /// endpoint, anything whose <c>COUNT</c> is too expensive to run per keystroke. Where the source can
+    /// do both, <see cref="Virtual"/> is the better answer - it gives a real scrollbar and does not grow
+    /// without bound.
+    /// </para>
+    /// <para>
+    /// The chunk size is <see cref="PageSize"/>, or 50 when that is <c>0</c> (which means "do not page"
+    /// and is no answer to "how much to fetch"). Loading stops when a chunk comes back shorter than the
+    /// chunk size, or when the reported total is reached. Combine with <see cref="Virtual"/> to recycle
+    /// what has accumulated - otherwise a long enough scroll ends with the whole set in the DOM.
+    /// </para>
+    /// </summary>
     [Parameter] public bool InfiniteScroll { get; set; }
     /// <summary>
     /// Keeps the header group - band rows, column titles and the filter row - pinned to the top of
