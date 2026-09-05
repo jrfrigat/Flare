@@ -32,7 +32,7 @@
                   style="@($"background:{_currentPrimary};color:{onColor};")">Aa</span>
             <span>@ratio.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture):1</span>
             <span class="@Css.Classes.Color.CustomizerContrastBadge"
-                  style="@($"background:var(--flare-color-{status}-container);color:var(--flare-color-on-{status}-container);")">@ContrastVerdict(ratio)</span>
+                  style="@($"background:var({status.Container});color:var({status.OnContainer});")">@ContrastVerdict(ratio)</span>
         </div>
     }
     @if (ShowReset)
@@ -55,7 +55,12 @@
 
     // WCAG 2.x thresholds for normal text: AA 4.5, AAA 7; large text AA 3.
     private static string ContrastVerdict(double r) => r >= 7 ? "AAA" : r >= 4.5 ? "AA" : r >= 3 ? "AA Large" : "Fail";
-    private static string ContrastStatus(double r) => r >= 4.5 ? "success" : r >= 3 ? "warning" : "error";
+    // The pair of tokens the badge paints itself with, named rather than spelled from a status word:
+    // a name built at runtime is one the CSS audit cannot match against the stylesheet.
+    private static (string Container, string OnContainer) ContrastStatus(double r) =>
+        r >= 4.5 ? (Css.Tokens.Color.SuccessContainer, Css.Tokens.Color.OnSuccessContainer)
+        : r >= 3 ? (Css.Tokens.Color.WarningContainer, Css.Tokens.Color.OnWarningContainer)
+        : (Css.Tokens.Color.ErrorContainer, Css.Tokens.Color.OnErrorContainer);
 
     private string _label      => Label      ?? FlareStrings.ColorCustomizer_Label;
     private string _customLabel => CustomLabel ?? FlareStrings.ColorCustomizer_Custom;

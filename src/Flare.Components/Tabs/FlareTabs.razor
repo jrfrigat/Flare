@@ -152,10 +152,15 @@
 
     // When Typo is set, repoint the tab-label font tokens at the chosen type scale.
     private string? _typoVars => Typo is { } t
-        ? $"{Css.Tokens.Tabs.LabelFont}:var(--flare-typescale-{FlareTypography.Slug(t)}-font);"
-          + $"{Css.Tokens.Tabs.LabelSize}:var(--flare-typescale-{FlareTypography.Slug(t)}-size);"
-          + $"{Css.Tokens.Tabs.LabelWeight}:var(--flare-typescale-{FlareTypography.Slug(t)}-weight)"
+        ? TypoVars(FlareTypography.Tokens(t))
         : null;
+
+    // The tab-label tokens repointed at one type scale. The four scale names come from the registry
+    // rather than from a slug, so Flare.CssAudit can see which step is being asked for.
+    private static string TypoVars((string Font, string Weight, string Size, string Height) t) =>
+        $"{Css.Tokens.Tabs.LabelFont}:var({t.Font});"
+        + $"{Css.Tokens.Tabs.LabelSize}:var({t.Size});"
+        + $"{Css.Tokens.Tabs.LabelWeight}:var({t.Weight})";
 
     // Cached in OnParametersSet - depends only on parameters (LabelRotation, Typo, Style), so it need
     // not be re-joined on every render (runtime state like overflow/active-tab does not affect it).

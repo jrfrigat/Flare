@@ -103,7 +103,7 @@ public class TokenParityTests
         // The merged map carries values from both the color and the design axis
         Assert.Equal(colors.Primary, flat[Css.Tokens.Color.Primary]);
         Assert.Equal(design.Shape.Small, flat[Css.Tokens.Shape.Small]);
-        Assert.Equal(design.Typography.BodyLarge.FontFamily, flat[Css.Tokens.Typography.Font("body-large")]);
+        Assert.Equal(design.Typography.BodyLarge.FontFamily, flat[Css.Tokens.Typography.BodyLarge.Font]);
     }
 
     [Fact]

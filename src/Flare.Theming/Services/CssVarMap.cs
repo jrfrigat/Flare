@@ -29,21 +29,21 @@ public static class CssVarMap
         v[Css.Tokens.Vars.FocusRing] = t.FocusRing;
 
         // Typography
-        FlattenType(v, "display-large", t.Typography.DisplayLarge);
-        FlattenType(v, "display-medium", t.Typography.DisplayMedium);
-        FlattenType(v, "display-small", t.Typography.DisplaySmall);
-        FlattenType(v, "headline-large", t.Typography.HeadlineLarge);
-        FlattenType(v, "headline-medium", t.Typography.HeadlineMedium);
-        FlattenType(v, "headline-small", t.Typography.HeadlineSmall);
-        FlattenType(v, "title-large", t.Typography.TitleLarge);
-        FlattenType(v, "title-medium", t.Typography.TitleMedium);
-        FlattenType(v, "title-small", t.Typography.TitleSmall);
-        FlattenType(v, "body-large", t.Typography.BodyLarge);
-        FlattenType(v, "body-medium", t.Typography.BodyMedium);
-        FlattenType(v, "body-small", t.Typography.BodySmall);
-        FlattenType(v, "label-large", t.Typography.LabelLarge);
-        FlattenType(v, "label-medium", t.Typography.LabelMedium);
-        FlattenType(v, "label-small", t.Typography.LabelSmall);
+        FlattenType(v, Css.Tokens.Typography.DisplayLarge.Font, Css.Tokens.Typography.DisplayLarge.Weight, Css.Tokens.Typography.DisplayLarge.Size, Css.Tokens.Typography.DisplayLarge.Height, Css.Tokens.Typography.DisplayLarge.Spacing, t.Typography.DisplayLarge);
+        FlattenType(v, Css.Tokens.Typography.DisplayMedium.Font, Css.Tokens.Typography.DisplayMedium.Weight, Css.Tokens.Typography.DisplayMedium.Size, Css.Tokens.Typography.DisplayMedium.Height, Css.Tokens.Typography.DisplayMedium.Spacing, t.Typography.DisplayMedium);
+        FlattenType(v, Css.Tokens.Typography.DisplaySmall.Font, Css.Tokens.Typography.DisplaySmall.Weight, Css.Tokens.Typography.DisplaySmall.Size, Css.Tokens.Typography.DisplaySmall.Height, Css.Tokens.Typography.DisplaySmall.Spacing, t.Typography.DisplaySmall);
+        FlattenType(v, Css.Tokens.Typography.HeadlineLarge.Font, Css.Tokens.Typography.HeadlineLarge.Weight, Css.Tokens.Typography.HeadlineLarge.Size, Css.Tokens.Typography.HeadlineLarge.Height, Css.Tokens.Typography.HeadlineLarge.Spacing, t.Typography.HeadlineLarge);
+        FlattenType(v, Css.Tokens.Typography.HeadlineMedium.Font, Css.Tokens.Typography.HeadlineMedium.Weight, Css.Tokens.Typography.HeadlineMedium.Size, Css.Tokens.Typography.HeadlineMedium.Height, Css.Tokens.Typography.HeadlineMedium.Spacing, t.Typography.HeadlineMedium);
+        FlattenType(v, Css.Tokens.Typography.HeadlineSmall.Font, Css.Tokens.Typography.HeadlineSmall.Weight, Css.Tokens.Typography.HeadlineSmall.Size, Css.Tokens.Typography.HeadlineSmall.Height, Css.Tokens.Typography.HeadlineSmall.Spacing, t.Typography.HeadlineSmall);
+        FlattenType(v, Css.Tokens.Typography.TitleLarge.Font, Css.Tokens.Typography.TitleLarge.Weight, Css.Tokens.Typography.TitleLarge.Size, Css.Tokens.Typography.TitleLarge.Height, Css.Tokens.Typography.TitleLarge.Spacing, t.Typography.TitleLarge);
+        FlattenType(v, Css.Tokens.Typography.TitleMedium.Font, Css.Tokens.Typography.TitleMedium.Weight, Css.Tokens.Typography.TitleMedium.Size, Css.Tokens.Typography.TitleMedium.Height, Css.Tokens.Typography.TitleMedium.Spacing, t.Typography.TitleMedium);
+        FlattenType(v, Css.Tokens.Typography.TitleSmall.Font, Css.Tokens.Typography.TitleSmall.Weight, Css.Tokens.Typography.TitleSmall.Size, Css.Tokens.Typography.TitleSmall.Height, Css.Tokens.Typography.TitleSmall.Spacing, t.Typography.TitleSmall);
+        FlattenType(v, Css.Tokens.Typography.BodyLarge.Font, Css.Tokens.Typography.BodyLarge.Weight, Css.Tokens.Typography.BodyLarge.Size, Css.Tokens.Typography.BodyLarge.Height, Css.Tokens.Typography.BodyLarge.Spacing, t.Typography.BodyLarge);
+        FlattenType(v, Css.Tokens.Typography.BodyMedium.Font, Css.Tokens.Typography.BodyMedium.Weight, Css.Tokens.Typography.BodyMedium.Size, Css.Tokens.Typography.BodyMedium.Height, Css.Tokens.Typography.BodyMedium.Spacing, t.Typography.BodyMedium);
+        FlattenType(v, Css.Tokens.Typography.BodySmall.Font, Css.Tokens.Typography.BodySmall.Weight, Css.Tokens.Typography.BodySmall.Size, Css.Tokens.Typography.BodySmall.Height, Css.Tokens.Typography.BodySmall.Spacing, t.Typography.BodySmall);
+        FlattenType(v, Css.Tokens.Typography.LabelLarge.Font, Css.Tokens.Typography.LabelLarge.Weight, Css.Tokens.Typography.LabelLarge.Size, Css.Tokens.Typography.LabelLarge.Height, Css.Tokens.Typography.LabelLarge.Spacing, t.Typography.LabelLarge);
+        FlattenType(v, Css.Tokens.Typography.LabelMedium.Font, Css.Tokens.Typography.LabelMedium.Weight, Css.Tokens.Typography.LabelMedium.Size, Css.Tokens.Typography.LabelMedium.Height, Css.Tokens.Typography.LabelMedium.Spacing, t.Typography.LabelMedium);
+        FlattenType(v, Css.Tokens.Typography.LabelSmall.Font, Css.Tokens.Typography.LabelSmall.Weight, Css.Tokens.Typography.LabelSmall.Size, Css.Tokens.Typography.LabelSmall.Height, Css.Tokens.Typography.LabelSmall.Spacing, t.Typography.LabelSmall);
 
         // Shape
         v[Css.Tokens.Shape.None] = t.Shape.None;
@@ -266,11 +266,11 @@ public static class CssVarMap
         v[Css.Tokens.Button.SelectedColor] = t.Button.SelectedColor;
 
         // Label typography (across 5 sizes)
-        FlattenBtnLabel(v, "xs", t.Button.LabelXs);
-        FlattenBtnLabel(v, "sm", t.Button.LabelSm);
-        FlattenBtnLabel(v, "md", t.Button.LabelMd);
-        FlattenBtnLabel(v, "lg", t.Button.LabelLg);
-        FlattenBtnLabel(v, "xl", t.Button.LabelXl);
+        FlattenBtnLabel(v, Css.Tokens.Button.Label.Xs.Font, Css.Tokens.Button.Label.Xs.Weight, Css.Tokens.Button.Label.Xs.Size, Css.Tokens.Button.Label.Xs.Height, Css.Tokens.Button.Label.Xs.Spacing, t.Button.LabelXs);
+        FlattenBtnLabel(v, Css.Tokens.Button.Label.Sm.Font, Css.Tokens.Button.Label.Sm.Weight, Css.Tokens.Button.Label.Sm.Size, Css.Tokens.Button.Label.Sm.Height, Css.Tokens.Button.Label.Sm.Spacing, t.Button.LabelSm);
+        FlattenBtnLabel(v, Css.Tokens.Button.Label.Md.Font, Css.Tokens.Button.Label.Md.Weight, Css.Tokens.Button.Label.Md.Size, Css.Tokens.Button.Label.Md.Height, Css.Tokens.Button.Label.Md.Spacing, t.Button.LabelMd);
+        FlattenBtnLabel(v, Css.Tokens.Button.Label.Lg.Font, Css.Tokens.Button.Label.Lg.Weight, Css.Tokens.Button.Label.Lg.Size, Css.Tokens.Button.Label.Lg.Height, Css.Tokens.Button.Label.Lg.Spacing, t.Button.LabelLg);
+        FlattenBtnLabel(v, Css.Tokens.Button.Label.Xl.Font, Css.Tokens.Button.Label.Xl.Weight, Css.Tokens.Button.Label.Xl.Size, Css.Tokens.Button.Label.Xl.Height, Css.Tokens.Button.Label.Xl.Spacing, t.Button.LabelXl);
         #endregion
 
         #region BUTTON GROUP
@@ -1172,21 +1172,27 @@ public static class CssVarMap
         return v;
     }
 
-    private static void FlattenType(Dictionary<string, string> v, string scale, TypeStyle s)
+    // The five names are passed in rather than derived from a slug: a name built at runtime is one
+    // Flare.CssAudit cannot match against the stylesheet, and the registry exists to be matched.
+    private static void FlattenType(
+        Dictionary<string, string> v, string font, string weight, string size, string height, string spacing,
+        TypeStyle s)
     {
-        v[Css.Tokens.Typography.Font(scale)] = s.FontFamily;
-        v[Css.Tokens.Typography.Weight(scale)] = s.FontWeight;
-        v[Css.Tokens.Typography.Size(scale)] = s.FontSize;
-        v[Css.Tokens.Typography.Height(scale)] = s.LineHeight;
-        v[Css.Tokens.Typography.Spacing(scale)] = s.LetterSpacing;
+        v[font] = s.FontFamily;
+        v[weight] = s.FontWeight;
+        v[size] = s.FontSize;
+        v[height] = s.LineHeight;
+        v[spacing] = s.LetterSpacing;
     }
 
-    private static void FlattenBtnLabel(Dictionary<string, string> v, string size, TypeStyle s)
+    private static void FlattenBtnLabel(
+        Dictionary<string, string> v, string font, string weight, string size, string height, string spacing,
+        TypeStyle s)
     {
-        v[$"{Css.Tokens.Button.LabelPrefix}-{size}-font"] = s.FontFamily;
-        v[$"{Css.Tokens.Button.LabelPrefix}-{size}-weight"] = s.FontWeight;
-        v[$"{Css.Tokens.Button.LabelPrefix}-{size}-size"] = s.FontSize;
-        v[$"{Css.Tokens.Button.LabelPrefix}-{size}-height"] = s.LineHeight;
-        v[$"{Css.Tokens.Button.LabelPrefix}-{size}-spacing"] = s.LetterSpacing;
+        v[font] = s.FontFamily;
+        v[weight] = s.FontWeight;
+        v[size] = s.FontSize;
+        v[height] = s.LineHeight;
+        v[spacing] = s.LetterSpacing;
     }
 }

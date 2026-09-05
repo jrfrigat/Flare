@@ -114,6 +114,22 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **Two components could emit a CSS class that does not exist.** `FlareHidden` built its class from the
+  breakpoint name, so `Below="Breakpoint.Xs"` produced `flare-hidden--below-xs` and
+  `Above="Breakpoint.Xxl"` produced `flare-hidden--above-xxl` - there is nothing below the smallest tier
+  or above the largest, so neither rule exists and the element simply stayed visible with nothing to say
+  why. `FlareSnackbarProvider` built `flare-snackbar--normal` the same way, for the severity that has no
+  accent rule at all.
+
+  Both are now impossible: every class and every custom property a component sets is NAMED from the
+  registry rather than assembled from an enum or a number, so `Flare.CssAudit` can check each one
+  against the stylesheet. That took 100 names out of the audit's blind spot - the 75 type-scale
+  properties and the 25 button-label ones were built from a slug at both ends, by the theme that emits
+  them and by the component that reads them, and neither end could be verified. Paper and app-bar
+  elevation levels, the drawer anchor and the contrast badge's colour pair moved the same way. Both
+  audits read fully in sync afterwards.
+
+
 - **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
   threshold rather than the press, and by then pointer capture has been taken - so every pointer event
   is retargeted to the capturing container and `e.target` is the container, never what was pressed. The

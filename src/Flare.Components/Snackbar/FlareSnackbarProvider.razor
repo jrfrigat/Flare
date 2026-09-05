@@ -11,7 +11,7 @@
     @foreach (var msg in _messages)
     {
         var m = msg;
-        <div class="@BuildCssClass(Css.Classes.Snackbar.Root, $"flare-snackbar--{m.Severity.ToString().ToLowerInvariant()}", m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null, m.CssClass)"
+        <div class="@BuildCssClass(Css.Classes.Snackbar.Root, SeverityClass(m.Severity), m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null, m.CssClass)"
              role="@(m.Severity == SnackbarSeverity.Error ? "alert" : "status")"
              aria-atomic="true">
             <span class="@Css.Classes.Snackbar.Text">
@@ -56,6 +56,18 @@
     [Parameter] public int MaxVisible { get; set; } = 5;
     /// <summary>Screen position where the snackbar stack appears.</summary>
     [Parameter] public SnackbarPosition Position { get; set; } = SnackbarPosition.BottomCenter;
+
+    // Named, not built. Normal has no accent rule at all, so building the class from the enum name
+    // emitted flare-snackbar--normal - a class the stylesheet does not define and the CSS audit could
+    // not have told anyone about, because it never appeared in the source as a name.
+    private static string SeverityClass(SnackbarSeverity severity) => severity switch
+    {
+        SnackbarSeverity.Info => Css.Classes.Snackbar.Info,
+        SnackbarSeverity.Success => Css.Classes.Snackbar.Success,
+        SnackbarSeverity.Warning => Css.Classes.Snackbar.Warning,
+        SnackbarSeverity.Error => Css.Classes.Snackbar.Error,
+        _ => string.Empty,
+    };
 
     private readonly List<SnackbarMessage> _messages = [];
 

@@ -199,6 +199,20 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         Assert.Equal("alert", cut.Find(".flare-snackbar--error").GetAttribute("role"));
     }
 
+    // The severity class used to be assembled from the enum name, and Normal has no accent rule at
+    // all - so the neutral toast carried flare-snackbar--normal, a class the stylesheet never defines.
+    [Fact]
+    public void NormalSeverity_CarriesNoAccentClass()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var service = Services.GetRequiredService<ISnackbarService>();
+
+        service.Show("Just so you know", SnackbarSeverity.Normal);
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count > 0);
+
+        Assert.DoesNotContain("flare-snackbar--normal", cut.Markup);
+    }
+
     [Fact]
     public void NoMessagesInitially_NoSnackbarDivs()
     {

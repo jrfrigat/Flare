@@ -192,8 +192,84 @@ public static class Button
         public const string FilledUnselectedColor = "--flare-btn-filled-unselected-color";
     }
 
-    /// <summary>Prefix for the label typography CSS variables: --flare-btn-label-{size}-{font|weight|size|height|spacing}.</summary>
-    public const string LabelPrefix = "--flare-btn-label";
+    /// <summary>
+    /// Label typography, one nested class per button size. Spelled out rather than built from a
+    /// prefix plus a size: a name assembled at runtime is one <c>Flare.CssAudit</c> cannot match
+    /// against the stylesheet, so nothing could tell whether all twenty-five exist.
+    /// </summary>
+    public static class Label
+    {
+        /// <summary>Label typography tokens for the xs button size.</summary>
+        public static class Xs
+        {
+            /// <summary>CSS custom-property name for the font-family of the xs button label.</summary>
+            public const string Font = "--flare-btn-label-xs-font";
+            /// <summary>CSS custom-property name for the font-weight of the xs button label.</summary>
+            public const string Weight = "--flare-btn-label-xs-weight";
+            /// <summary>CSS custom-property name for the font-size of the xs button label.</summary>
+            public const string Size = "--flare-btn-label-xs-size";
+            /// <summary>CSS custom-property name for the line-height of the xs button label.</summary>
+            public const string Height = "--flare-btn-label-xs-height";
+            /// <summary>CSS custom-property name for the letter-spacing of the xs button label.</summary>
+            public const string Spacing = "--flare-btn-label-xs-spacing";
+        }
+        /// <summary>Label typography tokens for the sm button size.</summary>
+        public static class Sm
+        {
+            /// <summary>CSS custom-property name for the font-family of the sm button label.</summary>
+            public const string Font = "--flare-btn-label-sm-font";
+            /// <summary>CSS custom-property name for the font-weight of the sm button label.</summary>
+            public const string Weight = "--flare-btn-label-sm-weight";
+            /// <summary>CSS custom-property name for the font-size of the sm button label.</summary>
+            public const string Size = "--flare-btn-label-sm-size";
+            /// <summary>CSS custom-property name for the line-height of the sm button label.</summary>
+            public const string Height = "--flare-btn-label-sm-height";
+            /// <summary>CSS custom-property name for the letter-spacing of the sm button label.</summary>
+            public const string Spacing = "--flare-btn-label-sm-spacing";
+        }
+        /// <summary>Label typography tokens for the md button size.</summary>
+        public static class Md
+        {
+            /// <summary>CSS custom-property name for the font-family of the md button label.</summary>
+            public const string Font = "--flare-btn-label-md-font";
+            /// <summary>CSS custom-property name for the font-weight of the md button label.</summary>
+            public const string Weight = "--flare-btn-label-md-weight";
+            /// <summary>CSS custom-property name for the font-size of the md button label.</summary>
+            public const string Size = "--flare-btn-label-md-size";
+            /// <summary>CSS custom-property name for the line-height of the md button label.</summary>
+            public const string Height = "--flare-btn-label-md-height";
+            /// <summary>CSS custom-property name for the letter-spacing of the md button label.</summary>
+            public const string Spacing = "--flare-btn-label-md-spacing";
+        }
+        /// <summary>Label typography tokens for the lg button size.</summary>
+        public static class Lg
+        {
+            /// <summary>CSS custom-property name for the font-family of the lg button label.</summary>
+            public const string Font = "--flare-btn-label-lg-font";
+            /// <summary>CSS custom-property name for the font-weight of the lg button label.</summary>
+            public const string Weight = "--flare-btn-label-lg-weight";
+            /// <summary>CSS custom-property name for the font-size of the lg button label.</summary>
+            public const string Size = "--flare-btn-label-lg-size";
+            /// <summary>CSS custom-property name for the line-height of the lg button label.</summary>
+            public const string Height = "--flare-btn-label-lg-height";
+            /// <summary>CSS custom-property name for the letter-spacing of the lg button label.</summary>
+            public const string Spacing = "--flare-btn-label-lg-spacing";
+        }
+        /// <summary>Label typography tokens for the xl button size.</summary>
+        public static class Xl
+        {
+            /// <summary>CSS custom-property name for the font-family of the xl button label.</summary>
+            public const string Font = "--flare-btn-label-xl-font";
+            /// <summary>CSS custom-property name for the font-weight of the xl button label.</summary>
+            public const string Weight = "--flare-btn-label-xl-weight";
+            /// <summary>CSS custom-property name for the font-size of the xl button label.</summary>
+            public const string Size = "--flare-btn-label-xl-size";
+            /// <summary>CSS custom-property name for the line-height of the xl button label.</summary>
+            public const string Height = "--flare-btn-label-xl-height";
+            /// <summary>CSS custom-property name for the letter-spacing of the xl button label.</summary>
+            public const string Spacing = "--flare-btn-label-xl-spacing";
+        }
+    }
 
     // Focus ring and shadow behavior
     /// <summary>CSS custom-property name for the focus outline token.</summary>
