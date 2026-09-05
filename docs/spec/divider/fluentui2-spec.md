@@ -6,7 +6,7 @@
 четыре appearance (`default`, `subtle`, `brand`, `strong`) и две ориентации
 (horizontal / vertical). Линия рисуется border на псевдоэлементах `::before`/`::after`
 (`border-top` для horizontal, `border-right` для vertical) - цвет линии одинаков для обеих
-ориентаций. Каждый appearance задаёт цвет контента (текста) и цвет линии.
+ориентаций. Каждый appearance задает цвет контента (текста) и цвет линии.
 
 # Divider - Color - Default (контекст: Default, Light)
 

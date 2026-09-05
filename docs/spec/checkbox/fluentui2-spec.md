@@ -3,8 +3,8 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-checkbox`
 (`useCheckboxStyles.styles.ts`). В колонке `Token Name` - реальный Fluent alias-токен
-(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешённое значение.
-Состояние `Pressed` в CSS соответствует `:active`; цвет текста задаётся на слоте root и
+(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешенное значение.
+Состояние `Pressed` в CSS соответствует `:active`; цвет текста задается на слоте root и
 наследуется меткой, а границу/фон/галочку индикатора задают внутренние CSS-переменные
 (`--fui-Checkbox__indicator--borderColor/backgroundColor/color`).
 
@@ -160,7 +160,7 @@
 
 # Checkbox - Color - Disabled (контекст: Default, Light)
 
-Одно состояние для checked / unchecked / mixed (Fluent задаёт единый блок `disabled`).
+Одно состояние для checked / unchecked / mixed (Fluent задает единый блок `disabled`).
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
@@ -178,7 +178,7 @@
 
 # Checkbox - Focus (контекст: Default, Light/Dark)
 
-Фокус применён к root по `:focus-within` через `createFocusOutlineStyle` (Fluent 2 -
+Фокус применен к root по `:focus-within` через `createFocusOutlineStyle` (Fluent 2 -
 двойное кольцо: внутреннее `colorStrokeFocus2`, внешнее `colorStrokeFocus1`).
 
 | Display Name | Token Name | Value (Light) | Value (Dark) |

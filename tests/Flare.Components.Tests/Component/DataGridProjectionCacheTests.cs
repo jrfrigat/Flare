@@ -113,7 +113,7 @@ public sealed class DataGridProjectionCacheTests : FlareTestContext
 
         cut.Find(".flare-datagrid__filter-row .flare-input__control").Input("row 007");
 
-        Assert.Equal(1, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Single(cut.FindAll("tbody tr.flare-datagrid__row"));
     }
 
     private static RenderFragment FilterableNameColumn() => b =>

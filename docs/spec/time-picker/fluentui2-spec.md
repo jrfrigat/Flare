@@ -4,11 +4,11 @@
 привязки слот/состояние -> alias-токен взяты из исходников `@fluentui/react-timepicker-compat`
 (`TimePicker/useTimePickerStyles.styles.ts`) и его основы `@fluentui/react-combobox`
 (`Combobox/useComboboxStyles.styles.ts`, `Option/useOptionStyles.styles.ts`). В колонке
-`Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешённое значение.
+`Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешенное значение.
 Состояние `Pressed` соответствует `:active` (поле) / `:active` (опция).
 
 **TimePicker построен на Combobox** (`useComboboxStyles_unstable`): TimePicker добавляет только
-`max-height` списка, всё оформление поля/списка/опций - это Combobox. Ниже задокументированы:
+`max-height` списка, все оформление поля/списка/опций - это Combobox. Ниже задокументированы:
 поле (Combobox root, appearance `outline`), опции списка и поверхность listbox.
 
 # TimePicker - Field (Combobox outline) (контекст: Default, Light)

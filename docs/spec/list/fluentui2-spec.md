@@ -4,13 +4,13 @@
 привязки слот/состояние -> alias-токен взяты из исходников `@fluentui/react-list`
 (`useListStyles.styles.ts`, `useListItemStyles.styles.ts`). В колонке `Token Name` - реальный
 Fluent alias-токен (см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его
-разрешённое значение.
+разрешенное значение.
 
 **ВАЖНО (flag): `@fluentui/react-list` - НЕстилизованный примитив.** `List` и `ListItem`
 задают только сброс списка (`padding/margin: 0`, `list-style: none`), курсор для
 кликабельных/выбираемых элементов и focus-обводку. У `ListItem` **НЕТ собственных токенов
 фона для состояний rest / hover / active / selected** - фон и подсветку выделения должен
-задать потребитель (или обёртка `Menu`/селект-паттерн). Ниже приведено всё, что реально
+задать потребитель (или обертка `Menu`/селект-паттерн). Ниже приведено все, что реально
 токенизировано компонентом; для состояний фона нужна сверка с Figma / целевым паттерном.
 
 # List - Surface (List root) (контекст: Default, Light/Dark)
@@ -39,19 +39,19 @@ Fluent alias-токен (см. `docs/spec/_pallete/fluentui2-spec.md`), в ко�
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
-| List item hovered container color | (не токенизирован; задаёт потребитель) | (consumer-defined) |
+| List item hovered container color | (не токенизирован; задает потребитель) | (consumer-defined) |
 
 ## Pressed / Active
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
-| List item pressed container color | (не токенизирован; задаёт потребитель) | (consumer-defined) |
+| List item pressed container color | (не токенизирован; задает потребитель) | (consumer-defined) |
 
 ## Selected
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
-| List item selected container color | (не токенизирован; задаёт потребитель) | (consumer-defined) |
+| List item selected container color | (не токенизирован; задает потребитель) | (consumer-defined) |
 
 ## Disabled
 
@@ -74,19 +74,19 @@ Fluent alias-токен (см. `docs/spec/_pallete/fluentui2-spec.md`), в ко�
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
-| List item hovered container color | (не токенизирован; задаёт потребитель) | (consumer-defined) |
+| List item hovered container color | (не токенизирован; задает потребитель) | (consumer-defined) |
 
 ## Pressed / Active
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
-| List item pressed container color | (не токенизирован; задаёт потребитель) | (consumer-defined) |
+| List item pressed container color | (не токенизирован; задает потребитель) | (consumer-defined) |
 
 ## Selected
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
-| List item selected container color | (не токенизирован; задаёт потребитель) | (consumer-defined) |
+| List item selected container color | (не токенизирован; задает потребитель) | (consumer-defined) |
 
 ## Disabled
 

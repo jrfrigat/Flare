@@ -2,7 +2,7 @@
 @inject ISnackbarService Snackbar
 
 <FlareStack Gap="FlareSpacing.XSmall">
-    <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Сформировать отчёт</FlareText>
+    <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Сформировать отчет</FlareText>
     <FlareGrid Columns="4" Gap="FlareSpacing.XSmall">
         @foreach (var report in _reports)
         {
@@ -11,7 +11,7 @@
                     <FlareIconView Size="1.4rem" Value="@LegacyIcons.Resolve(report.Icon)" Color="FlareColor.Primary" />
                     <FlareText Typo="TypographyScale.LabelLarge" Weight="FontWeight.Bold">@report.Title</FlareText>
                     <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">@report.Description</FlareText>
-                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Отчёт: " + report.Title))">Сформировать</FlareButton>
+                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Отчет: " + report.Title))">Сформировать</FlareButton>
                 </FlareStack>
             </FlareCard>
         }

@@ -8,7 +8,7 @@ Material-компонент); ниже - маппинг на ближайший 
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-button`
 (`useButtonStyles.styles.ts`, ветка `primary` + shape `circular` + icon-only sizes).
-В колонке `Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешённое
+В колонке `Token Name` - реальный Fluent alias-токен, в колонке `Value` - его разрешенное
 значение. Состояние `Pressed` в CSS соответствует `:hover:active, :active:focus-visible`.
 Fluent-кнопка НЕ имеет собственного токена возвышения (elevation) - секция `Elevation`
 ниже добавлена как приближение FAB через `shadow8`/`shadow16` и подлежит сверке с Figma.

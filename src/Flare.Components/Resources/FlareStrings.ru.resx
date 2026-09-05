@@ -107,9 +107,9 @@
 
   <!-- Theme / ColorCustomizer / ColorModeToggle -->
   <data name="ColorCustomizer_Label" xml:space="preserve"><value>Цвет темы</value></data>
-  <data name="ColorCustomizer_Custom" xml:space="preserve"><value>Своё значение</value></data>
+  <data name="ColorCustomizer_Custom" xml:space="preserve"><value>Свое значение</value></data>
   <data name="ColorCustomizer_Reset" xml:space="preserve"><value>Сбросить</value></data>
-  <data name="Theme_ToggleDark" xml:space="preserve"><value>Переключить на тёмную тему</value></data>
+  <data name="Theme_ToggleDark" xml:space="preserve"><value>Переключить на темную тему</value></data>
   <data name="Theme_ToggleLight" xml:space="preserve"><value>Переключить на светлую тему</value></data>
 
   <!-- Chip -->
@@ -140,7 +140,7 @@
   <data name="Chart_ZoomOut" xml:space="preserve"><value>Отдалить</value></data>
   <data name="Chart_ZoomReset" xml:space="preserve"><value>Сбросить масштаб</value></data>
   <data name="Tabs_ScrollBack" xml:space="preserve"><value>Прокрутить вкладки назад</value></data>
-  <data name="Tabs_ScrollForward" xml:space="preserve"><value>Прокрутить вкладки вперёд</value></data>
+  <data name="Tabs_ScrollForward" xml:space="preserve"><value>Прокрутить вкладки вперед</value></data>
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Переключить меню</value></data>
   <data name="Aria_TogglePassword" xml:space="preserve"><value>Показать/скрыть пароль</value></data>
   <data name="Aria_ToggleList" xml:space="preserve"><value>Показать или скрыть список</value></data>
@@ -173,7 +173,7 @@
   <data name="SpeedDial_Actions" xml:space="preserve"><value>Действия</value></data>
 
   <!-- Avatar / EmptyState -->
-  <data name="Avatar_OverflowMore" xml:space="preserve"><value>ещё {0}</value></data>
+  <data name="Avatar_OverflowMore" xml:space="preserve"><value>еще {0}</value></data>
   <data name="EmptyState_Label" xml:space="preserve"><value>Нет данных</value></data>
 
   <!-- Rating -->
@@ -252,7 +252,7 @@
   <data name="Transfer_MoveAllToSource" xml:space="preserve"><value>Вернуть все</value></data>
 
   <data name="Barcode_Invalid" xml:space="preserve"><value>Значение не кодируется</value></data>
-  <data name="NavGuard_Title" xml:space="preserve"><value>Несохранённые изменения</value></data>
+  <data name="NavGuard_Title" xml:space="preserve"><value>Несохраненные изменения</value></data>
   <data name="NavGuard_Message" xml:space="preserve"><value>Есть изменения, которые не сохранены. Если уйти со страницы, они будут потеряны.</value></data>
   <data name="NavGuard_Leave" xml:space="preserve"><value>Уйти без сохранения</value></data>
   <data name="NavGuard_Stay" xml:space="preserve"><value>Остаться</value></data>
@@ -260,7 +260,7 @@
   <data name="Password_Weak" xml:space="preserve"><value>Слабый</value></data>
   <data name="Password_Fair" xml:space="preserve"><value>Средний</value></data>
   <data name="Password_Good" xml:space="preserve"><value>Хороший</value></data>
-  <data name="Password_Strong" xml:space="preserve"><value>Надёжный</value></data>
+  <data name="Password_Strong" xml:space="preserve"><value>Надежный</value></data>
   <data name="Password_MakeLonger" xml:space="preserve"><value>Сделайте длиннее.</value></data>
   <data name="Password_MixCharacters" xml:space="preserve"><value>Смешайте заглавные, цифры и символы.</value></data>
   <data name="Password_TooCommon" xml:space="preserve"><value>Это часто используемый пароль.</value></data>

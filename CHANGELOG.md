@@ -23,6 +23,13 @@ All notable changes to Flare are documented here. This project adheres to
   changed. `Data` now documents that replacing it refits the axis, which is the trap underneath all of
   this.
 
+### Changed
+
+- **Russian text drops the letter yo.** `U+0451` is spelled `U+0435` throughout - the RU resx
+  values, the RU documentation, the theme readmes and this changelog. The letter is optional in Russian
+  orthography, so either convention is defensible, but the repository held both at once: one term looked
+  like two to anyone searching the Gallery, and to any translation memory. A guard test keeps it out.
+
 ### Fixed
 
 - **Every "fit the screen" cap in the library uses `dvh` rather than `vh`.** The dialog fix in 0.31.0

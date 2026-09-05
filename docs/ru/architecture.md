@@ -25,7 +25,7 @@ Flare построен как **чистая / луковичная (порты 
         Flare (Flare.Blazor)   (Кольцо 4 - корень композиции; -> Components, Infrastructure)
 
 Reference-пакеты токенов (-> только Flare.Abstractions): содержат полностью заполненный базовый
-DesignTokens, от которого производится каждая линейка тем (сам core не несёт значений по умолчанию):
+DesignTokens, от которого производится каждая линейка тем (сам core не несет значений по умолчанию):
   Flare.Theme.MaterialDesign3.Tokens (MaterialDesignTokens.Design),
   Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
 
@@ -57,7 +57,7 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 - `Tokens/` - неизменяемые `record`-типы ЗНАЧЕНИЙ токенов: `DesignTokens`, `ColorScheme`, `Palette`,
   `TypographyTokens`, `ShapeTokens`, `ElevationTokens`, `MotionTokens`, `StateTokens`, `SpacingTokens`,
   `TypeStyle`, `PaletteSeed`, `ThemeMode`, `ThemeDelivery`, `ThemeSnapshot` + записи в `Tokens/Components/`.
-- `Css/` - реестр ИМЁН CSS-переменных (`Css.Tokens.*`, `Css.Classes.*`, `Vars`) и атрибут `[CssVar]`,
+- `Css/` - реестр ИМЕН CSS-переменных (`Css.Tokens.*`, `Css.Classes.*`, `Vars`) и атрибут `[CssVar]`,
   связывающий свойство-значение токена с именем `--flare-*`, которое оно заполняет.
 - `JsInterop/` - `FlareJsModule`, общая база для типизированных JS-interop сервисов.
 - `Security/` - чистые утилиты `HtmlSanitizer` / `CssValidator` (internal).
@@ -88,7 +88,7 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 базовые компоненты в `Base/`. Зависит от `Flare.Abstractions` + `Flare.Theming` и использует адаптеры
 только через их порты (внедряются через DI). **НЕ ссылается на `Flare.Infrastructure`** - этот инвариант
 делает хост заменяемым.
-- Каждый компонент наследует `FlareComponentBase` (в `Base/`, пространство имён `Flare.Components`).
+- Каждый компонент наследует `FlareComponentBase` (в `Base/`, пространство имен `Flare.Components`).
 - CSS поставляется единым бандлом на токенах в `wwwroot/css/` (агрегируется в `flare-components.css`) -
   не scoped CSS. Все правила используют только токены `var(--flare-*)`.
 - Хранит весь статический JS в `wwwroot/js/` (`_content/Flare.Components/js/`); адаптеры Infrastructure
@@ -114,17 +114,17 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 Также можно включить рантайм-палитру **Dynamic Color** (`Palette.DynamicId = "dynamic"`) через
 `FlareOptions.UseDynamicPalette`; она строится из акцента ОС генератором активной темы.
 
-- Тема = дизайн-система (`DesignTokens`) + `DefaultPaletteId` + `StyleAssets`. Светлая/тёмная это
+- Тема = дизайн-система (`DesignTokens`) + `DefaultPaletteId` + `StyleAssets`. Светлая/темная это
   **режим**, а не отдельная тема; цвета приходят из **палитры**.
 - Каждый пакет экспортирует публичные reference-токены (например `Md3.DesignReference`, `Md3.LightColors`,
   `Md3.DarkColors`), чтобы выводить кастомные темы/палитры через `with`.
-- Каждый несёт `IPaletteGenerator` по правилам цвета своей дизайн-системы (тональный MD3 / рампа).
+- Каждый несет `IPaletteGenerator` по правилам цвета своей дизайн-системы (тональный MD3 / рампа).
 - `StyleAssets` перечисляет статический CSS темы (шрифты, базовый сброс, сгенерированный CSS токенов),
   чтобы нужные токены присутствовали до первого кадра (анти-FOUC).
 
 **NuGet:** каждый пакет темы зависит от `Flare.Abstractions` + `Flare.Theming` + reference-пакета
 своей линейки (`Flare.Theme.MaterialDesign3.Tokens` или `Flare.Theme.FluentUI2.Tokens`), от базового
-`Design` которого он `with`-производит свои токены. Core остаётся без значений по умолчанию;
+`Design` которого он `with`-производит свои токены. Core остается без значений по умолчанию;
 конкретные значения живут только в этих двух reference-пакетах.
 
 ### Flare (umbrella / корень композиции)
@@ -142,7 +142,7 @@ Blazor WebAssembly PWA. Интерактивная галерея с перек�
 подсветкой и живым переключателем тем (дизайн-система x палитра x режим, плюс генерация палитры из
 цвета). Регистрирует все пять тем через `AddFlareTheme`. Docker-готова.
 
-> `samples/Flare.Legacy` - сохранённый legacy-пример, не часть публикуемой библиотеки.
+> `samples/Flare.Legacy` - сохраненный legacy-пример, не часть публикуемой библиотеки.
 
 ---
 
@@ -189,7 +189,7 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
 | Активная вкладка | `flare-tabs__tab flare-tabs__tab--active` |
 | Сортируемый заголовок | `flare-datagrid__th flare-datagrid__th--sortable` |
 
-Все CSS-правила используют только `var(--flare-*)` - никаких жёстко заданных цветов, размеров шрифтов или
+Все CSS-правила используют только `var(--flare-*)` - никаких жестко заданных цветов, размеров шрифтов или
 тайминга анимаций.
 
 ### Паттерн составного компонента (Cascading Parent)
@@ -197,7 +197,7 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
 1. **Родитель регистрирует детей** (`FlareTabs`/`FlareTab`, `FlareDataGrid`/`FlareColumn`,
    `FlareAccordion`/`FlareAccordionPanel`): дети регистрируются при монтировании и снимаются при удалении;
    родитель владеет состоянием и перерисовывается после изменений.
-2. **Каскадный callback** (`FlarePopover`/`FlareMenu`): передаёт `Func<Task>` закрытия вниз, чтобы
+2. **Каскадный callback** (`FlarePopover`/`FlareMenu`): передает `Func<Task>` закрытия вниз, чтобы
    вложенный элемент мог закрыть хост, не зная типа родителя.
 
 ---
@@ -206,10 +206,10 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
 
 ### Три оси
 
-Отрисованная тема это композиция трёх независимо переключаемых осей:
+Отрисованная тема это композиция трех независимо переключаемых осей:
 
 1. **Дизайн-система** (`ITheme`) - типографика, форма, движение, геометрия теней, токены компонентов.
-2. **Палитра** (`Palette`) - цвета: несёт светлую и тёмную `ColorScheme` (и опц. high-contrast).
+2. **Палитра** (`Palette`) - цвета: несет светлую и темную `ColorScheme` (и опц. high-contrast).
 3. **Режим** (`ThemeMode`) - `Light` / `Dark` / `Auto` (Auto следит за `prefers-color-scheme`).
 
 `IThemeService.SetThemeAsync` / `SetPaletteAsync` / `SetModeAsync` переключают каждую ось в рантайме.
@@ -250,20 +250,20 @@ Palette
   гарантирует наличие нужного class-scoped CSS (`EnsureStaticCssAsync` / `RequireThemeAssetsAsync`).
 - **`Inject`** - `ICssVariableInjector` сплющивает активные токены через `CssVarMap` и пишет их в `:root`
   через JS-interop. Безопасно при SSR/prerender (исключения JS-interop проглатываются; статический
-  базовый CSS даёт начальные значения).
+  базовый CSS дает начальные значения).
 
 ### Бутстрап против FOUC
 
-Одностроковый бутстрап-скрипт (`_content/Flare.Components/js/flare-bootstrap.js`) применяет сохранённые
+Одностроковый бутстрап-скрипт (`_content/Flare.Components/js/flare-bootstrap.js`) применяет сохраненные
 классы темы/палитры/режима до первого кадра, поэтому пока приложение грузится, тема не мигает. Сам
 Flare загрузочный сплэш не рисует - его рисует каждое приложение (фон + анимация), чтобы он совпадал с
 брендом приложения.
 
-Вместо этого скрипт даёт сигнал готовности: `window.hideFlareSplash()` диспатчит событие `flare:ready`
+Вместо этого скрипт дает сигнал готовности: `window.hideFlareSplash()` диспатчит событие `flare:ready`
 и плавно убирает собственный элемент сплэша приложения, если тот помечен `id="flare-splash"` /
 `[data-flare-splash]`. `FlareThemeProvider` вызывает его автоматически (`ManageSplash`, по умолчанию
 `true`): на первом интерактивном рендере он применяет классы темы и статический CSS, дожидается события
-`load` каждого стиля темы и веб-шрифтов документа (`document.fonts.ready`), а затем шлёт готовность
+`load` каждого стиля темы и веб-шрифтов документа (`document.fonts.ready`), а затем шлет готовность
 после первого оформленного кадра. Страховочный таймаут в бутстрапе срабатывает в любом случае, если
 провайдера нет или загрузка упала; задайте `ManageSplash="false"`, чтобы слать готовность
 (`window.hideFlareSplash()` или событие `flare:ready`) самостоятельно.
@@ -272,7 +272,7 @@ Flare загрузочный сплэш не рисует - его рисует 
 
 `IThemeStorageService` (порт в `Flare.Abstractions`, реализация `LocalStorageThemeStorage` в
 `Flare.Blazor`) читает/пишет выбор в `localStorage`, с защитой от SSR/prerender. `FlareThemeProvider`
-восстанавливает сохранённый выбор при первом интерактивном рендере.
+восстанавливает сохраненный выбор при первом интерактивном рендере.
 
 ### Как добавить новую тему
 
@@ -323,13 +323,13 @@ Flare загрузочный сплэш не рисует - его рисует 
 | `IMessageBoxService` | `MessageBoxService` |
 | `ICollisionService` | `CollisionService` |
 | `IThemeJsService` | `ThemeJsService` |
-| `IFlareClipboard` / `IFlareDownload` / `IFlareColorExtractor` | типизированные обёртки JS-interop |
+| `IFlareClipboard` / `IFlareDownload` / `IFlareColorExtractor` | типизированные обертки JS-interop |
 
 `AddFlareIde()` (из `Flare.Components.IDE`) регистрирует дополнительные сервисы пакета IDE.
 
 ### Различия WASM и Server
 
 Оба хоста используют один путь кода. Сервисы JS-interop загружаются лениво и защищены от prerender
-перехватом `InvalidOperationException` / `JSDisconnectedException`; статический базовый CSS даёт начальные
+перехватом `InvalidOperationException` / `JSDisconnectedException`; статический базовый CSS дает начальные
 значения токенов, пока interop недоступен. Scoped-время жизни - на SignalR-канал (Server) или на сессию
 (WASM).

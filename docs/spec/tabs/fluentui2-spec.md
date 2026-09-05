@@ -4,7 +4,7 @@
 привязки слот/состояние -> alias-токен взяты из исходников `@fluentui/react-tabs`
 (`useTabStyles.styles.ts`, `useTabListStyles.styles.ts`). В колонке `Token Name` - реальный
 Fluent alias-токен (см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его
-разрешённое значение. Состояние `Pressed` в CSS соответствует `:enabled:active`; `Hovered` =
+разрешенное значение. Состояние `Pressed` в CSS соответствует `:enabled:active`; `Hovered` =
 `:enabled:hover`. Tab имеет две группы appearance: линейные (`transparent` по умолчанию,
 `subtle`) с полосой-индикатором и круглые «pill» (`subtle-circular`, `filled-circular`).
 

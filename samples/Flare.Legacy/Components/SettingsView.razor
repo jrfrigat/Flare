@@ -18,9 +18,9 @@
                          Value="@ThemeService.CurrentTheme.Id"
                          ValueChanged="OnThemeChanged" />
 
-            <FlareSelect TValue="ThemeMode" Label="Режим (светлый / тёмный)"
+            <FlareSelect TValue="ThemeMode" Label="Режим (светлый / темный)"
                          Items="_modes"
-                         ItemLabel="@(m => m switch { ThemeMode.Light => "Светлый", ThemeMode.Dark => "Тёмный", _ => "Авто (как в системе)" })"
+                         ItemLabel="@(m => m switch { ThemeMode.Light => "Светлый", ThemeMode.Dark => "Темный", _ => "Авто (как в системе)" })"
                          Value="@ThemeService.Mode"
                          ValueChanged="OnModeChanged" />
         </FlareStack>

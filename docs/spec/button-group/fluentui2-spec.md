@@ -8,7 +8,7 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки взяты из исходника `@fluentui/react-button` (`useToggleButtonStyles.styles.ts`;
 невыбранные rest-состояния наследуются от `useButtonStyles.styles.ts`). В колонке
-`Token Name` - реальный Fluent alias-токен, в колонке `Value` - разрешённое значение.
+`Token Name` - реальный Fluent alias-токен, в колонке `Value` - разрешенное значение.
 Состояние `Pressed` в CSS соответствует `:hover:active, :active:focus-visible`.
 ToggleButton не имеет собственного токена «группировки»: секция `Grouping geometry`
 ниже - приближение общей границы/радиуса соседних элементов и подлежит сверке с Figma.

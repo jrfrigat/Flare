@@ -45,10 +45,10 @@ public sealed class LanguageService
     }
 
     // Инициализация культуры при старте приложения.
-    // Приоритет: 1) сохранённый выбор пользователя -> 2) язык браузера -> 3) "en".
+    // Приоритет: 1) сохраненный выбор пользователя -> 2) язык браузера -> 3) "en".
     public async Task InitializeCultureAsync()
     {
-        // 1. Явный выбор пользователя (сохранён в localStorage, важно для офлайн PWA).
+        // 1. Явный выбор пользователя (сохранен в localStorage, важно для офлайн PWA).
         var storedCulture = await _js.InvokeAsync<string?>("localStorage.getItem", "blazorCulture");
 
         // 2. Иначе - язык браузера: рантайм Blazor WASM инициализирует CurrentUICulture из

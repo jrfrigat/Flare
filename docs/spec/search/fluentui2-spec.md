@@ -84,7 +84,7 @@ chrome-цветов см. в `docs/spec/input/fluentui2-spec.md`; ниже - н�
 # SearchBox - Color - Icons (search + dismiss) (контекст: Default, Light)
 
 `contentBefore` (иконка поиска) наследует content-цвет Input; `dismiss` (иконка очистки)
-задаёт собственный reset с тем же токеном + `cursor: pointer`.
+задает собственный reset с тем же токеном + `cursor: pointer`.
 
 ## Enabled
 
@@ -151,7 +151,7 @@ chrome-цветов см. в `docs/spec/input/fluentui2-spec.md`; ниже - н�
 
 # SearchBox - Layout - contentAfter (dismiss reveal)
 
-Слот `contentAfter` (обёртка dismiss) скрыт до фокуса и раскрывается при `focused`.
+Слот `contentAfter` (обертка dismiss) скрыт до фокуса и раскрывается при `focused`.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|

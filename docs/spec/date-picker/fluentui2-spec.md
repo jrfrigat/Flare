@@ -5,11 +5,11 @@
 (`DatePicker/useDatePickerStyles.styles.ts`), поля ввода `@fluentui/react-input`
 (`Input/useInputStyles.styles.ts`) и календарной сетки `@fluentui/react-calendar-compat`
 (`CalendarDayGrid/useCalendarDayGridStyles.styles.ts`). В колонке `Token Name` - реальный
-Fluent alias-токен, в колонке `Value` - его разрешённое значение.
+Fluent alias-токен, в колонке `Value` - его разрешенное значение.
 Состояние `Pressed` соответствует `:active, :focus-within` у поля.
 
 DatePicker построен на текстовом поле `Input` (appearance по умолчанию - `outline`) плюс
-поповер-поверхность (`popupSurface`) с календарём. Ниже задокументированы: поле, поверхность
+поповер-поверхность (`popupSurface`) с календарем. Ниже задокументированы: поле, поверхность
 поповера и ячейки дней календаря.
 
 # DatePicker - Field (Input outline) (контекст: Default, Light)
@@ -152,7 +152,7 @@ DatePicker построен на текстовом поле `Input` (appearance
 
 ## Selected
 
-`daySelected` - фон диапазона; `daySingleSelected` - обведённая кнопка выбранного дня.
+`daySelected` - фон диапазона; `daySingleSelected` - обведенная кнопка выбранного дня.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|

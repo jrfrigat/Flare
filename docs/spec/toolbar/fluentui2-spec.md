@@ -5,7 +5,7 @@
 (`useToolbarStyles.styles.ts`, `useToolbarButtonStyles.styles.ts`, `useToolbarDividerStyles.styles.ts`).
 
 **ВАЖНО: Toolbar в Fluent UI 2 - тонкий layout-контейнер без собственных цветовых токенов.**
-Сама поверхность Toolbar задаёт только `display/align/padding` (никаких background/border/color).
+Сама поверхность Toolbar задает только `display/align/padding` (никаких background/border/color).
 `ToolbarButton` целиком переиспользует `useButtonStyles_unstable` из `@fluentui/react-button`
 (appearance по умолчанию = `subtle`), добавляя лишь вертикальную раскладку и увеличенную иконку.
 `ToolbarDivider` целиком переиспользует `useDividerStyles_unstable` из `@fluentui/react-divider`
@@ -14,7 +14,7 @@
 
 # Toolbar - Surface (контекст: Default, Light/Dark)
 
-Поверхность Toolbar не задаёт ни фон, ни рамку, ни цвет текста - только раскладку. Цвет фона
+Поверхность Toolbar не задает ни фон, ни рамку, ни цвет текста - только раскладку. Цвет фона
 наследуется от родителя (обычно `colorNeutralBackground1`). Ниже - только геометрия.
 
 | Display Name | Token Name | Value |

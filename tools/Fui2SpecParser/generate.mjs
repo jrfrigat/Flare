@@ -85,7 +85,7 @@ function groupOf(k) {
 function buildPalette() {
   const out = [];
   out.push('# Fluent UI 2 - палитра', '');
-  out.push('Разрешённые семантические alias-токены цвета из `@fluentui/tokens` '
+  out.push('Разрешенные семантические alias-токены цвета из `@fluentui/tokens` '
     + `(webLightTheme / webDarkTheme, версия ${version}). `
     + 'В отличие от MD3, у Fluent НЕТ per-component цветовых токенов - компоненты '
     + 'потребляют эти alias-роли напрямую.', '');

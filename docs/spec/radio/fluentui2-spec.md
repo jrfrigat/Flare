@@ -3,9 +3,9 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-radio`
 (`useRadioStyles.styles.ts`). В колонке `Token Name` - реальный Fluent alias-токен
-(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешённое значение.
+(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешенное значение.
 Состояние `Pressed` в CSS соответствует `:hover:active`. Точка выбора (`::after`) окрашена
-`currentColor` индикатора, поэтому её цвет совпадает с цветом индикатора.
+`currentColor` индикатора, поэтому ее цвет совпадает с цветом индикатора.
 
 # Radio - Color - Unchecked (контекст: Default, Light)
 
@@ -105,7 +105,7 @@
 
 # Radio - Color - Disabled (контекст: Default, Light)
 
-Одно состояние для checked / unchecked (Fluent задаёт единый блок `:disabled`).
+Одно состояние для checked / unchecked (Fluent задает единый блок `:disabled`).
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|
@@ -123,7 +123,7 @@
 
 # Radio - Focus (контекст: Default, Light/Dark)
 
-Фокус применён к root по `:focus-within` через `createFocusOutlineStyle` (Fluent 2 -
+Фокус применен к root по `:focus-within` через `createFocusOutlineStyle` (Fluent 2 -
 двойное кольцо: внутреннее `colorStrokeFocus2`, внешнее `colorStrokeFocus1`).
 
 | Display Name | Token Name | Value (Light) | Value (Dark) |

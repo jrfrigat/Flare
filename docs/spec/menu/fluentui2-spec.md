@@ -4,7 +4,7 @@
 привязки слот/состояние -> alias-токен взяты из исходников `@fluentui/react-menu`
 (`useMenuPopoverStyles.styles.ts`, `useMenuListStyles.styles.ts`, `useMenuItemStyles.styles.ts`).
 В колонке `Token Name` - реальный Fluent alias-токен (см. `docs/spec/_pallete/fluentui2-spec.md`),
-в колонке `Value` - его разрешённое значение. Состояние `Pressed` в CSS соответствует `:hover:active`.
+в колонке `Value` - его разрешенное значение. Состояние `Pressed` в CSS соответствует `:hover:active`.
 
 # Menu - Surface (MenuPopover) (контекст: Default, Light)
 

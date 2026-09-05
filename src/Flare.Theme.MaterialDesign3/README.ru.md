@@ -1,6 +1,6 @@
 # Flare.Theme.MaterialDesign3
 
-Тема Material Design 3 (базовая), светлая и тёмная, для библиотеки компонентов
+Тема Material Design 3 (базовая), светлая и темная, для библиотеки компонентов
 [Flare](https://github.com/jrfrigat/Flare) на Blazor, вместе со встроенными палитрами MD3.
 
 ```sh
@@ -61,7 +61,7 @@ builder.Services.AddFlareTheme(new MaterialDesign3Theme());
 - **Нет морфинга формы.** Нажатая кнопка не становится квадратнее, выбранная toggle-кнопка не меняет форму.
 - **Нет волнистого прогресса** и пружинной анимации.
 
-Если всё это нужно - берите `Flare.Theme.MaterialDesign3Expressive`; палитры и цветовые роли общие,
+Если все это нужно - берите `Flare.Theme.MaterialDesign3Expressive`; палитры и цветовые роли общие,
 поэтому переключение между ними меняет геометрию и движение, но не цвет.
 
 Требуется `Flare.Components`. Репозиторий и документация: https://github.com/jrfrigat/Flare  -  лицензия MIT.

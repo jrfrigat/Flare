@@ -3,7 +3,7 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-button`
 (`useButtonStyles.styles.ts`). В колонке `Token Name` - реальный Fluent alias-токен
-(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешённое значение.
+(см. `docs/spec/_pallete/fluentui2-spec.md`), в колонке `Value` - его разрешенное значение.
 Состояние `Pressed` в CSS соответствует `:hover:active, :active:focus-visible`.
 
 # Button - Color - Secondary (default) (контекст: Default, Light)

@@ -5,7 +5,7 @@ Fluent UI 2 не имеет компонента с именем "Chip"; его 
 (статичный, с необязательной кнопкой закрытия) и **InteractionTagPrimary** (кликабельный chip-элемент).
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки взяты из `useTagStyles.styles.ts` и `useInteractionTagPrimaryStyles.styles.ts`.
-Рамка задаётся `strokeWidthThin solid colorTransparentStroke` (по умолчанию прозрачная);
+Рамка задается `strokeWidthThin solid colorTransparentStroke` (по умолчанию прозрачная);
 `:active` в CSS соответствует Pressed.
 
 # Chip (Tag) - Appearance - Filled (контекст: Default, Light)
@@ -130,7 +130,7 @@ Fluent UI 2 не имеет компонента с именем "Chip"; его 
 
 # Chip (Tag) - Dismiss Icon (контекст: Default, Light/Dark)
 
-Кнопка закрытия имеет hover/active состояния; для `selected` цвет метки остаётся `colorNeutralForegroundOnBrand`.
+Кнопка закрытия имеет hover/active состояния; для `selected` цвет метки остается `colorNeutralForegroundOnBrand`.
 
 | Display Name | Token Name | Value (Light) | Value (Dark) |
 |--------------|------------|---------------|--------------|
@@ -396,7 +396,7 @@ Fluent UI 2 не имеет компонента с именем "Chip"; его 
 
 # Chip - Size (theme-independent)
 
-Высота задаётся контейнером (Tag / InteractionTag); внутренние отступы - литералы (7px/5px/5px);
+Высота задается контейнером (Tag / InteractionTag); внутренние отступы - литералы (7px/5px/5px);
 размер иконки/dismiss - литералы.
 
 | Display Name | Token Name | Value |
@@ -430,5 +430,5 @@ Fluent UI 2 не имеет компонента с именем "Chip"; его 
 
 # Chip - Motion
 
-Исходник `@fluentui/react-tags` не задаёт токены перехода (`transition`); смена состояний
+Исходник `@fluentui/react-tags` не задает токены перехода (`transition`); смена состояний
 опирается на переключение цветовых токенов без явной анимации.

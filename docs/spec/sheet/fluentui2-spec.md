@@ -8,7 +8,7 @@
 `useOverlayDrawerSurfaceStyles.styles.ts` (backdrop). Drawer поддерживает позиции
 `start` / `end` / `bottom` и режимы overlay (модальный, с backdrop) / inline (в потоке).
 
-**Флаг:** в исходнике `react-drawer` поверхность НЕ задаёт токен тени (в отличие от
+**Флаг:** в исходнике `react-drawer` поверхность НЕ задает токен тени (в отличие от
 `DialogSurface`/`shadow64`) - глубина читается через backdrop + рамку. Для sheet-подобной
 тени (bottom-sheet) сверьтесь с Figma.
 
@@ -54,7 +54,7 @@
 
 # Sheet - Size - Side (position start / end)
 
-Размеры не зависят от темы; ширина задаётся через CSS-var `--fui-Drawer--size`.
+Размеры не зависят от темы; ширина задается через CSS-var `--fui-Drawer--size`.
 
 | Display Name | Token Name | Value |
 |--------------|------------|-------|

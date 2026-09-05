@@ -1,6 +1,6 @@
 # Flare.Theme.FluentUI2
 
-Тема Fluent UI 2, светлая и тёмная, для библиотеки компонентов
+Тема Fluent UI 2, светлая и темная, для библиотеки компонентов
 [Flare](https://github.com/jrfrigat/Flare) на Blazor.
 
 ```sh
@@ -36,7 +36,7 @@ Fluent называет часть элементов иначе, чем Materia
 | Input / Textarea | `FlareField`, `FlareTextArea` | |
 | Combobox / Dropdown | `FlareCombobox`, `FlareSelect` | Combobox у Fluent редактируемый, Dropdown - нет |
 | SpinButton | `FlareNumericField` | |
-| Field (подпись, подсказка и валидация вокруг контрола) | `FlareField` | обвязка встроена, а не является отдельной обёрткой |
+| Field (подпись, подсказка и валидация вокруг контрола) | `FlareField` | обвязка встроена, а не является отдельной оберткой |
 | Menu / MenuItem | `FlareMenu`, `FlareMenuItem` | |
 | Toolbar | `FlareToolbar` | |
 | Dialog / Drawer | `FlareDialog`, `FlareLayoutDrawer` | |
@@ -56,7 +56,7 @@ Fluent называет часть элементов иначе, чем Materia
 
 ## Что тема меняет помимо цвета
 
-- **Дискретные заливки состояний, а не полупрозрачная плёнка.** Там, где Material рисует наложение
+- **Дискретные заливки состояний, а не полупрозрачная пленка.** Там, где Material рисует наложение
   `currentColor` на прозрачности состояния, Fluent назначает плоскую заливку на каждое состояние через
   те же токены `--flare-state-*-layer`.
 - **Disabled перекрашивается, а не гаснет.** У каждого компонента здесь `DisabledOpacity` равна `1`, а

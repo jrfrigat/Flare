@@ -33,7 +33,7 @@
    для точечных правок, но предпочитайте токены.
 5. **Оборачивайте приложение в `<FlareThemeProvider>`** и регистрируйте хотя бы одну тему в DI, иначе
    ничего не отрисуется правильно.
-6. **Сервисам оверлеев нужен их провайдер**, размещённый один раз в layout: `<FlareDialogProvider />`,
+6. **Сервисам оверлеев нужен их провайдер**, размещенный один раз в layout: `<FlareDialogProvider />`,
    `<FlareSnackbarProvider />`, `<FlareMessageBoxProvider />`.
 7. **Формы используют `EditForm`/`EditContext` из Blazor** - поля Flare работают с
    `DataAnnotationsValidator` из коробки.
@@ -51,7 +51,7 @@ dotnet add package Flare.Theme.MaterialDesign3Expressive
 # другие: Flare.Theme.FluentUI2, Flare.Theme.Aero, Flare.Theme.LiquidGlass, Flare.Theme.VisualStudio
 ```
 
-Тяжёлые опциональные компоненты - в своих пакетах, подключайте только нужное:
+Тяжелые опциональные компоненты - в своих пакетах, подключайте только нужное:
 
 | Пакет | Компонент |
 | :-- | :-- |
@@ -112,7 +112,7 @@ CSS темы (шрифты, базовые токены) подключаетс�
     </Router>
 </FlareThemeProvider>
 ```
-Авто-тёмная тема следует за ОС по умолчанию; отключается через `RespectSystemColorScheme="false"`.
+Авто-темная тема следует за ОС по умолчанию; отключается через `RespectSystemColorScheme="false"`.
 
 ---
 
@@ -133,7 +133,7 @@ CSS темы (шрифты, базовые токены) подключаетс�
 
 **Иконки** - это полиморфный тип-значение `FlareIcon`. Используйте типизированный член - встроенный
 `Icon="@FlareIcons.Search"` или каталог провайдера `Icon="@MaterialDesign3Icons.Regular.Delete"` - и рисуйте
-отдельно через `<FlareIconView Value="@FlareIcons.Home" />`. Всё - inline-SVG, без иконочного шрифта. См.
+отдельно через `<FlareIconView Value="@FlareIcons.Home" />`. Все - inline-SVG, без иконочного шрифта. См.
 `docs/ru/icons.md`.
 
 **Двусторонняя привязка:**
@@ -264,7 +264,7 @@ inline/batch-редактирование, выделение, переупор�
   Исключение - только значения в локализуемых ресурсах (`.resx`).
 - **XML-документация обязательна** на каждом public-типе, `[Parameter]`, методе и enum (она питает
   этот сгенерированный API-сайт).
-- **CSS живёт в глобальном бандле** (`wwwroot/css/*.css`), не scoped; стилизация через семантические
+- **CSS живет в глобальном бандле** (`wwwroot/css/*.css`), не scoped; стилизация через семантические
   токены (`Css.Tokens.*`, `CssVarMap`, theme-records). `FlareButton` - эталонный компонент.
 - **Никогда не хардкодьте видимые пользователю строки** в Gallery - добавляйте EN+RU ресурсы.
 

@@ -142,7 +142,7 @@ public sealed class FillHeightFamilyTests : FlareTestContext
             .Add(x => x.Style, style)
             .AddChildContent("content"));
 
-        var cls = cut.Find(".flare-card").ClassName;
+        var cls = cut.Find(".flare-card").ClassName ?? "";
         Assert.Equal(fills, cls.Contains("flare-fill", StringComparison.Ordinal));
     }
 

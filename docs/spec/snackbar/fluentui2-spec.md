@@ -7,7 +7,7 @@
 `useToastBodyStyles.styles.ts` (body + subtitle). Toast - нейтральная поверхность
 `colorNeutralBackground1` + тень `shadow8`; интент (success/warning/error/info) выражается
 ЦВЕТОМ ИКОНКИ в title-media, а не фоном. Для инлайн-уведомления в потоке (не всплывающего) в
-Fluent используется `MessageBar` - см. секцию в конце (там интент задаёт фон + рамку).
+Fluent используется `MessageBar` - см. секцию в конце (там интент задает фон + рамку).
 
 # Snackbar - Color - Surface (контекст: Default, Light)
 
@@ -109,7 +109,7 @@ Fluent используется `MessageBar` - см. секцию в конце 
 # Snackbar - Inline variant (MessageBar)
 
 Инлайн-уведомление в потоке страницы - `MessageBar` (`@fluentui/react-message-bar`,
-`useMessageBarStyles.styles.ts`). В отличие от Toast, интент задаёт ФОН + ЦВЕТ РАМКИ + иконку.
+`useMessageBarStyles.styles.ts`). В отличие от Toast, интент задает ФОН + ЦВЕТ РАМКИ + иконку.
 База: фон `colorNeutralBackground3`, рамка `strokeWidthThin`/`colorNeutralStroke1`,
 радиус `borderRadiusMedium`, `min-height: 36px`, иконка `fontSizeBase500` (20px)
 цвета `colorNeutralForeground3` (для info).

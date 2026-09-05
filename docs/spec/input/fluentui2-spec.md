@@ -3,7 +3,7 @@
 Значения разрешены из `@fluentui/tokens` (webLightTheme / webDarkTheme, v1.0.0-alpha.23);
 привязки слот/состояние -> alias-токен взяты из исходника `@fluentui/react-input`
 (`useInputStyles.styles.ts`). В колонке `Token Name` - реальный Fluent alias-токен, в колонке
-`Value` - его разрешённое значение для темы. Состояние `Focused` в CSS соответствует
+`Value` - его разрешенное значение для темы. Состояние `Focused` в CSS соответствует
 `:active, :focus-within` (изменение рамки), плюс нижняя brand-подсветка (`::after`) появляется
 на `:focus-within`. Слоты input-текста и content-иконок общие для всех appearance.
 
