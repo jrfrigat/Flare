@@ -107,6 +107,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.31.0] - 2026-09-05
 
+- **A drag scrolls the container it is running out of.** Hold the pointer near the edge of a scrolling
+  board, list or page and it scrolls, so a card can reach a column that was off-screen when the drag
+  began. Without it that was impossible rather than awkward: `elementFromPoint` outside the viewport
+  returns null, so an unseen column is not a target at all - and on a phone, where a four-column board
+  shows one and a half of them, that is most of the board. Measured at 375px: a card reached "Done"
+  from "Backlog" across 701px of scroll it never had access to before.
+
+  It runs on a frame loop, not on `pointermove`, because a pointer held still at the edge stops firing
+  moves - which is exactly the moment the scrolling has to continue. Each scroll re-runs the hit test:
+  the pointer has not moved, but what is under it has.
+
 ### Changed
 
 - **`FlareDataGrid`'s size, paging and sticky header are three independent parameters, and `Scroll` is
