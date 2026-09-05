@@ -96,6 +96,15 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
+  threshold rather than the press, and by then pointer capture has been taken - so every pointer event
+  is retargeted to the capturing container and `e.target` is the container, never what was pressed. The
+  drag-and-drop layer reads `e.target` to learn which item was picked up, found nothing, and returned.
+  It only ever worked where capture silently failed. `onStart` now receives the press, whose
+  coordinates are also what a grab offset is measured from.
+
+### Fixed
+
 - **Every "fit the screen" cap in the library uses `dvh` rather than `vh`.** The dialog fix in 0.31.0
   moved its own caps; the same unit was still sizing the DataGrid's filter menu, its filter-builder
   tree and the shortcuts panel. On a phone `100vh` counts the space behind the browser chrome, so a

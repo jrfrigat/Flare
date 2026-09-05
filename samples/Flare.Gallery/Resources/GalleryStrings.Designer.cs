@@ -5088,6 +5088,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag a card within a column to reorder it, or across to another column to move it - with a mouse, a pen or a finger, because the model is built on pointer events. &quot;Archive&quot; refuses every card through Accepts, so it never lights up as a target and never takes a drop.
+        /// </summary>
+        public static string DragDrop_BoardDesc {
+            get {
+                return ResourceManager.GetString("DragDrop_BoardDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Board.
         /// </summary>
         public static string DragDrop_Board {
