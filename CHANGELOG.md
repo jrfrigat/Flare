@@ -87,6 +87,25 @@ All notable changes to Flare are documented here. This project adheres to
   changed. `Data` now documents that replacing it refits the axis, which is the trap underneath all of
   this.
 
+- **`FlareChart.AnimateUpdates`: the chart moves to the new data instead of being replaced by it.**
+  A new `Data` swaps the whole drawing, so every point is somewhere else the instant it arrives and
+  the one value that actually changed is invisible among nineteen that did not. This walks the geometry
+  to its new place, so a change reads as a movement. It is not `Animate`: that one replays the ENTER
+  animation, redrawing the series from nothing, which on a chart fed by a three-second timer is worse
+  than no animation at all.
+
+  It covers everything the chart draws - bars, slices, radar spokes, and the value labels that travel
+  with them - because all of a chart's geometry is numbers inside attributes. A drawing whose SHAPE
+  changed still jumps: a series that gained or lost a point is a different path, and walking one into
+  the other would slide every point into its neighbour's place and read as data that did not change.
+
+  **The interop cost of an animated update is zero.** The browser is told once, when the chart appears,
+  to watch the plot; after that it reads geometry it wrote itself and nothing crosses to .NET per
+  update. Not `transition: d` in CSS either - that property is not carried by every engine, and a
+  library cannot ship motion that works in two of the three. Duration and easing come from the theme's
+  motion scale, a reader who asked for reduced motion gets the jump, and a chart that did not ask for
+  this loads no script at all.
+
 - **A `FlareDraggable` can be reordered from the keyboard.** Tab to it, space picks it up, the arrows
   walk it through every position it could take, space drops it there, escape lets it go. None of the
   four surfaces that reordered had this, and a control only a pointer can operate is one half the

@@ -10899,5 +10899,14 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Charts_Live", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на An update you can follow, not a new picture.
+        /// </summary>
+        public static string Charts_AnimateUpdates {
+            get {
+                return ResourceManager.GetString("Charts_AnimateUpdates", resourceCulture);
+            }
+        }
     }
 }
