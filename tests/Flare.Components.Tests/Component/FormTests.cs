@@ -14,7 +14,7 @@ public class C_FlareSwitchTests : FlareTestContext
     {
         var cut = Render<FlareSwitch>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-switch"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Switch.Root}"));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class C_FlareSwitchTests : FlareTestContext
         var cut = Render<FlareSwitch>(p => p
             .Add(x => x.Label, "Enable feature"));
 
-        Assert.Contains("Enable feature", cut.Find(".flare-switch__label").TextContent);
+        Assert.Contains("Enable feature", cut.Find($".{Css.Classes.Switch.Label}").TextContent);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class C_FlareSwitchTests : FlareTestContext
         var cut = Render<FlareSwitch>(p => p
             .Add(x => x.ErrorText, "Must be enabled"));
 
-        Assert.Contains("Must be enabled", cut.Find(".flare-switch__error").TextContent);
+        Assert.Contains("Must be enabled", cut.Find($".{Css.Classes.Switch.Error}").TextContent);
     }
 }
 
@@ -83,7 +83,7 @@ public class C_FlareRadioTests : FlareTestContext
     {
         var cut = Render<FlareRadio<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-radio"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Radio.Root}"));
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class C_FlareRadioTests : FlareTestContext
         var cut = Render<FlareRadio<string>>(p => p
             .Add(x => x.Label, "Option A"));
 
-        Assert.Contains("Option A", cut.Find(".flare-radio__label").TextContent);
+        Assert.Contains("Option A", cut.Find($".{Css.Classes.Radio.Label}").TextContent);
     }
 
     [Fact]
@@ -128,7 +128,7 @@ public class C_FlareRadioTests : FlareTestContext
         var cut = Render<FlareRadio<string>>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Contains("flare-radio--disabled", cut.Find("label").ClassName);
+        Assert.Contains(Css.Classes.Radio.Disabled, cut.Find("label").ClassName);
     }
 }
 
@@ -142,14 +142,14 @@ public class C_FlareFormFieldTests : FlareTestContext
     public void RendersRootElement()
     {
         var cut = Render<FlareFormField>();
-        Assert.NotEmpty(cut.FindAll(".flare-input"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root}"));
     }
 
     [Fact]
     public void LabelRenderedWhenSet()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Email"));
-        Assert.NotEmpty(cut.FindAll("label.flare-input__label"));
+        Assert.NotEmpty(cut.FindAll($"label.{Css.Classes.Input.Label}"));
         Assert.Contains("Email", cut.Markup);
     }
 
@@ -164,7 +164,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     public void HelperTextRendered()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.HelperText, "Enter your email"));
-        Assert.NotEmpty(cut.FindAll(".flare-input__helper"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Helper}"));
         Assert.Contains("Enter your email", cut.Markup);
     }
 
@@ -176,14 +176,14 @@ public class C_FlareFormFieldTests : FlareTestContext
             p.Add(x => x.Label, "Name");
             p.Add(x => x.Required, true);
         });
-        Assert.Contains("flare-input--required", cut.Find(".flare-input").ClassName);
+        Assert.Contains(Css.Classes.Input.Required, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 
     [Fact]
     public void NotRequiredByDefault()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Name"));
-        Assert.DoesNotContain("flare-input--required", cut.Find(".flare-input").ClassName);
+        Assert.DoesNotContain(Css.Classes.Input.Required, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 
     [Fact]
@@ -207,14 +207,14 @@ public class C_FlareFormFieldTests : FlareTestContext
                 b.AddAttribute(1, "id", "test-input");
                 b.CloseElement();
             })));
-        Assert.NotEmpty(cut.FindAll(".flare-input__control-slot input"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.ControlSlot} input"));
     }
 
     [Fact]
     public void ControlDivAlwaysPresent()
     {
         var cut = Render<FlareFormField>();
-        Assert.NotEmpty(cut.FindAll(".flare-input__control-slot"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.ControlSlot}"));
     }
 }
 
@@ -230,16 +230,16 @@ public class C_FlareFormLayoutTests : FlareTestContext
     public void RendersRootFlareForm()
     {
         var cut = Render<FlareForm>(p => p.Add(x => x.Model, _model));
-        Assert.NotEmpty(cut.FindAll(".flare-form"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Form.Root}"));
     }
 
     [Fact]
     public void DefaultLayoutHasNoVariantClass()
     {
         var cut = Render<FlareForm>(p => p.Add(x => x.Model, _model));
-        var cls = cut.Find(".flare-form").ClassName;
-        Assert.DoesNotContain("flare-form--horizontal", cls);
-        Assert.DoesNotContain("flare-form--inline", cls);
+        var cls = cut.Find($".{Css.Classes.Form.Root}").ClassName;
+        Assert.DoesNotContain(Css.Classes.Form.Horizontal, cls);
+        Assert.DoesNotContain(Css.Classes.Form.Inline, cls);
     }
 
     [Fact]
@@ -250,7 +250,7 @@ public class C_FlareFormLayoutTests : FlareTestContext
             p.Add(x => x.Model, _model);
             p.Add(x => x.Layout, FormLayout.Horizontal);
         });
-        Assert.Contains("flare-form--horizontal", cut.Find(".flare-form").ClassName);
+        Assert.Contains(Css.Classes.Form.Horizontal, cut.Find($".{Css.Classes.Form.Root}").ClassName);
     }
 
     [Fact]
@@ -261,7 +261,7 @@ public class C_FlareFormLayoutTests : FlareTestContext
             p.Add(x => x.Model, _model);
             p.Add(x => x.Layout, FormLayout.Inline);
         });
-        Assert.Contains("flare-form--inline", cut.Find(".flare-form").ClassName);
+        Assert.Contains(Css.Classes.Form.Inline, cut.Find($".{Css.Classes.Form.Root}").ClassName);
     }
 
     [Fact]
@@ -272,14 +272,14 @@ public class C_FlareFormLayoutTests : FlareTestContext
             p.Add(x => x.Model, _model);
             p.Add(x => x.Dense, true);
         });
-        Assert.Contains("flare-form--dense", cut.Find(".flare-form").ClassName);
+        Assert.Contains(Css.Classes.Form.Dense, cut.Find($".{Css.Classes.Form.Root}").ClassName);
     }
 
     [Fact]
     public void NotDenseByDefault()
     {
         var cut = Render<FlareForm>(p => p.Add(x => x.Model, _model));
-        Assert.DoesNotContain("flare-form--dense", cut.Find(".flare-form").ClassName);
+        Assert.DoesNotContain(Css.Classes.Form.Dense, cut.Find($".{Css.Classes.Form.Root}").ClassName);
     }
 
     [Fact]
@@ -291,9 +291,9 @@ public class C_FlareFormLayoutTests : FlareTestContext
             p.Add(x => x.Layout, FormLayout.Horizontal);
             p.Add(x => x.Dense, true);
         });
-        var cls = cut.Find(".flare-form").ClassName;
-        Assert.Contains("flare-form--horizontal", cls);
-        Assert.Contains("flare-form--dense", cls);
+        var cls = cut.Find($".{Css.Classes.Form.Root}").ClassName;
+        Assert.Contains(Css.Classes.Form.Horizontal, cls);
+        Assert.Contains(Css.Classes.Form.Dense, cls);
     }
 
     [Fact]

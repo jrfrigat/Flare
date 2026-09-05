@@ -40,12 +40,12 @@ public class C_FlareFieldValidationTests : FlareTestContext
         }));
 
         // No validation error yet.
-        Assert.Empty(cut.FindAll(".flare-input__helper--error"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Input.HelperError}"));
 
         store.Add(ctx.Field(nameof(Model.Name)), "Name is required");
         ctx.NotifyValidationStateChanged();
 
-        Assert.Contains("Name is required", cut.Find(".flare-input__helper--error").TextContent);
+        Assert.Contains("Name is required", cut.Find($".{Css.Classes.Input.HelperError}").TextContent);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class C_FlareFieldValidationTests : FlareTestContext
         store.Add(ctx.Field(nameof(Model.Name)), "Pick a value");
         ctx.NotifyValidationStateChanged();
 
-        Assert.Contains("Pick a value", cut.Find(".flare-input__helper--error").TextContent);
+        Assert.Contains("Pick a value", cut.Find($".{Css.Classes.Input.HelperError}").TextContent);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class C_FlareFieldValidationTests : FlareTestContext
             b.CloseComponent();
         }));
 
-        var helper = cut.Find(".flare-input__helper--error").TextContent;
+        var helper = cut.Find($".{Css.Classes.Input.HelperError}").TextContent;
         Assert.Contains("Explicit override", helper);
         Assert.DoesNotContain("From validation", helper);
     }

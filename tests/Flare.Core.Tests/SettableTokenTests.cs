@@ -25,12 +25,12 @@ public sealed class SettableTokenTests
         // A media query cannot read a custom property, so the real breakpoints are the literal px in the
         // @media rules of responsive.css/grid.css. These vars only republish those numbers so consumer CSS
         // and the C# FlareBreakpoints scale agree; a theme could not drive layout through them if it tried.
-        ["--flare-breakpoint-xs"] = "read-only mirror of an @media boundary",
-        ["--flare-breakpoint-sm"] = "read-only mirror of an @media boundary",
-        ["--flare-breakpoint-md"] = "read-only mirror of an @media boundary",
-        ["--flare-breakpoint-lg"] = "read-only mirror of an @media boundary",
-        ["--flare-breakpoint-xl"] = "read-only mirror of an @media boundary",
-        ["--flare-breakpoint-xxl"] = "read-only mirror of an @media boundary",
+        [Css.Tokens.Breakpoint.Xs] = "read-only mirror of an @media boundary",
+        [Css.Tokens.Breakpoint.Sm] = "read-only mirror of an @media boundary",
+        [Css.Tokens.Breakpoint.Md] = "read-only mirror of an @media boundary",
+        [Css.Tokens.Breakpoint.Lg] = "read-only mirror of an @media boundary",
+        [Css.Tokens.Breakpoint.Xl] = "read-only mirror of an @media boundary",
+        [Css.Tokens.Breakpoint.Xxl] = "read-only mirror of an @media boundary",
     };
 
     /// <summary>

@@ -13,7 +13,7 @@ public class FlareTagFieldTests : FlareTestContext
         var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
-        var input = cut.Find("input.flare-tag-input__input");
+        var input = cut.Find($"input.{Css.Classes.TagInput.Input}");
         input.Input("Blazor");
         input.KeyDown(new KeyboardEventArgs { Key = "Enter" });
 
@@ -27,7 +27,7 @@ public class FlareTagFieldTests : FlareTestContext
         var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
-        var input = cut.Find("input.flare-tag-input__input");
+        var input = cut.Find($"input.{Css.Classes.TagInput.Input}");
         input.Input("csharp");
         input.KeyDown(new KeyboardEventArgs { Key = "," });
 
@@ -42,7 +42,7 @@ public class FlareTagFieldTests : FlareTestContext
             .Add(x => x.Values, tags)
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
-        cut.Find("input.flare-tag-input__input").KeyDown(new KeyboardEventArgs { Key = "Backspace" });
+        cut.Find($"input.{Css.Classes.TagInput.Input}").KeyDown(new KeyboardEventArgs { Key = "Backspace" });
 
         Assert.Equal(new[] { "one" }, tags);
     }
@@ -57,7 +57,7 @@ public class FlareTagFieldTests : FlareTestContext
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
         // At the cap, the input is not even rendered.
-        Assert.Empty(cut.FindAll("input.flare-tag-input__input"));
+        Assert.Empty(cut.FindAll($"input.{Css.Classes.TagInput.Input}"));
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class FlareTagFieldTests : FlareTestContext
             .Add(x => x.Values, tags)
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
-        var input = cut.Find("input.flare-tag-input__input");
+        var input = cut.Find($"input.{Css.Classes.TagInput.Input}");
         input.Input("dup");
         input.KeyDown(new KeyboardEventArgs { Key = "Enter" });
 
@@ -80,13 +80,13 @@ public class FlareTagFieldTests : FlareTestContext
     {
         // Regression: uncontrolled (no @bind-Values) tags must survive a parent re-render.
         var cut = Render<FlareTagField<string>>();
-        var input = cut.Find("input.flare-tag-input__input");
+        var input = cut.Find($"input.{Css.Classes.TagInput.Input}");
         input.Input("alpha");
         input.KeyDown(new KeyboardEventArgs { Key = "Enter" });
-        Assert.Single(cut.FindAll(".flare-multiselect__chip"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Multiselect.Chip}"));
 
         cut.Render(p => p.Add(x => x.Placeholder, "add"));   // simulate a parent re-render
-        Assert.Single(cut.FindAll(".flare-multiselect__chip"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Multiselect.Chip}"));
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class FlareTagFieldTests : FlareTestContext
             .Add(x => x.Values, tags)
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
-        var removeButtons = cut.FindAll(".flare-multiselect__chip-remove");
+        var removeButtons = cut.FindAll($".{Css.Classes.Multiselect.ChipRemove}");
         Assert.Equal(2, removeButtons.Count);
         removeButtons[1].Click();   // remove "drop"
 

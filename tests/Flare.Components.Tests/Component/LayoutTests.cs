@@ -11,7 +11,7 @@ public class C_FlareContainerTests : FlareTestContext
     {
         var cut = Render<FlareContainer>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-container"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Container.Root}"));
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public class C_FlareContainerTests : FlareTestContext
     {
         var cut = Render<FlareContainer>();
 
-        Assert.Contains("flare-container--lg", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Container.Lg, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class C_FlareContainerTests : FlareTestContext
         var cut = Render<FlareContainer>(p => p
             .Add(x => x.MaxWidth, ContainerMaxWidth.Xs));
 
-        Assert.Contains("flare-container--xs", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Container.Xs, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class C_FlareContainerTests : FlareTestContext
         var cut = Render<FlareContainer>(p => p
             .Add(x => x.MaxWidth, ContainerMaxWidth.Xl));
 
-        Assert.Contains("flare-container--xl", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Container.Xl, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class C_FlareContainerTests : FlareTestContext
         var cut = Render<FlareContainer>(p => p
             .Add(x => x.Fluid, true));
 
-        Assert.Contains("flare-container--fluid", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Container.Fluid, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class C_FlareSpacerTests : FlareTestContext
     {
         var cut = Render<FlareSpacer>();
 
-        Assert.Contains("flare-spacer", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Spacer.Root, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class C_FlareResizableTests : FlareTestContext
     {
         var cut = Render<FlareResizable>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-resizable"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Resizable.Root}"));
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class C_FlareResizableTests : FlareTestContext
     {
         var cut = Render<FlareResizable>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-resizable__handle"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Resizable.Handle}"));
     }
 
     [Fact]
@@ -138,7 +138,7 @@ public class C_FlareResizableTests : FlareTestContext
     {
         var cut = Render<FlareResizable>();
 
-        Assert.Contains("flare-resizable--right", cut.Find(".flare-resizable").ClassName ?? "");
+        Assert.Contains(Css.Classes.Resizable.Right, cut.Find($".{Css.Classes.Resizable.Root}").ClassName ?? "");
     }
 
     [Fact]
@@ -147,7 +147,7 @@ public class C_FlareResizableTests : FlareTestContext
         var cut = Render<FlareResizable>(p => p
             .Add(x => x.Edge, ResizableEdge.Bottom));
 
-        Assert.Contains("flare-resizable--bottom", cut.Find(".flare-resizable").ClassName ?? "");
+        Assert.Contains(Css.Classes.Resizable.Bottom, cut.Find($".{Css.Classes.Resizable.Root}").ClassName ?? "");
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public class C_FlareResizableTests : FlareTestContext
         var cut = Render<FlareResizable>(p => p
             .Add(x => x.InitialSize, "300px"));
 
-        var style = cut.Find(".flare-resizable").GetAttribute("style") ?? "";
+        var style = cut.Find($".{Css.Classes.Resizable.Root}").GetAttribute("style") ?? "";
         Assert.Contains("300px", style);
     }
 }

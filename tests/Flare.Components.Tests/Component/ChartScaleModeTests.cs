@@ -24,13 +24,13 @@ public sealed class ChartScaleModeTests : FlareTestContext
 
     // The legend is the only way in, so the test goes through it rather than through internal state.
     private static void HideSecondSeries(IRenderedComponent<FlareChart> cut) =>
-        cut.FindAll(".flare-chart__legend-item")[1].Click();
+        cut.FindAll($".{Css.Classes.Chart.LegendItem}")[1].Click();
 
     private static string GridLines(IRenderedComponent<FlareChart> cut) =>
         string.Join("|", cut.FindAll("text").Select(t => t.TextContent.Trim()));
 
     private static string FirstLinePath(IRenderedComponent<FlareChart> cut) =>
-        cut.FindAll("path.flare-chart__line")[0].GetAttribute("d") ?? "";
+        cut.FindAll($"path.{Css.Classes.Chart.Line}")[0].GetAttribute("d") ?? "";
 
     [Fact]
     public void FitVisible_IsTheDefault()
@@ -60,39 +60,39 @@ public sealed class ChartScaleModeTests : FlareTestContext
     public void FitAll_StillRemovesTheHiddenSeries()
     {
         var cut = RenderChart(ChartType.Line, ChartScaleMode.FitAll);
-        Assert.Equal(2, cut.FindAll("path.flare-chart__line").Count);
+        Assert.Equal(2, cut.FindAll($"path.{Css.Classes.Chart.Line}").Count);
 
         HideSecondSeries(cut);
 
-        Assert.Single(cut.FindAll("path.flare-chart__line"));
-        Assert.Contains("flare-chart__legend-item--off",
-            cut.FindAll(".flare-chart__legend-item")[1].ClassName, StringComparison.Ordinal);
+        Assert.Single(cut.FindAll($"path.{Css.Classes.Chart.Line}"));
+        Assert.Contains(Css.Classes.Chart.LegendItemOff,
+            cut.FindAll($".{Css.Classes.Chart.LegendItem}")[1].ClassName, StringComparison.Ordinal);
     }
 
     [Fact]
     public void FitVisible_RepacksTheBarGroup()
     {
         var cut = RenderChart(ChartType.Bar, ChartScaleMode.FitVisible);
-        var before = cut.FindAll("rect.flare-chart__bar")[0].GetAttribute("width");
+        var before = cut.FindAll($"rect.{Css.Classes.Chart.Bar}")[0].GetAttribute("width");
 
         HideSecondSeries(cut);
 
         // One series left in a group sized for one: the bars are wider than they were beside a neighbour.
-        Assert.NotEqual(before, cut.FindAll("rect.flare-chart__bar")[0].GetAttribute("width"));
+        Assert.NotEqual(before, cut.FindAll($"rect.{Css.Classes.Chart.Bar}")[0].GetAttribute("width"));
     }
 
     [Fact]
     public void FitAll_KeepsEveryBarWhereItWas()
     {
         var cut = RenderChart(ChartType.Bar, ChartScaleMode.FitAll);
-        var before = cut.FindAll("rect.flare-chart__bar")
+        var before = cut.FindAll($"rect.{Css.Classes.Chart.Bar}")
             .Take(4)
             .Select(r => (r.GetAttribute("x"), r.GetAttribute("y"), r.GetAttribute("width")))
             .ToList();
 
         HideSecondSeries(cut);
 
-        var after = cut.FindAll("rect.flare-chart__bar")
+        var after = cut.FindAll($"rect.{Css.Classes.Chart.Bar}")
             .Select(r => (r.GetAttribute("x"), r.GetAttribute("y"), r.GetAttribute("width")))
             .ToList();
         Assert.Equal(4, after.Count);
@@ -117,14 +117,14 @@ public sealed class ChartScaleModeTests : FlareTestContext
             .Add(x => x.ScaleMode, mode));
 
         var held = Combo(ChartScaleMode.FitAll);
-        var heldBefore = held.FindAll("rect.flare-chart__bar").Take(4).Select(r => r.GetAttribute("x")).ToList();
+        var heldBefore = held.FindAll($"rect.{Css.Classes.Chart.Bar}").Take(4).Select(r => r.GetAttribute("x")).ToList();
         HideSecondSeries(held);
-        Assert.Equal(heldBefore, held.FindAll("rect.flare-chart__bar").Select(r => r.GetAttribute("x")).ToList());
+        Assert.Equal(heldBefore, held.FindAll($"rect.{Css.Classes.Chart.Bar}").Select(r => r.GetAttribute("x")).ToList());
 
         var refit = Combo(ChartScaleMode.FitVisible);
-        var refitBefore = refit.FindAll("rect.flare-chart__bar")[0].GetAttribute("x");
+        var refitBefore = refit.FindAll($"rect.{Css.Classes.Chart.Bar}")[0].GetAttribute("x");
         HideSecondSeries(refit);
-        Assert.NotEqual(refitBefore, refit.FindAll("rect.flare-chart__bar")[0].GetAttribute("x"));
+        Assert.NotEqual(refitBefore, refit.FindAll($"rect.{Css.Classes.Chart.Bar}")[0].GetAttribute("x"));
     }
 
     // A stacked band that is switched off frees room in every stack. Under FitAll the axis keeps that
@@ -137,12 +137,12 @@ public sealed class ChartScaleModeTests : FlareTestContext
             .Add(x => x.Data, Data)
             .Add(x => x.ScaleMode, ChartScaleMode.FitAll));
         var axisBefore = GridLines(cut);
-        var firstBefore = cut.FindAll("rect.flare-chart__bar")[0].GetAttribute("height");
+        var firstBefore = cut.FindAll($"rect.{Css.Classes.Chart.Bar}")[0].GetAttribute("height");
 
         HideSecondSeries(cut);
 
         Assert.Equal(axisBefore, GridLines(cut));
-        Assert.Equal(firstBefore, cut.FindAll("rect.flare-chart__bar")[0].GetAttribute("height"));
+        Assert.Equal(firstBefore, cut.FindAll($"rect.{Css.Classes.Chart.Bar}")[0].GetAttribute("height"));
     }
 
     [Fact]

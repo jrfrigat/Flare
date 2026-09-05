@@ -33,7 +33,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.Single(cut.FindAll(".flare-tabs"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Tabs.Root}"));
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class FlareTabsTests : FlareTestContext
     {
         var cut = Render(TwoTabLayout());
 
-        var tabButtons = cut.FindAll(".flare-tabs__tab");
+        var tabButtons = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         Assert.Equal(2, tabButtons.Count);
     }
 
@@ -50,7 +50,7 @@ public class FlareTabsTests : FlareTestContext
     {
         var cut = Render(TwoTabLayout());
 
-        var tabs = cut.FindAll(".flare-tabs__tab");
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         Assert.Contains("Tab One", tabs[0].TextContent);
         Assert.Contains("Tab Two", tabs[1].TextContent);
     }
@@ -60,9 +60,9 @@ public class FlareTabsTests : FlareTestContext
     {
         var cut = Render(TwoTabLayout());
 
-        var tabs = cut.FindAll(".flare-tabs__tab");
-        Assert.Contains("flare-tabs__tab--active", tabs[0].ClassName);
-        Assert.DoesNotContain("flare-tabs__tab--active", tabs[1].ClassName);
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
+        Assert.Contains(Css.Classes.Tabs.TabActive, tabs[0].ClassName);
+        Assert.DoesNotContain(Css.Classes.Tabs.TabActive, tabs[1].ClassName);
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class FlareTabsTests : FlareTestContext
         var cut = Render(TwoTabLayout());
 
         // First tab panel should be rendered
-        Assert.NotEmpty(cut.FindAll(".flare-tabs__panel"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tabs.Panel}"));
         Assert.Contains("Content One", cut.Markup);
     }
 
@@ -81,9 +81,9 @@ public class FlareTabsTests : FlareTestContext
         var cut = Render(TwoTabLayout());
 
         // Panels are always rendered (no state loss), inactive panel has hidden class
-        var panels = cut.FindAll(".flare-tabs__panel");
+        var panels = cut.FindAll($".{Css.Classes.Tabs.Panel}");
         Assert.Equal(2, panels.Count);
-        Assert.Contains("flare-tab-panel--hidden", panels[1].ClassName);
+        Assert.Contains(Css.Classes.Tabs.PanelHidden, panels[1].ClassName);
     }
 
     [Fact]
@@ -91,12 +91,12 @@ public class FlareTabsTests : FlareTestContext
     {
         var cut = Render(TwoTabLayout());
 
-        var tabs = cut.FindAll(".flare-tabs__tab");
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         tabs[1].Click();
 
-        var updatedTabs = cut.FindAll(".flare-tabs__tab");
-        Assert.DoesNotContain("flare-tabs__tab--active", updatedTabs[0].ClassName);
-        Assert.Contains("flare-tabs__tab--active", updatedTabs[1].ClassName);
+        var updatedTabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
+        Assert.DoesNotContain(Css.Classes.Tabs.TabActive, updatedTabs[0].ClassName);
+        Assert.Contains(Css.Classes.Tabs.TabActive, updatedTabs[1].ClassName);
     }
 
     [Fact]
@@ -113,15 +113,15 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        cut.FindAll(".flare-tabs__tab")[1].Click();
-        Assert.Contains("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[1].ClassName);
+        cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].Click();
+        Assert.Contains(Css.Classes.Tabs.TabActive, cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].ClassName);
 
         // A parent re-render (params re-supplied with ActiveIndex unchanged) must NOT snap the
         // selection back to ActiveIndex (the default 0).
         cut.Render(p => p.Add(x => x.ActiveIndex, 0));
 
-        Assert.Contains("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[1].ClassName);
-        Assert.DoesNotContain("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[0].ClassName);
+        Assert.Contains(Css.Classes.Tabs.TabActive, cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].ClassName);
+        Assert.DoesNotContain(Css.Classes.Tabs.TabActive, cut.FindAll($".{Css.Classes.Tabs.TabButton}")[0].ClassName);
     }
 
     [Fact]
@@ -129,12 +129,12 @@ public class FlareTabsTests : FlareTestContext
     {
         var cut = Render(TwoTabLayout());
 
-        cut.FindAll(".flare-tabs__tab")[1].Click();
+        cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].Click();
 
         // After click: second panel is active (no hidden class), first is hidden
-        var panels = cut.FindAll(".flare-tabs__panel");
-        Assert.DoesNotContain("flare-tab-panel--hidden", panels[1].ClassName);
-        Assert.Contains("flare-tab-panel--hidden", panels[0].ClassName);
+        var panels = cut.FindAll($".{Css.Classes.Tabs.Panel}");
+        Assert.DoesNotContain(Css.Classes.Tabs.PanelHidden, panels[1].ClassName);
+        Assert.Contains(Css.Classes.Tabs.PanelHidden, panels[0].ClassName);
     }
 
     [Fact]
@@ -156,12 +156,12 @@ public class FlareTabsTests : FlareTestContext
             }));
 
         // Click the disabled tab
-        var tabs = cut.FindAll(".flare-tabs__tab");
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         tabs[1].Click();
 
         // First tab should still be active
-        Assert.Contains("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[0].ClassName);
-        Assert.DoesNotContain("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[1].ClassName);
+        Assert.Contains(Css.Classes.Tabs.TabActive, cut.FindAll($".{Css.Classes.Tabs.TabButton}")[0].ClassName);
+        Assert.DoesNotContain(Css.Classes.Tabs.TabActive, cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].ClassName);
     }
 
     [Fact]
@@ -180,7 +180,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var tabs = cut.FindAll(".flare-tabs__tab");
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         Assert.True(tabs[1].HasAttribute("disabled"));
     }
 
@@ -209,7 +209,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var tabBtn = cut.Find(".flare-tabs__tab");
+        var tabBtn = cut.Find($".{Css.Classes.Tabs.TabButton}");
         Assert.Equal("tab", tabBtn.GetAttribute("role"));
     }
 
@@ -219,7 +219,7 @@ public class FlareTabsTests : FlareTestContext
         var cut = Render(TwoTabLayout());
 
         // Blazor renders bool true as aria-selected="" (attribute present)
-        var tabs = cut.FindAll(".flare-tabs__tab");
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         Assert.True(tabs[0].HasAttribute("aria-selected"));
     }
 
@@ -229,7 +229,7 @@ public class FlareTabsTests : FlareTestContext
         var cut = Render(TwoTabLayout());
 
         // Blazor removes the attribute when the bool value is false
-        var tabs = cut.FindAll(".flare-tabs__tab");
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
         Assert.False(tabs[1].HasAttribute("aria-selected"));
     }
 
@@ -248,9 +248,9 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var tabs = cut.FindAll(".flare-tabs__tab");
-        Assert.DoesNotContain("flare-tabs__tab--active", tabs[0].ClassName);
-        Assert.Contains("flare-tabs__tab--active", tabs[1].ClassName);
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
+        Assert.DoesNotContain(Css.Classes.Tabs.TabActive, tabs[0].ClassName);
+        Assert.Contains(Css.Classes.Tabs.TabActive, tabs[1].ClassName);
     }
 
     [Fact]
@@ -269,7 +269,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        cut.FindAll(".flare-tabs__tab")[1].Click();
+        cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].Click();
         Assert.Equal(1, changed);
     }
 
@@ -288,11 +288,11 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        cut.FindAll(".flare-tabs__tab")[1].Click();
+        cut.FindAll($".{Css.Classes.Tabs.TabButton}")[1].Click();
 
-        var tabs = cut.FindAll(".flare-tabs__tab");
-        Assert.Contains("flare-tabs__tab--active", tabs[0].ClassName);
-        Assert.DoesNotContain("flare-tabs__tab--active", tabs[1].ClassName);
+        var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
+        Assert.Contains(Css.Classes.Tabs.TabActive, tabs[0].ClassName);
+        Assert.DoesNotContain(Css.Classes.Tabs.TabActive, tabs[1].ClassName);
     }
 
     [Fact]
@@ -307,7 +307,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.NotNull(cut.Find(".flare-tabs__badge--dot"));
+        Assert.NotNull(cut.Find($".{Css.Classes.Tabs.BadgeDot}"));
     }
 
     [Fact]
@@ -322,7 +322,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.Equal("Hello", cut.Find(".flare-tabs__tab").GetAttribute("title"));
+        Assert.Equal("Hello", cut.Find($".{Css.Classes.Tabs.TabButton}").GetAttribute("title"));
     }
 
     [Fact]
@@ -338,8 +338,8 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.NotNull(cut.Find(".flare-tabs__header-start #start-btn"));
-        Assert.NotNull(cut.Find(".flare-tabs__header-end #end-btn"));
+        Assert.NotNull(cut.Find($".{Css.Classes.Tabs.HeaderStart} #start-btn"));
+        Assert.NotNull(cut.Find($".{Css.Classes.Tabs.HeaderEnd} #end-btn"));
     }
 
     [Fact]
@@ -353,8 +353,8 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.Empty(cut.FindAll(".flare-tabs__header-start"));
-        Assert.Empty(cut.FindAll(".flare-tabs__header-end"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Tabs.HeaderStart}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Tabs.HeaderEnd}"));
     }
 
     [Fact]
@@ -369,7 +369,7 @@ public class FlareTabsTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var style = cut.Find(".flare-tabs").GetAttribute("style") ?? "";
-        Assert.Contains("--flare-tabs-label-size:var(--flare-typescale-title-small-size)", style);
+        var style = cut.Find($".{Css.Classes.Tabs.Root}").GetAttribute("style") ?? "";
+        Assert.Contains($"{Css.Tokens.Tabs.LabelSize}:var({Css.Tokens.Typography.TitleSmall.Size})", style);
     }
 }

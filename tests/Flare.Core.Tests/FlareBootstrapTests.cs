@@ -18,9 +18,9 @@ public class FlareBootstrapTests
         Assert.Contains("if(P.indexOf(p)<0)p='md3-violet'", js);
         Assert.Contains("var m=s.getItem('flare-mode')||'auto'", js);
         Assert.Contains("prefers-color-scheme: dark", js);
-        Assert.Contains("flare-mode-dark", js);
-        Assert.Contains("flare-theme-'+t", js);
-        Assert.Contains("flare-palette-'+p", js);
+        Assert.Contains(Css.Classes.Theme.ModeDark, js);
+        Assert.Contains($"{Css.Classes.Theme.ThemePrefix}'+t", js);
+        Assert.Contains($"{Css.Classes.Theme.PalettePrefix}'+p", js);
     }
 
     [Fact]

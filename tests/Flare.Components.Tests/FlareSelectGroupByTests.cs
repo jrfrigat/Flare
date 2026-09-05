@@ -13,7 +13,7 @@ public class FlareSelectGroupByTests : FlareTestContext
     {
         var cut = Render<FlareSelect<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-select"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Select.Root}"));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class FlareSelectGroupByTests : FlareTestContext
             .Add(x => x.Items, items)
             .Add(x => x.GroupBy, (Func<string, string>)(item => item.StartsWith("A") ? "A" : "B")));
 
-        Assert.NotEmpty(cut.FindAll(".flare-select"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Select.Root}"));
     }
 
     [Fact]
@@ -34,9 +34,9 @@ public class FlareSelectGroupByTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Items, items));
 
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
 
-        Assert.Equal(3, cut.FindAll(".flare-select__option").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Select.Option}").Count);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class FlareSelectGroupByTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Contains("flare-input--disabled", cut.Find(".flare-select").ClassName);
+        Assert.Contains(Css.Classes.Input.Disabled, cut.Find($".{Css.Classes.Select.Root}").ClassName);
     }
 
     [Fact]
@@ -54,6 +54,6 @@ public class FlareSelectGroupByTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Label, "Choose option"));
 
-        Assert.Contains("Choose option", cut.Find(".flare-input__label").TextContent);
+        Assert.Contains("Choose option", cut.Find($".{Css.Classes.Input.Label}").TextContent);
     }
 }

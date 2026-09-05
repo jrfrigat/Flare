@@ -50,7 +50,7 @@ public sealed class CoreCssFallbackTests
             "A core stylesheet falls back to a value that decides how the component LOOKS. The core owns "
             + "no look: register the token in Css.Tokens, add it to the component's token record as a "
             + "required member, let each theme state it, and read it without a fallback. See "
-            + "--flare-switch-focus-shadow-on for the shape of the fix:\n  "
+            + $"{Css.Tokens.SwitchField.FocusShadowOn} for the shape of the fix:\n  "
             + string.Join("\n  ", offenders));
     }
 

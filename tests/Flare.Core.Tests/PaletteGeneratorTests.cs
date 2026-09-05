@@ -45,8 +45,8 @@ public class PaletteGeneratorTests
         // a representative spread of roles is present and non-empty
         foreach (var key in new[]
         {
-            "--flare-color-primary", "--flare-color-on-surface", "--flare-color-surface-container",
-            "--flare-color-outline", "--flare-color-error", "--flare-shadow-umbra",
+            Css.Tokens.Color.Primary, Css.Tokens.Color.OnSurface, Css.Tokens.Color.SurfaceContainer,
+            Css.Tokens.Color.Outline, Css.Tokens.Color.Error, Css.Tokens.Color.ShadowUmbra,
         })
         {
             Assert.True(lightVars.ContainsKey(key), $"missing {key}");

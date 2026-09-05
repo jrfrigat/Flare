@@ -15,7 +15,7 @@ public class FlareRadioGroupTests : FlareTestContext
     {
         var cut = Render<FlareRadioGroup<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-radio-group"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.RadioGroup.Root}"));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class FlareRadioGroupTests : FlareTestContext
         var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Label, "Pick one"));
 
-        Assert.Contains("Pick one", cut.Find(".flare-radio-group__legend").TextContent);
+        Assert.Contains("Pick one", cut.Find($".{Css.Classes.RadioGroup.Legend}").TextContent);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class FlareRadioGroupTests : FlareTestContext
         var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.ErrorText, "Selection required"));
 
-        Assert.Contains("Selection required", cut.Find(".flare-radio-group__error").TextContent);
+        Assert.Contains("Selection required", cut.Find($".{Css.Classes.RadioGroup.ErrorMsg}").TextContent);
     }
 
     [Fact]
@@ -67,6 +67,6 @@ public class FlareRadioGroupTests : FlareTestContext
         var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Inline, true));
 
-        Assert.Contains("flare-radio-group--inline", cut.Find("fieldset").ClassName);
+        Assert.Contains(Css.Classes.RadioGroup.Inline, cut.Find("fieldset").ClassName);
     }
 }

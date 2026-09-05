@@ -18,7 +18,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "default"));
 
-        Assert.Contains("flare-btn--icon-only", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .AddChildContent("Label"));
 
-        Assert.DoesNotContain("flare-btn--icon-only", cut.Find("button").ClassName);
+        Assert.DoesNotContain(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "filled"));
 
-        Assert.Contains("flare-btn--filled", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Filled, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "tonal"));
 
-        Assert.Contains("flare-btn--tonal", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Tonal, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "outlined"));
 
-        Assert.Contains("flare-btn--outlined", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Outlined, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "small"));
 
-        Assert.Contains("flare-btn--sm", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Sm, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "large"));
 
-        Assert.Contains("flare-btn--lg", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Lg, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -120,9 +120,9 @@ public class C_FlareButtonGroupTests : FlareTestContext
         var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Vertical, false));
 
-        var div = cut.Find(".flare-btn-group");
+        var div = cut.Find($".{Css.Classes.ButtonGroup.Root}");
         Assert.NotNull(div);
-        Assert.DoesNotContain("flare-btn-group--vertical", div.ClassName);
+        Assert.DoesNotContain(Css.Classes.ButtonGroup.Vertical, div.ClassName);
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
         var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Vertical, true));
 
-        Assert.Contains("flare-btn-group--vertical", cut.Find(".flare-btn-group").ClassName);
+        Assert.Contains(Css.Classes.ButtonGroup.Vertical, cut.Find($".{Css.Classes.ButtonGroup.Root}").ClassName);
     }
 
     [Fact]
@@ -140,7 +140,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
         var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.FullWidth, true));
 
-        Assert.Contains("flare-btn-group--full", cut.Find(".flare-btn-group").ClassName);
+        Assert.Contains(Css.Classes.ButtonGroup.Full, cut.Find($".{Css.Classes.ButtonGroup.Root}").ClassName);
     }
 
     [Fact]
@@ -152,18 +152,18 @@ public class C_FlareButtonGroupTests : FlareTestContext
         // fold INTO, and the group would just clip.
         var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Collapsible, true)
-            .AddChildContent("<button class=\"flare-btn\">One</button><button class=\"flare-btn\">Two</button>"));
+            .AddChildContent($"<button class=\"{Css.Classes.Button.Root}\">One</button><button class=\"{Css.Classes.Button.Root}\">Two</button>"));
 
-        var root = cut.Find(".flare-btn-group");
-        Assert.Contains("flare-btn-group--collapsible", root.ClassName);
+        var root = cut.Find($".{Css.Classes.ButtonGroup.Root}");
+        Assert.Contains(Css.Classes.ButtonGroup.Collapsible, root.ClassName);
         Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.More}"));
 
         // The copies live behind the menu, so they exist only once it is open - which is also why
         // the measurer treats the panel as optional rather than assuming it is there.
         Assert.Empty(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
-        cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
+        cut.Find($".{Css.Classes.ButtonGroup.More} .{Css.Classes.Button.Root}").Click();
         Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
-        Assert.Equal(2, cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList} .flare-btn").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList} .{Css.Classes.Button.Root}").Count);
     }
 
     [Fact]
@@ -249,9 +249,9 @@ public class C_FlareButtonGroupTests : FlareTestContext
         // be focused and wrong here - it would leave every folded button reachable by nothing but Escape.
         var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Collapsible, true)
-            .AddChildContent("<button class=\"flare-btn\">One</button>"));
+            .AddChildContent($"<button class=\"{Css.Classes.Button.Root}\">One</button>"));
 
-        cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
+        cut.Find($".{Css.Classes.ButtonGroup.More} .{Css.Classes.Button.Root}").Click();
         Assert.Equal("group", cut.Find($".{Css.Classes.Menu.Panel}").GetAttribute("role"));
     }
 
@@ -272,8 +272,8 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void NotCollapsibleRendersNoOverflowControl()
     {
-        var cut = Render<FlareButtonGroup>(p => p.AddChildContent("<button class=\"flare-btn\">One</button>"));
-        Assert.DoesNotContain("flare-btn-group--collapsible", cut.Find(".flare-btn-group").ClassName);
+        var cut = Render<FlareButtonGroup>(p => p.AddChildContent($"<button class=\"{Css.Classes.Button.Root}\">One</button>"));
+        Assert.DoesNotContain(Css.Classes.ButtonGroup.Collapsible, cut.Find($".{Css.Classes.ButtonGroup.Root}").ClassName);
         Assert.Empty(cut.FindAll($".{Css.Classes.ButtonGroup.More}"));
     }
 
@@ -285,12 +285,12 @@ public class C_FlareButtonGroupTests : FlareTestContext
         // it is rather than one being the absence of the other. Standard is the default.
         foreach (var (connected, expected, notExpected) in new[]
                  {
-                     (false, "flare-btn-group--standard", "flare-btn-group--connected"),
-                     (true, "flare-btn-group--connected", "flare-btn-group--standard"),
+                     (false, Css.Classes.ButtonGroup.Standard, Css.Classes.ButtonGroup.Connected),
+                     (true, Css.Classes.ButtonGroup.Connected, Css.Classes.ButtonGroup.Standard),
                  })
         {
             var cut = Render<FlareButtonGroup>(p => p.Add(x => x.Connected, connected));
-            var cls = cut.Find(".flare-btn-group").ClassName;
+            var cls = cut.Find($".{Css.Classes.ButtonGroup.Root}").ClassName;
             Assert.Contains(expected, cls);
             Assert.DoesNotContain(notExpected, cls);
         }
@@ -310,9 +310,9 @@ public class C_FlareButtonGroupTests : FlareTestContext
     {
         var cut = Render<FlareButtonGroup>();
 
-        var div = cut.Find(".flare-btn-group");
-        Assert.DoesNotContain("flare-btn-group--vertical", div.ClassName);
-        Assert.DoesNotContain("flare-btn-group--full", div.ClassName);
+        var div = cut.Find($".{Css.Classes.ButtonGroup.Root}");
+        Assert.DoesNotContain(Css.Classes.ButtonGroup.Vertical, div.ClassName);
+        Assert.DoesNotContain(Css.Classes.ButtonGroup.Full, div.ClassName);
     }
 
     [Fact]
@@ -326,7 +326,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.NotEmpty(cut.FindAll(".flare-btn--filled"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Button.Filled}"));
     }
 
     [Fact]
@@ -342,9 +342,9 @@ public class C_FlareButtonGroupTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var btn = cut.Find(".flare-btn");
-        Assert.Contains("flare-btn--lg", btn.ClassName);
-        Assert.Contains("flare-btn--tonal", btn.ClassName);
+        var btn = cut.Find($".{Css.Classes.Button.Root}");
+        Assert.Contains(Css.Classes.Button.Lg, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Tonal, btn.ClassName);
     }
 
     [Fact]
@@ -359,7 +359,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.Contains("flare-btn--outlined", cut.Find(".flare-btn").ClassName);
+        Assert.Contains(Css.Classes.Button.Outlined, cut.Find($".{Css.Classes.Button.Root}").ClassName);
     }
 }
 
@@ -374,7 +374,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     {
         var cut = Render<FlareFloatingActionButton>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-fab"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Fab.Root}"));
     }
 
     [Fact]
@@ -383,7 +383,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Size, FabSize.Sm));
 
-        Assert.Contains("flare-fab--sm", cut.Find(".flare-fab").ClassName);
+        Assert.Contains(Css.Classes.Fab.Sm, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
     }
 
     [Fact]
@@ -392,7 +392,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Size, FabSize.Lg));
 
-        Assert.Contains("flare-fab--lg", cut.Find(".flare-fab").ClassName);
+        Assert.Contains(Css.Classes.Fab.Lg, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
     }
 
     [Fact]
@@ -401,7 +401,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Color, FlareColor.Secondary));
 
-        Assert.Contains("flare-color-secondary", cut.Find(".flare-fab").ClassName);
+        Assert.Contains(Css.Classes.Color.Secondary, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
     }
 
     [Fact]
@@ -410,7 +410,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Color, FlareColor.Custom("#123456")));
 
-        Assert.Contains("--fc-container", cut.Find(".flare-fab").GetAttribute("style"));
+        Assert.Contains(Css.Tokens.LocalColor.Container, cut.Find($".{Css.Classes.Fab.Root}").GetAttribute("style"));
     }
 
     [Fact]
@@ -418,7 +418,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     {
         var cut = Render<FlareFloatingActionButton>();
 
-        Assert.DoesNotContain("flare-color-", cut.Find(".flare-fab").ClassName);
+        Assert.DoesNotContain("flare-color-", cut.Find($".{Css.Classes.Fab.Root}").ClassName);
     }
 
     [Fact]
@@ -427,7 +427,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Position, FabPosition.BottomRight));
 
-        Assert.NotEmpty(cut.FindAll(".flare-fab-anchor--bottom-right"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Fab.AnchorBottomRight}"));
     }
 
     [Fact]
@@ -437,7 +437,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
             .Add(x => x.Label, "Create")
             .Add(x => x.Position, FabPosition.Static));
 
-        var label = cut.Find(".flare-fab__label");
+        var label = cut.Find($".{Css.Classes.Fab.Label}");
         Assert.Equal("Create", label.TextContent);
     }
 }
@@ -453,7 +453,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     {
         var cut = Render<FlareToggleButton>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-btn"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Button.Root}"));
     }
 
     [Fact]
@@ -506,7 +506,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
             .Add(x => x.Loading, false)
             .AddChildContent("Click Me"));
 
-        Assert.Contains("Click Me", cut.Find(".flare-btn__label").TextContent);
+        Assert.Contains("Click Me", cut.Find($".{Css.Classes.Button.Label}").TextContent);
     }
 
     [Fact]
@@ -515,7 +515,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true));
 
-        Assert.NotEmpty(cut.FindAll("span.flare-btn__spinner"));
+        Assert.NotEmpty(cut.FindAll($"span.{Css.Classes.Button.Spinner}"));
     }
 
     [Fact]
@@ -524,7 +524,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true));
 
-        Assert.Contains("flare-btn--loading", cut.Find("button").ClassName ?? "");
+        Assert.Contains(Css.Classes.Button.Loading, cut.Find("button").ClassName ?? "");
     }
 
     [Fact]
@@ -552,7 +552,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
             .Add(x => x.Loading, true)
             .Add(x => x.LoadingText, "Saving..."));
 
-        Assert.Contains("Saving...", cut.Find(".flare-btn__label").TextContent);
+        Assert.Contains("Saving...", cut.Find($".{Css.Classes.Button.Label}").TextContent);
     }
 
     [Fact]
@@ -561,7 +561,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, false));
 
-        Assert.Empty(cut.FindAll("span.flare-btn__spinner"));
+        Assert.Empty(cut.FindAll($"span.{Css.Classes.Button.Spinner}"));
     }
 
     [Fact]
@@ -570,7 +570,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .AddChildContent("Submit"));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-btn"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Button.Root}"));
         Assert.False(cut.Find("button").HasAttribute("disabled"));
     }
 }
@@ -587,9 +587,9 @@ public class C_FlareSplitButtonTests : FlareTestContext
         var cut = Render<FlareSplitButton>(p => p
             .Add(x => x.ChildContent, b => b.AddMarkupContent(0, "Save")));
 
-        Assert.NotEmpty(cut.FindAll(".flare-split-btn__main"));
-        Assert.NotEmpty(cut.FindAll(".flare-split-btn__trigger"));
-        Assert.Contains("Save", cut.Find(".flare-split-btn__main").TextContent);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.SplitButton.Main}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.SplitButton.Trigger}"));
+        Assert.Contains("Save", cut.Find($".{Css.Classes.SplitButton.Main}").TextContent);
     }
 
     [Fact]
@@ -604,7 +604,7 @@ public class C_FlareSplitButtonTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.Empty(cut.FindAll(".flare-menu__panel"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
     }
 
     [Fact]
@@ -619,9 +619,9 @@ public class C_FlareSplitButtonTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        Assert.NotEmpty(cut.FindAll(".flare-menu__panel"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
         Assert.Contains("Save as...", cut.Markup);
     }
 
@@ -632,7 +632,7 @@ public class C_FlareSplitButtonTests : FlareTestContext
             .Add(x => x.Disabled, true)
             .Add(x => x.ChildContent, b => b.AddMarkupContent(0, "Save")));
 
-        Assert.All(cut.FindAll(".flare-split-btn button"),
+        Assert.All(cut.FindAll($".{Css.Classes.SplitButton.Root} button"),
             btn => Assert.True(btn.HasAttribute("disabled")));
     }
 }

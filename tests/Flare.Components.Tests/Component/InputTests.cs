@@ -12,7 +12,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
         var cut = Render<FlarePasswordField>(p => p
             .Add(x => x.Label, "Password"));
 
-        var label = cut.Find("label.flare-input__label");
+        var label = cut.Find($"label.{Css.Classes.Input.Label}");
         Assert.Equal("Password", label.TextContent);
     }
 
@@ -29,7 +29,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
     {
         var cut = Render<FlarePasswordField>();
 
-        var toggleBtn = cut.Find("button.flare-btn");
+        var toggleBtn = cut.Find($"button.{Css.Classes.Button.Root}");
         Assert.NotNull(toggleBtn);
     }
 
@@ -48,7 +48,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
         var cut = Render<FlarePasswordField>(p => p
             .Add(x => x.HelperText, "At least 8 characters"));
 
-        var helper = cut.Find(".flare-input__helper");
+        var helper = cut.Find($".{Css.Classes.Input.Helper}");
         Assert.Contains("At least 8 characters", helper.TextContent);
     }
 
@@ -58,7 +58,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
         var cut = Render<FlarePasswordField>(p => p
             .Add(x => x.ErrorText, "Password too short"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-input__helper--error"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.HelperError}"));
     }
 
     [Fact]
@@ -124,7 +124,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
         var cut = Render<FlarePasswordField>(p => p
             .Add(x => x.Variant, InputVariant.Outlined));
 
-        Assert.Contains("flare-input-variant--outlined", cut.Find(".flare-input").ClassName);
+        Assert.Contains(Css.Classes.Input.VariantOutlined, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 
     [Fact]
@@ -133,7 +133,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
         var cut = Render<FlarePasswordField>(p => p
             .Add(x => x.FullWidth, false));
 
-        Assert.Contains("flare-input--auto", cut.Find(".flare-input").ClassName);
+        Assert.Contains(Css.Classes.Input.Auto, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 
     [Fact]
@@ -142,7 +142,7 @@ public class C_FlarePasswordFieldTests : FlareTestContext
         var cut = Render<FlarePasswordField>(p => p
             .Add(x => x.Margin, FieldMargin.Dense));
 
-        Assert.Contains("flare-input--margin-dense", cut.Find(".flare-input").ClassName);
+        Assert.Contains(Css.Classes.Input.MarginDense, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 }
 
@@ -158,8 +158,8 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>();
 
         // TextArea now renders the shared flare-input chrome; only the control keeps a textarea class.
-        Assert.NotEmpty(cut.FindAll(".flare-input"));
-        Assert.NotEmpty(cut.FindAll(".flare-textarea__control"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Textarea.Control}"));
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>(p => p
             .Add(x => x.Label, "Comments"));
 
-        Assert.Contains("Comments", cut.Find(".flare-input__label").TextContent);
+        Assert.Contains("Comments", cut.Find($".{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -203,7 +203,7 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>(p => p
             .Add(x => x.HelperText, "Max 500 chars"));
 
-        Assert.Contains("Max 500 chars", cut.Find(".flare-input__helper").TextContent);
+        Assert.Contains("Max 500 chars", cut.Find($".{Css.Classes.Input.Helper}").TextContent);
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>(p => p
             .Add(x => x.ErrorText, "Field is required"));
 
-        Assert.Contains("Field is required", cut.Find(".flare-input__helper--error").TextContent);
+        Assert.Contains("Field is required", cut.Find($".{Css.Classes.Input.HelperError}").TextContent);
     }
 
     [Fact]
@@ -236,7 +236,7 @@ public class C_FlareNumericFieldTests : FlareTestContext
     {
         var cut = Render<FlareNumericField<int>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-input"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root}"));
     }
 
     [Fact]
@@ -261,7 +261,7 @@ public class C_FlareNumericFieldTests : FlareTestContext
         var cut = Render<FlareNumericField<int>>(p => p
             .Add(x => x.Label, "Quantity"));
 
-        Assert.Contains("Quantity", cut.Find(".flare-input__label").TextContent);
+        Assert.Contains("Quantity", cut.Find($".{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -320,8 +320,8 @@ public class C_FlareFieldFloatingLabelTests : FlareTestContext
     public void NoFloatingByDefault()
     {
         var cut = Render<FlareField<string>>(p => p.Add(x => x.Label, "Name"));
-        var cls = cut.Find(".flare-input").ClassName;
-        Assert.DoesNotContain("flare-input--floating", cls);
+        var cls = cut.Find($".{Css.Classes.Input.Root}").ClassName;
+        Assert.DoesNotContain(Css.Classes.Input.Floating, cls);
     }
 
     [Fact]
@@ -332,16 +332,16 @@ public class C_FlareFieldFloatingLabelTests : FlareTestContext
             p.Add(x => x.Label, "Name");
             p.Add(x => x.FloatingLabel, true);
         });
-        Assert.Contains("flare-input--floating", cut.Find(".flare-input").ClassName);
+        Assert.Contains(Css.Classes.Input.Floating, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 
     [Fact]
     public void NonFloatingLabelRenderedBeforeField()
     {
         var cut = Render<FlareField<string>>(p => p.Add(x => x.Label, "Email"));
-        var label = cut.Find("label.flare-input__label");
+        var label = cut.Find($"label.{Css.Classes.Input.Label}");
         Assert.NotNull(label);
-        Assert.DoesNotContain("flare-input__label--floating", label.ClassName);
+        Assert.DoesNotContain(Css.Classes.Input.LabelFloating, label.ClassName);
     }
 
     [Fact]
@@ -352,7 +352,7 @@ public class C_FlareFieldFloatingLabelTests : FlareTestContext
             p.Add(x => x.Label, "Email");
             p.Add(x => x.FloatingLabel, true);
         });
-        var label = cut.Find(".flare-input__field label.flare-input__label--floating");
+        var label = cut.Find($".{Css.Classes.Input.Field} label.{Css.Classes.Input.LabelFloating}");
         Assert.NotNull(label);
         Assert.Contains("Email", label.TextContent);
     }
@@ -379,7 +379,7 @@ public class C_FlareFieldFloatingLabelTests : FlareTestContext
             p.Add(x => x.Label, "Search");
             p.Add(x => x.FloatingLabel, true);
         });
-        var label = cut.Find(".flare-input__label--floating");
+        var label = cut.Find($".{Css.Classes.Input.LabelFloating}");
         Assert.NotNull(label.GetAttribute("for"));
     }
 }

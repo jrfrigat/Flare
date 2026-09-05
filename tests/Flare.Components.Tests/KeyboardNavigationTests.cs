@@ -81,7 +81,7 @@ public class KeyboardNavigationTests : BunitContext
             .Add(p => p.ChildContent, "Alert message")
             .Add(p => p.Severity, AlertSeverity.Info));
 
-        var alert = cut.Find(".flare-alert");
+        var alert = cut.Find($".{Css.Classes.Alert.Root}");
         Assert.NotNull(alert);
     }
 }

@@ -15,7 +15,7 @@ public class FlareSkeletonExtraTests : FlareTestContext
         var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Animation, SkeletonAnimation.Pulse));
 
-        Assert.Contains("flare-skeleton--pulse", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Pulse, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
@@ -24,9 +24,9 @@ public class FlareSkeletonExtraTests : FlareTestContext
         var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Animation, SkeletonAnimation.None));
 
-        var cls = cut.Find(".flare-skeleton").ClassName ?? string.Empty;
-        Assert.DoesNotContain("flare-skeleton--wave", cls);
-        Assert.DoesNotContain("flare-skeleton--pulse", cls);
+        var cls = cut.Find($".{Css.Classes.Skeleton.Root}").ClassName ?? string.Empty;
+        Assert.DoesNotContain(Css.Classes.Skeleton.Wave, cls);
+        Assert.DoesNotContain(Css.Classes.Skeleton.Pulse, cls);
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class FlareSkeletonExtraTests : FlareTestContext
     {
         var cut = Render<FlareSkeleton>();
 
-        var el = cut.Find(".flare-skeleton");
+        var el = cut.Find($".{Css.Classes.Skeleton.Root}");
         Assert.Equal("true", el.GetAttribute("aria-busy"));
         Assert.Equal("status", el.GetAttribute("role"));
     }

@@ -13,7 +13,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
     {
         var cut = Render<FlareDivider>();
 
-        Assert.Contains("flare-divider", cut.Find("hr").ClassName ?? "");
+        Assert.Contains(Css.Classes.Divider.Root, cut.Find("hr").ClassName ?? "");
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
         var cut = Render<FlareDivider>(p => p
             .Add(x => x.Text, "OR"));
 
-        Assert.Contains("OR", cut.Find("span.flare-divider__text").TextContent);
+        Assert.Contains("OR", cut.Find($"span.{Css.Classes.Divider.TextContent}").TextContent);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
         var cut = Render<FlareDivider>(p => p
             .Add(x => x.Text, "OR"));
 
-        Assert.Contains("flare-divider--text", cut.Find("div.flare-divider--text").ClassName ?? "");
+        Assert.Contains(Css.Classes.Divider.Text, cut.Find($"div.{Css.Classes.Divider.Text}").ClassName ?? "");
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
             .Add(x => x.Text, "OR")
             .Add(x => x.TextAlign, DividerTextAlign.Left));
 
-        Assert.Contains("flare-divider--text-left", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Divider.TextLeft, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -50,6 +50,6 @@ public class FlareDividerTextAlignTests : FlareTestContext
         var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, true));
 
-        Assert.Contains("flare-divider--vertical", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Divider.Vertical, cut.Find("div").ClassName ?? "");
     }
 }

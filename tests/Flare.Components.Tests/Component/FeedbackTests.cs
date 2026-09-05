@@ -17,7 +17,7 @@ public class C_FlareDialogTests : FlareTestContext
         var cut = Render<FlareDialog>(p => p
             .Add(x => x.Visible, false));
 
-        Assert.Empty(cut.FindAll(".flare-dialog-scrim"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Dialog.Scrim}"));
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class C_FlareDialogTests : FlareTestContext
         var cut = Render<FlareDialog>(p => p
             .Add(x => x.Visible, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-dialog-scrim"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.Scrim}"));
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class C_FlareDialogTests : FlareTestContext
             .Add(x => x.Visible, true)
             .Add(x => x.Title, "Confirm Action"));
 
-        Assert.Contains("Confirm Action", cut.Find(".flare-dialog__title").TextContent);
+        Assert.Contains("Confirm Action", cut.Find($".{Css.Classes.Dialog.Title}").TextContent);
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class C_FlareDialogTests : FlareTestContext
         var cut = Render<FlareDialog>(p => p
             .Add(x => x.Visible, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-dialog--md"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.SizeMd}"));
     }
 }
 
@@ -96,7 +96,7 @@ public class C_FlareAlertTests : FlareTestContext
     {
         var cut = Render<FlareAlert>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-alert"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Root}"));
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class C_FlareAlertTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .AddChildContent("Alert body text"));
 
-        Assert.Contains("Alert body text", cut.Find(".flare-alert__body").TextContent);
+        Assert.Contains("Alert body text", cut.Find($".{Css.Classes.Alert.Body}").TextContent);
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public class C_FlareAlertTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Title, "Important!"));
 
-        Assert.Contains("Important!", cut.Find(".flare-alert__title").TextContent);
+        Assert.Contains("Important!", cut.Find($".{Css.Classes.Alert.Title}").TextContent);
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class C_FlareAlertTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Severity, AlertSeverity.Info));
 
-        Assert.Contains("flare-alert--info", cut.Find(".flare-alert").ClassName);
+        Assert.Contains(Css.Classes.Alert.Info, cut.Find($".{Css.Classes.Alert.Root}").ClassName);
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class C_FlareAlertTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Severity, AlertSeverity.Success));
 
-        Assert.Contains("flare-alert--success", cut.Find(".flare-alert").ClassName);
+        Assert.Contains(Css.Classes.Alert.Success, cut.Find($".{Css.Classes.Alert.Root}").ClassName);
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class C_FlareAlertTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Severity, AlertSeverity.Warning));
 
-        Assert.Contains("flare-alert--warning", cut.Find(".flare-alert").ClassName);
+        Assert.Contains(Css.Classes.Alert.Warning, cut.Find($".{Css.Classes.Alert.Root}").ClassName);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public class C_FlareAlertTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Severity, AlertSeverity.Error));
 
-        Assert.Contains("flare-alert--error", cut.Find(".flare-alert").ClassName);
+        Assert.Contains(Css.Classes.Alert.Error, cut.Find($".{Css.Classes.Alert.Root}").ClassName);
     }
 }
 
@@ -170,7 +170,7 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
     {
         var cut = Render<FlareSnackbarProvider>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-snackbar-provider"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Snackbar.Provider}"));
     }
 
     [Fact]
@@ -180,10 +180,10 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         var service = Services.GetRequiredService<ISnackbarService>();
 
         service.Show("Saved", SnackbarSeverity.Success);
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count > 0);
 
         // Live semantics live on the toast, not the container: a stack mixes politeness levels.
-        Assert.Equal("status", cut.Find(".flare-snackbar").GetAttribute("role"));
+        Assert.Equal("status", cut.Find($".{Css.Classes.Snackbar.Root}").GetAttribute("role"));
     }
 
     [Fact]
@@ -193,10 +193,10 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         var service = Services.GetRequiredService<ISnackbarService>();
 
         service.Show("Boom", SnackbarSeverity.Error);
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar--error").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Error}").Count > 0);
 
         // An error interrupts the screen reader; role="alert" is an assertive live region.
-        Assert.Equal("alert", cut.Find(".flare-snackbar--error").GetAttribute("role"));
+        Assert.Equal("alert", cut.Find($".{Css.Classes.Snackbar.Error}").GetAttribute("role"));
     }
 
     // The severity class used to be assembled from the enum name, and Normal has no accent rule at
@@ -208,7 +208,7 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         var service = Services.GetRequiredService<ISnackbarService>();
 
         service.Show("Just so you know", SnackbarSeverity.Normal);
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count > 0);
 
         Assert.DoesNotContain("flare-snackbar--normal", cut.Markup);
     }
@@ -218,7 +218,7 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
     {
         var cut = Render<FlareSnackbarProvider>();
 
-        Assert.Empty(cut.FindAll(".flare-snackbar"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Snackbar.Root}"));
     }
 
     [Fact]
@@ -228,9 +228,9 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         var service = Services.GetRequiredService<ISnackbarService>();
 
         service.Show("Hello Snackbar");
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count > 0);
 
-        Assert.NotEmpty(cut.FindAll(".flare-snackbar"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Snackbar.Root}"));
     }
 
     [Fact]
@@ -240,7 +240,7 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         var service = Services.GetRequiredService<ISnackbarService>();
 
         service.Show("Important message");
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count > 0);
 
         Assert.Contains("Important message", cut.Markup);
     }
@@ -252,9 +252,9 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
         var service = Services.GetRequiredService<ISnackbarService>();
 
         service.Show("Error occurred", SnackbarSeverity.Error);
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar--error").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Error}").Count > 0);
 
-        Assert.NotEmpty(cut.FindAll(".flare-snackbar--error"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Snackbar.Error}"));
     }
 }
 
@@ -270,7 +270,7 @@ public class C_FlareProgressTests : FlareTestContext
         var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Linear));
 
-        Assert.NotEmpty(cut.FindAll(".flare-progress"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Root}"));
     }
 
     [Fact]
@@ -280,7 +280,7 @@ public class C_FlareProgressTests : FlareTestContext
             .Add(x => x.Variant, ProgressVariant.Linear)
             .Add(x => x.Value, 50.0));
 
-        Assert.Contains("flare-progress--linear", cut.Find(".flare-progress").ClassName);
+        Assert.Contains(Css.Classes.Progress.Linear, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
 
     [Fact]
@@ -290,7 +290,7 @@ public class C_FlareProgressTests : FlareTestContext
             .Add(x => x.Variant, ProgressVariant.Circular)
             .Add(x => x.Value, 50.0));
 
-        Assert.Contains("flare-progress--circular", cut.Find(".flare-progress").ClassName);
+        Assert.Contains(Css.Classes.Progress.Circular, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
 
     [Fact]
@@ -299,7 +299,7 @@ public class C_FlareProgressTests : FlareTestContext
         var cut = Render<FlareProgress>(p => p
             .Add(x => x.Value, (double?)null));
 
-        Assert.Contains("flare-progress--indeterminate", cut.Find(".flare-progress").ClassName);
+        Assert.Contains(Css.Classes.Progress.Indeterminate, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
 
     [Fact]
@@ -318,7 +318,7 @@ public class C_FlareProgressTests : FlareTestContext
             .Add(x => x.Variant, ProgressVariant.Circular)
             .Add(x => x.Value, 50.0));
 
-        Assert.NotEmpty(cut.FindAll("svg.flare-progress__svg"));
+        Assert.NotEmpty(cut.FindAll($"svg.{Css.Classes.Progress.Svg}"));
     }
 }
 
@@ -335,7 +335,7 @@ public class C_FlareSkeletonTests : FlareTestContext
         var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Variant, SkeletonVariant.Rect));
 
-        Assert.Contains("flare-skeleton--rect", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Rect, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
@@ -344,7 +344,7 @@ public class C_FlareSkeletonTests : FlareTestContext
         var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Variant, SkeletonVariant.Circle));
 
-        Assert.Contains("flare-skeleton--circle", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Circle, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
@@ -353,7 +353,7 @@ public class C_FlareSkeletonTests : FlareTestContext
         var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Variant, SkeletonVariant.Text));
 
-        Assert.Contains("flare-skeleton--text", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Text, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
@@ -362,7 +362,7 @@ public class C_FlareSkeletonTests : FlareTestContext
         var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Animation, SkeletonAnimation.Wave));
 
-        Assert.Contains("flare-skeleton--wave", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Wave, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
@@ -372,7 +372,7 @@ public class C_FlareSkeletonTests : FlareTestContext
             .Add(x => x.Width, "200px")
             .Add(x => x.Height, "50px"));
 
-        var style = cut.Find(".flare-skeleton").GetAttribute("style") ?? string.Empty;
+        var style = cut.Find($".{Css.Classes.Skeleton.Root}").GetAttribute("style") ?? string.Empty;
         Assert.Contains("200px", style);
         Assert.Contains("50px", style);
     }
@@ -390,7 +390,7 @@ public class C_FlareOverlayTests : FlareTestContext
         var cut = Render<FlareOverlay>(p => p
             .Add(x => x.Open, false));
 
-        Assert.Empty(cut.FindAll(".flare-overlay"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Overlay.Root}"));
     }
 
     [Fact]
@@ -399,7 +399,7 @@ public class C_FlareOverlayTests : FlareTestContext
         var cut = Render<FlareOverlay>(p => p
             .Add(x => x.Open, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-overlay"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Overlay.Root}"));
     }
 
     [Fact]
@@ -419,7 +419,7 @@ public class C_FlareOverlayTests : FlareTestContext
             .Add(x => x.Open, true)
             .Add(x => x.ZIndex, 9999));
 
-        var style = cut.Find(".flare-overlay").GetAttribute("style") ?? "";
+        var style = cut.Find($".{Css.Classes.Overlay.Root}").GetAttribute("style") ?? "";
         Assert.Contains("9999", style);
     }
 
@@ -430,7 +430,7 @@ public class C_FlareOverlayTests : FlareTestContext
             .Add(x => x.Open, true)
             .Add(x => x.Opacity, 0.75));
 
-        var style = cut.Find(".flare-overlay").GetAttribute("style") ?? "";
+        var style = cut.Find($".{Css.Classes.Overlay.Root}").GetAttribute("style") ?? "";
         Assert.Contains("0.75", style);
     }
 
@@ -441,7 +441,7 @@ public class C_FlareOverlayTests : FlareTestContext
             .Add(x => x.Open, true)
             .Add(x => x.Absolute, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-overlay--absolute"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Overlay.Absolute}"));
     }
 
     [Fact]
@@ -451,7 +451,7 @@ public class C_FlareOverlayTests : FlareTestContext
             .Add(x => x.Open, true)
             .Add(x => x.Absolute, false));
 
-        Assert.Empty(cut.FindAll(".flare-overlay--absolute"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Overlay.Absolute}"));
     }
 }
 
@@ -467,7 +467,7 @@ public class C_FlarePopoverTests : FlareTestContext
         var cut = Render<FlarePopover>(p => p
             .Add(x => x.Open, false));
 
-        Assert.NotEmpty(cut.FindAll(".flare-popover-anchor"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.Anchor}"));
     }
 
     [Fact]
@@ -476,7 +476,7 @@ public class C_FlarePopoverTests : FlareTestContext
         var cut = Render<FlarePopover>(p => p
             .Add(x => x.Open, false));
 
-        Assert.Empty(cut.FindAll(".flare-popover__paper"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Popover.Paper}"));
     }
 
     [Fact]
@@ -485,7 +485,7 @@ public class C_FlarePopoverTests : FlareTestContext
         var cut = Render<FlarePopover>(p => p
             .Add(x => x.Open, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-popover__paper"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.Paper}"));
     }
 
     [Fact]
@@ -516,7 +516,7 @@ public class C_FlarePopoverTests : FlareTestContext
             .Add(x => x.Open, true)
             .Add(x => x.Placement, PopoverPlacement.BottomStart));
 
-        Assert.NotEmpty(cut.FindAll(".flare-popover__paper--bottom-start"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.PaperBottomStart}"));
     }
 
     [Fact]
@@ -526,7 +526,7 @@ public class C_FlarePopoverTests : FlareTestContext
             .Add(x => x.Open, true)
             .Add(x => x.Placement, PopoverPlacement.Top));
 
-        Assert.NotEmpty(cut.FindAll(".flare-popover__paper--top"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.PaperTop}"));
     }
 }
 
@@ -542,7 +542,7 @@ public class C_FlareTooltipTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "Tooltip text"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-tooltip"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tooltip.Root}"));
     }
 
     [Fact]
@@ -551,7 +551,7 @@ public class C_FlareTooltipTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "Helpful tip"));
 
-        Assert.Contains("Helpful tip", cut.Find(".flare-tooltip__content").TextContent);
+        Assert.Contains("Helpful tip", cut.Find($".{Css.Classes.Tooltip.Content}").TextContent);
     }
 
     [Fact]
@@ -561,7 +561,7 @@ public class C_FlareTooltipTests : FlareTestContext
             .Add(x => x.Content, "tip")
             .Add(x => x.Placement, TooltipPlacement.Top));
 
-        Assert.Contains("flare-tooltip--top", cut.Find(".flare-tooltip").ClassName);
+        Assert.Contains(Css.Classes.Tooltip.Top, cut.Find($".{Css.Classes.Tooltip.Root}").ClassName);
     }
 
     [Fact]
@@ -571,7 +571,7 @@ public class C_FlareTooltipTests : FlareTestContext
             .Add(x => x.Content, "tip")
             .Add(x => x.Placement, TooltipPlacement.Bottom));
 
-        Assert.Contains("flare-tooltip--bottom", cut.Find(".flare-tooltip").ClassName);
+        Assert.Contains(Css.Classes.Tooltip.Bottom, cut.Find($".{Css.Classes.Tooltip.Root}").ClassName);
     }
 
     [Fact]
@@ -597,7 +597,7 @@ public class C_FlareEmptyStateTests : FlareTestContext
         var cut = Render<FlareEmptyState>(p => p
             .Add(x => x.IconContent, b => b.AddMarkupContent(0, "<span class=\"test-icon\">★</span>")));
 
-        Assert.NotNull(cut.Find(".flare-empty-state__icon"));
+        Assert.NotNull(cut.Find($".{Css.Classes.Empty.StateIcon}"));
         Assert.NotEmpty(cut.FindAll(".test-icon"));
     }
 
@@ -607,7 +607,7 @@ public class C_FlareEmptyStateTests : FlareTestContext
         var cut = Render<FlareEmptyState>(p => p
             .Add(x => x.Title, "Nothing here"));
 
-        var title = cut.Find(".flare-empty-state__title");
+        var title = cut.Find($".{Css.Classes.Empty.StateTitle}");
         Assert.Equal("Nothing here", title.TextContent);
     }
 
@@ -617,7 +617,7 @@ public class C_FlareEmptyStateTests : FlareTestContext
         var cut = Render<FlareEmptyState>(p => p
             .Add(x => x.Description, "Try adjusting your filters."));
 
-        var desc = cut.Find(".flare-empty-state__description");
+        var desc = cut.Find($".{Css.Classes.Empty.StateDescription}");
         Assert.Equal("Try adjusting your filters.", desc.TextContent);
     }
 
@@ -628,7 +628,7 @@ public class C_FlareEmptyStateTests : FlareTestContext
             .Add(x => x.ActionContent,
                 b => b.AddMarkupContent(0, "<button class=\"action-btn\">Retry</button>")));
 
-        Assert.NotNull(cut.Find(".flare-empty-state__action"));
+        Assert.NotNull(cut.Find($".{Css.Classes.Empty.StateAction}"));
         Assert.NotEmpty(cut.FindAll(".action-btn"));
     }
 
@@ -638,10 +638,10 @@ public class C_FlareEmptyStateTests : FlareTestContext
         var cut = Render<FlareEmptyState>(p => p
             .Add(x => x.Title, "Empty"));
 
-        Assert.NotNull(cut.Find(".flare-empty-state__title"));
-        Assert.Empty(cut.FindAll(".flare-empty-state__icon"));
-        Assert.Empty(cut.FindAll(".flare-empty-state__description"));
-        Assert.Empty(cut.FindAll(".flare-empty-state__action"));
+        Assert.NotNull(cut.Find($".{Css.Classes.Empty.StateTitle}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Empty.StateIcon}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Empty.StateDescription}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Empty.StateAction}"));
     }
 
     [Fact]
@@ -653,10 +653,10 @@ public class C_FlareEmptyStateTests : FlareTestContext
             .Add(x => x.Description, "Clear your search to see results.")
             .Add(x => x.ActionContent, b => b.AddMarkupContent(0, "<button>Clear</button>")));
 
-        Assert.NotEmpty(cut.FindAll(".flare-empty-state__icon"));
-        Assert.NotEmpty(cut.FindAll(".flare-empty-state__title"));
-        Assert.NotEmpty(cut.FindAll(".flare-empty-state__description"));
-        Assert.NotEmpty(cut.FindAll(".flare-empty-state__action"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateIcon}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateTitle}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateDescription}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateAction}"));
     }
 }
 
@@ -680,7 +680,7 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
     {
         var cut = Render<FlareConfirmDialogProvider>();
 
-        Assert.Empty(cut.FindAll(".flare-confirmdialog__backdrop"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Confirmdialog.Backdrop}"));
     }
 
     [Fact]
@@ -688,7 +688,7 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
     {
         var cut = Render<FlareConfirmDialogProvider>();
 
-        Assert.Empty(cut.FindAll(".flare-confirmdialog__btn--confirm"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Confirmdialog.BtnConfirm}"));
     }
 
     [Fact]
@@ -696,7 +696,7 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
     {
         var cut = Render<FlareConfirmDialogProvider>();
 
-        Assert.Empty(cut.FindAll(".flare-confirmdialog__btn--cancel"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Confirmdialog.BtnCancel}"));
     }
 
     [Fact]
@@ -706,9 +706,9 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
         var provider = cut.Instance;
 
         _ = provider.ConfirmAsync("Delete?", "Are you sure?");
-        cut.WaitForState(() => cut.FindAll(".flare-confirmdialog__backdrop").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Confirmdialog.Backdrop}").Count > 0);
 
-        Assert.NotEmpty(cut.FindAll(".flare-confirmdialog__backdrop"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Confirmdialog.Backdrop}"));
     }
 
     [Fact]
@@ -718,9 +718,9 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
         var provider = cut.Instance;
 
         _ = provider.ConfirmAsync("Delete item", "Cannot be undone.");
-        cut.WaitForState(() => cut.FindAll(".flare-confirmdialog__title").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Confirmdialog.Title}").Count > 0);
 
-        Assert.Contains("Delete item", cut.Find(".flare-confirmdialog__title").TextContent);
+        Assert.Contains("Delete item", cut.Find($".{Css.Classes.Confirmdialog.Title}").TextContent);
     }
 
     [Fact]
@@ -730,9 +730,9 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
         var provider = cut.Instance;
 
         _ = provider.ConfirmAsync("Title", "Please confirm this action.");
-        cut.WaitForState(() => cut.FindAll(".flare-confirmdialog__body").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Confirmdialog.Body}").Count > 0);
 
-        Assert.Contains("Please confirm this action.", cut.Find(".flare-confirmdialog__body").TextContent);
+        Assert.Contains("Please confirm this action.", cut.Find($".{Css.Classes.Confirmdialog.Body}").TextContent);
     }
 
     [Fact]
@@ -742,10 +742,10 @@ public class C_FlareConfirmDialogProviderTests : FlareTestContext
         var provider = cut.Instance;
 
         _ = provider.ConfirmAsync("Sure?", "Yes or No");
-        cut.WaitForState(() => cut.FindAll(".flare-confirmdialog__btn--confirm").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Confirmdialog.BtnConfirm}").Count > 0);
 
-        cut.Find(".flare-confirmdialog__btn--confirm").Click();
+        cut.Find($".{Css.Classes.Confirmdialog.BtnConfirm}").Click();
 
-        Assert.Empty(cut.FindAll(".flare-confirmdialog__backdrop"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Confirmdialog.Backdrop}"));
     }
 }

@@ -23,7 +23,7 @@ public class FlareFormTests : FlareTestContext
         var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model));
 
-        Assert.NotEmpty(cut.FindAll(".flare-form"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Form.Root}"));
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class FlareFormTests : FlareTestContext
             }));
 
         // No errors initially so flare-validation-summary should not render
-        Assert.Empty(cut.FindAll(".flare-validation-summary"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Validation.Summary}"));
     }
 
     [Fact]
@@ -87,6 +87,6 @@ public class FlareFormTests : FlareTestContext
             .Add(x => x.Model, model)
             .AddUnmatched("data-testid", "my-form"));
 
-        Assert.Equal("my-form", cut.Find(".flare-form").GetAttribute("data-testid"));
+        Assert.Equal("my-form", cut.Find($".{Css.Classes.Form.Root}").GetAttribute("data-testid"));
     }
 }

@@ -32,7 +32,7 @@ public sealed class TokenDocLiteralTests
         new(@"\d+(\.\d+)?(px|rem|em|ch|ex|vh|vw|vmin|vmax|pt|dp|deg|ms|s)\b", RegexOptions.Compiled);
 
     // The value-claim shape: a parenthetical holding nothing but a <c>..</c> run, sitting at the very END of
-    // the summary - "Panel shadow token (<c>var(--flare-elevation-2)</c>)." That trailing position is what
+    // the summary - $"Panel shadow token (<c>var({Css.Tokens.Elevation.Level2})</c>)." That trailing position is what
     // makes it an assertion about the value rather than prose. Mid-sentence uses are left alone, because they
     // are pointers, not claims: naming the selector a token applies at ("on focus (<c>:focus-visible</c>),
     // not on a pointer press"), or telling a theme author what to reference.

@@ -8,7 +8,7 @@ public class FlareTextFieldTests : FlareTestContext
         var cut = Render<FlareTextField>(p => p
             .Add(c => c.Label, "Name"));
 
-        Assert.Equal("Name", cut.Find("label.flare-input__label").TextContent);
+        Assert.Equal("Name", cut.Find($"label.{Css.Classes.Input.Label}").TextContent);
         Assert.NotNull(cut.Find("input"));
     }
 

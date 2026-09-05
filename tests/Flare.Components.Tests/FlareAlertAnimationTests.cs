@@ -15,7 +15,7 @@ public class FlareAlertAnimationTests : FlareTestContext
     {
         var cut = Render<FlareAlert>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-alert"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Root}"));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class FlareAlertAnimationTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Severity, AlertSeverity.Success));
 
-        Assert.Contains("flare-alert--success", cut.Find(".flare-alert").ClassName ?? "");
+        Assert.Contains(Css.Classes.Alert.Success, cut.Find($".{Css.Classes.Alert.Root}").ClassName ?? "");
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class FlareAlertAnimationTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.ShowCloseButton, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-alert__close"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Alert.Close}"));
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class FlareAlertAnimationTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.AnimateDismiss, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-alert"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Root}"));
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class FlareAlertAnimationTests : FlareTestContext
             .Add(x => x.AnimateDismiss, false)
             .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => { invoked = true; })));
 
-        cut.Find("button.flare-alert__close").Click();
+        cut.Find($"button.{Css.Classes.Alert.Close}").Click();
 
         Assert.True(invoked);
     }
@@ -68,6 +68,6 @@ public class FlareAlertAnimationTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .AddChildContent("Something went wrong."));
 
-        Assert.Contains("Something went wrong.", cut.Find(".flare-alert__body").TextContent);
+        Assert.Contains("Something went wrong.", cut.Find($".{Css.Classes.Alert.Body}").TextContent);
     }
 }

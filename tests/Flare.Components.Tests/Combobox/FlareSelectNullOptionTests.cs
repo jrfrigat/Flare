@@ -20,7 +20,7 @@ public class FlareSelectNullOptionTests : FlareTestContext
     public void NullOption_AddsARowAtTheTopOfTheList()
     {
         var cut = RenderSelect();
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
 
         var options = cut.FindAll("[role=option]");
         Assert.Equal(4, options.Count);
@@ -31,7 +31,7 @@ public class FlareSelectNullOptionTests : FlareTestContext
     public void ClosedField_ShowsTheNullOptionTextInsteadOfEmptiness()
     {
         var cut = RenderSelect();
-        Assert.Contains("All ingredients", cut.Find(".flare-select__value").TextContent);
+        Assert.Contains("All ingredients", cut.Find($".{Css.Classes.Select.Value}").TextContent);
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class FlareSelectNullOptionTests : FlareTestContext
             .Add(x => x.Placeholder, "Pick one")
             .Add(x => x.NullOption, "All ingredients"));
 
-        Assert.Empty(cut.FindAll(".flare-input__placeholder"));
-        Assert.Contains("All ingredients", cut.Find(".flare-select__value").TextContent);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Input.Placeholder}"));
+        Assert.Contains("All ingredients", cut.Find($".{Css.Classes.Select.Value}").TextContent);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class FlareSelectNullOptionTests : FlareTestContext
             .Add(x => x.Items, _items)
             .Add(x => x.Placeholder, "Pick one"));
 
-        Assert.Single(cut.FindAll(".flare-input__placeholder"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Input.Placeholder}"));
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class FlareSelectNullOptionTests : FlareTestContext
             .Add(x => x.NullOption, "All ingredients")
             .Add(x => x.ValueChanged, (string? v) => committed = v));
 
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
         cut.FindAll("[role=option]")[0].Click();
 
         Assert.Null(committed);
@@ -76,7 +76,7 @@ public class FlareSelectNullOptionTests : FlareTestContext
     public void TheNullRow_RendersAsSelectedWhenTheValueIsNull()
     {
         var cut = RenderSelect();
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
 
         Assert.Equal("true", cut.FindAll("[role=option]")[0].GetAttribute("aria-selected"));
     }
@@ -85,8 +85,8 @@ public class FlareSelectNullOptionTests : FlareTestContext
     public void TheNullRow_SurvivesASearchThatMatchesNothingElse()
     {
         var cut = RenderSelect(searchable: true);
-        cut.Find(".flare-select__control").Click();
-        cut.Find("input.flare-select__search").Input("zzz");
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+        cut.Find($"input.{Css.Classes.Select.Search}").Input("zzz");
 
         var options = cut.FindAll("[role=option]");
         Assert.Single(options);
@@ -97,8 +97,8 @@ public class FlareSelectNullOptionTests : FlareTestContext
     public void TheNullRow_StaysAtTheTopWhileFiltering()
     {
         var cut = RenderSelect(searchable: true);
-        cut.Find(".flare-select__control").Click();
-        cut.Find("input.flare-select__search").Input("ar");
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+        cut.Find($"input.{Css.Classes.Select.Search}").Input("ar");
 
         var options = cut.FindAll("[role=option]");
         Assert.Contains("All ingredients", options[0].TextContent);
@@ -113,8 +113,8 @@ public class FlareSelectNullOptionTests : FlareTestContext
             .Add(x => x.NullOption, "All")
             .Add(x => x.NullOptionTemplate, (RenderFragment)(b => b.AddMarkupContent(0, "<em class=\"all-row\">All</em>"))));
 
-        Assert.Single(cut.FindAll(".flare-select__value em.all-row"));
-        cut.Find(".flare-select__control").Click();
+        Assert.Single(cut.FindAll($".{Css.Classes.Select.Value} em.all-row"));
+        cut.Find($".{Css.Classes.Select.Control}").Click();
         Assert.Contains(cut.FindAll("[role=option] em.all-row"), _ => true);
     }
 
@@ -138,7 +138,7 @@ public class FlareSelectNullOptionTests : FlareTestContext
             .Add(x => x.Items, new int?[] { 1, 2, 3 })
             .Add(x => x.NullOption, "Any"));
 
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
         Assert.Equal(4, cut.FindAll("[role=option]").Count);
     }
 }

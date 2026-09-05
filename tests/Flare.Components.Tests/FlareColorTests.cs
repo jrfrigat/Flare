@@ -75,10 +75,10 @@ public class FlareColorTests
         Assert.True(c.IsDynamic);
         var full = c.StyleFull();
         Assert.NotNull(full);
-        Assert.Contains("--fc-main:", full);
-        Assert.Contains("--fc-on:", full);
-        Assert.Contains("--fc-container:", full);
-        Assert.Contains("--fc-on-container:", full);
+        Assert.Contains($"{Css.Tokens.LocalColor.Main}:", full);
+        Assert.Contains($"{Css.Tokens.LocalColor.On}:", full);
+        Assert.Contains($"{Css.Tokens.LocalColor.Container}:", full);
+        Assert.Contains($"{Css.Tokens.LocalColor.OnContainer}:", full);
         Assert.Contains("light-dark(", full);   // mode-adaptive
     }
 

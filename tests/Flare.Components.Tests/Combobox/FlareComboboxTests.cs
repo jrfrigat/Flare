@@ -12,8 +12,8 @@ public class FlareComboboxTests : FlareTestContext
     public void Renders_root_input_with_combobox_role()
     {
         var cut = Render<FlareCombobox<string>>(p => p.Add(x => x.Items, Cities));
-        Assert.NotEmpty(cut.FindAll(".flare-autocomplete"));
-        var input = cut.Find("input.flare-input__control");
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Autocomplete.Root}"));
+        var input = cut.Find($"input.{Css.Classes.Input.Control}");
         Assert.Equal("combobox", input.GetAttribute("role"));
         Assert.Equal("false", input.GetAttribute("aria-expanded"));
     }
@@ -22,7 +22,7 @@ public class FlareComboboxTests : FlareTestContext
     public void Dropdown_closed_initially()
     {
         var cut = Render<FlareCombobox<string>>(p => p.Add(x => x.Items, Cities));
-        Assert.Empty(cut.FindAll(".flare-listbox"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Root}"));
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class FlareComboboxTests : FlareTestContext
     {
         var cut = Render<FlareCombobox<string>>(p => p.Add(x => x.Items, Cities));
         cut.Find("input").Focus();
-        Assert.NotEmpty(cut.FindAll(".flare-listbox"));
-        Assert.Equal(4, cut.FindAll(".flare-listbox__option").Count);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Listbox.Root}"));
+        Assert.Equal(4, cut.FindAll($".{Css.Classes.Listbox.Option}").Count);
         Assert.Equal("true", cut.Find("input").GetAttribute("aria-expanded"));
     }
 
@@ -41,7 +41,7 @@ public class FlareComboboxTests : FlareTestContext
         var cut = Render<FlareCombobox<string>>(p => p.Add(x => x.Items, Cities));
         cut.Find("input").Focus();
         cut.Find("input").Input("lo");
-        var options = cut.FindAll(".flare-listbox__option");
+        var options = cut.FindAll($".{Css.Classes.Listbox.Option}");
         Assert.Single(options);
         Assert.Contains("London", options[0].TextContent);
     }
@@ -56,10 +56,10 @@ public class FlareComboboxTests : FlareTestContext
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<string?>(this, v => bound = v)));
 
         cut.Find("input").Focus();
-        cut.FindAll(".flare-listbox__option")[0].Click();
+        cut.FindAll($".{Css.Classes.Listbox.Option}")[0].Click();
 
         Assert.Equal("Berlin", bound);
-        Assert.Empty(cut.FindAll(".flare-listbox"));   // closed on select
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Root}"));   // closed on select
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class FlareComboboxTests : FlareTestContext
             .Add(x => x.Items, new[] { "Apple", "Avocado", "Banana" })
             .Add(x => x.GroupBy, (Func<string, string>)(s => s.StartsWith("A") ? "A" : "B")));
         cut.Find("input").Focus();
-        Assert.NotEmpty(cut.FindAll(".flare-listbox__group-header"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Listbox.GroupHeader}"));
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class FlareComboboxTests : FlareTestContext
             .Add(x => x.Value, bound)
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<string?>(this, v => bound = v)));
         cut.Find("input").Focus();
-        var selected = cut.FindAll(".flare-listbox__option").Single(o => o.GetAttribute("aria-selected") == "true");
+        var selected = cut.FindAll($".{Css.Classes.Listbox.Option}").Single(o => o.GetAttribute("aria-selected") == "true");
         Assert.Contains("London", selected.TextContent);
         // R8: selection is on the option, never a nested checkbox control inside it.
         Assert.Empty(selected.QuerySelectorAll("[role='checkbox']"));
@@ -157,7 +157,7 @@ public class FlareComboboxTests : FlareTestContext
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<string?>(this, v => bound = v)));
 
         cut.Find("input").Focus();
-        var berlin = cut.FindAll(".flare-listbox__option").First(o => o.TextContent.Contains("Berlin"));
+        var berlin = cut.FindAll($".{Css.Classes.Listbox.Option}").First(o => o.TextContent.Contains("Berlin"));
         berlin.Click();
         Assert.Null(bound);   // disabled -> rejected
     }
@@ -168,7 +168,7 @@ public class FlareComboboxTests : FlareTestContext
         var cut = Render<FlareCombobox<string>>(p => p
             .AddChildContent("<option value=\"s\">Small</option><option value=\"m\">Medium</option>"));
         cut.Find("input").Focus();
-        Assert.Equal(2, cut.FindAll(".flare-listbox__option").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Listbox.Option}").Count);
     }
 
     [Fact]
@@ -183,14 +183,14 @@ public class FlareComboboxTests : FlareTestContext
         var chevron = cut.Find($".{Css.Classes.Autocomplete.Icon}");
         Assert.Equal("BUTTON", chevron.TagName);
         Assert.Equal("false", chevron.GetAttribute("aria-expanded"));
-        Assert.Empty(cut.FindAll(".flare-listbox__option"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Option}"));
 
         chevron.Click();
-        Assert.NotEmpty(cut.FindAll(".flare-listbox__option"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Listbox.Option}"));
         Assert.Equal("true", cut.Find($".{Css.Classes.Autocomplete.Icon}").GetAttribute("aria-expanded"));
 
         cut.Find($".{Css.Classes.Autocomplete.Icon}").Click();
-        Assert.Empty(cut.FindAll(".flare-listbox__option"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Option}"));
         Assert.Equal("false", cut.Find($".{Css.Classes.Autocomplete.Icon}").GetAttribute("aria-expanded"));
     }
 

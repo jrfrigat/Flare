@@ -20,7 +20,7 @@ public class C_FlareButtonFamilyAuditTests : FlareTestContext
         var cut = Render<FlareIconButton>(p => p
             .Add(x => x.Icon, FlareIcons.Add).Add(x => x.Edge, ButtonEdge.Start).Add(x => x.AriaLabel, "add"));
 
-        Assert.Contains("flare-edge-start", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.EdgeStart, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class C_FlareButtonFamilyAuditTests : FlareTestContext
     public void ToggleButton_EdgeEnd_AddsEdgeClass()
     {
         var cut = Render<FlareToggleButton>(p => p.Add(x => x.Edge, ButtonEdge.End).AddChildContent("B"));
-        Assert.Contains("flare-edge-end", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.EdgeEnd, cut.Find("button").ClassName);
     }
 
     [Fact]

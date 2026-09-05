@@ -13,7 +13,7 @@ public class C_FlareTableTests : FlareTestContext
     {
         var cut = Render<FlareTable<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-table"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Table.Root}"));
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class C_FlareTableTests : FlareTestContext
         var cut = Render<FlareTable<string>>(p => p
             .Add(x => x.StickyHeader, true));
 
-        Assert.Contains("flare-table-container--sticky", cut.Find(".flare-table-container").ClassName ?? "");
+        Assert.Contains(Css.Classes.Table.StickyContainer, cut.Find($".{Css.Classes.Table.Container}").ClassName ?? "");
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class C_FlareTableTests : FlareTestContext
                 builder.CloseElement();
             })));
 
-        Assert.NotEmpty(cut.FindAll(".flare-table__group-row"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Table.GroupRow}"));
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class C_FlareTableTests : FlareTestContext
         var rowsBefore = cut.FindAll("tr[data-row]").Count;
         Assert.Equal(2, rowsBefore);
 
-        cut.Find(".flare-table__group-row").Click();
+        cut.Find($".{Css.Classes.Table.GroupRow}").Click();
 
         var rowsAfter = cut.FindAll("tr[data-row]").Count;
         Assert.Equal(0, rowsAfter);
@@ -125,6 +125,6 @@ public class C_FlareTableTests : FlareTestContext
                 builder.CloseElement();
             })));
 
-        Assert.Equal("5", cut.Find(".flare-table__group-row td").GetAttribute("colspan"));
+        Assert.Equal("5", cut.Find($".{Css.Classes.Table.GroupRow} td").GetAttribute("colspan"));
     }
 }

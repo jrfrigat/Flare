@@ -13,7 +13,7 @@ public class C_FlareAvatarTests : FlareTestContext
         var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Text, "John Doe"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-avatar__initials"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Avatar.Initials}"));
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class C_FlareAvatarTests : FlareTestContext
         var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Src, "https://example.com/avatar.png"));
 
-        Assert.NotEmpty(cut.FindAll("img.flare-avatar__img"));
+        Assert.NotEmpty(cut.FindAll($"img.{Css.Classes.Avatar.Img}"));
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class C_FlareAvatarTests : FlareTestContext
         var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Size, AvatarSize.Sm));
 
-        Assert.Contains("flare-avatar--sm", cut.Find(".flare-avatar").ClassName);
+        Assert.Contains(Css.Classes.Avatar.Sm, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class C_FlareAvatarTests : FlareTestContext
         var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Size, AvatarSize.Lg));
 
-        Assert.Contains("flare-avatar--lg", cut.Find(".flare-avatar").ClassName);
+        Assert.Contains(Css.Classes.Avatar.Lg, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class C_FlareAvatarTests : FlareTestContext
         var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Shape, AvatarShape.Square));
 
-        Assert.Contains("flare-avatar--square", cut.Find(".flare-avatar").ClassName);
+        Assert.Contains(Css.Classes.Avatar.Square, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 }
 
@@ -64,7 +64,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
     {
         var cut = Render<FlareAvatarGroup>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-avatar-group"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Avatar.Group}"));
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
         var cut = Render<FlareAvatarGroup>(p => p
             .Add(x => x.Spacing, "-1rem"));
 
-        var style = cut.Find(".flare-avatar-group").GetAttribute("style") ?? string.Empty;
+        var style = cut.Find($".{Css.Classes.Avatar.Group}").GetAttribute("style") ?? string.Empty;
         Assert.Contains("-1rem", style);
     }
 
@@ -92,7 +92,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
         var cut = Render<FlareAvatarGroup>(p => p
             .Add(x => x.Max, 5));
 
-        Assert.Empty(cut.FindAll(".flare-avatar-group__overflow"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Avatar.GroupOverflow}"));
     }
 }
 
@@ -110,8 +110,8 @@ public class C_FlareChipTests : FlareTestContext
             .Add(x => x.Label, "Archived")
             .Add(x => x.Disabled, true));
 
-        var chip = cut.Find(".flare-chip");
-        Assert.Contains("flare-chip--disabled", chip.ClassName);
+        var chip = cut.Find($".{Css.Classes.Chip.Root}");
+        Assert.Contains(Css.Classes.Chip.Disabled, chip.ClassName);
         Assert.Equal("true", chip.GetAttribute("aria-disabled"));
         Assert.Equal("-1", chip.GetAttribute("tabindex"));
     }
@@ -121,8 +121,8 @@ public class C_FlareChipTests : FlareTestContext
     {
         var cut = Render<FlareChip>(p => p.Add(x => x.Label, "Active"));
 
-        var chip = cut.Find(".flare-chip");
-        Assert.DoesNotContain("flare-chip--disabled", chip.ClassName);
+        var chip = cut.Find($".{Css.Classes.Chip.Root}");
+        Assert.DoesNotContain(Css.Classes.Chip.Disabled, chip.ClassName);
         Assert.Null(chip.GetAttribute("aria-disabled"));
         Assert.Equal("0", chip.GetAttribute("tabindex"));
     }
@@ -139,8 +139,8 @@ public class C_FlareChipTests : FlareTestContext
             .Add(x => x.OnClick, () => clicks++)
             .Add(x => x.SelectedChanged, (bool _) => selections++));
 
-        cut.Find(".flare-chip").Click();
-        cut.Find(".flare-chip").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "Enter" });
+        cut.Find($".{Css.Classes.Chip.Root}").Click();
+        cut.Find($".{Css.Classes.Chip.Root}").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "Enter" });
 
         Assert.Equal(0, clicks);
         Assert.Equal(0, selections);
@@ -156,7 +156,7 @@ public class C_FlareChipTests : FlareTestContext
             .Add(x => x.Disabled, true)
             .Add(x => x.OnClose, () => closes++));
 
-        var close = cut.Find(".flare-chip__close");
+        var close = cut.Find($".{Css.Classes.Chip.Close}");
         Assert.True(close.HasAttribute("disabled"));
 
         close.Click();
@@ -175,7 +175,7 @@ public class C_FlareChipTests : FlareTestContext
                 .Add(x => x.Value, "archived")
                 .Add(x => x.Disabled, true)));
 
-        cut.Find(".flare-chip").Click();
+        cut.Find($".{Css.Classes.Chip.Root}").Click();
 
         Assert.Null(selected);
     }
@@ -192,7 +192,7 @@ public class C_FlareBadgeTests : FlareTestContext
     {
         var cut = Render<FlareBadge>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-badge"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Badge.Root}"));
     }
 
     [Fact]
@@ -201,7 +201,7 @@ public class C_FlareBadgeTests : FlareTestContext
         var cut = Render<FlareBadge>(p => p
             .Add(x => x.Count, 7));
 
-        Assert.Contains("7", cut.Find(".flare-badge__indicator").TextContent);
+        Assert.Contains("7", cut.Find($".{Css.Classes.Badge.Indicator}").TextContent);
     }
 
     [Fact]
@@ -211,7 +211,7 @@ public class C_FlareBadgeTests : FlareTestContext
             .Add(x => x.Count, 150)
             .Add(x => x.Max, 99));
 
-        Assert.Contains("99+", cut.Find(".flare-badge__indicator").TextContent);
+        Assert.Contains("99+", cut.Find($".{Css.Classes.Badge.Indicator}").TextContent);
     }
 
     [Fact]
@@ -220,7 +220,7 @@ public class C_FlareBadgeTests : FlareTestContext
         var cut = Render<FlareBadge>(p => p
             .Add(x => x.Dot, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-badge__indicator--dot"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Badge.IndicatorDot}"));
     }
 
     [Fact]
@@ -239,7 +239,7 @@ public class C_FlareBadgeTests : FlareTestContext
             .Add(x => x.Text, "NEW")
             .Add(x => x.Count, 5));
 
-        Assert.Contains("NEW", cut.Find(".flare-badge__indicator").TextContent);
+        Assert.Contains("NEW", cut.Find($".{Css.Classes.Badge.Indicator}").TextContent);
     }
 
     [Fact]
@@ -249,7 +249,7 @@ public class C_FlareBadgeTests : FlareTestContext
             .Add(x => x.Text, "Beta")
             .Add(x => x.Standalone, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-badge--standalone"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Badge.Standalone}"));
     }
 
     [Fact]
@@ -258,7 +258,7 @@ public class C_FlareBadgeTests : FlareTestContext
         var cut = Render<FlareBadge>(p => p
             .Add(x => x.Text, "Tag"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-badge--standalone"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Badge.Standalone}"));
     }
 }
 
@@ -273,7 +273,7 @@ public class C_FlarePaperTests : FlareTestContext
     {
         var cut = Render<FlarePaper>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-paper"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Paper.Root}"));
     }
 
     [Fact]
@@ -291,7 +291,7 @@ public class C_FlarePaperTests : FlareTestContext
         var cut = Render<FlarePaper>(p => p
             .Add(x => x.Elevation, 3));
 
-        Assert.Contains("flare-paper--elevation-3", cut.Find(".flare-paper").ClassName);
+        Assert.Contains(Css.Classes.Paper.Elevation3, cut.Find($".{Css.Classes.Paper.Root}").ClassName);
     }
 
     [Fact]
@@ -300,7 +300,7 @@ public class C_FlarePaperTests : FlareTestContext
         var cut = Render<FlarePaper>(p => p
             .Add(x => x.Square, true));
 
-        Assert.Contains("flare-paper--square", cut.Find(".flare-paper").ClassName);
+        Assert.Contains(Css.Classes.Paper.Square, cut.Find($".{Css.Classes.Paper.Root}").ClassName);
     }
 }
 
@@ -315,7 +315,7 @@ public class C_FlareTimelineTests : FlareTestContext
     {
         var cut = Render<FlareTimeline>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-timeline"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Timeline.Root}"));
     }
 
     [Fact]
@@ -333,7 +333,7 @@ public class C_FlareTimelineTests : FlareTestContext
         var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Right));
 
-        Assert.Contains("flare-timeline--right", cut.Find(".flare-timeline").ClassName);
+        Assert.Contains(Css.Classes.Timeline.Right, cut.Find($".{Css.Classes.Timeline.Root}").ClassName);
     }
 
     [Fact]
@@ -342,7 +342,7 @@ public class C_FlareTimelineTests : FlareTestContext
         var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Alternate));
 
-        Assert.Contains("flare-timeline--alternate", cut.Find(".flare-timeline").ClassName);
+        Assert.Contains(Css.Classes.Timeline.Alternate, cut.Find($".{Css.Classes.Timeline.Root}").ClassName);
     }
 
     [Fact]
@@ -351,9 +351,9 @@ public class C_FlareTimelineTests : FlareTestContext
         var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Left));
 
-        var className = cut.Find(".flare-timeline").ClassName ?? string.Empty;
-        Assert.DoesNotContain("flare-timeline--right", className);
-        Assert.DoesNotContain("flare-timeline--alternate", className);
+        var className = cut.Find($".{Css.Classes.Timeline.Root}").ClassName ?? string.Empty;
+        Assert.DoesNotContain(Css.Classes.Timeline.Right, className);
+        Assert.DoesNotContain(Css.Classes.Timeline.Alternate, className);
     }
 }
 
@@ -368,7 +368,7 @@ public class C_FlareRatingTests : FlareTestContext
     {
         var cut = Render<FlareRating>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-rating"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Rating.Root}"));
     }
 
     [Fact]
@@ -376,7 +376,7 @@ public class C_FlareRatingTests : FlareTestContext
     {
         var cut = Render<FlareRating>();
 
-        Assert.Equal(5, cut.FindAll(".flare-rating__star").Count);
+        Assert.Equal(5, cut.FindAll($".{Css.Classes.Rating.Star}").Count);
     }
 
     [Fact]
@@ -385,7 +385,7 @@ public class C_FlareRatingTests : FlareTestContext
         var cut = Render<FlareRating>(p => p
             .Add(x => x.Max, 3));
 
-        Assert.Equal(3, cut.FindAll(".flare-rating__star").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Rating.Star}").Count);
     }
 
     [Fact]
@@ -394,7 +394,7 @@ public class C_FlareRatingTests : FlareTestContext
         var cut = Render<FlareRating>(p => p
             .Add(x => x.Disabled, true));
 
-        var stars = cut.FindAll(".flare-rating__star");
+        var stars = cut.FindAll($".{Css.Classes.Rating.Star}");
         Assert.All(stars, star => Assert.True(star.HasAttribute("disabled")));
     }
 
@@ -404,7 +404,7 @@ public class C_FlareRatingTests : FlareTestContext
         var cut = Render<FlareRating>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Contains("flare-rating--disabled", cut.Find(".flare-rating").ClassName);
+        Assert.Contains(Css.Classes.Rating.Disabled, cut.Find($".{Css.Classes.Rating.Root}").ClassName);
     }
 
     [Fact]
@@ -414,7 +414,7 @@ public class C_FlareRatingTests : FlareTestContext
             .Add(x => x.Value, 3)
             .Add(x => x.Max, 5));
 
-        var filledStars = cut.FindAll(".flare-rating__star--filled");
+        var filledStars = cut.FindAll($".{Css.Classes.Rating.Filled}");
         Assert.Equal(3, filledStars.Count);
     }
 }

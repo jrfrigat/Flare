@@ -14,7 +14,7 @@ public class C_FlareSelectTests : FlareTestContext
     {
         var cut = Render<FlareSelect<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-select"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Select.Root}"));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Label, "My Label"));
 
-        Assert.Contains("My Label", cut.Find(".flare-input__label").TextContent);
+        Assert.Contains("My Label", cut.Find($".{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class C_FlareSelectTests : FlareTestContext
     {
         var cut = Render<FlareSelect<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-select__control"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Select.Control}"));
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Contains("flare-input--disabled", cut.Find(".flare-select").ClassName);
+        Assert.Contains(Css.Classes.Input.Disabled, cut.Find($".{Css.Classes.Select.Root}").ClassName);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.HelperText, "Hint text"));
 
-        Assert.Contains("Hint text", cut.Find(".flare-input__helper").TextContent);
+        Assert.Contains("Hint text", cut.Find($".{Css.Classes.Input.Helper}").TextContent);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.ErrorText, "Required"));
 
-        Assert.Contains("Required", cut.Find(".flare-input__helper--error").TextContent);
+        Assert.Contains("Required", cut.Find($".{Css.Classes.Input.HelperError}").TextContent);
     }
 
     [Fact]
@@ -68,9 +68,9 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Items, items));
 
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
 
-        var options = cut.FindAll(".flare-select__option");
+        var options = cut.FindAll($".{Css.Classes.Select.Option}");
         Assert.Equal(3, options.Count);
     }
 
@@ -80,7 +80,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .AddUnmatched("data-testid", "my-select"));
 
-        Assert.Equal("my-select", cut.Find(".flare-select").GetAttribute("data-testid"));
+        Assert.Equal("my-select", cut.Find($".{Css.Classes.Select.Root}").GetAttribute("data-testid"));
     }
 
     [Fact]
@@ -90,9 +90,9 @@ public class C_FlareSelectTests : FlareTestContext
             .Add(x => x.Items, new[] { "a", "b" })
             .Add(x => x.ItemTemplate, (RenderFragment<string>)(v => b => b.AddMarkupContent(0, $"<em class=\"tpl\">{v}</em>"))));
 
-        cut.Find(".flare-select__control").Click();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
 
-        Assert.Equal(2, cut.FindAll(".flare-select__option .tpl").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Select.Option} .tpl").Count);
     }
 }
 
@@ -110,7 +110,7 @@ public class C_FlareComboboxTests : FlareTestContext
         var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities));
 
-        Assert.NotEmpty(cut.FindAll(".flare-autocomplete"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Autocomplete.Root}"));
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class C_FlareComboboxTests : FlareTestContext
             .Add(x => x.Label, "City")
             .Add(x => x.Items, _cities));
 
-        Assert.Equal("City", cut.Find("label.flare-input__label").TextContent);
+        Assert.Equal("City", cut.Find($"label.{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public class C_FlareComboboxTests : FlareTestContext
             .Add(x => x.Items, _cities)
             .Add(x => x.HelperText, "Start typing to search"));
 
-        Assert.Contains("Start typing to search", cut.Find(".flare-input__helper").TextContent);
+        Assert.Contains("Start typing to search", cut.Find($".{Css.Classes.Input.Helper}").TextContent);
     }
 
     [Fact]
@@ -160,7 +160,7 @@ public class C_FlareComboboxTests : FlareTestContext
             .Add(x => x.Items, _cities)
             .Add(x => x.ErrorText, "City required"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-input__helper--error"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.HelperError}"));
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class C_FlareComboboxTests : FlareTestContext
         var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities));
 
-        Assert.Empty(cut.FindAll(".flare-listbox"));   // the option surface is not rendered while closed
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Root}"));   // the option surface is not rendered while closed
     }
 
     [Fact]
@@ -178,7 +178,7 @@ public class C_FlareComboboxTests : FlareTestContext
         var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities));
 
-        Assert.NotNull(cut.Find("input.flare-input__control"));
+        Assert.NotNull(cut.Find($"input.{Css.Classes.Input.Control}"));
     }
 }
 
@@ -197,7 +197,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Label, "Fruits")
             .Add(x => x.Items, _fruits));
 
-        var label = cut.Find("label.flare-input__label");
+        var label = cut.Find($"label.{Css.Classes.Input.Label}");
         Assert.Equal("Fruits", label.TextContent);
     }
 
@@ -208,7 +208,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Placeholder, "Pick fruit"));
 
-        Assert.Contains("Pick fruit", cut.Find(".flare-input__placeholder").TextContent);
+        Assert.Contains("Pick fruit", cut.Find($".{Css.Classes.Input.Placeholder}").TextContent);
     }
 
     [Fact]
@@ -217,9 +217,9 @@ public class C_FlareMultiSelectTests : FlareTestContext
         var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
-        cut.Find(".flare-multiselect__control").Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
 
-        Assert.NotEmpty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Multiselect.Dropdown}"));
     }
 
     [Fact]
@@ -228,12 +228,12 @@ public class C_FlareMultiSelectTests : FlareTestContext
         var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
-        cut.Find(".flare-multiselect__control").Click();
-        Assert.NotEmpty(cut.FindAll(".flare-multiselect__dropdown"));
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Multiselect.Dropdown}"));
 
-        cut.Find(".flare-multiselect__control").KeyDown(new KeyboardEventArgs { Key = "Escape" });
+        cut.Find($".{Css.Classes.Multiselect.Control}").KeyDown(new KeyboardEventArgs { Key = "Escape" });
 
-        Assert.Empty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Multiselect.Dropdown}"));
     }
 
     [Fact]
@@ -244,8 +244,8 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.ValuesChanged, v => captured = v));
 
-        cut.Find(".flare-multiselect__control").Click();
-        cut.FindAll(".flare-multiselect__option")[0].Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        cut.FindAll($".{Css.Classes.Multiselect.Option}")[0].Click();
 
         Assert.NotNull(captured);
         Assert.Contains("Apple", captured!);
@@ -260,8 +260,8 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Values, new[] { "Apple" })
             .Add(x => x.ValuesChanged, v => captured = v));
 
-        cut.Find(".flare-multiselect__control").Click();
-        cut.FindAll(".flare-multiselect__option")[0].Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        cut.FindAll($".{Css.Classes.Multiselect.Option}")[0].Click();
 
         Assert.NotNull(captured);
         Assert.DoesNotContain("Apple", captured!);
@@ -274,7 +274,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.HelperText, "Choose one or more"));
 
-        Assert.Contains("Choose one or more", cut.Find(".flare-input__helper").TextContent);
+        Assert.Contains("Choose one or more", cut.Find($".{Css.Classes.Input.Helper}").TextContent);
     }
 
     [Fact]
@@ -284,7 +284,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.ErrorText, "Selection required"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-input__helper--error"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.HelperError}"));
     }
 
     [Fact]
@@ -294,9 +294,9 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Disabled, true));
 
-        cut.Find(".flare-multiselect__control").Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
 
-        Assert.Empty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Multiselect.Dropdown}"));
     }
 
     [Fact]
@@ -305,9 +305,9 @@ public class C_FlareMultiSelectTests : FlareTestContext
         var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
-        cut.Find(".flare-multiselect__control").Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
 
-        var options = cut.FindAll(".flare-multiselect__option");
+        var options = cut.FindAll($".{Css.Classes.Multiselect.Option}");
         Assert.Equal(3, options.Count);
         Assert.Contains("Apple", options[0].TextContent);
         Assert.Contains("Banana", options[1].TextContent);
@@ -321,9 +321,9 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.ItemTemplate, (RenderFragment<string>)(v => b => b.AddMarkupContent(0, $"<em class=\"tpl\">{v}</em>"))));
 
-        cut.Find(".flare-multiselect__control").Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
 
-        Assert.Equal(3, cut.FindAll(".flare-multiselect__option .tpl").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Multiselect.Option} .tpl").Count);
     }
 }
 
@@ -363,7 +363,7 @@ public class C_FlareChipGroupTests : FlareTestContext
     {
         var cut = Render(ChipGroupWith(["Red", "Green", "Blue"]));
 
-        Assert.Equal(3, cut.FindAll(".flare-chip").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Chip.Root}").Count);
     }
 
     [Fact]
@@ -372,9 +372,9 @@ public class C_FlareChipGroupTests : FlareTestContext
         var cut = Render(ChipGroupWith(["A", "B"], multiSelect: false,
             selectedValues: ["A"]));
 
-        var chips = cut.FindAll(".flare-chip");
-        Assert.Contains("flare-chip--selected", chips[0].ClassName);
-        Assert.DoesNotContain("flare-chip--selected", chips[1].ClassName);
+        var chips = cut.FindAll($".{Css.Classes.Chip.Root}");
+        Assert.Contains(Css.Classes.Chip.Selected, chips[0].ClassName);
+        Assert.DoesNotContain(Css.Classes.Chip.Selected, chips[1].ClassName);
     }
 
     [Fact]
@@ -383,10 +383,10 @@ public class C_FlareChipGroupTests : FlareTestContext
         var cut = Render(ChipGroupWith(["X", "Y", "Z"], multiSelect: true,
             selectedValues: ["X", "Z"]));
 
-        var chips = cut.FindAll(".flare-chip");
-        Assert.Contains("flare-chip--selected", chips[0].ClassName);
-        Assert.DoesNotContain("flare-chip--selected", chips[1].ClassName);
-        Assert.Contains("flare-chip--selected", chips[2].ClassName);
+        var chips = cut.FindAll($".{Css.Classes.Chip.Root}");
+        Assert.Contains(Css.Classes.Chip.Selected, chips[0].ClassName);
+        Assert.DoesNotContain(Css.Classes.Chip.Selected, chips[1].ClassName);
+        Assert.Contains(Css.Classes.Chip.Selected, chips[2].ClassName);
     }
 
     [Fact]
@@ -394,9 +394,9 @@ public class C_FlareChipGroupTests : FlareTestContext
     {
         var cut = Render(ChipGroupWith(["One", "Two"], selectedValues: ["Two"]));
 
-        var chips = cut.FindAll(".flare-chip");
-        Assert.DoesNotContain("flare-chip--selected", chips[0].ClassName);
-        Assert.Contains("flare-chip--selected", chips[1].ClassName);
+        var chips = cut.FindAll($".{Css.Classes.Chip.Root}");
+        Assert.DoesNotContain(Css.Classes.Chip.Selected, chips[0].ClassName);
+        Assert.Contains(Css.Classes.Chip.Selected, chips[1].ClassName);
     }
 
     [Fact]
@@ -409,7 +409,7 @@ public class C_FlareChipGroupTests : FlareTestContext
         var cut = Render(ChipGroupWith(["Alpha", "Beta"],
             selectedValuesChanged: callback));
 
-        cut.FindAll(".flare-chip")[0].Click();
+        cut.FindAll($".{Css.Classes.Chip.Root}")[0].Click();
 
         Assert.NotNull(captured);
         Assert.Contains("Alpha", captured!);
@@ -420,7 +420,7 @@ public class C_FlareChipGroupTests : FlareTestContext
     {
         var cut = Render(ChipGroupWith(["MyValue"]));
 
-        Assert.Contains("MyValue", cut.Find(".flare-chip__label").TextContent);
+        Assert.Contains("MyValue", cut.Find($".{Css.Classes.Chip.Label}").TextContent);
     }
 
     [Fact]
@@ -428,8 +428,8 @@ public class C_FlareChipGroupTests : FlareTestContext
     {
         var cut = Render(ChipGroupWith(["P", "Q"], selectedValues: ["Q"]));
 
-        var chips = cut.FindAll(".flare-chip");
-        Assert.Contains("flare-chip--selected", chips[1].ClassName);
+        var chips = cut.FindAll($".{Css.Classes.Chip.Root}");
+        Assert.Contains(Css.Classes.Chip.Selected, chips[1].ClassName);
     }
 
     [Fact]
@@ -444,7 +444,7 @@ public class C_FlareChipGroupTests : FlareTestContext
             selectedValues: ["Cat"],
             selectedValuesChanged: callback));
 
-        cut.FindAll(".flare-chip")[0].Click();
+        cut.FindAll($".{Css.Classes.Chip.Root}")[0].Click();
 
         Assert.NotNull(captured);
         Assert.Empty(captured!);

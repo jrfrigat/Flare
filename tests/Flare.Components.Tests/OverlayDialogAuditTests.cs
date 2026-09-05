@@ -25,10 +25,10 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
     public void Tooltip_DefaultTriggers_HoverAndFocus()
     {
         var cut = Render<FlareTooltip>(p => p.Add(x => x.Content, "hi"));
-        var root = cut.Find(".flare-tooltip");
-        Assert.Contains("flare-tooltip--hover", root.ClassList);
-        Assert.Contains("flare-tooltip--focus", root.ClassList);
-        Assert.DoesNotContain("flare-tooltip--click", root.ClassList);
+        var root = cut.Find($".{Css.Classes.Tooltip.Root}");
+        Assert.Contains(Css.Classes.Tooltip.TriggerHover, root.ClassList);
+        Assert.Contains(Css.Classes.Tooltip.TriggerFocus, root.ClassList);
+        Assert.DoesNotContain(Css.Classes.Tooltip.TriggerClick, root.ClassList);
     }
 
     [Fact]
@@ -37,9 +37,9 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "hi")
             .Add(x => x.ShowOnHover, false));
-        var root = cut.Find(".flare-tooltip");
-        Assert.DoesNotContain("flare-tooltip--hover", root.ClassList);
-        Assert.Contains("flare-tooltip--focus", root.ClassList);
+        var root = cut.Find($".{Css.Classes.Tooltip.Root}");
+        Assert.DoesNotContain(Css.Classes.Tooltip.TriggerHover, root.ClassList);
+        Assert.Contains(Css.Classes.Tooltip.TriggerFocus, root.ClassList);
     }
 
     [Fact]
@@ -49,13 +49,13 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.Content, "hi")
             .Add(x => x.ShowOnHover, false)
             .Add(x => x.ShowOnClick, true));
-        var root = cut.Find(".flare-tooltip");
-        Assert.Contains("flare-tooltip--click", root.ClassList);
-        Assert.DoesNotContain("flare-tooltip--open", cut.Find(".flare-tooltip").ClassList);
+        var root = cut.Find($".{Css.Classes.Tooltip.Root}");
+        Assert.Contains(Css.Classes.Tooltip.TriggerClick, root.ClassList);
+        Assert.DoesNotContain(Css.Classes.Tooltip.Open, cut.Find($".{Css.Classes.Tooltip.Root}").ClassList);
 
-        cut.Find(".flare-tooltip").Click();
-        Assert.Contains("flare-tooltip--open", cut.Find(".flare-tooltip").ClassList);
-        Assert.NotEmpty(cut.FindAll(".flare-tooltip__backdrop"));
+        cut.Find($".{Css.Classes.Tooltip.Root}").Click();
+        Assert.Contains(Css.Classes.Tooltip.Open, cut.Find($".{Css.Classes.Tooltip.Root}").ClassList);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tooltip.Backdrop}"));
     }
 
     [Fact]
@@ -64,10 +64,10 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "hi")
             .Add(x => x.Disabled, true));
-        var root = cut.Find(".flare-tooltip");
-        Assert.Contains("flare-tooltip--disabled", root.ClassList);
-        Assert.DoesNotContain("flare-tooltip--hover", root.ClassList);
-        Assert.DoesNotContain("flare-tooltip--focus", root.ClassList);
+        var root = cut.Find($".{Css.Classes.Tooltip.Root}");
+        Assert.Contains(Css.Classes.Tooltip.Disabled, root.ClassList);
+        Assert.DoesNotContain(Css.Classes.Tooltip.TriggerHover, root.ClassList);
+        Assert.DoesNotContain(Css.Classes.Tooltip.TriggerFocus, root.ClassList);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "hi")
             .Add(x => x.Arrow, true));
-        Assert.Contains("flare-tooltip--arrow", cut.Find(".flare-tooltip").ClassList);
+        Assert.Contains(Css.Classes.Tooltip.Arrow, cut.Find($".{Css.Classes.Tooltip.Root}").ClassList);
     }
 
     [Fact]
@@ -85,7 +85,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "hi")
             .Add(x => x.Delay, 500));
-        Assert.Contains("--fc-tt-delay:500ms", cut.Find(".flare-tooltip").GetAttribute("style"));
+        Assert.Contains("--fc-tt-delay:500ms", cut.Find($".{Css.Classes.Tooltip.Root}").GetAttribute("style"));
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
     {
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.TooltipContent, "<b>rich</b>"));
-        Assert.NotEmpty(cut.FindAll(".flare-tooltip__content--rich"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tooltip.ContentRich}"));
     }
 
     // -- Menu ------------------------------------------------------------------
@@ -109,15 +109,15 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(m => m.Activator, Markup("<span>x</span>")));
 
         // Left click must not open a right-click menu.
-        cut.Find(".flare-menu__activator").Click();
-        Assert.Empty(cut.FindAll(".flare-menu__panel"));
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
+        Assert.Empty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
 
         // The pointer coordinates go to the placement engine as an anchor rectangle rather than into an
         // inline style, so the marker of "opened at the cursor" is the class, not a pair of pixels: two
         // owners for top/left is exactly what the engine was brought in to end.
-        cut.Find(".flare-menu__activator").ContextMenu(new MouseEventArgs { ClientX = 120, ClientY = 240 });
-        var panel = cut.Find(".flare-menu__panel");
-        Assert.Contains("flare-menu__panel--at-cursor", panel.ClassList);
+        cut.Find($".{Css.Classes.Menu.Activator}").ContextMenu(new MouseEventArgs { ClientX = 120, ClientY = 240 });
+        var panel = cut.Find($".{Css.Classes.Menu.Panel}");
+        Assert.Contains(Css.Classes.Menu.AtCursor, panel.ClassList);
         Assert.DoesNotContain("left:", panel.GetAttribute("style") ?? "");
     }
 
@@ -128,9 +128,9 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(m => m.MaxHeight, "14rem")
             .Add(m => m.Activator, Markup("<span>x</span>")));
 
-        cut.Find(".flare-menu__activator").Click();
-        var panel = cut.Find(".flare-menu__panel");
-        Assert.Contains("flare-menu__panel--scroll", panel.ClassList);
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
+        var panel = cut.Find($".{Css.Classes.Menu.Panel}");
+        Assert.Contains(Css.Classes.Menu.PanelScroll, panel.ClassList);
         Assert.Contains("max-height:14rem", panel.GetAttribute("style") ?? "");
     }
 
@@ -149,11 +149,11 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(m => m.Activator, Markup("<span>x</span>"))
             .Add(m => m.ChildContent, MenuItem(autoClose: false)));
 
-        cut.Find(".flare-menu__activator").Click();
-        Assert.NotEmpty(cut.FindAll(".flare-menu__panel"));
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
 
-        cut.Find(".flare-menu-item").Click();
-        Assert.NotEmpty(cut.FindAll(".flare-menu__panel"));
+        cut.Find($".{Css.Classes.Menu.Item}").Click();
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
     }
 
     [Fact]
@@ -163,9 +163,9 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(m => m.Activator, Markup("<span>x</span>"))
             .Add(m => m.ChildContent, MenuItem(autoClose: true)));
 
-        cut.Find(".flare-menu__activator").Click();
-        cut.Find(".flare-menu-item").Click();
-        Assert.Empty(cut.FindAll(".flare-menu__panel"));
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
+        cut.Find($".{Css.Classes.Menu.Item}").Click();
+        Assert.Empty(cut.FindAll($".{Css.Classes.Menu.Panel}"));
     }
 
     // -- Snackbar --------------------------------------------------------------
@@ -178,10 +178,10 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         var opts = new SnackbarOptions { DurationMs = 0, PreventDuplicate = true };
 
         svc.Show("same", opts);
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 1);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 1);
         svc.Show("same", opts);
 
-        Assert.Single(cut.FindAll(".flare-snackbar"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Snackbar.Root}"));
     }
 
     [Fact]
@@ -192,9 +192,9 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
 
         svc.Show("dup", new SnackbarOptions { DurationMs = 0 });
         svc.Show("dup", new SnackbarOptions { DurationMs = 0 });
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 2);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 2);
 
-        Assert.Equal(2, cut.FindAll(".flare-snackbar").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Snackbar.Root}").Count);
     }
 
     [Fact]
@@ -205,11 +205,11 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
 
         svc.Show("a", new SnackbarOptions { DurationMs = 0 });
         svc.Show("b", new SnackbarOptions { DurationMs = 0 });
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 2);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 2);
 
         svc.Clear();
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 0);
-        Assert.Empty(cut.FindAll(".flare-snackbar"));
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 0);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Snackbar.Root}"));
     }
 
     [Fact]
@@ -221,10 +221,10 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
 
         svc.Show(new SnackbarMessage(id, "one", SnackbarSeverity.Normal, 0));
         svc.Show("two", new SnackbarOptions { DurationMs = 0 });
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 2);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 2);
 
         svc.Remove(id);
-        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 1);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 1);
         Assert.Contains("two", cut.Markup);
         Assert.DoesNotContain("one", cut.Markup);
     }
@@ -253,7 +253,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.AnchorContent, Markup("<span>a</span>"))
             .Add(x => x.ChildContent, Markup("<span>c</span>")));
 
-        Assert.NotEmpty(cut.FindAll(".flare-popover__paper--match-width"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.PaperMatchWidth}"));
     }
 
     [Fact]
@@ -265,7 +265,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.AnchorContent, Markup("<span>a</span>"))
             .Add(x => x.ChildContent, Markup("<span>c</span>")));
 
-        Assert.Contains("max-height:12rem", cut.Find(".flare-popover__paper").GetAttribute("style") ?? "");
+        Assert.Contains("max-height:12rem", cut.Find($".{Css.Classes.Popover.Paper}").GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.AnchorContent, Markup("<span>a</span>"))
             .Add(x => x.OpenChanged, (bool v) => opened = v));
 
-        cut.Find(".flare-popover-anchor").MouseEnter();
+        cut.Find($".{Css.Classes.Popover.Anchor}").MouseEnter();
         cut.WaitForState(() => opened);
         Assert.True(opened);
     }
@@ -293,7 +293,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.ChildContent, Markup("<span>c</span>")));
 
         // A hover popover is not modal, so it must not render the dismiss backdrop.
-        Assert.Empty(cut.FindAll(".flare-popover__backdrop"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Popover.Backdrop}"));
     }
 
     // -- Dialog ----------------------------------------------------------------
@@ -307,8 +307,8 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.ShowCloseButton, true)
             .Add(x => x.VisibleChanged, (bool v) => last = v));
 
-        Assert.NotEmpty(cut.FindAll(".flare-dialog__close"));
-        cut.Find(".flare-dialog__close").Click();
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.CloseButton}"));
+        cut.Find($".{Css.Classes.Dialog.CloseButton}").Click();
         Assert.False(last);
     }
 
@@ -322,7 +322,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.BeforeClose, _ => ValueTask.FromResult(false))
             .Add(x => x.VisibleChanged, (bool v) => last = v));
 
-        cut.Find(".flare-dialog__close").Click();
+        cut.Find($".{Css.Classes.Dialog.CloseButton}").Click();
         Assert.Null(last); // vetoed - VisibleChanged never fired
     }
 
@@ -334,8 +334,8 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.Title, "Move me")
             .Add(x => x.Draggable, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-dialog--draggable"));
-        Assert.NotEmpty(cut.FindAll(".flare-dialog__drag-handle"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.Draggable}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.DragHandle}"));
     }
 
     [Fact]
@@ -345,7 +345,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
             .Add(x => x.Visible, true)
             .Add(x => x.Resizable, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-dialog__resizer"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.Resizer}"));
     }
 
     [Fact]

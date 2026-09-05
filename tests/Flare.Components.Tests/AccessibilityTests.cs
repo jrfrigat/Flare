@@ -79,7 +79,7 @@ public class AccessibilityTests : BunitContext
             .Add(p => p.ChildContent, "Warning message")
             .Add(p => p.Severity, AlertSeverity.Warning));
 
-        var alert = cut.Find(".flare-alert");
+        var alert = cut.Find($".{Css.Classes.Alert.Root}");
         Assert.NotNull(alert);
     }
 

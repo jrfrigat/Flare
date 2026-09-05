@@ -37,7 +37,7 @@ public class C_TreeDragDropTests : FlareTestContext
 
         var items = cut.FindAll("li[data-flare-drag]");
         Assert.Equal(2, items.Count);
-        Assert.Contains("flare-draggable", items[0].ClassName);
+        Assert.Contains(Css.Classes.Drag.Item, items[0].ClassName);
         Assert.Empty(cut.FindAll("[draggable]"));
     }
 

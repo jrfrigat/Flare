@@ -14,7 +14,7 @@ public class FlareTreeItemTests : FlareTestContext
         var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Root Node"));
 
-        Assert.NotEmpty(cut.FindAll("li.flare-tree-item"));
+        Assert.NotEmpty(cut.FindAll($"li.{Css.Classes.TreeView.Item}"));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class FlareTreeItemTests : FlareTestContext
         var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Documents"));
 
-        Assert.Contains("Documents", cut.Find(".flare-tree-item__label").TextContent);
+        Assert.Contains("Documents", cut.Find($".{Css.Classes.TreeView.Label}").TextContent);
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class FlareTreeItemTests : FlareTestContext
         var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Leaf"));
 
-        Assert.Empty(cut.FindAll(".flare-tree-item__toggle"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.TreeView.Toggle}"));
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class FlareTreeItemTests : FlareTestContext
             .Add(x => x.Label, "Parent")
             .AddChildContent("<li>Child</li>"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-tree-item__toggle"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.Toggle}"));
     }
 
     [Fact]
@@ -83,8 +83,8 @@ public class FlareTreeItemTests : FlareTestContext
             .Add(x => x.Label, "With Icon")
             .Add(x => x.Icon, FlareIcons.Folder));
 
-        Assert.NotEmpty(cut.FindAll(".flare-tree-item__icon"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Tree.ItemIcon}"));
         // "folder" is built in, so the icon renders as inline SVG (no Material font).
-        Assert.Equal(FlareIcons.Folder.Data, cut.Find(".flare-tree-item__icon path").GetAttribute("d"));
+        Assert.Equal(FlareIcons.Folder.Data, cut.Find($".{Css.Classes.Tree.ItemIcon} path").GetAttribute("d"));
     }
 }

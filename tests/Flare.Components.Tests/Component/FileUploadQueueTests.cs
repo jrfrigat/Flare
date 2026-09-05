@@ -106,9 +106,9 @@ public class C_FileUploadQueueTests : FlareTestContext
         // with no progress, no actions and no state classes.
         var cut = Render<FlareFileUploadZone>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__zone"));
-        Assert.Empty(cut.FindAll(".flare-file-upload__progress"));
-        Assert.Empty(cut.FindAll(".flare-file-upload__file-actions"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.Zone}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.FileUpload.Progress}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.FileUpload.FileActions}"));
     }
 
     [Fact]
@@ -122,9 +122,9 @@ public class C_FileUploadQueueTests : FlareTestContext
             .Add(x => x.Items, new List<FlareUploadFile> { running })
             .Add(x => x.Interactive, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__file--uploading"));
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__progress"));
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__file-actions button"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.FileUploading}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.Progress}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.FileActions} button"));
     }
 
     [Fact]
@@ -138,9 +138,9 @@ public class C_FileUploadQueueTests : FlareTestContext
             .Add(x => x.Items, new List<FlareUploadFile> { failed })
             .Add(x => x.Interactive, true));
 
-        Assert.Contains("413 Payload Too Large", cut.Find(".flare-file-upload__file-error").TextContent);
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__file--failed"));
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__file-actions button"));
+        Assert.Contains("413 Payload Too Large", cut.Find($".{Css.Classes.FileUpload.FileError}").TextContent);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.FileFailed}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.FileActions} button"));
     }
 
     [Fact]
@@ -153,10 +153,10 @@ public class C_FileUploadQueueTests : FlareTestContext
             .Add(x => x.Items, new List<FlareUploadFile> { done })
             .Add(x => x.Interactive, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-file-upload__file--completed"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FileUpload.FileCompleted}"));
         // Named rather than counted: remove is offered on every row, including this one, so "no buttons"
         // would assert the absence of an affordance this test is not about.
-        var labels = cut.FindAll(".flare-file-upload__file-actions button")
+        var labels = cut.FindAll($".{Css.Classes.FileUpload.FileActions} button")
             .Select(b => b.GetAttribute("aria-label"))
             .ToArray();
         Assert.DoesNotContain(FlareStrings.FileUpload_Cancel, labels);
@@ -175,7 +175,7 @@ public class C_FileUploadQueueTests : FlareTestContext
             .Add(x => x.Interactive, true)
             .Add(x => x.OnRetry, (string id) => retried = id));
 
-        cut.Find(".flare-file-upload__file-actions button").Click();
+        cut.Find($".{Css.Classes.FileUpload.FileActions} button").Click();
 
         Assert.Equal(failed.Id, retried);
     }

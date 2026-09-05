@@ -18,7 +18,7 @@ public class FlareChipClosableTests : FlareTestContext
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, false));
 
-        Assert.Empty(cut.FindAll("button.flare-chip__close"));
+        Assert.Empty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class FlareChipClosableTests : FlareTestContext
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-chip__close"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class FlareChipClosableTests : FlareTestContext
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true));
 
-        var btn = cut.Find("button.flare-chip__close");
+        var btn = cut.Find($"button.{Css.Classes.Chip.Close}");
         Assert.NotNull(btn.GetAttribute("aria-label"));
     }
 
@@ -51,7 +51,7 @@ public class FlareChipClosableTests : FlareTestContext
             .Add(x => x.Closeable, true)
             .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => { invoked = true; })));
 
-        cut.Find("button.flare-chip__close").Click();
+        cut.Find($"button.{Css.Classes.Chip.Close}").Click();
 
         Assert.True(invoked);
     }
@@ -62,7 +62,7 @@ public class FlareChipClosableTests : FlareTestContext
         var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "MyChip"));
 
-        Assert.Contains("MyChip", cut.Find(".flare-chip__label").TextContent);
+        Assert.Contains("MyChip", cut.Find($".{Css.Classes.Chip.Label}").TextContent);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class FlareChipClosableTests : FlareTestContext
             .Add(x => x.Closeable, true)
             .Add(x => x.Selected, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-chip__close"));
-        Assert.Contains("flare-chip--selected", cut.Find(".flare-chip").ClassName ?? "");
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
+        Assert.Contains(Css.Classes.Chip.Selected, cut.Find($".{Css.Classes.Chip.Root}").ClassName ?? "");
     }
 }

@@ -15,7 +15,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     {
         var cut = Render<FlareTreeView>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-tree-view"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.Root}"));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class FlareTreeExtendedTests : FlareTestContext
         var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Documents"));
 
-        Assert.Contains("Documents", cut.Find(".flare-tree-item__label").TextContent);
+        Assert.Contains("Documents", cut.Find($".{Css.Classes.TreeView.Label}").TextContent);
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class FlareTreeExtendedTests : FlareTestContext
             .AddChildContent<FlareTreeItem>(bp => bp
                 .Add(x => x.Label, "Child")));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-tree-item__toggle"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.TreeView.Toggle}"));
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class FlareTreeExtendedTests : FlareTestContext
             .AddChildContent<FlareTreeItem>(bp => bp
                 .Add(x => x.Label, "Hidden Child")));
 
-        Assert.Empty(cut.FindAll(".flare-tree-item__children"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.TreeView.Children}"));
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class FlareTreeExtendedTests : FlareTestContext
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 
     [Fact]
@@ -75,6 +75,6 @@ public class FlareTreeExtendedTests : FlareTestContext
             .Add(x => x.ChildrenProvider,
                 (Func<string, Task<IEnumerable<string>>>)(_ => Task.FromResult(Enumerable.Empty<string>()))));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 }

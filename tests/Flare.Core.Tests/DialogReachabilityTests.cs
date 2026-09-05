@@ -21,9 +21,9 @@ public class DialogReachabilityTests
     [Fact]
     public void Panel_IsCappedToTheViewport()
     {
-        var body = RuleBody(".flare-dialog");
+        var body = RuleBody($".{Css.Classes.Dialog.Root}");
 
-        Assert.True(body is not null, "`.flare-dialog` is missing.");
+        Assert.True(body is not null, $"`.{Css.Classes.Dialog.Root}` is missing.");
         Assert.Matches(@"max-block-size\s*:\s*calc\(100dvh", Normalize(body!));
         Assert.Matches(@"flex-direction\s*:\s*column", Normalize(body!));
     }
@@ -50,7 +50,7 @@ public class DialogReachabilityTests
     public void NoLiteralInsetSubtractedFromTheViewport()
     {
         AssertNoMatch(@"calc\(\s*100d?v[hw]\s*-\s*[\d.]",
-            "subtract a literal length from the viewport; use --flare-overlay-viewport-inset");
+            $"subtract a literal length from the viewport; use {Css.Tokens.Overlay.ViewportInset}");
     }
 
     // A share of the screen is the same kind of opinion. 100 is not - that IS the viewport.
@@ -58,7 +58,7 @@ public class DialogReachabilityTests
     public void NoLiteralShareOfTheViewport()
     {
         AssertNoMatch(@"(?<![\d.])(?!100d?v[hw]\b)\d+(\.\d+)?d?v[hw]\b",
-            "take a literal share of the viewport; use --flare-overlay-panel-max-block-size");
+            $"take a literal share of the viewport; use {Css.Tokens.Overlay.PanelMaxBlockSize}");
     }
 
     // A percentage inside color-mix is how strongly one colour is laid over another - a state layer,
@@ -87,9 +87,9 @@ public class DialogReachabilityTests
     [Fact]
     public void ContentRegion_IsWhatScrolls()
     {
-        var body = RuleBody(".flare-dialog__content");
+        var body = RuleBody($".{Css.Classes.Dialog.Content}");
 
-        Assert.True(body is not null, "`.flare-dialog__content` is missing.");
+        Assert.True(body is not null, $"`.{Css.Classes.Dialog.Content}` is missing.");
         Assert.Matches(@"overflow\s*:\s*auto", Normalize(body!));
         // A flex item refuses to shrink below its content without this, so the panel would grow past
         // its own cap instead of the content scrolling inside it.
@@ -101,13 +101,13 @@ public class DialogReachabilityTests
     {
         var css = StripComments(File.ReadAllText(Path.Combine(CssDir, "dialog.css")));
         var rule = Regex.Matches(css, @"(?<selectors>[^{}]+)\{(?<body>[^{}]*)\}")
-            .FirstOrDefault(m => m.Groups["selectors"].Value.Contains(".flare-dialog__actions", StringComparison.Ordinal)
+            .FirstOrDefault(m => m.Groups["selectors"].Value.Contains($".{Css.Classes.Dialog.Actions}", StringComparison.Ordinal)
                 && Regex.IsMatch(m.Groups["body"].Value, @"flex\s*:\s*0 0 auto"));
 
         Assert.True(rule is not null,
             "The header and the actions must be `flex: 0 0 auto`, or the panel's cap is paid for by "
             + "squashing the title and the buttons instead of by scrolling the content.");
-        Assert.Contains(".flare-dialog__header", rule!.Groups["selectors"].Value, StringComparison.Ordinal);
+        Assert.Contains($".{Css.Classes.Dialog.Header}", rule!.Groups["selectors"].Value, StringComparison.Ordinal);
     }
 
     private static string CssDir =>

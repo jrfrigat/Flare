@@ -33,11 +33,11 @@ public class ThemeCompositionTests
         Elevation = new()
         {
             Level0 = "none",
-            Level1 = "0 1px 2px var(--flare-shadow-umbra), 0 1px 3px var(--flare-shadow-penumbra)",
-            Level2 = "0 2px 4px var(--flare-shadow-umbra)",
-            Level3 = "0 4px 8px var(--flare-shadow-umbra)",
-            Level4 = "0 6px 10px var(--flare-shadow-umbra)",
-            Level5 = "0 8px 12px var(--flare-shadow-umbra)",
+            Level1 = $"0 1px 2px var({Css.Tokens.Color.ShadowUmbra}), 0 1px 3px var({Css.Tokens.Color.ShadowPenumbra})",
+            Level2 = $"0 2px 4px var({Css.Tokens.Color.ShadowUmbra})",
+            Level3 = $"0 4px 8px var({Css.Tokens.Color.ShadowUmbra})",
+            Level4 = $"0 6px 10px var({Css.Tokens.Color.ShadowUmbra})",
+            Level5 = $"0 8px 12px var({Css.Tokens.Color.ShadowUmbra})",
         },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationShort3 = "150ms", DurationShort4 = "200ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease", EasingSpringFast = "ease", EasingSpring = "ease", EasingSpringSlow = "ease", DurationSpringFast = "300ms", DurationSpring = "350ms", DurationSpringSlow = "500ms" },
         State = new() { HoverOpacity = "0.08", SelectedOpacity = "0.12", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12", HoverLayer = "currentColor", FocusLayer = "currentColor", PressedLayer = "currentColor", DraggedLayer = "currentColor", FocusHoverLayer = "currentColor", SelectedLayer = "currentColor", SelectedHoverLayer = "currentColor" },
@@ -133,6 +133,6 @@ public class ThemeCompositionTests
         Assert.Equal("rgba(0,0,0,0.25)", vars[Css.Tokens.Color.ShadowUmbra]);
         Assert.Equal("rgba(0,0,0,0.10)", vars[Css.Tokens.Color.ShadowPenumbra]);
         // elevation geometry references the layer vars
-        Assert.Contains("var(--flare-shadow-umbra)", vars[Css.Tokens.Elevation.Level1]);
+        Assert.Contains($"var({Css.Tokens.Color.ShadowUmbra})", vars[Css.Tokens.Elevation.Level1]);
     }
 }

@@ -100,7 +100,7 @@ public class FieldHeightRampTests
             {
                 var selectors = rule.Groups["selectors"].Value;
                 // The subject of a selector is its LAST compound: a rule reading
-                // ".flare-input__field .something { height }" sizes the something, not the well.
+                // $".{Css.Classes.Input.Field} .something {{ height }}" sizes the something, not the well.
                 if (!selectors.Split(',').Any(s => Subject(s).Contains("__field", StringComparison.Ordinal)))
                     continue;
 

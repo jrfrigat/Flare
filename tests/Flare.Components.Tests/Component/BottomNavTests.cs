@@ -28,7 +28,7 @@ public class C_FlareBottomNavTests : FlareTestContext
     {
         var cut = Render<FlareBottomNav>();
 
-        Assert.NotEmpty(cut.FindAll("nav.flare-bottom-nav"));
+        Assert.NotEmpty(cut.FindAll($"nav.{Css.Classes.BottomNav.Root}"));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class C_FlareBottomNavTests : FlareTestContext
         var cut = Render<FlareBottomNav>(p => p
             .AddChildContent(TwoItems()));
 
-        Assert.Equal(2, cut.FindAll(".flare-bottom-nav-item").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.BottomNav.Item}").Count);
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class C_FlareBottomNavTests : FlareTestContext
         var cut = Render<FlareBottomNav>(p => p
             .AddUnmatched("data-testid", "bottom-nav-root"));
 
-        Assert.Equal("bottom-nav-root", cut.Find(".flare-bottom-nav").GetAttribute("data-testid"));
+        Assert.Equal("bottom-nav-root", cut.Find($".{Css.Classes.BottomNav.Root}").GetAttribute("data-testid"));
     }
 }
 
@@ -76,7 +76,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Href, "/home")
             .AddChildContent("Home"));
 
-        Assert.NotEmpty(cut.FindAll("a.flare-bottom-nav-item"));
+        Assert.NotEmpty(cut.FindAll($"a.{Css.Classes.BottomNav.Item}"));
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Href, "/about")
             .AddChildContent("About Us"));
 
-        Assert.Contains("About Us", cut.Find(".flare-bottom-nav-item__label").TextContent);
+        Assert.Contains("About Us", cut.Find($".{Css.Classes.BottomNav.ItemLabel}").TextContent);
     }
 
     [Fact]
@@ -102,7 +102,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             }))
             .AddChildContent("Settings"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-bottom-nav-item__icon"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.BottomNav.ItemIcon}"));
         Assert.NotEmpty(cut.FindAll("#bn-icon"));
     }
 
@@ -124,7 +124,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .AddChildContent("Page"));
 
         var a = cut.Find("a");
-        Assert.Contains("flare-bottom-nav-item--active", a.ClassName ?? "");
+        Assert.Contains(Css.Classes.BottomNav.ItemActive, a.ClassName ?? "");
         Assert.Equal("page", a.GetAttribute("aria-current"));
     }
 
@@ -146,7 +146,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Disabled, true)
             .AddChildContent("Locked"));
 
-        Assert.Contains("flare-bottom-nav-item--disabled", cut.Find("a").ClassName ?? "");
+        Assert.Contains(Css.Classes.BottomNav.ItemDisabled, cut.Find("a").ClassName ?? "");
     }
 
     [Fact]
@@ -201,7 +201,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Match, NavMatchMode.Exact)
             .AddChildContent("Products"));
 
-        Assert.DoesNotContain("flare-bottom-nav-item--active", cut.Find("a").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.BottomNav.ItemActive, cut.Find("a").ClassName ?? "");
     }
 
     [Fact]
@@ -215,7 +215,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Match, NavMatchMode.Prefix)
             .AddChildContent("Products"));
 
-        Assert.Contains("flare-bottom-nav-item--active", cut.Find("a").ClassName ?? "");
+        Assert.Contains(Css.Classes.BottomNav.ItemActive, cut.Find("a").ClassName ?? "");
     }
 
     [Fact]
@@ -229,12 +229,12 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Match, NavMatchMode.Exact)
             .AddChildContent("Settings"));
 
-        Assert.DoesNotContain("flare-bottom-nav-item--active", cut.Find("a").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.BottomNav.ItemActive, cut.Find("a").ClassName ?? "");
 
         cut.InvokeAsync(() => nav.NavigateTo("/settings"));
-        cut.WaitForState(() => cut.Find("a").ClassName?.Contains("flare-bottom-nav-item--active") ?? false);
+        cut.WaitForState(() => cut.Find("a").ClassName?.Contains(Css.Classes.BottomNav.ItemActive) ?? false);
 
-        Assert.Contains("flare-bottom-nav-item--active", cut.Find("a").ClassName ?? "");
+        Assert.Contains(Css.Classes.BottomNav.ItemActive, cut.Find("a").ClassName ?? "");
     }
 
     [Fact]
@@ -248,11 +248,11 @@ public class C_FlareBottomNavItemTests : FlareTestContext
             .Add(x => x.Match, NavMatchMode.Exact)
             .AddChildContent("Settings"));
 
-        Assert.Contains("flare-bottom-nav-item--active", cut.Find("a").ClassName ?? "");
+        Assert.Contains(Css.Classes.BottomNav.ItemActive, cut.Find("a").ClassName ?? "");
 
         cut.InvokeAsync(() => nav.NavigateTo("/home"));
-        cut.WaitForState(() => !(cut.Find("a").ClassName?.Contains("flare-bottom-nav-item--active") ?? false));
+        cut.WaitForState(() => !(cut.Find("a").ClassName?.Contains(Css.Classes.BottomNav.ItemActive) ?? false));
 
-        Assert.DoesNotContain("flare-bottom-nav-item--active", cut.Find("a").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.BottomNav.ItemActive, cut.Find("a").ClassName ?? "");
     }
 }

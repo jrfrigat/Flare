@@ -31,7 +31,7 @@ public class ThemeServiceTests
             LabelSmall = TS(),
         },
         Shape = new() { None = "0", ExtraSmall = "4px", Small = "8px", Medium = "12px", Large = "16px", ExtraLarge = "28px", Full = "9999px", MorphDuration = "0s", MorphEasing = "ease" },
-        Elevation = new() { Level0 = "none", Level1 = "0 1px 2px var(--flare-shadow-umbra)", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
+        Elevation = new() { Level0 = "none", Level1 = $"0 1px 2px var({Css.Tokens.Color.ShadowUmbra})", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationShort3 = "150ms", DurationShort4 = "200ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease", EasingSpringFast = "ease", EasingSpring = "ease", EasingSpringSlow = "ease", DurationSpringFast = "300ms", DurationSpring = "350ms", DurationSpringSlow = "500ms" },
         State = new() { HoverOpacity = "0.08", SelectedOpacity = "0.12", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12", HoverLayer = "currentColor", FocusLayer = "currentColor", PressedLayer = "currentColor", DraggedLayer = "currentColor", FocusHoverLayer = "currentColor", SelectedLayer = "currentColor", SelectedHoverLayer = "currentColor" },
     };
@@ -141,7 +141,7 @@ public class ThemeServiceTests
         public string DisplayName => "ext";
         public DesignTokens Design { get; } = ThemeServiceTests.Design() with
         {
-            Extended = new Dictionary<string, string> { ["--flare-card-radius"] = "var(--flare-shape-medium)" },
+            Extended = new Dictionary<string, string> { [Css.Tokens.CardField.Radius] = $"var({Css.Tokens.Shape.Medium})" },
         };
         public string DefaultPaletteId => "p1";
         public IReadOnlyList<string> StyleAssets => [];
@@ -161,8 +161,8 @@ public class ThemeServiceTests
 
         s.CustomizeColors(c => c with { Primary = "#123456" });
 
-        Assert.Equal("#123456", injector.Custom["--flare-color-primary"]);
-        Assert.False(injector.Custom.ContainsKey("--flare-color-secondary"));
+        Assert.Equal("#123456", injector.Custom[Css.Tokens.Color.Primary]);
+        Assert.False(injector.Custom.ContainsKey(Css.Tokens.Color.Secondary));
     }
 
     [Fact]
@@ -174,7 +174,7 @@ public class ThemeServiceTests
         // The theme's Extended shadows --flare-card-radius; editing the typed Card.Radius must still win.
         s.CustomizeDesign(d => d with { Card = d.Card with { Radius = "2px" } });
 
-        Assert.Equal("2px", injector.Custom["--flare-card-radius"]);
+        Assert.Equal("2px", injector.Custom[Css.Tokens.CardField.Radius]);
     }
 
     [Fact]
@@ -214,7 +214,7 @@ public class ThemeServiceTests
 
         Assert.Contains(".flare-palette-p1{", inj.LastStaticCss);   // active stays
         Assert.Contains(".flare-palette-p2{", inj.LastStaticCss);
-        Assert.Contains("--flare-color-primary:#222222;", inj.LastStaticCss);
+        Assert.Contains($"{Css.Tokens.Color.Primary}:#222222;", inj.LastStaticCss);
     }
 
     [Fact]

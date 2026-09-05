@@ -17,7 +17,7 @@ public class C_FlareSelectSearchTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Searchable, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-select__control .flare-select__search"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Select.Control} .{Css.Classes.Select.Search}"));
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class C_FlareSelectSearchTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
-        Assert.Empty(cut.FindAll(".flare-select__search"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Select.Search}"));
     }
 
     [Fact]
@@ -36,9 +36,9 @@ public class C_FlareSelectSearchTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Searchable, true));
 
-        cut.Find(".flare-select__search").Input("Ban");
+        cut.Find($".{Css.Classes.Select.Search}").Input("Ban");
 
-        var options = cut.FindAll(".flare-select__option");
+        var options = cut.FindAll($".{Css.Classes.Select.Option}");
         Assert.Single(options);
         Assert.Contains("Banana", options[0].TextContent);
     }
@@ -51,9 +51,9 @@ public class C_FlareSelectSearchTests : FlareTestContext
             .Add(x => x.Searchable, true));
 
         // Search input lives in the trigger, sharing the flare-select__search class.
-        Assert.NotEmpty(cut.FindAll(".flare-multiselect__control .flare-select__search"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Multiselect.Control} .{Css.Classes.Select.Search}"));
         // The old in-dropdown search box no longer exists.
-        Assert.Empty(cut.FindAll(".flare-multiselect__search"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Multiselect.Root}__search"));
     }
 
     [Fact]
@@ -63,9 +63,9 @@ public class C_FlareSelectSearchTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Searchable, true));
 
-        cut.Find(".flare-select__search").Input("Ch");
+        cut.Find($".{Css.Classes.Select.Search}").Input("Ch");
 
-        var options = cut.FindAll(".flare-multiselect__option");
+        var options = cut.FindAll($".{Css.Classes.Multiselect.Option}");
         Assert.Single(options);
         Assert.Contains("Cherry", options[0].TextContent);
     }
@@ -80,7 +80,7 @@ public class C_FlareSelectSearchTests : FlareTestContext
             .Add(x => x.Searchable, true)
             .Add(x => x.ValuesChanged, v => captured = v));
 
-        cut.Find(".flare-select__search").KeyDown(new KeyboardEventArgs { Key = "Backspace" });
+        cut.Find($".{Css.Classes.Select.Search}").KeyDown(new KeyboardEventArgs { Key = "Backspace" });
 
         Assert.NotNull(captured);
         Assert.DoesNotContain("Banana", captured!);
@@ -103,7 +103,7 @@ public class C_FlareSelectAriaTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Placeholder, "Pick fruit"));
 
-        var combo = cut.Find(".flare-multiselect__control");
+        var combo = cut.Find($".{Css.Classes.Multiselect.Control}");
         Assert.Equal("combobox", combo.GetAttribute("role"));
         Assert.Equal("Pick fruit", combo.GetAttribute("aria-label"));
     }
@@ -116,8 +116,8 @@ public class C_FlareSelectAriaTests : FlareTestContext
             .Add(x => x.Searchable, true));
 
         // The div is presentational when searchable; the focused input carries the combobox role.
-        Assert.Null(cut.Find(".flare-select__control").GetAttribute("role"));
-        Assert.Equal("combobox", cut.Find(".flare-select__search").GetAttribute("role"));
+        Assert.Null(cut.Find($".{Css.Classes.Select.Control}").GetAttribute("role"));
+        Assert.Equal("combobox", cut.Find($".{Css.Classes.Select.Search}").GetAttribute("role"));
     }
 
     [Fact]
@@ -127,10 +127,10 @@ public class C_FlareSelectAriaTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Searchable, true));
 
-        cut.Find(".flare-select__control").Click();   // opens + enters edit mode
-        cut.Find(".flare-select__search").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        cut.Find($".{Css.Classes.Select.Control}").Click();   // opens + enters edit mode
+        cut.Find($".{Css.Classes.Select.Search}").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
 
-        var active = cut.Find(".flare-select__search").GetAttribute("aria-activedescendant");
+        var active = cut.Find($".{Css.Classes.Select.Search}").GetAttribute("aria-activedescendant");
         Assert.False(string.IsNullOrEmpty(active));
         // The referenced option id actually exists in the rendered listbox.
         Assert.NotNull(cut.Find($"#{active}"));
@@ -150,10 +150,10 @@ public class C_FlareSelectUncontrolledTests : FlareTestContext
     {
         var cut = Render<FlareSelect<string>>(p => p.Add(x => x.Items, _items));
 
-        cut.Find(".flare-select__control").Click();
-        cut.FindAll(".flare-select__option")[1].Click();   // pick "Beta"
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+        cut.FindAll($".{Css.Classes.Select.Option}")[1].Click();   // pick "Beta"
 
-        Assert.Contains("Beta", cut.Find(".flare-select__value").TextContent);
+        Assert.Contains("Beta", cut.Find($".{Css.Classes.Select.Value}").TextContent);
     }
 
     [Fact]
@@ -163,7 +163,7 @@ public class C_FlareSelectUncontrolledTests : FlareTestContext
             .Add(x => x.Items, _items)
             .Add(x => x.Value, "Gamma"));
 
-        Assert.Contains("Gamma", cut.Find(".flare-select__value").TextContent);
+        Assert.Contains("Gamma", cut.Find($".{Css.Classes.Select.Value}").TextContent);
     }
 
     [Fact]
@@ -171,11 +171,11 @@ public class C_FlareSelectUncontrolledTests : FlareTestContext
     {
         var cut = Render<FlareMultiSelect<string>>(p => p.Add(x => x.Items, _items));
 
-        cut.Find(".flare-multiselect__control").Click();
-        cut.FindAll(".flare-multiselect__option")[0].Click();   // Alpha
-        cut.FindAll(".flare-multiselect__option")[2].Click();   // Gamma
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        cut.FindAll($".{Css.Classes.Multiselect.Option}")[0].Click();   // Alpha
+        cut.FindAll($".{Css.Classes.Multiselect.Option}")[2].Click();   // Gamma
 
-        var shown = cut.Find(".flare-multiselect__value").TextContent;
+        var shown = cut.Find($".{Css.Classes.Multiselect.Value}").TextContent;
         Assert.Contains("Alpha", shown);
         Assert.Contains("Gamma", shown);
     }

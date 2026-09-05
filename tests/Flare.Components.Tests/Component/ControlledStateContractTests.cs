@@ -48,11 +48,11 @@ public class ControlledStateContractTests : FlareTestContext
             })));
 
         cut.Find("button").Click();
-        Assert.Contains("flare-collapse--expanded", cut.Markup);
+        Assert.Contains(Css.Classes.Collapse.Expanded, cut.Markup);
 
         // Something else on the page changes; the collapse must not care.
         cut.Render(ps => ps.Add(p => p.Tick, 1));
-        Assert.Contains("flare-collapse--expanded", cut.Markup);
+        Assert.Contains(Css.Classes.Collapse.Expanded, cut.Markup);
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class ControlledStateContractTests : FlareTestContext
 
         // The parent re-renders without moving Expanded: the region goes back to what the parent says.
         cut.Render(ps => ps.Add(p => p.Expanded, false));
-        Assert.DoesNotContain("flare-collapse--expanded", cut.Markup);
+        Assert.DoesNotContain(Css.Classes.Collapse.Expanded, cut.Markup);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class ControlledStateContractTests : FlareTestContext
             .Add(p => p.ChildContent, (RenderFragment)(c => c.AddMarkupContent(0, "<p>body</p>"))));
 
         cut.Render(ps => ps.Add(p => p.Expanded, true));
-        Assert.Contains("flare-collapse--expanded", cut.Markup);
+        Assert.Contains(Css.Classes.Collapse.Expanded, cut.Markup);
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public class ControlledStateContractTests : FlareTestContext
             .Add(p => p.ChildContent, (RenderFragment)(c => c.AddMarkupContent(0, "<p>body</p>"))));
 
         cut.Render(ps => ps.Add(p => p.Expanded, true));
-        Assert.Contains("flare-collapse--expanded", cut.Markup);
+        Assert.Contains(Css.Classes.Collapse.Expanded, cut.Markup);
     }
 
     // ---- FlareToggleButton ---------------------------------------------------------------------

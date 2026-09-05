@@ -15,7 +15,7 @@ public class FieldAttributeSplatTests : FlareTestContext
 
     private static void AssertSplit(IRenderedComponent<IComponent> cut, string controlSelector)
     {
-        var root = cut.Find(".flare-input");
+        var root = cut.Find($".{Css.Classes.Input.Root}");
         Assert.Equal("outer", root.GetAttribute("data-outer"));
         Assert.False(root.HasAttribute("data-inner"));
 
@@ -95,7 +95,7 @@ public class FieldAttributeSplatTests : FlareTestContext
             .Add(x => x.InputAttributes, Inner)
             .AddUnmatched("data-outer", "outer"));
 
-        AssertSplit(cut, ".flare-select__control");
+        AssertSplit(cut, $".{Css.Classes.Select.Control}");
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class FieldAttributeSplatTests : FlareTestContext
             .Add(x => x.InputAttributes, Inner)
             .AddUnmatched("data-outer", "outer"));
 
-        AssertSplit(cut, ".flare-multiselect__control");
+        AssertSplit(cut, $".{Css.Classes.Multiselect.Control}");
     }
 
     [Fact]
@@ -135,7 +135,7 @@ public class FieldAttributeSplatTests : FlareTestContext
     {
         var cut = Render<FlareSelect<string>>(p => p.Add(x => x.Items, new[] { "a", "b" }));
 
-        var arrow = cut.Find(".flare-input__arrow");
+        var arrow = cut.Find($".{Css.Classes.Input.Arrow}");
         Assert.Equal("true", arrow.GetAttribute("aria-hidden"));
         Assert.Equal("-1", arrow.GetAttribute("tabindex"));
         // A named button inside role="combobox" is what the review flagged; the name is gone with it.

@@ -13,7 +13,7 @@ public class FlareNavGroupTests : FlareTestContext
     {
         var cut = Render<FlareNavGroup>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-nav-group"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Navigation.NavGroup}"));
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class FlareNavGroupTests : FlareTestContext
         var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Label, "Navigation"));
 
-        Assert.Contains("Navigation", cut.Find(".flare-nav-group__title").TextContent);
+        Assert.Contains("Navigation", cut.Find($".{Css.Classes.Navigation.NavGroupTitle}").TextContent);
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class FlareNavGroupTests : FlareTestContext
             .Add(x => x.Icon, FlareIcons.Home));
 
         // "home" is built in, so the icon renders as inline SVG (no Material font).
-        Assert.Equal(FlareIcons.Home.Data, cut.Find(".flare-nav-group__icon path").GetAttribute("d"));
+        Assert.Equal(FlareIcons.Home.Data, cut.Find($".{Css.Classes.Navigation.GroupIcon} path").GetAttribute("d"));
     }
 
     [Fact]
@@ -44,8 +44,8 @@ public class FlareNavGroupTests : FlareTestContext
 
         // Items always rendered in DOM (no state loss); hidden via CSS class when collapsed
         Assert.NotEmpty(cut.FindAll("#nav-child"));
-        var items = cut.Find(".flare-nav-group__items");
-        Assert.DoesNotContain("flare-nav-group__items--open", items.ClassName);
+        var items = cut.Find($".{Css.Classes.Navigation.GroupItems}");
+        Assert.DoesNotContain(Css.Classes.Navigation.GroupItemsOpen, items.ClassName);
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class FlareNavGroupTests : FlareTestContext
             .Add(x => x.Expanded, false)
             .AddChildContent("<a id=\"nav-link\">Link</a>"));
 
-        cut.Find("button.flare-nav-group__header").Click();
+        cut.Find($"button.{Css.Classes.Navigation.NavGroupHeader}").Click();
 
         Assert.NotEmpty(cut.FindAll("#nav-link"));
     }
@@ -75,7 +75,7 @@ public class FlareNavGroupTests : FlareTestContext
     {
         var cut = Render<FlareNavGroup>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-nav-group__chevron"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Navigation.GroupChevron}"));
     }
 
     [Fact]

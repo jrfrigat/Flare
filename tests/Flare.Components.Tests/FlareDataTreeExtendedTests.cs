@@ -16,7 +16,7 @@ public class FlareDataTreeExtendedTests : FlareTestContext
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s)));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class FlareDataTreeExtendedTests : FlareTestContext
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class FlareDataTreeExtendedTests : FlareTestContext
                 (Func<string, Task<IEnumerable<string>>>)(_ =>
                     Task.FromResult(Enumerable.Empty<string>()))));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class FlareDataTreeExtendedTests : FlareTestContext
             .Add(x => x.Items, Array.Empty<string>())
             .Add(x => x.KeySelector, (Func<string, object>)(s => s)));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class FlareDataTreeExtendedTests : FlareTestContext
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree__leaf-spacer"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VLeafSpacer}"));
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class FlareDataTreeExtendedTests : FlareTestContext
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
 
-        Assert.Equal(2, cut.FindAll(".flare-vtree__node").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.TreeView.VNode}").Count);
     }
 
     [Fact]
@@ -89,6 +89,6 @@ public class FlareDataTreeExtendedTests : FlareTestContext
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<int, object>)(i => i)));
 
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.VTree}"));
     }
 }

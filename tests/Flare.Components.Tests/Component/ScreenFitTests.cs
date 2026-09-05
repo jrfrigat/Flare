@@ -39,25 +39,25 @@ public sealed class ScreenFitTests : FlareTestContext
     {
         var plain = Render<FlareLayoutContent>(p => p
             .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "page"))));
-        Assert.DoesNotContain("flare-layout-content--fill", plain.Find("main").ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.Layout.ContentFill, plain.Find("main").ClassName, StringComparison.Ordinal);
 
         var filled = Render<FlareLayoutContent>(p => p
             .Add(x => x.FillHeight, true)
             .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "page"))));
-        Assert.Contains("flare-layout-content--fill", filled.Find("main").ClassName, StringComparison.Ordinal);
-        Assert.NotEmpty(filled.FindAll(".flare-layout__content-frame"));
+        Assert.Contains(Css.Classes.Layout.ContentFill, filled.Find("main").ClassName, StringComparison.Ordinal);
+        Assert.NotEmpty(filled.FindAll($".{Css.Classes.Layout.ContentFrame}"));
     }
 
     [Fact]
     public void Tabs_FillHeight_MarksTheRoot()
     {
         var plain = Render<FlareTabs>(p => p.Add(x => x.ChildContent, OneTab("One")));
-        Assert.DoesNotContain("flare-tabs--fill", plain.Find(".flare-tabs").ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.Tabs.Fill, plain.Find($".{Css.Classes.Tabs.Root}").ClassName, StringComparison.Ordinal);
 
         var filled = Render<FlareTabs>(p => p
             .Add(x => x.FillHeight, true)
             .Add(x => x.ChildContent, OneTab("One")));
-        Assert.Contains("flare-tabs--fill", filled.Find(".flare-tabs").ClassName, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.Tabs.Fill, filled.Find($".{Css.Classes.Tabs.Root}").ClassName, StringComparison.Ordinal);
     }
 
     // Paging is a page size, not a mode. Nothing is set here, so every row is on one page and there is
@@ -70,7 +70,7 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Columns, OneColumn()));
 
         Assert.Equal(30, cut.FindAll("tbody tr").Count);
-        Assert.Empty(cut.FindAll(".flare-datagrid__pagination"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Columns, OneColumn()));
 
         Assert.Equal(10, cut.FindAll("tbody tr").Count);
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
     }
 
     // The defect this whole model change started from: the height was gated on a mode flag, so a paged
@@ -99,10 +99,10 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Height, "320px")
             .Add(x => x.Columns, OneColumn()));
 
-        var root = cut.Find(".flare-datagrid");
-        Assert.Contains("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        var root = cut.Find($".{Css.Classes.DataGrid.Root}");
+        Assert.Contains(Css.Classes.DataGrid.Bounded, root.ClassName, StringComparison.Ordinal);
         Assert.Contains("--_flare-datagrid-height:320px", root.GetAttribute("style"), StringComparison.Ordinal);
-        Assert.DoesNotContain("--_flare-datagrid-height", cut.Find(".flare-datagrid__wrapper").GetAttribute("style") ?? "", StringComparison.Ordinal);
+        Assert.DoesNotContain("--_flare-datagrid-height", cut.Find($".{Css.Classes.DataGrid.Wrapper}").GetAttribute("style") ?? "", StringComparison.Ordinal);
     }
 
     // A percentage cap against a content-sized parent computes to `none`, so a percentage has to size
@@ -115,9 +115,9 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Height, "50%")
             .Add(x => x.Columns, OneColumn()));
 
-        var root = cut.Find(".flare-datagrid");
-        Assert.Contains("flare-datagrid--sized", root.ClassName, StringComparison.Ordinal);
-        Assert.DoesNotContain("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        var root = cut.Find($".{Css.Classes.DataGrid.Root}");
+        Assert.Contains(Css.Classes.DataGrid.Sized, root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.DataGrid.Bounded, root.ClassName, StringComparison.Ordinal);
         Assert.Contains("--_flare-datagrid-height:50%", root.GetAttribute("style"), StringComparison.Ordinal);
     }
 
@@ -133,9 +133,9 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Height, height)
             .Add(x => x.Columns, OneColumn()));
 
-        var root = cut.Find(".flare-datagrid");
-        Assert.DoesNotContain("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
-        Assert.DoesNotContain("flare-datagrid--sized", root.ClassName, StringComparison.Ordinal);
+        var root = cut.Find($".{Css.Classes.DataGrid.Root}");
+        Assert.DoesNotContain(Css.Classes.DataGrid.Bounded, root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.DataGrid.Sized, root.ClassName, StringComparison.Ordinal);
         Assert.DoesNotContain("--_flare-datagrid-height", root.GetAttribute("style") ?? "", StringComparison.Ordinal);
     }
 
@@ -148,9 +148,9 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Height, "320px")
             .Add(x => x.Columns, OneColumn()));
 
-        var root = cut.Find(".flare-datagrid");
-        Assert.Contains("flare-datagrid--fill", root.ClassName, StringComparison.Ordinal);
-        Assert.DoesNotContain("flare-datagrid--bounded", root.ClassName, StringComparison.Ordinal);
+        var root = cut.Find($".{Css.Classes.DataGrid.Root}");
+        Assert.Contains(Css.Classes.DataGrid.Fill, root.ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.DataGrid.Bounded, root.ClassName, StringComparison.Ordinal);
         Assert.DoesNotContain("--_flare-datagrid-height", root.GetAttribute("style") ?? "", StringComparison.Ordinal);
     }
 
@@ -164,7 +164,7 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Style, "margin-top:8px")
             .Add(x => x.Columns, OneColumn()));
 
-        var style = cut.Find(".flare-datagrid").GetAttribute("style");
+        var style = cut.Find($".{Css.Classes.DataGrid.Root}").GetAttribute("style");
         Assert.Contains("--_flare-datagrid-height:320px", style, StringComparison.Ordinal);
         Assert.Contains("margin-top:8px", style, StringComparison.Ordinal);
     }
@@ -177,13 +177,13 @@ public sealed class ScreenFitTests : FlareTestContext
         var sticky = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(5))
             .Add(x => x.Columns, OneColumn()));
-        Assert.Contains("flare-datagrid__wrapper--sticky-head", sticky.Find(".flare-datagrid__wrapper").ClassName, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.DataGrid.WrapperStickyHead, sticky.Find($".{Css.Classes.DataGrid.Wrapper}").ClassName, StringComparison.Ordinal);
 
         var loose = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, Rows(5))
             .Add(x => x.StickyHeader, false)
             .Add(x => x.Columns, OneColumn()));
-        Assert.DoesNotContain("sticky-head", loose.Find(".flare-datagrid__wrapper").ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("sticky-head", loose.Find($".{Css.Classes.DataGrid.Wrapper}").ClassName, StringComparison.Ordinal);
     }
 
     // Virtualization recycles the rows of whatever set it is given; it does not decide what that set is.
@@ -203,14 +203,14 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Virtual, true)
             .Add(x => x.Columns, OneColumn()));
 
-        Assert.True(cut.FindAll("tbody tr").Count > cut.FindAll("tbody tr.flare-datagrid__row").Count,
+        Assert.True(cut.FindAll("tbody tr").Count > cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count,
             "The virtual path renders Virtualize's spacer rows around its window; an unvirtualized grid "
             + "renders nothing but data rows. Only spacers tell the two apart without depending on how "
             + "many rows Virtualize chose to build.");
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
-        Assert.Equal(10, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
+        Assert.Equal(10, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
         // Recycling changes how many rows exist, so the columns must stop being measured from them.
-        Assert.Contains("flare-datagrid__table--fixed", cut.Find("table").ClassName, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.DataGrid.TableFixed, cut.Find("table").ClassName, StringComparison.Ordinal);
     }
 
     // Recycling no longer changes anything but the number of rows in the DOM, so the grid can decide for
@@ -231,7 +231,7 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Virtual, @virtual)
             .Add(x => x.Columns, OneColumn()));
 
-        var recycling = cut.FindAll("tbody tr").Count > cut.FindAll("tbody tr.flare-datagrid__row").Count;
+        var recycling = cut.FindAll("tbody tr").Count > cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count;
         Assert.Equal(expected, recycling);
     }
 
@@ -245,8 +245,8 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.PageSize, 50)
             .Add(x => x.Columns, OneColumn()));
 
-        Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll("tbody tr.flare-datagrid__row").Count);
-        Assert.Equal(50, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
+        Assert.Equal(50, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -256,8 +256,8 @@ public sealed class ScreenFitTests : FlareTestContext
             .Add(x => x.Items, Rows(500))
             .Add(x => x.Columns, OneColumn()));
 
-        Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll("tbody tr.flare-datagrid__row").Count);
-        Assert.Equal(500, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(cut.FindAll("tbody tr").Count, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
+        Assert.Equal(500, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]

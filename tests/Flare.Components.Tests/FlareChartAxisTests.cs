@@ -186,8 +186,8 @@ public class FlareChartAxisTests : FlareTestContext
             .Add(x => x.YAxisMinorTicks, 1));
 
         var style = MinorLines(cut)[0].GetAttribute("style") ?? "";
-        Assert.Contains("var(--flare-chart-grid-minor-color)", style);
-        Assert.Contains("var(--flare-chart-grid-minor-width)", style);
+        Assert.Contains($"var({Css.Tokens.Chart.GridMinorColor})", style);
+        Assert.Contains($"var({Css.Tokens.Chart.GridMinorWidth})", style);
     }
 
     [Fact]

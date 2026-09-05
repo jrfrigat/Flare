@@ -44,8 +44,8 @@ public sealed class DataGridProjectionCacheTests : FlareTestContext
         var afterFirstRender = calls;
         Assert.True(afterFirstRender > 0, "The pipeline has to have run at least once.");
 
-        cut.FindAll("tbody tr.flare-datagrid__row")[0].Click();
-        cut.FindAll("tbody tr.flare-datagrid__row")[1].Click();
+        cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0].Click();
+        cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[1].Click();
 
         Assert.Equal(afterFirstRender, calls);
     }
@@ -60,13 +60,13 @@ public sealed class DataGridProjectionCacheTests : FlareTestContext
             .Add(x => x.Columns, NameColumn()));
 
         var before = calls;
-        cut.Find("th.flare-datagrid__th--sortable").Click();
+        cut.Find($"th.{Css.Classes.DataGrid.ThSortable}").Click();
 
         Assert.True(calls > before, "A sort changes the projection, so the cache must be dropped.");
-        Assert.Equal("row 001", cut.FindAll("tbody tr.flare-datagrid__row")[0].TextContent.Trim());
+        Assert.Equal("row 001", cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0].TextContent.Trim());
 
-        cut.Find("th.flare-datagrid__th--sortable").Click();
-        Assert.Equal("row 020", cut.FindAll("tbody tr.flare-datagrid__row")[0].TextContent.Trim());
+        cut.Find($"th.{Css.Classes.DataGrid.ThSortable}").Click();
+        Assert.Equal("row 020", cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0].TextContent.Trim());
     }
 
     // The case the cache could get wrong and no test would notice: the application mutates the list it
@@ -80,12 +80,12 @@ public sealed class DataGridProjectionCacheTests : FlareTestContext
             .Add(x => x.Items, rows)
             .Add(x => x.Columns, NameColumn()));
 
-        Assert.Equal(3, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(3, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
 
         rows.Add(new Row("row 004"));
         cut.Render();
 
-        Assert.Equal(4, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(4, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
         Assert.Contains("row 004", cut.Markup, StringComparison.Ordinal);
     }
 
@@ -98,7 +98,7 @@ public sealed class DataGridProjectionCacheTests : FlareTestContext
 
         cut.Render(p => p.Add(x => x.Items, Rows(7)));
 
-        Assert.Equal(7, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(7, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -109,11 +109,11 @@ public sealed class DataGridProjectionCacheTests : FlareTestContext
             .Add(x => x.FilterMode, DataGridFilterMode.Simple)
             .Add(x => x.Columns, FilterableNameColumn()));
 
-        Assert.Equal(20, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(20, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
 
-        cut.Find(".flare-datagrid__filter-row .flare-input__control").Input("row 007");
+        cut.Find($".{Css.Classes.DataGrid.FilterRow} .{Css.Classes.Input.Control}").Input("row 007");
 
-        Assert.Single(cut.FindAll("tbody tr.flare-datagrid__row"));
+        Assert.Single(cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}"));
     }
 
     private static RenderFragment FilterableNameColumn() => b =>

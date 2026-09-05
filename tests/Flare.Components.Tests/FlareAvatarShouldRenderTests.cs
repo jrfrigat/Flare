@@ -9,7 +9,7 @@ public class FlareAvatarShouldRenderTests : FlareTestContext
     public void RendersRootElement()
     {
         var cut = Render<FlareAvatar>();
-        Assert.NotEmpty(cut.FindAll(".flare-avatar"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Avatar.Root}"));
     }
 
     [Fact]
@@ -17,7 +17,7 @@ public class FlareAvatarShouldRenderTests : FlareTestContext
     {
         var cut = Render<FlareAvatar>();
         // Default fallback is the built-in person SVG (no Material Symbols font dependency).
-        Assert.NotEmpty(cut.FindAll(".flare-avatar__icon path"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Avatar.Icon} path"));
     }
 
     [Fact]
@@ -31,20 +31,20 @@ public class FlareAvatarShouldRenderTests : FlareTestContext
     public void SrcRendersImg()
     {
         var cut = Render<FlareAvatar>(p => p.Add(x => x.Src, "/img/avatar.png"));
-        Assert.NotEmpty(cut.FindAll("img.flare-avatar__img"));
+        Assert.NotEmpty(cut.FindAll($"img.{Css.Classes.Avatar.Img}"));
     }
 
     [Fact]
     public void SmallSizeAppliesClass()
     {
         var cut = Render<FlareAvatar>(p => p.Add(x => x.Size, AvatarSize.Sm));
-        Assert.Contains("flare-avatar--sm", cut.Find(".flare-avatar").ClassName);
+        Assert.Contains(Css.Classes.Avatar.Sm, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 
     [Fact]
     public void SquareShapeAppliesClass()
     {
         var cut = Render<FlareAvatar>(p => p.Add(x => x.Shape, AvatarShape.Square));
-        Assert.Contains("flare-avatar--square", cut.Find(".flare-avatar").ClassName);
+        Assert.Contains(Css.Classes.Avatar.Square, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 }

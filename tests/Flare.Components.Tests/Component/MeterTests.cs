@@ -26,7 +26,7 @@ public class C_FlareMeterTests : FlareTestContext
     {
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, TwoSegments));
 
-        Assert.Equal(2, cut.FindAll(".flare-meter__seg").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Meter.Seg}").Count);
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class C_FlareMeterTests : FlareTestContext
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, TwoSegments));
 
         // 75 / 25 of a 100 total -> already normalized.
-        var segs = cut.FindAll(".flare-meter__seg");
+        var segs = cut.FindAll($".{Css.Classes.Meter.Seg}");
         Assert.Contains("flex-grow:75", segs[0].GetAttribute("style"));
         Assert.Contains("flex-grow:25", segs[1].GetAttribute("style"));
     }
@@ -59,7 +59,7 @@ public class C_FlareMeterTests : FlareTestContext
 
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, fractional));
 
-        var grows = cut.FindAll(".flare-meter__seg")
+        var grows = cut.FindAll($".{Css.Classes.Meter.Seg}")
             .Select(s => double.Parse(
                 Regex.Match(s.GetAttribute("style")!, @"flex-grow:([0-9.E+-]+)").Groups[1].Value,
                 CultureInfo.InvariantCulture))
@@ -75,7 +75,7 @@ public class C_FlareMeterTests : FlareTestContext
     {
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, TwoSegments));
 
-        Assert.Contains("flare-color-error", cut.FindAll(".flare-meter__seg")[0].ClassName);
+        Assert.Contains(Css.Classes.Color.Error, cut.FindAll($".{Css.Classes.Meter.Seg}")[0].ClassName);
     }
 
     [Fact]
@@ -90,8 +90,8 @@ public class C_FlareMeterTests : FlareTestContext
 
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, zero));
 
-        Assert.Empty(cut.FindAll(".flare-meter__seg"));
-        Assert.Contains("flare-meter--empty", cut.Find(".flare-meter").ClassName);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Meter.Seg}"));
+        Assert.Contains(Css.Classes.Meter.Empty, cut.Find($".{Css.Classes.Meter.Root}").ClassName);
     }
 
     [Fact]
@@ -101,8 +101,8 @@ public class C_FlareMeterTests : FlareTestContext
             .Add(x => x.ShowLegend, true)
             .Add(x => x.ChildContent, TwoSegments));
 
-        Assert.Equal(2, cut.FindAll(".flare-meter__legend-item").Count);
-        Assert.Contains("DB", cut.Find(".flare-meter__legend").TextContent);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Meter.LegendItem}").Count);
+        Assert.Contains("DB", cut.Find($".{Css.Classes.Meter.Legend}").TextContent);
     }
 
     // The accessible label must carry the same information a sighted user gets: ShowValues gates the legend
@@ -113,7 +113,7 @@ public class C_FlareMeterTests : FlareTestContext
     {
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, TwoSegments));
 
-        var label = cut.Find(".flare-meter").GetAttribute("aria-label")!;
+        var label = cut.Find($".{Css.Classes.Meter.Root}").GetAttribute("aria-label")!;
         Assert.Equal("DB; Other", label);
     }
 
@@ -124,7 +124,7 @@ public class C_FlareMeterTests : FlareTestContext
             .Add(x => x.ShowValues, true)
             .Add(x => x.ChildContent, TwoSegments));
 
-        var label = cut.Find(".flare-meter").GetAttribute("aria-label")!;
+        var label = cut.Find($".{Css.Classes.Meter.Root}").GetAttribute("aria-label")!;
         Assert.Contains("DB 75", label);
         Assert.Contains("Other 25", label);
     }
@@ -145,7 +145,7 @@ public class C_FlareMeterTests : FlareTestContext
             .Add(x => x.ShowValues, true)
             .Add(x => x.ChildContent, noisy));
 
-        var label = cut.Find(".flare-meter").GetAttribute("aria-label")!;
+        var label = cut.Find($".{Css.Classes.Meter.Root}").GetAttribute("aria-label")!;
         Assert.DoesNotContain("0.06269999999999998", label);
         Assert.DoesNotContain("0,06269999999999998", label);
     }
@@ -192,10 +192,10 @@ public class C_FlareProgressZonesTests : FlareTestContext
             .Add(x => x.Value, 40d)
             .Add(x => x.Zones, DangerZone));
 
-        var band = cut.Find(".flare-progress__zone");
+        var band = cut.Find($".{Css.Classes.Progress.Zone}");
         Assert.Contains("--_z0:90.00%", band.GetAttribute("style"));
         Assert.Contains("--_z1:100.00%", band.GetAttribute("style"));
-        Assert.Contains("flare-color-error", band.ClassName);
+        Assert.Contains(Css.Classes.Color.Error, band.ClassName);
     }
 
     [Fact]
@@ -205,10 +205,10 @@ public class C_FlareProgressZonesTests : FlareTestContext
             .Add(x => x.Value, 40d)
             .Add(x => x.Zones, DangerZone));
 
-        var root = cut.Find(".flare-progress--linear");
-        Assert.Contains("flare-progress--with-zones", root.ClassName);
-        Assert.DoesNotContain("flare-progress--split", root.ClassName);
-        Assert.Empty(cut.FindAll(".flare-progress__remain"));
+        var root = cut.Find($".{Css.Classes.Progress.Linear}");
+        Assert.Contains(Css.Classes.Progress.WithZones, root.ClassName);
+        Assert.DoesNotContain(Css.Classes.Progress.Split, root.ClassName);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Progress.Remain}"));
     }
 
     [Fact]
@@ -216,10 +216,10 @@ public class C_FlareProgressZonesTests : FlareTestContext
     {
         var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 40d));
 
-        var root = cut.Find(".flare-progress--linear");
-        Assert.Contains("flare-progress--split", root.ClassName);
-        Assert.DoesNotContain("flare-progress--with-zones", root.ClassName);
-        Assert.Empty(cut.FindAll(".flare-progress__zone"));
+        var root = cut.Find($".{Css.Classes.Progress.Linear}");
+        Assert.Contains(Css.Classes.Progress.Split, root.ClassName);
+        Assert.DoesNotContain(Css.Classes.Progress.WithZones, root.ClassName);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Progress.Zone}"));
     }
 
     [Fact]
@@ -235,7 +235,7 @@ public class C_FlareProgressZonesTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        Assert.Empty(cut.FindAll(".flare-progress__zone"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Progress.Zone}"));
     }
 
     // Mirror of the meter guard: a weighted meter part has no meaning on a host-owned scale.

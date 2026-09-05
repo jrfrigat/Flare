@@ -32,7 +32,7 @@ public class TokensToCssTests
             LabelSmall = TS(),
         },
         Shape = new() { None = "0", ExtraSmall = "4px", Small = "8px", Medium = "12px", Large = "16px", ExtraLarge = "28px", Full = "9999px", MorphDuration = "0s", MorphEasing = "ease" },
-        Elevation = new() { Level0 = "none", Level1 = "0 1px 2px var(--flare-shadow-umbra)", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
+        Elevation = new() { Level0 = "none", Level1 = $"0 1px 2px var({Css.Tokens.Color.ShadowUmbra})", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationShort3 = "150ms", DurationShort4 = "200ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease", EasingSpringFast = "ease", EasingSpring = "ease", EasingSpringSlow = "ease", DurationSpringFast = "300ms", DurationSpring = "350ms", DurationSpringSlow = "500ms" },
         State = new() { HoverOpacity = "0.08", SelectedOpacity = "0.12", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12", HoverLayer = "currentColor", FocusLayer = "currentColor", PressedLayer = "currentColor", DraggedLayer = "currentColor", FocusHoverLayer = "currentColor", SelectedLayer = "currentColor", SelectedHoverLayer = "currentColor" },
         Extended = extended ?? new Dictionary<string, string> { ["--x"] = "1" },
@@ -128,9 +128,9 @@ public class TokensToCssTests
         });
 
         Assert.Contains(".flare-palette-ocean{", css);
-        Assert.Contains(".flare-palette-ocean.flare-mode-dark{", css);
-        Assert.Contains("--flare-color-primary:#0000FF;", css);
-        Assert.Contains("--flare-color-primary:#88AAFF;", css);
+        Assert.Contains($".flare-palette-ocean.{Css.Classes.Theme.ModeDark}{{", css);
+        Assert.Contains($"{Css.Tokens.Color.Primary}:#0000FF;", css);
+        Assert.Contains($"{Css.Tokens.Color.Primary}:#88AAFF;", css);
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class TokensToCssTests
         var css = TokensToCss.ThemeCss(new FakeTheme("md3", design, darkExt));
 
         Assert.Contains(".flare-theme-md3{", css);
-        Assert.Contains(".flare-theme-md3.flare-mode-dark{", css);
+        Assert.Contains($".flare-theme-md3.{Css.Classes.Theme.ModeDark}{{", css);
         Assert.Contains("--a:dark;", css);   // changed key present
         Assert.DoesNotContain("--b:keep;.flare", css); // unchanged key not duplicated in the dark rule
     }

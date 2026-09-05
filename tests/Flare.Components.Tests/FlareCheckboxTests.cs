@@ -62,7 +62,7 @@ public class FlareCheckboxTests : FlareTestContext
         var cut = Render<FlareCheckbox>(p => p
             .Add(c => c.Disabled, true));
 
-        var wrapper = cut.Find(".flare-checkbox--disabled");
+        var wrapper = cut.Find($".{Css.Classes.Checkbox.Disabled}");
         Assert.NotNull(wrapper);
     }
 
@@ -72,7 +72,7 @@ public class FlareCheckboxTests : FlareTestContext
         var cut = Render<FlareCheckbox>(p => p
             .Add(c => c.Disabled, false));
 
-        Assert.Empty(cut.FindAll(".flare-checkbox--disabled"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Checkbox.Disabled}"));
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class FlareCheckboxTests : FlareTestContext
         var cut = Render<FlareCheckbox>(p => p
             .Add(c => c.Label, "Accept terms"));
 
-        var labelSpan = cut.Find(".flare-checkbox__label");
+        var labelSpan = cut.Find($".{Css.Classes.Checkbox.Label}");
         Assert.Equal("Accept terms", labelSpan.TextContent);
     }
 
@@ -91,7 +91,7 @@ public class FlareCheckboxTests : FlareTestContext
         var cut = Render<FlareCheckbox>(p => p
             .Add(c => c.Label, (string?)null));
 
-        Assert.Empty(cut.FindAll(".flare-checkbox__label"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Checkbox.Label}"));
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class FlareCheckboxTests : FlareTestContext
         var cut = Render<FlareCheckbox>(p => p
             .Add(c => c.ErrorText, "Required"));
 
-        var error = cut.Find(".flare-checkbox__error");
+        var error = cut.Find($".{Css.Classes.Checkbox.ErrorMsg}");
         Assert.Contains("Required", error.TextContent);
     }
 
@@ -110,7 +110,7 @@ public class FlareCheckboxTests : FlareTestContext
         var cut = Render<FlareCheckbox>(p => p
             .Add(c => c.ErrorText, "Required"));
 
-        var wrapper = cut.Find(".flare-checkbox--error");
+        var wrapper = cut.Find($".{Css.Classes.Checkbox.Error}");
         Assert.NotNull(wrapper);
     }
 
@@ -119,7 +119,7 @@ public class FlareCheckboxTests : FlareTestContext
     {
         var cut = Render<FlareCheckbox>();
 
-        Assert.Empty(cut.FindAll(".flare-checkbox__error"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Checkbox.ErrorMsg}"));
     }
 
     [Fact]
@@ -127,6 +127,6 @@ public class FlareCheckboxTests : FlareTestContext
     {
         var cut = Render<FlareCheckbox>();
 
-        Assert.Single(cut.FindAll(".flare-checkbox__indicator"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Checkbox.Indicator}"));
     }
 }
