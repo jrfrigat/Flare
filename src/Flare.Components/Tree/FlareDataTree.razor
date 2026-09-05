@@ -6,7 +6,7 @@
 <div class="@BuildCssClass()" style="@($"{Style};height:{Height}")" @attributes="AdditionalAttributes">
     <Virtualize Items="@_flat" Context="node" OverscanCount="5">
         <div class="@Css.Classes.TreeView.VNode"
-             style="@($"--flare-vtree-indent:{(node.Level * 1.25).ToString(System.Globalization.CultureInfo.InvariantCulture)}rem")"
+             style="@($"{Css.Tokens.LocalVars.TreeIndent}:{(node.Level * 1.25).ToString(System.Globalization.CultureInfo.InvariantCulture)}rem")"
              role="treeitem"
              aria-expanded="@(node.HasChildren ? node.IsExpanded.ToString().ToLower() : null)"
              aria-selected="@node.IsSelected.ToString().ToLower()"

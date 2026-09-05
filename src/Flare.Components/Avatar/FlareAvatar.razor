@@ -77,10 +77,10 @@
 
     private static readonly (string bg, string fg)[] _palette =
     [
-        ("var(--flare-color-primary-container)", "var(--flare-color-on-primary-container)"),
-        ("var(--flare-color-secondary-container)", "var(--flare-color-on-secondary-container)"),
-        ("var(--flare-color-tertiary-container)", "var(--flare-color-on-tertiary-container)"),
-        ("var(--flare-color-error-container)", "var(--flare-color-on-error-container)"),
+        ($"var({Css.Tokens.Color.PrimaryContainer})", $"var({Css.Tokens.Color.OnPrimaryContainer})"),
+        ($"var({Css.Tokens.Color.SecondaryContainer})", $"var({Css.Tokens.Color.OnSecondaryContainer})"),
+        ($"var({Css.Tokens.Color.TertiaryContainer})", $"var({Css.Tokens.Color.OnTertiaryContainer})"),
+        ($"var({Css.Tokens.Color.ErrorContainer})", $"var({Css.Tokens.Color.OnErrorContainer})"),
     ];
 
     private string _sizeClass => Size switch

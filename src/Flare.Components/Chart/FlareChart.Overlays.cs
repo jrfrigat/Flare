@@ -22,7 +22,7 @@ public partial class FlareChart
             builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => ToggleSeries(idx)));
             builder.OpenElement(5, "span");
             builder.AddAttribute(6, "class", Css.Classes.Chart.LegendDot);
-            builder.AddAttribute(7, "style", $"--flare-chart-dot:{GetColor(idx)}");
+            builder.AddAttribute(7, "style", $"{Css.Tokens.LocalVars.ChartDot}:{GetColor(idx)}");
             builder.CloseElement();
             builder.OpenElement(8, "span");
             builder.AddContent(9, series[idx].Label);
@@ -44,7 +44,7 @@ public partial class FlareChart
         double b = (n * sxy - sx * sy) / denom;
         double a = (sy - b * sx) / n;
         double x1 = pts.Min(p => p.X), x2 = pts.Max(p => p.X);
-        return string.Create(_inv, $"<line x1=\"{x1:F1}\" y1=\"{a + b * x1:F1}\" x2=\"{x2:F1}\" y2=\"{a + b * x2:F1}\" style=\"stroke:{color};stroke-width:var(--flare-chart-trend-width);stroke-dasharray:var(--flare-chart-trend-dash);opacity:var(--flare-chart-trend-opacity)\"/>");
+        return string.Create(_inv, $"<line x1=\"{x1:F1}\" y1=\"{a + b * x1:F1}\" x2=\"{x2:F1}\" y2=\"{a + b * x2:F1}\" style=\"stroke:{color};stroke-width:var({Css.Tokens.Chart.TrendWidth});stroke-dasharray:var({Css.Tokens.Chart.TrendDash});opacity:var({Css.Tokens.Chart.TrendOpacity})\"/>");
     }
 
     // Overlays drawn in DATA coordinates: thresholds and bands on either axis, free segments, arrows and
@@ -66,10 +66,10 @@ public partial class FlareChart
 
         foreach (var a in anns)
         {
-            var color = a.Color.CssValue ?? "var(--flare-chart-annotation-color)";
-            var stroke = $"stroke:{color};stroke-width:var(--flare-chart-annotation-width);stroke-dasharray:"
-                + (a.LineStyle is { } ls ? DashOf(ls) : "var(--flare-chart-annotation-dash)");
-            var textStyle = $"fill:{color};font-size:var(--flare-chart-label-size)";
+            var color = a.Color.CssValue ?? $"var({Css.Tokens.Chart.AnnotationColor})";
+            var stroke = $"stroke:{color};stroke-width:var({Css.Tokens.Chart.AnnotationWidth});stroke-dasharray:"
+                + (a.LineStyle is { } ls ? DashOf(ls) : $"var({Css.Tokens.Chart.AnnotationDash})");
+            var textStyle = $"fill:{color};font-size:var({Css.Tokens.Chart.LabelSize})";
 
             switch (a.Kind)
             {
@@ -85,7 +85,7 @@ public partial class FlareChart
                 {
                     double b1 = YOf(a.Y), b2 = YOf(a.Y2);
                     double top = Math.Min(b1, b2), bh = Math.Abs(b2 - b1);
-                    sb.Append(string.Create(_inv, $"<rect x=\"{_padL}\" y=\"{top:F1}\" width=\"{_plotW:F1}\" height=\"{bh:F1}\" style=\"fill:{color};fill-opacity:var(--flare-chart-annotation-band-opacity)\"/>"));
+                    sb.Append(string.Create(_inv, $"<rect x=\"{_padL}\" y=\"{top:F1}\" width=\"{_plotW:F1}\" height=\"{bh:F1}\" style=\"fill:{color};fill-opacity:var({Css.Tokens.Chart.AnnotationBandOpacity})\"/>"));
                     AppendLabel(sb, a, right, top - 3, "end", textStyle);
                     break;
                 }
@@ -100,7 +100,7 @@ public partial class FlareChart
                 {
                     double v1 = XOfIndex(a.X), v2 = XOfIndex(a.X2);
                     double left = Math.Min(v1, v2), bw = Math.Abs(v2 - v1);
-                    sb.Append(string.Create(_inv, $"<rect x=\"{left:F1}\" y=\"{_padT}\" width=\"{bw:F1}\" height=\"{_plotH:F1}\" style=\"fill:{color};fill-opacity:var(--flare-chart-annotation-band-opacity)\"/>"));
+                    sb.Append(string.Create(_inv, $"<rect x=\"{left:F1}\" y=\"{_padT}\" width=\"{bw:F1}\" height=\"{_plotH:F1}\" style=\"fill:{color};fill-opacity:var({Css.Tokens.Chart.AnnotationBandOpacity})\"/>"));
                     AppendLabel(sb, a, left + 3, _padT + 10, "start", textStyle);
                     break;
                 }

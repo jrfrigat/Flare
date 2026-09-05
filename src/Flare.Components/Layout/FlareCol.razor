@@ -37,16 +37,16 @@
     {
         get
         {
-            var parts = new List<string>(8) { $"--flare-col-span:{Span}" };
-            if (Xs is int xs) parts.Add($"--flare-col-span-xs:{xs}");
-            if (Sm is int sm) parts.Add($"--flare-col-span-sm:{sm}");
-            if (Md is int md) parts.Add($"--flare-col-span-md:{md}");
-            if (Lg is int lg) parts.Add($"--flare-col-span-lg:{lg}");
-            if (Xl is int xl) parts.Add($"--flare-col-span-xl:{xl}");
-            if (Xxl is int xxl) parts.Add($"--flare-col-span-xxl:{xxl}");
+            var parts = new List<string>(8) { $"{Css.Tokens.LocalVars.ColSpan}:{Span}" };
+            if (Xs is int xs) parts.Add($"{Css.Tokens.LocalVars.ColSpanXs}:{xs}");
+            if (Sm is int sm) parts.Add($"{Css.Tokens.LocalVars.ColSpanSm}:{sm}");
+            if (Md is int md) parts.Add($"{Css.Tokens.LocalVars.ColSpanMd}:{md}");
+            if (Lg is int lg) parts.Add($"{Css.Tokens.LocalVars.ColSpanLg}:{lg}");
+            if (Xl is int xl) parts.Add($"{Css.Tokens.LocalVars.ColSpanXl}:{xl}");
+            if (Xxl is int xxl) parts.Add($"{Css.Tokens.LocalVars.ColSpanXxl}:{xxl}");
             // ColStart wins over Offset; Offset N starts the column at line N+1.
             var start = ColStart ?? (Offset > 0 ? Offset + 1 : (int?)null);
-            if (start is int s) parts.Add($"--flare-col-start:{s}");
+            if (start is int s) parts.Add($"{Css.Tokens.LocalVars.ColStart}:{s}");
             if (!string.IsNullOrWhiteSpace(Style)) parts.Add(Style);
             return string.Join(';', parts);
         }

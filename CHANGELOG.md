@@ -87,26 +87,6 @@ All notable changes to Flare are documented here. This project adheres to
   changed. `Data` now documents that replacing it refits the axis, which is the trap underneath all of
   this.
 
-### Fixed
-
-- **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
-  threshold rather than the press, and by then pointer capture has been taken - so every pointer event
-  is retargeted to the capturing container and `e.target` is the container, never what was pressed. The
-  drag-and-drop layer reads `e.target` to learn which item was picked up, found nothing, and returned.
-  It only ever worked where capture silently failed. `onStart` now receives the press, whose
-  coordinates are also what a grab offset is measured from.
-
-### Fixed
-
-- **Every "fit the screen" cap in the library uses `dvh` rather than `vh`.** The dialog fix in 0.31.0
-  moved its own caps; the same unit was still sizing the DataGrid's filter menu, its filter-builder
-  tree and the shortcuts panel. On a phone `100vh` counts the space behind the browser chrome, so a
-  `vh` cap is too generous exactly where a cap is needed - the filter menu promised in its own comment
-  that "the actions row stays reachable" and then measured against a viewport taller than the screen.
-  A guard now fails on any `vh` in any component stylesheet.
-
-## [0.31.0] - 2026-09-05
-
 - **A `FlareDraggable` can be reordered from the keyboard.** Tab to it, space picks it up, the arrows
   walk it through every position it could take, space drops it there, escape lets it go. None of the
   four surfaces that reordered had this, and a control only a pointer can operate is one half the
@@ -131,6 +111,46 @@ All notable changes to Flare are documented here. This project adheres to
   It runs on a frame loop, not on `pointermove`, because a pointer held still at the edge stops firing
   moves - which is exactly the moment the scrolling has to continue. Each scroll re-runs the hit test:
   the pointer has not moved, but what is under it has.
+
+### Changed
+
+- **Russian text drops the letter yo.** `U+0451` is spelled `U+0435` throughout - the RU resx values,
+  the RU documentation, the theme readmes and this changelog. The letter is optional in Russian
+  orthography, so either convention is defensible, but the repository held both at once: one term looked
+  like two to anyone searching the Gallery, and to any translation memory.
+
+- **Every CSS custom-property name a component writes now comes from the registry, not from a string.**
+  `Flare.Abstractions` owns the names so that a rename is a compile error; component code spelled 58
+  lines of them by hand, where nothing checked. The half that mattered was the per-instance channels - a
+  clock hand's angle, a tree row's indent, a grid cell's span - because their CSS reads them WITH a
+  fallback, so a drift is not a broken element, it is a component that quietly stops moving. Those, the
+  component tokens that had a constant all along (starting with `--flare-avatar-group-spacing`, which is
+  what raised this) and 27 chart names are on constants now. The chart emits byte-identical markup; that
+  was checked in the browser rather than assumed.
+
+  Fifteen literals remain and all fifteen are meant to: prefix construction
+  (`--flare-typescale-{scale}-*` and friends, which IS the registry's mechanism) and doc comments. A
+  blanket "no literals" guard was planned and is deliberately not written - the two ways a name can fail
+  silently are already covered, everything else is visible the moment it is wrong, and a rule about
+  housekeeping does not belong in the build.
+
+### Fixed
+
+- **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
+  threshold rather than the press, and by then pointer capture has been taken - so every pointer event
+  is retargeted to the capturing container and `e.target` is the container, never what was pressed. The
+  drag-and-drop layer reads `e.target` to learn which item was picked up, found nothing, and returned.
+  It only ever worked where capture silently failed. `onStart` now receives the press, whose
+  coordinates are also what a grab offset is measured from.
+
+- **Every "fit the screen" cap in the library uses `dvh` rather than `vh`.** The dialog fix in 0.31.0
+  moved its own caps; the same unit was still sizing the DataGrid's filter menu, its filter-builder
+  tree and the shortcuts panel. On a phone `100vh` counts the space behind the browser chrome, so a
+  `vh` cap is too generous exactly where a cap is needed - the filter menu promised in its own comment
+  that "the actions row stays reachable" and then measured against a viewport taller than the screen.
+  A guard now fails on any `vh` in any component stylesheet.
+
+## [0.31.0] - 2026-09-05
 
 ### Changed
 

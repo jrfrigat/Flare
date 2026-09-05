@@ -7,7 +7,7 @@
         @foreach (var preset in Presets)
         {
             <button class="@Css.Classes.Color.CustomizerSwatch @(IsSelected(preset.Primary) ? Css.Classes.Color.CustomizerSwatchActive : "")"
-                    style="@($"--flare-swatch:{SafeColor(preset.Primary)}")"
+                    style="@($"{Css.Tokens.LocalVars.Swatch}:{SafeColor(preset.Primary)}")"
                     title="@preset.Name"
                     @onclick="@(() => ApplyPreset(preset))">
             </button>

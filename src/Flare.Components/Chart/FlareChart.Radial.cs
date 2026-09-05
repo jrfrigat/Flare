@@ -91,7 +91,7 @@ public partial class FlareChart
                 double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
                 poly.Append(string.Create(_inv, $"{cx + rr * Math.Cos(ang):F1},{cy + rr * Math.Sin(ang):F1} "));
             }
-            builder.AddMarkupContent(seq++, $"<polygon points=\"{poly.ToString().Trim()}\" style=\"fill:{color};stroke:{color};fill-opacity:var(--flare-chart-radar-fill-opacity);stroke-width:var(--flare-chart-line-width);stroke-linejoin:round\"/>");
+            builder.AddMarkupContent(seq++, $"<polygon points=\"{poly.ToString().Trim()}\" style=\"fill:{color};stroke:{color};fill-opacity:var({Css.Tokens.Chart.RadarFillOpacity});stroke-width:var({Css.Tokens.Chart.LineWidth});stroke-linejoin:round\"/>");
         }
     };
 
@@ -123,7 +123,7 @@ public partial class FlareChart
                 double t = (v - min) / (max - min);
                 double x = _padL + c * cellW, y = _padT + r * cellH;
                 builder.AddMarkupContent(seq++, string.Create(_inv,
-                    $"<rect class=\"{Css.Classes.Chart.Cell}\" x=\"{x + gap / 2:F1}\" y=\"{y + gap / 2:F1}\" width=\"{Math.Max(0, cellW - gap):F1}\" height=\"{Math.Max(0, cellH - gap):F1}\" rx=\"{cellR:F2}\" style=\"fill:var(--flare-chart-ramp-color);fill-opacity:{(opMin + opSpan * t):F2}\"/>"));
+                    $"<rect class=\"{Css.Classes.Chart.Cell}\" x=\"{x + gap / 2:F1}\" y=\"{y + gap / 2:F1}\" width=\"{Math.Max(0, cellW - gap):F1}\" height=\"{Math.Max(0, cellH - gap):F1}\" rx=\"{cellR:F2}\" style=\"fill:var({Css.Tokens.Chart.RampColor});fill-opacity:{(opMin + opSpan * t):F2}\"/>"));
                 if (ShowValues && cellH >= 14)
                     builder.AddMarkupContent(seq++, string.Create(_inv,
                         $"<text x=\"{x + cellW / 2:F1}\" y=\"{y + cellH / 2 + 3:F1}\" text-anchor=\"middle\" style=\"{_valueStyle}\">{v:G3}</text>"));
@@ -196,7 +196,7 @@ public partial class FlareChart
             double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
             int large = step > Math.PI ? 1 : 0;
             string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
-            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(i)};stroke:{GetColor(i)};fill-opacity:var(--flare-chart-wedge-opacity);stroke-width:var(--flare-chart-slice-stroke-width)\"/>");
+            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(i)};stroke:{GetColor(i)};fill-opacity:var({Css.Tokens.Chart.WedgeOpacity});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})\"/>");
         }
     };
 

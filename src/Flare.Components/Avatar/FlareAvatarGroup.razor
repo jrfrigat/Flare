@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass()"
-     style="--flare-avatar-group-spacing:@Spacing; @Style"
+     style="@($"{Css.Tokens.AvatarField.GroupSpacing}:{Spacing}; {Style}")"
      @attributes="AdditionalAttributes">
     <CascadingValue Value="@this" IsFixed="true">
         @ChildContent
