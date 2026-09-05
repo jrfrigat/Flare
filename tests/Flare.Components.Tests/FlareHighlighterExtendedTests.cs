@@ -16,7 +16,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     {
         var cut = Render<FlareHighlighter>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-highlighter"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Highlighter.Root}"));
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
         var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "hello world"));
 
-        Assert.Contains("hello world", cut.Find(".flare-highlighter").TextContent);
+        Assert.Contains("hello world", cut.Find($".{Css.Classes.Highlighter.Root}").TextContent);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
             .Add(x => x.Text, "Find the keyword here")
             .Add(x => x.Highlight, "keyword"));
 
-        Assert.Contains("flare-highlighter__mark", cut.Find("mark").ClassName ?? "");
+        Assert.Contains(Css.Classes.Highlighter.Mark, cut.Find("mark").ClassName ?? "");
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
         var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, (string?)null));
 
-        Assert.NotEmpty(cut.FindAll(".flare-highlighter"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Highlighter.Root}"));
     }
 
     [Fact]
@@ -87,7 +87,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
             .Add(x => x.Highlight, (string?)null));
 
         Assert.Empty(cut.FindAll("mark"));
-        Assert.Contains("some text", cut.Find(".flare-highlighter").TextContent);
+        Assert.Contains("some text", cut.Find($".{Css.Classes.Highlighter.Root}").TextContent);
     }
 
     [Fact]
@@ -106,6 +106,6 @@ public class FlareHighlighterExtendedTests : FlareTestContext
         var cut = Render<FlareHighlighter>(p => p
             .AddUnmatched("data-testid", "highlighter-root"));
 
-        Assert.Equal("highlighter-root", cut.Find(".flare-highlighter").GetAttribute("data-testid"));
+        Assert.Equal("highlighter-root", cut.Find($".{Css.Classes.Highlighter.Root}").GetAttribute("data-testid"));
     }
 }

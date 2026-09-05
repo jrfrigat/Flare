@@ -13,9 +13,9 @@ public class DateTimePickerAuditTests : FlareTestContext
             .Add(c => c.Inline, true)
             .Add(c => c.OpenTo, PickerOpenTo.Year));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datepicker__year-grid"));
-        Assert.Equal(12, cut.FindAll(".flare-datepicker__year-btn").Count);
-        Assert.Empty(cut.FindAll(".flare-picker__day")); // the day grid is not shown in year view
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DatePicker.YearGrid}"));
+        Assert.Equal(12, cut.FindAll($".{Css.Classes.DatePicker.YearBtn}").Count);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Picker.Day}")); // the day grid is not shown in year view
     }
 
     // Item 7: Inline renders the panel in normal flow (no scrim, calendar always visible).
@@ -24,9 +24,9 @@ public class DateTimePickerAuditTests : FlareTestContext
     {
         var cut = Render<FlareDatePicker>(p => p.Add(c => c.Inline, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-picker__panel--inline"));
-        Assert.Empty(cut.FindAll(".flare-picker__scrim"));
-        Assert.NotEmpty(cut.FindAll(".flare-picker__day"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Picker.PanelInline}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Picker.Scrim}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Picker.Day}"));
     }
 
     // Item 5: ShowWeekNumbers renders a leading week-number column (1 header + 6 rows).
@@ -37,7 +37,7 @@ public class DateTimePickerAuditTests : FlareTestContext
             .Add(c => c.Inline, true)
             .Add(c => c.ShowWeekNumbers, true));
 
-        Assert.Equal(7, cut.FindAll(".flare-picker__weeknum").Count);
+        Assert.Equal(7, cut.FindAll($".{Css.Classes.Picker.WeekNum}").Count);
     }
 
     // Item 5: FirstDayOfWeek override changes which weekday the grid starts on.
@@ -52,7 +52,7 @@ public class DateTimePickerAuditTests : FlareTestContext
         var expected = new DateOnly(2026, 7, 1);
         while (expected.DayOfWeek != DayOfWeek.Monday) expected = expected.AddDays(-1);
 
-        Assert.Equal(expected.Day.ToString(), cut.FindAll(".flare-picker__day")[0].TextContent);
+        Assert.Equal(expected.Day.ToString(), cut.FindAll($".{Css.Classes.Picker.Day}")[0].TextContent);
     }
 
     // Item 8: DayClassFunc adds a custom class to matching day cells.
@@ -64,7 +64,7 @@ public class DateTimePickerAuditTests : FlareTestContext
             .Add(c => c.Value, new DateOnly(2026, 7, 15))
             .Add(c => c.DayClassFunc, d => d.Day == 15 ? "holiday" : ""));
 
-        Assert.NotEmpty(cut.FindAll(".flare-picker__day.holiday"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Picker.Day}.holiday"));
     }
 
     // Item 1 + 4: imperative Open/Close drive the popup and fire Opened/Closed.
@@ -77,14 +77,14 @@ public class DateTimePickerAuditTests : FlareTestContext
             .Add(c => c.Opened, EventCallback.Factory.Create(this, () => opened++))
             .Add(c => c.Closed, EventCallback.Factory.Create(this, () => closed++)));
 
-        Assert.Empty(cut.FindAll(".flare-datepicker__panel"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DatePicker.Panel}"));
 
         await cut.InvokeAsync(() => cut.Instance.OpenAsync());
-        Assert.NotEmpty(cut.FindAll(".flare-datepicker__panel"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DatePicker.Panel}"));
         Assert.Equal(1, opened);
 
         await cut.InvokeAsync(() => cut.Instance.CloseAsync());
-        Assert.Empty(cut.FindAll(".flare-datepicker__panel"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DatePicker.Panel}"));
         Assert.Equal(1, closed);
     }
 
@@ -95,9 +95,9 @@ public class DateTimePickerAuditTests : FlareTestContext
         var cut = Render<FlareDatePicker>(p => p.Add(c => c.AutoClose, false));
         await cut.InvokeAsync(() => cut.Instance.OpenAsync());
 
-        cut.FindAll(".flare-picker__day")[15].Click();
+        cut.FindAll($".{Css.Classes.Picker.Day}")[15].Click();
 
-        Assert.NotEmpty(cut.FindAll(".flare-datepicker__panel")); // still open
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DatePicker.Panel}")); // still open
     }
 
     // Item 6: TimePicker ShowSeconds adds a third (seconds) column in the Dropdown variant.
@@ -110,7 +110,7 @@ public class DateTimePickerAuditTests : FlareTestContext
 
         await cut.InvokeAsync(() => cut.Instance.OpenAsync());
 
-        Assert.Equal(3, cut.FindAll(".flare-timepicker__col").Count); // hours + minutes + seconds
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.TimePicker.Col}").Count); // hours + minutes + seconds
     }
 
     // Item 1: the imperative API surface is present family-wide.

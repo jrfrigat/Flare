@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Guards the two browser defaults that quietly break a field the moment it holds a number or an
@@ -28,11 +28,11 @@ public sealed class NumberInputChromeTests
     private static readonly (string Selector, string File)[] NumberInputSelectors =
     [
         // FlareNumericField, and any FlareField with Type="number" (the DataGrid's numeric filter).
-        (".flare-input__control[type=number]", "input.css"),
+        ($".{Css.Classes.Input.Control}[type=number]", "input.css"),
         // FlareDateTimePicker's hour/minute boxes.
-        (".flare-datetimepicker__time-input", "datetimepicker.css"),
+        ($".{Css.Classes.DateTimePicker.TimeInput}", "datetimepicker.css"),
         // FlareColorPicker's R/G/B and H/S/L boxes.
-        (".flare-colorpicker__input[type=number]", "colorpicker.css"),
+        ($".{Css.Classes.Colorpicker.Input}[type=number]", "colorpicker.css"),
     ];
 
     [Theory]
@@ -65,10 +65,10 @@ public sealed class NumberInputChromeTests
         var css = ReadCoreCss("input.css");
         var rule = Regex.Match(css, @"^\.flare-input__control\s*\{(.*?)\}", RegexOptions.Multiline | RegexOptions.Singleline);
 
-        Assert.True(rule.Success, "input.css no longer declares a .flare-input__control rule.");
+        Assert.True(rule.Success, $"input.css no longer declares a .{Css.Classes.Input.Control} rule.");
         Assert.True(
             Regex.IsMatch(rule.Groups[1].Value, @"min-width:\s*0"),
-            ".flare-input__control must set min-width: 0. Without it the control keeps its intrinsic "
+            $".{Css.Classes.Input.Control} must set min-width: 0. Without it the control keeps its intrinsic "
             + "width as a flex floor and pushes the prefix, suffix, clear button and stepper outside the field.");
     }
 

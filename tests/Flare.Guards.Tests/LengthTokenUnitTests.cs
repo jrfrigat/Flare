@@ -9,7 +9,7 @@ using Flare.Theme.MaterialDesign3Expressive;
 using Flare.Theme.VisualStudio;
 using Flare.Theming;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// A token that lands in a <c>calc()</c> addition must carry a unit: inside <c>calc()</c> a bare <c>0</c> is a
@@ -19,8 +19,8 @@ namespace Flare.Core.Tests;
 /// dropped.
 ///
 /// This is the third shape of the same bug the other two guards cover: a custom property that is PRESENT but
-/// not substitutable, quietly invalidating the declaration that reads it. <see cref="ParkedTokenFallbackTests"/>
-/// catches <c>initial</c> and <see cref="DeadFallbackTests"/> catches a core fallback - both ask "is a value
+/// not substitutable, quietly invalidating the declaration that reads it. <c>ParkedTokenFallbackTests</c>
+/// catches <c>initial</c> and <c>DeadFallbackTests</c> catches a core fallback - both ask "is a value
 /// supplied". This one asks the next question down: "is the supplied value the CSS TYPE the declaration
 /// substitutes it into". MaterialDesign2 shipped <c>SliderTokens.Gap = "0"</c> and its slider rail was
 /// invisible at every size, through every release that had the theme.

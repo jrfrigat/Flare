@@ -14,7 +14,7 @@ public class FlareChipSingleTests : FlareTestContext
         var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tech"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-chip"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Chip.Root}"));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class FlareChipSingleTests : FlareTestContext
         var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Science"));
 
-        Assert.Contains("Science", cut.Find(".flare-chip__label").TextContent);
+        Assert.Contains("Science", cut.Find($".{Css.Classes.Chip.Label}").TextContent);
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class FlareChipSingleTests : FlareTestContext
             .Add(x => x.Label, "Art")
             .Add(x => x.Selected, true));
 
-        Assert.Contains("flare-chip--selected", cut.Find(".flare-chip").ClassName);
+        Assert.Contains(Css.Classes.Chip.Selected, cut.Find($".{Css.Classes.Chip.Root}").ClassName);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class FlareChipSingleTests : FlareTestContext
             .Add(x => x.Label, "Music")
             .Add(x => x.Closeable, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-chip__close"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Chip.Close}"));
     }
 
     [Fact]
@@ -53,6 +53,6 @@ public class FlareChipSingleTests : FlareTestContext
             .Add(x => x.Label, "Sports")
             .Add(x => x.Closeable, false));
 
-        Assert.Empty(cut.FindAll(".flare-chip__close"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chip.Close}"));
     }
 }

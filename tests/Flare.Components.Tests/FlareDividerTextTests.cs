@@ -16,7 +16,7 @@ public class FlareDividerTextTests : FlareTestContext
         var cut = Render<FlareDivider>();
 
         // Horizontal renders as <hr>
-        Assert.Contains("flare-divider", cut.Find("hr").ClassName ?? "");
+        Assert.Contains(Css.Classes.Divider.Root, cut.Find("hr").ClassName ?? "");
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class FlareDividerTextTests : FlareTestContext
             .Add(x => x.Vertical, true));
 
         Assert.Empty(cut.FindAll("hr"));
-        Assert.NotEmpty(cut.FindAll("div.flare-divider"));
+        Assert.NotEmpty(cut.FindAll($"div.{Css.Classes.Divider.Root}"));
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class FlareDividerTextTests : FlareTestContext
         var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, true));
 
-        Assert.Contains("flare-divider--vertical", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.Divider.Vertical, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class FlareDividerTextTests : FlareTestContext
         var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, false));
 
-        Assert.DoesNotContain("flare-divider--vertical", cut.Find("hr").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.Divider.Vertical, cut.Find("hr").ClassName ?? "");
     }
 
     [Fact]

@@ -8,7 +8,7 @@ public class FlareFieldTests : FlareTestContext
         var cut = Render<FlareField<string>>(p => p
             .Add(c => c.Label, "Username"));
 
-        var label = cut.Find("label.flare-input__label");
+        var label = cut.Find($"label.{Css.Classes.Input.Label}");
         Assert.Equal("Username", label.TextContent);
     }
 
@@ -18,7 +18,7 @@ public class FlareFieldTests : FlareTestContext
         var cut = Render<FlareField<string>>(p => p
             .Add(c => c.Label, (string?)null));
 
-        Assert.Empty(cut.FindAll("label.flare-input__label"));
+        Assert.Empty(cut.FindAll($"label.{Css.Classes.Input.Label}"));
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class FlareFieldTests : FlareTestContext
         var cut = Render<FlareField<string>>(p => p
             .Add(c => c.HelperText, "Some hint"));
 
-        var helper = cut.Find(".flare-input__helper");
+        var helper = cut.Find($".{Css.Classes.Input.Helper}");
         Assert.Contains("Some hint", helper.TextContent);
     }
 
@@ -105,7 +105,7 @@ public class FlareFieldTests : FlareTestContext
         var cut = Render<FlareField<string>>(p => p
             .Add(c => c.ErrorText, "This field is required"));
 
-        var error = cut.Find(".flare-input__helper--error");
+        var error = cut.Find($".{Css.Classes.Input.HelperError}");
         Assert.Contains("This field is required", error.TextContent);
     }
 
@@ -124,7 +124,7 @@ public class FlareFieldTests : FlareTestContext
         var cut = Render<FlareField<string>>(p => p
             .Add(c => c.Disabled, true));
 
-        var wrapper = cut.Find(".flare-input--disabled");
+        var wrapper = cut.Find($".{Css.Classes.Input.Disabled}");
         Assert.NotNull(wrapper);
     }
 
@@ -156,7 +156,7 @@ public class FlareFieldTests : FlareTestContext
         var cut = Render<FlareField<string>>(p => p
             .Add(c => c.LeadingIcon, b => b.AddMarkupContent(0, "<span>search</span>")));
 
-        var icon = cut.Find(".flare-input__icon--leading");
+        var icon = cut.Find($".{Css.Classes.Input.IconLeading}");
         Assert.NotNull(icon);
         Assert.Contains("search", icon.InnerHtml);
     }

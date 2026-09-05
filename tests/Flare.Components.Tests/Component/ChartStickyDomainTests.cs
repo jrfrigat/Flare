@@ -16,7 +16,7 @@ public sealed class ChartStickyDomainTests : FlareTestContext
         new([new ChartSeries("live", values)], values.Select((_, i) => i.ToString()).ToList());
 
     private static string LinePath(IRenderedComponent<FlareChart> cut) =>
-        cut.Find("path.flare-chart__line").GetAttribute("d") ?? "";
+        cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("d") ?? "";
 
     // The Y of each point, which is where the domain becomes observable: X is the category slot and
     // says nothing about the scale.

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// An overlay that is hidden by CSS must not still occupy the room it would occupy when shown.
@@ -20,8 +20,8 @@ public class HiddenOverlayFootprintTests
     // Component, the rule that hides it, and the rule that shows it again.
     public static TheoryData<string, string, string> Overlays => new()
     {
-        { "tooltip.css", ".flare-tooltip__content", ".flare-tooltip__content--visible" },
-        { "fabmenu.css", ".flare-fab-menu__list", ".flare-fab-menu__list--open" },
+        { "tooltip.css", $".{Css.Classes.Tooltip.Content}", $".{Css.Classes.Tooltip.ContentVisible}" },
+        { "fabmenu.css", $".{Css.Classes.FabMenu.List}", $".{Css.Classes.FabMenu.ListOpen}" },
     };
 
     [Theory]

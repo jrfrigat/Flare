@@ -17,7 +17,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closable, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-chip__close"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-chip__close"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closable, true));
 
-        var btn = cut.Find("button.flare-chip__close");
+        var btn = cut.Find($"button.{Css.Classes.Chip.Close}");
         Assert.NotNull(btn.GetAttribute("aria-label"));
     }
 
@@ -50,7 +50,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
             .Add(x => x.Closable, true)
             .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => { invoked = true; })));
 
-        cut.Find("button.flare-chip__close").Click();
+        cut.Find($"button.{Css.Classes.Chip.Close}").Click();
 
         Assert.True(invoked);
     }
@@ -63,6 +63,6 @@ public class FlareChipClosableInteractionTests : FlareTestContext
             .Add(x => x.Closable, false)
             .Add(x => x.Closeable, false));
 
-        Assert.Empty(cut.FindAll("button.flare-chip__close"));
+        Assert.Empty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
     }
 }

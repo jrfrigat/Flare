@@ -62,7 +62,7 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.SelectionMode, SelectionMode.Multiple)
             .Add(x => x.Columns, NameColumn()));
 
-        var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
+        var row = cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0];
         Assert.Equal("row", row.GetAttribute("role"));
         Assert.Equal("2", row.GetAttribute("aria-rowindex"));
         Assert.Equal("false", row.GetAttribute("aria-selected"));
@@ -79,10 +79,10 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.RowReorderable, true)
             .Add(x => x.Columns, NameColumn()));
 
-        var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
+        var row = cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0];
         Assert.NotNull(row.GetAttribute("data-flare-drag"));
         Assert.Equal("flare-datagrid-rows", row.GetAttribute("data-flare-drag-group"));
-        Assert.Contains("flare-draggable", row.ClassName, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.Drag.Item, row.ClassName, StringComparison.Ordinal);
     }
 
     // The tree toggle used to exist only in the virtual renderer, so a paged tree grid - which is what
@@ -109,7 +109,7 @@ public sealed class DataGridRowParityTests : FlareTestContext
             })
             .Add(x => x.Columns, NodeColumn()));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__tree-toggle"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.TreeToggle}"));
         Assert.Contains("child a", cut.Markup, StringComparison.Ordinal);
     }
 
@@ -124,11 +124,11 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.RowDetailTemplate, (RenderFragment<Row>)(r => b => b.AddContent(0, "detail of " + r.Name)))
             .Add(x => x.Columns, NameColumn()));
 
-        Assert.Empty(cut.FindAll("tr.flare-datagrid__detail-row"));
+        Assert.Empty(cut.FindAll($"tr.{Css.Classes.DataGrid.DetailRow}"));
 
-        cut.FindAll("button.flare-datagrid__detail-btn")[0].Click();
+        cut.FindAll($"button.{Css.Classes.DataGrid.DetailBtn}")[0].Click();
 
-        Assert.Single(cut.FindAll("tr.flare-datagrid__detail-row"));
+        Assert.Single(cut.FindAll($"tr.{Css.Classes.DataGrid.DetailRow}"));
         Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
     }
 
@@ -147,7 +147,7 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.Grouping, GroupByFirstWord())
             .Add(x => x.Columns, NameColumn()));
 
-        Assert.NotEmpty(cut.FindAll("tr.flare-datagrid__group-header"));
+        Assert.NotEmpty(cut.FindAll($"tr.{Css.Classes.DataGrid.GroupHeader}"));
     }
 
     // The grouped branch carried a THIRD copy of the row markup, and the poorest of the three: no aria,
@@ -163,7 +163,7 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.Grouping, GroupByFirstWord())
             .Add(x => x.Columns, NameColumn()));
 
-        var row = cut.FindAll("tbody tr.flare-datagrid__row")[0];
+        var row = cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0];
         Assert.Equal("row", row.GetAttribute("role"));
         Assert.NotNull(row.GetAttribute("aria-rowindex"));
         Assert.Equal("false", row.GetAttribute("aria-selected"));
@@ -181,15 +181,15 @@ public sealed class DataGridRowParityTests : FlareTestContext
             .Add(x => x.RowDetailTemplate, (RenderFragment<Row>)(r => b => b.AddContent(0, "detail of " + r.Name)))
             .Add(x => x.Columns, NameColumn()));
 
-        cut.FindAll("button.flare-datagrid__detail-btn")[0].Click();
+        cut.FindAll($"button.{Css.Classes.DataGrid.DetailBtn}")[0].Click();
         Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
 
         // Sort descending: row 1 moves to the bottom, and its detail must move with it.
-        cut.Find("th.flare-datagrid__th--sortable").Click();
-        cut.Find("th.flare-datagrid__th--sortable").Click();
+        cut.Find($"th.{Css.Classes.DataGrid.ThSortable}").Click();
+        cut.Find($"th.{Css.Classes.DataGrid.ThSortable}").Click();
 
         Assert.Contains("detail of row 1", cut.Markup, StringComparison.Ordinal);
         Assert.DoesNotContain("detail of row 3", cut.Markup, StringComparison.Ordinal);
-        Assert.Equal("true", cut.FindAll("button.flare-datagrid__detail-btn")[^1].GetAttribute("aria-expanded"));
+        Assert.Equal("true", cut.FindAll($"button.{Css.Classes.DataGrid.DetailBtn}")[^1].GetAttribute("aria-expanded"));
     }
 }

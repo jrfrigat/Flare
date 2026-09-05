@@ -42,7 +42,7 @@ public sealed class IconLayoutSparklineGapTests : FlareTestContext
     {
         var cut = Render<FlareLayoutAppBar>(p => p.Add(x => x.Height, "50px"));
 
-        Assert.Contains("--flare-layout-appbar-height:50px", cut.Find("header").GetAttribute("style") ?? "");
+        Assert.Contains($"{Css.Tokens.LayoutField.AppBarHeight}:50px", cut.Find("header").GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public sealed class IconLayoutSparklineGapTests : FlareTestContext
     {
         var cut = Render<FlareLayoutAppBar>(p => p.Add(x => x.Dense, true));
 
-        Assert.Contains("flare-layout-appbar--dense", cut.Find("header").ClassList);
+        Assert.Contains(Css.Classes.Layout.AppBarDense, cut.Find("header").ClassList);
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public sealed class IconLayoutSparklineGapTests : FlareTestContext
         var cut = Render<FlareLayoutAppBar>();
         var header = cut.Find("header");
 
-        Assert.DoesNotContain("--flare-layout-appbar-height", header.GetAttribute("style") ?? "");
-        Assert.DoesNotContain("flare-layout-appbar--dense", header.ClassList);
+        Assert.DoesNotContain(Css.Tokens.LayoutField.AppBarHeight, header.GetAttribute("style") ?? "");
+        Assert.DoesNotContain(Css.Classes.Layout.AppBarDense, header.ClassList);
     }
 }

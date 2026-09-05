@@ -33,14 +33,14 @@ public class C_FlareOptionListTests : FlareTestContext
     public void RendersRootListboxWithRole()
     {
         var cut = Render<FlareOptionList<string>>(p => p.Add(x => x.Rows, Rows(_items)));
-        Assert.Equal("listbox", cut.Find(".flare-listbox").GetAttribute("role"));
+        Assert.Equal("listbox", cut.Find($".{Css.Classes.Listbox.Root}").GetAttribute("role"));
     }
 
     [Fact]
     public void RendersOneOptionPerItem()
     {
         var cut = Render<FlareOptionList<string>>(p => p.Add(x => x.Rows, Rows(_items)));
-        Assert.Equal(3, cut.FindAll(".flare-listbox__option").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Listbox.Option}").Count);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class C_FlareOptionListTests : FlareTestContext
         var cut = Render<FlareOptionList<string>>(p => p
             .Add(x => x.Rows, GroupedRows(s => s.StartsWith("A") ? "A" : "B", "Apple", "Avocado", "Banana")));
 
-        var headers = cut.FindAll(".flare-listbox__group-header");
+        var headers = cut.FindAll($".{Css.Classes.Listbox.GroupHeader}");
         Assert.Equal(2, headers.Count);
         Assert.Equal("A", headers[0].TextContent);
         Assert.Equal("B", headers[1].TextContent);
@@ -63,11 +63,11 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.IsSelected, (Func<string, bool>)(s => s == "Beta"))
             .Add(x => x.ShowCheck, true));
 
-        var opts = cut.FindAll(".flare-listbox__option");
-        Assert.Contains("flare-listbox__option--selected", opts[1].ClassName);
-        Assert.DoesNotContain("flare-listbox__option--selected", opts[0].ClassName);
+        var opts = cut.FindAll($".{Css.Classes.Listbox.Option}");
+        Assert.Contains(Css.Classes.Listbox.OptionSelected, opts[1].ClassName);
+        Assert.DoesNotContain(Css.Classes.Listbox.OptionSelected, opts[0].ClassName);
         Assert.Equal("true", opts[1].GetAttribute("aria-selected"));
-        Assert.Single(cut.FindAll(".flare-listbox__check"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Listbox.Check}"));
     }
 
     [Fact]
@@ -77,9 +77,9 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.Rows, Rows(_items))
             .Add(x => x.HighlightedIndex, 2));
 
-        var opts = cut.FindAll(".flare-listbox__option");
-        Assert.Contains("flare-listbox__option--active", opts[2].ClassName);
-        Assert.DoesNotContain("flare-listbox__option--active", opts[0].ClassName);
+        var opts = cut.FindAll($".{Css.Classes.Listbox.Option}");
+        Assert.Contains(Css.Classes.Listbox.OptionActive, opts[2].ClassName);
+        Assert.DoesNotContain(Css.Classes.Listbox.OptionActive, opts[0].ClassName);
     }
 
     [Fact]
@@ -90,8 +90,8 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.ShowCheckbox, true));
 
         // R8: a visual aria-hidden checkbox span per option, not a nested interactive FlareCheckbox.
-        Assert.Equal(3, cut.FindAll(".flare-listbox__option .flare-listbox__checkbox").Count);
-        Assert.Empty(cut.FindAll(".flare-listbox__option [role='checkbox']"));
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Listbox.Option} .{Css.Classes.Listbox.Checkbox}").Count);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Option} [role='checkbox']"));
     }
 
     [Fact]
@@ -102,7 +102,7 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.Rows, Rows(_items))
             .Add(x => x.OnSelect, (string s) => clicked = s));
 
-        cut.FindAll(".flare-listbox__option")[1].Click();
+        cut.FindAll($".{Css.Classes.Listbox.Option}")[1].Click();
         Assert.Equal("Beta", clicked);
     }
 
@@ -114,7 +114,7 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.EmptyContent, (RenderFragment)(b => b.AddMarkupContent(0, "<div class=\"empty-slot\">none</div>"))));
 
         Assert.NotEmpty(cut.FindAll(".empty-slot"));
-        Assert.Empty(cut.FindAll(".flare-listbox__option"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Option}"));
     }
 
     [Fact]
@@ -124,7 +124,7 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.Rows, Rows(_items))
             .Add(x => x.ItemTemplate, (RenderFragment<string>)(v => b => b.AddMarkupContent(0, $"<em class=\"tpl\">{v}</em>"))));
 
-        Assert.Equal(3, cut.FindAll(".flare-listbox__option .tpl").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Listbox.Option} .tpl").Count);
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.Rows, Rows(_items))
             .Add(x => x.OptionClass, "host-opt"));
 
-        Assert.Equal(3, cut.FindAll(".flare-listbox__option.host-opt").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Listbox.Option}.host-opt").Count);
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.Rows, Rows(_items))
             .Add(x => x.Class, "host-dropdown"));
 
-        Assert.Contains("host-dropdown", cut.Find(".flare-listbox").ClassName);
+        Assert.Contains("host-dropdown", cut.Find($".{Css.Classes.Listbox.Root}").ClassName);
     }
 
     [Fact]
@@ -154,6 +154,6 @@ public class C_FlareOptionListTests : FlareTestContext
             .Add(x => x.Rows, Rows(_items))
             .Add(x => x.Multiselectable, true));
 
-        Assert.True(cut.Find(".flare-listbox").HasAttribute("aria-multiselectable"));
+        Assert.True(cut.Find($".{Css.Classes.Listbox.Root}").HasAttribute("aria-multiselectable"));
     }
 }

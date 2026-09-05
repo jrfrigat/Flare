@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// A component that reads a design token by name must name it with the registry constant, never with a

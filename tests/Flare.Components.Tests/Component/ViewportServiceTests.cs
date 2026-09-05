@@ -78,7 +78,7 @@ public class C_BrowserViewportServiceTests : FlareTestContext
 public class C_HiddenXxlTests : FlareTestContext
 {
     [Theory]
-    [InlineData("flare-hidden--only-xxl")]
+    [InlineData(Css.Classes.Hidden.OnlyXxl)]
     public void Only_Xxl_EmitsClass(string expected)
     {
         var cut = Render<FlareHidden>(p => p.Add(x => x.Only, Breakpoint.Xxl).AddChildContent("<i>x</i>"));
@@ -89,14 +89,14 @@ public class C_HiddenXxlTests : FlareTestContext
     public void Below_Xxl_EmitsClass()
     {
         var cut = Render<FlareHidden>(p => p.Add(x => x.Below, Breakpoint.Xxl).AddChildContent("<i>x</i>"));
-        Assert.Contains("flare-hidden--below-xxl", cut.Markup);
+        Assert.Contains(Css.Classes.Hidden.BelowXxl, cut.Markup);
     }
 
     [Fact]
     public void Above_Xl_EmitsClass()
     {
         var cut = Render<FlareHidden>(p => p.Add(x => x.Above, Breakpoint.Xl).AddChildContent("<i>x</i>"));
-        Assert.Contains("flare-hidden--above-xl", cut.Markup);
+        Assert.Contains(Css.Classes.Hidden.AboveXl, cut.Markup);
     }
 
     // The class used to be assembled from the breakpoint name, which could assemble one that does not
@@ -122,7 +122,7 @@ public class C_HiddenXxlTests : FlareTestContext
     {
         var cut = Render<FlareHidden>(p => p
             .Add(x => x.Only, Breakpoint.Xxl).Add(x => x.Invert, true).AddChildContent("<i>x</i>"));
-        Assert.Contains("flare-hidden--invert-only-xxl", cut.Markup);
+        Assert.Contains(Css.Classes.Hidden.InvertOnlyXxl, cut.Markup);
     }
 }
 
@@ -132,6 +132,6 @@ public class C_ColXxlTests : FlareTestContext
     public void Xxl_Span_EmitsCssVariable()
     {
         var cut = Render<FlareCol>(p => p.Add(x => x.Xxl, 4).AddChildContent("<i>x</i>"));
-        Assert.Contains("--flare-col-span-xxl:4", cut.Find(".flare-col").GetAttribute("style"));
+        Assert.Contains($"{Css.Tokens.LocalVars.ColSpanXxl}:4", cut.Find($".{Css.Classes.Col.Root}").GetAttribute("style"));
     }
 }

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// A settled open/visible state must not carry an identity transform. <c>translate(0, 0)</c> and

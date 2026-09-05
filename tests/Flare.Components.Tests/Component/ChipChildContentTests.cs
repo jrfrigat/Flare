@@ -20,7 +20,7 @@ public class C_ChipChildContentTests : FlareTestContext
         var cut = Render<FlareChip>(p => p
             .AddChildContent("<b>42</b>"));
 
-        var label = cut.Find(".flare-chip__label");
+        var label = cut.Find($".{Css.Classes.Chip.Label}");
         Assert.Equal("42", label.TextContent);
         Assert.NotEmpty(label.QuerySelectorAll("b"));
     }
@@ -32,7 +32,7 @@ public class C_ChipChildContentTests : FlareTestContext
             .Add(x => x.Label, "shorthand")
             .AddChildContent("markup"));
 
-        var label = cut.Find(".flare-chip__label").TextContent;
+        var label = cut.Find($".{Css.Classes.Chip.Label}").TextContent;
         Assert.Equal("markup", label);
         Assert.DoesNotContain("shorthand", label);
     }
@@ -43,7 +43,7 @@ public class C_ChipChildContentTests : FlareTestContext
         var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Science"));
 
-        Assert.Equal("Science", cut.Find(".flare-chip__label").TextContent);
+        Assert.Equal("Science", cut.Find($".{Css.Classes.Chip.Label}").TextContent);
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class C_ChipChildContentTests : FlareTestContext
     {
         var cut = Render<FlareChip>();
 
-        Assert.Equal(string.Empty, cut.Find(".flare-chip__label").TextContent);
+        Assert.Equal(string.Empty, cut.Find($".{Css.Classes.Chip.Label}").TextContent);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class C_ChipChildContentTests : FlareTestContext
         var cut = Render<FlareChip>(p => p
             .AddChildContent<FlareBadge>(b => b.Add(x => x.Text, "9")));
 
-        Assert.NotEmpty(cut.Find(".flare-chip__label").QuerySelectorAll(".flare-badge"));
+        Assert.NotEmpty(cut.Find($".{Css.Classes.Chip.Label}").QuerySelectorAll($".{Css.Classes.Badge.Root}"));
     }
 }
 
@@ -76,7 +76,7 @@ public class C_LabelFamilyChildContentTests : FlareTestContext
     {
         var cut = Render<FlareCheckbox>(p => p.AddChildContent("<a href=\"/terms\">terms</a>"));
 
-        var label = cut.Find(".flare-checkbox__label");
+        var label = cut.Find($".{Css.Classes.Checkbox.Label}");
         Assert.Equal("terms", label.TextContent);
         Assert.NotEmpty(label.QuerySelectorAll("a"));
     }
@@ -88,7 +88,7 @@ public class C_LabelFamilyChildContentTests : FlareTestContext
             .Add(x => x.Label, "shorthand")
             .AddChildContent("markup"));
 
-        Assert.Equal("markup", cut.Find(".flare-switch__label").TextContent);
+        Assert.Equal("markup", cut.Find($".{Css.Classes.Switch.Label}").TextContent);
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public class C_LabelFamilyChildContentTests : FlareTestContext
     {
         var cut = Render<FlareRadio<string>>(p => p.Add(x => x.Label, "Second"));
 
-        Assert.Equal("Second", cut.Find(".flare-radio__label").TextContent);
+        Assert.Equal("Second", cut.Find($".{Css.Classes.Radio.Label}").TextContent);
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class C_LabelFamilyChildContentTests : FlareTestContext
     {
         var cut = Render<FlareCheckbox>();
 
-        Assert.Empty(cut.FindAll(".flare-checkbox__label"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Checkbox.Label}"));
     }
 }
 
@@ -123,7 +123,7 @@ public class C_FieldLabelContentTests : FlareTestContext
                 b.AddMarkupContent(0, "Price, <abbr title=\"euro\">EUR</abbr>");
             })));
 
-        var label = cut.Find(".flare-input__label");
+        var label = cut.Find($".{Css.Classes.Input.Label}");
         Assert.Contains("Price", label.TextContent);
         Assert.NotEmpty(label.QuerySelectorAll("abbr"));
     }
@@ -135,7 +135,7 @@ public class C_FieldLabelContentTests : FlareTestContext
             .Add(x => x.Label, "shorthand")
             .Add(x => x.LabelContent, (RenderFragment)(b => b.AddContent(0, "markup"))));
 
-        Assert.Equal("markup", cut.Find(".flare-input__label").TextContent);
+        Assert.Equal("markup", cut.Find($".{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class C_FieldLabelContentTests : FlareTestContext
     {
         var cut = Render<FlareField<string>>(p => p.Add(x => x.Label, "Email"));
 
-        Assert.Equal("Email", cut.Find(".flare-input__label").TextContent);
+        Assert.Equal("Email", cut.Find($".{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -151,6 +151,6 @@ public class C_FieldLabelContentTests : FlareTestContext
     {
         var cut = Render<FlareField<string>>();
 
-        Assert.Empty(cut.FindAll(".flare-input__label"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Input.Label}"));
     }
 }

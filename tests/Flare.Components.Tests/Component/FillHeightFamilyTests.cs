@@ -19,11 +19,11 @@ public sealed class FillHeightFamilyTests : FlareTestContext
 
     public static TheoryData<Type, string> Family => new()
     {
-        { typeof(FlareCard), ".flare-card" },
-        { typeof(FlarePaper), ".flare-paper" },
-        { typeof(FlareStack), ".flare-stack" },
-        { typeof(FlareGrid), ".flare-grid" },
-        { typeof(FlareCol), ".flare-col" },
+        { typeof(FlareCard), $".{Css.Classes.Card.Root}" },
+        { typeof(FlarePaper), $".{Css.Classes.Paper.Root}" },
+        { typeof(FlareStack), $".{Css.Classes.Stack.Root}" },
+        { typeof(FlareGrid), $".{Css.Classes.Grid.Root}" },
+        { typeof(FlareCol), $".{Css.Classes.Col.Root}" },
     };
 
     [Theory]
@@ -31,10 +31,10 @@ public sealed class FillHeightFamilyTests : FlareTestContext
     public void Container_MarksItsRootWhenFilling(Type container, string rootSelector)
     {
         var plain = RenderContainer(container, fill: false);
-        Assert.DoesNotContain("flare-fill", plain.Find(rootSelector).ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.Fill.Root, plain.Find(rootSelector).ClassName, StringComparison.Ordinal);
 
         var filled = RenderContainer(container, fill: true);
-        Assert.Contains("flare-fill", filled.Find(rootSelector).ClassName, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.Fill.Root, filled.Find(rootSelector).ClassName, StringComparison.Ordinal);
     }
 
     // The two that had a FillHeight of their own before there was a shared one keep their component
@@ -52,16 +52,16 @@ public sealed class FillHeightFamilyTests : FlareTestContext
                 b.AddAttribute(2, "ChildContent", Content());
                 b.CloseComponent();
             })));
-        var tabsClass = tabs.Find(".flare-tabs").ClassName;
-        Assert.Contains("flare-fill", tabsClass, StringComparison.Ordinal);
-        Assert.Contains("flare-tabs--fill", tabsClass, StringComparison.Ordinal);
+        var tabsClass = tabs.Find($".{Css.Classes.Tabs.Root}").ClassName;
+        Assert.Contains(Css.Classes.Fill.Root, tabsClass, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.Tabs.Fill, tabsClass, StringComparison.Ordinal);
 
         var grid = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, new[] { "a" }.AsEnumerable())
             .Add(x => x.FillHeight, true));
-        var gridClass = grid.Find(".flare-datagrid").ClassName;
-        Assert.Contains("flare-fill", gridClass, StringComparison.Ordinal);
-        Assert.Contains("flare-datagrid--fill", gridClass, StringComparison.Ordinal);
+        var gridClass = grid.Find($".{Css.Classes.DataGrid.Root}").ClassName;
+        Assert.Contains(Css.Classes.Fill.Root, gridClass, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.DataGrid.Fill, gridClass, StringComparison.Ordinal);
     }
 
     // The dialog is the second member with a mechanism of its own: it is centred on a scrim that is a
@@ -71,15 +71,15 @@ public sealed class FillHeightFamilyTests : FlareTestContext
     public void Dialog_FillsWithItsOwnRule()
     {
         var plain = Render<FlareDialog>(p => p.Add(x => x.Visible, true));
-        Assert.DoesNotContain("--fill", plain.Find(".flare-dialog").ClassName, StringComparison.Ordinal);
+        Assert.DoesNotContain("--fill", plain.Find($".{Css.Classes.Dialog.Root}").ClassName, StringComparison.Ordinal);
 
         var filled = Render<FlareDialog>(p => p
             .Add(x => x.Visible, true)
             .Add(x => x.FillHeight, true));
 
-        var cls = filled.Find(".flare-dialog").ClassName;
-        Assert.Contains("flare-dialog--fill", cls, StringComparison.Ordinal);
-        Assert.DoesNotContain("flare-fill", cls, StringComparison.Ordinal);
+        var cls = filled.Find($".{Css.Classes.Dialog.Root}").ClassName;
+        Assert.Contains(Css.Classes.Dialog.Fill, cls, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.Fill.Root, cls, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -116,8 +116,8 @@ public sealed class FillHeightFamilyTests : FlareTestContext
             .Add(x => x.ChildContent, Content()));
 
         var cls = cut.Find("main").ClassName;
-        Assert.Contains("flare-layout-content--fill", cls, StringComparison.Ordinal);
-        Assert.DoesNotContain("flare-fill", cls, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.Layout.ContentFill, cls, StringComparison.Ordinal);
+        Assert.DoesNotContain(Css.Classes.Fill.Root, cls, StringComparison.Ordinal);
     }
 
     // "Be 24rem tall" and "fill your parent" are contradictory, and the contradiction used to resolve
@@ -142,8 +142,8 @@ public sealed class FillHeightFamilyTests : FlareTestContext
             .Add(x => x.Style, style)
             .AddChildContent("content"));
 
-        var cls = cut.Find(".flare-card").ClassName ?? "";
-        Assert.Equal(fills, cls.Contains("flare-fill", StringComparison.Ordinal));
+        var cls = cut.Find($".{Css.Classes.Card.Root}").ClassName ?? "";
+        Assert.Equal(fills, cls.Contains(Css.Classes.Fill.Root, StringComparison.Ordinal));
     }
 
     // The parameter itself is declared once, on the base every container shares. A component that

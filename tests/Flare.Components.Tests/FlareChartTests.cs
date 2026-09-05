@@ -105,7 +105,7 @@ public class FlareChartTests : FlareTestContext
                 new ChartSeries("Two", [3, 4]),
             ])));
 
-        Assert.Equal(2, cut.FindAll(".flare-chart__legend-item").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Chart.LegendItem}").Count);
     }
 
     // --- Phase 1 -------------------------------------------------------------------------------
@@ -119,9 +119,9 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.Sparkline, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-chart--sparkline"));
-        Assert.Empty(cut.FindAll(".flare-chart__legend"));       // no legend
-        Assert.Empty(cut.FindAll(".flare-chart__title"));        // no title
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Chart.Sparkline}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Legend}"));       // no legend
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Title}"));        // no title
         Assert.Empty(cut.FindAll("line"));                       // no grid lines
         Assert.Empty(cut.FindAll("text"));                       // no axis labels
         Assert.Equal("none", cut.Find("svg").GetAttribute("preserveAspectRatio"));
@@ -148,7 +148,7 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.ShowLegend, false));
 
-        Assert.Empty(cut.FindAll(".flare-chart__legend"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Legend}"));
     }
 
     [Fact]
@@ -181,10 +181,10 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.LegendPosition, ChartLegendPosition.Top));
 
-        var body = cut.Find(".flare-chart__body");
+        var body = cut.Find($".{Css.Classes.Chart.Body}");
         var children = body.Children.ToList();
-        int legendIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__legend"));
-        int plotIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__plot"));
+        int legendIdx = children.FindIndex(c => c.ClassList.Contains(Css.Classes.Chart.Legend));
+        int plotIdx = children.FindIndex(c => c.ClassList.Contains(Css.Classes.Chart.Plot));
         Assert.True(legendIdx >= 0 && plotIdx >= 0 && legendIdx < plotIdx);
     }
 
@@ -271,9 +271,9 @@ public class FlareChartTests : FlareTestContext
             ])));
 
         Assert.Equal(2, cut.FindAll("path[style*=stroke]").Count); // both lines drawn
-        cut.FindAll(".flare-chart__legend-item")[0].Click();        // hide series 0
+        cut.FindAll($".{Css.Classes.Chart.LegendItem}")[0].Click();        // hide series 0
         Assert.Single(cut.FindAll("path[style*=stroke]"));         // one line left
-        Assert.NotEmpty(cut.FindAll(".flare-chart__legend-item--off"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Chart.LegendItemOff}"));
     }
 
     [Fact]
@@ -324,7 +324,7 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.LegendPosition, ChartLegendPosition.Left));
 
-        Assert.NotEmpty(cut.FindAll(".flare-chart__body--row"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Chart.BodyRow}"));
     }
 
     // --- Phase 4: animation, heatmap, a11y ---------------------------------------------------
@@ -337,8 +337,8 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.Animate, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-chart--animate"));
-        Assert.NotEmpty(cut.FindAll("rect.flare-chart__bar"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Chart.Animate}"));
+        Assert.NotEmpty(cut.FindAll($"rect.{Css.Classes.Chart.Bar}"));
     }
 
     [Fact]
@@ -348,7 +348,7 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, _data));
 
-        var line = cut.Find("path.flare-chart__line");
+        var line = cut.Find($"path.{Css.Classes.Chart.Line}");
         Assert.Equal("1", line.GetAttribute("pathLength"));
     }
 
@@ -362,8 +362,8 @@ public class FlareChartTests : FlareTestContext
                 new ChartSeries("Tue", [4, 5, 6]),
             ], ["A", "B", "C"])));
 
-        Assert.Equal(6, cut.FindAll("rect.flare-chart__cell").Count); // 2 rows x 3 cols
-        Assert.Empty(cut.FindAll(".flare-chart__legend"));             // no legend for heat maps
+        Assert.Equal(6, cut.FindAll($"rect.{Css.Classes.Chart.Cell}").Count); // 2 rows x 3 cols
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Legend}"));             // no legend for heat maps
     }
 
     [Fact]
@@ -374,7 +374,7 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.DataTable, true));
 
-        var table = cut.Find("table.flare-chart__table");
+        var table = cut.Find($"table.{Css.Classes.Chart.Table}");
         Assert.Equal(4, table.QuerySelectorAll("tbody tr").Length); // one row per category
     }
 
@@ -434,8 +434,8 @@ public class FlareChartTests : FlareTestContext
                 new ChartSeries("Trend", [12, 18, 16, 22], Kind: ChartSeriesKind.Line),
             ], ["q1", "q2", "q3", "q4"])));
 
-        Assert.Equal(4, cut.FindAll("rect.flare-chart__bar").Count); // bar series
-        Assert.NotEmpty(cut.FindAll("path.flare-chart__line"));       // line series
+        Assert.Equal(4, cut.FindAll($"rect.{Css.Classes.Chart.Bar}").Count); // bar series
+        Assert.NotEmpty(cut.FindAll($"path.{Css.Classes.Chart.Line}"));       // line series
     }
 
     [Fact]
@@ -449,7 +449,7 @@ public class FlareChartTests : FlareTestContext
         // The dash is the THEME's now, so it rides in the style as a token rather than as a
         // stroke-dasharray presentation attribute - which a theme could not have overridden.
         Assert.Contains(cut.FindAll("line"),
-            l => (l.GetAttribute("style") ?? "").Contains("stroke-dasharray:var(--flare-chart-trend-dash)"));
+            l => (l.GetAttribute("style") ?? "").Contains($"stroke-dasharray:var({Css.Tokens.Chart.TrendDash})"));
     }
 
     [Fact]
@@ -464,7 +464,7 @@ public class FlareChartTests : FlareTestContext
             }));
 
         Assert.Contains(cut.FindAll("line"),
-            l => (l.GetAttribute("style") ?? "").Contains("stroke-dasharray:var(--flare-chart-annotation-dash)"));
+            l => (l.GetAttribute("style") ?? "").Contains($"stroke-dasharray:var({Css.Tokens.Chart.AnnotationDash})"));
         Assert.Contains(cut.FindAll("text"), t => (t.TextContent ?? "").Contains("Target"));
     }
 
@@ -515,11 +515,11 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Type, ChartType.HeatMap)
             .Add(x => x.Data, new ChartData([new ChartSeries("r", [0, 10])], ["a", "b"])));
 
-        var cells = cut.FindAll("rect.flare-chart__cell");
+        var cells = cut.FindAll($"rect.{Css.Classes.Chart.Cell}");
         Assert.Equal(2, cells.Count);
         // The intensity still encodes the value; what changed is that the hue and both ends of the ramp
         // are the theme's, instead of the primary role with a 0.12..1 opacity range baked into the render.
-        Assert.All(cells, c => Assert.Contains("fill:var(--flare-chart-ramp-color)", c.GetAttribute("style") ?? ""));
+        Assert.All(cells, c => Assert.Contains($"fill:var({Css.Tokens.Chart.RampColor})", c.GetAttribute("style") ?? ""));
         Assert.NotEqual(
             cells[0].GetAttribute("style"),
             cells[1].GetAttribute("style"));

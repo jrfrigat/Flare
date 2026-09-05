@@ -24,14 +24,14 @@ public sealed class ProgressTokenReachTests
 
     [Theory]
     // Exactly the names FlareProgress passes to ReadTokenNum/ReadTokenStr.
-    [InlineData("--flare-progress-circular-gap")]
-    [InlineData("--flare-progress-wavy-enabled")]
-    [InlineData("--flare-progress-wavy-height")]
-    [InlineData("--flare-progress-wave-length")]
-    [InlineData("--flare-progress-wave-amplitude")]
-    [InlineData("--flare-progress-wave-speed")]
-    [InlineData("--flare-progress-ring-waves")]
-    [InlineData("--flare-progress-ring-wave-amplitude")]
+    [InlineData(Css.Tokens.ProgressField.CircularGap)]
+    [InlineData(Css.Tokens.ProgressField.WavyEnabled)]
+    [InlineData(Css.Tokens.ProgressField.WavyHeight)]
+    [InlineData(Css.Tokens.ProgressField.WaveLength)]
+    [InlineData(Css.Tokens.ProgressField.WaveAmplitude)]
+    [InlineData(Css.Tokens.ProgressField.WaveSpeed)]
+    [InlineData(Css.Tokens.ProgressField.RingWaves)]
+    [InlineData(Css.Tokens.ProgressField.RingWaveAmplitude)]
     public void EveryTokenTheComponentLooksUp_IsInTheFlattenedDesign(string token)
     {
         Assert.True(Flattened().ContainsKey(token),
@@ -46,9 +46,9 @@ public sealed class ProgressTokenReachTests
 
         // Expressive's signature loading state. "0" here means Wavy renders a plain bar, which is
         // indistinguishable from the parameter being ignored - the shape the reported bug took.
-        Assert.Equal("1", flat["--flare-progress-wavy-enabled"]);
+        Assert.Equal("1", flat[Css.Tokens.ProgressField.WavyEnabled]);
 
         // And the ring must break between the indicator and the remaining track.
-        Assert.NotEqual("0", flat["--flare-progress-circular-gap"].TrimEnd('p', 'x'));
+        Assert.NotEqual("0", flat[Css.Tokens.ProgressField.CircularGap].TrimEnd('p', 'x'));
     }
 }

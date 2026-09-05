@@ -88,7 +88,7 @@ public class DataGridColumnFlagCombinationTests : FlareTestContext
     {
         var cut = Render(Grid(sortable: true, frozen: true, frozenRight: false, resizable: false, filterable: false));
         var th = cut.FindAll("th")[0];
-        Assert.Contains("flare-datagrid__th--sortable", th.ClassName);
-        Assert.Contains("flare-datagrid__th--frozen", th.ClassName);
+        Assert.Contains(Css.Classes.DataGrid.ThSortable, th.ClassName);
+        Assert.Contains(Css.Classes.DataGrid.ThFrozen, th.ClassName);
     }
 }

@@ -62,7 +62,7 @@ public class C_FlareDataGridAdvancedTests : FlareTestContext
         // when at least one column is Filterable.
         var cut = Render(DataGridWith(filterable: true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__filter-row"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.FilterRow}"));
     }
 
     [Fact]
@@ -71,9 +71,9 @@ public class C_FlareDataGridAdvancedTests : FlareTestContext
         var cut = Render(DataGridWith(filterable: true));
 
         // The text filter reuses FlareField (Immediate) in the filter row.
-        cut.Find(".flare-datagrid__filter-row .flare-input__control").Input("Alice");
+        cut.Find($".{Css.Classes.DataGrid.FilterRow} .{Css.Classes.Input.Control}").Input("Alice");
 
-        var rows = cut.FindAll(".flare-datagrid__row");
+        var rows = cut.FindAll($".{Css.Classes.DataGrid.Row}");
         Assert.Single(rows);
         Assert.Contains("Alice", rows[0].TextContent);
     }
@@ -95,7 +95,7 @@ public class C_FlareDataGridAdvancedTests : FlareTestContext
 
         var cut = Render(DataGridWith(rowDetailTemplate: detail));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__detail-btn"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.DetailBtn}"));
     }
 
     [Fact]
@@ -103,7 +103,7 @@ public class C_FlareDataGridAdvancedTests : FlareTestContext
     {
         var cut = Render(DataGridWith(frozen: true));
 
-        var frozenHeaders = cut.FindAll(".flare-datagrid__th--frozen");
+        var frozenHeaders = cut.FindAll($".{Css.Classes.DataGrid.ThFrozen}");
         Assert.NotEmpty(frozenHeaders);
     }
 
@@ -112,7 +112,7 @@ public class C_FlareDataGridAdvancedTests : FlareTestContext
     {
         var cut = Render(DataGridWith(filterable: true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__filter-row .flare-input__control"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.FilterRow} .{Css.Classes.Input.Control}"));
     }
 }
 
@@ -127,7 +127,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     {
         var cut = Render<FlareDataGrid<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Root}"));
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, items));
 
-        Assert.Equal(3, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(3, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -148,7 +148,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Items, items)
             .Add(x => x.PageSize, 5));
 
-        Assert.Equal(5, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(5, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     // Builds a <Grouping> fragment of <DataGridGroup> children (the post-refactor grouping API).
@@ -172,7 +172,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Items, items)
             .Add(x => x.Grouping, GroupingFor<string>(("Letter", s => s.StartsWith("A") ? "A" : "B"))));
 
-        Assert.NotEmpty(cut.FindAll("tr.flare-datagrid__group-header"));
+        Assert.NotEmpty(cut.FindAll($"tr.{Css.Classes.DataGrid.GroupHeader}"));
     }
 
     private record GroupedPerson(string Role, string City, int Score);
@@ -195,9 +195,9 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
                 ("City", g => g.City))));
 
         // 2 roles (Eng, QA) + 3 cities (Berlin, Paris under Eng; Paris under QA) = 5 group headers.
-        Assert.Equal(5, cut.FindAll("tr.flare-datagrid__group-header").Count);
+        Assert.Equal(5, cut.FindAll($"tr.{Css.Classes.DataGrid.GroupHeader}").Count);
         // All data rows still render under their leaf groups.
-        Assert.Equal(4, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(4, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -211,7 +211,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
                 new AggregateDefinition<GroupedPerson> { ColumnTitle = "Max", Type = AggregateType.Max, ValueSelector = g => g.Score, Format = "N0" },
             }));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__group-aggregate"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.GroupAggregate}"));
     }
 
     [Fact]
@@ -221,12 +221,12 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.Grouping, GroupingFor<GroupedPerson>(("Role", g => g.Role))));
 
-        Assert.Equal(4, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(4, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
 
         // Collapse the first group (Eng, 3 rows) -> only the QA group's 1 row remains.
-        cut.FindAll("button.flare-datagrid__group-toggle")[0].Click();
+        cut.FindAll($"button.{Css.Classes.DataGrid.GroupToggle}")[0].Click();
 
-        Assert.Single(cut.FindAll("tr.flare-datagrid__row"));
+        Assert.Single(cut.FindAll($"tr.{Css.Classes.DataGrid.Row}"));
     }
 
     // The Select filter applies on selection; the text/number filter row is debounced, so the
@@ -268,9 +268,9 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     // option by its visible text. Operator labels use the same FlareStrings the component renders.
     private static void PickSelect(IRenderedComponent<IComponent> cut, string scope, string optionText, bool last = false)
     {
-        var controls = cut.FindAll($"{scope} .flare-select__control");
+        var controls = cut.FindAll($"{scope} .{Css.Classes.Select.Control}");
         (last ? controls[controls.Count - 1] : controls[0]).Click();
-        cut.FindAll($"{scope} .flare-select__option")
+        cut.FindAll($"{scope} .{Css.Classes.Select.Option}")
             .First(o => o.TextContent.Trim() == optionText)
             .Click();
     }
@@ -281,10 +281,10 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         var cut = Render(FilterableGrid());
 
         // The Select filter reuses FlareMultiSelect.
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__filter-th .flare-multiselect"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.FilterTh} .{Css.Classes.Multiselect.Root}"));
         // Open the dropdown: 2 distinct roles (Eng, QA).
-        cut.Find(".flare-multiselect__control").Click();
-        Assert.Equal(2, cut.FindAll(".flare-multiselect__option").Count);
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Multiselect.Option}").Count);
     }
 
     [Fact]
@@ -292,12 +292,12 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     {
         var cut = Render(FilterableGrid());
 
-        Assert.Equal(4, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(4, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
 
-        cut.Find(".flare-multiselect__control").Click();
-        cut.FindAll(".flare-multiselect__option").First(o => o.TextContent.Contains("QA")).Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        cut.FindAll($".{Css.Classes.Multiselect.Option}").First(o => o.TextContent.Contains("QA")).Click();
 
-        Assert.Single(cut.FindAll("tr.flare-datagrid__row"));
+        Assert.Single(cut.FindAll($"tr.{Css.Classes.DataGrid.Row}"));
     }
 
     [Fact]
@@ -305,29 +305,29 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     {
         var cut = Render(FilterableGrid(showFilterBuilder: true));
 
-        Assert.Empty(cut.FindAll(".flare-datagrid__filter-builder-panel"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderPanel}"));
 
-        cut.Find(".flare-datagrid__filter-builder > button").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilder} > button").Click();
 
-        Assert.Single(cut.FindAll(".flare-datagrid__filter-builder-panel"));
-        Assert.Single(cut.FindAll(".flare-datagrid__filter-builder-row"));
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderPanel}"));
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderRow}"));
     }
 
     [Fact]
     public void FilterBuilder_ApplyGreaterThan_FiltersRows()
     {
         var cut = Render(FilterableGrid(showFilterBuilder: true));
-        cut.Find(".flare-datagrid__filter-builder > button").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilder} > button").Click();
 
         // Configure: Score greater-than 75 -> of {90,80,70,60} only 90 and 80 qualify.
         // Column + operator reuse FlareSelect (custom popover); value reuses FlareField.
-        PickSelect(cut, ".flare-datagrid__filter-builder-field", "Score");
-        PickSelect(cut, ".flare-datagrid__filter-builder-op", FlareStrings.DataGrid_OpGreaterThan);
-        cut.Find(".flare-datagrid__filter-builder-value .flare-input__control").Input("75");
+        PickSelect(cut, $".{Css.Classes.DataGrid.FilterBuilderField}", "Score");
+        PickSelect(cut, $".{Css.Classes.DataGrid.FilterBuilderOp}", FlareStrings.DataGrid_OpGreaterThan);
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilderValue} .{Css.Classes.Input.Control}").Input("75");
         // Actions order: Clear, Apply -> Apply is the last button.
-        cut.FindAll(".flare-datagrid__filter-builder-actions button").Last().Click();
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderActions} button").Last().Click();
 
-        Assert.Equal(2, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(2, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -336,65 +336,65 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         // The first condition defaults its field to the first column (Role); the user only sets
         // the value and applies, without touching the field dropdown.
         var cut = Render(FilterableGrid(showFilterBuilder: true));
-        cut.Find(".flare-datagrid__filter-builder > button").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilder} > button").Click();
 
-        cut.Find(".flare-datagrid__filter-builder-value .flare-input__control").Input("QA");
-        cut.FindAll(".flare-datagrid__filter-builder-actions button").Last().Click(); // Apply
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilderValue} .{Css.Classes.Input.Control}").Input("QA");
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderActions} button").Last().Click(); // Apply
 
-        Assert.Single(cut.FindAll("tr.flare-datagrid__row"));
+        Assert.Single(cut.FindAll($"tr.{Css.Classes.DataGrid.Row}"));
     }
 
     [Fact]
     public void FilterBuilder_Connector_TogglesAndOr()
     {
         var cut = Render(FilterableGrid(showFilterBuilder: true));
-        cut.Find(".flare-datagrid__filter-builder > button").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilder} > button").Click();
 
-        var connector = cut.Find(".flare-datagrid__filter-builder-connector");
+        var connector = cut.Find($".{Css.Classes.DataGrid.FilterBuilderConnector}");
         Assert.Equal(FlareStrings.DataGrid_And, connector.TextContent.Trim());
 
         connector.Click();
-        Assert.Equal(FlareStrings.DataGrid_Or, cut.Find(".flare-datagrid__filter-builder-connector").TextContent.Trim());
+        Assert.Equal(FlareStrings.DataGrid_Or, cut.Find($".{Css.Classes.DataGrid.FilterBuilderConnector}").TextContent.Trim());
     }
 
     [Fact]
     public void FilterBuilder_AddGroup_AddsNestedGroup()
     {
         var cut = Render(FilterableGrid(showFilterBuilder: true));
-        cut.Find(".flare-datagrid__filter-builder > button").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilder} > button").Click();
 
-        Assert.Single(cut.FindAll(".flare-datagrid__filter-builder-group"));
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderGroup}"));
 
         // Group head buttons: [0] connector, [1] add condition, [2] add group.
-        cut.FindAll(".flare-datagrid__filter-builder-group-head button")[2].Click();
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderGroupHead} button")[2].Click();
 
-        Assert.Equal(2, cut.FindAll(".flare-datagrid__filter-builder-group").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderGroup}").Count);
     }
 
     [Fact]
     public void FilterBuilder_NestedOrGroup_FiltersRows()
     {
         var cut = Render(FilterableGrid(showFilterBuilder: true));
-        cut.Find(".flare-datagrid__filter-builder > button").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilder} > button").Click();
 
         // Root condition: Score >= 90 (matches the single 90 row).
-        PickSelect(cut, ".flare-datagrid__filter-builder-field", "Score");
-        PickSelect(cut, ".flare-datagrid__filter-builder-op", FlareStrings.DataGrid_OpGreaterOrEqual);
-        cut.Find(".flare-datagrid__filter-builder-value .flare-input__control").Input("90");
+        PickSelect(cut, $".{Css.Classes.DataGrid.FilterBuilderField}", "Score");
+        PickSelect(cut, $".{Css.Classes.DataGrid.FilterBuilderOp}", FlareStrings.DataGrid_OpGreaterOrEqual);
+        cut.Find($".{Css.Classes.DataGrid.FilterBuilderValue} .{Css.Classes.Input.Control}").Input("90");
 
         // Add a nested group, set it to OR, add a condition Score <= 60 (matches the single 60 row).
-        cut.FindAll(".flare-datagrid__filter-builder-group-head button")[2].Click(); // add group
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderGroupHead} button")[2].Click(); // add group
         // The nested group is the 2nd group; toggle its connector to Or.
-        cut.FindAll(".flare-datagrid__filter-builder-connector")[1].Click();
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderConnector}")[1].Click();
         // Configure the nested condition (last field/op/value belong to the new group's seeded row).
-        PickSelect(cut, ".flare-datagrid__filter-builder-field", "Score", last: true);
-        PickSelect(cut, ".flare-datagrid__filter-builder-op", FlareStrings.DataGrid_OpLessOrEqual, last: true);
-        cut.FindAll(".flare-datagrid__filter-builder-value .flare-input__control").Last().Input("60");
+        PickSelect(cut, $".{Css.Classes.DataGrid.FilterBuilderField}", "Score", last: true);
+        PickSelect(cut, $".{Css.Classes.DataGrid.FilterBuilderOp}", FlareStrings.DataGrid_OpLessOrEqual, last: true);
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderValue} .{Css.Classes.Input.Control}").Last().Input("60");
 
-        cut.FindAll(".flare-datagrid__filter-builder-actions button").Last().Click(); // Apply
+        cut.FindAll($".{Css.Classes.DataGrid.FilterBuilderActions} button").Last().Click(); // Apply
 
         // Root is AND of [Score>=90] and [OR group: Score<=60]. No row is both >=90 and <=60.
-        Assert.Empty(cut.FindAll("tr.flare-datagrid__row"));
+        Assert.Empty(cut.FindAll($"tr.{Css.Classes.DataGrid.Row}"));
     }
 
     private static RenderFragment GroupedCols => inner =>
@@ -415,9 +415,9 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.LoadingIndicator, DataGridLoadingIndicator.Skeleton)
             .Add(x => x.Columns, GroupedCols));
 
-        Assert.NotEmpty(cut.FindAll("tr.flare-datagrid__placeholder-row"));
+        Assert.NotEmpty(cut.FindAll($"tr.{Css.Classes.DataGrid.PlaceholderRow}"));
         // Skeleton mode shows no spinner/text overlay.
-        Assert.Empty(cut.FindAll(".flare-datagrid__loading"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.Loading}"));
     }
 
     [Fact]
@@ -429,8 +429,8 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.LoadingIndicator, DataGridLoadingIndicator.Spinner)
             .Add(x => x.Columns, GroupedCols));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__loading"));
-        Assert.NotEmpty(cut.FindAll(".flare-progress--circular"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Loading}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Circular}"));
     }
 
     private static RenderFragment EditableCols => inner =>
@@ -456,10 +456,10 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Dense, true)
             .Add(x => x.Columns, GroupedCols));
 
-        var root = cut.Find(".flare-datagrid");
-        Assert.Contains("flare-datagrid--striped", root.ClassName);
-        Assert.Contains("flare-datagrid--hoverable", root.ClassName);
-        Assert.Contains("flare-datagrid--dense", root.ClassName);
+        var root = cut.Find($".{Css.Classes.DataGrid.Root}");
+        Assert.Contains(Css.Classes.DataGrid.Striped, root.ClassName);
+        Assert.Contains(Css.Classes.DataGrid.Hoverable, root.ClassName);
+        Assert.Contains(Css.Classes.DataGrid.Dense, root.ClassName);
     }
 
     [Fact]
@@ -476,7 +476,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
                 inner.CloseComponent();
             }));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__resize-handle"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.ResizeHandle}"));
     }
 
     [Fact]
@@ -488,10 +488,10 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Columns, EditableCols));
 
         // An Editable column alone surfaces the edit (pencil) action - no InlineEdit needed.
-        cut.Find(".flare-datagrid__td--edit-actions button").Click();
+        cut.Find($".{Css.Classes.DataGrid.TdEditActions} button").Click();
 
         // The editable cell now renders a FlareField; typing updates the edit buffer.
-        var input = cut.Find(".flare-input__control");
+        var input = cut.Find($".{Css.Classes.Input.Control}");
         input.Input("Manager");
         Assert.Equal("Manager", cut.Instance.GetEditValues()["Role"]);
     }
@@ -513,11 +513,11 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Columns, GroupedCols));
 
         // Initial load brings the first page.
-        Assert.Equal(10, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(10, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
 
         // Simulate the bottom sentinel becoming visible -> next page appends.
         await cut.InvokeAsync(() => cut.Instance.TriggerLoad());
-        Assert.Equal(20, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(20, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     // Infinite scroll uses PageSize as its CHUNK size, which is a different question from "how many
@@ -543,11 +543,11 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Columns, GroupedCols));
 
         Assert.All(asked, size => Assert.True(size > 0, "A chunk of zero rows asks the provider for nothing."));
-        var first = cut.FindAll("tr.flare-datagrid__row").Count;
+        var first = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count;
         Assert.True(first > 0, "The first chunk has to arrive without the page telling the grid how big it is.");
 
         await cut.InvokeAsync(() => cut.Instance.TriggerLoad());
-        Assert.True(cut.FindAll("tr.flare-datagrid__row").Count > first,
+        Assert.True(cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count > first,
             "Reaching the bottom appends the next chunk.");
     }
 
@@ -560,11 +560,11 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.LoadingIndicator, DataGridLoadingIndicator.ProgressLine)
             .Add(x => x.Columns, GroupedCols));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__progress-line"));
-        Assert.NotEmpty(cut.FindAll(".flare-progress--linear"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.ProgressLine}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Linear}"));
         // ProgressLine keeps the table visible: no spinner/text overlay, no dim class.
-        Assert.Empty(cut.FindAll(".flare-datagrid__loading"));
-        Assert.Empty(cut.FindAll(".flare-datagrid__table--loading"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.Loading}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.TableLoading}"));
     }
 
     [Fact]
@@ -576,7 +576,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.RowKey, g => g.Score)
             .Add(x => x.Columns, GroupedCols));
 
-        Assert.Equal(4, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(4, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -591,7 +591,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             .Add(x => x.Height, "300px")
             .Add(x => x.Columns, GroupedCols));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Root}"));
     }
 
     // The virtual grid must be handed the row set it is RESPONSIBLE for, whole. It renders its own
@@ -620,11 +620,11 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             if (pageSize is not null) p.Add(x => x.PageSize, pageSize.Value);
         });
 
-        Assert.Equal(expectedRows, cut.FindAll("tr.flare-datagrid__row").Count);
+        Assert.Equal(expectedRows, cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").Count);
         // Every row past the window is reachable: by scrolling when there is one page, by the pager when
         // there are several.
         if (expectedRows < 100)
-            Assert.NotEmpty(cut.FindAll(".flare-datagrid__pagination"));
+            Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
     }
 
     private sealed record Reading(int? Value);
@@ -654,7 +654,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
                 inner.CloseComponent();
             })));
 
-        Assert.Single(cut.FindAll("tr.flare-datagrid__row"));
+        Assert.Single(cut.FindAll($"tr.{Css.Classes.DataGrid.Row}"));
     }
 
     // Sorting a virtual grid must reorder the whole set and keep showing all of it. With a paged source
@@ -677,10 +677,10 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
                 inner.CloseComponent();
             })));
 
-        cut.Find("th.flare-datagrid__th").Click();   // ascending
-        cut.Find("th.flare-datagrid__th").Click();   // descending
+        cut.Find($"th.{Css.Classes.DataGrid.Th}").Click();   // ascending
+        cut.Find($"th.{Css.Classes.DataGrid.Th}").Click();   // descending
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal(100, rows.Count);
         Assert.Contains("R100", rows[0].TextContent);      // the last item is now first
     }
@@ -773,11 +773,11 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
                 inner.CloseComponent();
             }));
 
-        var aliceRow = cut.FindAll("tr.flare-datagrid__row").First(r => r.TextContent.Contains("Alice"));
+        var aliceRow = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}").First(r => r.TextContent.Contains("Alice"));
         Assert.Contains("row-hi", aliceRow.ClassName);
         Assert.Contains("background:red", aliceRow.GetAttribute("style") ?? "");
 
-        var aliceCell = aliceRow.QuerySelector("td.flare-datagrid__td")!;
+        var aliceCell = aliceRow.QuerySelector($"td.{Css.Classes.DataGrid.Td}")!;
         Assert.Contains("cell-hi", aliceCell.ClassName);
         Assert.Contains("font-weight:bold", aliceCell.GetAttribute("style") ?? "");
     }
@@ -789,7 +789,7 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
         var th = cut.FindAll("th[role=columnheader]")[0];
         Assert.Equal("c:Name", th.GetAttribute("data-flare-drag"));
         Assert.Equal("flare-datagrid-columns", th.GetAttribute("data-flare-drag-group"));
-        Assert.Contains("flare-draggable", th.ClassName);
+        Assert.Contains(Css.Classes.Drag.Item, th.ClassName);
     }
 
     [Fact]
@@ -829,10 +829,10 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
     public void RowReorderable_AddsDraggableMarkup()
     {
         var cut = Render(ReorderGrid(rowReorderable: true));
-        var row = cut.FindAll("tr.flare-datagrid__row")[0];
+        var row = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0];
         Assert.Equal("0", row.GetAttribute("data-flare-drag"));
         Assert.Equal("flare-datagrid-rows", row.GetAttribute("data-flare-drag-group"));
-        Assert.Contains("flare-draggable", row.ClassName);
+        Assert.Contains(Css.Classes.Drag.Item, row.ClassName);
     }
 
     [Fact]
@@ -904,7 +904,7 @@ public class C_FlareDataGridBandTests : FlareTestContext
     {
         var cut = Render(BandedGrid());
 
-        var bandCells = cut.FindAll("th.flare-datagrid__th--band");
+        var bandCells = cut.FindAll($"th.{Css.Classes.DataGrid.ThBand}");
         Assert.Contains(bandCells, th => th.TextContent.Trim() == "Details");
         Assert.Contains(bandCells, th => th.TextContent.Trim() == "Location");
 
@@ -934,7 +934,7 @@ public class C_FlareDataGridBandTests : FlareTestContext
     {
         var cut = Render(BandedGrid());
         // Four leaf columns -> four data cells per row, in declaration order.
-        var firstRowCells = cut.FindAll("tr.flare-datagrid__row")[0].QuerySelectorAll("td.flare-datagrid__td");
+        var firstRowCells = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll($"td.{Css.Classes.DataGrid.Td}");
         Assert.Equal(4, firstRowCells.Length);
         Assert.Equal("Alice", firstRowCells[0].TextContent.Trim());
         Assert.Equal("Eng", firstRowCells[1].TextContent.Trim());
@@ -1006,9 +1006,9 @@ public class C_FlareDataGridCompositeTests : FlareTestContext
     {
         var cut = Render(CompositeGrid());
         // Two data rows -> two composite containers.
-        Assert.Equal(2, cut.FindAll(".flare-datagrid__composite").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.DataGrid.Composite}").Count);
         // The composite host plus the normal Score column = exactly two td cells per data row.
-        var cells = cut.FindAll("tr.flare-datagrid__row")[0].QuerySelectorAll("td.flare-datagrid__td");
+        var cells = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll($"td.{Css.Classes.DataGrid.Td}");
         Assert.Equal(2, cells.Length);
     }
 
@@ -1016,14 +1016,14 @@ public class C_FlareDataGridCompositeTests : FlareTestContext
     public void Composite_RendersAllFieldValuesAndLabels()
     {
         var cut = Render(CompositeGrid());
-        var firstComposite = cut.FindAll(".flare-datagrid__composite")[0];
+        var firstComposite = cut.FindAll($".{Css.Classes.DataGrid.Composite}")[0];
 
-        var values = firstComposite.QuerySelectorAll(".flare-datagrid__composite-value").Select(v => v.TextContent.Trim()).ToList();
+        var values = firstComposite.QuerySelectorAll($".{Css.Classes.DataGrid.CompositeValue}").Select(v => v.TextContent.Trim()).ToList();
         Assert.Contains("Alice", values);
         Assert.Contains("Berlin", values);
         Assert.Contains("Eng", values);
 
-        var labels = firstComposite.QuerySelectorAll(".flare-datagrid__composite-label").Select(l => l.TextContent.Trim()).ToList();
+        var labels = firstComposite.QuerySelectorAll($".{Css.Classes.DataGrid.CompositeLabel}").Select(l => l.TextContent.Trim()).ToList();
         Assert.Contains("Name", labels);
         Assert.Contains("Role", labels);
     }
@@ -1032,7 +1032,7 @@ public class C_FlareDataGridCompositeTests : FlareTestContext
     public void Composite_FieldColSpan_AppliesGridColumnSpan()
     {
         var cut = Render(CompositeGrid());
-        var roleField = cut.FindAll(".flare-datagrid__composite-field")
+        var roleField = cut.FindAll($".{Css.Classes.DataGrid.CompositeField}")
             .First(f => f.TextContent.Contains("Role"));
         Assert.Contains("span 2", roleField.GetAttribute("style") ?? "");
     }
@@ -1121,22 +1121,22 @@ public class C_FlareDataGridBandedCompositeTests : FlareTestContext
     {
         var cut = Render(BandedGrid());
         // 2 records x 2 rows = 4 record rows.
-        Assert.Equal(4, cut.FindAll("tr.flare-datagrid__row--record").Count);
+        Assert.Equal(4, cut.FindAll($"tr.{Css.Classes.DataGrid.RecordRow}").Count);
     }
 
     [Fact]
     public void Banded_RendersFieldValuesAndColSpan()
     {
         var cut = Render(BandedGrid());
-        var firstRow = cut.FindAll("tr.flare-datagrid__row--record")[0];
-        var composites = firstRow.QuerySelectorAll("td.flare-datagrid__td--composite");
+        var firstRow = cut.FindAll($"tr.{Css.Classes.DataGrid.RecordRow}")[0];
+        var composites = firstRow.QuerySelectorAll($"td.{Css.Classes.DataGrid.TdComposite}");
         var texts = composites.Select(c => c.TextContent.Trim()).ToList();
         Assert.Contains("Alice", texts);
         Assert.Contains("Berlin", texts);
 
         // The Role cell on the second record-row spans 2 columns.
-        var secondRow = cut.FindAll("tr.flare-datagrid__row--record")[1];
-        var roleCell = secondRow.QuerySelectorAll("td.flare-datagrid__td--composite")[0];
+        var secondRow = cut.FindAll($"tr.{Css.Classes.DataGrid.RecordRow}")[1];
+        var roleCell = secondRow.QuerySelectorAll($"td.{Css.Classes.DataGrid.TdComposite}")[0];
         Assert.Equal("Eng", roleCell.TextContent.Trim());
         Assert.Equal("2", roleCell.GetAttribute("colspan"));
     }
@@ -1188,20 +1188,20 @@ public class C_FlareDataGridBandedSortTests : FlareTestContext
     public void SortableCompositeField_SortsRecordsAndShowsIndicator()
     {
         var cut = Render(Grid());
-        var cityTh = cut.FindAll("th.flare-datagrid__th--composite").First(t => t.TextContent.Contains("City"));
-        Assert.Contains("flare-datagrid__th--sortable", cityTh.ClassName);
+        var cityTh = cut.FindAll($"th.{Css.Classes.DataGrid.ThComposite}").First(t => t.TextContent.Contains("City"));
+        Assert.Contains(Css.Classes.DataGrid.ThSortable, cityTh.ClassName);
 
         cityTh.Click(); // ascending by City: Berlin (Alice), Paris (Bob)
-        var firstAsc = cut.FindAll("tr.flare-datagrid__row--record")[0]
-            .QuerySelectorAll("td.flare-datagrid__td--composite")[0].TextContent.Trim();
+        var firstAsc = cut.FindAll($"tr.{Css.Classes.DataGrid.RecordRow}")[0]
+            .QuerySelectorAll($"td.{Css.Classes.DataGrid.TdComposite}")[0].TextContent.Trim();
         Assert.Equal("Alice", firstAsc);
 
-        cut.FindAll("th.flare-datagrid__th--composite").First(t => t.TextContent.Contains("City")).Click(); // descending
-        var firstDesc = cut.FindAll("tr.flare-datagrid__row--record")[0]
-            .QuerySelectorAll("td.flare-datagrid__td--composite")[0].TextContent.Trim();
+        cut.FindAll($"th.{Css.Classes.DataGrid.ThComposite}").First(t => t.TextContent.Contains("City")).Click(); // descending
+        var firstDesc = cut.FindAll($"tr.{Css.Classes.DataGrid.RecordRow}")[0]
+            .QuerySelectorAll($"td.{Css.Classes.DataGrid.TdComposite}")[0].TextContent.Trim();
         Assert.Equal("Bob", firstDesc);
 
-        Assert.NotEmpty(cut.FindAll("th.flare-datagrid__th--composite .flare-datagrid__sort-icon"));
+        Assert.NotEmpty(cut.FindAll($"th.{Css.Classes.DataGrid.ThComposite} .{Css.Classes.DataGrid.SortIcon}"));
     }
 
     [Fact]
@@ -1209,15 +1209,15 @@ public class C_FlareDataGridBandedSortTests : FlareTestContext
     {
         var cut = Render(Grid());
         // Both records visible initially.
-        Assert.Equal(2, cut.FindAll("tr.flare-datagrid__row--record-first").Count);
+        Assert.Equal(2, cut.FindAll($"tr.{Css.Classes.DataGrid.RecordFirst}").Count);
 
         // The City sub-header hosts an inline filter input.
-        var cityTh = cut.FindAll("th.flare-datagrid__th--composite").First(t => t.TextContent.Contains("City"));
-        var input = cityTh.QuerySelector(".flare-datagrid__composite-filter input");
+        var cityTh = cut.FindAll($"th.{Css.Classes.DataGrid.ThComposite}").First(t => t.TextContent.Contains("City"));
+        var input = cityTh.QuerySelector($".{Css.Classes.DataGrid.CompositeFilter} input");
         Assert.NotNull(input);
 
         input!.Input("Berlin"); // keep only Alice (Berlin)
-        var records = cut.FindAll("tr.flare-datagrid__row--record-first");
+        var records = cut.FindAll($"tr.{Css.Classes.DataGrid.RecordFirst}");
         Assert.Single(records);
         Assert.Contains("Alice", records[0].TextContent);
         Assert.DoesNotContain("Bob", cut.Markup);
@@ -1265,8 +1265,8 @@ public class C_FlareDataGridBandedSortTests : FlareTestContext
 
         // Height caps the component so the table container has something to scroll in, and the banded
         // header still renders inside it.
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid--bounded"));
-        Assert.NotEmpty(cut.FindAll("th.flare-datagrid__th--composite"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Bounded}"));
+        Assert.NotEmpty(cut.FindAll($"th.{Css.Classes.DataGrid.ThComposite}"));
     }
 }
 
@@ -1327,8 +1327,8 @@ public class C_FlareDataGridColumnIdentityTests : FlareTestContext
             })));
 
         // Click the first "Value" header; only it gets a sort indicator (state keyed by Id "name").
-        cut.FindAll("th.flare-datagrid__th--sortable")[0].Click();
-        var sortIcons = cut.FindAll("th .flare-datagrid__sort-icon");
+        cut.FindAll($"th.{Css.Classes.DataGrid.ThSortable}")[0].Click();
+        var sortIcons = cut.FindAll($"th .{Css.Classes.DataGrid.SortIcon}");
         Assert.Single(sortIcons);
     }
 }
@@ -1364,7 +1364,7 @@ public class C_FlareDataGridColumnVisibilityTests : FlareTestContext
             .Add(g => g.ShowColumnPicker, true)
             .Add(g => g.Columns, Cols()));
 
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__column-picker-wrap"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.ColumnPickerWrap}"));
     }
 
     [Fact]
@@ -1379,8 +1379,8 @@ public class C_FlareDataGridColumnVisibilityTests : FlareTestContext
 
         Assert.Equal(2, cut.FindAll("thead th[role='columnheader']").Count);
 
-        cut.Find(".flare-datagrid__column-picker-wrap button").Click(); // open the picker
-        cut.FindAll(".flare-datagrid__column-picker input[type=checkbox]")[1].Change(false); // hide Department
+        cut.Find($".{Css.Classes.DataGrid.ColumnPickerWrap} button").Click(); // open the picker
+        cut.FindAll($".{Css.Classes.DataGrid.ColumnPicker} input[type=checkbox]")[1].Change(false); // hide Department
 
         Assert.Single(cut.FindAll("thead th[role='columnheader']"));
         Assert.NotNull(reported);
@@ -1440,9 +1440,9 @@ public class C_FlareDataGridColumnStrategyTests : FlareTestContext
     {
         // Lexical sort would give High, Low, Medium; the custom comparison sorts by priority rank.
         var cut = Render(Grid(sortComparison: (a, b) => Rank(a.Priority).CompareTo(Rank(b.Priority))));
-        cut.FindAll("th.flare-datagrid__th--sortable").First(t => t.TextContent.Contains("Priority")).Click();
+        cut.FindAll($"th.{Css.Classes.DataGrid.ThSortable}").First(t => t.TextContent.Contains("Priority")).Click();
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal("B", rows[0].QuerySelectorAll("td")[0].TextContent.Trim()); // High
         Assert.Equal("C", rows[1].QuerySelectorAll("td")[0].TextContent.Trim()); // Medium
         Assert.Equal("A", rows[2].QuerySelectorAll("td")[0].TextContent.Trim()); // Low
@@ -1453,9 +1453,9 @@ public class C_FlareDataGridColumnStrategyTests : FlareTestContext
     {
         // Custom predicate: keep tickets whose priority rank is <= the typed number.
         var cut = Render(Grid(filterFunc: (t, text) => int.TryParse(text, out var max) && Rank(t.Priority) <= max));
-        cut.Find(".flare-datagrid__filter-row .flare-input__control").Input("0"); // only High
+        cut.Find($".{Css.Classes.DataGrid.FilterRow} .{Css.Classes.Input.Control}").Input("0"); // only High
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Single(rows);
         Assert.Contains("B", rows[0].TextContent);
     }
@@ -1548,7 +1548,7 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
     public void BoolColumn_AutoDetected_RendersCheckboxIcon()
     {
         var cut = Render(Grid());
-        var icons = cut.FindAll(".flare-datagrid__bool");
+        var icons = cut.FindAll($".{Css.Classes.DataGrid.BoolCell}");
         Assert.Equal(2, icons.Count);
         Assert.All(icons, i => Assert.Equal("svg", i.NodeName, ignoreCase: true));
         Assert.Contains(icons, i => i.GetAttribute("aria-label") == "true");   // Alice = true
@@ -1559,8 +1559,8 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
     public void BoolColumn_True_GetsOnStateClass()
     {
         var cut = Render(Grid());
-        Assert.Contains(cut.FindAll(".flare-datagrid__bool--on"), i => i.GetAttribute("aria-label") == "true");
-        Assert.Contains(cut.FindAll(".flare-datagrid__bool--off"), i => i.GetAttribute("aria-label") == "false");
+        Assert.Contains(cut.FindAll($".{Css.Classes.DataGrid.BoolOn}"), i => i.GetAttribute("aria-label") == "true");
+        Assert.Contains(cut.FindAll($".{Css.Classes.DataGrid.BoolOff}"), i => i.GetAttribute("aria-label") == "false");
     }
 
     [Fact]
@@ -1578,7 +1578,7 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
                 inner.CloseComponent();
             })));
 
-        var firstCell = cut.FindAll("tr.flare-datagrid__row td")[0].TextContent.Trim();
+        var firstCell = cut.FindAll($"tr.{Css.Classes.DataGrid.Row} td")[0].TextContent.Trim();
         Assert.Equal("06/21/2026", firstCell);
         Assert.DoesNotContain(":", firstCell); // no time
     }
@@ -1598,7 +1598,7 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
                 inner.CloseComponent();
             })));
 
-        Assert.Equal("1,234.50", cut.FindAll("tr.flare-datagrid__row td")[0].TextContent.Trim());
+        Assert.Equal("1,234.50", cut.FindAll($"tr.{Css.Classes.DataGrid.Row} td")[0].TextContent.Trim());
     }
 }
 
@@ -1638,26 +1638,26 @@ public class C_FlareDataGridAlignmentTests : FlareTestContext
     public void NumberColumn_AutoAlignsEnd()
     {
         var cut = Render(Grid());
-        var cells = cut.FindAll("tr.flare-datagrid__row")[0].QuerySelectorAll("td");
-        Assert.Contains("flare-datagrid__cell--end", cells[2].ClassName);   // Amount
-        Assert.DoesNotContain("flare-datagrid__cell--", cells[0].ClassName); // Name (text) = leading, no class
+        var cells = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll("td");
+        Assert.Contains(Css.Classes.DataGrid.AlignEnd, cells[2].ClassName);   // Amount
+        Assert.DoesNotContain($"{Css.Classes.DataGrid.Root}__cell--", cells[0].ClassName); // Name (text) = leading, no class
     }
 
     [Fact]
     public void BoolColumn_AutoAlignsCenter()
     {
         var cut = Render(Grid());
-        var cells = cut.FindAll("tr.flare-datagrid__row")[0].QuerySelectorAll("td");
-        Assert.Contains("flare-datagrid__cell--center", cells[1].ClassName); // Active
+        var cells = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll("td");
+        Assert.Contains(Css.Classes.DataGrid.AlignCenter, cells[1].ClassName); // Active
     }
 
     [Fact]
     public void Header_MatchesCellAlignment()
     {
         var cut = Render(Grid());
-        var ths = cut.FindAll("th.flare-datagrid__th");
-        Assert.Contains("flare-datagrid__cell--center", ths[1].ClassName); // Active header
-        Assert.Contains("flare-datagrid__cell--end", ths[2].ClassName);    // Amount header
+        var ths = cut.FindAll($"th.{Css.Classes.DataGrid.Th}");
+        Assert.Contains(Css.Classes.DataGrid.AlignCenter, ths[1].ClassName); // Active header
+        Assert.Contains(Css.Classes.DataGrid.AlignEnd, ths[2].ClassName);    // Amount header
     }
 
     [Fact]
@@ -1665,8 +1665,8 @@ public class C_FlareDataGridAlignmentTests : FlareTestContext
     {
         // A number column forced to Start must not get the auto end-alignment.
         var cut = Render(Grid(amountAlign: ColumnAlign.Start));
-        var amountCell = cut.FindAll("tr.flare-datagrid__row")[0].QuerySelectorAll("td")[2];
-        Assert.DoesNotContain("flare-datagrid__cell--end", amountCell.ClassName);
+        var amountCell = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll("td")[2];
+        Assert.DoesNotContain(Css.Classes.DataGrid.AlignEnd, amountCell.ClassName);
     }
 }
 
@@ -1701,9 +1701,9 @@ public class C_FlareDataGridComputedColumnTests : FlareTestContext
     public void Filter_ByComputedColumn_Works()
     {
         var cut = Render(Grid());
-        cut.Find(".flare-datagrid__filter-row .flare-input__control").Input("Smith");
+        cut.Find($".{Css.Classes.DataGrid.FilterRow} .{Css.Classes.Input.Control}").Input("Smith");
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal(2, rows.Count);
         Assert.All(rows, r => Assert.Contains("Smith", r.TextContent));
     }
@@ -1712,9 +1712,9 @@ public class C_FlareDataGridComputedColumnTests : FlareTestContext
     public void Sort_ByComputedColumn_OrdersByAccessor()
     {
         var cut = Render(Grid());
-        cut.Find("th.flare-datagrid__th--sortable").Click(); // ascending by full name
+        cut.Find($"th.{Css.Classes.DataGrid.ThSortable}").Click(); // ascending by full name
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal("Alice Adams", rows[0].QuerySelector("td")!.TextContent.Trim());
         Assert.Equal("Bob Smith", rows[1].QuerySelector("td")!.TextContent.Trim());
         Assert.Equal("Carol Smith", rows[2].QuerySelector("td")!.TextContent.Trim());
@@ -1748,39 +1748,39 @@ public class C_FlareDataGridMenuFilterTests : FlareTestContext
     public void MenuMode_RendersTriggerButton_NotInlineFilterRow()
     {
         var cut = Render(Grid());
-        Assert.Single(cut.FindAll("button.flare-datagrid__filter-trigger"));
+        Assert.Single(cut.FindAll($"button.{Css.Classes.DataGrid.FilterTrigger}"));
         // Menu mode must not also render the always-on inline filter row.
-        Assert.Empty(cut.FindAll(".flare-datagrid__filter-row"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.FilterRow}"));
     }
 
     [Fact]
     public void Trigger_TogglesPanel()
     {
         var cut = Render(Grid());
-        Assert.Empty(cut.FindAll(".flare-datagrid__filter-menu"));
-        cut.Find("button.flare-datagrid__filter-trigger").Click();
-        Assert.Single(cut.FindAll(".flare-datagrid__filter-menu"));
-        cut.Find("button.flare-datagrid__filter-trigger").Click();
-        Assert.Empty(cut.FindAll(".flare-datagrid__filter-menu"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.FilterMenu}"));
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.FilterMenu}"));
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.FilterMenu}"));
     }
 
     [Fact]
     public void ApplyFilter_FiltersRows_AndMarksTriggerActive()
     {
         var cut = Render(Grid());
-        cut.Find("button.flare-datagrid__filter-trigger").Click(); // open
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click(); // open
 
         // Fields in order: [0] search box, [1] operator select, [2] condition value input.
-        var valueField = cut.FindAll(".flare-datagrid__filter-menu-field")[2];
+        var valueField = cut.FindAll($".{Css.Classes.DataGrid.FilterMenuField}")[2];
         valueField.QuerySelector("input")!.Input("Ban"); // default operator = contains; all values stay checked
 
         // Apply is the filled button in the actions row.
-        cut.FindAll(".flare-datagrid__filter-menu-actions button")[^1].Click();
+        cut.FindAll($".{Css.Classes.DataGrid.FilterMenuActions} button")[^1].Click();
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Single(rows);
         Assert.Contains("Banana", rows[0].TextContent);
-        Assert.Single(cut.FindAll("button.flare-datagrid__filter-trigger--active"));
+        Assert.Single(cut.FindAll($"button.{Css.Classes.DataGrid.FilterTriggerActive}"));
     }
 }
 
@@ -1941,7 +1941,7 @@ public class C_FlareDataGridExportTests : FlareTestContext
             .Add(x => x.ToolbarContent, toolbar)
             .Add(x => x.Columns, Cols()));
 
-        cut.Find(".flare-datagrid__toolbar button").Click();
+        cut.Find($".{Css.Classes.DataGrid.Toolbar} button").Click();
 
         Assert.Equal("people.csv", dl.FileName);
         Assert.Contains("Alice", dl.Content);
@@ -1970,8 +1970,8 @@ public class C_FlareDataGridExportTests : FlareTestContext
             .Add(x => x.Columns, Cols()));
 
         // Split layout: one split-button host with a primary action, not a button per exporter.
-        Assert.Single(cut.FindAll(".flare-split-btn"));
-        var primary = cut.Find(".flare-split-btn__main");
+        Assert.Single(cut.FindAll($".{Css.Classes.SplitButton.Root}"));
+        var primary = cut.Find($".{Css.Classes.SplitButton.Main}");
         Assert.Contains("CSV", primary.TextContent); // first exporter is the primary action
 
         primary.Click();
@@ -2017,7 +2017,7 @@ public class C_FlareDataGridCellSelectionTests : FlareTestContext
     }
 
     private static void Key(IRenderedComponent<FlareDataGrid<Row>> cut, string key, bool shift = false, bool ctrl = false)
-        => cut.Find(".flare-datagrid__table").KeyDown(new KeyboardEventArgs { Key = key, ShiftKey = shift, CtrlKey = ctrl });
+        => cut.Find($".{Css.Classes.DataGrid.Table}").KeyDown(new KeyboardEventArgs { Key = key, ShiftKey = shift, CtrlKey = ctrl });
 
     [Fact]
     public void ShiftArrow_ExtendsRange_HighlightsCells()
@@ -2028,7 +2028,7 @@ public class C_FlareDataGridCellSelectionTests : FlareTestContext
         Key(cut, "ArrowDown", shift: true);    // extend to (1,1) -> 2x2 block
 
         // 4 body cells in the 2x2 block are highlighted.
-        Assert.Equal(4, cut.FindAll("td.flare-datagrid__cell--range").Count);
+        Assert.Equal(4, cut.FindAll($"td.{Css.Classes.DataGrid.CellRange}").Count);
     }
 
     [Fact]
@@ -2052,20 +2052,20 @@ public class C_FlareDataGridCellSelectionTests : FlareTestContext
         Key(cut, "ArrowRight", shift: true);   // range (0,0)-(0,1)
         Key(cut, "ArrowDown");                 // plain move collapses to single cell (1,1)
 
-        Assert.Single(cut.FindAll("td.flare-datagrid__cell--range"));
+        Assert.Single(cut.FindAll($"td.{Css.Classes.DataGrid.CellRange}"));
     }
 
     [Fact]
     public void MouseDrag_SelectsRectangularRange()
     {
         var cut = RenderGrid();
-        cut.FindAll("tr.flare-datagrid__row")[0].QuerySelectorAll("td")[0]
+        cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll("td")[0]
             .TriggerEvent("onmousedown", new MouseEventArgs()); // start at (0,0)
         // Re-query after the re-render so the handler IDs are current.
-        cut.FindAll("tr.flare-datagrid__row")[1].QuerySelectorAll("td")[1]
+        cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[1].QuerySelectorAll("td")[1]
             .TriggerEvent("onmouseenter", new MouseEventArgs()); // drag to (1,1)
 
-        Assert.Equal(4, cut.FindAll("td.flare-datagrid__cell--range").Count); // 2x2 block
+        Assert.Equal(4, cut.FindAll($"td.{Css.Classes.DataGrid.CellRange}").Count); // 2x2 block
     }
 
     [Fact]
@@ -2080,8 +2080,8 @@ public class C_FlareDataGridCellSelectionTests : FlareTestContext
             .Add(x => x.OnPaste, EventCallback.Factory.Create<DataGridPaste<Row>>(this, dp => received = dp))
             .Add(x => x.Columns, Cols()));
 
-        cut.Find(".flare-datagrid__table").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" }); // active cell (0,0)
-        await cut.Find(".flare-datagrid__table").KeyDownAsync(new KeyboardEventArgs { Key = "v", CtrlKey = true });
+        cut.Find($".{Css.Classes.DataGrid.Table}").KeyDown(new KeyboardEventArgs { Key = "ArrowDown" }); // active cell (0,0)
+        await cut.Find($".{Css.Classes.DataGrid.Table}").KeyDownAsync(new KeyboardEventArgs { Key = "v", CtrlKey = true });
 
         Assert.NotNull(received);
         Assert.Equal(4, received!.Cells.Count);
@@ -2127,7 +2127,7 @@ public class C_FlareDataGridTypedEditorTests : FlareTestContext
             .Add(x => x.EditMode, DataGridEditMode.Inline)
             .Add(x => x.Columns, Cols()));
         // Begin editing the first row via its edit action button.
-        cut.FindAll("td.flare-datagrid__td--edit-actions button")[0].Click();
+        cut.FindAll($"td.{Css.Classes.DataGrid.TdEditActions} button")[0].Click();
         return cut;
     }
 
@@ -2135,23 +2135,23 @@ public class C_FlareDataGridTypedEditorTests : FlareTestContext
     public void BoolColumn_EditsWithCheckbox()
     {
         var cut = RenderEditing();
-        var editRow = cut.FindAll("tr.flare-datagrid__row")[0];
-        Assert.NotEmpty(editRow.QuerySelectorAll(".flare-checkbox"));
+        var editRow = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0];
+        Assert.NotEmpty(editRow.QuerySelectorAll($".{Css.Classes.Checkbox.Root}"));
     }
 
     [Fact]
     public void EnumColumn_EditsWithSelect()
     {
         var cut = RenderEditing();
-        var editRow = cut.FindAll("tr.flare-datagrid__row")[0];
-        Assert.NotEmpty(editRow.QuerySelectorAll(".flare-select"));
+        var editRow = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0];
+        Assert.NotEmpty(editRow.QuerySelectorAll($".{Css.Classes.Select.Root}"));
     }
 
     [Fact]
     public void NumberColumn_EditsWithNumberInput()
     {
         var cut = RenderEditing();
-        var editRow = cut.FindAll("tr.flare-datagrid__row")[0];
+        var editRow = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}")[0];
         var numberInputs = editRow.QuerySelectorAll("input[type=number]");
         Assert.NotEmpty(numberInputs);
     }
@@ -2189,9 +2189,9 @@ public class C_FlareDataGridExcelFilterTests : FlareTestContext
     public void Menu_ShowsDistinctValueChecklist()
     {
         var cut = RenderGrid();
-        cut.Find("button.flare-datagrid__filter-trigger").Click();
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
 
-        var checks = cut.FindAll(".flare-datagrid__filter-menu-list .flare-checkbox");
+        var checks = cut.FindAll($".{Css.Classes.DataGrid.FilterMenuList} .{Css.Classes.Checkbox.Root}");
         // 3 distinct values (Apple/Banana/Cherry) + the "(Select all)" row.
         Assert.Equal(4, checks.Count);
         Assert.Contains(checks, c => c.TextContent.Contains("Apple"));
@@ -2203,28 +2203,28 @@ public class C_FlareDataGridExcelFilterTests : FlareTestContext
     public void Uncheck_Value_AppliesInFilter_ExcludingIt()
     {
         var cut = RenderGrid();
-        cut.Find("button.flare-datagrid__filter-trigger").Click();
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
 
-        var banana = cut.FindAll(".flare-datagrid__filter-menu-list .flare-checkbox")
+        var banana = cut.FindAll($".{Css.Classes.DataGrid.FilterMenuList} .{Css.Classes.Checkbox.Root}")
             .First(c => c.TextContent.Contains("Banana"));
         banana.QuerySelector("input")!.Change(false); // uncheck Banana
 
-        cut.FindAll(".flare-datagrid__filter-menu-actions button")[^1].Click(); // Apply
+        cut.FindAll($".{Css.Classes.DataGrid.FilterMenuActions} button")[^1].Click(); // Apply
 
-        var rows = cut.FindAll("tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal(2, rows.Count); // Apple, Cherry (both Bananas excluded)
         Assert.DoesNotContain(rows, r => r.TextContent.Contains("Banana"));
-        Assert.Single(cut.FindAll("button.flare-datagrid__filter-trigger--active"));
+        Assert.Single(cut.FindAll($"button.{Css.Classes.DataGrid.FilterTriggerActive}"));
     }
 
     [Fact]
     public void Search_FiltersTheChecklist()
     {
         var cut = RenderGrid();
-        cut.Find("button.flare-datagrid__filter-trigger").Click();
-        cut.Find(".flare-datagrid__filter-menu .flare-input__control").Input("ban");
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
+        cut.Find($".{Css.Classes.DataGrid.FilterMenu} .{Css.Classes.Input.Control}").Input("ban");
 
-        var values = cut.FindAll(".flare-datagrid__filter-menu-list .flare-checkbox")
+        var values = cut.FindAll($".{Css.Classes.DataGrid.FilterMenuList} .{Css.Classes.Checkbox.Root}")
             .Where(c => !c.TextContent.Contains("Select all")).ToList();
         Assert.Single(values);
         Assert.Contains("Banana", values[0].TextContent);
@@ -2260,7 +2260,7 @@ public class C_FlareDataGridPinnedRowsTests : FlareTestContext
     public void PinnedTop_RendersInThead()
     {
         var cut = RenderGrid();
-        var pinned = cut.FindAll("thead tr.flare-datagrid__row--pinned");
+        var pinned = cut.FindAll($"thead tr.{Css.Classes.DataGrid.PinnedRow}");
         Assert.Single(pinned);
         Assert.Contains("TOPROW", pinned[0].TextContent);
     }
@@ -2269,7 +2269,7 @@ public class C_FlareDataGridPinnedRowsTests : FlareTestContext
     public void PinnedBottom_RendersInTfoot()
     {
         var cut = RenderGrid();
-        var pinned = cut.FindAll("tfoot tr.flare-datagrid__row--pinned");
+        var pinned = cut.FindAll($"tfoot tr.{Css.Classes.DataGrid.PinnedRow}");
         Assert.Single(pinned);
         Assert.Contains("BOTTOMROW", pinned[0].TextContent);
     }
@@ -2278,7 +2278,7 @@ public class C_FlareDataGridPinnedRowsTests : FlareTestContext
     public void PinnedRows_AreOutsidePaging()
     {
         var cut = RenderGrid();
-        var bodyRows = cut.FindAll("tbody tr.flare-datagrid__row");
+        var bodyRows = cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal(5, bodyRows.Count); // page size unaffected by the pinned rows
         Assert.DoesNotContain(bodyRows, r => r.TextContent.Contains("TOPROW") || r.TextContent.Contains("BOTTOMROW"));
     }
@@ -2303,10 +2303,10 @@ public class C_FlareDataGridFrozenRightTests : FlareTestContext
                 inner.AddAttribute(23, "FrozenRight", true); inner.CloseComponent();
             })));
 
-        Assert.Single(cut.FindAll("th.flare-datagrid__th--frozen-right"));
-        Assert.Equal(2, cut.FindAll("td.flare-datagrid__td--frozen-right").Count); // one per data row
+        Assert.Single(cut.FindAll($"th.{Css.Classes.DataGrid.ThFrozenRight}"));
+        Assert.Equal(2, cut.FindAll($"td.{Css.Classes.DataGrid.TdFrozenRight}").Count); // one per data row
         // The table opts into horizontal-scroll layout when any column is frozen (left or right).
-        Assert.NotEmpty(cut.FindAll("table.flare-datagrid__table--scroll-x"));
+        Assert.NotEmpty(cut.FindAll($"table.{Css.Classes.DataGrid.TableScrollX}"));
     }
 }
 
@@ -2448,18 +2448,18 @@ public class C_FlareDataGridQueryableWiringTests : FlareTestContext
 
     [Fact]
     public void Queryable_PagesServerSide()
-        => Assert.Equal(5, RenderGrid().FindAll("tbody tr.flare-datagrid__row").Count);
+        => Assert.Equal(5, RenderGrid().FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
 
     [Fact]
     public void Queryable_SortsViaTranslation()
     {
         var cut = RenderGrid();
         // Re-query before each click - a sort reloads via the queryable and re-renders the tree.
-        string FirstValue() => cut.FindAll("tbody tr.flare-datagrid__row")[0].QuerySelectorAll("td")[0].TextContent.Trim();
+        string FirstValue() => cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}")[0].QuerySelectorAll("td")[0].TextContent.Trim();
 
-        cut.FindAll("th.flare-datagrid__th--sortable").First(t => t.TextContent.Contains("Value")).Click();
+        cut.FindAll($"th.{Css.Classes.DataGrid.ThSortable}").First(t => t.TextContent.Contains("Value")).Click();
         Assert.Equal("1", FirstValue()); // ascending
-        cut.FindAll("th.flare-datagrid__th--sortable").First(t => t.TextContent.Contains("Value")).Click();
+        cut.FindAll($"th.{Css.Classes.DataGrid.ThSortable}").First(t => t.TextContent.Contains("Value")).Click();
         Assert.Equal("12", FirstValue()); // descending
     }
 }
@@ -2495,7 +2495,7 @@ public class C_FlareDataGridA11yTests : FlareTestContext
     public void Sort_AnnouncesColumnAndDirection()
     {
         var cut = RenderGrid();
-        cut.FindAll("th.flare-datagrid__th--sortable").First(t => t.TextContent.Contains("Name")).Click();
+        cut.FindAll($"th.{Css.Classes.DataGrid.ThSortable}").First(t => t.TextContent.Contains("Name")).Click();
         var status = cut.Find("div[role=status]").TextContent;
         Assert.Contains("Sorted by Name", status);
         Assert.Contains("ascending", status);
@@ -2505,7 +2505,7 @@ public class C_FlareDataGridA11yTests : FlareTestContext
     public void Filter_AnnouncesResultCount()
     {
         var cut = RenderGrid();
-        cut.Find(".flare-datagrid__filter-row input").Input("N1"); // N10, N11, N12
+        cut.Find($".{Css.Classes.DataGrid.FilterRow} input").Input("N1"); // N10, N11, N12
         Assert.Contains("3 results", cut.Find("div[role=status]").TextContent);
     }
 
@@ -2535,10 +2535,10 @@ public class C_FlareDataGridQuickFilterTests : FlareTestContext
             .Add(x => x.Columns, Cols()));
 
         await cut.InvokeAsync(() => cut.Instance.ApplyQuickFilter("berlin")); // City match, case-insensitive
-        Assert.Equal(2, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(2, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
 
         await cut.InvokeAsync(() => cut.Instance.ApplyQuickFilter(null)); // clear
-        Assert.Equal(3, cut.FindAll("tbody tr.flare-datagrid__row").Count);
+        Assert.Equal(3, cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}").Count);
     }
 
     [Fact]
@@ -2572,8 +2572,8 @@ public class C_FlareDataGridFilterPresetsTests : FlareTestContext
     public void PresetsComponent_ListsNoFilterPlusPresets()
     {
         var cut = Render<FlareDataGridFilterPresets<Row>>(p => p.Add(x => x.Presets, _presets));
-        cut.Find(".flare-select__control").Click();
-        var options = cut.FindAll(".flare-select__option").Select(o => o.TextContent.Trim()).ToList();
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+        var options = cut.FindAll($".{Css.Classes.Select.Option}").Select(o => o.TextContent.Trim()).ToList();
         Assert.Contains(options, o => o.Contains("(No filter)"));
         Assert.Contains(options, o => o.Contains("Berliners"));
         Assert.Contains(options, o => o.Contains("Londoners"));
@@ -2588,7 +2588,7 @@ public class C_FlareDataGridFilterPresetsTests : FlareTestContext
             .Add(x => x.Columns, Cols()));
 
         await cut.InvokeAsync(() => cut.Instance.ApplyAdvancedFilter(_presets[0].Filter)); // Berliners
-        var rows = cut.FindAll("tbody tr.flare-datagrid__row");
+        var rows = cut.FindAll($"tbody tr.{Css.Classes.DataGrid.Row}");
         Assert.Equal(2, rows.Count);
         Assert.All(rows, r => Assert.Contains("Berlin", r.TextContent));
     }
@@ -2614,7 +2614,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
             .Add(x => x.PageSize, 5)
             .Add(x => x.Columns, Cols()));
 
-        Assert.Single(cut.FindAll(".flare-datagrid__pagination"));
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
         Assert.Equal(4, cut.Instance.PageCount); // 20 items / 5 per page
     }
 
@@ -2647,7 +2647,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
             .Add(x => x.ShowPager, false)
             .Add(x => x.Columns, Cols()));
 
-        Assert.Empty(cut.FindAll(".flare-datagrid__pagination"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
     }
 
     [Fact]
@@ -2667,16 +2667,16 @@ public class C_FlareDataGridPagerTests : FlareTestContext
             .Add(x => x.Columns, Cols()));
 
         // The footer area renders, the built-in pager does not, and the pager lives in the footer.
-        Assert.Single(cut.FindAll(".flare-datagrid__footer"));
-        Assert.Empty(cut.FindAll(".flare-datagrid__pagination"));
-        Assert.NotEmpty(cut.FindAll(".flare-datagrid__footer .flare-pagination"));
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.Footer}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.Pagination}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.Footer} .{Css.Classes.Pagination.Root}"));
 
         // Page 1 shows the first five items.
         Assert.Contains("Item 01", cut.Find("tbody").TextContent);
         Assert.DoesNotContain("Item 06", cut.Find("tbody").TextContent);
 
         // Click the page-2 button inside the footer pager -> grid advances a page.
-        var pageTwo = cut.FindAll(".flare-datagrid__footer .flare-pagination button")
+        var pageTwo = cut.FindAll($".{Css.Classes.DataGrid.Footer} .{Css.Classes.Pagination.Root} button")
             .First(b => b.TextContent.Trim() == "2");
         pageTwo.Click();
 
@@ -2688,7 +2688,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
     public void StandalonePager_WithoutGrid_RendersNothing()
     {
         var cut = Render<FlareDataGridPager<string>>();
-        Assert.Empty(cut.FindAll(".flare-pagination"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Pagination.Root}"));
     }
 
     [Fact]
@@ -2709,7 +2709,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
             .Add(x => x.FooterContent, footer)
             .Add(x => x.Columns, Cols()));
 
-        var opts = cut.FindAll(".flare-datagrid__footer .flare-pagination option")
+        var opts = cut.FindAll($".{Css.Classes.DataGrid.Footer} .{Css.Classes.Pagination.Root} option")
             .Select(o => o.TextContent.Trim()).ToList();
         Assert.Equal(["5", "10", "25"], opts);
     }

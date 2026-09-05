@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Every field renders <c>FlareFieldChrome</c> as its root, so the three parameters that address that

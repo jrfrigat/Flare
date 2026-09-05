@@ -13,55 +13,55 @@ public class FlareSkeletonShouldRenderTests : FlareTestContext
     public void RendersRootElement()
     {
         var cut = Render<FlareSkeleton>();
-        Assert.NotEmpty(cut.FindAll(".flare-skeleton"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Skeleton.Root}"));
     }
 
     [Fact]
     public void DefaultVariantIsRect()
     {
         var cut = Render<FlareSkeleton>();
-        Assert.Contains("flare-skeleton--rect", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Rect, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
     public void TextVariantAppliesClass()
     {
         var cut = Render<FlareSkeleton>(p => p.Add(x => x.Variant, SkeletonVariant.Text));
-        Assert.Contains("flare-skeleton--text", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Text, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
     public void CircleVariantAppliesClass()
     {
         var cut = Render<FlareSkeleton>(p => p.Add(x => x.Variant, SkeletonVariant.Circle));
-        Assert.Contains("flare-skeleton--circle", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Circle, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
     public void WaveAnimationIsDefault()
     {
         var cut = Render<FlareSkeleton>();
-        Assert.Contains("flare-skeleton--wave", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Wave, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
     public void PulseAnimationAppliesClass()
     {
         var cut = Render<FlareSkeleton>(p => p.Add(x => x.Animation, SkeletonAnimation.Pulse));
-        Assert.Contains("flare-skeleton--pulse", cut.Find(".flare-skeleton").ClassName);
+        Assert.Contains(Css.Classes.Skeleton.Pulse, cut.Find($".{Css.Classes.Skeleton.Root}").ClassName);
     }
 
     [Fact]
     public void WidthAppliedInlineStyle()
     {
         var cut = Render<FlareSkeleton>(p => p.Add(x => x.Width, "120px"));
-        Assert.Contains("width:120px", cut.Find(".flare-skeleton").GetAttribute("style") ?? "");
+        Assert.Contains("width:120px", cut.Find($".{Css.Classes.Skeleton.Root}").GetAttribute("style") ?? "");
     }
 
     [Fact]
     public void HeightAppliedInlineStyle()
     {
         var cut = Render<FlareSkeleton>(p => p.Add(x => x.Height, "40px"));
-        Assert.Contains("height:40px", cut.Find(".flare-skeleton").GetAttribute("style") ?? "");
+        Assert.Contains("height:40px", cut.Find($".{Css.Classes.Skeleton.Root}").GetAttribute("style") ?? "");
     }
 }

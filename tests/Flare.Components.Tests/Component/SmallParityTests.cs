@@ -19,8 +19,8 @@ public class C_FlareBusyTests : FlareTestContext
         var cut = Render<FlareBusy>(p => p.Add(x => x.Busy, true).Add(x => x.Delay, 5000));
 
         // Still inside the delay, so nothing has appeared yet.
-        Assert.Empty(cut.FindAll(".flare-busy__veil"));
-        Assert.Null(cut.Find(".flare-busy").GetAttribute("aria-busy"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Busy.Veil}"));
+        Assert.Null(cut.Find($".{Css.Classes.Busy.Root}").GetAttribute("aria-busy"));
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public class C_FlareBusyTests : FlareTestContext
         var cut = Render<FlareBusy>(p => p.Add(x => x.Busy, true).Add(x => x.Delay, 20));
 
         await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
-        cut.WaitForAssertion(() => Assert.NotEmpty(cut.FindAll(".flare-busy__veil")));
-        Assert.Equal("true", cut.Find(".flare-busy").GetAttribute("aria-busy"));
+        cut.WaitForAssertion(() => Assert.NotEmpty(cut.FindAll($".{Css.Classes.Busy.Veil}")));
+        Assert.Equal("true", cut.Find($".{Css.Classes.Busy.Root}").GetAttribute("aria-busy"));
     }
 
     // Once the spinner is up it stays long enough to be read: without this, work that runs just past the
@@ -44,12 +44,12 @@ public class C_FlareBusyTests : FlareTestContext
             .Add(x => x.MinDuration, 3000));
 
         await Task.Delay(150, Xunit.TestContext.Current.CancellationToken);
-        cut.WaitForAssertion(() => Assert.NotEmpty(cut.FindAll(".flare-busy__veil")));
+        cut.WaitForAssertion(() => Assert.NotEmpty(cut.FindAll($".{Css.Classes.Busy.Veil}")));
 
         cut.Render(p => p.Add(x => x.Busy, false));
         await Task.Delay(150, Xunit.TestContext.Current.CancellationToken);
 
-        Assert.NotEmpty(cut.FindAll(".flare-busy__veil"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Busy.Veil}"));
     }
 
     // inert rather than a focus trap: the subtree keeps its layout and its scroll position, and the
@@ -63,7 +63,7 @@ public class C_FlareBusyTests : FlareTestContext
             .AddChildContent("<button>Save</button>"));
 
         await Task.Delay(150, Xunit.TestContext.Current.CancellationToken);
-        cut.WaitForAssertion(() => Assert.NotNull(cut.Find(".flare-busy__content").GetAttribute("inert")));
+        cut.WaitForAssertion(() => Assert.NotNull(cut.Find($".{Css.Classes.Busy.Content}").GetAttribute("inert")));
     }
 
     [Fact]
@@ -73,8 +73,8 @@ public class C_FlareBusyTests : FlareTestContext
             .Add(x => x.Busy, false)
             .AddChildContent("<button>Save</button>"));
 
-        Assert.Empty(cut.FindAll(".flare-busy__veil"));
-        Assert.Null(cut.Find(".flare-busy__content").GetAttribute("inert"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Busy.Veil}"));
+        Assert.Null(cut.Find($".{Css.Classes.Busy.Content}").GetAttribute("inert"));
         Assert.NotNull(cut.Find("button"));
     }
 }
@@ -157,7 +157,7 @@ public class C_PasswordStrengthTests
         var context = new FlareTestContext();
         var cut = context.Render<FlarePasswordField>();
 
-        Assert.Empty(cut.FindAll(".flare-input__strength"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Input.Strength}"));
     }
 }
 
@@ -172,7 +172,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
     {
         var cut = Render<FlareTimeSpanPicker>(p => p.Add(x => x.Units, TimeSpanUnits.All));
 
-        Assert.Equal(4, cut.FindAll(".flare-timespan__input").Count);
+        Assert.Equal(4, cut.FindAll($".{Css.Classes.TimeSpanField.Input}").Count);
     }
 
     [Fact]
@@ -180,7 +180,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
     {
         var cut = Render<FlareTimeSpanPicker>(p => p.Add(x => x.Units, TimeSpanUnits.HoursMinutes));
 
-        Assert.Equal(2, cut.FindAll(".flare-timespan__input").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.TimeSpanField.Input}").Count);
     }
 
     // The largest shown segment absorbs everything above it: a field showing only hours on a two-day
@@ -192,7 +192,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
             .Add(x => x.Units, TimeSpanUnits.HoursMinutes)
             .Add(x => x.Value, TimeSpan.FromHours(50)));
 
-        var hours = cut.FindAll(".flare-timespan__input")[0];
+        var hours = cut.FindAll($".{Css.Classes.TimeSpanField.Input}")[0];
         Assert.Equal("50", hours.GetAttribute("value"));
     }
 
@@ -200,7 +200,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
     public void SegmentsBelowTheLargestAreBoundedToTheirPlace()
     {
         var cut = Render<FlareTimeSpanPicker>(p => p.Add(x => x.Units, TimeSpanUnits.All));
-        var inputs = cut.FindAll(".flare-timespan__input");
+        var inputs = cut.FindAll($".{Css.Classes.TimeSpanField.Input}");
 
         Assert.Null(inputs[0].GetAttribute("max"));      // days: no ceiling
         Assert.Equal("23", inputs[1].GetAttribute("max"));
@@ -217,7 +217,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
             .Add(x => x.Value, TimeSpan.FromMinutes(90))
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<TimeSpan?>(this, v => captured = v)));
 
-        cut.FindAll(".flare-timespan__input")[1].Change("45");
+        cut.FindAll($".{Css.Classes.TimeSpanField.Input}")[1].Change("45");
 
         Assert.Equal(TimeSpan.FromMinutes(105), captured);
     }
@@ -231,7 +231,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
             .Add(x => x.Max, TimeSpan.FromHours(8))
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<TimeSpan?>(this, v => captured = v)));
 
-        cut.FindAll(".flare-timespan__input")[0].Change("40");
+        cut.FindAll($".{Css.Classes.TimeSpanField.Input}")[0].Change("40");
 
         Assert.Equal(TimeSpan.FromHours(8), captured);
     }
@@ -242,8 +242,8 @@ public class C_TimeSpanPickerTests : FlareTestContext
         var plain = Render<FlareTimeSpanPicker>();
         var signed = Render<FlareTimeSpanPicker>(p => p.Add(x => x.Negatable, true));
 
-        Assert.Empty(plain.FindAll(".flare-timespan__sign"));
-        Assert.Single(signed.FindAll(".flare-timespan__sign"));
+        Assert.Empty(plain.FindAll($".{Css.Classes.TimeSpanField.Sign}"));
+        Assert.Single(signed.FindAll($".{Css.Classes.TimeSpanField.Sign}"));
     }
 
     [Fact]
@@ -255,7 +255,7 @@ public class C_TimeSpanPickerTests : FlareTestContext
             .Add(x => x.Value, TimeSpan.FromHours(2))
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<TimeSpan?>(this, v => captured = v)));
 
-        cut.Find(".flare-timespan__sign").Click();
+        cut.Find($".{Css.Classes.TimeSpanField.Sign}").Click();
 
         Assert.Equal(TimeSpan.FromHours(-2), captured);
     }
@@ -273,7 +273,7 @@ public class C_PullToRefreshTests : FlareTestContext
         var cut = Render<FlarePullToRefresh>(p => p.AddChildContent("<p>rows</p>"));
 
         Assert.NotNull(cut.Find("p"));
-        Assert.Equal("true", cut.Find(".flare-ptr__indicator").GetAttribute("aria-hidden"));
+        Assert.Equal("true", cut.Find($".{Css.Classes.PullToRefresh.Indicator}").GetAttribute("aria-hidden"));
     }
 
     // A pull short of the threshold is an ordinary scroll and must not fire the refresh - the failure
@@ -286,7 +286,7 @@ public class C_PullToRefreshTests : FlareTestContext
             .Add(x => x.Threshold, 64)
             .Add(x => x.OnRefresh, EventCallback.Factory.Create(this, () => fired++)));
 
-        var root = cut.Find(".flare-ptr");
+        var root = cut.Find($".{Css.Classes.PullToRefresh.Root}");
         root.PointerDown(new Microsoft.AspNetCore.Components.Web.PointerEventArgs { ClientY = 0 });
         root.PointerMove(new Microsoft.AspNetCore.Components.Web.PointerEventArgs { ClientY = 40 });
         root.PointerUp(new Microsoft.AspNetCore.Components.Web.PointerEventArgs { ClientY = 40 });
@@ -303,7 +303,7 @@ public class C_PullToRefreshTests : FlareTestContext
             .Add(x => x.OnRefresh, EventCallback.Factory.Create(this, () => fired++))
             .AddChildContent("<p>rows</p>"));
 
-        var root = cut.Find(".flare-ptr");
+        var root = cut.Find($".{Css.Classes.PullToRefresh.Root}");
         root.PointerDown(new Microsoft.AspNetCore.Components.Web.PointerEventArgs { ClientY = 0 });
         root.PointerMove(new Microsoft.AspNetCore.Components.Web.PointerEventArgs { ClientY = 400 });
         root.PointerUp(new Microsoft.AspNetCore.Components.Web.PointerEventArgs { ClientY = 400 });
@@ -325,8 +325,8 @@ public class C_TimeSpanSignTests : FlareTestContext
             .Add(x => x.Units, TimeSpanUnits.HoursMinutes)
             .Add(x => x.Value, TimeSpan.FromMinutes(-75)));
 
-        Assert.Equal("-", cut.Find(".flare-timespan__sign").TextContent.Trim());
-        Assert.Equal("true", cut.Find(".flare-timespan__sign").GetAttribute("aria-pressed"));
+        Assert.Equal("-", cut.Find($".{Css.Classes.TimeSpanField.Sign}").TextContent.Trim());
+        Assert.Equal("true", cut.Find($".{Css.Classes.TimeSpanField.Sign}").GetAttribute("aria-pressed"));
     }
 
     [Fact]
@@ -337,7 +337,7 @@ public class C_TimeSpanSignTests : FlareTestContext
             .Add(x => x.Units, TimeSpanUnits.HoursMinutes)
             .Add(x => x.Value, TimeSpan.FromMinutes(-75)));
 
-        var inputs = cut.FindAll(".flare-timespan__input");
+        var inputs = cut.FindAll($".{Css.Classes.TimeSpanField.Input}");
         Assert.Equal("1", inputs[0].GetAttribute("value"));
         Assert.Equal("15", inputs[1].GetAttribute("value"));
     }
@@ -349,7 +349,7 @@ public class C_TimeSpanSignTests : FlareTestContext
             .Add(x => x.Negatable, true)
             .Add(x => x.Value, TimeSpan.FromHours(3)));
 
-        Assert.Equal("+", cut.Find(".flare-timespan__sign").TextContent.Trim());
+        Assert.Equal("+", cut.Find($".{Css.Classes.TimeSpanField.Sign}").TextContent.Trim());
     }
 
     // Editing a segment of a negative duration must keep it negative - the sign is not something the
@@ -364,7 +364,7 @@ public class C_TimeSpanSignTests : FlareTestContext
             .Add(x => x.Value, TimeSpan.FromMinutes(-75))
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<TimeSpan?>(this, v => captured = v)));
 
-        cut.FindAll(".flare-timespan__input")[1].Change("30");
+        cut.FindAll($".{Css.Classes.TimeSpanField.Input}")[1].Change("30");
 
         Assert.Equal(TimeSpan.FromMinutes(-90), captured);
     }

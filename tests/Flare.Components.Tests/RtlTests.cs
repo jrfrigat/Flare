@@ -58,7 +58,7 @@ public class RtlTests : FlareTestContext
             .Add(p => p.ChildContent, "تنبيه")
             .Add(p => p.Severity, AlertSeverity.Warning));
 
-        var alert = cut.Find(".flare-alert");
+        var alert = cut.Find($".{Css.Classes.Alert.Root}");
         Assert.NotNull(alert);
     }
 
@@ -79,7 +79,7 @@ public class RtlTests : FlareTestContext
         var cut = Render<FlareBadge>(parameters => parameters
             .Add(p => p.ChildContent, "5"));
 
-        var badge = cut.Find(".flare-badge");
+        var badge = cut.Find($".{Css.Classes.Badge.Root}");
         Assert.NotNull(badge);
     }
 
@@ -89,7 +89,7 @@ public class RtlTests : FlareTestContext
         var cut = Render<FlareAvatar>(parameters => parameters
             .Add(p => p.Alt, "أحمد"));
 
-        var avatar = cut.Find(".flare-avatar");
+        var avatar = cut.Find($".{Css.Classes.Avatar.Root}");
         Assert.NotNull(avatar);
     }
 }

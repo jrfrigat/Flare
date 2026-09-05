@@ -7,10 +7,10 @@ namespace Flare.Components.Tests;
 // glyph, so Blazor INSERTS the new node instead of patching the path data into the existing one.
 public class FlareIconMorphTests : FlareTestContext
 {
-    private const string Wrapper = ".flare-icon-morph";
-    private const string Slot = ".flare-icon-morph__slot";
-    private const string Enter = ".flare-icon-morph__slot--enter";
-    private const string Exit = ".flare-icon-morph__slot--exit";
+    private const string Wrapper = $".{Css.Classes.Icon.Morph}";
+    private const string Slot = $".{Css.Classes.Icon.MorphSlot}";
+    private const string Enter = $".{Css.Classes.Icon.MorphSlotEnter}";
+    private const string Exit = $".{Css.Classes.Icon.MorphSlotExit}";
 
     [Fact]
     public void MorphNone_IsTheDefault_AndRendersNoWrapper()
@@ -113,9 +113,9 @@ public class FlareIconMorphTests : FlareTestContext
     }
 
     [Theory]
-    [InlineData(FlareIconMorph.Fade, "flare-icon-morph--fade")]
-    [InlineData(FlareIconMorph.Scale, "flare-icon-morph--scale")]
-    [InlineData(FlareIconMorph.Rotate, "flare-icon-morph--rotate")]
+    [InlineData(FlareIconMorph.Fade, Css.Classes.Icon.MorphFade)]
+    [InlineData(FlareIconMorph.Scale, Css.Classes.Icon.MorphScale)]
+    [InlineData(FlareIconMorph.Rotate, Css.Classes.Icon.MorphRotate)]
     public void Mode_SelectsTheWrapperModifier(FlareIconMorph morph, string expected)
     {
         var cut = Render<FlareIconView>(p => p
@@ -159,7 +159,7 @@ public class FlareIconMorphTests : FlareTestContext
         var cut = Render<FlareIconView>(p => p.Add(x => x.Value, FlareIcons.Home));
         cut.Render(p => p.Add(x => x.Value, FlareIcons.Menu));
 
-        Assert.Contains("flare-icon-morph--rotate", cut.Find(Wrapper).ClassName);
+        Assert.Contains(Css.Classes.Icon.MorphRotate, cut.Find(Wrapper).ClassName);
         Assert.Equal(2, cut.FindAll(Slot).Count);
     }
 
@@ -172,7 +172,7 @@ public class FlareIconMorphTests : FlareTestContext
             .Add(x => x.Value, FlareIcons.Home)
             .Add(x => x.Morph, FlareIconMorph.Fade));
 
-        Assert.Contains("flare-icon-morph--fade", cut.Find(Wrapper).ClassName);
+        Assert.Contains(Css.Classes.Icon.MorphFade, cut.Find(Wrapper).ClassName);
     }
 
     // The direction that matters most: one call site opting OUT of a scope that is on.
@@ -199,7 +199,7 @@ public class FlareIconMorphTests : FlareTestContext
         var path = cut.Find("path");
         Assert.Equal(FlareMorphIcons.Plus.Data, path.GetAttribute("d"));
         Assert.Contains($"d:path('{FlareMorphIcons.Plus.Data}')", path.GetAttribute("style"));
-        Assert.Contains("flare-icon--path-morph", cut.Find("svg").ClassName);
+        Assert.Contains(Css.Classes.Icon.PathMorph, cut.Find("svg").ClassName);
     }
 
     // Cross-fading a morph icon would replace the very element whose geometry is being interpolated, so a

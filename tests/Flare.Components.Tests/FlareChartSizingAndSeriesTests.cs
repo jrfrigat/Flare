@@ -64,7 +64,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
 
         var cut = Render<FlareChart>(p => p.Add(x => x.Type, ChartType.Line).Add(x => x.Data, data));
 
-        var lines = cut.FindAll("path.flare-chart__line").Select(l => l.GetAttribute("d") ?? "").ToList();
+        var lines = cut.FindAll($"path.{Css.Classes.Chart.Line}").Select(l => l.GetAttribute("d") ?? "").ToList();
         Assert.Equal(2, lines.Count);
         Assert.DoesNotContain(lines, d => d.StartsWith('M') && d.Contains(" C ") && d == lines[0]);
         Assert.Contains(lines, d => d.Contains(" C "));   // the smoothed one is a cubic path
@@ -79,7 +79,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.Smooth, true));
 
-        Assert.Contains(" C ", cut.Find("path.flare-chart__line").GetAttribute("d") ?? "");
+        Assert.Contains(" C ", cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("d") ?? "");
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
                 [new ChartSeries("spiky", [0, 0, 0, 0, 6500, 0, 0, 3900, 0, 0, 0])])));
 
         var n = System.Text.RegularExpressions.Regex
-            .Matches(cut.Find("path.flare-chart__line").GetAttribute("d") ?? "", @"-?\d+(\.\d+)?")
+            .Matches(cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("d") ?? "", @"-?\d+(\.\d+)?")
             .Select(x => double.Parse(x.Value, System.Globalization.CultureInfo.InvariantCulture))
             .ToList();
 
@@ -118,29 +118,29 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
                 new ChartSeries("dashed", [2, 3, 4], LineStyle: ChartLineStyle.Dashed),
             ])));
 
-        var lines = cut.FindAll("path.flare-chart__line");
+        var lines = cut.FindAll($"path.{Css.Classes.Chart.Line}");
         Assert.Equal("1", lines[0].GetAttribute("pathLength"));
         Assert.Null(lines[1].GetAttribute("pathLength"));
     }
 
     [Theory]
-    [InlineData(ChartLineStyle.Dashed, "--flare-chart-line-dash-dashed")]
-    [InlineData(ChartLineStyle.Dotted, "--flare-chart-line-dash-dotted")]
-    [InlineData(ChartLineStyle.DashDot, "--flare-chart-line-dash-dash-dot")]
+    [InlineData(ChartLineStyle.Dashed, Css.Tokens.Chart.LineDashDashed)]
+    [InlineData(ChartLineStyle.Dotted, Css.Tokens.Chart.LineDashDotted)]
+    [InlineData(ChartLineStyle.DashDot, Css.Tokens.Chart.LineDashDashDot)]
     public void LineStyle_ResolvesToTheThemesDashToken(ChartLineStyle style, string token)
     {
         var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, new ChartData([new ChartSeries("A", [1, 2, 3], LineStyle: style)])));
 
-        Assert.Contains(token, cut.Find("path.flare-chart__line").GetAttribute("style") ?? "");
+        Assert.Contains(token, cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("style") ?? "");
     }
 
     [Fact]
     public void SolidLine_WritesNoDashAtAll()
     {
         var cut = Render<FlareChart>(p => p.Add(x => x.Type, ChartType.Line).Add(x => x.Data, _data));
-        Assert.DoesNotContain("stroke-dasharray", cut.Find("path.flare-chart__line").GetAttribute("style") ?? "");
+        Assert.DoesNotContain("stroke-dasharray", cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -166,7 +166,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, new ChartData([new ChartSeries("A", [1, 2, 3], FlareColor.Error)])));
 
-        Assert.Contains("var(--flare-color-error)", cut.Find("path.flare-chart__line").GetAttribute("style") ?? "");
+        Assert.Contains($"var({Css.Tokens.Color.Error})", cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, new ChartData([new ChartSeries("A", [1, 2, 3], "#ff0000")])));
 
-        Assert.Contains("#ff0000", cut.Find("path.flare-chart__line").GetAttribute("style") ?? "");
+        Assert.Contains("#ff0000", cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, _data));
 
-        Assert.Contains("var(--flare-chart-series-1)", cut.Find("path.flare-chart__line").GetAttribute("style") ?? "");
+        Assert.Contains($"var({Css.Tokens.Chart.Series1})", cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("style") ?? "");
     }
 
     // ---- Annotations -------------------------------------------------------------------------------
@@ -236,7 +236,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Annotations, new[] { ChartAnnotation.VerticalBand(1, 2, "window") }));
 
         Assert.Contains(cut.FindAll("rect"),
-            r => (r.GetAttribute("style") ?? "").Contains("fill-opacity:var(--flare-chart-annotation-band-opacity)"));
+            r => (r.GetAttribute("style") ?? "").Contains($"fill-opacity:var({Css.Tokens.Chart.AnnotationBandOpacity})"));
     }
 
     [Fact]
@@ -248,7 +248,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Annotations, new[] { ChartAnnotation.Threshold(5, "t", FlareColor.Success) }));
 
         Assert.Contains(cut.FindAll("line"),
-            l => (l.GetAttribute("style") ?? "").Contains("stroke:var(--flare-color-success)"));
+            l => (l.GetAttribute("style") ?? "").Contains($"stroke:var({Css.Tokens.Color.Success})"));
     }
 
     // ---- Zoom --------------------------------------------------------------------------------------
@@ -261,7 +261,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.Fluid, false));
 
-        var d = cut.Find("path.flare-chart__line").GetAttribute("d") ?? "";
+        var d = cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("d") ?? "";
         Assert.StartsWith("M 36.0", d);       // left padding
         Assert.Contains("388.0", d);          // 400 - right padding
     }
@@ -278,7 +278,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
 
         // Category 1 is now the left edge and category 2 the right edge, so the drawn path spans the
         // plot even though the data has four points.
-        var d = cut.Find("path.flare-chart__line").GetAttribute("d") ?? "";
+        var d = cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("d") ?? "";
         Assert.Contains("L 36.0", d);
         Assert.Contains("L 388.0", d);
     }
@@ -334,11 +334,11 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
     public void ZoomToolbar_AppearsOnlyForAZoomableChart()
     {
         var plain = Render<FlareChart>(p => p.Add(x => x.Data, _data));
-        Assert.Empty(plain.FindAll(".flare-chart__toolbar"));
+        Assert.Empty(plain.FindAll($".{Css.Classes.Chart.Toolbar}"));
 
         var zoomable = Render<FlareChart>(p => p.Add(x => x.Data, _data).Add(x => x.Zoomable, true));
-        Assert.Single(zoomable.FindAll(".flare-chart__toolbar"));
-        Assert.Equal(3, zoomable.FindAll(".flare-chart__toolbar button").Count);
+        Assert.Single(zoomable.FindAll($".{Css.Classes.Chart.Toolbar}"));
+        Assert.Equal(3, zoomable.FindAll($".{Css.Classes.Chart.Toolbar} button").Count);
     }
 
     [Fact]
@@ -350,7 +350,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Zoomable, true)
             .Add(x => x.ZoomChanged, (ChartZoom? z) => reported = z));
 
-        cut.FindAll(".flare-chart__toolbar button")[0].Click();
+        cut.FindAll($".{Css.Classes.Chart.Toolbar} button")[0].Click();
 
         Assert.NotNull(reported);
         Assert.True(reported!.Value.Span < 3);   // the full domain of four points is 3
@@ -366,7 +366,7 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
             .Add(x => x.Zoom, new ChartZoom(1, 2))
             .Add(x => x.ZoomChanged, (ChartZoom? z) => reported = z));
 
-        cut.FindAll(".flare-chart__toolbar button")[2].Click();
+        cut.FindAll($".{Css.Classes.Chart.Toolbar} button")[2].Click();
 
         Assert.Null(reported);
     }

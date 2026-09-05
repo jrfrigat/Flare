@@ -13,14 +13,14 @@ public class C_FlareSplitButtonG10Tests : FlareTestContext
     public void FullWidth_AddsFullClass()
     {
         var cut = Render<FlareSplitButton>(p => p.Add(x => x.FullWidth, true).AddChildContent("Save"));
-        Assert.Contains("flare-split-btn--full", cut.Find(".flare-split-btn").ClassName);
+        Assert.Contains(Css.Classes.SplitButton.Full, cut.Find($".{Css.Classes.SplitButton.Root}").ClassName);
     }
 
     [Fact]
     public void Href_RendersPrimaryAsLink()
     {
         var cut = Render<FlareSplitButton>(p => p.Add(x => x.Href, "/go").AddChildContent("Go"));
-        var main = cut.Find("a.flare-split-btn__main");
+        var main = cut.Find($"a.{Css.Classes.SplitButton.Main}");
         Assert.Equal("/go", main.GetAttribute("href"));
     }
 
@@ -29,7 +29,7 @@ public class C_FlareSplitButtonG10Tests : FlareTestContext
     {
         var cut = Render<FlareSplitButton>(p => p
             .Add(x => x.Href, "https://example.com").Add(x => x.Target, "_blank").AddChildContent("Go"));
-        Assert.Equal("noopener noreferrer", cut.Find("a.flare-split-btn__main").GetAttribute("rel"));
+        Assert.Equal("noopener noreferrer", cut.Find($"a.{Css.Classes.SplitButton.Main}").GetAttribute("rel"));
     }
 
     [Fact]
@@ -45,9 +45,9 @@ public class C_FlareSplitButtonG10Tests : FlareTestContext
         var cut = Render<FlareSplitButton>(p => p.AddChildContent("Save"));
 
         await cut.InvokeAsync(() => cut.Instance.Open());
-        Assert.Contains("flare-split-btn--open", cut.Find(".flare-split-btn").ClassName);
+        Assert.Contains(Css.Classes.SplitButton.Opened, cut.Find($".{Css.Classes.SplitButton.Root}").ClassName);
 
         await cut.InvokeAsync(() => cut.Instance.Close());
-        Assert.DoesNotContain("flare-split-btn--open", cut.Find(".flare-split-btn").ClassName);
+        Assert.DoesNotContain(Css.Classes.SplitButton.Opened, cut.Find($".{Css.Classes.SplitButton.Root}").ClassName);
     }
 }

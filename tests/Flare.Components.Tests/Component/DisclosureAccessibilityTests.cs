@@ -24,7 +24,7 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
     {
         var cut = Render<FlareAccordion>(p => p.Add(x => x.ChildContent, Panels()));
 
-        var heading = cut.Find(".flare-accordion-panel__heading");
+        var heading = cut.Find($".{Css.Classes.Accordion.Heading}");
         Assert.Equal("heading", heading.GetAttribute("role"));
         Assert.Equal("3", heading.GetAttribute("aria-level"));
         // The pattern asks for the button to be the heading's only content: anything else placed there
@@ -40,7 +40,7 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
             .Add(x => x.HeadingLevel, 2)
             .Add(x => x.ChildContent, Panels()));
 
-        Assert.Equal("2", cut.Find(".flare-accordion-panel__heading").GetAttribute("aria-level"));
+        Assert.Equal("2", cut.Find($".{Css.Classes.Accordion.Heading}").GetAttribute("aria-level"));
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
             .Add(x => x.HeadingLevel, 2)
             .Add(x => x.ChildContent, Panels(panelLevel: 4)));
 
-        Assert.Equal("4", cut.Find(".flare-accordion-panel__heading").GetAttribute("aria-level"));
+        Assert.Equal("4", cut.Find($".{Css.Classes.Accordion.Heading}").GetAttribute("aria-level"));
     }
 
     // An accordion used as a control rather than as a section of the document should not inject
@@ -62,7 +62,7 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
             .Add(x => x.HeadingLevel, 0)
             .Add(x => x.ChildContent, Panels()));
 
-        var heading = cut.Find(".flare-accordion-panel__heading");
+        var heading = cut.Find($".{Css.Classes.Accordion.Heading}");
         Assert.Null(heading.GetAttribute("role"));
         Assert.Null(heading.GetAttribute("aria-level"));
     }
@@ -72,12 +72,12 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
     {
         var cut = Render<FlareAccordion>(p => p.Add(x => x.ChildContent, Panels()));
 
-        var button = cut.Find(".flare-accordion-panel__header");
+        var button = cut.Find($".{Css.Classes.Accordion.Header}");
         Assert.Equal("false", button.GetAttribute("aria-expanded"));
         Assert.False(string.IsNullOrEmpty(button.GetAttribute("aria-controls")));
 
         button.Click();
-        Assert.Equal("true", cut.Find(".flare-accordion-panel__header").GetAttribute("aria-expanded"));
+        Assert.Equal("true", cut.Find($".{Css.Classes.Accordion.Header}").GetAttribute("aria-expanded"));
     }
 
     [Fact]
@@ -87,9 +87,9 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
             .Add(x => x.Header, "Advanced")
             .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "body"))));
 
-        var region = cut.Find(".flare-collapse__region");
+        var region = cut.Find($".{Css.Classes.Collapse.Region}");
         Assert.Equal("region", region.GetAttribute("role"));
-        Assert.Equal(cut.Find(".flare-collapse__header").Id, region.GetAttribute("aria-labelledby"));
+        Assert.Equal(cut.Find($".{Css.Classes.Collapse.Header}").Id, region.GetAttribute("aria-labelledby"));
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
             .Add(x => x.Expanded, true)
             .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "body"))));
 
-        var region = cut.Find(".flare-collapse__region");
+        var region = cut.Find($".{Css.Classes.Collapse.Region}");
         Assert.Null(region.GetAttribute("role"));
         Assert.Null(region.GetAttribute("aria-labelledby"));
         Assert.Null(region.GetAttribute("aria-label"));
@@ -113,7 +113,7 @@ public sealed class DisclosureAccessibilityTests : FlareTestContext
             .Add(x => x.RegionLabel, "Advanced filters")
             .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "body"))));
 
-        var region = cut.Find(".flare-collapse__region");
+        var region = cut.Find($".{Css.Classes.Collapse.Region}");
         Assert.Equal("region", region.GetAttribute("role"));
         Assert.Equal("Advanced filters", region.GetAttribute("aria-label"));
     }

@@ -25,7 +25,7 @@ public class FloatingPanelLayerTests : FlareTestContext
             .Add(t => t.Placement, placement)
             .Add(t => t.ChildContent, Markup("<span>x</span>")));
 
-        Assert.Equal(expected, cut.Find(".flare-tooltip__content").GetAttribute("data-flare-side"));
+        Assert.Equal(expected, cut.Find($".{Css.Classes.Tooltip.Content}").GetAttribute("data-flare-side"));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class FloatingPanelLayerTests : FlareTestContext
             .Add(t => t.ChildContent, Markup("<span>x</span>")));
 
         // One source for the distance: the token both the resting CSS and the placement engine read.
-        Assert.Contains("--flare-tooltip-offset:16px", cut.Find(".flare-tooltip").GetAttribute("style"));
+        Assert.Contains($"{Css.Tokens.TooltipPopup.Offset}:16px", cut.Find($".{Css.Classes.Tooltip.Root}").GetAttribute("style"));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class FloatingPanelLayerTests : FlareTestContext
             .Add(t => t.Content, "hello")
             .Add(t => t.ChildContent, Markup("<span>x</span>")));
 
-        Assert.DoesNotContain("--flare-tooltip-offset", cut.Find(".flare-tooltip").GetAttribute("style") ?? "");
+        Assert.DoesNotContain(Css.Tokens.TooltipPopup.Offset, cut.Find($".{Css.Classes.Tooltip.Root}").GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class FloatingPanelLayerTests : FlareTestContext
             .Add(x => x.AnchorContent, Markup("<span>x</span>"))
             .Add(x => x.ChildContent, Markup("<span>body</span>")));
 
-        Assert.Equal("right", cut.Find(".flare-popover__paper").GetAttribute("data-flare-side"));
+        Assert.Equal("right", cut.Find($".{Css.Classes.Popover.Paper}").GetAttribute("data-flare-side"));
     }
 
     [Fact]
@@ -85,7 +85,7 @@ public class FloatingPanelLayerTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var ids = cut.FindAll(".flare-datagrid__filter-trigger")
+        var ids = cut.FindAll($".{Css.Classes.DataGrid.FilterTrigger}")
             .Select(e => e.GetAttribute("id"))
             .ToList();
 

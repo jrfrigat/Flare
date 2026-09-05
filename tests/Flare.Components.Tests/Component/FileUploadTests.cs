@@ -18,7 +18,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
         var cut = Render<FlareFileUploadButton>();
 
         // A <button> here would silently stop opening the file dialog - the label/for pairing is load-bearing.
-        var label = cut.Find("label.flare-file-upload__button");
+        var label = cut.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}");
         var input = cut.Find("input[type=file]");
         Assert.Equal(input.Id, label.GetAttribute("for"));
     }
@@ -32,7 +32,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
         // The CSS that lifts the overlay keys off this modifier, so its absence is the bug coming back.
         var cut = Render<FlareFileUploadButton>();
 
-        Assert.Contains("flare-file-upload--button", cut.Find("div.flare-file-upload").ClassList);
+        Assert.Contains(Css.Classes.FileUpload.Button, cut.Find($"div.{Css.Classes.FileUpload.Root}").ClassList);
     }
 
     [Fact]
@@ -40,33 +40,33 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadButton>();
 
-        Assert.NotEmpty(cut.FindAll("label.flare-file-upload__button.flare-btn"));
+        Assert.NotEmpty(cut.FindAll($"label.{Css.Classes.FileUpload.ButtonTrigger}.{Css.Classes.Button.Root}"));
     }
 
     [Theory]
-    [InlineData(ButtonVariant.Filled, "flare-btn--filled")]
-    [InlineData(ButtonVariant.Outlined, "flare-btn--outlined")]
-    [InlineData(ButtonVariant.Text, "flare-btn--text")]
-    [InlineData(ButtonVariant.Tonal, "flare-btn--tonal")]
-    [InlineData(ButtonVariant.Elevated, "flare-btn--elevated")]
+    [InlineData(ButtonVariant.Filled, Css.Classes.Button.Filled)]
+    [InlineData(ButtonVariant.Outlined, Css.Classes.Button.Outlined)]
+    [InlineData(ButtonVariant.Text, Css.Classes.Button.Text)]
+    [InlineData(ButtonVariant.Tonal, Css.Classes.Button.Tonal)]
+    [InlineData(ButtonVariant.Elevated, Css.Classes.Button.Elevated)]
     public void VariantMapsToTheButtonFamilysClass(ButtonVariant variant, string expected)
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.Variant, variant));
 
-        Assert.Contains(expected, cut.Find("label.flare-file-upload__button").ClassList);
+        Assert.Contains(expected, cut.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}").ClassList);
     }
 
     [Theory]
-    [InlineData(ButtonSize.Xs, "flare-btn--xs")]
-    [InlineData(ButtonSize.Sm, "flare-btn--sm")]
-    [InlineData(ButtonSize.Md, "flare-btn--md")]
-    [InlineData(ButtonSize.Lg, "flare-btn--lg")]
-    [InlineData(ButtonSize.Xl, "flare-btn--xl")]
+    [InlineData(ButtonSize.Xs, Css.Classes.Button.Xs)]
+    [InlineData(ButtonSize.Sm, Css.Classes.Button.Sm)]
+    [InlineData(ButtonSize.Md, Css.Classes.Button.Md)]
+    [InlineData(ButtonSize.Lg, Css.Classes.Button.Lg)]
+    [InlineData(ButtonSize.Xl, Css.Classes.Button.Xl)]
     public void SizeMapsToTheButtonFamilysClass(ButtonSize size, string expected)
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.Size, size));
 
-        Assert.Contains(expected, cut.Find("label.flare-file-upload__button").ClassList);
+        Assert.Contains(expected, cut.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}").ClassList);
     }
 
     [Fact]
@@ -76,8 +76,8 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
         var upload = Render<FlareFileUploadButton>(p => p.Add(x => x.Size, ButtonSize.Sm));
         var button = Render<FlareButton>(p => p.Add(x => x.Size, ButtonSize.Sm));
 
-        var uploadSize = upload.Find("label.flare-file-upload__button").ClassList.Single(c => c.StartsWith("flare-btn--") && c.Contains("sm"));
-        var buttonSize = button.Find("button.flare-btn").ClassList.Single(c => c.StartsWith("flare-btn--") && c.Contains("sm"));
+        var uploadSize = upload.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}").ClassList.Single(c => c.StartsWith("flare-btn--") && c.Contains("sm"));
+        var buttonSize = button.Find($"button.{Css.Classes.Button.Root}").ClassList.Single(c => c.StartsWith("flare-btn--") && c.Contains("sm"));
         Assert.Equal(buttonSize, uploadSize);
     }
 
@@ -86,7 +86,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.Loading, true));
 
-        Assert.Contains("flare-btn--loading", cut.Find("label.flare-file-upload__button").ClassList);
+        Assert.Contains(Css.Classes.Button.Loading, cut.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}").ClassList);
         Assert.True(cut.Find("input[type=file]").HasAttribute("disabled"));
     }
 
@@ -113,7 +113,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.Text, "Import"));
 
-        Assert.Contains("Import", cut.Find("span.flare-btn__label").TextContent);
+        Assert.Contains("Import", cut.Find($"span.{Css.Classes.Button.Label}").TextContent);
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.ShowFileList, false));
 
-        Assert.Empty(cut.FindAll("ul.flare-file-upload__list"));
+        Assert.Empty(cut.FindAll($"ul.{Css.Classes.FileUpload.List}"));
     }
 
     [Fact]
@@ -132,8 +132,8 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
         var button = Render<FlareButton>(p => p
             .Add(x => x.Typo, TypographyScale.TitleLarge).AddChildContent("Import"));
 
-        var uploadLabel = upload.Find("span.flare-btn__label").ClassList.Single(c => c.StartsWith("flare-text--"));
-        var buttonLabel = button.Find("span.flare-btn__label").ClassList.Single(c => c.StartsWith("flare-text--"));
+        var uploadLabel = upload.Find($"span.{Css.Classes.Button.Label}").ClassList.Single(c => c.StartsWith("flare-text--"));
+        var buttonLabel = button.Find($"span.{Css.Classes.Button.Label}").ClassList.Single(c => c.StartsWith("flare-text--"));
         Assert.Equal(buttonLabel, uploadLabel);
     }
 
@@ -146,7 +146,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
             .Add<RenderFragment>(x => x.LoadingTemplate!, b => b.AddMarkupContent(0, "<span id=\"mine\">Reading...</span>")));
 
         Assert.NotEmpty(cut.FindAll("#mine"));
-        Assert.Empty(cut.FindAll("span.flare-btn__spinner"));
+        Assert.Empty(cut.FindAll($"span.{Css.Classes.Button.Spinner}"));
         Assert.DoesNotContain("Import", cut.Markup);
     }
 
@@ -158,8 +158,8 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
         var upload = Render<FlareFileUploadButton>(p => p.Add(x => x.Color, FlareColor.Custom("#FF0000")));
         var button = Render<FlareButton>(p => p.Add(x => x.Color, FlareColor.Custom("#FF0000")));
 
-        var uploadStyle = upload.Find("label.flare-file-upload__button").GetAttribute("style");
-        var buttonStyle = button.Find("button.flare-btn").GetAttribute("style");
+        var uploadStyle = upload.Find($"label.{Css.Classes.FileUpload.ButtonTrigger}").GetAttribute("style");
+        var buttonStyle = button.Find($"button.{Css.Classes.Button.Root}").GetAttribute("style");
         Assert.Equal(buttonStyle, uploadStyle);
     }
 }
@@ -171,7 +171,7 @@ public class C_FlareFileUploadZoneTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadZone>();
 
-        Assert.NotEmpty(cut.FindAll("label.flare-file-upload__zone"));
+        Assert.NotEmpty(cut.FindAll($"label.{Css.Classes.FileUpload.Zone}"));
     }
 
     [Fact]
@@ -180,8 +180,8 @@ public class C_FlareFileUploadZoneTests : FlareTestContext
         // A zone owns its footprint, so it must not carry the button classes the row-level button does.
         var cut = Render<FlareFileUploadZone>();
 
-        Assert.Empty(cut.FindAll(".flare-btn"));
-        Assert.Empty(cut.FindAll(".flare-file-upload--button"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Button.Root}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.FileUpload.Button}"));
     }
 
     [Fact]
@@ -189,7 +189,7 @@ public class C_FlareFileUploadZoneTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadZone>(p => p.Add(x => x.Accept, ".json"));
 
-        Assert.Contains(".json", cut.Find("span.flare-file-upload__hint").TextContent);
+        Assert.Contains(".json", cut.Find($"span.{Css.Classes.FileUpload.Hint}").TextContent);
     }
 
     // --- absorbed from FlareDropZone ---
@@ -204,7 +204,7 @@ public class C_FlareFileUploadZoneTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll("#mine"));
         // The default icon, text and accept hint all give way - not just the text.
         Assert.DoesNotContain("upload_file", cut.Markup);
-        Assert.Empty(cut.FindAll("span.flare-file-upload__hint"));
+        Assert.Empty(cut.FindAll($"span.{Css.Classes.FileUpload.Hint}"));
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public class C_FlareFileUploadZoneTests : FlareTestContext
     {
         var cut = Render<FlareFileUploadZone>(p => p.Add(x => x.AriaLabel, "Avatar dropper"));
 
-        Assert.Equal("Avatar dropper", cut.Find("div.flare-file-upload").GetAttribute("aria-label"));
+        Assert.Equal("Avatar dropper", cut.Find($"div.{Css.Classes.FileUpload.Root}").GetAttribute("aria-label"));
     }
 
     [Fact]

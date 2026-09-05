@@ -1,4 +1,4 @@
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Guards the state-layer model against sliding back into the one it replaced.
@@ -44,15 +44,15 @@ public sealed class StateLayerModelTests
             var lines = CssLinesWithoutComments(file);
             for (var i = 0; i < lines.Length; i++)
             {
-                if (lines[i].Contains("--flare-state-hover-opacity", StringComparison.Ordinal))
+                if (lines[i].Contains(Css.Tokens.State.HoverOpacity, StringComparison.Ordinal))
                     offenders.Add($"{name}:{i + 1}  {lines[i].Trim()}");
             }
         }
 
         Assert.True(offenders.Count == 0,
-            "A core stylesheet is mixing an interaction state from --flare-state-hover-opacity again. "
+            $"A core stylesheet is mixing an interaction state from {Css.Tokens.State.HoverOpacity} again. "
             + "That hard-codes one design language's idea of hover into the core and forces every other "
-            + "theme to override the rule. Paint a ::before layer from --flare-state-hover-layer instead "
+            + $"theme to override the rule. Paint a ::before layer from {Css.Tokens.State.HoverLayer} instead "
             + "- see tabs.css for the placement and the reasoning:\n  "
             + string.Join("\n  ", offenders));
     }

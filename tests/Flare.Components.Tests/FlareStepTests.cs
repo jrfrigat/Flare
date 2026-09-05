@@ -34,7 +34,7 @@ public class FlareStepTests : FlareTestContext
         var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(s => s.Add(x => x.Label, "Step")));
 
-        Assert.Empty(cut.FindAll(".flare-stepper__description"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Stepper.Description}"));
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class FlareStepTests : FlareTestContext
             .AddChildContent<FlareStep>(s => s.Add(x => x.Label, "First")));
 
         // First step shows number "1" in the circle
-        var circle = cut.Find(".flare-stepper__circle");
+        var circle = cut.Find($".{Css.Classes.Stepper.Circle}");
         Assert.Contains("1", circle.TextContent);
     }
 
@@ -62,7 +62,7 @@ public class FlareStepTests : FlareTestContext
                 b.CloseComponent();
             }));
 
-        var labels = cut.FindAll(".flare-stepper__label");
+        var labels = cut.FindAll($".{Css.Classes.Stepper.Label}");
         Assert.Equal(2, labels.Count);
         Assert.Contains("Alpha", labels[0].TextContent);
         Assert.Contains("Beta", labels[1].TextContent);

@@ -13,7 +13,7 @@ public class FlareTimelineItemTests : FlareTestContext
     {
         var cut = Render<FlareTimelineItem>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-timeline-item"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Timeline.Item}"));
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class FlareTimelineItemTests : FlareTestContext
         var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Title, "Release 1.0"));
 
-        Assert.Contains("Release 1.0", cut.Find(".flare-timeline-item__title").TextContent);
+        Assert.Contains("Release 1.0", cut.Find($".{Css.Classes.Timeline.Title}").TextContent);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class FlareTimelineItemTests : FlareTestContext
         var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Time, "2026-05-24"));
 
-        Assert.Contains("2026-05-24", cut.Find(".flare-timeline-item__time").TextContent);
+        Assert.Contains("2026-05-24", cut.Find($".{Css.Classes.Timeline.Time}").TextContent);
     }
 
     [Fact]
@@ -49,6 +49,6 @@ public class FlareTimelineItemTests : FlareTestContext
         var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Color, FlareColor.Success));
 
-        Assert.Contains("flare-color-success", cut.Find(".flare-timeline-item").ClassName);
+        Assert.Contains(Css.Classes.Color.Success, cut.Find($".{Css.Classes.Timeline.Item}").ClassName);
     }
 }

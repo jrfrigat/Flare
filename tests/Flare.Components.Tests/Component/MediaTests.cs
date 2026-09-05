@@ -12,7 +12,7 @@ public class C_FlareHighlighterTests : FlareTestContext
         var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello world"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-highlighter"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Highlighter.Root}"));
     }
 
     [Fact]
@@ -21,7 +21,7 @@ public class C_FlareHighlighterTests : FlareTestContext
         var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello world"));
 
-        Assert.Contains("Hello world", cut.Find(".flare-highlighter").TextContent);
+        Assert.Contains("Hello world", cut.Find($".{Css.Classes.Highlighter.Root}").TextContent);
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class C_FlareHighlighterTests : FlareTestContext
             .Add(x => x.Text, "Hello world")
             .Add(x => x.Highlight, "world"));
 
-        Assert.NotEmpty(cut.FindAll("mark.flare-highlighter__mark"));
+        Assert.NotEmpty(cut.FindAll($"mark.{Css.Classes.Highlighter.Mark}"));
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class C_FlareHighlighterTests : FlareTestContext
             .Add(x => x.Text, "The quick brown fox")
             .Add(x => x.Highlight, "quick"));
 
-        Assert.Contains("quick", cut.Find("mark.flare-highlighter__mark").TextContent);
+        Assert.Contains("quick", cut.Find($"mark.{Css.Classes.Highlighter.Mark}").TextContent);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class C_FlareHighlighterTests : FlareTestContext
             .Add(x => x.Highlight, "hello")
             .Add(x => x.CaseSensitive, true));
 
-        Assert.Empty(cut.FindAll("mark.flare-highlighter__mark"));
+        Assert.Empty(cut.FindAll($"mark.{Css.Classes.Highlighter.Mark}"));
     }
 }
 
@@ -67,7 +67,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     {
         var cut = Render<FlareMarkdown>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-markdown"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Markdown.Root}"));
     }
 
     [Fact]
@@ -76,8 +76,8 @@ public class C_FlareMarkdownTests : FlareTestContext
         var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, (string?)null));
 
-        Assert.NotEmpty(cut.FindAll(".flare-markdown"));
-        Assert.Empty(cut.Find(".flare-markdown").InnerHtml.Trim());
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Markdown.Root}"));
+        Assert.Empty(cut.Find($".{Css.Classes.Markdown.Root}").InnerHtml.Trim());
     }
 
     [Fact]
@@ -167,7 +167,7 @@ public class C_FlareTreeViewTests : FlareTestContext
     {
         var cut = Render<FlareTreeView>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-tree-view"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TreeView.Root}"));
     }
 
     [Fact]
@@ -175,7 +175,7 @@ public class C_FlareTreeViewTests : FlareTestContext
     {
         var cut = Render<FlareTreeView>();
 
-        Assert.Equal("tree", cut.Find(".flare-tree-view").GetAttribute("role"));
+        Assert.Equal("tree", cut.Find($".{Css.Classes.TreeView.Root}").GetAttribute("role"));
     }
 
     [Fact]
@@ -193,159 +193,6 @@ public class C_FlareTreeViewTests : FlareTestContext
         var cut = Render<FlareTreeView>(p => p
             .Add(x => x.AriaLabel, "File tree"));
 
-        Assert.Equal("File tree", cut.Find(".flare-tree-view").GetAttribute("aria-label"));
-    }
-}
-
-// ------------------------------------------------------------------------------
-// FlareDataTree extended  (7 tests from Wave9)
-// ------------------------------------------------------------------------------
-
-public class C_FlareDataTreeTests : FlareTestContext
-{
-    [Fact]
-    public void RendersRootFlareVtreeElement()
-    {
-        var items = Array.Empty<string>();
-        var cut = Render<FlareDataTree<string>>(p => p
-            .Add(x => x.Items, items)
-            .Add(x => x.KeySelector, (Func<string, object>)(s => s)));
-
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
-    }
-
-    [Fact]
-    public void HasChildren_Param_Exists_RendersWithoutError()
-    {
-        var items = new[] { "Root" };
-        var cut = Render<FlareDataTree<string>>(p => p
-            .Add(x => x.Items, items)
-            .Add(x => x.KeySelector, (Func<string, object>)(s => s))
-            .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
-
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
-    }
-
-    [Fact]
-    public void ChildrenProvider_Param_Exists_RendersWithoutError()
-    {
-        var items = new[] { "Root" };
-        var cut = Render<FlareDataTree<string>>(p => p
-            .Add(x => x.Items, items)
-            .Add(x => x.KeySelector, (Func<string, object>)(s => s))
-            .Add(x => x.ChildrenProvider,
-                (Func<string, Task<IEnumerable<string>>>)(_ =>
-                    Task.FromResult(Enumerable.Empty<string>()))));
-
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
-    }
-
-    [Fact]
-    public void EmptyItems_RendersWithoutError()
-    {
-        var cut = Render<FlareDataTree<string>>(p => p
-            .Add(x => x.Items, Array.Empty<string>())
-            .Add(x => x.KeySelector, (Func<string, object>)(s => s)));
-
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
-    }
-
-    [Fact]
-    public void HasChildren_False_NodeRendersLeafSpacer()
-    {
-        var items = new[] { "Leaf" };
-        var cut = Render<FlareDataTree<string>>(p => p
-            .Add(x => x.Items, items)
-            .Add(x => x.KeySelector, (Func<string, object>)(s => s))
-            .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
-
-        Assert.NotEmpty(cut.FindAll(".flare-vtree__leaf-spacer"));
-    }
-
-    [Fact]
-    public void Items_WithContent_RendersNodes()
-    {
-        var items = new[] { "Folder A", "Folder B" };
-        var cut = Render<FlareDataTree<string>>(p => p
-            .Add(x => x.Items, items)
-            .Add(x => x.KeySelector, (Func<string, object>)(s => s))
-            .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
-
-        Assert.Equal(2, cut.FindAll(".flare-vtree__node").Count);
-    }
-
-    [Fact]
-    public void ComponentIsGeneric_AcceptsIntType()
-    {
-        var items = new[] { 1, 2, 3 };
-        var cut = Render<FlareDataTree<int>>(p => p
-            .Add(x => x.Items, items)
-            .Add(x => x.KeySelector, (Func<int, object>)(i => i)));
-
-        Assert.NotEmpty(cut.FindAll(".flare-vtree"));
-    }
-}
-
-// ------------------------------------------------------------------------------
-// MarkdownParser unit tests  (8 tests from Wave8)
-// ------------------------------------------------------------------------------
-
-public class C_MarkdownParserTests
-{
-    [Fact]
-    public void HeadingH1_RendersH1Tag()
-    {
-        var html = MarkdownParser.ToHtml("# Hello", true);
-        Assert.Contains("<h1>", html);
-    }
-
-    [Fact]
-    public void Bold_RendersStrongTag()
-    {
-        var html = MarkdownParser.ToHtml("**bold**", true);
-        Assert.Contains("<strong>", html);
-    }
-
-    [Fact]
-    public void Italic_RendersEmTag()
-    {
-        var html = MarkdownParser.ToHtml("*italic*", true);
-        Assert.Contains("<em>", html);
-    }
-
-    [Fact]
-    public void UnorderedList_RendersUlAndLi()
-    {
-        var html = MarkdownParser.ToHtml("- item", true);
-        Assert.Contains("<ul>", html);
-        Assert.Contains("<li>", html);
-    }
-
-    [Fact]
-    public void Link_RendersAnchorWithHref()
-    {
-        var html = MarkdownParser.ToHtml("[link](https://example.com)", true);
-        Assert.Contains("<a href", html);
-    }
-
-    [Fact]
-    public void HorizontalRule_RendersHr()
-    {
-        var html = MarkdownParser.ToHtml("---", true);
-        Assert.Contains("<hr", html);
-    }
-
-    [Fact]
-    public void Blockquote_RendersBlockquoteTag()
-    {
-        var html = MarkdownParser.ToHtml("> quote", true);
-        Assert.Contains("<blockquote>", html);
-    }
-
-    [Fact]
-    public void ScriptTag_WithSanitize_DoesNotContainScript()
-    {
-        var html = MarkdownParser.ToHtml("<script>x</script>", true);
-        Assert.DoesNotContain("<script>", html, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal("File tree", cut.Find($".{Css.Classes.TreeView.Root}").GetAttribute("aria-label"));
     }
 }

@@ -4,7 +4,7 @@ using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 using Flare.Components;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Architecture-boundary guard: Flare.Abstractions, Flare.Theming and Flare.Components must never

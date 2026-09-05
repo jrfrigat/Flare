@@ -220,7 +220,7 @@ public class C_FlareDialogProviderComponentTests : FlareTestContext
     {
         var cut = Render<FlareDialogProvider>();
 
-        Assert.Empty(cut.FindAll(".flare-dialog-scrim"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Dialog.Scrim}"));
     }
 
     [Fact]
@@ -231,10 +231,10 @@ public class C_FlareDialogProviderComponentTests : FlareTestContext
 
         service.Show<TestDialogBody>("Edit profile",
             new DialogParameters().Add(nameof(TestDialogBody.Payload), "hello"));
-        cut.WaitForState(() => cut.FindAll(".flare-dialog-scrim").Count > 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Dialog.Scrim}").Count > 0);
 
         Assert.NotEmpty(cut.FindAll(".test-ok"));
-        Assert.Contains("Edit profile", cut.Find(".flare-dialog__title").TextContent);
+        Assert.Contains("Edit profile", cut.Find($".{Css.Classes.Dialog.Title}").TextContent);
     }
 
     [Fact]
@@ -248,7 +248,7 @@ public class C_FlareDialogProviderComponentTests : FlareTestContext
         cut.WaitForState(() => cut.FindAll(".test-ok").Count > 0);
 
         cut.Find(".test-ok").Click();
-        cut.WaitForState(() => cut.FindAll(".flare-dialog-scrim").Count == 0);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Dialog.Scrim}").Count == 0);
 
         var result = await reference.Result;
         Assert.False(result.Cancelled);

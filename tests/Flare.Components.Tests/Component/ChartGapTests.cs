@@ -24,7 +24,7 @@ public sealed class ChartGapTests : FlareTestContext
 
     // The path of the series line, as the `d` attribute the renderer produced.
     private static string LinePath(IRenderedComponent<FlareChart> cut) =>
-        cut.Find("path.flare-chart__line").GetAttribute("d") ?? "";
+        cut.Find($"path.{Css.Classes.Chart.Line}").GetAttribute("d") ?? "";
 
     [Fact]
     public void Gaps_ConvertsNullsToTheGapMarker()
@@ -94,7 +94,7 @@ public sealed class ChartGapTests : FlareTestContext
         var gapped = new ChartData([new ChartSeries("S", ChartSeries.Gaps([1.0, null, 3.0]))], ["a", "b", "c"]);
 
         int Bars(ChartData d) => Render<FlareChart>(p => p
-            .Add(x => x.Type, ChartType.Bar).Add(x => x.Data, d)).FindAll("rect.flare-chart__bar").Count;
+            .Add(x => x.Type, ChartType.Bar).Add(x => x.Data, d)).FindAll($"rect.{Css.Classes.Chart.Bar}").Count;
 
         Assert.Equal(3, Bars(full));
         Assert.Equal(2, Bars(gapped));
@@ -106,7 +106,7 @@ public sealed class ChartGapTests : FlareTestContext
         var data = new ChartData([new ChartSeries("S", [1, 2, 3])], ["a", "b", "c"]);
         var markup = Paths(RenderLine(data, [ChartAnnotation.VerticalBand(0, 1, "plan")]));
 
-        Assert.True(markup.IndexOf("flare-chart__line", StringComparison.Ordinal)
+        Assert.True(markup.IndexOf(Css.Classes.Chart.Line, StringComparison.Ordinal)
             < markup.IndexOf("plan", StringComparison.Ordinal),
             "An annotation with no layer stated keeps the behaviour it always had: over the data.");
     }
@@ -119,7 +119,7 @@ public sealed class ChartGapTests : FlareTestContext
             [ChartAnnotation.VerticalBand(0, 1, "plan", layer: ChartAnnotationLayer.Under)]));
 
         Assert.True(markup.IndexOf("plan", StringComparison.Ordinal)
-            < markup.IndexOf("flare-chart__line", StringComparison.Ordinal),
+            < markup.IndexOf(Css.Classes.Chart.Line, StringComparison.Ordinal),
             "An Under band paints first, so the series draws on top of it instead of through it.");
     }
 
@@ -134,7 +134,7 @@ public sealed class ChartGapTests : FlareTestContext
         ]));
 
         int behind = markup.IndexOf("behind", StringComparison.Ordinal);
-        int line = markup.IndexOf("flare-chart__line", StringComparison.Ordinal);
+        int line = markup.IndexOf(Css.Classes.Chart.Line, StringComparison.Ordinal);
         int front = markup.IndexOf("in front", StringComparison.Ordinal);
 
         Assert.True(behind < line && line < front);

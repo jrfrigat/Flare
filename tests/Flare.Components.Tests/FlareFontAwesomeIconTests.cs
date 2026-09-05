@@ -14,7 +14,7 @@ public class FlareFontAwesomeIconTests : FlareTestContext
         var i = cut.Find("i");
         Assert.Contains("fa-solid", i.ClassList);
         Assert.Contains("fa-house", i.ClassList);
-        Assert.Contains("flare-icon", i.ClassList);
+        Assert.Contains(Css.Classes.Icon.Root, i.ClassList);
     }
 
     [Fact]

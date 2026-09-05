@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Every floating panel in the library is positioned by the placement engine, which writes `position`,
@@ -25,13 +25,13 @@ public class FloatingPanelPlacementTests
     // Stylesheet, and the panel class in it that the placement engine owns.
     public static TheoryData<string, string> Panels => new()
     {
-        { "popover.css", "flare-popover__paper" },
-        { "tooltip.css", "flare-tooltip__content" },
-        { "menu.css", "flare-menu__panel" },
-        { "menu.css", "flare-submenu__panel" },
-        { "datagrid.css", "flare-datagrid__filter-menu" },
-        { "datagrid.css", "flare-datagrid__column-picker" },
-        { "datagrid.css", "flare-datagrid__filter-builder-panel" },
+        { "popover.css", Css.Classes.Popover.Paper },
+        { "tooltip.css", Css.Classes.Tooltip.Content },
+        { "menu.css", Css.Classes.Menu.Panel },
+        { "menu.css", Css.Classes.Menu.SubmenuPanel },
+        { "datagrid.css", Css.Classes.DataGrid.FilterMenu },
+        { "datagrid.css", Css.Classes.DataGrid.ColumnPicker },
+        { "datagrid.css", Css.Classes.DataGrid.FilterBuilderPanel },
     };
 
     [Theory]

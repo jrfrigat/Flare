@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Guards the border scale: a rule drawn between or around things in a core stylesheet gets its width
@@ -31,7 +31,7 @@ public sealed class CoreBorderLiteralTests
         || declaration.Contains("currentColor", StringComparison.OrdinalIgnoreCase);
 
     // The single decorative accent bar. Named explicitly so a second one has to argue for itself.
-    private const string BlockquoteAccent = "border-left: 4px solid var(--flare-color-primary)";
+    private const string BlockquoteAccent = $"border-left: 4px solid var({Css.Tokens.Color.Primary})";
 
     [Fact]
     public void NoCoreStylesheet_DrawsARuleFromALiteralWidth()
@@ -53,8 +53,8 @@ public sealed class CoreBorderLiteralTests
 
         Assert.True(offenders.Count == 0,
             "A rule drawn in core CSS must take its width and style from the border scale - " +
-            "var(--flare-border-divider) between things, var(--flare-border-outline) around a surface, " +
-            "or var(--flare-border-width[-emphasis]) var(--flare-border-style) with the component's own " +
+            $"var({Css.Tokens.Border.Divider}) between things, var({Css.Tokens.Border.Outline}) around a surface, " +
+            $"or var({Css.Tokens.Border.Width}[-emphasis]) var({Css.Tokens.Border.Style}) with the component's own " +
             "colour token. A literal width decides on behalf of every theme:" +
             Environment.NewLine + string.Join(Environment.NewLine, offenders));
     }

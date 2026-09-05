@@ -88,7 +88,7 @@ public sealed class DragModelTests : FlareTestContext
     public void TheContextRootCarriesItsOwnClassAndNothingElse()
     {
         var cut = RenderBoard();
-        Assert.Equal(Css.Classes.Drag.Context, cut.Find("div.flare-drag-context").ClassName);
+        Assert.Equal(Css.Classes.Drag.Context, cut.Find($"div.{Css.Classes.Drag.Context}").ClassName);
     }
 
     [Fact]

@@ -15,7 +15,7 @@ public class C_FlareClipboardTests : FlareTestContext
         var cut = Render<FlareClipboard>(p => p
             .Add(x => x.Text, "hello"));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-clipboard"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Clipboard.Root}"));
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class C_FlareClipboardTests : FlareTestContext
         var cut = Render<FlareClipboard>(p => p
             .Add(x => x.Text, "hello"));
 
-        Assert.Empty(cut.FindAll(".flare-clipboard--copied"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Clipboard.Copied}"));
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class C_FlareClipboardTests : FlareTestContext
         var cut = Render<FlareClipboard>(p => p
             .Add(x => x.Text, "some content"));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-clipboard"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Clipboard.Root}"));
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class C_FlareClipboardTests : FlareTestContext
             .Add(x => x.FeedbackDurationMs, 30_000)
             .Add(x => x.OnCopied, EventCallback.Factory.Create(this, () => copied = true)));
 
-        _ = cut.Find("button.flare-clipboard").ClickAsync(new MouseEventArgs());
+        _ = cut.Find($"button.{Css.Classes.Clipboard.Root}").ClickAsync(new MouseEventArgs());
 
         // Let the copy + callback run, but nowhere near the 30s confirmation.
         await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
@@ -116,9 +116,9 @@ public class C_FlareClipboardTests : FlareTestContext
             .Add(x => x.Disabled, true)
             .Add(x => x.Loading, true));
 
-        var button = cut.Find("button.flare-clipboard");
+        var button = cut.Find($"button.{Css.Classes.Clipboard.Root}");
         Assert.True(button.HasAttribute("disabled"));
-        Assert.Contains("flare-btn--loading", button.ClassList);
+        Assert.Contains(Css.Classes.Button.Loading, button.ClassList);
     }
 }
 
@@ -167,7 +167,7 @@ public class C_FlareScrollTopTests : FlareTestContext
     {
         var cut = Render<FlareScrollTop>();
 
-        Assert.NotEmpty(cut.FindAll("button.flare-scroll-top"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Scroll.Top}"));
     }
 
     [Fact]
@@ -191,7 +191,7 @@ public class C_FlareScrollTopTests : FlareTestContext
     {
         var cut = Render<FlareScrollTop>();
 
-        Assert.DoesNotContain("flare-scroll-top--visible", cut.Find("button").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.Scroll.TopVisible, cut.Find("button").ClassName ?? "");
     }
 
     [Fact]
@@ -236,8 +236,8 @@ public class C_FlareFabMenuTests : FlareTestContext
             .Add(x => x.Position, FabPosition.Static)
             .Add(x => x.AriaLabel, "Add"));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-fab"));
-        Assert.Empty(cut.FindAll(".flare-fab-menu"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Fab.Root}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.FabMenu.Wrapper}"));
     }
 
     [Fact]
@@ -245,8 +245,8 @@ public class C_FlareFabMenuTests : FlareTestContext
     {
         var cut = RenderFabMenu();
 
-        Assert.NotEmpty(cut.FindAll(".flare-fab-menu"));
-        Assert.NotEmpty(cut.FindAll(".flare-fab-menu > button.flare-fab"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FabMenu.Wrapper}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}"));
     }
 
     [Fact]
@@ -254,7 +254,7 @@ public class C_FlareFabMenuTests : FlareTestContext
     {
         var cut = RenderFabMenu();
 
-        Assert.NotEmpty(cut.FindAll(".flare-fab-menu__list"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FabMenu.List}"));
     }
 
     [Fact]
@@ -262,8 +262,8 @@ public class C_FlareFabMenuTests : FlareTestContext
     {
         var cut = RenderFabMenu();
 
-        Assert.NotEmpty(cut.FindAll(".flare-fab-menu__item"));
-        Assert.NotEmpty(cut.FindAll("button.flare-fab-menu__btn.flare-fab--sm"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.FabMenu.Item}"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.FabMenu.Btn}.{Css.Classes.Fab.Sm}"));
     }
 
     [Fact]
@@ -271,8 +271,8 @@ public class C_FlareFabMenuTests : FlareTestContext
     {
         var cut = RenderFabMenu();
 
-        Assert.DoesNotContain("flare-fab-menu--open", cut.Find(".flare-fab-menu").ClassName ?? "");
-        Assert.DoesNotContain("flare-fab-menu__list--open", cut.Find(".flare-fab-menu__list").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.FabMenu.Open, cut.Find($".{Css.Classes.FabMenu.Wrapper}").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.FabMenu.ListOpen, cut.Find($".{Css.Classes.FabMenu.List}").ClassName ?? "");
     }
 
     [Fact]
@@ -280,10 +280,10 @@ public class C_FlareFabMenuTests : FlareTestContext
     {
         var cut = RenderFabMenu();
 
-        cut.Find(".flare-fab-menu > button.flare-fab").Click();
+        cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").Click();
 
-        Assert.Contains("flare-fab-menu--open", cut.Find(".flare-fab-menu").ClassName ?? "");
-        Assert.Contains("flare-fab-menu__list--open", cut.Find(".flare-fab-menu__list").ClassName ?? "");
+        Assert.Contains(Css.Classes.FabMenu.Open, cut.Find($".{Css.Classes.FabMenu.Wrapper}").ClassName ?? "");
+        Assert.Contains(Css.Classes.FabMenu.ListOpen, cut.Find($".{Css.Classes.FabMenu.List}").ClassName ?? "");
     }
 
     [Fact]
@@ -291,11 +291,11 @@ public class C_FlareFabMenuTests : FlareTestContext
     {
         var cut = RenderFabMenu();
 
-        var trigger = cut.Find(".flare-fab-menu > button.flare-fab");
+        var trigger = cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}");
         Assert.Equal("false", trigger.GetAttribute("aria-expanded"));
 
         trigger.Click();
-        Assert.Equal("true", cut.Find(".flare-fab-menu > button.flare-fab").GetAttribute("aria-expanded"));
+        Assert.Equal("true", cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").GetAttribute("aria-expanded"));
     }
 }
 
@@ -310,7 +310,7 @@ public class C_FlareToggleGroupTests : FlareTestContext
     {
         var cut = Render<FlareToggleGroup<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-togglegroup"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.ToggleGroup.Root}"));
     }
 
     [Fact]
@@ -319,7 +319,7 @@ public class C_FlareToggleGroupTests : FlareTestContext
         var cut = Render<FlareToggleGroup<string>>(p => p
             .Add(x => x.Orientation, "horizontal"));
 
-        Assert.DoesNotContain("flare-togglegroup--vertical", cut.Find("div").ClassName ?? "");
+        Assert.DoesNotContain(Css.Classes.ToggleGroup.Vertical, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -328,7 +328,7 @@ public class C_FlareToggleGroupTests : FlareTestContext
         var cut = Render<FlareToggleGroup<string>>(p => p
             .Add(x => x.Orientation, "vertical"));
 
-        Assert.Contains("flare-togglegroup--vertical", cut.Find("div").ClassName ?? "");
+        Assert.Contains(Css.Classes.ToggleGroup.Vertical, cut.Find("div").ClassName ?? "");
     }
 
     [Fact]
@@ -364,7 +364,7 @@ public class C_FlareToggleGroupTests : FlareTestContext
             .AddChildContent<FlareToggleButton>(bp => bp
                 .Add(x => x.Value, "A")));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-btn"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Button.Root}"));
     }
 
     [Fact]
@@ -373,7 +373,7 @@ public class C_FlareToggleGroupTests : FlareTestContext
         var cut = Render<FlareToggleGroup<string>>(p => p
             .AddUnmatched("data-testid", "toggle-group"));
 
-        Assert.Equal("toggle-group", cut.Find(".flare-togglegroup").GetAttribute("data-testid"));
+        Assert.Equal("toggle-group", cut.Find($".{Css.Classes.ToggleGroup.Root}").GetAttribute("data-testid"));
     }
 }
 
@@ -388,7 +388,7 @@ public class C_FlareTagFieldTests : FlareTestContext
     {
         var cut = Render<FlareTagField<string>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-tag-input"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.TagInput.Root}"));
     }
 
     [Fact]
@@ -396,7 +396,7 @@ public class C_FlareTagFieldTests : FlareTestContext
     {
         var cut = Render<FlareTagField<string>>();
 
-        Assert.NotEmpty(cut.FindAll("input.flare-tag-input__input"));
+        Assert.NotEmpty(cut.FindAll($"input.{Css.Classes.TagInput.Input}"));
     }
 
     [Fact]
@@ -405,7 +405,7 @@ public class C_FlareTagFieldTests : FlareTestContext
         var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Placeholder, "Add a tag..."));
 
-        Assert.Equal("Add a tag...", cut.Find("input.flare-tag-input__input").GetAttribute("placeholder"));
+        Assert.Equal("Add a tag...", cut.Find($"input.{Css.Classes.TagInput.Input}").GetAttribute("placeholder"));
     }
 
     [Fact]
@@ -414,7 +414,7 @@ public class C_FlareTagFieldTests : FlareTestContext
         var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Empty(cut.FindAll("input.flare-tag-input__input"));
+        Assert.Empty(cut.FindAll($"input.{Css.Classes.TagInput.Input}"));
     }
 
     [Fact]
@@ -423,7 +423,7 @@ public class C_FlareTagFieldTests : FlareTestContext
         var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Values, (IReadOnlyList<string>)["Alpha", "Beta"]));
 
-        var chips = cut.FindAll(".flare-multiselect__chip");   // shared FlareChipStrip renders the unified chip class
+        var chips = cut.FindAll($".{Css.Classes.Multiselect.Chip}");   // shared FlareChipStrip renders the unified chip class
         Assert.Equal(2, chips.Count);
     }
 }
@@ -439,7 +439,7 @@ public class C_FlareSliderTests : FlareTestContext
     {
         var cut = Render<FlareSlider>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-slider"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.Root}"));
     }
 
     [Fact]
@@ -478,20 +478,20 @@ public class C_FlareSliderTests : FlareTestContext
         var cut = Render<FlareSlider>(p => p
             .Add(x => x.Label, "Volume"));
 
-        Assert.Contains("Volume", cut.Find(".flare-slider__label").TextContent);
+        Assert.Contains("Volume", cut.Find($".{Css.Classes.Slider.Label}").TextContent);
     }
 
     [Theory]
-    [InlineData(TrackSize.Xs, "flare-slider--xs")]
-    [InlineData(TrackSize.Sm, "flare-slider--sm")]
-    [InlineData(TrackSize.Md, "flare-slider--md")]
-    [InlineData(TrackSize.Lg, "flare-slider--lg")]
-    [InlineData(TrackSize.Xl, "flare-slider--xl")]
+    [InlineData(TrackSize.Xs, Css.Classes.Slider.Xs)]
+    [InlineData(TrackSize.Sm, Css.Classes.Slider.Sm)]
+    [InlineData(TrackSize.Md, Css.Classes.Slider.Md)]
+    [InlineData(TrackSize.Lg, Css.Classes.Slider.Lg)]
+    [InlineData(TrackSize.Xl, Css.Classes.Slider.Xl)]
     public void Size_AppliesSizeClass(TrackSize size, string expected)
     {
         var cut = Render<FlareSlider>(p => p.Add(x => x.Size, size));
 
-        Assert.Contains(expected, cut.Find(".flare-slider").ClassName);
+        Assert.Contains(expected, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
     }
 
     [Fact]
@@ -501,8 +501,8 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.StartIcon, FlareIcons.VolumeOff)
             .Add(x => x.EndIcon, FlareIcons.VolumeUp));
 
-        Assert.NotEmpty(cut.FindAll(".flare-slider__icon--start"));
-        Assert.NotEmpty(cut.FindAll(".flare-slider__icon--end"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.IconStart}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.IconEnd}"));
     }
 
     [Fact]
@@ -513,7 +513,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Stepper, true));
 
         // 0,1,2,3,4 -> 5 stops
-        Assert.Equal(5, cut.FindAll(".flare-slider__tick").Count);
+        Assert.Equal(5, cut.FindAll($".{Css.Classes.Slider.Tick}").Count);
     }
 
     [Fact]
@@ -524,7 +524,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 2.0).Add(x => x.Stepper, true));
 
         // values 0,1,2 are <= 2 -> 3 active ticks
-        Assert.Equal(3, cut.FindAll(".flare-slider__tick--active").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Slider.TickActive}").Count);
     }
 
     [Fact]
@@ -533,7 +533,7 @@ public class C_FlareSliderTests : FlareTestContext
         var cut = Render<FlareSlider>(p => p
             .Add(x => x.Indicator, true).Add(x => x.Value, 42.0));
 
-        Assert.Contains("42", cut.Find(".flare-slider__bubble").TextContent);
+        Assert.Contains("42", cut.Find($".{Css.Classes.Slider.Bubble}").TextContent);
     }
 
     [Fact]
@@ -544,7 +544,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Min, 0.0).Add(x => x.Max, 100000.0).Add(x => x.Step, 1.0)
             .Add(x => x.Stepper, true));
 
-        Assert.Empty(cut.FindAll(".flare-slider__tick"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Slider.Tick}"));
     }
 
     [Fact]
@@ -554,8 +554,8 @@ public class C_FlareSliderTests : FlareTestContext
         var cut = Render<FlareSlider>(p => p
             .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Value, 50.0));
 
-        Assert.NotEmpty(cut.FindAll(".flare-slider__seg"));
-        Assert.NotEmpty(cut.FindAll(".flare-slider__seg--active"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.Seg}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.SegActive}"));
     }
 
     [Fact]
@@ -563,7 +563,7 @@ public class C_FlareSliderTests : FlareTestContext
     {
         var cut = Render<FlareSlider>(p => p.Add(x => x.Vertical, true));
 
-        Assert.Contains("flare-slider--vertical", cut.Find(".flare-slider").ClassName);
+        Assert.Contains(Css.Classes.Slider.Vertical, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
         Assert.Equal("vertical", cut.Find("input[type='range']").GetAttribute("aria-orientation"));
     }
 
@@ -580,7 +580,7 @@ public class C_FlareSliderTests : FlareTestContext
     {
         var cut = Render<FlareSlider>(p => p.Add(x => x.Color, FlareColor.Secondary));
 
-        Assert.Contains("flare-color-secondary", cut.Find(".flare-slider").ClassName);
+        Assert.Contains(Css.Classes.Color.Secondary, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
     }
 
     [Fact]
@@ -589,7 +589,7 @@ public class C_FlareSliderTests : FlareTestContext
         var cut = Render<FlareSlider>(p => p
             .Add(x => x.Color, FlareColor.Custom("#E91E63")));
 
-        Assert.Contains("--fc-main:#E91E63", cut.Find(".flare-slider").GetAttribute("style"));
+        Assert.Contains($"{Css.Tokens.LocalColor.Main}:#E91E63", cut.Find($".{Css.Classes.Slider.Root}").GetAttribute("style"));
     }
 
     [Fact]
@@ -599,10 +599,10 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Range, true)
             .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 80.0));
 
-        Assert.Contains("flare-slider--range", cut.Find(".flare-slider").ClassName);
+        Assert.Contains(Css.Classes.Slider.Range, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
         Assert.Equal(2, cut.FindAll("input[type='range']").Count);
-        Assert.NotEmpty(cut.FindAll(".flare-slider__input--low"));
-        Assert.NotEmpty(cut.FindAll(".flare-slider__input--high"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.InputLow}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Slider.InputHigh}"));
     }
 
     [Fact]
@@ -612,7 +612,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.HandleOnHover, true)
             .Add(x => x.Value, 40.0));
 
-        Assert.Contains("flare-slider--handle-on-hover", cut.Find(".flare-slider").ClassName);
+        Assert.Contains(Css.Classes.Slider.HandleOnHover, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
 
         // Only the handle's paint is hidden. The control must keep everything that makes it
         // operable, or a seek bar becomes unreachable by keyboard and silent to a screen reader.
@@ -628,7 +628,7 @@ public class C_FlareSliderTests : FlareTestContext
     {
         var cut = Render<FlareSlider>(p => p.Add(x => x.Value, 40.0));
 
-        Assert.DoesNotContain("handle-on-hover", cut.Find(".flare-slider").ClassName);
+        Assert.DoesNotContain("handle-on-hover", cut.Find($".{Css.Classes.Slider.Root}").ClassName);
     }
 
     [Fact]
@@ -639,7 +639,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0)
             .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 80.0));
 
-        var style = cut.Find(".flare-slider__track-wrap").GetAttribute("style")!;
+        var style = cut.Find($".{Css.Classes.Slider.TrackWrap}").GetAttribute("style")!;
         Assert.Contains("--_pct:20.00%", style);
         Assert.Contains("--_pct-end:80.00%", style);
     }
@@ -653,7 +653,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0)
             .Add(x => x.Value, 80.0).Add(x => x.ValueEnd, 20.0));
 
-        var style = cut.Find(".flare-slider__track-wrap").GetAttribute("style")!;
+        var style = cut.Find($".{Css.Classes.Slider.TrackWrap}").GetAttribute("style")!;
         Assert.Contains("--_pct:20.00%", style);
         Assert.Contains("--_pct-end:80.00%", style);
     }
@@ -665,8 +665,8 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Range, true).Add(x => x.Label, "Band")
             .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 80.0));
 
-        Assert.Contains("20", cut.Find(".flare-slider__value").TextContent);
-        Assert.Contains("80", cut.Find(".flare-slider__value").TextContent);
+        Assert.Contains("20", cut.Find($".{Css.Classes.Slider.Value}").TextContent);
+        Assert.Contains("80", cut.Find($".{Css.Classes.Slider.Value}").TextContent);
     }
 
     [Fact]
@@ -678,7 +678,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Min, -100.0).Add(x => x.Max, 100.0)
             .Add(x => x.Init, 0.0).Add(x => x.Value, -50.0));
 
-        Assert.Equal(3, cut.FindAll(".flare-slider__seg").Count);
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Slider.Seg}").Count);
     }
 
     [Fact]
@@ -687,7 +687,7 @@ public class C_FlareSliderTests : FlareTestContext
         var cut = Render<FlareSlider>(p => p
             .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Value, 50.0));
 
-        var wrap = cut.Find(".flare-slider__track-wrap");
+        var wrap = cut.Find($".{Css.Classes.Slider.TrackWrap}");
         Assert.Contains("--_init:0.00%", wrap.GetAttribute("style"));
     }
 
@@ -699,7 +699,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Min, -100.0).Add(x => x.Max, 100.0)
             .Add(x => x.Init, 0.0).Add(x => x.Value, -50.0));
 
-        var wrap = cut.Find(".flare-slider__track-wrap");
+        var wrap = cut.Find($".{Css.Classes.Slider.TrackWrap}");
         var style = wrap.GetAttribute("style")!;
         Assert.Contains("--_init:50.00%", style);
         Assert.Contains("--_pct:25.00%", style);   // value -50 -> 25%
@@ -715,7 +715,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Init, 0.0).Add(x => x.Value, -50.0)
             .Add(x => x.Step, 50.0).Add(x => x.Stepper, true));
 
-        Assert.Equal(2, cut.FindAll(".flare-slider__tick--active").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Slider.TickActive}").Count);
     }
 
     [Fact]
@@ -728,7 +728,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 50.0)
             .Add(x => x.ValueChanged, (double v) => changed = v));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
 
         Assert.Equal(55.0, changed);
     }
@@ -743,7 +743,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 50.0)
             .Add(x => x.ValueChanged, (double v) => changed = v));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = 1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = 1 });
 
         Assert.Equal(45.0, changed);
     }
@@ -758,7 +758,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 100.0)
             .Add(x => x.ValueChanged, (double _) => invoked = true));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
 
         Assert.False(invoked);
     }
@@ -772,7 +772,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 50.0)
             .Add(x => x.ValueChanged, (double _) => invoked = true));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
 
         Assert.False(invoked);
     }
@@ -785,7 +785,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 50.0)
             .Add(x => x.ValueChanged, (double _) => invoked = true));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
 
         Assert.False(invoked);
     }
@@ -801,7 +801,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.ValueChanged, (double v) => low = v)
             .Add(x => x.ValueEndChanged, (double v) => high = v));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
 
         Assert.Equal(25.0, low);   // low handle moved
         Assert.Null(high);         // high handle untouched
@@ -818,7 +818,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.ValueChanged, (double v) => low = v)
             .Add(x => x.ValueEndChanged, (double v) => high = v));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1, CtrlKey = true });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1, CtrlKey = true });
 
         Assert.Equal(65.0, high);  // high handle moved
         Assert.Null(low);          // low handle untouched
@@ -834,7 +834,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 60.0).Add(x => x.ValueEnd, 60.0)   // low already at high
             .Add(x => x.ValueChanged, (double _) => invoked = true));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
 
         Assert.False(invoked);
     }
@@ -849,7 +849,7 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Value, 60.0).Add(x => x.ValueEnd, 60.0)   // high already at low
             .Add(x => x.ValueEndChanged, (double _) => invoked = true));
 
-        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = 1, CtrlKey = true });
+        cut.Find($".{Css.Classes.Slider.TrackArea}").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = 1, CtrlKey = true });
 
         Assert.False(invoked);
     }
@@ -866,7 +866,7 @@ public class C_FlareListTests : FlareTestContext
     {
         var cut = Render<FlareList<object>>();
 
-        Assert.NotEmpty(cut.FindAll("ul.flare-list"));
+        Assert.NotEmpty(cut.FindAll($"ul.{Css.Classes.List.Root}"));
     }
 
     [Fact]
@@ -874,7 +874,7 @@ public class C_FlareListTests : FlareTestContext
     {
         var cut = Render<FlareList<object>>();
 
-        Assert.Equal("list", cut.Find("ul.flare-list").GetAttribute("role"));
+        Assert.Equal("list", cut.Find($"ul.{Css.Classes.List.Root}").GetAttribute("role"));
     }
 
     [Fact]
@@ -892,7 +892,7 @@ public class C_FlareListTests : FlareTestContext
         var cut = Render<FlareList<object>>(p => p
             .Add(x => x.Dense, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-list--dense"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Dense}"));
     }
 
     [Fact]
@@ -901,7 +901,7 @@ public class C_FlareListTests : FlareTestContext
         var cut = Render<FlareList<object>>(p => p
             .Add(x => x.Dense, false));
 
-        Assert.Empty(cut.FindAll(".flare-list--dense"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.List.Dense}"));
     }
 
     [Fact]
@@ -911,7 +911,7 @@ public class C_FlareListTests : FlareTestContext
             .AddChildContent<FlareListItem>(li =>
                 li.Add(x => x.Primary, "First Item")));
 
-        Assert.NotEmpty(cut.FindAll(".flare-list-item"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Item}"));
     }
 }
 
@@ -926,7 +926,7 @@ public class C_FlareListItemTests : FlareTestContext
     {
         var cut = Render<FlareListItem>();
 
-        Assert.NotEmpty(cut.FindAll("li.flare-list-item"));
+        Assert.NotEmpty(cut.FindAll($"li.{Css.Classes.List.Item}"));
     }
 
     [Fact]
@@ -936,7 +936,7 @@ public class C_FlareListItemTests : FlareTestContext
             .Add(x => x.Primary, "Primary Label"));
 
         Assert.Contains("Primary Label", cut.Markup);
-        Assert.NotEmpty(cut.FindAll(".flare-list-item__primary"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Primary}"));
     }
 
     [Fact]
@@ -947,7 +947,7 @@ public class C_FlareListItemTests : FlareTestContext
             .Add(x => x.Secondary, "Subtitle text"));
 
         Assert.Contains("Subtitle text", cut.Markup);
-        Assert.NotEmpty(cut.FindAll(".flare-list-item__secondary"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Secondary}"));
     }
 
     [Fact]
@@ -955,7 +955,7 @@ public class C_FlareListItemTests : FlareTestContext
     {
         var cut = Render<FlareListItem>();
 
-        Assert.Empty(cut.FindAll(".flare-list-item__primary"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.List.Primary}"));
     }
 
     [Fact]
@@ -964,7 +964,7 @@ public class C_FlareListItemTests : FlareTestContext
         var cut = Render<FlareListItem>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-list-item--disabled"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Disabled}"));
     }
 
     [Fact]
@@ -973,7 +973,7 @@ public class C_FlareListItemTests : FlareTestContext
         var cut = Render<FlareListItem>(p => p
             .Add(x => x.Selected, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-list-item--selected"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Selected}"));
     }
 
     [Fact]
@@ -982,7 +982,7 @@ public class C_FlareListItemTests : FlareTestContext
         var cut = Render<FlareListItem>(p => p
             .Add(x => x.Selected, false));
 
-        Assert.Empty(cut.FindAll(".flare-list-item--selected"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.List.Selected}"));
     }
 
     [Fact]
@@ -991,6 +991,6 @@ public class C_FlareListItemTests : FlareTestContext
         var cut = Render<FlareListItem>(p => p
             .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })));
 
-        Assert.NotEmpty(cut.FindAll(".flare-list-item--clickable"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Clickable}"));
     }
 }

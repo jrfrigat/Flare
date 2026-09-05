@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// A sticky table header cannot draw its own edge with a border.
@@ -28,21 +28,21 @@ public class StickyTableEdgeTests
     {
         // The header's bottom edge.
         {
-            ".flare-datagrid__wrapper--sticky-head thead th",
-            "inset 0 calc(-1 * var(--flare-border-width)) 0",
-            ".flare-datagrid__wrapper--sticky-head thead th"
+            $".{Css.Classes.DataGrid.WrapperStickyHead} thead th",
+            $"inset 0 calc(-1 * var({Css.Tokens.Border.Width})) 0",
+            $".{Css.Classes.DataGrid.WrapperStickyHead} thead th"
         },
         // The column dividers between header cells on a bordered grid.
         {
-            ".flare-datagrid--bordered .flare-datagrid__wrapper--sticky-head thead th:not(:last-child)",
-            "inset calc(-1 * var(--flare-border-width)) 0 0",
-            ".flare-datagrid--bordered .flare-datagrid__wrapper--sticky-head thead th:not(:last-child)"
+            $".{Css.Classes.DataGrid.Bordered} .{Css.Classes.DataGrid.WrapperStickyHead} thead th:not(:last-child)",
+            $"inset calc(-1 * var({Css.Tokens.Border.Width})) 0 0",
+            $".{Css.Classes.DataGrid.Bordered} .{Css.Classes.DataGrid.WrapperStickyHead} thead th:not(:last-child)"
         },
         // The aggregate footer's top edge, from the footer's own width token.
         {
-            ".flare-datagrid__wrapper tfoot .flare-datagrid__aggregate-row > .flare-datagrid__td",
-            "inset 0 var(--flare-datagrid-aggregate-divider-width) 0",
-            ".flare-datagrid__wrapper tfoot .flare-datagrid__aggregate-row"
+            $".{Css.Classes.DataGrid.Wrapper} tfoot .{Css.Classes.DataGrid.AggregateRow} > .{Css.Classes.DataGrid.Td}",
+            $"inset 0 var({Css.Tokens.DataGridField.AggregateDividerWidth}) 0",
+            $".{Css.Classes.DataGrid.Wrapper} tfoot .{Css.Classes.DataGrid.AggregateRow}"
         },
     };
 

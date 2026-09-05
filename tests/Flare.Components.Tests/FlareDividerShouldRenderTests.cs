@@ -9,7 +9,7 @@ public class FlareDividerShouldRenderTests : FlareTestContext
     public void RendersHrByDefault()
     {
         var cut = Render<FlareDivider>();
-        Assert.NotEmpty(cut.FindAll("hr.flare-divider"));
+        Assert.NotEmpty(cut.FindAll($"hr.{Css.Classes.Divider.Root}"));
     }
 
     [Fact]
@@ -17,14 +17,14 @@ public class FlareDividerShouldRenderTests : FlareTestContext
     {
         var cut = Render<FlareDivider>(p => p.Add(x => x.Vertical, true));
         Assert.Empty(cut.FindAll("hr"));
-        Assert.NotEmpty(cut.FindAll("div.flare-divider--vertical"));
+        Assert.NotEmpty(cut.FindAll($"div.{Css.Classes.Divider.Vertical}"));
     }
 
     [Fact]
     public void TextRendersTextVariant()
     {
         var cut = Render<FlareDivider>(p => p.Add(x => x.Text, "OR"));
-        Assert.NotEmpty(cut.FindAll(".flare-divider--text"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Divider.Text}"));
         Assert.Contains("OR", cut.Markup);
     }
 
@@ -36,7 +36,7 @@ public class FlareDividerShouldRenderTests : FlareTestContext
             p.Add(x => x.Text, "Start");
             p.Add(x => x.TextAlign, DividerTextAlign.Left);
         });
-        Assert.Contains("flare-divider--text-left", cut.Find(".flare-divider--text").ClassName);
+        Assert.Contains(Css.Classes.Divider.TextLeft, cut.Find($".{Css.Classes.Divider.Text}").ClassName);
     }
 
     [Fact]
@@ -47,14 +47,14 @@ public class FlareDividerShouldRenderTests : FlareTestContext
             p.Add(x => x.Text, "End");
             p.Add(x => x.TextAlign, DividerTextAlign.Right);
         });
-        Assert.Contains("flare-divider--text-right", cut.Find(".flare-divider--text").ClassName);
+        Assert.Contains(Css.Classes.Divider.TextRight, cut.Find($".{Css.Classes.Divider.Text}").ClassName);
     }
 
     [Fact]
     public void TextAlignCenterIsDefault()
     {
         var cut = Render<FlareDivider>(p => p.Add(x => x.Text, "Center"));
-        Assert.Contains("flare-divider--text-center", cut.Find(".flare-divider--text").ClassName);
+        Assert.Contains(Css.Classes.Divider.TextCenter, cut.Find($".{Css.Classes.Divider.Text}").ClassName);
     }
 
     [Fact]

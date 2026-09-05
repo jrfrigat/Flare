@@ -15,11 +15,11 @@ public sealed class FieldChromeCompositionTests : FlareTestContext
     private static void AssertSingleFrameChrome(IRenderedComponent<IComponent> cut)
     {
         // Exactly one frame root: the field composes INTO the frame, it does not wrap a second one.
-        Assert.Single(cut.FindAll(".flare-input"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Input.Root}"));
         // The (non-floating) label is rendered by the frame, inside that single root.
-        Assert.Single(cut.FindAll(".flare-input label.flare-input__label"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Input.Root} label.{Css.Classes.Input.Label}"));
         // The helper text is inside the frame's support row (also inside the root).
-        Assert.NotEmpty(cut.FindAll(".flare-input .flare-input__support .flare-input__helper"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root} .{Css.Classes.Input.Support} .{Css.Classes.Input.Helper}"));
     }
 
     [Fact]
@@ -69,8 +69,8 @@ public sealed class FieldChromeCompositionTests : FlareTestContext
             .Add(x => x.Label, "L").Add(x => x.ErrorText, "boom"));
 
         // Error text renders as the support-row helper in its error form, inside the single frame root.
-        Assert.NotEmpty(cut.FindAll(".flare-input .flare-input__support .flare-input__helper--error"));
-        Assert.Single(cut.FindAll(".flare-input"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root} .{Css.Classes.Input.Support} .{Css.Classes.Input.HelperError}"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Input.Root}"));
     }
 
     // No helper, no error, no counter asked for => no support row at all. The frame decides the row
@@ -80,34 +80,34 @@ public sealed class FieldChromeCompositionTests : FlareTestContext
     [Fact]
     public void BareField_RendersNoSupportRow() =>
         Assert.Empty(Render<FlareField<string>>(p => p.Add(x => x.Label, "L"))
-            .FindAll(".flare-input__support"));
+            .FindAll($".{Css.Classes.Input.Support}"));
 
     [Fact]
     public void BareTextArea_RendersNoSupportRow() =>
         Assert.Empty(Render<FlareTextArea>(p => p.Add(x => x.Label, "L"))
-            .FindAll(".flare-input__support"));
+            .FindAll($".{Css.Classes.Input.Support}"));
 
     // A select never had the problem, and is the control the two above are measured against: all three
     // must agree on when the row exists, or the family stops lining up.
     [Fact]
     public void BareSelect_RendersNoSupportRow() =>
         Assert.Empty(Render<FlareSelect<string>>(p => p.Add(x => x.Label, "L"))
-            .FindAll(".flare-input__support"));
+            .FindAll($".{Css.Classes.Input.Support}"));
 
     // ...and the row comes back the moment there is something to put in it.
     [Fact]
     public void FieldWithACounter_RendersTheSupportRow()
     {
         var cut = Render<FlareField<string>>(p => p.Add(x => x.Label, "L").Add(x => x.MaxLength, 10));
-        Assert.Single(cut.FindAll(".flare-input__support"));
-        Assert.NotEmpty(cut.FindAll(".flare-input__support .flare-input__counter"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Input.Support}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Support} .{Css.Classes.Input.Counter}"));
     }
 
     [Fact]
     public void TextAreaWithACounter_RendersTheSupportRow()
     {
         var cut = Render<FlareTextArea>(p => p.Add(x => x.Label, "L").Add(x => x.MaxLength, 10));
-        Assert.Single(cut.FindAll(".flare-input__support"));
-        Assert.NotEmpty(cut.FindAll(".flare-input__support .flare-input__counter"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Input.Support}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Support} .{Css.Classes.Input.Counter}"));
     }
 }

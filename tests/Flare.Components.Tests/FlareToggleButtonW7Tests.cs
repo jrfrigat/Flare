@@ -13,7 +13,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
     {
         var cut = Render<FlareToggleButton>();
 
-        Assert.NotEmpty(cut.FindAll("button.flare-btn"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Button.Root}"));
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
         var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Toggled, true));
 
-        Assert.Contains("flare-btn--selected", cut.Find("button").ClassName ?? "");
+        Assert.Contains(Css.Classes.Button.Selected, cut.Find("button").ClassName ?? "");
     }
 
     [Fact]

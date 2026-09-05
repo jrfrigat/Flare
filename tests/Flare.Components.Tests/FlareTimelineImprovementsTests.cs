@@ -16,7 +16,7 @@ public class FlareTimelineImprovementsTests : FlareTestContext
     {
         var cut = Render<FlareTimeline>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-timeline"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Timeline.Root}"));
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class FlareTimelineImprovementsTests : FlareTestContext
         var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Alternate));
 
-        Assert.Contains("flare-timeline--alternate", cut.Find(".flare-timeline").ClassName ?? "");
+        Assert.Contains(Css.Classes.Timeline.Alternate, cut.Find($".{Css.Classes.Timeline.Root}").ClassName ?? "");
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class FlareTimelineImprovementsTests : FlareTestContext
         var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Right));
 
-        Assert.Contains("flare-timeline--right", cut.Find(".flare-timeline").ClassName ?? "");
+        Assert.Contains(Css.Classes.Timeline.Right, cut.Find($".{Css.Classes.Timeline.Root}").ClassName ?? "");
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class FlareTimelineImprovementsTests : FlareTestContext
     {
         var cut = Render<FlareTimelineItem>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-timeline-item"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Timeline.Item}"));
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class FlareTimelineImprovementsTests : FlareTestContext
         var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Color, FlareColor.Secondary));
 
-        Assert.Contains("flare-color-secondary", cut.Find(".flare-timeline-item").ClassName ?? "");
+        Assert.Contains(Css.Classes.Color.Secondary, cut.Find($".{Css.Classes.Timeline.Item}").ClassName ?? "");
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class FlareTimelineImprovementsTests : FlareTestContext
             .AddChildContent<FlareTimelineItem>(bp => bp
                 .Add(x => x.Title, "Step 1")));
 
-        Assert.NotEmpty(cut.FindAll(".flare-timeline-item"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Timeline.Item}"));
     }
 
     [Fact]
@@ -70,6 +70,6 @@ public class FlareTimelineImprovementsTests : FlareTestContext
         var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Title, "Released"));
 
-        Assert.Contains("Released", cut.Find(".flare-timeline-item__title").TextContent);
+        Assert.Contains("Released", cut.Find($".{Css.Classes.Timeline.Title}").TextContent);
     }
 }

@@ -11,7 +11,7 @@ public class FlareButtonTests : FlareTestContext
             .AddChildContent("Click me"));
 
         var btn = cut.Find("button");
-        Assert.Contains("flare-btn--filled", btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Filled, btn.ClassName);
     }
 
     [Fact]
@@ -22,8 +22,8 @@ public class FlareButtonTests : FlareTestContext
             .AddChildContent("Click me"));
 
         var btn = cut.Find("button");
-        Assert.Contains("flare-btn--outlined", btn.ClassName);
-        Assert.DoesNotContain("flare-btn--filled", btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Outlined, btn.ClassName);
+        Assert.DoesNotContain(Css.Classes.Button.Filled, btn.ClassName);
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public class FlareButtonTests : FlareTestContext
             .AddChildContent("Click me"));
 
         var btn = cut.Find("button");
-        Assert.Contains("flare-btn--text", btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Text, btn.ClassName);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Variant, ButtonVariant.Elevated)
             .AddChildContent("Elevated"));
 
-        Assert.Contains("flare-btn--elevated", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Elevated, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Variant, ButtonVariant.Tonal)
             .AddChildContent("Tonal"));
 
-        Assert.Contains("flare-btn--tonal", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Tonal, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.LeadingIcon, b => b.AddMarkupContent(0, "<span>icon</span>"))
             .AddChildContent("With Icon"));
 
-        var span = cut.Find(".flare-btn__icon--leading");
+        var span = cut.Find($".{Css.Classes.Button.IconLeading}");
         Assert.NotNull(span);
         Assert.Contains("icon", span.InnerHtml);
     }
@@ -110,7 +110,7 @@ public class FlareButtonTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .AddChildContent("No Icon"));
 
-        Assert.Empty(cut.FindAll(".flare-btn__icon--leading"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Button.IconLeading}"));
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.TrailingIcon, b => b.AddMarkupContent(0, "<span>trailing</span>"))
             .AddChildContent("With Trailing"));
 
-        var span = cut.Find(".flare-btn__icon--trailing");
+        var span = cut.Find($".{Css.Classes.Button.IconTrailing}");
         Assert.NotNull(span);
     }
 
@@ -131,7 +131,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Size, ButtonSize.Sm)
             .AddChildContent("Small"));
 
-        Assert.Contains("flare-btn--sm", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Sm, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Size, ButtonSize.Lg)
             .AddChildContent("Large"));
 
-        Assert.Contains("flare-btn--lg", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Lg, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public class FlareButtonTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .AddChildContent("My Label"));
 
-        var label = cut.Find(".flare-btn__label");
+        var label = cut.Find($".{Css.Classes.Button.Label}");
         Assert.Contains("My Label", label.TextContent);
     }
 
@@ -172,7 +172,7 @@ public class FlareButtonTests : FlareTestContext
             .AddChildContent("Custom"));
 
         Assert.Contains("my-custom-class", cut.Find("button").ClassName);
-        Assert.Contains("flare-btn", cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.Root, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -182,8 +182,8 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Typo, TypographyScale.LabelSmall)
             .AddChildContent("Small"));
 
-        var label = cut.Find(".flare-btn__label");
-        Assert.Contains("flare-text--label-small", label.ClassName);
+        var label = cut.Find($".{Css.Classes.Button.Label}");
+        Assert.Contains(Css.Classes.Text.LabelSmall, label.ClassName);
     }
 
     [Fact]
@@ -192,7 +192,7 @@ public class FlareButtonTests : FlareTestContext
         var cut = Render<FlareButton>(p => p
             .AddChildContent("Default"));
 
-        var label = cut.Find(".flare-btn__label");
+        var label = cut.Find($".{Css.Classes.Button.Label}");
         Assert.DoesNotContain("flare-text--", label.ClassName);
     }
 }

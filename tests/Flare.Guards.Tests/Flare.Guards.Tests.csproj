@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Unit tests for the parts of Flare that are not a component: colour maths, palette derivation,
-       token resolution and parity, CSV, the theme engine, the CSS audit tool itself. The tests that
-       READ the repository moved to Flare.Guards.Tests; what is left here runs code. -->
+  <!-- The tests that READ the repository rather than run it: CSS, Razor, generated sources, JS module
+       exports, XML docs. They assert conventions and architecture - that a component names its classes
+       from the registry, that nothing caps a panel in static vh, that a hover-revealed control is gated
+       on a fine pointer. Nothing here renders a component, which is why it needs neither bUnit nor the
+       multi-targeting the render suite has: a guard reads the same file whichever runtime it runs on. -->
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -31,14 +33,8 @@
     <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
     <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
-    <!-- The composition root, so AddFlareServiceCompletenessTests can build the real container. -->
-    <ProjectReference Include="..\..\src\Flare\Flare.csproj" />
-    <!-- A concrete reference DesignTokens for the FlareThemeBuilder tests (the core ships no baseline). -->
-    <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3.Tokens\Flare.Theme.MaterialDesign3.Tokens.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Theme.FluentUI2.Tokens\Flare.Theme.FluentUI2.Tokens.csproj" />
-    <!-- Every in-box theme, so ParkedTokenFallbackTests can check them all by reflecting over ITheme
-         rather than a hand-kept list (each theme package builds its own records, not just the two
-         reference token packages). -->
+    <!-- Every in-box theme: ThemeIndependenceTests reflects over ITheme rather than keeping a list by
+         hand, so a new theme package is covered the moment it is referenced. -->
     <ProjectReference Include="..\..\src\Flare.Theme.Aero\Flare.Theme.Aero.csproj" />
     <ProjectReference Include="..\..\src\Flare.Theme.FluentUI2\Flare.Theme.FluentUI2.csproj" />
     <ProjectReference Include="..\..\src\Flare.Theme.LiquidGlass\Flare.Theme.LiquidGlass.csproj" />
@@ -46,8 +42,6 @@
     <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3\Flare.Theme.MaterialDesign3.csproj" />
     <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
     <ProjectReference Include="..\..\src\Flare.Theme.VisualStudio\Flare.Theme.VisualStudio.csproj" />
-    <!-- Reusable audit logic for the CssClasses/CSS/theme in-sync guard test. -->
-    <ProjectReference Include="..\..\tools\Flare.CssAudit\Flare.CssAudit.csproj" />
   </ItemGroup>
 
 </Project>

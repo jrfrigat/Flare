@@ -8,7 +8,7 @@ public class FlareRatingExtraTests : FlareTestContext
         var cut = Render<FlareRating>(p => p
             .Add(x => x.ReadOnly, true));
 
-        Assert.Contains("flare-rating--readonly", cut.Find(".flare-rating").ClassName);
+        Assert.Contains(Css.Classes.Rating.Readonly, cut.Find($".{Css.Classes.Rating.Root}").ClassName);
     }
 
     [Fact]
@@ -17,7 +17,7 @@ public class FlareRatingExtraTests : FlareTestContext
         var cut = Render<FlareRating>(p => p
             .Add(x => x.ReadOnly, true));
 
-        var stars = cut.FindAll(".flare-rating__star");
+        var stars = cut.FindAll($".{Css.Classes.Rating.Star}");
         Assert.All(stars, star => Assert.True(star.HasAttribute("disabled")));
     }
 }

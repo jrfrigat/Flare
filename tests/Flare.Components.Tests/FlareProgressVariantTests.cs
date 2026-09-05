@@ -14,7 +14,7 @@ public class FlareProgressVariantTests : FlareTestContext
         var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Linear));
 
-        Assert.NotEmpty(cut.FindAll(".flare-progress--linear"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Linear}"));
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class FlareProgressVariantTests : FlareTestContext
         var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Buffer));
 
-        Assert.NotEmpty(cut.FindAll(".flare-progress--buffer"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Buffer}"));
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class FlareProgressVariantTests : FlareTestContext
         var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Query));
 
-        Assert.NotEmpty(cut.FindAll(".flare-progress--query"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Query}"));
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class FlareProgressVariantTests : FlareTestContext
             .Add(x => x.Variant, ProgressVariant.Buffer)
             .Add(x => x.BufferValue, 60.0));
 
-        var fill = cut.Find(".flare-progress__buffer-fill");
+        var fill = cut.Find($".{Css.Classes.Progress.BufferFill}");
         var style = fill.GetAttribute("style") ?? "";
         Assert.Contains("60", style);
     }
@@ -63,7 +63,7 @@ public class FlareProgressVariantTests : FlareTestContext
             .Add(x => x.Variant, ProgressVariant.Linear)
             .Add(x => x.Value, 50.0));
 
-        var bar = cut.Find(".flare-progress__bar");
+        var bar = cut.Find($".{Css.Classes.Progress.Bar}");
         var style = bar.GetAttribute("style") ?? "";
         Assert.Contains("50", style);
     }

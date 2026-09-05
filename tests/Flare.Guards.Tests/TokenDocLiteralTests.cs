@@ -1,12 +1,12 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Enforces the token mandate <b>in prose</b>: a core token's XML doc must not state what a theme sets it to.
 ///
-/// The sibling guards cover the code - <see cref="DeadFallbackTests"/> forbids a theme default hiding in a CSS
+/// The sibling guards cover the code - <c>DeadFallbackTests</c> forbids a theme default hiding in a CSS
 /// fallback, and the token-record guard forbids a literal default on the member itself. The docs were the hole
 /// left over: nothing stopped <c>/// &lt;summary&gt;Gap xs token (&lt;c&gt;0.25rem&lt;/c&gt;).&lt;/summary&gt;</c>,
 /// which asserts a value the core does not own and cannot keep true. It did not keep true: when this guard was
@@ -32,7 +32,7 @@ public sealed class TokenDocLiteralTests
         new(@"\d+(\.\d+)?(px|rem|em|ch|ex|vh|vw|vmin|vmax|pt|dp|deg|ms|s)\b", RegexOptions.Compiled);
 
     // The value-claim shape: a parenthetical holding nothing but a <c>..</c> run, sitting at the very END of
-    // the summary - "Panel shadow token (<c>var(--flare-elevation-2)</c>)." That trailing position is what
+    // the summary - $"Panel shadow token (<c>var({Css.Tokens.Elevation.Level2})</c>)." That trailing position is what
     // makes it an assertion about the value rather than prose. Mid-sentence uses are left alone, because they
     // are pointers, not claims: naming the selector a token applies at ("on focus (<c>:focus-visible</c>),
     // not on a pointer press"), or telling a theme author what to reference.

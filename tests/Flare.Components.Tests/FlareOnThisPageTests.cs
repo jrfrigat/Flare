@@ -14,14 +14,14 @@ public class FlareOnThisPageTests : FlareTestContext
     public void Empty_RendersNothing_ByDefault()
     {
         var cut = Render<FlareOnThisPage>();
-        Assert.Empty(cut.FindAll(".flare-toc"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.TableOfContents.Root}"));
     }
 
     [Fact]
     public void ShowWhenEmpty_RendersContainer()
     {
         var cut = Render<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
-        Assert.Single(cut.FindAll(".flare-toc"));
+        Assert.Single(cut.FindAll($".{Css.Classes.TableOfContents.Root}"));
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class FlareOnThisPageTests : FlareTestContext
         var cut = Render<FlareOnThisPage>();
         cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
 
-        var links = cut.FindAll(".flare-toc__link");
+        var links = cut.FindAll($".{Css.Classes.TableOfContents.Link}");
         Assert.Equal(2, links.Count);
         // href is anchored to the current page path, ending in the fragment.
         Assert.EndsWith("#intro", links[0].GetAttribute("href"));
@@ -46,7 +46,7 @@ public class FlareOnThisPageTests : FlareTestContext
         cut.InvokeAsync(() => cut.Instance.SetActive(["intro", "details"]));
 
         // Both visible headings are marked active simultaneously.
-        var active = cut.FindAll(".flare-toc__link--active");
+        var active = cut.FindAll($".{Css.Classes.TableOfContents.LinkActive}");
         Assert.Equal(2, active.Count);
         Assert.All(active, a => Assert.Equal("true", a.GetAttribute("aria-current")));
     }
@@ -58,16 +58,16 @@ public class FlareOnThisPageTests : FlareTestContext
         cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
         cut.InvokeAsync(() => cut.Instance.SetActive(["details"]));
 
-        var active = cut.Find(".flare-toc__link--active");
+        var active = cut.Find($".{Css.Classes.TableOfContents.LinkActive}");
         Assert.EndsWith("#details", active.GetAttribute("href"));
-        Assert.Single(cut.FindAll(".flare-toc__link--active"));
+        Assert.Single(cut.FindAll($".{Css.Classes.TableOfContents.LinkActive}"));
     }
 
     [Fact]
     public void DefaultTitle_IsLocalized()
     {
         var cut = Render<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
-        Assert.Equal("On this page", cut.Find(".flare-toc__title").TextContent);
+        Assert.Equal("On this page", cut.Find($".{Css.Classes.TableOfContents.Title}").TextContent);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class FlareOnThisPageTests : FlareTestContext
         var cut = Render<FlareOnThisPage>(p => p
             .Add(x => x.ShowWhenEmpty, true)
             .Add(x => x.Title, "Contents"));
-        Assert.Equal("Contents", cut.Find(".flare-toc__title").TextContent);
+        Assert.Equal("Contents", cut.Find($".{Css.Classes.TableOfContents.Title}").TextContent);
     }
 
     [Fact]
@@ -100,13 +100,13 @@ public class FlareTableOfContentsTests : FlareTestContext
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#a").Add(x => x.ChildContent, "Alpha").Add(x => x.Active, true))
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#b").Add(x => x.ChildContent, "Bravo")));
 
-        Assert.Equal("Contents", cut.Find(".flare-toc__title").TextContent);
-        var links = cut.FindAll(".flare-toc__link");
+        Assert.Equal("Contents", cut.Find($".{Css.Classes.TableOfContents.Title}").TextContent);
+        var links = cut.FindAll($".{Css.Classes.TableOfContents.Link}");
         Assert.Equal(2, links.Count);
         Assert.Equal("#a", links[0].GetAttribute("href"));
-        Assert.Contains("flare-toc__link--active", links[0].ClassName);
+        Assert.Contains(Css.Classes.TableOfContents.LinkActive, links[0].ClassName);
         Assert.Equal("true", links[0].GetAttribute("aria-current"));
-        Assert.DoesNotContain("flare-toc__link--active", links[1].ClassName);
+        Assert.DoesNotContain(Css.Classes.TableOfContents.LinkActive, links[1].ClassName);
     }
 
     [Fact]
@@ -114,8 +114,8 @@ public class FlareTableOfContentsTests : FlareTestContext
     {
         var cut = Render<FlareTableOfContents>(p => p
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#a").Add(x => x.ChildContent, "Alpha")));
-        Assert.Empty(cut.FindAll(".flare-toc__title"));
-        Assert.Single(cut.FindAll(".flare-toc__link"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.TableOfContents.Title}"));
+        Assert.Single(cut.FindAll($".{Css.Classes.TableOfContents.Link}"));
     }
 
     [Fact]
@@ -123,8 +123,8 @@ public class FlareTableOfContentsTests : FlareTestContext
     {
         var cut = Render<FlareTableOfContents>(p => p
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#a").Add(x => x.Level, 2).Add(x => x.ChildContent, "Deep")));
-        var li = cut.Find(".flare-toc__item");
-        Assert.Contains("--flare-toc-depth:2", li.GetAttribute("style"));
+        var li = cut.Find($".{Css.Classes.TableOfContents.Item}");
+        Assert.Contains($"{Css.Tokens.LocalVars.TocDepth}:2", li.GetAttribute("style"));
     }
 }
 
@@ -141,7 +141,7 @@ public class FlareTextAnchorTests : FlareTestContext
         var heading = cut.Find("h4");
         Assert.Equal("getting-started", heading.GetAttribute("id"));
 
-        var anchor = cut.Find("a.flare-text__anchor");
+        var anchor = cut.Find($"a.{Css.Classes.Text.Anchor}");
         Assert.EndsWith("#getting-started", anchor.GetAttribute("href"));
         Assert.Equal("true", anchor.GetAttribute("aria-hidden"));
     }
@@ -154,6 +154,6 @@ public class FlareTextAnchorTests : FlareTestContext
             .AddChildContent("Plain"));
 
         Assert.False(cut.Find("h4").HasAttribute("id"));
-        Assert.Empty(cut.FindAll("a.flare-text__anchor"));
+        Assert.Empty(cut.FindAll($"a.{Css.Classes.Text.Anchor}"));
     }
 }

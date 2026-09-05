@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Wherever a component swallows <c>JSDisconnectedException</c> (the circuit went away) it must also

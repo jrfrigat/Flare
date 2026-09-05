@@ -2,14 +2,14 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// A PascalCase attribute on a Flare component must be one of its parameters. Nearly every component
 /// takes <c>CaptureUnmatchedValues</c>, so anything else compiles, renders as a literal HTML attribute,
 /// and does nothing - no error, no warning, no failing test. That is how <c>Clickable="true"</c> sat on a
 /// list item that has no such parameter, and it is the same silent-swallow shape as the slot-name
-/// collision <see cref="SlotNameTests"/> guards.
+/// collision <c>SlotNameTests</c> guards.
 ///
 /// Lowercase attributes are left alone: those are real HTML (<c>href</c>, <c>type</c>, <c>colspan</c>),
 /// which is exactly what the catch-all is for. Only the PascalCase spelling is unambiguously a

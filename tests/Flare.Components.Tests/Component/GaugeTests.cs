@@ -10,15 +10,15 @@ namespace Flare.Components.Tests.Component;
 public class GaugeTests : FlareTestContext
 {
     private static string Offset(IRenderedComponent<FlareGauge> cut) =>
-        cut.Find(".flare-gauge__fill").GetAttribute("style") ?? string.Empty;
+        cut.Find($".{Css.Classes.Gauge.Fill}").GetAttribute("style") ?? string.Empty;
 
     [Fact]
     public void RendersArcByDefault()
     {
         var cut = Render<FlareGauge>(p => p.Add(x => x.Value, 50));
 
-        Assert.Contains("flare-gauge--arc", cut.Find(".flare-gauge").ClassName ?? string.Empty);
-        Assert.NotEmpty(cut.FindAll(".flare-gauge__track"));
+        Assert.Contains(Css.Classes.Gauge.Arc, cut.Find($".{Css.Classes.Gauge.Root}").ClassName ?? string.Empty);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Gauge.Track}"));
     }
 
     // The fill is the whole track revealed by a dash, so the offset IS the percentage still to fill. That
@@ -42,8 +42,8 @@ public class GaugeTests : FlareTestContext
 
         Assert.Contains("stroke-dashoffset:0.00", Offset(over));
         Assert.Contains("stroke-dashoffset:100.00", Offset(under));
-        Assert.Equal("100", over.Find(".flare-gauge").GetAttribute("aria-valuenow"));
-        Assert.Equal("0", under.Find(".flare-gauge").GetAttribute("aria-valuenow"));
+        Assert.Equal("100", over.Find($".{Css.Classes.Gauge.Root}").GetAttribute("aria-valuenow"));
+        Assert.Equal("0", under.Find($".{Css.Classes.Gauge.Root}").GetAttribute("aria-valuenow"));
     }
 
     [Fact]
@@ -65,10 +65,10 @@ public class GaugeTests : FlareTestContext
         var radial = Render<FlareGauge>(p => p.Add(x => x.Shape, GaugeShape.Radial).Add(x => x.Value, 50));
         var arc = Render<FlareGauge>(p => p.Add(x => x.Shape, GaugeShape.Arc).Add(x => x.Value, 50));
 
-        Assert.NotEmpty(radial.FindAll(".flare-gauge__needle"));
-        Assert.Empty(radial.FindAll(".flare-gauge__fill"));
-        Assert.NotEmpty(arc.FindAll(".flare-gauge__fill"));
-        Assert.Empty(arc.FindAll(".flare-gauge__needle"));
+        Assert.NotEmpty(radial.FindAll($".{Css.Classes.Gauge.Needle}"));
+        Assert.Empty(radial.FindAll($".{Css.Classes.Gauge.Fill}"));
+        Assert.NotEmpty(arc.FindAll($".{Css.Classes.Gauge.Fill}"));
+        Assert.Empty(arc.FindAll($".{Css.Classes.Gauge.Needle}"));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class GaugeTests : FlareTestContext
         // The default radial sweep is 270 degrees, so half the scale is 135.
         var cut = Render<FlareGauge>(p => p.Add(x => x.Shape, GaugeShape.Radial).Add(x => x.Value, 50));
 
-        var transform = cut.Find(".flare-gauge__needle-group").GetAttribute("transform");
+        var transform = cut.Find($".{Css.Classes.Gauge.NeedleGroup}").GetAttribute("transform");
         Assert.StartsWith("rotate(135.00", transform);
     }
 
@@ -109,7 +109,7 @@ public class GaugeTests : FlareTestContext
             .Add(x => x.StartAngle, 0d)
             .Add(x => x.EndAngle, 360d));
 
-        var d = cut.Find(".flare-gauge__track").GetAttribute("d") ?? string.Empty;
+        var d = cut.Find($".{Css.Classes.Gauge.Track}").GetAttribute("d") ?? string.Empty;
         Assert.Equal(2, d.Split('A').Length - 1);
     }
 
@@ -125,7 +125,7 @@ public class GaugeTests : FlareTestContext
                 .Add(x => x.End, 100d)
                 .Add(x => x.Color, FlareColor.Error)));
 
-        Assert.Single(cut.FindAll(".flare-gauge__band"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Gauge.Band}"));
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class GaugeTests : FlareTestContext
         var cut = Render<FlareGauge>(p => p
             .AddChildContent<FlareZone>(z => z.Add(x => x.Start, 80d)));
 
-        Assert.Empty(cut.FindAll(".flare-gauge__band"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Gauge.Band}"));
     }
 
     // What a screen reader is told the reading MEANS: the band it lands in, when the application named one.
@@ -148,7 +148,7 @@ public class GaugeTests : FlareTestContext
                 .Add(x => x.End, 100d)
                 .Add(x => x.Label, "Critical")));
 
-        Assert.Equal("90 (Critical)", cut.Find(".flare-gauge").GetAttribute("aria-valuetext"));
+        Assert.Equal("90 (Critical)", cut.Find($".{Css.Classes.Gauge.Root}").GetAttribute("aria-valuetext"));
     }
 
     [Fact]
@@ -161,7 +161,7 @@ public class GaugeTests : FlareTestContext
                 .Add(x => x.End, 100d)
                 .Add(x => x.Label, "Critical")));
 
-        Assert.Equal("20", cut.Find(".flare-gauge").GetAttribute("aria-valuetext"));
+        Assert.Equal("20", cut.Find($".{Css.Classes.Gauge.Root}").GetAttribute("aria-valuetext"));
     }
 
     [Fact]
@@ -172,7 +172,7 @@ public class GaugeTests : FlareTestContext
             .Add(x => x.Max, 90)
             .Add(x => x.Value, 40));
 
-        var root = cut.Find(".flare-gauge");
+        var root = cut.Find($".{Css.Classes.Gauge.Root}");
         Assert.Equal("meter", root.GetAttribute("role"));
         Assert.Equal("10", root.GetAttribute("aria-valuemin"));
         Assert.Equal("90", root.GetAttribute("aria-valuemax"));
@@ -187,7 +187,7 @@ public class GaugeTests : FlareTestContext
             .Add(x => x.TickInterval, 25d));
 
         // 0, 25, 50, 75, 100.
-        Assert.Equal(5, cut.FindAll(".flare-gauge__tick").Count);
+        Assert.Equal(5, cut.FindAll($".{Css.Classes.Gauge.Tick}").Count);
     }
 
     [Fact]
@@ -198,9 +198,9 @@ public class GaugeTests : FlareTestContext
             .Add(x => x.TickInterval, 50d)
             .Add(x => x.MinorTickInterval, 25d));
 
-        Assert.Equal(5, cut.FindAll(".flare-gauge__tick").Count);
+        Assert.Equal(5, cut.FindAll($".{Css.Classes.Gauge.Tick}").Count);
         // 25 and 75 are minor; 0, 50 and 100 are major.
-        Assert.Equal(2, cut.FindAll(".flare-gauge__tick--minor").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Gauge.TickMinor}").Count);
     }
 
     [Fact]
@@ -208,8 +208,8 @@ public class GaugeTests : FlareTestContext
     {
         var cut = Render<FlareGauge>(p => p.Add(x => x.Value, 40).Add(x => x.Target, 70d));
 
-        Assert.Single(cut.FindAll(".flare-gauge__target"));
-        Assert.Empty(cut.FindAll(".flare-gauge__needle"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Gauge.Target}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Gauge.Needle}"));
     }
 
     [Fact]
@@ -220,7 +220,7 @@ public class GaugeTests : FlareTestContext
             .Add(x => x.Max, 1)
             .Add(x => x.Format, "P0"));
 
-        Assert.Equal(0.63.ToString("P0", CultureInfo.CurrentCulture), cut.Find(".flare-gauge__value").TextContent.Trim());
+        Assert.Equal(0.63.ToString("P0", CultureInfo.CurrentCulture), cut.Find($".{Css.Classes.Gauge.Value}").TextContent.Trim());
     }
 
     [Fact]
@@ -229,13 +229,13 @@ public class GaugeTests : FlareTestContext
         var on = Render<FlareGauge>();
         var off = Render<FlareGauge>(p => p.Add(x => x.Animate, false));
 
-        Assert.Contains("flare-gauge--animate", on.Find(".flare-gauge").ClassName ?? string.Empty);
-        Assert.DoesNotContain("flare-gauge--animate", off.Find(".flare-gauge").ClassName ?? string.Empty);
+        Assert.Contains(Css.Classes.Gauge.Animate, on.Find($".{Css.Classes.Gauge.Root}").ClassName ?? string.Empty);
+        Assert.DoesNotContain(Css.Classes.Gauge.Animate, off.Find($".{Css.Classes.Gauge.Root}").ClassName ?? string.Empty);
     }
 
     private static (double W, double H) Box(IRenderedComponent<FlareGauge> cut)
     {
-        var parts = (cut.Find(".flare-gauge svg").GetAttribute("viewBox") ?? string.Empty)
+        var parts = (cut.Find($".{Css.Classes.Gauge.Root} svg").GetAttribute("viewBox") ?? string.Empty)
             .Split(' ', StringSplitOptions.RemoveEmptyEntries)
             .Select(v => double.Parse(v, CultureInfo.InvariantCulture))
             .ToArray();

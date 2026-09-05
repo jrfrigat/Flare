@@ -27,12 +27,12 @@ public class FlareSelectRebuildTests : FlareTestContext
     public void Select_typeahead_highlights_matching_option()
     {
         var cut = Render<FlareSelect<string>>(p => p.Add(x => x.Items, Fruits));
-        var control = cut.Find(".flare-select__control");
+        var control = cut.Find($".{Css.Classes.Select.Control}");
         control.KeyDown(new KeyboardEventArgs { Key = "b" });   // type-ahead -> Banana
 
         var active = control.GetAttribute("aria-activedescendant");
         Assert.False(string.IsNullOrEmpty(active));
-        var highlighted = cut.Find(".flare-listbox__option--active");
+        var highlighted = cut.Find($".{Css.Classes.Listbox.OptionActive}");
         Assert.Contains("Banana", highlighted.TextContent);
     }
 
@@ -46,8 +46,8 @@ public class FlareSelectRebuildTests : FlareTestContext
             .Add(x => x.Value, bound)
             .Add(x => x.ValueChanged, EventCallback.Factory.Create<string?>(this, v => bound = v)));
 
-        cut.Find(".flare-select__control").Click();   // open
-        var banana = cut.FindAll(".flare-listbox__option").First(o => o.TextContent.Contains("Banana"));
+        cut.Find($".{Css.Classes.Select.Control}").Click();   // open
+        var banana = cut.FindAll($".{Css.Classes.Listbox.Option}").First(o => o.TextContent.Contains("Banana"));
         Assert.Equal("true", banana.GetAttribute("aria-disabled"));
         banana.Click();
         Assert.Null(bound);
@@ -61,7 +61,7 @@ public class FlareSelectRebuildTests : FlareTestContext
             .Add(x => x.Chips, true)
             .Add(x => x.Values, new[] { "Apple", "Cherry" }));
 
-        Assert.Equal(2, cut.FindAll(".flare-multiselect__chip").Count);
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Multiselect.Chip}").Count);
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class FlareSelectRebuildTests : FlareTestContext
             .Add(x => x.Chips, false)
             .Add(x => x.Values, new[] { "Apple", "Cherry" }));
 
-        Assert.Contains("Apple, Cherry", cut.Find(".flare-multiselect__value").TextContent);
+        Assert.Contains("Apple, Cherry", cut.Find($".{Css.Classes.Multiselect.Value}").TextContent);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class FlareSelectRebuildTests : FlareTestContext
             .Add(x => x.ShowSelectAll, true)
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => bound = v)));
 
-        cut.Find(".flare-multiselect__control").Click();   // open
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();   // open
         cut.Find($".{Css.Classes.Multiselect.OptionSelectAll}").Click();
 
         Assert.Equal(4, bound.Count);
@@ -100,11 +100,11 @@ public class FlareSelectRebuildTests : FlareTestContext
             .Add(x => x.Items, Fruits)
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => bound = v)));
 
-        cut.Find(".flare-multiselect__control").Click();      // open
-        cut.FindAll(".flare-listbox__option")[0].Click();     // pick Apple
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();      // open
+        cut.FindAll($".{Css.Classes.Listbox.Option}")[0].Click();     // pick Apple
 
         Assert.Single(bound);
-        Assert.NotEmpty(cut.FindAll(".flare-listbox"));        // still open
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Listbox.Root}"));        // still open
     }
 
     [Fact]
@@ -114,12 +114,12 @@ public class FlareSelectRebuildTests : FlareTestContext
         // the incoming-Values tracker on our own push made OnParametersSet wipe the engine selection.
         var cut = Render<FlareMultiSelect<string>>(p => p.Add(x => x.Items, Fruits));
 
-        cut.Find(".flare-multiselect__control").Click();
-        cut.FindAll(".flare-listbox__option")[0].Click();   // pick Apple
-        Assert.Contains("Apple", cut.Find(".flare-multiselect__value").TextContent);
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        cut.FindAll($".{Css.Classes.Listbox.Option}")[0].Click();   // pick Apple
+        Assert.Contains("Apple", cut.Find($".{Css.Classes.Multiselect.Value}").TextContent);
 
         cut.Render(p => p.Add(x => x.Items, Fruits));   // simulate a parent re-render
-        Assert.Contains("Apple", cut.Find(".flare-multiselect__value").TextContent);
+        Assert.Contains("Apple", cut.Find($".{Css.Classes.Multiselect.Value}").TextContent);
     }
 
     [Fact]
@@ -134,8 +134,8 @@ public class FlareSelectRebuildTests : FlareTestContext
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => bound = v))
             .Add(x => x.OnMaxSelectionsReached, EventCallback.Factory.Create(this, () => reached++)));
 
-        cut.Find(".flare-multiselect__control").Click();
-        var cherry = cut.FindAll(".flare-listbox__option").First(o => o.TextContent.Contains("Cherry"));
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+        var cherry = cut.FindAll($".{Css.Classes.Listbox.Option}").First(o => o.TextContent.Contains("Cherry"));
         cherry.Click();
 
         Assert.Equal(2, bound.Count);      // unchanged
@@ -146,10 +146,10 @@ public class FlareSelectRebuildTests : FlareTestContext
     public void MultiSelect_options_have_aria_multiselectable_and_no_nested_checkbox()
     {
         var cut = Render<FlareMultiSelect<string>>(p => p.Add(x => x.Items, Fruits));
-        cut.Find(".flare-multiselect__control").Click();
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
 
-        Assert.True(cut.Find(".flare-listbox").HasAttribute("aria-multiselectable"));
-        Assert.Empty(cut.FindAll(".flare-listbox__option [role='checkbox']"));   // R8
-        Assert.Equal(4, cut.FindAll(".flare-listbox__option .flare-listbox__checkbox").Count);
+        Assert.True(cut.Find($".{Css.Classes.Listbox.Root}").HasAttribute("aria-multiselectable"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Option} [role='checkbox']"));   // R8
+        Assert.Equal(4, cut.FindAll($".{Css.Classes.Listbox.Option} .{Css.Classes.Listbox.Checkbox}").Count);
     }
 }

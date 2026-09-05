@@ -64,9 +64,9 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.HelperText, "hint")
             .Add(c => c.HelperTextOnFocus, true));
 
-        Assert.Empty(cut.FindAll(".flare-input__helper"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Input.Helper}"));
         cut.Find("input").Focus();
-        Assert.NotEmpty(cut.FindAll(".flare-input__helper"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Helper}"));
     }
 
     // --- Item 6: Clearable is now on every editable field.
@@ -81,7 +81,7 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.Clearable, true)
             .Add(c => c.OnClearButtonClick, () => cleared = true));
 
-        cut.Find("button.flare-input__clear").Click();
+        cut.Find($"button.{Css.Classes.Input.Clear}").Click();
 
         Assert.Null(captured);
         Assert.True(cleared);
@@ -94,7 +94,7 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.Value, "text")
             .Add(c => c.Clearable, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-input__clear"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Input.Clear}"));
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.Value, "12")
             .Add(c => c.Clearable, true));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-input__clear"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Input.Clear}"));
     }
 
     // --- Item 7: public Increment()/Decrement().
@@ -144,9 +144,9 @@ public class FieldFamilyAuditTests : FlareTestContext
 
         var cut = Render<FlareOtpField>(p => p.Add(c => c.Length, 4));
         // The shared field frame wraps the cell group; the cells keep their own look.
-        Assert.NotEmpty(cut.FindAll(".flare-input"));
-        Assert.NotEmpty(cut.FindAll(".flare-otp[role=group]"));
-        Assert.Equal(4, cut.FindAll("input.flare-otp__cell").Count);
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root}"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Otp.Root}[role=group]"));
+        Assert.Equal(4, cut.FindAll($"input.{Css.Classes.Otp.Cell}").Count);
     }
 
     [Fact]
@@ -159,7 +159,7 @@ public class FieldFamilyAuditTests : FlareTestContext
         var label = cut.Find("label");
         Assert.Equal("Verification code", label.TextContent);
         // A group control is labelled by aria-labelledby (not a single for=/input id).
-        Assert.Equal(label.Id, cut.Find(".flare-otp").GetAttribute("aria-labelledby"));
+        Assert.Equal(label.Id, cut.Find($".{Css.Classes.Otp.Root}").GetAttribute("aria-labelledby"));
     }
 
     [Fact]
@@ -169,7 +169,7 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.Length, 4)
             .Add(c => c.HelperText, "Enter the code we sent you"));
 
-        Assert.Contains("Enter the code we sent you", cut.Find(".flare-input__helper").TextContent);
+        Assert.Contains("Enter the code we sent you", cut.Find($".{Css.Classes.Input.Helper}").TextContent);
     }
 
     [Fact]
@@ -179,7 +179,7 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.Length, 4)
             .Add(c => c.ErrorText, "Invalid code"));
 
-        Assert.Contains("Invalid code", cut.Find(".flare-input__helper--error").TextContent);
-        Assert.NotEmpty(cut.FindAll("input.flare-otp__cell--error"));
+        Assert.Contains("Invalid code", cut.Find($".{Css.Classes.Input.HelperError}").TextContent);
+        Assert.NotEmpty(cut.FindAll($"input.{Css.Classes.Otp.CellError}"));
     }
 }

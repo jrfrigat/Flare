@@ -13,7 +13,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     {
         var cut = Render<FlareNumericField<double>>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-input"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Root}"));
     }
 
     [Fact]
@@ -22,7 +22,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
         var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Label, "Quantity"));
 
-        Assert.Contains("Quantity", cut.Find("label.flare-input__label").TextContent);
+        Assert.Contains("Quantity", cut.Find($"label.{Css.Classes.Input.Label}").TextContent);
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
         var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Contains("flare-input--disabled", cut.Find(".flare-input").ClassName ?? "");
+        Assert.Contains(Css.Classes.Input.Disabled, cut.Find($".{Css.Classes.Input.Root}").ClassName ?? "");
     }
 
     [Fact]
@@ -83,6 +83,6 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
             .Add(x => x.HelperText, "Enter a number between 0 and 100"));
 
         Assert.Contains("Enter a number between 0 and 100",
-            cut.Find("span.flare-input__helper").TextContent);
+            cut.Find($"span.{Css.Classes.Input.Helper}").TextContent);
     }
 }

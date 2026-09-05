@@ -22,7 +22,7 @@ public sealed class FileUploadDropTests : FlareTestContext
     private const string PreventDragOver = "blazor:ondragover:preventdefault";
 
     private static IElement Root(IRenderedComponent<FlareFileUploadZone> cut) =>
-        cut.Find(".flare-file-upload");
+        cut.Find($".{Css.Classes.FileUpload.Root}");
 
     [Fact]
     public void Zone_DoesNotCancelTheDropItsInputHasToReceive()
@@ -76,7 +76,7 @@ public sealed class FileUploadDropTests : FlareTestContext
 
         Root(cut).TriggerEvent("ondragover", new DragEventArgs());
 
-        Assert.DoesNotContain("flare-file-upload--dragging", Root(cut).ClassName);
+        Assert.DoesNotContain(Css.Classes.FileUpload.Dragging, Root(cut).ClassName);
     }
 
     [Fact]
@@ -87,7 +87,7 @@ public sealed class FileUploadDropTests : FlareTestContext
         var cut = Render<FlareUploadFileList>(p => p
             .Add(x => x.Items, (IReadOnlyList<FlareUploadFile>)[]));
 
-        var list = cut.Find(".flare-file-upload__list");
+        var list = cut.Find($".{Css.Classes.FileUpload.List}");
         Assert.True(list.HasAttribute(PreventDrop),
             "A drop that lands on the file list has no input under it, so the browser default applies - "
             + "and that default is to navigate away from the app to the dropped file.");

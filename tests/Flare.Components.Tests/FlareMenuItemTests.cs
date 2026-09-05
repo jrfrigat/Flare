@@ -17,9 +17,9 @@ public class FlareMenuItemTests : FlareTestContext
             .AddChildContent<FlareMenuItem>(mi =>
                 mi.AddChildContent("Save")));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        Assert.NotEmpty(cut.FindAll("button.flare-menu-item"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Menu.Item}"));
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class FlareMenuItemTests : FlareTestContext
             .AddChildContent<FlareMenuItem>(mi =>
                 mi.AddChildContent("Delete")));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
         Assert.Contains("Delete", cut.Markup);
     }
@@ -46,9 +46,9 @@ public class FlareMenuItemTests : FlareTestContext
                 .Add(x => x.Disabled, true)
                 .AddChildContent("Disabled Action")));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        var btn = cut.Find("button.flare-menu-item");
+        var btn = cut.Find($"button.{Css.Classes.Menu.Item}");
         Assert.True(btn.HasAttribute("disabled"));
     }
 
@@ -62,9 +62,9 @@ public class FlareMenuItemTests : FlareTestContext
                 .Add(x => x.Disabled, true)
                 .AddChildContent("Disabled Action")));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        Assert.NotEmpty(cut.FindAll(".flare-menu-item--disabled"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.ItemDisabled}"));
     }
 
     [Fact]
@@ -76,9 +76,9 @@ public class FlareMenuItemTests : FlareTestContext
             .AddChildContent<FlareMenuItem>(mi =>
                 mi.AddChildContent("Item")));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        Assert.Equal("menuitem", cut.Find("button.flare-menu-item").GetAttribute("role"));
+        Assert.Equal("menuitem", cut.Find($"button.{Css.Classes.Menu.Item}").GetAttribute("role"));
     }
 
     [Fact]
@@ -91,8 +91,8 @@ public class FlareMenuItemTests : FlareTestContext
                 .Add(x => x.Icon, FlareIcons.Settings)
                 .AddChildContent("Settings")));
 
-        cut.Find(".flare-menu__activator").Click();
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
 
-        Assert.NotEmpty(cut.FindAll(".flare-menu-item__icon"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.ItemIcon}"));
     }
 }

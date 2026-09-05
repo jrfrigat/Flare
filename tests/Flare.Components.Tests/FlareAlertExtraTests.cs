@@ -10,7 +10,7 @@ public class FlareAlertExtraTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.Dismissible, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-alert__close"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Close}"));
     }
 
     [Fact]
@@ -19,6 +19,6 @@ public class FlareAlertExtraTests : FlareTestContext
         var cut = Render<FlareAlert>(p => p
             .Add(x => x.ShowCloseButton, true));
 
-        Assert.NotEmpty(cut.FindAll(".flare-alert__close"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Close}"));
     }
 }

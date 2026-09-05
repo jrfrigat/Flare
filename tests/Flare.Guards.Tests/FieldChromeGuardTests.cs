@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Flare.Core.Tests;
+namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Architecture guard for the field-family chrome consolidation: the supporting-text row
@@ -18,7 +18,7 @@ namespace Flare.Core.Tests;
 public sealed class FieldChromeGuardTests
 {
     // Razor compiles the token reference, not the raw class literal, so match BOTH forms.
-    private static readonly string[] SupportMarkers = ["flare-input__support", "Css.Classes.Input.Support"];
+    private static readonly string[] SupportMarkers = [Css.Classes.Input.Support, "Css.Classes.Input.Support"];
     private const string FrameFile = "FlareFieldChrome.razor";
 
     [Fact]
@@ -44,7 +44,7 @@ public sealed class FieldChromeGuardTests
         }
 
         Assert.True(offenders.Count == 0,
-            "The field supporting-text row (flare-input__support) is frame-exclusive; render helper/error " +
+            $"The field supporting-text row ({Css.Classes.Input.Support}) is frame-exclusive; render helper/error " +
             $"through FlareFieldChrome instead of re-emitting the support row. Offenders:\n  " +
             string.Join("\n  ", offenders));
 

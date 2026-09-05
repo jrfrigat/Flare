@@ -54,7 +54,7 @@ public class C_FlareClipboardColorTests : FlareTestContext
             .Add(x => x.Text, "secret")
             .Add(x => x.Color, FlareColor.Primary));
 
-        Assert.Contains("flare-color-primary", cut.Find("button.flare-btn").ClassName);
+        Assert.Contains(Css.Classes.Color.Primary, cut.Find($"button.{Css.Classes.Button.Root}").ClassName);
     }
 
     [Fact]
@@ -62,6 +62,6 @@ public class C_FlareClipboardColorTests : FlareTestContext
     {
         var cut = Render<FlareClipboard>(p => p.Add(x => x.Text, "secret"));
 
-        Assert.DoesNotContain("flare-color-", cut.Find("button.flare-btn").ClassName);
+        Assert.DoesNotContain("flare-color-", cut.Find($"button.{Css.Classes.Button.Root}").ClassName);
     }
 }

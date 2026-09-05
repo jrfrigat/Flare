@@ -18,11 +18,11 @@ public sealed class FieldGeometryContractTests : FlareTestContext
     // family's.
     private static void AssertOneSharedWell(IRenderedComponent<IComponent> cut, bool grows)
     {
-        var wells = cut.FindAll(".flare-input__field");
+        var wells = cut.FindAll($".{Css.Classes.Input.Field}");
         Assert.Single(wells);
 
-        var isGrow = wells[0].ClassList.Contains("flare-input__field--grow")
-            || wells[0].ClassList.Contains("flare-tag-input__field");
+        var isGrow = wells[0].ClassList.Contains(Css.Classes.Input.FieldGrow)
+            || wells[0].ClassList.Contains(Css.Classes.TagInput.Field);
         Assert.True(
             isGrow == grows,
             grows
@@ -96,6 +96,6 @@ public sealed class FieldGeometryContractTests : FlareTestContext
     public void SelectArrow_SitsInsideTheWell()
     {
         var cut = Render<FlareSelect<string>>(p => p.Add(x => x.Label, "L"));
-        Assert.NotEmpty(cut.FindAll(".flare-input__field .flare-input__arrow"));
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.Field} .{Css.Classes.Input.Arrow}"));
     }
 }

@@ -124,7 +124,7 @@ public sealed class EmptySlotGuardTests : FlareTestContext
 
         var failure = Assert.Throws<Xunit.Sdk.TrueException>(
             () => AssertNoEmptySlots("a tab set with an empty header zone", cut));
-        Assert.Contains("flare-tabs__header-start", failure.Message, StringComparison.Ordinal);
+        Assert.Contains(Css.Classes.Tabs.HeaderStart, failure.Message, StringComparison.Ordinal);
     }
 
     private sealed record Row(string Name);

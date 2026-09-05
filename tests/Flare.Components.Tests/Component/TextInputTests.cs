@@ -9,7 +9,7 @@ public class C_FlareTextInputTests : FlareTestContext
     public void Renders_input_control_by_default()
     {
         var cut = Render<FlareTextInput>(p => p.Add(x => x.Value, "hi"));
-        var input = cut.Find("input.flare-input__control");
+        var input = cut.Find($"input.{Css.Classes.Input.Control}");
         Assert.Equal("hi", input.GetAttribute("value"));
         Assert.Empty(cut.FindAll("textarea"));
     }
@@ -20,7 +20,7 @@ public class C_FlareTextInputTests : FlareTestContext
         var cut = Render<FlareTextInput>(p => p
             .Add(x => x.Multiline, true)
             .Add(x => x.Rows, 4));
-        Assert.NotEmpty(cut.FindAll("textarea.flare-input__control"));
+        Assert.NotEmpty(cut.FindAll($"textarea.{Css.Classes.Input.Control}"));
         Assert.Equal("4", cut.Find("textarea").GetAttribute("rows"));
         Assert.Empty(cut.FindAll("input"));
     }
