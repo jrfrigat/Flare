@@ -300,7 +300,7 @@ public partial class FlareDataGrid<TItem>
         }
 
         _sortDir = _sortStack.Count > 0 ? _sortStack[0].Direction : SortDirection.None;
-        _sortedCache = null;
+        InvalidateData();
         _page = 0;
 
         await RaiseSortChangedAsync();

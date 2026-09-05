@@ -180,7 +180,7 @@ public partial class FlareDataGrid<TItem>
     /// the local <c>Items</c>.</summary>
     public async Task RefreshAsync()
     {
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         if (_provider is not null)
             await LoadFromProviderAsync();
@@ -193,7 +193,7 @@ public partial class FlareDataGrid<TItem>
     // the change and re-run the query the way this grid's data source requires.
     private async Task AfterQueryChangedAsync(DataGridChange change, Func<Task> raise)
     {
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await raise();

@@ -111,7 +111,7 @@ public partial class FlareDataGrid<TItem>
         _filterMenuOpen = null;
         _filterMenuValue = "";
         _filterMenuOperator = "contains";
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -128,7 +128,7 @@ public partial class FlareDataGrid<TItem>
         _filterMenuOpen = null;
         _filterMenuValue = "";
         _filterMenuOperator = "contains";
-        _sortedCache = null;
+        InvalidateData();
         _itemsCount = null;
         _page = 0;
         await RaiseFilterChangedAsync();
@@ -155,7 +155,7 @@ public partial class FlareDataGrid<TItem>
         if (debounceMs <= 0)
         {
             // Instant filter application
-            _sortedCache = null;
+            InvalidateData();
             _itemsCount = null;
             _page = 0;
             _focusRow = -1;
@@ -170,7 +170,7 @@ public partial class FlareDataGrid<TItem>
         {
             await InvokeAsync(async () =>
             {
-                _sortedCache = null;
+                InvalidateData();
                 _itemsCount = null;
                 _page = 0;
                 _focusRow = -1;
@@ -198,7 +198,7 @@ public partial class FlareDataGrid<TItem>
             _typedFilters.Remove(key);
         else
             _typedFilters[key] = new DataGridFilter(key, op, value);
-        _sortedCache = null;
+        InvalidateData();
         _page = 0;
         _focusRow = -1;
         await RaiseFilterChangedAsync();
@@ -295,7 +295,7 @@ public partial class FlareDataGrid<TItem>
             _typedFilters.Remove(key);
         else
             _typedFilters[key] = new DataGridFilter(key, FilterOperator.In, Values: [.. values]);
-        _sortedCache = null;
+        InvalidateData();
         _page = 0;
         _focusRow = -1;
         await RaiseFilterChangedAsync();

@@ -102,6 +102,19 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The grid's sorted and filtered projection is cached until the data changes, not until the render
+  ends.** It used to be dropped at both render-cycle boundaries, so every render the grid caused for
+  ITSELF - a row selected, a detail row opened, a cell focused, a column resized - re-ran the whole
+  filter and sort over the entire set. On a hundred rows that is invisible; on the sets this grid is now
+  expected to hold, it is the render.
+
+  What made the per-render memo necessary no longer holds: `Virtualize` was handed the list directly and
+  needed a fresh reference each render, and it is now handed a new `IndexedRows` wrapper over it. What
+  makes the cache safe is that every path which changes the data now clears it through one method -
+  twenty-two call sites cleared the paged cache by hand, and a second cache next to them would have been
+  correct in twenty-two places and stale in the twenty-third. The parameter set clears it too, which is
+  what catches an application mutating the list it already handed over.
+
 - **A field asks the phone for the right keyboard.** Which on-screen keyboard appears is decided by
   `inputmode`, not by the input's html type: `type="tel"` alone gets the phone keypad in some browsers
   and a full QWERTY in others, and on Android it is `inputmode` that decides whether the decimal
