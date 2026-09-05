@@ -17,6 +17,18 @@
     [Parameter] public EventCallback<FlareDropEventArgs<TPayload>> OnDrop { get; set; }
 
     /// <summary>
+    /// Raised when an item is picked up, before it has moved anywhere. Free: the browser already asks
+    /// which targets accept the item, and this rides on that call.
+    /// </summary>
+    [Parameter] public EventCallback<TPayload> OnDragStart { get; set; }
+
+    /// <summary>
+    /// Raised when a drag finishes, whether it landed or not - after <see cref="OnDrop"/> when it did.
+    /// This is where a hint put up in <see cref="OnDragStart"/> comes down.
+    /// </summary>
+    [Parameter] public EventCallback OnDragEnd { get; set; }
+
+    /// <summary>
     /// Whether a payload may be dropped in a given target, asked once per drag for every zone. A zone
     /// that says no never lights up and cannot receive the drop. Use it for what only the caller knows:
     /// a tree node cannot go inside its own descendant, a column is full, a card is locked.
@@ -73,10 +85,12 @@
     /// </summary>
     /// <param name="sourceId">The dragged item's id.</param>
     [JSInvokable]
-    public Task<string[]?> OnDragStartAsync(string sourceId)
+    public async Task<string[]?> OnDragStartAsync(string sourceId)
     {
         if (!TryResolve(sourceId, out var payload, out _))
-            return Task.FromResult<string[]?>([]);
+            return [];
+
+        if (OnDragStart.HasDelegate) await OnDragStart.InvokeAsync(payload);
 
         var allowed = new List<string>();
         var everyZone = true;
@@ -91,8 +105,12 @@
         // A context whose zones are all declared as markup rather than as components registers none of
         // them, and "all of them" is then the only answer that can be given - the browser already knows
         // the zones from the DOM, and it is the group that keeps them apart.
-        return Task.FromResult(everyZone ? null : allowed.ToArray());
+        return everyZone ? null : allowed.ToArray();
     }
+
+    /// <summary>Reports that a drag finished. Called by the browser once per drag, landed or not.</summary>
+    [JSInvokable]
+    public Task OnDragEndAsync() => OnDragEnd.HasDelegate ? OnDragEnd.InvokeAsync() : Task.CompletedTask;
 
     /// <summary>Reports where a drag landed. Called by the browser once per completed drop.</summary>
     /// <param name="sourceId">The dragged item's id.</param>

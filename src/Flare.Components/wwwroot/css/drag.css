@@ -39,6 +39,14 @@
 /* A zone the item in flight could land in. Marked while the drag lasts and not only on hover, because
    a finger has no hover: on a touch screen this outline is the only thing that says where the card may
    go before it is let go of. Thin for "possible", emphasis-width and filled for "here". */
+/* A drop that lands ON this item rather than beside it. Only a Both zone has a middle third, and
+   without this the reader cannot tell "into the folder" from "between the folders". */
+.flare-draggable--drop-into {
+    background: var(--flare-drag-zone-active-background);
+    outline: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-drag-zone-active-outline);
+    outline-offset: calc(-1 * var(--flare-border-width-emphasis));
+}
+
 .flare-drop-zone--candidate {
     outline: var(--flare-border-width) var(--flare-border-style) var(--flare-drag-zone-active-outline);
     outline-offset: calc(-1 * var(--flare-border-width));

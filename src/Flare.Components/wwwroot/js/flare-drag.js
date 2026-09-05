@@ -5,7 +5,7 @@
 // re-implemented the same pointerdown -> track delta -> apply -> notify .NET skeleton (with subtly
 // different mouse-vs-pointer and capture handling). Centralising it here means one touch-capable,
 // pointer-captured implementation. The drag-and-drop TRANSFER layer that rides on startDrag lives in
-// flare-dragdrop.js; what is left here is one geometry helper the tree's HTML5 handler still needs.
+// flare-dragdrop.js.
 
 import { registry } from './flare-dom.js';
 
@@ -356,21 +356,4 @@ export const flareColorPicker = (() => {
         }
     };
 })();
-
-// -- Drag-and-drop reorder geometry helpers ----------------------------------
-// These serve native HTML5 drag-and-drop (driven in C#), which reports the cursor position but not
-// the target's bounds -- so the "which zone" decision must be made here. The tree is the last caller;
-// flare-dragdrop.js resolves the same thirds without a round trip, and this goes when the tree moves.
-
-// FlareTreeItem: given a row element and the cursor's clientY, return which third of the row the
-// cursor is over: top ~25% -> 'before', bottom ~25% -> 'after', middle -> 'inside'.
-export function getDropZone(rowEl, clientY) {
-    if (!rowEl) return 'inside';
-    const rect = rowEl.getBoundingClientRect();
-    if (rect.height <= 0) return 'inside';
-    const offset = clientY - rect.top;
-    if (offset < rect.height * 0.25) return 'before';
-    if (offset > rect.height * 0.75) return 'after';
-    return 'inside';
-}
 

@@ -2433,6 +2433,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The content that declares the draggables and drop zones.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Group", @"string?", null, @"Default group for the draggables and zones beneath this context. Items only see zones of their own group, so one context can hold two unrelated sets of things.", null, false, false, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"OnDragEnd", @"EventCallback", null, @"Raised when a drag finishes, whether it landed or not - after OnDrop when it did. This is where a hint put up in OnDragStart comes down.", null, false, true, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"OnDragStart", @"EventCallback<TPayload?>", null, @"Raised when an item is picked up, before it has moved anywhere. Free: the browser already asks which targets accept the item, and this rides on that call.", null, false, true, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"OnDrop", @"EventCallback<FlareDropEventArgs<TPayload?>>", null, @"Raised once when a drag lands on a zone that accepted it. Not raised when the drop was cancelled, dropped on nothing, or dropped back onto the item itself.", null, false, true, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"ResolveItem", @"DragItemResolver<TPayload?>?", null, @"Resolves an id to its payload for items that are NOT FlareDraggable components - a data grid's tr, a tree's li, anything that cannot take a wrapper element without producing invalid markup. Such an element carries the model's data attributes itself and this answers for it. Consulted only when no registered draggable owns the id. SourceTargetId is null for these, since there is no component to have been declared inside a zone.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -2440,6 +2442,8 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Detaches the context's pointer gesture.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnDragEndAsync", @"OnDragEndAsync()", @"Task", null, @"Reports that a drag finished. Called by the browser once per drag, landed or not.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnDragStartAsync", @"OnDragStartAsync(string sourceId)", @"Task<string[]>", null, @"Which zones will take the item that has just been picked up. Called by the browser once per drag; null means every zone in the item's group, which is the common case and saves marshalling a list that says the same thing.",
                     new ApiMethodParameter[]
@@ -6761,7 +6765,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Removes this item from its tree's drag registry.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

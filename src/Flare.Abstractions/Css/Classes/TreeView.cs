@@ -29,12 +29,4 @@ public static class TreeView
     public const string VLeafSpacer = "flare-vtree__leaf-spacer";
     /// <summary>The <c>flare-tree-item__drag-handle</c> CSS class.</summary>
     public const string DragHandle = "flare-tree-item__drag-handle";
-    /// <summary>The <c>flare-tree-item--dragging</c> CSS class (applied to the item being dragged).</summary>
-    public const string Dragging = "flare-tree-item--dragging";
-    /// <summary>The <c>flare-tree-item--drop-before</c> CSS class.</summary>
-    public const string DropBefore = "flare-tree-item--drop-before";
-    /// <summary>The <c>flare-tree-item--drop-after</c> CSS class.</summary>
-    public const string DropAfter = "flare-tree-item--drop-after";
-    /// <summary>The <c>flare-tree-item--drop-inside</c> CSS class.</summary>
-    public const string DropInside = "flare-tree-item--drop-inside";
 }

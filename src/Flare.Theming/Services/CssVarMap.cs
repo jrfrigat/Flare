@@ -532,12 +532,10 @@ public static class CssVarMap
 
         v[Css.Tokens.Tree.Indent] = t.Tree.Indent;
         v[Css.Tokens.Tree.ToggleHoverBg] = t.Tree.ToggleHoverBg;
-        v[Css.Tokens.Tree.DropInsideBg] = t.Tree.DropInsideBg;
         v[Css.Tokens.Tree.ToggleSize] = t.Tree.ToggleSize;
         v[Css.Tokens.Tree.IconSize] = t.Tree.IconSize;
         v[Css.Tokens.Tree.SelectedBg] = t.Tree.SelectedBg;
         v[Css.Tokens.Tree.SelectedColor] = t.Tree.SelectedColor;
-        v[Css.Tokens.Tree.DropIndicatorColor] = t.Tree.DropIndicatorColor;
 
         v[Css.Tokens.Calendar.MaxWidth] = t.Calendar.MaxWidth;
         v[Css.Tokens.Calendar.EventPadY] = t.Calendar.EventPadY;

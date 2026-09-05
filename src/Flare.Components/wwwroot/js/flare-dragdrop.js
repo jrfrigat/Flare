@@ -5,11 +5,12 @@
 // which does not fire a single event on a touch screen - the reason reordering a data-grid column or a
 // tree node was impossible on a phone.
 //
-// THE INTEROP BUDGET IS TWO CALLS PER DRAG. One at the start, to ask .NET which targets accept this
-// item; one at the drop, to report where it landed. Everything in between - hit-testing, the preview
-// that follows the pointer, the insertion line, the hover classes - happens here, because a call per
-// pointermove is a network round trip per pointermove on Blazor Server. (The tree's HTML5 handler had
-// to grow a "one measurement in flight at a time" coalescer to survive exactly that.)
+// THE INTEROP BUDGET IS THREE CALLS PER DRAG, AND IT IS A CONSTANT. One at the start, to ask .NET
+// which targets accept this item; one at the drop, to report where it landed; one at the end, which is
+// the only one a cancelled drag makes. Everything in between - hit-testing, the preview that follows
+// the pointer, the insertion line, the hover classes - happens here, because a call per pointermove is
+// a network round trip per pointermove on Blazor Server. (The tree's HTML5 handler had to grow a "one
+// measurement in flight at a time" coalescer to survive exactly that.)
 //
 // The whole hit test is elementFromPoint. It is scroll-safe by construction: no rect is cached, so a
 // list that scrolls under the pointer mid-drag cannot desynchronise.
@@ -20,6 +21,7 @@ import { startDrag } from './flare-drag.js';
 const ITEM = '[data-flare-drag]';
 const ZONE = '[data-flare-drop]';
 const CONTEXT = '.flare-drag-context';
+const HIT = ':scope > [data-flare-drag-hit]';
 
 const _contexts = registry();
 
@@ -48,10 +50,18 @@ function _ownItems(zoneEl) {
     return [...zoneEl.querySelectorAll(ITEM)].filter(el => el.closest(ZONE) === zoneEl);
 }
 
+// The box that decides where the pointer is inside an item, which is not always the item. An expanded
+// tree node is as tall as its whole subtree, so measured against the li every point in a 300px branch
+// lands in its top third; the node marks its own ROW with data-flare-drag-hit and that is measured
+// instead. Scoped to direct children so a nested item's row is not mistaken for this one's.
+function _hitBox(itemEl) {
+    return itemEl.querySelector(HIT) ?? itemEl;
+}
+
 // Which part of the item the pointer is over. `both` splits it into thirds (a tree row: land before it,
 // inside it, or after it); everything else splits it in half, because there is no "inside" to hit.
 function _edgeOf(itemEl, placement, x, y, row) {
-    const r = itemEl.getBoundingClientRect();
+    const r = _hitBox(itemEl).getBoundingClientRect();
     const size = row ? r.width : r.height;
     if (size <= 0) return 'into';
     const offset = row ? x - r.left : y - r.top;
@@ -91,12 +101,13 @@ function _hitTest(drag, x, y) {
 
     const row = _isRow(zoneEl, items);
     const edge = placement === 'into' ? 'into' : _edgeOf(itemEl, placement, x, y, row);
-    if (edge === 'into') return { zone, edge, index: -1, overEl: itemEl, row };
+    const hitEl = _hitBox(itemEl);
+    if (edge === 'into') return { zone, edge, index: -1, overEl: itemEl, hitEl, row };
 
     let index = items.indexOf(itemEl);
     if (index < 0) index = items.length;
     else if (edge === 'after') index += 1;
-    return { zone, edge, index, overEl: itemEl, row };
+    return { zone, edge, index, overEl: itemEl, hitEl, row };
 }
 
 function _makePreview(sourceEl) {
@@ -121,7 +132,7 @@ function _makeIndicator() {
 
 function _placeIndicator(node, hit) {
     if (!hit || hit.edge === 'into' || !hit.overEl) { node.hidden = true; return; }
-    const r = hit.overEl.getBoundingClientRect();
+    const r = hit.hitEl.getBoundingClientRect();
     node.classList.toggle('flare-drag-indicator--horizontal', !hit.row);
     if (hit.row) {
         node.style.left = (hit.edge === 'before' ? r.left : r.right) + 'px';
@@ -142,6 +153,7 @@ function _placeIndicator(node, hit) {
 // item.
 //   dotNetRef: OnDragStartAsync(sourceId) -> string[] | null   (null = every zone in the group)
 //              OnDropAsync(sourceId, targetId, index, edge, overId)
+//              OnDragEndAsync()   - once at the end of every drag, dropped or not
 export function registerDragContext(root, dotNetRef) {
     if (!root) return;
     let drag = null;
@@ -150,6 +162,7 @@ export function registerDragContext(root, dotNetRef) {
         if (!drag) return;
         drag.preview?.node.remove();
         drag.indicator?.remove();
+        drag.hit?.hitEl?.classList.remove('flare-draggable--drop-into');
         drag.sourceEl.classList.remove('flare-draggable--dragging');
         for (const zoneEl of drag.zones.keys())
             zoneEl.classList.remove('flare-drop-zone--candidate', 'flare-drop-zone--over');
@@ -193,12 +206,12 @@ export function registerDragContext(root, dotNetRef) {
             preview.grabY = e.clientY - r.top;
             preview.node.style.transform = `translate(${r.left}px, ${r.top}px)`;
 
-            // Escape abandons the drag. Nothing has to be unwound on the .NET side: it holds no state
-            // between the two calls, so a drag that never reaches OnDropAsync simply never happened.
+            // Escape abandons the drag: no drop is reported, only the end.
             const onKey = ev => {
                 if (ev.key !== 'Escape') return;
                 ev.preventDefault();
                 cleanup();
+                dotNetRef.invokeMethodAsync('OnDragEndAsync').catch(() => { });
             };
 
             sourceEl.classList.add('flare-draggable--dragging');
@@ -238,6 +251,11 @@ export function registerDragContext(root, dotNetRef) {
                 drag.hit?.zone.el.classList.remove('flare-drop-zone--over');
                 hit?.zone.el.classList.add('flare-drop-zone--over');
             }
+            // "Into" an item is the one state a zone highlight and an insertion line cannot express.
+            if (drag.hit?.overEl !== hit?.overEl || drag.hit?.edge !== hit?.edge) {
+                drag.hit?.hitEl?.classList.remove('flare-draggable--drop-into');
+                if (hit?.edge === 'into' && hit.hitEl) hit.hitEl.classList.add('flare-draggable--drop-into');
+            }
             drag.hit = hit;
             _placeIndicator(drag.indicator, hit);
         },
@@ -246,10 +264,12 @@ export function registerDragContext(root, dotNetRef) {
             const hit = drag.hit;
             const sourceId = drag.sourceId;
             cleanup();
-            if (!hit) return;   // dropped on nothing, which is a cancel
-            dotNetRef.invokeMethodAsync(
-                'OnDropAsync', sourceId, hit.zone.id, hit.index, hit.edge,
-                hit.overEl ? hit.overEl.dataset.flareDrag : null).catch(() => { });
+            if (hit) {
+                dotNetRef.invokeMethodAsync(
+                    'OnDropAsync', sourceId, hit.zone.id, hit.index, hit.edge,
+                    hit.overEl ? hit.overEl.dataset.flareDrag : null).catch(() => { });
+            }
+            dotNetRef.invokeMethodAsync('OnDragEndAsync').catch(() => { });
         },
     });
 

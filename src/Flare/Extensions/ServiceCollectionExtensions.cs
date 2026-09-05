@@ -118,7 +118,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICollisionService, Flare.Components.Services.CollisionService>();
         services.AddScoped<IThemeJsService, Flare.Components.Services.ThemeJsService>();
         services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();
-        services.AddScoped<Flare.Components.Services.ITreeJsService, Flare.Components.Services.TreeJsService>();
         services.AddScoped<Flare.Components.Services.IOverlayJsService, Flare.Components.Services.OverlayJsService>();
         services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
         services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();

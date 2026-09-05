@@ -9,6 +9,9 @@ public static class Drag
     public const string Item = "flare-draggable";
     /// <summary>The <c>flare-draggable--dragging</c> CSS class.</summary>
     public const string ItemDragging = "flare-draggable--dragging";
+    /// <summary>The <c>flare-draggable--drop-into</c> CSS class, applied to the item a drop would land
+    /// ON rather than beside - the middle third of a <c>Both</c> zone's item.</summary>
+    public const string ItemDropInto = "flare-draggable--drop-into";
     /// <summary>The <c>flare-draggable--disabled</c> CSS class.</summary>
     public const string ItemDisabled = "flare-draggable--disabled";
     /// <summary>The <c>flare-drop-zone</c> CSS class.</summary>

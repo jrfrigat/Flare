@@ -1,17 +1,31 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<ul class="@BuildCssClass()" role="tree"
-    aria-label="@AriaLabel"
-    aria-multiselectable="@(MultiSelect ? "true" : null)"
-    style="@Style"
-    @attributes="AdditionalAttributes">
-    <CascadingValue Value="1" Name="Level" IsFixed="true">
-        <CascadingValue Value="_treeContext" IsFixed="true">
-            @ChildContent
+@* The tree's own drag-and-drop is gone: it is a FlareDragContext now, and every branch is a drop zone
+   with Both placement - the thirds of a row, which is where before/inside/after came from in the first
+   place. The zone attributes go on the ul rather than on a FlareDropZone, because a div between a ul
+   and its li is markup the browser rearranges. *@
+<FlareDragContext TPayload="object"
+                  Group="@DragGroup"
+                  ResolveItem="TryResolveDragItem"
+                  OnDrop="HandleDropAsync"
+                  OnDragStart="HandleDragStartAsync"
+                  OnDragEnd="HandleDragEndAsync">
+    <ul class="@BuildCssClass()" role="tree"
+        aria-label="@AriaLabel"
+        aria-multiselectable="@(MultiSelect ? "true" : null)"
+        style="@Style"
+        data-flare-drop="@(Draggable ? RootZone : null)"
+        data-flare-drag-group="@(Draggable ? DragGroup : null)"
+        data-flare-drop-placement="both"
+        @attributes="AdditionalAttributes">
+        <CascadingValue Value="1" Name="Level" IsFixed="true">
+            <CascadingValue Value="_treeContext" IsFixed="true">
+                @ChildContent
+            </CascadingValue>
         </CascadingValue>
-    </CascadingValue>
-</ul>
+    </ul>
+</FlareDragContext>
 
 @code {
     /// <summary>Tree items rendered inside the tree view.</summary>
@@ -30,12 +44,16 @@
     /// <summary>Callback raised when an item drag ends.</summary>
     [Parameter] public EventCallback OnItemDragEnd { get; set; }
 
+    internal const string DragGroup = "flare-tree";
+    private const string RootZone = "flare-tree-root";
+
     protected override string ComponentCssClass => Css.Classes.TreeView.Root;
 
-    // Shared with every descendant FlareTreeItem so a drop target can report the dragged source.
-    private readonly TreeDragDropCoordinator _dragCoordinator = new();
+    // Shared with every descendant FlareTreeItem, which registers itself under the id it writes into
+    // the DOM. This is what lets the model report a real item rather than an element id.
+    private readonly TreeDragRegistry _dragRegistry = new();
 
-    // Single cascading context for the whole tree (drag config + callbacks + coordinator). Built once;
+    // Single cascading context for the whole tree (drag config + callbacks + registry). Built once;
     // [Parameter]s are applied before OnInitialized, and the cascade is fixed, matching the prior behaviour.
     private FlareTreeContext _treeContext = default!;
 
@@ -45,10 +63,37 @@
         _treeContext = new FlareTreeContext
         {
             Draggable = Draggable,
-            OnItemDrop = OnItemDrop,
-            OnItemDragStart = OnItemDragStart,
-            OnItemDragEnd = OnItemDragEnd,
-            DragCoordinator = _dragCoordinator,
+            DragRegistry = _dragRegistry,
         };
+    }
+
+    private bool TryResolveDragItem(string id, out object item) => _dragRegistry.TryGet(id, out item);
+
+    private Task HandleDragStartAsync(object item) =>
+        OnItemDragStart.HasDelegate
+            ? OnItemDragStart.InvokeAsync(new TreeDragEventArgs { Item = item })
+            : Task.CompletedTask;
+
+    private Task HandleDragEndAsync() =>
+        OnItemDragEnd.HasDelegate ? OnItemDragEnd.InvokeAsync() : Task.CompletedTask;
+
+    // The drop is reported against the item under the pointer, which is exactly what TreeDropEventArgs
+    // has always described. A drop on the empty part of a branch has no target item and is ignored -
+    // the same outcome the HTML5 handler produced, since it only ever fired on a row.
+    private Task HandleDropAsync(FlareDropEventArgs<object> e)
+    {
+        if (!e.HasOverPayload || e.OverPayload is null || !OnItemDrop.HasDelegate) return Task.CompletedTask;
+
+        return OnItemDrop.InvokeAsync(new TreeDropEventArgs
+        {
+            SourceItem = e.Payload,
+            TargetItem = e.OverPayload,
+            Position = e.Edge switch
+            {
+                DropEdge.Before => TreeDropPosition.Before,
+                DropEdge.After => TreeDropPosition.After,
+                _ => TreeDropPosition.Inside,
+            },
+        });
     }
 }

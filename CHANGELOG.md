@@ -54,6 +54,23 @@ All notable changes to Flare are documented here. This project adheres to
   rows, with nothing to configure. `_dragRow`, `_dragColumn` and four now-duplicate CSS classes are
   gone.
 
+- **The tree is the last of the four on the shared drag model, and it loses an interop call per
+  `dragover`.** It asked the browser, on every single drag-over event, which third of the row the
+  cursor was in - so continuous that it had grown a "one measurement in flight at a time" coalescer to
+  stay usable. Those thirds ARE `DropPlacement.Both`, resolved in the browser now, and the whole drag
+  costs three calls. `ITreeJsService` and its module export are deleted outright.
+
+  An expanded branch is its own drop zone, so a node dropped between two children lands among THEM
+  rather than among their parent's siblings - the old flat handler had no way to say that. `TreeTokens`
+  loses `DropInsideBg` and `DropIndicatorColor`: they were the tree's private copy of what `DragTokens`
+  now says once for every surface.
+
+  Two behaviour changes worth naming. A drop on the empty part of a branch raises nothing, where the
+  old code reported the target as its own source when no drag was in flight - a state that could only
+  be reached by dispatching `ondrop` at it, and never meant anything. And the thirds are measured on
+  the ROW rather than the `li`, which is as tall as the whole expanded subtree; with a 300px branch
+  every point in it used to be in its "top third".
+
 - **`FlareChart.StickyDomain`: a value axis that does not shrink back, so a live chart holds still.**
   A chart handed a fresh dataset on a timer re-derives its domain from that dataset alone, which puts
   the top of the plot at the current maximum - so the value that CHANGED stays glued to the top and the

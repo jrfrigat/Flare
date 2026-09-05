@@ -989,13 +989,11 @@ public class MaterialDesignTokens
     internal static readonly TreeTokens Tree = new()
     {
         ToggleHoverBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DropInsideBg = "color-mix(in srgb, var(--flare-color-primary) 12%, transparent)",
         Indent = "var(--flare-spacing-12)",
         ToggleSize = "1.5rem",
         IconSize = "1.25rem",
         SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
         SelectedColor = "var(--flare-color-primary)",
-        DropIndicatorColor = "var(--flare-color-primary)",
     };
 
     // Stepper: 32dp indicator circle (2px border, 18dp icon), 2px connector (outline-variant, primary

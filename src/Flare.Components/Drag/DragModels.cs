@@ -31,6 +31,12 @@ public enum DropPlacement
 /// <param name="payload">The item that id stands for.</param>
 /// <returns><c>true</c> when the id was recognised. An unrecognised id is refused rather than dropped
 /// as a default, which is what makes this correct for a value-type payload too.</returns>
+/// <remarks>
+/// Such an element carries <c>data-flare-drag</c> with this id and <c>data-flare-drag-group</c>. When
+/// the element is taller than the part of it a pointer aims at - a tree node is as tall as its whole
+/// expanded subtree - it marks that part with <c>data-flare-drag-hit</c> on a DIRECT child, and the
+/// insertion line and the thirds of <see cref="DropPlacement.Both"/> are measured against that instead.
+/// </remarks>
 public delegate bool DragItemResolver<TPayload>(string id, out TPayload payload);
 
 /// <summary>Where a drop landed relative to the item under the pointer.</summary>
