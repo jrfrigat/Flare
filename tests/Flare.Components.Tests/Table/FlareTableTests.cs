@@ -1,0 +1,126 @@
+using Microsoft.AspNetCore.Components;
+
+namespace Flare.Components.Tests;
+
+public class FlareTableTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootFlareTableElement()
+    {
+        var cut = Render<FlareTable<string>>();
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Table.Root}"));
+    }
+
+    [Fact]
+    public void StickyHeader_True_AddsStickyClass()
+    {
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.StickyHeader, true));
+
+        Assert.Contains(Css.Classes.Table.StickyContainer, cut.Find($".{Css.Classes.Table.Container}").ClassName ?? "");
+    }
+
+    [Fact]
+    public void GroupBy_RendersGroupRow_WhenItemsAreGrouped()
+    {
+        var items = new[] { "Apple", "Avocado", "Banana" };
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.Items, items)
+            .Add(x => x.GroupBy, (Func<string, string>)(s => s.StartsWith("A") ? "A-Group" : "B-Group"))
+            .Add(x => x.RowTemplate, (RenderFragment<string>)(item => builder =>
+            {
+                builder.OpenElement(0, "tr");
+                builder.OpenElement(1, "td");
+                builder.AddContent(2, item);
+                builder.CloseElement();
+                builder.CloseElement();
+            })));
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Table.GroupRow}"));
+    }
+
+    [Fact]
+    public void ShowFooter_True_RendersTfoot()
+    {
+        var items = new[] { "One", "Two" };
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.Items, items)
+            .Add(x => x.ShowFooter, true)
+            .Add(x => x.FooterContent, (RenderFragment<IEnumerable<string>>)(allItems => builder =>
+            {
+                builder.OpenElement(0, "tr");
+                builder.OpenElement(1, "td");
+                builder.AddContent(2, "footer");
+                builder.CloseElement();
+                builder.CloseElement();
+            })));
+
+        Assert.NotEmpty(cut.FindAll("tfoot"));
+    }
+
+    [Fact]
+    public void Items_WithoutGroupBy_RendersItemsNormally()
+    {
+        var items = new[] { "Alpha", "Beta", "Gamma" };
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.Items, items)
+            .Add(x => x.RowTemplate, (RenderFragment<string>)(item => builder =>
+            {
+                builder.OpenElement(0, "tr");
+                builder.AddAttribute(1, "data-item", item);
+                builder.CloseElement();
+            })));
+
+        Assert.Equal(3, cut.FindAll("tr[data-item]").Count);
+    }
+
+    [Fact]
+    public void ChildContent_BackwardCompat_RendersWithoutError()
+    {
+        var cut = Render<FlareTable<string>>(p => p
+            .AddChildContent("<thead><tr><th>Name</th></tr></thead><tbody></tbody>"));
+
+        Assert.NotEmpty(cut.FindAll("th"));
+    }
+
+    [Fact]
+    public void GroupRow_IsCollapsible_ClickingTogglesChildren()
+    {
+        var items = new[] { "Apple", "Avocado" };
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.Items, items)
+            .Add(x => x.GroupBy, (Func<string, string>)(_ => "A-Group"))
+            .Add(x => x.RowTemplate, (RenderFragment<string>)(item => builder =>
+            {
+                builder.OpenElement(0, "tr");
+                builder.AddAttribute(1, "data-row", item);
+                builder.CloseElement();
+            })));
+
+        var rowsBefore = cut.FindAll("tr[data-row]").Count;
+        Assert.Equal(2, rowsBefore);
+
+        cut.Find($".{Css.Classes.Table.GroupRow}").Click();
+
+        var rowsAfter = cut.FindAll("tr[data-row]").Count;
+        Assert.Equal(0, rowsAfter);
+    }
+
+    [Fact]
+    public void ColSpan_ParamExists_RendersWithoutError()
+    {
+        var items = new[] { "X" };
+        var cut = Render<FlareTable<string>>(p => p
+            .Add(x => x.Items, items)
+            .Add(x => x.ColSpan, 5)
+            .Add(x => x.GroupBy, (Func<string, string>)(_ => "G"))
+            .Add(x => x.RowTemplate, (RenderFragment<string>)(item => builder =>
+            {
+                builder.OpenElement(0, "tr");
+                builder.CloseElement();
+            })));
+
+        Assert.Equal("5", cut.Find($".{Css.Classes.Table.GroupRow} td").GetAttribute("colspan"));
+    }
+}

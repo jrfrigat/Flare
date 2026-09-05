@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Flare.Components.Tests.Combobox;
+namespace Flare.Components.Tests;
 
 // bUnit tests for the rebuilt generic FlareTagField<T> (free-typing multi over the engine-driven dropdown).
 public class FlareTagFieldTests : FlareTestContext

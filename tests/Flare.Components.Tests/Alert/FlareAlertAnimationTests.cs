@@ -1,0 +1,67 @@
+using Microsoft.AspNetCore.Components;
+
+namespace Flare.Components.Tests;
+
+public class FlareAlertAnimationTests : FlareTestContext
+{
+    [Fact]
+    public void Default_RendersAlertElement()
+    {
+        var cut = Render<FlareAlert>();
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Root}"));
+    }
+
+    [Fact]
+    public void Severity_Success_AddsSuccessClass()
+    {
+        var cut = Render<FlareAlert>(p => p
+            .Add(x => x.Severity, AlertSeverity.Success));
+
+        Assert.Contains(Css.Classes.Alert.Success, cut.Find($".{Css.Classes.Alert.Root}").ClassName ?? "");
+    }
+
+    [Fact]
+    public void ShowCloseButton_True_RendersCloseButton()
+    {
+        var cut = Render<FlareAlert>(p => p
+            .Add(x => x.ShowCloseButton, true));
+
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Alert.Close}"));
+    }
+
+    [Fact]
+    public void AnimateDismiss_ParamExists_DefaultTrue_RendersWithoutError()
+    {
+        // AnimateDismiss defaults to true - component renders normally
+        var cut = Render<FlareAlert>(p => p
+            .Add(x => x.AnimateDismiss, true));
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Root}"));
+    }
+
+    [Fact]
+    public void AnimateDismiss_False_WithShowCloseButton_OnClose_InvokedSynchronously()
+    {
+        // When AnimateDismiss=false there is no Task.Delay(300), so OnClose fires promptly.
+        // bUnit's Click() is synchronous so we can still observe it.
+        var invoked = false;
+        var cut = Render<FlareAlert>(p => p
+            .Add(x => x.ShowCloseButton, true)
+            .Add(x => x.AnimateDismiss, false)
+            .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => { invoked = true; })));
+
+        cut.Find($"button.{Css.Classes.Alert.Close}").Click();
+
+        Assert.True(invoked);
+    }
+
+    [Fact]
+    public void ChildContent_RendersMessageText()
+    {
+        var cut = Render<FlareAlert>(p => p
+            .AddChildContent("Something went wrong."));
+
+        Assert.Contains("Something went wrong.", cut.Find($".{Css.Classes.Alert.Body}").TextContent);
+    }
+}

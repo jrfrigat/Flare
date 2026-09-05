@@ -1,7 +1,7 @@
 using System.Globalization;
 using Flare.Components.Resources;
 
-namespace Flare.Components.Tests.QrCode;
+namespace Flare.Components.Tests;
 
 // ---------------------------------------------------------------------------
 // Component-level tests for FlareQrCode. QrCodeGeneratorTests proves the matrix

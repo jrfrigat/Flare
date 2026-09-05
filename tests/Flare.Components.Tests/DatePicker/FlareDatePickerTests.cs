@@ -1,0 +1,109 @@
+namespace Flare.Components.Tests;
+
+public class FlareDatePickerTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootDiv()
+    {
+        var cut = Render<FlareDatePicker>();
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DatePicker.Root}"));
+    }
+
+    [Fact]
+    public void RendersLabel()
+    {
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.Label, "Select date"));
+
+        var label = cut.Find($"label.{Css.Classes.Input.Label}");
+        Assert.Equal("Select date", label.TextContent);
+    }
+
+    [Fact]
+    public void RendersPlaceholder()
+    {
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.Placeholder, "YYYY-MM-DD"));
+
+        Assert.Equal("YYYY-MM-DD", cut.Find("input").GetAttribute("placeholder"));
+    }
+
+    [Fact]
+    public void RendersCalendarIcon()
+    {
+        var cut = Render<FlareDatePicker>();
+
+        var icon = cut.Find($".{Css.Classes.Input.IconTrailing}");
+        Assert.NotNull(icon);
+    }
+
+    [Fact]
+    public void DoesNotShowCalendar_Initially()
+    {
+        var cut = Render<FlareDatePicker>();
+
+        Assert.Empty(cut.FindAll($".{Css.Classes.DatePicker.Panel}"));
+    }
+
+    [Fact]
+    public void RendersDisabledInput()
+    {
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.Disabled, true));
+
+        Assert.True(cut.Find("input").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void RendersErrorText()
+    {
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.ErrorText, "Date is required"));
+
+        Assert.Contains("Date is required", cut.Find($".{Css.Classes.Input.HelperError}").TextContent);
+    }
+
+    [Fact]
+    public void RendersHelperText()
+    {
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.HelperText, "Pick any date"));
+
+        Assert.Contains("Pick any date", cut.Find($".{Css.Classes.Input.Helper}").TextContent);
+    }
+
+    [Fact]
+    public void RendersFormattedValue()
+    {
+        var date = new DateOnly(2026, 5, 23);
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.Value, date)
+            .Add(x => x.DateFormat, "yyyy-MM-dd"));
+
+        Assert.Equal("2026-05-23", cut.Find("input").GetAttribute("value"));
+    }
+
+    [Fact]
+    public void OpensCalendarOnToggleClick()
+    {
+        var cut = Render<FlareDatePicker>();
+
+        cut.Find($".{Css.Classes.Input.Toggle}").Click();
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DatePicker.Panel}"));
+    }
+
+    [Fact]
+    public void TypingDateUpdatesValue()
+    {
+        DateOnly? value = null;
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.DateFormat, "yyyy-MM-dd")
+            .Add(x => x.ValueChanged, (DateOnly? v) => value = v));
+
+        cut.Find("input").Change("2026-07-15");
+
+        Assert.Equal(new DateOnly(2026, 7, 15), value);
+    }
+}

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Flare.Components.Tests.Combobox;
+namespace Flare.Components.Tests;
 
 // bUnit tests for the FlareCombobox shell (the editable combobox over the headless engine).
 public class FlareComboboxTests : FlareTestContext

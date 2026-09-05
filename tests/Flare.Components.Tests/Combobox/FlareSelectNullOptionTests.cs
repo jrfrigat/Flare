@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Flare.Components.Tests.Combobox;
+namespace Flare.Components.Tests;
 
 // The "no value" row: a filter select has to be able to say "All" without a sentinel item of type T
 // leaking into the caller's model.

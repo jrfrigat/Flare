@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Flare.Components.Tests.Combobox;
+namespace Flare.Components.Tests;
 
 // New-feature tests for the engine-backed FlareSelect / FlareMultiSelect (Clearable, ItemDisabled,
 // type-ahead, select-all, MaxSelections). The pre-existing Select suites cover the retained behaviour.

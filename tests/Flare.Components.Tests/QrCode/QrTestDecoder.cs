@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Flare.Components.Tests.QrCode;
+namespace Flare.Components.Tests;
 
 /// <summary>
 /// Minimal QR decoder used only by the test suite to prove that
