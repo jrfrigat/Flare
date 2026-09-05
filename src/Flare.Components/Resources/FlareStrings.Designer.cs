@@ -1546,6 +1546,51 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Move cancelled.
+        /// </summary>
+        public static string Drag_Cancelled {
+            get {
+                return ResourceManager.GetString("Drag_Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dropped at position {0}.
+        /// </summary>
+        public static string Drag_Dropped {
+            get {
+                return ResourceManager.GetString("Drag_Dropped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Picked up. Arrow keys move it, space drops it, escape cancels.
+        /// </summary>
+        public static string Drag_Picked {
+            get {
+                return ResourceManager.GetString("Drag_Picked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Position {0} of {1}.
+        /// </summary>
+        public static string Drag_Position {
+            get {
+                return ResourceManager.GetString("Drag_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reorderable. Press space to pick up.
+        /// </summary>
+        public static string Drag_Reorderable {
+            get {
+                return ResourceManager.GetString("Drag_Reorderable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Expand.
         /// </summary>
         public static string Tree_Expand {

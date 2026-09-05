@@ -6,6 +6,11 @@
 <CascadingValue Value="_coordinator" IsFixed="true">
     <div @ref="_root" class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
         @ChildContent
+        @if (KeyboardReorder)
+        {
+            @* A keyboard move has no preview to watch, so the position has to be spoken. *@
+            <span role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@_announcement</span>
+        }
     </div>
 </CascadingValue>
 
@@ -52,6 +57,18 @@
     /// </summary>
     [Parameter] public DragItemResolver<TPayload>? ResolveItem { get; set; }
 
+    /// <summary>
+    /// Whether <see cref="FlareDraggable"/> items can be reordered from the keyboard: space picks one
+    /// up, the arrows move it, space drops it, escape cancels. On by default - an item that only a
+    /// pointer can move is a control half the readers cannot use.
+    /// <para>
+    /// It makes every item a tab stop, which is right for a board and wrong for a list of a thousand;
+    /// turn it off there and give the list its own roving focus. Items a host component renders itself
+    /// (a data grid's rows, a tree's nodes) are not covered - their keys already mean something.
+    /// </para>
+    /// </summary>
+    [Parameter] public bool KeyboardReorder { get; set; } = true;
+
     /// <summary>The content that declares the draggables and drop zones.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -64,6 +81,12 @@
 
     protected override void OnInitialized() =>
         _coordinator = new DragCoordinator { Group = Group ?? "" };
+
+    protected override void OnParametersSet()
+    {
+        _coordinator.Keyboard = KeyboardReorder;
+        _coordinator.ItemKey = HandleItemKeyAsync;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -92,6 +115,14 @@
 
         if (OnDragStart.HasDelegate) await OnDragStart.InvokeAsync(payload);
 
+        return AllowedTargets(payload);
+    }
+
+    // null means "every zone in the group". A context whose zones are all declared as markup rather
+    // than as components registers none of them, and that is then the only answer that can be given -
+    // the browser already knows the zones from the DOM, and it is the group that keeps them apart.
+    private string[]? AllowedTargets(TPayload payload)
+    {
         var allowed = new List<string>();
         var everyZone = true;
         foreach (var zone in _coordinator.Zones)
@@ -101,10 +132,6 @@
             else
                 everyZone = false;
         }
-
-        // A context whose zones are all declared as markup rather than as components registers none of
-        // them, and "all of them" is then the only answer that can be given - the browser already knows
-        // the zones from the DOM, and it is the group that keeps them apart.
         return everyZone ? null : allowed.ToArray();
     }
 
@@ -176,6 +203,157 @@
         }
         payload = default!;
         return item.PayloadValue is null && default(TPayload) is null;
+    }
+
+    // -- Keyboard reorder ----------------------------------------------------
+    // There is no pointer, so there is no gesture: this side owns the whole interaction. The browser is
+    // asked twice - once for the DOM order, because registration order here is not render order after a
+    // list has been reordered, and then for the insertion line, which is the only thing a sighted
+    // reader can watch move. A screen reader gets the position spoken instead.
+    //
+    // A "slot" is a position the item could take: a zone plus an index in it, counted WITHOUT the item
+    // being moved - the same index the pointer path reports, so both paths hand OnDrop the same thing.
+    private readonly record struct KeyboardSlot(string Target, int Index, string? OverId);
+
+    private FlareDraggable? _picked;
+    private readonly List<KeyboardSlot> _slots = [];
+    private int _slot;
+    private string? _announcement;
+
+    private async Task HandleItemKeyAsync(FlareDraggable item, KeyboardEventArgs e)
+    {
+        if (!KeyboardReorder || item.Disabled) return;
+        var held = ReferenceEquals(_picked, item);
+
+        switch (e.Key)
+        {
+            case " " or "Spacebar":
+                if (_picked is null) await PickUpAsync(item);
+                else if (held) await CommitAsync();
+                break;
+            case "Escape" when held:
+                await ReleaseAsync(FlareStrings.Drag_Cancelled);
+                break;
+            case "ArrowUp" or "ArrowLeft" when held:
+                await StepAsync(-1);
+                break;
+            case "ArrowDown" or "ArrowRight" when held:
+                await StepAsync(1);
+                break;
+        }
+    }
+
+    private async Task PickUpAsync(FlareDraggable item)
+    {
+        if (!TryResolve(item.ItemId, out var payload, out _)) return;
+
+        IReadOnlyList<DragZoneOrder> order;
+        try { order = await DragDrop.ItemOrderAsync(_root, item.GroupName); }
+        catch (InvalidOperationException) { return; }
+        catch (JSDisconnectedException) { return; }
+        catch (JSException) { return; }
+
+        var allowed = AllowedTargets(payload);
+        _slots.Clear();
+
+        foreach (var zone in order)
+        {
+            if (allowed is not null && !allowed.Contains(zone.Target, StringComparer.Ordinal)) continue;
+            var others = zone.Items.Where(i => !string.Equals(i, item.ItemId, StringComparison.Ordinal)).ToList();
+            for (var i = 0; i <= others.Count; i++)
+                _slots.Add(new KeyboardSlot(zone.Target, i, i < others.Count ? others[i] : null));
+        }
+
+        if (_slots.Count == 0) return;
+
+        // Start where the item already sits, so the first arrow press is a step and not a jump.
+        _slot = 0;
+        var home = order.FirstOrDefault(z => IndexIn(z.Items, item.ItemId) >= 0);
+        if (home is not null)
+        {
+            var at = _slots.FindIndex(x =>
+                string.Equals(x.Target, home.Target, StringComparison.Ordinal) && x.Index == IndexIn(home.Items, item.ItemId));
+            if (at >= 0) _slot = at;
+        }
+
+        _picked = item;
+        item.SetPicked(true);
+        _announcement = FlareStrings.Drag_Picked;
+        if (OnDragStart.HasDelegate) await OnDragStart.InvokeAsync(payload);
+        await ShowHintAsync();
+        StateHasChanged();
+    }
+
+    private async Task StepAsync(int delta)
+    {
+        var next = Math.Clamp(_slot + delta, 0, _slots.Count - 1);
+        if (next == _slot) return;
+
+        _slot = next;
+        _announcement = string.Format(
+            System.Globalization.CultureInfo.CurrentCulture, FlareStrings.Drag_Position, _slot + 1, _slots.Count);
+        await ShowHintAsync();
+        StateHasChanged();
+    }
+
+    private async Task CommitAsync()
+    {
+        var item = _picked;
+        if (item is null || _slots.Count == 0) return;
+
+        var slot = _slots[_slot];
+        var position = _slot + 1;
+
+        if (OnDrop.HasDelegate && TryResolve(item.ItemId, out var payload, out var sourceZone))
+        {
+            var hasOver = TryResolve(slot.OverId, out var overPayload, out _);
+            await OnDrop.InvokeAsync(new FlareDropEventArgs<TPayload>
+            {
+                Payload = payload,
+                TargetId = slot.Target,
+                SourceTargetId = sourceZone?.Target,
+                Index = slot.Index,
+                Edge = hasOver ? DropEdge.Before : DropEdge.Into,
+                OverPayload = hasOver ? overPayload : default,
+                HasOverPayload = hasOver,
+            });
+        }
+
+        await ReleaseAsync(string.Format(
+            System.Globalization.CultureInfo.CurrentCulture, FlareStrings.Drag_Dropped, position));
+    }
+
+    private async Task ReleaseAsync(string announcement)
+    {
+        _picked?.SetPicked(false);
+        _picked = null;
+        _slots.Clear();
+        _announcement = announcement;
+
+        try { await DragDrop.HideDropHintAsync(_root); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+
+        if (OnDragEnd.HasDelegate) await OnDragEnd.InvokeAsync();
+        StateHasChanged();
+    }
+
+    private async Task ShowHintAsync()
+    {
+        if (_picked is null) return;
+        var slot = _slots[_slot];
+        try { await DragDrop.ShowDropHintAsync(_root, slot.Target, slot.Index, _picked.ItemId); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+    }
+
+    private static int IndexIn(IReadOnlyList<string> items, string id)
+    {
+        for (var i = 0; i < items.Count; i++)
+            if (string.Equals(items[i], id, StringComparison.Ordinal)) return i;
+        return -1;
     }
 
     /// <summary>Detaches the context's pointer gesture.</summary>

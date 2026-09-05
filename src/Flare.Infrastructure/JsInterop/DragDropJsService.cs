@@ -20,6 +20,16 @@ public sealed class DragDropJsService : FlareJsModule, IDragDropJsService
         => InvokeVoidAsync("removeDragContext", root);
 
     /// <inheritdoc />
+    // An empty list rather than null when the module answers with nothing: a page whose script has not
+    // loaded should reorder nowhere, not throw where the caller enumerates it.
     public async ValueTask<IReadOnlyList<DragZoneOrder>> ItemOrderAsync(ElementReference root, string group)
-        => await InvokeAsync<DragZoneOrder[]>("dragItemOrder", root, group);
+        => await InvokeAsync<DragZoneOrder[]>("dragItemOrder", root, group) ?? [];
+
+    /// <inheritdoc />
+    public ValueTask ShowDropHintAsync(ElementReference root, string targetId, int index, string sourceId)
+        => InvokeVoidAsync("showDropHint", root, targetId, index, sourceId);
+
+    /// <inheritdoc />
+    public ValueTask HideDropHintAsync(ElementReference root)
+        => InvokeVoidAsync("hideDropHint", root);
 }

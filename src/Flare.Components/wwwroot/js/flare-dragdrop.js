@@ -216,6 +216,18 @@ export function registerDragContext(root, dotNetRef) {
     if (!root) return;
     let drag = null;
 
+    // Space on a focused control is the control's, never the page's - so it never scrolls under a
+    // draggable. The arrows stay the page's until an item is actually picked up, which the model says
+    // by putting --picked on it; a card you have merely tabbed to must not trap the reader.
+    function onRootKey(e) {
+        const item = e.target instanceof Element ? e.target.closest(ITEM) : null;
+        if (!item || item.closest(CONTEXT) !== root || item.dataset.flareDragDisabled === 'true') return;
+        const space = e.key === ' ' || e.key === 'Spacebar';
+        const held = item.classList.contains('flare-draggable--picked');
+        if (space || (held && (e.key === 'Escape' || e.key.startsWith('Arrow')))) e.preventDefault();
+    }
+    root.addEventListener('keydown', onRootKey);
+
     function cleanup() {
         if (!drag) return;
         cancelAnimationFrame(drag.raf);
@@ -349,11 +361,48 @@ export function registerDragContext(root, dotNetRef) {
         },
     });
 
-    _contexts.keep(root, () => { cleanup(); off(); });
+    _contexts.keep(root, () => { cleanup(); off(); root.removeEventListener('keydown', onRootKey); hideDropHint(root); });
 }
 
 export function removeDragContext(root) {
     _contexts.drop(root);
+}
+
+// -- Keyboard reorder ---------------------------------------------------------
+// There is no pointer, so there is no gesture: .NET owns the whole interaction and asks for two things.
+// This draws the same insertion line the pointer path draws, at a position named as (zone, index)
+// rather than found under a cursor.
+const _hints = new Map();   // context root -> indicator element
+
+export function showDropHint(root, targetId, index, sourceId) {
+    if (!root) return;
+    const zoneEl = root.querySelector(`[data-flare-drop="${CSS.escape(targetId)}"]`);
+    if (!zoneEl) return hideDropHint(root);
+
+    const items = _ownItems(zoneEl).filter(el => el.dataset.flareDrag !== sourceId);
+    const row = _isRow(zoneEl, items);
+    const at = Math.max(0, Math.min(index, items.length));
+
+    // Past the last item there is no item to sit beside, so the line goes after the last one.
+    const anchorEl = at < items.length ? items[at] : items[items.length - 1];
+    if (!anchorEl) return hideDropHint(root);
+
+    let node = _hints.get(root);
+    if (!node) { node = _makeIndicator(); _hints.set(root, node); }
+    _placeIndicator(node, {
+        edge: at < items.length ? 'before' : 'after',
+        overEl: anchorEl,
+        hitEl: _hitBox(anchorEl),
+        row,
+    });
+    anchorEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+export function hideDropHint(root) {
+    const node = _hints.get(root);
+    if (!node) return;
+    node.remove();
+    _hints.delete(root);
 }
 
 // The draggable ids a group holds, in the order the DOM has them, grouped by zone. The keyboard

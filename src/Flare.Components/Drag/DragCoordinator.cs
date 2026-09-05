@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Web;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -17,6 +19,13 @@ internal sealed class DragCoordinator
 
     /// <summary>The context's group, inherited by any draggable or zone that does not name its own.</summary>
     public string Group { get; init; } = "";
+
+    /// <summary>Whether items are focusable and reorderable from the keyboard.</summary>
+    public bool Keyboard { get; set; }
+
+    /// <summary>The context's key handler. An item forwards its own keydown here rather than deciding
+    /// anything: the move is between items, and only the context can see all of them.</summary>
+    public Func<FlareDraggable, KeyboardEventArgs, Task>? ItemKey { get; set; }
 
     /// <summary>Registered zones, for the "which targets accept this item" answer.</summary>
     public IEnumerable<FlareDropZone> Zones => _zones.Values;

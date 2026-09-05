@@ -39,6 +39,14 @@
 /* A zone the item in flight could land in. Marked while the drag lasts and not only on hover, because
    a finger has no hover: on a touch screen this outline is the only thing that says where the card may
    go before it is let go of. Thin for "possible", emphasis-width and filled for "here". */
+/* Held by a keyboard reorder. There is no preview to follow a pointer, so the item itself has to say
+   it is in flight - it is still in the list, and the reader has to see which one is moving. */
+.flare-draggable--picked {
+    opacity: var(--flare-drag-preview-opacity);
+    box-shadow: var(--flare-drag-preview-elevation);
+    outline: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-drag-zone-active-outline);
+}
+
 /* A drop that lands ON this item rather than beside it. Only a Both zone has a middle third, and
    without this the reader cannot tell "into the folder" from "between the folders". */
 .flare-draggable--drop-into {

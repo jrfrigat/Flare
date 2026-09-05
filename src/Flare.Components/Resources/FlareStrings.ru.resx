@@ -154,6 +154,11 @@
   <data name="NumericField_Decrement" xml:space="preserve"><value>Уменьшить</value></data>
 
   <!-- Tree -->
+  <data name="Drag_Picked" xml:space="preserve"><value>Элемент поднят. Стрелки перемещают, пробел опускает, escape отменяет.</value></data>
+  <data name="Drag_Position" xml:space="preserve"><value>Позиция {0} из {1}.</value></data>
+  <data name="Drag_Dropped" xml:space="preserve"><value>Опущен на позицию {0}.</value></data>
+  <data name="Drag_Cancelled" xml:space="preserve"><value>Перемещение отменено.</value></data>
+  <data name="Drag_Reorderable" xml:space="preserve"><value>Можно переставить. Нажмите пробел, чтобы поднять.</value></data>
   <data name="Tree_Expand" xml:space="preserve"><value>Развернуть</value></data>
   <data name="Tree_Collapse" xml:space="preserve"><value>Свернуть</value></data>
 

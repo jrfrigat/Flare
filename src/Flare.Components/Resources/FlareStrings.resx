@@ -154,6 +154,11 @@
   <data name="NumericField_Decrement" xml:space="preserve"><value>Decrement</value></data>
 
   <!-- Tree -->
+  <data name="Drag_Picked" xml:space="preserve"><value>Picked up. Arrow keys move it, space drops it, escape cancels.</value></data>
+  <data name="Drag_Position" xml:space="preserve"><value>Position {0} of {1}.</value></data>
+  <data name="Drag_Dropped" xml:space="preserve"><value>Dropped at position {0}.</value></data>
+  <data name="Drag_Cancelled" xml:space="preserve"><value>Move cancelled.</value></data>
+  <data name="Drag_Reorderable" xml:space="preserve"><value>Reorderable. Press space to pick up.</value></data>
   <data name="Tree_Expand" xml:space="preserve"><value>Expand</value></data>
   <data name="Tree_Collapse" xml:space="preserve"><value>Collapse</value></data>
 

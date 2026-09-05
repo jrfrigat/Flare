@@ -1405,7 +1405,7 @@
     <value>Distinct rows</value>
   </data>
   <data name="DragDrop_BoardDesc" xml:space="preserve">
-    <value>Drag a card within a column to reorder it, or across to another column to move it - with a mouse, a pen or a finger, because the model is built on pointer events. "Archive" refuses every card through Accepts, so it never lights up as a target and never takes a drop.</value>
+    <value>Drag a card within a column to reorder it, or across to another column to move it - with a mouse, a pen or a finger, because the model is built on pointer events. Tab to a card and press space to move it with the arrow keys instead. &quot;Archive&quot; refuses every card through Accepts, so it never lights up as a target, and the arrow keys skip it too.</value>
   </data>
   <data name="DragDrop_Title" xml:space="preserve">
     <value>Drag and Drop</value>
