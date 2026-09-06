@@ -440,10 +440,8 @@ All notable changes to Flare are documented here. This project adheres to
   subscribers of a target saves exactly one passive registration per extra subscriber and nothing else,
   because each subscription carries its own throttle - so the timers cannot be shared - and each already
   receives its own small position per window. What it would cost is a refcounted registry on the path
-  where a disposed circuit and a live one have to unwind independently. Pinned by
-  `Each_subscription_owns_its_own_listener` rather than by a comment: two subscribers on one target
-  register two listeners, and disposing one unsubscribes exactly that one while the other keeps
-  delivering.
+  where a disposed circuit and a live one have to unwind independently. Two subscribers on one target register two
+  listeners, and disposing one unsubscribes exactly that one while the other keeps delivering.
 
 ## [0.28.0] - 2026-09-03
 
@@ -1309,10 +1307,9 @@ to point at them.
   in `docs/ru/component-conventions.md`.
 - **`AddFlare()` did not register `TimeProvider`, so `FlareCalendar` and the three date pickers threw on
   first render** in any app that had not registered one itself. It is now registered with `TryAddSingleton`,
-  so an application's own clock (or a test fake) still wins. The rule behind it - `AddFlare()` must be
+  so an application's own clock (or a test fake) still wins. The rule behind it: `AddFlare()` must be
   sufficient on its own, and no component may depend on a registration the application is expected to
-  guess - is now enforced by a test that reflects over every component's `[Inject]` properties and checks
-  each one against the container `AddFlare()` builds.
+  guess.
 - **A stale cached script could take the whole render down.** 29 best-effort JS calls caught
   `InvalidOperationException` (prerender) and `JSDisconnectedException` (circuit gone) but not
   `JSException` - which is exactly what a component gets when the browser is running an older
@@ -1434,10 +1431,6 @@ to point at them.
   again, along with two `FlareTagField` parameters whose docs had drifted.
 
 ### Toolchain
-- **The test run could report green from a stale binary.** xunit.v3 4.0.0 builds test projects as
-  Microsoft.Testing.Platform applications, and the VSTest bridge `dotnet test` used to rely on is gone
-  on the .NET 10 SDK, so the runner is selected in `global.json` now. MTP also takes `--report-trx`
-  rather than VSTest's `--logger`, which it ignores silently.
 - **The SDK floor is pinned at 10.0.400** (`global.json`, `rollForward: latestFeature`). The Gallery's
   source generator references `Microsoft.CodeAnalysis.CSharp`, and a generator may not reference a
   Roslyn newer than the compiler loading it: the SDK drops the analyzer with CS9057 - a warning - and
