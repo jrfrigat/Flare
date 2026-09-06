@@ -5,6 +5,27 @@
 A single code style for **all** components. The canonical reference is **`FlareButton`**.
 When creating or changing any component, bring its architecture in line with these rules.
 
+## 0. One responsibility - no "super components"
+
+A type's description is its contract. If the XML doc says "renders text", the component cannot hold a
+clipboard or a navigation manager. Three checks, any one of which means "not here":
+
+- **A new injected service.** If the feature makes the component need something it otherwise would
+  not, it belongs to another type. EVERY instance pays for it, not the ones using the feature.
+- **The name stopped describing it.** If the name now wants "and also ...", that is two types.
+- **It is application chrome, not library.** A heading anchor, a demo toolbar, a "show code" button
+  serve the documentation site rather than the package consumer: they live in `samples/` and are
+  assembled OUT of Flare components.
+
+Compose instead of parameterising: the caller puts a small component beside it. A parameter is for
+what the component itself is, not for the scenario around it. Removing one costs more than never
+adding it - it is a breaking release.
+
+**Example (0.32.0).** `FlareText` had `AnchorId`: it set an `id` and drew a "#" deep link, which made
+a text component depend on `NavigationManager` and `IFlareClipboard` - hundreds of headings per page
+resolving two scoped services for a feature a handful of them used. The parameter is gone: an id is
+what the `id` attribute is for, and the "#" is the Gallery's `SectionAnchor`, built out of
+`FlareText`, `IFlareClipboard` and `NavigationManager`.
 ## 1. CSS architecture - one global bundle
 
 ### CSS lives in `wwwroot/css/` (a global bundle), NOT in scoped `*.razor.css`
