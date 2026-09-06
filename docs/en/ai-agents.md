@@ -208,14 +208,16 @@ All real component names (consult the [API Reference](https://jrfrigat.github.io
 
 **Inputs & forms:** `FlareTextField`, `FlareTextArea`, `FlareNumericField`, `FlarePasswordField`,
 `FlareMaskedField`, `FlareOtpField`, `FlareTagField`, `FlareSelect`, `FlareMultiSelect`,
-`FlareAutocomplete`, `FlareListbox`, `FlareCheckbox`, `FlareSwitch`, `FlareRadio`, `FlareRadioGroup`,
+`FlareCombobox`, `FlareCheckbox`, `FlareSwitch`, `FlareRadio`, `FlareRadioGroup`,
 `FlareSlider`, `FlareRating`, `FlareDatePicker`, `FlareDateRangePicker`, `FlareTimePicker`,
-`FlareDateTimePicker`, `FlareCalendar`, `FlareClockDial`, `FlareColorPicker`, `FlareFileUploadZone`,
+`FlareDateTimePicker`, `FlareTimeSpanPicker`, `FlareCalendar`, `FlareClockDial`, `FlareColorPicker`,
+`FlareZone`, `FlareFileUploadZone`,
 `FlareFileUploadButton`, `FlareSignaturePad`, `FlareField`, `FlareFormField`, `FlareForm`, `FlareFormBuilder`,
 `FlareValidationSummary`.
 
 **Buttons & actions:** `FlareButton`, `FlareButtonGroup`, `FlareSplitButton`, `FlareToggleButton`,
-`FlareToggleGroup`, `FlareFloatingActionButton`, `FlareFloatingActionMenu`, `FlareFloatingActionMenuItem`,
+`FlareToggleGroup`, `FlareIconButton`, `FlareFloatingActionButton`, `FlareFloatingActionMenu`,
+`FlareFloatingActionMenuItem`,
 `FlareShortcuts`, `FlareShortcutEntry`, `FlareClipboard`.
 
 **Data display:** `FlareDataGrid` (+ `FlareColumn`, `FlareColumnBand`, `FlareColumnRow`,
@@ -224,23 +226,25 @@ All real component names (consult the [API Reference](https://jrfrigat.github.io
 `FlareTimeline`, `FlareTimelineItem`, `FlareChart`, `FlarePagination`, `FlareCard` (+ `FlareCardHeader`,
 `FlareCardContent`, `FlareCardActions`, `FlareCardFooter`, `FlareCardMedia`), `FlarePaper`, `FlareBadge`,
 `FlareChip`, `FlareChipGroup`, `FlareAvatar`, `FlareAvatarGroup`, `FlareSkeleton`, `FlareEmptyState`,
-`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`.
+`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`,
+`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`.
 
 **Navigation:** `FlareAppBar`, `FlareNavMenu`, `FlareNavLink`, `FlareNavGroup`, `FlareTabs`, `FlareTab`,
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,
 `FlareSubMenu`, `FlareMenuBar`, `FlareToolbar`, `FlareLink`, `FlareOnThisPage`, `FlareTableOfContents`,
-`FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`.
+`FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`, `FlareBottomNav`, `FlareBottomNavItem`,
+`FlareLinkTabs`, `FlareLinkTab`, `FlareNavigationGuard`.
 
 **Overlays & feedback:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,
-`FlareDrawer`, `FlareProgress`, `FlareAlert`.
+`FlareDrawer`, `FlareProgress`, `FlareAlert`, `FlareBusy`.
 
 **Layout & structure:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,
 `FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
-`FlareLazy`, `FlareMediaQuery`, `FlareHidden`.
+`FlareLazy`, `FlareMediaQuery`, `FlareHidden`, `FlareCollapse`, `FlarePullToRefresh`.
 
-**Content:** `FlareText`, `FlareMarkdown`, `FlareCodeBlock`.
+**Content:** `FlareText`, `FlareCode`, `FlareMarkdown`, `FlareCodeBlock`.
 
 **Theming:** `FlareThemeProvider`, `FlareThemeScope`, `FlareColorModeToggle`, `FlareColorCustomizer`.
 
@@ -249,8 +253,10 @@ All real component names (consult the [API Reference](https://jrfrigat.github.io
 `FlareRibbonDropdown`, `FlareRibbonSeparator`), `FlareQuickAccessToolbar`, `FlareStatusBar`,
 `FlareFormulaBar`, `FlareSheetTabs`.
 
+**Drag and drop:** `FlareDragContext`, `FlareDraggable`, `FlareDropZone`.
+
 **Separate packages:** `FlareKanban`, `FlareVideoPlayer`, `FlareRichTextEditor`, `FlareCarousel`,
-`FlareTransfer`, `FlareQrCode`.
+`FlareTransfer`, `FlareQrCode`, `FlareBarcode`, `FlareQueryBuilder`, `FlareQueryEditor`.
 
 ---
 
