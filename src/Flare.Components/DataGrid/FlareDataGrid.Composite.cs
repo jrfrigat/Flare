@@ -124,9 +124,9 @@ public partial class FlareDataGrid<TItem>
                     builder.OpenElement(seq++, "th");
                     builder.AddAttribute(seq++, "class", $"{Css.Classes.DataGrid.Th} {Css.Classes.DataGrid.ThSelect}");
                     if (rows > 1) builder.AddAttribute(seq++, "rowspan", rows.ToString());
-                    builder.OpenComponent<FlareCheckbox>(seq++);
+                    builder.OpenComponent<FlareCheckbox<bool?>>(seq++);
                     builder.AddAttribute(seq++, "Value", _selectAllState);
-                    builder.AddAttribute(seq++, "ValueChanged", EventCallback.Factory.Create<bool>(this, _ => ToggleSelectAll()));
+                    builder.AddAttribute(seq++, "ValueChanged", EventCallback.Factory.Create<bool?>(this, _ => ToggleSelectAll()));
                     builder.CloseComponent();
                     builder.CloseElement();
                 }
@@ -228,7 +228,7 @@ public partial class FlareDataGrid<TItem>
                     builder.AddAttribute(seq++, "class", $"{Css.Classes.DataGrid.Td} {Css.Classes.DataGrid.TdSelect}");
                     if (rows > 1) builder.AddAttribute(seq++, "rowspan", rows.ToString());
                     builder.AddEventStopPropagationAttribute(seq++, "onclick", true);
-                    builder.OpenComponent<FlareCheckbox>(seq++);
+                    builder.OpenComponent<FlareCheckbox<bool>>(seq++);
                     builder.AddAttribute(seq++, "Value", selected);
                     builder.AddAttribute(seq++, "ValueChanged", EventCallback.Factory.Create<bool>(this, _ => HandleRowClickAsync(item)));
                     builder.CloseComponent();

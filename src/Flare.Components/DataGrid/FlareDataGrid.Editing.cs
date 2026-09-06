@@ -141,9 +141,9 @@ public partial class FlareDataGrid<TItem>
         switch (ResolveColumnDataType(col.Key, col.Type))
         {
             case ColumnDataType.Boolean:
-                builder.OpenComponent<FlareCheckbox>(0);
-                builder.AddAttribute(1, "Value", (bool?)string.Equals(current, "true", StringComparison.OrdinalIgnoreCase));
-                builder.AddAttribute(2, "ValueChanged", EventCallback.Factory.Create<bool?>(this, b => _editValues[key] = (b == true).ToString()));
+                builder.OpenComponent<FlareCheckbox<bool>>(0);
+                builder.AddAttribute(1, "Value", string.Equals(current, "true", StringComparison.OrdinalIgnoreCase));
+                builder.AddAttribute(2, "ValueChanged", EventCallback.Factory.Create<bool>(this, b => _editValues[key] = b.ToString()));
                 builder.CloseComponent();
                 break;
             case ColumnDataType.Enum:

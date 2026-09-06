@@ -64,7 +64,7 @@ public class AccessibilityTests : BunitContext
     [Fact]
     public void FlareCheckbox_Should_HaveAriaChecked()
     {
-        var cut = Render<FlareCheckbox>(parameters => parameters
+        var cut = Render<FlareCheckbox<bool>>(parameters => parameters
             .Add(p => p.Label, "Accept terms")
             .Add(p => p.Value, true));
 

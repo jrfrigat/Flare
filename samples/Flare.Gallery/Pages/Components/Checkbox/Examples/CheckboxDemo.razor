@@ -19,10 +19,13 @@
 </FlareStack>
 
 @code {
-    private bool? _a = true;
-    private bool? _b = false;
-    private bool? _c = null;   // null -> indeterminate; click resolves to true/false
-    private bool? _d = true;
-    private bool? _e = true;
-    private bool? _f = true;
+    // The bound type is the caller's choice and the component follows it: bool for a box that is either
+    // checked or not, bool? when the third (indeterminate) state is needed - _c below. The type of the
+    // binding is also the type of For, so either shape can be validated in a form.
+    private bool _a = true;
+    private bool _b;
+    private bool? _c;          // null -> indeterminate; click resolves to true/false
+    private bool _d = true;
+    private bool _e = true;
+    private bool _f = true;
 }

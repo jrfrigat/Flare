@@ -15,13 +15,7 @@
     <FlareNumericField TValue="int" Label="Quantity" Min="1"
                        @bind-Value="Model.Quantity" For="@(() => Model.Quantity)" />
 
-    @* Not @bind-Value: the checkbox is tri-state (bool?, null = indeterminate) while For is
-       Expression<Func<bool>>, so a validated bool on the model cannot use the two-way shorthand -
-       the generated setter would assign bool? to bool. The long form is the only way to have both. *@
-    <FlareCheckbox Label="I accept the terms"
-                   Value="Model.Accepted"
-                   ValueChanged="@(v => Model.Accepted = v == true)"
-                   For="@(() => Model.Accepted)" />
+    <FlareCheckbox Label="I accept the terms" @bind-Value="Model.Accepted" For="@(() => Model.Accepted)" />
 
     <FlareButton Type="ButtonType.Submit" Variant="ButtonVariant.Filled">Place order</FlareButton>
 </FlareForm>

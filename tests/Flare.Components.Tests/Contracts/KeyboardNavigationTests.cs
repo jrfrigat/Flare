@@ -44,7 +44,7 @@ public class KeyboardNavigationTests : BunitContext
     [Fact]
     public void FlareCheckbox_Should_Be_Checkable()
     {
-        var cut = Render<FlareCheckbox>(parameters => parameters
+        var cut = Render<FlareCheckbox<bool>>(parameters => parameters
             .Add(p => p.Label, "Toggle")
             .Add(p => p.Value, false));
 

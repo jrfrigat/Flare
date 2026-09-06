@@ -1,14 +1,19 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@typeparam TValue
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
+
+@* Generic in the value type so the bound property and For are the SAME type, which is the only way the
+   two cannot disagree. TValue is bool for an ordinary checkbox and bool? for a tri-state one, where
+   null is the indeterminate state - the third state is the value, not a separate flag beside it. *@
 
 <label class="@BuildCssClass(_stateClass, _colorClass, _sizeClass, _labelClass, _iconClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
     <span class="@Css.Classes.Checkbox.Container">
         <input class="@Css.Classes.Checkbox.Input"
                type="checkbox"
-               aria-checked="@(_indeterminate ? "mixed" : (Value == true ? "true" : "false"))"
-               checked="@(Value == true)"
+               aria-checked="@(_indeterminate ? "mixed" : (_checked ? "true" : "false"))"
+               checked="@_checked"
                disabled="@Disabled"
                @onchange="HandleChange" />
         <span class="@Css.Classes.Checkbox.Indicator @(_indeterminate ? Css.Classes.Checkbox.IndicatorIndeterminate : "")" aria-hidden="true">
@@ -18,7 +23,7 @@
                 {
                     @IndeterminateIcon
                 }
-                else if (Value == true)
+                else if (_checked)
                 {
                     @CheckedIcon
                 }
@@ -40,10 +45,14 @@
 </label>
 
 @code {
-    /// <summary>Tri-state value: true = checked, false = unchecked, null = indeterminate.</summary>
-    [Parameter] public bool? Value { get; set; }
-    /// <summary>Callback invoked when the checked state changes (always true/false - a click resolves the indeterminate state).</summary>
-    [Parameter] public EventCallback<bool?> ValueChanged { get; set; }
+    /// <summary>
+    /// Whether the box is checked. With <c>TValue="bool?"</c> the value is tri-state and <c>null</c> is
+    /// the indeterminate ("some of the below") state; with <c>TValue="bool"</c> there are two states and
+    /// the box can be validated against a plain <c>bool</c> on the model.
+    /// </summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Callback invoked when the checked state changes. A click always produces true or false - it resolves the indeterminate state rather than cycling back into it.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
     /// <summary>Label text displayed next to the checkbox. Ignored when <see cref="ChildContent"/> is
     /// set.</summary>
     [Parameter] public string? Label { get; set; }
@@ -72,8 +81,13 @@
     [Parameter] public RenderFragment? UncheckedIcon { get; set; }
     /// <summary>Custom icon shown when indeterminate.</summary>
     [Parameter] public RenderFragment? IndeterminateIcon { get; set; }
-    /// <summary>Expression used to bind and validate the field.</summary>
-    [Parameter] public Expression<Func<bool>>? For { get; set; }
+    /// <summary>
+    /// Expression naming the model property this box edits, so the enclosing form can validate it and
+    /// show the message. It is typed <typeparamref name="TValue"/> like <see cref="Value"/>, so the two
+    /// always name the same property - point both at a <c>bool</c> for a consent box
+    /// (<c>@bind-Value="Model.Accepted" For="@(() =&gt; Model.Accepted)"</c>).
+    /// </summary>
+    [Parameter] public Expression<Func<TValue>>? For { get; set; }
 
     [CascadingParameter] private EditContext? EditContext { get; set; }
 
@@ -93,14 +107,26 @@
     private string _iconClass => _hasIcons ? Css.Classes.Checkbox.CustomIcon : string.Empty;
     private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
 
-    /// <summary>The checkbox is indeterminate when its value is null.</summary>
+    // TValue is bool or bool? and nothing else. The check is per instance rather than per render, and it
+    // is a throw rather than a silent render because the alternative is a checkbox that draws itself
+    // unchecked forever and never says why - the compiler cannot rule the case out, so this does.
+    private static readonly bool _valueTypeIsBoolean =
+        typeof(TValue) == typeof(bool) || typeof(TValue) == typeof(bool?);
+
+    /// <summary>The checkbox is indeterminate when its value is null, which only a bool? can be.</summary>
     private bool _indeterminate => Value is null;
+
+    private bool _checked => Value is bool b && b;
 
     private FieldIdentifier _fieldId;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        if (!_valueTypeIsBoolean)
+            throw new InvalidOperationException(
+                $"FlareCheckbox<{typeof(TValue).Name}>: TValue must be bool or bool?. A checkbox holds a "
+                + "yes/no answer; use bool? when the third (indeterminate) state is needed.");
         if (EditContext is not null)
             EditContext.OnValidationStateChanged += OnValidationChanged;
     }
@@ -135,8 +161,10 @@
 
     private async Task HandleChange(ChangeEventArgs e)
     {
+        // The browser reports the box's new state as a plain bool; it becomes a TValue by boxing, which
+        // is the one conversion both bool and bool? accept.
         var val = e.Value is bool b && b;
-        await ValueChanged.InvokeAsync(val);
+        await ValueChanged.InvokeAsync((TValue)(object)val);
         if (EditContext is not null && For is not null)
             EditContext.NotifyFieldChanged(_fieldId);
     }

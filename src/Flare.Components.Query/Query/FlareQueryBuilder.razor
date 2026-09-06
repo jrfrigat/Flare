@@ -101,7 +101,7 @@
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
                         <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Group" Value="@row.Group"
-                                       ValueChanged="@(value => { row.Group = value ?? false; Rebuild(); })" />
+                                       ValueChanged="@((bool value) => { row.Group = value; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="SortOptions" ItemLabel="SortLabel"
@@ -145,7 +145,7 @@
             <div class="@Css.Classes.QueryBuilder.Row">
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
                     <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Distinct" Value="@_draft.Distinct"
-                                   ValueChanged="@(value => { _draft.Distinct = value ?? false; Rebuild(); })" />
+                                   ValueChanged="@((bool value) => { _draft.Distinct = value; Rebuild(); })" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                     <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Limit"

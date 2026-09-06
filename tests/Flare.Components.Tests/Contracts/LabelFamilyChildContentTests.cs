@@ -11,7 +11,7 @@ public class LabelFamilyChildContentTests : FlareTestContext
     [Fact]
     public void Checkbox_renders_content_between_the_tags()
     {
-        var cut = Render<FlareCheckbox>(p => p.AddChildContent("<a href=\"/terms\">terms</a>"));
+        var cut = Render<FlareCheckbox<bool>>(p => p.AddChildContent("<a href=\"/terms\">terms</a>"));
 
         var label = cut.Find($".{Css.Classes.Checkbox.Label}");
         Assert.Equal("terms", label.TextContent);
@@ -39,7 +39,7 @@ public class LabelFamilyChildContentTests : FlareTestContext
     [Fact]
     public void No_label_and_no_content_renders_no_label_element()
     {
-        var cut = Render<FlareCheckbox>();
+        var cut = Render<FlareCheckbox<bool>>();
 
         Assert.Empty(cut.FindAll($".{Css.Classes.Checkbox.Label}"));
     }

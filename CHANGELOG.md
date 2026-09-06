@@ -3,6 +3,38 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.33.0] - 2026-09-06
+
+### Changed
+
+- **BREAKING: `FlareCheckbox` is generic - `FlareCheckbox<TValue>`, where `TValue` is `bool` or
+  `bool?`.** `Value` was always `bool?` while `For` was always `Expression<Func<bool>>`, so the two
+  could never name the same property: a `bool` on the model took `For` but refused `@bind-Value`
+  (the generated setter assigns `bool?` to `bool`), and a `bool?` took `@bind-Value` but had no
+  expression `For` would accept. A validated consent box - the commonest checkbox there is - had to be
+  written with an explicit `Value`/`ValueChanged` pair and a `v == true` lambda.
+
+  Now the bound type is yours to choose and `For` follows it:
+
+  ```razor
+  <FlareCheckbox @bind-Value="_model.Accepted" For="@(() => _model.Accepted)" Label="I accept" />
+  ```
+
+  Migration: `@bind-Value` infers `TValue` and needs no edit. A checkbox with no binding at all
+  (`<FlareCheckbox Label="..." />`) needs `TValue="bool"`. A `bool?` field keeps working as the
+  tri-state checkbox it was - `null` is still the indeterminate state, and clicking still resolves it
+  to true or false. A `TValue` that is neither `bool` nor `bool?` now throws on first render rather
+  than drawing an unchecked box forever.
+
+### Fixed
+
+- **The API reference now reports parameter defaults for generic components.** Every one of them -
+  `FlareSelect`, `FlareField`, `FlareDataGrid`, `FlareRadioGroup` and the rest - showed no default for
+  any parameter, because a default is read off a constructed instance and an open generic type cannot
+  be constructed. 144 defaults were missing (`Size = FieldSize.Md`, `VirtualizeThreshold = 50`,
+  `Variant = InputVariant.Default`, ...). The same fix restores the intended parameter ordering on
+  those pages: own parameters first, inherited ones after.
+
 ## [0.32.0] - 2026-09-06
 
 ### Changed

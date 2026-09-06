@@ -11,8 +11,7 @@
                         @bind-Value="_model.Email"
                         For="@(() => _model.Email)" />
             <FlareCheckbox Label="Accept terms"
-                           Value="_model.AcceptsTerms"
-                           ValueChanged="@(v => _model.AcceptsTerms = v ?? false)"
+                           @bind-Value="_model.AcceptsTerms"
                            For="@(() => _model.AcceptsTerms)" />
             <FlareValidationSummary />
             <FlareStack Row Wrap Gap="FlareSpacing.XSmall">
