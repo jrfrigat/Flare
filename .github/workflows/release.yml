@@ -52,8 +52,8 @@ jobs:
           dotnet run --project tools/Flare.ApiDocGen -c Release -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
           git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
 
-      # Only IsPackable=true projects produce packages (the 16 library packages); Gallery/Legacy/
-      # tests/tools are excluded. Symbols (.snupkg) are produced alongside via IncludeSymbols.
+      # Only IsPackable=true projects produce packages (the 16 library packages); Gallery, tests
+      # and tools are excluded. Symbols (.snupkg) are produced alongside via IncludeSymbols.
       - name: Pack
         run: dotnet pack Flare.slnx -c Release --no-build -o artifacts
 
