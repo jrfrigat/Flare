@@ -5,7 +5,7 @@
     @if (!string.IsNullOrEmpty(Title))
     {
         <FlareStack Gap="FlareSpacing.XXSmall">
-            <FlareText Typo="TypographyScale.TitleLarge" Class="demo-section__title" AnchorId="@_anchorId">@Title</FlareText>
+            <FlareText Typo="TypographyScale.TitleLarge" Class="demo-section__title" id="@_anchorId">@Title<SectionAnchor For="@_anchorId" /></FlareText>
             @if (!string.IsNullOrEmpty(Description))
             {
                 <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@Description</FlareText>

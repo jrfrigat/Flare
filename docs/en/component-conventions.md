@@ -134,6 +134,5 @@ Separately: an `Icon` parameter of type `FlareIcon` is a **value**, not a slot, 
 distinction is the reason the fragments moved to `IconContent`: `Icon` now means an icon everywhere.
 
 ## 5. Other
-- Build and tests must pass; verify the component visually in `Flare.Gallery` (not in the legacy
-  sample `Flare.Legacy`).
+- Build and tests must pass; verify the component visually in `Flare.Gallery`.
 - Do not leave stale code (dead enums/classes) - remove it when you find it.

@@ -2,7 +2,6 @@
   <Folder Name="/samples/">
     <Project Path="samples/Flare.Gallery.Generators/Flare.Gallery.Generators.csproj" />
     <Project Path="samples/Flare.Gallery/Flare.Gallery.csproj" />
-    <Project Path="samples/Flare.Legacy/Flare.Legacy.csproj" />
   </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/Core/">

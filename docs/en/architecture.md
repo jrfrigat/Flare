@@ -155,8 +155,6 @@ Blazor WebAssembly PWA. Interactive component gallery with EN/RU language toggle
 syntax-highlighted code examples, and a live theme switcher (design system x palette x mode, plus
 "generate a palette from a color"). Registers all five themes via `AddFlareTheme`. Docker-ready.
 
-> `samples/Flare.Legacy` is a retained legacy sample and is not part of the published library.
-
 ---
 
 ## 2. Component Architecture

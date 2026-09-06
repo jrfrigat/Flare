@@ -3326,4 +3326,10 @@
   <data name="DragDrop_SurfacesDesc" xml:space="preserve">
     <value>Три поверхности, у которых нет ничего общего внешне, переупорядочиваются через один и тот же контекст. Дерево и таблица рисуют собственные li и tr, поэтому подключаются к модели атрибутом, а не оберткой, - а дерево отказывает броску внутрь собственного поддерева.</value>
   </data>
+  <data name="Anchor_Copy" xml:space="preserve">
+    <value>Скопировать ссылку на раздел</value>
+  </data>
+  <data name="Anchor_Copied" xml:space="preserve">
+    <value>Ссылка скопирована</value>
+  </data>
 </root>

@@ -28,29 +28,8 @@ public sealed class FlareText : FlareComponentBase
     /// <see cref="FlareCode"/>.</summary>
     [Parameter] public bool Mono { get; set; }
 
-    /// <summary>
-    /// When set, gives the element a stable <c>id</c> (a link target) and renders a hover "#" deep-link.
-    /// Use on headings so <c>FlareOnThisPage</c> and shareable URLs can reference the section.
-    /// </summary>
-    [Parameter] public string? AnchorId { get; set; }
-
-    [Inject] private NavigationManager Nav { get; set; } = default!;
-
     /// <summary>The component's root CSS class.</summary>
     protected override string ComponentCssClass => Css.Classes.Text.Root;
-
-    // Fragment href anchored to the CURRENT page path, so Blazor does not resolve a bare "#id"
-    // against the base href and navigate to the site root.
-    private string _anchorHref
-    {
-        get
-        {
-            var uri = Nav.Uri;
-            var hash = uri.IndexOf('#');
-            var path = hash >= 0 ? uri[..hash] : uri;
-            return $"{path}#{AnchorId}";
-        }
-    }
 
     /// <summary>Renders the configured semantic element (h1-h5/p) with the resolved type-scale classes.</summary>
     protected override void BuildRenderTree(RenderTreeBuilder builder)
@@ -59,22 +38,9 @@ public sealed class FlareText : FlareComponentBase
         builder.AddAttribute(1, "class", BuildCssClass(_scaleClass, Color.CssClass, _weightClass, _alignClass, _monoClass));
         if (_inlineStyle is not null)
             builder.AddAttribute(2, "style", _inlineStyle);
-        if (AnchorId is not null)
-            builder.AddAttribute(3, "id", AnchorId);
         if (AdditionalAttributes is not null)
             builder.AddMultipleAttributes(4, AdditionalAttributes);
         builder.AddContent(5, ChildContent);
-        if (AnchorId is not null)
-        {
-            // Hover-revealed deep link to this heading (kept out of the a11y tree / tab order).
-            builder.OpenElement(6, "a");
-            builder.AddAttribute(7, "class", Css.Classes.Text.Anchor);
-            builder.AddAttribute(8, "href", _anchorHref);
-            builder.AddAttribute(9, "aria-hidden", "true");
-            builder.AddAttribute(10, "tabindex", "-1");
-            builder.AddContent(11, "#");
-            builder.CloseElement();
-        }
         builder.CloseElement();
     }
 

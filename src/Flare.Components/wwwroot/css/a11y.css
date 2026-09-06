@@ -145,12 +145,26 @@ h6[tabindex="-1"]:focus {
     .flare-btn--icon-only,
     .flare-input__clear,
     .flare-autocomplete__clear,
-    .flare-numericfield__step,
     .flare-layout-appbar__toggle,
     .flare-tabs__scroll,
     .flare-btn {
         min-inline-size: var(--flare-touch-target-min);
         min-block-size: var(--flare-touch-target-min);
+    }
+
+    /* The numeric stepper takes the minimum on ONE axis, and this is not a compromise for its own sake.
+       Its two buttons are stacked inside a field whose height is the field's, not theirs: two 48px
+       buttons need 96px in a 56px box, and the second one hangs out of the bottom - which is exactly
+       what it did, below the field and over the next label. Growing the hit area instead is no better
+       here than growing the control: a 48px area centred on a 27px button reaches 10px into the button
+       above it, and the comment at the top of this block says what happens then - the later sibling
+       takes the tap, so the up arrow would answer presses meant for the down one.
+
+       So the button takes the whole width it can (48px, comfortably past the 24px WCAG 2.2 AA floor)
+       and the height the field has to give (half of it - 27px at the default size). A target inside a
+       text field cannot be 48px tall unless the text field is 96px tall. */
+    .flare-numericfield__step {
+        min-inline-size: var(--flare-touch-target-min);
     }
 
     /* Icons inside dense chrome - a chip's delete, a tab's close, a field's dropdown arrow. Growing the
