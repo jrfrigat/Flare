@@ -81,3 +81,31 @@ html, body { height: 100%; }
    FlareLayout component system -- the Gallery adds no layout CSS of its own. The two-column doc
    layout (content + "On this page" rail) and the Custom Theme page are likewise built entirely from
    Flare primitives (FlareGrid / FlareStack / FlareCol + design tokens), so they add no CSS here. */
+
+/* The "#" beside a section heading (SectionAnchor). Gallery chrome, not a Flare component: the
+   library has no opinion about deep links into a docs page.
+
+   The fade-in is gated on a fine pointer, the same way Flare gates its own hover-revealed controls. A
+   touch reader has no hover to uncover it with, and a transparent link is still a tap target - it
+   would be an invisible control beside every heading, hittable by accident and findable by nobody. */
+.section-anchor {
+    margin-inline-start: 0.4em;
+    text-decoration: none;
+    line-height: 1;
+    vertical-align: baseline;
+    opacity: 0.7;
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+@media (hover: hover) {
+    .section-anchor { opacity: 0; }
+    /* Whatever the heading is - the anchor is not a text component's business, so the reveal is not
+       written in terms of one. A hover on its own parent uncovers it. */
+    *:hover > .section-anchor,
+    .section-anchor:focus-visible { opacity: 0.7; }
+}
+
+.section-anchor:hover { opacity: 1; text-decoration: underline; }
+
+/* The moment after the address went to the clipboard. Painted only once the clipboard accepted it. */
+.section-anchor--copied { opacity: 1; }

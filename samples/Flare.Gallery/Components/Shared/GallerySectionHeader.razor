@@ -7,7 +7,10 @@
     }
     <FlareText Typo="TypographyScale.TitleLarge"
                Class="@(string.IsNullOrEmpty(AnchorId) ? null : "demo-section__title")"
-               AnchorId="@AnchorId">@Title</FlareText>
+               id="@AnchorId">@Title@if (!string.IsNullOrEmpty(AnchorId))
+        {
+            <SectionAnchor For="@AnchorId" />
+        }</FlareText>
 </FlareStack>
 
 @code {

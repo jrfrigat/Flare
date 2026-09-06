@@ -10926,5 +10926,23 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DragDrop_SurfacesDesc", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Copy link to this section.
+        /// </summary>
+        public static string Anchor_Copy {
+            get {
+                return ResourceManager.GetString("Anchor_Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Link copied.
+        /// </summary>
+        public static string Anchor_Copied {
+            get {
+                return ResourceManager.GetString("Anchor_Copied", resourceCulture);
+            }
+        }
     }
 }

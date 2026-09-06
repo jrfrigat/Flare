@@ -5,8 +5,6 @@ public static class Text
 {
     /// <summary>The <c>flare-text</c> CSS class.</summary>
     public const string Root = "flare-text";
-    /// <summary>The <c>flare-text__anchor</c> CSS class.</summary>
-    public const string Anchor = "flare-text__anchor";
     /// <summary>The <c>flare-text--display-large</c> CSS class.</summary>
     public const string DisplayLarge = "flare-text--display-large";
     /// <summary>The <c>flare-text--display-medium</c> CSS class.</summary>

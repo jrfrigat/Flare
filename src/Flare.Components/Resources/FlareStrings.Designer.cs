@@ -259,6 +259,24 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy link to this section.
+        /// </summary>
+        public static string Text_CopyAnchor {
+            get {
+                return ResourceManager.GetString("Text_CopyAnchor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link copied.
+        /// </summary>
+        public static string Text_AnchorCopied {
+            get {
+                return ResourceManager.GetString("Text_AnchorCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Custom.
         /// </summary>
         public static string ColorCustomizer_Custom {

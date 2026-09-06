@@ -6066,7 +6066,6 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Align", @"TextAlign", @"TextAlign.Default", @"Horizontal text alignment. Default inherits the surrounding alignment.", null, false, false, false, @"FlareText"),
-                new ApiParameterInfo(@"AnchorId", @"string?", null, @"When set, gives the element a stable id (a link target) and renders a hover ""#"" deep-link. Use on headings so FlareOnThisPage and shareable URLs can reference the section.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Text content rendered inside the typography element.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Text color. Role (FlareColor.Primary) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token. Default inherits.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Element", @"string?", null, @"HTML element to render (e.g. ""h1""..""h5"", ""p"", ""span""). When null a sensible default for the Typo is used.", null, false, false, false, @"FlareText"),

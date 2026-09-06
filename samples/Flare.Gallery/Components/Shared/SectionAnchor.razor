@@ -1,0 +1,83 @@
+@implements IDisposable
+@inject NavigationManager Nav
+@inject IFlareClipboard Clipboard
+
+@* The "#" beside a section heading. Pressing it COPIES the address of that section rather than going
+   to it: a reader who presses it wants the link, and following it only put the address in the address
+   bar for them to fetch by hand - on a phone, through a context menu on a target that was invisible
+   until they touched it. The href stays, so the context menu, a middle click and "open in new tab"
+   all still work.
+
+   It lives in the Gallery, not in Flare. Nothing about it is a text component's business: it needs the
+   navigation manager to know where "here" is and the clipboard to hand the address over, and a page
+   that wants one composes it beside its own heading. Flare supplies the pieces - FlareText draws the
+   glyph, IFlareClipboard does the copying. *@
+<a class="section-anchor @(_copied ? "section-anchor--copied" : "")"
+   href="@_href"
+   title="@_label"
+   aria-label="@_label"
+   @onclick="CopyAsync"
+   @onclick:preventDefault="true">
+    <FlareText Element="span" Color="FlareColor.Primary" Weight="FontWeight.SemiBold">@(_copied ? Tick : "#")</FlareText>
+</a>
+
+@code {
+    /// <summary>The id of the heading this points at.</summary>
+    [Parameter, EditorRequired] public string For { get; set; } = "";
+
+    // U+2713 CHECK MARK, written as an escape because the repository is ASCII.
+    private const string Tick = "\u2713";
+    private const int CopiedForMs = 1600;
+
+    private bool _copied;
+    private CancellationTokenSource? _revert;
+
+    private string _label => _copied ? GalleryStrings.Anchor_Copied : GalleryStrings.Anchor_Copy;
+
+    // Anchored to the CURRENT page, so Blazor does not resolve a bare "#id" against the base href and
+    // send the reader to the site root.
+    private string _href
+    {
+        get
+        {
+            var uri = Nav.Uri;
+            var hash = uri.IndexOf('#');
+            return $"{(hash >= 0 ? uri[..hash] : uri)}#{For}";
+        }
+    }
+
+    // The tick appears only once the clipboard has taken the text: claiming a copy that did not happen
+    // is worse than saying nothing, and the href is still there either way.
+    private async Task CopyAsync()
+    {
+        try
+        {
+            await Clipboard.CopyAsync(_href);
+        }
+        catch (InvalidOperationException) { return; }
+        catch (JSDisconnectedException) { return; }
+        catch (JSException) { return; }
+
+        _copied = true;
+        StateHasChanged();
+
+        _revert?.Cancel();
+        _revert?.Dispose();
+        _revert = new CancellationTokenSource();
+        try
+        {
+            await Task.Delay(CopiedForMs, _revert.Token);
+        }
+        catch (TaskCanceledException) { return; }
+
+        _copied = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _revert?.Cancel();
+        _revert?.Dispose();
+        _revert = null;
+    }
+}

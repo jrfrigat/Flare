@@ -3326,4 +3326,10 @@
   <data name="DragDrop_SurfacesDesc" xml:space="preserve">
     <value>Three surfaces that share nothing visually and reorder through the same context. The tree and the grid render their own li and tr, so they join the model by attribute rather than by wrapper - and a tree refuses a drop inside its own subtree.</value>
   </data>
+  <data name="Anchor_Copy" xml:space="preserve">
+    <value>Copy link to this section</value>
+  </data>
+  <data name="Anchor_Copied" xml:space="preserve">
+    <value>Link copied</value>
+  </data>
 </root>
