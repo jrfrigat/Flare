@@ -19,7 +19,7 @@
 
     @if (ShowProblems && _markers.Count > 0)
     {
-        <ul class="flare-qe__problems">
+        <ul class="@Css.Classes.QueryEditor.Problems">
             @foreach (var marker in _markers)
             {
                 <li>@marker.Message</li>
@@ -65,7 +65,7 @@
     [Parameter] public bool ShowProblems { get; set; } = true;
 
     /// <inheritdoc />
-    protected override string ComponentCssClass => "flare-qe";
+    protected override string ComponentCssClass => Css.Classes.QueryEditor.Root;
 
     protected override async Task OnParametersSetAsync()
     {

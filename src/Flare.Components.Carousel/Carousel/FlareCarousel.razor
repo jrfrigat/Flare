@@ -8,17 +8,17 @@
      @onkeydown="OnKeyDown"
      @onmouseenter="PauseAutoPlay"
      @onmouseleave="ResumeAutoPlay">
-    <div class="flare-carousel__viewport"
+    <div class="@Css.Classes.Carousel.Viewport"
          @onpointerdown="OnPointerDown"
          @onpointerup="OnPointerUp"
          @ontouchstart="OnTouchStart"
          @ontouchend="OnTouchEnd">
-        <div class="flare-carousel__track" style="transform:translateX(-@(_current * 100)%)">
+        <div class="@Css.Classes.Carousel.Track" style="transform:translateX(-@(_current * 100)%)">
             @if (Items != null && ItemTemplate != null)
             {
                 @foreach (var item in Items)
                 {
-                    <div class="flare-carousel__slide">@ItemTemplate(item)</div>
+                    <div class="@Css.Classes.Carousel.Slide">@ItemTemplate(item)</div>
                 }
             }
         </div>
@@ -26,13 +26,13 @@
 
     @if (ShowArrows && _count > 1)
     {
-        <button class="flare-carousel__arrow flare-carousel__arrow--prev"
+        <button class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowPrev"
                 @onclick="Prev"
                 aria-label="@(FlareStrings.Carousel_Prev)"
                 disabled="@(!Loop && _current == 0)">
             <FlareIconView Value="@FlareIcons.ChevronLeft" />
         </button>
-        <button class="flare-carousel__arrow flare-carousel__arrow--next"
+        <button class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowNext"
                 @onclick="Next"
                 aria-label="@(FlareStrings.Carousel_Next)"
                 disabled="@(!Loop && _current >= _count - 1)">
@@ -42,11 +42,11 @@
 
     @if (ShowDots && _count > 1)
     {
-        <div class="flare-carousel__dots" role="tablist">
+        <div class="@Css.Classes.Carousel.Dots" role="tablist">
             @for (int i = 0; i < _count; i++)
             {
                 var idx = i;
-                <button class="flare-carousel__dot @(_current == idx ? "flare-carousel__dot--active" : "")"
+                <button class="@Css.Classes.Carousel.Dot @(_current == idx ? Css.Classes.Carousel.DotActive : "")"
                         @onclick="@(() => GoTo(idx))"
                         role="tab"
                         aria-selected="@(_current == idx)"
@@ -73,7 +73,7 @@
     /// <summary>Wraps from the last slide back to the first.</summary>
     [Parameter] public bool Loop { get; set; } = true;
 
-    protected override string ComponentCssClass => "flare-carousel";
+    protected override string ComponentCssClass => Css.Classes.Carousel.Root;
 
     private int _current;
     private int _count => Items?.Count ?? 0;

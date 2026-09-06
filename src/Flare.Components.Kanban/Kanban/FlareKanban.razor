@@ -14,23 +14,23 @@
                 var colCards = CardsForColumn(col.Id);
                 <FlareDropZone Target="@col.Id"
                                Placement="DropPlacement.Between"
-                               Class="flare-kanban__column"
+                               Class="@Css.Classes.Kanban.Column"
                                role="region"
                                aria-label="@col.Title">
-                    <div class="flare-kanban__col-header"
+                    <div class="@Css.Classes.Kanban.ColumnHeader"
                          style="@(col.Color != null ? $"border-top:3px solid {col.Color}" : "")">
                         <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
-                        <span class="flare-kanban__count" aria-label="@colCards.Count cards">@colCards.Count</span>
+                        <span class="@Css.Classes.Kanban.Count" aria-label="@colCards.Count cards">@colCards.Count</span>
                     </div>
-                    <div class="flare-kanban__cards" role="list">
+                    <div class="@Css.Classes.Kanban.Cards" role="list">
                         @foreach (var card in colCards)
                         {
                             var c = card;
                             <FlareDraggable @key="c.Id" Id="@c.Id" Payload="c"
-                                            Class="flare-kanban__card" role="listitem">
+                                            Class="@Css.Classes.Kanban.Card" role="listitem">
                                 @if (c.Tag is not null)
                                 {
-                                    <span class="flare-kanban__tag"
+                                    <span class="@Css.Classes.Kanban.Tag"
                                           style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
                                 }
                                 <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
@@ -56,7 +56,7 @@
     /// <summary>Callback raised when cards are moved between columns.</summary>
     [Parameter] public EventCallback<IReadOnlyList<KanbanCard>> CardsChanged { get; set; }
 
-    protected override string ComponentCssClass => "flare-kanban";
+    protected override string ComponentCssClass => Css.Classes.Kanban.Root;
 
     private List<KanbanCard> _cards = [];
 

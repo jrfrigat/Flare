@@ -4,15 +4,15 @@
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <!-- Source list -->
-    <div class="flare-transfer__panel">
-        <div class="flare-transfer__panel-header">
+    <div class="@Css.Classes.Transfer.Panel">
+        <div class="@Css.Classes.Transfer.PanelHeader">
             <FlareText Typo="TypographyScale.LabelLarge">@SourceTitle (@_source.Count)</FlareText>
         </div>
-        <div class="flare-transfer__list">
+        <div class="@Css.Classes.Transfer.List">
             @foreach (var item in _source)
             {
                 var it = item;
-                <div class="flare-transfer__item @(_srcSelected.Contains(it) ? "flare-transfer__item--selected" : "")"
+                <div class="@Css.Classes.Transfer.Item @(_srcSelected.Contains(it) ? Css.Classes.Transfer.ItemSelected : "")"
                      @onclick="@(() => ToggleSrcSelect(it))"
                      role="option"
                      aria-selected="@(_srcSelected.Contains(it))"
@@ -24,7 +24,7 @@
     </div>
 
     <!-- Controls -->
-    <div class="flare-transfer__controls">
+    <div class="@Css.Classes.Transfer.Controls">
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToTarget"
                      Disabled="@(_srcSelected.Count == 0)"
@@ -44,15 +44,15 @@
     </div>
 
     <!-- Target list -->
-    <div class="flare-transfer__panel">
-        <div class="flare-transfer__panel-header">
+    <div class="@Css.Classes.Transfer.Panel">
+        <div class="@Css.Classes.Transfer.PanelHeader">
             <FlareText Typo="TypographyScale.LabelLarge">@TargetTitle (@_target.Count)</FlareText>
         </div>
-        <div class="flare-transfer__list">
+        <div class="@Css.Classes.Transfer.List">
             @foreach (var item in _target)
             {
                 var it = item;
-                <div class="flare-transfer__item @(_tgtSelected.Contains(it) ? "flare-transfer__item--selected" : "")"
+                <div class="@Css.Classes.Transfer.Item @(_tgtSelected.Contains(it) ? Css.Classes.Transfer.ItemSelected : "")"
                      @onclick="@(() => ToggleTgtSelect(it))"
                      role="option"
                      aria-selected="@(_tgtSelected.Contains(it))"
@@ -78,7 +78,7 @@
     /// <summary>Header label shown above the target panel.</summary>
     [Parameter] public string TargetTitle { get; set; } = "Selected";
 
-    protected override string ComponentCssClass => "flare-transfer";
+    protected override string ComponentCssClass => Css.Classes.Transfer.Root;
 
     private List<TItem> _source = [];
     private List<TItem> _target = [];

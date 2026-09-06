@@ -3,9 +3,9 @@
 @* One node of the condition tree, rendering itself for nested nodes. Keeping the whole tree in one
    recursive component is what lets AND and OR mix to any depth without a second editor. *@
 
-<div class="flare-qb__group">
-    <div class="flare-qb__group-head">
-        <button type="button" class="flare-qb__connector" @onclick="ToggleConnector">
+<div class="@Css.Classes.QueryBuilder.Group">
+    <div class="@Css.Classes.QueryBuilder.GroupHead">
+        <button type="button" class="@Css.Classes.QueryBuilder.Connector" @onclick="ToggleConnector">
             @(Group.Or ? OrLabel : AndLabel)
         </button>
         <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddCondition">
@@ -24,17 +24,17 @@
         }
     </div>
 
-    <div class="flare-qb__group-body">
+    <div class="@Css.Classes.QueryBuilder.GroupBody">
         @foreach (var condition in Group.Conditions)
         {
             var row = condition;
-            <div class="flare-qb__row">
-                <div class="flare-qb__cell flare-qb__cell--target">
+            <div class="@Css.Classes.QueryBuilder.Row">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
                     <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
                                  Value="@TargetOf(row)"
                                  ValueChanged="@(value => SetTarget(row, value))" />
                 </div>
-                <div class="flare-qb__cell flare-qb__cell--op">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
                     <FlareSelect TValue="QueryOperator" Size="FieldSize.Xs" Items="OperatorsFor(row)"
                                  ItemLabel="OperatorLabel" Value="@row.Operator"
                                  ValueChanged="@(value => { row.Operator = value; Changed(); })" />
@@ -42,7 +42,7 @@
 
                 @if (QueryDefaults.TakesValueList(row.Operator))
                 {
-                    <div class="flare-qb__cell flare-qb__cell--value">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                         <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValuesHint"
                                     Value="@row.Values"
                                     ValueChanged="@(value => { row.Values = value; Changed(); })" />
@@ -52,19 +52,19 @@
                 {
                     @if (IsTimestamp(row))
                     {
-                        <div class="flare-qb__cell flare-qb__cell--relative">
+                        <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellRelative">
                             <FlareCheckbox Size="FieldSize.Xs" Label="@RelativeLabel" Value="@row.Relative"
                                            ValueChanged="@(value => { row.Relative = value ?? false; Changed(); })" />
                         </div>
                     }
                     @if (row.Relative)
                     {
-                        <div class="flare-qb__cell flare-qb__cell--value">
+                        <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                             <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true"
                                         Value="@row.RelativeAmount.ToString(Culture)"
                                         ValueChanged="@(value => SetAmount(row, value))" />
                         </div>
-                        <div class="flare-qb__cell flare-qb__cell--unit">
+                        <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellUnit">
                             <FlareSelect TValue="QueryTimeUnit" Size="FieldSize.Xs" Items="Units"
                                          Value="@row.RelativeUnit"
                                          ValueChanged="@(value => { row.RelativeUnit = value; Changed(); })" />
@@ -72,14 +72,14 @@
                     }
                     else
                     {
-                        <div class="flare-qb__cell flare-qb__cell--value">
+                        <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                             <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValueHint"
                                         Value="@row.Value"
                                         ValueChanged="@(value => { row.Value = value; Changed(); })" />
                         </div>
                         @if (QueryDefaults.TakesTwoValues(row.Operator))
                         {
-                            <div class="flare-qb__cell flare-qb__cell--value">
+                            <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                                 <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValueHint"
                                             Value="@row.Value2"
                                             ValueChanged="@(value => { row.Value2 = value; Changed(); })" />

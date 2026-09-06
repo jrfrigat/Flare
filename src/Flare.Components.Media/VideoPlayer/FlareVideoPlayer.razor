@@ -5,7 +5,7 @@
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
-    <video class="flare-video-player__video"
+    <video class="@Css.Classes.VideoPlayer.Video"
            @ref="_video"
            src="@Src"
            poster="@Poster"
@@ -22,15 +22,15 @@
 
     @if (Controls)
     {
-        <div class="flare-video-player__controls">
-            <button class="flare-video-player__btn"
+        <div class="@Css.Classes.VideoPlayer.Controls">
+            <button class="@Css.Classes.VideoPlayer.Button"
                     type="button"
                     aria-label="@(_isPlaying ? "Pause" : "Play")"
                     @onclick="TogglePlayAsync">
                 <FlareIconView Value="@(_isPlaying ? FlareIcons.Pause : FlareIcons.PlayArrow)" Size="1.25rem" />
             </button>
 
-            <input class="flare-video-player__progress"
+            <input class="@Css.Classes.VideoPlayer.Progress"
                    type="range"
                    min="0"
                    max="@((int)(_duration > 0 ? _duration : 1))"
@@ -39,16 +39,16 @@
                    aria-label="Seek"
                    @oninput="OnSeekInput" />
 
-            <span class="flare-video-player__time">@FormatTime(_currentTime) / @FormatTime(_duration)</span>
+            <span class="@Css.Classes.VideoPlayer.Time">@FormatTime(_currentTime) / @FormatTime(_duration)</span>
 
-            <button class="flare-video-player__btn"
+            <button class="@Css.Classes.VideoPlayer.Button"
                     type="button"
                     aria-label="@(_isMuted ? "Unmute" : "Mute")"
                     @onclick="ToggleMuteAsync">
                 <FlareIconView Value="@(_isMuted ? FlareIcons.VolumeOff : FlareIcons.VolumeUp)" Size="1.25rem" />
             </button>
 
-            <input class="flare-video-player__progress"
+            <input class="@Css.Classes.VideoPlayer.Progress"
                    type="range"
                    min="0"
                    max="1"
@@ -60,7 +60,7 @@
 
             @if (PlaybackRates is { Count: > 0 })
             {
-                <select class="flare-video-player__rate"
+                <select class="@Css.Classes.VideoPlayer.Rate"
                         aria-label="Playback speed"
                         @onchange="OnPlaybackRateChange">
                     @foreach (var rate in PlaybackRates)
@@ -73,7 +73,7 @@
                 </select>
             }
 
-            <button class="flare-video-player__btn"
+            <button class="@Css.Classes.VideoPlayer.Button"
                     type="button"
                     aria-label="Fullscreen"
                     @onclick="RequestFullscreenAsync">
@@ -109,7 +109,7 @@
     /// <summary>Accessible label for the video element. Defaults to "Video player".</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
-    protected override string ComponentCssClass => "flare-video-player";
+    protected override string ComponentCssClass => Css.Classes.VideoPlayer.Root;
 
     private ElementReference _video;
     private IJSObjectReference? _module;

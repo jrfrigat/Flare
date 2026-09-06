@@ -8,12 +8,12 @@
    An unencodable value renders the fallback rather than throwing: the value usually arrives from a field
    the user is still typing into, and an EAN is unencodable for the first twelve keystrokes of thirteen. *@
 
-<div class="@BuildCssClass(_symbol is null ? "flare-barcode--invalid" : null, TextAbove ? "flare-barcode--text-above" : null)"
+<div class="@BuildCssClass(_symbol is null ? Css.Classes.Barcode.Invalid : null, TextAbove ? Css.Classes.Barcode.TextAbove : null)"
      style="@Style"
      @attributes="AdditionalAttributes">
     @if (_symbol is { } sym)
     {
-        <svg class="flare-barcode__svg"
+        <svg class="@Css.Classes.Barcode.Svg"
              viewBox="0 0 @F(_totalWidth) @F(Height)"
              width="@F(_totalWidth)" height="@F(Height)"
              xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
                 double w = run * ModuleWidth;
                 if (bar)
                 {
-                    <rect class="flare-barcode__bar" x="@F(x)" y="0" width="@F(w)" height="@F(Height)" />
+                    <rect class="@Css.Classes.Barcode.Bar" x="@F(x)" y="0" width="@F(w)" height="@F(Height)" />
                 }
                 x += w;
                 bar = !bar;
@@ -38,12 +38,12 @@
 
         @if (ShowText)
         {
-            <span class="flare-barcode__text">@_readable(sym.Text)</span>
+            <span class="@Css.Classes.Barcode.Text">@_readable(sym.Text)</span>
         }
     }
     else
     {
-        <span class="flare-barcode__error" role="status">@(_error ?? FlareStrings.Barcode_Invalid)</span>
+        <span class="@Css.Classes.Barcode.Error" role="status">@(_error ?? FlareStrings.Barcode_Invalid)</span>
     }
 </div>
 
@@ -89,7 +89,7 @@
     [Parameter] public string? AriaLabel { get; set; }
 
     /// <inheritdoc />
-    protected override string ComponentCssClass => "flare-barcode";
+    protected override string ComponentCssClass => Css.Classes.Barcode.Root;
 
     private BarcodeEncoder.Symbol? _symbol;
     private string? _error;
