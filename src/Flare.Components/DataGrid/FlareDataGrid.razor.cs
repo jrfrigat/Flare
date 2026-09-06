@@ -27,8 +27,7 @@ public partial class FlareDataGrid<TItem>
     //
     // A height, because Virtualize derives its window from a scroll container: an unbounded grid's
     // container has no scrollable extent, so the window is computed once, comes out tiny and never
-    // grows. That failure is the 0.26.2 bug, and switching it on by accident is worse than not
-    // switching it on at all.
+    // grows. Switching recycling on by accident is therefore worse than leaving it off.
     //
     // An in-memory source, because the total is what the decision is made from. A provider reports its
     // total only after a load, so an auto decision would fetch the whole set once, discover it is large,

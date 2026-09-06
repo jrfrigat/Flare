@@ -75,7 +75,7 @@ jobs:
           git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
 
       # Pack here too so a packaging break (missing README/icon, CS1591, etc.) fails CI, not release.
-      # IsPackable=false on Gallery/Legacy/tests/tools means only the publishable packages are produced.
+      # IsPackable=false on Gallery/tests/tools means only the publishable packages are produced.
       - name: Pack (validation only)
         run: dotnet pack Flare.slnx -c Release --no-build -o artifacts
 

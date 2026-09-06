@@ -12,31 +12,24 @@ All notable changes to Flare are documented here. This project adheres to
   as well. An id is what the `id` attribute is for - `<FlareText id="install">` splats it like any
   other attribute - and an anchor can point at any element, not only at text.
 
-  The "#" itself was never the library's business: it is documentation-site chrome, and the Gallery
-  now owns it (`SectionAnchor`, built out of `FlareText`, `IFlareClipboard` and `NavigationManager`).
   Migration is one line per heading: `AnchorId="install"` becomes `id="install"`, plus whatever draws
-  the link beside it if you want one.
+  the link beside it if you want one. The Gallery's `SectionAnchor`, built out of `FlareText`,
+  `IFlareClipboard` and `NavigationManager`, is a worked example.
 
-  What this buys is not tidiness. Every `FlareText` on a page - and a page has hundreds - resolved two
+  What this buys is not tidiness: every `FlareText` on a page - and a page has hundreds - resolved two
   scoped services for a feature a handful of headings used.
 
-- **Every optional package now owns the names of its own CSS classes.** `Flare.Components.Carousel`,
-  `.Kanban`, `.Barcode`, `.QrCode`, `.Media`, `.Query`, `.RichTextEditor` and `.Transfer` wrote their
-  class names as text in the markup, and a name written as text is a name nothing verifies:
-  `Flare.CssAudit` proves that a class a component emits exists in the stylesheets, and it can only do
-  that for a name it can read. Each package declares its own registry now - `Css.Classes.Carousel`,
+- **Every optional package now declares its own CSS class names.** `Css.Classes.Carousel`,
   `Css.Classes.Kanban`, `Css.Classes.Barcode`, `Css.Classes.QrCode`, `Css.Classes.SignaturePad`,
   `Css.Classes.VideoPlayer`, `Css.Classes.QueryBuilder`, `Css.Classes.QueryEditor`, `Css.Classes.Rte`
-  and `Css.Classes.Transfer` - and the audit reads all nine packages, which it could not do before:
-  it reads one stylesheet folder and one registry, and every package has a pair of its own.
+  and `Css.Classes.Transfer` are new: if you style one of the satellite components, its class names are
+  constants you can reference rather than strings you retype.
 
-  Two of those constants used to live in `Flare.Abstractions`. `Css.Classes.Transfer.Item` and
-  `Css.Classes.Rte.Tool` existed only because the core accessibility stylesheet gave those two
-  components a focus ring and a coarse-pointer minimum - which meant `Flare.Components` was styling
-  components it does not ship, and a rename inside either package would have dropped the ring with
-  nothing failing. The rules moved to the packages that render them and the constants went with them.
-  The name and the namespace are unchanged, so source stays compatible; the types now ship in the
-  package assembly rather than in `Flare.Abstractions`.
+  `Css.Classes.Transfer.Item` and `Css.Classes.Rte.Tool` moved out of `Flare.Abstractions` into those
+  packages, together with the focus ring and coarse-pointer minimum the core stylesheet used to give
+  them. The name and the namespace are unchanged, so source keeps compiling; the types now ship in the
+  package assembly, so a binary compiled against the old location needs a rebuild.
+
 ### Added
 
 - **`FlareChart.AnimateUpdates`: the chart moves to the new data instead of being replaced by it.**
@@ -47,16 +40,14 @@ All notable changes to Flare are documented here. This project adheres to
   than no animation at all.
 
   It covers everything the chart draws - bars, slices, radar spokes, and the value labels that travel
-  with them - because all of a chart's geometry is numbers inside attributes. A drawing whose SHAPE
-  changed still jumps: a series that gained or lost a point is a different path, and walking one into
-  the other would slide every point into its neighbour's place and read as data that did not change.
+  with them. A drawing whose SHAPE changed still jumps: a series that gained or lost a point is a
+  different path, and walking one into the other would slide every point into its neighbour's place and
+  read as data that did not change.
 
   **The interop cost of an animated update is zero.** The browser is told once, when the chart appears,
   to watch the plot; after that it reads geometry it wrote itself and nothing crosses to .NET per
-  update. Not `transition: d` in CSS either - that property is not carried by every engine, and a
-  library cannot ship motion that works in two of the three. Duration and easing come from the theme's
-  motion scale, a reader who asked for reduced motion gets the jump, and a chart that did not ask for
-  this loads no script at all.
+  update. Duration and easing come from the theme's motion scale, a reader who asked for reduced motion
+  gets the jump, and a chart that did not ask for this loads no script at all.
 
 - **A `FlareDraggable` can be reordered from the keyboard.** Tab to it, space picks it up, the arrows
   walk it through every position it could take, space drops it there, escape lets it go. None of the
@@ -65,23 +56,16 @@ All notable changes to Flare are documented here. This project adheres to
   can be dragged and cannot be reached is a defect rather than a preference - turn it off for a list
   long enough that a tab stop per item is worse than no keyboard path.
 
-  The positions come from the DOM, asked for once when the item is picked up: registration order on
-  the .NET side is not render order once a list has been reordered. A refused zone is not among them,
-  so the arrows skip it exactly as the pointer does. The insertion line is the same one a pointer
-  draws, and the position is also spoken through a live region, because a keyboard move has no preview
-  to watch. Space never scrolls the page under a draggable; the arrows only stop scrolling it once
-  something is actually picked up.
+  The arrows walk the order on screen, skip a refused zone exactly as the pointer does, and draw the
+  same insertion line. The position is also spoken through a live region, because a keyboard move has
+  no preview to watch. Space never scrolls the page under a draggable, and the arrows stop scrolling it
+  only once something is picked up.
 
 - **A drag scrolls the container it is running out of.** Hold the pointer near the edge of a scrolling
   board, list or page and it scrolls, so a card can reach a column that was off-screen when the drag
   began. Without it that was impossible rather than awkward: `elementFromPoint` outside the viewport
   returns null, so an unseen column is not a target at all - and on a phone, where a four-column board
-  shows one and a half of them, that is most of the board. Measured at 375px: a card reached "Done"
-  from "Backlog" across 701px of scroll it never had access to before.
-
-  It runs on a frame loop, not on `pointermove`, because a pointer held still at the edge stops firing
-  moves - which is exactly the moment the scrolling has to continue. Each scroll re-runs the hit test:
-  the pointer has not moved, but what is under it has.
+  shows one and a half of them, that is most of the board.
 
 ### Fixed
 
@@ -90,11 +74,8 @@ All notable changes to Flare are documented here. This project adheres to
   whose height is the field's, so two of them needed 96px in a 56px box and the down arrow ended up
   below the border, over the next label. Reported on `FlareNumericField` with `ShowStepper`.
 
-  The minimum now applies on one axis: the button takes the full 48px of width (comfortably past the
-  24px WCAG 2.2 AA floor) and the height the field has to give, which is half of it. Growing the hit
-  area instead would have been worse - a 48px area centred on a 27px button reaches into the button
-  above it, and the later sibling takes the tap, so the up arrow would have answered presses meant for
-  the down one.
+  The minimum now applies on one axis: the button takes the full 48px of width, comfortably past the
+  24px WCAG 2.2 AA floor, and the height the field has to give, which is half of it.
 
 - **Two controls were invisible on a touch screen, and one of them was still tappable.** A tree row's
   drag handle and the deep-link anchor beside a `FlareText` heading were both drawn at `opacity: 0`
@@ -103,14 +84,7 @@ All notable changes to Flare are documented here. This project adheres to
   could hit by accident, navigating the page for no visible reason.
 
   Both now follow what the data grid's resize handle and the slider's hover thumb already did: the
-  fade-in lives inside `@media (hover: hover)`, so a coarse pointer keeps the control visible. The
-  tree handle had a comment saying it was hidden deliberately, because the reorder ran on HTML5
-  drag-and-drop and could not be performed by touch at all - that stopped being true in this release.
-
-  A guard now holds the rule across the library: anything hidden at `opacity: 0` has to be revealed by
-  something a finger can produce. A second trigger counts - the slider's value bubble comes up on
-  `:focus-within`, which dragging with a finger produces - but `:focus-visible` does not, since that
-  one is the keyboard's.
+  fade-in lives inside `@media (hover: hover)`, so a coarse pointer keeps the control visible.
 
 - **A disabled file-upload zone handed the dropped file to the browser, and the application went with
   it.** Drop a file on a `FlareFileUploadZone` whose `Disabled` is true and the browser navigated away
@@ -122,35 +96,22 @@ All notable changes to Flare are documented here. This project adheres to
   being read, so a second file dropped during a slow read took the application off the screen. A
   disabled zone now refuses the drop itself, and no longer lights up for one it cannot accept.
 
-  Introduced by the 0.29.0 drop fix, which stopped the root cancelling `drop` - correct, it was killing
-  the input's own default action, but a disabled zone has no input default left to protect.
+  Introduced in 0.29.0 by the drop fix, so 0.29.0 through 0.31.0 are affected.
 
 - **A tree node could be dropped inside its own subtree.** The branch left the tree with everything in
   it and nothing in the interface put it back. Every branch under the dragged node is refused before
   the drag is even visible now, so those zones never light up and cannot take the drop.
 
-  `FlareDragContext.RefusedTargets` is new, and it is what made this expressible. `CanDrop` is only
-  asked about zones registered as `FlareDropZone` components; a tree declares its zones as markup on
-  its own `ul` elements, because a div between a `ul` and its `li` is markup the browser rearranges -
-  so the predicate existed and was never consulted for a tree at all. A component in that position now
-  names the zones that must refuse, which is the smaller list anyway.
-
-- **A guard added in 0.31.0 asserted nothing at all.** `NoStylesheetCapsWithStaticViewportHeight` was
-  written with a control character inside its regex, so the pattern could never match and the test was
-  green from the day it was added - while being reported as cover for the `vh`/`dvh` rule it was
-  supposed to hold. It is repaired, and every guard in that file is now proved by injecting the
-  violation it is meant to catch and watching it fail.
+  `FlareDragContext.RefusedTargets` is new and is what made this expressible: a component that declares
+  its drop zones as markup rather than as `FlareDropZone` components names the zones that must refuse.
+  `CanDrop` is only asked about registered zones, so a tree - whose zones are its own `ul` elements -
+  could never be covered by it.
 
 - **A theme can set how much of the screen a surface takes.** Nine rules across the dialog, the data
   grid's filter menu and filter-builder tree and the shortcuts panel carried the measurement as a
   number - `calc(100dvh - 3rem)`, `max-block-size: 60dvh`, `max-width: 90vw` - which a theme has no way
   to repoint. They read `OverlayTokens` now: MD3 keeps 3rem of air (2rem on a phone) and lets a panel
   take 70% of the screen, FluentUI 2 runs tighter at 2rem/1.5rem and 75%. That difference was the point.
-
-  The literals spread precisely because they were literals: the dialog cap added in 0.31.0 took its
-  `3rem` from the rule beside it. Three guards keep them out - a literal subtracted from the viewport,
-  a literal share of the viewport, and a literal percentage in a `color-mix`.
-
 
 - **Two components could emit a CSS class that does not exist.** `FlareHidden` built its class from the
   breakpoint name, so `Below="Breakpoint.Xs"` produced `flare-hidden--below-xs` and
@@ -159,14 +120,8 @@ All notable changes to Flare are documented here. This project adheres to
   why. `FlareSnackbarProvider` built `flare-snackbar--normal` the same way, for the severity that has no
   accent rule at all.
 
-  Both are now impossible: every class and every custom property a component sets is NAMED from the
-  registry rather than assembled from an enum or a number, so `Flare.CssAudit` can check each one
-  against the stylesheet. That took 100 names out of the audit's blind spot - the 75 type-scale
-  properties and the 25 button-label ones were built from a slug at both ends, by the theme that emits
-  them and by the component that reads them, and neither end could be verified. Paper and app-bar
-  elevation levels, the drawer anchor and the contrast badge's colour pair moved the same way. Both
-  audits read fully in sync afterwards.
-
+  Both are fixed, and the shape that produced them is gone: every class and every custom property a
+  component sets is named from the registry rather than assembled from an enum or a number.
 
 - **A drag with a real pointer started nothing.** `startDrag` handed `onStart` the move that crossed the
   threshold rather than the press, and by then pointer capture has been taken - so every pointer event
@@ -178,9 +133,8 @@ All notable changes to Flare are documented here. This project adheres to
 - **Every "fit the screen" cap in the library uses `dvh` rather than `vh`.** The dialog fix in 0.31.0
   moved its own caps; the same unit was still sizing the DataGrid's filter menu, its filter-builder
   tree and the shortcuts panel. On a phone `100vh` counts the space behind the browser chrome, so a
-  `vh` cap is too generous exactly where a cap is needed - the filter menu promised in its own comment
-  that "the actions row stays reachable" and then measured against a viewport taller than the screen.
-  A guard now fails on any `vh` in any component stylesheet.
+  `vh` cap is too generous exactly where a cap is needed, and the actions row a filter menu promises to
+  keep reachable was measured against a viewport taller than the screen.
 
 - **A ribbon tab panel told a screen reader it was named by an element that does not exist.**
   `FlareRibbonTab` set `aria-labelledby` to `flare-ribbon-tab-<id>` and nothing ever wrote that id:
@@ -189,10 +143,6 @@ All notable changes to Flare are documented here. This project adheres to
   the quiet half of the same defect - its panel carried no `aria-labelledby` whatsoever - and points at
   its own tab too.
 
-  Neither was reachable by any test in the repository: the markup was valid, every class name was
-  real, and an id is the one kind of name a compiler never checks. The test that holds this now asserts
-  the link rather than either end of it - every id an ARIA attribute references resolves to an element
-  in the same tree.
 ## [0.31.0] - 2026-09-05
 
 ### Changed
@@ -242,8 +192,8 @@ All notable changes to Flare are documented here. This project adheres to
 
   Two things follow. Column widths are now resolved from the header while rows are recycled
   (`table-layout: fixed`), because automatic layout measures the cells that exist and a recycled window
-  is a different set of cells at every scroll position - measured here at 97px against 432px for one
-  column, depending only on which rows were in view. And `Virtual` is now `bool?`: left unset, the grid
+  is a different set of cells at every scroll position, so a column's width changed with the scroll.
+  And `Virtual` is now `bool?`: left unset, the grid
   recycles an in-memory source of more than 500 rows when it has a height to scroll in. Set it to
   `false` when every row must be in the DOM for the browser's own find or for printing. With an
   `ItemsProvider` the choice stays yours, since deciding would mean fetching the whole set to find out
@@ -262,12 +212,10 @@ All notable changes to Flare are documented here. This project adheres to
   and `FlareCard`, `FlarePaper`, `FlareStack`, `FlareGrid` and `FlareCol` join the three that had it.
   The shared half of the behaviour is one CSS rule (`.flare-fill`); the half only a component knows -
   a tab set's panels, a data grid's table container, a card's content region - stays with that
-  component. A guard test asserts every member of the family inherits the parameter rather than
-  re-declaring it, which is how the chain came to cover three components and stop.
+  component.
 
   Two containers deliberately stay out. `FlareResizable` already hands its height down as an ordinary
-  block box - measured at a 300px box with a filling grid at 300px whose table container scrolls 2699px
-  of rows in 218px - so a switch there would turn on something that already happens, and it would
+  block box, so a switch there would turn on something that already happens, and it would
   contradict the component's own purpose, which is a height the user drags. An accordion panel animates
   its height open and closed, and "spend the height you were given" has no meaning while that number is
   moving; making it work is an animation question, not a parameter.
@@ -278,17 +226,12 @@ All notable changes to Flare are documented here. This project adheres to
   its content - what a dialog holding a data grid wants, where a content-sized panel leaves the grid a
   few rows tall in the middle of an empty screen.
 
-  Measured end to end in the Gallery: a box of `24rem`, a filling card inside it at 384px, a tab set at
-  352px, a grid at 289px whose table container scrolls 7843px of rows in 272px - and no application
-  CSS anywhere in the chain.
+  The chain holds end to end: a fixed-height box, a filling card inside it, a tab set, and a data grid
+  whose table container scrolls its rows - with no application CSS anywhere in it.
 
   A box that declares a `height` in its `Style` keeps it: filling works by replacing an element's
   height with a share of its parent's, so the two are contradictory, and the written number - the one
-  visible in the markup - wins while the fill is dropped. Without that rule the contradiction resolved
-  into a third thing that is neither: a `24rem` box measured 104px, and every link below it collapsed
-  with it. Basing the flex on the height instead of on zero would fix the same case and break a
-  commoner one, because an item whose basis is its full height takes its shrink out of the toolbar
-  beside it.
+  visible in the markup - wins while the fill is dropped.
 
 ### Fixed
 
@@ -322,11 +265,9 @@ All notable changes to Flare are documented here. This project adheres to
 - **A tall dialog no longer hangs off both ends of the screen.** `FlareDialog` had no height cap and
   sits on a scrim that is `position: fixed` and does not scroll, so a panel taller than the window did
   not push a scrollbar anywhere - it simply overflowed in both directions with its title and its
-  buttons past the edge, unreachable. Measured in Chrome on Flare's own stylesheet at a viewport of
-  1274px: a dialog of eighty paragraphs came out 2862px tall with its top 794px ABOVE the window, its
-  content region reporting `overflow-y: visible`, and nothing scrolling anywhere. The same probe now:
-  the panel is 1226px, its top is at 24px, header and actions are both on screen, and the content
-  region scrolls 2758px of content in 1122px.
+  buttons past the edge, unreachable. A dialog of eighty paragraphs came out taller than the
+  window with its title above the top edge and its content region not scrolling at all. It is capped to
+  the viewport now: the header and the actions stay on screen and the content region scrolls.
 
   The panel is a flex column capped at `calc(100dvh - 3rem)`, the header and the actions keep their
   size, and the content region is what gives way and scrolls. Dynamic viewport units rather than `vh`
@@ -419,9 +360,7 @@ All notable changes to Flare are documented here. This project adheres to
   up flush against the column titles - or, with the filter row on, against the filter inputs, which is
   what the report described as rows going "under" the filters. Under `border-collapse: collapse` the
   TABLE owns and paints every collapsed border, and a sticky cell moves while the table does not: the
-  header kept its background and left its divider behind with the first row. Measured in Chrome on two
-  identical sticky-header tables side by side - with `collapse` the rule vanishes on scroll, with
-  `separate` it stays. The header, the bordered grid's column dividers and the aggregate footer now draw
+  header kept its background and left its divider behind with the first row. The header, the bordered grid's column dividers and the aggregate footer now draw
   their edges as inset shadows, which belong to the element and travel with it; the whole table is
   deliberately NOT switched to `border-collapse: separate`, which would double every cell edge and
   change how the frozen columns paint. A theme still sets the width and the colour.
@@ -459,8 +398,7 @@ All notable changes to Flare are documented here. This project adheres to
   wrapping absolutely positioned box shrink-to-fits against its containing block - which here is the
   tooltip wrapper, that is, the trigger. On a 133px button the panel came out 96px wide and 168px tall,
   one or two words per line, and `--flare-tooltip-max-width` never bound because the available width was
-  already under it. It sizes to its own text first now, with the cap applied to that: measured on the
-  Gallery's own rich tooltip, 96x168 becomes 256x84.
+  already under it. It sizes to its own text first now, with the cap applied to that.
 - **Dropping a file on `FlareFileUploadZone` had never worked.** The zone gets its drag-and-drop from
   the browser rather than from its own code - the hidden file input is stretched over the drop area for
   exactly that reason - and a file input takes a dropped file as the DEFAULT ACTION of the `drop` event.
@@ -471,9 +409,7 @@ All notable changes to Flare are documented here. This project adheres to
   why it read as "drag-and-drop is broken" rather than "upload is broken". The root now cancels
   `dragover`/`dragenter` only - without those the region is not a drop target at all - and clears the
   highlight from its own `drop`; the file list, the one part of the zone with no input beneath it,
-  cancels its own drop so a miss there still cannot navigate the app away to the dropped file. Measured
-  in the page: `drop.defaultPrevented` was `true`, it is `false` now, and `dragover` is still cancelled.
-  Guarded by `FileUploadDropTests`, checked against the reintroduced attribute.
+  cancels its own drop so a miss there still cannot navigate the app away to the dropped file.
 - **A drag over the zone re-rendered it on every `dragover` event**, which the browser fires
   continuously while a file is held there. The assignment was idempotent but the render was not skipped;
   it now costs one render per drag instead of one per event.
@@ -485,8 +421,6 @@ All notable changes to Flare are documented here. This project adheres to
   Xs..Xl ramp, matching the field next to it. Its segment row is the family's third structurally
   different control - beside TagField's chip input and the combobox trigger - so it joins them in the
   size grid and takes the same edge padding; the first digit used to sit against the border.
-  `FieldGeometryContractTests` now names it, which is why it was missed: the contract that exists to
-  catch exactly this shape did not list the component.
 - **A hidden tooltip and a closed speed dial still took up the room they occupy when open, and gave a
   phone a sideways scrollbar.** Both are hidden by paint - `visibility: hidden` on the bubble, a faded
   item in the dial - which leaves the box in the layout at whatever its PLACEMENT put it. For a
@@ -495,10 +429,7 @@ All notable changes to Flare are documented here. This project adheres to
   scroll and the speed-dial page 91px, with nothing open on either. Both now collapse while hidden
   (`content-visibility`, restored before the show so the collision engine and the first painted frame
   still measure the real size) and both pages measure 0, closed and open. The close still animates -
-  `transition-behavior: allow-discrete` holds the collapse until the fade has finished. Guarded by
-  `HiddenOverlayFootprintTests`. This was the last of the thirteen horizontal-overflow findings in the
-  mobile sweep; the two it left open were recorded as demo problems, and the measurement says one of
-  them was this bug in a second component.
+  `transition-behavior: allow-discrete` holds the collapse until the fade has finished.
 
 ### Changed
 
@@ -509,10 +440,8 @@ All notable changes to Flare are documented here. This project adheres to
   subscribers of a target saves exactly one passive registration per extra subscriber and nothing else,
   because each subscription carries its own throttle - so the timers cannot be shared - and each already
   receives its own small position per window. What it would cost is a refcounted registry on the path
-  where a disposed circuit and a live one have to unwind independently. Pinned by
-  `Each_subscription_owns_its_own_listener` rather than by a comment: two subscribers on one target
-  register two listeners, and disposing one unsubscribes exactly that one while the other keeps
-  delivering.
+  where a disposed circuit and a live one have to unwind independently. Two subscribers on one target register two
+  listeners, and disposing one unsubscribes exactly that one while the other keeps delivering.
 
 ## [0.28.0] - 2026-09-03
 
@@ -589,10 +518,6 @@ All notable changes to Flare are documented here. This project adheres to
   `.flare-datagrid__wrapper--scroll`** (and `Css.Classes.DataGrid.WrapperVirtual` is `WrapperScroll`).
   The class marks a table container that scrolls in its own box with a sticky header, which three
   modes now share; naming it after one of them was already misleading before the third arrived.
-- **Test guard: a slot container may not render empty.** The empty support row that shipped in 0.26.2
-  survived because the tests asked whether the fragment was passed, not whether it drew anything - and
-  a non-null fragment whose body is conditional passes that question. `EmptySlotGuardTests` reads the
-  rendered DOM instead, and proves itself by catching a fragment that was passed and drew nothing.
 
 ## [0.27.0] - 2026-09-03
 
@@ -600,8 +525,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 - **A field's height was set by whatever its well happened to hold, so the family did not line up.** The
   shared well was measured from its content, and the tallest thing in it won - which for a combobox
-  trigger is the chevron, not the text. Measured across every field the library ships, at every size, in
-  both reference themes: under Material the trigger stood 2px OVER the text field at Xs/Sm/Md/Lg and 5px
+  trigger is the chevron, not the text. The misalignment was everywhere: under Material the trigger stood 2px OVER the text field at Xs/Sm/Md/Lg and 5px
   UNDER it at Xl (the sign inverts because the text line grows with the type step and the glyph does
   not); under Fluent the text field was 4px taller at every step, and the same `FlareSelect` was 4px
   taller with a leading icon than without. `FlareTagField` named a `2.75rem` literal of its own and sat
@@ -609,10 +533,7 @@ All notable changes to Flare are documented here. This project adheres to
   a `--flare-input-height-{xs..xl}` ramp: a single-line well is exactly that tall, and a definite height
   is not measured from its content, so a chevron, a clear button, a picker toggle, a numeric stepper or a
   larger type step have nothing left to push against. Padding places the content inside that height
-  instead of defining it. Verified in the browser across `FlareField`, `FlarePasswordField`,
-  `FlareNumericField`, `FlareMaskedField`, `FlareTextArea`, `FlareSelect`, `FlareMultiSelect`,
-  `FlareCombobox`, `FlareTagField`, `FlareDatePicker`, `FlareTimePicker`, `FlareDateTimePicker` and
-  `FlareDateRangePicker`, in all seven shipped themes: one height per size, everywhere.
+  instead of defining it, so every field in the family is one height per size in every shipped theme.
 - **The chevron on a select and the chevron on a combobox were the same glyph at half the size.** Neither
   told the icon layer how big it was: `.flare-input__arrow` set no `--_flare-icon-size` at all, so it
   inherited a TYPOGRAPHY step (`--flare-typescale-title-large-size`), and `.flare-autocomplete__icon`
@@ -625,10 +546,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `InputTokens.Height{Xs,Sm,Md,Lg,Xl}` (`--flare-input-height-*`): the field family's height ramp. A
   theme owns the five values and their ordering; a single-line well is exactly the step tall, and the
   two wells whose height is legitimately their content - `FlareTextArea` and `FlareTagField` - take it as
-  a floor via the new `flare-input__field--grow` marker. Guarded by `FieldHeightRampTests` (the ramp
-  grows Xs..Xl, each step has room for its own padding, and no stylesheet outside the shared rule sizes a
-  well) and `FieldGeometryContractTests` (every field renders exactly one shared well, and only the two
-  grow wells are marked as such).
+  a floor via the new `flare-input__field--grow` marker.
 
 ### Changed
 
@@ -681,14 +599,12 @@ All notable changes to Flare are documented here. This project adheres to
   column gap added 4px to every text field with no helper, error or counter. Both now pass the fragment
   only when there is a counter to show.
 
-
 - **Inline code inside bold was not parsed.** `MarkdownParser` encoded an emphasis body flat instead of
   parsing it, so anything nested inside came out as literal markers: `` **`FlareSelect` was shorter** ``
   rendered the backticks as text. Emphasis bodies now recurse through the inline renderer, the way link
   text always did - code, italic-inside-bold and bold-inside-italic all resolve. Literal text still
   reaches the encoder on the way through, so nesting is not a hole in it, and a code span still binds
-  tighter than emphasis, leaving `**` inside backticks alone. Measured on the Gallery's own `/changelog`:
-  56 of 104 `<strong>` elements now carry a `<code>` child and none carry a raw backtick.
+  tighter than emphasis, leaving `**` inside backticks alone.
 - **One row that threw took down a whole `FlareDataGrid` render.** An `Auto`-typed column infers its type
   by running the caller's `Field` lambda, and it scans `Items` - the whole set - while the grid renders
   only the current page. A selector like `s => s.Latest!.Value` against an optional parent is safe for
@@ -771,8 +687,7 @@ All notable changes to Flare are documented here. This project adheres to
 - **The same defect in four more places**, none of which the report reached: the RTL drawer states
   (where the fix would otherwise not have applied), `FlareLayoutDrawer` in its floating and temporary
   variants - the navigation drawer of a whole application - a FAB menu action at rest, and the
-  scroll-to-top button. `SettledTransformTests` now fails on any rule that gives a settled `--open`,
-  `--visible`, `--shown` or `--expanded` state an identity transform; it found the FAB menu one itself.
+  scroll-to-top button.
   Dialog, listbox, menu, snackbar and tab were checked and are clean: each animates in with a keyframe
   and no fill mode, so nothing is left holding a transform once it settles.
 
@@ -806,10 +721,6 @@ All notable changes to Flare are documented here. This project adheres to
 - **The upload row is finished**: `AllowRemove` and `OnRemove` for a queued or failed file, a
   `FileTemplate` for the row, and the two events the queue raised nowhere - `OnUploadStarted` and
   `OnUploadProgress`.
-- **`ApiDocGenCoverageTests`** - fails when the Gallery shows an add-on package the API generator does
-  not reference. That omission is silent: the components render, the API tab has no page for them.
-- **`FieldChromeForwardingTests`** - fails when a field drops `Class`, `Style` or the splatted attributes
-  on its way to `FlareFieldChrome`.
 
 - **`DrawerVariant.Persistent` and `DrawerVariant.Responsive` now do something.** Both were documented
   variants that emitted no class and had no CSS: they rendered at `translateX(-100%)` with no way back,
@@ -820,13 +731,6 @@ All notable changes to Flare are documented here. This project adheres to
 - **A tablet shell in the Gallery** (`/mobile-shells`): the drill-down inbox at 768px, with a persistent
   drawer behind an app-bar toggle and the list and detail side by side - the same app in the form factor
   the phone shell has to drill down to reach.
-- **`ComponentAttributeTests`** - fails when markup passes a PascalCase attribute that is not a parameter
-  of the component it sits on. Nearly every component captures unmatched attributes, so a typo'd or
-  renamed parameter compiles, renders as a literal HTML attribute, and does nothing.
-- **`GalleryDeadMarkupTests`** - fails when a Gallery component is not routable and nothing references it.
-- **`JsModuleImportTests`** - fails when a JS module calls a shared helper it did not import. Those
-  helpers run at module scope, so a missing import is a ReferenceError during evaluation: the module never
-  loads, every service importing it rejects, and the component silently does nothing.
 - **Broken `<see cref="..."/>` and unknown Razor tags now fail the build** (`CS1574`/`CS1580`/`CS1584`
   and `RZ10012`). Both are warnings a full rebuild surfaces and an incremental one hides, and both are
   invisible at runtime: a dead cref is a dead doc link, and an unknown tag compiles to literal markup, so
@@ -943,7 +847,7 @@ All notable changes to Flare are documented here. This project adheres to
   component you were reading. An `Icon` of type `FlareIcon` is unchanged - it is a value, not a slot, and
   `Icon` now always means an icon. Deliberately kept: `Columns` and `Grouping` on the data grid (collection
   slots every grid library spells this way), and `Leading` / `Trailing` / `Zones` / `Composite` /
-  `Activator` (positional or domain terms nobody names a component after). `SlotNameTests` keeps the rule.
+  `Activator` (positional or domain terms nobody names a component after).
 - **`--flare-fab-radius` is now `--flare-fab-radius-md`.** The constant behind it was already called
   `Radius.Md`; the CSS name did not say so.
 
@@ -960,25 +864,15 @@ All notable changes to Flare are documented here. This project adheres to
   is bound to whether there *is* anywhere to go back to, and a phone-width form shown as a pair - the
   default field size beside `Size="FieldSize.Sm"` at 360px, so the density question can be judged at the
   viewport it was reported at rather than argued about.
-- **`SlotNameTests`** - fails when a content slot is named like something an application would plausibly
-  call one of its own components, with the exceptions and their reasons in the test itself.
-- **`TokenLookupKeyTests`** - fails when a component reads a design token by string literal instead of by
-  its registry constant.
 - **`Css.Tokens.LocalVars`** - the seventeen per-instance channels a component writes on its own element
-  and its own CSS reads back (a clock hand's angle, a grid cell's span, a tree row's indent). They are
-  exempt from the settable-token guard as a type, and a second guard fails if a theme ever emits one,
-  which would mean it is a design token filed in the wrong place.
+  and its own CSS reads back (a clock hand's angle, a grid cell's span, a tree row's indent). They are not design tokens and a theme
+  does not set them.
 
 ### Fixed
 
 - **`FlareProgress` read all eight of its wave and ring tokens by string literal.** A token read by name
   is the one corner of this problem that fails silently: the read returns its fallback and the wavy
-  progress bar simply never switches on. Now on constants and guarded.
-- **`Flare.CssAudit` attributed constants to the wrong class.** It tracked the owner by the last
-  `public static class` line and never restored it when a nested class closed, so `ProgressField`'s
-  constants were filed under its nested `CircularWidth` and a component referencing them correctly
-  reported the token as dead. Now tracked by brace depth, which affected any constant declared after a
-  nested class.
+  progress bar simply never switches on. They are read by constant now.
 - **Every open overlay attached its own document listener.** A `documentBus` keeps one listener per event
   type alive while its registry is non-empty.
   **Three open dialogs now add one listener instead of three, and two popups one instead of two.**
@@ -1016,10 +910,6 @@ All notable changes to Flare are documented here. This project adheres to
   plain and the banded header path. `Title` stays required and unchanged: it is not only the heading but
   the column's identity and its name in the export, the filter menu, the column picker, the aggregate
   rows and the edit dictionaries, all of which need text.
-- **`CallerTextSlotTests`** - a guard that fails when a component renders a caller-supplied string
-  without accepting a `RenderFragment` for it, with an allow-list where each entry carries the reason it
-  is genuinely not markup (an `aria-label`, an algorithm's input, two strings where one slot could not
-  say which). A second test fails when an allow-list entry names a component that no longer exists.
 
 ### Fixed
 
@@ -1115,10 +1005,6 @@ All notable changes to Flare are documented here. This project adheres to
 - **A per-size field padding token for every step**: `--flare-input-padding-xs` through `-xl`. The size
   grid used to hold four literal lengths in core CSS while the theme owned only the medium step, so a ramp
   half-owned by core could not stay ordered around it.
-- **Two guard tests.** `CoreBorderLiteralTests` fails on a literal rule width reappearing in core CSS
-  (allowing the three shapes that are not rules: a `transparent` border reserved for layout stability, the
-  button spinner's `currentColor` ring, and the markdown blockquote's accent bar). `FieldSizeRampTests`
-  fails when any theme's field ramp stops growing from Xs to Xl.
 
 ### Fixed
 
@@ -1129,8 +1015,8 @@ All notable changes to Flare are documented here. This project adheres to
   happened to be ordered.
 - **The tab bar crossed the interop boundary on every scroll event.** It reports three booleans, so a drag
   from one end of an overflowing bar to the other has two interesting frames out of a hundred. Coalesced
-  to a frame and gated on an actual change: measured against a synthetic bar, 60 scroll events that change
-  nothing now produce **1** interop call instead of 60.
+  to a frame and gated on an actual change, so 60 scroll events that change nothing now produce **1**
+  interop call instead of 60.
 
 ### Changed
 
@@ -1206,9 +1092,6 @@ All notable changes to Flare are documented here. This project adheres to
   interdependent - the nice step depends on how many lines were asked for, and the count finally drawn
   depends on where the rounding landed - so computing them apart let a label name a value its line was not
   drawn at. Line, bar, stacked bar, scatter and combo all resolve through the same path.
-- **`DataGridContextTests` and `DataGridColumnDefinitionTests` no longer block on async work.** The 27
-  `.GetAwaiter().GetResult()` calls added in 0.20.0 raised 85 `xUnit1031` warnings on a full build, which
-  is enough noise to hide a real one.
 
 ## [0.20.0] - 2026-08-28
 
@@ -1410,8 +1293,7 @@ to point at them.
   a composite sub-header. In an app that does not load that font they were words, in the same grid whose
   other sort arrow was a glyph. `FlareCarousel` (2 spans) and `FlareRichTextEditor` (7) had the same
   leftover. All of them now render `FlareIconView`, `BuildIconButton` takes a `FlareIcon` instead of an
-  icon name so a call site cannot pass a ligature again, and a guard test fails the build if any
-  component outside the Material Symbols packages emits that class. Nine icons were added to
+  icon name, so a call site cannot pass a ligature again. Nine icons were added to
   `FlareIcons` for it; `FlareIcons.Colorize` was also registered under the id `content_copy`, so it
   overwrote the copy icon in the by-id lookup.
 - **`FlareCollapse` closed itself whenever anything else on the page re-rendered.** `Toggle()` wrote the
@@ -1422,20 +1304,18 @@ to point at them.
   that listens to `ExpandedChanged` and declines to move `Expanded` keeps the region shut, which is what
   a controlled component has to do and what the previous code could not express. `FlareToggleButton`'s
   imperative `SetToggledAsync` and `FlareColorPicker` had the same defect. The contract is written down
-  in `docs/ru/component-conventions.md` and locked by `ControlledStateContractTests`.
+  in `docs/ru/component-conventions.md`.
 - **`AddFlare()` did not register `TimeProvider`, so `FlareCalendar` and the three date pickers threw on
   first render** in any app that had not registered one itself. It is now registered with `TryAddSingleton`,
-  so an application's own clock (or a test fake) still wins. The rule behind it - `AddFlare()` must be
+  so an application's own clock (or a test fake) still wins. The rule behind it: `AddFlare()` must be
   sufficient on its own, and no component may depend on a registration the application is expected to
-  guess - is now enforced by a test that reflects over every component's `[Inject]` properties and checks
-  each one against the container `AddFlare()` builds.
+  guess.
 - **A stale cached script could take the whole render down.** 29 best-effort JS calls caught
   `InvalidOperationException` (prerender) and `JSDisconnectedException` (circuit gone) but not
   `JSException` - which is exactly what a component gets when the browser is running an older
   `_content/…/*.js` than the assembly, the ordinary PWA/service-worker skew, since those asset URLs are
   not fingerprinted. A frozen DataGrid column, a splitter, a tooltip or the theme injector would then
-  throw into the renderer over an enhancement the page could simply have gone without. All of them now
-  catch it, and a guard test keeps the two clauses together.
+  throw into the renderer over an enhancement the page could simply have gone without. All of them now catch it.
 - **Card action stacking is scoped to the cards that ask for it.** `container-type: inline-size`, which the
   `StackBelow` container query needs, also applies inline-size containment - it makes a box's width
   independent of its contents, which is harmless for a card the layout sizes and wrong for one that
@@ -1518,8 +1398,7 @@ to point at them.
   `d` attribute as well, so a browser without that property still draws the icon and simply lands the
   change in one frame. It only works between outlines drawn against each other - path interpolation
   requires the same command list on both sides - so `FlareMorphIcons` ships pairs authored that way
-  (`Plus`/`Minus`, `ChevronDown`/`ChevronUp`), padded with degenerate segments, and a guard test
-  compares their command lists because a mismatched pair does not fail loudly, it stutters.
+  (`Plus`/`Minus`, `ChevronDown`/`ChevronUp`) and padded with degenerate segments, because a mismatched pair does not fail loudly, it stutters.
   `FlareIconView` recognises the type and stands its cross-fade down even when a mode is on:
   cross-fading would replace the very element whose geometry is being interpolated.
 - **Four theme tokens for the motion.** `IconTokens` adds `--flare-icon-morph-duration`,
@@ -1552,10 +1431,6 @@ to point at them.
   again, along with two `FlareTagField` parameters whose docs had drifted.
 
 ### Toolchain
-- **The test run could report green from a stale binary.** xunit.v3 4.0.0 builds test projects as
-  Microsoft.Testing.Platform applications, and the VSTest bridge `dotnet test` used to rely on is gone
-  on the .NET 10 SDK, so the runner is selected in `global.json` now. MTP also takes `--report-trx`
-  rather than VSTest's `--logger`, which it ignores silently.
 - **The SDK floor is pinned at 10.0.400** (`global.json`, `rollForward: latestFeature`). The Gallery's
   source generator references `Microsoft.CodeAnalysis.CSharp`, and a generator may not reference a
   Roslyn newer than the compiler loading it: the SDK drops the analyzer with CS9057 - a warning - and
@@ -1615,22 +1490,6 @@ to point at them.
   you are reading about. The nav lists one entry per registered theme that ships a README, so adding a
   theme package adds its page without editing a list. Each README has a Russian translation beside it
   (`README.ru.md`), served by UI culture with a fall back to English, the same way the changelog works.
-- **A guard against a core fallback that decides how a component looks**, closing the last open item of
-  the core/theme decoupling work. `CoreCssFallbackTests` reads every `var(--flare-x, <fallback>)` in core
-  CSS and requires the fallback to be an identity value. The plan had assumed this needed an allowlist of
-  the 29 legitimate structural reads; measured, it does not - a per-instance var falls back to `1`,
-  `auto`, `0deg` or a chain of other vars, and only a fallback that names a COLOUR is a design decision.
-  One rule, no list, and a new structural fallback passes on its own merits.
-  - It found two offenders immediately: **the switch's focus halo was core opinion no theme could
-    reach.** `--flare-switch-focus-shadow-off`/`-on` were registered nowhere and set by nobody, so the
-    halo's size and colour were baked into `switch.css`. They were invisible to CssAudit because
-    `--flare-switch-focus-shadow` IS a const and the audit counts a token as declared when any const is a
-    segment prefix of it. Both are now `required` members of `SwitchTokens`, set by both theme bases.
-- **A guard against suppressing a state layer.** `StateLayerModelTests` already refused
-  `opacity: 1 !important` in a theme; it now refuses `opacity: 0 !important` too, and all three checks
-  in that file strip CSS comments before scanning. The first run reported three offenders, every one of
-  them a paragraph explaining why the old form was wrong - a guard that forbids documenting the
-  anti-pattern is not one worth having.
 
 ### Fixed
 - **A tag chip forced white label text.** `FlareTagField` wrote a caller's `ChipColor` straight onto
@@ -1646,7 +1505,7 @@ to point at them.
   `.flare-datagrid`, the outer flex column, instead of on the table that scrolls inside
   `.flare-datagrid__wrapper`: the scroller grew with the component and had nothing left to scroll. The
   minimum is `max-content` on the table now, so a narrow grid still fits without a scrollbar and a wide
-  one scrolls by exactly what it needs. Measured after: 293px visible, 394px scrollable.
+  one scrolls by exactly what it needs. 293px visible, 394px scrollable.
 - **The gallery's section drawer could not be closed on a phone.** Below the Md bound every drawer
   floats over the content, and the section column was given `Open` one-way with no `OpenChanged` - so
   the scrim tap, Escape, and the layout's own "close floating drawers on navigation" were all raised
@@ -1784,7 +1643,7 @@ to point at them.
   is meant to be a trade: the pressed segment takes space and the segments beside it give exactly that
   much up, so the row's width never changes and nothing around it moves. It only balanced in the middle
   of a row - at either end there is one neighbour rather than two, and the group grew by the step the
-  missing neighbour never paid. Measured on a medium group: 304.4px at rest, 310.4px on a first or last
+  missing neighbour never paid. A medium group measures 304.4px at rest, 310.4px on a first or last
   press. The pressed segment now takes a step from each side that HAS a neighbour to take it from, so an
   end button expands inward and the row measures 304.4px in every position. The same correction applies
   to a vertical group's height, and to a collapsed group, where the last visible segment is followed by
@@ -1793,7 +1652,7 @@ to point at them.
   width on a press: the pressed segment takes a step and the segments beside it give one up. The trade is
   written against the button's own padding token, and a toggle button was not a button - it carried a
   padding token of its own - so the rule reached it holding a value from the wrong family and the
-  neighbours jumped outward. Measured after the rebuild: pressing a medium segment takes it from 82.9px to
+  neighbours jumped outward. Pressing a medium segment now takes it from 82.9px to
   94.9px (the spec's 15%), its neighbour gives up 6px, and a segment that is not adjacent does not move.
 - **A selected segment of a connected group did not go round.** Material makes it fully round - "selected
   inner corner size 50%" - but no rule said so, and the theme's hover capsule carried an `!important` that
@@ -1862,7 +1721,7 @@ to point at them.
   moved up to the `<tr>` and is simply `var(--flare-state-hover-layer)`: no layer, no isolation, and
   one tint per row instead of one per cell, which is what a row whose cells a consumer had coloured
   used to get. The striped rule moved to the row with it, because a cell background is the one thing a
-  row-wide paint cannot get above. `StateLayerModelTests` no longer carries an allowlist.
+  row-wide paint cannot get above.
 - **A frozen DataGrid column highlights in the same colour as the row it belongs to.** It is the one
   cell that cannot take the row's paint - it is sticky, so it needs an opaque background of its own or
   the rows scrolling underneath read through it - and it used to be repainted on hover from `surface`
@@ -1919,7 +1778,7 @@ to point at them.
   a secondary strip nested under a primary one reads as subordinate instead of competing with it.
   Both differences are tokens - `TabsTokens.SecondaryIndicatorThickness` and `SecondaryActiveColor` -
   because how far apart a design language sets its two tab levels is its answer, not the core's.
-  Measured against the MD3 spec: primary active `#6750A4` at 3dp, secondary active `#1D1B20` with a
+  Against the MD3 spec: primary active `#6750A4` at 3dp, secondary active `#1D1B20` with a
   2dp `#6750A4` indicator, all matching.
 - **A theme states how a disabled slider looks.** `SliderTokens.DisabledActiveColor` and
   `DisabledInactiveColor`. The filled track, the thumb and the rail were three fixed fades of
@@ -2038,13 +1897,6 @@ to point at them.
   painted". The tab and its overflow scroll button get separate members on purpose: a language may
   mute a spent affordance more heavily than an unavailable destination.
 
-- **A guard against the state model sliding back.** `StateLayerModelTests` fails if a core stylesheet
-  mixes an interaction state from `--flare-state-hover-opacity` again, if an in-box theme forces
-  `opacity: 1 !important` to undo a core fade, or if the two-file allowlist for the table and DataGrid
-  rows goes stale. The old form is the kind of thing that returns by imitation - the next person adding
-  a hover copies the rule beside it - and nothing else would catch it: the CSS is valid, CssAudit sees
-  well-formed token names, and it renders correctly under the one theme it was written for.
-
 ### Fixed
 - **The chevron on a combobox, select or multi-select opens and closes the list.** On
   `FlareAutocomplete` it did nothing at all - it was a decorative `<span>` with no handler, and only
@@ -2070,8 +1922,7 @@ to point at them.
   during the token-mandate work. Every lookup fell through to its fallback, so `Wavy` drew a flat bar
   and the ring drew no break between the indicator and the track. The reader now asks the same
   flattened design the emitted CSS is built from, so what the component computes and what the
-  stylesheet paints cannot disagree again. CssAudit could not have caught this: every name existed and
-  was in sync - a guard test now checks that each token the component looks up is actually there.
+  stylesheet paints cannot disagree again.
 - **Pressing a button, a split button or a group segment now shows its morph.** The corners and the
   group's width grow rode the same 300ms spring as the hover morph, and an ordinary click holds
   `:active` for a fraction of that - measured at about two frames. The shape moved a hair and sprang
@@ -2103,7 +1954,7 @@ to point at them.
   `md.comp.button-group.standard.<size>.pressed.item.width.multiplier` asks for 15%; the spec says
   nothing about the neighbours because it does not have to - they move because layout moves them.
   That is also why it had to be a layout property: a transform would leave them exactly where they
-  were and stretch the label besides. Measured on a live group, the pressed segment grows to the
+  were and stretch the label besides. On a live group the pressed segment grows to the
   spec figure and the neighbour overshoots its resting place by a pixel before settling, which is
   the flinch. Side padding stands in for the width multiplier, since a percentage of an item's own
   width is not something CSS can name without measuring each segment in script.
@@ -2285,8 +2136,7 @@ to point at them.
   item, and the first arrow key after a click lands on the first item rather than skipping it.
 - **The splitter and the toggle button's end sizes are the theme's again.** Seven splitter constants had
   no token record behind them, and the toggle's selected radius was declared for sm/md/lg while the CSS
-  also read xs and xl, so those values shipped from core CSS where a theme could not change them. A
-  guard test now fails the build on any token constant no theme can set.
+  also read xs and xl, so those values shipped from core CSS where a theme could not change them.
 
 ## [0.10.0] - 2026-07-19
 
@@ -2370,7 +2220,7 @@ to point at them.
 
   It was one set. The theme named the default size and `badge.css` hardcoded the other four in literals, so
   four of the five sizes were core's opinion and no theme could reach them - a badge simply could not be
-  resized by a theme. Measured after: xs/sm/md/lg/xl still paint 12/14/16/20/24px with a 4/5/6/8/10px dot
+  resized by a theme. xs/sm/md/lg/xl still paint 12/14/16/20/24px with a 4/5/6/8/10px dot
   and a 9/10/11/12/14px label, identical to the literals they replace; and setting
   `--flare-badge-height-xs` from a theme now moves the box, which it never did before.
 
@@ -2381,7 +2231,7 @@ to point at them.
   `ThumbOnLeft` - each become `*Xs`/`*Sm`/`*Md`/`*Lg`/`*Xl`, the same shape `ButtonTokens` uses.
 
   They were single. The theme named the md size and `switch.css` hardcoded xs/sm/lg/xl in literals, so four
-  of the five sizes were core's opinion and no theme could reach them. Measured after: every size paints
+  of the five sizes were core's opinion and no theme could reach them. Every size paints
   exactly as before under Material (track 34/40/52/64/76px across xs..xl), Fluent keeps its own compact md
   thumb, and setting e.g. `--flare-switch-track-width-lg` from a theme now resizes the lg switch, which it
   never could.
@@ -2432,18 +2282,6 @@ to point at them.
   and **no theme could change them**. Both are proper `LayoutTokens` members now (`AppBarHeightDense`,
   `AppBarBg`), wired through `CssVarMap` and supplied by the reference packages. Values are unchanged.
 
-### Added
-- **A guard against the same thing coming back**: `DeadFallbackTests.CoreCss_DoesNotDeclareATokenTheThemeSupplies`.
-  Its sibling already banned a core *fallback* on a theme token; this bans a core *declaration* of one, which
-  is the more dangerous half - a fallback that never renders is dead code, but a declaration nearer the
-  element than the theme's silently wins.
-
-  It follows the mandate's own line: pointing a token at another semantic token is fine, a hardcoded `16px`
-  is not. Its first run found more than the layout shell - `badge.css`, `switch.css` and `menuitem.css`
-  hardcode geometry over the theme's, and `datagrid.css` re-declares what `.flare-input-variant--outlined`
-  already says. Those are named in the test as known debt so the guard holds every other stylesheet clean
-  while they come out one at a time.
-
 ## [0.8.0] - 2026-07-17
 
 ### Changed
@@ -2455,8 +2293,7 @@ to point at them.
   `RootNamespace=Flare.Components`, so the types were `Flare.Components.FlareFileUpload*` all along. Drop the
   `Flare.Components.Media` reference if upload was the only thing you used it for.
 
-  The move paid for itself. CssAudit only covers `Flare.Components`, so `fileupload.css` had never been
-  audited: it carried 11 literal token fallbacks, two of which gave the **same** token different values
+  The move paid for itself: `fileupload.css` carried 11 literal token fallbacks, two of which gave the **same** token different values
   (`--flare-typescale-body-small-size` as `0.75rem` on one line, `0.875rem` on another). All stripped.
 - **BREAKING: `FlareDropZone` is gone, folded into `FlareFileUploadZone`.** They were the same component
   written twice - same hidden input, same drag state, same default upload glyph, label and accept hint - in
@@ -2616,7 +2453,7 @@ to point at them.
   right by luck. The override existed for a real reason: a 9999px pill radius sharing an edge with a small
   corner makes the browser scale *both* toward zero, so the seam rendered square while `getComputedStyle`
   still reported its px. That fix (a `calc(height/2)` outer end) stays; it just no longer takes the seam
-  with it. Measured after the change: 4/4/4/8/12px across xs..xl.
+  with it. 4/4/4/8/12px across xs..xl.
 - **`InputTokens.FocusBorder` / `FocusBorderBottom` are removed.** Nothing read them. The focus indicator has
   been `--flare-input-focus-ring` + `--flare-input-focus-outline` for some time; these two were left behind by
   that change, so five themes were filling in values that went nowhere and a theme author tuning focus through
@@ -2638,7 +2475,7 @@ to point at them.
   `Delay` did not prevent a pass-through from opening the panel - it only delayed it, onto a pointer that was
   already gone.
 
-  Both handlers now bump the generation first and guard afterwards; the two regressions are pinned by tests.
+  Both handlers now bump the generation first and guard afterwards.
 - **Core docs stated a design system's measurements, and were already wrong.** `SwitchSize.Md` was documented
   as the "52x32dp" switch - Material Design 3's number - while FluentUI2 draws it 40x20, so the doc lied under
   a shipped theme. `FabSize` promised a "40dp / 56dp / 96dp container" for a component that has no size token
@@ -2649,12 +2486,6 @@ to point at them.
   enum docs. A size step is a *label*: each theme maps it onto its own tokens, so a doc that pins a number to
   it is unowned prose that goes stale. The docs now say what a step is for and leave the geometry to the
   theme.
-- **A guard so it cannot come back** (`CoreDocSpecUnitTests`): no core doc may quote a `dp` measurement.
-  `dp` is the exact signal - a design-spec unit that appears in no C# and no CSS, so it can only turn up in
-  the core when someone is quoting a design system. That precision is what lets the guard stay out of the
-  way of numbers the core legitimately owns: a debounce (`Default: 300ms`), or an example of a value the
-  caller passes (`e.g. "48px"`). Theme packages are out of scope - quoting the spec they implement is what
-  their comments are for.
 - **The Gallery's slider size demo was labelled in MD3's dp**, which is wrong under four of the seven themes -
   FluentUI2 in particular draws one slider geometry at every step, so the demo renders five identical sliders
   there while the labels claim 16dp through 96dp. The labels now name the step, and the demo says why the
@@ -2732,28 +2563,6 @@ to point at them.
 - **`Microsoft.Extensions.Localization` bumped to 10.0.10**, matching the rest of the ASP.NET Core 10.0.10
   packages picked up in 0.5.0.
 
-### Added
-- **A guard against token docs that state a theme's value** (`TokenDocLiteralTests`), completing the set that
-  keeps theme opinion out of the core: one guard already forbids a literal default on the token member, one
-  forbids a theme default hiding in a CSS fallback, and this one covers the prose. It fails a `[CssVar]`
-  member whose summary carries a CSS dimension (`0.25rem`, `2px`), or a trailing `(<c>value</c>).` claim -
-  the second rule catches the digit-free quotes like `(<c>var(--flare-elevation-2)</c>)` that a literal
-  check alone misses. Mid-sentence references stay legal, since naming the selector a token applies at is a
-  pointer, not a claim. Pointed at the whole token model rather than the records that were known to be
-  wrong, it found violations in `SpacingTokens`, `RadioTokens` and `ButtonGroupTokens` that the manual pass
-  had missed; those are fixed too.
-- **A guard against a length token spelled without its unit** (`LengthTokenUnitTests`), which is what made the
-  MD2 slider below invisible. For each in-box theme it fails any token whose value is a bare number while some
-  `calc()` adds or subtracts it from a length or a percentage.
-
-  The requirement is *derived from the consuming expression*, not declared on the token. Annotating every
-  `[CssVar]` with a CSS type would have been hundreds of edits that then rot as the CSS moves; the calc sites
-  already state it exactly, and reading them keeps the guard honest for calc sites nobody has written yet.
-  Two details decide whether it works at all: it scans component `.razor` as well as stylesheets (the slider
-  builds its geometry inline in C#, so a CSS-only scan misses the very case that shipped), and it resolves the
-  private `--_gap` alias back to the theme token (matching on the token's own name finds nothing).
-  Multiplication (`calc(-1 * var(--x))`) is deliberately out of scope - see the test for why.
-
 ### Fixed
 - **The Material Design 2 slider had no visible rail - at every size, in every release that shipped the
   theme.** Only the handle drew; the track and the fill were both absent. The cause was one missing unit:
@@ -2768,8 +2577,7 @@ to point at them.
   value was supplied, and this is the question after it: whether the value is the CSS *type* the declaration
   substitutes it into. The debugging trail actively misleads, too: `getComputedStyle` reports
   `right: 464px` on the collapsed segment, which reads like a deliberate position but is only the used value
-  implied by `width: 0`, while the rail height and fill colour both measure correct. The
-  `LengthTokenUnitTests` guard above now fails any theme that spells one of these without its unit.
+  implied by `width: 0`, while the rail height and fill colour both measure correct.
 - **The docs shipped a `Program.cs` that no longer compiles, straight to NuGet.** The repo README still
   opened with `new Md3Theme()`, and it is the packaged readme for the seven packages that have no readme of
   their own (`Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure`, `Flare.Theme.MaterialDesign3`,
@@ -2782,8 +2590,8 @@ to point at them.
   `api/` index, the getting-started and ai-agents docs (EN + RU), the two package descriptions, and the
   Gallery's home stat. The `+` form is deliberate - an exact count is what rotted into `67`.
 - **Docs pointed at `Flare.Core`, a package that does not exist** (it was retired in 0.1.0 when the rings
-  were split). The Gallery's install snippet named it as the home of the abstractions, and the CssAudit
-  readme and tool output pointed at `Flare.Core/CssClasses.cs`; the file lives in `Flare.Abstractions`.
+  were split). The Gallery's install snippet named it as the home of the abstractions; the
+  abstractions live in `Flare.Abstractions`.
 - **The Gallery's API pages were missing every component added since 12 July** (`FlareMeter`,
   `FlareMeterSegment`, `FlareZone`), because the generated API registry had not been regenerated since.
 - **`FlareMeter` under-filled its track whenever the segment values summed to less than 1.** The raw value
@@ -2823,18 +2631,6 @@ now carries no default that belongs to a theme, and a test keeps it that way.**
   `--flare-slider-length` on a vertical slider and the `--flare-ide-*` pane sizes are set by the CONSUMER,
   never by a theme, so their fallback is the real default. Removing those would have broken the grid.
 
-### Added
-- **A guard for each half of the mandate**, so "no defaults in the core" is now enforced rather than
-  intended:
-  - a fallback on a token the theme supplies fails the build (`DeadFallbackTests`) - it keys off the
-    theme-emitted name set, so consumer-set vars keep their defaults;
-  - no theme may park a token at `initial` (`ParkedTokenFallbackTests`), now covering **all seven** in-box
-    themes rather than the two reference token packages, with a completeness check that fails if a new theme
-    is not added to it.
-
-  The pair is what makes either rule safe: parking is what made "the fallback is dead" a false premise in
-  0.2.0, and that premise shipped broken geometry for three releases.
-
 ### Changed (theme authors)
 - **A custom theme may no longer rely on a component default.** With the fallbacks gone, a theme that parks
   a token at `initial` (or leaves it empty) now renders nothing for that property instead of quietly getting
@@ -2853,7 +2649,7 @@ carrying only what applies to it.
 **Component geometry** (broken since 0.2.0): the slider, pagination and rating lost their sizing under
 Material Design 3 - the default theme - because a theme cannot express a per-size ramp through a single
 token, so it punted the values into the component CSS, where a later cleanup removed them as "dead". Every
-size ramp now lives in the theme, one token per size, and a guard keeps it that way.
+size ramp now lives in the theme, one token per size.
 
 ### Changed
 - **BREAKING: `FlareZone` and meter parts are now separate types.** A zone and a meter part are not the
@@ -2906,9 +2702,6 @@ size ramp now lives in the theme, one token per size, and a guard keeps it that 
   as two spans with the gap between them. Zone separation therefore matches the active/inactive split
   exactly (2x`--flare-slider-gap`) in themes that define a notch gap - Material Design 3 / Expressive - and
   stays flush where the gap is 0 (FluentUI2, Visual Studio). No per-theme CSS.
-- **A guard now pins the mandate**: a new test fails when a reference theme parks any token at `initial`
-  instead of supplying a value. Name-level auditing cannot see this - every name is present and in sync -
-  which is why it shipped in three releases.
 
 ### Changed (theme authors)
 - **`SliderTokens`, `RatingTokens` and `PaginationTokens` gained per-size members.**
@@ -2919,7 +2712,7 @@ size ramp now lives in the theme, one token per size, and a guard keeps it that 
     (a vertical slider's default length) - both previously hardcoded in the component CSS.
 
   A theme that wants one value for every size sets the same value five times. Parking a token at `initial`
-  is no longer supported - supply a real value; a guard test enforces it.
+  is no longer supported - supply a real value.
 
   Themes that derive from the in-box reference themes via `with` are unaffected unless they override these
   members. A theme that constructs `SliderTokens` / `RatingTokens` / `PaginationTokens` directly must set
@@ -3276,11 +3069,6 @@ package ships no theme of its own.
   `tree`, `splitter`) were extended to cover values the CSS still read as literals. Every newly wired
   value equals the prior CSS fallback, so the shipped themes render identically - the change is that a
   custom theme can now override these too.
-- **`cssaudit tokens` report plus a build gate.** A token analog of the existing class audit cross-checks
-  every `--flare-*` token referenced in component CSS against the `Css.Tokens` registry and reports drift
-  in either direction - `[T+]` a token used in CSS with no constant, `[T-]` a constant no CSS references,
-  `[T~]` a theme-only token. The registry now audits fully in sync (`[T+]0 / [T-]0 / [T~]0`), and
-  `CssAuditTests.CssTokens_Components_And_Themes_StayInSync` fails the build if that drifts.
 - **Extended the semantic motion scale** with `short3` / `short4` durations, so components that needed an
   intermediate duration reference a scale token instead of a literal.
 
@@ -3330,7 +3118,7 @@ Material literals.
   Card, DataGrid, Switch, Progress, Input, Menu, Slider, Dialog, Button, Nav, Tabs, Alert, Badge, Chip,
   Radio, Fab, Checkbox, ToggleButton, Drawer, Snackbar, Tooltip, Popover and Avatar records, plus
   `CornerRadius` and the `ColorScheme` shadow set, no longer carry literal defaults. A theme must supply
-  every value; a guard test fails the build on any re-introduced literal default. Components render
+  every value. Components render
   unstyled without a theme by design - the shipped themes are unaffected.
 - **The Select family is now thin shells over the headless core.** `FlareSelect` and `FlareMultiSelect`
   are UI-only wrappers around `ComboboxState` and friends. Search moved into the trigger field (you type
@@ -3352,7 +3140,7 @@ Material literals.
 ### Fixed
 - **A batch of accessibility and cross-theme bugs.** The `FlareBottomNav` Fluent pill regression,
   disabled-item keyboard safety, dialog ARIA naming, the layout drawer's modal semantics, and the
-  password-field eye icon were all corrected. `CssAudit` now also reports duplicate token constants.
+  password-field eye icon were all corrected.
 
 ## [0.0.10] - 2026-07-04
 
@@ -3750,7 +3538,7 @@ a composition model where each `FlareLayoutDrawer` owns its own state, enabling 
 - **`ITheme.Derive(...)`** to tweak a built-in theme by composition instead of subclassing.
 - **Id constants** on every theme (`<Theme>.ThemeId`) and palette set (`<Palettes>.<Name>Id`) for
   string-free theme/palette switching.
-- **`[CssVar]`** attribute linking every token value to its `--flare-*` name (guarded by a drift test),
+- **`[CssVar]`** attribute linking every token value to its `--flare-*` name,
   and typed `Vars.Var(Css.Tokens.*)` token values instead of magic `var(--flare-*)` strings.
 
 ### Changed

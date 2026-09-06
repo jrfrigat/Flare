@@ -9,8 +9,7 @@ namespace Flare.Components.Combobox;
 /// strictly separate: hover/arrow/type-ahead move the highlight, and committing is the only bridge to the
 /// selection. It raises <see cref="Changed"/> so the shell re-renders and <see cref="ScrollRequested"/> so
 /// the shell scrolls the active row into view - but it never touches <c>ComponentBase</c>, a
-/// <c>RenderFragment</c>, an <c>EventCallback</c> or JS, which keeps it fully unit-testable and is enforced
-/// by a reflection guard test.
+/// <c>RenderFragment</c>, an <c>EventCallback</c> or JS, which keeps it fully unit-testable.
 /// </summary>
 /// <typeparam name="TItem">The option value type.</typeparam>
 public sealed class ComboboxState<TItem>
