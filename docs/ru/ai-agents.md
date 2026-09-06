@@ -1,17 +1,17 @@
 # Flare для ИИ-агентов
 
-> [English version ->](../en/ai-agents.md) - [Начало работы](getting-started.md) - [API Reference](../../api/index.md)
+> [English version ->](../en/ai-agents.md) - [Начало работы](getting-started.md) - [API Reference](https://jrfrigat.github.io/Flare/api)
 
 Компактный, насыщенный справочник для LLM-агентов, генерирующих код Blazor с **Flare**.
 Прочитайте один раз - и сможете писать корректную разметку Flare без догадок. Точные имена и типы
-параметров любого компонента смотрите в сгенерированном [API Reference](../../api/index.md).
+параметров любого компонента смотрите в сгенерированном [API Reference](https://jrfrigat.github.io/Flare/api).
 
 ---
 
 ## 1. Что такое Flare
 
 - UI-библиотека для **.NET 8 / 9 / 10 Blazor** (приоритет net10). Работает и в Blazor WebAssembly, и в Blazor Server.
-- **130+ компонентов**, все с префиксом `Flare*` (например `FlareButton`, `FlareDataGrid`).
+- **190+ компонентов**, все с префиксом `Flare*` (например `FlareButton`, `FlareDataGrid`).
 - **Темизация на токенах - дизайн-система в ваших руках.** Компоненты не содержат вшитых стилей; каждый
   цвет, форма, размер и анимация берутся из темы через единый API семантических токенов. Семь готовых
   дизайн-систем (Material Design 3 Expressive, MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio)
@@ -43,7 +43,7 @@
 ## 3. Установка
 
 ```sh
-# Ядро (тянет Flare.Components (+ кольца Abstractions/Theming/Infrastructure), 130+ компонентов):
+# Ядро (тянет Flare.Components (+ кольца Abstractions/Theming/Infrastructure), 160+ компонентов):
 dotnet add package Flare.Blazor
 
 # Тема - подключите preset-пакет ниже или создайте свою (docs/ru/theme-creation-guide.md):
@@ -200,24 +200,26 @@ CSS темы (шрифты, базовые токены) подключаетс�
 Таблица поддерживает сортировку (в т.ч. много-колоночную), фильтрацию, пагинацию, группировку,
 inline/batch-редактирование, выделение, переупорядочивание/изменение размера/видимости колонок,
 виртуализацию и бандлы колонок. Полный набор параметров `FlareDataGrid` / `FlareColumn` -
-в [API Reference](../../api/index.md).
+в [API Reference](https://jrfrigat.github.io/Flare/api).
 
 ---
 
 ## 9. Каталог компонентов
 
-Реальные имена всех компонентов (параметры каждого - в [API Reference](../../api/index.md)):
+Реальные имена всех компонентов (параметры каждого - в [API Reference](https://jrfrigat.github.io/Flare/api)):
 
 **Поля ввода и формы:** `FlareTextField`, `FlareTextArea`, `FlareNumericField`, `FlarePasswordField`,
 `FlareMaskedField`, `FlareOtpField`, `FlareTagField`, `FlareSelect`, `FlareMultiSelect`,
-`FlareAutocomplete`, `FlareListbox`, `FlareCheckbox`, `FlareSwitch`, `FlareRadio`, `FlareRadioGroup`,
+`FlareCombobox`, `FlareCheckbox`, `FlareSwitch`, `FlareRadio`, `FlareRadioGroup`,
 `FlareSlider`, `FlareRating`, `FlareDatePicker`, `FlareDateRangePicker`, `FlareTimePicker`,
-`FlareDateTimePicker`, `FlareCalendar`, `FlareClockDial`, `FlareColorPicker`, `FlareFileUploadZone`,
+`FlareDateTimePicker`, `FlareTimeSpanPicker`, `FlareCalendar`, `FlareClockDial`, `FlareColorPicker`,
+`FlareZone`, `FlareFileUploadZone`,
 `FlareFileUploadButton`, `FlareSignaturePad`, `FlareField`, `FlareFormField`, `FlareForm`, `FlareFormBuilder`,
 `FlareValidationSummary`.
 
 **Кнопки и действия:** `FlareButton`, `FlareButtonGroup`, `FlareSplitButton`, `FlareToggleButton`,
-`FlareToggleGroup`, `FlareFloatingActionButton`, `FlareFloatingActionMenu`, `FlareFloatingActionMenuItem`,
+`FlareToggleGroup`, `FlareIconButton`, `FlareFloatingActionButton`, `FlareFloatingActionMenu`,
+`FlareFloatingActionMenuItem`,
 `FlareShortcuts`, `FlareShortcutEntry`, `FlareClipboard`.
 
 **Отображение данных:** `FlareDataGrid` (+ `FlareColumn`, `FlareColumnBand`, `FlareColumnRow`,
@@ -226,23 +228,25 @@ inline/batch-редактирование, выделение, переупор�
 `FlareTimeline`, `FlareTimelineItem`, `FlareChart`, `FlarePagination`, `FlareCard` (+ `FlareCardHeader`,
 `FlareCardContent`, `FlareCardActions`, `FlareCardFooter`, `FlareCardMedia`), `FlarePaper`, `FlareBadge`,
 `FlareChip`, `FlareChipGroup`, `FlareAvatar`, `FlareAvatarGroup`, `FlareSkeleton`, `FlareEmptyState`,
-`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`.
+`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`,
+`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`.
 
 **Навигация:** `FlareAppBar`, `FlareNavMenu`, `FlareNavLink`, `FlareNavGroup`, `FlareTabs`, `FlareTab`,
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,
 `FlareSubMenu`, `FlareMenuBar`, `FlareToolbar`, `FlareLink`, `FlareOnThisPage`, `FlareTableOfContents`,
-`FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`.
+`FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`, `FlareBottomNav`, `FlareBottomNavItem`,
+`FlareLinkTabs`, `FlareLinkTab`, `FlareNavigationGuard`.
 
 **Оверлеи и обратная связь:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,
-`FlareDrawer`, `FlareProgress`, `FlareAlert`.
+`FlareDrawer`, `FlareProgress`, `FlareAlert`, `FlareBusy`.
 
 **Раскладка и структура:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,
 `FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
-`FlareLazy`, `FlareMediaQuery`, `FlareHidden`.
+`FlareLazy`, `FlareMediaQuery`, `FlareHidden`, `FlareCollapse`, `FlarePullToRefresh`.
 
-**Контент:** `FlareText`, `FlareMarkdown`, `FlareCodeBlock`.
+**Контент:** `FlareText`, `FlareCode`, `FlareMarkdown`, `FlareCodeBlock`.
 
 **Темизация:** `FlareThemeProvider`, `FlareThemeScope`, `FlareColorModeToggle`, `FlareColorCustomizer`.
 
@@ -251,8 +255,10 @@ inline/batch-редактирование, выделение, переупор�
 `FlareRibbonDropdown`, `FlareRibbonSeparator`), `FlareQuickAccessToolbar`, `FlareStatusBar`,
 `FlareFormulaBar`, `FlareSheetTabs`.
 
+**Перетаскивание:** `FlareDragContext`, `FlareDraggable`, `FlareDropZone`.
+
 **Отдельные пакеты:** `FlareKanban`, `FlareVideoPlayer`, `FlareRichTextEditor`, `FlareCarousel`,
-`FlareTransfer`, `FlareQrCode`.
+`FlareTransfer`, `FlareQrCode`, `FlareBarcode`, `FlareQueryBuilder`, `FlareQueryEditor`.
 
 ---
 
@@ -274,7 +280,7 @@ inline/batch-редактирование, выделение, переупор�
 
 ## 11. Куда смотреть дальше
 
-- **[API Reference](../../api/index.md)** - каждый public-тип, параметр и enum (сгенерировано из XML-доков).
+- **[API Reference](https://jrfrigat.github.io/Flare/api)** - каждый public-тип, параметр и enum (сгенерировано из XML-доков).
 - **[Начало работы](getting-started.md)** - та же настройка подробнее.
 - **[Архитектура](architecture.md)** - модули, токены, сервисы, движок темизации.
 - **Gallery** - живые интерактивные примеры каждого компонента (в `samples/Flare.Gallery`).

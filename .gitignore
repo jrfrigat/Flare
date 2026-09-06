@@ -83,10 +83,4 @@ yarn-error.log*
 CLAUDE.md
 .mcp.json
 
-## docfx (API docs site) ##
-_site/
-api/**/*.yml
-api/.manifest
-!api/index.md
-docfx.log
 

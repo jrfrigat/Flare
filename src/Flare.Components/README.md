@@ -1,6 +1,6 @@
 # Flare.Components
 
-130+ production-ready Blazor UI components - inputs, buttons, layout, navigation, data display,
+160+ production-ready Blazor UI components - inputs, buttons, layout, navigation, data display,
 feedback and overlays - with runtime theme switching and zero third-party CSS dependencies.
 
 ## Install
@@ -26,7 +26,7 @@ builder.Services.AddFlare(opts => opts.DefaultTheme = new MaterialDesign3Express
 </FlareThemeProvider>
 ```
 
-Add-on packages extend this with more components: `Flare.Components.Carousel`, `.IDE`, `.Kanban`,
-`.Media`, `.QrCode`, `.RichTextEditor`, `.Transfer`.
+Add-on packages extend this with more components: `Flare.Components.Barcode`, `.Carousel`, `.IDE`,
+`.Kanban`, `.Media`, `.QrCode`, `.Query`, `.RichTextEditor`, `.Transfer`.
 
 Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

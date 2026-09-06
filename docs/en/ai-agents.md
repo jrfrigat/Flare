@@ -1,17 +1,17 @@
 # Flare for AI Agents
 
-> [Русская версия ->](../ru/ai-agents.md) - [Getting Started](getting-started.md) - [API Reference](../../api/index.md)
+> [Русская версия ->](../ru/ai-agents.md) - [Getting Started](getting-started.md) - [API Reference](https://jrfrigat.github.io/Flare/api)
 
 A compact, high-signal reference for LLM coding agents that generate Blazor code with **Flare**.
 Read this once and you can produce correct Flare markup without guessing. For exact parameter names
-and types of any component, consult the generated [API Reference](../../api/index.md).
+and types of any component, consult the generated [API Reference](https://jrfrigat.github.io/Flare/api).
 
 ---
 
 ## 1. What Flare is
 
 - A **.NET 8 / 9 / 10 Blazor** UI library (net10-first). Works in **both** Blazor WebAssembly and Blazor Server.
-- **130+ components**, all prefixed `Flare*` (e.g. `FlareButton`, `FlareDataGrid`).
+- **190+ components**, all prefixed `Flare*` (e.g. `FlareButton`, `FlareDataGrid`).
 - **Token-based theming - you own the design system.** Components ship with zero baked-in styling; every
   color, shape, size and motion comes from a theme via one semantic token API. Seven preset design systems
   (Material Design 3 Expressive, MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio) ship as
@@ -43,7 +43,7 @@ and types of any component, consult the generated [API Reference](../../api/inde
 ## 3. Install
 
 ```sh
-# Core (pulls in Flare.Components (+ the Abstractions/Theming/Infrastructure rings), 130+ components):
+# Core (pulls in Flare.Components (+ the Abstractions/Theming/Infrastructure rings), 160+ components):
 dotnet add package Flare.Blazor
 
 # A theme - use a preset package below, or build your own (docs/en/theme-creation-guide.md):
@@ -198,24 +198,26 @@ Validation messages render on the Flare field automatically via the shared `Edit
 ```
 The grid supports sorting, single/multi-column sort, filtering, paging, grouping, inline/batch editing,
 selection, column reorder/resize/visibility, virtualization, and column bands. Check the
-[API Reference](../../api/index.md) for the full `FlareDataGrid` / `FlareColumn` parameter set.
+[API Reference](https://jrfrigat.github.io/Flare/api) for the full `FlareDataGrid` / `FlareColumn` parameter set.
 
 ---
 
 ## 9. Component catalog
 
-All real component names (consult the [API Reference](../../api/index.md) for each one's parameters):
+All real component names (consult the [API Reference](https://jrfrigat.github.io/Flare/api) for each one's parameters):
 
 **Inputs & forms:** `FlareTextField`, `FlareTextArea`, `FlareNumericField`, `FlarePasswordField`,
 `FlareMaskedField`, `FlareOtpField`, `FlareTagField`, `FlareSelect`, `FlareMultiSelect`,
-`FlareAutocomplete`, `FlareListbox`, `FlareCheckbox`, `FlareSwitch`, `FlareRadio`, `FlareRadioGroup`,
+`FlareCombobox`, `FlareCheckbox`, `FlareSwitch`, `FlareRadio`, `FlareRadioGroup`,
 `FlareSlider`, `FlareRating`, `FlareDatePicker`, `FlareDateRangePicker`, `FlareTimePicker`,
-`FlareDateTimePicker`, `FlareCalendar`, `FlareClockDial`, `FlareColorPicker`, `FlareFileUploadZone`,
+`FlareDateTimePicker`, `FlareTimeSpanPicker`, `FlareCalendar`, `FlareClockDial`, `FlareColorPicker`,
+`FlareZone`, `FlareFileUploadZone`,
 `FlareFileUploadButton`, `FlareSignaturePad`, `FlareField`, `FlareFormField`, `FlareForm`, `FlareFormBuilder`,
 `FlareValidationSummary`.
 
 **Buttons & actions:** `FlareButton`, `FlareButtonGroup`, `FlareSplitButton`, `FlareToggleButton`,
-`FlareToggleGroup`, `FlareFloatingActionButton`, `FlareFloatingActionMenu`, `FlareFloatingActionMenuItem`,
+`FlareToggleGroup`, `FlareIconButton`, `FlareFloatingActionButton`, `FlareFloatingActionMenu`,
+`FlareFloatingActionMenuItem`,
 `FlareShortcuts`, `FlareShortcutEntry`, `FlareClipboard`.
 
 **Data display:** `FlareDataGrid` (+ `FlareColumn`, `FlareColumnBand`, `FlareColumnRow`,
@@ -224,23 +226,25 @@ All real component names (consult the [API Reference](../../api/index.md) for ea
 `FlareTimeline`, `FlareTimelineItem`, `FlareChart`, `FlarePagination`, `FlareCard` (+ `FlareCardHeader`,
 `FlareCardContent`, `FlareCardActions`, `FlareCardFooter`, `FlareCardMedia`), `FlarePaper`, `FlareBadge`,
 `FlareChip`, `FlareChipGroup`, `FlareAvatar`, `FlareAvatarGroup`, `FlareSkeleton`, `FlareEmptyState`,
-`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`.
+`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`,
+`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`.
 
 **Navigation:** `FlareAppBar`, `FlareNavMenu`, `FlareNavLink`, `FlareNavGroup`, `FlareTabs`, `FlareTab`,
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,
 `FlareSubMenu`, `FlareMenuBar`, `FlareToolbar`, `FlareLink`, `FlareOnThisPage`, `FlareTableOfContents`,
-`FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`.
+`FlareTocLink`, `FlareBackstage`, `FlareBackstageItem`, `FlareBottomNav`, `FlareBottomNavItem`,
+`FlareLinkTabs`, `FlareLinkTab`, `FlareNavigationGuard`.
 
 **Overlays & feedback:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,
-`FlareDrawer`, `FlareProgress`, `FlareAlert`.
+`FlareDrawer`, `FlareProgress`, `FlareAlert`, `FlareBusy`.
 
 **Layout & structure:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,
 `FlareResizable`, `FlareAccordion`, `FlareAccordionPanel`, `FlareScrollTop`, `FlareInfiniteScroll`,
-`FlareLazy`, `FlareMediaQuery`, `FlareHidden`.
+`FlareLazy`, `FlareMediaQuery`, `FlareHidden`, `FlareCollapse`, `FlarePullToRefresh`.
 
-**Content:** `FlareText`, `FlareMarkdown`, `FlareCodeBlock`.
+**Content:** `FlareText`, `FlareCode`, `FlareMarkdown`, `FlareCodeBlock`.
 
 **Theming:** `FlareThemeProvider`, `FlareThemeScope`, `FlareColorModeToggle`, `FlareColorCustomizer`.
 
@@ -249,8 +253,10 @@ All real component names (consult the [API Reference](../../api/index.md) for ea
 `FlareRibbonDropdown`, `FlareRibbonSeparator`), `FlareQuickAccessToolbar`, `FlareStatusBar`,
 `FlareFormulaBar`, `FlareSheetTabs`.
 
+**Drag and drop:** `FlareDragContext`, `FlareDraggable`, `FlareDropZone`.
+
 **Separate packages:** `FlareKanban`, `FlareVideoPlayer`, `FlareRichTextEditor`, `FlareCarousel`,
-`FlareTransfer`, `FlareQrCode`.
+`FlareTransfer`, `FlareQrCode`, `FlareBarcode`, `FlareQueryBuilder`, `FlareQueryEditor`.
 
 ---
 
@@ -272,7 +278,7 @@ See [Component Conventions](component-conventions.md) and [Architecture](archite
 
 ## 11. Where to look next
 
-- **[API Reference](../../api/index.md)** - every public type, parameter, and enum (generated from XML docs).
+- **[API Reference](https://jrfrigat.github.io/Flare/api)** - every public type, parameter, and enum (generated from XML docs).
 - **[Getting Started](getting-started.md)** - the same setup with more prose.
 - **[Architecture](architecture.md)** - modules, tokens, services, theming engine.
 - **Gallery** - interactive live examples of every component (in `samples/Flare.Gallery`).
