@@ -27,13 +27,13 @@ filed as one.
 
 **[Live demo / component gallery ->](https://jrfrigat.github.io/Flare/)**
 
-**130+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
+**190+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
 
 ---
 
 ## Features
 
-- **130+ production-ready components** across inputs, layout, navigation, data display, feedback, and utilities
+- **190+ production-ready components** across inputs, layout, navigation, data display, feedback, and utilities
 - **Three independent theme axes** - swap the design system (MD3 Expressive / MD3 / MD2 / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026), the color palette, and light/dark/auto separately, at runtime
 - **Seven design systems, shipped as independent packages** - reference only the themes you use; the umbrella `Flare.Blazor` package ships no themes of its own
 - **Class-toggle delivery** - switching is a class swap on `<html>` (no per-switch CSS-var injection); `ThemeDelivery.Inject` available as a fallback
