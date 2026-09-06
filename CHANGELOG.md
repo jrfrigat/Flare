@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.32.0] - 2026-09-05
+## [0.32.0] - 2026-09-06
 
 ### Changed
 
@@ -31,6 +31,69 @@ All notable changes to Flare are documented here. This project adheres to
   package assembly, so a binary compiled against the old location needs a rebuild.
 
 ### Added
+
+- **A drag-and-drop model in the core: `FlareDragContext` / `FlareDraggable` / `FlareDropZone`, on
+  pointer events.** Flare had no drag model - it had four, and three of them did not work on a touch
+  screen at all. The Kanban board, the tree, and the data grid's rows and columns each reached for
+  native HTML5 drag-and-drop, which fires no event whatsoever in a mobile browser; only the board wrote
+  a touch path, so reordering a table column or a tree node on a phone was impossible. Pointer events
+  cover mouse, pen and finger in one code path, which is exactly what HTML5 drag-and-drop does not.
+
+  `FlareDropZone.Placement` says what a zone accepts, and therefore what a drop means: `Into` (a column
+  that holds cards), `Between` (an ordered list where a drop resolves to an index) or `Both` (each item
+  splits into thirds - before it, into it, after it - which is what a tree needs). The index is reported
+  WITHOUT the dragged item, so it is the position the item will occupy and can go straight into
+  `List.Insert`. The context's `CanDrop` and the zone's `Accepts` are asked once at the start of a drag,
+  so a zone that refuses never lights up and never takes the drop; `Group` keeps two unrelated sets of
+  things apart inside one context. Escape cancels.
+
+  **The interop budget is three calls per drag, and it is a constant**: which targets accept the item,
+  where it landed, the gesture is over. Nothing in between. The browser owns the gesture - hit testing
+  under the pointer, the preview, the insertion line, the hover classes. That is not an optimisation
+  detail but the difference between a drag and a network round trip on every `pointermove` under Blazor
+  Server. The gesture binds once per context rather than per item, so a list of a thousand draggables
+  registers once.
+
+  New `DragTokens`, so a dragged card, row and tree node finally look related: each surface used to
+  paint its own drag state out of its own component tokens.
+
+- **`FlareKanban` is the first surface on the shared model, and its cards gained an order.** Cards can
+  now be reordered WITHIN a column - the old "dropped on a column" handler had nowhere to express a
+  position: it filtered a flat list by column id, and the drop carried no position at all.
+
+- **A data grid can be reordered on a phone.** Both reorders - rows and columns - moved onto the shared
+  model; they were HTML5 drag-and-drop with no touch path, so neither worked on a touch screen. The
+  table keeps its own `tr` and `th` (a wrapper between `tbody` and `tr` is markup the browser hoists
+  straight back out): it declares the model's attributes on its own elements and answers
+  `FlareDragContext.ResolveItem`, which is new and exists for exactly this.
+
+  The insertion line's axis is MEASURED from where the first two items sit rather than taken from a
+  declaration: neither `table-header-group` nor `table-row-group` says which way its children run. So a
+  column drop draws a vertical line between headers and a row drop a horizontal one between rows, with
+  nothing to configure.
+
+- **The tree is the last of the four surfaces on the shared model, and it loses an interop call per
+  `dragover`.** It used to ask the browser on EVERY drag event which third of a row the pointer was in -
+  continuously enough that it had grown a "no more than one measurement in flight" coalescer to stay
+  usable. Those thirds ARE `DropPlacement.Both`; they resolve in the browser now, and a whole drag costs
+  three calls.
+
+  An expanded branch is its own drop zone, so a node dropped between two children lands among THEM
+  rather than beside their parent - the old flat handler had no way to say that.
+
+  Two behaviour changes worth naming. A drop on the empty part of a branch now does nothing, where the
+  old code reported the target as the source as well when no drag was in progress - a state reachable
+  only by dispatching `ondrop` by hand, and never meaningful. And the thirds are measured against the
+  ROW rather than the `li`, which is as tall as the whole expanded subtree: on a 300px branch every
+  point used to be in the "top third".
+
+- **`FlareChart.StickyDomain`: a value axis that does not shrink back, so a live chart stops moving.**
+  A chart handed a fresh data set on a timer derives its domain from that set alone, so the top of the
+  plot is always the current maximum: the value that CHANGED stays pinned to the top edge while the
+  values nobody touched crawl underneath it. That is backwards, and it is exactly why a live chart
+  reads as noise - the points that move are the ones that did not change. `YMin`/`YMax` pin the window,
+  but a metric whose range is not known in advance cannot use them, and `ScaleMode` (0.29.0) chooses
+  which SERIES the domain is measured over, not whether to measure it again at all.
 
 - **`FlareChart.AnimateUpdates`: the chart moves to the new data instead of being replaced by it.**
   A new `Data` swaps the whole drawing, so every point is somewhere else the instant it arrives and
