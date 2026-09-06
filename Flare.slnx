@@ -53,6 +53,7 @@
     <Project Path="tests/Flare.Components.Transfer.Tests/Flare.Components.Transfer.Tests.csproj" />
     <Project Path="tests/Flare.Core.Tests/Flare.Core.Tests.csproj" />
     <Project Path="tests/Flare.Guards.Tests/Flare.Guards.Tests.csproj" />
+    <Project Path="tests/Flare.Integration.Tests/Flare.Integration.Tests.csproj" />
   </Folder>
   <Folder Name="/tools/">
     <Project Path="tools/Flare.ApiDocGen/Flare.ApiDocGen.csproj" />

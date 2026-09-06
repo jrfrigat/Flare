@@ -1,0 +1,31 @@
+@* The same form, in a dialog: the composition an application reaches for when the order is a detour
+   rather than a page. Two things only exist at this joint - the form's submit button is inside the
+   dialog while the dialog's own actions are outside the <form>, and closing the dialog unmounts the
+   form, so what happens to a half-filled draft is the screen's decision rather than the form's. *@
+
+<FlareButton OnClick="@(() => _open = true)">New order</FlareButton>
+
+<FlareDialog @bind-Visible="_open" Title="New order" ShowCloseButton="true">
+    <NewOrderForm Model="@Model" OnSubmitted="OnSubmittedAsync" OnRejected="OnRejected" />
+</FlareDialog>
+
+@code {
+    /// <summary>The order the dialog's form is writing.</summary>
+    [Parameter, EditorRequired] public NewOrder Model { get; set; } = default!;
+
+    /// <summary>Raised with the model once the form inside the dialog submits successfully.</summary>
+    [Parameter] public EventCallback<NewOrder> OnSubmitted { get; set; }
+
+    /// <summary>Raised when a submit inside the dialog was refused as invalid.</summary>
+    [Parameter] public EventCallback OnRejected { get; set; }
+
+    private bool _open;
+
+    // A successful submit closes the dialog; a refused one leaves it open with the summary showing,
+    // which is the whole reason the form's verdict has to reach the screen around it.
+    private async Task OnSubmittedAsync(NewOrder order)
+    {
+        _open = false;
+        await OnSubmitted.InvokeAsync(order);
+    }
+}

@@ -1,0 +1,44 @@
+@* A form a consumer would actually write: four fields from four different families over one model, the
+   library's own validation summary, and a submit button - all inside FlareForm, which owns the
+   EditContext they attach to. What this exercises and a per-component test cannot is that attachment:
+   the field, the select, the numeric field and the checkbox each reach the SAME EditContext through the
+   cascade, so the model is one object and a submit is one verdict over all four. *@
+
+<FlareForm Model="@Model" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+    <FlareValidationSummary />
+
+    <FlareField TValue="string" Label="Customer" @bind-Value="Model.Customer" For="@(() => Model.Customer)" />
+
+    <FlareSelect TValue="string" Label="Shipping" Items="@Methods"
+                 @bind-Value="Model.Shipping" For="@(() => Model.Shipping)" />
+
+    <FlareNumericField TValue="int" Label="Quantity" Min="1"
+                       @bind-Value="Model.Quantity" For="@(() => Model.Quantity)" />
+
+    @* Not @bind-Value: the checkbox is tri-state (bool?, null = indeterminate) while For is
+       Expression<Func<bool>>, so a validated bool on the model cannot use the two-way shorthand -
+       the generated setter would assign bool? to bool. The long form is the only way to have both. *@
+    <FlareCheckbox Label="I accept the terms"
+                   Value="Model.Accepted"
+                   ValueChanged="@(v => Model.Accepted = v == true)"
+                   For="@(() => Model.Accepted)" />
+
+    <FlareButton Type="ButtonType.Submit" Variant="ButtonVariant.Filled">Place order</FlareButton>
+</FlareForm>
+
+@code {
+    /// <summary>The order being written. The screen mutates it in place, the way a page would.</summary>
+    [Parameter, EditorRequired] public NewOrder Model { get; set; } = default!;
+
+    /// <summary>Shipping methods offered by the select.</summary>
+    [Parameter] public IReadOnlyList<string> Methods { get; set; } = ["Standard", "Express"];
+
+    /// <summary>Raised once the model passes every validation rule.</summary>
+    [Parameter] public EventCallback<NewOrder> OnSubmitted { get; set; }
+
+    /// <summary>Raised when a submit was refused because the model is invalid.</summary>
+    [Parameter] public EventCallback OnRejected { get; set; }
+
+    private Task OnValidSubmit(EditContext _) => OnSubmitted.InvokeAsync(Model);
+    private Task OnInvalidSubmit(EditContext _) => OnRejected.InvokeAsync();
+}

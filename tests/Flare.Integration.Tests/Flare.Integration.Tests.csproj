@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!-- Screens, not components. Every other suite renders one component with its parameters set from a
+       test; this one renders a page a consumer would write - a grid inside a card inside a tab, a form
+       that submits - because that is where the defects arrived from: not the component, the composition.
+       Two things follow from that and are the reason this project exists rather than a folder:
+
+       - The screens are .razor. A three-deep composition written with RenderTreeBuilder is a wall of
+         opcodes nobody reads twice; written as markup it is the page the bug report showed.
+       - Services come from AddFlare(), the real composition root, instead of the hand-registered stubs
+         the component suite uses. A service missing from AddFlare cannot be caught by a suite that
+         registers its own, and a real screen is what would find it.
+
+       net10 only: this asks whether the pieces fit together, which is not a per-runtime question, and
+       the component suite already builds and runs everything on net8/net9/net10. -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bunit" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Bunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Flare is the composition root: referencing it (and not the rings under it directly) is what a
+         consuming application does, and AddFlare is what this suite calls. A theme comes with it because
+         Flare ships none and AddFlare throws without one - a screen with no theme is not a screen. -->
+    <ProjectReference Include="..\..\src\Flare\Flare.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3\Flare.Theme.MaterialDesign3.csproj" />
+  </ItemGroup>
+
+</Project>

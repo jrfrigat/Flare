@@ -1,0 +1,83 @@
+@* The screen this suite is named for: an app shell whose content is a tab set, whose first tab holds a
+   card, whose card holds a data grid - and whose second tab holds the order form. Every defect this
+   project was created for lived at one of those joints rather than in any of the components.
+
+   The height chain is declared the whole way down (content -> tabs -> card -> grid): the grid scrolls
+   inside the card instead of the page growing, and one link left off collapses it silently. *@
+
+<FlareLayout>
+    <FlareLayoutAppBar DrawerToggle="true">
+        <FlareText Typo="TypographyScale.TitleLarge">Orders</FlareText>
+    </FlareLayoutAppBar>
+
+    <FlareLayoutDrawer @bind-Open="_navOpen" AriaLabel="Sections">
+        <FlareNavMenu>
+            <FlareNavLink Href="orders">Orders</FlareNavLink>
+            <FlareNavLink Href="customers">Customers</FlareNavLink>
+        </FlareNavMenu>
+    </FlareLayoutDrawer>
+
+    <FlareLayoutContent FillHeight="true">
+        <FlareTabs FillHeight="true" Lazy="@Lazy" ActiveIndex="_tab" ActiveIndexChanged="SetTabAsync">
+            <FlareTab Label="All orders">
+                <FlareCard FillHeight="true">
+                    <FlareCardHeader Title="All orders" Subtitle="@($"{Orders.Count} in total")" />
+                    <FlareCardContent>
+                        <FlareDataGrid TItem="Order" Items="@Orders" PageSize="@PageSize"
+                                       FillHeight="true" Hoverable="true">
+                            <Columns>
+                                <FlareColumn TItem="Order" Title="Order" Field="@(o => o.Reference)" Sortable="true" />
+                                <FlareColumn TItem="Order" Title="Customer" Field="@(o => o.Customer)" Sortable="true" Filterable="true" />
+                                <FlareColumn TItem="Order" Title="Total" Field="@(o => o.Total)" Sortable="true" Align="ColumnAlign.End" />
+                            </Columns>
+                        </FlareDataGrid>
+                    </FlareCardContent>
+                </FlareCard>
+            </FlareTab>
+
+            <FlareTab Label="New order">
+                <FlareCard>
+                    <FlareCardContent>
+                        <NewOrderForm Model="@Draft" OnSubmitted="OnOrderPlaced" />
+                    </FlareCardContent>
+                </FlareCard>
+            </FlareTab>
+        </FlareTabs>
+    </FlareLayoutContent>
+</FlareLayout>
+
+@code {
+    /// <summary>Rows shown in the grid on the first tab.</summary>
+    [Parameter] public IReadOnlyList<Order> Orders { get; set; } = Order.Sample;
+
+    /// <summary>Rows per grid page. The sample set is nine, so the default of four gives three pages.</summary>
+    [Parameter] public int PageSize { get; set; } = 4;
+
+    /// <summary>The order the second tab's form is writing.</summary>
+    [Parameter] public NewOrder Draft { get; set; } = new();
+
+    /// <summary>Tab the screen opens on. The screen owns the index from then on - a test moves it by
+    /// clicking a tab, which is the path a user takes.</summary>
+    [Parameter] public int InitialTab { get; set; }
+
+    /// <summary>Raised with the new index whenever the open tab changes.</summary>
+    [Parameter] public EventCallback<int> OnTabChanged { get; set; }
+
+    /// <summary>When true the tab set builds only the open panel, so the grid is unmounted while the
+    /// form tab is showing and built again when it comes back.</summary>
+    [Parameter] public bool Lazy { get; set; }
+
+    /// <summary>Raised with the draft once the form on the second tab submits successfully.</summary>
+    [Parameter] public EventCallback<NewOrder> OnOrderPlaced { get; set; }
+
+    private bool _navOpen = true;
+    private int _tab;
+
+    protected override void OnInitialized() => _tab = InitialTab;
+
+    private async Task SetTabAsync(int index)
+    {
+        _tab = index;
+        await OnTabChanged.InvokeAsync(index);
+    }
+}
