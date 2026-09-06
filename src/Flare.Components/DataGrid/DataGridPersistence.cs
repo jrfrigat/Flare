@@ -17,7 +17,7 @@ public sealed class DataGridPersistence<TItem>
     // The default key is a literal on purpose, and must stay one: it names a slot in the reader's
     // browser storage, not an element. Pointing it at the CSS class constant would mean that renaming
     // a class silently orphans every layout anyone had saved.
-    public DataGridPersistence(IBrowserStorage storage, string storageKey = "flare-datagrid")
+    public DataGridPersistence(IBrowserStorage storage, string storageKey = "flare-datagrid") // cssaudit:allow-literal - a storage slot, not a class
     {
         _storage = storage;
         _storageKey = storageKey;

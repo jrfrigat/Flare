@@ -43,6 +43,7 @@ internal static class Program
         return cmd switch
         {
             "check" => Check(css, constants, themeCss, cssThemeDirs, cssDir) ? 0 : 1,
+            "packages" or "pkg" => PackageCheck(root),
             "tokens" => TokenCheck(root),
             "generate" or "gen" => Generate(css, constants),
             "merge" => Merge(css, cssClassesDir),
@@ -98,8 +99,9 @@ internal static class Program
     private static int Usage()
     {
         Console.WriteLine("Flare.CssAudit - keeps CssClasses and Css.Tokens in sync with component CSS.");
-        Console.WriteLine("Usage: cssaudit [check|tokens|generate]");
+        Console.WriteLine("Usage: cssaudit [check|packages|tokens|generate]");
         Console.WriteLine("  check     Report classes missing in CssClasses and constants missing in CSS (exit 1 on mismatch).");
+        Console.WriteLine("  packages  Same check per optional package (src/Flare.Components.*), each against its own registry.");
         Console.WriteLine("  tokens    Report --flare-* token drift between CSS and Css.Tokens (report only, always exit 0).");
         Console.WriteLine("  generate  Emit C# constants for CSS classes missing from CssClasses, grouped by CSS file.");
         Console.WriteLine("  (no arg)  Interactive menu.");
@@ -133,6 +135,7 @@ internal static class Program
             Console.WriteLine($"  {css.Count} CSS classes, {constants.Values.Count} constants");
             Console.WriteLine();
             Console.WriteLine("  [1] Check classes (compare both directions)");
+            Console.WriteLine("  [5] Check the optional packages (each against its own registry)");
             Console.WriteLine("  [2] Token audit (--flare-* CSS vs Css.Tokens, report only)");
             Console.WriteLine("  [3] Generate missing constants (preview, grouped by CSS file)");
             Console.WriteLine("  [4] Merge missing constants into CssClasses/ partials (in place)");
@@ -141,6 +144,7 @@ internal static class Program
             switch (Console.ReadLine()?.Trim())
             {
                 case "1": Check(css, constants, themeCss, themeDirs, cssDir); break;
+                case "5": PackageCheck(_root); break;
                 case "2": TokenCheck(); break;
                 case "3": Generate(css, constants); break;
                 case "4":
@@ -184,6 +188,10 @@ internal static class Program
             ? CssAudit.ScanLiteralTokenFallbacks(cssDir)
             : (IReadOnlyList<string>)Array.Empty<string>();
 
+        var spelledOut = _root.Length > 0
+            ? ScanSpelledOutNames(Path.Combine(_root, "src", "Flare.Components"), "Flare.Components", constants)
+            : new List<string>();
+
         var duplicates = constants.Duplicates;
 
         Console.WriteLine();
@@ -211,7 +219,8 @@ internal static class Program
         Console.WriteLine();
 
         var clean = missingInConstants.Count == 0 && missingInCss.Count == 0
-            && inThemeNotBase.Count == 0 && literalFallbacks.Count == 0 && duplicates.Count == 0;
+            && inThemeNotBase.Count == 0 && literalFallbacks.Count == 0 && duplicates.Count == 0
+            && spelledOut.Count == 0;
         if (clean)
         {
             Console.WriteLine("OK - CssClasses, Flare.Components CSS and themes are fully in sync.");
@@ -224,6 +233,15 @@ internal static class Program
             foreach (var d in duplicates)
                 Console.WriteLine($"  [=] {d}");
             Console.WriteLine("      (consolidate to ONE constant and reference it from the other call sites)");
+            Console.WriteLine();
+        }
+
+        if (spelledOut.Count > 0)
+        {
+            Console.WriteLine($"--- {spelledOut.Count} CSS name(s) written as text instead of named from the registry ---");
+            foreach (var finding in spelledOut)
+                Console.WriteLine($"  {finding}");
+            Console.WriteLine("      (a name assembled from a stem is a name this audit cannot read - use the constant)");
             Console.WriteLine();
         }
 
@@ -551,6 +569,164 @@ internal static class Program
         if (!used.Contains(name)) return name;
         var n = 2; while (used.Contains(name + n)) n++;
         return name + n;
+    }
+
+    // ---- Optional packages ----
+
+    /// <summary>
+    /// Every optional component package: <c>src/Flare.Components.&lt;Name&gt;</c>. The prefix is tested on
+    /// the name rather than left to the search pattern, because a Win32 <c>.*</c> also matches a name
+    /// with no suffix at all - which quietly pulled <c>Flare.Components</c> itself into the list.
+    /// </summary>
+    internal static string[] PackageDirs(string root) =>
+        Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Components.*")
+            .Where(d => Path.GetFileName(d).StartsWith("Flare.Components.", StringComparison.Ordinal))
+            .OrderBy(d => d, StringComparer.Ordinal)
+            .ToArray();
+
+    // A flare-* name written as text. The lookbehind excludes the three things that are NOT class
+    // names: a --flare-* custom property, a data-flare-* attribute, and a path segment such as
+    // _content/Flare.Components.IDE/js/flare-ide.js.
+    private static readonly Regex BareCssNameRx =
+        new(@"(?<![-a-z0-9/.])flare-[a-z0-9_-]+", RegexOptions.Compiled);
+
+    // A class attribute whose value holds no nested quote. A value that DOES nest one (the
+    // "@Const @(flag ? Const : "")" shape) is matched only up to that quote, which is enough: the part
+    // a name would be spelled in bare is the head.
+    private static readonly Regex ClassAttrRx =
+        new(@"\b[cC]lass=""([^""]*)""", RegexOptions.Compiled);
+
+    // The last two segments of a Css.Classes[.Package].Owner.Field reference, which is how a component
+    // names a class now that nothing spells one out. The quantifier is greedy and the tail is guarded
+    // against another dot on purpose: lazy matching took the FIRST two segments, so a package reference
+    // such as Css.Classes.Ide.Backstage.NavLabel resolved to "Ide.Backstage" and the real field looked
+    // like a name nothing used.
+    private static readonly Regex ClassRefRx =
+        new(@"Css\.Classes(?:\.\w+)*\.(\w+)\.(\w+)\b(?!\.)", RegexOptions.Compiled);
+
+    /// <summary>
+    /// The <c>Owner.Field</c> pairs an assembly's components actually reference, so a constant can be
+    /// told apart from a dead one: a class with no CSS rule is a styling hook while something emits it,
+    /// and a dead name only when nothing does.
+    /// </summary>
+    internal static HashSet<string> CollectClassReferences(string sourceDir)
+    {
+        var refs = new HashSet<string>(StringComparer.Ordinal);
+        var sep = Path.DirectorySeparatorChar;
+
+        foreach (var file in Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories)
+                     .Where(f => f.EndsWith(".cs", StringComparison.OrdinalIgnoreCase)
+                              || f.EndsWith(".razor", StringComparison.OrdinalIgnoreCase)))
+        {
+            if (file.Contains($"{sep}obj{sep}", StringComparison.Ordinal)
+                || file.Contains($"{sep}bin{sep}", StringComparison.Ordinal)
+                || file.Contains($"{sep}Css{sep}", StringComparison.Ordinal))
+                continue;
+
+            foreach (Match m in ClassRefRx.Matches(File.ReadAllText(file)))
+                refs.Add($"{m.Groups[1].Value}.{m.Groups[2].Value}");
+        }
+
+        return refs;
+    }
+
+    /// <summary>
+    /// Written on the line itself, this says the string is not a CSS class despite reading like one.
+    /// The reason belongs after it, because a marker without one is an allow-list entry in disguise.
+    /// </summary>
+    internal const string AllowLiteralMarker = "cssaudit:allow-literal";
+
+    // Block comments in both flavours, C# and Razor. Blanked rather than removed so line numbers in a
+    // finding still point at the line the reader will open.
+    private static readonly Regex BlockCommentRx =
+        new(@"/\*.*?\*/|@\*.*?\*@", RegexOptions.Compiled | RegexOptions.Singleline);
+
+    /// <summary>
+    /// Names an assembly writes as text where a constant belongs. Two shapes are reported: a name some
+    /// registry already owns, spelled out anywhere in the C#/Razor, and any <c>flare-*</c> name sitting
+    /// bare inside a class attribute - which is what an assembled class name looks like.
+    /// <para>
+    /// Comments are not code, so they are dropped first: a doc comment naming the class it emits is
+    /// documentation, and nothing renames along with it. The registry folder is skipped too, being
+    /// where the names are declared.
+    /// </para>
+    /// </summary>
+    internal static List<string> ScanSpelledOutNames(string sourceDir, string label, params ConstSet[] registries)
+    {
+        var known = new HashSet<string>(registries.SelectMany(r => r.Values), StringComparer.Ordinal);
+        var findings = new List<string>();
+        var sep = Path.DirectorySeparatorChar;
+
+        foreach (var file in Directory.EnumerateFiles(sourceDir, "*.*", SearchOption.AllDirectories)
+                     .Where(f => f.EndsWith(".cs", StringComparison.OrdinalIgnoreCase)
+                              || f.EndsWith(".razor", StringComparison.OrdinalIgnoreCase))
+                     .OrderBy(f => f, StringComparer.Ordinal))
+        {
+            if (file.Contains($"{sep}obj{sep}", StringComparison.Ordinal)
+                || file.Contains($"{sep}bin{sep}", StringComparison.Ordinal)
+                || file.Contains($"{sep}Css{sep}", StringComparison.Ordinal))
+                continue;
+
+            var raw = File.ReadAllText(file);
+            var text = BlockCommentRx.Replace(raw, m => Regex.Replace(m.Value, @"[^\r\n]", " "));
+
+            var rawLines = raw.Replace("\r\n", "\n").Split('\n');
+            var lines = text.Replace("\r\n", "\n").Split('\n');
+            for (var i = 0; i < lines.Length; i++)
+            {
+                // The one legitimate reason to write a name out is that it is not a class at all - a
+                // storage key that happens to read like one. Marking the line says so where a reader
+                // will see it, and is greppable, which an unexplained allow-list is not.
+                if (rawLines[i].Contains(AllowLiteralMarker, StringComparison.Ordinal)) continue;
+
+                var line = lines[i];
+                var slashes = line.IndexOf("//", StringComparison.Ordinal);
+                if (slashes >= 0) line = line[..slashes];
+
+                foreach (Match m in BareCssNameRx.Matches(line))
+                    if (known.Contains(m.Value))
+                        findings.Add($"[L] {label}: \"{m.Value}\" spelled out, {Path.GetFileName(file)}:{i + 1}");
+
+                foreach (Match attr in ClassAttrRx.Matches(line))
+                    foreach (Match m in BareCssNameRx.Matches(attr.Groups[1].Value))
+                        if (!known.Contains(m.Value))
+                            findings.Add($"[L] {label}: \"{m.Value}\" is a class nothing declares, "
+                                + $"{Path.GetFileName(file)}:{i + 1}");
+            }
+        }
+
+        return findings;
+    }
+
+    // Prints the optional-package audit: each package's own CSS against its own registry.
+    private static int PackageCheck(string root)
+    {
+        var report = CssAudit.RunPackages(root);
+        Console.WriteLine();
+        Console.WriteLine("=== Flare Optional-Package CSS Audit ===");
+        Console.WriteLine($"  packages examined                                : {report.Packages.Count}");
+        Console.WriteLine($"  [+] in a package's CSS, no constant              : {report.ClassesMissingConstant.Count}");
+        Console.WriteLine($"  [-] constant declared, no rule                   : {report.ConstantsMissingCss.Count}");
+        Console.WriteLine($"  [L] name spelled out instead of named            : {report.NamesSpelledOut.Count}");
+        Console.WriteLine($"  [h] emitted, no rule (hooks - reported, not failed): {report.StylingHooks.Count}");
+        Console.WriteLine();
+
+        if (report.StylingHooks.Count > 0)
+        {
+            foreach (var hook in report.StylingHooks) Console.WriteLine($"  {hook}");
+            Console.WriteLine("      (a class on an element its parent lays out, kept so a theme can reach it)");
+            Console.WriteLine();
+        }
+
+        if (report.InSync)
+        {
+            Console.WriteLine("OK - every optional package's CSS, registry and markup agree.");
+            return 0;
+        }
+
+        foreach (var finding in report.AllFindings) Console.WriteLine($"  {finding}");
+        Console.WriteLine();
+        return 1;
     }
 
     // ---- Parsing ----
