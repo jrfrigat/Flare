@@ -4,7 +4,8 @@
 
 @if (Tabs.IsTabActive(this))
 {
-    <div class="@Css.Classes.Ide.DocTabs.Panel" id="@PanelId" role="tabpanel" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.DocTabs.Panel" id="@PanelId" role="tabpanel"
+         aria-labelledby="@TabButtonId" @attributes="AdditionalAttributes">
         @ChildContent
     </div>
 }
@@ -31,6 +32,10 @@
 
     internal string TabId { get; } = Guid.NewGuid().ToString("N")[..8];
     internal string PanelId => $"flare-doc-panel-{TabId}";
+
+    // The tab strip labels the panel, so both ends of that link are built here. The panel used to have
+    // no label at all, which leaves a tab panel unnamed to a screen reader.
+    internal string TabButtonId => $"flare-doc-tab-{TabId}";
 
     protected override void OnInitialized()
     {
