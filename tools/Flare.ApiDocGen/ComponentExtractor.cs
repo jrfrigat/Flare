@@ -117,9 +117,13 @@ internal sealed class ComponentExtractor
                 DeclaringType: CleanName(prop.DeclaringType?.Name ?? type.Name)));
         }
 
-        // Stable, readable ordering: own parameters first (alphabetical), inherited last.
+        // Stable, readable ordering: own parameters first (alphabetical), inherited last. Compared
+        // against the CLEANED name because a generic type's Name carries the arity (`FlareSelect`1`)
+        // while DeclaringType has already had it stripped - so every parameter of every generic
+        // component read as inherited and the two groups collapsed into one alphabetical list.
+        var ownName = CleanName(type.Name);
         return result
-            .OrderBy(p => p.DeclaringType == type.Name ? 0 : 1)
+            .OrderBy(p => p.DeclaringType == ownName ? 0 : 1)
             .ThenBy(p => p.Name, StringComparer.Ordinal)
             .ToList();
     }
@@ -176,8 +180,16 @@ internal sealed class ComponentExtractor
         if (instance is null)
             return null;
 
+        // The PropertyInfo came from the type as declared, which for a generic component is the OPEN
+        // definition - reading it against an instance of the closed type throws. Resolve it by name on
+        // the instance's own type; for a non-generic component that lands on the same property.
+        var readable = instance.GetType().GetProperty(
+            prop.Name,
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy)
+            ?? prop;
+
         object? value;
-        try { value = prop.GetValue(instance); }
+        try { value = readable.GetValue(instance); }
         catch { return null; }
 
         return FormatValue(value, prop.PropertyType);
@@ -188,10 +200,23 @@ internal sealed class ComponentExtractor
         if (_instanceCache.TryGetValue(type, out var cached))
             return cached;
 
+        // A default is read off a constructed instance, so an OPEN generic has to be closed first or
+        // every parameter of every generic component reports no default at all - which is what the
+        // reference used to say about FlareSelect, FlareField and the rest of them. The type argument
+        // is arbitrary because a default (`FieldSize.Md`, `LabelPlacement.End`) is a constant on the
+        // component, not a function of what it holds; object is the one that satisfies an unconstrained
+        // parameter. A component whose constraints it does not satisfy simply keeps the old answer.
         object? instance = null;
-        if (!type.ContainsGenericParameters)
+        var constructible = type;
+        if (type.ContainsGenericParameters)
         {
-            try { instance = Activator.CreateInstance(type); }
+            try { constructible = type.MakeGenericType([.. type.GetGenericArguments().Select(_ => typeof(object))]); }
+            catch { constructible = null; }
+        }
+
+        if (constructible is not null)
+        {
+            try { instance = Activator.CreateInstance(constructible); }
             catch { instance = null; }
         }
 
