@@ -57,3 +57,21 @@
     gap: var(--flare-spacing-3, 0.375rem);
     padding: 0 var(--flare-spacing-2, 0.25rem);
 }
+
+/*
+    A focus ring and a coarse-pointer minimum for the list row. Both used to live in the core a11y
+    stylesheet, which meant Flare.Components named a class only this package ever renders - and a
+    rename here would have dropped the ring with nothing failing. They travel with the component now.
+*/
+.flare-transfer__item:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+    /* A row is as wide as its list, so only its HEIGHT is the minimum-size question. Measured at
+       375px before the rule: 36px. */
+    .flare-transfer__item {
+        min-block-size: var(--flare-touch-target-min);
+    }
+}

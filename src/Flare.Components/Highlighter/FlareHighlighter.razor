@@ -48,7 +48,7 @@
                 break;
             }
             sb.Append(System.Web.HttpUtility.HtmlEncode(text[start..idx]));
-            sb.Append("<mark class=\"flare-highlighter__mark\">");
+            sb.Append($"<mark class=\"{Css.Classes.Highlighter.Mark}\">");
             sb.Append(System.Web.HttpUtility.HtmlEncode(text.Substring(idx, len)));
             sb.Append("</mark>");
             start = idx + len;

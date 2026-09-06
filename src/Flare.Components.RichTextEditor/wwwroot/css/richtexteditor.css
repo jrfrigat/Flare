@@ -91,3 +91,12 @@
 .flare-rte__link-input:focus {
     border-color: var(--flare-color-primary);
 }
+
+/*
+    The toolbar button focus ring, moved out of the core a11y stylesheet: it named a class only this
+    package renders, so a rename here would have taken the ring away silently.
+*/
+.flare-rte__tool:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: 2px;
+}

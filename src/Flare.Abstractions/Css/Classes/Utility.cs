@@ -51,14 +51,6 @@ public static class P
     public const string Sm = "flare-p-sm";
 }
 
-/// <summary>CSS classes for rte.</summary>
-public static class Rte
-{
-    /// <summary>The <c>flare-rte__tool</c> CSS class.</summary>
-    public const string Tool = "flare-rte__tool";
-}
-
-
 /// <summary>CSS classes for flex.</summary>
 public static class Flex
 {

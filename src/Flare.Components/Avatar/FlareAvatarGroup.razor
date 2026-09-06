@@ -9,7 +9,7 @@
     </CascadingValue>
     @if (_overflow > 0)
     {
-        <div class="@Css.Classes.Avatar.GroupOverflow @Css.Classes.Avatar.Root flare-avatar--@_sizeKey"
+        <div class="@Css.Classes.Avatar.GroupOverflow @Css.Classes.Avatar.Root @_sizeClass"
              role="img"
              aria-label="@_overflowLabel"
              title="@_overflowLabel">
@@ -36,14 +36,7 @@
     private string _overflowLabel =>
         string.Format(FlareStrings.Avatar_OverflowMore, _overflow);
 
-    private string _sizeKey => Size switch
-    {
-        AvatarSize.Xs => "xs",
-        AvatarSize.Sm => "sm",
-        AvatarSize.Lg => "lg",
-        AvatarSize.Xl => "xl",
-        _             => "md",
-    };
+    private string _sizeClass => FlareAvatar.SizeClass(Size);
 
     /// <summary>Called by child FlareAvatar; returns true if the avatar should be visible.</summary>
     internal bool RegisterAvatar()

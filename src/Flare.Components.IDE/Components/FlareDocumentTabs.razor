@@ -7,6 +7,7 @@
         {
             var isActive = tab == _activeTab;
             <div class="@Css.Classes.Ide.DocTabs.Tab @(isActive ? Css.Classes.Ide.DocTabs.TabActive : "")"
+                 id="@tab.TabButtonId"
                  role="tab"
                  aria-selected="@isActive"
                  aria-controls="@tab.PanelId"

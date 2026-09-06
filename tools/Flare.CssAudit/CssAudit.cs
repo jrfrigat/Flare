@@ -19,19 +19,26 @@ public sealed class CssAuditReport
     public required IReadOnlyList<string> LiteralTokenFallbacks { get; init; }
     /// <summary><c>[=]</c> CSS-class values declared by more than one <c>CssClasses</c> constant (redundant duplicates to consolidate).</summary>
     public required IReadOnlyList<string> DuplicateConstants { get; init; }
+    /// <summary>
+    /// <c>[L]</c> names a component writes as text: a name the registry owns, spelled out anyway, or a
+    /// class attribute holding a bare <c>flare-*</c> name - which is what a name assembled from a stem
+    /// looks like. The other five reports cannot see either, because a name that is never written whole
+    /// is a name this audit cannot read.
+    /// </summary>
+    public required IReadOnlyList<string> NamesSpelledOut { get; init; }
 
     /// <summary>True when CssClasses, Flare.Components CSS and the themes are fully in sync, no
-    /// component CSS bakes a theme literal as a fallback on an always-emitted semantic token, and no
-    /// CSS class is declared by more than one constant.</summary>
+    /// component CSS bakes a theme literal as a fallback on an always-emitted semantic token, no
+    /// CSS class is declared by more than one constant, and every name comes from the registry.</summary>
     public bool InSync =>
         ClassesMissingConstant.Count == 0 && ConstantsMissingCss.Count == 0
         && ThemeOnlyClasses.Count == 0 && LiteralTokenFallbacks.Count == 0
-        && DuplicateConstants.Count == 0;
+        && DuplicateConstants.Count == 0 && NamesSpelledOut.Count == 0;
 
     /// <summary>All findings across the reports, for a single combined failure message.</summary>
     public IEnumerable<string> AllFindings =>
         ClassesMissingConstant.Concat(ConstantsMissingCss).Concat(ThemeOnlyClasses)
-            .Concat(LiteralTokenFallbacks).Concat(DuplicateConstants);
+            .Concat(LiteralTokenFallbacks).Concat(DuplicateConstants).Concat(NamesSpelledOut);
 }
 
 /// <summary>
@@ -56,6 +63,38 @@ public sealed class TokenAuditReport
     /// <summary>All findings across the reports, for a single combined message.</summary>
     public IEnumerable<string> AllFindings =>
         TokensMissingConstant.Concat(ConstantsMissingCss).Concat(ThemeOnlyTokens);
+}
+
+/// <summary>
+/// Outcome of the optional-package audit. Every package under <c>src/Flare.Components.*</c> ships its
+/// own stylesheet and its own <c>Css/Classes</c> registry, so each is judged on its own terms: a class
+/// the package styles has a constant somewhere (its own registry or the core one), a constant it
+/// declares has a rule, and no name is spelled out where a constant belongs.
+/// </summary>
+public sealed class PackageAuditReport
+{
+    /// <summary>The packages examined, in path order.</summary>
+    public required IReadOnlyList<string> Packages { get; init; }
+    /// <summary><c>[+]</c> classes a package's CSS defines with no constant in its registry or the core one.</summary>
+    public required IReadOnlyList<string> ClassesMissingConstant { get; init; }
+    /// <summary><c>[-]</c> constants nothing styles AND nothing emits - a name that is simply dead.</summary>
+    public required IReadOnlyList<string> ConstantsMissingCss { get; init; }
+    /// <summary><c>[L]</c> names written as text in a package's components instead of coming from a registry.</summary>
+    public required IReadOnlyList<string> NamesSpelledOut { get; init; }
+    /// <summary>
+    /// <c>[h]</c> classes a component emits that no rule styles. Reported, never failed: on an element
+    /// whose layout its parent owns, such a class is the hook a theme needs in order to reach it, and a
+    /// package stylesheet is thin on purpose. Worth reading when a variant looks like it does nothing.
+    /// </summary>
+    public required IReadOnlyList<string> StylingHooks { get; init; }
+
+    /// <summary>True when every package's CSS, registry and markup agree.</summary>
+    public bool InSync =>
+        ClassesMissingConstant.Count == 0 && ConstantsMissingCss.Count == 0 && NamesSpelledOut.Count == 0;
+
+    /// <summary>All findings across the reports, for a single combined failure message.</summary>
+    public IEnumerable<string> AllFindings =>
+        ClassesMissingConstant.Concat(ConstantsMissingCss).Concat(NamesSpelledOut);
 }
 
 /// <summary>
@@ -148,6 +187,73 @@ public static class CssAudit
             ThemeOnlyClasses = tilde.Select(c => $"[~] {c}  (in {string.Join(", ", themeCss[c])})").ToList(),
             LiteralTokenFallbacks = ScanLiteralTokenFallbacks(cssDir),
             DuplicateConstants = constants.Duplicates.Select(d => $"[=] {d}").ToList(),
+            NamesSpelledOut = Program.ScanSpelledOutNames(
+                Path.Combine(root, "src", "Flare.Components"), "Flare.Components", constants),
+        };
+    }
+
+    /// <summary>
+    /// Runs the audit over every optional component package (<c>src/Flare.Components.*</c>). The core
+    /// audit cannot see these: it reads one stylesheet folder and one registry, while each package has
+    /// its own pair. Without this pass a package could style a class nobody emits, emit a class nobody
+    /// styles, or spell a name out - and nothing would say so.
+    /// </summary>
+    /// <param name="repoRoot">Repo root; located by walking up when null (see <see cref="Run"/>).</param>
+    /// <exception cref="DirectoryNotFoundException">The repo root could not be located.</exception>
+    public static PackageAuditReport RunPackages(string? repoRoot = null)
+    {
+        var root = repoRoot ?? Program.FindRepoRoot()
+            ?? throw new DirectoryNotFoundException(
+                "Could not locate the repo root (a folder containing src/Flare.Components).");
+
+        // A package legitimately uses core classes (a button inside a carousel) and core CSS
+        // legitimately has no opinion about a package class, so both directions consult the core.
+        var coreCss = Program.CollectCssClasses(Path.Combine(root, "src", "Flare.Components", "wwwroot", "css"));
+        var coreConstants = Program.CollectConstants(Path.Combine(root, "src", "Flare.Abstractions", "Css", "Classes"));
+
+        var packages = new List<string>();
+        var plus = new List<string>();
+        var minus = new List<string>();
+        var spelledOut = new List<string>();
+        var hooks = new List<string>();
+
+        foreach (var dir in Program.PackageDirs(root))
+        {
+            var name = Path.GetFileName(dir);
+            packages.Add(name);
+
+            var css = Program.CollectCssClasses(Path.Combine(dir, "wwwroot", "css"));
+            var classesDir = Path.Combine(dir, "Css", "Classes");
+            var constants = Directory.Exists(classesDir) ? Program.CollectConstants(classesDir) : new ConstSet();
+
+            foreach (var cls in css.Keys.Where(c => !constants.Values.Contains(c) && !coreConstants.Values.Contains(c)))
+                plus.Add($"[+] {name}: {cls}  (in {string.Join(", ", css[cls])}, no constant)");
+
+            // A constant with no rule is only dead if nothing emits it either; while a component puts it
+            // on an element it is a hook, which is how a theme reaches an element the base CSS leaves alone.
+            var emitted = Program.CollectClassReferences(dir);
+            foreach (var v in constants.Values
+                         .Where(v => !css.ContainsKey(v) && !coreCss.ContainsKey(v))
+                         .OrderBy(v => v, StringComparer.Ordinal))
+            {
+                var live = constants.Declarations()
+                    .Any(d => d.Value == v && emitted.Contains($"{d.Owner}.{d.Field}"));
+                if (live)
+                    hooks.Add($"[h] {name}: {v}  ({constants.LocationOf(v)}, emitted, no rule)");
+                else
+                    minus.Add($"[-] {name}: {v}  ({constants.LocationOf(v)}, nothing styles or emits it)");
+            }
+
+            spelledOut.AddRange(Program.ScanSpelledOutNames(dir, name, coreConstants, constants));
+        }
+
+        return new PackageAuditReport
+        {
+            Packages = packages,
+            ClassesMissingConstant = plus,
+            ConstantsMissingCss = minus,
+            NamesSpelledOut = spelledOut,
+            StylingHooks = hooks,
         };
     }
 

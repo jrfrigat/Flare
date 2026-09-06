@@ -5,7 +5,7 @@
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <canvas @ref="_canvas"
-            class="flare-signature-pad__canvas"
+            class="@Css.Classes.SignaturePad.Canvas"
             width="@Width"
             height="@Height"
             role="img"
@@ -41,7 +41,7 @@
     /// <summary>Accessible label for the signature canvas. Defaults to "Signature pad".</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
-    protected override string ComponentCssClass => "flare-signature-pad";
+    protected override string ComponentCssClass => Css.Classes.SignaturePad.Root;
 
     // A <canvas> 2D context cannot resolve CSS variables, so translate the FlareColor into a CSS
     // color expression: a role -> its semantic var, a custom/dynamic color -> its own value. The JS

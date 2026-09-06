@@ -20,6 +20,23 @@ All notable changes to Flare are documented here. This project adheres to
   What this buys is not tidiness. Every `FlareText` on a page - and a page has hundreds - resolved two
   scoped services for a feature a handful of headings used.
 
+- **Every optional package now owns the names of its own CSS classes.** `Flare.Components.Carousel`,
+  `.Kanban`, `.Barcode`, `.QrCode`, `.Media`, `.Query`, `.RichTextEditor` and `.Transfer` wrote their
+  class names as text in the markup, and a name written as text is a name nothing verifies:
+  `Flare.CssAudit` proves that a class a component emits exists in the stylesheets, and it can only do
+  that for a name it can read. Each package declares its own registry now - `Css.Classes.Carousel`,
+  `Css.Classes.Kanban`, `Css.Classes.Barcode`, `Css.Classes.QrCode`, `Css.Classes.SignaturePad`,
+  `Css.Classes.VideoPlayer`, `Css.Classes.QueryBuilder`, `Css.Classes.QueryEditor`, `Css.Classes.Rte`
+  and `Css.Classes.Transfer` - and the audit reads all nine packages, which it could not do before:
+  it reads one stylesheet folder and one registry, and every package has a pair of its own.
+
+  Two of those constants used to live in `Flare.Abstractions`. `Css.Classes.Transfer.Item` and
+  `Css.Classes.Rte.Tool` existed only because the core accessibility stylesheet gave those two
+  components a focus ring and a coarse-pointer minimum - which meant `Flare.Components` was styling
+  components it does not ship, and a rename inside either package would have dropped the ring with
+  nothing failing. The rules moved to the packages that render them and the constants went with them.
+  The name and the namespace are unchanged, so source stays compatible; the types now ship in the
+  package assembly rather than in `Flare.Abstractions`.
 ### Added
 
 - **`FlareChart.AnimateUpdates`: the chart moves to the new data instead of being replaced by it.**
@@ -165,6 +182,17 @@ All notable changes to Flare are documented here. This project adheres to
   that "the actions row stays reachable" and then measured against a viewport taller than the screen.
   A guard now fails on any `vh` in any component stylesheet.
 
+- **A ribbon tab panel told a screen reader it was named by an element that does not exist.**
+  `FlareRibbonTab` set `aria-labelledby` to `flare-ribbon-tab-<id>` and nothing ever wrote that id:
+  the ribbon's tab buttons carried no `id` at all. A dangling reference reads as no name, so the panel
+  announced itself unnamed. Both ends of the link are built from one place now. `FlareDocumentTab` had
+  the quiet half of the same defect - its panel carried no `aria-labelledby` whatsoever - and points at
+  its own tab too.
+
+  Neither was reachable by any test in the repository: the markup was valid, every class name was
+  real, and an id is the one kind of name a compiler never checks. The test that holds this now asserts
+  the link rather than either end of it - every id an ARIA attribute references resolves to an element
+  in the same tree.
 ## [0.31.0] - 2026-09-05
 
 ### Changed

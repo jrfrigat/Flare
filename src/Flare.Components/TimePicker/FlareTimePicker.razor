@@ -40,7 +40,7 @@
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
                    @attributes="InputAttributes" />
-            <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
+            <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                     disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
                     aria-label="@FlareStrings.TimePicker_Open" @onclick="Toggle">
                 <FlareIconView Value="@FlareIcons.Schedule" />

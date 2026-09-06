@@ -8,18 +8,18 @@
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     @if (Schema is null)
     {
-        <p class="flare-qb__ok">@Labels.SchemaMissing</p>
+        <p class="@Css.Classes.QueryBuilder.Ok">@Labels.SchemaMissing</p>
     }
     else
     {
-        <section class="flare-qb__section">
-            <h3 class="flare-qb__heading">@Labels.Source</h3>
-            <div class="flare-qb__row">
-                <div class="flare-qb__cell flare-qb__cell--target">
+        <section class="@Css.Classes.QueryBuilder.Section">
+            <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Source</h3>
+            <div class="@Css.Classes.QueryBuilder.Row">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
                     <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Sources" ItemLabel="SourceLabel"
                                  Value="@RootToken" ValueChanged="SetRoot" />
                 </div>
-                <div class="flare-qb__cell flare-qb__cell--alias">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
                     <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Alias"
                                 Value="@_draft.RootAlias"
                                 ValueChanged="@(value => { _draft.RootAlias = value ?? string.Empty; Rebuild(); })" />
@@ -33,23 +33,23 @@
             @foreach (var join in _draft.Joins)
             {
                 var row = join;
-                <div class="flare-qb__row">
-                    <div class="flare-qb__cell flare-qb__cell--target">
+                <div class="@Css.Classes.QueryBuilder.Row">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="EntityKeys" ItemLabel="EntityLabel"
                                      Value="@row.Entity"
                                      ValueChanged="@(value => SetJoinEntity(row, value))" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--alias">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
                         <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Alias"
                                     Value="@row.Alias"
                                     ValueChanged="@(value => { row.Alias = value ?? string.Empty; Rebuild(); })" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--relation">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellRelation">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="RelationsFor(row)" ItemLabel="RelationLabel"
                                      Value="@row.Relation"
                                      ValueChanged="@(value => { row.Relation = value; Rebuild(); })" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--op">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
                         <FlareSelect TValue="QueryJoinKind" Size="FieldSize.Xs" Items="JoinKinds"
                                      Value="@row.Kind"
                                      ValueChanged="@(value => { row.Kind = value; Rebuild(); })" />
@@ -62,9 +62,9 @@
             }
         </section>
 
-        <section class="flare-qb__section">
-            <div class="flare-qb__section-head">
-                <h3 class="flare-qb__heading">@Labels.Columns</h3>
+        <section class="@Css.Classes.QueryBuilder.Section">
+            <div class="@Css.Classes.QueryBuilder.SectionHead">
+                <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Columns</h3>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddColumn">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
                     <ChildContent>@Labels.AddColumn</ChildContent>
@@ -74,12 +74,12 @@
             @foreach (var column in _draft.Columns)
             {
                 var row = column;
-                <div class="flare-qb__row">
-                    <div class="flare-qb__cell flare-qb__cell--target">
+                <div class="@Css.Classes.QueryBuilder.Row">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="ValueTargets" ItemLabel="ValueTargetLabel"
                                      Value="@ColumnToken(row)" ValueChanged="@(value => SetColumn(row, value))" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--op">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="AggregatesFor(row)" ItemLabel="AggregateLabel"
                                      Value="@(row.Aggregate?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetAggregate(row, value))" />
@@ -88,22 +88,22 @@
                        into one, a name cannot, and an aggregate has already collapsed the rows.
                        Rendering it only sometimes moved everything to its right, so two rows of the
                        same designer put their output names in different places. *@
-                    <div class="flare-qb__cell flare-qb__cell--op">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Periods" ItemLabel="PeriodLabel"
                                      Disabled="@(row.Aggregate is not null || !IsTimestampColumn(row))"
                                      Value="@(row.Truncate?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetPeriod(row, value))" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--alias">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
                         <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.OutputName"
                                     Value="@row.OutputAlias"
                                     ValueChanged="@(value => { row.OutputAlias = value; Rebuild(); })" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--flag">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
                         <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Group" Value="@row.Group"
                                        ValueChanged="@(value => { row.Group = value ?? false; Rebuild(); })" />
                     </div>
-                    <div class="flare-qb__cell flare-qb__cell--op">
+                    <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
                         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="SortOptions" ItemLabel="SortLabel"
                                      Value="@(row.Sort?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetSort(row, value))" />
@@ -116,8 +116,8 @@
             }
         </section>
 
-        <section class="flare-qb__section">
-            <h3 class="flare-qb__heading">@Labels.Filter</h3>
+        <section class="@Css.Classes.QueryBuilder.Section">
+            <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Filter</h3>
             <QueryConditionEditor Group="_draft.Where" Schema="Schema" Choices="_choices"
                                   AndLabel="@Labels.And" OrLabel="@Labels.Or"
                                   AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
@@ -129,8 +129,8 @@
         @if (_draft.Columns.Any(column => column.Group)
              || _draft.Columns.Any(column => column.Aggregate is not null))
         {
-            <section class="flare-qb__section">
-                <h3 class="flare-qb__heading">@Labels.GroupFilter</h3>
+            <section class="@Css.Classes.QueryBuilder.Section">
+                <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.GroupFilter</h3>
                 <QueryConditionEditor Group="_draft.Having" Schema="Schema" Choices="_choices" AllowAggregates="true"
                                       AndLabel="@Labels.And" OrLabel="@Labels.Or"
                                       AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
@@ -140,19 +140,19 @@
             </section>
         }
 
-        <section class="flare-qb__section">
-            <h3 class="flare-qb__heading">@Labels.Options</h3>
-            <div class="flare-qb__row">
-                <div class="flare-qb__cell flare-qb__cell--flag">
+        <section class="@Css.Classes.QueryBuilder.Section">
+            <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Options</h3>
+            <div class="@Css.Classes.QueryBuilder.Row">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
                     <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Distinct" Value="@_draft.Distinct"
                                    ValueChanged="@(value => { _draft.Distinct = value ?? false; Rebuild(); })" />
                 </div>
-                <div class="flare-qb__cell flare-qb__cell--value">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                     <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Limit"
                                 Value="@(_draft.Limit?.ToString(Culture))"
                                 ValueChanged="@(value => { _draft.Limit = ParseCount(value); Rebuild(); })" />
                 </div>
-                <div class="flare-qb__cell flare-qb__cell--value">
+                <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
                     <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Offset"
                                 Value="@(_draft.Offset?.ToString(Culture))"
                                 ValueChanged="@(value => { _draft.Offset = ParseCount(value); Rebuild(); })" />
@@ -169,15 +169,15 @@
 
         @if (ShowValidation)
         {
-            <section class="flare-qb__section">
-                <h3 class="flare-qb__heading">@Labels.Problems</h3>
+            <section class="@Css.Classes.QueryBuilder.Section">
+                <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Problems</h3>
                 @if (_validation.IsValid)
                 {
-                    <p class="flare-qb__ok">@Labels.NoProblems</p>
+                    <p class="@Css.Classes.QueryBuilder.Ok">@Labels.NoProblems</p>
                 }
                 else
                 {
-                    <ul class="flare-qb__problems">
+                    <ul class="@Css.Classes.QueryBuilder.Problems">
                         @foreach (var error in _validation.Errors)
                         {
                             <li><code>@error.Path</code> @error.Message</li>
@@ -231,7 +231,7 @@
     [Parameter] public QueryBuilderLabels Labels { get; set; } = QueryBuilderLabels.Default;
 
     /// <inheritdoc />
-    protected override string ComponentCssClass => "flare-qb";
+    protected override string ComponentCssClass => Css.Classes.QueryBuilder.Root;
 
     protected override void OnParametersSet()
     {

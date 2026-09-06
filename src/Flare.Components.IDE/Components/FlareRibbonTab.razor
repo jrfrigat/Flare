@@ -5,7 +5,7 @@
 @if (Ribbon.IsTabActive(this))
 {
     <div class="@Css.Classes.Ide.Ribbon.TabPanel" id="@PanelId" role="tabpanel"
-         aria-labelledby="flare-ribbon-tab-@TabId"
+         aria-labelledby="@TabButtonId"
          @attributes="AdditionalAttributes">
         @ChildContent
     </div>
@@ -27,6 +27,11 @@
 
     internal string TabId { get; } = Guid.NewGuid().ToString("N")[..8];
     internal string PanelId => $"flare-ribbon-panel-{TabId}";
+
+    // The panel is labelled by its tab button, so both ends of that link are built here. They used to
+    // be spelled out separately, and the button end was never written at all: the panel pointed at an
+    // id no element carried, which reads to a screen reader as a tab panel with no name.
+    internal string TabButtonId => $"flare-ribbon-tab-{TabId}";
 
     protected override void OnInitialized()
     {

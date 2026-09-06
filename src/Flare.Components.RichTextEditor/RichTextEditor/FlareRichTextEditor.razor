@@ -4,53 +4,53 @@
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
-    <div class="flare-rte__toolbar">
+    <div class="@Css.Classes.Rte.Toolbar">
         @if (ShowHeadings)
         {
-            <button class="flare-rte__tool" @onclick="@(() => ExecAsync("formatBlock", "H1"))" title="Heading 1" aria-label="Heading 1" disabled="@ReadOnly">
+            <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H1"))" title="Heading 1" aria-label="Heading 1" disabled="@ReadOnly">
                 <span style="font-size:.85rem;font-weight:700;">H1</span>
             </button>
-            <button class="flare-rte__tool" @onclick="@(() => ExecAsync("formatBlock", "H2"))" title="Heading 2" aria-label="Heading 2" disabled="@ReadOnly">
+            <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H2"))" title="Heading 2" aria-label="Heading 2" disabled="@ReadOnly">
                 <span style="font-size:.85rem;font-weight:700;">H2</span>
             </button>
-            <button class="flare-rte__tool" @onclick="@(() => ExecAsync("formatBlock", "H3"))" title="Heading 3" aria-label="Heading 3" disabled="@ReadOnly">
+            <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("formatBlock", "H3"))" title="Heading 3" aria-label="Heading 3" disabled="@ReadOnly">
                 <span style="font-size:.85rem;font-weight:700;">H3</span>
             </button>
-            <div class="flare-rte__separator"></div>
+            <div class="@Css.Classes.Rte.Separator"></div>
         }
-        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("bold"))" title="Bold" aria-label="Bold" disabled="@ReadOnly">
+        <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("bold"))" title="Bold" aria-label="Bold" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatBold" />
         </button>
-        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("italic"))" title="Italic" aria-label="Italic" disabled="@ReadOnly">
+        <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("italic"))" title="Italic" aria-label="Italic" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatItalic" />
         </button>
-        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("underline"))" title="Underline" aria-label="Underline" disabled="@ReadOnly">
+        <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("underline"))" title="Underline" aria-label="Underline" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatUnderlined" />
         </button>
-        <div class="flare-rte__separator"></div>
-        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("insertUnorderedList"))" title="Bullet list" aria-label="Bullet list" disabled="@ReadOnly">
+        <div class="@Css.Classes.Rte.Separator"></div>
+        <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("insertUnorderedList"))" title="Bullet list" aria-label="Bullet list" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatListBulleted" />
         </button>
-        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("insertOrderedList"))" title="Numbered list" aria-label="Numbered list" disabled="@ReadOnly">
+        <button class="@Css.Classes.Rte.Tool" @onclick="@(() => ExecAsync("insertOrderedList"))" title="Numbered list" aria-label="Numbered list" disabled="@ReadOnly">
             <FlareIconView Value="@FlareIcons.FormatListNumbered" />
         </button>
         @if (ShowLink)
         {
-            <div class="flare-rte__separator"></div>
-            <button class="flare-rte__tool @(_showLinkInput ? "flare-rte__tool--active" : "")"
+            <div class="@Css.Classes.Rte.Separator"></div>
+            <button class="@Css.Classes.Rte.Tool @(_showLinkInput ? Css.Classes.Rte.ToolActive : "")"
                     @onclick="ToggleLinkInput"
                     title="Insert link" aria-label="Insert link" disabled="@ReadOnly">
                 <FlareIconView Value="@FlareIcons.Link" />
             </button>
             @if (_showLinkInput)
             {
-                <div class="flare-rte__link-input-wrap">
-                    <input class="flare-rte__link-input"
+                <div class="@Css.Classes.Rte.LinkInputWrap">
+                    <input class="@Css.Classes.Rte.LinkInput"
                            type="url"
                            placeholder="https://..."
                            @bind="_linkUrl"
                            @onkeydown="HandleLinkKeyDown" />
-                    <button class="flare-rte__tool" @onclick="InsertLinkAsync" title="Apply" aria-label="Apply link">
+                    <button class="@Css.Classes.Rte.Tool" @onclick="InsertLinkAsync" title="Apply" aria-label="Apply link">
                         <FlareIconView Value="@FlareIcons.Check" />
                     </button>
                 </div>
@@ -58,7 +58,7 @@
         }
     </div>
     <div id="@_editorId"
-         class="flare-rte__content"
+         class="@Css.Classes.Rte.Content"
          role="textbox"
          aria-multiline="true"
          aria-label="@(Label ?? FlareStrings.RTE_Label)"
@@ -88,7 +88,7 @@
     /// <summary>Shows a link-insertion button in the toolbar.</summary>
     [Parameter] public bool ShowLink { get; set; }
 
-    protected override string ComponentCssClass => "flare-rte";
+    protected override string ComponentCssClass => Css.Classes.Rte.Root;
 
     private readonly string _editorId = "rte-" + Guid.NewGuid().ToString("N")[..8];
     private string _minHeightStyle => $"min-height:{MinHeight}";

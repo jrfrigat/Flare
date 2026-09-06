@@ -83,7 +83,11 @@
         ($"var({Css.Tokens.Color.ErrorContainer})", $"var({Css.Tokens.Color.OnErrorContainer})"),
     ];
 
-    private string _sizeClass => Size switch
+    private string _sizeClass => SizeClass(Size);
+
+    // Shared with FlareAvatarGroup, whose overflow bubble is the same circle at the same size. It used
+    // to build the name from a suffix, which is a name Flare.CssAudit cannot read.
+    internal static string SizeClass(AvatarSize size) => size switch
     {
         AvatarSize.Xs => Css.Classes.Avatar.SizeXs,
         AvatarSize.Sm => Css.Classes.Avatar.Sm,

@@ -5,7 +5,7 @@
 
 @* BuildCssClass already emits ComponentCssClass, which IS the root class - naming it again put
    `flare-resizable` in the attribute twice. *@
-<div class="@BuildCssClass() flare-resizable--@Edge.ToString().ToLower()"
+<div class="@BuildCssClass() @_edgeClass"
      style="@BuildStyle()"
      @attributes="AdditionalAttributes"
      @ref="_container">
@@ -25,6 +25,16 @@
     [Parameter] public EventCallback<string> OnResized { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Resizable.Root;
+
+    // The edge modifier used to be lower-cased off the enum name, which made the class name something
+    // the audit could not read: rename either end and the handle silently loses its side.
+    private string _edgeClass => Edge switch
+    {
+        ResizableEdge.Bottom => Css.Classes.Resizable.Bottom,
+        ResizableEdge.Left   => Css.Classes.Resizable.Left,
+        ResizableEdge.Top    => Css.Classes.Resizable.Top,
+        _                    => Css.Classes.Resizable.Right
+    };
 
     private ElementReference _container;
     private ElementReference _handle;

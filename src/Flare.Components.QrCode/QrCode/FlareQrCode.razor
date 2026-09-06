@@ -132,7 +132,7 @@
     /// </summary>
     [Parameter] public double IconSize { get; set; } = 0;
 
-    protected override string ComponentCssClass => "flare-qrcode";
+    protected override string ComponentCssClass => Css.Classes.QrCode.Root;
 
     private bool[,]? _matrix;
     private string? _encodedValue;
