@@ -30,7 +30,7 @@
                 Style="flex:1;min-width:220px;min-height:180px;display:flex;align-items:center;justify-content:center;border:1px dashed var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
         @if (_visible)
         {
-            <FlareButton Variant="_variant" Disabled="@(_disabled == true)" Style="@($"width:{_width}px;")">
+            <FlareButton Variant="_variant" Disabled="_disabled" Style="@($"width:{_width}px;")">
                 @(_text ?? "")
             </FlareButton>
         }
@@ -47,7 +47,7 @@
     private string? _text = "Click me";
     private ButtonVariant _variant = ButtonVariant.Filled;
     private int _width = 160;
-    private bool? _disabled = false;
+    private bool _disabled;
     private bool _visible = true;
 
     private readonly ButtonVariant[] _variants = Enum.GetValues<ButtonVariant>();

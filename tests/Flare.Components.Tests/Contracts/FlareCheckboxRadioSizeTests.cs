@@ -13,7 +13,7 @@ public class FlareCheckboxRadioSizeTests : FlareTestContext
     [InlineData(FieldSize.Xl, Css.Classes.Checkbox.SizeXl)]
     public void Checkbox_Size_AppliesModifier(FieldSize size, string expected)
     {
-        var cut = Render<FlareCheckbox>(p => p.Add(x => x.Size, size));
+        var cut = Render<FlareCheckbox<bool>>(p => p.Add(x => x.Size, size));
         Assert.Contains(expected, cut.Find($".{Css.Classes.Checkbox.Root}").ClassName);
     }
 

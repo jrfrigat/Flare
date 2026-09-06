@@ -16,8 +16,8 @@
             {
                 var key = col.Key;
                 <div class="@Css.Classes.DataGrid.ColumnPickerItem">
-                    <FlareCheckbox Value="@(!_hidden.Contains(key))" Label="@col.Title"
-                                   ValueChanged="@(_ => ToggleAsync(key))" />
+                    <FlareCheckbox TValue="bool" Value="@(!_hidden.Contains(key))" Label="@col.Title"
+                                   ValueChanged="@((bool _) => ToggleAsync(key))" />
                 </div>
             }
         </div>

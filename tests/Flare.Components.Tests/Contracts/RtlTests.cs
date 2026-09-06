@@ -32,7 +32,7 @@ public class RtlTests : FlareTestContext
     [Fact]
     public void FlareCheckbox_Should_Render_In_Rtl()
     {
-        var cut = Render<FlareCheckbox>(parameters => parameters
+        var cut = Render<FlareCheckbox<bool>>(parameters => parameters
             .Add(p => p.Label, "أوافق")
             .Add(p => p.Value, false));
 

@@ -111,7 +111,7 @@
                     @if (SelectionMode == SelectionMode.Multiple)
                     {
                         <th role="columnheader" class="@Css.Classes.DataGrid.Th @Css.Classes.DataGrid.ThSelect">
-                            <FlareCheckbox Value="_selectAllState" ValueChanged="@(_ => ToggleSelectAll())" />
+                            <FlareCheckbox TValue="bool?" Value="_selectAllState" ValueChanged="@((bool? _) => ToggleSelectAll())" />
                         </th>
                     }
                     @foreach (var col in _gridColumns)
@@ -206,7 +206,7 @@
                         }
                         @if (SelectionMode == SelectionMode.Multiple)
                         {
-                            <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox Value="@_selection.Contains(item)" ValueChanged="@(_ => HandleRowClickAsync(item))" /></td>
+                            <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox TValue="bool" Value="@_selection.Contains(item)" ValueChanged="@((bool _) => HandleRowClickAsync(item))" /></td>
                         }
                         @{ var _colIdx = 0; }
                         @foreach (var col in _gridColumns)
@@ -618,15 +618,15 @@
                                     ValueChanged="@(v => _filterMenuSearch = v ?? "")" />
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuList">
-                        <FlareCheckbox Label="@FlareStrings.DataGrid_SelectAll"
+                        <FlareCheckbox TValue="bool" Label="@FlareStrings.DataGrid_SelectAll"
                                        Value="@MenuAllSelected(col.Key)"
-                                       ValueChanged="@(_ => ToggleSelectAllMenu(col.Key))" />
+                                       ValueChanged="@((bool _) => ToggleSelectAllMenu(col.Key))" />
                         @foreach (var v in MenuFilterValues(col.Key))
                         {
                             var val = v;
-                            <FlareCheckbox Label="@val"
+                            <FlareCheckbox TValue="bool" Label="@val"
                                            Value="@_filterMenuValues.Contains(val)"
-                                           ValueChanged="@(_ => ToggleMenuValue(val))" />
+                                           ValueChanged="@((bool _) => ToggleMenuValue(val))" />
                         }
                     </div>
                     <div class="@Css.Classes.DataGrid.FilterMenuDivider"></div>

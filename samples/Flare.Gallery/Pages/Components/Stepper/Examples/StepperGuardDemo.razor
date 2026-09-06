@@ -25,14 +25,14 @@
 </FlareStepper>
 
 @code {
-    private bool? _agreed;
+    private bool _agreed;
     private bool _blocked;
 
     // Validate forward moves only; always allow going back. Returning false vetoes the change.
     private Task<bool> GuardAsync(StepperChange change)
     {
         if (change.To <= change.From) { _blocked = false; return Task.FromResult(true); }
-        if (change.From == 0 && _agreed != true)
+        if (change.From == 0 && !_agreed)
         {
             _blocked = true;
             return Task.FromResult(false);

@@ -54,7 +54,7 @@
                     {
                         <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellRelative">
                             <FlareCheckbox Size="FieldSize.Xs" Label="@RelativeLabel" Value="@row.Relative"
-                                           ValueChanged="@(value => { row.Relative = value ?? false; Changed(); })" />
+                                           ValueChanged="@((bool value) => { row.Relative = value; Changed(); })" />
                         </div>
                     }
                     @if (row.Relative)

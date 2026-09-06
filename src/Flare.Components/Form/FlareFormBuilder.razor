@@ -94,12 +94,12 @@
         switch (field.FieldType)
         {
             case FormFieldType.Bool:
-                builder.OpenComponent<FlareCheckbox>(0);
+                builder.OpenComponent<FlareCheckbox<bool>>(0);
                 builder.AddAttribute(1, "Label", field.Label);
-                builder.AddAttribute(2, "Value", (bool?)(bool)(value ?? false));
-                builder.AddAttribute(3, "ValueChanged", EventCallback.Factory.Create<bool?>(this, v =>
+                builder.AddAttribute(2, "Value", (bool)(value ?? false));
+                builder.AddAttribute(3, "ValueChanged", EventCallback.Factory.Create<bool>(this, v =>
                 {
-                    field.Property.SetValue(Model, v ?? false);
+                    field.Property.SetValue(Model, v);
                 }));
                 builder.CloseComponent();
                 break;
