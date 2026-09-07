@@ -1,14 +1,34 @@
 using Flare.ApiDocGen;
 using System.Reflection;
 
-// Usage: Flare.ApiDocGen <outputFile.g.cs> [probeDirectory]
-// Emits a generated C# registry of Flare component API docs for Flare.Gallery.
+// Usage: Flare.ApiDocGen <outputFile.g.cs> [probeDirectory] [--markdown <outputDirectory>]
+// Emits a generated C# registry of Flare component API docs for Flare.Gallery and, optionally,
+// a portable Markdown reference split into component and enum pages.
 
-var outputPath = args.Length > 0
-    ? args[0]
+var remainingArgs = new List<string>();
+string? markdownOutputDirectory = null;
+for (var i = 0; i < args.Length; i++)
+{
+    if (args[i] != "--markdown")
+    {
+        remainingArgs.Add(args[i]);
+        continue;
+    }
+
+    if (markdownOutputDirectory is not null || ++i >= args.Length || string.IsNullOrWhiteSpace(args[i]))
+        throw new ArgumentException("Use --markdown exactly once followed by an output directory.");
+
+    markdownOutputDirectory = args[i];
+}
+
+if (remainingArgs.Count > 2)
+    throw new ArgumentException("Usage: Flare.ApiDocGen <outputFile.g.cs> [probeDirectory] [--markdown <outputDirectory>]");
+
+var outputPath = remainingArgs.Count > 0
+    ? remainingArgs[0]
     : Path.Combine(AppContext.BaseDirectory, "ComponentApiRegistry.g.cs");
 
-var probeDir = args.Length > 1 ? args[1] : AppContext.BaseDirectory;
+var probeDir = remainingArgs.Count > 1 ? remainingArgs[1] : AppContext.BaseDirectory;
 
 Console.WriteLine($"[ApiDocGen] Probing assemblies in: {probeDir}");
 
@@ -118,11 +138,16 @@ if (!string.IsNullOrEmpty(outDir))
 if (File.Exists(outputPath) && File.ReadAllText(outputPath) == source)
 {
     Console.WriteLine($"[ApiDocGen] Up to date: {outputPath}");
+    if (markdownOutputDirectory is not null)
+        MarkdownEmitter.Write(markdownOutputDirectory, components, enums);
     return 0;
 }
 
 File.WriteAllText(outputPath, source);
 Console.WriteLine($"[ApiDocGen] Wrote: {outputPath}");
+
+if (markdownOutputDirectory is not null)
+    MarkdownEmitter.Write(markdownOutputDirectory, components, enums);
 return 0;
 
 static List<Assembly> LoadFlareAssemblies(string dir)

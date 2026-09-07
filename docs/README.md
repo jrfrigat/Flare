@@ -12,6 +12,7 @@
 | [Architecture](en/architecture.md) | Module map, component patterns, theming deep-dive |
 | [Theme Creation Guide](en/theme-creation-guide.md) | Design tokens, palettes, custom themes |
 | [Component Code Conventions](en/component-conventions.md) | CSS bundle, token system, unified color, XML docs |
+| [API Reference](api/README.md) | Generated reference for all public components and enums |
 
 ## Русский
 
