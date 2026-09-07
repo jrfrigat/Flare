@@ -1,9 +1,17 @@
 using Flare.ApiDocGen;
+using System.Globalization;
 using System.Reflection;
 
 // Usage: Flare.ApiDocGen <outputFile.g.cs> [probeDirectory] [--markdown <outputDirectory>]
 // Emits a generated C# registry of Flare component API docs for Flare.Gallery and, optionally,
 // a portable Markdown reference split into component and enum pages.
+
+// Constructors and parameter getters can resolve localized defaults. Use the resource fallback
+// culture so the generated reference does not depend on the developer's or CI runner's locale.
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
 var remainingArgs = new List<string>();
 string? markdownOutputDirectory = null;

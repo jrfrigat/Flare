@@ -13,7 +13,7 @@
 | `Label` | `Func<TItem?, string>` | `` | Parameter |  | Resolves a chip's display text when no Template is supplied. |
 | `OnRemove` | `EventCallback<TItem?>` | `` | Callback |  | Invoked with the item whose chip remove button was activated. |
 | `ReadOnly` | `bool` | `false` | Parameter |  | Hides the remove buttons (disabled/read-only field). |
-| `RemoveLabel` | `string` | `"Очистить"` | Parameter |  | Accessible label for the remove button. |
+| `RemoveLabel` | `string` | `"Clear"` | Parameter |  | Accessible label for the remove button. |
 | `Template` | `RenderFragment<TItem?>?` | `` | Parameter |  | Custom render template for a chip's content. Overrides the Label text. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

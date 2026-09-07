@@ -71,8 +71,11 @@ jobs:
       #   dotnet build samples/Flare.Gallery/Flare.Gallery.csproj -p:RunApiDocGen=true
       - name: Verify the API reference is current
         run: |
-          dotnet run --project tools/Flare.ApiDocGen -c Release -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
-          git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+          # Exercise localized defaults under both developer and runner locales.
+          for locale in ru_RU.UTF-8 en_US.UTF-8; do
+            LANG="$locale" LC_ALL="$locale" dotnet run --project tools/Flare.ApiDocGen -c Release --no-build -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+            git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+          done
 
       # Pack here too so a packaging break (missing README/icon, CS1591, etc.) fails CI, not release.
       # IsPackable=false on Gallery/tests/tools means only the publishable packages are produced.

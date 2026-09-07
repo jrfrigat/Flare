@@ -966,7 +966,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Label", @"Func<TItem?, string>", null, @"Resolves a chip's display text when no Template is supplied.", null, false, false, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"OnRemove", @"EventCallback<TItem?>", null, @"Invoked with the item whose chip remove button was activated.", null, false, true, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Hides the remove buttons (disabled/read-only field).", null, false, false, false, @"FlareChipStrip"),
-                new ApiParameterInfo(@"RemoveLabel", @"string", @"""Очистить""", @"Accessible label for the remove button.", null, false, false, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"RemoveLabel", @"string", @"""Clear""", @"Accessible label for the remove button.", null, false, false, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"Template", @"RenderFragment<TItem?>?", null, @"Custom render template for a chip's content. Overrides the Label text.", null, false, false, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
