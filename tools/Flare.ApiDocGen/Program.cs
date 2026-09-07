@@ -16,7 +16,10 @@ var assemblies = LoadFlareAssemblies(probeDir);
 Console.WriteLine($"[ApiDocGen] Loaded {assemblies.Count} Flare assemblies.");
 
 var docs = new XmlDocReader();
-docs.Load(Directory.EnumerateFiles(probeDir, "Flare.*.xml"));
+// Filesystem enumeration order is not a contract and differs between Windows and Linux.
+// Keep the committed registry byte-for-byte reproducible in CI and on developer machines.
+docs.Load(Directory.EnumerateFiles(probeDir, "Flare.*.xml")
+    .OrderBy(path => path, StringComparer.Ordinal));
 
 var extractor = new ComponentExtractor(docs);
 var components = new List<ComponentDoc>();
@@ -26,7 +29,7 @@ Type? baseComponentType = null;
 
 foreach (var assembly in assemblies)
 {
-    foreach (var type in SafeGetTypes(assembly))
+    foreach (var type in SafeGetTypes(assembly).OrderBy(type => type.FullName, StringComparer.Ordinal))
     {
         if (ComponentExtractor.IsComponent(type))
         {
@@ -125,7 +128,8 @@ return 0;
 static List<Assembly> LoadFlareAssemblies(string dir)
 {
     var result = new List<Assembly>();
-    foreach (var path in Directory.EnumerateFiles(dir, "Flare.*.dll"))
+    foreach (var path in Directory.EnumerateFiles(dir, "Flare.*.dll")
+        .OrderBy(path => path, StringComparer.Ordinal))
     {
         var name = Path.GetFileNameWithoutExtension(path);
         if (IsNotALibrary(name))

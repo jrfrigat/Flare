@@ -8796,6 +8796,22 @@ public static class ComponentApiRegistry
 
         e[@"SelectionMode"] = new ApiEnumInfo(
             @"SelectionMode",
+            @"Flare.Components.Combobox.SelectionMode",
+            @"Flare.Components.Combobox",
+            @"How many items a combobox may hold selected at once.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Single", @"0", @"At most one selected value (FlareSelect, FlareCombobox)."),
+                new ApiEnumMember(@"Multiple", @"1", @"Any number of selected values (FlareMultiSelect, FlareTagField)."),
+            },
+            new string[]
+            {
+                @"FlareDataGrid",
+            });
+
+        e[@"SelectionMode"] = new ApiEnumInfo(
+            @"SelectionMode",
             @"Flare.Components.SelectionMode",
             @"Flare.Components",
             @"How many rows a FlareDataGrid lets the user select.",
@@ -8805,22 +8821,6 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"None", @"0", @"None."),
                 new ApiEnumMember(@"Single", @"1", @"Single."),
                 new ApiEnumMember(@"Multiple", @"2", @"Multiple."),
-            },
-            new string[]
-            {
-                @"FlareDataGrid",
-            });
-
-        e[@"SelectionMode"] = new ApiEnumInfo(
-            @"SelectionMode",
-            @"Flare.Components.Combobox.SelectionMode",
-            @"Flare.Components.Combobox",
-            @"How many items a combobox may hold selected at once.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Single", @"0", @"At most one selected value (FlareSelect, FlareCombobox)."),
-                new ApiEnumMember(@"Multiple", @"1", @"Any number of selected values (FlareMultiSelect, FlareTagField)."),
             },
             new string[]
             {

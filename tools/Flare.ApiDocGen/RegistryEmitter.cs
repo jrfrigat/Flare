@@ -41,7 +41,9 @@ internal static class RegistryEmitter
         sb.AppendLine("        var c = new Dictionary<string, ApiComponentInfo>(System.StringComparer.Ordinal);");
         sb.AppendLine();
 
-        foreach (var component in components.OrderBy(x => x.Name, StringComparer.Ordinal))
+        foreach (var component in components
+            .OrderBy(x => x.Name, StringComparer.Ordinal)
+            .ThenBy(x => x.FullName, StringComparer.Ordinal))
             EmitComponent(sb, component);
 
         sb.AppendLine("        return c;");
@@ -52,7 +54,12 @@ internal static class RegistryEmitter
         sb.AppendLine("        var e = new Dictionary<string, ApiEnumInfo>(System.StringComparer.Ordinal);");
         sb.AppendLine();
 
-        foreach (var enumDoc in enums.OrderBy(x => x.Name, StringComparer.Ordinal))
+        // Names are the public lookup keys, but different namespaces can legitimately contain the
+        // same short name (for example, the grid and combobox SelectionMode enums). FullName makes
+        // their otherwise tied order stable across filesystem and runtime implementations.
+        foreach (var enumDoc in enums
+            .OrderBy(x => x.Name, StringComparer.Ordinal)
+            .ThenBy(x => x.FullName, StringComparer.Ordinal))
             EmitEnum(sb, enumDoc);
 
         sb.AppendLine("        return e;");
