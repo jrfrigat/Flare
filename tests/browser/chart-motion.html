@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Chart motion regression tests</title>
+<h1>Chart motion regression tests</h1>
+<p>Copy this file to the Gallery wwwroot, build the Gallery and restart its dev server before running.
+Rebuild after changing JavaScript too: the Gallery import map includes integrity hashes.</p>
+<pre id="results">Running...</pre>
+<button id="gallery-test">Test real Gallery redraw</button>
+<pre id="gallery-results"></pre>
+<script type="module">
+import { observePlot, unobservePlot } from '/_content/Flare.Components/js/flare-chart-motion.js';
+
+const results = document.querySelector('#results');
+const nativeNow = performance.now.bind(performance);
+const nativeMatchMedia = window.matchMedia;
+const nativeRaf = window.requestAnimationFrame;
+const nativeCancel = window.cancelAnimationFrame;
+let now = 0;
+let nextFrame = 0;
+let reduced = false;
+const frames = new Map();
+performance.now = () => now;
+window.requestAnimationFrame = fn => { frames.set(++nextFrame, fn); return nextFrame; };
+window.cancelAnimationFrame = id => frames.delete(id);
+window.matchMedia = query => query.includes('prefers-reduced-motion')
+    ? { matches: reduced } : nativeMatchMedia(query);
+
+const flush = async () => { await Promise.resolve(); await Promise.resolve(); };
+async function frame(ms) {
+    now += ms;
+    const pending = [...frames.values()];
+    frames.clear();
+    for (const fn of pending) fn(now);
+    await flush();
+}
+function assert(value, message) { if (!value) throw Error(message); }
+function equal(actual, expected) { assert(actual === expected, `${actual} != ${expected}`); }
+const line = d => `<g><path class="line" d="${d}"/></g>`;
+const first = 'M 0 10 L 10 20';
+const second = 'M 0 30 L 10 40';
+const third = 'M 0 50 L 10 60';
+const changed = 'M 0 10 L 10 20 L 20 30';
+const plots = [];
+function plot(markup = line(first)) {
+    const host = document.createElement('div');
+    host.style.setProperty('--test-duration', '100ms');
+    host.style.setProperty('--test-easing', 'cubic-bezier(0,0,1,1)');
+    host.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg">${markup}</svg>`;
+    document.body.append(host);
+    plots.push(host);
+    observePlot(host, '--test-duration', '--test-easing');
+    return host;
+}
+const path = host => host.querySelector('path');
+async function replace(host, markup) {
+    host.querySelector('svg').innerHTML = markup;
+    await flush();
+}
+const tests = [
+    ['replacement starts at the visible geometry before the next frame', async () => {
+        const host = plot();
+        const old = path(host);
+        await replace(host, line(second));
+        assert(old !== path(host), 'The fixture must replace the path');
+        equal(path(host).getAttribute('d'), first);
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 20 L 10 30');
+        await frame(50);
+        equal(path(host).getAttribute('d'), second);
+    }],
+    ['direct attribute changes still animate', async () => {
+        const host = plot();
+        path(host).setAttribute('d', second);
+        await flush();
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 20 L 10 30');
+    }],
+    ['replacement during a tween starts from its visible position', async () => {
+        const host = plot();
+        await replace(host, line(second));
+        await frame(50);
+        const old = path(host);
+        const visible = old.getAttribute('d');
+        await replace(host, line(third));
+        equal(path(host).getAttribute('d'), visible);
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 35 L 10 45');
+        equal(old.getAttribute('d'), visible);
+    }],
+    ['multiple replacements in one task use the original geometry', async () => {
+        const host = plot();
+        host.querySelector('svg').innerHTML = line(second);
+        host.querySelector('svg').innerHTML = line(third);
+        await flush();
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 30 L 10 40');
+    }],
+    ['multiple writes in one task use the first old value', async () => {
+        const host = plot();
+        path(host).setAttribute('d', second);
+        path(host).setAttribute('d', third);
+        await flush();
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 30 L 10 40');
+    }],
+    ['an attribute write followed by replacement uses the visible origin', async () => {
+        const host = plot();
+        path(host).setAttribute('d', second);
+        await replace(host, line(third));
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 30 L 10 40');
+    }],
+    ['SVG arc flags remain discrete when a slice crosses a half circle', async () => {
+        const a = 'M 0 0 L 10 0 A 10 10 0 0 1 0 10 Z';
+        const b = 'M 0 0 L 10 0 A 10 10 0 1 1 0 -10 Z';
+        const host = plot(line(a));
+        await replace(host, line(b));
+        await frame(50);
+        equal(path(host).getAttribute('d'), b);
+    }],
+    ['a different path shape jumps', async () => {
+        const host = plot();
+        await replace(host, line(changed));
+        await frame(50);
+        equal(path(host).getAttribute('d'), changed);
+    }],
+    ['an attribute shape change cancels its previous tween', async () => {
+        const host = plot();
+        path(host).setAttribute('d', second);
+        await flush();
+        await frame(25);
+        path(host).setAttribute('d', changed);
+        await flush();
+        await frame(50);
+        equal(path(host).getAttribute('d'), changed);
+    }],
+    ['inserting a sibling does not animate it from another mark', async () => {
+        const host = plot();
+        await replace(host, line(second) + line(third));
+        await frame(50);
+        equal(path(host).getAttribute('d'), second);
+    }],
+    ['different series styling is not paired', async () => {
+        const host = plot('<g><path class="line" style="stroke:red" d="M 0 10"/></g>');
+        await replace(host, '<g><path class="line" style="stroke:blue" d="M 0 30"/></g>');
+        await frame(50);
+        equal(path(host).getAttribute('d'), 'M 0 30');
+    }],
+    ['bars, labels, circles and radar polygons move together', async () => {
+        const marks = n => `<rect y="${n}" height="${100 - n}"/><text y="${n}">Value</text>`
+            + `<circle cy="${n}" r="${n}"/><polygon points="0,${n} 10,${n}"/>`;
+        const host = plot(marks(10));
+        await replace(host, marks(30));
+        await frame(50);
+        equal(host.querySelector('rect').getAttribute('height'), '80');
+        equal(host.querySelector('text').getAttribute('y'), '20');
+        equal(host.querySelector('circle').getAttribute('r'), '20');
+        equal(host.querySelector('polygon').getAttribute('points'), '0,20 10,20');
+    }],
+    ['zero duration leaves the new drawing in place', async () => {
+        const host = plot();
+        host.style.setProperty('--test-duration', '0ms');
+        await replace(host, line(second));
+        await frame(50);
+        equal(path(host).getAttribute('d'), second);
+    }],
+    ['reduced motion cancels an earlier attribute tween', async () => {
+        const host = plot();
+        path(host).setAttribute('d', second);
+        await flush();
+        await frame(25);
+        reduced = true;
+        path(host).setAttribute('d', third);
+        await flush();
+        await frame(50);
+        equal(path(host).getAttribute('d'), third);
+    }],
+    ['removal stops writing detached geometry', async () => {
+        const host = plot();
+        path(host).setAttribute('d', second);
+        await flush();
+        await frame(25);
+        const old = path(host);
+        const visible = old.getAttribute('d');
+        await replace(host, '');
+        await frame(50);
+        equal(old.getAttribute('d'), visible);
+    }],
+    ['disposal settles the final geometry and removes the observer', async () => {
+        const host = plot();
+        await replace(host, line(second));
+        await frame(25);
+        unobservePlot(host);
+        equal(path(host).getAttribute('d'), second);
+        path(host).setAttribute('d', third);
+        await flush();
+        await frame(50);
+        equal(path(host).getAttribute('d'), third);
+    }],
+    ['charts have independent observers and teardown', async () => {
+        const a = plot();
+        const b = plot();
+        await replace(a, line(second));
+        await replace(b, line(third));
+        unobservePlot(a);
+        await frame(50);
+        equal(path(b).getAttribute('d'), 'M 0 30 L 10 40');
+    }],
+    ['own frame writes do not restart the animation', async () => {
+        const host = plot();
+        await replace(host, line(second));
+        await frame(50);
+        await frame(50);
+        await frame(50);
+        equal(path(host).getAttribute('d'), second);
+        equal(frames.size, 0);
+    }],
+];
+let failed = 0;
+const lines = [];
+for (const [name, run] of tests) {
+    try { await run(); lines.push(`PASS ${name}`); }
+    catch (e) { failed++; lines.push(`FAIL ${name}: ${e.message}`); }
+    finally {
+        for (const host of plots.splice(0)) { unobservePlot(host); host.remove(); }
+        reduced = false;
+        await frame(200);
+    }
+}
+performance.now = nativeNow;
+window.requestAnimationFrame = nativeRaf;
+window.cancelAnimationFrame = nativeCancel;
+window.matchMedia = nativeMatchMedia;
+results.textContent = `${tests.length - failed}/${tests.length} passed\n` + lines.join('\n');
+document.title = `${failed ? 'FAIL' : 'PASS'} Chart motion tests`;
+
+document.querySelector('#gallery-test').onclick = async () => {
+    const output = document.querySelector('#gallery-results');
+    output.textContent = 'Loading Gallery...';
+    document.querySelector('iframe')?.remove();
+    const iframe = document.createElement('iframe');
+    iframe.width = '1200';
+    iframe.height = '850';
+    iframe.src = '/components/charts#charts-animate-updates';
+    document.body.append(iframe);
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const until = async predicate => {
+        for (let i = 0; i < 150; i++) { if (predicate()) return; await sleep(100); }
+        throw Error('Gallery did not reach the expected state in 15 seconds');
+    };
+    let restore = () => {};
+    try {
+        await until(() => iframe.contentDocument.querySelector('#charts-animate-updates'));
+        const w = iframe.contentWindow;
+        const doc = iframe.contentDocument;
+        doc.querySelector('#charts-animate-updates').scrollIntoView();
+        await until(() => doc.querySelector('[data-testid="chart-update-data"]'));
+        await sleep(300);
+        const button = doc.querySelector('[data-testid="chart-update-data"]');
+        const toggle = button.parentElement.querySelector('input');
+        if (toggle?.checked) toggle.click();
+        await sleep(300);
+
+        const raf = w.requestAnimationFrame;
+        const cancel = w.cancelAnimationFrame;
+        const clock = w.performance.now.bind(w.performance);
+        let time = clock();
+        let id = 0;
+        const queued = new Map();
+        w.performance.now = () => time;
+        w.requestAnimationFrame = fn => { queued.set(++id, fn); return id; };
+        w.cancelAnimationFrame = key => queued.delete(key);
+        restore = () => { w.requestAnimationFrame = raf; w.cancelAnimationFrame = cancel; w.performance.now = clock; };
+        const advance = async ms => {
+            time += ms;
+            const callbacks = [...queued.values()];
+            queued.clear();
+            for (const fn of callbacks) fn(time);
+            await sleep(0);
+        };
+        const cases = [
+            ['chart-moving', 'path.flare-chart__line', 'd'],
+            ['chart-moving-bars', 'rect.flare-chart__bar', 'height'],
+            ['chart-moving-sparkline', 'path.flare-chart__line', 'd'],
+        ].map(([name, selector, attr]) => {
+            const host = doc.querySelector(`[data-testid="${name}"]`);
+            const el = host.querySelector(selector);
+            assert(el, `Missing ${name} geometry`);
+            return { name, host, selector, attr, el, before: el.getAttribute(attr),
+                structure: [...host.querySelector('svg').children].map(n => n.localName).join(',') };
+        });
+        const records = [];
+        const observer = new w.MutationObserver(batch => records.push(...batch));
+        for (const c of cases) observer.observe(c.host, { subtree: true, childList: true, attributes: true });
+        button.click();
+        await until(() => cases.every(c => c.host.querySelector(c.selector) !== c.el));
+        await sleep(0);
+        for (const c of cases) {
+            const structure = [...c.host.querySelector('svg').children].map(n => n.localName).join(',');
+            assert(c.host.querySelector(c.selector).getAttribute(c.attr) === c.before,
+                `${c.name} did not rewind; SVG before: ${c.structure}; after: ${structure}; queued frames: ${queued.size}`);
+        }
+        await advance(80);
+        for (const c of cases) c.middle = c.host.querySelector(c.selector).getAttribute(c.attr);
+        await advance(2000);
+        observer.disconnect();
+        const report = [];
+        for (const c of cases) {
+            const end = c.host.querySelector(c.selector).getAttribute(c.attr);
+            assert(c.middle !== c.before && c.middle !== end, `${c.name} has no intermediate geometry`);
+            report.push(`PASS ${c.name}: replaced node, visible origin, intermediate frame, destination`);
+        }
+        assert(records.some(r => r.type === 'childList'), 'Blazor must replace the markup');
+        output.textContent = report.join('\n') + `\nDOM records: ${records.length}`;
+    } catch (e) { output.textContent = `FAIL Gallery: ${e.message}`; }
+    finally { restore(); }
+};
+</script>
+</html>

@@ -3332,4 +3332,12 @@
   <data name="Anchor_Copied" xml:space="preserve">
     <value>Link copied</value>
   </data>
+  <data name="Charts_UpdatesLive" xml:space="preserve"><value>Live updates every two seconds</value></data>
+  <data name="Charts_UpdatesEnter" xml:space="preserve"><value>Show the entry animation too</value></data>
+  <data name="Charts_UpdateData" xml:space="preserve"><value>Update data</value></data>
+  <data name="Charts_UpdatesInstant" xml:space="preserve"><value>Instant update</value></data>
+  <data name="Charts_UpdatesMoving" xml:space="preserve"><value>AnimateUpdates - moving points</value></data>
+  <data name="Charts_UpdatesRedraw" xml:space="preserve"><value>Animate - drawing from the start</value></data>
+  <data name="Charts_UpdatesBars" xml:space="preserve"><value>Moving bars and value labels</value></data>
+  <data name="Charts_UpdatesSparkline" xml:space="preserve"><value>Sparkline with animated updates</value></data>
 </root>

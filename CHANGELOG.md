@@ -3,6 +3,14 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.33.1] - 2026-09-07
+
+### Fixed
+
+- `FlareChart.AnimateUpdates` now animates data updates when Blazor replaces the SVG drawing,
+  including sparklines, bars and value labels. Updates during an animation continue from the
+  visible position. Changes to the drawing's structure still take effect immediately.
+
 ## [0.33.0] - 2026-09-06
 
 ### Changed

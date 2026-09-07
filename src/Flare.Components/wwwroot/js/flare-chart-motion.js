@@ -1,21 +1,4 @@
-// Flare chart motion: walks a chart's geometry from one dataset to the next.
-//
-// A new Data replaces the plot's markup, so the new numbers are simply written into the SVG
-// attributes and the browser repaints them instantly - twenty points teleport. This watches those
-// attributes and moves them, so a value that CHANGED reads as a move rather than as a different
-// picture. It is not the enter animation (`Animate`, `stroke-dashoffset` on the line): that one
-// redraws the series from nothing, which on a chart updating every three seconds is worse than no
-// animation at all.
-//
-// THE INTEROP COST OF AN ANIMATED UPDATE IS ZERO. A MutationObserver, not a call per update: the
-// browser already knows precisely which attributes changed and what they were, so asking .NET would
-// mean marshalling the geometry of every element twice per update - on a component whose whole claim
-// is that it draws itself without JS.
-//
-// Not `transition: d` in CSS either. `d` as an animatable property is not carried by every engine,
-// and a library cannot ship motion that works in two of the three. Attribute tweening works
-// everywhere by construction, and it covers bars, slices and radar spokes as well as the line: all of
-// a chart's geometry is numbers inside attributes.
+// Interpolates SVG geometry after attribute changes or Blazor markup replacement.
 
 import { registry } from './flare-dom.js';
 
@@ -52,9 +35,14 @@ function _shape(value) {
 
 // Same drawing, different numbers. No sentinel to substitute into the text: a placeholder is a
 // character that then must not appear in the value, and an invisible one in source is a trap.
-function _sameShape(a, b) {
+function _sameShape(a, b, attr) {
     if (a.parts.length !== b.parts.length) return false;
-    for (let i = 0; i < a.parts.length; i++) if (a.parts[i] !== b.parts[i]) return false;
+    for (let i = 0; i < a.parts.length; i++) {
+        if (a.parts[i] !== b.parts[i]) return false;
+        // SVG arc flags accept only 0 or 1; a changed flag is a different path shape.
+        if (attr === 'd' && /[Aa]\s*$/.test(a.parts[i]) &&
+            (a.nums[i + 3] !== b.nums[i + 3] || a.nums[i + 4] !== b.nums[i + 4])) return false;
+    }
     return true;
 }
 
@@ -103,38 +91,80 @@ function _easing(value) {
     };
 }
 
-function _onMutations(plot, vars, records) {
+function _snapshot(el) {
+    return { el, children: Array.from(el.children, _snapshot) };
+}
+
+function _sameElement(a, b) {
+    if (a === b) return true;
+    if (a.localName !== b.localName || a.namespaceURI !== b.namespaceURI) return false;
+    const identity = el => Array.from(el.attributes).filter(attr => !ATTRS.includes(attr.name));
+    const before = identity(a);
+    const after = identity(b);
+    return before.length === after.length && before.every(attr => b.getAttribute(attr.name) === attr.value);
+}
+
+function _replacements(before, after, from) {
+    if (!_sameElement(before.el, after.el)) return;
+    if (before.el !== after.el) {
+        const original = from.get(before.el);
+        from.set(after.el, new Map(ATTRS.map(attr =>
+            [attr, original?.has(attr) ? original.get(attr) : before.el.getAttribute(attr)])));
+    }
+    // Position identifies a mark only while its sibling structure stays the same.
+    if (before.children.length !== after.children.length) return;
+    for (let i = 0; i < before.children.length; i++) {
+        _replacements(before.children[i], after.children[i], from);
+    }
+}
+
+function _finishPlot(plot) {
+    for (const [el, attrs] of _tweens) {
+        for (const [attr, tw] of attrs) {
+            if (tw.plot !== plot) continue;
+            if (plot.contains(el)) el.setAttribute(attr, tw.target);
+            attrs.delete(attr);
+        }
+        if (!attrs.size) _tweens.delete(el);
+    }
+    if (!_tweens.size && _raf) { cancelAnimationFrame(_raf); _raf = 0; }
+}
+
+function _onMutations(plot, vars, from) {
+    // A hidden tab can keep receiving data while its frame loop is suspended.
+    for (const [el, attrs] of _tweens) {
+        for (const [attr, tw] of attrs) {
+            if (!el.isConnected || (tw.plot === plot && !plot.contains(el))) attrs.delete(attr);
+        }
+        if (!attrs.size) _tweens.delete(el);
+    }
     const style = getComputedStyle(plot);
     const duration = _ms(style.getPropertyValue(vars.duration));
-    if (!duration || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const animate = duration > 0 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
     const ease = _easing(style.getPropertyValue(vars.easing));
-
-    // The FIRST old value in the batch is where the element visually is; the last new value is where
-    // it is going, and that one is simply what the DOM holds now. An attribute written twice in one
-    // batch would otherwise start its walk from the halfway state.
-    const from = new Map();
-    for (const r of records) {
-        let attrs = from.get(r.target);
-        if (!attrs) from.set(r.target, attrs = new Map());
-        if (!attrs.has(r.attributeName)) attrs.set(r.attributeName, r.oldValue);
-    }
-
     const now = performance.now();
     for (const [el, attrs] of from) {
+        if (!plot.contains(el)) continue;
         for (const [attr, was] of attrs) {
             const is = el.getAttribute(attr);
-            if (was == null || is == null || was === is) continue;
+            const running = _tweens.get(el) ?? new Map();
+            running.delete(attr);
+            if (!running.size) _tweens.delete(el);
+            if (!animate || was == null || is == null || was === is) continue;
 
             const a = _shape(was);
             const b = _shape(is);
-            if (!_sameShape(a, b)) continue;
+            if (!_sameShape(a, b, attr)) continue;
 
-            let running = _tweens.get(el);
-            if (!running) _tweens.set(el, running = new Map());
-            running.set(attr, { plot, parts: b.parts, from: a.nums, to: b.nums, start: now, duration, ease });
+            _tweens.set(el, running);
+            running.set(attr, { plot, parts: b.parts, from: a.nums, to: b.nums, target: is, start: now, duration, ease });
+            // Mutation observers run before paint, so the final drawing must be rewound here.
+            el.setAttribute(attr, was);
         }
     }
 
+    if (!animate) _finishPlot(plot);
+    _observers.get(plot).takeRecords();
     if (_tweens.size && !_raf) _raf = requestAnimationFrame(_tick);
 }
 
@@ -142,9 +172,10 @@ function _tick(now) {
     _raf = 0;
     for (const [el, attrs] of _tweens) {
         for (const [attr, tw] of attrs) {
+            if (!el.isConnected || !tw.plot.contains(el)) { attrs.delete(attr); continue; }
             const p = Math.min(1, (now - tw.start) / tw.duration);
             const e = tw.ease(p);
-            el.setAttribute(attr, _write(tw.parts, tw.from.map((v, i) => v + (tw.to[i] - v) * e)));
+            el.setAttribute(attr, p >= 1 ? tw.target : _write(tw.parts, tw.from.map((v, i) => v + (tw.to[i] - v) * e)));
             if (p >= 1) attrs.delete(attr);
         }
         if (!attrs.size) _tweens.delete(el);
@@ -166,21 +197,35 @@ export function observePlot(plot, durationVar, easingVar) {
     if (!plot || !durationVar || !easingVar || _plots.has(plot)) return;
 
     const vars = { duration: durationVar, easing: easingVar };
-    const observer = new MutationObserver(records => _onMutations(plot, vars, records));
-    observer.observe(plot, { subtree: true, attributes: true, attributeOldValue: true, attributeFilter: ATTRS });
+    let drawing = _snapshot(plot);
+    const observer = new MutationObserver(records => {
+        const from = new Map();
+        // Capture the first old value even when the same batch later replaces that node.
+        for (const r of records) {
+            if (r.type !== 'attributes') continue;
+            let attrs = from.get(r.target);
+            if (!attrs) from.set(r.target, attrs = new Map());
+            if (!attrs.has(r.attributeName)) attrs.set(r.attributeName, r.oldValue);
+        }
+        if (records.some(r => r.type === 'childList')) {
+            const next = _snapshot(plot);
+            _replacements(drawing, next, from);
+            drawing = next;
+        }
+        _onMutations(plot, vars, from);
+    });
+    observer.observe(plot, { subtree: true, childList: true, attributes: true, attributeOldValue: true, attributeFilter: ATTRS });
     _observers.set(plot, observer);
 
     _plots.keep(plot, () => {
         observer.disconnect();
         _observers.delete(plot);
-        for (const [el, attrs] of _tweens) {
-            for (const [attr, tw] of attrs) if (tw.plot === plot) attrs.delete(attr);
-            if (!attrs.size) _tweens.delete(el);
-        }
+        _finishPlot(plot);
+        drawing = null;
     });
 }
 
-// Stops watching, and abandons whatever this chart still had in flight.
+// Stops watching and settles this chart's remaining motion at its destination.
 export function unobservePlot(plot) {
     _plots.drop(plot);
 }

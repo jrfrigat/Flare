@@ -10944,5 +10944,29 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Anchor_Copied", resourceCulture);
             }
         }
+        /// <summary>Looks up the localized text: Live updates every two seconds.</summary>
+        public static string Charts_UpdatesLive => ResourceManager.GetString("Charts_UpdatesLive", resourceCulture);
+
+        /// <summary>Looks up the localized text: Show the entry animation too.</summary>
+        public static string Charts_UpdatesEnter => ResourceManager.GetString("Charts_UpdatesEnter", resourceCulture);
+
+        /// <summary>Looks up the localized text: Update data.</summary>
+        public static string Charts_UpdateData => ResourceManager.GetString("Charts_UpdateData", resourceCulture);
+
+        /// <summary>Looks up the localized text: Instant update.</summary>
+        public static string Charts_UpdatesInstant => ResourceManager.GetString("Charts_UpdatesInstant", resourceCulture);
+
+        /// <summary>Looks up the localized text: AnimateUpdates - moving points.</summary>
+        public static string Charts_UpdatesMoving => ResourceManager.GetString("Charts_UpdatesMoving", resourceCulture);
+
+        /// <summary>Looks up the localized text: Animate - drawing from the start.</summary>
+        public static string Charts_UpdatesRedraw => ResourceManager.GetString("Charts_UpdatesRedraw", resourceCulture);
+
+        /// <summary>Looks up the localized text: Moving bars and value labels.</summary>
+        public static string Charts_UpdatesBars => ResourceManager.GetString("Charts_UpdatesBars", resourceCulture);
+
+        /// <summary>Looks up the localized text: Sparkline with animated updates.</summary>
+        public static string Charts_UpdatesSparkline => ResourceManager.GetString("Charts_UpdatesSparkline", resourceCulture);
+
     }
 }
