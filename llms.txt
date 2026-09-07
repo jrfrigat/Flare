@@ -1,6 +1,6 @@
 # Flare
 
-> Flare is an MIT-licensed, theme-agnostic UI component library for .NET 10 Blazor (WebAssembly and Server). It ships 100+ components (all prefixed `Flare*`) with zero baked-in styling, driven by one semantic token-based theming engine: you build your own design system, and every color/shape/size/motion comes from a theme you control. Seven production-ready preset design systems (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio) ship as independent, optional packages - reference only the ones you use, or author a fully custom theme from scratch. Component variants/sizes are enums; two-way binding uses `@bind-Value`; themes and overlay services are wired through DI (`AddFlare`) and a `<FlareThemeProvider>` wrapper. An opt-in Dynamic Color palette (`opts.UseDynamicPalette = true`) derives colors from the OS/browser accent via the active theme's generator.
+> Flare is an MIT-licensed, theme-agnostic UI component library for .NET 10 Blazor (WebAssembly and Server). It ships 190+ components (all prefixed `Flare*`) with zero baked-in styling, driven by one semantic token-based theming engine: you build your own design system, and every color/shape/size/motion comes from a theme you control. Seven production-ready preset design systems (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio) ship as independent, optional packages - reference only the ones you use, or author a fully custom theme from scratch. Component variants/sizes are enums; two-way binding uses `@bind-Value`; themes and overlay services are wired through DI (`AddFlare`) and a `<FlareThemeProvider>` wrapper. An opt-in Dynamic Color palette (`opts.UseDynamicPalette = true`) derives colors from the OS/browser accent via the active theme's generator.
 
 Key facts for code generation:
 - Install: `dotnet add package Flare.Blazor` plus one theme package (e.g. `Flare.Theme.MaterialDesign3Expressive`).
@@ -8,13 +8,21 @@ Key facts for code generation:
 - Styles: reference `_content/Flare.Components/js/flare-bootstrap.js` and `_content/Flare.Components/css/flare-components.css` in `<head>`.
 - Wrap the router in `<FlareThemeProvider>`; place `<FlareDialogProvider/>`, `<FlareSnackbarProvider/>`, `<FlareMessageBoxProvider/>` once in the layout.
 - Forms use Blazor `EditForm` + `DataAnnotationsValidator`; Flare fields integrate automatically.
+- `FlareDataGrid` ships grouping, column bands, frozen columns, multi-sort, filtering and virtualization out of the box.
+- `FlareChart` draws pure SVG on the C# side - no charting library, no JS interop on the render path.
 
 ## Docs
 
 - [For AI Agents (full guide)](https://github.com/jrfrigat/Flare/blob/main/docs/en/ai-agents.md): Compact, machine-friendly reference: hard rules, setup, patterns, services, forms, data grid, and the full component catalog with real names.
 - [Getting Started](https://github.com/jrfrigat/Flare/blob/main/docs/en/getting-started.md): Install, DI setup, styles, theme provider, first component, forms, dialogs.
-- [API Reference](https://jrfrigat.github.io/Flare/api/): Generated reference for every public component, parameter, method, and enum - part of the gallery itself, built from the XML docs by `tools/Flare.ApiDocGen`.
 - [Architecture](https://github.com/jrfrigat/Flare/blob/main/docs/en/architecture.md): Module map, component patterns, token system, theming engine, services.
+
+## API Reference
+
+- [Index](https://github.com/jrfrigat/Flare/blob/main/docs/api/README.md): Every public component and enum in one list - generated from the assemblies' XML docs by `tools/Flare.ApiDocGen`, not editable by hand.
+- [Component specs](https://github.com/jrfrigat/Flare/tree/main/docs/api/components): One markdown file per component: full parameter tables (name, type, default, description), public methods, and the inheritance chain.
+- [Enumerations](https://github.com/jrfrigat/Flare/tree/main/docs/api/enums): One markdown file per enum (variants, sizes, placements, ...) with per-value docs.
+- [Browsable site](https://jrfrigat.github.io/Flare/api/): The same generated reference rendered in the gallery.
 
 ## Optional
 

@@ -360,6 +360,7 @@ CI запускается при каждом пуше в `main`/`master`: сб�
 | [architecture](docs/ru/architecture.md) - [en](docs/en/architecture.md) | RU - EN | Карта модулей, паттерны компонентов, архитектура тем |
 | [theme-creation-guide](docs/ru/theme-creation-guide.md) - [en](docs/en/theme-creation-guide.md) | RU - EN | Создание тем: дизайн-токены, палитры, кастомные темы |
 | [component-conventions](docs/ru/component-conventions.md) - [en](docs/en/component-conventions.md) | RU - EN | Конвенции кода компонентов (CSS-токены, единый цвет, XML-доки) |
+| [Full API Reference](docs/api/README.md) | EN | Сгенерировано автоматически на основе общедоступных сборок и XML-документации. Содержит подробные технические характеристики всех компонентов. |
 
 ---
 

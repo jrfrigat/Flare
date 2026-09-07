@@ -1,10 +1,11 @@
 # Flare для ИИ-агентов
 
-> [English version ->](../en/ai-agents.md) - [Начало работы](getting-started.md) - [API Reference](https://jrfrigat.github.io/Flare/api)
+> [English version ->](../en/ai-agents.md) - [Начало работы](getting-started.md) - [API Reference](../api/README.md)
 
 Компактный, насыщенный справочник для LLM-агентов, генерирующих код Blazor с **Flare**.
 Прочитайте один раз - и сможете писать корректную разметку Flare без догадок. Точные имена и типы
-параметров любого компонента смотрите в сгенерированном [API Reference](https://jrfrigat.github.io/Flare/api).
+параметров любого компонента смотрите в сгенерированном [API Reference](../api/README.md): по одной
+markdown-странице на компонент в [docs/api/components](../api/components) и на enum в [docs/api/enums](../api/enums).
 
 ---
 
@@ -199,14 +200,15 @@ CSS темы (шрифты, базовые токены) подключаетс�
 ```
 Таблица поддерживает сортировку (в т.ч. много-колоночную), фильтрацию, пагинацию, группировку,
 inline/batch-редактирование, выделение, переупорядочивание/изменение размера/видимости колонок,
-виртуализацию и бандлы колонок. Полный набор параметров `FlareDataGrid` / `FlareColumn` -
-в [API Reference](https://jrfrigat.github.io/Flare/api).
+виртуализацию и бандлы колонок. Полный набор параметров - в сгенерированных спецификациях:
+[FlareDataGrid](../api/components/flare-components-flaredatagrid.md) /
+[FlareColumn](../api/components/flare-components-flarecolumn.md).
 
 ---
 
 ## 9. Каталог компонентов
 
-Реальные имена всех компонентов (параметры каждого - в [API Reference](https://jrfrigat.github.io/Flare/api)):
+Реальные имена всех компонентов (параметры каждого - в [API Reference](../api/README.md)):
 
 **Поля ввода и формы:** `FlareTextField`, `FlareTextArea`, `FlareNumericField`, `FlarePasswordField`,
 `FlareMaskedField`, `FlareOtpField`, `FlareTagField`, `FlareSelect`, `FlareMultiSelect`,
@@ -280,7 +282,7 @@ inline/batch-редактирование, выделение, переупор�
 
 ## 11. Куда смотреть дальше
 
-- **[API Reference](https://jrfrigat.github.io/Flare/api)** - каждый public-тип, параметр и enum (сгенерировано из XML-доков).
+- **[API Reference](../api/README.md)** - каждый public-тип, параметр и enum в виде markdown в `docs/api`, сгенерировано из XML-доков утилитой `tools/Flare.ApiDocGen`; browsable-версия - https://jrfrigat.github.io/Flare/api.
 - **[Начало работы](getting-started.md)** - та же настройка подробнее.
 - **[Архитектура](architecture.md)** - модули, токены, сервисы, движок темизации.
 - **Gallery** - живые интерактивные примеры каждого компонента (в `samples/Flare.Gallery`).

@@ -1,10 +1,11 @@
 # Flare for AI Agents
 
-> [Русская версия ->](../ru/ai-agents.md) - [Getting Started](getting-started.md) - [API Reference](https://jrfrigat.github.io/Flare/api)
+> [Русская версия ->](../ru/ai-agents.md) - [Getting Started](getting-started.md) - [API Reference](../api/README.md)
 
 A compact, high-signal reference for LLM coding agents that generate Blazor code with **Flare**.
 Read this once and you can produce correct Flare markup without guessing. For exact parameter names
-and types of any component, consult the generated [API Reference](https://jrfrigat.github.io/Flare/api).
+and types of any component, consult the generated [API Reference](../api/README.md): one markdown page
+per component in [docs/api/components](../api/components) and per enum in [docs/api/enums](../api/enums).
 
 ---
 
@@ -197,14 +198,15 @@ Validation messages render on the Flare field automatically via the shared `Edit
 </FlareDataGrid>
 ```
 The grid supports sorting, single/multi-column sort, filtering, paging, grouping, inline/batch editing,
-selection, column reorder/resize/visibility, virtualization, and column bands. Check the
-[API Reference](https://jrfrigat.github.io/Flare/api) for the full `FlareDataGrid` / `FlareColumn` parameter set.
+selection, column reorder/resize/visibility, virtualization, and column bands. Check the generated
+specs for the full parameter sets: [FlareDataGrid](../api/components/flare-components-flaredatagrid.md) /
+[FlareColumn](../api/components/flare-components-flarecolumn.md).
 
 ---
 
 ## 9. Component catalog
 
-All real component names (consult the [API Reference](https://jrfrigat.github.io/Flare/api) for each one's parameters):
+All real component names (consult the [API Reference](../api/README.md) for each one's parameters):
 
 **Inputs & forms:** `FlareTextField`, `FlareTextArea`, `FlareNumericField`, `FlarePasswordField`,
 `FlareMaskedField`, `FlareOtpField`, `FlareTagField`, `FlareSelect`, `FlareMultiSelect`,
@@ -278,7 +280,7 @@ See [Component Conventions](component-conventions.md) and [Architecture](archite
 
 ## 11. Where to look next
 
-- **[API Reference](https://jrfrigat.github.io/Flare/api)** - every public type, parameter, and enum (generated from XML docs).
+- **[API Reference](../api/README.md)** - every public type, parameter, and enum as markdown under `docs/api`, generated from XML docs by `tools/Flare.ApiDocGen`; browsable in the gallery at https://jrfrigat.github.io/Flare/api.
 - **[Getting Started](getting-started.md)** - the same setup with more prose.
 - **[Architecture](architecture.md)** - modules, tokens, services, theming engine.
 - **Gallery** - interactive live examples of every component (in `samples/Flare.Gallery`).
