@@ -19,6 +19,7 @@ public partial class FlareProgress
         "--_circ-width",
         Css.Tokens.ProgressField.CircularGap,
         Css.Tokens.ProgressField.RingWaveAmplitude,
+        Css.Tokens.ProgressField.RingWaveLength,
         Css.Tokens.ProgressField.RingWaves,
     ];
 

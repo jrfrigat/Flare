@@ -113,9 +113,39 @@
   background: var(--flare-progress-stop-color);
 }
 
+@property --_progress-head {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --_progress-tail {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+/* Indeterminate motion uses two segments whose leading and trailing ends move independently.
+   Logical insets mirror the motion automatically in RTL. */
 .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
-  width: 40% !important;
-  animation: flare-progress-linear 1.5s infinite var(--flare-motion-easing-standard);
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(var(--_progress-tail) * 100%);
+  inset-inline-end: calc((1 - var(--_progress-head)) * 100%);
+  width: auto !important;
+  transition: none;
+}
+
+.flare-progress__bar--indeterminate-first {
+  animation:
+    flare-progress-first-head var(--flare-progress-linear-indeterminate-duration) infinite,
+    flare-progress-first-tail var(--flare-progress-linear-indeterminate-duration) infinite;
+}
+
+.flare-progress__bar--indeterminate-second {
+  animation:
+    flare-progress-second-head var(--flare-progress-linear-indeterminate-duration) infinite,
+    flare-progress-second-tail var(--flare-progress-linear-indeterminate-duration) infinite;
 }
 
 /* ==========================================================================
@@ -128,7 +158,7 @@
    wavy-height (with-wave height), wave-length, wave-amplitude, wave-speed.
    ========================================================================== */
 .flare-progress--wavy.flare-progress--linear {
-  height: var(--flare-progress-wavy-height);
+  height: var(--_wave-height);
   background: transparent;
 }
 
@@ -138,6 +168,10 @@
   border-radius: 0;
   background: transparent;
   color: var(--fc-main, var(--flare-color-primary));   /* stroke="currentColor" */
+}
+
+.flare-progress--wavy.flare-progress--linear .flare-progress__wave path {
+  stroke-width: var(--_wave-stroke);
 }
 
 .flare-progress__wave {
@@ -155,13 +189,28 @@
   height: var(--_lin-height);
 }
 
+.flare-progress--wavy.flare-progress--linear.flare-progress--indeterminate .flare-progress__remain {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  margin: 0;
+}
+
+.flare-progress--wavy.flare-progress--linear.flare-progress--indeterminate .flare-progress__wave {
+  animation: flare-progress-indeterminate-wave
+             var(--flare-progress-linear-indeterminate-duration)
+             var(--flare-progress-linear-indeterminate-easing) infinite;
+}
+
 /* Flow: shift the wave by exactly one wavelength for a seamless loop. */
 @keyframes flare-progress-wave {
   to { transform: translateX(calc(-1 * var(--_wave-period))); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .flare-progress__wave { animation: none; }
+@keyframes flare-progress-indeterminate-wave {
+  to { transform: translateX(calc(-3 * var(--_wave-period))); }
 }
 
 /* ==========================================================================
@@ -172,7 +221,7 @@
    travel around the active arc.
    ========================================================================== */
 .flare-progress--wavy.flare-progress--circular .flare-progress__track,
-.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
+.flare-progress--wavy.flare-progress--circular:not(.flare-progress--indeterminate) .flare-progress__indicator {
   stroke-linejoin: round;
 }
 
@@ -224,13 +273,24 @@
 
 /* The crests travelling are movement; the arc itself is information. Suppressing only the animation
    leaves the base stroke-dashoffset above in charge, so the gap before the arc survives. */
-@media (prefers-reduced-motion: reduce) {
-  .flare-progress--wavy.flare-progress--circular .flare-progress__indicator { animation: none; }
+@keyframes flare-progress-first-head {
+  0% { --_progress-head: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  57.1429%, 100% { --_progress-head: 1; }
 }
 
-@keyframes flare-progress-linear {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(350%); }
+@keyframes flare-progress-first-tail {
+  0%, 14.2857% { --_progress-tail: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  71.4286%, 100% { --_progress-tail: 1; }
+}
+
+@keyframes flare-progress-second-head {
+  0%, 37.1429% { --_progress-head: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  85.7143%, 100% { --_progress-head: 1; }
+}
+
+@keyframes flare-progress-second-tail {
+  0%, 51.4286% { --_progress-tail: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  100% { --_progress-tail: 1; }
 }
 
 /* Circular */
@@ -272,7 +332,46 @@
   animation: flare-progress-dash 1.4s ease-in-out infinite;
 }
 
+.flare-progress--wavy.flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
+  animation: flare-progress-wavy-rotate var(--flare-progress-circular-wavy-indeterminate-rotation-duration) linear infinite;
+}
+
+.flare-progress--wavy.flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
+  stroke-dashoffset: 0;
+  animation: flare-progress-wavy-dash var(--flare-progress-circular-wavy-indeterminate-progress-duration)
+             var(--flare-motion-easing-standard) infinite;
+}
+
+.flare-progress--wavy.flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
+  animation: flare-progress-wavy-track var(--flare-progress-circular-wavy-indeterminate-progress-duration)
+             var(--flare-motion-easing-standard) infinite;
+}
+
 @keyframes flare-progress-rotate { 100% { transform: rotate(360deg); } }
+
+@keyframes flare-progress-wavy-rotate {
+  0% { transform: rotate(0deg); }
+  13.3333% { transform: rotate(90deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes flare-progress-wavy-dash {
+  0%, 16.6667% { stroke-dasharray: 10 90; }
+  50%, 66.6667% { stroke-dasharray: 87 13; }
+  100% { stroke-dasharray: 10 90; }
+}
+
+@keyframes flare-progress-wavy-track {
+  0%, 16.6667% {
+    stroke-dasharray: 0 calc(10 + var(--_ring-gap)) max(0, calc(90 - 2 * var(--_ring-gap))) 100;
+  }
+  50%, 66.6667% {
+    stroke-dasharray: 0 calc(87 + var(--_ring-gap)) max(0, calc(13 - 2 * var(--_ring-gap))) 100;
+  }
+  100% {
+    stroke-dasharray: 0 calc(10 + var(--_ring-gap)) max(0, calc(90 - 2 * var(--_ring-gap))) 100;
+  }
+}
 
 /* Buffer variant */
 .flare-progress--buffer .flare-progress__track { background: transparent; }
@@ -298,4 +397,32 @@
   0%   { stroke-dasharray: 0.88 100; stroke-dashoffset: 0; }
   50%  { stroke-dasharray: 79.58 100; stroke-dashoffset: -30.95; }
   100% { stroke-dasharray: 79.58 100; stroke-dashoffset: -100; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar,
+  .flare-progress__wave,
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg,
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__track,
+  .flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
+    animation: none;
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar--indeterminate-first {
+    --_progress-head: 0.7;
+    --_progress-tail: 0.3;
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar--indeterminate-second {
+    display: none;
+  }
+
+  .flare-progress--wavy.flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
+    stroke-dasharray: 40 60;
+  }
+
+  .flare-progress--wavy.flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
+    stroke-dasharray: 0 calc(40 + var(--_ring-gap)) max(0, calc(60 - 2 * var(--_ring-gap))) 100;
+  }
 }

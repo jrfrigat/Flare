@@ -33,6 +33,10 @@ public static class Progress
     public const string Track = "flare-progress__track";
     /// <summary>The <c>flare-progress__bar</c> CSS class.</summary>
     public const string Bar = "flare-progress__bar";
+    /// <summary>The first moving segment of an indeterminate linear indicator.</summary>
+    public const string IndeterminateFirst = "flare-progress__bar--indeterminate-first";
+    /// <summary>The second moving segment of an indeterminate linear indicator.</summary>
+    public const string IndeterminateSecond = "flare-progress__bar--indeterminate-second";
     /// <summary>The <c>flare-progress__buffer-fill</c> CSS class.</summary>
     public const string BufferFill = "flare-progress__buffer-fill";
     /// <summary>The <c>flare-progress__indicator</c> CSS class.</summary>

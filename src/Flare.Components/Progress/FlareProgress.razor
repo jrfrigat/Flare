@@ -23,7 +23,8 @@
                 @if (_wavyActive)
                 {
                     <path class="@Css.Classes.Progress.Indicator" d="@_wavyRingPath" pathLength="100" fill="none"
-                          stroke-dasharray="@_wavyIndicatorDash" style="@_wavyRingLead" />
+                          stroke-dasharray="@(_indeterminate ? null : _wavyIndicatorDash)"
+                          style="@(_indeterminate ? null : _wavyRingLead)" />
                 }
                 else
                 {
@@ -44,31 +45,54 @@
 }
 else if (Variant == ProgressVariant.Linear && _wavyActive)
 {
-    @* Wavy linear: split-track layout (active bar + gap + remaining track +
-       trailing stop indicator). The active bar holds a continuous sine path (constant wavelength,
-       amplitude and speed from theme tokens) that is clipped to the bar and translated one
-       wavelength per cycle for a seamless flow. The remaining track stays a flat line. *@
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Wavy, Css.Classes.Progress.Split, _sizeClass, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Wavy, _indeterminate ? Css.Classes.Progress.Indeterminate : Css.Classes.Progress.Split, _sizeClass, _colorClass)"
          role="progressbar"
-         aria-valuenow="@_clampedValue.ToString("F0")"
+         aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{Style}")"
+         style="@($"{_colorTokens}--_wave-height:{_inv(_wavyHeightPx)}px;--_wave-stroke:{_inv(_linearStrokePx)}px;{Style}")"
          @attributes="AdditionalAttributes">
-        <div class="@Css.Classes.Progress.Bar" style="width:@(_clampedValue.ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%">
-            @* No viewBox: the pattern is measured in CSS pixels, independent of the fill width.
-               A repeating tile covers any bar length without stretching or a finite path limit. *@
-            <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
-                 style="@($"--_wave-period:{_inv(_waveLen)}px;")">
+        @if (_indeterminate)
+        {
+            <div class="@Css.Classes.Progress.Remain"></div>
+            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateFirst)">
+                <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                     style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
+                    <defs>
+                        <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
+                            <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
+                </svg>
+            </div>
+            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateSecond)">
+                <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                     style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
+                    <defs>
+                        <pattern id="@_linearWaveSecondId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
+                            <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="@($"url(#{_linearWaveSecondId})")" />
+                </svg>
+            </div>
+        }
+        else
+        {
+            <div class="@Css.Classes.Progress.Bar" style="width:@(_clampedValue.ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%">
+                <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                     style="@($"--_wave-period:{_inv(_waveLen)}px;")">
                 <defs>
                     <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_waveLen)" height="@_inv(_wavyHeightPx)">
-                        <path d="@_linWavePath" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            <path d="@_linWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
                     </pattern>
                 </defs>
                 <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
             </svg>
         </div>
-        <div class="@Css.Classes.Progress.Remain"></div>
+            <div class="@Css.Classes.Progress.Remain"></div>
+        }
     </div>
 }
 else if (Variant == ProgressVariant.Buffer)
@@ -108,8 +132,15 @@ else
         {
             <span class="@z.CssClass" style="@z.Style"></span>
         }
-        <div class="@Css.Classes.Progress.Bar"
-             style="@(_indeterminate ? null : $"width:{_clampedValue:F0}%")"></div>
+        @if (_indeterminate)
+        {
+            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateFirst)"></div>
+            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateSecond)"></div>
+        }
+        else
+        {
+            <div class="@Css.Classes.Progress.Bar" style="width:@($"{_clampedValue:F0}%")"></div>
+        }
         @if (!_indeterminate && !_hasZones)
         {
             <div class="@Css.Classes.Progress.Remain"></div>
@@ -227,17 +258,30 @@ else
     // WAVY - opt-in per theme via --flare-progress-wavy-enabled (1=on). A theme
     // that doesn't define it renders the plain bar/ring even when Wavy="true".
     // ===========================================================================================
-    private bool _wavyActive => Wavy && !_indeterminate && ReadTokenNum(Css.Tokens.ProgressField.WavyEnabled, 0) > 0;
+    private bool _wavyActive => Wavy && ReadTokenNum(Css.Tokens.ProgressField.WavyEnabled, 0) > 0;
 
-    private double _wavyHeightPx => ReadTokenNum(Css.Tokens.ProgressField.WavyHeight, 10);
+    private string _linearHeightToken => Size switch
+    {
+        TrackSize.Sm => Css.Tokens.ProgressField.LinearHeight.Sm,
+        TrackSize.Md => Css.Tokens.ProgressField.LinearHeight.Md,
+        TrackSize.Lg => Css.Tokens.ProgressField.LinearHeight.Lg,
+        TrackSize.Xl => Css.Tokens.ProgressField.LinearHeight.Xl,
+        _ => Css.Tokens.ProgressField.LinearHeight.Xs,
+    };
+    private double _linearStrokePx => ReadTokenNum(_linearHeightToken, 4);
+    private double _wavyHeightPx => Math.Max(
+        ReadTokenNum(Css.Tokens.ProgressField.WavyHeight, 10),
+        _linearStrokePx + 2 * _waveAmp);
     private double _waveLen => ReadTokenNum(Css.Tokens.ProgressField.WaveLength, 40);
+    private double _indeterminateWaveLen => ReadTokenNum(Css.Tokens.ProgressField.IndeterminateWaveLength, 20);
     private double _waveAmp => ReadTokenNum(Css.Tokens.ProgressField.WaveAmplitude, 3);
-    private string _waveSpeed => ReadTokenStr(Css.Tokens.ProgressField.WaveSpeed, "1s");
 
     private static string _inv(double v) => v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
 
     private readonly string _linearWaveId = $"flare-progress-wave-{Guid.NewGuid():N}";
+    private readonly string _linearWaveSecondId = $"flare-progress-wave-{Guid.NewGuid():N}";
     private string _linWavePath => BuildLinearWavePath(_waveLen, _waveAmp, _wavyHeightPx / 2);
+    private string _linIndeterminateWavePath => BuildLinearWavePath(_indeterminateWaveLen, _waveAmp, _wavyHeightPx / 2);
 
     // Cubic sine quarters meet at equal tangents. Extend one period on either side of the tile so
     // clipping its stroke never leaves a seam; only the middle period repeats in the SVG pattern.

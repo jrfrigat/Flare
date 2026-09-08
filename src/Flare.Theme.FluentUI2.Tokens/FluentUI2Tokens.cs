@@ -755,9 +755,15 @@ public class FluentUI2Tokens
         WavyEnabled = "0",
         WavyHeight = "10px",
         WaveLength = "40px",
+        IndeterminateWaveLength = "20px",
         WaveAmplitude = "3px",
         WaveSpeed = "1s",
+        LinearIndeterminateDuration = "1500ms",
+        LinearIndeterminateEasing = "var(--flare-motion-easing-standard)",
+        CircularWavyIndeterminateRotationDuration = "1400ms",
+        CircularWavyIndeterminateProgressDuration = "1400ms",
         RingWaves = "8",
+        RingWaveLength = "15px",
         RingWaveAmplitude = "1.6",
     };
 

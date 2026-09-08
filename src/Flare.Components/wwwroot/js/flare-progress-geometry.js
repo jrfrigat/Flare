@@ -31,7 +31,7 @@ function fit(state) {
     const indicator = svg.querySelector('.flare-progress__indicator');
     if (!track || !indicator) return;
 
-    const [stroke, gap, waveAmplitude, waveCount] = measures.map(box => nonnegative(box.getBBox().width));
+    const [stroke, gap, waveAmplitude, waveLength, waveCount] = measures.map(box => nonnegative(box.getBBox().width));
     const wavy = indicator.localName === 'path';
     const available = Math.max(0, (Math.min(width, height) - stroke) / 2);
     const amplitude = wavy ? Math.min(waveAmplitude, available / 2) : 0;
@@ -45,8 +45,11 @@ function fit(state) {
         attribute(circle, 'r', number(radius));
     }
     if (wavy) {
-        // More waves than pixels cannot be resolved. Bound work for arbitrary CSS input.
-        const waves = Math.max(3, Math.min(Math.floor(waveCount), Math.ceil(2 * Math.PI * radius)));
+        // A whole wave count closes the path without a seam. The wavelength is preferred so larger
+        // size steps keep the theme's frequency instead of stretching a fixed number of lobes.
+        // RingWaves remains the fallback for existing custom themes.
+        const requestedWaves = waveLength > 0 ? Math.floor(2 * Math.PI * radius / waveLength) : Math.floor(waveCount);
+        const waves = Math.max(3, Math.min(requestedWaves, Math.ceil(2 * Math.PI * radius)));
         const key = [cx, cy, radius, amplitude, waves].join(',');
         if (key !== state.pathKey) {
             state.pathKey = key;
@@ -58,7 +61,9 @@ function fit(state) {
     const rawValue = svg.getAttribute('data-value');
     const value = rawValue === null ? null : Math.min(100, nonnegative(Number(rawValue)));
     // Gap measures distance along the unperturbed centerline, as it does for the smooth track.
-    const gapPercent = radius > 0 && value > 0 && value < 100 ? Math.min(100, gap / (2 * Math.PI * radius) * 100) : 0;
+    const gapPercent = radius > 0 && (value === null || value > 0 && value < 100)
+        ? Math.min(100, gap / (2 * Math.PI * radius) * 100)
+        : 0;
     const arc = value === null ? 100 : Math.max(0, value - gapPercent);
     const rest = value === null ? 100 : Math.max(0, 100 - value - gapPercent);
     indicator.style.visibility = arc > 0 && radius > 0 ? '' : 'hidden';
@@ -67,7 +72,10 @@ function fit(state) {
     attribute(indicator, 'stroke-dasharray', value === null ? null : wavy
         ? `${number(arc)} ${number(100 - arc)}`
         : `0 ${number(gapPercent / 2)} ${number(arc)} 100`);
-    if (wavy) indicator.style.setProperty('--_ring-lead', number(-gapPercent / 2));
+    if (wavy && value !== null) indicator.style.setProperty('--_ring-lead', number(-gapPercent / 2));
+    else indicator.style.removeProperty('--_ring-lead');
+    if (wavy && value === null) track.style.setProperty('--_ring-gap', number(gapPercent));
+    else track.style.removeProperty('--_ring-gap');
     // Blazor can rewrite fallback d/dash/style attributes. Observe them, but discard our own writes.
     state.mutations.takeRecords();
 }
@@ -76,7 +84,7 @@ export function observe(element) {
     if (!element || observed.has(element)) return;
     const svg = element.querySelector('.flare-progress__svg');
     const measures = Array.from(element.querySelectorAll('.flare-progress__measure'));
-    if (!svg || measures.length !== 4) return;
+    if (!svg || measures.length !== 5) return;
     const state = { element, svg, measures };
     state.mutations = new MutationObserver(() => fit(state));
     state.resize = new ResizeObserver(() => fit(state));

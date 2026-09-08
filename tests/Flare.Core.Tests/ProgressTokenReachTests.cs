@@ -28,9 +28,11 @@ public sealed class ProgressTokenReachTests
     [InlineData(Css.Tokens.ProgressField.WavyEnabled)]
     [InlineData(Css.Tokens.ProgressField.WavyHeight)]
     [InlineData(Css.Tokens.ProgressField.WaveLength)]
+    [InlineData(Css.Tokens.ProgressField.IndeterminateWaveLength)]
     [InlineData(Css.Tokens.ProgressField.WaveAmplitude)]
     [InlineData(Css.Tokens.ProgressField.WaveSpeed)]
     [InlineData(Css.Tokens.ProgressField.RingWaves)]
+    [InlineData(Css.Tokens.ProgressField.RingWaveLength)]
     [InlineData(Css.Tokens.ProgressField.RingWaveAmplitude)]
     public void EveryTokenTheComponentLooksUp_IsInTheFlattenedDesign(string token)
     {
@@ -47,6 +49,11 @@ public sealed class ProgressTokenReachTests
         // Expressive's signature loading state. "0" here means Wavy renders a plain bar, which is
         // indistinguishable from the parameter being ignored - the shape the reported bug took.
         Assert.Equal("1", flat[Css.Tokens.ProgressField.WavyEnabled]);
+        Assert.Equal("20px", flat[Css.Tokens.ProgressField.IndeterminateWaveLength]);
+        Assert.Equal("15px", flat[Css.Tokens.ProgressField.RingWaveLength]);
+        Assert.Equal("1750ms", flat[Css.Tokens.ProgressField.LinearIndeterminateDuration]);
+        Assert.Equal("1500ms", flat[Css.Tokens.ProgressField.CircularWavyIndeterminateRotationDuration]);
+        Assert.Equal("6000ms", flat[Css.Tokens.ProgressField.CircularWavyIndeterminateProgressDuration]);
 
         // And the ring must break between the indicator and the remaining track.
         Assert.NotEqual("0", flat[Css.Tokens.ProgressField.CircularGap].TrimEnd('p', 'x'));

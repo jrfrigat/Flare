@@ -726,9 +726,15 @@ public class MaterialDesignTokens
         WavyEnabled = "1",
         WavyHeight = "10px",
         WaveLength = "40px",
+        IndeterminateWaveLength = "20px",
         WaveAmplitude = "3px",
         WaveSpeed = "1s",
+        LinearIndeterminateDuration = "1750ms",
+        LinearIndeterminateEasing = "cubic-bezier(0.3, 0, 0.8, 0.15)",
+        CircularWavyIndeterminateRotationDuration = "1500ms",
+        CircularWavyIndeterminateProgressDuration = "6000ms",
         RingWaves = "8",
+        RingWaveLength = "15px",
         RingWaveAmplitude = "1.6",
     };
 
