@@ -79,11 +79,11 @@ else
         }
         @if (_indeterminate)
         {
-            @if (_waveSupported)
+            @if (_segmentedIndeterminateSupported)
             {
                 <div class="@Css.Classes.Progress.Remain"></div>
             }
-            <div class="@BuildCssClass(Css.Classes.Progress.Bar, _waveSupported ? Css.Classes.Progress.IndeterminateFirst : null)">
+            <div class="@BuildCssClass(Css.Classes.Progress.Bar, _segmentedIndeterminateSupported ? Css.Classes.Progress.IndeterminateFirst : null)">
                 @if (_waveSupported)
                 {
                     <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
@@ -97,18 +97,21 @@ else
                     </svg>
                 }
             </div>
-            @if (_waveSupported)
+            @if (_segmentedIndeterminateSupported)
             {
                 <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateSecond)">
-                    <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
-                         style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
-                        <defs>
-                            <pattern id="@_linearWaveSecondId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
-                                <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
-                            </pattern>
-                        </defs>
-                        <rect width="100%" height="100%" fill="@($"url(#{_linearWaveSecondId})")" />
-                    </svg>
+                    @if (_waveSupported)
+                    {
+                        <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                             style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
+                            <defs>
+                                <pattern id="@_linearWaveSecondId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
+                                    <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="@($"url(#{_linearWaveSecondId})")" />
+                        </svg>
+                    }
                 </div>
             }
         }
@@ -252,6 +255,7 @@ else
     // supporting theme package owns the public token constants and publishes their values through
     // DesignTokens.Extended. Core only consumes the generic geometry contract.
     private bool _waveSupported => !string.IsNullOrWhiteSpace(Class) && ReadTokenRaw(_waveLengthToken) is not null;
+    private bool _segmentedIndeterminateSupported => ReadTokenRaw(_segmentedIndeterminateToken) is not null;
     private string _waveStyle => !_waveSupported ? string.Empty
         : $"--_wave-height:{_inv(_wavyHeightPx)}px;--_wave-stroke:{_inv(_linearStrokePx)}px;";
 

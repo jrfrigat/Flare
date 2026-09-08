@@ -28,7 +28,10 @@ function fit(state) {
     const width = parseFloat(style.width), height = parseFloat(style.height);
     if (!(width > 0 && height > 0)) return;
     const track = svg.querySelector('.flare-progress__track');
-    const indicator = svg.querySelector('.flare-progress__indicator');
+    // A theme renderer can add a path after the fallback circle. Measure and update that active
+    // path when it exists; querySelector used to keep selecting the hidden circle instead.
+    const indicator = svg.querySelector('path.flare-progress__indicator')
+        ?? svg.querySelector('.flare-progress__indicator');
     if (!track || !indicator) return;
 
     const [stroke, gap, waveAmplitude, waveLength, waveCount] = measures.map(box => nonnegative(box.getBBox().width));
@@ -74,7 +77,7 @@ function fit(state) {
         : `0 ${number(gapPercent / 2)} ${number(arc)} 100`);
     if (wavy && value !== null) indicator.style.setProperty('--_ring-lead', number(-gapPercent / 2));
     else indicator.style.removeProperty('--_ring-lead');
-    if (wavy && value === null) track.style.setProperty('--_ring-gap', number(gapPercent));
+    if (value === null) track.style.setProperty('--_ring-gap', number(gapPercent));
     else track.style.removeProperty('--_ring-gap');
     // Blazor can rewrite fallback d/dash/style attributes. Observe them, but discard our own writes.
     state.mutations.takeRecords();

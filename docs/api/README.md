@@ -130,7 +130,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlarePasswordField`](components/flare-components-flarepasswordfield.md)
 - [`FlarePopover`](components/flare-components-flarepopover.md)
 - [`FlarePopup`](components/flare-components-flarepopup.md) — The anchored dropdown panel for the select family (see the markup partial for the rationale). Owns the fixed-position anchoring and the single unified dismissal handler through IOverlayJsService, so no shell re-implements the open/position/dismiss lifecycle or a blur timer.
-- [`FlareProgress`](components/flare-components-flareprogress.md)
+- [`FlareProgress`](components/flare-components-flareprogress.md) — Displays determinate or indeterminate progress as a bar or circular indicator.
 - [`FlarePropertyGrid`](components/flare-components-ide-flarepropertygrid.md)
 - [`FlarePropertyGridItem`](components/flare-components-ide-flarepropertygriditem.md)
 - [`FlarePullToRefresh`](components/flare-components-flarepulltorefresh.md)

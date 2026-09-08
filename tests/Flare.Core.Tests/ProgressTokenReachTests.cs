@@ -22,12 +22,13 @@ public sealed class ProgressTokenReachTests
         new MaterialDesign3ExpressiveTheme().Design.FlattenDesign();
 
     [Theory]
-    // Exactly the names FlareProgress passes to ReadTokenNum.
+    // Exactly the theme extension names FlareProgress reads from the flattened design.
     [InlineData(Css.Tokens.ProgressField.CircularGap)]
     [InlineData(Css.Tokens.Md3e.Progress.Height)]
     [InlineData(Css.Tokens.Md3e.Progress.Length)]
     [InlineData(Css.Tokens.Md3e.Progress.IndeterminateLength)]
     [InlineData(Css.Tokens.Md3e.Progress.Amplitude)]
+    [InlineData(Css.Tokens.Md3e.Progress.LinearIndeterminateDuration)]
     [InlineData(Css.Tokens.Md3e.Progress.Speed)]
     [InlineData(Css.Tokens.Md3e.Progress.RingCount)]
     [InlineData(Css.Tokens.Md3e.Progress.RingLength)]
@@ -57,9 +58,14 @@ public sealed class ProgressTokenReachTests
     [Fact]
     public void FlatThemes_DoNotEmitWaveRendererTokens()
     {
-        Assert.False(new MaterialDesign3Theme().Design.FlattenDesign()
-            .ContainsKey(Css.Tokens.Md3e.Progress.Length));
-        Assert.False(new FluentUI2Theme().Design.FlattenDesign()
-            .ContainsKey(Css.Tokens.Md3e.Progress.Length));
+        foreach (var design in new[]
+                 {
+                     new MaterialDesign3Theme().Design.FlattenDesign(),
+                     new FluentUI2Theme().Design.FlattenDesign(),
+                 })
+        {
+            Assert.False(design.ContainsKey(Css.Tokens.Md3e.Progress.Length));
+            Assert.False(design.ContainsKey(Css.Tokens.Md3e.Progress.LinearIndeterminateDuration));
+        }
     }
 }

@@ -13,6 +13,7 @@ public class FlareProgressWavyTests : FlareTestContext
     private const string WaveLengthToken = "--flare-progress-wave-length";
     private const string IndeterminateWaveLengthToken = "--flare-progress-indeterminate-wave-length";
     private const string WaveAmplitudeToken = "--flare-progress-wave-amplitude";
+    private const string SegmentedIndeterminateToken = "--flare-progress-linear-indeterminate-duration";
 
     // Theme service that exposes the CSS geometry contract owned by a supporting theme package.
     private static TokenThemeService WavyTheme() => new(new Dictionary<string, string>
@@ -21,6 +22,7 @@ public class FlareProgressWavyTests : FlareTestContext
         [WaveLengthToken] = "40px",
         [IndeterminateWaveLengthToken] = "20px",
         [WaveAmplitudeToken] = "3px",
+        [SegmentedIndeterminateToken] = "1750ms",
         [Css.Tokens.ProgressField.CircularGap] = "4px",
         [Css.Tokens.ProgressField.LinearHeight.Md] = "4px",
     });
@@ -191,6 +193,33 @@ public class FlareProgressWavyTests : FlareTestContext
         Assert.Equal(2, cut.FindAll($"svg.{Css.Classes.Progress.Wave}").Count);
         Assert.All(cut.FindAll("pattern"), pattern => Assert.Equal("20", pattern.GetAttribute("width")));
         Assert.Equal(2, cut.FindAll("pattern").Select(pattern => pattern.Id).Distinct().Count());
+    }
+
+    [Fact]
+    public void SegmentedIndeterminate_ThemeOptIn_RendersTrackAndTwoFlatSegments()
+    {
+        var theme = new TokenThemeService(new Dictionary<string, string>
+        {
+            [SegmentedIndeterminateToken] = "1750ms",
+        });
+        var cut = Render<FlareProgress>(p => p
+            .AddCascadingValue<IThemeService>(theme)
+            .Add(x => x.Variant, ProgressVariant.Linear));
+
+        Assert.Single(cut.FindAll($".{Css.Classes.Progress.Remain}"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Progress.IndeterminateFirst}"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Progress.IndeterminateSecond}"));
+        Assert.Empty(cut.FindAll("svg"));
+    }
+
+    [Fact]
+    public void Indeterminate_WithoutThemeOptIn_KeepsTheSingleSegmentFallback()
+    {
+        var cut = Render<FlareProgress>(p => p.Add(x => x.Variant, ProgressVariant.Linear));
+
+        Assert.Single(cut.FindAll($".{Css.Classes.Progress.Bar}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Progress.Remain}"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Progress.IndeterminateSecond}"));
     }
 
     [Fact]

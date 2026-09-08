@@ -3,10 +3,20 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.33.1] - 2026-09-07
+## [0.34.0] - Unreleased
+
+### Changed
+
+- **BREAKING: Removed `FlareProgress.Wavy`.** Theme-specific progress styles now use CSS classes such
+  as `Flare.Css.Classes.Md3e.Progress.Wave`, so themes can add variants without changing the core API.
 
 ### Fixed
 
+- MD3 Expressive indeterminate progress now keeps the specified gap between every active segment and
+  the remaining track in both linear and circular indicators, including wave mode. The circular active
+  arc and inactive track now follow the same six-second cycle without drifting apart.
+- `Flare.ApiDocGen` now refreshes both the Gallery API registry and `docs/api`; CI and release checks
+  detect drift in either generated output.
 - Linear wavy `FlareProgress` keeps the theme's wavelength at every bar width and moves smoothly
   across animation loops. Its wave repeats to fill wide bars without stretching the drawing.
 - Circular `FlareProgress` now keeps its stroke, gap and wave amplitude at the lengths set by the

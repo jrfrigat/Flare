@@ -73,8 +73,8 @@ jobs:
         run: |
           # Exercise localized defaults under both developer and runner locales.
           for locale in ru_RU.UTF-8 en_US.UTF-8; do
-            LANG="$locale" LC_ALL="$locale" dotnet run --project tools/Flare.ApiDocGen -c Release --no-build -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
-            git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+            LANG="$locale" LC_ALL="$locale" dotnet run --project tools/Flare.ApiDocGen -c Release --no-build -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs --markdown docs/api
+            git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs docs/api
           done
 
       # Pack here too so a packaging break (missing README/icon, CS1591, etc.) fails CI, not release.

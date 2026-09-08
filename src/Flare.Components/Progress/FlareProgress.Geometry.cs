@@ -14,6 +14,7 @@ public partial class FlareProgress
     private const string _waveLengthToken = "--flare-progress-wave-length";
     private const string _indeterminateWaveLengthToken = "--flare-progress-indeterminate-wave-length";
     private const string _waveAmplitudeToken = "--flare-progress-wave-amplitude";
+    private const string _segmentedIndeterminateToken = "--flare-progress-linear-indeterminate-duration";
     private const string _ringCountToken = "--flare-progress-ring-waves";
     private const string _ringLengthToken = "--flare-progress-ring-wave-length";
     private const string _ringAmplitudeToken = "--flare-progress-ring-wave-amplitude";

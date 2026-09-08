@@ -4,6 +4,8 @@
 
 `Flare.Components.FlareProgress`
 
+Displays determinate or indeterminate progress as a bar or circular indicator.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
@@ -12,8 +14,7 @@
 | `Color` | `FlareColor` | `` | Parameter |  | Semantic color applied to the progress indicator. |
 | `Size` | `TrackSize` | `TrackSize.Md` | Parameter |  | Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It drives the linear track thickness AND the circular diameter and stroke, so one step means one size whichever variant is rendered, and the theme owns every value. |
 | `Value` | `double?` | `` | Parameter |  | Percentage value (0-100); null for indeterminate mode. |
-| `Variant` | `ProgressVariant` | `ProgressVariant.Linear` | Parameter |  | Display style: Linear bar, Circular spinner, Buffer, or Query. |
-| `Wavy` | `bool` | `false` | Parameter |  | Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave. |
+| `Variant` | `ProgressVariant` | `ProgressVariant.Linear` | Parameter |  | Base progress structure. Theme-specific visual variants can be selected through Class using a class exported by the theme package. |
 | `Zones` | `RenderFragment?` | `` | Parameter |  | Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Applies to the determinate linear bar; because zones need an uninterrupted track, using them renders a continuous track instead of the split (gap + trailing stop dot) one. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
@@ -21,7 +22,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `DisposeAsync()`
+
+Disposes the component; override to release JS interop or subscriptions.
+Returns: `ValueTask`.
+
 
 ## Inheritance
 
