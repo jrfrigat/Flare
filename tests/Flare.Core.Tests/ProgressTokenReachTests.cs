@@ -1,3 +1,5 @@
+using Flare.Theme.FluentUI2;
+using Flare.Theme.MaterialDesign3;
 using Flare.Theme.MaterialDesign3Expressive;
 using Flare.Theming;
 
@@ -7,12 +9,9 @@ namespace Flare.Core.Tests;
 /// Guards the tokens <c>FlareProgress</c> reads from C# rather than from CSS.
 ///
 /// Most component geometry is consumed by a stylesheet, where CssAudit can see it. These few cannot
-/// be: the wavy path and the ring's gap are computed in the component, because an SVG path has to be
-/// built from numbers. That makes them the one place where a token can be emitted correctly, named
-/// correctly, and still never reach the paint - which is exactly what happened. The values moved from
-/// <c>DesignTokens.Extended</c> into the typed <c>ProgressTokens</c> record during the token-mandate
-/// work, and the component's reader kept looking only in <c>Extended</c>. Every read silently fell
-/// through to its fallback, so <c>Wavy</c> drew a flat bar in every theme and the ring drew no gap.
+/// be: the wavy path is computed in the component because an SVG path has to be built from numbers.
+/// The public token constants and values live in the supporting theme package; this guard proves that
+/// those theme-owned extension values still reach the generic renderer through the flattened map.
 ///
 /// CssAudit could not catch it: every name existed and was in sync. Only asking "does the value the
 /// component looks up actually exist where it looks it up" catches this.
@@ -23,17 +22,16 @@ public sealed class ProgressTokenReachTests
         new MaterialDesign3ExpressiveTheme().Design.FlattenDesign();
 
     [Theory]
-    // Exactly the names FlareProgress passes to ReadTokenNum/ReadTokenStr.
+    // Exactly the names FlareProgress passes to ReadTokenNum.
     [InlineData(Css.Tokens.ProgressField.CircularGap)]
-    [InlineData(Css.Tokens.ProgressField.WavyEnabled)]
-    [InlineData(Css.Tokens.ProgressField.WavyHeight)]
-    [InlineData(Css.Tokens.ProgressField.WaveLength)]
-    [InlineData(Css.Tokens.ProgressField.IndeterminateWaveLength)]
-    [InlineData(Css.Tokens.ProgressField.WaveAmplitude)]
-    [InlineData(Css.Tokens.ProgressField.WaveSpeed)]
-    [InlineData(Css.Tokens.ProgressField.RingWaves)]
-    [InlineData(Css.Tokens.ProgressField.RingWaveLength)]
-    [InlineData(Css.Tokens.ProgressField.RingWaveAmplitude)]
+    [InlineData(Css.Tokens.Md3e.Progress.Height)]
+    [InlineData(Css.Tokens.Md3e.Progress.Length)]
+    [InlineData(Css.Tokens.Md3e.Progress.IndeterminateLength)]
+    [InlineData(Css.Tokens.Md3e.Progress.Amplitude)]
+    [InlineData(Css.Tokens.Md3e.Progress.Speed)]
+    [InlineData(Css.Tokens.Md3e.Progress.RingCount)]
+    [InlineData(Css.Tokens.Md3e.Progress.RingLength)]
+    [InlineData(Css.Tokens.Md3e.Progress.RingAmplitude)]
     public void EveryTokenTheComponentLooksUp_IsInTheFlattenedDesign(string token)
     {
         Assert.True(Flattened().ContainsKey(token),
@@ -42,20 +40,26 @@ public sealed class ProgressTokenReachTests
     }
 
     [Fact]
-    public void Md3Expressive_ActuallyTurnsTheWavyProgressOn()
+    public void Md3Expressive_ProvidesTheWaveRendererConfiguration()
     {
         var flat = Flattened();
 
-        // Expressive's signature loading state. "0" here means Wavy renders a plain bar, which is
-        // indistinguishable from the parameter being ignored - the shape the reported bug took.
-        Assert.Equal("1", flat[Css.Tokens.ProgressField.WavyEnabled]);
-        Assert.Equal("20px", flat[Css.Tokens.ProgressField.IndeterminateWaveLength]);
-        Assert.Equal("15px", flat[Css.Tokens.ProgressField.RingWaveLength]);
-        Assert.Equal("1750ms", flat[Css.Tokens.ProgressField.LinearIndeterminateDuration]);
-        Assert.Equal("1500ms", flat[Css.Tokens.ProgressField.CircularWavyIndeterminateRotationDuration]);
-        Assert.Equal("6000ms", flat[Css.Tokens.ProgressField.CircularWavyIndeterminateProgressDuration]);
+        Assert.Equal("20px", flat[Css.Tokens.Md3e.Progress.IndeterminateLength]);
+        Assert.Equal("15px", flat[Css.Tokens.Md3e.Progress.RingLength]);
+        Assert.Equal("1750ms", flat[Css.Tokens.Md3e.Progress.LinearIndeterminateDuration]);
+        Assert.Equal("1500ms", flat[Css.Tokens.Md3e.Progress.CircularIndeterminateRotationDuration]);
+        Assert.Equal("6000ms", flat[Css.Tokens.Md3e.Progress.CircularIndeterminateProgressDuration]);
 
         // And the ring must break between the indicator and the remaining track.
         Assert.NotEqual("0", flat[Css.Tokens.ProgressField.CircularGap].TrimEnd('p', 'x'));
+    }
+
+    [Fact]
+    public void FlatThemes_DoNotEmitWaveRendererTokens()
+    {
+        Assert.False(new MaterialDesign3Theme().Design.FlattenDesign()
+            .ContainsKey(Css.Tokens.Md3e.Progress.Length));
+        Assert.False(new FluentUI2Theme().Design.FlattenDesign()
+            .ContainsKey(Css.Tokens.Md3e.Progress.Length));
     }
 }

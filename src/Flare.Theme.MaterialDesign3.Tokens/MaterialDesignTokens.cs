@@ -690,8 +690,8 @@ public class MaterialDesignTokens
         ZoomSelectionStroke = "var(--flare-color-primary)",
     };
 
-    // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round
-    // circular caps, and the opt-in wavy determinate track (with-wave 10dp, amplitude 3dp, wavelength 40dp).
+    // Progress - shared Material geometry. Optional Expressive wave behavior is supplied by the
+    // Expressive theme package, so this baseline token bundle stays reusable by flat themes.
     internal static readonly ProgressTokens Progress = new()
     {
         // Size ramp. The spec names two steps of each - linear 4dp with an 8dp "thick", circular 40dp with a
@@ -723,19 +723,6 @@ public class MaterialDesignTokens
         CircularWidthXl = "5px",
         CircularCap = "round",
         CircularGap = "4px",
-        WavyEnabled = "1",
-        WavyHeight = "10px",
-        WaveLength = "40px",
-        IndeterminateWaveLength = "20px",
-        WaveAmplitude = "3px",
-        WaveSpeed = "1s",
-        LinearIndeterminateDuration = "1750ms",
-        LinearIndeterminateEasing = "cubic-bezier(0.3, 0, 0.8, 0.15)",
-        CircularWavyIndeterminateRotationDuration = "1500ms",
-        CircularWavyIndeterminateProgressDuration = "6000ms",
-        RingWaves = "8",
-        RingWaveLength = "15px",
-        RingWaveAmplitude = "1.6",
     };
 
     /// <summary>

@@ -25,8 +25,6 @@ public static class Progress
     public const string Buffer = "flare-progress--buffer";
     /// <summary>The <c>flare-progress--query</c> CSS class.</summary>
     public const string Query = "flare-progress--query";
-    /// <summary>The <c>flare-progress--wavy</c> CSS class.</summary>
-    public const string Wavy = "flare-progress--wavy";
     /// <summary>The <c>flare-progress__wave</c> CSS class.</summary>
     public const string Wave = "flare-progress__wave";
     /// <summary>The <c>flare-progress__track</c> CSS class.</summary>

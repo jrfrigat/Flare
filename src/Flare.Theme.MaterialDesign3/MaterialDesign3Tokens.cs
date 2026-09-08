@@ -31,16 +31,7 @@ internal static class MaterialDesign3Tokens
             LabelXl = label,
         };
 
-        // Baseline MD3 reverts two Expressive-only behaviors via the typed records:
-        //   1. Progress: a flat track (no Expressive wavy/amplitude line).
-        var progress = reference.Progress with
-        {
-            WavyEnabled = "0",
-            WavyHeight = "4px",
-            WaveAmplitude = "0px",
-        };
-
-        //   2. Menus: a classic single 4dp surface with square items, not the Expressive 16dp rounded
+        // Baseline menus use a classic single 4dp surface with square items, not the Expressive 16dp rounded
         //      panel with floating rounded "island" group sections.
         var menu = reference.Menu with
         {
@@ -60,7 +51,6 @@ internal static class MaterialDesign3Tokens
         return reference with
         {
             Button = button,
-            Progress = progress,
             Menu = menu,
             // Extended carries only the inherited theme-specific extras (e.g. datetimepicker gap).
             Extended = reference.Extended,

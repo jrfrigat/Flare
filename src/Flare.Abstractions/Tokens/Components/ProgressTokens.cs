@@ -74,43 +74,4 @@ public sealed record ProgressTokens
     /// A CSS length, independent of diameter; line caps extend into this distance.</summary>
     [CssVar(ProgressField.CircularGap)] public required string CircularGap { get; init; }
 
-    /// <summary>Wavy-progress enable flag (1 = on); read by the component at runtime.</summary>
-    [CssVar(ProgressField.WavyEnabled)] public required string WavyEnabled { get; init; }
-
-    /// <summary>Wavy linear-track height.</summary>
-    [CssVar(ProgressField.WavyHeight)] public required string WavyHeight { get; init; }
-
-    /// <summary>Wave length of the wavy track.</summary>
-    [CssVar(ProgressField.WaveLength)] public required string WaveLength { get; init; }
-
-    /// <summary>Wave length of the indeterminate wavy linear track.</summary>
-    [CssVar(ProgressField.IndeterminateWaveLength)] public required string IndeterminateWaveLength { get; init; }
-
-    /// <summary>Wave amplitude of the wavy track.</summary>
-    [CssVar(ProgressField.WaveAmplitude)] public required string WaveAmplitude { get; init; }
-
-    /// <summary>Wave animation speed.</summary>
-    [CssVar(ProgressField.WaveSpeed)] public required string WaveSpeed { get; init; }
-
-    /// <summary>Duration of one linear indeterminate animation cycle.</summary>
-    [CssVar(ProgressField.LinearIndeterminateDuration)] public required string LinearIndeterminateDuration { get; init; }
-
-    /// <summary>Easing used by the moving ends of linear indeterminate indicators.</summary>
-    [CssVar(ProgressField.LinearIndeterminateEasing)] public required string LinearIndeterminateEasing { get; init; }
-
-    /// <summary>Duration of one wavy circular indeterminate rotation.</summary>
-    [CssVar(ProgressField.CircularWavyIndeterminateRotationDuration)] public required string CircularWavyIndeterminateRotationDuration { get; init; }
-
-    /// <summary>Duration of one wavy circular indeterminate grow and shrink cycle.</summary>
-    [CssVar(ProgressField.CircularWavyIndeterminateProgressDuration)] public required string CircularWavyIndeterminateProgressDuration { get; init; }
-
-    /// <summary>Circular wavy ring wave count.</summary>
-    [CssVar(ProgressField.RingWaves)] public required string RingWaves { get; init; }
-
-    /// <summary>Preferred circular wave length; the rendered ring uses a whole number of waves.</summary>
-    [CssVar(ProgressField.RingWaveLength)] public required string RingWaveLength { get; init; }
-
-    /// <summary>Radial amplitude of the circular wave, as a CSS length (or unitless pixels).
-    /// Independent of diameter; clamped when necessary to keep the wave inside the viewport.</summary>
-    [CssVar(ProgressField.RingWaveAmplitude)] public required string RingWaveAmplitude { get; init; }
 }

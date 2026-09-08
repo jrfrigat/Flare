@@ -80,7 +80,7 @@ public sealed class StubThemeService : IThemeService
 
 /// <summary>
 /// IThemeService stub that exposes a caller-supplied custom-token dictionary, for testing
-/// token-gated behaviour (e.g. FlareProgress wavy mode keyed on --flare-progress-wavy-enabled).
+/// token-gated behavior such as an optional progress renderer.
 /// </summary>
 public sealed class TokenThemeService : IThemeService
 {

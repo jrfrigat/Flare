@@ -8,24 +8,47 @@ namespace Flare.Components.Tests;
 
 public class FlareProgressWavyTests : FlareTestContext
 {
-    // Theme that opts into wavy progress (mirrors the MD3 theme tokens).
+    private const string WaveClass = "flare-progress--md3e-wave";
+    private const string WaveHeightToken = "--flare-progress-wavy-height";
+    private const string WaveLengthToken = "--flare-progress-wave-length";
+    private const string IndeterminateWaveLengthToken = "--flare-progress-indeterminate-wave-length";
+    private const string WaveAmplitudeToken = "--flare-progress-wave-amplitude";
+
+    // Theme service that exposes the CSS geometry contract owned by a supporting theme package.
     private static TokenThemeService WavyTheme() => new(new Dictionary<string, string>
     {
-        [Css.Tokens.ProgressField.WavyEnabled] = "1",
-        [Css.Tokens.ProgressField.WavyHeight] = "10px",
-        [Css.Tokens.ProgressField.WaveLength] = "40px",
-        [Css.Tokens.ProgressField.IndeterminateWaveLength] = "20px",
-        [Css.Tokens.ProgressField.WaveAmplitude] = "3px",
+        [WaveHeightToken] = "10px",
+        [WaveLengthToken] = "40px",
+        [IndeterminateWaveLengthToken] = "20px",
+        [WaveAmplitudeToken] = "3px",
         [Css.Tokens.ProgressField.CircularGap] = "4px",
         [Css.Tokens.ProgressField.LinearHeight.Md] = "4px",
     });
 
     [Fact]
-    public void Wavy_NoThemeOptIn_RendersPlain()
+    public void LinearWave_NoThemeOptIn_RendersFlatLinearFallback()
     {
-        // Point 2: without --flare-progress-wavy-enabled (e.g. Fluent), Wavy="true" stays plain.
-        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 60d).Add(x => x.Wavy, true));
-        Assert.DoesNotContain(Css.Classes.Progress.Wavy, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Value, 60d)
+            .Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass));
+        var root = cut.Find($".{Css.Classes.Progress.Root}");
+        Assert.Contains(Css.Classes.Progress.Linear, root.ClassName);
+        Assert.Contains(WaveClass, root.ClassName);
+        Assert.Single(cut.FindAll($".{Css.Classes.Progress.Bar}"));
+        Assert.Empty(cut.FindAll("svg"));
+    }
+
+    [Fact]
+    public void CircularWave_NoThemeOptIn_RendersFlatCircularFallback()
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Value, 60d)
+            .Add(x => x.Variant, ProgressVariant.Circular).Add(x => x.Class, WaveClass));
+        var root = cut.Find($".{Css.Classes.Progress.Root}");
+        Assert.Contains(Css.Classes.Progress.Circular, root.ClassName);
+        Assert.Contains(WaveClass, root.ClassName);
+        Assert.Single(cut.FindAll($"circle.{Css.Classes.Progress.Indicator}"));
+        Assert.Empty(cut.FindAll($"path.{Css.Classes.Progress.Indicator}"));
     }
 
     [Fact]
@@ -33,9 +56,9 @@ public class FlareProgressWavyTests : FlareTestContext
     {
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Value, 60d).Add(x => x.Wavy, true));
+            .Add(x => x.Value, 60d).Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass));
         var root = cut.Find($".{Css.Classes.Progress.Root}").ClassName;
-        Assert.Contains(Css.Classes.Progress.Wavy, root);
+        Assert.Contains(WaveClass, root);
         Assert.Contains(Css.Classes.Progress.Split, root);          // inherits gap + stop indicator
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Bar} svg.{Css.Classes.Progress.Wave} path"));
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Remain}"));
@@ -46,9 +69,9 @@ public class FlareProgressWavyTests : FlareTestContext
     {
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Variant, ProgressVariant.Circular)
-            .Add(x => x.Value, 60d).Add(x => x.Wavy, true));
-        Assert.Contains(Css.Classes.Progress.Wavy, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
+            .Add(x => x.Variant, ProgressVariant.Circular).Add(x => x.Class, WaveClass)
+            .Add(x => x.Value, 60d));
+        Assert.Contains(WaveClass, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
         // Point 1: track stays a smooth <circle>, only the active indicator is a wavy <path>.
         Assert.NotEmpty(cut.FindAll($"circle.{Css.Classes.Progress.Track}"));
         var ind = cut.FindAll($"path.{Css.Classes.Progress.Indicator}");
@@ -65,13 +88,12 @@ public class FlareProgressWavyTests : FlareTestContext
     {
         var theme = new TokenThemeService(new Dictionary<string, string>
         {
-            [Css.Tokens.ProgressField.WavyEnabled] = "1",
-            [Css.Tokens.ProgressField.WaveLength] = period.ToString(CultureInfo.InvariantCulture) + "px",
-            [Css.Tokens.ProgressField.WaveAmplitude] = amplitude.ToString(CultureInfo.InvariantCulture) + "px",
-            [Css.Tokens.ProgressField.WavyHeight] = "12px",
+            [WaveLengthToken] = period.ToString(CultureInfo.InvariantCulture) + "px",
+            [WaveAmplitudeToken] = amplitude.ToString(CultureInfo.InvariantCulture) + "px",
+            [WaveHeightToken] = "12px",
         });
         var cut = Render<FlareProgress>(p => p.AddCascadingValue<IThemeService>(theme)
-            .Add(x => x.Value, 70d).Add(x => x.Wavy, true));
+            .Add(x => x.Value, 70d).Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass));
         var svg = cut.Find("svg");
         var tile = cut.Find("pattern");
         Assert.Null(svg.GetAttribute("viewBox")); // the fill width must never rescale wave geometry
@@ -94,9 +116,9 @@ public class FlareProgressWavyTests : FlareTestContext
     public void LinearWaveTilesDoNotCollideAndKeepTheirIdentityOnValueUpdates()
     {
         var first = Render<FlareProgress>(p => p.AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Wavy, true).Add(x => x.Value, 70d));
+            .Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass).Add(x => x.Value, 70d));
         var second = Render<FlareProgress>(p => p.AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Wavy, true).Add(x => x.Value, 25d));
+            .Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass).Add(x => x.Value, 25d));
         var id = first.Find("pattern").Id;
         var path = first.Find("path").GetAttribute("d");
         Assert.NotEqual(id, second.Find("pattern").Id);
@@ -123,8 +145,8 @@ public class FlareProgressWavyTests : FlareTestContext
         // while animating, which no other assertion in this file would notice.
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Variant, ProgressVariant.Circular)
-            .Add(x => x.Value, value).Add(x => x.Wavy, true));
+            .Add(x => x.Variant, ProgressVariant.Circular).Add(x => x.Class, WaveClass)
+            .Add(x => x.Value, value));
 
         var dash = cut.Find($"path.{Css.Classes.Progress.Indicator}").GetAttribute("stroke-dasharray");
         var parts = dash!.Split(' ', StringSplitOptions.RemoveEmptyEntries)
@@ -144,8 +166,8 @@ public class FlareProgressWavyTests : FlareTestContext
         // the track with no break, which is the other half of the reported bug.
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Variant, ProgressVariant.Circular)
-            .Add(x => x.Value, 60d).Add(x => x.Wavy, true));
+            .Add(x => x.Variant, ProgressVariant.Circular).Add(x => x.Class, WaveClass)
+            .Add(x => x.Value, 60d));
 
         var style = cut.Find($"path.{Css.Classes.Progress.Indicator}").GetAttribute("style") ?? "";
         Assert.Contains("--_ring-lead:", style);
@@ -158,10 +180,10 @@ public class FlareProgressWavyTests : FlareTestContext
     {
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Wavy, true));
+            .Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass));
 
         var root = cut.Find($".{Css.Classes.Progress.Root}");
-        Assert.Contains(Css.Classes.Progress.Wavy, root.ClassName);
+        Assert.Contains(WaveClass, root.ClassName);
         Assert.Contains(Css.Classes.Progress.Indeterminate, root.ClassName);
         Assert.Null(root.GetAttribute("aria-valuenow"));
         Assert.Single(cut.FindAll($".{Css.Classes.Progress.IndeterminateFirst}"));
@@ -176,12 +198,11 @@ public class FlareProgressWavyTests : FlareTestContext
     {
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(WavyTheme())
-            .Add(x => x.Variant, ProgressVariant.Circular)
-            .Add(x => x.Size, TrackSize.Md)
-            .Add(x => x.Wavy, true));
+            .Add(x => x.Variant, ProgressVariant.Circular).Add(x => x.Class, WaveClass)
+            .Add(x => x.Size, TrackSize.Md));
 
         var root = cut.Find($".{Css.Classes.Progress.Root}");
-        Assert.Contains(Css.Classes.Progress.Wavy, root.ClassName);
+        Assert.Contains(WaveClass, root.ClassName);
         Assert.Contains(Css.Classes.Progress.Indeterminate, root.ClassName);
         Assert.Contains(Css.Classes.Progress.Md, root.ClassName);
         Assert.Null(root.GetAttribute("aria-valuenow"));
@@ -193,17 +214,16 @@ public class FlareProgressWavyTests : FlareTestContext
     {
         var theme = new TokenThemeService(new Dictionary<string, string>
         {
-            [Css.Tokens.ProgressField.WavyEnabled] = "1",
-            [Css.Tokens.ProgressField.WavyHeight] = "10px",
-            [Css.Tokens.ProgressField.WaveLength] = "40px",
-            [Css.Tokens.ProgressField.WaveAmplitude] = "3px",
+            [WaveHeightToken] = "10px",
+            [WaveLengthToken] = "40px",
+            [WaveAmplitudeToken] = "3px",
             [Css.Tokens.ProgressField.LinearHeight.Xl] = "8px",
         });
         var cut = Render<FlareProgress>(p => p
             .AddCascadingValue<IThemeService>(theme)
             .Add(x => x.Value, 60d)
             .Add(x => x.Size, TrackSize.Xl)
-            .Add(x => x.Wavy, true));
+            .Add(x => x.Variant, ProgressVariant.Linear).Add(x => x.Class, WaveClass));
 
         var style = cut.Find($".{Css.Classes.Progress.Root}").GetAttribute("style") ?? "";
         Assert.Contains("--_wave-height:14px", style);

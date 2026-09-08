@@ -13,6 +13,23 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
 
     public const string ThemeId = "md3-expressive";
 
+    private static readonly IReadOnlyDictionary<string, string> Extended =
+        new Dictionary<string, string>(MaterialDesignTokens.Extended)
+        {
+            [Css.Tokens.Md3e.Progress.Height] = "10px",
+            [Css.Tokens.Md3e.Progress.Length] = "40px",
+            [Css.Tokens.Md3e.Progress.IndeterminateLength] = "20px",
+            [Css.Tokens.Md3e.Progress.Amplitude] = "3px",
+            [Css.Tokens.Md3e.Progress.Speed] = "1s",
+            [Css.Tokens.Md3e.Progress.LinearIndeterminateDuration] = "1750ms",
+            [Css.Tokens.Md3e.Progress.LinearIndeterminateEasing] = "cubic-bezier(0.3, 0, 0.8, 0.15)",
+            [Css.Tokens.Md3e.Progress.CircularIndeterminateRotationDuration] = "1500ms",
+            [Css.Tokens.Md3e.Progress.CircularIndeterminateProgressDuration] = "6000ms",
+            [Css.Tokens.Md3e.Progress.RingCount] = "8",
+            [Css.Tokens.Md3e.Progress.RingLength] = "15px",
+            [Css.Tokens.Md3e.Progress.RingAmplitude] = "1.6",
+        };
+
     /// <inheritdoc />
 
     public string Id => ThemeId;
@@ -107,6 +124,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             AreaOpacity = "0.4",
             LegendDotSize = "0.75rem",
         },
+        Extended = Extended,
     };
     public string DefaultPaletteId => Md3Palettes.Violet.Id;
     public IReadOnlyList<Palette> Palettes => Md3Palettes.All;
@@ -119,6 +137,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css",
+        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css",
     ];
 }
 

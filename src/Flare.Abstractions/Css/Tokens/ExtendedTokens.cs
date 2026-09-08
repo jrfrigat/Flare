@@ -233,32 +233,6 @@ public static class ProgressField
     public const string CircularCap = "--flare-progress-circular-cap";
     /// <summary>CSS custom-property name for the circular indicator/track gap.</summary>
     public const string CircularGap = "--flare-progress-circular-gap";
-    /// <summary>CSS custom-property name for the wavy-progress enable flag (1 = on).</summary>
-    public const string WavyEnabled = "--flare-progress-wavy-enabled";
-    /// <summary>CSS custom-property name for the wavy linear-track height.</summary>
-    public const string WavyHeight = "--flare-progress-wavy-height";
-    /// <summary>CSS custom-property name for the wave length.</summary>
-    public const string WaveLength = "--flare-progress-wave-length";
-    /// <summary>CSS custom-property name for the indeterminate linear wave length.</summary>
-    public const string IndeterminateWaveLength = "--flare-progress-indeterminate-wave-length";
-    /// <summary>CSS custom-property name for the wave amplitude.</summary>
-    public const string WaveAmplitude = "--flare-progress-wave-amplitude";
-    /// <summary>CSS custom-property name for the wave animation speed.</summary>
-    public const string WaveSpeed = "--flare-progress-wave-speed";
-    /// <summary>CSS custom-property name for one linear indeterminate animation cycle.</summary>
-    public const string LinearIndeterminateDuration = "--flare-progress-linear-indeterminate-duration";
-    /// <summary>CSS custom-property name for the linear indeterminate easing.</summary>
-    public const string LinearIndeterminateEasing = "--flare-progress-linear-indeterminate-easing";
-    /// <summary>CSS custom-property name for one wavy circular indeterminate rotation.</summary>
-    public const string CircularWavyIndeterminateRotationDuration = "--flare-progress-circular-wavy-indeterminate-rotation-duration";
-    /// <summary>CSS custom-property name for one wavy circular indeterminate grow and shrink cycle.</summary>
-    public const string CircularWavyIndeterminateProgressDuration = "--flare-progress-circular-wavy-indeterminate-progress-duration";
-    /// <summary>CSS custom-property name for the circular wavy ring wave count.</summary>
-    public const string RingWaves = "--flare-progress-ring-waves";
-    /// <summary>CSS custom-property name for the preferred circular wave length.</summary>
-    public const string RingWaveLength = "--flare-progress-ring-wave-length";
-    /// <summary>CSS custom-property name for the circular wavy ring wave amplitude.</summary>
-    public const string RingWaveAmplitude = "--flare-progress-ring-wave-amplitude";
 }
 
 /// <summary>CSS variable tokens for navigation (drawer/rail nav items and the active indicator).</summary>

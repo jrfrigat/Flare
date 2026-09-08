@@ -7,6 +7,17 @@ namespace Flare.Components;
 /// <summary>Displays determinate or indeterminate progress as a bar or circular indicator.</summary>
 public partial class FlareProgress
 {
+    // Generic geometry ports. Their public constants and values belong to the theme package that
+    // implements a renderer; keeping them out of Flare.Abstractions prevents one theme's extension
+    // from becoming a required token for every theme.
+    private const string _waveHeightToken = "--flare-progress-wavy-height";
+    private const string _waveLengthToken = "--flare-progress-wave-length";
+    private const string _indeterminateWaveLengthToken = "--flare-progress-indeterminate-wave-length";
+    private const string _waveAmplitudeToken = "--flare-progress-wave-amplitude";
+    private const string _ringCountToken = "--flare-progress-ring-waves";
+    private const string _ringLengthToken = "--flare-progress-ring-wave-length";
+    private const string _ringAmplitudeToken = "--flare-progress-ring-wave-amplitude";
+
     [Inject] private IProgressGeometryJsService Geometry { get; set; } = default!;
 
     private ElementReference _circularRef;
@@ -18,9 +29,9 @@ public partial class FlareProgress
     [
         "--_circ-width",
         Css.Tokens.ProgressField.CircularGap,
-        Css.Tokens.ProgressField.RingWaveAmplitude,
-        Css.Tokens.ProgressField.RingWaveLength,
-        Css.Tokens.ProgressField.RingWaves,
+        _ringAmplitudeToken,
+        _ringLengthToken,
+        _ringCountToken,
     ];
 
     /// <inheritdoc />

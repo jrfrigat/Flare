@@ -13,7 +13,7 @@ public sealed class CssAuditReport
     public required IReadOnlyList<string> ClassesMissingConstant { get; init; }
     /// <summary><c>[-]</c> <c>CssClasses</c> constants with no matching Flare.Components CSS rule.</summary>
     public required IReadOnlyList<string> ConstantsMissingCss { get; init; }
-    /// <summary><c>[~]</c> classes a theme defines that the Flare.Components base does not.</summary>
+    /// <summary><c>[~]</c> classes a theme defines without a registered <c>Css.Classes</c> constant.</summary>
     public required IReadOnlyList<string> ThemeOnlyClasses { get; init; }
     /// <summary><c>[!]</c> dead literal fallbacks on always-emitted semantic tokens (see <see cref="CssAudit"/>).</summary>
     public required IReadOnlyList<string> LiteralTokenFallbacks { get; init; }
@@ -173,9 +173,13 @@ public static class CssAudit
             .Select(d => Path.Combine(d, "wwwroot", "css"))
             .Where(Directory.Exists)
             .ToArray();
+        var themeClassDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*")
+            .Select(d => Path.Combine(d, "Css", "Classes"))
+            .Where(Directory.Exists)
+            .ToArray();
 
         var css = Program.CollectCssClasses(cssDir);
-        var constants = Program.CollectConstants(cssClassesDir);
+        var constants = Program.CollectConstants(new[] { cssClassesDir }.Concat(themeClassDirs).ToArray());
         var themeCss = Program.CollectCssClasses(themeDirs);
 
         var (plus, minus, tilde) = Program.Compare(css, constants, themeCss);

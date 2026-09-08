@@ -18,7 +18,7 @@
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
         @foreach (var step in _steps)
         {
-            <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" Wavy="true" Size="@step.Size" data-testid="progress-wave-size" />
+            <FlareProgress Variant="ProgressVariant.Circular" Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" Size="@step.Size" data-testid="progress-wave-size" />
         }
     </FlareStack>
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
@@ -30,7 +30,7 @@
     <FlareText Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Progress_SizeOverride</FlareText>
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Style="--flare-progress-circular-size-md:calc(6rem + 4px);">
         <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" data-testid="progress-enlarged" />
-        <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" Wavy="true" data-testid="progress-wave-enlarged" />
+        <FlareProgress Variant="ProgressVariant.Circular" Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" data-testid="progress-wave-enlarged" />
         <FlareProgress Variant="ProgressVariant.Circular" data-testid="progress-spin-enlarged" />
     </FlareStack>
 

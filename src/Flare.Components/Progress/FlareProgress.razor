@@ -3,10 +3,10 @@
 @using System.Globalization
 @using Flare.Theming
 
-@if (Variant == ProgressVariant.Circular)
+@if (_circular)
 {
     <div @ref="_circularRef"
-         class="@BuildCssClass(Css.Classes.Progress.Circular, _wavyActive ? Css.Classes.Progress.Wavy : null, _indeterminate ? Css.Classes.Progress.Indeterminate : null, _sizeClass, _colorClass)"
+         class="@BuildCssClass(Css.Classes.Progress.Circular, _indeterminate ? Css.Classes.Progress.Indeterminate : null, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
@@ -20,16 +20,13 @@
             <g transform="rotate(-90 22 22)">
                 <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" pathLength="100" fill="none"
                         stroke-dasharray="@(_indeterminate ? null : _trackDash)" />
-                @if (_wavyActive)
+                <circle class="@Css.Classes.Progress.Indicator" cx="22" cy="22" r="18" pathLength="100" fill="none"
+                        stroke-dasharray="@(_indeterminate ? null : _indicatorDash)" />
+                @if (_waveSupported)
                 {
                     <path class="@Css.Classes.Progress.Indicator" d="@_wavyRingPath" pathLength="100" fill="none"
                           stroke-dasharray="@(_indeterminate ? null : _wavyIndicatorDash)"
                           style="@(_indeterminate ? null : _wavyRingLead)" />
-                }
-                else
-                {
-                    <circle class="@Css.Classes.Progress.Indicator" cx="22" cy="22" r="18" pathLength="100" fill="none"
-                            stroke-dasharray="@(_indeterminate ? null : _indicatorDash)" />
                 }
             </g>
             @* Overlapping rects let CSS resolve both lengths and legacy unitless pixel tokens.
@@ -41,58 +38,6 @@
                 </g>
             }
         </svg>
-    </div>
-}
-else if (Variant == ProgressVariant.Linear && _wavyActive)
-{
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Wavy, _indeterminate ? Css.Classes.Progress.Indeterminate : Css.Classes.Progress.Split, _sizeClass, _colorClass)"
-         role="progressbar"
-         aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
-         aria-valuemin="0"
-         aria-valuemax="100"
-         style="@($"{_colorTokens}--_wave-height:{_inv(_wavyHeightPx)}px;--_wave-stroke:{_inv(_linearStrokePx)}px;{Style}")"
-         @attributes="AdditionalAttributes">
-        @if (_indeterminate)
-        {
-            <div class="@Css.Classes.Progress.Remain"></div>
-            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateFirst)">
-                <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
-                     style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
-                    <defs>
-                        <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
-                            <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
-                </svg>
-            </div>
-            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateSecond)">
-                <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
-                     style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
-                    <defs>
-                        <pattern id="@_linearWaveSecondId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
-                            <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="@($"url(#{_linearWaveSecondId})")" />
-                </svg>
-            </div>
-        }
-        else
-        {
-            <div class="@Css.Classes.Progress.Bar" style="width:@(_clampedValue.ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%">
-                <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
-                     style="@($"--_wave-period:{_inv(_waveLen)}px;")">
-                <defs>
-                    <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_waveLen)" height="@_inv(_wavyHeightPx)">
-                            <path d="@_linWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
-            </svg>
-        </div>
-            <div class="@Css.Classes.Progress.Remain"></div>
-        }
     </div>
 }
 else if (Variant == ProgressVariant.Buffer)
@@ -126,7 +71,7 @@ else
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{Style}")"
+         style="@($"{_colorTokens}{_waveStyle}{Style}")"
          @attributes="AdditionalAttributes">
         @foreach (var z in _zoneBands)
         {
@@ -134,12 +79,55 @@ else
         }
         @if (_indeterminate)
         {
-            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateFirst)"></div>
-            <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateSecond)"></div>
+            @if (_waveSupported)
+            {
+                <div class="@Css.Classes.Progress.Remain"></div>
+            }
+            <div class="@BuildCssClass(Css.Classes.Progress.Bar, _waveSupported ? Css.Classes.Progress.IndeterminateFirst : null)">
+                @if (_waveSupported)
+                {
+                    <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                         style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
+                        <defs>
+                            <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
+                                <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
+                    </svg>
+                }
+            </div>
+            @if (_waveSupported)
+            {
+                <div class="@BuildCssClass(Css.Classes.Progress.Bar, Css.Classes.Progress.IndeterminateSecond)">
+                    <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                         style="@($"--_wave-period:{_inv(_indeterminateWaveLen)}px;")">
+                        <defs>
+                            <pattern id="@_linearWaveSecondId" patternUnits="userSpaceOnUse" width="@_inv(_indeterminateWaveLen)" height="@_inv(_wavyHeightPx)">
+                                <path d="@_linIndeterminateWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="@($"url(#{_linearWaveSecondId})")" />
+                    </svg>
+                </div>
+            }
         }
         else
         {
-            <div class="@Css.Classes.Progress.Bar" style="width:@($"{_clampedValue:F0}%")"></div>
+            <div class="@Css.Classes.Progress.Bar" style="width:@($"{_clampedValue:F0}%")">
+                @if (_waveSupported)
+                {
+                    <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                         style="@($"--_wave-period:{_inv(_waveLen)}px;")">
+                        <defs>
+                            <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_waveLen)" height="@_inv(_wavyHeightPx)">
+                                <path d="@_linWavePath" fill="none" stroke="currentColor" stroke-linecap="round" />
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
+                    </svg>
+                }
+            </div>
         }
         @if (!_indeterminate && !_hasZones)
         {
@@ -157,7 +145,10 @@ else
 @code {
     /// <summary>Percentage value (0-100); null for indeterminate mode.</summary>
     [Parameter] public double? Value { get; set; }
-    /// <summary>Display style: Linear bar, Circular spinner, Buffer, or Query.</summary>
+    /// <summary>
+    /// Base progress structure. Theme-specific visual variants can be selected through
+    /// <see cref="FlareComponentBase.Class"/> using a class exported by the theme package.
+    /// </summary>
     [Parameter] public ProgressVariant Variant { get; set; } = ProgressVariant.Linear;
     /// <summary>
     /// Size step on the shared <see cref="TrackSize"/> scale, the same one <see cref="FlareSlider"/> and
@@ -165,8 +156,6 @@ else
     /// stroke, so one step means one size whichever variant is rendered, and the theme owns every value.
     /// </summary>
     [Parameter] public TrackSize Size { get; set; } = TrackSize.Md;
-    /// <summary>Wavy active indicator for determinate linear and circular progress, when enabled by the theme.</summary>
-    [Parameter] public bool Wavy { get; set; }
     /// <summary>
     /// Secondary buffer fill percentage (0-100), used only with Variant=Buffer. This is shorthand for the
     /// common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent.
@@ -222,6 +211,7 @@ else
 
     private const double _circumference = 2 * Math.PI * 18;
     private bool _indeterminate => Value is null;
+    private bool _circular => Variant == ProgressVariant.Circular;
 
     // Clamp Value and BufferValue to 0-100 to prevent bar overflow.
     private double _clampedValue => Math.Clamp(Value ?? 0, 0, 100);
@@ -255,10 +245,15 @@ else
     private double _circularGap => ReadTokenNum(Css.Tokens.ProgressField.CircularGap, 0);
 
     // ===========================================================================================
-    // WAVY - opt-in per theme via --flare-progress-wavy-enabled (1=on). A theme
-    // that doesn't define it renders the plain bar/ring even when Wavy="true".
+    // Optional renderer hooks are structural core capabilities. A supporting theme supplies their
+    // geometry tokens and activates them with its own CSS class; core never names a concrete theme.
     // ===========================================================================================
-    private bool _wavyActive => Wavy && ReadTokenNum(Css.Tokens.ProgressField.WavyEnabled, 0) > 0;
+    // The renderer is opt-in through Class. Its CSS variables are deliberately untyped here: the
+    // supporting theme package owns the public token constants and publishes their values through
+    // DesignTokens.Extended. Core only consumes the generic geometry contract.
+    private bool _waveSupported => !string.IsNullOrWhiteSpace(Class) && ReadTokenRaw(_waveLengthToken) is not null;
+    private string _waveStyle => !_waveSupported ? string.Empty
+        : $"--_wave-height:{_inv(_wavyHeightPx)}px;--_wave-stroke:{_inv(_linearStrokePx)}px;";
 
     private string _linearHeightToken => Size switch
     {
@@ -270,11 +265,11 @@ else
     };
     private double _linearStrokePx => ReadTokenNum(_linearHeightToken, 4);
     private double _wavyHeightPx => Math.Max(
-        ReadTokenNum(Css.Tokens.ProgressField.WavyHeight, 10),
+        ReadTokenNum(_waveHeightToken, 10),
         _linearStrokePx + 2 * _waveAmp);
-    private double _waveLen => ReadTokenNum(Css.Tokens.ProgressField.WaveLength, 40);
-    private double _indeterminateWaveLen => ReadTokenNum(Css.Tokens.ProgressField.IndeterminateWaveLength, 20);
-    private double _waveAmp => ReadTokenNum(Css.Tokens.ProgressField.WaveAmplitude, 3);
+    private double _waveLen => ReadTokenNum(_waveLengthToken, 40);
+    private double _indeterminateWaveLen => ReadTokenNum(_indeterminateWaveLengthToken, 20);
+    private double _waveAmp => ReadTokenNum(_waveAmplitudeToken, 3);
 
     private static string _inv(double v) => v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
 
@@ -309,8 +304,8 @@ else
     // -- Wavy ring: ONLY the active arc is wavy (the track stays a smooth circle). One static wavy
     //    path is drawn; the flow comes from a CSS rotation synced with stroke-dashoffset (see
     //    progress.css) so crests travel while the fill window stays put. pathLength=100 -> % dash. ---
-    private int _ringWaves => Math.Max(3, (int)ReadTokenNum(Css.Tokens.ProgressField.RingWaves, 8));
-    private double _ringAmp => ReadTokenNum(Css.Tokens.ProgressField.RingWaveAmplitude, 1.6);
+    private int _ringWaves => Math.Max(3, (int)ReadTokenNum(_ringCountToken, 8));
+    private double _ringAmp => ReadTokenNum(_ringAmplitudeToken, 1.6);
 
     private string _wavyRingPath => BuildWavyCirclePath(_ringWaves, _ringAmp, 0);
 
