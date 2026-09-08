@@ -8,19 +8,28 @@
         <FlareProgress Value="65" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">90% - Success</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">90%</FlareText>
         <FlareProgress Value="90" Color="FlareColor.Success" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">Indeterminate</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Indeterminate</FlareText>
         <FlareProgress />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">Thick (TrackSize.Xl)</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Thick</FlareText>
         <FlareProgress Value="50" Size="TrackSize.Xl" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">Wavy (MD3 Expressive) - 70%</FlareText>
-        <FlareProgress Value="70" Wavy="true" />
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Wavy - @_waveValue%</FlareText>
+        <FlareProgress Value="@_waveValue" Wavy="true" data-testid="progress-linear-wave" />
     </FlareStack>
+    <FlareStack Gap="FlareSpacing.Small" Style="width:8rem;">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_NarrowWave</FlareText>
+        <FlareProgress Value="@_waveValue" Wavy="true" data-testid="progress-linear-narrow-wave" />
+    </FlareStack>
+    <FlareButton OnClick="@(() => _waveValue = _waveValue == 70 ? 25 : 70)" Style="align-self:flex-start;" data-testid="progress-linear-update">@GalleryStrings.Progress_UpdateValue</FlareButton>
 </FlareStack>
+
+@code {
+    private double _waveValue = 70;
+}

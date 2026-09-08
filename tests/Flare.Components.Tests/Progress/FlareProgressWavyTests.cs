@@ -55,6 +55,56 @@ public class FlareProgressWavyTests : FlareTestContext
     }
 
     [Theory]
+    [InlineData(20d, 1d)]
+    [InlineData(40d, 3d)]
+    [InlineData(80d, 4d)]
+    public void LinearWaveTilePreservesTheThemePeriodAndAmplitude(double period, double amplitude)
+    {
+        var theme = new TokenThemeService(new Dictionary<string, string>
+        {
+            [Css.Tokens.ProgressField.WavyEnabled] = "1",
+            [Css.Tokens.ProgressField.WaveLength] = period.ToString(CultureInfo.InvariantCulture) + "px",
+            [Css.Tokens.ProgressField.WaveAmplitude] = amplitude.ToString(CultureInfo.InvariantCulture) + "px",
+            [Css.Tokens.ProgressField.WavyHeight] = "12px",
+        });
+        var cut = Render<FlareProgress>(p => p.AddCascadingValue<IThemeService>(theme)
+            .Add(x => x.Value, 70d).Add(x => x.Wavy, true));
+        var svg = cut.Find("svg");
+        var tile = cut.Find("pattern");
+        Assert.Null(svg.GetAttribute("viewBox")); // the fill width must never rescale wave geometry
+        Assert.Equal("userSpaceOnUse", tile.GetAttribute("patternUnits"));
+        Assert.Equal(period, double.Parse(tile.GetAttribute("width")!, CultureInfo.InvariantCulture));
+        Assert.Equal($"--_wave-period:{period.ToString(CultureInfo.InvariantCulture)}px;", svg.GetAttribute("style"));
+
+        var curves = cut.Find("path").GetAttribute("d")!.Split('C').Skip(1)
+            .Select(part => part.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(value => double.Parse(value, CultureInfo.InvariantCulture)).ToArray()).ToArray();
+        // The central tile runs 0..period, with one crest and trough about its vertical midpoint.
+        var tileEnds = curves.Where(curve => curve[4] > 0 && curve[4] <= period).ToArray();
+        Assert.Equal(6 - amplitude, tileEnds.Min(curve => curve[5]), 2);
+        Assert.Equal(6 + amplitude, tileEnds.Max(curve => curve[5]), 2);
+        Assert.Equal(period, tileEnds[^1][4], 2);
+        Assert.Equal(6, tileEnds[^1][5], 2);
+    }
+
+    [Fact]
+    public void LinearWaveTilesDoNotCollideAndKeepTheirIdentityOnValueUpdates()
+    {
+        var first = Render<FlareProgress>(p => p.AddCascadingValue<IThemeService>(WavyTheme())
+            .Add(x => x.Wavy, true).Add(x => x.Value, 70d));
+        var second = Render<FlareProgress>(p => p.AddCascadingValue<IThemeService>(WavyTheme())
+            .Add(x => x.Wavy, true).Add(x => x.Value, 25d));
+        var id = first.Find("pattern").Id;
+        var path = first.Find("path").GetAttribute("d");
+        Assert.NotEqual(id, second.Find("pattern").Id);
+        first.Render(p => p.Add(x => x.Value, 25d));
+        Assert.Equal(id, first.Find("pattern").Id);
+        Assert.Equal(path, first.Find("path").GetAttribute("d"));
+        Assert.Equal($"url(#{id})", first.Find("rect").GetAttribute("fill"));
+        Assert.Equal("100%", first.Find("rect").GetAttribute("width"));
+    }
+
+    [Theory]
     [InlineData(0d)]
     [InlineData(25d)]
     [InlineData(60d)]

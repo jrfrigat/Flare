@@ -3342,4 +3342,8 @@
   <data name="Charts_UpdatesSparkline" xml:space="preserve"><value>Спарклайн с плавным обновлением</value></data>
   <data name="Progress_UpdateValue" xml:space="preserve"><value>Изменить прогресс</value></data>
   <data name="Progress_SizeOverride" xml:space="preserve"><value>Увеличенный диаметр с прежней толщиной, зазором и амплитудой волны.</value></data>
+  <data name="Progress_Indeterminate" xml:space="preserve"><value>Неопределенный прогресс</value></data>
+  <data name="Progress_Thick" xml:space="preserve"><value>Толстая полоса (Xl)</value></data>
+  <data name="Progress_Wavy" xml:space="preserve"><value>Волнистый прогресс</value></data>
+  <data name="Progress_NarrowWave" xml:space="preserve"><value>Та же волна на узкой полосе</value></data>
 </root>

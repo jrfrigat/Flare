@@ -56,9 +56,16 @@ else if (Variant == ProgressVariant.Linear && _wavyActive)
          style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Progress.Bar" style="width:@(_clampedValue.ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%">
-            <svg class="@Css.Classes.Progress.Wave" width="@_inv(_linWaveWidth)" height="@_inv(_wavyHeightPx)"
-                 viewBox="@($"0 0 {_inv(_linWaveWidth)} {_inv(_wavyHeightPx)}")" preserveAspectRatio="none" aria-hidden="true">
-                <path d="@_linWavePath" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            @* No viewBox: the pattern is measured in CSS pixels, independent of the fill width.
+               A repeating tile covers any bar length without stretching or a finite path limit. *@
+            <svg class="@Css.Classes.Progress.Wave" height="@_inv(_wavyHeightPx)" aria-hidden="true"
+                 style="@($"--_wave-period:{_inv(_waveLen)}px;")">
+                <defs>
+                    <pattern id="@_linearWaveId" patternUnits="userSpaceOnUse" width="@_inv(_waveLen)" height="@_inv(_wavyHeightPx)">
+                        <path d="@_linWavePath" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="@($"url(#{_linearWaveId})")" />
             </svg>
         </div>
         <div class="@Css.Classes.Progress.Remain"></div>
@@ -229,19 +236,28 @@ else
 
     private static string _inv(double v) => v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
 
-    // -- Linear wave: one continuous sine path spanning many wavelengths; the bar clips it and CSS
-    //    translates it one wavelength per cycle. Drawn 1:1 in px so the wavelength is constant. ----
-    private double _linWaveWidth => _waveLen * 40;   // enough periods for any realistic bar width
-    private string _linWavePath => BuildLinearWavePath(_linWaveWidth, _waveLen, _waveAmp, _wavyHeightPx / 2);
-    private static string BuildLinearWavePath(double width, double period, double amp, double midY)
+    private readonly string _linearWaveId = $"flare-progress-wave-{Guid.NewGuid():N}";
+    private string _linWavePath => BuildLinearWavePath(_waveLen, _waveAmp, _wavyHeightPx / 2);
+
+    // Cubic sine quarters meet at equal tangents. Extend one period on either side of the tile so
+    // clipping its stroke never leaves a seam; only the middle period repeats in the SVG pattern.
+    private static string BuildLinearWavePath(double period, double amp, double midY)
     {
-        var step = period / 12;
         var sb = new System.Text.StringBuilder();
-        for (double x = 0; x <= width + 0.01; x += step)
+        sb.Append($"M{_inv(-period)} {_inv(midY)} ");
+        var quarter = period / 4;
+        for (var i = -4; i < 8; i++)
         {
-            var y = midY - amp * Math.Sin(2 * Math.PI * x / period);
-            sb.Append(x <= 0 ? "M" : "L");
-            sb.Append(_inv(x)); sb.Append(' '); sb.Append(_inv(y)); sb.Append(' ');
+            var angle = i * Math.PI / 2;
+            var nextAngle = (i + 1) * Math.PI / 2;
+            var x = i * quarter;
+            var nextX = (i + 1) * quarter;
+            var y = midY - amp * Math.Sin(angle);
+            var nextY = midY - amp * Math.Sin(nextAngle);
+            var tangent = amp * Math.PI / 6;
+            sb.Append($"C{_inv(x + quarter / 3)} {_inv(y - tangent * Math.Cos(angle))} ");
+            sb.Append($"{_inv(nextX - quarter / 3)} {_inv(nextY + tangent * Math.Cos(nextAngle))} ");
+            sb.Append($"{_inv(nextX)} {_inv(nextY)} ");
         }
         return sb.ToString();
     }

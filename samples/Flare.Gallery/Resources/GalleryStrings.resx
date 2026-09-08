@@ -3342,4 +3342,8 @@
   <data name="Charts_UpdatesSparkline" xml:space="preserve"><value>Sparkline with animated updates</value></data>
   <data name="Progress_UpdateValue" xml:space="preserve"><value>Change progress</value></data>
   <data name="Progress_SizeOverride" xml:space="preserve"><value>Larger diameter, with the same stroke, gap and wave amplitude.</value></data>
+  <data name="Progress_Indeterminate" xml:space="preserve"><value>Indeterminate</value></data>
+  <data name="Progress_Thick" xml:space="preserve"><value>Thick track (Xl)</value></data>
+  <data name="Progress_Wavy" xml:space="preserve"><value>Wavy progress</value></data>
+  <data name="Progress_NarrowWave" xml:space="preserve"><value>Same wave in a narrow track</value></data>
 </root>

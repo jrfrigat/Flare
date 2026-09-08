@@ -10974,5 +10974,17 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized text describing the enlarged circular progress diameter.</summary>
         public static string Progress_SizeOverride => ResourceManager.GetString("Progress_SizeOverride", resourceCulture);
 
+        /// <summary>Looks up the localized indeterminate progress label.</summary>
+        public static string Progress_Indeterminate => ResourceManager.GetString("Progress_Indeterminate", resourceCulture);
+
+        /// <summary>Looks up the localized thick track label.</summary>
+        public static string Progress_Thick => ResourceManager.GetString("Progress_Thick", resourceCulture);
+
+        /// <summary>Looks up the localized wavy progress label.</summary>
+        public static string Progress_Wavy => ResourceManager.GetString("Progress_Wavy", resourceCulture);
+
+        /// <summary>Looks up the localized narrow wave label.</summary>
+        public static string Progress_NarrowWave => ResourceManager.GetString("Progress_NarrowWave", resourceCulture);
+
     }
 }

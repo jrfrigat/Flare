@@ -142,6 +142,10 @@
 
 .flare-progress__wave {
   display: block;
+  /* The reset caps SVGs at 100%, which used to squeeze a 1600px viewBox into the active bar.
+     Keep one extra, unscaled tile outside the clipping bar for the full animation travel. */
+  max-width: none;
+  width: calc(100% + var(--_wave-period));
   height: 100%;
   animation: flare-progress-wave var(--flare-progress-wave-speed) linear infinite;
 }
@@ -153,7 +157,7 @@
 
 /* Flow: shift the wave by exactly one wavelength for a seamless loop. */
 @keyframes flare-progress-wave {
-  to { transform: translateX(calc(-1 * var(--flare-progress-wave-length))); }
+  to { transform: translateX(calc(-1 * var(--_wave-period))); }
 }
 
 @media (prefers-reduced-motion: reduce) {

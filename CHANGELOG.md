@@ -7,6 +7,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Linear wavy `FlareProgress` keeps the theme's wavelength at every bar width and moves smoothly
+  across animation loops. Its wave repeats to fill wide bars without stretching the drawing.
 - Circular `FlareProgress` now keeps its stroke, gap and wave amplitude at the lengths set by the
   theme when resized. CSS overrides, including `rem` and `calc()`, also update the ring geometry.
 - `FlareChart.AnimateUpdates` now animates data updates when Blazor replaces the SVG drawing,
