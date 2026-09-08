@@ -10968,5 +10968,11 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized text: Sparkline with animated updates.</summary>
         public static string Charts_UpdatesSparkline => ResourceManager.GetString("Charts_UpdatesSparkline", resourceCulture);
 
+        /// <summary>Looks up the localized text: Change progress.</summary>
+        public static string Progress_UpdateValue => ResourceManager.GetString("Progress_UpdateValue", resourceCulture);
+
+        /// <summary>Looks up the localized text describing the enlarged circular progress diameter.</summary>
+        public static string Progress_SizeOverride => ResourceManager.GetString("Progress_SizeOverride", resourceCulture);
+
     }
 }

@@ -206,7 +206,7 @@
   /* Not fill-box: that centres rotation on the wavy path's bounding box, which is not the ring's
      centre, and the arc wobbles off-axis. The viewBox's centre is the real one. */
   transform-box: view-box;
-  transform-origin: 22px 22px;
+  transform-origin: 50% 50%;
   stroke-dashoffset: calc(var(--_ring-lead, 0) + var(--_ring-sweep));
   animation: flare-progress-ring-wave
              calc(var(--flare-progress-wave-speed) * var(--flare-progress-ring-waves))
@@ -239,6 +239,11 @@
 }
 
 .flare-progress__svg { width: 100%; height: 100%; }
+/* One rect accepts CSS lengths; the other accepts legacy unitless pixel values. Invalid widths
+   resolve to zero. The group's bounding box measures the valid one without parsing CSS in JS. */
+.flare-progress__measure { visibility: hidden; pointer-events: none; }
+.flare-progress__measure rect { width: var(--_measure); height: 1px; }
+.flare-progress__measure rect + rect { width: calc(var(--_measure) * 1px); }
 .flare-progress__track {
   stroke: var(--flare-color-secondary-container);
   stroke-width: var(--_circ-width);
@@ -259,7 +264,7 @@
 }
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
-  stroke-dasharray: 80 113.1;
+  stroke-dasharray: 70.74 100;
   animation: flare-progress-dash 1.4s ease-in-out infinite;
 }
 
@@ -286,7 +291,7 @@
 }
 
 @keyframes flare-progress-dash {
-  0%   { stroke-dasharray: 1 113.1; stroke-dashoffset: 0; }
-  50%  { stroke-dasharray: 90 113.1; stroke-dashoffset: -35; }
-  100% { stroke-dasharray: 90 113.1; stroke-dashoffset: -113; }
+  0%   { stroke-dasharray: 0.88 100; stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 79.58 100; stroke-dashoffset: -30.95; }
+  100% { stroke-dasharray: 79.58 100; stroke-dashoffset: -100; }
 }

@@ -3,48 +3,42 @@
 @using System.Globalization
 @using Flare.Theming
 
-@if (Variant == ProgressVariant.Circular && _wavyActive)
+@if (Variant == ProgressVariant.Circular)
 {
-    @* Wavy ring: ONLY the active indicator is wavy; the remaining track is a
-       normal smooth circle. pathLength=100 keeps the active-arc dash in percent units, which is also
-       what lets the flow work: the dash is a TWO-value pattern summing to exactly 100, so it repeats
-       once per lap and the offset can be walked a full 100 without the window desynchronising. *@
-    <div class="@BuildCssClass(Css.Classes.Progress.Circular, Css.Classes.Progress.Wavy, _sizeClass, _colorClass)"
-         role="progressbar"
-         aria-valuenow="@_clampedValue.ToString("F0")"
-         aria-valuemin="0"
-         aria-valuemax="100"
-         style="@($"{_colorTokens}{Style}")"
-         @attributes="AdditionalAttributes">
-        @* -90deg start offset on the group; the wavy indicator flows via a CSS rotation synced with
-           stroke-dashoffset (the fill window stays put while the wave crests travel around). The
-           window's start is carried as --_ring-lead so the keyframe can walk it a full lap. *@
-        <svg viewBox="0 0 44 44" class="@Css.Classes.Progress.Svg">
-            <g transform="rotate(-90 22 22)">
-                <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" fill="none" stroke-width="4"
-                        stroke-dasharray="@_trackDash" />
-                <path class="@Css.Classes.Progress.Indicator" d="@_wavyRingPath" pathLength="100" fill="none" stroke-width="4"
-                      stroke-dasharray="@_wavyIndicatorDash" style="@_wavyRingLead" />
-            </g>
-        </svg>
-    </div>
-}
-else if (Variant == ProgressVariant.Circular)
-{
-    <div class="@BuildCssClass(Css.Classes.Progress.Circular, _indeterminate ? Css.Classes.Progress.Indeterminate : null, _sizeClass, _colorClass)"
+    <div @ref="_circularRef"
+         class="@BuildCssClass(Css.Classes.Progress.Circular, _wavyActive ? Css.Classes.Progress.Wavy : null, _indeterminate ? Css.Classes.Progress.Indeterminate : null, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
          style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
-        <svg viewBox="0 0 44 44" class="@Css.Classes.Progress.Svg">
-            <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" fill="none" stroke-width="4"
-                    stroke-dasharray="@(_indeterminate ? null : _trackDash)"
-                    transform="rotate(-90 22 22)" />
-            <circle class="@Css.Classes.Progress.Indicator" cx="22" cy="22" r="18" fill="none" stroke-width="4"
-                    stroke-dasharray="@(_indeterminate ? null : _indicatorDash)"
-                    transform="rotate(-90 22 22)" />
+        @* The browser resolves CSS lengths and fits this fallback drawing to the actual viewport.
+           Dash lengths stay in percent units at every size; CSS owns all animation. *@
+        <svg viewBox="0 0 44 44" class="@Css.Classes.Progress.Svg" aria-hidden="true"
+             data-value="@(_indeterminate ? null : _clampedValue.ToString(CultureInfo.InvariantCulture))">
+            <g transform="rotate(-90 22 22)">
+                <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" pathLength="100" fill="none"
+                        stroke-dasharray="@(_indeterminate ? null : _trackDash)" />
+                @if (_wavyActive)
+                {
+                    <path class="@Css.Classes.Progress.Indicator" d="@_wavyRingPath" pathLength="100" fill="none"
+                          stroke-dasharray="@_wavyIndicatorDash" style="@_wavyRingLead" />
+                }
+                else
+                {
+                    <circle class="@Css.Classes.Progress.Indicator" cx="22" cy="22" r="18" pathLength="100" fill="none"
+                            stroke-dasharray="@(_indeterminate ? null : _indicatorDash)" />
+                }
+            </g>
+            @* Overlapping rects let CSS resolve both lengths and legacy unitless pixel tokens.
+               ResizeObserver notices inherited token changes even when the ring size stays put. *@
+            @foreach (var token in _circularMeasures)
+            {
+                <g class="@Css.Classes.Progress.Measure" style="@($"--_measure:var({token})")">
+                    <rect /><rect />
+                </g>
+            }
         </svg>
     </div>
 }
@@ -133,7 +127,7 @@ else
     /// stroke, so one step means one size whichever variant is rendered, and the theme owns every value.
     /// </summary>
     [Parameter] public TrackSize Size { get; set; } = TrackSize.Md;
-    /// <summary>Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.</summary>
+    /// <summary>Wavy active indicator for determinate linear and circular progress, when enabled by the theme.</summary>
     [Parameter] public bool Wavy { get; set; }
     /// <summary>
     /// Secondary buffer fill percentage (0-100), used only with Variant=Buffer. This is shorthand for the
@@ -195,7 +189,6 @@ else
     private double _clampedValue => Math.Clamp(Value ?? 0, 0, 100);
     private double _clampedBufferValue => Math.Clamp(BufferValue, 0, 100);
 
-    private double _arc => _circumference * _clampedValue / 100;
     // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main token.
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string _colorTokens => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : string.Empty;
@@ -214,12 +207,12 @@ else
     // carves the gap directly into the pattern - no stroke-dashoffset needed.
     //   indicator: empty(gap/2) - (arc-gap) - rest        -> active arc, inset gap/2 each end
     //   track:     empty(arc+gap/2) - (circ-arc-gap) - rest -> remaining track, same gaps
-    private string _indicatorDash => Dash(_circularGap / 2, Math.Max(0, _arc - _circularGap));
-    private string _trackDash => Dash(_arc + _circularGap / 2, Math.Max(0, _circumference - _arc - _circularGap));
+    private string _indicatorDash => Dash(_gapPct / 2, Math.Max(0, _clampedValue - _gapPct));
+    private string _trackDash => Dash(_clampedValue + _gapPct / 2, Math.Max(0, 100 - _clampedValue - _gapPct));
 
     private string Dash(double lead, double len) =>
         string.Create(System.Globalization.CultureInfo.InvariantCulture,
-            $"0 {lead:F2} {len:F2} {_circumference:F2}");
+            $"0 {lead:F2} {len:F2} 100");
 
     private double _circularGap => ReadTokenNum(Css.Tokens.ProgressField.CircularGap, 0);
 

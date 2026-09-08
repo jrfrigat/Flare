@@ -3340,4 +3340,6 @@
   <data name="Charts_UpdatesRedraw" xml:space="preserve"><value>Animate - отрисовка с начала</value></data>
   <data name="Charts_UpdatesBars" xml:space="preserve"><value>Движение столбцов и подписей значений</value></data>
   <data name="Charts_UpdatesSparkline" xml:space="preserve"><value>Спарклайн с плавным обновлением</value></data>
+  <data name="Progress_UpdateValue" xml:space="preserve"><value>Изменить прогресс</value></data>
+  <data name="Progress_SizeOverride" xml:space="preserve"><value>Увеличенный диаметр с прежней толщиной, зазором и амплитудой волны.</value></data>
 </root>

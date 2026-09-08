@@ -3340,4 +3340,6 @@
   <data name="Charts_UpdatesRedraw" xml:space="preserve"><value>Animate - drawing from the start</value></data>
   <data name="Charts_UpdatesBars" xml:space="preserve"><value>Moving bars and value labels</value></data>
   <data name="Charts_UpdatesSparkline" xml:space="preserve"><value>Sparkline with animated updates</value></data>
+  <data name="Progress_UpdateValue" xml:space="preserve"><value>Change progress</value></data>
+  <data name="Progress_SizeOverride" xml:space="preserve"><value>Larger diameter, with the same stroke, gap and wave amplitude.</value></data>
 </root>

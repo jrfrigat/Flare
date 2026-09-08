@@ -4663,7 +4663,7 @@ public static class ComponentApiRegistry
             @"FlareProgress",
             @"Flare.Components.FlareProgress",
             @"Flare.Components",
-            null,
+            @"Displays determinate or indeterminate progress as a bar or circular indicator.",
             null,
             new ApiParameterInfo[]
             {
@@ -4672,13 +4672,17 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It drives the linear track thickness AND the circular diameter and stroke, so one step means one size whichever variant is rendered, and the theme owns every value.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Variant", @"ProgressVariant", @"ProgressVariant.Linear", @"Display style: Linear bar, Circular spinner, Buffer, or Query.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Wavy", @"bool", @"false", @"Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.", null, false, false, false, @"FlareProgress"),
+                new ApiParameterInfo(@"Wavy", @"bool", @"false", @"Wavy active indicator for determinate linear and circular progress, when enabled by the theme.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Applies to the determinate linear bar; because zones need an uninterrupted track, using them renders a continuous track instead of the split (gap + trailing stop dot) one.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

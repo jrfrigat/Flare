@@ -7,6 +7,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Circular `FlareProgress` now keeps its stroke, gap and wave amplitude at the lengths set by the
+  theme when resized. CSS overrides, including `rem` and `calc()`, also update the ring geometry.
 - `FlareChart.AnimateUpdates` now animates data updates when Blazor replaces the SVG drawing,
   including sparklines, bars and value labels. Updates during an animation continue from the
   visible position. Changes to the drawing's structure still take effect immediately.

@@ -5,8 +5,9 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>
 /// Design tokens for the Progress indicators. Track/indicator/circular colors, indeterminate timing and
 /// buffer color are NOT tokens here - progress.css reuses the shared color/motion scales directly. What
-/// remains is the geometry the component actually reads (in CSS and, for the wavy variant, in C# via
-/// ReadToken).
+/// remains is the geometry the component actually reads. Circular size, stroke, gap and wave amplitude
+/// are CSS lengths resolved by the browser; enlarging the diameter does not scale the other lengths.
+/// Unitless circular gap and amplitude values are accepted as pixels for compatibility.
 ///
 /// The size ramps carry one member per step of the <c>TrackSize</c> scale. <c>FlareMeter</c> reads the
 /// linear ramp too, so a meter and a linear progress bar at the same size share one track geometry by
@@ -44,15 +45,15 @@ public sealed record ProgressTokens
     /// <summary>Opacity of the buffer track.</summary>
     [CssVar(ProgressField.BufferOpacity)] public required string BufferOpacity { get; init; }
 
-    /// <summary>Diameter of the circular variant at the xs size, which is also the default size.</summary>
+    /// <summary>Outer diameter of the circular variant at the xs size, as a CSS length.</summary>
     [CssVar(ProgressField.CircularSize.Xs)] public required string CircularSizeXs { get; init; }
-    /// <summary>Diameter of the circular variant at the sm size.</summary>
+    /// <summary>Outer diameter of the circular variant at the sm size, as a CSS length.</summary>
     [CssVar(ProgressField.CircularSize.Sm)] public required string CircularSizeSm { get; init; }
-    /// <summary>Diameter of the circular variant at the md size.</summary>
+    /// <summary>Outer diameter of the circular variant at the md (default) size, as a CSS length.</summary>
     [CssVar(ProgressField.CircularSize.Md)] public required string CircularSizeMd { get; init; }
-    /// <summary>Diameter of the circular variant at the lg size.</summary>
+    /// <summary>Outer diameter of the circular variant at the lg size, as a CSS length.</summary>
     [CssVar(ProgressField.CircularSize.Lg)] public required string CircularSizeLg { get; init; }
-    /// <summary>Diameter of the circular variant at the xl size.</summary>
+    /// <summary>Outer diameter of the circular variant at the xl size, as a CSS length.</summary>
     [CssVar(ProgressField.CircularSize.Xl)] public required string CircularSizeXl { get; init; }
 
     /// <summary>Stroke width of the circular indicator at the xs size.</summary>
@@ -69,7 +70,8 @@ public sealed record ProgressTokens
     /// <summary>Line cap of the circular indicator stroke (butt/round).</summary>
     [CssVar(ProgressField.CircularCap)] public required string CircularCap { get; init; }
 
-    /// <summary>Gap between the circular indicator and its track.</summary>
+    /// <summary>Distance along the smooth ring centerline excluded between indicator and track.
+    /// A CSS length, independent of diameter; line caps extend into this distance.</summary>
     [CssVar(ProgressField.CircularGap)] public required string CircularGap { get; init; }
 
     /// <summary>Wavy-progress enable flag (1 = on); read by the component at runtime.</summary>
@@ -90,6 +92,7 @@ public sealed record ProgressTokens
     /// <summary>Circular wavy ring wave count.</summary>
     [CssVar(ProgressField.RingWaves)] public required string RingWaves { get; init; }
 
-    /// <summary>Circular wavy ring wave amplitude.</summary>
+    /// <summary>Radial amplitude of the circular wave, as a CSS length (or unitless pixels).
+    /// Independent of diameter; clamped when necessary to keep the wave inside the viewport.</summary>
     [CssVar(ProgressField.RingWaveAmplitude)] public required string RingWaveAmplitude { get; init; }
 }

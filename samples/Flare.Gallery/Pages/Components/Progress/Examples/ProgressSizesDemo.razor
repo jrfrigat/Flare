@@ -4,14 +4,34 @@
    these. Md is the default, and the ramp runs both ways from it - a progress indicator wants room to go
    finer (an inline spinner in a table row) as readily as heavier. *@
 <FlareStack Gap="FlareSpacing.Large">
+    <FlareButton OnClick="@(() => _value = _value == 65 ? 25 : 65)" data-testid="progress-update">@GalleryStrings.Progress_UpdateValue</FlareButton>
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
         @foreach (var step in _steps)
         {
             <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-                <FlareProgress Variant="ProgressVariant.Circular" Value="65" Size="@step.Size" />
+                <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" Size="@step.Size" data-testid="progress-size" />
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@step.Label</FlareText>
             </FlareStack>
         }
+    </FlareStack>
+
+    <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
+        @foreach (var step in _steps)
+        {
+            <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" Wavy="true" Size="@step.Size" data-testid="progress-wave-size" />
+        }
+    </FlareStack>
+    <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
+        @foreach (var step in _steps)
+        {
+            <FlareProgress Variant="ProgressVariant.Circular" Size="@step.Size" data-testid="progress-spin-size" />
+        }
+    </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Progress_SizeOverride</FlareText>
+    <FlareStack Row Gap="FlareSpacing.Large" Wrap Style="--flare-progress-circular-size-md:calc(6rem + 4px);">
+        <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" data-testid="progress-enlarged" />
+        <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" Wavy="true" data-testid="progress-wave-enlarged" />
+        <FlareProgress Variant="ProgressVariant.Circular" data-testid="progress-spin-enlarged" />
     </FlareStack>
 
     <FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
@@ -26,11 +46,12 @@
 </FlareStack>
 
 @code {
+    private double _value = 65;
     private readonly (TrackSize Size, string Label)[] _steps =
     [
         (TrackSize.Xs, "Xs"),
         (TrackSize.Sm, "Sm"),
-        (TrackSize.Md, "Md (default)"),
+        (TrackSize.Md, "Md"),
         (TrackSize.Lg, "Lg"),
         (TrackSize.Xl, "Xl"),
     ];

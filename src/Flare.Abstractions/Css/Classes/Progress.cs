@@ -39,6 +39,8 @@ public static class Progress
     public const string Indicator = "flare-progress__indicator";
     /// <summary>The <c>flare-progress__svg</c> CSS class.</summary>
     public const string Svg = "flare-progress__svg";
+    /// <summary>Hidden SVG boxes for measuring circular progress tokens in CSS pixels.</summary>
+    public const string Measure = "flare-progress__measure";
     /// <summary>The <c>flare-progress__remain</c> CSS class.</summary>
     public const string Remain = "flare-progress__remain";
     /// <summary>The <c>flare-progress--split</c> CSS class.</summary>
