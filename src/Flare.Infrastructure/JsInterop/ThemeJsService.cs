@@ -32,6 +32,10 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
     public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default)
         => InvokeVoidAsync("ensureStylesheet", href);
 
+    /// <summary>Ensures a theme JavaScript module is loaded once.</summary>
+    public ValueTask EnsureModuleAsync(string src, CancellationToken ct = default)
+        => InvokeVoidAsync("ensureModule", src);
+
     /// <summary>Completes once web fonts are loaded (or the safety timeout elapses).</summary>
     public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default)
         => InvokeVoidAsync("whenFontsReady", timeoutMs);

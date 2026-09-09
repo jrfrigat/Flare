@@ -164,9 +164,8 @@ public static class AvatarField
 /// <summary>CSS variable tokens for progress field.</summary>
 public static class ProgressField
 {
-    // Colors, indeterminate timing and buffer-color are gone: progress.css reuses the shared color/motion
-    // scales directly. What remains is the geometry the component reads - in CSS, and (for the wavy variant)
-    // in C# via ReadToken.
+    // Colors and buffer-color reuse shared scales. Component geometry and the timing of the stable
+    // Linear/Circular structures live here; theme-specific renderers own their additional tokens.
 
     /// <summary>CSS custom-property names for the linear track/indicator height, one per size step. The
     /// theme emits all five on <c>:root</c> and the component's size class reads the matching one, so the
@@ -190,6 +189,10 @@ public static class ProgressField
     public const string TrackRadius = "--flare-progress-track-radius";
     /// <summary>CSS custom-property name for the gap between indicator and remaining track.</summary>
     public const string Gap = "--flare-progress-gap";
+    /// <summary>CSS custom-property name for one linear indeterminate animation cycle.</summary>
+    public const string LinearIndeterminateDuration = "--flare-progress-linear-indeterminate-duration";
+    /// <summary>CSS custom-property name for the easing of linear indeterminate segment ends.</summary>
+    public const string LinearIndeterminateEasing = "--flare-progress-linear-indeterminate-easing";
     /// <summary>CSS custom-property name for the trailing stop-indicator size.</summary>
     public const string StopSize = "--flare-progress-stop-size";
     /// <summary>CSS custom-property name for the trailing stop-indicator inset.</summary>
@@ -233,6 +236,10 @@ public static class ProgressField
     public const string CircularCap = "--flare-progress-circular-cap";
     /// <summary>CSS custom-property name for the circular indicator/track gap.</summary>
     public const string CircularGap = "--flare-progress-circular-gap";
+    /// <summary>CSS custom-property name for one circular indeterminate rotation.</summary>
+    public const string CircularIndeterminateRotationDuration = "--flare-progress-circular-indeterminate-rotation-duration";
+    /// <summary>CSS custom-property name for one circular indeterminate grow and shrink cycle.</summary>
+    public const string CircularIndeterminateProgressDuration = "--flare-progress-circular-indeterminate-progress-duration";
 }
 
 /// <summary>CSS variable tokens for navigation (drawer/rail nav items and the active indicator).</summary>

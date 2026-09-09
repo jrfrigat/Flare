@@ -26,6 +26,9 @@ public interface IThemeJsService : IAsyncDisposable
     /// </summary>
     ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default);
 
+    /// <summary>Ensures a theme JavaScript module is loaded once.</summary>
+    ValueTask EnsureModuleAsync(string src, CancellationToken ct = default);
+
     /// <summary>
     /// Completes once the document's web fonts have loaded (text typefaces and icon glyphs), or after
     /// the given safety timeout elapses. Used to gate the startup splash so text appears in its final

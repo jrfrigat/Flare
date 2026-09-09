@@ -172,6 +172,7 @@ public sealed class StubThemeJsService : IThemeJsService
     public ValueTask SetStaticCssAsync(string css, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default) => ValueTask.CompletedTask;
+    public ValueTask EnsureModuleAsync(string src, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask RevealAppAsync(CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class => ValueTask.CompletedTask;

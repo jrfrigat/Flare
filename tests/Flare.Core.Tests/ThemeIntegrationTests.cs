@@ -16,11 +16,13 @@ public class ThemeIntegrationTests
         var theme = new FlareThemeBuilder("test-theme", "Test Theme", MaterialDesignTokens.Design)
             .WithDefaultPalette("test-palette")
             .WithStyleAsset("_content/Test/css/test.css")
+            .WithScriptAsset("_content/Test/js/test.js")
             .Build();
 
         Assert.Equal("test-theme", theme.Id);
         Assert.Equal("Test Theme", theme.DisplayName);
         Assert.Single(theme.StyleAssets);
+        Assert.Single(theme.ScriptAssets);
     }
 
     [Fact]

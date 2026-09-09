@@ -46,6 +46,23 @@ public class FlareProgressTests : FlareTestContext
     }
 
     [Fact]
+    public void IndeterminateLinear_RendersThemeExtensionSegments()
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Variant, ProgressVariant.Linear)
+            .Add(x => x.Class, "theme-progress-variant"));
+
+        Assert.Single(cut.FindAll($".{Css.Classes.Progress.Remain}"));
+        var first = Assert.Single(cut.FindAll($".{Css.Classes.Progress.IndeterminateFirst}"));
+        var second = Assert.Single(cut.FindAll($".{Css.Classes.Progress.IndeterminateSecond}"));
+        Assert.DoesNotContain(Css.Classes.Progress.Root, first.ClassList);
+        Assert.DoesNotContain(Css.Classes.Progress.Root, second.ClassList);
+        Assert.DoesNotContain("theme-progress-variant", first.ClassList);
+        Assert.DoesNotContain("theme-progress-variant", second.ClassList);
+        Assert.Empty(cut.FindAll("svg"));
+    }
+
+    [Fact]
     public void AriaValueNow_ReflectsValue()
     {
         var cut = Render<FlareProgress>(p => p

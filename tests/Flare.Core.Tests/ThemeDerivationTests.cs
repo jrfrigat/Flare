@@ -17,6 +17,7 @@ public sealed class ThemeDerivationTests
         public DesignTokens Design { get; } = TokenParityTests.CreateDefaultDesignTokens();
         public string DefaultPaletteId => "base-pal";
         public IReadOnlyList<string> StyleAssets => ["base.css"];
+        public IReadOnlyList<string> ScriptAssets => ["base.js"];
         public IReadOnlyList<Palette> Palettes => [];
         public IPaletteGenerator? PaletteGenerator => null;
     }
@@ -32,6 +33,7 @@ public sealed class ThemeDerivationTests
         Assert.Equal("Base", d.DisplayName);                 // forwarded
         Assert.Equal("base-pal", d.DefaultPaletteId);        // forwarded
         Assert.Equal(b.StyleAssets, d.StyleAssets);          // forwarded
+        Assert.Equal(b.ScriptAssets, d.ScriptAssets);        // forwarded
         Assert.Equal("9px solid red", d.Design.FocusRing);   // transformed
         Assert.Equal(b.Design.Shape, d.Design.Shape);        // the rest of the design is preserved
     }

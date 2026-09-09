@@ -25,8 +25,6 @@ public static class Progress
     public const string Buffer = "flare-progress--buffer";
     /// <summary>The <c>flare-progress--query</c> CSS class.</summary>
     public const string Query = "flare-progress--query";
-    /// <summary>The <c>flare-progress__wave</c> CSS class.</summary>
-    public const string Wave = "flare-progress__wave";
     /// <summary>The <c>flare-progress__track</c> CSS class.</summary>
     public const string Track = "flare-progress__track";
     /// <summary>The <c>flare-progress__bar</c> CSS class.</summary>
@@ -35,6 +33,8 @@ public static class Progress
     public const string IndeterminateFirst = "flare-progress__bar--indeterminate-first";
     /// <summary>The second moving segment of an indeterminate linear indicator.</summary>
     public const string IndeterminateSecond = "flare-progress__bar--indeterminate-second";
+    /// <summary>An inert host where a theme can draw an optional progress decoration.</summary>
+    public const string Decoration = "flare-progress__decoration";
     /// <summary>The <c>flare-progress__buffer-fill</c> CSS class.</summary>
     public const string BufferFill = "flare-progress__buffer-fill";
     /// <summary>The <c>flare-progress__indicator</c> CSS class.</summary>

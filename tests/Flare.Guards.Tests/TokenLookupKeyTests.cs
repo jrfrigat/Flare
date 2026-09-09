@@ -11,8 +11,7 @@ namespace Flare.Guards.Tests;
 /// misspelled <c>--flare-*</c> shows up: a rule that does not apply leaves a visibly unstyled element.
 /// A misspelled lookup key does not - <c>ReadTokenNum</c> returns the fallback, the component behaves
 /// exactly as if the theme had not set the token, and the only symptom is a feature that quietly never
-/// turns on. <c>FlareProgress</c> read all eight of its wave tokens by literal, so renaming any of them
-/// in a theme would have silently disabled the wavy progress bar with nothing to show for it.
+/// turns on.
 ///
 /// The broader pass over the remaining literals is docs/issues/css-name-literals.md. This guard covers
 /// the part that cannot be caught by looking at the screen.

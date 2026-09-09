@@ -5,6 +5,12 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.34.0] - Unreleased
 
+### Added
+
+- Themes can publish optional JavaScript modules through `ITheme.ScriptAssets`,
+  `FlareThemeBuilder.WithScriptAsset(s)` and `ITheme.Derive`. This lets a theme own visual renderers
+  such as the MD3 Expressive progress wave without adding theme-specific code to Flare components.
+
 ### Changed
 
 - **BREAKING: Removed `FlareProgress.Wavy`.** Theme-specific progress styles now use CSS classes such

@@ -21,11 +21,6 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             [Css.Tokens.Md3e.Progress.IndeterminateLength] = "20px",
             [Css.Tokens.Md3e.Progress.Amplitude] = "3px",
             [Css.Tokens.Md3e.Progress.Speed] = "1s",
-            [Css.Tokens.Md3e.Progress.LinearIndeterminateDuration] = "1750ms",
-            [Css.Tokens.Md3e.Progress.LinearIndeterminateEasing] = "cubic-bezier(0.3, 0, 0.8, 0.15)",
-            [Css.Tokens.Md3e.Progress.CircularIndeterminateRotationDuration] = "1500ms",
-            [Css.Tokens.Md3e.Progress.CircularIndeterminateProgressDuration] = "6000ms",
-            [Css.Tokens.Md3e.Progress.RingCount] = "8",
             [Css.Tokens.Md3e.Progress.RingLength] = "15px",
             [Css.Tokens.Md3e.Progress.RingAmplitude] = "1.6",
         };
@@ -111,6 +106,13 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
+        Progress = MaterialDesignTokens.Design.Progress with
+        {
+            LinearIndeterminateDuration = "1750ms",
+            LinearIndeterminateEasing = "cubic-bezier(0.3, 0, 0.8, 0.15)",
+            CircularIndeterminateRotationDuration = "1500ms",
+            CircularIndeterminateProgressDuration = "6000ms",
+        },
 
         // Charts get the Expressive treatment for the same reason the buttons do: shape is the axis this
         // era pushes. A heavier stroke and a visibly rounded bar end read as Expressive at a glance, and
@@ -138,6 +140,12 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css",
+    ];
+
+    /// <inheritdoc />
+    public IReadOnlyList<string> ScriptAssets =>
+    [
+        "_content/Flare.Theme.MaterialDesign3Expressive/js/progress-wave.js",
     ];
 }
 

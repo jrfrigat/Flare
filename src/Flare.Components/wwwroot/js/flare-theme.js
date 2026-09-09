@@ -49,6 +49,24 @@ export function ensureStylesheet(href) {
     });
 }
 
+const themeModules = new Map();
+
+// Theme modules are optional behavior owned by a theme package. Dynamic import keeps them out of
+// applications that never activate that theme, while the cache prevents duplicate initialization.
+export function ensureModule(src) {
+    if (!src) return Promise.resolve();
+    const url = new URL(src, document.baseURI).href;
+    let pending = themeModules.get(url);
+    if (!pending) {
+        pending = import(url).catch(error => {
+            themeModules.delete(url);
+            throw error;
+        });
+        themeModules.set(url, pending);
+    }
+    return pending;
+}
+
 // Resolves once the document's web fonts have finished loading (text typefaces + icon glyphs), or
 // after a safety timeout so a slow/blocked font CDN can never strand the caller. Used to gate the
 // startup splash so text is first painted in its final face -- no font-swap flash.

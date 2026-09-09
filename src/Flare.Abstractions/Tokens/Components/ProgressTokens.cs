@@ -3,11 +3,11 @@ using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
-/// Design tokens for the Progress indicators. Track/indicator/circular colors, indeterminate timing and
-/// buffer color are NOT tokens here - progress.css reuses the shared color/motion scales directly. What
-/// remains is the geometry the component actually reads. Circular size, stroke, gap and wave amplitude
+/// Design tokens for the Progress indicators. Track/indicator colors and buffer color reuse shared
+/// scales. This record owns the geometry and motion of the stable Linear/Circular structures; a
+/// theme-specific renderer owns any additional geometry it introduces. Circular size, stroke and gap
 /// are CSS lengths resolved by the browser; enlarging the diameter does not scale the other lengths.
-/// Unitless circular gap and amplitude values are accepted as pixels for compatibility.
+/// A unitless circular gap value is accepted as pixels for compatibility.
 ///
 /// The size ramps carry one member per step of the <c>TrackSize</c> scale. <c>FlareMeter</c> reads the
 /// linear ramp too, so a meter and a linear progress bar at the same size share one track geometry by
@@ -32,6 +32,12 @@ public sealed record ProgressTokens
 
     /// <summary>Gap between the active indicator and the remaining track.</summary>
     [CssVar(ProgressField.Gap)] public required string Gap { get; init; }
+
+    /// <summary>Duration of one linear indeterminate animation cycle.</summary>
+    [CssVar(ProgressField.LinearIndeterminateDuration)] public required string LinearIndeterminateDuration { get; init; }
+
+    /// <summary>Easing used by the moving ends of a linear indeterminate indicator.</summary>
+    [CssVar(ProgressField.LinearIndeterminateEasing)] public required string LinearIndeterminateEasing { get; init; }
 
     /// <summary>Trailing stop-indicator dot size (0 = off).</summary>
     [CssVar(ProgressField.StopSize)] public required string StopSize { get; init; }
@@ -73,5 +79,11 @@ public sealed record ProgressTokens
     /// <summary>Distance along the smooth ring centerline excluded between indicator and track.
     /// A CSS length, independent of diameter; line caps extend into this distance.</summary>
     [CssVar(ProgressField.CircularGap)] public required string CircularGap { get; init; }
+
+    /// <summary>Duration of one circular indeterminate rotation.</summary>
+    [CssVar(ProgressField.CircularIndeterminateRotationDuration)] public required string CircularIndeterminateRotationDuration { get; init; }
+
+    /// <summary>Duration of one circular indeterminate grow and shrink cycle.</summary>
+    [CssVar(ProgressField.CircularIndeterminateProgressDuration)] public required string CircularIndeterminateProgressDuration { get; init; }
 
 }

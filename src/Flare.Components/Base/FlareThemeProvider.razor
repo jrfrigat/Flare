@@ -190,6 +190,9 @@
 
             await ThemeJsService.SetThemeClassesAsync(
                 ThemeService.CurrentTheme.Id, ThemeService.CurrentPalette.Id, ThemeService.IsDark);
+
+            foreach (var src in ThemeService.CurrentTheme.ScriptAssets)
+                await ThemeJsService.EnsureModuleAsync(src);
         }
         catch (JSDisconnectedException) { }
         catch (JSException) { }

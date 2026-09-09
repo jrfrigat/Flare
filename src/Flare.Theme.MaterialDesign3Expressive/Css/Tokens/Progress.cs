@@ -13,16 +13,6 @@ public static class Progress
     public const string Amplitude = "--flare-progress-wave-amplitude";
     /// <summary>Duration for a linear wave to travel by one wavelength.</summary>
     public const string Speed = "--flare-progress-wave-speed";
-    /// <summary>Duration of one linear indeterminate cycle.</summary>
-    public const string LinearIndeterminateDuration = "--flare-progress-linear-indeterminate-duration";
-    /// <summary>Easing used by the moving ends of a linear indeterminate indicator.</summary>
-    public const string LinearIndeterminateEasing = "--flare-progress-linear-indeterminate-easing";
-    /// <summary>Duration of one circular indeterminate rotation.</summary>
-    public const string CircularIndeterminateRotationDuration = "--flare-progress-circular-wavy-indeterminate-rotation-duration";
-    /// <summary>Duration of one circular indeterminate grow and shrink cycle.</summary>
-    public const string CircularIndeterminateProgressDuration = "--flare-progress-circular-wavy-indeterminate-progress-duration";
-    /// <summary>Fallback circular wave count used when no usable wavelength is available.</summary>
-    public const string RingCount = "--flare-progress-ring-waves";
     /// <summary>Preferred circular wavelength; the renderer chooses a whole number of waves.</summary>
     public const string RingLength = "--flare-progress-ring-wave-length";
     /// <summary>Radial circular-wave amplitude as a CSS length or legacy unitless pixel value.</summary>

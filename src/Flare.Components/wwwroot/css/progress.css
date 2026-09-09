@@ -50,12 +50,17 @@
   transition: width 0.3s var(--flare-motion-easing-standard);
 }
 
-/* Optional renderer hooks stay inert until a theme-owned variant class activates them. */
-.flare-progress__wave,
+/* The second segment and segmented track stay inert unless a theme activates them. */
 .flare-progress--linear.flare-progress--indeterminate .flare-progress__remain,
-.flare-progress__bar--indeterminate-second,
-path.flare-progress__indicator {
+.flare-progress__bar--indeterminate-second {
   display: none;
+}
+
+.flare-progress__decoration {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 /* Split track: active indicator + gap + remaining track (no SVG).
@@ -125,7 +130,8 @@ path.flare-progress__indicator {
    established single-segment behavior. */
 .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
   width: 40% !important;
-  animation: flare-progress-linear 1.5s infinite var(--flare-motion-easing-standard);
+  animation: flare-progress-linear var(--flare-progress-linear-indeterminate-duration)
+             infinite var(--flare-progress-linear-indeterminate-easing);
 }
 
 @keyframes flare-progress-linear {
@@ -164,12 +170,14 @@ path.flare-progress__indicator {
    no CSS calc() in stroke-dasharray, which several browsers reject. */
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
-  animation: flare-progress-rotate 1.4s linear infinite;
+  animation: flare-progress-rotate var(--flare-progress-circular-indeterminate-rotation-duration)
+             linear infinite;
 }
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
   stroke-dasharray: 70.74 100;
-  animation: flare-progress-dash 1.4s ease-in-out infinite;
+  animation: flare-progress-dash var(--flare-progress-circular-indeterminate-progress-duration)
+             ease-in-out infinite;
 }
 
 @keyframes flare-progress-rotate { 100% { transform: rotate(360deg); } }

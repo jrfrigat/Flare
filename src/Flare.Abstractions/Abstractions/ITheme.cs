@@ -4,7 +4,7 @@ namespace Flare.Abstractions;
 
 /// <summary>
 /// A theme = a design system (non-color <see cref="DesignTokens"/>) plus a default palette
-/// reference and its static style assets. Colors live in <see cref="Palette"/>s, which are
+/// reference and its static assets. Colors live in <see cref="Palette"/>s, which are
 /// registered separately and chosen independently; light/dark is a <see cref="ThemeMode"/>,
 /// not a separate theme.
 /// </summary>
@@ -20,6 +20,12 @@ public interface ITheme
     string DefaultPaletteId { get; }
     /// <summary>Static stylesheets this theme needs (fonts, base reset, generated token CSS).</summary>
     IReadOnlyList<string> StyleAssets { get; }
+
+    /// <summary>
+    /// Optional JavaScript modules that implement theme-owned rendering behavior. Modules are loaded
+    /// once when the theme becomes active and must scope their behavior to the theme's root class.
+    /// </summary>
+    IReadOnlyList<string> ScriptAssets => [];
 
     /// <summary>
     /// The palettes this theme ships with. When a theme is registered (auto-discovered from a

@@ -77,6 +77,9 @@ public sealed class ThemeValidator : IThemeValidator
         if (theme.StyleAssets is null || !theme.StyleAssets.Any())
             errors.Add("Theme.StyleAssets must contain at least one stylesheet.");
 
+        if (theme.ScriptAssets is null)
+            errors.Add("Theme.ScriptAssets must not be null.");
+
         // DefaultPaletteId
         if (string.IsNullOrWhiteSpace(theme.DefaultPaletteId))
             errors.Add("Theme.DefaultPaletteId must not be null or empty.");

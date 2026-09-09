@@ -705,6 +705,8 @@ public class MaterialDesignTokens
         LinearHeightXl = "8px",   // spec: linear thick height
         TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
+        LinearIndeterminateDuration = "1500ms",
+        LinearIndeterminateEasing = "var(--flare-motion-easing-standard)",
         StopSize = "4px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
@@ -723,6 +725,8 @@ public class MaterialDesignTokens
         CircularWidthXl = "5px",
         CircularCap = "round",
         CircularGap = "4px",
+        CircularIndeterminateRotationDuration = "1400ms",
+        CircularIndeterminateProgressDuration = "1400ms",
     };
 
     /// <summary>

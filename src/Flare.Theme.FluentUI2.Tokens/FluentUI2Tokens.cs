@@ -729,6 +729,8 @@ public class FluentUI2Tokens
         LinearHeightXl = "4px",   // spec: bar thickness (large)
         TrackRadius = "var(--flare-shape-extra-small)",
         Gap = "0px",
+        LinearIndeterminateDuration = "1500ms",
+        LinearIndeterminateEasing = "var(--flare-motion-easing-standard)",
         StopSize = "0px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
@@ -751,6 +753,8 @@ public class FluentUI2Tokens
         CircularWidthXl = "4px",
         CircularCap = "butt",
         CircularGap = "0px",
+        CircularIndeterminateRotationDuration = "1400ms",
+        CircularIndeterminateProgressDuration = "1400ms",
     };
 
     // Nav - no pill in Fluent; a left accent bar marks the active item.

@@ -22,24 +22,16 @@
   initial-value: 0;
 }
 
-@property --_ring-sweep {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 0;
-}
-
 @property --_ring-progress {
   syntax: '<number>';
   inherits: true;
   initial-value: 10;
 }
 
-@keyframes flare-progress-wave {
-  to { transform: translateX(calc(-1 * var(--_wave-period))); }
-}
-
-@keyframes flare-progress-indeterminate-wave {
-  to { transform: translateX(calc(-3 * var(--_wave-period))); }
+@property --_ring-sweep {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
 }
 
 @keyframes flare-progress-first-head {
@@ -60,11 +52,6 @@
 @keyframes flare-progress-second-tail {
   0%, 51.4286% { --_progress-second-tail: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
   100% { --_progress-second-tail: 1; }
-}
-
-@keyframes flare-progress-ring-wave {
-  from { rotate: 0deg; --_ring-sweep: 0; }
-  to { rotate: 360deg; --_ring-sweep: 100; }
 }
 
 @keyframes flare-progress-wavy-rotate {
@@ -173,12 +160,25 @@
     transform: translateY(-50%);
   }
 
-  .flare-progress--md3e-wave.flare-progress--linear {
-    height: var(--_wave-height);
+  /* The public class is the complete opt-in contract. The module draws only inside the neutral
+     decoration hosts; until it is ready, the ordinary progress fallback remains visible. */
+  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__bar > .flare-progress__decoration {
+    display: block;
+  }
+
+  .flare-progress--md3e-wave.flare-progress--linear:not(.flare-progress--indeterminate) .flare-progress__bar {
+    position: relative;
+  }
+
+  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear {
+    height: max(
+      var(--flare-progress-wavy-height),
+      calc(var(--_lin-height) + var(--flare-progress-wave-amplitude) + var(--flare-progress-wave-amplitude))
+    );
     background: transparent;
   }
 
-  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__bar {
+  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear .flare-progress__bar {
     top: 0;
     height: 100%;
     overflow: hidden;
@@ -188,59 +188,27 @@
     transform: none;
   }
 
-  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__wave path {
-    stroke-width: var(--_wave-stroke);
-  }
-
-  .flare-progress--md3e-wave .flare-progress__wave {
-    display: block;
-    max-width: none;
-    width: calc(100% + var(--_wave-period));
-    height: 100%;
-    animation: flare-progress-wave var(--flare-progress-wave-speed) linear infinite;
-  }
-
-  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__remain {
+  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear .flare-progress__remain {
     height: var(--_lin-height);
   }
 
-  .flare-progress--md3e-wave.flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
+  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
     inset-block: 0;
   }
 
-  .flare-progress--md3e-wave.flare-progress--linear.flare-progress--indeterminate .flare-progress__wave {
-    animation: flare-progress-indeterminate-wave
-               var(--flare-progress-linear-indeterminate-duration)
-               var(--flare-progress-linear-indeterminate-easing) infinite;
-  }
-
-  .flare-progress--md3e-wave.flare-progress--circular .flare-progress__track,
-  .flare-progress--md3e-wave.flare-progress--circular:not(.flare-progress--indeterminate) .flare-progress__indicator {
-    stroke-linejoin: round;
-  }
-
-  .flare-progress--md3e-wave.flare-progress--circular circle.flare-progress__indicator {
-    display: none;
-  }
-
-  .flare-progress--md3e-wave.flare-progress--circular path.flare-progress__indicator {
-    display: block;
-    transform-box: view-box;
-    transform-origin: 50% 50%;
-    stroke-dashoffset: calc(var(--_ring-lead, 0) + var(--_ring-sweep));
-    animation: flare-progress-ring-wave
-               calc(var(--flare-progress-wave-speed) * var(--flare-progress-ring-waves))
+  .flare-progress--circular.flare-progress--indeterminate {
+    animation: flare-progress-ring-progress
+               var(--flare-progress-circular-indeterminate-progress-duration)
                linear infinite;
   }
 
-  .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
-    animation:
-      flare-progress-wavy-rotate var(--flare-progress-circular-wavy-indeterminate-rotation-duration) linear infinite,
-      flare-progress-ring-progress var(--flare-progress-circular-wavy-indeterminate-progress-duration) linear infinite;
+  .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg {
+    animation: flare-progress-wavy-rotate
+               var(--flare-progress-circular-indeterminate-rotation-duration)
+               linear infinite;
   }
 
-  .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
-  .flare-progress--md3e-wave.flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
     stroke-dasharray: var(--_ring-progress) calc(100 - var(--_ring-progress));
     stroke-dashoffset: 0;
     transition: none;
@@ -256,12 +224,35 @@
     animation: none;
   }
 
+  .flare-progress--md3e-wave.flare-progress--circular {
+    position: relative;
+  }
+
+  .flare-progress--md3e-wave.flare-progress--circular > .flare-progress__decoration {
+    display: block;
+    z-index: 1;
+  }
+
+  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--circular .flare-progress__track {
+    stroke-linejoin: round;
+  }
+
+  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--circular circle.flare-progress__indicator {
+    display: none;
+  }
+
+  .flare-progress--md3e-wave.flare-progress--circular.flare-progress--indeterminate > .flare-progress__decoration {
+    animation: flare-progress-wavy-rotate
+               var(--flare-progress-circular-indeterminate-rotation-duration)
+               linear infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .flare-progress--linear.flare-progress--indeterminate,
-    .flare-progress--md3e-wave .flare-progress__wave,
-    .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg,
+    .flare-progress--circular.flare-progress--indeterminate,
+    .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg,
+    .flare-progress--md3e-wave.flare-progress--circular.flare-progress--indeterminate > .flare-progress__decoration,
     .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
-    .flare-progress--md3e-wave.flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
     .flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
       animation: none;
     }
@@ -275,7 +266,7 @@
       display: none;
     }
 
-    .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
+    .flare-progress--circular.flare-progress--indeterminate {
       --_ring-progress: 40;
     }
   }
