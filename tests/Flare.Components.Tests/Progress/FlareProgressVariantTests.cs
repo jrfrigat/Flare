@@ -5,8 +5,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Linear_RendersLinearClass()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Linear));
+        var cut = Render<FlareProgressLinear>();
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Linear}"));
     }
@@ -14,8 +13,8 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Buffer_RendersBufferClass()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Buffer));
+        var cut = Render<FlareProgressLinear>(p => p
+            .Add(x => x.Variant, LinearProgressVariant.Buffer));
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Buffer}"));
     }
@@ -23,8 +22,8 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Query_RendersQueryClass()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Query));
+        var cut = Render<FlareProgressLinear>(p => p
+            .Add(x => x.Variant, LinearProgressVariant.Query));
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Progress.Query}"));
     }
@@ -32,8 +31,8 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Buffer_WithBufferValue_RendersBufferFill()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Buffer)
+        var cut = Render<FlareProgressLinear>(p => p
+            .Add(x => x.Variant, LinearProgressVariant.Buffer)
             .Add(x => x.BufferValue, 60.0));
 
         var fill = cut.Find($".{Css.Classes.Progress.BufferFill}");
@@ -44,8 +43,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Circular_RendersSvgElement()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Circular));
+        var cut = Render<FlareProgressCircular>();
 
         Assert.NotEmpty(cut.FindAll("svg"));
     }
@@ -53,8 +51,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Linear_WithValue50_AppliesWidthStyle()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Linear)
+        var cut = Render<FlareProgressLinear>(p => p
             .Add(x => x.Value, 50.0));
 
         var bar = cut.Find($".{Css.Classes.Progress.Bar}");
@@ -65,8 +62,8 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Buffer_RendersRootElement()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Buffer));
+        var cut = Render<FlareProgressLinear>(p => p
+            .Add(x => x.Variant, LinearProgressVariant.Buffer));
 
         Assert.NotEmpty(cut.FindAll("[role='progressbar']"));
     }
@@ -74,8 +71,8 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Query_RendersRootElement()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Query));
+        var cut = Render<FlareProgressLinear>(p => p
+            .Add(x => x.Variant, LinearProgressVariant.Query));
 
         Assert.NotEmpty(cut.FindAll("[role='progressbar']"));
     }

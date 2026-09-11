@@ -15,7 +15,7 @@
 <FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
     <FlareStack Gap="FlareSpacing.Medium">
         @* FlareProgress reads a 0..100 percentage, so the 0..1 progress is scaled here. *@
-        <FlareProgress Value="@(_progress * 100)" />
+        <FlareProgressLinear Value="@(_progress * 100)" />
         <FlareStack Row Wrap Gap="FlareSpacing.Large">
             <FlareText Typo="TypographyScale.BodyMedium">
                 @GalleryStrings.Services_Scroll_Offset <code>@_top.ToString("F0")</code>
@@ -61,8 +61,8 @@
             </FlareStack>
         </div>
         <FlareStack Row Gap="FlareSpacing.Small">
-            <FlareProgress Value="@(_stripProgress * 100)" Style="flex:1;" />
-            <FlareProgress Value="@(_hProgress * 100)" Style="flex:1;" />
+            <FlareProgressLinear Value="@(_stripProgress * 100)" Style="flex:1;" />
+            <FlareProgressLinear Value="@(_hProgress * 100)" Style="flex:1;" />
         </FlareStack>
         <FlareStack Row Wrap Gap="FlareSpacing.Large">
             <FlareText Typo="TypographyScale.BodyMedium">

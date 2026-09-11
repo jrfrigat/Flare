@@ -71,12 +71,19 @@
   to { --_ring-wave-spin: 1; }
 }
 
-/* One wavelength per cycle, so the tiled wave travels without a seam at the loop. */
+/* Exactly one wavelength per cycle, so the tiling hides the loop. */
 @keyframes flare-md3e-wave-travel {
   to {
-    background-position:
-      calc(-1 * var(--_wave-len)) 0,
-      calc(-1 * var(--_wave-len)) 100%;
+    -webkit-mask-position: calc(-1 * var(--_wave-len)) 0;
+    mask-position: calc(-1 * var(--_wave-len)) 0;
+  }
+}
+
+/* Three, because this one runs on the indeterminate cycle's clock rather than its own. */
+@keyframes flare-md3e-wave-travel-indeterminate {
+  to {
+    -webkit-mask-position: calc(-3 * var(--_wave-len)) 0;
+    mask-position: calc(-3 * var(--_wave-len)) 0;
   }
 }
 
@@ -193,17 +200,12 @@
 
   .flare-progress--md3e-wave.flare-progress--linear {
     /* Amplitude is the authority and the height follows from it - one indicator
-       thickness plus a crest above and a trough below - so a wave can never be
-       told to be taller than the box drawing it. */
+       thickness plus a crest above and a trough below, which is the spec's 10dp
+       `linear.with-wave.height` - so a wave can never be told to be taller than
+       the box drawing it. The mask's own 3-and-4-in-10 proportions are the same
+       two numbers; ProgressLineWaveTests checks they stay that way. */
     --_wave-amp: var(--flare-progress-wave-amplitude);
     --_wave-len: var(--flare-progress-wave-length);
-    /* The band is centred on each arc and is exactly as thick as the flat
-       indicator it replaces, so wave and remaining track read as one line. */
-    --_wave-band:
-      #0000 calc(100% - var(--_lin-height) / 2),
-      var(--fc-main, var(--flare-color-primary)) calc(100% - var(--_lin-height) / 2)
-                                                calc(100% + var(--_lin-height) / 2),
-      #0000 calc(100% + var(--_lin-height) / 2);
     height: calc(var(--_lin-height) + 2 * var(--_wave-amp));
     background: transparent;
   }
@@ -212,25 +214,21 @@
     --_wave-len: var(--flare-progress-indeterminate-wave-length);
   }
 
-  /* One period per tile: a crest in the left half, a trough in the right, each a
-     shallow arc off a circle far larger than the wave is tall. That size is the
-     whole trick - an arc only as wide as its own half-period stands vertically
-     where two of them meet, and the result is scalloped, a row of half-circles
-     rather than a wave. These radii put the join at 33 degrees, near the 25 a
-     sine would have. They are percentages of the tile, so the arc keeps meeting
-     the centre line a quarter-wavelength from its crest at any wavelength, while
-     the tile's own height, and so the amplitude, stays a length. */
+  /* The wave is one period of a sine, stroked, tiled along the bar as a mask over
+     the indicator's own colour. Built from gradients instead it came out unevenly
+     lit and visibly stepped: a gradient's colour stop is a hard boundary the
+     rasteriser barely softens, while a stroke is antialiased as the curve it is.
+     The path runs a period either side of its tile, so the stroke is already
+     formed where the tile clips it and the next tile continues it without a seam. */
   .flare-progress--md3e-wave.flare-progress--linear .flare-progress__bar {
+    --_wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 10'%3E%3Cpath d='M-40,5C-36.67,3.43 -33.33,2 -30,2C-26.67,2 -23.33,3.43 -20,5C-16.67,6.57 -13.33,8 -10,8C-6.67,8 -3.33,6.57 0,5C3.33,3.43 6.67,2 10,2C13.33,2 16.67,3.43 20,5C23.33,6.57 26.67,8 30,8C33.33,8 36.67,6.57 40,5C43.33,3.43 46.67,2 50,2C53.33,2 56.67,3.43 60,5C63.33,6.57 66.67,8 70,8C73.33,8 76.67,6.57 80,5' fill='none' stroke='%23fff' stroke-width='4'/%3E%3C/svg%3E");
     height: 100%;
     border-radius: 0;
-    background:
-      radial-gradient(45.43% 259.6% at 25% 288.1%, var(--_wave-band)) 0 0,
-      radial-gradient(45.43% 259.6% at 75% -188.1%, var(--_wave-band)) 0 100%;
-    /* Half a line taller than its half of the bar, so the two tiles overlap across the
-       centre line. Tiled exactly in half, each band would be sliced off where the arcs
-       meet and the wave would come out pinched at every crossing. */
-    background-size: var(--_wave-len) calc(var(--_wave-amp) + var(--_lin-height));
-    background-repeat: repeat-x;
+    background: var(--fc-main, var(--flare-color-primary));
+    -webkit-mask: var(--flare-progress-wave-mask, var(--_wave-mask))
+                  0 0 / var(--_wave-len) 100% repeat-x;
+    mask: var(--flare-progress-wave-mask, var(--_wave-mask))
+          0 0 / var(--_wave-len) 100% repeat-x;
     animation: flare-md3e-wave-travel var(--flare-progress-wave-speed) linear infinite;
   }
 
@@ -239,11 +237,20 @@
   }
 
   /* The indeterminate segments are laid out flat and one indicator tall; a wave
-     needs the whole bar. */
+     needs the whole bar.
+
+     The wave runs on the indeterminate cycle's own duration and easing, not on a
+     steady speed of its own. The segment it is drawn in accelerates and slows to
+     that curve, and a wave crossing it at a constant rate reads as sliding against
+     the segment rather than travelling with it. Three wavelengths per cycle is what
+     keeps the crests moving at a believable speed on that clock. */
   .flare-progress--md3e-wave.flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
     inset-block: 0;
     height: auto;
     transform: none;
+    animation: flare-md3e-wave-travel-indeterminate
+               var(--flare-progress-linear-indeterminate-duration)
+               var(--flare-progress-linear-indeterminate-easing) infinite;
   }
 
   .flare-progress--circular.flare-progress--indeterminate {

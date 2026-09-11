@@ -5,13 +5,13 @@ namespace Flare.Components;
 
 /// <summary>
 /// One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks.
-/// <see cref="FlareProgress"/> and <see cref="FlareMeter"/> are both bars and
+/// <see cref="FlareProgressLinear"/> and <see cref="FlareMeter"/> are both bars and
 /// answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is
 /// the dashboard reading.
 /// </summary>
 /// <remarks>
 /// Coloured bands are <see cref="FlareZone"/> children - the same <c>Start</c>/<c>End</c>-on-a-host-scale
-/// primitive <see cref="FlareSlider"/> and <see cref="FlareProgress"/> already take, rather than a
+/// primitive <see cref="FlareSlider"/> and <see cref="FlareProgressLinear"/> already take, rather than a
 /// gauge-specific range type. Which part of a scale counts as bad belongs to the application's data, so it
 /// arrives as a zone with a colour rather than as a token a theme would have to guess at.
 ///

@@ -1,0 +1,124 @@
+@namespace Flare.Components
+@inherits FlareProgressBase
+@using System.Globalization
+
+@if (Variant == LinearProgressVariant.Buffer)
+{
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, SizeClass, ColorClass)"
+         role="progressbar"
+         aria-valuenow="@AriaValueNow"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         style="@($"{ColorTokens}{Style}")"
+         @attributes="AdditionalAttributes">
+        <div class="@Css.Classes.Progress.BufferFill" style="width:@(_clampedBufferValue.ToString("F0"))%"></div>
+        <div class="@Css.Classes.Progress.Bar" style="width:@(ClampedValue.ToString("F0"))%"></div>
+    </div>
+}
+else if (Variant == LinearProgressVariant.Query)
+{
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Query, SizeClass, ColorClass)"
+         role="progressbar"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         style="@($"{ColorTokens}{Style}")"
+         @attributes="AdditionalAttributes">
+        <div class="@Css.Classes.Progress.Bar"></div>
+    </div>
+}
+else
+{
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _trackClass, SizeClass, ColorClass)"
+         role="progressbar"
+         aria-valuenow="@AriaValueNow"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         style="@($"{ColorTokens}{Style}")"
+         @attributes="AdditionalAttributes">
+        @foreach (var z in _zoneBands)
+        {
+            <span class="@z.CssClass" style="@z.Style"></span>
+        }
+        @if (Indeterminate)
+        {
+            @* Neutral hooks: the second segment and the segmented track stay inert until a theme
+               switches them on, so a theme with a one-segment indeterminate pays no attention to them. *@
+            <div class="@Css.Classes.Progress.Remain"></div>
+            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateFirst}")"></div>
+            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateSecond}")"></div>
+        }
+        else
+        {
+            <div class="@Css.Classes.Progress.Bar" style="width:@($"{ClampedValue:F0}%")"></div>
+        }
+        @if (!Indeterminate && !_hasZones)
+        {
+            <div class="@Css.Classes.Progress.Remain"></div>
+        }
+        @* Zones register through the cascaded collection and render no DOM of their own; the bands
+           above draw them. IsFixed: the collection instance never changes identity. *@
+        @if (Zones is not null)
+        {
+            <CascadingValue TValue="IFlareZoneHost" Value="_zones" IsFixed="true">@Zones</CascadingValue>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>Which shape the linear track takes.</summary>
+    [Parameter] public LinearProgressVariant Variant { get; set; } = LinearProgressVariant.Bar;
+
+    /// <summary>
+    /// Secondary buffer fill percentage (0-100), used only with <see cref="LinearProgressVariant.Buffer"/>.
+    /// This is shorthand for the common case: a SINGLE buffered range anchored at the track start,
+    /// auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that
+    /// does not start at 0 (a media player's <c>TimeRanges</c>) - use <see cref="Zones"/> with explicit
+    /// <see cref="FlareZone"/> bands instead.
+    /// </summary>
+    [Parameter] public double BufferValue { get; set; }
+
+    /// <summary>
+    /// Declarative colored zones on the track: one or more <see cref="FlareZone"/> children, each an
+    /// absolute <c>[Start, End]</c> region on the 0-100 scale in its own color (threshold/danger ranges,
+    /// a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Because zones
+    /// need an uninterrupted track, using them renders a continuous track instead of the split one
+    /// (gap plus trailing stop dot).
+    /// </summary>
+    [Parameter] public RenderFragment? Zones { get; set; }
+
+    // Shared zone registration; the collection pokes StateHasChanged when zones change.
+    private readonly ZoneCollection _zones;
+
+    /// <summary>Creates the indicator and its zone collection.</summary>
+    public FlareProgressLinear() => _zones = new ZoneCollection(StateHasChanged);
+
+    private bool _hasZones => _zones.Count > 0;
+
+    private double _clampedBufferValue => Math.Clamp(BufferValue, 0, 100);
+
+    // Indeterminate wins; zones force a continuous track; otherwise the default split track.
+    private string _trackClass => Indeterminate
+        ? Css.Classes.Progress.Indeterminate
+        : _hasZones ? Css.Classes.Progress.WithZones : Css.Classes.Progress.Split;
+
+    // Renderable band per zone: percent-positioned via --_z0/--_z1 CSS vars. Progress is a scale host on
+    // the fixed 0-100 range, so a zone is read as an absolute [Start, End]. Empty/invalid zones are dropped.
+    private IEnumerable<(string CssClass, string Style)> _zoneBands
+    {
+        get
+        {
+            var inv = CultureInfo.InvariantCulture;
+            foreach (var z in _zones.Typed<FlareZone>(nameof(FlareProgressLinear), "<FlareZone Start=\"..\" End=\"..\" /> children"))
+            {
+                var lo = Math.Clamp(Math.Min(z.Start ?? 0, z.End ?? 0), 0, 100);
+                var hi = Math.Clamp(Math.Max(z.Start ?? 0, z.End ?? 0), 0, 100);
+                if (hi - lo <= 0.001) continue;
+                var cls = string.IsNullOrEmpty(z.Color.CssClass)
+                    ? Css.Classes.Progress.Zone
+                    : $"{Css.Classes.Progress.Zone} {z.Color.CssClass}";
+                var style = $"--_z0:{lo.ToString("F2", inv)}%;--_z1:{hi.ToString("F2", inv)}%;{z.Color.StyleMain()}";
+                yield return (cls, style);
+            }
+        }
+    }
+}

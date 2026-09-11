@@ -9,7 +9,7 @@
         @foreach (var step in _steps)
         {
             <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-                <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" Size="@step.Size" data-testid="progress-size" />
+                <FlareProgressCircular Value="@_value" Size="@step.Size" data-testid="progress-size" />
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@step.Label</FlareText>
             </FlareStack>
         }
@@ -18,20 +18,20 @@
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
         @foreach (var step in _steps)
         {
-            <FlareProgress Variant="ProgressVariant.Circular" Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" Size="@step.Size" data-testid="progress-wave-size" />
+            <FlareProgressCircular Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" Size="@step.Size" data-testid="progress-wave-size" />
         }
     </FlareStack>
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
         @foreach (var step in _steps)
         {
-            <FlareProgress Variant="ProgressVariant.Circular" Size="@step.Size" data-testid="progress-spin-size" />
+            <FlareProgressCircular Size="@step.Size" data-testid="progress-spin-size" />
         }
     </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Progress_SizeOverride</FlareText>
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Style="--flare-progress-circular-size-md:calc(6rem + 4px);">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="@_value" data-testid="progress-enlarged" />
-        <FlareProgress Variant="ProgressVariant.Circular" Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" data-testid="progress-wave-enlarged" />
-        <FlareProgress Variant="ProgressVariant.Circular" data-testid="progress-spin-enlarged" />
+        <FlareProgressCircular Value="@_value" data-testid="progress-enlarged" />
+        <FlareProgressCircular Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" data-testid="progress-wave-enlarged" />
+        <FlareProgressCircular data-testid="progress-spin-enlarged" />
     </FlareStack>
 
     <FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
@@ -39,7 +39,7 @@
         {
             <FlareStack Gap="FlareSpacing.XSmall">
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@step.Label</FlareText>
-                <FlareProgress Value="65" Size="@step.Size" />
+                <FlareProgressLinear Value="65" Size="@step.Size" />
             </FlareStack>
         }
     </FlareStack>

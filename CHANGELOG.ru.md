@@ -26,6 +26,19 @@
 
 ### Изменено
 
+- **ЛОМАЮЩЕЕ: `FlareProgress` разделен на `FlareProgressLinear` и `FlareProgressCircular`.** Один тип
+  рисовал четыре не связанные между собой вещи, а круговому варианту нужен JS-наблюдатель, чтобы
+  превратить CSS-длины кольца в радиус, - поэтому каждая линейная полоса на странице разрешала этот
+  сервис и заводила цикл after-render ради геометрии, которой не пользовалась. Параметры тоже не
+  пересекались: `Zones`, `BufferValue` и точка-индикатор относились только к линейному треку, а
+  круговой вариант их игнорировал.
+
+  Миграция: `<FlareProgress />` становится `<FlareProgressLinear />`;
+  `<FlareProgress Variant="ProgressVariant.Circular" />` становится `<FlareProgressCircular />`.
+  Вместо `ProgressVariant` - `LinearProgressVariant` только с линейными формами: `Bar` (был `Linear`),
+  `Buffer` и `Query`. `Value`, `Size` и `Color` не изменились и живут теперь в общем
+  `FlareProgressBase`. Имена CSS-классов, токены и wave-класс темы не тронуты, поэтому стили и темы
+  править не нужно.
 - **ЛОМАЮЩЕЕ: удален `FlareProgress.Wavy`.** Тематические варианты progress теперь включаются CSS-классами,
   например `Flare.Css.Classes.Md3e.Progress.Wave`, поэтому темы могут добавлять варианты без изменения API ядра.
 - **ЛОМАЮЩЕЕ: `ProgressTokens` больше не несет волну.** Удалены `WavyEnabled`, `WavyHeight`,

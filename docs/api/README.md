@@ -84,7 +84,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareFormBuilder`](components/flare-components-flareformbuilder.md)
 - [`FlareFormField`](components/flare-components-flareformfield.md)
 - [`FlareFormulaBar`](components/flare-components-ide-flareformulabar.md)
-- [`FlareGauge`](components/flare-components-flaregauge.md) — One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgress and FlareMeter are both bars and answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is the dashboard reading.
+- [`FlareGauge`](components/flare-components-flaregauge.md) — One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgressLinear and FlareMeter are both bars and answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is the dashboard reading.
 - [`FlareGrid`](components/flare-components-flaregrid.md)
 - [`FlareHidden`](components/flare-components-flarehidden.md)
 - [`FlareHighlighter`](components/flare-components-flarehighlighter.md)
@@ -130,7 +130,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlarePasswordField`](components/flare-components-flarepasswordfield.md)
 - [`FlarePopover`](components/flare-components-flarepopover.md)
 - [`FlarePopup`](components/flare-components-flarepopup.md) — The anchored dropdown panel for the select family (see the markup partial for the rationale). Owns the fixed-position anchoring and the single unified dismissal handler through IOverlayJsService, so no shell re-implements the open/position/dismiss lifecycle or a blur timer.
-- [`FlareProgress`](components/flare-components-flareprogress.md) — Displays determinate or indeterminate progress as a bar or circular indicator.
+- [`FlareProgressCircular`](components/flare-components-flareprogresscircular.md) — The ring is the half of progress that needs measuring: its radius is the box less the stroke, and the gap between arcs is a CSS length that only becomes a share of the circumference once the browser has laid the ring out. That is what this observer is for, and why it lives with the circular indicator alone - a linear bar resolves everything the CSS already knows.
+- [`FlareProgressLinear`](components/flare-components-flareprogresslinear.md)
 - [`FlarePropertyGrid`](components/flare-components-ide-flarepropertygrid.md)
 - [`FlarePropertyGridItem`](components/flare-components-ide-flarepropertygriditem.md)
 - [`FlarePullToRefresh`](components/flare-components-flarepulltorefresh.md)
@@ -278,6 +279,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.InputVariant`](enums/flare-components-inputvariant.md) — Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea), independent of the active theme. Default keeps the theme's own field style.
 - [`Flare.Components.LabelPlacement`](enums/flare-components-labelplacement.md) — Position of a control's label relative to the control (checkbox, radio, switch).
 - [`Flare.Components.LayoutContentAlignment`](enums/flare-components-layoutcontentalignment.md) — Horizontal placement of a width-capped content frame within the available area of FlareLayout / FlareLayoutContent. Only has a visible effect when the content is narrower than the available width (i.e. a ContainerMaxWidth cap is applied); at full width there is no free space to distribute.
+- [`Flare.Components.LinearProgressVariant`](enums/flare-components-linearprogressvariant.md) — Which of the linear track's three shapes FlareProgressLinear draws.
 - [`Flare.Components.LinkTabsVariant`](enums/flare-components-linktabsvariant.md) — Visual style of a FlareLinkTabs bar, independent of the active theme. Mirrors the pill-shaped variants of TabsVariant (Tonal/Filled) so a row of route links can read as the same segmented control as an in-page FlareTabs, reusing the same --flare-tabs-* design tokens.
 - [`Flare.Components.LinkUnderline`](enums/flare-components-linkunderline.md) — When a FlareLink shows its underline.
 - [`Flare.Components.MaskPreset`](enums/flare-components-maskpreset.md) — Ready-made mask patterns for FlareMaskedField. When set (and no explicit Mask is given), the corresponding pattern is used. Pattern tokens: # digit, A letter, * alphanumeric.
@@ -291,7 +293,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.PickerOpenTo`](enums/flare-components-pickeropento.md) — The initial calendar view a date picker opens to. Year jumps straight to the year grid - handy for far-back dates like a date of birth so the user does not page through months.
 - [`Flare.Components.PopoverPlacement`](enums/flare-components-popoverplacement.md) — Side and alignment a FlarePopover is placed relative to its anchor.
 - [`Flare.Components.PopoverTrigger`](enums/flare-components-popovertrigger.md) — How a FlarePopover is opened.
-- [`Flare.Components.ProgressVariant`](enums/flare-components-progressvariant.md) — Visual style of a FlareProgress indicator.
 - [`Flare.Components.QrErrorCorrectionLevel`](enums/flare-components-qrerrorcorrectionlevel.md) — QR code error correction level. Higher levels allow more data recovery at the cost of reduced capacity.
 - [`Flare.Components.ResizableEdge`](enums/flare-components-resizableedge.md) — Which edge of a FlareResizable carries the drag handle.
 - [`Flare.Components.IDE.RibbonSizeMode`](enums/flare-components-ide-ribbonsizemode.md) — Size mode for the ribbon - collapsed shows only tabs, full shows tabs + commands.
@@ -323,7 +324,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.TimelineAlign`](enums/flare-components-timelinealign.md) — Which side of the rail FlareTimeline items are placed on.
 - [`Flare.Components.IDE.ToolPanelPosition`](enums/flare-components-ide-toolpanelposition.md) — Position of a tool panel within the IDE layout.
 - [`Flare.Components.TooltipPlacement`](enums/flare-components-tooltipplacement.md) — Side of the anchor a FlareTooltip is placed on.
-- [`Flare.Components.TrackSize`](enums/flare-components-tracksize.md) — The size step of a track-based indicator - FlareSlider, FlareProgress and FlareMeter - on the shared Xs..Xl scale. The scale is a set of LABELS, not measurements: each component maps a step onto its own per-size tokens, and each theme decides what those are worth. A slider's Md is a chunky drag target while a progress bar's Md is a few pixels of rule - the same step, deliberately different geometry. What the shared scale does guarantee is that the three stay in step with each other within one theme, and that a caller learns one vocabulary instead of three. The DEFAULT step is per component, because the components' natural sizes sit at different points of their own ranges: a slider defaults to Xs (its canonical thin-track form), while a progress bar and a meter default to Md - a rule and a spinner want room to go finer as well as heavier, so their resting size sits mid-scale rather than at the floor.
+- [`Flare.Components.TrackSize`](enums/flare-components-tracksize.md) — The size step of a track-based indicator - FlareSlider, FlareProgressLinear and FlareMeter - on the shared Xs..Xl scale. The scale is a set of LABELS, not measurements: each component maps a step onto its own per-size tokens, and each theme decides what those are worth. A slider's Md is a chunky drag target while a progress bar's Md is a few pixels of rule - the same step, deliberately different geometry. What the shared scale does guarantee is that the three stay in step with each other within one theme, and that a caller learns one vocabulary instead of three. The DEFAULT step is per component, because the components' natural sizes sit at different points of their own ranges: a slider defaults to Xs (its canonical thin-track form), while a progress bar and a meter default to Md - a rule and a spinner want room to go finer as well as heavier, so their resting size sits mid-scale rather than at the floor.
 - [`Flare.Components.TreeDropPosition`](enums/flare-components-treedropposition.md) — Position where an item is dropped relative to the target.
 - [`Flare.Components.Combobox.TriState`](enums/flare-components-combobox-tristate.md) — Tri-state of a "select all" affordance over the currently visible, enabled options.
 - [`Flare.Components.TypographyScale`](enums/flare-components-typographyscale.md) — Semantic type-scale roles mapped to semantic HTML elements and CSS utility classes.

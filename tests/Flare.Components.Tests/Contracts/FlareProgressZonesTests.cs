@@ -20,7 +20,7 @@ public class FlareProgressZonesTests : FlareTestContext
     [Fact]
     public void Zones_RenderBand_WithPercentsAndRoleColor()
     {
-        var cut = Render<FlareProgress>(p => p
+        var cut = Render<FlareProgressLinear>(p => p
             .Add(x => x.Value, 40d)
             .Add(x => x.Zones, DangerZone));
 
@@ -33,7 +33,7 @@ public class FlareProgressZonesTests : FlareTestContext
     [Fact]
     public void Zones_SwitchTrackToContinuous_NotSplit()
     {
-        var cut = Render<FlareProgress>(p => p
+        var cut = Render<FlareProgressLinear>(p => p
             .Add(x => x.Value, 40d)
             .Add(x => x.Zones, DangerZone));
 
@@ -46,7 +46,7 @@ public class FlareProgressZonesTests : FlareTestContext
     [Fact]
     public void NoZones_KeepsSplitTrack()
     {
-        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 40d));
+        var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 40d));
 
         var root = cut.Find($".{Css.Classes.Progress.Linear}");
         Assert.Contains(Css.Classes.Progress.Split, root.ClassName);
@@ -57,7 +57,7 @@ public class FlareProgressZonesTests : FlareTestContext
     [Fact]
     public void ZeroWidthZone_IsDropped()
     {
-        var cut = Render<FlareProgress>(p => p
+        var cut = Render<FlareProgressLinear>(p => p
             .Add(x => x.Value, 40d)
             .Add(x => x.Zones, b =>
             {
@@ -74,7 +74,7 @@ public class FlareProgressZonesTests : FlareTestContext
     [Fact]
     public void MeterSegmentInsideProgress_ThrowsWithAClearMessage()
     {
-        var ex = Assert.Throws<InvalidOperationException>(() => Render<FlareProgress>(p => p
+        var ex = Assert.Throws<InvalidOperationException>(() => Render<FlareProgressLinear>(p => p
             .Add(x => x.Value, 40d)
             .Add(x => x.Zones, b =>
             {

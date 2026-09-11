@@ -24,6 +24,19 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **BREAKING: `FlareProgress` is now `FlareProgressLinear` and `FlareProgressCircular`.** One type
+  drew four unrelated things, and the circular one needed a JavaScript observer to turn the ring's
+  CSS lengths into a radius - so every linear bar on a page resolved that service and ran an
+  after-render loop for geometry it never used. The parameters did not overlap either: `Zones`,
+  `BufferValue` and the stop indicator only ever applied to the linear track, and the circular
+  variant ignored them.
+
+  Migration: `<FlareProgress />` becomes `<FlareProgressLinear />`;
+  `<FlareProgress Variant="ProgressVariant.Circular" />` becomes `<FlareProgressCircular />`.
+  `ProgressVariant` is replaced by `LinearProgressVariant`, which has only the linear shapes -
+  `Bar` (was `Linear`), `Buffer` and `Query`. `Value`, `Size` and `Color` are unchanged and now live
+  on a shared `FlareProgressBase`. CSS class names, tokens and the theme's wave class are untouched,
+  so stylesheets and themes need no edit.
 - **BREAKING: Removed `FlareProgress.Wavy`.** Theme-specific progress styles now use CSS classes such
   as `Flare.Css.Classes.Md3e.Progress.Wave`, so themes can add variants without changing the core API.
 - **BREAKING: `ProgressTokens` no longer carries the wave.** `WavyEnabled`, `WavyHeight`,

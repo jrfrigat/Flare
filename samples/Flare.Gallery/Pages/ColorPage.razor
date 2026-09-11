@@ -93,7 +93,7 @@
             <FlareButton Variant="ButtonVariant.Filled" Color="_current">Button</FlareButton>
             <FlareChip Color="_current">Chip</FlareChip>
             <div style="min-width:200px;">
-                <FlareProgress Color="_current" Value="65" />
+                <FlareProgressLinear Color="_current" Value="65" />
             </div>
         </FlareStack>
 
@@ -111,7 +111,7 @@
         """
         @* Semantic role -> shared, cached theme class (theme-aware) *@
         <FlareButton Color="FlareColor.Primary">Primary</FlareButton>
-        <FlareProgress Color="FlareColor.Success" Value="70" />
+        <FlareProgressLinear Color="FlareColor.Success" Value="70" />
 
         @* Arbitrary CSS color -> inline tokens (sanitized) *@
         <FlareSlider Color="FlareColor.Custom("#E91E63")" @bind-Value="_v" />

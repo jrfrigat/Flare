@@ -15,6 +15,14 @@ public static class Progress
     /// <summary>Duration for a linear wave to travel by one wavelength.</summary>
     public const string Speed = "--flare-progress-wave-speed";
     /// <summary>
+    /// Mask that shapes the linear wave: one period of the drawing, tiled along the bar, so
+    /// replacing this token replaces the wave. Its viewBox is scaled onto one wavelength by the
+    /// bar's height, which is why the shipped one is drawn 3-and-4-in-10 - the spec's amplitude
+    /// and indicator thickness against its 10dp wave height. A replacement that changes those
+    /// proportions has to change <see cref="Amplitude"/> to match, or the wave will not fill the bar.
+    /// </summary>
+    public const string Mask = "--flare-progress-wave-mask";
+    /// <summary>
     /// Mask that shapes the circular wave: the whole ring drawing in one value, so replacing this
     /// token replaces the wave. Its geometry and the ring's are tied together - the mask's mean
     /// radius is 41% of the box and the CSS sets the ring's stroke to 18% to match - so a

@@ -9,7 +9,7 @@
         <FlareText Typo="TypographyScale.BodyMedium">Scoped overlay area - click button above to overlay it</FlareText>
         <FlareOverlay Open="@_loadingOpen" Absolute="true" Opacity="0.7" OnClick="@(() => _loadingOpen = false)">
             <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="color:white;">
-                <FlareProgress Variant="ProgressVariant.Circular" />
+                <FlareProgressCircular />
                 <FlareText Typo="TypographyScale.LabelMedium" Style="color:white;">Loading…</FlareText>
             </FlareStack>
         </FlareOverlay>

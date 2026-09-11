@@ -136,7 +136,8 @@ This component exposes no documented public methods.
 - `FlarePasswordField`
 - `FlarePopover`
 - `FlarePopup`
-- `FlareProgress`
+- `FlareProgressCircular`
+- `FlareProgressLinear`
 - `FlarePropertyGrid`
 - `FlarePropertyGridItem`
 - `FlarePullToRefresh`
