@@ -31,7 +31,7 @@ what the `id` attribute is for, and the "#" is the Gallery's `SectionAnchor`, bu
 ### CSS lives in `wwwroot/css/` (a global bundle), NOT in scoped `*.razor.css`
 
 Flare is a published NuGet library with token-driven theming. All component styles live in the
-**global bundle** `src/Flare.Components/wwwroot/css/*.css`, imported through `flare-components.css`.
+**global bundle** `src/Flare.Components/wwwroot/css/*.css`, concatenated at build time into the single `flare-components.css` the package ships.
 
 **Why not scoped `*.razor.css`:**
 - Scoped CSS adds a `[b-hash]` to every rule, raising specificity and getting in the way of a
@@ -44,7 +44,7 @@ Flare is a published NuGet library with token-driven theming. All component styl
 
 **Rules:**
 - One component (or a related group) - one CSS file in `wwwroot/css/`.
-- The file is added via `@import` in `flare-components.css`.
+- The file is named in `flare-components.imports.css`, which is the load order the build concatenates in. A stylesheet nobody names fails the build rather than silently not shipping.
 - When you touch a component, make sure its CSS file exists and is in the bundle.
 - Examples: `button.css` -> `FlareButton`, `menu.css`/`menuitem.css`/`menugroup.css` -> the Menu group.
 - Theme-specific tweaks (MD3 vs Fluent) go in `src/Flare.Theme.*/wwwroot/css/components/*.css`.

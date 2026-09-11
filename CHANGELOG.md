@@ -3,7 +3,30 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.34.0] - Unreleased
+## [0.35.0] - Unreleased
+
+### Changed
+
+- **The component styles now reach the browser as one stylesheet instead of 108.**
+  `flare-components.css` used to be a 3 KB file of 107 `@import` rules, and an `@import` is the one
+  thing a browser cannot start early: it only learns the imports exist after fetching and parsing
+  the file that names them, so the whole set arrived in a second, serialized wave that blocked
+  first paint. Measured on the component gallery, that wave ran from 18 ms to 89 ms of a 96 ms
+  DOM-interactive. The build now concatenates the parts, in the same order, into the single
+  stylesheet the package ships: **108 requests became 1, and DOM-interactive went from 96 ms to
+  28 ms.** No application change is needed - the stylesheet keeps its name and path.
+- **The package no longer ships the individual component stylesheets.** They are authored sources
+  that the build concatenates; nothing fetched them once the bundle existed, and shipping them put
+  107 files plus their gzip and brotli variants into the package and into every consumer's publish
+  output. An application linking one of them directly - none is documented - should link
+  `_content/Flare.Components/css/flare-components.css` instead.
+
+### Fixed
+
+- A gallery page documenting two components no longer squeezes its heading to nothing: the API
+  links wrap when they do not fit beside it, instead of spelling the title out one letter per line.
+
+## [0.34.0] - 2026-09-11
 
 ### Added
 

@@ -84,3 +84,5 @@ CLAUDE.md
 .mcp.json
 
 
+# Generated: the component CSS bundle the build concatenates from flare-components.imports.css
+src/Flare.Components/wwwroot/css/flare-components.css
