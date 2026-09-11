@@ -49,8 +49,8 @@ jobs:
       #   dotnet build samples/Flare.Gallery/Flare.Gallery.csproj -p:RunApiDocGen=true
       - name: Verify the API reference is current
         run: |
-          dotnet run --project tools/Flare.ApiDocGen -c Release -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
-          git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+          dotnet run --project tools/Flare.ApiDocGen -c Release -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs --markdown docs/api
+          git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs docs/api
 
       # Only IsPackable=true projects produce packages (the 16 library packages); Gallery, tests
       # and tools are excluded. Symbols (.snupkg) are produced alongside via IncludeSymbols.

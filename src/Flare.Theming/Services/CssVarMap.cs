@@ -870,6 +870,8 @@ public static class CssVarMap
         v[Css.Tokens.ProgressField.LinearHeight.Xl] = t.Progress.LinearHeightXl;
         v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
         v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
+        v[Css.Tokens.ProgressField.LinearIndeterminateDuration] = t.Progress.LinearIndeterminateDuration;
+        v[Css.Tokens.ProgressField.LinearIndeterminateEasing] = t.Progress.LinearIndeterminateEasing;
         v[Css.Tokens.ProgressField.StopSize] = t.Progress.StopSize;
         v[Css.Tokens.ProgressField.StopInset] = t.Progress.StopInset;
         v[Css.Tokens.ProgressField.StopColor] = t.Progress.StopColor;
@@ -886,13 +888,8 @@ public static class CssVarMap
         v[Css.Tokens.ProgressField.CircularWidth.Xl] = t.Progress.CircularWidthXl;
         v[Css.Tokens.ProgressField.CircularCap] = t.Progress.CircularCap;
         v[Css.Tokens.ProgressField.CircularGap] = t.Progress.CircularGap;
-        v[Css.Tokens.ProgressField.WavyEnabled] = t.Progress.WavyEnabled;
-        v[Css.Tokens.ProgressField.WavyHeight] = t.Progress.WavyHeight;
-        v[Css.Tokens.ProgressField.WaveLength] = t.Progress.WaveLength;
-        v[Css.Tokens.ProgressField.WaveAmplitude] = t.Progress.WaveAmplitude;
-        v[Css.Tokens.ProgressField.WaveSpeed] = t.Progress.WaveSpeed;
-        v[Css.Tokens.ProgressField.RingWaves] = t.Progress.RingWaves;
-        v[Css.Tokens.ProgressField.RingWaveAmplitude] = t.Progress.RingWaveAmplitude;
+        v[Css.Tokens.ProgressField.CircularIndeterminateRotationDuration] = t.Progress.CircularIndeterminateRotationDuration;
+        v[Css.Tokens.ProgressField.CircularIndeterminateProgressDuration] = t.Progress.CircularIndeterminateProgressDuration;
         #endregion
 
         #region NAV

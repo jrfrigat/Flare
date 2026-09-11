@@ -34,7 +34,7 @@ public class FlareMeterSizeTests : FlareTestContext
     public void DefaultSize_IsMd_MatchingProgress()
     {
         var meter = Render<FlareMeter>(p => p.Add(x => x.ChildContent, OneSegment));
-        var progress = Render<FlareProgress>(p => p.Add(x => x.Value, 50d));
+        var progress = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d));
 
         Assert.Contains(Css.Classes.Meter.Md, meter.Find($".{Css.Classes.Meter.Root}").ClassName);
         Assert.Contains(Css.Classes.Progress.Md, progress.Find($".{Css.Classes.Progress.Root}").ClassName);

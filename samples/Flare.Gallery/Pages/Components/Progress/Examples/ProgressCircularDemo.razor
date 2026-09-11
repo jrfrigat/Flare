@@ -1,18 +1,19 @@
+@* The bare ring. The wave a theme can draw on it lives in its own section. *@
 <FlareStack Row Gap="FlareSpacing.Medium" Wrap>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="40" />
+        <FlareProgressCircular Value="40" />
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">40%</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="75" />
+        <FlareProgressCircular Value="75" />
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">75%</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Indeterminate</FlareText>
+        <FlareProgressCircular data-testid="progress-circular-indeterminate" />
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_Indeterminate</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="65" Wavy="true" Size="TrackSize.Lg" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Wavy 65%</FlareText>
+        <FlareProgressCircular Value="60" Color="FlareColor.Success" />
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">60%</FlareText>
     </FlareStack>
 </FlareStack>

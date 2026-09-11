@@ -1744,10 +1744,25 @@
     <value>Прогресс</value>
   </data>
   <data name="Progress_Subtitle" xml:space="preserve">
-    <value>FlareProgress - линейные и круговые индикаторы: размеры, цвета и буфер.</value>
+    <value>FlareProgressLinear и FlareProgressCircular: размеры, цвета, буфер и зоны.</value>
   </data>
   <data name="Progress_Linear" xml:space="preserve">
     <value>Линейный</value>
+  </data>
+  <data name="Progress_LinearDescription" xml:space="preserve">
+    <value>Дорожка с активным индикатором. С Value - определенный, без него - неопределенный.</value>
+  </data>
+  <data name="Progress_CircularDescription" xml:space="preserve">
+    <value>Те же состояния в виде кольца. Диаметр и толщину задает шаг размера.</value>
+  </data>
+  <data name="Progress_Wave" xml:space="preserve">
+    <value>Волна (дает тема)</value>
+  </data>
+  <data name="Progress_WaveDescription" xml:space="preserve">
+    <value>Тема может добавить собственный вид, и ядро об этом не знает. MD3 Expressive рисует эту волну своими стилями и включает ее классом, который сама же экспортирует - Flare.Css.Classes.Md3e.Progress.Wavy; параметра волны в Flare нет. Под другой темой эта же разметка отрисует обычные индикаторы выше.</value>
+  </data>
+  <data name="Progress_WaveSizes" xml:space="preserve">
+    <value>Волна идет по общей линейке размеров</value>
   </data>
   <data name="Progress_Circular" xml:space="preserve">
     <value>Круговой</value>
@@ -3341,7 +3356,7 @@
   <data name="Charts_UpdatesBars" xml:space="preserve"><value>Движение столбцов и подписей значений</value></data>
   <data name="Charts_UpdatesSparkline" xml:space="preserve"><value>Спарклайн с плавным обновлением</value></data>
   <data name="Progress_UpdateValue" xml:space="preserve"><value>Изменить прогресс</value></data>
-  <data name="Progress_SizeOverride" xml:space="preserve"><value>Увеличенный диаметр с прежней толщиной, зазором и амплитудой волны.</value></data>
+  <data name="Progress_SizeOverride" xml:space="preserve"><value>Увеличенный диаметр. Обычное кольцо сохраняет толщину и зазор; волна масштабируется вместе с кольцом.</value></data>
   <data name="Progress_Indeterminate" xml:space="preserve"><value>Неопределенный прогресс</value></data>
   <data name="Progress_Thick" xml:space="preserve"><value>Толстая полоса (Xl)</value></data>
   <data name="Progress_Wavy" xml:space="preserve"><value>Волнистый прогресс</value></data>

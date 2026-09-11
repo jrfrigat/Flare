@@ -7,7 +7,7 @@ namespace Flare.Components;
 /// place a region in genuinely different coordinate systems:
 /// <list type="bullet">
 /// <item><see cref="FlareZone"/> - an absolute <c>[Start, End]</c> range on a scale the HOST owns
-/// (<see cref="FlareSlider"/>'s Min..Max, <see cref="FlareProgress"/>'s 0-100).</item>
+/// (<see cref="FlareSlider"/>'s Min..Max, <see cref="FlareProgressLinear"/>'s 0-100).</item>
 /// <item><see cref="FlareMeterSegment"/> - a proportional <c>Value</c> weight on <see cref="FlareMeter"/>,
 /// where the parts themselves DEFINE the whole.</item>
 /// </list>

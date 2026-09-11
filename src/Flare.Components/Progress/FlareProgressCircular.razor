@@ -1,0 +1,58 @@
+@namespace Flare.Components
+@inherits FlareProgressBase
+@using System.Globalization
+
+<div @ref="_ref"
+     class="@BuildCssClass(Css.Classes.Progress.Circular, Indeterminate ? Css.Classes.Progress.Indeterminate : null, SizeClass, ColorClass)"
+     role="progressbar"
+     aria-valuenow="@AriaValueNow"
+     aria-valuemin="0"
+     aria-valuemax="100"
+     style="@($"{ColorTokens}{_ringArcVar}{Style}")"
+     @attributes="AdditionalAttributes">
+    @* The browser resolves CSS lengths and fits this fallback drawing to the actual viewport.
+       Dash lengths stay in percent units at every size; CSS owns all animation. *@
+    <svg viewBox="0 0 44 44" class="@Css.Classes.Progress.Svg" aria-hidden="true"
+         data-value="@(Indeterminate ? null : ClampedValue.ToString(CultureInfo.InvariantCulture))">
+        <g transform="rotate(-90 22 22)">
+            <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" pathLength="100" fill="none"
+                    stroke-dasharray="@(Indeterminate ? null : _trackDash)" />
+            <circle class="@Css.Classes.Progress.Indicator" cx="22" cy="22" r="18" pathLength="100" fill="none"
+                    stroke-dasharray="@(Indeterminate ? null : _indicatorDash)" />
+        </g>
+        @* Overlapping rects resolve both CSS lengths and legacy unitless pixel tokens. *@
+        @foreach (var token in _measures)
+        {
+            <g class="@Css.Classes.Progress.Measure" style="@($"--_measure:var({token})")">
+                <rect /><rect />
+            </g>
+        }
+    </svg>
+</div>
+
+@code {
+    private const double Circumference = 2 * Math.PI * 18;
+
+    // The drawn arc as a share of the ring, for a theme that redraws the indicator and would
+    // otherwise have nothing to draw until flare-progress-geometry.js reports the measured
+    // geometry. That script narrows this by the gap, which needs a laid-out radius; this is the
+    // value alone, so the first paint is right to within the gap instead of showing a full ring.
+    private string _ringArcVar => Indeterminate
+        ? string.Empty
+        : $"--_ring-arc:{ClampedValue.ToString("F2", CultureInfo.InvariantCulture)};";
+
+    // Both arcs are plain numeric dash patterns so SVG renders them reliably (no CSS calc() in
+    // stroke-dasharray). The leading "0 <space>" pair carves the gap into the pattern itself -
+    // no stroke-dashoffset needed.
+    //   indicator: empty(gap/2) - (arc-gap) - rest         -> active arc, inset gap/2 each end
+    //   track:     empty(arc+gap/2) - (circ-arc-gap) - rest -> remaining track, same gaps
+    private string _indicatorDash => Dash(_gapPct / 2, Math.Max(0, ClampedValue - _gapPct));
+    private string _trackDash => Dash(ClampedValue + _gapPct / 2, Math.Max(0, 100 - ClampedValue - _gapPct));
+
+    private static string Dash(double lead, double len) =>
+        string.Create(CultureInfo.InvariantCulture, $"0 {lead:F2} {len:F2} 100");
+
+    private double _circularGap => ReadTokenNum(Css.Tokens.ProgressField.CircularGap, 0);
+
+    private double _gapPct => Circumference > 0d ? _circularGap / Circumference * 100d : 0d;
+}

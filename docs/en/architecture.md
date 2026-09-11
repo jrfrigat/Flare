@@ -135,6 +135,16 @@ A runtime-only **Dynamic Color** palette (`Palette.DynamicId = "dynamic"`) can a
 - Each carries an `IPaletteGenerator` matching the design system's color rules (MD3 tonal / ramp).
 - `StyleAssets` lists the static CSS the theme needs (fonts, base reset, generated token CSS) so
   the correct tokens are present on first paint (anti-FOUC).
+- `ScriptAssets` lists JavaScript modules the theme owns, loaded once when the theme becomes active -
+  including when it becomes active only for a `FlareThemeScope` subtree. Optional, and empty for every
+  built-in theme: a theme's own rendering belongs in its stylesheet wherever CSS can express it. A
+  module must key its behavior off its own public CSS classes rather than off a theme id, so that it
+  also serves themes derived from it.
+- `StyleFamilyId` names the visual family whose stylesheets style the theme, and is emitted as a
+  second root class next to the theme's own. It defaults to `Id`, because a theme that ships its own
+  stylesheets is its own family. A theme built with `Derive` keeps the base theme's family: it
+  re-values tokens and inherits the base theme's CSS, which is scoped to the base theme's class.
+  Without this a derived theme would render unstyled.
 
 **NuGet:** each theme package depends on `Flare.Abstractions` + `Flare.Theming` + its lineage's
 reference token package (`Flare.Theme.MaterialDesign3.Tokens` or `Flare.Theme.FluentUI2.Tokens`),
@@ -243,6 +253,8 @@ A rendered theme is the composition of three independently switchable axes:
 ITheme
   +-- Id, DisplayName, DefaultPaletteId
   +-- StyleAssets (IReadOnlyList<string>)        - static CSS/fonts (anti-FOUC)
+  +-- ScriptAssets (IReadOnlyList<string>)      - theme-owned JS modules (optional, empty by default)
+  +-- StyleFamilyId (string)                    - whose stylesheets style this theme (defaults to Id)
   +-- Palettes (IReadOnlyList<Palette>)          - colors that travel with the theme
   +-- PaletteGenerator (IPaletteGenerator?)      - design-system color rules (MD3 tonal / ramp)
   +-- ExtendedDarkOverride (dict?)               - rare dark-mode non-color extras

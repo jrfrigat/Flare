@@ -43,7 +43,7 @@ Fluent называет часть элементов иначе, чем Materia
 | Popover / Tooltip | `FlarePopover`, `FlareTooltip` | |
 | Toast | `ISnackbarService` | внедряется через DI, разметки нет |
 | MessageBar | `FlareAlert` | |
-| ProgressBar / Spinner | `FlareProgress` | `Variant="ProgressVariant.Linear\|Circular"` |
+| ProgressBar / Spinner | `FlareProgressLinear`, `FlareProgressCircular` | |
 | TabList | `FlareTabs` | |
 | Breadcrumb | `FlareBreadcrumb` | |
 | Accordion | `FlareAccordion` | |

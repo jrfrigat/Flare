@@ -3,13 +3,21 @@
 
 <PageTitle>@GalleryStrings.Progress_Title - Flare</PageTitle>
 
-<GalleryPageTitle Api="FlareProgress">
+<GalleryPageTitle Api="FlareProgressLinear,FlareProgressCircular">
     <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Progress_Title</FlareText>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Progress_Subtitle</FlareText>
 </GalleryPageTitle>
 
-<AutoDemoSection Title="@GalleryStrings.Progress_Linear" DemoType="typeof(Examples.ProgressLinearDemo)" />
-<AutoDemoSection Title="@GalleryStrings.Progress_Circular" DemoType="typeof(Examples.ProgressCircularDemo)" />
+@* One section per component, then the theme's own addition, then what the two share. *@
+<AutoDemoSection Title="@GalleryStrings.Progress_Linear"
+                 Description="@GalleryStrings.Progress_LinearDescription"
+                 DemoType="typeof(Examples.ProgressLinearDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Circular"
+                 Description="@GalleryStrings.Progress_CircularDescription"
+                 DemoType="typeof(Examples.ProgressCircularDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Wave"
+                 Description="@GalleryStrings.Progress_WaveDescription"
+                 DemoType="typeof(Examples.ProgressWaveDemo)" />
 <AutoDemoSection Title="@GalleryStrings.Progress_Sizes" DemoType="typeof(Examples.ProgressSizesDemo)" />
 <AutoDemoSection Title="@GalleryStrings.Progress_Colors" DemoType="typeof(Examples.ProgressColorsDemo)" />
 <AutoDemoSection Title="@GalleryStrings.Progress_Buffer" DemoType="typeof(Examples.ProgressBufferDemo)" />

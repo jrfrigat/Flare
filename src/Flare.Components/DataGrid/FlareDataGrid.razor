@@ -68,7 +68,7 @@
         @if (_loading && LoadingIndicator == DataGridLoadingIndicator.ProgressLine)
         {
             <div class="@Css.Classes.DataGrid.ProgressLine">
-                <FlareProgress Variant="ProgressVariant.Linear" />
+                <FlareProgressLinear />
             </div>
         }
         else if (_loading && (LoadingIndicator == DataGridLoadingIndicator.Spinner || LoadingIndicator == DataGridLoadingIndicator.Text))
@@ -76,7 +76,7 @@
             <div class="@Css.Classes.DataGrid.Loading">
                 @if (LoadingIndicator == DataGridLoadingIndicator.Spinner)
                 {
-                    <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Sm" />
+                    <FlareProgressCircular Size="TrackSize.Sm" />
                 }
                 <span class="@Css.Classes.DataGrid.LoadingText">@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
             </div>
@@ -325,7 +325,7 @@
                             var moreColSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
                             <tr class="@Css.Classes.DataGrid.PlaceholderRow">
                                 <td colspan="@(moreColSpan == 0 ? 1 : moreColSpan)" class="@Css.Classes.DataGrid.InfiniteMore">
-                                    <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Xs" />
+                                    <FlareProgressCircular Size="TrackSize.Xs" />
                                     <span>@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
                                 </td>
                             </tr>

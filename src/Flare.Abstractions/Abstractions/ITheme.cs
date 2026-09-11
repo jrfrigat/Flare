@@ -4,7 +4,7 @@ namespace Flare.Abstractions;
 
 /// <summary>
 /// A theme = a design system (non-color <see cref="DesignTokens"/>) plus a default palette
-/// reference and its static style assets. Colors live in <see cref="Palette"/>s, which are
+/// reference and its static assets. Colors live in <see cref="Palette"/>s, which are
 /// registered separately and chosen independently; light/dark is a <see cref="ThemeMode"/>,
 /// not a separate theme.
 /// </summary>
@@ -20,6 +20,24 @@ public interface ITheme
     string DefaultPaletteId { get; }
     /// <summary>Static stylesheets this theme needs (fonts, base reset, generated token CSS).</summary>
     IReadOnlyList<string> StyleAssets { get; }
+
+    /// <summary>
+    /// Id of the visual family whose stylesheets style this theme, emitted as a second root class
+    /// (<c>flare-theme-{StyleFamilyId}</c>) next to <see cref="Id"/>'s own. A theme that ships its
+    /// own stylesheets is its own family, which is why this defaults to <see cref="Id"/>. A theme
+    /// derived from another one only re-values tokens, so it keeps the base theme's family and the
+    /// base theme's CSS keeps applying to it; without this a derived theme would render unstyled,
+    /// because every theme stylesheet is scoped to the class its own id produces.
+    /// </summary>
+    string StyleFamilyId => Id;
+
+    /// <summary>
+    /// Optional JavaScript modules that implement theme-owned rendering behavior. Loaded once when
+    /// the theme becomes active, including when it becomes active only for the subtree of a
+    /// <c>FlareThemeScope</c>. A module must key its behavior off its own public CSS classes rather
+    /// than off a theme id, so that it also serves themes derived from this one.
+    /// </summary>
+    IReadOnlyList<string> ScriptAssets => [];
 
     /// <summary>
     /// The palettes this theme ships with. When a theme is registered (auto-discovered from a

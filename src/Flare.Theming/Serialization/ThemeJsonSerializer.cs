@@ -27,6 +27,8 @@ public static class ThemeJsonSerializer
             DisplayName = theme.DisplayName,
             DefaultPaletteId = theme.DefaultPaletteId,
             StyleAssets = theme.StyleAssets.ToArray(),
+            ScriptAssets = theme.ScriptAssets.ToArray(),
+            StyleFamilyId = theme.StyleFamilyId,
             Design = theme.Design,
         };
         return JsonSerializer.Serialize(model, s_options);
@@ -38,10 +40,16 @@ public static class ThemeJsonSerializer
         var model = JsonSerializer.Deserialize<ThemeExportModel>(json, s_options)
             ?? throw new InvalidOperationException("Invalid theme JSON.");
 
-        return new Flare.Theming.FlareThemeBuilder(model.Id, model.DisplayName, model.Design)
+        var builder = new Flare.Theming.FlareThemeBuilder(model.Id, model.DisplayName, model.Design)
             .WithDefaultPalette(model.DefaultPaletteId)
             .WithStyleAssets(model.StyleAssets)
-            .BuildUnsafe();
+            .WithScriptAssets(model.ScriptAssets);
+
+        // Older exports carry no family; such a theme ships its own stylesheets, so its id is its family.
+        if (!string.IsNullOrEmpty(model.StyleFamilyId))
+            builder = builder.WithStyleFamily(model.StyleFamilyId);
+
+        return builder.BuildUnsafe();
     }
 
     /// <summary>Serializes a palette to JSON.</summary>
@@ -63,6 +71,8 @@ public static class ThemeJsonSerializer
         public string DisplayName { get; set; } = "";
         public string DefaultPaletteId { get; set; } = "";
         public string[] StyleAssets { get; set; } = [];
+        public string[] ScriptAssets { get; set; } = [];
+        public string? StyleFamilyId { get; set; }
         public DesignTokens Design { get; set; } = null!;
     }
 }

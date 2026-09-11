@@ -32,7 +32,7 @@ Aero - это визуальный стиль Windows, а не опублико�
 | Combo box (редактируемый / список) | `FlareCombobox`, `FlareSelect` | редактируемый против только-список |
 | Флажок / переключатель | `FlareCheckbox`, `FlareRadioGroup` | |
 | Trackbar | `FlareSlider` | |
-| Индикатор выполнения | `FlareProgress` | |
+| Индикатор выполнения | `FlareProgressLinear` | |
 | Group box | `FlareCard` | `Variant="CardVariant.Outlined"` |
 | Tab control | `FlareTabs` | |
 | List view (таблица) | `FlareTable`, `FlareDataGrid` | |

@@ -40,7 +40,7 @@ builder.Services.AddFlareTheme(new MaterialDesign3Theme());
 | Snackbar | `ISnackbarService` | внедряется через DI, разметки нет |
 | Подсказки (plain, rich) | `FlareTooltip` | |
 | Значки | `FlareBadge` | `Standalone` для голой пилюли |
-| Индикаторы прогресса (линейный, круговой) | `FlareProgress` | `Variant="ProgressVariant.Linear\|Circular"` |
+| Индикаторы прогресса (линейный, круговой) | `FlareProgressLinear`, `FlareProgressCircular` | |
 | Нижняя панель навигации | `FlareBottomNav` | |
 | Навигационный рельс | `FlareNavMenu` | `Mode="NavMenuMode.Rail"` |
 | Навигационная панель (standard, modal) | `FlareLayoutDrawer` | `Variant="DrawerVariant.Persistent\|Temporary\|Responsive"` |

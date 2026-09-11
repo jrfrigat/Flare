@@ -26,11 +26,19 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
 
     /// <summary>Applies the active theme's CSS classes to the document root.</summary>
     public ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default)
-        => InvokeVoidAsync("setThemeClasses", themeId, paletteId, isDark);
+        => SetThemeClassesAsync(themeId, themeId, paletteId, isDark, ct);
+
+    /// <summary>Applies the active theme's CSS classes, plus its style-family class, to the document root.</summary>
+    public ValueTask SetThemeClassesAsync(string themeId, string styleFamilyId, string paletteId, bool isDark, CancellationToken ct = default)
+        => InvokeVoidAsync("setThemeClasses", themeId, styleFamilyId, paletteId, isDark);
 
     /// <summary>Ensures the theme stylesheet link is present and has finished loading.</summary>
     public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default)
         => InvokeVoidAsync("ensureStylesheet", href);
+
+    /// <summary>Ensures a theme JavaScript module is loaded once.</summary>
+    public ValueTask EnsureModuleAsync(string src, CancellationToken ct = default)
+        => InvokeVoidAsync("ensureModule", src);
 
     /// <summary>Completes once web fonts are loaded (or the safety timeout elapses).</summary>
     public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default)

@@ -1,0 +1,401 @@
+@property --_progress-first-head {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --_progress-first-tail {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --_progress-second-head {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --_progress-second-tail {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --_ring-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 10;
+}
+
+@property --_ring-sweep {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+/* One turn of the wave around the ring, as a fraction. Registered so it can be animated at all. */
+@property --_ring-wave-spin {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes flare-progress-first-head {
+  0% { --_progress-first-head: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  57.1429%, 100% { --_progress-first-head: 1; }
+}
+
+@keyframes flare-progress-first-tail {
+  0%, 14.2857% { --_progress-first-tail: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  71.4286%, 100% { --_progress-first-tail: 1; }
+}
+
+@keyframes flare-progress-second-head {
+  0%, 37.1429% { --_progress-second-head: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  85.7143%, 100% { --_progress-second-head: 1; }
+}
+
+@keyframes flare-progress-second-tail {
+  0%, 51.4286% { --_progress-second-tail: 0; animation-timing-function: var(--flare-progress-linear-indeterminate-easing); }
+  100% { --_progress-second-tail: 1; }
+}
+
+@keyframes flare-progress-wavy-rotate {
+  0% { transform: rotate(0deg); }
+  13.3333% { transform: rotate(90deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes flare-md3e-ring-wave-travel {
+  to { --_ring-wave-spin: 1; }
+}
+
+/* Exactly one wavelength per cycle, so the tiling hides the loop. */
+@keyframes flare-md3e-wave-travel {
+  to {
+    -webkit-mask-position: calc(-1 * var(--_wave-len)) 0;
+    mask-position: calc(-1 * var(--_wave-len)) 0;
+  }
+}
+
+/* Three, because this one runs on the indeterminate cycle's clock rather than its own. */
+@keyframes flare-md3e-wave-travel-indeterminate {
+  to {
+    -webkit-mask-position: calc(-3 * var(--_wave-len)) 0;
+    mask-position: calc(-3 * var(--_wave-len)) 0;
+  }
+}
+
+@keyframes flare-progress-ring-progress {
+  0% { --_ring-progress: 10; }
+  16.6667% {
+    --_ring-progress: 10;
+    animation-timing-function: var(--flare-motion-easing-standard);
+  }
+  50% { --_ring-progress: 87; }
+  66.6667% {
+    --_ring-progress: 87;
+    animation-timing-function: var(--flare-motion-easing-standard);
+  }
+  100% { --_ring-progress: 10; }
+}
+
+/* Wrapped in @scope like every other MD3 Expressive component sheet: these rules apply only inside
+   the nearest .flare-theme-md3-expressive root and stop at any nested .flare-root that is not one,
+   so a Fluent scope inside an Expressive app keeps Fluent's progress. The class is emitted for the
+   theme's style family, not its id, so a theme derived from this one is styled by these rules too. */
+@scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
+  .flare-progress--linear.flare-progress--indeterminate {
+    --_progress-mask-direction: right;
+    background: transparent;
+    animation:
+      flare-progress-first-head var(--flare-progress-linear-indeterminate-duration) infinite,
+      flare-progress-first-tail var(--flare-progress-linear-indeterminate-duration) infinite,
+      flare-progress-second-head var(--flare-progress-linear-indeterminate-duration) infinite,
+      flare-progress-second-tail var(--flare-progress-linear-indeterminate-duration) infinite;
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate:dir(rtl) {
+    --_progress-mask-direction: left;
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
+    position: absolute;
+    top: 50%;
+    height: var(--_lin-height);
+    width: auto !important;
+    transform: translateY(-50%);
+    transition: none;
+    animation: none;
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar--indeterminate-first {
+    inset-inline-start: calc(var(--_progress-first-tail) * 100%);
+    inset-inline-end: calc((1 - var(--_progress-first-head)) * 100%);
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar--indeterminate-second {
+    display: block;
+    inset-inline-start: calc(var(--_progress-second-tail) * 100%);
+    inset-inline-end: calc((1 - var(--_progress-second-head)) * 100%);
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__remain {
+    --_first-gap: min(var(--flare-progress-gap), calc((var(--_progress-first-head) - var(--_progress-first-tail)) * 100%));
+    --_second-gap: min(var(--flare-progress-gap), calc((var(--_progress-second-head) - var(--_progress-second-tail)) * 100%));
+    display: block;
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    width: 100%;
+    height: var(--_lin-height);
+    margin: 0;
+    transform: translateY(-50%);
+    -webkit-mask-image:
+      linear-gradient(to var(--_progress-mask-direction),
+        #000 0 max(0%, calc(var(--_progress-first-tail) * 100% - var(--_first-gap))),
+        transparent max(0%, calc(var(--_progress-first-tail) * 100% - var(--_first-gap)))
+                    min(100%, calc(var(--_progress-first-head) * 100% + var(--_first-gap))),
+        #000 min(100%, calc(var(--_progress-first-head) * 100% + var(--_first-gap))) 100%),
+      linear-gradient(to var(--_progress-mask-direction),
+        #000 0 max(0%, calc(var(--_progress-second-tail) * 100% - var(--_second-gap))),
+        transparent max(0%, calc(var(--_progress-second-tail) * 100% - var(--_second-gap)))
+                    min(100%, calc(var(--_progress-second-head) * 100% + var(--_second-gap))),
+        #000 min(100%, calc(var(--_progress-second-head) * 100% + var(--_second-gap))) 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to var(--_progress-mask-direction),
+        #000 0 max(0%, calc(var(--_progress-first-tail) * 100% - var(--_first-gap))),
+        transparent max(0%, calc(var(--_progress-first-tail) * 100% - var(--_first-gap)))
+                    min(100%, calc(var(--_progress-first-head) * 100% + var(--_first-gap))),
+        #000 min(100%, calc(var(--_progress-first-head) * 100% + var(--_first-gap))) 100%),
+      linear-gradient(to var(--_progress-mask-direction),
+        #000 0 max(0%, calc(var(--_progress-second-tail) * 100% - var(--_second-gap))),
+        transparent max(0%, calc(var(--_progress-second-tail) * 100% - var(--_second-gap)))
+                    min(100%, calc(var(--_progress-second-head) * 100% + var(--_second-gap))),
+        #000 min(100%, calc(var(--_progress-second-head) * 100% + var(--_second-gap))) 100%);
+    mask-composite: intersect;
+  }
+
+  .flare-progress--linear.flare-progress--indeterminate::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    inset-inline-end: var(--flare-progress-stop-inset);
+    width: var(--flare-progress-stop-size);
+    height: var(--flare-progress-stop-size);
+    border-radius: 50%;
+    background: var(--flare-progress-stop-color);
+    transform: translateY(-50%);
+  }
+
+  /* ---- Wave ---------------------------------------------------------------
+     The Wave class is the whole opt-in contract, and no theme id appears in it,
+     so a theme derived from this one gets the wave along with everything else.
+     The drawing is CSS: two rows of elliptical arcs tiled along the bar, one
+     row crests and one row troughs, meeting on the centre line.
+     ------------------------------------------------------------------------ */
+
+  .flare-progress--md3e-wavy.flare-progress--linear {
+    /* Amplitude is the authority and the height follows from it - one indicator
+       thickness plus a crest above and a trough below, which is the spec's 10dp
+       `linear.with-wave.height` - so a wave can never be told to be taller than
+       the box drawing it. The mask's own 3-and-4-in-10 proportions are the same
+       two numbers; ProgressLineWaveTests checks they stay that way. */
+    --_wave-amp: var(--flare-progress-wave-amplitude);
+    --_wave-len: var(--flare-progress-wave-length);
+    height: calc(var(--_lin-height) + 2 * var(--_wave-amp));
+    background: transparent;
+  }
+
+  .flare-progress--md3e-wavy.flare-progress--linear.flare-progress--indeterminate {
+    --_wave-len: var(--flare-progress-indeterminate-wave-length);
+  }
+
+  /* The wave is one period of a sine, stroked, tiled along the bar as a mask over
+     the indicator's own colour. Built from gradients instead it came out unevenly
+     lit and visibly stepped: a gradient's colour stop is a hard boundary the
+     rasteriser barely softens, while a stroke is antialiased as the curve it is.
+     The path runs a period either side of its tile, so the stroke is already
+     formed where the tile clips it and the next tile continues it without a seam. */
+  .flare-progress--md3e-wavy.flare-progress--linear .flare-progress__bar {
+    --_wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 10'%3E%3Cpath d='M-40,5C-36.67,3.43 -33.33,2 -30,2C-26.67,2 -23.33,3.43 -20,5C-16.67,6.57 -13.33,8 -10,8C-6.67,8 -3.33,6.57 0,5C3.33,3.43 6.67,2 10,2C13.33,2 16.67,3.43 20,5C23.33,6.57 26.67,8 30,8C33.33,8 36.67,6.57 40,5C43.33,3.43 46.67,2 50,2C53.33,2 56.67,3.43 60,5C63.33,6.57 66.67,8 70,8C73.33,8 76.67,6.57 80,5' fill='none' stroke='%23fff' stroke-width='4'/%3E%3C/svg%3E");
+    height: 100%;
+    border-radius: 0;
+    background: var(--fc-main, var(--flare-color-primary));
+    -webkit-mask: var(--flare-progress-wave-mask, var(--_wave-mask))
+                  0 0 / var(--_wave-len) 100% repeat-x;
+    mask: var(--flare-progress-wave-mask, var(--_wave-mask))
+          0 0 / var(--_wave-len) 100% repeat-x;
+    animation: flare-md3e-wave-travel var(--flare-progress-wave-speed) linear infinite;
+  }
+
+  .flare-progress--md3e-wavy.flare-progress--linear .flare-progress__remain {
+    height: var(--_lin-height);
+  }
+
+  /* The indeterminate segments are laid out flat and one indicator tall; a wave
+     needs the whole bar.
+
+     The wave runs on the indeterminate cycle's own duration and easing, not on a
+     steady speed of its own. The segment it is drawn in accelerates and slows to
+     that curve, and a wave crossing it at a constant rate reads as sliding against
+     the segment rather than travelling with it. Three wavelengths per cycle is what
+     keeps the crests moving at a believable speed on that clock. */
+  .flare-progress--md3e-wavy.flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
+    inset-block: 0;
+    height: auto;
+    transform: none;
+    animation: flare-md3e-wave-travel-indeterminate
+               var(--flare-progress-linear-indeterminate-duration)
+               var(--flare-progress-linear-indeterminate-easing) infinite;
+  }
+
+  .flare-progress--circular.flare-progress--indeterminate {
+    animation: flare-progress-ring-progress
+               var(--flare-progress-circular-indeterminate-progress-duration)
+               linear infinite;
+  }
+
+  .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg {
+    animation: flare-progress-wavy-rotate
+               var(--flare-progress-circular-indeterminate-rotation-duration)
+               linear infinite;
+  }
+
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
+    stroke-dasharray: var(--_ring-progress) calc(100 - var(--_ring-progress));
+    stroke-dashoffset: 0;
+    transition: none;
+    animation: none;
+  }
+
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
+    stroke-dasharray:
+      0
+      calc(var(--_ring-progress) + var(--_ring-gap))
+      max(0, calc(100 - var(--_ring-progress) - 2 * var(--_ring-gap)))
+      100;
+    animation: none;
+  }
+
+  /* The mask reshapes the arc the core already drew, which is why the value, the
+     gap and the indeterminate sweep need no wave-specific arithmetic here: they are
+     still the core's stroke-dasharray, seen through a wavy window. Only the active
+     indicator is masked - MD3 Expressive leaves the remaining track a plain circle.
+
+     A mask is scaled as a whole, so one drawing can serve exactly one ratio of ring
+     diameter to line thickness, and the size ramp has five. Hence one mask per step,
+     each carrying its step's thickness and a wave four tenths of it - the proportion
+     MD3's 1.6dp wave has against its 4dp indicator. --_circ-width is widened to hold
+     crest, trough and line, because the core reads it to place the radius the mask's
+     wave is drawn on; ProgressRingWaveTests checks the two still agree.
+     A custom diameter keeps its step's mask and scales the wave with the ring. */
+  /* xs: 24px ring, 3px line, 1.2px wave, 5 waves, radius 9.3px */
+  .flare-progress--md3e-wavy.flare-progress--xs {
+    --_ring-waves: 5;
+    --_ring-line: calc(var(--_circ-size) * 0.125);
+    --_circ-width: calc(var(--_circ-size) * 0.225);
+    --_ring-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M88.8,50L91,54.3L92.1,59L91.6,63.5L89.4,67.5L85.7,70.6L81.3,72.8L76.9,74.3L73,75.6L69.8,77.3L67.2,79.8L64.7,83.1L62,86.9L58.6,90.3L54.5,92.8L50,93.8L45.5,92.8L41.4,90.3L38,86.9L35.3,83.1L32.8,79.8L30.2,77.3L27,75.6L23.1,74.3L18.7,72.8L14.3,70.6L10.6,67.5L8.4,63.5L7.9,59L9,54.3L11.2,50L13.9,46.2L16.3,42.8L17.9,39.6L18.6,36L18.6,31.9L18.7,27.2L19.3,22.4L21.2,18L24.3,14.6L28.5,12.7L33.2,12.3L38,13.1L42.5,14.5L46.4,15.8L50,16.3L53.6,15.8L57.5,14.5L62,13.1L66.8,12.3L71.5,12.7L75.7,14.6L78.8,18L80.7,22.4L81.3,27.2L81.4,31.9L81.4,36L82.1,39.6L83.7,42.8L86.1,46.2Z' fill='none' stroke='%23fff' stroke-width='12.5'/%3E%3C/svg%3E");
+  }
+
+  /* sm: 32px ring, 3px line, 1.2px wave, 6 waves, radius 13.3px */
+  .flare-progress--md3e-wavy.flare-progress--sm {
+    --_ring-waves: 6;
+    --_ring-line: calc(var(--_circ-size) * 0.09375);
+    --_circ-width: calc(var(--_circ-size) * 0.16875);
+    --_ring-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M91.6,50L93.3,53.8L94.1,57.8L93.8,61.7L92.1,65.3L89.4,68.4L86,70.8L82.5,72.8L79.4,74.6L76.7,76.7L74.6,79.4L72.8,82.5L70.8,86L68.4,89.4L65.3,92.1L61.7,93.8L57.8,94.1L53.8,93.3L50,91.6L46.5,89.5L43.3,87.7L40.2,86.5L36.9,86L33.2,86L29.2,86L25.1,85.6L21.2,84.3L18,82L15.7,78.8L14.4,74.9L14,70.8L14,66.8L14,63.1L13.5,59.8L12.3,56.7L10.5,53.5L8.4,50L6.7,46.2L5.9,42.2L6.2,38.3L7.9,34.7L10.6,31.6L14,29.2L17.5,27.2L20.6,25.4L23.3,23.3L25.4,20.6L27.2,17.5L29.2,14L31.6,10.6L34.7,7.9L38.3,6.2L42.2,5.9L46.2,6.7L50,8.4L53.5,10.5L56.7,12.3L59.8,13.5L63.1,14L66.8,14L70.8,14L74.9,14.4L78.8,15.7L82,18L84.3,21.2L85.6,25.1L86,29.2L86,33.2L86,36.9L86.5,40.2L87.7,43.3L89.5,46.5Z' fill='none' stroke='%23fff' stroke-width='9.4'/%3E%3C/svg%3E");
+  }
+
+  /* md: 40px ring, 4px line, 1.6px wave, 7 waves, radius 16.4px */
+  .flare-progress--md3e-wavy.flare-progress--md {
+    --_ring-waves: 7;
+    --_ring-line: calc(var(--_circ-size) * 0.1);
+    --_circ-width: calc(var(--_circ-size) * 0.18);
+    --_ring-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M91,50L92.9,53.2L94,56.6L93.9,60L92.5,63.1L90,65.7L86.9,67.8L83.8,69.5L81,71.1L78.9,73.1L77.5,75.5L76.5,78.6L75.6,82.1L74.2,85.5L72.2,88.5L69.5,90.5L66.2,91.4L62.7,91.1L59.1,90L55.8,88.6L52.8,87.4L50,87L47.2,87.4L44.2,88.6L40.9,90L37.3,91.1L33.8,91.4L30.5,90.5L27.8,88.5L25.8,85.5L24.4,82.1L23.5,78.6L22.5,75.5L21.1,73.1L19,71.1L16.2,69.5L13.1,67.8L10,65.7L7.5,63.1L6.1,60L6,56.6L7.1,53.2L9,50L11.1,47.1L12.9,44.4L13.9,41.8L14.1,38.9L13.7,35.8L13.1,32.2L12.8,28.5L13.3,25L14.8,21.9L17.4,19.8L20.8,18.5L24.4,17.9L28,17.8L31.2,17.5L33.9,16.7L36.3,15.1L38.5,12.7L40.9,10L43.6,7.5L46.7,5.7L50,5L53.3,5.7L56.4,7.5L59.1,10L61.5,12.7L63.7,15.1L66.1,16.7L68.8,17.5L72,17.8L75.6,17.9L79.2,18.5L82.6,19.8L85.2,21.9L86.7,25L87.2,28.5L86.9,32.2L86.3,35.8L85.9,38.9L86.1,41.8L87.1,44.4L88.9,47.1Z' fill='none' stroke='%23fff' stroke-width='10'/%3E%3C/svg%3E");
+  }
+
+  /* lg: 52px ring, 4px line, 1.6px wave, 9 waves, radius 22.4px */
+  .flare-progress--md3e-wavy.flare-progress--lg {
+    --_ring-waves: 9;
+    --_ring-line: calc(var(--_circ-size) * 0.07692);
+    --_circ-width: calc(var(--_circ-size) * 0.13846);
+    --_ring-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M93.1,50L94.5,52.6L95.4,55.3L95.5,58L94.5,60.5L92.7,62.8L90.5,64.7L88.1,66.5L86.1,68.1L84.6,70L83.8,72.2L83.3,74.8L83,77.7L82.5,80.6L81.4,83.3L79.7,85.4L77.3,86.7L74.5,87.3L71.5,87.3L68.6,87.1L66,87.1L63.7,87.6L61.6,88.7L59.6,90.4L57.5,92.4L55.2,94.3L52.7,95.7L50,96.2L47.3,95.7L44.8,94.3L42.5,92.4L40.4,90.4L38.4,88.7L36.3,87.6L34,87.1L31.4,87.1L28.5,87.3L25.5,87.3L22.7,86.7L20.3,85.4L18.6,83.3L17.5,80.6L17,77.7L16.7,74.8L16.2,72.2L15.4,70L13.9,68.1L11.9,66.5L9.5,64.7L7.3,62.8L5.5,60.5L4.5,58L4.6,55.3L5.5,52.6L6.9,50L8.5,47.6L9.9,45.3L10.6,43.1L10.7,40.7L10.2,38.1L9.5,35.3L9,32.3L9.1,29.5L10,26.9L11.8,24.9L14.2,23.4L17,22.3L19.8,21.5L22.3,20.6L24.3,19.4L25.9,17.6L27.2,15.3L28.5,12.7L30,10.1L31.9,8L34.2,6.6L36.9,6.2L39.7,6.6L42.5,7.6L45.2,8.7L47.7,9.7L50,10L52.3,9.7L54.8,8.7L57.5,7.6L60.3,6.6L63.1,6.2L65.8,6.6L68.1,8L70,10.1L71.5,12.7L72.8,15.3L74.1,17.6L75.7,19.4L77.7,20.6L80.2,21.5L83,22.3L85.8,23.4L88.2,24.9L90,26.9L90.9,29.5L91,32.3L90.5,35.3L89.8,38.1L89.3,40.7L89.4,43.1L90.1,45.3L91.5,47.6Z' fill='none' stroke='%23fff' stroke-width='7.7'/%3E%3C/svg%3E");
+  }
+
+  /* xl: 64px ring, 5px line, 2px wave, 12 waves, radius 27.5px */
+  .flare-progress--md3e-wavy.flare-progress--xl {
+    --_ring-waves: 12;
+    --_ring-line: calc(var(--_circ-size) * 0.07813);
+    --_circ-width: calc(var(--_circ-size) * 0.14063);
+    --_ring-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M93,50L94.5,51.9L95.5,54L95.7,56L95,57.9L93.5,59.6L91.5,61.1L89.5,62.5L87.8,63.8L86.8,65.2L86.5,67L86.7,69.1L87.2,71.5L87.6,73.9L87.4,76.2L86.6,78.1L85,79.4L82.8,80.1L80.4,80.4L78,80.5L75.9,80.8L74.3,81.6L73.1,83L72.2,84.9L71.5,87.2L70.6,89.5L69.3,91.4L67.6,92.6L65.6,92.9L63.4,92.5L61.1,91.5L59,90.4L57,89.7L55.2,89.5L53.5,90.1L51.8,91.4L50,93L48.1,94.5L46,95.5L44,95.7L42.1,95L40.4,93.5L38.9,91.5L37.5,89.5L36.2,87.8L34.8,86.8L33,86.5L30.9,86.7L28.5,87.2L26.1,87.6L23.8,87.4L21.9,86.6L20.6,85L19.9,82.8L19.6,80.4L19.5,78L19.2,75.9L18.4,74.3L17,73.1L15.1,72.2L12.8,71.5L10.5,70.6L8.6,69.3L7.4,67.6L7.1,65.6L7.5,63.4L8.5,61.1L9.6,59L10.3,57L10.5,55.2L9.9,53.5L8.6,51.8L7,50L5.5,48.1L4.5,46L4.3,44L5,42.1L6.5,40.4L8.5,38.9L10.5,37.5L12.2,36.2L13.2,34.8L13.5,33L13.3,30.9L12.8,28.5L12.4,26.1L12.6,23.8L13.4,21.9L15,20.6L17.2,19.9L19.6,19.6L22,19.5L24.1,19.2L25.7,18.4L26.9,17L27.8,15.1L28.5,12.8L29.4,10.5L30.7,8.6L32.4,7.4L34.4,7.1L36.6,7.5L38.9,8.5L41,9.6L43,10.3L44.8,10.5L46.5,9.9L48.2,8.6L50,7L51.9,5.5L54,4.5L56,4.3L57.9,5L59.6,6.5L61.1,8.5L62.5,10.5L63.8,12.2L65.2,13.2L67,13.5L69.1,13.3L71.5,12.8L73.9,12.4L76.2,12.6L78.1,13.4L79.4,15L80.1,17.2L80.4,19.6L80.5,22L80.8,24.1L81.6,25.7L83,26.9L84.9,27.8L87.2,28.5L89.5,29.4L91.4,30.7L92.6,32.4L92.9,34.4L92.5,36.6L91.5,38.9L90.4,41L89.7,43L89.5,44.8L90.1,46.5L91.4,48.2Z' fill='none' stroke='%23fff' stroke-width='7.8'/%3E%3C/svg%3E");
+  }
+
+  .flare-progress--md3e-wavy.flare-progress--circular .flare-progress__indicator {
+    /* The mask is the element box, but an SVG shape is masked within its fill box -
+       here the circle's geometry, which stops short of the stroke the wave lives in.
+       no-clip is what lets the crests paint past it. */
+    -webkit-mask: var(--flare-progress-ring-wave-mask, var(--_ring-mask))
+                  center / var(--_circ-size) var(--_circ-size) no-repeat;
+    -webkit-mask-clip: no-clip;
+    mask: var(--flare-progress-ring-wave-mask, var(--_ring-mask))
+          center / var(--_circ-size) var(--_circ-size) no-repeat;
+    mask-clip: no-clip;
+    /* A round cap is half the stroke long, and the stroke is widened to hold the wave,
+       so a cap would reach further round the ring than the gap is wide and close it. */
+    stroke-linecap: butt;
+  }
+
+  /* The wave travels by turning the indicator, mask and all, and paying the turn back in
+     dash offset so the arc itself stays where the value put it. That trade only balances
+     on a two-part dash whose period is the whole path: the core's four-part pattern
+     repeats over more than one turn, so the same offset would drag the arc along. Hence
+     the arc is restated here from the lengths the core measured, and the lead that used
+     to open the gap becomes the pattern's starting offset. */
+  .flare-progress--md3e-wavy.flare-progress--circular:not(.flare-progress--indeterminate)
+  .flare-progress__indicator {
+    stroke-dasharray: var(--_ring-arc) calc(100 - var(--_ring-arc));
+    /* The lead opens the gap and needs a measured radius, so it arrives with the script; until
+       then the arc simply starts flush, which is a quarter of a degree out rather than absent. */
+    stroke-dashoffset: calc(var(--_ring-wave-spin) * 100 - var(--_ring-lead, 0));
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+    transform: rotate(calc(var(--_ring-wave-spin) * 360deg));
+    animation: flare-md3e-ring-wave-travel
+               calc(var(--flare-progress-wave-speed) * var(--_ring-waves))
+               linear infinite;
+  }
+
+  /* The remaining track is not wavy: it keeps the thickness its size step asks for,
+     while --_circ-width stays widened so the radius both circles share is the one the
+     wave is drawn on. */
+  .flare-progress--md3e-wavy.flare-progress--circular .flare-progress__track {
+    stroke-width: var(--_ring-line);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flare-progress--linear.flare-progress--indeterminate,
+    .flare-progress--circular.flare-progress--indeterminate,
+    .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg,
+    .flare-progress--md3e-wavy.flare-progress--linear .flare-progress__bar,
+    .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
+    .flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
+      animation: none;
+    }
+
+    .flare-progress--linear.flare-progress--indeterminate {
+      --_progress-first-head: 0.7;
+      --_progress-first-tail: 0.3;
+    }
+
+    .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar--indeterminate-second {
+      display: none;
+    }
+
+    .flare-progress--circular.flare-progress--indeterminate {
+      --_ring-progress: 40;
+    }
+  }
+}

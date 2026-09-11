@@ -38,7 +38,7 @@ map, so the table below is the platform-control vocabulary the look belongs to.
 | Sidebar (NavigationSplitView) | `FlareLayoutDrawer` + `FlareNavMenu` | |
 | List / Section | `FlareList`, `FlareCard` | |
 | Disclosure group | `FlareAccordion`, `FlareCollapse` | |
-| Progress view / Gauge | `FlareProgress`, `FlareMeter` | |
+| Progress view / Gauge | `FlareProgressLinear`, `FlareProgressCircular`, `FlareMeter` | |
 | Badge | `FlareBadge` | |
 | Date picker | `FlareDatePicker` | |
 

@@ -118,6 +118,45 @@ If you genuinely want a from-scratch design system with no Material/Fluent ances
 `DesignTokens` yourself (setting every `required` group) - the compiler (CS9035) will list any token
 you miss.
 
+### Reusing another theme's stylesheets
+
+A theme's stylesheet is scoped to the class its own id produces (`.flare-theme-md3-expressive`), so a
+theme that reuses another's CSS has to keep answering to that class. That is what `StyleFamilyId` is:
+
+```csharp
+public string StyleFamilyId => MaterialDesign3ExpressiveTheme.ThemeId;
+```
+
+The root element then carries both classes - the theme is selectable by its own id and styled by the
+family it belongs to. `Derive` does this for you, keeping the base theme's family unless you pass
+`styleFamilyId` yourself:
+
+```csharp
+// Re-values tokens, keeps Expressive's stylesheets, and is styled by them.
+var brand = new MaterialDesign3ExpressiveTheme()
+    .Derive("md3-expressive-brand", design: d => d with { ... });
+
+// Brings its own stylesheets, so it is its own family.
+var standalone = new MaterialDesign3ExpressiveTheme()
+    .Derive("acme", styleAssets: ["_content/Acme/css/acme.css"], styleFamilyId: "acme");
+```
+
+Leave `StyleFamilyId` alone when your theme ships its own `StyleAssets`: it already defaults to `Id`.
+
+### Theme-owned JavaScript
+
+`ScriptAssets` lists modules the theme loads once when it becomes active, including when it is active
+only for a `FlareThemeScope` subtree:
+
+```csharp
+public IReadOnlyList<string> ScriptAssets => ["_content/MyApp/js/my-renderer.js"];
+```
+
+Reach for it only when CSS genuinely cannot express the effect - none of the built-in themes need it.
+A module must key its behavior off its own public CSS classes rather than off a theme id, or it will
+not serve themes derived from yours, and it must tolerate being loaded while its theme is not the
+active one, since modules are never unloaded.
+
 ## Registering a Theme
 
 ```csharp

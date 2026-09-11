@@ -239,7 +239,7 @@ All real component names (consult the [API Reference](../api/README.md) for each
 
 **Overlays & feedback:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,
-`FlareDrawer`, `FlareProgress`, `FlareAlert`, `FlareBusy`.
+`FlareDrawer`, `FlareProgressLinear`, `FlareProgressCircular`, `FlareAlert`, `FlareBusy`.
 
 **Layout & structure:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,

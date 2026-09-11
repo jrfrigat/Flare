@@ -13,6 +13,16 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
 
     public const string ThemeId = "md3-expressive";
 
+    private static readonly IReadOnlyDictionary<string, string> Extended =
+        new Dictionary<string, string>(MaterialDesignTokens.Extended)
+        {
+            [Css.Tokens.Md3e.Progress.Length] = "40px",
+            [Css.Tokens.Md3e.Progress.IndeterminateLength] = "20px",
+            [Css.Tokens.Md3e.Progress.Amplitude] = "3px",
+            [Css.Tokens.Md3e.Progress.Speed] = "1s",
+        };
+
+
     /// <inheritdoc />
 
     public string Id => ThemeId;
@@ -94,6 +104,13 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
+        Progress = MaterialDesignTokens.Design.Progress with
+        {
+            LinearIndeterminateDuration = "1750ms",
+            LinearIndeterminateEasing = "cubic-bezier(0.3, 0, 0.8, 0.15)",
+            CircularIndeterminateRotationDuration = "1500ms",
+            CircularIndeterminateProgressDuration = "6000ms",
+        },
 
         // Charts get the Expressive treatment for the same reason the buttons do: shape is the axis this
         // era pushes. A heavier stroke and a visibly rounded bar end read as Expressive at a glance, and
@@ -107,6 +124,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             AreaOpacity = "0.4",
             LegendDotSize = "0.75rem",
         },
+        Extended = Extended,
     };
     public string DefaultPaletteId => Md3Palettes.Violet.Id;
     public IReadOnlyList<Palette> Palettes => Md3Palettes.All;
@@ -119,6 +137,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css",
+        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css",
     ];
 }
 

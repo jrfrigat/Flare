@@ -1,7 +1,7 @@
 namespace Flare.Components;
 
 /// <summary>
-/// The size step of a track-based indicator - <see cref="FlareSlider"/>, <see cref="FlareProgress"/> and
+/// The size step of a track-based indicator - <see cref="FlareSlider"/>, <see cref="FlareProgressLinear"/> and
 /// <see cref="FlareMeter"/> - on the shared Xs..Xl scale.
 ///
 /// The scale is a set of LABELS, not measurements: each component maps a step onto its own per-size tokens,

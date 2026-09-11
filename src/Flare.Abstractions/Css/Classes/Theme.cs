@@ -27,6 +27,20 @@ public static class Theme
     /// <returns>The theme class string.</returns>
     public static string ForTheme(string themeId) => ThemePrefix + themeId;
 
+    /// <summary>
+    /// Builds the theme classes a root element carries: the theme's own class plus, when the theme
+    /// was derived from another, the class of the family whose stylesheets style it. Emitting both
+    /// is what lets a derived theme keep the base theme's CSS while still being selectable by its
+    /// own id.
+    /// </summary>
+    /// <param name="themeId">The theme id.</param>
+    /// <param name="styleFamilyId">The theme's style-family id; equal to <paramref name="themeId"/> for a theme that ships its own stylesheets.</param>
+    /// <returns>One class when the two ids match, otherwise the two classes separated by a space.</returns>
+    public static string ForTheme(string themeId, string styleFamilyId) =>
+        string.Equals(themeId, styleFamilyId, StringComparison.Ordinal)
+            ? ForTheme(themeId)
+            : ForTheme(themeId) + " " + ForTheme(styleFamilyId);
+
     /// <summary>Builds the per-palette class for the given palette id (<c>flare-palette-{id}</c>).</summary>
     /// <param name="paletteId">The palette id.</param>
     /// <returns>The palette class string.</returns>

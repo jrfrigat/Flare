@@ -69,7 +69,7 @@ jobs:
       - name: Regenerate the API reference
         run: >
           dotnet run --project tools/Flare.ApiDocGen -c Release --
-          samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+          samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs --markdown docs/api
 
       - name: Publish (Release, trimmed)
         run: dotnet publish samples/Flare.Gallery/Flare.Gallery.csproj -c Release -o publish

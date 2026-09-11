@@ -4,11 +4,11 @@
 
 `Flare.Components.FlareGauge`
 
-One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgress and FlareMeter are both bars and answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is the dashboard reading.
+One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgressLinear and FlareMeter are both bars and answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is the dashboard reading.
 
 ## Remarks
 
-Coloured bands are FlareZone children - the same Start/End-on-a-host-scale primitive FlareSlider and FlareProgress already take, rather than a gauge-specific range type. Which part of a scale counts as bad belongs to the application's data, so it arrives as a zone with a colour rather than as a token a theme would have to guess at. No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness is a token read by the stylesheet.
+Coloured bands are FlareZone children - the same Start/End-on-a-host-scale primitive FlareSlider and FlareProgressLinear already take, rather than a gauge-specific range type. Which part of a scale counts as bad belongs to the application's data, so it arrives as a zone with a colour rather than as a token a theme would have to guess at. No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness is a token read by the stylesheet.
 
 ## Parameters
 

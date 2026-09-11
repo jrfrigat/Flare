@@ -33,9 +33,10 @@ internal static class Program
             .Select(d => Path.Combine(d, "wwwroot", "css"))
             .Where(Directory.Exists)
             .ToArray();
+        var themeClassDirs = ThemeClassDirs(root);
 
         var css = CollectCssClasses(cssDir);
-        var constants = CollectConstants(cssClassesDir);
+        var constants = CollectConstants(new[] { cssClassesDir }.Concat(themeClassDirs).ToArray());
         var themeCss = CollectCssClasses(cssThemeDirs);
 
         // Non-interactive mode.
@@ -149,7 +150,7 @@ internal static class Program
                 case "3": Generate(css, constants); break;
                 case "4":
                     Merge(css, cssClassesDir);
-                    constants = CollectConstants(cssClassesDir); // refresh after writing
+                    constants = CollectConstants(new[] { cssClassesDir }.Concat(ThemeClassDirs(_root)).ToArray()); // refresh after writing
                     break;
                 case "0" or null: return 0;
                 default: Console.WriteLine("Unknown choice."); break;
@@ -159,22 +160,30 @@ internal static class Program
 
     // ---- Comparison ----
 
+    private static string[] ThemeClassDirs(string root) =>
+        Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*")
+            .Select(d => Path.Combine(d, "Css", "Classes"))
+            .Where(Directory.Exists)
+            .ToArray();
+
     // The single source of truth for the three sync reports, shared by the CLI and CssAudit.Run.
     //   Plus  -> classes in Flare.Components CSS with no CssClasses constant
-    //   Minus -> constants with no Flare.Components rule (a full class name, not a runtime prefix,
-    //            and not theme-scoping infrastructure)
-    //   Tilde -> classes a theme defines that the Flare.Components base lacks (infra excluded)
+    //   Minus -> constants with no rule in Flare.Components or any theme (a full class name, not a
+    //            runtime prefix, and not theme-scoping infrastructure)
+    //   Tilde -> classes a theme defines without a registered Css.Classes constant (infra excluded)
     internal static (List<string> Plus, List<string> Minus, List<string> Tilde) Compare(
         SortedDictionary<string, SortedSet<string>> css, ConstSet constants,
         SortedDictionary<string, SortedSet<string>>? themeCss)
     {
         var plus = css.Keys.Where(c => !constants.Values.Contains(c))
             .OrderBy(c => c, StringComparer.Ordinal).ToList();
+        var themeKeys = themeCss?.Keys ?? Enumerable.Empty<string>();
         var minus = constants.Values
-            .Where(v => !css.ContainsKey(v) && !v.EndsWith("-", StringComparison.Ordinal) && !IsThemeInfrastructure(v))
+            .Where(v => !css.ContainsKey(v) && !themeKeys.Contains(v)
+                     && !v.EndsWith("-", StringComparison.Ordinal) && !IsThemeInfrastructure(v))
             .OrderBy(v => v, StringComparer.Ordinal).ToList();
-        var tilde = (themeCss?.Keys ?? Enumerable.Empty<string>())
-            .Where(c => !css.ContainsKey(c) && !IsThemeInfrastructure(c))
+        var tilde = themeKeys
+            .Where(c => !constants.Values.Contains(c) && !IsThemeInfrastructure(c))
             .OrderBy(c => c, StringComparer.Ordinal).ToList();
         return (plus, minus, tilde);
     }
@@ -273,7 +282,7 @@ internal static class Program
 
         if (inThemeNotBase.Count > 0)
         {
-            Console.WriteLine($"--- {inThemeNotBase.Count} class(es) in a theme but MISSING from Flare.Components (add a stub) ---");
+            Console.WriteLine($"--- {inThemeNotBase.Count} class(es) in a theme but MISSING from Css.Classes ---");
             foreach (var c in inThemeNotBase)
                 Console.WriteLine($"  [~] {c}   (in {string.Join(", ", themeCss![c])})");
             Console.WriteLine();
@@ -765,10 +774,12 @@ internal static class Program
 
     // Read constants from every per-component partial under CssClasses/ (the monolithic
     // CssClasses.cs is now near-empty after the refactoring).
-    internal static ConstSet CollectConstants(string cssClassesDir)
+    internal static ConstSet CollectConstants(params string[] cssClassesDirs)
     {
         var set = new ConstSet();
-        foreach (var file in Directory.EnumerateFiles(cssClassesDir, "*.cs").OrderBy(p => p, StringComparer.Ordinal))
+        foreach (var file in cssClassesDirs.Where(Directory.Exists)
+                     .SelectMany(dir => Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories))
+                     .OrderBy(p => p, StringComparer.Ordinal))
         {
             string current = "CssClasses";
             foreach (var raw in File.ReadAllLines(file))
@@ -958,7 +969,8 @@ internal static class Program
         foreach (var dir in dirs)
         {
             if (!Directory.Exists(dir)) continue;
-            foreach (var file in Directory.EnumerateFiles(dir, "*.cs").OrderBy(p => p, StringComparer.Ordinal))
+            foreach (var file in Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories)
+                         .OrderBy(p => p, StringComparer.Ordinal))
             {
                 if (file.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
                 // Brace depth, not just "the last class line seen": a token class can nest, and a constant

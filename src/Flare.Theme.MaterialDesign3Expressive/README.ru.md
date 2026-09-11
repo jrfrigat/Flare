@@ -48,7 +48,7 @@ Expressive - это не отдельный набор компонентов, �
 | Snackbar | `ISnackbarService` | внедряется через DI, разметки нет |
 | Подсказки (plain, rich) | `FlareTooltip` | |
 | Значки | `FlareBadge` | `Standalone` для голой пилюли |
-| Индикаторы прогресса (линейный, круговой) | `FlareProgress` | `Variant="ProgressVariant.Linear\|Circular"`; `Wavy` - от Expressive |
+| Индикаторы прогресса (линейный, круговой) | `FlareProgressLinear`, `FlareProgressCircular` | для Expressive-волны добавьте `Class="@Flare.Css.Classes.Md3e.Progress.Wavy"` |
 | Нижняя панель навигации | `FlareBottomNav` | |
 | Навигационный рельс | `FlareNavMenu` | `Mode="NavMenuMode.Rail"` |
 | Навигационная панель (standard, modal) | `FlareLayoutDrawer` | `Variant="DrawerVariant.Persistent\|Temporary\|Responsive"` |

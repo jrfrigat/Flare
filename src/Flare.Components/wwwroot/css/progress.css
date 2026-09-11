@@ -50,6 +50,12 @@
   transition: width 0.3s var(--flare-motion-easing-standard);
 }
 
+/* The second segment and segmented track stay inert unless a theme activates them. */
+.flare-progress--linear.flare-progress--indeterminate .flare-progress__remain,
+.flare-progress__bar--indeterminate-second {
+  display: none;
+}
+
 /* Split track: active indicator + gap + remaining track (no SVG).
    Gap is token-driven - a theme can set e.g. 4px, or leave it 0 for a continuous bar. */
 .flare-progress--linear.flare-progress--split {
@@ -70,9 +76,10 @@
   height: 100%;
   background: var(--flare-color-secondary-container);
   border-radius: var(--flare-progress-track-radius);
-  /* Leave a gap before the trailing stop indicator so the track does not
-     run under the dot. Reserves gap + dot-size on the right (0 when the dot is off). */
-  margin-right: calc(var(--flare-progress-gap) + var(--flare-progress-stop-size));
+  /* Leave a gap before the trailing stop indicator so the track does not run under the dot.
+     Reserves gap + dot-size at the inline end (0 when the dot is off), which is where the bar
+     finishes in either writing direction. */
+  margin-inline-end: calc(var(--flare-progress-gap) + var(--flare-progress-stop-size));
 }
 
 /* Colored scale zones (declared via <FlareZone Start End>): static [start,end] bands that annotate the
@@ -87,8 +94,8 @@
   position: absolute;
   top: 0;
   height: 100%;
-  left: var(--_z0, 0%);
-  right: calc(100% - var(--_z1, 0%));
+  inset-inline-start: var(--_z0, 0%);
+  inset-inline-end: calc(100% - var(--_z1, 0%));
   z-index: 1;
   background: var(--fc-main, var(--flare-color-primary));
   pointer-events: none;
@@ -105,7 +112,7 @@
   content: "";
   position: absolute;
   top: 50%;
-  right: var(--flare-progress-stop-inset);
+  inset-inline-end: var(--flare-progress-stop-inset);
   transform: translateY(-50%);
   width: var(--flare-progress-stop-size);
   height: var(--flare-progress-stop-size);
@@ -113,119 +120,12 @@
   background: var(--flare-progress-stop-color);
 }
 
+/* Flat indeterminate motion stays in the core so themes without an optional renderer keep the
+   established single-segment behavior. */
 .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
   width: 40% !important;
-  animation: flare-progress-linear 1.5s infinite var(--flare-motion-easing-standard);
-}
-
-/* ==========================================================================
-   WAVY LINEAR
-   Reuses the split-track layout (.flare-progress--split): active bar + gap +
-   remaining track + trailing stop indicator, so the wavy mode gets the SAME gap
-   (--flare-progress-gap) and stop dot as the plain split mode. The active bar
-   clips a single continuous sine <path> (drawn 1:1 in px for a constant wavelength)
-   and translates it one wavelength per cycle for a seamless flow. Theme tokens:
-   wavy-height (with-wave height), wave-length, wave-amplitude, wave-speed.
-   ========================================================================== */
-.flare-progress--wavy.flare-progress--linear {
-  height: var(--flare-progress-wavy-height);
-  background: transparent;
-}
-
-.flare-progress--wavy.flare-progress--linear .flare-progress__bar {
-  height: 100%;
-  overflow: hidden;          /* clips the wide wave path to the active width */
-  border-radius: 0;
-  background: transparent;
-  color: var(--fc-main, var(--flare-color-primary));   /* stroke="currentColor" */
-}
-
-.flare-progress__wave {
-  display: block;
-  /* The reset caps SVGs at 100%, which used to squeeze a 1600px viewBox into the active bar.
-     Keep one extra, unscaled tile outside the clipping bar for the full animation travel. */
-  max-width: none;
-  width: calc(100% + var(--_wave-period));
-  height: 100%;
-  animation: flare-progress-wave var(--flare-progress-wave-speed) linear infinite;
-}
-
-/* Remaining track is a thin flat line, vertically centred in the taller wavy track. */
-.flare-progress--wavy.flare-progress--linear .flare-progress__remain {
-  height: var(--_lin-height);
-}
-
-/* Flow: shift the wave by exactly one wavelength for a seamless loop. */
-@keyframes flare-progress-wave {
-  to { transform: translateX(calc(-1 * var(--_wave-period))); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flare-progress__wave { animation: none; }
-}
-
-/* ==========================================================================
-   WAVY RING
-   Only the active arc is wavy (track stays a smooth circle). Flow: rotate the wavy
-   path while shifting stroke-dashoffset by the same fraction (pathLength=100, so a
-   full 360deg == 100 units). The fill window stays put on screen while the crests
-   travel around the active arc.
-   ========================================================================== */
-.flare-progress--wavy.flare-progress--circular .flare-progress__track,
-.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
-  stroke-linejoin: round;
-}
-
-/* Rotating the path carries the crests round; sweeping stroke-dashoffset by the matching arc length
-   pulls the visible window back, so the fill stays where the value put it and only the wave moves.
-   Both halves must be exact for the loop to be seamless, and both now are:
-
-   - A full 360deg returns the path to itself, and pathLength=100 makes the matching sweep exactly
-     100. Stopping at 360/waves would be enough for the SHAPE (the wave is n-fold symmetric) but not
-     for the dash, which would have slid 100/waves - hence the whole turn.
-   - The dash array sums to exactly 100, so the pattern's period IS the path length and offset 100
-     lands back on offset 0. This is what the first attempt lacked; see the razor for the details.
-
-   Within a turn the two are not in perfect lockstep, because arc length runs slightly ahead of angle
-   over a crest and behind it in a trough. The excess is bounded by the wave itself - about a quarter
-   of a percent of the circumference at the shipped amplitude - and it cancels every 360/waves rather
-   than accumulating, so the window breathes by a fraction of a pixel instead of drifting.
-
-   One cycle is one lap, so a crest rate matching the linear bar's means wave-speed per WAVE, times
-   the number of waves. The bar and the ring then pulse at the same rate under one theme token. */
-/* The sweep is animated as a registered custom property rather than animating stroke-dashoffset
-   directly, because the offset also has to carry the value's own leading gap. Putting `var()` in the
-   keyframes instead - `from: var(--_ring-lead)` to `calc(var(--_ring-lead) + 100)` - parses and reads
-   back as correct keyframes, but does not interpolate: the computed offset snaps to the `to` value
-   for the whole cycle, so the window rides around with the path and nothing is cancelled. Registering
-   the property gives the sweep a real <number> type, so it interpolates and the offset recomputes
-   each frame. */
-@property --_ring-sweep {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 0;
-}
-
-.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
-  /* Not fill-box: that centres rotation on the wavy path's bounding box, which is not the ring's
-     centre, and the arc wobbles off-axis. The viewBox's centre is the real one. */
-  transform-box: view-box;
-  transform-origin: 50% 50%;
-  stroke-dashoffset: calc(var(--_ring-lead, 0) + var(--_ring-sweep));
-  animation: flare-progress-ring-wave
-             calc(var(--flare-progress-wave-speed) * var(--flare-progress-ring-waves))
-             linear infinite;
-}
-
-@keyframes flare-progress-ring-wave {
-  from { rotate: 0deg;   --_ring-sweep: 0;   }
-  to   { rotate: 360deg; --_ring-sweep: 100; }
-}
-
-/* The crests travelling are movement; the arc itself is information. Suppressing only the animation
-   leaves the base stroke-dashoffset above in charge, so the gap before the arc survives. */
-@media (prefers-reduced-motion: reduce) {
-  .flare-progress--wavy.flare-progress--circular .flare-progress__indicator { animation: none; }
+  animation: flare-progress-linear var(--flare-progress-linear-indeterminate-duration)
+             infinite var(--flare-progress-linear-indeterminate-easing);
 }
 
 @keyframes flare-progress-linear {
@@ -264,12 +164,14 @@
    no CSS calc() in stroke-dasharray, which several browsers reject. */
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
-  animation: flare-progress-rotate 1.4s linear infinite;
+  animation: flare-progress-rotate var(--flare-progress-circular-indeterminate-rotation-duration)
+             linear infinite;
 }
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
   stroke-dasharray: 70.74 100;
-  animation: flare-progress-dash 1.4s ease-in-out infinite;
+  animation: flare-progress-dash var(--flare-progress-circular-indeterminate-progress-duration)
+             ease-in-out infinite;
 }
 
 @keyframes flare-progress-rotate { 100% { transform: rotate(360deg); } }
@@ -277,7 +179,7 @@
 /* Buffer variant */
 .flare-progress--buffer .flare-progress__track { background: transparent; }
 .flare-progress__buffer-fill {
-    position: absolute; left: 0; top: 0; height: 100%;
+    position: absolute; inset-inline-start: 0; top: 0; height: 100%;
     background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) var(--flare-progress-buffer-opacity), transparent);
     transition: width 0.3s ease;
 }
@@ -298,4 +200,12 @@
   0%   { stroke-dasharray: 0.88 100; stroke-dashoffset: 0; }
   50%  { stroke-dasharray: 79.58 100; stroke-dashoffset: -30.95; }
   100% { stroke-dasharray: 79.58 100; stroke-dashoffset: -100; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar,
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg,
+  .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
+    animation: none;
+  }
 }

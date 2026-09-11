@@ -1604,7 +1604,8 @@ public static class ComponentApiRegistry
                 @"FlarePasswordField",
                 @"FlarePopover",
                 @"FlarePopup",
-                @"FlareProgress",
+                @"FlareProgressCircular",
+                @"FlareProgressLinear",
                 @"FlarePropertyGrid",
                 @"FlarePropertyGridItem",
                 @"FlarePullToRefresh",
@@ -3033,8 +3034,8 @@ public static class ComponentApiRegistry
             @"FlareGauge",
             @"Flare.Components.FlareGauge",
             @"Flare.Components",
-            @"One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgress and FlareMeter are both bars and answer ""how far along""; a gauge answers ""where does this sit on the scale, and is that good"", which is the dashboard reading.",
-            @"Coloured bands are FlareZone children - the same Start/End-on-a-host-scale primitive FlareSlider and FlareProgress already take, rather than a gauge-specific range type. Which part of a scale counts as bad belongs to the application's data, so it arrives as a zone with a colour rather than as a token a theme would have to guess at. No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness is a token read by the stylesheet.",
+            @"One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgressLinear and FlareMeter are both bars and answer ""how far along""; a gauge answers ""where does this sit on the scale, and is that good"", which is the dashboard reading.",
+            @"Coloured bands are FlareZone children - the same Start/End-on-a-host-scale primitive FlareSlider and FlareProgressLinear already take, rather than a gauge-specific range type. Which part of a scale counts as bad belongs to the application's data, so it arrives as a zone with a colour rather than as a token a theme would have to guess at. No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness is a token read by the stylesheet.",
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Animate", @"bool", @"true", @"Sweeps the fill and needle to the value on first render and on every change. Default true; a reduced-motion preference suppresses it regardless.", null, false, false, false, @"FlareGauge"),
@@ -3962,7 +3963,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Format", @"string?", null, @"Format string applied to segment values wherever they are shown (e.g. ""N1""). Defaults to a bounded two-decimal format: a meter is fed raw measurements, and the round-trip ""G"" default would read a 0.0627 ms slice out as 0.06269999999999998.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"ShowLegend", @"bool", @"false", @"Shows a key below the track: one entry per segment (color swatch + label). Default false.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"ShowValues", @"bool", @"false", @"Shows each segment's numeric value - in the legend, the hover tooltip and the accessible label alike. Default false.", null, false, false, false, @"FlareMeter"),
-                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Track thickness, as a step on the shared TrackSize scale used by FlareSlider and FlareProgress. A meter reads the same per-size tokens as a linear progress bar, so the two are the same thickness at the same step.", null, false, false, false, @"FlareMeter"),
+                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Track thickness, as a step on the shared TrackSize scale used by FlareSlider and FlareProgressLinear. A meter reads the same per-size tokens as a linear progress bar, so the two are the same thickness at the same step.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -4659,24 +4660,20 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
-        c[@"FlareProgress"] = new ApiComponentInfo(
-            @"FlareProgress",
-            @"Flare.Components.FlareProgress",
+        c[@"FlareProgressCircular"] = new ApiComponentInfo(
+            @"FlareProgressCircular",
+            @"Flare.Components.FlareProgressCircular",
             @"Flare.Components",
-            @"Displays determinate or indeterminate progress as a bar or circular indicator.",
+            @"The ring is the half of progress that needs measuring: its radius is the box less the stroke, and the gap between arcs is a CSS length that only becomes a share of the circumference once the browser has laid the ring out. That is what this observer is for, and why it lives with the circular indicator alone - a linear bar resolves everything the CSS already knows.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Variant=Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It drives the linear track thickness AND the circular diameter and stroke, so one step means one size whichever variant is rendered, and the theme owns every value.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Variant", @"ProgressVariant", @"ProgressVariant.Linear", @"Display style: Linear bar, Circular spinner, Buffer, or Query.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Wavy", @"bool", @"false", @"Wavy active indicator for determinate linear and circular progress, when enabled by the theme.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Applies to the determinate linear bar; because zones need an uninterrupted track, using them renders a continuous track instead of the split (gap + trailing stop dot) one.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgressBase"),
+                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth.", null, false, false, false, @"FlareProgressBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgressBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4685,6 +4682,36 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareProgressBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareProgressLinear"] = new ApiComponentInfo(
+            @"FlareProgressLinear",
+            @"Flare.Components.FlareProgressLinear",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgressLinear"),
+                new ApiParameterInfo(@"Variant", @"LinearProgressVariant", @"LinearProgressVariant.Bar", @"Which shape the linear track takes.", null, false, false, false, @"FlareProgressLinear"),
+                new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Because zones need an uninterrupted track, using them renders a continuous track instead of the split one (gap plus trailing stop dot).", null, false, false, false, @"FlareProgressLinear"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgressBase"),
+                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth.", null, false, false, false, @"FlareProgressBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgressBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareProgressBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8431,6 +8458,23 @@ public static class ComponentApiRegistry
                 @"FlareLayoutContent",
             });
 
+        e[@"LinearProgressVariant"] = new ApiEnumInfo(
+            @"LinearProgressVariant",
+            @"Flare.Components.LinearProgressVariant",
+            @"Flare.Components",
+            @"Which of the linear track's three shapes FlareProgressLinear draws.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Bar", @"0", @"A single active indicator on a track: the ordinary progress bar."),
+                new ApiEnumMember(@"Buffer", @"1", @"The bar plus a muted secondary fill behind it, for buffered-ahead work."),
+                new ApiEnumMember(@"Query", @"2", @"A pulse sweeping backwards along the track, for work whose size is not known yet."),
+            },
+            new string[]
+            {
+                @"FlareProgressLinear",
+            });
+
         e[@"LinkTabsVariant"] = new ApiEnumInfo(
             @"LinkTabsVariant",
             @"Flare.Components.LinkTabsVariant",
@@ -8667,24 +8711,6 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlarePopover",
-            });
-
-        e[@"ProgressVariant"] = new ApiEnumInfo(
-            @"ProgressVariant",
-            @"Flare.Components.ProgressVariant",
-            @"Flare.Components",
-            @"Visual style of a FlareProgress indicator.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Linear", @"0", @"Linear."),
-                new ApiEnumMember(@"Circular", @"1", @"Circular."),
-                new ApiEnumMember(@"Buffer", @"2", @"Buffer."),
-                new ApiEnumMember(@"Query", @"3", @"Query."),
-            },
-            new string[]
-            {
-                @"FlareProgress",
             });
 
         e[@"QrErrorCorrectionLevel"] = new ApiEnumInfo(
@@ -9220,7 +9246,7 @@ public static class ComponentApiRegistry
             @"TrackSize",
             @"Flare.Components.TrackSize",
             @"Flare.Components",
-            @"The size step of a track-based indicator - FlareSlider, FlareProgress and FlareMeter - on the shared Xs..Xl scale. The scale is a set of LABELS, not measurements: each component maps a step onto its own per-size tokens, and each theme decides what those are worth. A slider's Md is a chunky drag target while a progress bar's Md is a few pixels of rule - the same step, deliberately different geometry. What the shared scale does guarantee is that the three stay in step with each other within one theme, and that a caller learns one vocabulary instead of three. The DEFAULT step is per component, because the components' natural sizes sit at different points of their own ranges: a slider defaults to Xs (its canonical thin-track form), while a progress bar and a meter default to Md - a rule and a spinner want room to go finer as well as heavier, so their resting size sits mid-scale rather than at the floor.",
+            @"The size step of a track-based indicator - FlareSlider, FlareProgressLinear and FlareMeter - on the shared Xs..Xl scale. The scale is a set of LABELS, not measurements: each component maps a step onto its own per-size tokens, and each theme decides what those are worth. A slider's Md is a chunky drag target while a progress bar's Md is a few pixels of rule - the same step, deliberately different geometry. What the shared scale does guarantee is that the three stay in step with each other within one theme, and that a caller learns one vocabulary instead of three. The DEFAULT step is per component, because the components' natural sizes sit at different points of their own ranges: a slider defaults to Xs (its canonical thin-track form), while a progress bar and a meter default to Md - a rule and a spinner want room to go finer as well as heavier, so their resting size sits mid-scale rather than at the floor.",
             null,
             new ApiEnumMember[]
             {
@@ -9233,7 +9259,8 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareMeter",
-                @"FlareProgress",
+                @"FlareProgressCircular",
+                @"FlareProgressLinear",
                 @"FlareSlider",
             });
 

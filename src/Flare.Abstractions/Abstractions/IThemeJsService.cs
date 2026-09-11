@@ -21,10 +21,32 @@ public interface IThemeJsService : IAsyncDisposable
     ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default);
 
     /// <summary>
+    /// Sets the root element's theme classes, including the style-family class that a theme derived
+    /// from another needs for the base theme's stylesheets to keep applying to it. Defaults to the
+    /// single-id overload, which emits the theme's own class only.
+    /// </summary>
+    /// <param name="themeId">The active theme's id.</param>
+    /// <param name="styleFamilyId">The active theme's <see cref="ITheme.StyleFamilyId"/>.</param>
+    /// <param name="paletteId">The active palette's id.</param>
+    /// <param name="isDark">Whether the dark scheme is active.</param>
+    /// <param name="ct">A cancellation token.</param>
+    ValueTask SetThemeClassesAsync(string themeId, string styleFamilyId, string paletteId, bool isDark, CancellationToken ct = default)
+        => SetThemeClassesAsync(themeId, paletteId, isDark, ct);
+
+    /// <summary>
     /// Ensures a stylesheet link is present and completes only once it has finished loading (or a
     /// safety timeout elapses), so callers can reveal styled UI without flashing unstyled content.
     /// </summary>
     ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default);
+
+    /// <summary>
+    /// Ensures a theme JavaScript module is loaded once. Defaults to doing nothing, so that an
+    /// adapter written before <see cref="ITheme.ScriptAssets"/> existed still compiles; such an
+    /// adapter serves themes that ship no modules, which is all of the built-in ones.
+    /// </summary>
+    /// <param name="src">Module URL, resolved against the document base URI.</param>
+    /// <param name="ct">A cancellation token.</param>
+    ValueTask EnsureModuleAsync(string src, CancellationToken ct = default) => ValueTask.CompletedTask;
 
     /// <summary>
     /// Completes once the document's web fonts have loaded (text typefaces and icon glyphs), or after

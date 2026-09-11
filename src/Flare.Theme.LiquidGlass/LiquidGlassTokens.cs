@@ -381,7 +381,6 @@ internal class LiquidGlassTokens
         StopSize = "0px",
         CircularCap = "butt",
         CircularGap = "0",
-        WavyEnabled = "0",
     };
 
     // Nav - pill indicator (iOS tab/segmented look).

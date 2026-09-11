@@ -6629,6 +6629,51 @@ namespace Flare.Gallery.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Linear.
         /// </summary>
+        /// <summary>
+        ///   Ищет локализованную строку для Progress_LinearDescription.
+        /// </summary>
+        public static string Progress_LinearDescription {
+            get {
+                return ResourceManager.GetString("Progress_LinearDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку для Progress_CircularDescription.
+        /// </summary>
+        public static string Progress_CircularDescription {
+            get {
+                return ResourceManager.GetString("Progress_CircularDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку для Progress_Wave.
+        /// </summary>
+        public static string Progress_Wave {
+            get {
+                return ResourceManager.GetString("Progress_Wave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку для Progress_WaveDescription.
+        /// </summary>
+        public static string Progress_WaveDescription {
+            get {
+                return ResourceManager.GetString("Progress_WaveDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку для Progress_WaveSizes.
+        /// </summary>
+        public static string Progress_WaveSizes {
+            get {
+                return ResourceManager.GetString("Progress_WaveSizes", resourceCulture);
+            }
+        }
+        
         public static string Progress_Linear {
             get {
                 return ResourceManager.GetString("Progress_Linear", resourceCulture);
@@ -6654,7 +6699,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareProgress - linear and circular indicators with sizes, colors and buffer..
+        ///   Ищет локализованную строку, похожую на FlareProgressLinear and FlareProgressCircular: sizes, colors, buffer and zones..
         /// </summary>
         public static string Progress_Subtitle {
             get {

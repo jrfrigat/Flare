@@ -18,7 +18,7 @@ public class FlareProgressSizeTests : FlareTestContext
     [InlineData(TrackSize.Xl, Css.Classes.Progress.Xl)]
     public void Size_AppliesSizeClass_OnLinear(TrackSize size, string expected)
     {
-        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, size));
+        var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, size));
 
         Assert.Contains(expected, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
@@ -29,8 +29,7 @@ public class FlareProgressSizeTests : FlareTestContext
     [InlineData(TrackSize.Xl, Css.Classes.Progress.Xl)]
     public void Size_AppliesSizeClass_OnCircular(TrackSize size, string expected)
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Circular)
+        var cut = Render<FlareProgressCircular>(p => p
             .Add(x => x.Value, 50d)
             .Add(x => x.Size, size));
 
@@ -40,7 +39,7 @@ public class FlareProgressSizeTests : FlareTestContext
     [Fact]
     public void DefaultSize_IsMd()
     {
-        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d));
+        var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d));
 
         Assert.Contains(Css.Classes.Progress.Md, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
@@ -52,8 +51,7 @@ public class FlareProgressSizeTests : FlareTestContext
     [Fact]
     public void Circular_WritesNoInlineGeometry_SoTheThemeTokenDecides()
     {
-        var cut = Render<FlareProgress>(p => p
-            .Add(x => x.Variant, ProgressVariant.Circular)
+        var cut = Render<FlareProgressCircular>(p => p
             .Add(x => x.Value, 50d)
             .Add(x => x.Size, TrackSize.Xl));
 
@@ -67,7 +65,7 @@ public class FlareProgressSizeTests : FlareTestContext
     [Fact]
     public void Linear_WritesNoInlineHeight()
     {
-        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, TrackSize.Xl));
+        var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, TrackSize.Xl));
 
         var style = cut.Find($".{Css.Classes.Progress.Root}").GetAttribute("style") ?? "";
         Assert.DoesNotContain("--flare-progress-linear-height", style);

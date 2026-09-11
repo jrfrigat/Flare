@@ -327,7 +327,6 @@ internal class AeroTokens
         StopSize = "0px",
         CircularCap = "butt",
         CircularGap = "0",
-        WavyEnabled = "0",
     };
 
     // Nav - left accent bar (Office side-nav), no pill.

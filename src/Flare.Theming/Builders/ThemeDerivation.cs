@@ -32,6 +32,10 @@ public static class ThemeDerivation
     /// <param name="styleAssets">Overrides the static style assets; defaults to the base theme's.</param>
     /// <param name="paletteGenerator">Overrides the palette generator; defaults to the base theme's.</param>
     /// <param name="extendedDarkOverride">Overrides the dark-mode extras; defaults to the base theme's.</param>
+    /// <param name="scriptAssets">Overrides the JavaScript module assets; defaults to the base theme's.</param>
+    /// <param name="styleFamilyId">Overrides the style family. Defaults to the base theme's, which is
+    /// what keeps the base theme's scoped CSS applying to the derived theme's subtree; pass the new
+    /// id only together with <paramref name="styleAssets"/> of your own.</param>
     public static ITheme Derive(
         this ITheme baseTheme,
         string id,
@@ -41,12 +45,14 @@ public static class ThemeDerivation
         string? defaultPaletteId = null,
         IReadOnlyList<string>? styleAssets = null,
         IPaletteGenerator? paletteGenerator = null,
-        IReadOnlyDictionary<string, string>? extendedDarkOverride = null)
+        IReadOnlyDictionary<string, string>? extendedDarkOverride = null,
+        IReadOnlyList<string>? scriptAssets = null,
+        string? styleFamilyId = null)
     {
         ArgumentNullException.ThrowIfNull(baseTheme);
         ArgumentException.ThrowIfNullOrEmpty(id);
         return new DerivedTheme(baseTheme, id, displayName, design, palettes,
-            defaultPaletteId, styleAssets, paletteGenerator, extendedDarkOverride);
+            defaultPaletteId, styleAssets, scriptAssets, styleFamilyId, paletteGenerator, extendedDarkOverride);
     }
 }
 
@@ -57,13 +63,16 @@ internal sealed class DerivedTheme : ITheme
     private readonly IReadOnlyList<Palette> _palettes;
     private readonly string _defaultPaletteId;
     private readonly IReadOnlyList<string> _styleAssets;
+    private readonly IReadOnlyList<string> _scriptAssets;
+    private readonly string _styleFamilyId;
     private readonly IPaletteGenerator? _paletteGenerator;
     private readonly IReadOnlyDictionary<string, string>? _extendedDarkOverride;
 
     public DerivedTheme(
         ITheme baseTheme, string id, string? displayName,
         Func<DesignTokens, DesignTokens>? design, IReadOnlyList<Palette>? palettes,
-        string? defaultPaletteId, IReadOnlyList<string>? styleAssets,
+        string? defaultPaletteId, IReadOnlyList<string>? styleAssets, IReadOnlyList<string>? scriptAssets,
+        string? styleFamilyId,
         IPaletteGenerator? paletteGenerator, IReadOnlyDictionary<string, string>? extendedDarkOverride)
     {
         Id = id;
@@ -74,6 +83,10 @@ internal sealed class DerivedTheme : ITheme
         _palettes = palettes ?? baseTheme.Palettes;
         _defaultPaletteId = defaultPaletteId ?? baseTheme.DefaultPaletteId;
         _styleAssets = styleAssets ?? baseTheme.StyleAssets;
+        _scriptAssets = scriptAssets ?? baseTheme.ScriptAssets;
+        // The base theme's family, not this theme's id: a derived theme re-values tokens and is
+        // styled by the stylesheets it inherited, which are scoped to the family class.
+        _styleFamilyId = styleFamilyId ?? baseTheme.StyleFamilyId;
         _paletteGenerator = paletteGenerator ?? baseTheme.PaletteGenerator;
         _extendedDarkOverride = extendedDarkOverride ?? baseTheme.ExtendedDarkOverride;
     }
@@ -84,6 +97,8 @@ internal sealed class DerivedTheme : ITheme
     public string DefaultPaletteId => _defaultPaletteId;
     public IReadOnlyList<Palette> Palettes => _palettes;
     public IReadOnlyList<string> StyleAssets => _styleAssets;
+    public IReadOnlyList<string> ScriptAssets => _scriptAssets;
+    public string StyleFamilyId => _styleFamilyId;
     public IPaletteGenerator? PaletteGenerator => _paletteGenerator;
     public IReadOnlyDictionary<string, string>? ExtendedDarkOverride => _extendedDarkOverride;
 }

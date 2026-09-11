@@ -717,8 +717,7 @@ public class FluentUI2Tokens
         ZoomSelectionStroke = "var(--flare-color-primary)",
     };
 
-    // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left
-    // off (WavyEnabled stays at the default 0) so FlareProgress renders a plain bar/ring.
+    // Progress - Fluent: thin 2px rail, squared corners, no stop dot and a 3px butt-cap ring.
     internal static readonly ProgressTokens Progress = new()
     {
         // Size ramp, anchored at Md (the default) and running both ways. Fluent names two bar thicknesses -
@@ -730,6 +729,8 @@ public class FluentUI2Tokens
         LinearHeightXl = "4px",   // spec: bar thickness (large)
         TrackRadius = "var(--flare-shape-extra-small)",
         Gap = "0px",
+        LinearIndeterminateDuration = "1500ms",
+        LinearIndeterminateEasing = "var(--flare-motion-easing-standard)",
         StopSize = "0px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
@@ -752,13 +753,8 @@ public class FluentUI2Tokens
         CircularWidthXl = "4px",
         CircularCap = "butt",
         CircularGap = "0px",
-        WavyEnabled = "0",
-        WavyHeight = "10px",
-        WaveLength = "40px",
-        WaveAmplitude = "3px",
-        WaveSpeed = "1s",
-        RingWaves = "8",
-        RingWaveAmplitude = "1.6",
+        CircularIndeterminateRotationDuration = "1400ms",
+        CircularIndeterminateProgressDuration = "1400ms",
     };
 
     // Nav - no pill in Fluent; a left accent bar marks the active item.

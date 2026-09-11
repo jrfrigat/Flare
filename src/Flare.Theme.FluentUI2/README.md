@@ -43,7 +43,7 @@ Fluent rather than as Material.
 | Popover / Tooltip | `FlarePopover`, `FlareTooltip` | |
 | Toast | `ISnackbarService` | injected; no markup |
 | MessageBar | `FlareAlert` | |
-| ProgressBar / Spinner | `FlareProgress` | `Variant="ProgressVariant.Linear\|Circular"` |
+| ProgressBar / Spinner | `FlareProgressLinear`, `FlareProgressCircular` | |
 | TabList | `FlareTabs` | |
 | Breadcrumb | `FlareBreadcrumb` | |
 | Accordion | `FlareAccordion` | |

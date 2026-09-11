@@ -31,7 +31,7 @@ a desktop-looking app - a 1C or Office 2010 style line-of-business UI - this is 
 | Combo box (dropdown / dropdown list) | `FlareCombobox`, `FlareSelect` | editable vs. list-only |
 | Check box / Option button (radio) | `FlareCheckbox`, `FlareRadioGroup` | |
 | Trackbar | `FlareSlider` | |
-| Progress bar | `FlareProgress` | |
+| Progress bar | `FlareProgressLinear` | |
 | Group box | `FlareCard` | `Variant="CardVariant.Outlined"` |
 | Tab control | `FlareTabs` | |
 | List view (details) | `FlareTable`, `FlareDataGrid` | |
