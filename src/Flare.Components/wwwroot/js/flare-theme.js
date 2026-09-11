@@ -11,7 +11,7 @@ export function setCssVariables(vars) {
 
 // ClassToggle strategy: put the active theme/palette/mode classes on <html> so the
 // generated CSS applies to everything, including overlays portaled to <body>.
-export function setThemeClasses(themeId, paletteId, dark) {
+export function setThemeClasses(themeId, styleFamilyId, paletteId, dark) {
     const r = document.documentElement;
     r.className = r.className
         .replace(/\bflare-theme-\S+/g, '')
@@ -19,7 +19,10 @@ export function setThemeClasses(themeId, paletteId, dark) {
         .replace(/\bflare-mode-dark\b/g, '')
         .replace(/\s+/g, ' ')
         .trim();
+    // Both classes, because theme stylesheets are scoped to the family class: a derived theme is
+    // selectable by its own id and still styled by the theme it came from.
     r.classList.add('flare-theme-' + themeId, 'flare-palette-' + paletteId);
+    if (styleFamilyId && styleFamilyId !== themeId) r.classList.add('flare-theme-' + styleFamilyId);
     if (dark) r.classList.add('flare-mode-dark');
 }
 

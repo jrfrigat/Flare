@@ -16,14 +16,33 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
     private static readonly IReadOnlyDictionary<string, string> Extended =
         new Dictionary<string, string>(MaterialDesignTokens.Extended)
         {
-            [Css.Tokens.Md3e.Progress.Height] = "10px",
             [Css.Tokens.Md3e.Progress.Length] = "40px",
             [Css.Tokens.Md3e.Progress.IndeterminateLength] = "20px",
             [Css.Tokens.Md3e.Progress.Amplitude] = "3px",
             [Css.Tokens.Md3e.Progress.Speed] = "1s",
-            [Css.Tokens.Md3e.Progress.RingLength] = "15px",
-            [Css.Tokens.Md3e.Progress.RingAmplitude] = "1.6",
+            [Css.Tokens.Md3e.Progress.RingMask] = RingWaveMask,
         };
+
+    // Seven waves of amplitude 4 around a mean radius of 41, stroked 10 wide, in a 100-unit box.
+    // progress.css sets the ring's stroke to 18% = 2 * (4 + 10 / 2), which is what makes the core's
+    // radius, (100% - 18%) / 2, come out at the 41% this path is drawn on.
+    private const string RingWaveMask =
+        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E"
+        + "%3Cpath d='M91,50L92.2,51.9L93.2,53.9L93.8,55.9L94.1,58L93.9,60L93.2,61.9L92.1,63.7L90.6,65.2"
+        + "L88.8,66.6L86.9,67.8L85,68.8L83.2,69.8L81.5,70.8L80.1,71.9L78.9,73.1L78,74.5L77.3,76.1L76.7,77.9"
+        + "L76.2,79.9L75.6,82.1L74.8,84.2L73.9,86.2L72.7,88L71.2,89.5L69.5,90.5L67.6,91.2L65.5,91.4L63.4,91.2"
+        + "L61.2,90.7L59.1,90L57.1,89.1L55.2,88.3L53.4,87.6L51.7,87.2L50,87L48.3,87.2L46.6,87.6L44.8,88.3"
+        + "L42.9,89.1L40.9,90L38.8,90.7L36.6,91.2L34.5,91.4L32.4,91.2L30.5,90.5L28.8,89.5L27.3,88L26.1,86.2"
+        + "L25.2,84.2L24.4,82.1L23.8,79.9L23.3,77.9L22.7,76.1L22,74.5L21.1,73.1L19.9,71.9L18.5,70.8L16.8,69.8"
+        + "L15,68.8L13.1,67.8L11.2,66.6L9.4,65.2L7.9,63.7L6.8,61.9L6.1,60L5.9,58L6.2,55.9L6.8,53.9L7.8,51.9"
+        + "L9,50L10.3,48.2L11.5,46.5L12.6,44.9L13.4,43.4L13.9,41.8L14.1,40.1L14.1,38.3L13.8,36.4L13.4,34.4"
+        + "L13.1,32.2L12.8,30L12.8,27.8L13.1,25.6L13.8,23.7L14.8,21.9L16.3,20.5L18,19.4L20,18.7L22.2,18.2"
+        + "L24.4,17.9L26.6,17.8L28.7,17.7L30.6,17.6L32.4,17.2L33.9,16.7L35.4,15.8L36.7,14.6L38.1,13.2"
+        + "L39.4,11.7L40.9,10L42.5,8.4L44.2,7L46,5.9L48,5.2L50,5L52,5.2L54,5.9L55.8,7L57.5,8.4L59.1,10"
+        + "L60.6,11.7L61.9,13.2L63.3,14.6L64.6,15.8L66.1,16.7L67.6,17.2L69.4,17.6L71.3,17.7L73.4,17.8"
+        + "L75.6,17.9L77.8,18.2L80,18.7L82,19.4L83.7,20.5L85.2,21.9L86.2,23.7L86.9,25.6L87.2,27.8L87.2,30"
+        + "L86.9,32.2L86.6,34.4L86.2,36.4L85.9,38.3L85.9,40.1L86.1,41.8L86.6,43.4L87.4,44.9L88.5,46.5"
+        + "L89.7,48.2Z' fill='none' stroke='%23fff' stroke-width='10'/%3E%3C/svg%3E\")";
 
     /// <inheritdoc />
 
@@ -140,12 +159,6 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css",
         "_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css",
-    ];
-
-    /// <inheritdoc />
-    public IReadOnlyList<string> ScriptAssets =>
-    [
-        "_content/Flare.Theme.MaterialDesign3Expressive/js/progress-wave.js",
     ];
 }
 

@@ -56,13 +56,6 @@
   display: none;
 }
 
-.flare-progress__decoration {
-  display: none;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
 /* Split track: active indicator + gap + remaining track (no SVG).
    Gap is token-driven - a theme can set e.g. 4px, or leave it 0 for a continuous bar. */
 .flare-progress--linear.flare-progress--split {
@@ -83,9 +76,10 @@
   height: 100%;
   background: var(--flare-color-secondary-container);
   border-radius: var(--flare-progress-track-radius);
-  /* Leave a gap before the trailing stop indicator so the track does not
-     run under the dot. Reserves gap + dot-size on the right (0 when the dot is off). */
-  margin-right: calc(var(--flare-progress-gap) + var(--flare-progress-stop-size));
+  /* Leave a gap before the trailing stop indicator so the track does not run under the dot.
+     Reserves gap + dot-size at the inline end (0 when the dot is off), which is where the bar
+     finishes in either writing direction. */
+  margin-inline-end: calc(var(--flare-progress-gap) + var(--flare-progress-stop-size));
 }
 
 /* Colored scale zones (declared via <FlareZone Start End>): static [start,end] bands that annotate the
@@ -100,8 +94,8 @@
   position: absolute;
   top: 0;
   height: 100%;
-  left: var(--_z0, 0%);
-  right: calc(100% - var(--_z1, 0%));
+  inset-inline-start: var(--_z0, 0%);
+  inset-inline-end: calc(100% - var(--_z1, 0%));
   z-index: 1;
   background: var(--fc-main, var(--flare-color-primary));
   pointer-events: none;
@@ -118,7 +112,7 @@
   content: "";
   position: absolute;
   top: 50%;
-  right: var(--flare-progress-stop-inset);
+  inset-inline-end: var(--flare-progress-stop-inset);
   transform: translateY(-50%);
   width: var(--flare-progress-stop-size);
   height: var(--flare-progress-stop-size);
@@ -185,7 +179,7 @@
 /* Buffer variant */
 .flare-progress--buffer .flare-progress__track { background: transparent; }
 .flare-progress__buffer-fill {
-    position: absolute; left: 0; top: 0; height: 100%;
+    position: absolute; inset-inline-start: 0; top: 0; height: 100%;
     background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) var(--flare-progress-buffer-opacity), transparent);
     transition: width 0.3s ease;
 }

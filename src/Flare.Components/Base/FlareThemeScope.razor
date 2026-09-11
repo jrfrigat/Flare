@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @implements IDisposable
+@inject IThemeJsService ThemeJsService
 @using Flare.Abstractions
 @using Flare.Theming
 @using Flare.Abstractions.Tokens
@@ -44,6 +45,7 @@
     private string _cssClass = string.Empty;
     private IThemeService? _subscribed;
     private int _version;
+    private ITheme? _loadedTheme;
 
     protected override void OnInitialized()
     {
@@ -57,6 +59,26 @@
     }
 
     protected override void OnParametersSet() => Resolve();
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // A scoped theme may be one the provider never activated, so its own stylesheets and modules
+        // are not in the document yet. Both loaders are idempotent, so a scope of the active theme
+        // costs one resolved call each.
+        var theme = _theme;
+        if (ReferenceEquals(theme, _loadedTheme)) return;
+        _loadedTheme = theme;
+        try
+        {
+            foreach (var href in theme.StyleAssets)
+                await ThemeJsService.EnsureStylesheetAsync(href);
+            foreach (var src in theme.ScriptAssets)
+                await ThemeJsService.EnsureModuleAsync(src);
+        }
+        catch (JSDisconnectedException) { _loadedTheme = null; }
+        catch (JSException) { _loadedTheme = null; }
+    }
 
     private void Resolve()
     {
@@ -75,7 +97,7 @@
 
         _cssClass = string.Join(' ',
             Css.Classes.Theme.Root,
-            Css.Classes.Theme.ForTheme(_theme.Id),
+            Css.Classes.Theme.ForTheme(_theme.Id, _theme.StyleFamilyId),
             Css.Classes.Theme.ForPalette(_palette.Id),
             Css.Classes.Theme.Mode(_isDark),
             Class);

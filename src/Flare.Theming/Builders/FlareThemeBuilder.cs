@@ -24,6 +24,7 @@ public sealed class FlareThemeBuilder
     private DesignTokens _design;
     private readonly List<string> _styleAssets = [];
     private readonly List<string> _scriptAssets = [];
+    private string? _styleFamilyId;
     private string _defaultPaletteId = "default";
     private IReadOnlyDictionary<string, string>? _extendedDarkOverride;
     private IPaletteGenerator? _paletteGenerator;
@@ -132,6 +133,17 @@ public sealed class FlareThemeBuilder
         return this;
     }
 
+    /// <summary>
+    /// Points this theme at another theme's stylesheets. Use it when the theme only re-values tokens
+    /// and expects the named theme's CSS to style it; leave it unset when the theme ships its own.
+    /// </summary>
+    /// <param name="styleFamilyId">Id of the theme whose stylesheets style this one.</param>
+    public FlareThemeBuilder WithStyleFamily(string styleFamilyId)
+    {
+        _styleFamilyId = styleFamilyId;
+        return this;
+    }
+
     /// <summary>Adds a JavaScript module owned by this theme.</summary>
     public FlareThemeBuilder WithScriptAsset(string src)
     {
@@ -175,6 +187,7 @@ public sealed class FlareThemeBuilder
             _id, _displayName, _design,
             _styleAssets.ToArray(),
             _scriptAssets.ToArray(),
+            _styleFamilyId,
             _defaultPaletteId,
             _extendedDarkOverride,
             _paletteGenerator);
@@ -194,6 +207,7 @@ public sealed class FlareThemeBuilder
             _id, _displayName, _design,
             _styleAssets.ToArray(),
             _scriptAssets.ToArray(),
+            _styleFamilyId,
             _defaultPaletteId,
             _extendedDarkOverride,
             _paletteGenerator);
@@ -207,11 +221,12 @@ public sealed class FlareThemeBuilder
         public string DefaultPaletteId { get; }
         public IReadOnlyList<string> StyleAssets { get; }
         public IReadOnlyList<string> ScriptAssets { get; }
+        public string StyleFamilyId { get; }
         public IReadOnlyDictionary<string, string>? ExtendedDarkOverride { get; }
         public IPaletteGenerator? PaletteGenerator { get; }
 
         public BuiltTheme(string id, string displayName, DesignTokens design,
-            string[] styleAssets, string[] scriptAssets, string defaultPaletteId,
+            string[] styleAssets, string[] scriptAssets, string? styleFamilyId, string defaultPaletteId,
             IReadOnlyDictionary<string, string>? extendedDarkOverride,
             IPaletteGenerator? paletteGenerator)
         {
@@ -220,6 +235,7 @@ public sealed class FlareThemeBuilder
             Design = design;
             StyleAssets = styleAssets;
             ScriptAssets = scriptAssets;
+            StyleFamilyId = styleFamilyId ?? id;
             DefaultPaletteId = defaultPaletteId;
             ExtendedDarkOverride = extendedDarkOverride;
             PaletteGenerator = paletteGenerator;

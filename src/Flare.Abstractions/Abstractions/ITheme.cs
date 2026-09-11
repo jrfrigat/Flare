@@ -22,8 +22,20 @@ public interface ITheme
     IReadOnlyList<string> StyleAssets { get; }
 
     /// <summary>
-    /// Optional JavaScript modules that implement theme-owned rendering behavior. Modules are loaded
-    /// once when the theme becomes active and must scope their behavior to the theme's root class.
+    /// Id of the visual family whose stylesheets style this theme, emitted as a second root class
+    /// (<c>flare-theme-{StyleFamilyId}</c>) next to <see cref="Id"/>'s own. A theme that ships its
+    /// own stylesheets is its own family, which is why this defaults to <see cref="Id"/>. A theme
+    /// derived from another one only re-values tokens, so it keeps the base theme's family and the
+    /// base theme's CSS keeps applying to it; without this a derived theme would render unstyled,
+    /// because every theme stylesheet is scoped to the class its own id produces.
+    /// </summary>
+    string StyleFamilyId => Id;
+
+    /// <summary>
+    /// Optional JavaScript modules that implement theme-owned rendering behavior. Loaded once when
+    /// the theme becomes active, including when it becomes active only for the subtree of a
+    /// <c>FlareThemeScope</c>. A module must key its behavior off its own public CSS classes rather
+    /// than off a theme id, so that it also serves themes derived from this one.
     /// </summary>
     IReadOnlyList<string> ScriptAssets => [];
 

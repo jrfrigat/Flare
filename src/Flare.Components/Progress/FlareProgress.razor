@@ -31,7 +31,6 @@
                 </g>
             }
         </svg>
-        <span class="@Css.Classes.Progress.Decoration" aria-hidden="true"></span>
     </div>
 }
 else if (Variant == ProgressVariant.Buffer)
@@ -74,18 +73,12 @@ else
         @if (_indeterminate)
         {
             <div class="@Css.Classes.Progress.Remain"></div>
-            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateFirst}")">
-                <span class="@Css.Classes.Progress.Decoration" aria-hidden="true"></span>
-            </div>
-            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateSecond}")">
-                <span class="@Css.Classes.Progress.Decoration" aria-hidden="true"></span>
-            </div>
+            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateFirst}")"></div>
+            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateSecond}")"></div>
         }
         else
         {
-            <div class="@Css.Classes.Progress.Bar" style="width:@($"{_clampedValue:F0}%")">
-                <span class="@Css.Classes.Progress.Decoration" aria-hidden="true"></span>
-            </div>
+            <div class="@Css.Classes.Progress.Bar" style="width:@($"{_clampedValue:F0}%")"></div>
         }
         @if (!_indeterminate && !_hasZones)
         {

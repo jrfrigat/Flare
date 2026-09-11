@@ -60,6 +60,15 @@
   100% { transform: rotate(360deg); }
 }
 
+/* One wavelength per cycle, so the tiled wave travels without a seam at the loop. */
+@keyframes flare-md3e-wave-travel {
+  to {
+    background-position:
+      calc(-1 * var(--_wave-len)) 0,
+      calc(-1 * var(--_wave-len)) 100%;
+  }
+}
+
 @keyframes flare-progress-ring-progress {
   0% { --_ring-progress: 10; }
   16.6667% {
@@ -74,7 +83,11 @@
   100% { --_ring-progress: 10; }
 }
 
-@scope (.flare-theme-md3-expressive) {
+/* Wrapped in @scope like every other MD3 Expressive component sheet: these rules apply only inside
+   the nearest .flare-theme-md3-expressive root and stop at any nested .flare-root that is not one,
+   so a Fluent scope inside an Expressive app keeps Fluent's progress. The class is emitted for the
+   theme's style family, not its id, so a theme derived from this one is styled by these rules too. */
+@scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
   .flare-progress--linear.flare-progress--indeterminate {
     --_progress-mask-direction: right;
     background: transparent;
@@ -152,7 +165,7 @@
     position: absolute;
     z-index: 1;
     top: 50%;
-    right: var(--flare-progress-stop-inset);
+    inset-inline-end: var(--flare-progress-stop-inset);
     width: var(--flare-progress-stop-size);
     height: var(--flare-progress-stop-size);
     border-radius: 50%;
@@ -160,40 +173,59 @@
     transform: translateY(-50%);
   }
 
-  /* The public class is the complete opt-in contract. The module draws only inside the neutral
-     decoration hosts; until it is ready, the ordinary progress fallback remains visible. */
-  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__bar > .flare-progress__decoration {
-    display: block;
-  }
+  /* ---- Wave ---------------------------------------------------------------
+     The Wave class is the whole opt-in contract, and no theme id appears in it,
+     so a theme derived from this one gets the wave along with everything else.
+     The drawing is CSS: two rows of elliptical arcs tiled along the bar, one
+     row crests and one row troughs, meeting on the centre line.
+     ------------------------------------------------------------------------ */
 
-  .flare-progress--md3e-wave.flare-progress--linear:not(.flare-progress--indeterminate) .flare-progress__bar {
-    position: relative;
-  }
-
-  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear {
-    height: max(
-      var(--flare-progress-wavy-height),
-      calc(var(--_lin-height) + var(--flare-progress-wave-amplitude) + var(--flare-progress-wave-amplitude))
-    );
+  .flare-progress--md3e-wave.flare-progress--linear {
+    /* Amplitude is the authority and the height follows from it - one indicator
+       thickness plus a crest above and a trough below - so a wave can never be
+       told to be taller than the box drawing it. */
+    --_wave-amp: var(--flare-progress-wave-amplitude);
+    --_wave-len: var(--flare-progress-wave-length);
+    /* The band is centred on each arc and is exactly as thick as the flat
+       indicator it replaces, so wave and remaining track read as one line. */
+    --_wave-band:
+      #0000 calc(100% - var(--_lin-height) / 2),
+      var(--fc-main, var(--flare-color-primary)) calc(100% - var(--_lin-height) / 2)
+                                                calc(100% + var(--_lin-height) / 2),
+      #0000 calc(100% + var(--_lin-height) / 2);
+    height: calc(var(--_lin-height) + 2 * var(--_wave-amp));
     background: transparent;
   }
 
-  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear .flare-progress__bar {
-    top: 0;
+  .flare-progress--md3e-wave.flare-progress--linear.flare-progress--indeterminate {
+    --_wave-len: var(--flare-progress-indeterminate-wave-length);
+  }
+
+  /* One period per tile, crest in the left half and trough in the right. The
+     ellipse radii are a percentage across (so a longer wavelength stretches the
+     wave rather than thickening it) and the amplitude as a length down (so the
+     band always fits its half of the bar and never clips). */
+  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__bar {
     height: 100%;
-    overflow: hidden;
     border-radius: 0;
-    background: transparent;
-    color: var(--fc-main, var(--flare-color-primary));
-    transform: none;
+    background:
+      radial-gradient(25% var(--_wave-amp) at 25% 100%, var(--_wave-band)) 0 0,
+      radial-gradient(25% var(--_wave-amp) at 75% 0, var(--_wave-band)) 0 100%;
+    background-size: var(--_wave-len) 50%;
+    background-repeat: repeat-x;
+    animation: flare-md3e-wave-travel var(--flare-progress-wave-speed) linear infinite;
   }
 
-  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear .flare-progress__remain {
+  .flare-progress--md3e-wave.flare-progress--linear .flare-progress__remain {
     height: var(--_lin-height);
   }
 
-  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
+  /* The indeterminate segments are laid out flat and one indicator tall; a wave
+     needs the whole bar. */
+  .flare-progress--md3e-wave.flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
     inset-block: 0;
+    height: auto;
+    transform: none;
   }
 
   .flare-progress--circular.flare-progress--indeterminate {
@@ -224,34 +256,26 @@
     animation: none;
   }
 
+  /* The mask reshapes the ring the core already drew, which is why the value, the
+     gap and the indeterminate sweep need no wave-specific arithmetic here: they
+     are still the core's stroke-dasharray, just seen through a wavy window.
+     The core derives its radius as (size - width) / 2, so the width below is what
+     puts that radius on the mask's mean radius. One measurement in two places;
+     ProgressThemeExtensionTests checks that they still agree. */
   .flare-progress--md3e-wave.flare-progress--circular {
-    position: relative;
+    --_circ-width: calc(var(--_circ-size) * 0.18);
   }
 
-  .flare-progress--md3e-wave.flare-progress--circular > .flare-progress__decoration {
-    display: block;
-    z-index: 1;
-  }
-
-  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--circular .flare-progress__track {
-    stroke-linejoin: round;
-  }
-
-  .flare-progress--md3e-wave[data-flare-md3e-wave-ready].flare-progress--circular circle.flare-progress__indicator {
-    display: none;
-  }
-
-  .flare-progress--md3e-wave.flare-progress--circular.flare-progress--indeterminate > .flare-progress__decoration {
-    animation: flare-progress-wavy-rotate
-               var(--flare-progress-circular-indeterminate-rotation-duration)
-               linear infinite;
+  .flare-progress--md3e-wave.flare-progress--circular .flare-progress__svg {
+    -webkit-mask: var(--flare-progress-ring-wave-mask) center / 100% 100% no-repeat;
+    mask: var(--flare-progress-ring-wave-mask) center / 100% 100% no-repeat;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .flare-progress--linear.flare-progress--indeterminate,
     .flare-progress--circular.flare-progress--indeterminate,
     .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg,
-    .flare-progress--md3e-wave.flare-progress--circular.flare-progress--indeterminate > .flare-progress__decoration,
+    .flare-progress--md3e-wave.flare-progress--linear .flare-progress__bar,
     .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
     .flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
       animation: none;
