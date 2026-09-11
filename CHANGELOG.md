@@ -7,14 +7,40 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- **A theme derived from another one is now styled by it.** `ITheme.StyleFamilyId` names the visual
+  family whose stylesheets style a theme, and the root element carries it as a second class next to
+  the theme's own. It defaults to `Id`, and `Derive` keeps the base theme's family. Previously a
+  derived theme rendered unstyled: every theme stylesheet is scoped to the class its own id produces,
+  and a derived theme's id produces a class no stylesheet mentions. Set it through
+  `FlareThemeBuilder.WithStyleFamily`, the `styleFamilyId` argument of `Derive`, or by implementing
+  the property; a theme that ships its own `StyleAssets` needs none of these.
 - Themes can publish optional JavaScript modules through `ITheme.ScriptAssets`,
-  `FlareThemeBuilder.WithScriptAsset(s)` and `ITheme.Derive`. This lets a theme own visual renderers
-  such as the MD3 Expressive progress wave without adding theme-specific code to Flare components.
+  `FlareThemeBuilder.WithScriptAsset(s)` and `ITheme.Derive`. Modules load when the theme becomes
+  active, including when it is active only for a `FlareThemeScope` subtree. No built-in theme uses
+  this: a theme's own rendering belongs in its stylesheet wherever CSS can express it.
+- `ThemeJsonSerializer` now round-trips `ScriptAssets` and `StyleFamilyId`. A theme exported and
+  re-imported previously lost both. A file written before these existed still imports, as a theme
+  that is its own family with no modules.
 
 ### Changed
 
 - **BREAKING: Removed `FlareProgress.Wavy`.** Theme-specific progress styles now use CSS classes such
   as `Flare.Css.Classes.Md3e.Progress.Wave`, so themes can add variants without changing the core API.
+- **BREAKING: `ProgressTokens` no longer carries the wave.** `WavyEnabled`, `WavyHeight`,
+  `WaveLength`, `WaveAmplitude`, `WaveSpeed`, `RingWaves` and `RingWaveAmplitude` are gone, and
+  `LinearIndeterminateDuration`, `LinearIndeterminateEasing`,
+  `CircularIndeterminateRotationDuration` and `CircularIndeterminateProgressDuration` are new
+  `required` members. Every theme carried seven wave properties, including Material Design 3 and
+  Fluent UI 2, which have no wave. Migration: delete the seven, add the four; a theme derived from a
+  reference package with `with` needs no edit. The MD3 Expressive wave tokens now live in that
+  package, as `Flare.Css.Tokens.Md3e.Progress`.
+- **BREAKING: Removed `Css.Classes.Progress.Wavy` and `Css.Classes.Progress.Wave`.** The wave is a
+  theme's own class; use `Flare.Css.Classes.Md3e.Progress.Wave`. `Css.Classes.Progress.Decoration`,
+  added and never released, is gone with the markup hook it named.
+- **BREAKING: `ITheme.Derive` takes two more optional arguments** (`scriptAssets`, `styleFamilyId`).
+  Source-compatible; code compiled against 0.33.0 must be rebuilt.
+- `IThemeJsService` gained `EnsureModuleAsync` and a `SetThemeClassesAsync` overload that also takes
+  the style family. Both have default implementations, so an existing adapter still compiles.
 
 ### Fixed
 
@@ -23,10 +49,18 @@ All notable changes to Flare are documented here. This project adheres to
   arc and inactive track now follow the same six-second cycle without drifting apart.
 - `Flare.ApiDocGen` now refreshes both the Gallery API registry and `docs/api`; CI and release checks
   detect drift in either generated output.
-- Linear wavy `FlareProgress` keeps the theme's wavelength at every bar width and moves smoothly
-  across animation loops. Its wave repeats to fill wide bars without stretching the drawing.
-- Circular `FlareProgress` now keeps its stroke, gap and wave amplitude at the lengths set by the
-  theme when resized. CSS overrides, including `rem` and `calc()`, also update the ring geometry.
+- **The MD3 Expressive progress wave is drawn in CSS and needs no JavaScript.** It reads as a wave
+  rather than a row of half-circles, the circular wave's remaining track stays a plain ring as the
+  specification asks, and both waves keep the thickness and wave size of their size step. The wave
+  no longer depends on a module having been loaded, so a page renders the same whichever theme the
+  reader visited first.
+- Theme stylesheets no longer leak into a nested theme. MD3 Expressive's progress rules now stop at
+  the first nested root of another theme, so a Fluent UI 2 `FlareThemeScope` inside an Expressive app
+  keeps Fluent's progress. Every other Expressive sheet already did this.
+- `FlareThemeScope` now loads the stylesheets and modules of the theme it scopes to. A subtree themed
+  differently from the application previously got that theme's tokens but none of its component CSS.
+- The linear progress track, its trailing stop indicator, its zones and its buffer fill are placed
+  with logical properties, so they sit at the trailing end under RTL instead of the left edge.
 - `FlareChart.AnimateUpdates` now animates data updates when Blazor replaces the SVG drawing,
   including sparklines, bars and value labels. Updates during an animation continue from the
   visible position. Changes to the drawing's structure still take effect immediately.

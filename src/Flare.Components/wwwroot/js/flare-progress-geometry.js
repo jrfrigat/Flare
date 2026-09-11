@@ -42,6 +42,12 @@ function fit(state) {
     const arc = value === null ? 100 : Math.max(0, value - gapPercent);
     const rest = value === null ? 100 : Math.max(0, 100 - value - gapPercent);
 
+    // Publish the two numbers a theme cannot work out for itself: turning a CSS gap length into a
+    // share of the circumference needs the radius, which only exists once the browser has laid the
+    // ring out. Plain geometry, no opinion about how it should look.
+    svg.style.setProperty('--_ring-arc', number(arc));
+    svg.style.setProperty('--_ring-lead', number(gapPercent / 2));
+
     indicator.style.visibility = arc > 0 && radius > 0 ? '' : 'hidden';
     track.style.visibility = rest > 0 && radius > 0 ? '' : 'hidden';
     attribute(track, 'stroke-dasharray', value === null

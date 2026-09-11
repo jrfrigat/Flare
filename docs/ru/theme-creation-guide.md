@@ -118,6 +118,46 @@ public sealed class MyTheme : ITheme
 полный `DesignTokens` сами (задав каждую `required`-группу) - компилятор (CS9035) перечислит все
 пропущенные токены.
 
+### Переиспользование стилей другой темы
+
+Стили темы ограничены классом, который дает ее собственный id (`.flare-theme-md3-expressive`), поэтому
+тема, переиспользующая чужой CSS, обязана продолжать отзываться на этот класс. Для этого и нужен
+`StyleFamilyId`:
+
+```csharp
+public string StyleFamilyId => MaterialDesign3ExpressiveTheme.ThemeId;
+```
+
+Корневой элемент тогда несет оба класса: тема выбирается по своему id и оформляется стилями своего
+семейства. `Derive` делает это сам, сохраняя семейство базовой темы, пока вы не передадите
+`styleFamilyId` явно:
+
+```csharp
+// Переопределяет токены, сохраняет стили Expressive и оформляется ими.
+var brand = new MaterialDesign3ExpressiveTheme()
+    .Derive("md3-expressive-brand", design: d => d with { ... });
+
+// Приносит свои стили, поэтому сама себе семейство.
+var standalone = new MaterialDesign3ExpressiveTheme()
+    .Derive("acme", styleAssets: ["_content/Acme/css/acme.css"], styleFamilyId: "acme");
+```
+
+Если тема поставляет собственные `StyleAssets`, `StyleFamilyId` трогать не нужно: он и так равен `Id`.
+
+### JavaScript, которым владеет тема
+
+`ScriptAssets` перечисляет модули, которые тема загружает один раз при активации, в том числе когда
+она активна только для поддерева `FlareThemeScope`:
+
+```csharp
+public IReadOnlyList<string> ScriptAssets => ["_content/MyApp/js/my-renderer.js"];
+```
+
+Беритесь за него, только если CSS действительно не выражает нужный эффект - ни одной встроенной теме
+он не понадобился. Модуль обязан опираться на свои публичные CSS-классы, а не на id темы, иначе он не
+будет обслуживать производные от вашей темы; и он должен переносить загрузку в момент, когда его тема
+не активна, потому что модули никогда не выгружаются.
+
 ## Регистрация темы
 
 ```csharp

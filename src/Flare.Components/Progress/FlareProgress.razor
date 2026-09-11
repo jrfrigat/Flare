@@ -11,7 +11,7 @@
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{Style}")"
+         style="@($"{_colorTokens}{_ringArcVar}{Style}")"
          @attributes="AdditionalAttributes">
         @* The browser resolves CSS lengths and fits this fallback drawing to the actual viewport.
            Dash lengths stay in percent units at every size; CSS owns all animation. *@
@@ -133,6 +133,14 @@ else
     public FlareProgress() => _zones = new ZoneCollection(StateHasChanged);
 
     private bool _hasZones => _zones.Count > 0;
+
+    // The drawn arc as a share of the ring, for a theme that redraws the indicator and would
+    // otherwise have nothing to draw until flare-progress-geometry.js reports the measured
+    // geometry. That script narrows this by the gap, which needs a laid-out radius; this is the
+    // value alone, so the first paint is right to within the gap instead of showing a full ring.
+    private string _ringArcVar => _indeterminate
+        ? string.Empty
+        : $"--_ring-arc:{_clampedValue.ToString("F2", CultureInfo.InvariantCulture)};";
 
     // Indeterminate wins; zones force a continuous track; otherwise the default split track.
     private string _trackClass => _indeterminate
