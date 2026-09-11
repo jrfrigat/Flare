@@ -10,7 +10,7 @@
      MinDuration - once the spinner IS up it stays up long enough to be read. Without this, work that
                    takes 250ms produces a 40ms flicker, which reads as a glitch rather than as progress.
 
-   Composed from FlareOverlay and FlareProgress; the only thing here that is new is the timing. *@
+   Composed from FlareOverlay and FlareProgressCircular; the only thing here that is new is the timing. *@
 
 <div class="@BuildCssClass(_visible ? Css.Classes.Busy.Active : null)"
      aria-busy="@(_visible ? "true" : null)"

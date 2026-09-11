@@ -41,7 +41,7 @@ builder.Services.AddFlareTheme(new MaterialDesign3Theme());
 | Snackbar | `ISnackbarService` | injected; no markup |
 | Tooltips (plain, rich) | `FlareTooltip` | |
 | Badges | `FlareBadge` | `Standalone` for the bare pill |
-| Progress indicators (linear, circular) | `FlareProgress` | `Variant="ProgressVariant.Linear\|Circular"` |
+| Progress indicators (linear, circular) | `FlareProgressLinear`, `FlareProgressCircular` | |
 | Navigation bar | `FlareBottomNav` | |
 | Navigation rail | `FlareNavMenu` | `Mode="NavMenuMode.Rail"` |
 | Navigation drawer (standard, modal) | `FlareLayoutDrawer` | `Variant="DrawerVariant.Persistent\|Temporary\|Responsive"` |

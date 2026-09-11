@@ -41,7 +41,7 @@ also serves an M3 concept. Where M2 and M3 disagree about a name, the M2 name is
 | Snackbars | `ISnackbarService` | injected; no markup |
 | Tooltips | `FlareTooltip` | |
 | Badges | `FlareBadge` | |
-| Progress indicators (linear, circular) | `FlareProgress` | `Variant` |
+| Progress indicators (linear, circular) | `FlareProgressLinear`, `FlareProgressCircular` | |
 | Bottom navigation | `FlareBottomNav` | |
 | Navigation drawer (standard, modal, bottom) | `FlareLayoutDrawer` | `Variant` |
 | App bars: top | `FlareLayoutAppBar` | |

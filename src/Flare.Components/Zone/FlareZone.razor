@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareZoneBase
 
-@* A colored region on a SCALE host - FlareSlider or FlareProgress, whose scale is owned by the host
+@* A colored region on a SCALE host - FlareSlider or FlareProgressLinear, whose scale is owned by the host
    (Min..Max, or 0-100). A zone is an absolute [Start, End] range: thresholds read naturally as boundaries
    ("danger starts at 90") and each zone is independent of the others. Registers itself with the host and
    renders no DOM of its own - the host draws the band on the inactive track, under the active fill.

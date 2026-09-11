@@ -18,12 +18,6 @@
     <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
         @foreach (var step in _steps)
         {
-            <FlareProgressCircular Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" Size="@step.Size" data-testid="progress-wave-size" />
-        }
-    </FlareStack>
-    <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
-        @foreach (var step in _steps)
-        {
             <FlareProgressCircular Size="@step.Size" data-testid="progress-spin-size" />
         }
     </FlareStack>

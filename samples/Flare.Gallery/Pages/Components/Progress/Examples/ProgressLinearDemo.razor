@@ -1,11 +1,13 @@
+@* The bare linear indicator. Anything a theme adds on top of it - MD3 Expressive's wave, say -
+   is demonstrated in its own section, so this one shows what every theme gives you. *@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">25%</FlareText>
         <FlareProgressLinear Value="25" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">65%</FlareText>
-        <FlareProgressLinear Value="65" />
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@_value%</FlareText>
+        <FlareProgressLinear Value="@_value" data-testid="progress-linear" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">90%</FlareText>
@@ -13,27 +15,15 @@
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Indeterminate</FlareText>
-        <FlareProgressLinear />
-    </FlareStack>
-    <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Wavy - @GalleryStrings.Progress_Indeterminate</FlareText>
-        <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" data-testid="progress-linear-wave-indeterminate" />
+        <FlareProgressLinear data-testid="progress-linear-indeterminate" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Thick</FlareText>
         <FlareProgressLinear Value="50" Size="TrackSize.Xl" />
     </FlareStack>
-    <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Wavy - @_waveValue%</FlareText>
-        <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_waveValue" data-testid="progress-linear-wave" />
-    </FlareStack>
-    <FlareStack Gap="FlareSpacing.Small" Style="width:8rem;">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_NarrowWave</FlareText>
-        <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_waveValue" data-testid="progress-linear-narrow-wave" />
-    </FlareStack>
-    <FlareButton OnClick="@(() => _waveValue = _waveValue == 70 ? 25 : 70)" Style="align-self:flex-start;" data-testid="progress-linear-update">@GalleryStrings.Progress_UpdateValue</FlareButton>
+    <FlareButton OnClick="@(() => _value = _value == 70 ? 25 : 70)" Style="align-self:flex-start;" data-testid="progress-linear-update">@GalleryStrings.Progress_UpdateValue</FlareButton>
 </FlareStack>
 
 @code {
-    private double _waveValue = 70;
+    private double _value = 70;
 }

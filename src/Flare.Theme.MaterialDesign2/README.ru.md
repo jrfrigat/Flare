@@ -41,7 +41,7 @@ Flare, который обслуживает и понятие из M3. Там, 
 | Snackbars | `ISnackbarService` | внедряется через DI, разметки нет |
 | Подсказки | `FlareTooltip` | |
 | Значки | `FlareBadge` | |
-| Индикаторы прогресса (линейный, круговой) | `FlareProgress` | `Variant` |
+| Индикаторы прогресса (линейный, круговой) | `FlareProgressLinear`, `FlareProgressCircular` | |
 | Нижняя навигация | `FlareBottomNav` | |
 | Навигационная панель (standard, modal, bottom) | `FlareLayoutDrawer` | `Variant` |
 | Верхняя панель приложения | `FlareLayoutAppBar` | |

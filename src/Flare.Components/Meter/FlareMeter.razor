@@ -6,7 +6,7 @@
    breakdown (DB vs network), a quota bar (used vs free), a pass/fail/skip ribbon. Non-interactive.
    Parts are declared as <FlareMeterSegment Value="..."> children: a meter owns no external scale, so the
    parts themselves define the whole (unlike a slider/progress zone, which is a range on a host-owned
-   scale). The track's rounded ends and resting background reuse the FlareProgress linear-track tokens so a
+   scale). The track's rounded ends and resting background reuse the FlareProgressLinear track tokens so a
    meter and a progress bar line up visually. *@
 
 <div class="@BuildCssClass(_sizeClass, _emptyClass)" role="img" aria-label="@_ariaLabel" style="@Style" @attributes="AdditionalAttributes">

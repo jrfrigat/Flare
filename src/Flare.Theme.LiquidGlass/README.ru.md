@@ -38,7 +38,7 @@ Liquid Glass - это эстетика, а не каталог компонен�
 | Sidebar (NavigationSplitView) | `FlareLayoutDrawer` + `FlareNavMenu` | |
 | List / Section | `FlareList`, `FlareCard` | |
 | Disclosure group | `FlareAccordion`, `FlareCollapse` | |
-| Progress view / Gauge | `FlareProgress`, `FlareMeter` | |
+| Progress view / Gauge | `FlareProgressLinear`, `FlareProgressCircular`, `FlareMeter` | |
 | Badge | `FlareBadge` | |
 | Date picker | `FlareDatePicker` | |
 

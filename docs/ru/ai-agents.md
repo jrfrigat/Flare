@@ -241,7 +241,7 @@ inline/batch-редактирование, выделение, переупор�
 
 **Оверлеи и обратная связь:** `FlareDialog`, `FlareDialogProvider`, `FlareConfirmDialogProvider`,
 `FlareSnackbarProvider`, `FlareMessageBoxProvider`, `FlareTooltip`, `FlarePopover`, `FlareOverlay`,
-`FlareDrawer`, `FlareProgress`, `FlareAlert`, `FlareBusy`.
+`FlareDrawer`, `FlareProgressLinear`, `FlareProgressCircular`, `FlareAlert`, `FlareBusy`.
 
 **Раскладка и структура:** `FlareLayout` (+ `FlareLayoutAppBar`, `FlareLayoutContent`, `FlareLayoutDrawer`),
 `FlareContainer`, `FlareGrid`, `FlareCol`, `FlareStack`, `FlareSpacer`, `FlareDivider`, `FlareSplitter`,

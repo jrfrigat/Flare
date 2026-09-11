@@ -1,0 +1,55 @@
+@* Nothing here is a Flare parameter. The wave is drawn entirely by the MD3 Expressive package -
+   its stylesheet, its tokens - and switched on by the class that package exports. Under any other
+   theme these very same components render as the plain indicators above, which is the point: a
+   theme may add a look without the core learning the word "wave". *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
+        <FlareStack Gap="FlareSpacing.None">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@_value%</FlareText>
+            <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" data-testid="progress-linear-wave" />
+        </FlareStack>
+        <FlareStack Gap="FlareSpacing.None">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Indeterminate</FlareText>
+            <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" data-testid="progress-linear-wave-indeterminate" />
+        </FlareStack>
+        <FlareStack Gap="FlareSpacing.None">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Thick</FlareText>
+            <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" Size="TrackSize.Xl" />
+        </FlareStack>
+        <FlareStack Gap="FlareSpacing.Small" Style="width:8rem;">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_NarrowWave</FlareText>
+            <FlareProgressLinear Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" data-testid="progress-linear-narrow-wave" />
+        </FlareStack>
+    </FlareStack>
+
+    <FlareStack Row Gap="FlareSpacing.Medium" Wrap Align="FlareAlignItems.Center">
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            <FlareProgressCircular Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" data-testid="progress-circular-wave" />
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@_value%</FlareText>
+        </FlareStack>
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            <FlareProgressCircular Class="@Flare.Css.Classes.Md3e.Progress.Wave" data-testid="progress-circular-wave-indeterminate" />
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_Indeterminate</FlareText>
+        </FlareStack>
+    </FlareStack>
+
+    @* The wave follows the same size ramp the plain indicators do: one step, both variants. *@
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_WaveSizes</FlareText>
+    <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
+        @foreach (var step in _steps)
+        {
+            <FlareProgressCircular Class="@Flare.Css.Classes.Md3e.Progress.Wave" Value="@_value" Size="@step" data-testid="progress-wave-size" />
+        }
+    </FlareStack>
+
+    <FlareButton OnClick="@(() => _value = _value == 70 ? 25 : 70)" Style="align-self:flex-start;" data-testid="progress-wave-update">@GalleryStrings.Progress_UpdateValue</FlareButton>
+</FlareStack>
+
+@code {
+    private double _value = 70;
+
+    private readonly TrackSize[] _steps =
+    [
+        TrackSize.Xs, TrackSize.Sm, TrackSize.Md, TrackSize.Lg, TrackSize.Xl,
+    ];
+}

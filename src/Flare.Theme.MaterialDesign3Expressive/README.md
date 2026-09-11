@@ -49,7 +49,7 @@ this theme does that the baseline one does not.
 | Snackbar | `ISnackbarService` | injected; no markup |
 | Tooltips (plain, rich) | `FlareTooltip` | |
 | Badges | `FlareBadge` | `Standalone` for the bare pill |
-| Progress indicators (linear, circular) | `FlareProgress` | `Variant="ProgressVariant.Linear\|Circular"`; add `Class="@Flare.Css.Classes.Md3e.Progress.Wave"` for the Expressive wave |
+| Progress indicators (linear, circular) | `FlareProgressLinear`, `FlareProgressCircular` | add `Class="@Flare.Css.Classes.Md3e.Progress.Wave"` for the Expressive wave |
 | Navigation bar | `FlareBottomNav` | |
 | Navigation rail | `FlareNavMenu` | `Mode="NavMenuMode.Rail"` |
 | Navigation drawer (standard, modal) | `FlareLayoutDrawer` | `Variant="DrawerVariant.Persistent\|Temporary\|Responsive"` |

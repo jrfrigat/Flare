@@ -14,7 +14,7 @@
    target exists for: the panel belongs to the layout, so this page has no reference to it. *@
 <FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
     <FlareStack Gap="FlareSpacing.Medium">
-        @* FlareProgress reads a 0..100 percentage, so the 0..1 progress is scaled here. *@
+        @* FlareProgressLinear reads a 0..100 percentage, so the 0..1 progress is scaled here. *@
         <FlareProgressLinear Value="@(_progress * 100)" />
         <FlareStack Row Wrap Gap="FlareSpacing.Large">
             <FlareText Typo="TypographyScale.BodyMedium">

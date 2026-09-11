@@ -11,7 +11,7 @@
      <FlareThemeScope Theme="md3-expressive" Palette="violet" Mode="ThemeMode.Dark"> ... </FlareThemeScope>
    Works with the ClassToggle delivery: the wrapper carries the theme/palette/mode classes so the
    static token rules re-assert for the subtree, and a scoped IThemeService is cascaded so components
-   that read the theme in C# (e.g. FlareProgress) also see the scoped values.
+   that read the theme in C# (e.g. FlareProgressCircular) also see the scoped values.
 *@
 <CascadingValue Value="@_scoped" IsFixed="false">
     <CascadingValue Value="@_snapshot" IsFixed="false">
