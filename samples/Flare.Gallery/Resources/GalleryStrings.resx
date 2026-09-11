@@ -1759,7 +1759,7 @@
     <value>Wave (supplied by the theme)</value>
   </data>
   <data name="Progress_WaveDescription" xml:space="preserve">
-    <value>A theme may add a look of its own without the core knowing about it. MD3 Expressive draws this wave from its own stylesheet and switches it on through the class it exports, Flare.Css.Classes.Md3e.Progress.Wave - there is no wave parameter in Flare. Under another theme the very same markup renders the plain indicators above.</value>
+    <value>A theme may add a look of its own without the core knowing about it. MD3 Expressive draws this wave from its own stylesheet and switches it on through the class it exports, Flare.Css.Classes.Md3e.Progress.Wavy - there is no wave parameter in Flare. Under another theme the very same markup renders the plain indicators above.</value>
   </data>
   <data name="Progress_WaveSizes" xml:space="preserve">
     <value>The wave follows the shared size ramp</value>

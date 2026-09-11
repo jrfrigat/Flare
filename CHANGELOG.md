@@ -38,7 +38,7 @@ All notable changes to Flare are documented here. This project adheres to
   on a shared `FlareProgressBase`. CSS class names, tokens and the theme's wave class are untouched,
   so stylesheets and themes need no edit.
 - **BREAKING: Removed `FlareProgress.Wavy`.** Theme-specific progress styles now use CSS classes such
-  as `Flare.Css.Classes.Md3e.Progress.Wave`, so themes can add variants without changing the core API.
+  as `Flare.Css.Classes.Md3e.Progress.Wavy`, so themes can add variants without changing the core API.
 - **BREAKING: `ProgressTokens` no longer carries the wave.** `WavyEnabled`, `WavyHeight`,
   `WaveLength`, `WaveAmplitude`, `WaveSpeed`, `RingWaves` and `RingWaveAmplitude` are gone, and
   `LinearIndeterminateDuration`, `LinearIndeterminateEasing`,
@@ -48,7 +48,7 @@ All notable changes to Flare are documented here. This project adheres to
   reference package with `with` needs no edit. The MD3 Expressive wave tokens now live in that
   package, as `Flare.Css.Tokens.Md3e.Progress`.
 - **BREAKING: Removed `Css.Classes.Progress.Wavy` and `Css.Classes.Progress.Wave`.** The wave is a
-  theme's own class; use `Flare.Css.Classes.Md3e.Progress.Wave`. `Css.Classes.Progress.Decoration`,
+  theme's own class; use `Flare.Css.Classes.Md3e.Progress.Wavy`. `Css.Classes.Progress.Decoration`,
   added and never released, is gone with the markup hook it named.
 - **BREAKING: `ITheme.Derive` takes two more optional arguments** (`scriptAssets`, `styleFamilyId`).
   Source-compatible; code compiled against 0.33.0 must be rebuilt.

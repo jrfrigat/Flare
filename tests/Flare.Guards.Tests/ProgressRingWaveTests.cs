@@ -93,7 +93,7 @@ public sealed class ProgressRingWaveTests
         var css = File.ReadAllText(Path.Combine(FindRepoRoot(),
             "src", "Flare.Theme.MaterialDesign3Expressive", "wwwroot", "css", "components", "progress.css"));
         var match = Regex.Match(css,
-            @"\.flare-progress--md3e-wave\.flare-progress--" + step + @"\s*\{(.*?)\}",
+            @"\.flare-progress--md3e-wavy\.flare-progress--" + step + @"\s*\{(.*?)\}",
             RegexOptions.Singleline);
         Assert.True(match.Success, $"no wave rule for the {step} size step in progress.css");
         return match.Groups[1].Value;

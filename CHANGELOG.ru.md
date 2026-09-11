@@ -40,7 +40,7 @@
   `FlareProgressBase`. Имена CSS-классов, токены и wave-класс темы не тронуты, поэтому стили и темы
   править не нужно.
 - **ЛОМАЮЩЕЕ: удален `FlareProgress.Wavy`.** Тематические варианты progress теперь включаются CSS-классами,
-  например `Flare.Css.Classes.Md3e.Progress.Wave`, поэтому темы могут добавлять варианты без изменения API ядра.
+  например `Flare.Css.Classes.Md3e.Progress.Wavy`, поэтому темы могут добавлять варианты без изменения API ядра.
 - **ЛОМАЮЩЕЕ: `ProgressTokens` больше не несет волну.** Удалены `WavyEnabled`, `WavyHeight`,
   `WaveLength`, `WaveAmplitude`, `WaveSpeed`, `RingWaves` и `RingWaveAmplitude`; добавлены
   обязательные `LinearIndeterminateDuration`, `LinearIndeterminateEasing`,
@@ -49,7 +49,7 @@
   Миграция: удалите семь, добавьте четыре; теме, выведенной из reference-пакета через `with`, править
   нечего. Wave-токены MD3 Expressive переехали в этот пакет, в `Flare.Css.Tokens.Md3e.Progress`.
 - **ЛОМАЮЩЕЕ: удалены `Css.Classes.Progress.Wavy` и `Css.Classes.Progress.Wave`.** Волна - класс самой
-  темы, используйте `Flare.Css.Classes.Md3e.Progress.Wave`. Вместе с разметочным хуком удален и
+  темы, используйте `Flare.Css.Classes.Md3e.Progress.Wavy`. Вместе с разметочным хуком удален и
   `Css.Classes.Progress.Decoration`, добавленный, но ни разу не выпущенный.
 - **ЛОМАЮЩЕЕ: у `ITheme.Derive` появились два необязательных аргумента** (`scriptAssets`,
   `styleFamilyId`). Исходный код совместим; собранный против 0.33.0 требует пересборки.

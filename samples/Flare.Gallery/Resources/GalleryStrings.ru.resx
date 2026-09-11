@@ -1759,7 +1759,7 @@
     <value>Волна (дает тема)</value>
   </data>
   <data name="Progress_WaveDescription" xml:space="preserve">
-    <value>Тема может добавить собственный вид, и ядро об этом не знает. MD3 Expressive рисует эту волну своими стилями и включает ее классом, который сама же экспортирует - Flare.Css.Classes.Md3e.Progress.Wave; параметра волны в Flare нет. Под другой темой эта же разметка отрисует обычные индикаторы выше.</value>
+    <value>Тема может добавить собственный вид, и ядро об этом не знает. MD3 Expressive рисует эту волну своими стилями и включает ее классом, который сама же экспортирует - Flare.Css.Classes.Md3e.Progress.Wavy; параметра волны в Flare нет. Под другой темой эта же разметка отрисует обычные индикаторы выше.</value>
   </data>
   <data name="Progress_WaveSizes" xml:space="preserve">
     <value>Волна идет по общей линейке размеров</value>
