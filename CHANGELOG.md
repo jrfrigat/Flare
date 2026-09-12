@@ -3,11 +3,23 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.35.0] - Unreleased
+## [0.35.0] - 2026-09-12
 
 ### Changed
 
-- **The boot script no longer assumes a theme.** `flare-bootstrap.js` used to fall back to one
+- **BREAKING: `MaterialDesignTokens` is now `MaterialDesign3Tokens`.** The public token base in
+  `Flare.Theme.MaterialDesign3.Tokens` carries Material 3's opinions - tonal colour roles, pill
+  shapes, surface-tint elevation - and its old name said only "Material", which is what let a
+  Material 2 theme build on it. A custom theme that derives from it renames the reference; no value
+  it exposes changed.
+- **Breaking for custom themes: `TabsTokens` and `ChipTokens` have five new `required` properties.**
+  `TabsTokens.TabHeight` / `TabMinWidth` / `TabPaddingInline` and `ChipTokens.FilledBg` /
+  `ElevatedBg`. Tab height, minimum width and inline padding were literals in the stylesheet, and
+  the chip carried only a radius and a height - so a language whose tab strip is a fixed 48dp, or
+  whose chip is a grey pill rather than a tinted surface, could not say so. A theme outside this
+  repository must state all five. Every built-in theme keeps the look it had.
+- **Breaking for applications that relied on the boot script's default theme.** `flare-bootstrap.js`
+  used to fall back to one
   specific theme and palette when a visitor had nothing saved yet, so every application on any other
   theme painted its whole first frame in the wrong one - and in the wrong colour mode - before .NET
   booted and corrected it. That is the flash the script exists to prevent, and guessing made it
@@ -37,7 +49,8 @@ All notable changes to Flare are documented here. This project adheres to
   which is not the browser: they were 190 KB of the 525 KB bundle and, compressed, 55 KB of the
   89 KB that crossed the network. The bundle is now **339 KB, 34 KB over the wire**, with the same
   2067 rules. The authored files keep every comment.
-- **The package no longer ships the individual component stylesheets.** They are authored sources
+- **Breaking for applications linking a component stylesheet directly: the package no longer ships
+  the individual component stylesheets.** They are authored sources
   that the build concatenates; nothing fetched them once the bundle existed, and shipping them put
   107 files plus their gzip and brotli variants into the package and into every consumer's publish
   output. An application linking one of them directly - none is documented - should link
@@ -57,19 +70,17 @@ All notable changes to Flare are documented here. This project adheres to
   or 8dp, because the shared six-step scale has no room for those values. The selection controls
   followed: a checkbox is 24dp rather than Material 3's 18dp, and the switch is a 20dp thumb riding
   over a 34x14 rail rather than a thumb tucked inside a 52x32 pill. A navigation drawer is 256dp
-  wide, not 360dp, and a card picked up by the pointer rises to 8dp, not 4dp.
+  wide, not 360dp, and a card picked up by the pointer rises to 8dp, not 4dp. List rows shrank to
+  48dp for one line and 64dp for two - Material 3 is what grew them to 56 and 72 - taken from the
+  implementation, because the guidelines publish no list measurement at all. The dense pair is left
+  alone and marked unsourced: neither the guidelines nor the implementation names a dense row.
 - **The Material Design 2 theme no longer builds on Material 3 tokens.** It was written as a set of
   overrides on the Material 3 baseline, so every value nobody thought to override arrived as Material
   3 - which is how Material 3 colours, shapes, elevations and control geometry ended up in a Material
   2 application. It now states all of its own tokens, the way the Fluent and Material 3 themes do, and
-  a guard refuses a reference from one theme package to another. `MaterialDesignTokens` is renamed
-  `MaterialDesign3Tokens`, which is what it always was; the name is what let Material 2 sit on it.
-  No token value changed in this move - 829 of them carried across untouched.
-- **A theme can now size a tab and colour a chip.** Tab height, minimum width and inline padding
-  were literals in the stylesheet, and the chip carried only a radius and a height - so a language
-  whose tab strip is a fixed 48dp, or whose chip is a grey pill rather than a tinted surface, could
-  not say so. `TabsTokens.TabHeight` / `TabMinWidth` / `TabPaddingInline` and `ChipTokens.FilledBg` /
-  `ElevatedBg` fill that in. Every built-in theme keeps the look it had.
+  a guard refuses a reference from one theme package to another. The base it used to sit on is
+  renamed in the same move, above. No token value changed here - 829 of them carried across
+  untouched.
 - **A chip is as tall as its height token says.** It stood 34px against a token reading 32, because
   the label plus the vertical padding plus the border beat the minimum the token set - so the token
   named a floor nothing ever reached. The vertical padding is gone; the label is centred by the
