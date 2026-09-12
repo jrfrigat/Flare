@@ -46,7 +46,7 @@
     /// leaves it fully controlled. All modes still drive <see cref="Open"/>/<see cref="OpenChanged"/>.</summary>
     [Parameter] public PopoverTrigger       Trigger       { get; set; } = PopoverTrigger.Manual;
     /// <summary>Position of the panel relative to the anchor element.</summary>
-    [Parameter] public PopoverPlacement     Placement     { get; set; } = PopoverPlacement.BottomStart;
+    [Parameter] public Placement     Placement     { get; set; } = Placement.BottomStart;
     /// <summary>CSS max-width applied to the popover panel.</summary>
     [Parameter] public string?              MaxWidth      { get; set; }
     /// <summary>CSS min-width applied to the popover panel.</summary>
@@ -79,17 +79,17 @@
 
     private string _placementClass => Placement switch
     {
-        PopoverPlacement.Top         => Css.Classes.Popover.PaperTop,
-        PopoverPlacement.TopStart    => Css.Classes.Popover.PaperTopStart,
-        PopoverPlacement.TopEnd      => Css.Classes.Popover.PaperTopEnd,
-        PopoverPlacement.Bottom      => Css.Classes.Popover.PaperBottom,
-        PopoverPlacement.BottomEnd   => Css.Classes.Popover.PaperBottomEnd,
-        PopoverPlacement.Left        => Css.Classes.Popover.PaperLeft,
-        PopoverPlacement.LeftStart   => Css.Classes.Popover.PaperLeftStart,
-        PopoverPlacement.LeftEnd     => Css.Classes.Popover.PaperLeftEnd,
-        PopoverPlacement.Right       => Css.Classes.Popover.PaperRight,
-        PopoverPlacement.RightStart  => Css.Classes.Popover.PaperRightStart,
-        PopoverPlacement.RightEnd    => Css.Classes.Popover.PaperRightEnd,
+        Placement.Top         => Css.Classes.Popover.PaperTop,
+        Placement.TopStart    => Css.Classes.Popover.PaperTopStart,
+        Placement.TopEnd      => Css.Classes.Popover.PaperTopEnd,
+        Placement.Bottom      => Css.Classes.Popover.PaperBottom,
+        Placement.BottomEnd   => Css.Classes.Popover.PaperBottomEnd,
+        Placement.Left        => Css.Classes.Popover.PaperLeft,
+        Placement.LeftStart   => Css.Classes.Popover.PaperLeftStart,
+        Placement.LeftEnd     => Css.Classes.Popover.PaperLeftEnd,
+        Placement.Right       => Css.Classes.Popover.PaperRight,
+        Placement.RightStart  => Css.Classes.Popover.PaperRightStart,
+        Placement.RightEnd    => Css.Classes.Popover.PaperRightEnd,
         _                            => Css.Classes.Popover.PaperBottomStart,
     };
 
@@ -100,17 +100,17 @@
     // half travels in the placement string.
     private string _placement => Placement switch
     {
-        PopoverPlacement.Top         => PanelPlacement.Top,
-        PopoverPlacement.TopStart    => PanelPlacement.TopStart,
-        PopoverPlacement.TopEnd      => PanelPlacement.TopEnd,
-        PopoverPlacement.Bottom      => PanelPlacement.Bottom,
-        PopoverPlacement.BottomEnd   => PanelPlacement.BottomEnd,
-        PopoverPlacement.Left        => PanelPlacement.Left,
-        PopoverPlacement.LeftStart   => PanelPlacement.LeftStart,
-        PopoverPlacement.LeftEnd     => PanelPlacement.LeftEnd,
-        PopoverPlacement.Right       => PanelPlacement.Right,
-        PopoverPlacement.RightStart  => PanelPlacement.RightStart,
-        PopoverPlacement.RightEnd    => PanelPlacement.RightEnd,
+        Placement.Top         => PanelPlacement.Top,
+        Placement.TopStart    => PanelPlacement.TopStart,
+        Placement.TopEnd      => PanelPlacement.TopEnd,
+        Placement.Bottom      => PanelPlacement.Bottom,
+        Placement.BottomEnd   => PanelPlacement.BottomEnd,
+        Placement.Left        => PanelPlacement.Left,
+        Placement.LeftStart   => PanelPlacement.LeftStart,
+        Placement.LeftEnd     => PanelPlacement.LeftEnd,
+        Placement.Right       => PanelPlacement.Right,
+        Placement.RightStart  => PanelPlacement.RightStart,
+        Placement.RightEnd    => PanelPlacement.RightEnd,
         _                            => PanelPlacement.BottomStart,
     };
 

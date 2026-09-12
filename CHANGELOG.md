@@ -20,6 +20,19 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **BREAKING: `PopoverPlacement` is now `Placement`, and `FlareFloatingActionMenu.Direction` is now
+  `Placement` of that same type.** A speed dial could say which side of its FAB the actions open on,
+  but not how they line up along it - they were always centred, so a FAB pinned to a screen corner
+  opened a menu that hung half its width past the edge the button sat against. That is exactly what
+  a popover already expressed, with a side and an alignment, so the speed dial takes the popover's
+  type instead of growing a second one: `TopStart` lines up the left edges, `TopEnd` the right, a
+  bare `Top` centres as before, and the left and right sides line up top or bottom edges the same
+  way. The type drops its popover prefix because it no longer belongs to one component. Replace
+  `PopoverPlacement.X` with `Placement.X`, and `Direction="FabMenuDirection.Up"` with
+  `Placement="Placement.Top"` (`Down`, `Left`, `Right` become `Bottom`, `Left`, `Right`). Measured
+  on the gallery with real clicks: the list's left edge meets the button's at `TopStart`, the
+  centres meet at `Top`, the right edges at `TopEnd`.
+
 - **Breaking for custom themes: `ChipTokens` has ten new `required` properties.**
   `IconSizeXs..Xl` sizes a chip's leading and trailing icons and `AvatarSizeXs..Xl` its avatar. The
   chip never had an icon size, so the glyph fell back to the icon component's own default and drew

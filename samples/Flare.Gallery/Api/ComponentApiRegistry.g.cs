@@ -2877,7 +2877,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The FlareFloatingActionMenuItem entries.", null, false, false, false, @"FlareFloatingActionMenu"),
-                new ApiParameterInfo(@"Direction", @"FabMenuDirection", @"FabMenuDirection.Up", @"Direction the menu expands from the FAB.", null, false, false, false, @"FlareFloatingActionMenu"),
+                new ApiParameterInfo(@"Placement", @"Placement", @"Placement.Top", @"Which side of the FAB the actions open on, and how they line up along it - the same Placement a FlarePopover takes. A bare side centres the actions on the FAB; Start and End line up an edge instead, which is what keeps a speed dial pinned to a screen corner from hanging half off the screen.", null, false, false, false, @"FlareFloatingActionMenu"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -4601,7 +4601,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Offset", @"int", @"8", @"Offset in pixels between anchor and popover.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the popover panel is visible.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback raised when the open state should change.", null, false, true, false, @"FlarePopover"),
-                new ApiParameterInfo(@"Placement", @"PopoverPlacement", @"PopoverPlacement.BottomStart", @"Position of the panel relative to the anchor element.", null, false, false, false, @"FlarePopover"),
+                new ApiParameterInfo(@"Placement", @"Placement", @"Placement.BottomStart", @"Position of the panel relative to the anchor element.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Trigger", @"PopoverTrigger", @"PopoverTrigger.Manual", @"How the popover opens. Click toggles it from the anchor, Hover opens on hover, and Manual (default) leaves it fully controlled. All modes still drive Open/OpenChanged.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -7992,24 +7992,6 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
-        e[@"FabMenuDirection"] = new ApiEnumInfo(
-            @"FabMenuDirection",
-            @"Flare.Components.FabMenuDirection",
-            @"Flare.Components",
-            @"Direction a FlareFloatingActionMenu expands from its FAB.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Up", @"0", @"Up."),
-                new ApiEnumMember(@"Down", @"1", @"Down."),
-                new ApiEnumMember(@"Left", @"2", @"Left."),
-                new ApiEnumMember(@"Right", @"3", @"Right."),
-            },
-            new string[]
-            {
-                @"FlareFloatingActionMenu",
-            });
-
         e[@"FabPosition"] = new ApiEnumInfo(
             @"FabPosition",
             @"Flare.Components.FabPosition",
@@ -8672,29 +8654,30 @@ public static class ComponentApiRegistry
                 @"FlareDatePicker",
             });
 
-        e[@"PopoverPlacement"] = new ApiEnumInfo(
-            @"PopoverPlacement",
-            @"Flare.Components.PopoverPlacement",
+        e[@"Placement"] = new ApiEnumInfo(
+            @"Placement",
+            @"Flare.Components.Placement",
             @"Flare.Components",
-            @"Side and alignment a FlarePopover is placed relative to its anchor.",
-            null,
+            @"Where something sits relative to what it hangs off: a side, and how it lines up along that side. Shared by every component that places a surface next to an anchor, so a popover and a speed-dial menu read the same words and mean the same thing.",
+            @"A bare side (Top) centres on the anchor. Start and End name the edge that lines up: on a top or bottom side, the left or right edges; on a left or right side, the top or bottom edges. These are the same values the anchored-panel engine uses (PanelPlacement), so a component that goes through the engine maps them one to one.",
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Top", @"0", @"Top."),
-                new ApiEnumMember(@"TopStart", @"1", @"Top start."),
-                new ApiEnumMember(@"TopEnd", @"2", @"Top end."),
-                new ApiEnumMember(@"Bottom", @"3", @"Bottom."),
-                new ApiEnumMember(@"BottomStart", @"4", @"Bottom start."),
-                new ApiEnumMember(@"BottomEnd", @"5", @"Bottom end."),
-                new ApiEnumMember(@"Left", @"6", @"Left."),
-                new ApiEnumMember(@"LeftStart", @"7", @"Left start."),
-                new ApiEnumMember(@"LeftEnd", @"8", @"Left end."),
-                new ApiEnumMember(@"Right", @"9", @"Right."),
-                new ApiEnumMember(@"RightStart", @"10", @"Right start."),
-                new ApiEnumMember(@"RightEnd", @"11", @"Right end."),
+                new ApiEnumMember(@"Top", @"0", @"Above, centred on the anchor."),
+                new ApiEnumMember(@"TopStart", @"1", @"Above, left edges aligned."),
+                new ApiEnumMember(@"TopEnd", @"2", @"Above, right edges aligned."),
+                new ApiEnumMember(@"Bottom", @"3", @"Below, centred on the anchor."),
+                new ApiEnumMember(@"BottomStart", @"4", @"Below, left edges aligned."),
+                new ApiEnumMember(@"BottomEnd", @"5", @"Below, right edges aligned."),
+                new ApiEnumMember(@"Left", @"6", @"To the left, centred on the anchor."),
+                new ApiEnumMember(@"LeftStart", @"7", @"To the left, top edges aligned."),
+                new ApiEnumMember(@"LeftEnd", @"8", @"To the left, bottom edges aligned."),
+                new ApiEnumMember(@"Right", @"9", @"To the right, centred on the anchor."),
+                new ApiEnumMember(@"RightStart", @"10", @"To the right, top edges aligned."),
+                new ApiEnumMember(@"RightEnd", @"11", @"To the right, bottom edges aligned."),
             },
             new string[]
             {
+                @"FlareFloatingActionMenu",
                 @"FlarePopover",
             });
 

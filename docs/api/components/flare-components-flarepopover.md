@@ -20,7 +20,7 @@
 | `Offset` | `int` | `8` | Parameter |  | Offset in pixels between anchor and popover. |
 | `Open` | `bool` | `false` | Parameter |  | Controls whether the popover panel is visible. |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the open state should change. |
-| `Placement` | `PopoverPlacement` | `PopoverPlacement.BottomStart` | Parameter |  | Position of the panel relative to the anchor element. |
+| `Placement` | `Placement` | `Placement.BottomStart` | Parameter |  | Position of the panel relative to the anchor element. |
 | `Trigger` | `PopoverTrigger` | `PopoverTrigger.Manual` | Parameter |  | How the popover opens. Click toggles it from the anchor, Hover opens on hover, and Manual (default) leaves it fully controlled. All modes still drive Open/OpenChanged. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

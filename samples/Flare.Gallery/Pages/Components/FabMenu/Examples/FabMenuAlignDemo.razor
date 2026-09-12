@@ -1,0 +1,34 @@
+@inject ISnackbarService Snackbar
+
+@* Same side, three alignments. A FAB pinned to a screen corner wants Start or End: centred, a speed dial
+   of labelled actions hangs half its width past the edge the button sits against. The words are
+   Placement's - the same a FlarePopover takes - so the two read alike. *@
+<FlareStack Row Gap="FlareSpacing.XLarge" Wrap Align="FlareAlignItems.End" Justify="FlareJustifyContent.SpaceAround"
+            Style="min-height:14rem;padding:9rem 1rem 1rem;">
+    @foreach (var (placement, caption) in _cases)
+    {
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            <FlareFloatingActionButton Position="FabPosition.Static" AriaLabel="@caption" data-testid="@($"fab-align-{placement}")">
+                <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></IconContent>
+                <ChildContent>
+                    <FlareFloatingActionMenu Placement="placement">
+                        <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" Label="@GalleryStrings.FabMenu_ActionEdit"
+                                                     OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionEdit))" />
+                        <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Share" Label="@GalleryStrings.FabMenu_ActionShare"
+                                                     OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionShare))" />
+                    </FlareFloatingActionMenu>
+                </ChildContent>
+            </FlareFloatingActionButton>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@caption</FlareText>
+        </FlareStack>
+    }
+</FlareStack>
+
+@code {
+    private static (Placement, string)[] _cases =>
+    [
+        (Placement.TopStart, GalleryStrings.FabMenu_AlignStart),
+        (Placement.Top,      GalleryStrings.FabMenu_AlignCenter),
+        (Placement.TopEnd,   GalleryStrings.FabMenu_AlignEnd),
+    ];
+}

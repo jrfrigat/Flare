@@ -1,6 +1,6 @@
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Start">
     @* Hover trigger with a short open delay (not modal - no scrim). *@
-    <FlarePopover @bind-Open="_hover" Trigger="PopoverTrigger.Hover" Delay="150" Placement="PopoverPlacement.Bottom" Arrow="true">
+    <FlarePopover @bind-Open="_hover" Trigger="PopoverTrigger.Hover" Delay="150" Placement="Placement.Bottom" Arrow="true">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Popover_HoverAnchor</FlareButton>
         </AnchorContent>
@@ -12,7 +12,7 @@
     </FlarePopover>
 
     @* MatchAnchorWidth sizes the panel to the trigger, like a dropdown. *@
-    <FlarePopover @bind-Open="_width" Trigger="PopoverTrigger.Click" MatchAnchorWidth="true" Placement="PopoverPlacement.BottomStart">
+    <FlarePopover @bind-Open="_width" Trigger="PopoverTrigger.Click" MatchAnchorWidth="true" Placement="Placement.BottomStart">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Filled" Style="min-width:16rem;" OnClick="@(() => _width = !_width)">@GalleryStrings.Popover_WidthAnchor</FlareButton>
         </AnchorContent>
@@ -25,7 +25,7 @@
     </FlarePopover>
 
     @* MaxHeight caps the panel so long content scrolls inside it. *@
-    <FlarePopover @bind-Open="_scroll" Trigger="PopoverTrigger.Click" MaxHeight="12rem" Placement="PopoverPlacement.BottomStart">
+    <FlarePopover @bind-Open="_scroll" Trigger="PopoverTrigger.Click" MaxHeight="12rem" Placement="Placement.BottomStart">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => _scroll = !_scroll)">@GalleryStrings.Popover_ScrollAnchor</FlareButton>
         </AnchorContent>

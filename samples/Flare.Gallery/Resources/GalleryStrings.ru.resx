@@ -3367,4 +3367,25 @@
   <data name="Progress_Thick" xml:space="preserve"><value>Толстая полоса (Xl)</value></data>
   <data name="Progress_Wavy" xml:space="preserve"><value>Волнистый прогресс</value></data>
   <data name="Progress_NarrowWave" xml:space="preserve"><value>Та же волна на узкой полосе</value></data>
+  <data name="FabMenu_AlignTitle" xml:space="preserve">
+    <value>Выравнивание</value>
+  </data>
+  <data name="FabMenu_AlignDesc" xml:space="preserve">
+    <value>Placement задает сторону и то, как действия выстраиваются вдоль нее, - те же значения, что у FlarePopover. FAB, прижатому к углу, нужен Start или End, чтобы действия не свешивались за край.</value>
+  </data>
+  <data name="FabMenu_AlignStart" xml:space="preserve">
+    <value>По левому краю</value>
+  </data>
+  <data name="FabMenu_AlignCenter" xml:space="preserve">
+    <value>По центру</value>
+  </data>
+  <data name="FabMenu_AlignEnd" xml:space="preserve">
+    <value>По правому краю</value>
+  </data>
+  <data name="FabMenu_ActionEdit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="FabMenu_ActionShare" xml:space="preserve">
+    <value>Поделиться</value>
+  </data>
 </root>

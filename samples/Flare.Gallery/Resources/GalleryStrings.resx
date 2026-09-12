@@ -3367,4 +3367,25 @@
   <data name="Progress_Thick" xml:space="preserve"><value>Thick track (Xl)</value></data>
   <data name="Progress_Wavy" xml:space="preserve"><value>Wavy progress</value></data>
   <data name="Progress_NarrowWave" xml:space="preserve"><value>Same wave in a narrow track</value></data>
+  <data name="FabMenu_AlignTitle" xml:space="preserve">
+    <value>Alignment</value>
+  </data>
+  <data name="FabMenu_AlignDesc" xml:space="preserve">
+    <value>Placement takes a side and how the actions line up along it - the same values a FlarePopover takes. A FAB pinned to a corner wants Start or End, so its actions do not hang past the edge.</value>
+  </data>
+  <data name="FabMenu_AlignStart" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="FabMenu_AlignCenter" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="FabMenu_AlignEnd" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="FabMenu_ActionEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="FabMenu_ActionShare" xml:space="preserve">
+    <value>Share</value>
+  </data>
 </root>
