@@ -900,11 +900,14 @@ public class MaterialDesign3Tokens
         TrackRadiusMd = "0.75rem",
         TrackRadiusLg = "1rem",
         TrackRadiusXl = "1.75rem",
-        HandleHeightXs = "2.75rem",
-        HandleHeightSm = "2.75rem",
-        HandleHeightMd = "3.25rem",
-        HandleHeightLg = "4.25rem",
-        HandleHeightXl = "6.75rem",
+        // md.comp.slider.<size>.active.handle.height reads 44/44/44/68/108dp - the handle stays the
+        // same height for the first three steps and only grows for large and extra-large, which is
+        // why the ramp looks flat at the bottom. Md was 3.25rem against the table's 44dp.
+        HandleHeightXs = "2.75rem",  // 44dp
+        HandleHeightSm = "2.75rem",  // 44dp
+        HandleHeightMd = "2.75rem",  // 44dp
+        HandleHeightLg = "4.25rem",  // 68dp
+        HandleHeightXl = "6.75rem",  // 108dp
         // Flanking StartIcon/EndIcon ramp.
         IconSizeXs = "20px",
         IconSizeSm = "22px",

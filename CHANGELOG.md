@@ -62,6 +62,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **Material 3 Expressive now matches its own tables for the slider handle and the menu row.**
+  Three measurements disagreed with the published spec. The slider handle ramp reads 44/44/44/68/108dp
+  - flat for the first three steps, growing only for large and extra-large - and the medium step was
+  52px against the table's 44dp. A menu row is 44dp in Expressive
+  (`md.comp.menus.menu-item.height`) where baseline Material 3 keeps its 48dp list row
+  (`md.comp.menu.list-item.container.height`), and the first and last rows take a 12dp outer
+  corner so the ends of the list mirror the panel, against the 4dp every row between them takes.
+  Measured on the rendered page afterwards: panel 16px, five rows at 44px, ends 12px, middles 4px.
+  Baseline Material 3 is untouched - still a 48px row, square ends, a 4px panel - and so is every
+  other theme, each of which states its own handle heights.
+
 - **A meter separates its parts wherever the theme separates a progress bar's.** `FlareMeter`
   already borrows the linear progress track tokens for its height, rounded ends and resting
   background - the gap was the one member of that set it did not read, so under Material 3

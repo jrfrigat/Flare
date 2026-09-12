@@ -82,8 +82,13 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         {
             PanelRadius = "var(--flare-shape-large)",         // 16dp
             ItemGapBetween = "0.125rem",                      // 2dp
-            ItemRadius = "var(--flare-shape-extra-small)",    // 4dp
-            ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
+            ItemRadius = "var(--flare-shape-extra-small)",    // 4dp  md.comp.menus.menu-item.shape
+            // The ends of the list mirror the panel: md.comp.menus.menu-item.first-child.shape and
+            // .last-child.shape both read 12dp, against the 4dp every interior item takes.
+            ItemRadiusEnd = "var(--flare-shape-medium)",      // 12dp
+            // md.comp.menus.menu-item.height. Baseline M3 keeps the 48dp list-item row
+            // (md.comp.menu.list-item.container.height); Expressive tightens it.
+            ItemHeight = "2.75rem",                           // 44dp
             GroupRadius = "var(--flare-shape-small)",         // 8dp
             GroupPadding = "0.125rem",                        // 2dp
             GroupBg = "var(--flare-color-surface-container-high)",
