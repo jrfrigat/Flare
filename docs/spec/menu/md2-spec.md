@@ -323,3 +323,21 @@ Forms with outlined dropdown menus should align the menu label with the icon.
 > Outlined exposed dropdown menu states
 
 ### Specs
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### menu-surface/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/menu-surface@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$fade-in-duration` | 0.03s |  |
+| `$fade-out-duration` | 0.075s |  |
+| `$scale-duration` | 0.12s |  |
+| `$min-distance-from-edge` | 32px |  |
+| `$z-index` | 8 | One above mdc-dialog |
+| `$shape-radius` | medium |  |

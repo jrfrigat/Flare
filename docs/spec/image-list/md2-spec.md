@@ -236,3 +236,22 @@ Color, shape and elevation notes on the same drawing:
 
 - Roboto 16dp #000000de
 - Elevation Elevation 0dp
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### image-list/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/image-list@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$standard-gutter-size` | 4px |  |
+| `$masonry-gutter-size` | 16px |  |
+| `$icon-size` | 24px |  |
+| `$text-protection-background-color` | rgba(0, 0, 0, 0.6) |  |
+| `$text-protection-height` | 48px |  |
+| `$text-protection-horizontal-padding` | 16px |  |
+| `$shape-radius` | 0 |  |

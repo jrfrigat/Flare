@@ -320,3 +320,33 @@ Color, shape and elevation notes on the same drawing:
 - Elevation Elevation 6dp
 - Shape All corners Rounded: 4dp
 - Components Text Buttons
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### snackbar/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/snackbar@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$fill-color` | color.mix( theme-color.prop-value(on-surface), theme-color.prop-value(surface), 80% ) |  |
+| `$label-ink-color` | rgba( theme-color.prop-value(surface), theme-color.text-emphasis(high) ) |  |
+| `$action-ink-color` | #bb86fc |  |
+| `$dismiss-ink-color` | rgba( theme-color.prop-value(surface), theme-color.text-emphasis(high) ) |  |
+| `$label-type-scale` | body2 |  |
+| `$dismiss-icon-size` | 18px |  |
+| `$dismiss-button-size` | 36px |  |
+| `$min-width` | 344px |  |
+| `$max-width` | 672px |  |
+| `$mobile-breakpoint` | 480px |  |
+| `$viewport-margin-narrow` | 8px |  |
+| `$viewport-margin-wide` | 24px |  |
+| `$padding` | 8px |  |
+| `$elevation` | 6 |  |
+| `$shape-radius` | small | Key from shape.$category-keywords or CSS length value (e.g., 4px) |
+| `$z-index` | 8 | One above mdc-dialog |
+| `$enter-duration` | 150ms |  |
+| `$exit-duration` | 75ms |  |

@@ -63,3 +63,14 @@ Color, shape and elevation notes on the same drawing:
 - #6200eeff R98 G0 B238 A1.00
 - #6200ee89 R98 G0 B238 A0.54
 - Elevation Elevation 0dp
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### switch/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/switch@14.0.0/_variables.scss>
+
+Not fetched: Response status code does not indicate success: 404 (Not Found).

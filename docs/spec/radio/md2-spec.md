@@ -42,3 +42,14 @@ Color, shape and elevation notes on the same drawing:
 - #00000089 R0 G0 B0 A0.54
 - Elevation Elevation 0dp
 - General Stroke weight 2dp
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### radio/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/radio@14.0.0/_variables.scss>
+
+No variable declarations in this file.

@@ -261,3 +261,14 @@ An outline can separate a table from either another table or other components.
 Align numbers to the right for improved scannability.
 
 (image 7)
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### data-table/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/data-table@14.0.0/_variables.scss>
+
+No variable declarations in this file.

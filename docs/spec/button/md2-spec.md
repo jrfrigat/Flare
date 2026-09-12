@@ -540,3 +540,14 @@ Color, shape and elevation notes on the same drawing:
 - #000000 R0 G0 B0
 - #0000001e R0 G0 B0 A0.12
 - Elevation Elevation 0dp
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### button/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/button@14.0.0/_variables.scss>
+
+No variable declarations in this file.

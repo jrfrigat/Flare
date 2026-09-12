@@ -341,3 +341,14 @@ An extended FAB can transform into a standard FAB when a screen is scrolled.
 The FAB should not return to an extended FAB until the user scrolls back to the top of the page.
 
 ### Specs
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### fab/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/fab@14.0.0/_variables.scss>
+
+No variable declarations in this file.

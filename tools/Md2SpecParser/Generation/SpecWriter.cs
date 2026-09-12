@@ -50,11 +50,53 @@ public sealed class SpecWriter(Md2Config config, HttpClient http, SiteMetaIndex 
             sb.Append('\n').Append(GuidelineParser.ToMarkdown(json, route));
         }
 
+        await AppendMdcAsync(sb, page, ct);
+
         var dir = Path.Combine(config.OutputRoot, page.ResolveFolder());
         Directory.CreateDirectory(dir);
         var file = Path.Combine(dir, config.OutputFileName);
         await File.WriteAllTextAsync(file, sb.ToString(), ct);
 
         return new Result(page.Type, "written", file);
+    }
+
+    // The implementation's own numbers, under their own heading so nobody mistakes them for the
+    // guidelines. A file that has moved between releases is reported in place rather than failing the
+    // page: the guidelines half of the document is still worth writing.
+    private async Task AppendMdcAsync(StringBuilder sb, Md2Page page, CancellationToken ct)
+    {
+        if (page.Mdc.Count == 0) return;
+
+        sb.Append("\n## Implementation: Material Components for the Web ").Append(config.MdcVersion).Append('\n');
+        sb.Append("\nGoogle's own implementation of this specification. Read it where the guidelines publish no\n");
+        sb.Append("measurable value - it is evidence of the spec, not the spec itself.\n");
+
+        foreach (var path in page.Mdc)
+        {
+            var url = config.MdcUrlTemplate
+                .Replace("{version}", config.MdcVersion, StringComparison.Ordinal)
+                .Replace("{path}", path, StringComparison.Ordinal);
+            // The package name carries the version, the file path does not: @material/tab@14/_variables.scss
+            var at = path.IndexOf('/');
+            if (at > 0)
+                url = config.MdcUrlTemplate
+                    .Replace("{version}", config.MdcVersion, StringComparison.Ordinal)
+                    .Replace("{path}", $"{path[..at]}@{config.MdcVersion}{path[at..]}", StringComparison.Ordinal);
+
+            sb.Append("\n### ").Append(path).Append('\n');
+            sb.Append("\nSource: <").Append(url).Append(">\n");
+
+            string scss;
+            try { scss = await http.GetStringAsync(url, ct); }
+            catch (Exception ex) { sb.Append("\nNot fetched: ").Append(ex.Message).Append('\n'); continue; }
+
+            var vars = ScssVariables.Parse(scss);
+            if (vars.Count == 0) { sb.Append("\nNo variable declarations in this file.\n"); continue; }
+
+            sb.Append("\n| Variable | Value | Note |\n|---|---|---|\n");
+            foreach (var v in vars)
+                sb.Append("| `$").Append(v.Name).Append("` | ").Append(v.Value.Replace("|", "\\|"))
+                  .Append(" | ").Append(v.Comment?.Replace("|", "\\|") ?? string.Empty).Append(" |\n");
+        }
     }
 }

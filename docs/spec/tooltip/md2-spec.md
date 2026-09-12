@@ -84,3 +84,14 @@ Tooltips use a fade transition pattern to enter and exit the screen.
 On desktop, tooltips appear in the center of click targets and stay in place while cursor moves within the target.
 
 ### Specs
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### tooltip/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/tooltip@14.0.0/_variables.scss>
+
+Not fetched: Response status code does not indicate success: 404 (Not Found).

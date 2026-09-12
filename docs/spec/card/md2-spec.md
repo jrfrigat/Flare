@@ -438,3 +438,19 @@ Color, shape and elevation notes on the same drawing:
 - Shape All corners Rounded: 4dp
 - Elevation Elevation 0dp
 - Components Text Buttons
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### card/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/card@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$action-icon-color` | rgba( theme-color.prop-value(on-surface), theme-color.text-emphasis(medium) ) |  |
+| `$outline-color` | color.mix( theme-color.prop-value(on-surface), theme-color.prop-value(surface), 12% ) |  |
+| `$outline-width` | 1px |  |
+| `$shape-radius` | medium |  |

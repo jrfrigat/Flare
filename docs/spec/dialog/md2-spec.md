@@ -388,3 +388,36 @@ Titles should be succinct. They can wrap to a second line if necessary, and be t
 > Find ways to shorten app bar text, and place longer titles into the content area (1) of a full-screen dialog.
 
 ### Specs
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### dialog/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/dialog@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$scrim-color` | on-surface |  |
+| `$title-ink-color` | on-surface |  |
+| `$content-ink-color` | on-surface |  |
+| `$scroll-divider-color` | on-surface |  |
+| `$scrim-opacity` | 0.32 |  |
+| `$title-ink-opacity` | 0.87 |  |
+| `$content-ink-opacity` | 0.6 |  |
+| `$scroll-divider-opacity` | 0.12 |  |
+| `$min-width` | 280px |  |
+| `$max-width` | 560px |  |
+| `$margin` | 16px |  |
+| `$shape-radius` | medium |  |
+| `$title-bottom-padding` | 9px |  |
+| `$actions-padding` | 8px |  |
+| `$header-side-padding` | 24px |  |
+| `$close-icon-padding` | 12px |  |
+| `$title-side-padding` | 16px |  |
+| `$fullscreen-header-side-padding` | 16px |  |
+| `$sheet-close-icon-right` | 12px |  |
+| `$sheet-close-icon-top` | 9px |  |
+| `$z-index` | 7 |  |

@@ -304,3 +304,50 @@ The active state of a tab can inherit a hover, focus, and pressed state.
 > The hover, focus, and pressed states of an active tab
 
 ### Specs
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### tab/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/tab@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$icon-size` | 24px |  |
+| `$height` | 48px |  |
+| `$stacked-height` | 72px |  |
+| `$min-width` | 90px |  |
+| `$horizontal-padding` | 24px |  |
+| `$text-label-opacity` | 0.6 |  |
+| `$icon-opacity` | 0.54 |  |
+| `$text-label-color-default` | rgba( theme-color.prop-value(on-surface), $text-label-opacity ) |  |
+| `$icon-color-default` | rgba( theme-color.prop-value(on-surface), $icon-opacity ) |  |
+| `$text-label-color-active` | primary |  |
+| `$icon-color-active` | primary |  |
+| `$ripple-target` | '.mdc-tab__ripple' |  |
+
+### tab-bar/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/tab-bar@14.0.0/_variables.scss>
+
+| Variable | Value | Note |
+|---|---|---|
+| `$height` | tab-variables.$height |  |
+| `$minimum-height` | 30px |  |
+| `$maximum-height` | $height |  |
+| `$density-scale` | density-variables.$default-scale |  |
+| `$density-config` | ( height: ( default: $height, maximum: $maximum-height, minimum: $minimum-height, ), ) |  |
+| `$stacked-height` | tab-variables.$stacked-height |  |
+| `$stacked-minimum-height` | 56px |  |
+| `$stacked-maximum-height` | $stacked-height |  |
+| `$stacked-density-scale` | density-variables.$default-scale |  |
+| `$stacked-density-config` | ( height: ( default: $stacked-height, maximum: $stacked-maximum-height, minimum: $stacked-minimum-height, ), ) |  |
+
+### tab-indicator/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/tab-indicator@14.0.0/_variables.scss>
+
+Not fetched: Response status code does not indicate success: 404 (Not Found).

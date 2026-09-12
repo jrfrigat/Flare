@@ -71,3 +71,14 @@ Discrete sliders reflect state changes through the thumb ripple. When disabled, 
 ##### Discrete sliders
 
 (image 1)
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### slider/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/slider@14.0.0/_variables.scss>
+
+Not fetched: Response status code does not indicate success: 404 (Not Found).

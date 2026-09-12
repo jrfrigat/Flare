@@ -29,6 +29,19 @@ public sealed class Md2Config
     [JsonPropertyName("baseUrl")]
     public string BaseUrl { get; set; } = "https://m2.material.io";
 
+    /// <summary>
+    /// Where the Material Components stylesheets are fetched from, with <c>{version}</c> and
+    /// <c>{path}</c> substituted. They are the second source: the guidelines site publishes no
+    /// measurable value at all for several components, and Google's own implementation of the same
+    /// specification does.
+    /// </summary>
+    [JsonPropertyName("mdcUrlTemplate")]
+    public string MdcUrlTemplate { get; set; } = "https://cdn.jsdelivr.net/npm/@material/{path}";
+
+    /// <summary>The Material Components release the Sass values are read from.</summary>
+    [JsonPropertyName("mdcVersion")]
+    public string MdcVersion { get; set; } = "14.0.0";
+
     /// <summary>The pages to render, grouped into output folders.</summary>
     [JsonPropertyName("pages")]
     public List<Md2Page> Pages { get; set; } = new();
@@ -51,6 +64,15 @@ public sealed class Md2Page
     /// </summary>
     [JsonPropertyName("routes")]
     public List<string> Routes { get; set; } = new();
+
+    /// <summary>
+    /// Material Components packages whose Sass variables describe this component, as
+    /// <c>&lt;package&gt;/&lt;file&gt;</c> - e.g. <c>tab/_variables.scss</c>. Rendered as a separate,
+    /// clearly labelled section: an implementation is evidence of the specification, not the
+    /// specification, and it only matters where the guidelines publish no number at all.
+    /// </summary>
+    [JsonPropertyName("mdc")]
+    public List<string> Mdc { get; set; } = new();
 
     /// <summary>The folder this page writes into.</summary>
     public string ResolveFolder() =>

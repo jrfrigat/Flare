@@ -393,3 +393,14 @@ Color, shape and elevation notes on the same drawing:
 - #0000001f R0 G0 B0 A0.12
 - Shape All corners Rounded: 16dp
 - Elevation Elevation 0dp
+
+## Implementation: Material Components for the Web 14.0.0
+
+Google's own implementation of this specification. Read it where the guidelines publish no
+measurable value - it is evidence of the spec, not the spec itself.
+
+### chips/_variables.scss
+
+Source: <https://cdn.jsdelivr.net/npm/@material/chips@14.0.0/_variables.scss>
+
+Not fetched: Response status code does not indicate success: 404 (Not Found).
