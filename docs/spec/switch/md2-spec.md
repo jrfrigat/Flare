@@ -69,8 +69,19 @@ Color, shape and elevation notes on the same drawing:
 Google's own implementation of this specification. Read it where the guidelines publish no
 measurable value - it is evidence of the spec, not the spec itself.
 
-### switch/_variables.scss
+### switch/_switch-theme.scss
 
-Source: <https://cdn.jsdelivr.net/npm/@material/switch@14.0.0/_variables.scss>
+Source: <https://cdn.jsdelivr.net/npm/@material/switch@14.0.0/_switch-theme.scss>
 
-Not fetched: Response status code does not indicate success: 404 (Not Found).
+| Variable | Value | Note |
+|---|---|---|
+| `$_density-config` | ( size: ( minimum: 28px, default: 48px, maximum: 48px, ), ) |  |
+| `$_hairline` | color-palette.$grey-300 |  |
+| `$_inverse-primary` | color.scale( theme-color.prop-value(primary), $lightness: 75% ) |  |
+| `$_on-surface` | color-palette.$grey-800 |  |
+| `$_on-surface-variant` | color-palette.$grey-700 |  |
+| `$_on-surface-state-content` | color-palette.$grey-900 |  |
+| `$_primary-state-content` | color.scale( theme-color.prop-value(primary), $blackness: 50% ) | / TODO: Change to private when MWC has better access |
+| `$selectors` | ( disabled: ':disabled', focus: ':focus', hover: ':hover', pressed: ':active', selected: '.mdc-switch--selected', unselected: '.mdc-switch--unselected', ) |  |
+| `$light-theme` | ( disabled-handle-elevation: 0, disabled-handle-opacity: 0.38, disabled-selected-handle-color: $_on-surface, disabled-selected-icon-color: on-primary, disabled-selected-icon-opacity: 0.38, disabled-selected-track-color: $_on-surface, disabled-track-opacity: 0.12, disabled-unselected-handle-color: $_on-surface, disabled-unselected-icon-color: on-primary, disabled-unselected-icon-opacity: 0.38, disabled-unselected-track-color: $_on-surface, handle-elevation: 1, handle-height: 20px, handle-shadow-color: elevation-theme.$baseline-color, handle-shape: 10px, handle-surface-color: surface, handle-width: 20px, selected-focus-handle-color: $_primary-state-content, selected-focus-state-layer-color: primary, selected-focus-state-layer-opacity: 0.12, selected-focus-track-color: $_inverse-primary, selected-handle-color: primary, selected-hover-handle-color: $_primary-state-content, selected-hover-state-layer-color: primary, selected-hover-state-layer-opacity: 0.04, selected-hover-track-color: $_inverse-primary, selected-icon-color: on-primary, selected-icon-size: 18px, selected-pressed-handle-color: $_primary-state-content, selected-pressed-state-layer-color: primary, selected-pressed-state-layer-opacity: 0.1, selected-pressed-track-color: $_inverse-primary, selected-track-color: $_inverse-primary, state-layer-size: 48px, track-height: 14px, track-shape: 7px, track-width: 36px, unselected-focus-handle-color: $_on-surface-state-content, unselected-focus-state-layer-color: $_on-surface, unselected-focus-state-layer-opacity: 0.12, unselected-focus-track-color: $_hairline, unselected-handle-color: $_on-surface-variant, unselected-hover-handle-color: $_on-surface-state-content, unselected-hover-state-layer-color: $_on-surface, unselected-hover-state-layer-opacity: 0.04, unselected-hover-track-color: $_hairline, unselected-icon-color: on-primary, unselected-icon-size: 18px, unselected-pressed-handle-color: $_on-surface-state-content, unselected-pressed-state-layer-color: $_on-surface, unselected-pressed-state-layer-opacity: 0.1, unselected-pressed-track-color: $_hairline, unselected-track-color: $_hairline, ) |  |
+| `$forced-colors-theme` | ( disabled-handle-opacity: 1, disabled-selected-icon-color: GrayText, disabled-selected-icon-opacity: 1, disabled-track-opacity: 1, disabled-unselected-icon-color: GrayText, disabled-unselected-icon-opacity: 1, selected-icon-color: ButtonText, unselected-icon-color: ButtonText, ) |  |

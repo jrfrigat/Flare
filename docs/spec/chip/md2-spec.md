@@ -399,8 +399,39 @@ Color, shape and elevation notes on the same drawing:
 Google's own implementation of this specification. Read it where the guidelines publish no
 measurable value - it is evidence of the spec, not the spec itself.
 
-### chips/_variables.scss
+### chips/_chip-theme.scss
 
-Source: <https://cdn.jsdelivr.net/npm/@material/chips@14.0.0/_variables.scss>
+Source: <https://cdn.jsdelivr.net/npm/@material/chips@14.0.0/_chip-theme.scss>
 
-Not fetched: Response status code does not indicate success: 404 (Not Found).
+| Variable | Value | Note |
+|---|---|---|
+| `$height` | 32px |  |
+| `$minimum-height` | 24px |  |
+| `$maximum-height` | $height |  |
+| `$density-scale` | density.$default-scale |  |
+| `$density-config` | ( height: ( default: $height, maximum: $maximum-height, minimum: $minimum-height, ), ) |  |
+| `$radius` | math.div($height, 2) |  |
+| `$type-scale` | body2 |  |
+| `$container-color` | color.mix( theme-color.prop-value(on-surface), theme-color.prop-value(surface), 12% ) |  |
+| `$text-label-color` | rgba(theme-color.prop-value(on-surface), 0.87) |  |
+| `$icon-color` | rgba(theme-color.prop-value(on-surface), 0.87) |  |
+| `$checkmark-color` | rgba(theme-color.prop-value(on-surface), 0.87) |  |
+| `$trailing-action-color` | rgba(theme-color.prop-value(on-surface), 0.87) |  |
+| `$ripple-color` | on-surface |  |
+| `$checkmark-size` | 20px |  |
+| `$leading-icon-size` | 20px |  |
+| `$trailing-action-size` | 18px |  |
+| `$leading-padding` | 12px |  |
+| `$trailing-padding` | 12px |  |
+| `$avatar-size` | 24px |  |
+| `$avatar-leading-padding` | 4px |  |
+| `$avatar-trailing-padding` | 8px |  |
+| `$graphic-leading-padding` | 6px |  |
+| `$graphic-trailing-padding` | 6px |  |
+| `$trailing-action-leading-padding` | 8px |  |
+| `$trailing-action-trailing-padding` | 8px |  |
+| `$ripple-target` | '.mdc-evolution-chip__ripple' |  |
+| `$ripple-target-primary` | '.mdc-evolution-chip__ripple--primary' |  |
+| `$ripple-target-trailing` | '.mdc-evolution-chip__ripple--trailing' | Filter chip colors |
+| `$filter-selected-container-color` | color.mix( theme-color.prop-value(on-surface), $container-color, 8% ) |  |
+| `$_light-theme` | ( container-elevation: null, container-height: null, container-shadow-color: null, container-shape: null, disabled-label-text-color: null, disabled-label-text-opacity: null, disabled-outline-color: null, disabled-outline-opacity: null, elevated-container-color: null, elevated-container-elevation: null, elevated-container-shadow-color: null, container-surface-tint-layer-color: null, elevated-disabled-container-color: null, elevated-disabled-container-elevation: null, elevated-disabled-container-opacity: null, elevated-focus-container-elevation: null, elevated-hover-container-elevation: null, elevated-pressed-container-elevation: null, elevated-selected-container-color: null, elevated-selected-container-elevation: null, elevated-unselected-container-color: null, flat-container-elevation: null, flat-disabled-outline-color: null, flat-disabled-outline-opacity: null, flat-disabled-selected-outline-color: null, flat-disabled-selected-outline-opacity: null, flat-disabled-unselected-outline-color: null, flat-disabled-unselected-outline-opacity: null, flat-focus-outline-color: null, flat-outline-color: null, flat-outline-width: null, flat-selected-container-color: null, flat-selected-focus-container-elevation: null, flat-selected-hover-container-elevation: null, flat-selected-outline-color: null, flat-selected-outline-width: null, flat-selected-pressed-container-elevation: null, flat-unselected-focus-container-elevation: null, flat-unselected-focus-outline-color: null, flat-unselected-hover-container-elevation: null, flat-unselected-outline-color: null, flat-unselected-outline-width: null, flat-unselected-pressed-container-elevation: null, focus-label-text-color: null, focus-outline-color: null, focus-state-layer-color: null, focus-state-layer-opacity: null, hover-label-text-color: null, hover-state-layer-color: null, hover-state-layer-opacity: null, label-text-color: null, label-text-font: null, label-text-line-height: null, label-text-size: null, label-text-tracking: null, label-text-weight: null, outline-color: null, outline-width: null, pressed-label-text-color: null, pressed-state-layer-color: null, pressed-state-layer-opacity: null, selected-focus-label-text-color: null, selected-focus-state-layer-color: null, selected-focus-state-layer-opacity: null, selected-hover-label-text-color: null, selected-hover-state-layer-color: null, selected-hover-state-layer-opacity: null, selected-label-text-color: null, selected-pressed-label-text-color: null, selected-pressed-state-layer-color: null, selected-pressed-state-layer-opacity: null, unselected-focus-label-text-color: null, unselected-focus-state-layer-color: null, unselected-focus-state-layer-opacity: null, unselected-hover-label-text-color: null, unselected-hover-state-layer-color: null, unselected-hover-state-layer-opacity: null, unselected-label-text-color: null, unselected-pressed-label-text-color: null, unselected-pressed-state-layer-color: null, unselected-pressed-state-layer-opacity: null, with-avatar-avatar-shape: null, with-avatar-avatar-size: null, with-avatar-disabled-avatar-opacity: null, with-icon-disabled-icon-color: null, with-icon-disabled-icon-opacity: null, with-icon-focus-icon-color: null, with-icon-hover-icon-color: null, with-icon-icon-color: null, with-icon-icon-size: null, with-icon-pressed-icon-color: null, with-icon-selected-focus-icon-color: null, with-icon-selected-hover-icon-color: null, with-icon-selected-icon-color: null, with-icon-selected-pressed-icon-color: null, with-icon-unselected-focus-icon-color: null, with-icon-unselected-hover-icon-color: null, with-icon-unselected-icon-color: null, with-icon-unselected-pressed-icon-color: null, with-leading-icon-disabled-leading-icon-color: null, with-leading-icon-disabled-leading-icon-opacity: null, with-leading-icon-focus-leading-icon-color: null, with-leading-icon-hover-leading-icon-color: null, with-leading-icon-leading-icon-color: null, with-leading-icon-leading-icon-size: null, with-leading-icon-pressed-leading-icon-color: null, with-trailing-icon-disabled-trailing-icon-color: null, with-trailing-icon-disabled-trailing-icon-opacity: null, with-trailing-icon-focus-trailing-icon-color: null, with-trailing-icon-hover-trailing-icon-color: null, with-trailing-icon-pressed-trailing-icon-color: null, with-trailing-icon-trailing-icon-color: null, with-trailing-icon-trailing-icon-size: null, ) |  |

@@ -129,18 +129,3 @@ Source: <https://cdn.jsdelivr.net/npm/@material/linear-progress@14.0.0/_variable
 |---|---|---|
 | `$baseline-buffer-color` | #e6e6e6 |  |
 | `$height` | 4px |  |
-
-### circular-progress/_variables.scss
-
-Source: <https://cdn.jsdelivr.net/npm/@material/circular-progress@14.0.0/_variables.scss>
-
-| Variable | Value | Note |
-|---|---|---|
-| `$color` | primary |  |
-| `$track-color` | transparent | / The rotation position of the arcs that corresponds to their fully contracted state |
-| `$base-angle` | 135deg | / Amount of circle the arc takes up |
-| `$arc-size` | 270deg | / Time it takes to expand and contract arc |
-| `$arc-time` | 1333ms | / Time for inactive indicator to disappear |
-| `$shrink-time` | 400ms | / How much the start location of the arc should rotate each time; 216 gives |
-| `$arc-start-rotation-interval` | 216deg | / The timing function used for the core spinner animations. |
-| `$timing-function` | cubic-bezier(0.4, 0, 0.2, 1) |  |

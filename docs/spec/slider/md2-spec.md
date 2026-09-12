@@ -77,8 +77,18 @@ Discrete sliders reflect state changes through the thumb ripple. When disabled, 
 Google's own implementation of this specification. Read it where the guidelines publish no
 measurable value - it is evidence of the spec, not the spec itself.
 
-### slider/_variables.scss
+### slider/_slider-theme.scss
 
-Source: <https://cdn.jsdelivr.net/npm/@material/slider@14.0.0/_variables.scss>
+Source: <https://cdn.jsdelivr.net/npm/@material/slider@14.0.0/_slider-theme.scss>
 
-Not fetched: Response status code does not indicate success: 404 (Not Found).
+| Variable | Value | Note |
+|---|---|---|
+| `$color` | primary |  |
+| `$disabled-color` | on-surface | Thumb variables. |
+| `$value-indicator-color` | #000 |  |
+| `$value-indicator-opacity` | 0.6 |  |
+| `$value-indicator-text-color` | on-primary | Track variables. |
+| `$track-inactive-opacity` | 0.24 |  |
+| `$tick-mark-active-color` | on-primary |  |
+| `$tick-mark-inactive-color` | primary |  |
+| `$tick-mark-opacity` | 0.6 | / Customizes active track color, using a Color or state Map. |

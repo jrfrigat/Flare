@@ -91,7 +91,7 @@
         "/components/switches"
       ],
       "mdc": [
-        "switch/_variables.scss"
+        "switch/_switch-theme.scss"
       ]
     },
     {
@@ -101,7 +101,7 @@
         "/components/chips"
       ],
       "mdc": [
-        "chips/_variables.scss"
+        "chips/_chip-theme.scss"
       ]
     },
     {
@@ -170,8 +170,7 @@
         "/components/progress-indicators"
       ],
       "mdc": [
-        "linear-progress/_variables.scss",
-        "circular-progress/_variables.scss"
+        "linear-progress/_variables.scss"
       ]
     },
     {
@@ -196,7 +195,7 @@
         "/components/sliders"
       ],
       "mdc": [
-        "slider/_variables.scss"
+        "slider/_slider-theme.scss"
       ]
     },
     {
@@ -218,7 +217,7 @@
       "mdc": [
         "tab/_variables.scss",
         "tab-bar/_variables.scss",
-        "tab-indicator/_variables.scss"
+        "tab-indicator/_tab-indicator-theme.scss"
       ]
     },
     {
@@ -242,7 +241,7 @@
         "/components/tooltips"
       ],
       "mdc": [
-        "tooltip/_variables.scss"
+        "tooltip/_tooltip-theme.scss"
       ]
     },
     {
@@ -262,7 +261,7 @@
         "/components/banners"
       ],
       "mdc": [
-        "banner/_variables.scss"
+        "banner/_banner-theme.scss"
       ]
     },
     {

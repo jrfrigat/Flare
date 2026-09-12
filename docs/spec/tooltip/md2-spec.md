@@ -90,8 +90,22 @@ On desktop, tooltips appear in the center of click targets and stay in place whi
 Google's own implementation of this specification. Read it where the guidelines publish no
 measurable value - it is evidence of the spec, not the spec itself.
 
-### tooltip/_variables.scss
+### tooltip/_tooltip-theme.scss
 
-Source: <https://cdn.jsdelivr.net/npm/@material/tooltip@14.0.0/_variables.scss>
+Source: <https://cdn.jsdelivr.net/npm/@material/tooltip@14.0.0/_tooltip-theme.scss>
 
-Not fetched: Response status code does not indicate success: 404 (Not Found).
+| Variable | Value | Note |
+|---|---|---|
+| `$background-color` | rgba(black, theme-color.text-emphasis(medium)) |  |
+| `$border-radius` | small |  |
+| `$label-color` | text-primary-on-dark |  |
+| `$enter-duration` | 150ms |  |
+| `$exit-duration` | 75ms | Rich Tooltip variables |
+| `$rich-background-color` | theme-color.prop-value(surface) |  |
+| `$rich-title-text-color` | text-primary-on-light |  |
+| `$rich-content-text-color` | rgba(black, theme-color.text-emphasis(medium)) |  |
+| `$rich-content-link-color` | primary | Use a custom property so IE11 does not use "normal" and instead uses provided |
+| `$word-break-custom-prop` | custom-properties.create( --mdc-tooltip-word-break, normal ) |  |
+| `$word-break-default` | custom-properties.create-var($word-break-custom-prop) |  |
+| `$word-break-ie11-fallback` | break-all |  |
+| `$z-index` | 9 | Sets the border-radius for the tooltip element. |

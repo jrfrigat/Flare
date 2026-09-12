@@ -186,8 +186,20 @@ Banners must remain on screen until dismissed by the user.
 Google's own implementation of this specification. Read it where the guidelines publish no
 measurable value - it is evidence of the spec, not the spec itself.
 
-### banner/_variables.scss
+### banner/_banner-theme.scss
 
-Source: <https://cdn.jsdelivr.net/npm/@material/banner@14.0.0/_variables.scss>
+Source: <https://cdn.jsdelivr.net/npm/@material/banner@14.0.0/_banner-theme.scss>
 
-Not fetched: Response status code does not indicate success: 404 (Not Found).
+| Variable | Value | Note |
+|---|---|---|
+| `$fill-color` | surface |  |
+| `$text-color` | on-surface |  |
+| `$divider-color` | rgba(theme-color.prop-value(on-surface), 0.12) |  |
+| `$graphic-background-color` | primary |  |
+| `$graphic-color` | surface |  |
+| `$graphic-shape-radius` | 50% |  |
+| `$primary-action-text-color` | primary |  |
+| `$secondary-action-text-color` | primary |  |
+| `$mobile-breakpoint` | 480px |  |
+| `$z-index` | 1 |  |
+| `$light-theme` | ( action-focus-state-layer-color: theme-color.$primary, action-focus-state-layer-opacity: 0.12, action-focus-label-text-color: null, action-hover-state-layer-color: theme-color.$primary, action-hover-state-layer-opacity: 0.04, action-hover-label-text-color: null, action-label-text-color: theme-color.$primary, // TODO(b/197004146): Support action label typography. action-label-text-font: null, action-label-text-size: null, action-label-text-tracking: null, action-label-text-weight: null, action-pressed-state-layer-color: theme-color.$primary, action-pressed-state-layer-opacity: 0.1, action-pressed-label-text-color: null, container-color: theme-color.$surface, container-elevation: null, container-shadow-color: null, container-shape: 0, divider-color: $divider-color, divider-height: 1px, supporting-text-color: theme-color.$on-surface, supporting-text-font: typography.get-font(body2), supporting-text-line-height: typography.get-line-height(body2), supporting-text-size: typography.get-size(body2), supporting-text-tracking: typography.get-tracking(body2), supporting-text-weight: typography.get-weight(body2), with-image-image-shape: $graphic-shape-radius, with-image-image-size: 40px, ) |  |

@@ -346,8 +346,11 @@ Source: <https://cdn.jsdelivr.net/npm/@material/tab-bar@14.0.0/_variables.scss>
 | `$stacked-density-scale` | density-variables.$default-scale |  |
 | `$stacked-density-config` | ( height: ( default: $stacked-height, maximum: $stacked-maximum-height, minimum: $stacked-minimum-height, ), ) |  |
 
-### tab-indicator/_variables.scss
+### tab-indicator/_tab-indicator-theme.scss
 
-Source: <https://cdn.jsdelivr.net/npm/@material/tab-indicator@14.0.0/_variables.scss>
+Source: <https://cdn.jsdelivr.net/npm/@material/tab-indicator@14.0.0/_tab-indicator-theme.scss>
 
-Not fetched: Response status code does not indicate success: 404 (Not Found).
+| Variable | Value | Note |
+|---|---|---|
+| `$light-theme` | ( active-indicator-color: theme-color.$primary, active-indicator-height: 3px, active-indicator-shape: ( 3px, 3px, 0, 0, ), ) |  |
+| `$custom-property-prefix` | 'tab' |  |
