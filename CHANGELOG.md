@@ -45,6 +45,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The Material Design 2 theme now matches the published Material 2 specification.** It had been
+  built by eye, and an audit against the generated spec found eleven values that disagreed with it.
+  The visible ones: the fallback button radius was a pill, which made the confirm-dialog and message
+  box buttons the only capsules in a theme whose every other button is a 4dp rectangle; the large
+  shape category was 8dp where Material 2 meets the screen edge square at 0dp; the light background
+  was grey where the baseline is white, so a card was told apart from the page by a tint rather than
+  by its shadow; and the dark theme's on-surface colour was Material 3's, carried in from the
+  reference package. Elevation was the deepest of them - a dialog rests at 24dp, a navigation drawer
+  at 16dp, a snackbar and a resting FAB at 6dp, a card at 1dp, and all of them were arriving at 4dp
+  or 8dp, because the shared six-step scale has no room for those values.
+
 - **A popup no longer opens underneath the on-screen keyboard.** The placement engine measured the
   window, and a keyboard shrinks the visual viewport without changing the window or firing a resize -
   so a list opened from the field the reader had just tapped, which is every select and every picker,

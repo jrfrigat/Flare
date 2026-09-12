@@ -41,12 +41,15 @@ internal static class MaterialDesign2Tokens
     // ---- Shape: MD2 uses a small, mostly-rectangular 4dp scale (no large pill containers). ----
     internal static readonly ShapeTokens Shape = new()
     {
+        // The baseline shape scheme, verbatim: small 4dp, medium 4dp, large 0dp - a nav drawer, a
+        // side sheet and a bottom sheet all meet the screen edge square. See
+        // docs/spec/_foundation/md2-spec.md, "Baseline shape values".
         None = "0px",
         ExtraSmall = "4px",
         Small = "4px",
         Medium = "4px",
-        Large = "8px",
-        ExtraLarge = "8px",
+        Large = "0px",
+        ExtraLarge = "0px",
         Full = "9999px",
 
         // Shape morphing arrived with Material 3 Expressive; Material 2 containers keep their corners.
@@ -123,8 +126,13 @@ internal static class MaterialDesign2Tokens
         OutlineWidthMd = "1px",
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
-        ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // The fallback radius for the buttons that do not take a per-size one (the confirm dialog's
+        // and the message box's). A pill here made those two the only capsule buttons in a theme
+        // whose every other button is a 4dp rectangle.
+        ContainerRadius = "var(--flare-shape-extra-small)",
+        // 8dp, not the 16dp the container variants take: the text button trades its container for
+        // tighter padding (spec redline "Text button").
+        TextPaddingInline = "0.5rem",
         HeightXs = "1.75rem",  // 28dp
         HeightSm = "2rem",     // 32dp
         HeightMd = "2.25rem",  // 36dp (classic MD2 contained button)
@@ -205,15 +213,23 @@ internal static class MaterialDesign2Tokens
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs with { IndicatorThickness = "2px" };
 
-    // MD2 FABs are circular; resting 6dp, pressed 12dp.
+    // MD2 FABs are circular; resting 6dp, pressed 12dp. 6dp has no level in the shared six-step
+    // scale (it runs 0/1/2/4/8/12), so the resting shadow is written out from the same umbra /
+    // penumbra / ambient family the levels above are built from.
     internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
     {
         RadiusSm = "9999px",
         RadiusMd = "9999px",
         RadiusLg = "9999px",
-        Shadow = "var(--flare-elevation-4)",
+        Shadow = Dp6,
         HoverShadow = "var(--flare-elevation-5)",
     };
+
+    // The Material dp shadows the six-level scale has no room for. Same three-layer recipe as the
+    // levels: umbra 20%, penumbra 14%, ambient 12%.
+    private const string Dp6 = "0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12)";
+    private const string Dp16 = "0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12)";
+    private const string Dp24 = "0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12)";
 
     // MD2 slider: thin 4px rail with a round 20dp thumb (no MD3 Expressive bar handle).
     internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
@@ -245,7 +261,12 @@ internal static class MaterialDesign2Tokens
 
     // Classic flat 4dp menu (no MD3 Expressive 16dp panel or island grouping). The default MenuTokens
     // is already flat (square items, transparent groups); MD2 only pins the panel to the 4dp shape.
-    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu with { PanelRadius = "var(--flare-shape-extra-small)" };
+    // Menus sit at 8dp in the default elevation table, which is level 4 here.
+    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu with
+    {
+        PanelRadius = "var(--flare-shape-extra-small)",
+        PanelShadow = "var(--flare-elevation-4)",
+    };
 
     /// <summary>The complete Material Design 2 design tokens, derived from the shared Material baseline.</summary>
     public static readonly DesignTokens Design = MaterialDesignTokens.Design with
@@ -308,7 +329,9 @@ internal static class MaterialDesign2Tokens
         SurfaceContainer = "#F5F5F5",
         SurfaceContainerHigh = "#EEEEEE",
         SurfaceContainerHighest = "#E0E0E0",
-        Background = "#FAFAFA",
+        // The baseline background AND surface are both #FFFFFF: in this language a card is told apart
+        // from the page it sits on by its shadow, not by a different grey.
+        Background = "#FFFFFF",
         OnBackground = "#212121",
         Outline = "#757575",
         OutlineVariant = "#E0E0E0",
@@ -352,7 +375,9 @@ internal static class MaterialDesign2Tokens
         InfoContainer = "#014A6B",
         OnInfoContainer = "#B3E5FC",
         Surface = "#121212",
-        OnSurface = "#E6E1E5",
+        // 87% white over #121212 - the dark high-emphasis level, mirroring #212121 on the light side.
+        // #E6E1E5 is Material 3's dark on-surface and had been carried in from the reference package.
+        OnSurface = "#E0E0E0",
         SurfaceVariant = "#2C2C2C",
         OnSurfaceVariant = "#BDBDBD",
         OnSurfaceVariant2 = "#A3A3A3",
@@ -361,10 +386,10 @@ internal static class MaterialDesign2Tokens
         SurfaceContainerHigh = "#2C2C2C",
         SurfaceContainerHighest = "#333333",
         Background = "#121212",
-        OnBackground = "#E6E1E5",
+        OnBackground = "#E0E0E0",
         Outline = "#8A8A8A",
         OutlineVariant = "#3A3A3A",
-        InverseSurface = "#E6E1E5",
+        InverseSurface = "#E0E0E0",
         InverseOnSurface = "#121212",
         InversePrimary = "#6200EE",
         Scrim = "#000000",
