@@ -321,6 +321,10 @@ internal static class MaterialDesign2Tokens
     // FAB: padding-based sizing, large/medium/extra-large rounding.
     internal static readonly FabTokens Fab = new()
     {
+        // Material 2 draws a 24dp glyph on every FAB, mini and regular alike ($icon-size).
+        IconSizeSm = "1.5rem",
+        IconSizeMd = "1.5rem",
+        IconSizeLg = "1.5rem",
         PaddingSm = "0.5rem",
         PaddingMd = "1rem",
         PaddingLg = "1.75rem",
@@ -366,6 +370,8 @@ internal static class MaterialDesign2Tokens
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = new()
     {
+        // Material 2 tab icon: 24px ($icon-size).
+        IconSize = "1.5rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",

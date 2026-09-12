@@ -273,6 +273,8 @@ internal class VisualStudioTokens
     // theme-scoped tabs.css using these tokens.
     internal static readonly TabsTokens Tabs = new()
     {
+        // Follows Fluent: 20px tab icon.
+        IconSize = "1.25rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",

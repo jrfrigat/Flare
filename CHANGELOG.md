@@ -20,6 +20,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Breaking for custom themes: `FabTokens` gains `IconSizeSm` / `IconSizeMd` / `IconSizeLg` and
+  `TabsTokens` gains `IconSize`.** Neither component ever set an icon size, so the glyph fell back to
+  the icon component's own default - 22px on every FAB and every tab, whatever the size. On a FAB
+  that is worse than a wrong glyph: a FAB is its glyph plus padding, so the container was off too.
+  Material 3 Expressive's FABs measured 38, 54 and 78px against the 40, 56 and 96dp the spec
+  gives; with the spec glyph they are 40, 56 and 96, corners 12, 16 and 28. The large step also
+  takes 30dp of padding, because its 28dp corner makes it the large FAB rather than the medium one.
+  Tabs now draw a 24dp leading icon in Material 3 and Material 2 and 20px in Fluent, each from its
+  own spec; a speed dial's action buttons read the small FAB size instead of a hardcoded 20px. Aero
+  and Liquid Glass follow Material 3, Visual Studio follows Fluent.
+
 - **BREAKING: `PopoverPlacement` is now `Placement`, and `FlareFloatingActionMenu.Direction` is now
   `Placement` of that same type.** A speed dial could say which side of its FAB the actions open on,
   but not how they line up along it - they were always centred, so a FAB pinned to a screen corner

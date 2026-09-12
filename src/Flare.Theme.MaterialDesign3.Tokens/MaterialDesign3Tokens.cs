@@ -343,9 +343,16 @@ public class MaterialDesign3Tokens
     // FAB: padding-based sizing, large/medium/extra-large rounding.
     internal static readonly FabTokens Fab = new()
     {
+        // A FAB sizes itself as glyph plus padding on both sides, so the icon and the padding together
+        // make the container. Lg is the large FAB - its 28dp corner says so - which is
+        // md.comp.fab.large.*: a 36dp glyph in a 96dp container, hence 30dp of padding. Md is the
+        // baseline FAB (24dp glyph, 56dp container) and Sm the small one (24dp, 40dp).
+        IconSizeSm = "1.5rem",    // 24dp -> 40dp container
+        IconSizeMd = "1.5rem",    // 24dp -> 56dp container
+        IconSizeLg = "2.25rem",   // 36dp -> 96dp container
         PaddingSm = "0.5rem",
         PaddingMd = "1rem",
-        PaddingLg = "1.75rem",
+        PaddingLg = "1.875rem",   // 30dp
         RadiusSm = "var(--flare-shape-medium)",
         RadiusMd = "var(--flare-shape-large)",
         RadiusLg = "var(--flare-shape-extra-large)",
@@ -401,6 +408,8 @@ public class MaterialDesign3Tokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        // md.comp.primary-navigation-tab.with-icon.icon.size: 24dp.
+        IconSize = "1.5rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",

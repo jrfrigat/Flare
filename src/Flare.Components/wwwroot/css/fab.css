@@ -7,6 +7,9 @@
     height: auto;
     gap: var(--flare-fab-gap);
     padding: var(--flare-fab-padding-md);
+    /* The glyph size travels through the shared icon property. Without it the icon fell back to its own
+       default, and because a FAB is its glyph plus padding, that also put every container off size. */
+    --_flare-icon-size: var(--flare-fab-icon-size-md);
     border: none;
     border-radius: var(--flare-fab-radius-md);
     /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
@@ -26,11 +29,13 @@
 
 .flare-fab--sm {
     padding: var(--flare-fab-padding-sm);
+    --_flare-icon-size: var(--flare-fab-icon-size-sm);
     border-radius: var(--flare-fab-radius-sm);
 }
 
 .flare-fab--lg {
     padding: var(--flare-fab-padding-lg);
+    --_flare-icon-size: var(--flare-fab-icon-size-lg);
     border-radius: var(--flare-fab-radius-lg);
 }
 

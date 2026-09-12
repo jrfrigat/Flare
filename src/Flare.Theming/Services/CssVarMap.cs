@@ -387,6 +387,9 @@ public static class CssVarMap
         v[Css.Tokens.Fab.Shadow] = t.Fab.Shadow;
         v[Css.Tokens.Fab.HoverShadow] = t.Fab.HoverShadow;
         v[Css.Tokens.Fab.AnchorOffset] = t.Fab.AnchorOffset;
+        v[Css.Tokens.Fab.IconSize.Sm] = t.Fab.IconSizeSm;
+        v[Css.Tokens.Fab.IconSize.Md] = t.Fab.IconSizeMd;
+        v[Css.Tokens.Fab.IconSize.Lg] = t.Fab.IconSizeLg;
         #endregion
 
         #region MENU
@@ -442,6 +445,7 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.TabHeight] = t.Tabs.TabHeight;
         v[Css.Tokens.Tabs.TabMinWidth] = t.Tabs.TabMinWidth;
         v[Css.Tokens.Tabs.TabPaddingInline] = t.Tabs.TabPaddingInline;
+        v[Css.Tokens.Tabs.IconSize] = t.Tabs.IconSize;
         v[Css.Tokens.Tabs.ScrollDisabledOpacity] = t.Tabs.ScrollDisabledOpacity;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
         v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;

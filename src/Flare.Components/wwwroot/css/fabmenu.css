@@ -91,8 +91,8 @@
     box-shadow: var(--flare-elevation-1);
 }
 
-/* Small action FAB inherits themed .flare-fab / .flare-fab--sm; just size the glyph */
+/* Small action FAB inherits themed .flare-fab / .flare-fab--sm, glyph size included - it reads the small
+   FAB icon token through .flare-fab--sm rather than a literal of its own. */
 .flare-fab-menu__btn .flare-fab__icon {
-    font-size: 1.25rem;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

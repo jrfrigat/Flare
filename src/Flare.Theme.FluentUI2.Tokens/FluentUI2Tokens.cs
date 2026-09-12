@@ -298,6 +298,10 @@ public class FluentUI2Tokens
     // FAB: flatter Fluent rounding (4-8dp).
     internal static readonly FabTokens Fab = new()
     {
+        // Fluent circular button icon: 20px small and medium, 24px large.
+        IconSizeSm = "1.25rem",
+        IconSizeMd = "1.25rem",
+        IconSizeLg = "1.5rem",
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
         RadiusLg = "var(--flare-shape-large)",
@@ -465,6 +469,8 @@ public class FluentUI2Tokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        // Fluent tab icon: 20px at the medium tab.
+        IconSize = "1.25rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
