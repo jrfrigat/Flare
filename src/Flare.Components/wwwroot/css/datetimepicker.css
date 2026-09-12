@@ -16,6 +16,10 @@
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
    top/left/min-width are set via inline style from JS bounds. */
 .flare-datetimepicker__panel { min-width: 280px; }
+/* The clock dial is a fixed 256px; with the panel's own padding it needs more than the 280 floor.
+   Read off the rendered dial the way the split panes below do, rather than from a C# variant check -
+   the panel is positioned by the shared overlay engine and no longer carries a measured inline width. */
+.flare-datetimepicker__panel:has(.flare-clock-dial) { min-width: 320px; }
 
 /* Tabs */
 .flare-datetimepicker__tabs {

@@ -11,6 +11,11 @@
   display: flex;
   align-items: stretch;
   border-bottom: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
+  /* Once the bar cannot keep its own minimum beside the header zones, the bar takes a line of its
+     own rather than everything on the row being squeezed. Shrinking them all together left a title
+     painted over the tabs and an action button outside the tab set entirely: a flex item that is
+     narrower than its content does not clip it, it just overlaps whatever is next. */
+  flex-wrap: wrap;
 }
 
 /* Start/end zones for arbitrary content (titles, buttons) beside the tabs. The bar (flex:1)
@@ -29,7 +34,12 @@
 
 .flare-tabs__bar {
   display: flex;
-  flex: 1 1 auto;
+  /* The basis is the run of tabs worth keeping on the row, not the tabs' own width: with `auto` the
+     bar asked for its whole run, so the row was always over budget and every item shrank in
+     proportion - including the header zones, which cannot scroll and have nowhere to put the
+     overflow. With a fixed basis the bar takes the whole deficit (it scrolls, that is its job) and
+     wraps to its own line once even this much no longer fits. */
+  flex: 1 1 12rem;
   /* A flex item refuses to shrink below its content unless told to, so the bar kept its full tab run
      and pushed the end zone off the screen - the scroller was there and never used. */
   min-inline-size: 0;
@@ -107,7 +117,9 @@
 
 /* The vertical bar keeps its own layout; arrows are horizontal-only. Header zones stack
    above/below the column of tabs. */
-.flare-tabs--vertical .flare-tabs__bar-wrap { border-bottom: none; flex-direction: column; }
+/* A column wrap would break the bar into a second COLUMN, and the horizontal basis means nothing
+   along the block axis, so the vertical bar keeps the old sizing. */
+.flare-tabs--vertical .flare-tabs__bar-wrap { border-bottom: none; flex-direction: column; flex-wrap: nowrap; }
 
 .flare-tabs__tab {
   /* z-index:0 makes the tab its own stacking context so the state layer below can sit at -1: above
@@ -349,6 +361,7 @@
 .flare-tabs--vertical { flex-direction: row; }
 
 .flare-tabs--vertical .flare-tabs__bar {
+  flex-basis: auto;
   flex-direction: column;
   border-bottom: none;
   border-right: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
