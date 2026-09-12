@@ -35,11 +35,10 @@
     }
 
     /* A text button trades its container for tighter padding: 8dp, against the 16dp the contained
-       and outlined variants take (spec redline "Text button"). The ButtonTokens.TextPaddingInline
-       token says exactly this and is currently ignored - `.flare-btn--text` sets the local padding
-       property, and `.flare-btn--md` re-declares it further down the same stylesheet at the same
-       specificity - so the value is repeated here where it takes effect. When the core cascade is
-       fixed (see .claude/issues/button-text-padding-token-dead.md) this rule can go. */
+       and outlined variants take. ButtonTokens.TextPaddingInline carries that value but does not
+       reach the button: `.flare-btn--text` sets the local padding property and `.flare-btn--md`
+       re-declares it lower in the same stylesheet at equal specificity, so the size wins. Applying
+       the token here is what makes it take effect. */
     .flare-btn--text:not(.flare-btn--icon-only) {
         padding-inline: var(--flare-btn-text-padding-inline);
     }

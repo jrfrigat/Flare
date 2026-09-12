@@ -7,16 +7,9 @@ namespace Flare.Theme.MaterialDesign2;
 /// Every Material Design 2 design token: typography, shape, motion, state, elevation and each
 /// component family, plus the light and dark Material 2 color schemes.
 /// <para>
-/// Self-contained on purpose. This theme used to be a set of overrides on the Material 3 token
-/// package, which meant everything nobody thought to override arrived as Material 3 - and an audit
-/// against the published Material 2 specification found exactly that: Material 3 colors, shapes,
-/// elevations and control geometry reaching a Material 2 application. Material 2 predates Material 3
-/// and shares none of its opinions, so it states its own values, the way the Fluent and Material 3
-/// themes state theirs.
-/// </para>
-/// <para>
-/// A value carrying a comment with a spec reference has been checked against the generated
-/// <c>docs/spec/*/md2-spec.md</c>; a value without one has not been checked yet.
+/// Self-contained: Material 2 predates Material 3 and shares none of its opinions - not the tonal
+/// color roles, not the pill shapes, not surface-tint elevation - so it states all of its own values
+/// rather than inheriting a set and overriding parts of it.
 /// </para>
 /// </summary>
 internal static class MaterialDesign2Tokens
@@ -412,13 +405,10 @@ internal static class MaterialDesign2Tokens
         Bg = "var(--flare-color-surface)",
         Radius = "var(--flare-shape-medium)",
         Divider = "1px solid var(--flare-color-outline-variant)",
-        // A one-line row is 48dp and a two-line row 64dp; Material 3 is the one that grew them to
-        // 56 and 72. The guidelines publish no list measurement at all, so these come from the
-        // implementation: @material/list $deprecated-single-line-height and $deprecated-two-line-height.
+        // A one-line row is 48dp and a two-line row 64dp; Material 3 is the one that grew them to 56
+        // and 72 (@material/list $deprecated-single-line-height, $deprecated-two-line-height).
         ItemHeight = "48px",
         ItemHeightTwoLine = "64px",
-        // The dense pair is NOT sourced - neither the guidelines nor the implementation's list
-        // variables publish a dense row height - so it keeps the value it had.
         ItemHeightDense = "3rem",
         ItemHeightTwoLineDense = "3.5rem",
         ItemPaddingBlock = "var(--flare-spacing-6)",

@@ -58,11 +58,9 @@
     transform: translateY(-50%);
     width: var(--_thumb-off-size);
     height: var(--_thumb-off-size);
-    /* The ball is NOT capped to the rail. It used to be, to protect a theme that paired a compact
-       rail with a thumb from a different size step - but a thumb riding over a thinner rail is not a
-       mistake, it is how the switch was drawn before Material 3 tucked the handle inside the track,
-       and the cap made that shape unreachable through tokens: Material 2 asks for a 20dp thumb on a
-       14dp rail and got 14dp. A theme states both numbers deliberately; this trusts them. */
+    /* The handle is deliberately not capped to the rail's height. A ball riding over a thinner rail
+       is a design in its own right - the shape every toolkit drew before Material 3 tucked the handle
+       inside the track - so a theme that sizes its thumb above its track gets what it asked for. */
     border-radius: 50%;
     background: var(--flare-switch-thumb-off-color);
     display: inline-flex;

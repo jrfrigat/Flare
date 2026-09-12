@@ -34,11 +34,10 @@
 
 .flare-tabs__bar {
   display: flex;
-  /* The basis is the run of tabs worth keeping on the row, not the tabs' own width: with `auto` the
-     bar asked for its whole run, so the row was always over budget and every item shrank in
-     proportion - including the header zones, which cannot scroll and have nowhere to put the
-     overflow. With a fixed basis the bar takes the whole deficit (it scrolls, that is its job) and
-     wraps to its own line once even this much no longer fits. */
+  /* The basis is the run of tabs worth keeping on the row, not the tabs' own width. With `auto` the
+     bar asks for its whole run, the row goes over budget and flexbox shrinks every item in
+     proportion - the header zones included, and those cannot scroll. A fixed basis sends the whole
+     deficit to the bar, which can. */
   flex: 1 1 12rem;
   /* A flex item refuses to shrink below its content unless told to, so the bar kept its full tab run
      and pushed the end zone off the screen - the scroller was there and never used. */
