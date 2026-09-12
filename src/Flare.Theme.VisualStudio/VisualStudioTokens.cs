@@ -290,6 +290,9 @@ internal class VisualStudioTokens
         PillRadius = "var(--flare-shape-small)",
         TabDisabledOpacity = "1",
         ScrollDisabledOpacity = "1",
+        TabHeight = "auto",
+        TabMinWidth = "0",
+        TabPaddingInline = "var(--flare-spacing-10)",
     };
 
     internal static readonly SliderTokens Slider = FluentUI2Tokens.Design.Slider with

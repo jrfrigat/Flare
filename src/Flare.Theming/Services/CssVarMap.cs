@@ -423,6 +423,9 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.TrackBg] = t.Tabs.TrackBg;
         v[Css.Tokens.Tabs.PillRadius] = t.Tabs.PillRadius;
         v[Css.Tokens.Tabs.TabDisabledOpacity] = t.Tabs.TabDisabledOpacity;
+        v[Css.Tokens.Tabs.TabHeight] = t.Tabs.TabHeight;
+        v[Css.Tokens.Tabs.TabMinWidth] = t.Tabs.TabMinWidth;
+        v[Css.Tokens.Tabs.TabPaddingInline] = t.Tabs.TabPaddingInline;
         v[Css.Tokens.Tabs.ScrollDisabledOpacity] = t.Tabs.ScrollDisabledOpacity;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
         v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;

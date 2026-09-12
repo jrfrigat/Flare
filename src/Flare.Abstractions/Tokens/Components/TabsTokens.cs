@@ -66,4 +66,15 @@ public sealed record TabsTokens
     /// has reached one end. Separate from the tab, because a language may mute a spent affordance more
     /// heavily than an unavailable destination.</summary>
     [CssVar(Tabs.ScrollDisabledOpacity)] public required string ScrollDisabledOpacity { get; init; }
+
+    /// <summary>How tall a tab is. A language that sets the strip's height rather than letting the
+    /// label and its padding decide it names the number here.</summary>
+    [CssVar(Tabs.TabHeight)] public required string TabHeight { get; init; }
+
+    /// <summary>The narrowest a tab gets, so a one-word destination does not shrink to its label and
+    /// leave the strip looking ragged.</summary>
+    [CssVar(Tabs.TabMinWidth)] public required string TabMinWidth { get; init; }
+
+    /// <summary>Padding either side of a tab's content.</summary>
+    [CssVar(Tabs.TabPaddingInline)] public required string TabPaddingInline { get; init; }
 }

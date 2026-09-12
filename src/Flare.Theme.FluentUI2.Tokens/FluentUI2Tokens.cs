@@ -469,6 +469,9 @@ public class FluentUI2Tokens
         PillRadius = "var(--flare-shape-full)",
         TabDisabledOpacity = "1",
         ScrollDisabledOpacity = "1",
+        TabHeight = "auto",
+        TabMinWidth = "0",
+        TabPaddingInline = "var(--flare-spacing-10)",
     };
 
     // On-this-page - Fluent: rail style (vertical line + brand bar on the left of the active item),

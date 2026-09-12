@@ -396,6 +396,12 @@ internal static class MaterialDesign2Tokens
         PillRadius = "var(--flare-shape-full)",
         TabDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ScrollDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // 48dp tall with a 90dp minimum and 24dp either side. The guidelines publish no tab
+        // measurement, so these come from the implementation: @material/tab $height, $min-width
+        // and $horizontal-padding.
+        TabHeight = "48px",
+        TabMinWidth = "90px",
+        TabPaddingInline = "24px",
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,

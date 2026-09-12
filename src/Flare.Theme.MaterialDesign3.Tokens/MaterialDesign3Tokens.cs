@@ -407,6 +407,10 @@ public class MaterialDesign3Tokens
         PillRadius = "var(--flare-shape-full)",
         TabDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ScrollDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // The label and its padding decide the height here; no minimum width.
+        TabHeight = "auto",
+        TabMinWidth = "0",
+        TabPaddingInline = "var(--flare-spacing-10)",
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,

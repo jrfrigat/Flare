@@ -129,8 +129,14 @@
   z-index: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--flare-spacing-4);
-  padding: var(--flare-spacing-6) var(--flare-spacing-10);
+  /* The strip's own geometry, named by the theme: Material 2 sets a 48dp tab with a 90dp minimum,
+     Material 3 lets the label and its padding decide. A theme that wants the latter parks the height
+     at `auto` and the minimum at 0. */
+  min-block-size: var(--flare-tabs-tab-height);
+  min-inline-size: var(--flare-tabs-tab-min-width);
+  padding: var(--flare-spacing-6) var(--flare-tabs-tab-padding-inline);
   border: none;
   text-decoration: none;  /* FlareLinkTab reuses this class on its <a> items. */
   /* Active-indicator height 3dp; inactive label = on-surface */
