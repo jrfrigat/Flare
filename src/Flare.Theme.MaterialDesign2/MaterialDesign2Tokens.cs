@@ -294,6 +294,20 @@ internal static class MaterialDesign2Tokens
         StopColorSelected = "var(--flare-color-on-primary)",
     };
 
+    // A card rests at 1dp - which the shared baseline already says - and rises to 8dp when it is
+    // picked up, not to the 4dp the baseline steps to.
+    internal static readonly CardTokens Card = MaterialDesignTokens.Design.Card with
+    {
+        ElevationHover = "var(--flare-elevation-4)",
+    };
+
+    // The navigation drawer is 256dp wide here (spec redline "Standard navigation drawer"), against
+    // the 360dp Material 3 widened it to.
+    internal static readonly DrawerTokens Drawer = MaterialDesignTokens.Design.Drawer with
+    {
+        Width = "256px",
+    };
+
     // MD2 dialogs use a 4dp corner.
     internal static readonly DialogTokens Dialog = MaterialDesignTokens.Design.Dialog with { Radius = "var(--flare-shape-extra-small)" };
 
@@ -323,6 +337,8 @@ internal static class MaterialDesign2Tokens
         Chip = Chip,
         Checkbox = Checkbox,
         Switch = Switch,
+        Card = Card,
+        Drawer = Drawer,
         Tabs = Tabs,
         Slider = Slider,
         Dialog = Dialog,

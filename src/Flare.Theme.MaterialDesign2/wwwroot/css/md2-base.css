@@ -73,10 +73,9 @@
         box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
     }
 
-    /* A card rests at 1dp and rises to 8dp only when it is picked up. */
-    .flare-card {
-        box-shadow: var(--flare-elevation-1);
-    }
+    /* The card is deliberately absent from this list: it owns an elevation token, so its resting 1dp
+       and its picked-up 8dp are set there rather than here. So is the top app bar - the default
+       elevation table gives it "0 or 4dp", a choice the application makes, and it rests at 0. */
 
     /* A filled chip's container is the on-surface colour at 12%, which is what makes a Material 2
        chip read as a grey pill rather than as a tinted surface. The component reads

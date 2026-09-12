@@ -56,7 +56,8 @@ All notable changes to Flare are documented here. This project adheres to
   at 16dp, a snackbar and a resting FAB at 6dp, a card at 1dp, and all of them were arriving at 4dp
   or 8dp, because the shared six-step scale has no room for those values. The selection controls
   followed: a checkbox is 24dp rather than Material 3's 18dp, and the switch is a 20dp thumb riding
-  over a 34x14 rail rather than a thumb tucked inside a 52x32 pill.
+  over a 34x14 rail rather than a thumb tucked inside a 52x32 pill. A navigation drawer is 256dp
+  wide, not 360dp, and a card picked up by the pointer rises to 8dp, not 4dp.
 - **A switch's thumb may now be larger than its rail.** It was capped to the rail's height, which
   made the pre-Material-3 switch - a ball riding over a thin track, which is what Material 2, Fluent
   and most desktop toolkits draw - unreachable through tokens: a theme asking for a 20dp thumb on a
