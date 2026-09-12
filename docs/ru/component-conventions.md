@@ -77,8 +77,9 @@ select внутри нее рисовался на 896px правее окна �
 | Запись токенов (per-theme) | `src/Flare.Abstractions/Tokens/Components/<Comp>Tokens.cs` |
 | Имена CSS-переменных | `src/Flare.Abstractions/Css/Tokens/<Comp>Tokens.cs` (namespace `Flare.Css.Tokens`, holder-классы `Css.Tokens.<Comp>.*`; база/helper - `Css.Tokens.Vars`) |
 | Эмиссия переменных | `src/Flare.Theming/Services/CssVarMap.cs` |
-| Значения для MD3 | `src/Flare.Theme.MaterialDesign3Expressive/MaterialDesignTokens.cs` (+ dark theme) |
-| Значения для Fluent | `src/Flare.Theme.FluentUI2/FluentUI2Tokens.cs` (+ dark theme) |
+| Значения для MD3 | `src/Flare.Theme.MaterialDesign3.Tokens/MaterialDesign3Tokens.cs` (+ dark theme) |
+| Значения для Fluent | `src/Flare.Theme.FluentUI2.Tokens/FluentUI2Tokens.cs` (+ dark theme) |
+| Все остальные темы | Новое свойство токена `required`, поэтому его обязана задать каждая поставляемая тема: `.MaterialDesign2` (самодостаточная), `.Aero`, `.LiquidGlass`, `.VisualStudio` |
 | CSS-классы | `src/Flare.Abstractions/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder-классы `Css.Classes.<Comp>.*`) |
 
 > **Две системы токенов, связанные через `[CssVar]`.** `Css/Tokens/*` хранит константы ИМЕН переменных;

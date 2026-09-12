@@ -26,14 +26,16 @@ Flare построен как **чистая / луковичная (порты 
 
 Reference-пакеты токенов (-> только Flare.Abstractions): содержат полностью заполненный базовый
 DesignTokens, от которого производится каждая линейка тем (сам core не несет значений по умолчанию):
-  Flare.Theme.MaterialDesign3.Tokens (MaterialDesignTokens.Design),
+  Flare.Theme.MaterialDesign3.Tokens (MaterialDesign3Tokens.Design),
   Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
 
-Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming + reference-пакет своей линейки;
-umbrella не ссылается ни на один): семь поставляемых дизайн-систем -
-  Линейка Material (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .MaterialDesign3,
-    .MaterialDesign2, .Aero, .LiquidGlass
+Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming, плюс reference-пакет линейки, если тема
+разделяет ее мнения; umbrella не ссылается ни на один): семь поставляемых дизайн-систем -
+  Линейка Material 3 (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .Aero, .LiquidGlass
+    (.MaterialDesign3 наследует от .MaterialDesign3Expressive, а не напрямую от базы)
   Линейка Fluent (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
+  Самодостаточная: .MaterialDesign2 - она предшествует тональным палитрам, капсульным формам и
+    возвышению заливкой, которые несет база Material 3, поэтому задает все свои токены сама
 
 Опциональные пакеты компонентов (каждый -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode, .RichTextEditor, .Media, .IDE

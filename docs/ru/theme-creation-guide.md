@@ -85,8 +85,15 @@ Core Flare (`Flare.Abstractions`) **не несет значений токен�
 поэтому обязан задать *все* токены, что непрактично. Вместо этого **производите от опубликованного
 reference-пакета** и `with`-переопределяйте только отличия - именно так сделаны встроенные темы:
 
-- `Flare.Theme.MaterialDesign3.Tokens` -> `MaterialDesignTokens.Design` (база линейки Material)
+- `Flare.Theme.MaterialDesign3.Tokens` -> `MaterialDesign3Tokens.Design` (база линейки Material 3)
 - `Flare.Theme.FluentUI2.Tokens` -> `FluentUI2Tokens.Design` (база линейки Fluent)
+
+> **База - это дизайн-язык, а не стартовый набор.** Каждая несет мнения своей линейки - тональные
+> цветовые роли, капсульные формы и возвышение заливкой у Material 3, свой набор у Fluent, - и любой
+> токен, который вы не переопределили, приезжает вместе с ними. Наследуйте от той базы, на языке
+> которой говорите. Тема из другого языка должна задавать свои токены сама - так поступает
+> поставляемая тема Material 2; гард (`ThemeIndependenceTests`) держит кольца ядра свободными от
+> пакетов тем, но унаследовать чужой язык теме ничто не мешает.
 
 ```csharp
 using Flare.Abstractions;
@@ -99,11 +106,11 @@ public sealed class MyTheme : ITheme
     public string DisplayName => "My Custom Theme";
 
     // Стартуем от полностью заполненного reference; переопределяем только нужные токены.
-    public DesignTokens Design => MaterialDesignTokens.Design with
+    public DesignTokens Design => MaterialDesign3Tokens.Design with
     {
         FocusRing = "2px solid var(--flare-color-primary)",
-        Shape = MaterialDesignTokens.Design.Shape with { Medium = "6px" },
-        Button = MaterialDesignTokens.Design.Button with { HeightMd = "2.5rem" },
+        Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "6px" },
+        Button = MaterialDesign3Tokens.Design.Button with { HeightMd = "2.5rem" },
         // ... только токены, отличающиеся от базы
     };
 

@@ -29,14 +29,16 @@ root (`Flare.Blazor`) is the only package that binds ports to their adapter impl
 
 Reference token packages (-> Flare.Abstractions only): hold the fully-populated baseline
 DesignTokens each lineage derives from (the core itself ships no default token values):
-  Flare.Theme.MaterialDesign3.Tokens (MaterialDesignTokens.Design),
+  Flare.Theme.MaterialDesign3.Tokens (MaterialDesign3Tokens.Design),
   Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
 
-Theme packages (each -> Flare.Abstractions + Flare.Theming + its lineage's *.Tokens package;
-none referenced by the umbrella): the seven shipped design systems -
-  Material lineage (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .MaterialDesign3,
-    .MaterialDesign2, .Aero, .LiquidGlass
+Theme packages (each -> Flare.Abstractions + Flare.Theming, plus a lineage's *.Tokens package if it
+shares that lineage's opinions; none referenced by the umbrella): the seven shipped design systems -
+  Material 3 lineage (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .Aero, .LiquidGlass
+    (.MaterialDesign3 derives from .MaterialDesign3Expressive rather than the baseline directly)
   Fluent lineage (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
+  Self-contained: .MaterialDesign2 - it predates the tonal palettes, pill shapes and surface-tint
+    elevation the Material 3 baseline carries, so it states all of its own tokens instead
 
 Optional component packages (each -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode, .RichTextEditor, .Media, .IDE

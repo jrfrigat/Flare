@@ -76,8 +76,9 @@ base style when it finishes and holds nothing. Held by `SettledTransformTests`.
 | Token values (per-theme) | `src/Flare.Abstractions/Tokens/Components/<Comp>Tokens.cs` |
 | CSS variable names | `src/Flare.Abstractions/Css/Tokens/<Comp>Tokens.cs` (namespace `Flare.Css.Tokens`, holder classes `Css.Tokens.<Comp>.*`; base/helper - `Css.Tokens.Vars`) |
 | Variable emission | `src/Flare.Theming/Services/CssVarMap.cs` |
-| MD3 values | `src/Flare.Theme.MaterialDesign3Expressive/MaterialDesignTokens.cs` (+ dark theme) |
-| Fluent values | `src/Flare.Theme.FluentUI2/FluentUI2Tokens.cs` (+ dark theme) |
+| MD3 values | `src/Flare.Theme.MaterialDesign3.Tokens/MaterialDesign3Tokens.cs` (+ dark theme) |
+| Fluent values | `src/Flare.Theme.FluentUI2.Tokens/FluentUI2Tokens.cs` (+ dark theme) |
+| Every other theme | A new token property is `required`, so each shipped theme must state it: `.MaterialDesign2` (self-contained), `.Aero`, `.LiquidGlass`, `.VisualStudio` |
 | CSS classes | `src/Flare.Abstractions/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder classes `Css.Classes.<Comp>.*`) |
 
 > **Two token systems, linked by `[CssVar]`.** `Css/Tokens/*` holds the variable NAME constants; the

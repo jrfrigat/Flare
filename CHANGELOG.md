@@ -78,7 +78,8 @@ All notable changes to Flare are documented here. This project adheres to
   overrides on the Material 3 baseline, so every value nobody thought to override arrived as Material
   3 - which is how Material 3 colours, shapes, elevations and control geometry ended up in a Material
   2 application. It now states all of its own tokens, the way the Fluent and Material 3 themes do, and
-  a guard refuses a reference from one theme package to another. The base it used to sit on is
+  a guard (`MaterialDesign2_DoesNotBuildOnMaterialDesign3Tokens`) refuses it a reference to any other
+  theme package. The base it used to sit on is
   renamed in the same move, above. No token value changed here - 829 of them carried across
   untouched.
 - **A chip is as tall as its height token says.** It stood 34px against a token reading 32, because

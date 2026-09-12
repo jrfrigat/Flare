@@ -85,8 +85,15 @@ opinion (guarded by `ThemeIndependenceTests`). A bare `new DesignTokens { ... }`
 *every* token, which is impractical. Instead, **derive from a published reference package** and
 `with`-override only what differs - this is exactly what the built-in themes do:
 
-- `Flare.Theme.MaterialDesign3.Tokens` -> `MaterialDesignTokens.Design` (Material lineage baseline)
+- `Flare.Theme.MaterialDesign3.Tokens` -> `MaterialDesign3Tokens.Design` (Material 3 lineage baseline)
 - `Flare.Theme.FluentUI2.Tokens` -> `FluentUI2Tokens.Design` (Fluent lineage baseline)
+
+> **A baseline is a design language, not a starter kit.** Each one carries its lineage's opinions -
+> Material 3's tonal colour roles, pill shapes and surface-tint elevation; Fluent's own set - and
+> every token you do not override arrives with them. Derive from the one whose language you are
+> speaking. A theme from a different language should state its own tokens instead, the way the
+> shipped Material 2 theme does; a guard (`ThemeIndependenceTests`) keeps the core rings free of
+> theme packages, but nothing stops a theme from inheriting a language it does not speak.
 
 ```csharp
 using Flare.Abstractions;
@@ -99,11 +106,11 @@ public sealed class MyTheme : ITheme
     public string DisplayName => "My Custom Theme";
 
     // Start from a fully-populated reference; override only the tokens you care about.
-    public DesignTokens Design => MaterialDesignTokens.Design with
+    public DesignTokens Design => MaterialDesign3Tokens.Design with
     {
         FocusRing = "2px solid var(--flare-color-primary)",
-        Shape = MaterialDesignTokens.Design.Shape with { Medium = "6px" },
-        Button = MaterialDesignTokens.Design.Button with { HeightMd = "2.5rem" },
+        Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "6px" },
+        Button = MaterialDesign3Tokens.Design.Button with { HeightMd = "2.5rem" },
         // ... only the tokens that differ from the base
     };
 
