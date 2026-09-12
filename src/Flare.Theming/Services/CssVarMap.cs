@@ -410,6 +410,16 @@ public static class CssVarMap
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Chip.FilledBg] = t.Chip.FilledBg;
         v[Css.Tokens.Chip.ElevatedBg] = t.Chip.ElevatedBg;
+        v[Css.Tokens.Chip.IconSize.Xs] = t.Chip.IconSizeXs;
+        v[Css.Tokens.Chip.IconSize.Sm] = t.Chip.IconSizeSm;
+        v[Css.Tokens.Chip.IconSize.Md] = t.Chip.IconSizeMd;
+        v[Css.Tokens.Chip.IconSize.Lg] = t.Chip.IconSizeLg;
+        v[Css.Tokens.Chip.IconSize.Xl] = t.Chip.IconSizeXl;
+        v[Css.Tokens.Chip.AvatarSize.Xs] = t.Chip.AvatarSizeXs;
+        v[Css.Tokens.Chip.AvatarSize.Sm] = t.Chip.AvatarSizeSm;
+        v[Css.Tokens.Chip.AvatarSize.Md] = t.Chip.AvatarSizeMd;
+        v[Css.Tokens.Chip.AvatarSize.Lg] = t.Chip.AvatarSizeLg;
+        v[Css.Tokens.Chip.AvatarSize.Xl] = t.Chip.AvatarSizeXl;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
         v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
         v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;

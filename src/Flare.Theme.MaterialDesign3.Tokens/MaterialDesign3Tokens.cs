@@ -383,6 +383,17 @@ public class MaterialDesign3Tokens
     };
     internal static readonly ChipTokens Chip = new()
     {
+        // 18dp at md - md.comp.*-chip.with-icon.icon.size; the ramp follows the label scale.
+        IconSizeXs = "0.875rem",
+        IconSizeSm = "1rem",
+        IconSizeMd = "1.125rem",
+        IconSizeLg = "1.25rem",
+        IconSizeXl = "1.5rem",
+        AvatarSizeXs = "1rem",
+        AvatarSizeSm = "1.125rem",
+        AvatarSizeMd = "1.5rem",
+        AvatarSizeLg = "1.875rem",
+        AvatarSizeXl = "2.25rem",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp

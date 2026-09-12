@@ -20,6 +20,16 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Breaking for custom themes: `ChipTokens` has ten new `required` properties.**
+  `IconSizeXs..Xl` sizes a chip's leading and trailing icons and `AvatarSizeXs..Xl` its avatar. The
+  chip never had an icon size, so the glyph fell back to the icon component's own default and drew
+  22px on a 32dp chip - taller than wide, too - where Material asks for 18dp; the close glyph drew
+  12.6px. Both ends now read one ramp, since a language sizes the icon at one end the way it sizes
+  it at the other, and they read it through the library-wide icon property rather than a chip-only
+  one. The avatar ramp was already right and already correct at 24dp; it was just five literals in
+  the component stylesheet that no theme could reach. Measured afterwards on a medium chip: icon
+  18x18, close glyph 18px, avatar 24x24, height still 32.
+
 - **BREAKING: `ButtonTokens.TextPaddingInline` is now a ladder of five - `TextPaddingInlineXs`
   through `TextPaddingInlineXl`.** The single property never reached a button. Two rules in
   `button.css` wrote the same local property at equal specificity, and the one that won was the size

@@ -362,7 +362,7 @@ internal static class MaterialDesign2Tokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     // MD2 chips are fully rounded ("stadium") at 32dp.
-    internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)" };
+    internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = new()
     {

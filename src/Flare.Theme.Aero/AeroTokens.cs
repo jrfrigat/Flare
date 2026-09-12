@@ -265,7 +265,7 @@ internal class AeroTokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
-    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)" };
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
     internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs;
 
     internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
