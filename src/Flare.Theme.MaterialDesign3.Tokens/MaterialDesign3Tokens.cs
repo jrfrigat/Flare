@@ -728,6 +728,14 @@ public class MaterialDesign3Tokens
         LinearHeightMd = "4px",   // spec: linear height (the default)
         LinearHeightLg = "6px",
         LinearHeightXl = "8px",   // spec: linear thick height
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
         LinearIndeterminateDuration = "1500ms",

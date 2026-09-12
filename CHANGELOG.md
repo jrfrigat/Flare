@@ -5,6 +5,19 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.36.0] - Unreleased
 
+### Added
+
+- **`FlareProgressCircular` and `FlareProgressLinear` take `ChildContent`.** A percentage in the
+  middle of a ring is the commonest thing anyone wants there, and until now every caller wrote the
+  same relative-positioned wrapper and kept it centred by hand. The content is an overlay, not a
+  layout child, so the indicator's own geometry is untouched: the ring still measures itself and the
+  bar still fills by width. A linear track does not grow to fit a label - it is a few pixels tall by
+  design - so the label rides across it; keep it short. Its type size is a per-size theme token
+  (`ProgressTokens.ContentSizeXs..Xl`, plus `ContentColor`), so a label dropped into the smallest
+  indicator still fits it, and anything placed inside overrides it. The content is `aria-hidden`:
+  the indicator already announces its value and a reader would otherwise say the number twice - set
+  `aria-valuetext` when the content says something the value does not.
+
 ### Changed
 
 - **BREAKING: `ButtonTokens.TextPaddingInline` is now a ladder of five - `TextPaddingInlineXs`
@@ -15,13 +28,6 @@ All notable changes to Flare are documented here. This project adheres to
   button painted `16px`. The variant now outranks the size, and the token is per size for the same
   reason the contained padding is: the tightening that reads right beside a small label is cramped
   beside a large one. A custom theme replaces its one value with five.
-- **A text button is now tighter than a contained one, which is what every theme had already asked
-  for.** Because the old token never applied, text buttons rendered with the contained padding; they
-  now take the value their theme declares. In Material 3 Expressive a medium text button goes from
-  24px to 12px, in Material 2 from 16px to 8px. Icon-only buttons are untouched - they zero their
-  padding with a direct declaration rather than through the token.
-
-### Fixed
 
 - **BREAKING: `Md3` and `Fluent2` are gone; use `MaterialDesign3Tokens` and `FluentUI2Tokens`.** Both
   were wrappers that forwarded `DesignReference` / `LightColors` / `DarkColors` to types that are
@@ -30,6 +36,7 @@ All notable changes to Flare are documented here. This project adheres to
   to avoid. `Md3.DesignReference` becomes `MaterialDesign3Tokens.Design`, `Fluent2.LightColors`
   becomes `FluentUI2Tokens.LightColors`, and so on. `Aero`, `LiquidGlass` and `VisualStudio` keep
   theirs: those wrap internal types and are the only public way in.
+
 - **The Material 3 reference package now holds baseline Material 3, not Expressive.** It is what
   every Material 3 theme derives from, and it carried Expressive's opinions: buttons whose label
   ramps to title-medium / headline-small / headline-large with the container, and the Expressive
@@ -40,11 +47,20 @@ All notable changes to Flare are documented here. This project adheres to
   is what "Expressive overrides only what it changes" is supposed to mean. Neither theme moves: all
   979 of the baseline theme's token values and all 983 of Expressive's are unchanged, compared
   before and after.
+
+- **A text button is now tighter than a contained one, which is what every theme had already asked
+  for.** Because the old token never applied, text buttons rendered with the contained padding; they
+  now take the value their theme declares. In Material 3 Expressive a medium text button goes from
+  24px to 12px, in Material 2 from 16px to 8px. Icon-only buttons are untouched - they zero their
+  padding with a direct declaration rather than through the token.
+
 - **The Aero and Liquid Glass menus are the classic Material 3 menu again.** Both take the reference
   menu as it stands, so both had been drawing Expressive's island groups - inherited, never chosen.
   Eleven menu tokens change for each: the panel drops from 16dp to 4dp, items lose their 4dp corners
   and 2dp gaps, and a group stops being a separate elevated surface. A theme that wants the island
   back says so in eleven lines.
+
+### Fixed
 
 - **A meter separates its parts wherever the theme separates a progress bar's.** `FlareMeter`
   already borrows the linear progress track tokens for its height, rounded ends and resting

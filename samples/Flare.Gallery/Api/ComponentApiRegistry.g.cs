@@ -4668,6 +4668,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content centred inside the ring - a percentage, an icon, a short count. Purely decorative to assistive technology: the indicator already announces its value, so set aria-valuetext on the component when the content says something the value does not.", null, false, false, false, @"FlareProgressCircular"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgressBase"),
@@ -4699,6 +4700,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgressLinear"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content centred over the track - a percentage, a short count, an icon. The track does not grow to fit it: a bar is a few dp tall by design, so a label sits across it and the caller picks a size that reads. Purely decorative to assistive technology: the indicator already announces its value, so set aria-valuetext on the component when the content says something else.", null, false, false, false, @"FlareProgressLinear"),
                 new ApiParameterInfo(@"Variant", @"LinearProgressVariant", @"LinearProgressVariant.Bar", @"Which shape the linear track takes.", null, false, false, false, @"FlareProgressLinear"),
                 new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Because zones need an uninterrupted track, using them renders a continuous track instead of the split one (gap plus trailing stop dot).", null, false, false, false, @"FlareProgressLinear"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),

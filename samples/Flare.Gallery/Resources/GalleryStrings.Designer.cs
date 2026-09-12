@@ -6609,6 +6609,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Content on the indicator.
+        /// </summary>
+        public static string Progress_Content {
+            get {
+                return ResourceManager.GetString("Progress_Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ChildContent is centred on the ring or the bar..
+        /// </summary>
+        public static string Progress_ContentDesc {
+            get {
+                return ResourceManager.GetString("Progress_ContentDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Circular.
         /// </summary>
         public static string Progress_Circular {

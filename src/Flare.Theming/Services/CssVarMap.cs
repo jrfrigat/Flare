@@ -877,6 +877,12 @@ public static class CssVarMap
         v[Css.Tokens.ProgressField.LinearHeight.Md] = t.Progress.LinearHeightMd;
         v[Css.Tokens.ProgressField.LinearHeight.Lg] = t.Progress.LinearHeightLg;
         v[Css.Tokens.ProgressField.LinearHeight.Xl] = t.Progress.LinearHeightXl;
+        v[Css.Tokens.ProgressField.ContentColor] = t.Progress.ContentColor;
+        v[Css.Tokens.ProgressField.ContentSize.Xs] = t.Progress.ContentSizeXs;
+        v[Css.Tokens.ProgressField.ContentSize.Sm] = t.Progress.ContentSizeSm;
+        v[Css.Tokens.ProgressField.ContentSize.Md] = t.Progress.ContentSizeMd;
+        v[Css.Tokens.ProgressField.ContentSize.Lg] = t.Progress.ContentSizeLg;
+        v[Css.Tokens.ProgressField.ContentSize.Xl] = t.Progress.ContentSizeXl;
         v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
         v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
         v[Css.Tokens.ProgressField.LinearIndeterminateDuration] = t.Progress.LinearIndeterminateDuration;

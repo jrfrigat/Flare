@@ -737,6 +737,14 @@ public class FluentUI2Tokens
         LinearHeightMd = "2px",   // spec: bar thickness (medium, the default)
         LinearHeightLg = "3px",
         LinearHeightXl = "4px",   // spec: bar thickness (large)
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-extra-small)",
         Gap = "0px",
         LinearIndeterminateDuration = "1500ms",

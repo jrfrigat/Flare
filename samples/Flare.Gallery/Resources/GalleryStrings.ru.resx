@@ -1764,6 +1764,12 @@
   <data name="Progress_WaveSizes" xml:space="preserve">
     <value>Волна идет по общей линейке размеров</value>
   </data>
+  <data name="Progress_Content" xml:space="preserve">
+    <value>Содержимое на индикаторе</value>
+  </data>
+  <data name="Progress_ContentDesc" xml:space="preserve">
+    <value>ChildContent центрируется на кольце или на полосе. Размер текста берется от шага размера, поэтому в самый маленький индикатор попадает метка, которая в него влезает.</value>
+  </data>
   <data name="Progress_Circular" xml:space="preserve">
     <value>Круговой</value>
   </data>

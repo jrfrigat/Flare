@@ -392,6 +392,14 @@ internal class VisualStudioTokens
     // Progress - thin VS bar (derives Fluent's already-flat progress).
     internal static readonly ProgressTokens Progress = FluentUI2Tokens.Design.Progress with
     {
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-extra-small)",
         // Md is the thickness Visual Studio has always drawn; the ramp runs both ways from it.
         LinearHeightXs = "0.25rem",

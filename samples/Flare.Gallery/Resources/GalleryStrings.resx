@@ -1764,6 +1764,12 @@
   <data name="Progress_WaveSizes" xml:space="preserve">
     <value>The wave follows the shared size ramp</value>
   </data>
+  <data name="Progress_Content" xml:space="preserve">
+    <value>Content on the indicator</value>
+  </data>
+  <data name="Progress_ContentDesc" xml:space="preserve">
+    <value>ChildContent is centred on the ring or the bar. Its type size comes from the size step, so the smallest indicator gets a label that fits it.</value>
+  </data>
   <data name="Progress_Circular" xml:space="preserve">
     <value>Circular</value>
   </data>
