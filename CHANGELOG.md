@@ -21,6 +21,21 @@ All notable changes to Flare are documented here. This project adheres to
   24px to 12px, in Material 2 from 16px to 8px. Icon-only buttons are untouched - they zero their
   padding with a direct declaration rather than through the token.
 
+### Fixed
+
+- **A slider under RTL fills from the correct end.** Its track, fill, zones, stop dots, marks and
+  value bubble were all placed with physical `left` / `right` / `margin-right` - about a dozen and a
+  half declarations in the stylesheet, plus the inline styles that position every band on the rail.
+  Under RTL the native input flips its own value axis, so the thumb moved right-to-left while the
+  paint stayed anchored to the left: the fill and the handle ended up at opposite ends of the same
+  track. Everything is now logical, corners included - a band names `border-start-start-radius`
+  rather than a corner order that only reads correctly left-to-right. Measured on the component
+  gallery with a real click a quarter of the way in from the left edge: left-to-right it sets 25 and
+  the fill hugs the left edge, right-to-left it sets 75 and the fill hugs the right, with the stop
+  dots and marks landing on the same percentages in both. A vertical slider runs along the block
+  axis and is unchanged. `slider.css` now sits under `LogicalDirectionTests` with progress and
+  meter; the guard was confirmed to fail on a planted `left:` and `margin-right:` before it passed.
+
 ## [0.35.0] - 2026-09-12
 
 ### Changed

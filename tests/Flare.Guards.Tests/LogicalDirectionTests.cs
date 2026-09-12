@@ -11,9 +11,8 @@ public sealed class LogicalDirectionTests
 {
     // Files whose inline-direction geometry is load-bearing. Kept explicit rather than repo-wide:
     // a physical offset is legitimate in plenty of places (a decorative corner, an LTR-only glyph),
-    // so this guard covers the components whose ends carry meaning. slider.css is not here yet - it
-    // still has around a dozen physical offsets, which is its own piece of work.
-    private static readonly string[] Guarded = ["progress.css", "meter.css"];
+    // so this guard covers the components whose ends carry meaning.
+    private static readonly string[] Guarded = ["progress.css", "meter.css", "slider.css"];
 
     private static readonly string[] Physical =
     [

@@ -38,6 +38,17 @@
     --_stop-sel:    var(--flare-slider-stop-color-selected);
     --_value-bg:    var(--flare-slider-value-bg);
     --_value-color: var(--flare-slider-value-color);
+    /* Inline-direction sign. Everything on the track is placed with inset-inline-start and then
+       centred on that point by shifting half its own width - and that shift is a transform, which
+       has no logical form. Under RTL the offset is measured from the other edge, so the shift has
+       to point the other way; the same goes for the vertical bubble's growth origin. */
+    --_dir: 1;
+    --_bubble-origin-x: left;
+}
+
+[dir="rtl"] .flare-slider {
+    --_dir: -1;
+    --_bubble-origin-x: right;
 }
 
 /* ---- Size selection ----
@@ -144,8 +155,7 @@
 /* ---- Visual rail segments (decorative; input handles interaction) ---- */
 .flare-slider__rail {
     position: absolute;
-    left: 0;
-    right: 0;
+    inset-inline: 0;
     top: 50%;
     height: var(--_trk-height);
     transform: translateY(-50%);
@@ -181,7 +191,7 @@
 /* Vertical: zones run bottom(start) -> top(end) along the block axis (mirrors __seg). */
 .flare-slider--vertical .flare-slider__zone {
     top: auto;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
     height: auto;
 }
@@ -259,8 +269,7 @@
 /* ---- Stop indicators (Stepper) ---- */
 .flare-slider__ticks {
     position: absolute;
-    left: 0;
-    right: 0;
+    inset-inline: 0;
     top: 50%;
     height: 0;
     pointer-events: none;
@@ -269,7 +278,7 @@
 .flare-slider__tick {
     position: absolute;
     top: 0;
-    transform: translate(-50%, -50%);
+    transform: translate(calc(-50% * var(--_dir)), -50%);
     width: var(--flare-slider-stop-size);
     height: var(--flare-slider-stop-size);
     border-radius: 50%;
@@ -283,8 +292,7 @@
 .flare-slider--with-marks .flare-slider__track-area { margin-bottom: var(--flare-spacing-12); }
 .flare-slider__marks {
     position: absolute;
-    left: 0;
-    right: 0;
+    inset-inline: 0;
     top: calc(50% + var(--_trk-height) / 2 + 0.25rem);
     height: 0;
     pointer-events: none;
@@ -292,7 +300,7 @@
 .flare-slider__mark {
     position: absolute;
     top: 0;
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% * var(--_dir)));
     white-space: nowrap;
     font-family: var(--flare-typescale-label-small-font);
     font-size: var(--flare-typescale-label-small-size);
@@ -305,11 +313,11 @@
 /* vertical: marks run to the right of the track */
 .flare-slider--vertical.flare-slider--with-marks .flare-slider__track-area {
     margin-bottom: 0;
-    margin-right: 2.5rem;
+    margin-inline-end: 2.5rem;
 }
 .flare-slider--vertical .flare-slider__marks {
-    left: calc(50% + var(--_trk-height) / 2 + 0.5rem);
-    right: auto;
+    inset-inline-start: calc(50% + var(--_trk-height) / 2 + 0.5rem);
+    inset-inline-end: auto;
     top: 0;
     bottom: 0;
     width: 0;
@@ -317,7 +325,7 @@
 }
 .flare-slider--vertical .flare-slider__mark {
     top: auto;
-    left: 0;
+    inset-inline-start: 0;
     transform: translateY(50%);
 }
 
@@ -328,8 +336,8 @@
 .flare-slider__bubble {
     position: absolute;
     bottom: calc(100% - 6px);
-    left: var(--_pct, 0%);
-    transform: translateX(-50%) scale(0.8);
+    inset-inline-start: var(--_pct, 0%);
+    transform: translateX(calc(-50% * var(--_dir))) scale(0.8);
     transform-origin: bottom center;
     min-width: 3rem;
     box-sizing: border-box;
@@ -350,7 +358,7 @@
 .flare-slider__track-wrap:hover .flare-slider__bubble,
 .flare-slider__track-wrap:focus-within .flare-slider__bubble {
     opacity: 1;
-    transform: translateX(-50%) scale(1);
+    transform: translateX(calc(-50% * var(--_dir))) scale(1);
 }
 
 /* __helper style comes from the shared supporting-text rule (input.css). */
@@ -371,10 +379,10 @@
     z-index: 3;
 }
 /* second value bubble tracks the high handle */
-.flare-slider__bubble--high { left: var(--_pct-end, 0%); }
+.flare-slider__bubble--high { inset-inline-start: var(--_pct-end, 0%); }
 .flare-slider--vertical .flare-slider__bubble--high {
     bottom: var(--_pct-end, 0%);
-    left: calc(100% - 6px);
+    inset-inline-start: calc(100% - 6px);
 }
 
 /* ==========================================================================
@@ -401,17 +409,17 @@
 }
 /* rail runs vertically, centred horizontally */
 .flare-slider--vertical .flare-slider__rail {
-    left: 50%;
-    right: auto;
+    inset-inline-start: 50%;
+    inset-inline-end: auto;
     top: 0;
     bottom: 0;
     width: var(--_trk-height);
     height: auto;
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% * var(--_dir)));
 }
 .flare-slider--vertical .flare-slider__seg {
     top: auto;
-    left: 0;
+    inset-inline-start: 0;
     width: 100%;
     height: auto;
 }
@@ -444,8 +452,8 @@
 }
 /* ticks sit on the vertical rail */
 .flare-slider--vertical .flare-slider__ticks {
-    left: 50%;
-    right: auto;
+    inset-inline-start: 50%;
+    inset-inline-end: auto;
     top: 0;
     bottom: 0;
     width: 0;
@@ -453,14 +461,14 @@
 }
 .flare-slider--vertical .flare-slider__tick {
     top: auto;
-    left: 0;
+    inset-inline-start: 0;
 }
 /* value bubble to the right of the handle, upright */
 .flare-slider--vertical .flare-slider__bubble {
     bottom: var(--_pct, 0%);
-    left: calc(100% - 6px);
+    inset-inline-start: calc(100% - 6px);
     transform: translateY(50%) scale(0.8);
-    transform-origin: left center;
+    transform-origin: var(--_bubble-origin-x) center;
 }
 .flare-slider--vertical .flare-slider__track-wrap:hover .flare-slider__bubble,
 .flare-slider--vertical .flare-slider__track-wrap:focus-within .flare-slider__bubble {
