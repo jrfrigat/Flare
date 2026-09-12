@@ -406,8 +406,13 @@ internal static class MaterialDesign2Tokens
         Bg = "var(--flare-color-surface)",
         Radius = "var(--flare-shape-medium)",
         Divider = "1px solid var(--flare-color-outline-variant)",
-        ItemHeight = "3.5rem",
-        ItemHeightTwoLine = "4.5rem",
+        // A one-line row is 48dp and a two-line row 64dp; Material 3 is the one that grew them to
+        // 56 and 72. The guidelines publish no list measurement at all, so these come from the
+        // implementation: @material/list $deprecated-single-line-height and $deprecated-two-line-height.
+        ItemHeight = "48px",
+        ItemHeightTwoLine = "64px",
+        // The dense pair is NOT sourced - neither the guidelines nor the implementation's list
+        // variables publish a dense row height - so it keeps the value it had.
         ItemHeightDense = "3rem",
         ItemHeightTwoLineDense = "3.5rem",
         ItemPaddingBlock = "var(--flare-spacing-6)",
