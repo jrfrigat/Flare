@@ -121,8 +121,8 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 
 - Тема = дизайн-система (`DesignTokens`) + `DefaultPaletteId` + `StyleAssets`. Светлая/темная это
   **режим**, а не отдельная тема; цвета приходят из **палитры**.
-- Каждый пакет экспортирует публичные reference-токены (например `Md3.DesignReference`, `Md3.LightColors`,
-  `Md3.DarkColors`), чтобы выводить кастомные темы/палитры через `with`.
+- Каждый пакет экспортирует публичные reference-токены (например `MaterialDesign3Tokens.Design`,
+  `MaterialDesign3Tokens.LightColors`, `MaterialDesign3Tokens.DarkColors`), чтобы выводить кастомные темы/палитры через `with`.
 - Каждый несет `IPaletteGenerator` по правилам цвета своей дизайн-системы (тональный MD3 / рампа).
 - `StyleAssets` перечисляет статический CSS темы (шрифты, базовый сброс, сгенерированный CSS токенов),
   чтобы нужные токены присутствовали до первого кадра (анти-FOUC).
@@ -254,7 +254,7 @@ Palette
 
 `DesignTokens`, `ColorScheme` и `Palette` это `record`-типы со свойствами `required init` -
 конструирование проверяется на этапе компиляции и неизменяемо. Кастомные значения выводятся через
-`with` из публичных reference-экземпляров (например `Md3.LightColors with { Primary = "..." }`).
+`with` из публичных reference-экземпляров (например `MaterialDesign3Tokens.LightColors with { Primary = "..." }`).
 
 ### Доставка темы
 

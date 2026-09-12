@@ -24,6 +24,13 @@
 
 ### Исправлено
 
+- **BREAKING: `Md3` и `Fluent2` удалены, вместо них `MaterialDesign3Tokens` и `FluentUI2Tokens`.** Оба
+  были обертками, пробрасывавшими `DesignReference` / `LightColors` / `DarkColors` в типы, которые и
+  так публичны в reference-пакетах токенов, и оба лежали в пакете *темы*: чтобы взять базу линейки,
+  приходилось зависеть от темы - ровно та связанность, ради устранения которой reference-пакеты и
+  заведены. `Md3.DesignReference` становится `MaterialDesign3Tokens.Design`, `Fluent2.LightColors` -
+  `FluentUI2Tokens.LightColors`, и так далее. У `Aero`, `LiquidGlass` и `VisualStudio` обертки
+  остаются: они закрывают internal-типы и являются единственным публичным доступом.
 - **Reference-пакет Material 3 теперь содержит базовый Material 3, а не Expressive.** От него
   наследует каждая тема линейки, а лежали в нем мнения Expressive: кнопка, у которой метка растет
   вместе с контейнером до title-medium / headline-small / headline-large, и «островное» меню - панель

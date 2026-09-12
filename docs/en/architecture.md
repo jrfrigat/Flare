@@ -135,8 +135,8 @@ A runtime-only **Dynamic Color** palette (`Palette.DynamicId = "dynamic"`) can a
 
 - A theme = a design system (`DesignTokens`) + a `DefaultPaletteId` + `StyleAssets`. Light/dark is a
   **mode**, not a separate theme; colors come from a **palette**.
-- Each package exposes public reference tokens (e.g. `Md3.DesignReference`, `Md3.LightColors`,
-  `Md3.DarkColors`) so custom themes/palettes can be derived with `with` expressions.
+- Each package exposes public reference tokens (e.g. `MaterialDesign3Tokens.Design`,
+  `MaterialDesign3Tokens.LightColors`, `MaterialDesign3Tokens.DarkColors`) so custom themes/palettes can be derived with `with` expressions.
 - Each carries an `IPaletteGenerator` matching the design system's color rules (MD3 tonal / ramp).
 - `StyleAssets` lists the static CSS the theme needs (fonts, base reset, generated token CSS) so
   the correct tokens are present on first paint (anti-FOUC).
@@ -279,7 +279,7 @@ Palette
 
 `DesignTokens`, `ColorScheme`, and `Palette` are C# `record` types with `required init` properties -
 construction is compile-time checked and immutable. Custom values are derived with `with`
-expressions from the published reference instances (e.g. `Md3.LightColors with { Primary = "..." }`).
+expressions from the published reference instances (e.g. `MaterialDesign3Tokens.LightColors with { Primary = "..." }`).
 
 ### Theme Delivery
 

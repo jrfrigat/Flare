@@ -23,6 +23,13 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **BREAKING: `Md3` and `Fluent2` are gone; use `MaterialDesign3Tokens` and `FluentUI2Tokens`.** Both
+  were wrappers that forwarded `DesignReference` / `LightColors` / `DarkColors` to types that are
+  already public in the reference-tokens packages, and both lived in a *theme* package - so reaching
+  a lineage baseline meant depending on a theme, which is the coupling the reference packages exist
+  to avoid. `Md3.DesignReference` becomes `MaterialDesign3Tokens.Design`, `Fluent2.LightColors`
+  becomes `FluentUI2Tokens.LightColors`, and so on. `Aero`, `LiquidGlass` and `VisualStudio` keep
+  theirs: those wrap internal types and are the only public way in.
 - **The Material 3 reference package now holds baseline Material 3, not Expressive.** It is what
   every Material 3 theme derives from, and it carried Expressive's opinions: buttons whose label
   ramps to title-medium / headline-small / headline-large with the container, and the Expressive

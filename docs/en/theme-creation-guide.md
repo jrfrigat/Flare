@@ -69,12 +69,14 @@ services.AddFlareTheme(myFluent);
 generator, dark overrides) except the ones you pass; `design` receives the base `DesignTokens` so you
 `with`-override just what you need.
 
-Each theme package also exposes its reference tokens (`Md3`, `Fluent2`, `Aero`, `LiquidGlass`,
-`VisualStudio`) for composing them directly when implementing `ITheme` from scratch:
+A lineage baseline comes from its reference-tokens package - `MaterialDesign3Tokens` or
+`FluentUI2Tokens` - so a custom theme can take the values without depending on a theme. A concrete
+theme with no separate package exposes its own reference class instead (`Aero`, `LiquidGlass`,
+`VisualStudio`):
 
 ```csharp
-public DesignTokens Design => Fluent2.DesignReference with { /* overrides */ };
-// palette colors:  Fluent2.LightColors with { Primary = "#0F6CBD" }
+public DesignTokens Design => FluentUI2Tokens.Design with { /* overrides */ };
+// palette colors:  FluentUI2Tokens.LightColors with { Primary = "#0F6CBD" }
 ```
 
 ### Implementing ITheme Directly
