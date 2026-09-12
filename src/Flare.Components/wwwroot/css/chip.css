@@ -2,7 +2,11 @@
     display: inline-flex;
     align-items: center;
     gap: var(--flare-spacing-4);
-    padding: var(--flare-spacing-3) var(--flare-spacing-8);
+    /* No block padding: the height token is the height. With padding either side of a 20px label the
+       chip stood 34px tall while every theme's token said 32, because the content plus the padding
+       plus the border beat the minimum - so the token named a floor nothing ever reached. The label
+       is centred by align-items, not by padding, and taller content (a 24dp avatar) still fits. */
+    padding: 0 var(--flare-spacing-8);
     box-sizing: border-box;
     min-height: var(--flare-chip-height); /* default chip height 32dp */
     border-radius: var(--flare-chip-radius);
