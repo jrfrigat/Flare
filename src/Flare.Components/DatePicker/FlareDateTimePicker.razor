@@ -4,7 +4,7 @@
 @using System.Globalization
 @using System.Linq.Expressions
 @inject TimeProvider TimeProvider
-@inject Flare.Components.Services.IElementJsService Element
+@inject Flare.Components.Services.IOverlayJsService Overlay
 @inject IBrowserViewportService Viewport
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date-time field owns its
@@ -50,7 +50,7 @@
         @if (_open)
         {
         <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
-        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" style="@_panelStyle">
+        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" @ref="_panelEl">
             @if (_panels)
             {
                 <div class="@Css.Classes.DateTimePicker.Panes">
@@ -155,9 +155,9 @@
     private int _minute;
     private DateOnly _viewDate;
     private ElementReference _fieldRef;
-    private double _panelTop;
-    private double _panelLeft;
-    private double _panelMinWidth = 280;
+    private ElementReference _panelEl;
+    private bool _panelPositioned;
+    private readonly string _panelId = $"flare-datetimepicker-{Guid.NewGuid():N}";
     private bool _is24Hour;
     private Breakpoint _bp = Breakpoint.Xs;
     private IAsyncDisposable? _bpSubscription;
@@ -174,12 +174,6 @@
     private string _numericPattern => (_dayFirst ? $"dd{_dateSep}MM{_dateSep}yyyy" : $"MM{_dateSep}dd{_dateSep}yyyy") + " HH:mm";
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
-
-    private string _panelStyle =>
-        $"top:{_panelTop.ToString("F1", CultureInfo.InvariantCulture)}px;" +
-        $"left:{_panelLeft.ToString("F1", CultureInfo.InvariantCulture)}px;" +
-        $"min-width:{_panelMinWidth.ToString("F1", CultureInfo.InvariantCulture)}px";
-
 
     // Layout: Auto resolves to Panels on >= md (960px) viewports, Tabs otherwise.
     private DateTimeVariant _effectiveVariant => Mode switch
@@ -340,27 +334,10 @@
         if (Disabled || ReadOnly) return;
         if (_open) { await CloseAsync(); return; }
         _open = true;
-        {
-            try
-            {
-                var b = await Element.GetBoundsAsync(_fieldRef);
-                // The clock dial is 256px + panel padding; keep the panel wide enough so it never overflows.
-                var floor = TimeVariant == TimePickerVariant.Dial ? 320 : 280;
-                _panelMinWidth = Math.Max(floor, b.Width);
-                const double panelHeight = 380;
-                if (b.Bottom + panelHeight + 4 > b.ViewportHeight && b.Top > panelHeight)
-                    _panelTop = b.Top - panelHeight - 4;
-                else
-                    _panelTop = b.Bottom + 4;
-                var right = b.Left + _panelMinWidth;
-                _panelLeft = right > b.ViewportWidth ? Math.Max(0, b.ViewportWidth - _panelMinWidth - 8) : b.Left;
-            }
-            catch
-            {
-                _panelTop = 200;
-                _panelLeft = 0;
-            }
-        }
+        // Placement is the shared engine's job now (see OnAfterRenderAsync): it flips sides on its own
+        // measurement rather than on a guessed panel height, follows scroll, and puts the panel in the
+        // top layer. The hand-rolled version that used to live here assumed 380px of panel and left the
+        // popup a plain fixed box, so any ancestor with a transform dragged it off the screen.
         await Opened.InvokeAsync();
     }
 
@@ -410,6 +387,19 @@
             }
             catch { /* breakpoint sync is best-effort */ }
         }
+
+        if (_open == _panelPositioned) return;
+        try
+        {
+            if (_open)
+                await Overlay.PositionAnchoredPanelAsync(_panelId, _fieldRef, _panelEl,
+                    new AnchoredPanelOptions { MatchWidth = true });
+            else
+                await Overlay.RemoveAnchoredPanelAsync(_panelId);
+            _panelPositioned = _open;
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private Task OnBreakpointAsync(Breakpoint breakpoint)
@@ -424,6 +414,9 @@
         {
             try { await _bpSubscription.DisposeAsync(); } catch { }
         }
+        try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
         await base.DisposeAsync();
     }
 }
