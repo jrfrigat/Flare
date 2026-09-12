@@ -8,7 +8,7 @@ public class ThemeCompositionTests
 {
     // Build on the published MD3 reference (the core ships no token defaults) and override only the
     // scale tokens with controlled test values; component tokens come from the reference.
-    private static DesignTokens MakeDesign() => MaterialDesignTokens.Design with
+    private static DesignTokens MakeDesign() => MaterialDesign3Tokens.Design with
     {
         FocusRing = "2px solid #000",
         Typography = new()

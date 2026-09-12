@@ -45,6 +45,41 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The Material Design 2 theme now matches the published Material 2 specification.** It had been
+  built by eye, and an audit against the generated spec found eleven values that disagreed with it.
+  The visible ones: the fallback button radius was a pill, which made the confirm-dialog and message
+  box buttons the only capsules in a theme whose every other button is a 4dp rectangle; the large
+  shape category was 8dp where Material 2 meets the screen edge square at 0dp; the light background
+  was grey where the baseline is white, so a card was told apart from the page by a tint rather than
+  by its shadow; and the dark theme's on-surface colour was Material 3's, carried in from the
+  reference package. Elevation was the deepest of them - a dialog rests at 24dp, a navigation drawer
+  at 16dp, a snackbar and a resting FAB at 6dp, a card at 1dp, and all of them were arriving at 4dp
+  or 8dp, because the shared six-step scale has no room for those values. The selection controls
+  followed: a checkbox is 24dp rather than Material 3's 18dp, and the switch is a 20dp thumb riding
+  over a 34x14 rail rather than a thumb tucked inside a 52x32 pill. A navigation drawer is 256dp
+  wide, not 360dp, and a card picked up by the pointer rises to 8dp, not 4dp.
+- **The Material Design 2 theme no longer builds on Material 3 tokens.** It was written as a set of
+  overrides on the Material 3 baseline, so every value nobody thought to override arrived as Material
+  3 - which is how Material 3 colours, shapes, elevations and control geometry ended up in a Material
+  2 application. It now states all of its own tokens, the way the Fluent and Material 3 themes do, and
+  a guard refuses a reference from one theme package to another. `MaterialDesignTokens` is renamed
+  `MaterialDesign3Tokens`, which is what it always was; the name is what let Material 2 sit on it.
+  No token value changed in this move - 829 of them carried across untouched.
+- **A theme can now size a tab and colour a chip.** Tab height, minimum width and inline padding
+  were literals in the stylesheet, and the chip carried only a radius and a height - so a language
+  whose tab strip is a fixed 48dp, or whose chip is a grey pill rather than a tinted surface, could
+  not say so. `TabsTokens.TabHeight` / `TabMinWidth` / `TabPaddingInline` and `ChipTokens.FilledBg` /
+  `ElevatedBg` fill that in. Every built-in theme keeps the look it had.
+- **A chip is as tall as its height token says.** It stood 34px against a token reading 32, because
+  the label plus the vertical padding plus the border beat the minimum the token set - so the token
+  named a floor nothing ever reached. The vertical padding is gone; the label is centred by the
+  flexbox, as it already was.
+- **A switch's thumb may now be larger than its rail.** It was capped to the rail's height, which
+  made the pre-Material-3 switch - a ball riding over a thin track, which is what Material 2, Fluent
+  and most desktop toolkits draw - unreachable through tokens: a theme asking for a 20dp thumb on a
+  14dp rail got 14dp. A theme states both numbers deliberately, so the cap is gone. No built-in
+  theme changes: every one of them already sized its thumb under its rail.
+
 - **A popup no longer opens underneath the on-screen keyboard.** The placement engine measured the
   window, and a keyboard shrinks the visual viewport without changing the window or firing a resize -
   so a list opened from the field the reader had just tapped, which is every select and every picker,

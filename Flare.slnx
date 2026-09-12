@@ -59,6 +59,7 @@
     <Project Path="tools/Flare.ApiDocGen/Flare.ApiDocGen.csproj" />
     <Project Path="tools/Flare.CssAudit/Flare.CssAudit.csproj" />
     <Project Path="tools/Flare.DemoGen/Flare.DemoGen.csproj" />
+    <Project Path="tools/Md2SpecParser/Md2SpecParser.csproj" />
     <Project Path="tools/Md3SpecParser/Md3SpecParser.csproj" />
   </Folder>
 </Solution>

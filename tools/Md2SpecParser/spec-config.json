@@ -1,0 +1,287 @@
+{
+  "outputRoot": "C:\\Job\\Projects\\FrigaT\\Flare\\docs\\spec",
+  "outputFileName": "md2-spec.md",
+  "siteMetaUrl": "https://m2.material.io/site_meta.js",
+  "baseUrl": "https://m2.material.io",
+  "pages": [
+    {
+      "type": "Foundation",
+      "folder": "_foundation",
+      "routes": [
+        "/design/color/the-color-system.html",
+        "/design/color/dark-theme.html",
+        "/design/color/text-legibility.html",
+        "/design/typography/the-type-system.html",
+        "/design/shape/about-shape.html",
+        "/design/shape/applying-shape-to-ui.html",
+        "/design/environment/elevation.html",
+        "/design/environment/light-shadows.html",
+        "/design/environment/surfaces.html",
+        "/design/interaction/states.html",
+        "/design/motion/speed.html",
+        "/design/layout/applying-density.html"
+      ]
+    },
+    {
+      "type": "App bar",
+      "folder": "app-bar",
+      "routes": [
+        "/components/app-bars-top",
+        "/components/app-bars-bottom"
+      ],
+      "mdc": [
+        "top-app-bar/_variables.scss"
+      ]
+    },
+    {
+      "type": "Button",
+      "folder": "button",
+      "routes": [
+        "/components/buttons"
+      ],
+      "mdc": [
+        "button/_variables.scss"
+      ]
+    },
+    {
+      "type": "FAB",
+      "folder": "fab",
+      "routes": [
+        "/components/buttons-floating-action-button"
+      ],
+      "mdc": [
+        "fab/_variables.scss"
+      ]
+    },
+    {
+      "type": "Card",
+      "folder": "card",
+      "routes": [
+        "/components/cards"
+      ],
+      "mdc": [
+        "card/_variables.scss"
+      ]
+    },
+    {
+      "type": "Checkbox",
+      "folder": "checkbox",
+      "routes": [
+        "/components/checkboxes",
+        "/components/selection-controls"
+      ],
+      "mdc": [
+        "checkbox/_variables.scss"
+      ]
+    },
+    {
+      "type": "Radio",
+      "folder": "radio",
+      "routes": [
+        "/components/radio-buttons"
+      ],
+      "mdc": [
+        "radio/_variables.scss"
+      ]
+    },
+    {
+      "type": "Switch",
+      "folder": "switch",
+      "routes": [
+        "/components/switches"
+      ],
+      "mdc": [
+        "switch/_switch-theme.scss"
+      ]
+    },
+    {
+      "type": "Chip",
+      "folder": "chip",
+      "routes": [
+        "/components/chips"
+      ],
+      "mdc": [
+        "chips/_chip-theme.scss"
+      ]
+    },
+    {
+      "type": "Dialog",
+      "folder": "dialog",
+      "routes": [
+        "/components/dialogs"
+      ],
+      "mdc": [
+        "dialog/_variables.scss"
+      ]
+    },
+    {
+      "type": "Divider",
+      "folder": "divider",
+      "routes": [
+        "/components/dividers"
+      ]
+    },
+    {
+      "type": "Input",
+      "folder": "input",
+      "routes": [
+        "/components/text-fields"
+      ],
+      "mdc": [
+        "textfield/_variables.scss"
+      ]
+    },
+    {
+      "type": "List",
+      "folder": "list",
+      "routes": [
+        "/components/lists"
+      ],
+      "mdc": [
+        "list/_variables.scss"
+      ]
+    },
+    {
+      "type": "Menu",
+      "folder": "menu",
+      "routes": [
+        "/components/menus"
+      ],
+      "mdc": [
+        "menu-surface/_variables.scss"
+      ]
+    },
+    {
+      "type": "Nav",
+      "folder": "nav",
+      "routes": [
+        "/components/navigation-drawer",
+        "/components/bottom-navigation",
+        "/components/navigation-rail"
+      ],
+      "mdc": [
+        "drawer/_variables.scss"
+      ]
+    },
+    {
+      "type": "Progress",
+      "folder": "progress",
+      "routes": [
+        "/components/progress-indicators"
+      ],
+      "mdc": [
+        "linear-progress/_variables.scss"
+      ]
+    },
+    {
+      "type": "Search",
+      "folder": "search",
+      "routes": [
+        "/design/navigation/search.html"
+      ]
+    },
+    {
+      "type": "Sheet",
+      "folder": "sheet",
+      "routes": [
+        "/components/sheets-bottom",
+        "/components/sheets-side"
+      ]
+    },
+    {
+      "type": "Slider",
+      "folder": "slider",
+      "routes": [
+        "/components/sliders"
+      ],
+      "mdc": [
+        "slider/_slider-theme.scss"
+      ]
+    },
+    {
+      "type": "Snackbar",
+      "folder": "snackbar",
+      "routes": [
+        "/components/snackbars"
+      ],
+      "mdc": [
+        "snackbar/_variables.scss"
+      ]
+    },
+    {
+      "type": "Tabs",
+      "folder": "tabs",
+      "routes": [
+        "/components/tabs"
+      ],
+      "mdc": [
+        "tab/_variables.scss",
+        "tab-bar/_variables.scss",
+        "tab-indicator/_tab-indicator-theme.scss"
+      ]
+    },
+    {
+      "type": "Date picker",
+      "folder": "date-picker",
+      "routes": [
+        "/components/date-pickers"
+      ]
+    },
+    {
+      "type": "Time picker",
+      "folder": "time-picker",
+      "routes": [
+        "/components/time-pickers"
+      ]
+    },
+    {
+      "type": "Tooltip",
+      "folder": "tooltip",
+      "routes": [
+        "/components/tooltips"
+      ],
+      "mdc": [
+        "tooltip/_tooltip-theme.scss"
+      ]
+    },
+    {
+      "type": "Data table",
+      "folder": "data-table",
+      "routes": [
+        "/components/data-tables"
+      ],
+      "mdc": [
+        "data-table/_variables.scss"
+      ]
+    },
+    {
+      "type": "Banner",
+      "folder": "banner",
+      "routes": [
+        "/components/banners"
+      ],
+      "mdc": [
+        "banner/_banner-theme.scss"
+      ]
+    },
+    {
+      "type": "Backdrop",
+      "folder": "backdrop",
+      "routes": [
+        "/components/backdrop"
+      ]
+    },
+    {
+      "type": "Image list",
+      "folder": "image-list",
+      "routes": [
+        "/components/image-lists"
+      ],
+      "mdc": [
+        "image-list/_variables.scss"
+      ]
+    }
+  ],
+  "mdcVersion": "14.0.0",
+  "mdcUrlTemplate": "https://cdn.jsdelivr.net/npm/@material/{path}"
+}

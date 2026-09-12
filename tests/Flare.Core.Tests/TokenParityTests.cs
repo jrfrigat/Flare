@@ -130,7 +130,7 @@ public class TokenParityTests
             LetterSpacing = "0em"
         };
 
-        return MaterialDesignTokens.Design with
+        return MaterialDesign3Tokens.Design with
         {
             FocusRing = "2px solid blue",
             Typography = new TypographyTokens

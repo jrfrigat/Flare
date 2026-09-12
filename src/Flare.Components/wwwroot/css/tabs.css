@@ -34,11 +34,10 @@
 
 .flare-tabs__bar {
   display: flex;
-  /* The basis is the run of tabs worth keeping on the row, not the tabs' own width: with `auto` the
-     bar asked for its whole run, so the row was always over budget and every item shrank in
-     proportion - including the header zones, which cannot scroll and have nowhere to put the
-     overflow. With a fixed basis the bar takes the whole deficit (it scrolls, that is its job) and
-     wraps to its own line once even this much no longer fits. */
+  /* The basis is the run of tabs worth keeping on the row, not the tabs' own width. With `auto` the
+     bar asks for its whole run, the row goes over budget and flexbox shrinks every item in
+     proportion - the header zones included, and those cannot scroll. A fixed basis sends the whole
+     deficit to the bar, which can. */
   flex: 1 1 12rem;
   /* A flex item refuses to shrink below its content unless told to, so the bar kept its full tab run
      and pushed the end zone off the screen - the scroller was there and never used. */
@@ -129,8 +128,14 @@
   z-index: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--flare-spacing-4);
-  padding: var(--flare-spacing-6) var(--flare-spacing-10);
+  /* The strip's own geometry, named by the theme: Material 2 sets a 48dp tab with a 90dp minimum,
+     Material 3 lets the label and its padding decide. A theme that wants the latter parks the height
+     at `auto` and the minimum at 0. */
+  min-block-size: var(--flare-tabs-tab-height);
+  min-inline-size: var(--flare-tabs-tab-min-width);
+  padding: var(--flare-spacing-6) var(--flare-tabs-tab-padding-inline);
   border: none;
   text-decoration: none;  /* FlareLinkTab reuses this class on its <a> items. */
   /* Active-indicator height 3dp; inactive label = on-surface */

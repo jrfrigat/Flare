@@ -2,7 +2,9 @@
     display: inline-flex;
     align-items: center;
     gap: var(--flare-spacing-4);
-    padding: var(--flare-spacing-3) var(--flare-spacing-8);
+    /* No block padding, so the height token decides the height: with padding, a label plus the border
+       already exceeds it and the minimum below never binds. The label is centred by align-items. */
+    padding: 0 var(--flare-spacing-8);
     box-sizing: border-box;
     min-height: var(--flare-chip-height); /* default chip height 32dp */
     border-radius: var(--flare-chip-radius);
@@ -42,7 +44,7 @@
 
 /* Elevated chip: filled surface-container-low with a level-1 shadow, no border. */
 .flare-chip--elevated {
-    background-color: var(--flare-color-surface-container-low);
+    background-color: var(--flare-chip-elevated-bg);
     border-color: transparent;
     box-shadow: var(--flare-elevation-1);
 }
@@ -51,7 +53,7 @@
 /* Filled chip: solid surface fill, no border, no shadow. A Color role tints the
    foreground (label/icon) via --fc-main while the fill stays a neutral surface tone. */
 .flare-chip--filled {
-    background-color: var(--flare-color-surface-container-high);
+    background-color: var(--flare-chip-filled-bg);
     border-color: transparent;
 }
 

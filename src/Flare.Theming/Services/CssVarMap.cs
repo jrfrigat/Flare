@@ -404,6 +404,8 @@ public static class CssVarMap
         v[Css.Tokens.Radio.DisabledOpacity] = t.Radio.DisabledOpacity;
         v[Css.Tokens.Chip.Radius] = t.Chip.Radius;
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
+        v[Css.Tokens.Chip.FilledBg] = t.Chip.FilledBg;
+        v[Css.Tokens.Chip.ElevatedBg] = t.Chip.ElevatedBg;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
         v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
         v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;
@@ -423,6 +425,9 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.TrackBg] = t.Tabs.TrackBg;
         v[Css.Tokens.Tabs.PillRadius] = t.Tabs.PillRadius;
         v[Css.Tokens.Tabs.TabDisabledOpacity] = t.Tabs.TabDisabledOpacity;
+        v[Css.Tokens.Tabs.TabHeight] = t.Tabs.TabHeight;
+        v[Css.Tokens.Tabs.TabMinWidth] = t.Tabs.TabMinWidth;
+        v[Css.Tokens.Tabs.TabPaddingInline] = t.Tabs.TabPaddingInline;
         v[Css.Tokens.Tabs.ScrollDisabledOpacity] = t.Tabs.ScrollDisabledOpacity;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
         v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;

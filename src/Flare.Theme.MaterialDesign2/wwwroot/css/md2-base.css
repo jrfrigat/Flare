@@ -34,8 +34,50 @@
         box-shadow: none;
     }
 
+    /* A text button trades its container for tighter padding: 8dp, against the 16dp the contained
+       and outlined variants take. ButtonTokens.TextPaddingInline carries that value but does not
+       reach the button: `.flare-btn--text` sets the local padding property and `.flare-btn--md`
+       re-declares it lower in the same stylesheet at equal specificity, so the size wins. Applying
+       the token here is what makes it take effect. */
+    .flare-btn--text:not(.flare-btn--icon-only) {
+        padding-inline: var(--flare-btn-text-padding-inline);
+    }
+
     /* MD2 tabs use UPPERCASE labels. */
     .flare-tabs__tab {
         text-transform: uppercase;
     }
+
+    /* ----------------------------------------------------------------------
+       Elevation is assigned PER COMPONENT in this language, not picked off a
+       scale: the default elevation table gives a dialog 24dp, a nav drawer and
+       a modal sheet 16dp, a snackbar 6dp and a card 1dp. Flare's shared scale
+       has six steps (0/1/2/4/8/12dp) and hands dialog, drawer and snackbar the
+       same one, so three components that Material puts four times apart would
+       arrive identical. Until an elevation token exists per component, the
+       three dp values with no step of their own are written out here, from the
+       same umbra 20% / penumbra 14% / ambient 12% recipe as the steps.
+       See docs/spec/_foundation/md2-spec.md, "Default elevation values".
+       ---------------------------------------------------------------------- */
+    .flare-dialog {
+        box-shadow: 0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12);
+    }
+
+    /* The drawer is also what a side/bottom sheet is built from here, so one rule covers both. */
+    .flare-drawer {
+        box-shadow: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12);
+    }
+
+    .flare-snackbar {
+        box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+    }
+
+    /* The card is deliberately absent from this list: it owns an elevation token, so its resting 1dp
+       and its picked-up 8dp are set there rather than here. So is the top app bar - the default
+       elevation table gives it "0 or 4dp", a choice the application makes, and it rests at 0. */
+
+    /* The filled chip's grey pill is a token now (ChipTokens.FilledBg), not a rule here. */
+
+    /* The top app bar is deliberately not listed: the default elevation table gives it "0 or 4dp",
+       which is a choice the application makes, and the component already rests at 0. */
 }

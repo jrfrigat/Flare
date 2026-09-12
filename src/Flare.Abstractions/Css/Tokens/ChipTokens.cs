@@ -7,4 +7,8 @@ public static class Chip
     public const string Radius = "--flare-chip-radius";
     /// <summary>CSS custom-property name for the height token.</summary>
     public const string Height = "--flare-chip-height";
+    /// <summary>CSS custom-property name for the filled container background token.</summary>
+    public const string FilledBg = "--flare-chip-filled-bg";
+    /// <summary>CSS custom-property name for the elevated container background token.</summary>
+    public const string ElevatedBg = "--flare-chip-elevated-bg";
 }

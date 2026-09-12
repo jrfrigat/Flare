@@ -45,4 +45,10 @@ public static class Tabs
     public const string TabDisabledOpacity = "--flare-tabs-tab-disabled-opacity";
     /// <summary>CSS custom-property name for the disabled scroll-button opacity token.</summary>
     public const string ScrollDisabledOpacity = "--flare-tabs-scroll-disabled-opacity";
+    /// <summary>CSS custom-property name for the tab height token.</summary>
+    public const string TabHeight = "--flare-tabs-tab-height";
+    /// <summary>CSS custom-property name for the tab minimum width token.</summary>
+    public const string TabMinWidth = "--flare-tabs-tab-min-width";
+    /// <summary>CSS custom-property name for the tab inline padding token.</summary>
+    public const string TabPaddingInline = "--flare-tabs-tab-padding-inline";
 }

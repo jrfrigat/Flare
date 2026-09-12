@@ -7,10 +7,17 @@ namespace Flare.Theme.MaterialDesign3.Tokens;
 
 /// <summary>
 /// Material Design 3 baseline design-token values: the reference <see cref="DesignTokens"/> plus the
-/// light/dark <c>ColorScheme</c>s. This is the shared source of truth the Material-lineage themes
-/// (MD3 Expressive, MD3, MD2, and any custom Material theme) build from via <c>with</c>.
+/// light/dark <c>ColorScheme</c>s. Themes of the Material 3 lineage (MD3 Expressive and any custom
+/// Material 3 theme) build from it via <c>with</c>.
+/// <para>
+/// It carries Material 3's opinions - the tonal color roles, the pill shapes, the surface-tint
+/// elevation - so it is a base only for themes that share them. Material 2 predates all three and
+/// ships its own complete set; a theme from another design language should do the same rather than
+/// inherit a language it does not speak. It was called <c>MaterialDesignTokens</c> until that name
+/// let Material 2 sit on it by accident.
+/// </para>
 /// </summary>
-public class MaterialDesignTokens
+public class MaterialDesign3Tokens
 {
     internal static readonly TypographyTokens Typography = new()
     {
@@ -368,6 +375,8 @@ public class MaterialDesignTokens
     };
     internal static readonly ChipTokens Chip = new()
     {
+        FilledBg = "var(--flare-color-surface-container-high)",
+        ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp
         Height = "2rem",                       // MD3 = 32dp
     };
@@ -400,6 +409,10 @@ public class MaterialDesignTokens
         PillRadius = "var(--flare-shape-full)",
         TabDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ScrollDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // The label and its padding decide the height here; no minimum width.
+        TabHeight = "auto",
+        TabMinWidth = "0",
+        TabPaddingInline = "var(--flare-spacing-10)",
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,

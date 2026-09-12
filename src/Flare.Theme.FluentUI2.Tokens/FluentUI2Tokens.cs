@@ -442,6 +442,8 @@ public class FluentUI2Tokens
     // Chip - Fluent: the same values (8dp/32dp).
     internal static readonly ChipTokens Chip = new()
     {
+        FilledBg = "var(--flare-color-surface-container-high)",
+        ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",
         Height = "2rem",
     };
@@ -469,6 +471,9 @@ public class FluentUI2Tokens
         PillRadius = "var(--flare-shape-full)",
         TabDisabledOpacity = "1",
         ScrollDisabledOpacity = "1",
+        TabHeight = "auto",
+        TabMinWidth = "0",
+        TabPaddingInline = "var(--flare-spacing-10)",
     };
 
     // On-this-page - Fluent: rail style (vertical line + brand bar on the left of the active item),

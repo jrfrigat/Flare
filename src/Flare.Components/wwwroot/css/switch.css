@@ -58,12 +58,9 @@
     transform: translateY(-50%);
     width: var(--_thumb-off-size);
     height: var(--_thumb-off-size);
-    /* Never let the ball grow taller/wider than the rail. A theme that mixes a compact rail with a
-       larger thumb (e.g. a small track kept with a grow-on-check thumb from a different size scale)
-       would otherwise bulge out of the track; this caps every state (off/on/pressed/with-icon) in one
-       place. It is a no-op for all built-in sizes, whose thumbs are already smaller than their rail. */
-    max-width: var(--_track-height);
-    max-height: var(--_track-height);
+    /* The handle is deliberately not capped to the rail's height. A ball riding over a thinner rail
+       is a design in its own right - the shape every toolkit drew before Material 3 tucked the handle
+       inside the track - so a theme that sizes its thumb above its track gets what it asked for. */
     border-radius: 50%;
     background: var(--flare-switch-thumb-off-color);
     display: inline-flex;
