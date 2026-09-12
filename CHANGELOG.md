@@ -45,6 +45,27 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A popup no longer opens underneath the on-screen keyboard.** The placement engine measured the
+  window, and a keyboard shrinks the visual viewport without changing the window or firing a resize -
+  so a list opened from the field the reader had just tapped, which is every select and every picker,
+  was placed against a viewport whose lower half was covered, and had no event to move it afterwards.
+  It now measures the visual viewport and follows it. Measured with a select open and the visible
+  area cut to 380px: the list moved from 470-720, entirely behind the keyboard, to 126-376, and back
+  again when the keyboard closed.
+- **`FlareDateTimePicker`'s popup reaches the top layer like every other overlay.** It was the one
+  floating surface not on the shared positioning path: it measured the field itself, assumed a fixed
+  panel height, and left the popup a plain fixed-position box. Any ancestor with a `transform` - an
+  animation, a `will-change`, a `filter` - therefore dragged it off the screen; measured on a card
+  with `transform: translateZ(0)`, the panel hung 38px below the bottom edge with its OK and Clear
+  buttons unreachable. It now flips, follows scrolling and clears every clipping ancestor the way
+  `FlareDatePicker` already did.
+- **A tab set with a title or a button beside the tabs no longer paints them over each other.** The
+  bar asked for its whole tab run, so a narrow header row shrank every item in proportion, header
+  zones included - and a flex item narrower than its content does not clip it, it overlaps whatever
+  is next. At 375px a title in a 31px box painted across the tabs and an action button painted
+  outside the tab set. The bar now gives up the space instead (it scrolls, which the zones cannot),
+  and the row wraps the bar onto its own line when even that is not enough. Wide layouts are
+  unchanged.
 - A gallery page documenting two components no longer squeezes its heading to nothing: the API
   links wrap when they do not fit beside it, instead of spelling the title out one letter per line.
 

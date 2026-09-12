@@ -191,7 +191,16 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
 
     const place = () => {
         const a = anchorBox();
-        const vh = window.innerHeight, vw = window.innerWidth;
+        // The band the reader can actually SEE, not the window. An on-screen keyboard shrinks the
+        // visual viewport and fires no window resize, so a panel opened from the field the user just
+        // tapped - which is every select and every picker - was placed against a viewport half of
+        // which the keyboard was covering, and landed underneath it. Pinch-zoom shifts the same band.
+        // Coordinates stay in the layout viewport, which is what position:fixed and
+        // getBoundingClientRect both speak, so the offsets are what convert between the two.
+        const vv = window.visualViewport;
+        const vTop = vv ? vv.offsetTop : 0, vLeft = vv ? vv.offsetLeft : 0;
+        const vh = vv ? vv.height : window.innerHeight, vw = vv ? vv.width : window.innerWidth;
+        const vBottom = vTop + vh, vRight = vLeft + vw;
         panel.style.position = 'fixed';
         panel.style.margin = '0';
         if (opts.matchWidth) {
@@ -204,7 +213,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
             panel.style.maxWidth = `${vw - 2 * margin}px`;
         }
         const p = panel.getBoundingClientRect();
-        const room = { top: a.top, bottom: vh - a.bottom, left: a.left, right: vw - a.right };
+        const room = { top: a.top - vTop, bottom: vBottom - a.bottom, left: a.left - vLeft, right: vRight - a.right };
         const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
         const need = (s) => (s === 'top' || s === 'bottom' ? p.height : p.width) + gap;
         // Flip only when the preferred side is short AND the opposite one is roomier: a panel taller
@@ -225,8 +234,8 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
                 : align === 'center' ? a.top + a.height / 2 - p.height / 2
                     : a.top;
         }
-        panel.style.top = `${Math.max(margin, Math.min(top, vh - p.height - margin))}px`;
-        panel.style.left = `${Math.max(margin, Math.min(left, vw - p.width - margin))}px`;
+        panel.style.top = `${Math.max(vTop + margin, Math.min(top, vBottom - p.height - margin))}px`;
+        panel.style.left = `${Math.max(vLeft + margin, Math.min(left, vRight - p.width - margin))}px`;
         // Two facts the stylesheet needs back. `flarePlaced` switches a panel's resting CSS off - the
         // edges and centring transforms that put it under its anchor without script, and that would
         // otherwise fight these coordinates. `flareSide` is where it ACTUALLY landed, which is what an
@@ -241,6 +250,10 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     _anchoredPanels.keep(id, all(
         listen(window, 'scroll', place, { passive: true, capture: true }),
         listen(window, 'resize', place, { passive: true }),
+        // The keyboard opening and closing reaches the page only here; listen() ignores a null target,
+        // so a browser without visualViewport keeps the two above and nothing else changes.
+        listen(window.visualViewport, 'resize', place, { passive: true }),
+        listen(window.visualViewport, 'scroll', place, { passive: true }),
     ));
 }
 
