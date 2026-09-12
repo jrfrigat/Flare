@@ -58,12 +58,11 @@
     transform: translateY(-50%);
     width: var(--_thumb-off-size);
     height: var(--_thumb-off-size);
-    /* Never let the ball grow taller/wider than the rail. A theme that mixes a compact rail with a
-       larger thumb (e.g. a small track kept with a grow-on-check thumb from a different size scale)
-       would otherwise bulge out of the track; this caps every state (off/on/pressed/with-icon) in one
-       place. It is a no-op for all built-in sizes, whose thumbs are already smaller than their rail. */
-    max-width: var(--_track-height);
-    max-height: var(--_track-height);
+    /* The ball is NOT capped to the rail. It used to be, to protect a theme that paired a compact
+       rail with a thumb from a different size step - but a thumb riding over a thinner rail is not a
+       mistake, it is how the switch was drawn before Material 3 tucked the handle inside the track,
+       and the cap made that shape unreachable through tokens: Material 2 asks for a 20dp thumb on a
+       14dp rail and got 14dp. A theme states both numbers deliberately; this trusts them. */
     border-radius: 50%;
     background: var(--flare-switch-thumb-off-color);
     display: inline-flex;

@@ -78,6 +78,15 @@
         box-shadow: var(--flare-elevation-1);
     }
 
+    /* A filled chip's container is the on-surface colour at 12%, which is what makes a Material 2
+       chip read as a grey pill rather than as a tinted surface. The component reads
+       --flare-color-surface-container-high, a role this theme has to keep at #EEEEEE (black at 7%)
+       for everything else, and ChipTokens carries only a radius and a height - so the colour is
+       stated here until the chip has a container token. Redline annotation: #0000001f, black 12%. */
+    .flare-chip--filled {
+        background-color: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+    }
+
     /* The top app bar is deliberately not listed: the default elevation table gives it "0 or 4dp",
        which is a choice the application makes, and the component already rests at 0. */
 }

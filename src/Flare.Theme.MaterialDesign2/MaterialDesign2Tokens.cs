@@ -210,6 +210,44 @@ internal static class MaterialDesign2Tokens
     // MD2 chips are fully rounded ("stadium") at 32dp.
     internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem" };
 
+    // The box is 24dp here, against Material 3's 18dp - and the difference is the whole control,
+    // since a checkbox IS its box (spec redline "Checkboxes").
+    internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with
+    {
+        Size = "1.5rem",
+    };
+
+    // The Material 2 switch is a thin track with a thumb RIDING OVER it, not a thumb tucked inside a
+    // pill: the published redline gives one 20dp thumb and a 36dp overall width, and the thumb is
+    // what sets the height. Material 3's 52x32 track with a thumb inside is the shape this theme was
+    // wearing. The track is the overall width less the thumb's overhang at each end, and 14dp tall -
+    // the two numbers the drawing implies but does not print.
+    internal static readonly SwitchTokens Switch = MaterialDesignTokens.Design.Switch with
+    {
+        TrackWidthXs = "1.75rem", TrackWidthSm = "1.9375rem", TrackWidthMd = "34px",
+        TrackWidthLg = "2.625rem", TrackWidthXl = "3.0625rem",
+        TrackHeightXs = "0.5rem", TrackHeightSm = "0.6875rem", TrackHeightMd = "14px",
+        TrackHeightLg = "1.0625rem", TrackHeightXl = "1.25rem",
+        // One thumb size in every state: Material 2 does not grow the handle on press or on toggle.
+        ThumbOffSizeXs = "1rem", ThumbOffSizeSm = "1.125rem", ThumbOffSizeMd = "20px",
+        ThumbOffSizeLg = "1.5rem", ThumbOffSizeXl = "1.75rem",
+        ThumbOnSizeXs = "1rem", ThumbOnSizeSm = "1.125rem", ThumbOnSizeMd = "20px",
+        ThumbOnSizeLg = "1.5rem", ThumbOnSizeXl = "1.75rem",
+        ThumbPressedOffSizeXs = "1rem", ThumbPressedOffSizeSm = "1.125rem", ThumbPressedOffSizeMd = "20px",
+        ThumbPressedOffSizeLg = "1.5rem", ThumbPressedOffSizeXl = "1.75rem",
+        ThumbPressedOnSizeXs = "1rem", ThumbPressedOnSizeSm = "1.125rem", ThumbPressedOnSizeMd = "20px",
+        ThumbPressedOnSizeLg = "1.5rem", ThumbPressedOnSizeXl = "1.75rem",
+        // The thumb hangs 1dp past each end of the track, which is what makes 34 read as 36.
+        ThumbOffLeftXs = "-1px", ThumbOffLeftSm = "-1px", ThumbOffLeftMd = "-1px",
+        ThumbOffLeftLg = "-1px", ThumbOffLeftXl = "-1px",
+        ThumbOnLeftXs = "calc(100% - 15px)", ThumbOnLeftSm = "calc(100% - 17px)", ThumbOnLeftMd = "calc(100% - 19px)",
+        ThumbOnLeftLg = "calc(100% - 23px)", ThumbOnLeftXl = "calc(100% - 27px)",
+        // Track when on: the accent at 54%. Off: the spec's own grey, not a surface role.
+        TrackOnBg = "color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 54%, transparent)",
+        TrackOffBg = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
+        TrackBorder = "none",
+    };
+
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs with { IndicatorThickness = "2px" };
 
@@ -283,6 +321,8 @@ internal static class MaterialDesign2Tokens
         Fab = Fab,
         Menu = Menu,
         Chip = Chip,
+        Checkbox = Checkbox,
+        Switch = Switch,
         Tabs = Tabs,
         Slider = Slider,
         Dialog = Dialog,

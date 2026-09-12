@@ -54,7 +54,14 @@ All notable changes to Flare are documented here. This project adheres to
   by its shadow; and the dark theme's on-surface colour was Material 3's, carried in from the
   reference package. Elevation was the deepest of them - a dialog rests at 24dp, a navigation drawer
   at 16dp, a snackbar and a resting FAB at 6dp, a card at 1dp, and all of them were arriving at 4dp
-  or 8dp, because the shared six-step scale has no room for those values.
+  or 8dp, because the shared six-step scale has no room for those values. The selection controls
+  followed: a checkbox is 24dp rather than Material 3's 18dp, and the switch is a 20dp thumb riding
+  over a 34x14 rail rather than a thumb tucked inside a 52x32 pill.
+- **A switch's thumb may now be larger than its rail.** It was capped to the rail's height, which
+  made the pre-Material-3 switch - a ball riding over a thin track, which is what Material 2, Fluent
+  and most desktop toolkits draw - unreachable through tokens: a theme asking for a 20dp thumb on a
+  14dp rail got 14dp. A theme states both numbers deliberately, so the cap is gone. No built-in
+  theme changes: every one of them already sized its thumb under its rail.
 
 - **A popup no longer opens underneath the on-screen keyboard.** The placement engine measured the
   window, and a keyboard shrinks the visual viewport without changing the window or firing a resize -
