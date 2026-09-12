@@ -89,10 +89,15 @@ public sealed class ThemeIndependenceTests
     // "materialize"), "Fluent UI" / "FluentUI" / "Fluent2" (NOT the "fluent API" idiom), and the
     // theme-specific fonts "Roboto"/"Segoe". Uppercase "MD3"/"MD2"/"FUI2" cannot occur in lowercase-hex
     // GUIDs or SVG "M3"/"M2" moveto path data (which is why bare "M3"/"M2" is intentionally NOT listed).
+    // The lowercase ids ("md3-expressive", "md2-indigo", "fui2-...") are how a theme names itself in
+    // CSS classes and in stored settings, and they are what the uppercase entries above miss: a
+    // hardcoded 'md3-expressive' default sat in flare-bootstrap.js for months because the scan was
+    // case-sensitive. The trailing dash keeps them from matching hex digests or ordinary prose.
     private static readonly string[] ForbiddenThemeNames =
     [
         "MD3", "MD2", "FUI2", "Material Design", "Material You", "Fluent UI", "FluentUI", "Fluent2",
         "Cupertino", "Roboto", "Segoe",
+        "md3-", "md2-", "fui2-",
     ];
 
     // The three core rings whose SOURCE must stay free of concrete theme names.

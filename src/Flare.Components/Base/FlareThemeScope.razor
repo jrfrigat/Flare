@@ -8,7 +8,7 @@
 @*
    Re-themes a subtree without affecting the rest of the app. Any axis left unset inherits from the
    surrounding theme:
-     <FlareThemeScope Theme="md3-expressive" Palette="violet" Mode="ThemeMode.Dark"> ... </FlareThemeScope>
+     <FlareThemeScope Theme="@theme.Id" Palette="@palette.Id" Mode="ThemeMode.Dark"> ... </FlareThemeScope>
    Works with the ClassToggle delivery: the wrapper carries the theme/palette/mode classes so the
    static token rules re-assert for the subtree, and a scoped IThemeService is cascaded so components
    that read the theme in C# (e.g. FlareProgressCircular) also see the scoped values.

@@ -74,8 +74,11 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```html
 <head>
     <!-- One line: applies the saved theme classes to <html> before the first frame (no theme flash)
-         and fires "flare:ready" when the app is styled. It draws no splash - your app owns that. -->
-    <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+         and fires "flare:ready" when the app is styled. It draws no splash - your app owns that.
+         data-default-* is what a first-time visitor gets, before anything is saved: name the same
+         theme and palette you register in Program.cs. -->
+    <script src="_content/Flare.Components/js/flare-bootstrap.js"
+            data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
     <!-- All component styles -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 </head>
@@ -138,13 +141,19 @@ Prefer to hide it yourself? Listen for the event instead:
 window.addEventListener('flare:ready', () => { /* hide your splash */ });
 ```
 
-Customize the boot script through `data-*` attributes (all optional):
+Customize the boot script through `data-*` attributes:
 
 ```html
 <script src="_content/Flare.Components/js/flare-bootstrap.js"
         data-default-theme="md3-expressive" data-default-palette="md3-violet" data-default-mode="auto"
         data-ready-timeout="8000"></script>
 ```
+
+`data-default-theme` and `data-default-palette` are the ones to set. Flare ships no theme of its own
+and cannot guess yours, so without them a first-time visitor - nothing saved yet - gets an unthemed
+first paint until .NET boots and applies the real theme. Name the theme and palette you register in
+`Program.cs` and that first paint is already correct. `data-default-mode` is `auto` (follow the OS)
+unless you say `light` or `dark`.
 
 `data-ready-timeout` (ms) is a safety signal in case the provider is absent or boot fails. To signal
 readiness yourself, set `ManageSplash="false"` on `FlareThemeProvider` and call

@@ -74,8 +74,11 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```html
 <head>
     <!-- Одна строка: применяет сохраненные классы темы к <html> до первого кадра (без мигания темы)
-         и шлет "flare:ready", когда приложение оформлено. Сплэш НЕ рисует - его рисует приложение. -->
-    <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+         и шлет "flare:ready", когда приложение оформлено. Сплэш НЕ рисует - его рисует приложение.
+         data-default-* - это то, что увидит первый посетитель, пока ничего не сохранено: укажите ту
+         же тему и палитру, что регистрируете в Program.cs. -->
+    <script src="_content/Flare.Components/js/flare-bootstrap.js"
+            data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
     <!-- Все стили компонентов -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 </head>
@@ -138,13 +141,19 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 window.addEventListener('flare:ready', () => { /* спрятать свой сплэш */ });
 ```
 
-Настройка бутстрап-скрипта - через `data-*` атрибуты (все необязательны):
+Настройка бутстрап-скрипта - через `data-*` атрибуты:
 
 ```html
 <script src="_content/Flare.Components/js/flare-bootstrap.js"
         data-default-theme="md3-expressive" data-default-palette="md3-violet" data-default-mode="auto"
         data-ready-timeout="8000"></script>
 ```
+
+Задать стоит `data-default-theme` и `data-default-palette`. Своей темы у Flare нет, и угадать вашу он
+не может, поэтому без них первый посетитель - когда еще ничего не сохранено - увидит первый кадр без
+оформления, пока не загрузится .NET и не применит настоящую тему. Укажите ту же тему и палитру, что
+регистрируете в `Program.cs`, и первый кадр будет сразу правильным. `data-default-mode` по умолчанию
+`auto` (следовать системе), можно задать `light` или `dark`.
 
 `data-ready-timeout` (мс) - страховочный сигнал на случай, если провайдера нет или загрузка упала.
 Чтобы слать готовность самостоятельно, задайте `ManageSplash="false"` на `FlareThemeProvider` и

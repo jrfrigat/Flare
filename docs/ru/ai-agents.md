@@ -90,7 +90,8 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 
 **b) Стили - `index.html` (WASM) или `App.razor`/`_Host.cshtml` (Server), в `<head>`:**
 ```html
-<script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+<script src="_content/Flare.Components/js/flare-bootstrap.js"
+        data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 ```
 CSS темы (шрифты, базовые токены) подключается автоматически через `FlareThemeProvider`; вручную не добавляйте.

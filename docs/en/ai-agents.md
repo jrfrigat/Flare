@@ -90,7 +90,8 @@ registration needed. Other entry points: `AddFlareTheme`, `AddFlarePalette`, `Ad
 
 **b) Styles - `index.html` (WASM) or `App.razor`/`_Host.cshtml` (Server), in `<head>`:**
 ```html
-<script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+<script src="_content/Flare.Components/js/flare-bootstrap.js"
+        data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 ```
 Theme CSS (fonts, base tokens) is wired up automatically by `FlareThemeProvider`; do not add it by hand.
