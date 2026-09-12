@@ -375,6 +375,8 @@ public class MaterialDesign3Tokens
     };
     internal static readonly ChipTokens Chip = new()
     {
+        FilledBg = "var(--flare-color-surface-container-high)",
+        ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp
         Height = "2rem",                       // MD3 = 32dp
     };

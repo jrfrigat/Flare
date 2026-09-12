@@ -442,6 +442,8 @@ public class FluentUI2Tokens
     // Chip - Fluent: the same values (8dp/32dp).
     internal static readonly ChipTokens Chip = new()
     {
+        FilledBg = "var(--flare-color-surface-container-high)",
+        ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",
         Height = "2rem",
     };

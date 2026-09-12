@@ -261,7 +261,7 @@ internal class VisualStudioTokens
         DisabledOpacity = "1",
     };
 
-    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)" };
 
     // VS 2026 document tabs: thin top accent line, neutral strip, the active tab fills with the
     // editor surface. The full document-tab look (gap, top accent, hover) is finished in the
