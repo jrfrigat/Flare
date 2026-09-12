@@ -309,6 +309,13 @@ Action chips are displayed after primary content, such as below a card or persis
 | 12 | padding | horizontal |
 | C | typography | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #000000de
+- #0000001f R0 G0 B0 A0.12
+- Shape All corners Rounded: 16dp
+- Elevation Elevation 0dp
+
 #### Outlined action chip
 
 | Measurement | Kind | Axis |
@@ -321,6 +328,11 @@ Action chips are displayed after primary content, such as below a card or persis
 | 24 | dimensions | horizontal |
 | C | typography | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Elevation Elevation 0dp
+- Shape All corners Rounded: 16dp
+
 #### Choice chip
 
 | Measurement | Kind | Axis |
@@ -329,6 +341,13 @@ Action chips are displayed after primary content, such as below a card or persis
 | 32 | dimensions | vertical |
 | C | typography | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #000000de
+- #0000001f R0 G0 B0 A0.12
+- Shape All corners Rounded: 16dp
+- Elevation Elevation 0dp
+
 #### Filter chip
 
 | Measurement | Kind | Axis |
@@ -336,6 +355,13 @@ Action chips are displayed after primary content, such as below a card or persis
 | 12 | padding | horizontal |
 | C | typography | vertical |
 | 32 | dimensions | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #000000de
+- #0000001e R0 G0 B0 A0.12
+- Shape All corners Rounded: 16dp
+- Elevation Elevation 0dp
 
 #### Input chips
 
@@ -348,8 +374,22 @@ Action chips are displayed after primary content, such as below a card or persis
 | 24 | dimensions | horizontal |
 | 18 | dimensions | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #000000de
+- #0000001f R0 G0 B0 A0.12
+- Elevation Elevation 0dp
+- Shape All corners Rounded: 16dp
+
 #### Chips in groups
 
 | Measurement | Kind | Axis |
 |---|---|---|
 | 8 | padding | horizontal |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #000000de
+- #0000001f R0 G0 B0 A0.12
+- Shape All corners Rounded: 16dp
+- Elevation Elevation 0dp

@@ -383,6 +383,14 @@ As their placement at the bottom of the screen may make them less noticeable, th
 | 56 | dimensions | vertical |
 | 36 | typography | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 16dp #0000008a
+- Roboto 16dp #000000de
+- Elevation Elevation 16dp
+- Components List
+- General Scrim #000000 Opacity:32%
+
 #### Redline
 
 | Measurement | Kind | Axis |
@@ -392,12 +400,25 @@ As their placement at the bottom of the screen may make them less noticeable, th
 | 56 | dimensions | vertical |
 | 16 | padding | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 16dp #0000008a
+- Roboto 16dp #000000de
+- #ffffff R255 G255 B255
+- Elevation Elevation 16dp
+- Components List
+- General Scrim #000000 Opacity:32%
+
 #### Standard bottom sheet for mobile
 
 | Measurement | Kind | Axis |
 |---|---|---|
 | min height: 56dp | dimensions | vertical |
 | 360 | dimensions | horizontal |
+
+Color, shape and elevation notes on the same drawing:
+
+- Elevation Elevation 8dp
 
 ## Sheets: side
 
@@ -619,6 +640,13 @@ Modal side sheets appear when triggered by a user action, such as tapping a butt
 | 56 | dimensions | vertical |
 | 56 | dimensions | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 20dp #000000de
+- #00051 R0 G5 B1
+- Elevation Elevation 16dp
+- General Scrim #000000 Opacity:32%
+
 #### Standard side sheet (Desktop)
 
 | Measurement | Kind | Axis |
@@ -629,3 +657,10 @@ Modal side sheets appear when triggered by a user action, such as tapping a butt
 | 16 | padding | horizontal |
 | 64 | dimensions | vertical |
 | 24 | dimensions | - |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 20dp #000000de
+- #00089 R0 G8 B9
+- Elevation Elevation 8dp
+- General Width Set the width of side sheets by using increments of the height of a top app bar

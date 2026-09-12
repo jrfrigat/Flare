@@ -258,6 +258,13 @@ In wide layouts, snackbars can be left-aligned or center-aligned if they are con
 | 16 | padding | horizontal |
 | 344 | dimensions | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #ffffffde
+- #000000dd R0 G0 B0 A0.87
+- Elevation Elevation 6dp
+- Shape All corners Rounded: 4dp
+
 #### Redline
 
 | Measurement | Kind | Axis |
@@ -268,6 +275,14 @@ In wide layouts, snackbars can be left-aligned or center-aligned if they are con
 | 8 | padding | horizontal |
 | 16 | padding | horizontal |
 | 6 | padding | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #ffffffde
+- #000000dd R0 G0 B0 A0.87
+- Elevation Elevation 6dp
+- Shape All corners Rounded: 4dp
+- Components Text Buttons
 
 #### Redline
 
@@ -280,6 +295,14 @@ In wide layouts, snackbars can be left-aligned or center-aligned if they are con
 | 344 | dimensions | horizontal |
 | 16 | padding | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #ffffffde
+- #000000dd R0 G0 B0 A0.87
+- Elevation Elevation 6dp
+- Shape All corners Rounded: 4dp
+- Components Text Buttons
+
 #### Redline
 
 | Measurement | Kind | Axis |
@@ -289,3 +312,11 @@ In wide layouts, snackbars can be left-aligned or center-aligned if they are con
 | 30 | typography | vertical |
 | 8 | padding | vertical |
 | 18 | padding | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #ffffffde
+- #000000dd R0 G0 B0 A0.87
+- Elevation Elevation 6dp
+- Shape All corners Rounded: 4dp
+- Components Text Buttons

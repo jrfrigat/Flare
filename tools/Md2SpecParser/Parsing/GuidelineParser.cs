@@ -135,17 +135,26 @@ public static class GuidelineParser
         foreach (var redline in redlines.EnumerateArray())
         {
             var title = Str(redline, "title") ?? "Redline";
-            var measurements = Redline.Parse(Str(redline, "redline_html_image"));
+            var html = Str(redline, "redline_html_image");
+            var measurements = Redline.Parse(html);
+            var annotations = Redline.Annotations(html);
             sb.Append("\n#### ").Append(title).Append('\n');
-            if (measurements.Count == 0)
+
+            if (measurements.Count > 0)
             {
-                sb.Append("\nNo measurements in this drawing.\n");
-                continue;
+                sb.Append("\n| Measurement | Kind | Axis |\n|---|---|---|\n");
+                foreach (var m in measurements)
+                    sb.Append("| ").Append(m.Value).Append(" | ").Append(m.Kind).Append(" | ").Append(m.Axis).Append(" |\n");
             }
 
-            sb.Append("\n| Measurement | Kind | Axis |\n|---|---|---|\n");
-            foreach (var m in measurements)
-                sb.Append("| ").Append(m.Value).Append(" | ").Append(m.Kind).Append(" | ").Append(m.Axis).Append(" |\n");
+            if (annotations.Count > 0)
+            {
+                sb.Append("\nColor, shape and elevation notes on the same drawing:\n\n");
+                foreach (var a in annotations) sb.Append("- ").Append(a).Append('\n');
+            }
+
+            if (measurements.Count == 0 && annotations.Count == 0)
+                sb.Append("\nNo measurements in this drawing.\n");
         }
     }
 

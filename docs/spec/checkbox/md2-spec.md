@@ -38,6 +38,13 @@ Checkboxes can be selected, unselected, or indeterminate. Checkboxes have enable
 |---|---|---|
 | 24 | dimensions | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- #0000008a R0 G0 B0 A0.54
+- #6200eeff R98 G0 B238 A1.00
+- Elevation Elevation 0dp
+- General Stroke weight 2dp
+
 ## Selection controls
 
 Source: <https://m2.material.io/components/selection-controls>
@@ -147,11 +154,25 @@ For desktop, the radial reaction isn't needed.
 |---|---|---|
 | 24 | dimensions | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- #0000008a R0 G0 B0 A0.54
+- #6200eeff R98 G0 B238 A1.00
+- Elevation Elevation 0dp
+- General Stroke weight 2dp
+
 #### Radio buttons
 
 | Measurement | Kind | Axis |
 |---|---|---|
 | 20 | dimensions | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- #6200eeff R98 G0 B238 A1.00
+- #00000089 R0 G0 B0 A0.54
+- Elevation Elevation 0dp
+- General Stroke weight 2dp
 
 #### Switches
 
@@ -159,3 +180,10 @@ For desktop, the radial reaction isn't needed.
 |---|---|---|
 | 20 | dimensions | vertical |
 | 36 | dimensions | horizontal |
+
+Color, shape and elevation notes on the same drawing:
+
+- #ffffff R255 G255 B255
+- #6200eeff R98 G0 B238 A1.00
+- #6200ee89 R98 G0 B238 A0.54
+- Elevation Elevation 0dp

@@ -152,6 +152,10 @@ Masonry image lists use dynamically sized container heights that reflect the asp
 | 4 | padding | horizontal |
 | 1x1 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- Elevation Elevation 0dp
+
 #### Quilted
 
 | Measurement | Kind | Axis |
@@ -161,6 +165,12 @@ Masonry image lists use dynamically sized container heights that reflect the asp
 | 1x1 | dimensions | - |
 | 2x1 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 16dp #ffffffde
+- Elevation Elevation 0dp
+- General Scrim #000000 Opacity:60%
+
 #### Masonry—mobile
 
 | Measurement | Kind | Axis |
@@ -169,11 +179,21 @@ Masonry image lists use dynamically sized container heights that reflect the asp
 | 4 | padding | horizontal |
 | 174 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- Elevation Elevation 0dp
+- General Scrim #000000 Opacity:60%
+
 #### Masonry—desktop
 
 | Measurement | Kind | Axis |
 |---|---|---|
 | 4 | padding | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- Elevation Elevation 0dp
+- General Scrim #000000 Opacity:60%
 
 #### Redline
 
@@ -197,6 +217,11 @@ Masonry image lists use dynamically sized container heights that reflect the asp
 | 12 | padding | horizontal |
 | 192 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 16dp #ffffffde
+- Elevation Elevation 0dp
+
 #### Woven
 
 | Measurement | Kind | Axis |
@@ -206,3 +231,8 @@ Masonry image lists use dynamically sized container heights that reflect the asp
 | 28 | typography | vertical |
 | 1x1 | dimensions | - |
 | 5x7 | dimensions | - |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 16dp #000000de
+- Elevation Elevation 0dp

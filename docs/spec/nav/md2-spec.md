@@ -473,6 +473,12 @@ The destinations within a navigation drawer take the form of list items. Each it
 | 64 | dimensions | vertical |
 | 256 | dimensions | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 20dp #000000de
+- #ffffff R255 G255 B255
+- Components Sheets: Side
+
 #### Modal navigation drawer
 
 | Measurement | Kind | Axis |
@@ -487,6 +493,17 @@ The destinations within a navigation drawer take the form of list items. Each it
 | 56 | dimensions | horizontal |
 | 28 | typography | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 20dp #000000de
+- Roboto 13dp #0000008a
+- #ffffff R255 G255 B255
+- Elevation Elevation 16dp
+- Components Image List
+- Components Dividers
+- Components Sheets: Side
+- General Scrim #000000 Opacity:32%
+
 #### Bottom navigation drawer
 
 | Measurement | Kind | Axis |
@@ -498,6 +515,17 @@ The destinations within a navigation drawer take the form of list items. Each it
 | 20 | typography | vertical |
 | 48 | dimensions | vertical |
 | 18 | padding | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 20dp #000000de
+- Roboto 13dp #0000008a
+- #ffffff R255 G255 B255
+- Elevation Elevation 16dp
+- Components List
+- Components Sheets: Bottom
+- General Scrim #000000 Opacity:32%
+- General Max initial height Initial height cannot exceed 1/2 of the screen's height
 
 ## Bottom navigation
 

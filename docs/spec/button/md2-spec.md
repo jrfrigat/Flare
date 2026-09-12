@@ -467,6 +467,13 @@ Toggle buttons that cannot be selected can either be given a disabled state, or 
 | min-width: 64dp | dimensions | horizontal |
 | 16 | padding | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #ffffff
+- #6200eeff R98 G0 B238 A1.00
+- Elevation Elevation 2dp
+- Shape All corners Rounded: 4dp
+
 #### Contained button with icon
 
 | Measurement | Kind | Axis |
@@ -479,6 +486,13 @@ Toggle buttons that cannot be selected can either be given a disabled state, or 
 | C | typography | vertical |
 | 18 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #ffffff
+- #6200ee R98 G0 B238
+- Elevation Elevation 2dp
+- Shape All corners Rounded: 4dp
+
 #### Outlined button
 
 | Measurement | Kind | Axis |
@@ -489,6 +503,13 @@ Toggle buttons that cannot be selected can either be given a disabled state, or 
 | min-width: 64dp | dimensions | horizontal |
 | 1 | dimensions | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- #6200ee R98 G0 B238
+- #0000001e R0 G0 B0 A0.12
+- Elevation Elevation 0dp
+- Shape All corners Rounded: 4dp
+
 #### Text button
 
 | Measurement | Kind | Axis |
@@ -497,6 +518,11 @@ Toggle buttons that cannot be selected can either be given a disabled state, or 
 | min-width: 64dp | dimensions | horizontal |
 | 8 | padding | horizontal |
 | C | typography | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 14dp #6200ee
+- Elevation Elevation 0dp
 
 #### Toggle buttons
 
@@ -508,3 +534,9 @@ Toggle buttons that cannot be selected can either be given a disabled state, or 
 | 48 | dimensions | horizontal |
 | 1 | dimensions | horizontal |
 | 24 | dimensions | - |
+
+Color, shape and elevation notes on the same drawing:
+
+- #000000 R0 G0 B0
+- #0000001e R0 G0 B0 A0.12
+- Elevation Elevation 0dp

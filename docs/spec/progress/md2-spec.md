@@ -82,6 +82,12 @@ They should be used for short, indeterminate activities (between 2-5 seconds). L
 |---|---|---|
 | 48 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- #6200eeff R98 G0 B238 A1.00
+- Elevation Elevation 0dp
+- General Stroke weight 4dp
+
 #### Determinate indicators
 
 | Measurement | Kind | Axis |
@@ -90,6 +96,12 @@ They should be used for short, indeterminate activities (between 2-5 seconds). L
 | 144 | dimensions | horizontal |
 | 240 | dimensions | horizontal |
 
+Color, shape and elevation notes on the same drawing:
+
+- #6200eeff R98 G0 B238 A1.00
+- #6200ee99 R98 G0 B238 A0.60
+- Elevation Elevation 0dp
+
 #### Indeterminate indicators
 
 | Measurement | Kind | Axis |
@@ -97,3 +109,9 @@ They should be used for short, indeterminate activities (between 2-5 seconds). L
 | 4 | dimensions | vertical |
 | 240 | dimensions | horizontal |
 | 112 | dimensions | horizontal |
+
+Color, shape and elevation notes on the same drawing:
+
+- #6200eeff R98 G0 B238 A1.00
+- #6200ee99 R98 G0 B238 A0.60
+- Elevation Elevation 0dp

@@ -18,6 +18,28 @@ public static partial class Redline
     /// <param name="Value">The label as drawn, e.g. <c>36</c> or <c>min-width: 64dp</c>.</param>
     public sealed record Measurement(string Kind, string Axis, string Value);
 
+    /// <summary>
+    /// The colour, shape and elevation notes drawn on the same overlay, on their own layers. These
+    /// are where a redline states a value that is not a distance - the switch's track is primary at
+    /// 54% and its thumb sits at 0dp, and neither number appears anywhere else on the page.
+    /// </summary>
+    public static IReadOnlyList<string> Annotations(string? redlineHtml)
+    {
+        if (string.IsNullOrWhiteSpace(redlineHtml)) return [];
+
+        var found = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (Match item in AnnotationItem().Matches(redlineHtml))
+        {
+            var text = WebUtility.HtmlDecode(Regex.Replace(item.Groups[1].Value, "<[^>]+>", " "));
+            // "open_in_new" is a material icon ligature standing in for an outbound link.
+            text = Regex.Replace(text.Replace("open_in_new", " "), @"\s+", " ").Trim();
+            if (text.Length == 0 || text == " ") continue;
+            if (seen.Add(text)) found.Add(text);
+        }
+        return found;
+    }
+
     /// <summary>Extracts every measurement from one redline overlay, in document order.</summary>
     public static IReadOnlyList<Measurement> Parse(string? redlineHtml)
     {
@@ -55,6 +77,9 @@ public static partial class Redline
 
     [GeneratedRegex(@"<li class=""(?<class>[^""]*)""[^>]*>(?<body>.*?)</li>", RegexOptions.IgnoreCase | RegexOptions.Singleline)]
     private static partial Regex MeasurementItem();
+
+    [GeneratedRegex(@"<li class=""annotation[^""]*""[^>]*>([\s\S]*?)</li>", RegexOptions.IgnoreCase)]
+    private static partial Regex AnnotationItem();
 
     // The visible label; the screen-reader twin repeats it prefixed with "Measurement".
     [GeneratedRegex(@"<span class=""measurement__value(?![^""]*screenreader)[^""]*""[^>]*>(.*?)</span>", RegexOptions.IgnoreCase | RegexOptions.Singleline)]

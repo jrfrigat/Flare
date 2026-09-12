@@ -35,3 +35,10 @@ Radio buttons can be selected or unselected. Radio buttons have enabled, disable
 | Measurement | Kind | Axis |
 |---|---|---|
 | 20 | dimensions | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- #6200eeff R98 G0 B238 A1.00
+- #00000089 R0 G0 B0 A0.54
+- Elevation Elevation 0dp
+- General Stroke weight 2dp

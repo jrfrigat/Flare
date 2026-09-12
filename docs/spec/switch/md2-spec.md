@@ -56,3 +56,10 @@ For desktop, the ripple reaction isn't needed.
 |---|---|---|
 | 20 | dimensions | vertical |
 | 36 | dimensions | horizontal |
+
+Color, shape and elevation notes on the same drawing:
+
+- #ffffff R255 G255 B255
+- #6200eeff R98 G0 B238 A1.00
+- #6200ee89 R98 G0 B238 A0.54
+- Elevation Elevation 0dp

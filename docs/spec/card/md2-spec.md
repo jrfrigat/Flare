@@ -340,6 +340,16 @@ Card collections can be filtered in a variety of ways, including by date or alph
 | 40 | typography | vertical |
 | 80 | dimensions | - |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 24dp #000000de
+- Roboto 14dp #00000099
+- Roboto 14dp #6200ee
+- #ffffff R255 G255 B255
+- Elevation Elevation 1dp
+- Shape All corners Rounded: 4dp
+- Components Text Buttons
+
 #### Redline
 
 | Measurement | Kind | Axis |
@@ -358,6 +368,16 @@ Card collections can be filtered in a variety of ways, including by date or alph
 | 24 | padding | vertical |
 | 344 | dimensions | - |
 | 40 | dimensions | - |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 20dp #000000de
+- Roboto 14dp #00000099
+- Roboto 14dp #6200ee
+- #ffffff R255 G255 B255
+- Elevation Elevation 1dp
+- Shape All corners Rounded: 4dp
+- Components Text Buttons
 
 #### Redline
 
@@ -381,6 +401,20 @@ Card collections can be filtered in a variety of ways, including by date or alph
 | 44 | typography | vertical |
 | 24 | typography | vertical |
 
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 24dp #000000de
+- Roboto 12dp #0000008a
+- Roboto 14dp #000000de
+- Roboto 14dp #00000099
+- Roboto 14dp #6200ee
+- #ffffff R255 G255 B255
+- Elevation Elevation 1dp
+- Shape All corners Rounded: 4dp
+- Components Text Buttons
+- Components Chips
+- Components Dividers
+
 #### Outlined cards
 
 | Measurement | Kind | Axis |
@@ -393,3 +427,14 @@ Card collections can be filtered in a variety of ways, including by date or alph
 | 8 | padding | vertical |
 | 1 | dimensions | vertical |
 | 80 | dimensions | - |
+
+Color, shape and elevation notes on the same drawing:
+
+- Roboto 24dp #000000
+- Roboto 10dp #000000
+- Roboto 14dp #000000
+- #0000001e R0 G0 B0 A0.12
+- #fafafa R250 G250 B250
+- Shape All corners Rounded: 4dp
+- Elevation Elevation 0dp
+- Components Text Buttons

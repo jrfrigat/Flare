@@ -87,3 +87,8 @@ Dividers can be paired with subheaders to identify grouped content. Place divide
 | Measurement | Kind | Axis |
 |---|---|---|
 | 1 | dimensions | vertical |
+
+Color, shape and elevation notes on the same drawing:
+
+- #0000001e R0 G0 B0 A0.12
+- Elevation Elevation 0dp
