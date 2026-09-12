@@ -69,6 +69,54 @@
     </ParameterGroup>
     <Task>
       <Code Type="Fragment" Language="cs"><![CDATA[
+        // Drops /* ... */ comments, which are written for whoever edits the source and mean nothing to
+        // a browser - they were 190 KB of the 525 KB bundle, and 55 KB of the 89 KB that crossed the
+        // network compressed. Quoted strings and url() bodies are copied through untouched, so a "/*"
+        // inside a data URI stays part of the URI.
+        System.Func<string, string> strip = css =>
+        {
+            var o = new System.Text.StringBuilder(css.Length);
+            for (int k = 0; k < css.Length; )
+            {
+                char c = css[k];
+                if (c == '"' || c == '\'')
+                {
+                    char quote = c;
+                    o.Append(c); k++;
+                    while (k < css.Length && css[k] != quote)
+                    {
+                        if (css[k] == '\\' && k + 1 < css.Length) { o.Append(css[k]); k++; }
+                        o.Append(css[k]); k++;
+                    }
+                    if (k < css.Length) { o.Append(css[k]); k++; }
+                    continue;
+                }
+                if (c == 'u' && k + 4 <= css.Length && string.Compare(css, k, "url(", 0, 4, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    int close = css.IndexOf(')', k);
+                    if (close < 0) close = css.Length - 1;
+                    o.Append(css, k, close - k + 1); k = close + 1;
+                    continue;
+                }
+                if (c == '/' && k + 1 < css.Length && css[k + 1] == '*')
+                {
+                    int end2 = css.IndexOf("*/", k + 2, StringComparison.Ordinal);
+                    k = end2 < 0 ? css.Length : end2 + 2;
+                    continue;
+                }
+                o.Append(c); k++;
+            }
+            // Comment-only lines leave blank runs behind; collapse them and the trailing whitespace.
+            var kept = new System.Collections.Generic.List<string>();
+            foreach (var line in o.ToString().Split('\n'))
+            {
+                var trimmed = line.TrimEnd();
+                if (trimmed.Length == 0 && (kept.Count == 0 || kept[kept.Count - 1].Length == 0)) continue;
+                kept.Add(trimmed);
+            }
+            return string.Join("\n", kept);
+        };
+
         var text = System.IO.File.ReadAllText(Manifest);
         var sb = new System.Text.StringBuilder();
         sb.AppendLine("/* GENERATED from flare-components.imports.css - edit that, not this. */");
@@ -92,7 +140,7 @@
             if (!System.IO.File.Exists(path)) { missing.Add(name); continue; }
             sb.AppendLine();
             sb.AppendLine("/* ---- " + name + " ---- */");
-            sb.AppendLine(System.IO.File.ReadAllText(path).TrimEnd());
+            sb.AppendLine(strip(System.IO.File.ReadAllText(path)).TrimEnd());
         }
         // A component stylesheet nobody named is a component nobody styled: before the bundle the
         // omission at least showed up as an unimported file, now it would simply never ship.
