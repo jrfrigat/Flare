@@ -32,6 +32,11 @@
     background: var(--flare-color-secondary-container);
     border-radius: var(--flare-progress-track-radius);
     overflow: hidden;
+    /* The PROGRESS gap, not a meter-owned one, for the same reason the height ramp is shared: a
+       language that separates a progress bar's indicator from its remaining track separates a
+       meter's parts by the same distance, and two scales of one family on one page must not look
+       like they came from different eras. A theme that draws neither sets the token to zero. */
+    gap: var(--flare-progress-gap);
 }
 
 /* One proportional segment. flex-grow carries the segment's value (inline), so the row always fills
@@ -41,6 +46,15 @@
     min-width: 0;
     height: 100%;
     background: var(--fc-main, var(--flare-color-primary));
+    /* Rounded ends exactly when the theme separates the parts. With no gap they butt together and
+       the track's overflow clip already supplies the outer ends, so rounding each one would cut a
+       lens-shaped notch at every boundary. CSS has no conditional, so the gap is scaled into a
+       length large enough for min() to choose against: zero stays zero, anything else loses to the
+       radius. That radius is half the track height - a real length rather than 9999px, because a
+       9999px corner beside a smaller one on the same box makes the browser scale the whole set
+       down and paint it square. A segment narrower than it is tall is scaled down the same way,
+       which is what keeps a thin part from turning into a rectangle. */
+    border-radius: min(calc(var(--_lin-height) / 2), calc(var(--flare-progress-gap) * 1000));
 }
 
 /* ---- Optional legend ---- */

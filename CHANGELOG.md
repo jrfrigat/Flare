@@ -23,6 +23,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A meter separates its parts wherever the theme separates a progress bar's.** `FlareMeter`
+  already borrows the linear progress track tokens for its height, rounded ends and resting
+  background - the gap was the one member of that set it did not read, so under Material 3
+  Expressive a meter and a progress bar sat on the same page with one showing a 4dp gap and the
+  other running its parts together. The track now reads `--flare-progress-gap` too, rather than
+  owning a second token for the same distance. A theme that draws no gap (Fluent UI 2, Aero, Liquid
+  Glass, Visual Studio all set it to zero) gets the solid meter it had. Each part takes its own
+  rounded ends exactly when there is a gap to justify them, at half the track height - a real
+  length, because a 9999px corner beside a smaller one makes the browser scale the set down and
+  paint it square. Measured at 8x on the component gallery: a 2px part stays a lozenge.
+
 - **A slider under RTL fills from the correct end.** Its track, fill, zones, stop dots, marks and
   value bubble were all placed with physical `left` / `right` / `margin-right` - about a dozen and a
   half declarations in the stylesheet, plus the inline styles that position every band on the rail.
