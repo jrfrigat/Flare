@@ -14,7 +14,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
     public const string ThemeId = "md3-expressive";
 
     private static readonly IReadOnlyDictionary<string, string> Extended =
-        new Dictionary<string, string>(MaterialDesignTokens.Extended)
+        new Dictionary<string, string>(MaterialDesign3Tokens.Extended)
         {
             [Css.Tokens.Md3e.Progress.Length] = "40px",
             [Css.Tokens.Md3e.Progress.IndeterminateLength] = "20px",
@@ -27,7 +27,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
 
     public string Id => ThemeId;
     public string DisplayName => "Material Design 3 Expressive";
-    public DesignTokens Design => MaterialDesignTokens.Design with
+    public DesignTokens Design => MaterialDesign3Tokens.Design with
     {
         // THE EXPRESSIVE SIZE RAMP. Baseline M3 has one button - "small", 40dp tall - and the XS/M/L/XL
         // steps arrive with Expressive, which is why they are stated here rather than in the shared
@@ -39,7 +39,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // label, a display-scale control for one hero action per screen rather than a slightly bigger
         // button. Flare used to compress the whole ramp into 32-64dp, which made large and extra-large
         // near-duplicates of medium and quietly threw away the size axis Expressive exists to offer.
-        Button = MaterialDesignTokens.Design.Button with
+        Button = MaterialDesign3Tokens.Design.Button with
         {
             HeightXs = "2rem",     // 32dp
             HeightSm = "2.5rem",   // 40dp
@@ -104,7 +104,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
-        Progress = MaterialDesignTokens.Design.Progress with
+        Progress = MaterialDesign3Tokens.Design.Progress with
         {
             LinearIndeterminateDuration = "1750ms",
             LinearIndeterminateEasing = "cubic-bezier(0.3, 0, 0.8, 0.15)",
@@ -115,7 +115,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // Charts get the Expressive treatment for the same reason the buttons do: shape is the axis this
         // era pushes. A heavier stroke and a visibly rounded bar end read as Expressive at a glance, and
         // baseline M3 keeps the quieter geometry from the shared Material bundle.
-        Chart = MaterialDesignTokens.Design.Chart with
+        Chart = MaterialDesign3Tokens.Design.Chart with
         {
             LineWidth = "3",
             PointRadius = "3.5",
@@ -164,12 +164,12 @@ public static class Md3Palettes
         Id = VioletId,
         Name = "Violet",
         Source = SourceName,
-        Light = MaterialDesignTokens.LightColors,
-        Dark = MaterialDesignTokens.DarkColors,
+        Light = MaterialDesign3Tokens.LightColors,
+        Dark = MaterialDesign3Tokens.DarkColors,
     };
 
     private static Palette Brand(string id, string name, string seed) =>
-        PaletteFactory.Brand(id, name, MaterialDesignTokens.LightColors, MaterialDesignTokens.DarkColors, seed, SourceName);
+        PaletteFactory.Brand(id, name, MaterialDesign3Tokens.LightColors, MaterialDesign3Tokens.DarkColors, seed, SourceName);
 
     /// <summary>Material blue.</summary>
     public static readonly Palette Blue = Brand(BlueId, "Blue", "#0B57D0");

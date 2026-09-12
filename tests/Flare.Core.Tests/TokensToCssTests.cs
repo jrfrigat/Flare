@@ -10,7 +10,7 @@ public class TokensToCssTests
     // Reuse the builders from ThemeServiceTests via small local copies.
     private static TypeStyle TS() => new() { FontFamily = "Test", FontWeight = "400", FontSize = "1rem", LineHeight = "1.5rem", LetterSpacing = "0" };
 
-    private static DesignTokens Design(IReadOnlyDictionary<string, string>? extended = null) => MaterialDesignTokens.Design with
+    private static DesignTokens Design(IReadOnlyDictionary<string, string>? extended = null) => MaterialDesign3Tokens.Design with
     {
         FocusRing = "2px solid #000",
         Typography = new()

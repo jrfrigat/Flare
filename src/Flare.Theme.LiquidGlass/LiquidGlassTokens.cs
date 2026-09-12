@@ -228,19 +228,19 @@ internal class LiquidGlassTokens
         TriggerRadiusXl = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    internal static readonly ToggleButtonTokens ToggleButton = MaterialDesignTokens.Design.ToggleButton;
+    internal static readonly ToggleButtonTokens ToggleButton = MaterialDesign3Tokens.Design.ToggleButton;
 
     // FAB - fully round / pill.
-    internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
+    internal static readonly FabTokens Fab = MaterialDesign3Tokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-large)",
         RadiusMd = "var(--flare-shape-large)",
         RadiusLg = "var(--flare-shape-extra-large)",
     };
 
-    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu;
+    internal static readonly MenuTokens Menu = MaterialDesign3Tokens.Design.Menu;
 
-    internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with
+    internal static readonly CheckboxTokens Checkbox = MaterialDesign3Tokens.Design.Checkbox with
     {
         BorderWidth = "1.5px",
         Radius = "var(--flare-shape-small)",
@@ -262,10 +262,10 @@ internal class LiquidGlassTokens
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
-    internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
+    internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs;
 
     // The iconic green iOS switch: gray off track, green on track, white circular thumb (same size on/off).
-    internal static readonly SwitchTokens Switch = MaterialDesignTokens.Design.Switch with
+    internal static readonly SwitchTokens Switch = MaterialDesign3Tokens.Design.Switch with
     {
         // md step only (iOS pill); xs/sm/lg/xl inherited from the Material ramp.
         TrackWidthMd = "51px",
@@ -281,7 +281,7 @@ internal class LiquidGlassTokens
         ThumbOnColor = "#FFFFFF",
     };
 
-    internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
+    internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
     {
         // One fixed geometry at every size: a 4px pill rail with a 28px round thumb.
         TrackHeightXs = "4px", TrackHeightSm = "4px", TrackHeightMd = "4px",
@@ -319,7 +319,7 @@ internal class LiquidGlassTokens
         Level5 = "0 32px 72px var(--flare-shadow-umbra), 0 8px 16px var(--flare-shadow-penumbra)",
     };
 
-    internal static readonly SpacingTokens Spacing = MaterialDesignTokens.Design.Spacing;
+    internal static readonly SpacingTokens Spacing = MaterialDesign3Tokens.Design.Spacing;
 
     /// <summary>Theme-specific extras: translucent fills + blur hooks consumed by the scoped glass CSS.</summary>
     public static readonly Dictionary<string, string> Extended = new()
@@ -360,7 +360,7 @@ internal class LiquidGlassTokens
 
     // Input = iOS translucent field: borderless, rounded; blue glow on focus (scoped CSS). The
     // translucent fill itself is mode-specific and stays in Extended (--flare-input-bg).
-    internal static readonly InputTokens Input = MaterialDesignTokens.Design.Input with
+    internal static readonly InputTokens Input = MaterialDesign3Tokens.Design.Input with
     {
         OutlinedRadius = "var(--flare-shape-medium)",
         BorderColor = "transparent",
@@ -368,7 +368,7 @@ internal class LiquidGlassTokens
     };
 
     // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).
-    internal static readonly ProgressTokens Progress = MaterialDesignTokens.Design.Progress with
+    internal static readonly ProgressTokens Progress = MaterialDesign3Tokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-full)",
         // Md is the thickness Liquid Glass has always drawn; the ramp runs both ways from it.
@@ -384,14 +384,14 @@ internal class LiquidGlassTokens
     };
 
     // Nav - pill indicator (iOS tab/segmented look).
-    internal static readonly NavTokens Nav = MaterialDesignTokens.Design.Nav with
+    internal static readonly NavTokens Nav = MaterialDesign3Tokens.Design.Nav with
     {
         ItemRadius = "var(--flare-shape-medium)",
         IndicatorRadius = "var(--flare-shape-full)",
     };
 
     /// <summary>The complete Liquid Glass design tokens. Use this as the base for custom themes.</summary>
-    public static readonly DesignTokens Design = MaterialDesignTokens.Design with
+    public static readonly DesignTokens Design = MaterialDesign3Tokens.Design with
     {
         FocusRing = "0 0 0 4px var(--flare-liquid-glow, rgba(0,122,255,0.35))",
         Typography = Typography,
@@ -403,7 +403,7 @@ internal class LiquidGlassTokens
         Badge = Badge,
         Alert = Alert,
         Button = Button,
-        ButtonGroup = MaterialDesignTokens.Design.ButtonGroup,
+        ButtonGroup = MaterialDesign3Tokens.Design.ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,
         Fab = Fab,
@@ -415,13 +415,13 @@ internal class LiquidGlassTokens
         Switch = Switch,
         Slider = Slider,
         // Card geometry is typed; the translucent variant fills stay mode-specific in Extended.
-        Card = MaterialDesignTokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", ElevationHover = "var(--flare-elevation-2)", OutlinedBorder = "1px solid var(--flare-color-outline-variant)" },
+        Card = MaterialDesign3Tokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", ElevationHover = "var(--flare-elevation-2)", OutlinedBorder = "1px solid var(--flare-color-outline-variant)" },
         Input = Input,
         Progress = Progress,
         Nav = Nav,
-        Dialog = MaterialDesignTokens.Design.Dialog with { Radius = "var(--flare-shape-extra-large)" },
-        Popover = MaterialDesignTokens.Design.Popover with { Radius = "var(--flare-shape-large)" },
-        Snackbar = MaterialDesignTokens.Design.Snackbar with { Radius = "var(--flare-shape-large)" },
+        Dialog = MaterialDesign3Tokens.Design.Dialog with { Radius = "var(--flare-shape-extra-large)" },
+        Popover = MaterialDesign3Tokens.Design.Popover with { Radius = "var(--flare-shape-large)" },
+        Snackbar = MaterialDesign3Tokens.Design.Snackbar with { Radius = "var(--flare-shape-large)" },
         Extended = Extended,
     };
 

@@ -227,19 +227,19 @@ internal class AeroTokens
         TriggerRadiusXl = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    internal static readonly ToggleButtonTokens ToggleButton = MaterialDesignTokens.Design.ToggleButton;
+    internal static readonly ToggleButtonTokens ToggleButton = MaterialDesign3Tokens.Design.ToggleButton;
 
-    internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
+    internal static readonly FabTokens Fab = MaterialDesign3Tokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
         RadiusLg = "var(--flare-shape-large)",
     };
 
-    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu;
+    internal static readonly MenuTokens Menu = MaterialDesign3Tokens.Design.Menu;
 
     // Checkbox/Radio - Aero: 1px border, gentle corner, no MD3 halo.
-    internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with
+    internal static readonly CheckboxTokens Checkbox = MaterialDesign3Tokens.Design.Checkbox with
     {
         BorderWidth = "1px",
         Radius = "var(--flare-shape-extra-small)",
@@ -261,9 +261,9 @@ internal class AeroTokens
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
-    internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
+    internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs;
 
-    internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
+    internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
     {
         // One fixed geometry at every size: a 4px pill rail with a 16px round thumb.
         TrackHeightXs = "4px", TrackHeightSm = "4px", TrackHeightMd = "4px",
@@ -301,10 +301,10 @@ internal class AeroTokens
         Level5 = "0 18px 38px var(--flare-shadow-umbra), 0 4px 8px var(--flare-shadow-penumbra)",
     };
 
-    internal static readonly SpacingTokens Spacing = MaterialDesignTokens.Design.Spacing;
+    internal static readonly SpacingTokens Spacing = MaterialDesign3Tokens.Design.Spacing;
 
     // Input - sunken white field with a 1px border; blue focus is finished in scoped CSS.
-    internal static readonly InputTokens Input = MaterialDesignTokens.Design.Input with
+    internal static readonly InputTokens Input = MaterialDesign3Tokens.Design.Input with
     {
         FilledBg = "var(--flare-color-surface)",
         OutlinedRadius = "var(--flare-shape-extra-small)",
@@ -313,7 +313,7 @@ internal class AeroTokens
     };
 
     // Progress - thin classic bar; flat (no MD3 Expressive wavy/round-cap indicator).
-    internal static readonly ProgressTokens Progress = MaterialDesignTokens.Design.Progress with
+    internal static readonly ProgressTokens Progress = MaterialDesign3Tokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-extra-small)",
         // Aero's glossy capsule bar is chunky by design, so the whole ramp sits above MD3's.
@@ -352,7 +352,7 @@ internal class AeroTokens
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Aero design tokens. Use this as the base for custom themes.</summary>
-    public static readonly DesignTokens Design = MaterialDesignTokens.Design with
+    public static readonly DesignTokens Design = MaterialDesign3Tokens.Design with
     {
         FocusRing = "1px dotted var(--flare-color-on-surface)",
         Typography = Typography,
@@ -364,7 +364,7 @@ internal class AeroTokens
         Badge = Badge,
         Alert = Alert,
         Button = Button,
-        ButtonGroup = MaterialDesignTokens.Design.ButtonGroup,
+        ButtonGroup = MaterialDesign3Tokens.Design.ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,
         Fab = Fab,
@@ -375,7 +375,7 @@ internal class AeroTokens
         Tabs = Tabs,
         Slider = Slider,
         // Aero cards: flat glass panels with a 1px border, small radius, no drop shadow.
-        Card = MaterialDesignTokens.Design.Card with
+        Card = MaterialDesign3Tokens.Design.Card with
         {
             ElevatedBg = "var(--flare-color-surface)",
             Elevation = "none",
@@ -394,9 +394,9 @@ internal class AeroTokens
         Input = Input,
         Progress = Progress,
         Nav = Nav,
-        Dialog = MaterialDesignTokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
-        Popover = MaterialDesignTokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
-        Snackbar = MaterialDesignTokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
+        Dialog = MaterialDesign3Tokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
+        Popover = MaterialDesign3Tokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
+        Snackbar = MaterialDesign3Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 

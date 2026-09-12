@@ -20,7 +20,7 @@ public class FieldHeightRampTests
 {
     public static TheoryData<string, InputTokens> Themes => new()
     {
-        { "MaterialDesign3", MaterialDesignTokens.Design.Input },
+        { "MaterialDesign3", MaterialDesign3Tokens.Design.Input },
         { "FluentUI2", FluentUI2Tokens.Design.Input },
     };
 

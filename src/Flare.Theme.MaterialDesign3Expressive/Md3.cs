@@ -14,9 +14,9 @@ namespace Flare.Theme.MaterialDesign3Expressive;
 public static class Md3
 {
     /// <summary>The MD3 design tokens (non-color); override via <c>with</c>.</summary>
-    public static DesignTokens DesignReference => MaterialDesignTokens.Design;
+    public static DesignTokens DesignReference => MaterialDesign3Tokens.Design;
     /// <summary>The MD3 baseline light color scheme; override via <c>with</c>.</summary>
-    public static ColorScheme LightColors => MaterialDesignTokens.LightColors;
+    public static ColorScheme LightColors => MaterialDesign3Tokens.LightColors;
     /// <summary>The MD3 baseline dark color scheme; override via <c>with</c>.</summary>
-    public static ColorScheme DarkColors => MaterialDesignTokens.DarkColors;
+    public static ColorScheme DarkColors => MaterialDesign3Tokens.DarkColors;
 }

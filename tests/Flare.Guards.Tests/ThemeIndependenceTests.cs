@@ -42,6 +42,29 @@ public sealed class ThemeIndependenceTests
     public static IEnumerable<object[]> Rings() =>
         CoreRings.Select(r => new object[] { r.Ring, r.Assembly });
 
+    /// <summary>
+    /// A theme must not build on another design language's tokens. Material 2 did: it took the
+    /// Material 3 baseline and overrode the parts somebody noticed, so everything nobody noticed
+    /// arrived as Material 3 - the dark on-surface colour, the checkbox size, the switch's whole
+    /// silhouette, all found by an audit against the published Material 2 specification. Inheriting
+    /// across languages hides those; owning the values makes each one visible.
+    /// </summary>
+    [Fact]
+    public void MaterialDesign2_DoesNotBuildOnMaterialDesign3Tokens()
+    {
+        var md2 = typeof(Flare.Theme.MaterialDesign2.MaterialDesign2Theme).Assembly;
+
+        var borrowed = md2.GetReferencedAssemblies()
+            .Where(a => a.Name is not null && a.Name.StartsWith("Flare.Theme.", StringComparison.Ordinal))
+            .Select(a => a.Name!)
+            .ToArray();
+
+        Assert.True(borrowed.Length == 0,
+            "Flare.Theme.MaterialDesign2 references another theme package: " + string.Join(", ", borrowed) +
+            ". Material 2 predates Material 3 and shares none of its opinions - it ships its own complete " +
+            "token set (MaterialDesign2BaseTokens) instead of inheriting one.");
+    }
+
     // "Flare.Theme." (with the trailing dot) so this doesn't false-match "Flare.Theming" itself.
     private static bool IsThemePackage(AssemblyName name) =>
         name.Name is not null && name.Name.StartsWith("Flare.Theme.", StringComparison.Ordinal);
