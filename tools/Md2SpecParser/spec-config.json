@@ -1,0 +1,53 @@
+{
+  "outputRoot": "C:\\Job\\Projects\\FrigaT\\Flare\\docs\\spec",
+  "outputFileName": "md2-spec.md",
+  "siteMetaUrl": "https://m2.material.io/site_meta.js",
+  "baseUrl": "https://m2.material.io",
+  "pages": [
+    {
+      "type": "Foundation",
+      "folder": "_foundation",
+      "routes": [
+        "/design/color/the-color-system.html",
+        "/design/color/dark-theme.html",
+        "/design/color/text-legibility.html",
+        "/design/typography/the-type-system.html",
+        "/design/shape/about-shape.html",
+        "/design/shape/applying-shape-to-ui.html",
+        "/design/environment/elevation.html",
+        "/design/environment/light-shadows.html",
+        "/design/environment/surfaces.html",
+        "/design/interaction/states.html",
+        "/design/motion/speed.html",
+        "/design/layout/applying-density.html"
+      ]
+    },
+    { "type": "App bar", "folder": "app-bar", "routes": ["/components/app-bars-top", "/components/app-bars-bottom"] },
+    { "type": "Button", "folder": "button", "routes": ["/components/buttons"] },
+    { "type": "FAB", "folder": "fab", "routes": ["/components/buttons-floating-action-button"] },
+    { "type": "Card", "folder": "card", "routes": ["/components/cards"] },
+    { "type": "Checkbox", "folder": "checkbox", "routes": ["/components/checkboxes", "/components/selection-controls"] },
+    { "type": "Radio", "folder": "radio", "routes": ["/components/radio-buttons"] },
+    { "type": "Switch", "folder": "switch", "routes": ["/components/switches"] },
+    { "type": "Chip", "folder": "chip", "routes": ["/components/chips"] },
+    { "type": "Dialog", "folder": "dialog", "routes": ["/components/dialogs"] },
+    { "type": "Divider", "folder": "divider", "routes": ["/components/dividers"] },
+    { "type": "Input", "folder": "input", "routes": ["/components/text-fields"] },
+    { "type": "List", "folder": "list", "routes": ["/components/lists"] },
+    { "type": "Menu", "folder": "menu", "routes": ["/components/menus"] },
+    { "type": "Nav", "folder": "nav", "routes": ["/components/navigation-drawer", "/components/bottom-navigation", "/components/navigation-rail"] },
+    { "type": "Progress", "folder": "progress", "routes": ["/components/progress-indicators"] },
+    { "type": "Search", "folder": "search", "routes": ["/design/navigation/search.html"] },
+    { "type": "Sheet", "folder": "sheet", "routes": ["/components/sheets-bottom", "/components/sheets-side"] },
+    { "type": "Slider", "folder": "slider", "routes": ["/components/sliders"] },
+    { "type": "Snackbar", "folder": "snackbar", "routes": ["/components/snackbars"] },
+    { "type": "Tabs", "folder": "tabs", "routes": ["/components/tabs"] },
+    { "type": "Date picker", "folder": "date-picker", "routes": ["/components/date-pickers"] },
+    { "type": "Time picker", "folder": "time-picker", "routes": ["/components/time-pickers"] },
+    { "type": "Tooltip", "folder": "tooltip", "routes": ["/components/tooltips"] },
+    { "type": "Data table", "folder": "data-table", "routes": ["/components/data-tables"] },
+    { "type": "Banner", "folder": "banner", "routes": ["/components/banners"] },
+    { "type": "Backdrop", "folder": "backdrop", "routes": ["/components/backdrop"] },
+    { "type": "Image list", "folder": "image-list", "routes": ["/components/image-lists"] }
+  ]
+}
