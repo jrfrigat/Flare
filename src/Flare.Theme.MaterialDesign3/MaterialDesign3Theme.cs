@@ -1,5 +1,6 @@
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
 using Flare.Theme.MaterialDesign3Expressive;
 
 namespace Flare.Theme.MaterialDesign3;

@@ -31,8 +31,11 @@ DesignTokens, от которого производится каждая лин
 
 Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming, плюс reference-пакет линейки, если тема
 разделяет ее мнения; umbrella не ссылается ни на один): семь поставляемых дизайн-систем -
-  Линейка Material 3 (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .Aero, .LiquidGlass
-    (.MaterialDesign3 наследует от .MaterialDesign3Expressive, а не напрямую от базы)
+  Линейка Material 3 (-> MaterialDesign3.Tokens): .MaterialDesign3, .MaterialDesign3Expressive,
+    .Aero, .LiquidGlass - каждая берет значения токенов из reference-пакета и переопределяет только
+    то, что меняет ее язык. (.MaterialDesign3 дополнительно ссылается на .MaterialDesign3Expressive,
+    но только ради Md3Palettes / Md3TonalGenerator: цветовой системе Material 3 нужен Flare.Theming,
+    а reference-пакету токенов зависеть от него нельзя.)
   Линейка Fluent (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
   Самодостаточная: .MaterialDesign2 - она предшествует тональным палитрам, капсульным формам и
     возвышению заливкой, которые несет база Material 3, поэтому задает все свои токены сама

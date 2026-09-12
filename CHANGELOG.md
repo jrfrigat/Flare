@@ -23,6 +23,22 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The Material 3 reference package now holds baseline Material 3, not Expressive.** It is what
+  every Material 3 theme derives from, and it carried Expressive's opinions: buttons whose label
+  ramps to title-medium / headline-small / headline-large with the container, and the Expressive
+  "island" menu - a 16dp panel with rounded items and each group its own elevated surface. Baseline
+  Material 3 uses one button type style at every size and one classic 4dp panel with square items.
+  The baseline theme had to subtract those again, so it derived from the Expressive assembly to get
+  back to values the reference should have had. The Expressive theme now states them itself, which
+  is what "Expressive overrides only what it changes" is supposed to mean. Neither theme moves: all
+  979 of the baseline theme's token values and all 983 of Expressive's are unchanged, compared
+  before and after.
+- **The Aero and Liquid Glass menus are the classic Material 3 menu again.** Both take the reference
+  menu as it stands, so both had been drawing Expressive's island groups - inherited, never chosen.
+  Eleven menu tokens change for each: the panel drops from 16dp to 4dp, items lose their 4dp corners
+  and 2dp gaps, and a group stops being a separate elevated surface. A theme that wants the island
+  back says so in eleven lines.
+
 - **A meter separates its parts wherever the theme separates a progress bar's.** `FlareMeter`
   already borrows the linear progress track tokens for its height, rounded ends and resting
   background - the gap was the one member of that set it did not read, so under Material 3

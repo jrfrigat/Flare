@@ -34,8 +34,11 @@ DesignTokens each lineage derives from (the core itself ships no default token v
 
 Theme packages (each -> Flare.Abstractions + Flare.Theming, plus a lineage's *.Tokens package if it
 shares that lineage's opinions; none referenced by the umbrella): the seven shipped design systems -
-  Material 3 lineage (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .Aero, .LiquidGlass
-    (.MaterialDesign3 derives from .MaterialDesign3Expressive rather than the baseline directly)
+  Material 3 lineage (-> MaterialDesign3.Tokens): .MaterialDesign3, .MaterialDesign3Expressive,
+    .Aero, .LiquidGlass - every one takes its token values from the reference and overrides only
+    what its own language changes. (.MaterialDesign3 also references .MaterialDesign3Expressive, but
+    only for Md3Palettes / Md3TonalGenerator: the Material 3 colour system needs Flare.Theming,
+    which a reference-tokens package may not depend on.)
   Fluent lineage (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
   Self-contained: .MaterialDesign2 - it predates the tonal palettes, pill shapes and surface-tint
     elevation the Material 3 baseline carries, so it states all of its own tokens instead

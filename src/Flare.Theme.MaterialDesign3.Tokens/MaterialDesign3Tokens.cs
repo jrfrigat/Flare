@@ -255,12 +255,14 @@ public class MaterialDesign3Tokens
         IconSizeLg = "2rem",    // 32dp
         IconSizeXl = "2.5rem",  // 40dp
 
-        // Label typography: label-large -> title-medium -> headline-small -> headline-large
+        // Baseline M3 uses the one button type style at every size. Ramping the label up to
+        // title-medium / headline-small / headline-large is an Expressive behaviour and lives in
+        // the Expressive theme, which is what "Expressive overrides only what it needs" means.
         LabelXs = Typography.LabelLarge,
         LabelSm = Typography.LabelLarge,
-        LabelMd = Typography.TitleMedium,
-        LabelLg = Typography.HeadlineSmall,
-        LabelXl = Typography.HeadlineLarge,
+        LabelMd = Typography.LabelLarge,
+        LabelLg = Typography.LabelLarge,
+        LabelXl = Typography.LabelLarge,
     };
 
     // Both group models. Connected: no gap, a 1px negative overlap that collapses adjacent borders into
@@ -488,7 +490,10 @@ public class MaterialDesign3Tokens
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
-        PanelRadius = "var(--flare-shape-large)",     // 16dp
+        // Baseline M3 is one classic surface: a 4dp panel with square items and no group islands.
+        // The 16dp panel, the rounded items and the floating group sections are Expressive, and the
+        // Expressive theme states them.
+        PanelRadius = "var(--flare-shape-extra-small)", // 4dp
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-3)",     // elevation 3
         PanelPaddingInline = "0.125rem",              // group padding 2dp
@@ -499,18 +504,19 @@ public class MaterialDesign3Tokens
         // but never a dense one. Unchanged.
         ItemPaddingBlockDense = "0.375rem",
         ItemGapDense = "0.5rem",
-        ItemGapBetween = "0.125rem",                  // gap between items 2dp
-        ItemRadius = "var(--flare-shape-extra-small)",// 4dp
-        ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
-        GroupRadius = "var(--flare-shape-small)",     // group 8dp
-        GroupPadding = "0.125rem",                    // group padding 2dp
-        // Expressive "island" group sections: each group is a separate rounded surface tone with its
-        // own elevation, on a transparent backing panel, so adjacent sections read as two cards.
-        GroupBg = "var(--flare-color-surface-container-high)",
-        GroupGap = "0.5rem",
-        GroupShadow = "var(--flare-elevation-3)",
-        GroupedPanelBg = "transparent",
-        GroupedPanelShadow = "none",
+        ItemGapBetween = "0",
+        ItemRadius = "0",
+        ItemRadiusEnd = "0",
+        GroupRadius = "0",
+        GroupPadding = "0",
+        // Groups are sections of the one panel, marked by spacing alone - not the Expressive
+        // "island" model, where each group is its own rounded, elevated surface on a transparent
+        // backing panel.
+        GroupBg = "transparent",
+        GroupGap = "0",
+        GroupShadow = "none",
+        GroupedPanelBg = "var(--flare-color-surface-container)",
+        GroupedPanelShadow = "var(--flare-elevation-2)",
         ItemLabelFont = "var(--flare-typescale-label-large-font)",
         ItemLabelWeight = "var(--flare-typescale-label-large-weight)",
         ItemLabelSize = "var(--flare-typescale-label-large-size)",

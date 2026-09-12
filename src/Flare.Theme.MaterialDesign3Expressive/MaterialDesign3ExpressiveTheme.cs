@@ -67,6 +67,30 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             OutlineWidthMd = "1px",
             OutlineWidthLg = "2px",
             OutlineWidthXl = "3px",
+
+            // The label ramps with the container instead of staying one button type style at every
+            // size: label-large -> title-medium -> headline-small -> headline-large. Baseline M3
+            // keeps label-large throughout, so this belongs here rather than in the reference.
+            LabelMd = MaterialDesign3Tokens.Design.Typography.TitleMedium,
+            LabelLg = MaterialDesign3Tokens.Design.Typography.HeadlineSmall,
+            LabelXl = MaterialDesign3Tokens.Design.Typography.HeadlineLarge,
+        },
+        // Expressive menus: a 16dp panel with rounded items, and group sections drawn as "islands" -
+        // each its own rounded, elevated surface on a transparent backing panel, so adjacent sections
+        // read as two cards. Baseline M3 is one classic 4dp panel with square items.
+        Menu = MaterialDesign3Tokens.Design.Menu with
+        {
+            PanelRadius = "var(--flare-shape-large)",         // 16dp
+            ItemGapBetween = "0.125rem",                      // 2dp
+            ItemRadius = "var(--flare-shape-extra-small)",    // 4dp
+            ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
+            GroupRadius = "var(--flare-shape-small)",         // 8dp
+            GroupPadding = "0.125rem",                        // 2dp
+            GroupBg = "var(--flare-color-surface-container-high)",
+            GroupGap = "0.5rem",
+            GroupShadow = "var(--flare-elevation-3)",
+            GroupedPanelBg = "transparent",
+            GroupedPanelShadow = "none",
         },
         // SEPARATED button group (Expressive): a real 2dp gap, no overlap, rounded interior corners and
         // full-capsule ends. Purely a token bundle - the base buttongroup.css is untouched (no override).
