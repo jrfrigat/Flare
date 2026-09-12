@@ -9,9 +9,15 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
+    /* A page documenting two components carries two API links, and the pair can be wider than the
+       room left beside the heading. They refuse to shrink, so without wrapping they starve the
+       heading to zero width and it spells itself out one letter per line. */
+    flex-wrap: wrap;
 }
 
 .gallery-page-title__main {
+    /* Takes the room that is left and keeps a readable minimum, rather than being squeezed out. */
+    flex: 1 1 18rem;
     min-width: 0;
     display: flex;
     flex-direction: column;

@@ -45,4 +45,165 @@
   <ItemGroup>
     <Using Include="Flare.Icons" />
   </ItemGroup>
+
+  <!--
+    ONE stylesheet reaches the browser, not 108.
+
+    The component styles are authored one file per component, and flare-components.imports.css is
+    the order they load in. Shipping that file as-is meant shipping 107 `@import` rules, and an
+    @import is the one thing a browser cannot start early: it only learns the imports exist after it
+    has fetched and parsed the file naming them, so the whole set lands in a second, serialized wave
+    that blocks first paint. Measured in the Gallery it cost 71 ms of a 96 ms DOM-interactive and
+    turned 143 requests into 250.
+
+    So the imports file stays the authored manifest - it lives outside wwwroot precisely so it is
+    never served - and the build concatenates it, in its own order, into the single stylesheet the
+    package ships. Adding a component's CSS is still one line in the manifest.
+  -->
+  <UsingTask TaskName="BundleFlareCss" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Manifest ParameterType="System.String" Required="true" />
+      <CssDirectory ParameterType="System.String" Required="true" />
+      <Destination ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        // Drops /* ... */ comments, which are written for whoever edits the source and mean nothing to
+        // a browser - they were 190 KB of the 525 KB bundle, and 55 KB of the 89 KB that crossed the
+        // network compressed. Quoted strings and url() bodies are copied through untouched, so a "/*"
+        // inside a data URI stays part of the URI.
+        System.Func<string, string> strip = css =>
+        {
+            var o = new System.Text.StringBuilder(css.Length);
+            for (int k = 0; k < css.Length; )
+            {
+                char c = css[k];
+                if (c == '"' || c == '\'')
+                {
+                    char quote = c;
+                    o.Append(c); k++;
+                    while (k < css.Length && css[k] != quote)
+                    {
+                        if (css[k] == '\\' && k + 1 < css.Length) { o.Append(css[k]); k++; }
+                        o.Append(css[k]); k++;
+                    }
+                    if (k < css.Length) { o.Append(css[k]); k++; }
+                    continue;
+                }
+                if (c == 'u' && k + 4 <= css.Length && string.Compare(css, k, "url(", 0, 4, StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    int close = css.IndexOf(')', k);
+                    if (close < 0) close = css.Length - 1;
+                    o.Append(css, k, close - k + 1); k = close + 1;
+                    continue;
+                }
+                if (c == '/' && k + 1 < css.Length && css[k + 1] == '*')
+                {
+                    int end2 = css.IndexOf("*/", k + 2, StringComparison.Ordinal);
+                    k = end2 < 0 ? css.Length : end2 + 2;
+                    continue;
+                }
+                o.Append(c); k++;
+            }
+            // Comment-only lines leave blank runs behind; collapse them and the trailing whitespace.
+            var kept = new System.Collections.Generic.List<string>();
+            foreach (var line in o.ToString().Split('\n'))
+            {
+                var trimmed = line.TrimEnd();
+                if (trimmed.Length == 0 && (kept.Count == 0 || kept[kept.Count - 1].Length == 0)) continue;
+                kept.Add(trimmed);
+            }
+            return string.Join("\n", kept);
+        };
+
+        var text = System.IO.File.ReadAllText(Manifest);
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("/* GENERATED from flare-components.imports.css - edit that, not this. */");
+        var missing = new System.Collections.Generic.List<string>();
+        int i = 0;
+        while (true)
+        {
+            int at = text.IndexOf("@import", i, System.StringComparison.Ordinal);
+            if (at < 0) break;
+            int end = text.IndexOf(';', at);
+            if (end < 0) break;
+            string clause = text.Substring(at, end - at);
+            int q = clause.IndexOfAny(new[] { '\'', '"' });
+            i = end + 1;
+            if (q < 0) continue;
+            char quote = clause[q];
+            int close = clause.IndexOf(quote, q + 1);
+            if (close < 0) continue;
+            string name = clause.Substring(q + 1, close - q - 1);
+            string path = System.IO.Path.Combine(CssDirectory, name);
+            if (!System.IO.File.Exists(path)) { missing.Add(name); continue; }
+            sb.AppendLine();
+            sb.AppendLine("/* ---- " + name + " ---- */");
+            sb.AppendLine(strip(System.IO.File.ReadAllText(path)).TrimEnd());
+        }
+        // A component stylesheet nobody named is a component nobody styled: before the bundle the
+        // omission at least showed up as an unimported file, now it would simply never ship.
+        var named = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var line in sb.ToString().Split('\n'))
+        {
+            var t = line.Trim();
+            if (t.StartsWith("/* ---- ", StringComparison.Ordinal) && t.EndsWith(" ---- */", StringComparison.Ordinal))
+                named.Add(t.Substring(8, t.Length - 16));
+        }
+        var orphans = new System.Collections.Generic.List<string>();
+        foreach (var file in System.IO.Directory.GetFiles(CssDirectory, "*.css"))
+        {
+            string name = System.IO.Path.GetFileName(file);
+            if (name != System.IO.Path.GetFileName(Destination) && !named.Contains(name)) orphans.Add(name);
+        }
+
+        if (missing.Count > 0)
+        {
+            Log.LogError("flare-components.imports.css names files that do not exist: " + string.Join(", ", missing));
+        }
+        else if (orphans.Count > 0)
+        {
+            Log.LogError("These component stylesheets are not named in flare-components.imports.css, so they would "
+                + "not ship at all: " + string.Join(", ", orphans));
+        }
+        else
+        {
+            // Write only on change: an unconditional write re-times the file and makes every
+            // incremental build think the static web assets moved.
+            string next = sb.ToString();
+            if (!System.IO.File.Exists(Destination) || System.IO.File.ReadAllText(Destination) != next)
+            {
+                System.IO.File.WriteAllText(Destination, next);
+                Log.LogMessage(MessageImportance.High, "Flare: bundled component CSS -> " + Destination);
+            }
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <ItemGroup>
+    <!-- The per-component files are authored sources, not assets: once the build concatenates them
+         nothing fetches them, and shipping them anyway put 107 files plus their gzip and brotli
+         variants into the package and into every consumer's publish output. -->
+    <Content Remove="wwwroot\css\*.css" />
+  </ItemGroup>
+
+  <!-- Deliberately not Inputs/Outputs-incremental: the parts are in no item group to list, and a
+       stale bundle would mean edited CSS that silently never renders. The task reads 107 small
+       files and writes only when the result differs, so running it every build costs nothing.
+
+       The bundle is written into wwwroot, not into obj: a static web asset's public path is derived
+       from where it sits under wwwroot, and a file generated elsewhere and linked in is registered
+       by the SDK but served empty. It is git-ignored, and the one guard that reads every stylesheet
+       in this folder skips it by name. -->
+  <Target Name="FlareBundleCss" BeforeTargets="ResolveStaticWebAssetsInputs;BeforeBuild">
+    <BundleFlareCss Manifest="$(MSBuildProjectDirectory)\flare-components.imports.css"
+                    CssDirectory="$(MSBuildProjectDirectory)\wwwroot\css"
+                    Destination="$(MSBuildProjectDirectory)\wwwroot\css\flare-components.css" />
+    <ItemGroup>
+      <Content Include="wwwroot\css\flare-components.css"
+               Condition="!@(Content->AnyHaveMetadataValue('Identity', 'wwwroot\css\flare-components.css'))" />
+    </ItemGroup>
+  </Target>
 </Project>

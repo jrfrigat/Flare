@@ -32,8 +32,8 @@
 ### CSS живет в `wwwroot/css/` (глобальный бандл), НЕ в scoped `*.razor.css`
 
 Flare - это публикуемая NuGet-библиотека с токен-driven темизацией. Все стили компонентов
-хранятся в **глобальном бандле** `src/Flare.Components/wwwroot/css/*.css`, подключаемом через
-`flare-components.css`.
+хранятся в **глобальном бандле** `src/Flare.Components/wwwroot/css/*.css`; сборка склеивает их
+в единственный `flare-components.css`, который и уезжает в пакет.
 
 **Почему не scoped `*.razor.css`:**
 - Scoped добавляет `[b-hash]` к каждому правилу, что повышает специфичность и мешает
@@ -46,7 +46,7 @@ Flare - это публикуемая NuGet-библиотека с токен-d
 
 **Правила:**
 - Один компонент (или связанная группа) - один CSS-файл в `wwwroot/css/`.
-- Файл добавляется через `@import` в `flare-components.css`.
+- Файл перечисляется в `flare-components.imports.css` - это порядок загрузки, в котором сборка их склеивает. Не перечисленный файл роняет сборку, а не уезжает молча мимо пакета.
 - Если правишь компонент - убедись, что его CSS-файл существует и добавлен в бандл.
 - Примеры: `button.css` -> `FlareButton`, `menu.css`/`menuitem.css`/`menugroup.css` -> Menu-группа.
 - Theme-специфичные доводки (MD3 vs Fluent) - в `src/Flare.Theme.*/wwwroot/css/components/*.css`.

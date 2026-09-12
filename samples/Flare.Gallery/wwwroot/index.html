@@ -41,8 +41,11 @@
 
     <!-- Flare boot: applies the saved theme/palette/mode classes to <html> before first paint and
          fires window.hideFlareSplash()/"flare:ready" when the app is ready. It draws NO splash -
-         the app (below) owns its own loading background + animation. One line. -->
-    <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+         the app (below) owns its own loading background + animation. One line.
+         Flare knows no theme, so the first visit has none to restore: these two say which theme to
+         paint before .NET boots, and they must match what Program.cs registers as the default. -->
+    <script src="_content/Flare.Components/js/flare-bootstrap.js"
+            data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 
     <!-- App-owned loading splash (background + spinner). Tagged id="flare-splash" so Flare fades it
          out on ready. The theme classes on <html> (set above) make it dark-mode aware. -->

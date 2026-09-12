@@ -35,7 +35,11 @@ public sealed class DeadFallbackTests
         Assert.True(Directory.Exists(cssDir), $"Core CSS folder not found: {cssDir}");
 
         var offenders = new List<string>();
-        foreach (var file in Directory.EnumerateFiles(cssDir, "*.css").OrderBy(f => f, StringComparer.Ordinal))
+        foreach (var file in Directory.EnumerateFiles(cssDir, "*.css")
+                     // The build concatenates the authored parts into this one; scanning it would
+                     // read every rule a second time, under a name the exemptions below do not know.
+                     .Where(f => Path.GetFileName(f) != "flare-components.css")
+                     .OrderBy(f => f, StringComparer.Ordinal))
         {
             var lines = File.ReadAllLines(file);
             for (var i = 0; i < lines.Length; i++)
@@ -96,7 +100,11 @@ public sealed class DeadFallbackTests
         Assert.True(Directory.Exists(cssDir), $"Core CSS folder not found: {cssDir}");
 
         var offenders = new List<string>();
-        foreach (var file in Directory.EnumerateFiles(cssDir, "*.css").OrderBy(f => f, StringComparer.Ordinal))
+        foreach (var file in Directory.EnumerateFiles(cssDir, "*.css")
+                     // The build concatenates the authored parts into this one; scanning it would
+                     // read every rule a second time, under a name the exemptions below do not know.
+                     .Where(f => Path.GetFileName(f) != "flare-components.css")
+                     .OrderBy(f => f, StringComparer.Ordinal))
         {
             var name0 = Path.GetFileName(file);
             if (_knownDebt.Contains(name0)) continue;

@@ -89,8 +89,10 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 
 **`index.html` / `App.razor` `<head>`:**
 ```html
-<!-- Одна строка: классы темы + анти-FOUC сплэш до первого кадра -->
-<script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+<!-- Одна строка: классы темы + анти-FOUC сплэш до первого кадра. data-default-* задает тему,
+     которую рисуем до старта .NET, - ту же, что регистрируете в Program.cs. -->
+<script src="_content/Flare.Components/js/flare-bootstrap.js"
+        data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 <!-- Стили компонентов -->
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 ```
