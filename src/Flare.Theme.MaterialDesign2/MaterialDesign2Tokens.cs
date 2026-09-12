@@ -159,9 +159,13 @@ internal static class MaterialDesign2Tokens
         // and the message box's). A pill here made those two the only capsule buttons in a theme
         // whose every other button is a 4dp rectangle.
         ContainerRadius = "var(--flare-shape-extra-small)",
-        // 8dp, not the 16dp the container variants take: the text button trades its container for
-        // tighter padding (spec redline "Text button").
-        TextPaddingInline = "0.5rem",
+        // 8dp at M, not the 16dp the container variants take: the text button trades its container
+        // for tighter padding (spec redline "Text button"). Half the contained ladder throughout.
+        TextPaddingInlineXs = "0.25rem",
+        TextPaddingInlineSm = "0.375rem",
+        TextPaddingInlineMd = "0.5rem",
+        TextPaddingInlineLg = "0.625rem",
+        TextPaddingInlineXl = "0.75rem",
         HeightXs = "1.75rem",  // 28dp
         HeightSm = "2rem",     // 32dp
         HeightMd = "2.25rem",  // 36dp (classic MD2 contained button)

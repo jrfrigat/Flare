@@ -3,6 +3,24 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.36.0] - Unreleased
+
+### Changed
+
+- **BREAKING: `ButtonTokens.TextPaddingInline` is now a ladder of five - `TextPaddingInlineXs`
+  through `TextPaddingInlineXl`.** The single property never reached a button. Two rules in
+  `button.css` wrote the same local property at equal specificity, and the one that won was the size
+  class - which every button carries - so a text button silently took the contained variant's
+  padding. Measured on the component gallery in Material 2: the theme handed over `0.5rem` and the
+  button painted `16px`. The variant now outranks the size, and the token is per size for the same
+  reason the contained padding is: the tightening that reads right beside a small label is cramped
+  beside a large one. A custom theme replaces its one value with five.
+- **A text button is now tighter than a contained one, which is what every theme had already asked
+  for.** Because the old token never applied, text buttons rendered with the contained padding; they
+  now take the value their theme declares. In Material 3 Expressive a medium text button goes from
+  24px to 12px, in Material 2 from 16px to 8px. Icon-only buttons are untouched - they zero their
+  padding with a direct declaration rather than through the token.
+
 ## [0.35.0] - 2026-09-12
 
 ### Changed

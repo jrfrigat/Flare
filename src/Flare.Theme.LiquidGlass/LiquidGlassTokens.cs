@@ -132,7 +132,12 @@ internal class LiquidGlassTokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // Tighter than the contained ladder at every size - the text button has no pane to balance.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         GapXs = "0.25rem",
         GapSm = "0.3125rem",
         GapMd = "0.4375rem",

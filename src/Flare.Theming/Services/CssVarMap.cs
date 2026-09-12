@@ -175,7 +175,11 @@ public static class CssVarMap
         v[Css.Tokens.Button.Gap.Xs] = t.Button.GapXs;
         v[Css.Tokens.Button.LoadingOpacity] = t.Button.LoadingOpacity;
         v[Css.Tokens.Button.ContainerRadius] = t.Button.ContainerRadius;
-        v[Css.Tokens.Button.TextPaddingInline] = t.Button.TextPaddingInline;
+        v[Css.Tokens.Button.TextPaddingInline.Xs] = t.Button.TextPaddingInlineXs;
+        v[Css.Tokens.Button.TextPaddingInline.Sm] = t.Button.TextPaddingInlineSm;
+        v[Css.Tokens.Button.TextPaddingInline.Md] = t.Button.TextPaddingInlineMd;
+        v[Css.Tokens.Button.TextPaddingInline.Lg] = t.Button.TextPaddingInlineLg;
+        v[Css.Tokens.Button.TextPaddingInline.Xl] = t.Button.TextPaddingInlineXl;
         v[Css.Tokens.Button.Gap.Sm] = t.Button.GapSm;
         v[Css.Tokens.Button.Gap.Md] = t.Button.GapMd;
         v[Css.Tokens.Button.Gap.Lg] = t.Button.GapLg;

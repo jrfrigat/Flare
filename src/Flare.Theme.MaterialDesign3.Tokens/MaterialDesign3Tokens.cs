@@ -159,7 +159,13 @@ public class MaterialDesign3Tokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // A text button takes half the contained padding: 12dp against 24dp at M (spec
+        // "Text button"), and the same halving across the rest of the ladder.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         // 5 gap sizes (Gap) between text and icon
         // XS/S - height matches the MD3 spec -> gap = spec (8dp);
         // M=8 matches; L/XL - adapted to the reduced height.

@@ -138,10 +138,14 @@
     border-color: var(--fc-main, var(--flare-color-outline-variant));
 }
 
-.flare-btn--text {
+/* Two class names, not one, so the variant outranks the size class below: both write the same local
+   property at equal specificity otherwise, and the size - which every button carries - would win by
+   coming later in the file. The size rule picks which rung of the text ladder is in scope; this
+   swaps the whole ladder in. */
+.flare-btn.flare-btn--text {
     background-color: transparent;
     color: var(--fc-main, var(--flare-color-primary));
-    --_flare-btn-padding-inline: var(--flare-btn-text-padding-inline);
+    --_flare-btn-padding-inline: var(--_flare-btn-text-padding-inline);
 }
 
 .flare-btn--elevated {
@@ -190,6 +194,7 @@
     gap: var(--flare-btn-gap-xs);
     --_flare-btn-height: var(--flare-btn-height-xs);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xs);
+    --_flare-btn-text-padding-inline: var(--flare-btn-text-padding-inline-xs);
     --_flare-icon-size: var(--flare-btn-icon-size-xs);
     border-top-left-radius: var(--flare-btn-radius-xs-top-left);
     border-top-right-radius: var(--flare-btn-radius-xs-top-right);
@@ -207,6 +212,7 @@
     gap: var(--flare-btn-gap-sm);
     --_flare-btn-height: var(--flare-btn-height-sm);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-sm);
+    --_flare-btn-text-padding-inline: var(--flare-btn-text-padding-inline-sm);
     --_flare-icon-size: var(--flare-btn-icon-size-sm);
     border-top-left-radius: var(--flare-btn-radius-sm-top-left);
     border-top-right-radius: var(--flare-btn-radius-sm-top-right);
@@ -224,6 +230,7 @@
     gap: var(--flare-btn-gap-md);
     --_flare-btn-height: var(--flare-btn-height-md);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-md);
+    --_flare-btn-text-padding-inline: var(--flare-btn-text-padding-inline-md);
     --_flare-icon-size: var(--flare-btn-icon-size-md);
     border-top-left-radius: var(--flare-btn-radius-md-top-left);
     border-top-right-radius: var(--flare-btn-radius-md-top-right);
@@ -241,6 +248,7 @@
     gap: var(--flare-btn-gap-lg);
     --_flare-btn-height: var(--flare-btn-height-lg);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-lg);
+    --_flare-btn-text-padding-inline: var(--flare-btn-text-padding-inline-lg);
     --_flare-icon-size: var(--flare-btn-icon-size-lg);
     border-top-left-radius: var(--flare-btn-radius-lg-top-left);
     border-top-right-radius: var(--flare-btn-radius-lg-top-right);
@@ -258,6 +266,7 @@
     gap: var(--flare-btn-gap-xl);
     --_flare-btn-height: var(--flare-btn-height-xl);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xl);
+    --_flare-btn-text-padding-inline: var(--flare-btn-text-padding-inline-xl);
     --_flare-icon-size: var(--flare-btn-icon-size-xl);
     border-top-left-radius: var(--flare-btn-radius-xl-top-left);
     border-top-right-radius: var(--flare-btn-radius-xl-top-right);

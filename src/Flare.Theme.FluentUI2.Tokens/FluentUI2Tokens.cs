@@ -138,7 +138,12 @@ public class FluentUI2Tokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // Fluent does not tighten a subtle button: the ladder matches the contained one.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         // Compact gaps (Gap) between text and the Microsoft icon
         GapXs = "0.125rem",        // 2px
         GapSm = "0.25rem",         // 4px

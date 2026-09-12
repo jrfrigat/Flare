@@ -132,7 +132,12 @@ internal class VisualStudioTokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // Tighter than the contained ladder at every size - a toolbar button hugs its label.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",
