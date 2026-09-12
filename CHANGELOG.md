@@ -65,6 +65,15 @@ All notable changes to Flare are documented here. This project adheres to
   a guard refuses a reference from one theme package to another. `MaterialDesignTokens` is renamed
   `MaterialDesign3Tokens`, which is what it always was; the name is what let Material 2 sit on it.
   No token value changed in this move - 829 of them carried across untouched.
+- **A theme can now size a tab and colour a chip.** Tab height, minimum width and inline padding
+  were literals in the stylesheet, and the chip carried only a radius and a height - so a language
+  whose tab strip is a fixed 48dp, or whose chip is a grey pill rather than a tinted surface, could
+  not say so. `TabsTokens.TabHeight` / `TabMinWidth` / `TabPaddingInline` and `ChipTokens.FilledBg` /
+  `ElevatedBg` fill that in. Every built-in theme keeps the look it had.
+- **A chip is as tall as its height token says.** It stood 34px against a token reading 32, because
+  the label plus the vertical padding plus the border beat the minimum the token set - so the token
+  named a floor nothing ever reached. The vertical padding is gone; the label is centred by the
+  flexbox, as it already was.
 - **A switch's thumb may now be larger than its rail.** It was capped to the rail's height, which
   made the pre-Material-3 switch - a ball riding over a thin track, which is what Material 2, Fluent
   and most desktop toolkits draw - unreachable through tokens: a theme asking for a 20dp thumb on a
