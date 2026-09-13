@@ -35,7 +35,7 @@ public sealed class MaterialDesign2Theme : ITheme
     public IReadOnlyList<string> StyleAssets =>
     [
         "https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap",
-        "_content/Flare.Theme.MaterialDesign2/css/md2-base.css",
+        "_content/Flare.Theme.MaterialDesign2/css/components.css",
     ];
 }
 

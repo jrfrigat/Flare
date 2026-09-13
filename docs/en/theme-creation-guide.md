@@ -493,6 +493,13 @@ MyTheme/
 |       +-- ...                 # Other component overrides
 ```
 
+Author as many files as you like, but ship them as one stylesheet and list only that one in
+`StyleAssets`. Every entry is a separate request, and an app that writes the theme's links into its own
+head has to repeat each of them. Do not stitch the parts together with `@import` either: a browser finds
+an import only after it has fetched the file that names it. The in-box themes keep their parts in
+`wwwroot/css`, list them in a `components.imports.css` manifest beside the project file, and the build
+concatenates them into `wwwroot/css/components.css`.
+
 ### Base CSS
 
 ```css

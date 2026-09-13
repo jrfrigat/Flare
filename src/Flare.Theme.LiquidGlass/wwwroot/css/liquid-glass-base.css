@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LIQUID GLASS - base bundle (Apple "Liquid Glass" look, performance-first).
+   LIQUID GLASS - base styles (Apple "Liquid Glass" look, performance-first).
 
    The look: lightly translucent tinted surfaces over a soft palette backdrop,
    a bright light edge bent around the rim (lensing), a soft specular sheen
@@ -12,12 +12,6 @@
 
    Scoped so nothing leaks into a nested non-glass theme root.
    ========================================================================== */
-@import "components/button.css";
-@import "components/input.css";
-@import "components/controls.css";
-@import "components/surfaces.css";
-@import "components/chrome.css";
-@import "components/pickers.css";
 
 @scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
 

@@ -22,13 +22,7 @@ public sealed class LiquidGlassTheme : ITheme
 
     public IReadOnlyList<string> StyleAssets =>
     [
-        "_content/Flare.Theme.LiquidGlass/css/liquid-glass-base.css",
-        "_content/Flare.Theme.LiquidGlass/css/components/button.css",
-        "_content/Flare.Theme.LiquidGlass/css/components/input.css",
-        "_content/Flare.Theme.LiquidGlass/css/components/controls.css",
-        "_content/Flare.Theme.LiquidGlass/css/components/surfaces.css",
-        "_content/Flare.Theme.LiquidGlass/css/components/chrome.css",
-        "_content/Flare.Theme.LiquidGlass/css/components/pickers.css",
+        "_content/Flare.Theme.LiquidGlass/css/components.css",
     ];
 
     // Dark mode flips the frosted fills and glow to their dark variants.

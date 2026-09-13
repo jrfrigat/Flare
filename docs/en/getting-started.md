@@ -103,13 +103,9 @@ CSS, so the browser fetches them with the page:
 
 ```html
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
-<!-- The active theme's StyleAssets, in the same order (here: Material 3 Expressive) -->
+<!-- The active theme's StyleAssets (here: Material 3 Expressive - its font, then its one stylesheet) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/md3-base.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components.css" />
 ```
 
 and tell the provider:
@@ -124,9 +120,10 @@ spelled (`_content/...`, `/_content/...`, `./_content/...`), and adds only what 
 the user switches to at run time, or a sheet a newer theme version lists. A link you forget costs a late
 request, not an unstyled page.
 
-The addresses are the theme's `StyleAssets`; list them once with
-`@foreach (var href in ThemeService.CurrentTheme.StyleAssets)` or read them from the browser's network
-panel. Keep them in the order the theme gives: later sheets override earlier ones.
+An in-box theme ships all of its own CSS as one stylesheet, `_content/Flare.Theme.<Name>/css/components.css`;
+the Material themes add a Google Fonts link in front of it. The exact list is the theme's `StyleAssets` -
+print it once with `@foreach (var href in ThemeService.CurrentTheme.StyleAssets)` or read it from the
+browser's network panel - and its order is the order to keep.
 
 ---
 

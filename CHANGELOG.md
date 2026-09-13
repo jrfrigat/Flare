@@ -79,6 +79,18 @@ All notable changes to Flare are documented here. This project adheres to
   344 to 672px wide and 48px tall with its action, the layout drawer is 256dp, and the layout app bar
   sits 4dp above the page so a white bar no longer disappears into a white background.
 
+- **Breaking for apps that link theme CSS by hand: an in-box theme now ships all of its own CSS as one
+  stylesheet, `_content/Flare.Theme.<Name>/css/components.css`.** A theme used to list each of its files
+  in `StyleAssets` - five for Material 3 Expressive, seven for Aero and Liquid Glass - so an app writing
+  the links into its own head (`ThemeStylesheets.Manual`) had to know and repeat every one of them, in
+  order, and do it again whenever a theme gained a file. The build now concatenates a theme's parts into
+  one sheet, the way it already builds `flare-components.css`, and the parts are no longer in the
+  package. Replace links to `md3-base.css`, `md2-base.css`, `aero-base.css`, `liquid-glass-base.css`,
+  `fluent2-base.css`, `vs-base.css` or anything under `css/components/` with the one `components.css`;
+  an app on the default `Automatic` mode has nothing to change. The Material 3 Expressive, Aero, Liquid
+  Glass and Fluent 2 base files also `@import`ed component files that `StyleAssets` linked a second
+  time, so those rules were loaded twice; now each arrives once.
+
 ### Fixed
 
 - **A closed `FlareDrawer` could still be tabbed into.** A temporary drawer was closed only by sliding

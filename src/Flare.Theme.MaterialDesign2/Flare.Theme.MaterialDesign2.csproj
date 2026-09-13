@@ -7,6 +7,8 @@
     <Description>Material Design 2 (classic) light and dark themes for the Flare Blazor component library</Description>
     <PackageTags>blazor;theming;material-design;md2;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Built from components.imports.css into wwwroot/css/components.css; see Directory.Build.targets. -->
+    <FlareCssBundle>components</FlareCssBundle>
   </PropertyGroup>
 
   <ItemGroup>

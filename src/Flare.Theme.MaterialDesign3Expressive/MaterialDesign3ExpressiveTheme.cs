@@ -187,11 +187,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
     public IReadOnlyList<string> StyleAssets =>
     [
         "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/md3-base.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css",
+        "_content/Flare.Theme.MaterialDesign3Expressive/css/components.css",
     ];
 }
 

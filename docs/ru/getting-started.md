@@ -103,13 +103,9 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 
 ```html
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
-<!-- StyleAssets активной темы в том же порядке (здесь: Material 3 Expressive) -->
+<!-- StyleAssets активной темы (здесь: Material 3 Expressive - шрифт, затем единственный файл стилей) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/md3-base.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css" />
-<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components.css" />
 ```
 
 и сообщите провайдеру:
@@ -124,9 +120,10 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 которую пользователь переключился во время работы, или файл, который появился в новой версии темы.
 Забытая ссылка обойдется поздним запросом, а не неоформленной страницей.
 
-Адреса - это `StyleAssets` темы; выведите их один раз через
-`@foreach (var href in ThemeService.CurrentTheme.StyleAssets)` или посмотрите во вкладке сети
-браузера. Сохраняйте порядок, который дает тема: более поздние файлы переопределяют ранние.
+Встроенная тема поставляет весь собственный CSS одним файлом, `_content/Flare.Theme.<Name>/css/components.css`;
+темы Material добавляют перед ним ссылку на Google Fonts. Точный список - это `StyleAssets` темы: выведите
+его один раз через `@foreach (var href in ThemeService.CurrentTheme.StyleAssets)` или посмотрите во
+вкладке сети браузера, и сохраняйте его порядок.
 
 ---
 
