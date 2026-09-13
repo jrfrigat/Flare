@@ -118,8 +118,7 @@ In manual mode the provider writes no links of its own, so no sheet is fetched a
 still waits for the active theme's sheets and the active palette's `StyleAsset`, recognises a link you
 wrote by its address however it is spelled (`_content/...`, `/_content/...`, `./_content/...`), and adds
 only what is missing - a theme or palette the user switches to at run time, or a sheet a newer theme
-version lists. A link you forget costs a late
-request, not an unstyled page.
+version lists. A link you forget costs a late request, not an unstyled page.
 
 An in-box theme ships all of its own CSS as one stylesheet, `_content/Flare.Theme.<Name>/css/components.css`;
 the Material themes add a Google Fonts link in front of it. The exact list is the theme's `StyleAssets` -
