@@ -63,12 +63,6 @@
         box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
     }
 
-    /* The card is deliberately absent from this list: it owns an elevation token, so its resting 1dp
-       and its picked-up 8dp are set there rather than here. So is the top app bar - the default
-       elevation table gives it "0 or 4dp", a choice the application makes, and it rests at 0. */
-
-    /* The filled chip's grey pill is a token now (ChipTokens.FilledBg), not a rule here. */
-
-    /* The top app bar is deliberately not listed: the default elevation table gives it "0 or 4dp",
-       which is a choice the application makes, and the component already rests at 0. */
+    /* The card and the top app bar are absent from this list: each owns an elevation token
+       (CardTokens, LayoutTokens.AppBarShadow), so their values are set there rather than here. */
 }
