@@ -3388,4 +3388,10 @@
   <data name="FabMenu_ActionShare" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="SplitButton_SaveAs" xml:space="preserve">
+    <value>Save as</value>
+  </data>
+  <data name="SplitButton_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
 </root>

@@ -305,7 +305,11 @@ public class MaterialDesign3Tokens
         // reads the button's real height; a length here (as the other themes use) would win instead.
         // It cannot forward --_flare-btn-height: this record is emitted on :root, where that per-size
         // variable does not exist, so every size would end up the md fallback width.
-        TriggerWidth = "auto",
+        TriggerWidthXs = "auto",
+        TriggerWidthSm = "auto",
+        TriggerWidthMd = "auto",
+        TriggerWidthLg = "auto",
+        TriggerWidthXl = "auto",
 
         // Caret icon = Button icon size at the same size (token forwarded)
         CaretSizeXs = "var(--flare-btn-icon-size-xs)",

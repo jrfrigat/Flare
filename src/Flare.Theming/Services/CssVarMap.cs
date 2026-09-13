@@ -303,7 +303,11 @@ public static class CssVarMap
         #region SPLIT BUTTON
         // Base seam gap
         v[Css.Tokens.SplitButton.Gap] = t.SplitButton.Gap;
-        v[Css.Tokens.SplitButton.TriggerWidth] = t.SplitButton.TriggerWidth;
+        v[Css.Tokens.SplitButton.TriggerWidth.Xs] = t.SplitButton.TriggerWidthXs;
+        v[Css.Tokens.SplitButton.TriggerWidth.Sm] = t.SplitButton.TriggerWidthSm;
+        v[Css.Tokens.SplitButton.TriggerWidth.Md] = t.SplitButton.TriggerWidthMd;
+        v[Css.Tokens.SplitButton.TriggerWidth.Lg] = t.SplitButton.TriggerWidthLg;
+        v[Css.Tokens.SplitButton.TriggerWidth.Xl] = t.SplitButton.TriggerWidthXl;
 
         // Chevron caret sizes for all 5 sizes
         v[Css.Tokens.SplitButton.CaretSize.Xs] = t.SplitButton.CaretSizeXs;

@@ -18,6 +18,14 @@ All notable changes to Flare are documented here. This project adheres to
   by 80dp. The dropdown variant's header digits use the same size. Material 2 and Fluent keep their
   previous geometry.
 
+- **Breaking for custom themes: `SplitButtonTokens.TriggerWidth` is now `TriggerWidthXs..Xl`.** One
+  width could not describe a trigger that is wider than it is tall at the two small sizes and square
+  from medium up, which is what Material 3 Expressive specifies. Set all five to the old value to
+  keep a fixed width; `auto` still means square. In Material 3 Expressive the trigger is now 48dp
+  wide at extra small and small (it was square: 32 and 40px) and the caret follows the split-button
+  table - 22, 22, 26, 38 and 50dp - instead of borrowing the button's icon size (20, 20, 24, 32 and
+  40px). The split-button sizes demo now shows all five sizes.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

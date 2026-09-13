@@ -8328,6 +8328,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save as.
+        /// </summary>
+        public static string SplitButton_SaveAs {
+            get {
+                return ResourceManager.GetString("SplitButton_SaveAs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string SplitButton_Export {
+            get {
+                return ResourceManager.GetString("SplitButton_Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Split Button.
         /// </summary>
         public static string SplitButton_Title {

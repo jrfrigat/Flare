@@ -5,8 +5,6 @@ public static class SplitButton
 {
     /// <summary>CSS custom-property name for the gap token.</summary>
     public const string Gap = "--flare-split-btn-gap";
-    /// <summary>CSS custom-property name for the trigger width token.</summary>
-    public const string TriggerWidth = "--flare-split-btn-trigger-width";
 
     /// <summary>Per-corner radii for the main (left) split button across all 5 sizes.</summary>
     public static class MainRadius
@@ -104,6 +102,21 @@ public static class SplitButton
         public const string XlBottomRight = "--flare-split-btn-trigger-radius-xl-bottom-right";
         /// <summary>CSS custom-property name for the xl bottom left token.</summary>
         public const string XlBottomLeft = "--flare-split-btn-trigger-radius-xl-bottom-left";
+    }
+
+    /// <summary>Trigger width across the 5 sizes.</summary>
+    public static class TriggerWidth
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-split-btn-trigger-width-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-split-btn-trigger-width-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-split-btn-trigger-width-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-split-btn-trigger-width-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-split-btn-trigger-width-xl";
     }
 
     /// <summary>Arrow icon size across the 5 sizes.</summary>

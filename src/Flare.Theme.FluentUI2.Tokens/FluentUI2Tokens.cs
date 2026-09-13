@@ -261,7 +261,11 @@ public class FluentUI2Tokens
         Gap = "1px", // Thin 1px Microsoft seam between the two parts
 
         // Fluent: fixed-width trigger 24dp (not square), no inline padding needed
-        TriggerWidth = "1.5rem", // 24dp
+        TriggerWidthXs = "1.5rem",
+        TriggerWidthSm = "1.5rem",
+        TriggerWidthMd = "1.5rem",
+        TriggerWidthLg = "1.5rem",
+        TriggerWidthXl = "1.5rem",
 
         // Fluent: fixed 12dp chevron at every size
         CaretSizeXs = "0.75rem",

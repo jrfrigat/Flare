@@ -215,7 +215,11 @@ internal class VisualStudioTokens
     internal static readonly SplitButtonTokens SplitButton = new()
     {
         Gap = "1px",
-        TriggerWidth = "1.25rem",
+        TriggerWidthXs = "1.25rem",
+        TriggerWidthSm = "1.25rem",
+        TriggerWidthMd = "1.25rem",
+        TriggerWidthLg = "1.25rem",
+        TriggerWidthXl = "1.25rem",
         CaretSizeXs = "0.75rem",
         CaretSizeSm = "0.75rem",
         CaretSizeMd = "0.75rem",

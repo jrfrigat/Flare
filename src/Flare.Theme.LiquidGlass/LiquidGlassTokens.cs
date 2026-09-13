@@ -215,7 +215,11 @@ internal class LiquidGlassTokens
     internal static readonly SplitButtonTokens SplitButton = new()
     {
         Gap = "2px",
-        TriggerWidth = "2rem",
+        TriggerWidthXs = "2rem",
+        TriggerWidthSm = "2rem",
+        TriggerWidthMd = "2rem",
+        TriggerWidthLg = "2rem",
+        TriggerWidthXl = "2rem",
         CaretSizeXs = "0.875rem",
         CaretSizeSm = "0.875rem",
         CaretSizeMd = "1rem",

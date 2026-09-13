@@ -10,9 +10,21 @@ public sealed record SplitButtonTokens
     /// one container parks this at <c>0</c>; a theme with two separated pills opens it up.</summary>
     [CssVar(SplitButton.Gap)] public required string Gap { get; init; }
 
-    /// <summary>Width of the trigger button. A theme may track the button height for a square trigger, or
-    /// pin a fixed width.</summary>
-    [CssVar(SplitButton.TriggerWidth)] public required string TriggerWidth { get; init; }
+    /// <summary>Width of the trigger button at the xs size. A length pins it; <c>auto</c> makes the
+    /// trigger square, taking its width from the button height at that size.</summary>
+    [CssVar(SplitButton.TriggerWidth.Xs)] public required string TriggerWidthXs { get; init; }
+    /// <summary>Width of the trigger button at the sm size. A length pins it; <c>auto</c> makes the
+    /// trigger square, taking its width from the button height at that size.</summary>
+    [CssVar(SplitButton.TriggerWidth.Sm)] public required string TriggerWidthSm { get; init; }
+    /// <summary>Width of the trigger button at the md size. A length pins it; <c>auto</c> makes the
+    /// trigger square, taking its width from the button height at that size.</summary>
+    [CssVar(SplitButton.TriggerWidth.Md)] public required string TriggerWidthMd { get; init; }
+    /// <summary>Width of the trigger button at the lg size. A length pins it; <c>auto</c> makes the
+    /// trigger square, taking its width from the button height at that size.</summary>
+    [CssVar(SplitButton.TriggerWidth.Lg)] public required string TriggerWidthLg { get; init; }
+    /// <summary>Width of the trigger button at the xl size. A length pins it; <c>auto</c> makes the
+    /// trigger square, taking its width from the button height at that size.</summary>
+    [CssVar(SplitButton.TriggerWidth.Xl)] public required string TriggerWidthXl { get; init; }
 
     // (Trigger side padding tokens removed: the trigger is a fixed icon-only square with
     //  padding-inline:0 in splitbutton.css, so these had no CSS reader.)

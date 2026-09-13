@@ -133,6 +133,23 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
+        // The split button exists only in Expressive, so its trigger follows `md.comp.split-button.<size>`
+        // here rather than the baseline square. The trigger is its caret plus the trailing-button spaces:
+        // 13+22+13 = 48dp at xsmall and small, wider than the 32 and 40dp buttons, and square from medium
+        // up (15+26+15 = 56, 29+38+29 = 96, 43+50+43 = 136).
+        SplitButton = MaterialDesign3Tokens.Design.SplitButton with
+        {
+            TriggerWidthXs = "3rem",   // 48dp
+            TriggerWidthSm = "3rem",   // 48dp
+            TriggerWidthMd = "auto",   // 56dp, square
+            TriggerWidthLg = "auto",   // 96dp, square
+            TriggerWidthXl = "auto",   // 136dp, square
+            CaretSizeXs = "1.375rem",  // 22dp
+            CaretSizeSm = "1.375rem",  // 22dp
+            CaretSizeMd = "1.625rem",  // 26dp
+            CaretSizeLg = "2.375rem",  // 38dp
+            CaretSizeXl = "3.125rem",  // 50dp
+        },
         Progress = MaterialDesign3Tokens.Design.Progress with
         {
             LinearIndeterminateDuration = "1750ms",
