@@ -13,6 +13,9 @@ public sealed record TabsTokens
     [CssVar(Tabs.LabelFont)] public required string LabelFont { get; init; }
     /// <summary>Label size.</summary>
     [CssVar(Tabs.LabelSize)] public required string LabelSize { get; init; }
+
+    /// <summary>Letter-spacing of the tab label; a language that sets tab labels in its button type carries that tracking here.</summary>
+    [CssVar(Tabs.LabelSpacing)] public required string LabelSpacing { get; init; }
     /// <summary>Label weight.</summary>
     [CssVar(Tabs.LabelWeight)] public required string LabelWeight { get; init; }
     /// <summary>Scroll shadow opacity.</summary>

@@ -270,7 +270,7 @@ internal class VisualStudioTokens
         DisabledOpacity = "1",
     };
 
-    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-4)", PaddingInlineSm = "var(--flare-spacing-5)", PaddingInlineMd = "var(--flare-spacing-8)", PaddingInlineLg = "var(--flare-spacing-10)", PaddingInlineXl = "var(--flare-spacing-12)" };
 
     // VS 2026 document tabs: thin top accent line, neutral strip, the active tab fills with the
     // editor surface. The full document-tab look (gap, top accent, hover) is finished in the
@@ -283,6 +283,7 @@ internal class VisualStudioTokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
@@ -372,6 +373,8 @@ internal class VisualStudioTokens
         TonalBg = "var(--flare-color-surface-container-high)",
         Radius = "var(--flare-shape-small)",
         Elevation = "none",
+        FilledElevation = "none",
+        TonalElevation = "none",
         PaddingTop = "8px",
         PaddingRight = "8px",
         PaddingBottom = "8px",

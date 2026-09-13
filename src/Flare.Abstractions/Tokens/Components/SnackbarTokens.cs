@@ -23,4 +23,10 @@ public sealed record SnackbarTokens
 
     /// <summary>Opacity of the dismiss button.</summary>
     [CssVar(SnackbarPanel.CloseOpacity)] public required string CloseOpacity { get; init; }
+
+    /// <summary>Narrowest a snackbar gets, however short its message.</summary>
+    [CssVar(SnackbarPanel.MinWidth)] public required string MinWidth { get; init; }
+
+    /// <summary>Widest a snackbar gets before its message wraps.</summary>
+    [CssVar(SnackbarPanel.MaxWidth)] public required string MaxWidth { get; init; }
 }

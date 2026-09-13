@@ -97,6 +97,14 @@ public static class CardField
     public const string Elevation = "--flare-card-elevation";
     /// <summary>CSS custom-property name for the elevation hover token.</summary>
     public const string ElevationHover = "--flare-card-elevation-hover";
+    /// <summary>CSS custom-property name for the filled card elevation token.</summary>
+    public const string FilledElevation = "--flare-card-filled-elevation";
+    /// <summary>CSS custom-property name for the outlined card elevation token.</summary>
+    public const string OutlinedElevation = "--flare-card-outlined-elevation";
+    /// <summary>CSS custom-property name for the tonal card elevation token.</summary>
+    public const string TonalElevation = "--flare-card-tonal-elevation";
+    /// <summary>CSS custom-property name for the text card elevation token.</summary>
+    public const string TextElevation = "--flare-card-text-elevation";
     /// <summary>CSS custom-property name for the selected border token.</summary>
     public const string SelectedBorder = "--flare-card-selected-border";
     /// <summary>CSS custom-property name for the selected bg token.</summary>

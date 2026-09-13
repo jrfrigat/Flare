@@ -42,6 +42,19 @@ public sealed record CardTokens
     /// <summary>Elevation on hover for clickable/elevated cards.</summary>
     [CssVar(CardField.ElevationHover)] public required string ElevationHover { get; init; }
 
+    /// <summary>Elevation (box-shadow) of the filled variant at rest.</summary>
+    [CssVar(CardField.FilledElevation)] public required string FilledElevation { get; init; }
+
+    /// <summary>Elevation (box-shadow) of the outlined variant at rest; a language whose outline replaces
+    /// the shadow sets <c>none</c>.</summary>
+    [CssVar(CardField.OutlinedElevation)] public required string OutlinedElevation { get; init; }
+
+    /// <summary>Elevation (box-shadow) of the tonal variant at rest.</summary>
+    [CssVar(CardField.TonalElevation)] public required string TonalElevation { get; init; }
+
+    /// <summary>Elevation (box-shadow) of the text variant, which has no container of its own.</summary>
+    [CssVar(CardField.TextElevation)] public required string TextElevation { get; init; }
+
     /// <summary>Border applied to a selected card (accent ring). Used when Selectable + Selected.</summary>
     [CssVar(CardField.SelectedBorder)] public required string SelectedBorder { get; init; }
 

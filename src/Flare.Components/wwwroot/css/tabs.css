@@ -149,6 +149,7 @@
   /* Label font tokens are overridable via the Typo parameter (--flare-tabs-label-*). */
   font-family: var(--flare-tabs-label-font);
   font-size: var(--flare-tabs-label-size);
+  letter-spacing: var(--flare-tabs-label-spacing);
   font-weight: var(--flare-tabs-label-weight);
   cursor: pointer;
   white-space: nowrap;

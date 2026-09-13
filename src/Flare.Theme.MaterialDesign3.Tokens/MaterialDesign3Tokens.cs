@@ -405,6 +405,11 @@ public class MaterialDesign3Tokens
         AvatarSizeMd = "1.5rem",
         AvatarSizeLg = "1.875rem",
         AvatarSizeXl = "2.25rem",
+        PaddingInlineXs = "var(--flare-spacing-4)",
+        PaddingInlineSm = "var(--flare-spacing-5)",
+        PaddingInlineMd = "var(--flare-spacing-8)",
+        PaddingInlineLg = "var(--flare-spacing-10)",
+        PaddingInlineXl = "var(--flare-spacing-12)",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp
@@ -418,6 +423,7 @@ public class MaterialDesign3Tokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
@@ -902,6 +908,8 @@ public class MaterialDesign3Tokens
         PaddingBlock = "0.875rem",
         ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
+        MinWidth = "20rem",
+        MaxWidth = "36rem",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -1250,6 +1258,7 @@ public class MaterialDesign3Tokens
         DrawerWidth = "260px",
         AppBarBorder = "none",
         DrawerBorder = "none",
+        AppBarShadow = "none",
     };
 
     internal static readonly LinkTokens Link = new()
@@ -1426,6 +1435,11 @@ public class MaterialDesign3Tokens
             TextColor = "var(--flare-color-on-surface)",
             Radius = "var(--flare-shape-medium)",
             Elevation = "var(--flare-elevation-1)",
+            // Only the elevated card rests on a shadow; filled and outlined sit at level 0 (md.comp.*-card.container.elevation).
+            FilledElevation = "none",
+            OutlinedElevation = "none",
+            TonalElevation = "none",
+            TextElevation = "none",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
             StateLayer = "var(--flare-state-hover-layer)",

@@ -60,6 +60,25 @@ All notable changes to Flare are documented here. This project adheres to
   64 by 32dp pill 4dp above the label, and Material 3 Expressive its shorter 64dp bar with a 56dp
   pill. Fluent and Material 2 keep their previous bar.
 
+- **Breaking for custom themes: new `required` tokens for things a theme could not set.**
+  `CardTokens` gains `FilledElevation`, `OutlinedElevation`, `TonalElevation` and `TextElevation` -
+  every card variant used to take the elevated card's shadow, so an outlined card cast one although
+  both Material generations draw it flat. `TabsTokens.LabelSpacing` carries the tab label's
+  letter-spacing, `SnackbarTokens.MinWidth` / `MaxWidth` the snackbar's width range (a fixed 320 to
+  576px until now), `LayoutTokens.AppBarShadow` a shadow under the layout's app bar, and
+  `ChipTokens.PaddingInlineXs..Xl` the chip's side padding. Material 3 cards now shadow only the
+  elevated variant, as its spec gives level 0 to filled and outlined cards, and Liquid Glass follows it; the other values keep
+  every theme where it was.
+
+- **Material 2 measured against its own implementation, page by page.** Where the guidelines publish
+  no number, Material Components for the Web does, and Flare now follows it: the checkbox box is 18px
+  (the 24dp in the guidelines is the icon around it, so the box had been drawn a third too large),
+  tab labels carry the button type's 1.25px tracking, chips have 12px side padding and a 20px leading
+  icon, a two-line list row is 64px rather than 67, dense rows are 40 and 60px, an outlined card is
+  flat, menus are a plain list with 8px above and below and no gaps or rounded rows, the snackbar is
+  344 to 672px wide and 48px tall with its action, the layout drawer is 256dp, and the layout app bar
+  sits 4dp above the page so a white bar no longer disappears into a white background.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

@@ -32,4 +32,7 @@ public sealed record LayoutTokens
     /// <summary>Edge the shell drawer draws against the content, as a <c>border</c> shorthand. It lands on
     /// the trailing edge, or on the leading edge of an end-anchored drawer.</summary>
     [CssVar(LayoutField.DrawerBorder)] public required string DrawerBorder { get; init; }
+
+    /// <summary>Shadow under the app bar, for a language that lifts the bar off the page instead of drawing a border or a tone step.</summary>
+    [CssVar(LayoutField.AppBarShadow)] public required string AppBarShadow { get; init; }
 }

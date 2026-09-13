@@ -427,11 +427,17 @@ public static class CssVarMap
         v[Css.Tokens.Chip.AvatarSize.Md] = t.Chip.AvatarSizeMd;
         v[Css.Tokens.Chip.AvatarSize.Lg] = t.Chip.AvatarSizeLg;
         v[Css.Tokens.Chip.AvatarSize.Xl] = t.Chip.AvatarSizeXl;
+        v[Css.Tokens.Chip.PaddingInline.Xs] = t.Chip.PaddingInlineXs;
+        v[Css.Tokens.Chip.PaddingInline.Sm] = t.Chip.PaddingInlineSm;
+        v[Css.Tokens.Chip.PaddingInline.Md] = t.Chip.PaddingInlineMd;
+        v[Css.Tokens.Chip.PaddingInline.Lg] = t.Chip.PaddingInlineLg;
+        v[Css.Tokens.Chip.PaddingInline.Xl] = t.Chip.PaddingInlineXl;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
         v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
         v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;
         v[Css.Tokens.Tabs.LabelFont] = t.Tabs.LabelFont;
         v[Css.Tokens.Tabs.LabelSize] = t.Tabs.LabelSize;
+        v[Css.Tokens.Tabs.LabelSpacing] = t.Tabs.LabelSpacing;
         v[Css.Tokens.Tabs.LabelWeight] = t.Tabs.LabelWeight;
         v[Css.Tokens.Tabs.ScrollShadowOpacity] = t.Tabs.ScrollShadowOpacity;
         v[Css.Tokens.Tabs.ActiveColor] = t.Tabs.ActiveColor;
@@ -714,6 +720,8 @@ public static class CssVarMap
         v[Css.Tokens.SnackbarPanel.PaddingBlock] = t.Snackbar.PaddingBlock;
         v[Css.Tokens.SnackbarPanel.ProviderInset] = t.Snackbar.ProviderInset;
         v[Css.Tokens.SnackbarPanel.CloseOpacity] = t.Snackbar.CloseOpacity;
+        v[Css.Tokens.SnackbarPanel.MinWidth] = t.Snackbar.MinWidth;
+        v[Css.Tokens.SnackbarPanel.MaxWidth] = t.Snackbar.MaxWidth;
         #endregion
 
         #region TOOLTIP
@@ -760,6 +768,10 @@ public static class CssVarMap
         v[Css.Tokens.CardField.Radius] = t.Card.Radius;
         v[Css.Tokens.CardField.Elevation] = t.Card.Elevation;
         v[Css.Tokens.CardField.ElevationHover] = t.Card.ElevationHover;
+        v[Css.Tokens.CardField.FilledElevation] = t.Card.FilledElevation;
+        v[Css.Tokens.CardField.OutlinedElevation] = t.Card.OutlinedElevation;
+        v[Css.Tokens.CardField.TonalElevation] = t.Card.TonalElevation;
+        v[Css.Tokens.CardField.TextElevation] = t.Card.TextElevation;
         v[Css.Tokens.CardField.SelectedBorder] = t.Card.SelectedBorder;
         v[Css.Tokens.CardField.SelectedBg] = t.Card.SelectedBg;
         v[Css.Tokens.CardField.StateLayer] = t.Card.StateLayer;
@@ -1080,6 +1092,7 @@ public static class CssVarMap
         v[Css.Tokens.LayoutField.DrawerWidth] = t.Layout.DrawerWidth;
         v[Css.Tokens.LayoutField.AppBarBorder] = t.Layout.AppBarBorder;
         v[Css.Tokens.LayoutField.DrawerBorder] = t.Layout.DrawerBorder;
+        v[Css.Tokens.LayoutField.AppBarShadow] = t.Layout.AppBarShadow;
         #endregion
 
         #region LINK

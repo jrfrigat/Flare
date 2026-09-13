@@ -4,7 +4,7 @@
     gap: var(--flare-spacing-4);
     /* No block padding, so the height token decides the height: with padding, a label plus the border
        already exceeds it and the minimum below never binds. The label is centred by align-items. */
-    padding: 0 var(--flare-spacing-8);
+    padding: 0 var(--flare-chip-padding-inline-md);
     box-sizing: border-box;
     min-height: var(--flare-chip-height); /* default chip height 32dp */
     border-radius: var(--flare-chip-radius);
@@ -75,13 +75,13 @@
     border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-color-outline));
 }
 
-.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-spacing-4); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); --_flare-icon-size: var(--flare-chip-icon-size-xs); }
+.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-chip-padding-inline-xs); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); --_flare-icon-size: var(--flare-chip-icon-size-xs); }
 .flare-chip--xs .flare-chip__avatar { width: var(--flare-chip-avatar-size-xs); height: var(--flare-chip-avatar-size-xs); }
-.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-spacing-5); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); --_flare-icon-size: var(--flare-chip-icon-size-sm); }
+.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-chip-padding-inline-sm); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); --_flare-icon-size: var(--flare-chip-icon-size-sm); }
 .flare-chip--sm .flare-chip__avatar { width: var(--flare-chip-avatar-size-sm); height: var(--flare-chip-avatar-size-sm); }
-.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-spacing-10); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5); --_flare-icon-size: var(--flare-chip-icon-size-lg); }
+.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-chip-padding-inline-lg); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5); --_flare-icon-size: var(--flare-chip-icon-size-lg); }
 .flare-chip--lg .flare-chip__avatar { width: var(--flare-chip-avatar-size-lg); height: var(--flare-chip-avatar-size-lg); }
-.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-spacing-12); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); --_flare-icon-size: var(--flare-chip-icon-size-xl); }
+.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-chip-padding-inline-xl); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); --_flare-icon-size: var(--flare-chip-icon-size-xl); }
 .flare-chip--xl .flare-chip__avatar { width: var(--flare-chip-avatar-size-xl); height: var(--flare-chip-avatar-size-xl); }
 
 /* Hover/focus/pressed state layer comes from the shared flare-state-layer-hover/-focus/-pressed

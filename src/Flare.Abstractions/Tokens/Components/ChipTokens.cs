@@ -41,4 +41,19 @@ public sealed record ChipTokens
     [CssVar(Chip.AvatarSize.Lg)] public required string AvatarSizeLg { get; init; }
     /// <summary>Leading avatar box at the xl size.</summary>
     [CssVar(Chip.AvatarSize.Xl)] public required string AvatarSizeXl { get; init; }
+
+    /// <summary>Inline padding of a chip at the xs size.</summary>
+    [CssVar(Chip.PaddingInline.Xs)] public required string PaddingInlineXs { get; init; }
+
+    /// <summary>Inline padding of a chip at the sm size.</summary>
+    [CssVar(Chip.PaddingInline.Sm)] public required string PaddingInlineSm { get; init; }
+
+    /// <summary>Inline padding of a chip at the md size.</summary>
+    [CssVar(Chip.PaddingInline.Md)] public required string PaddingInlineMd { get; init; }
+
+    /// <summary>Inline padding of a chip at the lg size.</summary>
+    [CssVar(Chip.PaddingInline.Lg)] public required string PaddingInlineLg { get; init; }
+
+    /// <summary>Inline padding of a chip at the xl size.</summary>
+    [CssVar(Chip.PaddingInline.Xl)] public required string PaddingInlineXl { get; init; }
 }

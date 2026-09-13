@@ -467,6 +467,11 @@ public class FluentUI2Tokens
         AvatarSizeMd = "1.5rem",
         AvatarSizeLg = "1.875rem",
         AvatarSizeXl = "2.25rem",
+        PaddingInlineXs = "var(--flare-spacing-4)",
+        PaddingInlineSm = "var(--flare-spacing-5)",
+        PaddingInlineMd = "var(--flare-spacing-8)",
+        PaddingInlineLg = "var(--flare-spacing-10)",
+        PaddingInlineXl = "var(--flare-spacing-12)",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",
@@ -480,6 +485,7 @@ public class FluentUI2Tokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
@@ -1158,6 +1164,8 @@ public class FluentUI2Tokens
         PaddingBlock = "0.875rem",
         ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
+        MinWidth = "20rem",
+        MaxWidth = "36rem",
     };
 
     // Dialog - Fluent: large radius; the rest is the shared Material baseline.
@@ -1226,6 +1234,7 @@ public class FluentUI2Tokens
         DrawerWidth = "260px",
         AppBarBorder = "1px solid var(--flare-color-outline-variant)",
         DrawerBorder = "1px solid var(--flare-color-outline-variant)",
+        AppBarShadow = "none",
     };
 
     internal static readonly LinkTokens Link = new()
@@ -1377,6 +1386,11 @@ public class FluentUI2Tokens
             ElevatedBg = "var(--flare-color-surface)",
             Elevation = "var(--flare-elevation-2)",
             ElevationHover = "var(--flare-elevation-3)",
+            // Filled cards cast the shadow; the outline and subtle appearances do not.
+            FilledElevation = "var(--flare-elevation-2)",
+            OutlinedElevation = "none",
+            TonalElevation = "var(--flare-elevation-2)",
+            TextElevation = "none",
             FilledBg = "var(--flare-color-surface)",
             OutlinedBg = "var(--flare-color-surface)",
             OutlinedBorder = "1px solid var(--flare-color-outline-variant)",

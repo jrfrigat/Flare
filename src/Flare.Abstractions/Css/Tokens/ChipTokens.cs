@@ -43,4 +43,19 @@ public static class Chip
         /// <summary>CSS custom-property name for the xl chip avatar size.</summary>
         public const string Xl = "--flare-chip-avatar-size-xl";
     }
+
+    /// <summary>Inline padding of a chip across the 5 sizes.</summary>
+    public static class PaddingInline
+    {
+        /// <summary>CSS custom-property name for the xs chip inline padding.</summary>
+        public const string Xs = "--flare-chip-padding-inline-xs";
+        /// <summary>CSS custom-property name for the sm chip inline padding.</summary>
+        public const string Sm = "--flare-chip-padding-inline-sm";
+        /// <summary>CSS custom-property name for the md chip inline padding.</summary>
+        public const string Md = "--flare-chip-padding-inline-md";
+        /// <summary>CSS custom-property name for the lg chip inline padding.</summary>
+        public const string Lg = "--flare-chip-padding-inline-lg";
+        /// <summary>CSS custom-property name for the xl chip inline padding.</summary>
+        public const string Xl = "--flare-chip-padding-inline-xl";
+    }
 }
