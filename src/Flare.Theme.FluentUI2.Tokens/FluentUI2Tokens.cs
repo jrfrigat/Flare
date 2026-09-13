@@ -138,7 +138,12 @@ public class FluentUI2Tokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // Fluent does not tighten a subtle button: the ladder matches the contained one.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         // Compact gaps (Gap) between text and the Microsoft icon
         GapXs = "0.125rem",        // 2px
         GapSm = "0.25rem",         // 4px
@@ -293,6 +298,10 @@ public class FluentUI2Tokens
     // FAB: flatter Fluent rounding (4-8dp).
     internal static readonly FabTokens Fab = new()
     {
+        // Fluent circular button icon: 20px small and medium, 24px large.
+        IconSizeSm = "1.25rem",
+        IconSizeMd = "1.25rem",
+        IconSizeLg = "1.5rem",
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
         RadiusLg = "var(--flare-shape-large)",
@@ -442,6 +451,17 @@ public class FluentUI2Tokens
     // Chip - Fluent: the same values (8dp/32dp).
     internal static readonly ChipTokens Chip = new()
     {
+        // a chip glyph sizes with its label, same ramp.
+        IconSizeXs = "0.875rem",
+        IconSizeSm = "1rem",
+        IconSizeMd = "1.125rem",
+        IconSizeLg = "1.25rem",
+        IconSizeXl = "1.5rem",
+        AvatarSizeXs = "1rem",
+        AvatarSizeSm = "1.125rem",
+        AvatarSizeMd = "1.5rem",
+        AvatarSizeLg = "1.875rem",
+        AvatarSizeXl = "2.25rem",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",
@@ -449,6 +469,8 @@ public class FluentUI2Tokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        // Fluent tab icon: 20px at the medium tab.
+        IconSize = "1.25rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
@@ -732,6 +754,14 @@ public class FluentUI2Tokens
         LinearHeightMd = "2px",   // spec: bar thickness (medium, the default)
         LinearHeightLg = "3px",
         LinearHeightXl = "4px",   // spec: bar thickness (large)
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-extra-small)",
         Gap = "0px",
         LinearIndeterminateDuration = "1500ms",

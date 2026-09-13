@@ -31,8 +31,11 @@ DesignTokens, от которого производится каждая лин
 
 Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming, плюс reference-пакет линейки, если тема
 разделяет ее мнения; umbrella не ссылается ни на один): семь поставляемых дизайн-систем -
-  Линейка Material 3 (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .Aero, .LiquidGlass
-    (.MaterialDesign3 наследует от .MaterialDesign3Expressive, а не напрямую от базы)
+  Линейка Material 3 (-> MaterialDesign3.Tokens): .MaterialDesign3, .MaterialDesign3Expressive,
+    .Aero, .LiquidGlass - каждая берет значения токенов из reference-пакета и переопределяет только
+    то, что меняет ее язык. (.MaterialDesign3 дополнительно ссылается на .MaterialDesign3Expressive,
+    но только ради Md3Palettes / Md3TonalGenerator: цветовой системе Material 3 нужен Flare.Theming,
+    а reference-пакету токенов зависеть от него нельзя.)
   Линейка Fluent (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
   Самодостаточная: .MaterialDesign2 - она предшествует тональным палитрам, капсульным формам и
     возвышению заливкой, которые несет база Material 3, поэтому задает все свои токены сама
@@ -118,8 +121,8 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 
 - Тема = дизайн-система (`DesignTokens`) + `DefaultPaletteId` + `StyleAssets`. Светлая/темная это
   **режим**, а не отдельная тема; цвета приходят из **палитры**.
-- Каждый пакет экспортирует публичные reference-токены (например `Md3.DesignReference`, `Md3.LightColors`,
-  `Md3.DarkColors`), чтобы выводить кастомные темы/палитры через `with`.
+- Каждый пакет экспортирует публичные reference-токены (например `MaterialDesign3Tokens.Design`,
+  `MaterialDesign3Tokens.LightColors`, `MaterialDesign3Tokens.DarkColors`), чтобы выводить кастомные темы/палитры через `with`.
 - Каждый несет `IPaletteGenerator` по правилам цвета своей дизайн-системы (тональный MD3 / рампа).
 - `StyleAssets` перечисляет статический CSS темы (шрифты, базовый сброс, сгенерированный CSS токенов),
   чтобы нужные токены присутствовали до первого кадра (анти-FOUC).
@@ -251,7 +254,7 @@ Palette
 
 `DesignTokens`, `ColorScheme` и `Palette` это `record`-типы со свойствами `required init` -
 конструирование проверяется на этапе компиляции и неизменяемо. Кастомные значения выводятся через
-`with` из публичных reference-экземпляров (например `Md3.LightColors with { Primary = "..." }`).
+`with` из публичных reference-экземпляров (например `MaterialDesign3Tokens.LightColors with { Primary = "..." }`).
 
 ### Доставка темы
 

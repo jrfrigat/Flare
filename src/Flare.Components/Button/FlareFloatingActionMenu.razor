@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_dirClass, _open ? Css.Classes.FabMenu.ListOpen : null)"
+<div class="@BuildCssClass(_sideClass, _alignClass, _open ? Css.Classes.FabMenu.ListOpen : null)"
      role="menu"
      aria-hidden="@((!_open).ToString().ToLowerInvariant())"
      style="@Style"
@@ -13,8 +13,13 @@
     /// <summary>The <see cref="FlareFloatingActionMenuItem"/> entries.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Direction the menu expands from the FAB.</summary>
-    [Parameter] public FabMenuDirection Direction { get; set; } = FabMenuDirection.Up;
+    /// <summary>
+    /// Which side of the FAB the actions open on, and how they line up along it - the same
+    /// <see cref="Components.Placement"/> a <see cref="FlarePopover"/> takes. A bare side centres the
+    /// actions on the FAB; <c>Start</c> and <c>End</c> line up an edge instead, which is what keeps a
+    /// speed dial pinned to a screen corner from hanging half off the screen.
+    /// </summary>
+    [Parameter] public Placement Placement { get; set; } = Placement.Top;
 
     [CascadingParameter] private FabMenuContext? FabContext { get; set; }
     private bool Open => FabContext?.Open == true;
@@ -23,11 +28,19 @@
 
     private bool _open => Open;
 
-    private string _dirClass => Direction switch
+    private string _sideClass => Placement switch
     {
-        FabMenuDirection.Down  => Css.Classes.FabMenu.Down,
-        FabMenuDirection.Left  => Css.Classes.FabMenu.Left,
-        FabMenuDirection.Right => Css.Classes.FabMenu.Right,
-        _                      => Css.Classes.FabMenu.Up,
+        Placement.Bottom or Placement.BottomStart or Placement.BottomEnd => Css.Classes.FabMenu.Down,
+        Placement.Left or Placement.LeftStart or Placement.LeftEnd       => Css.Classes.FabMenu.Left,
+        Placement.Right or Placement.RightStart or Placement.RightEnd    => Css.Classes.FabMenu.Right,
+        _                                                               => Css.Classes.FabMenu.Up,
+    };
+
+    // A bare side centres, which is the side class's own layout, so it needs no second class.
+    private string? _alignClass => Placement switch
+    {
+        Placement.TopStart or Placement.BottomStart or Placement.LeftStart or Placement.RightStart => Css.Classes.FabMenu.AlignStart,
+        Placement.TopEnd or Placement.BottomEnd or Placement.LeftEnd or Placement.RightEnd         => Css.Classes.FabMenu.AlignEnd,
+        _                                                                                           => null,
     };
 }

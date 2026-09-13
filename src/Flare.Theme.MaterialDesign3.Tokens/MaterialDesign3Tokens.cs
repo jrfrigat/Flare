@@ -159,7 +159,13 @@ public class MaterialDesign3Tokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // A text button takes half the contained padding: 12dp against 24dp at M (spec
+        // "Text button"), and the same halving across the rest of the ladder.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         // 5 gap sizes (Gap) between text and icon
         // XS/S - height matches the MD3 spec -> gap = spec (8dp);
         // M=8 matches; L/XL - adapted to the reduced height.
@@ -249,12 +255,14 @@ public class MaterialDesign3Tokens
         IconSizeLg = "2rem",    // 32dp
         IconSizeXl = "2.5rem",  // 40dp
 
-        // Label typography: label-large -> title-medium -> headline-small -> headline-large
+        // Baseline M3 uses the one button type style at every size. Ramping the label up to
+        // title-medium / headline-small / headline-large is an Expressive behaviour and lives in
+        // the Expressive theme, which is what "Expressive overrides only what it needs" means.
         LabelXs = Typography.LabelLarge,
         LabelSm = Typography.LabelLarge,
-        LabelMd = Typography.TitleMedium,
-        LabelLg = Typography.HeadlineSmall,
-        LabelXl = Typography.HeadlineLarge,
+        LabelMd = Typography.LabelLarge,
+        LabelLg = Typography.LabelLarge,
+        LabelXl = Typography.LabelLarge,
     };
 
     // Both group models. Connected: no gap, a 1px negative overlap that collapses adjacent borders into
@@ -335,9 +343,16 @@ public class MaterialDesign3Tokens
     // FAB: padding-based sizing, large/medium/extra-large rounding.
     internal static readonly FabTokens Fab = new()
     {
+        // A FAB sizes itself as glyph plus padding on both sides, so the icon and the padding together
+        // make the container. Lg is the large FAB - its 28dp corner says so - which is
+        // md.comp.fab.large.*: a 36dp glyph in a 96dp container, hence 30dp of padding. Md is the
+        // baseline FAB (24dp glyph, 56dp container) and Sm the small one (24dp, 40dp).
+        IconSizeSm = "1.5rem",    // 24dp -> 40dp container
+        IconSizeMd = "1.5rem",    // 24dp -> 56dp container
+        IconSizeLg = "2.25rem",   // 36dp -> 96dp container
         PaddingSm = "0.5rem",
         PaddingMd = "1rem",
-        PaddingLg = "1.75rem",
+        PaddingLg = "1.875rem",   // 30dp
         RadiusSm = "var(--flare-shape-medium)",
         RadiusMd = "var(--flare-shape-large)",
         RadiusLg = "var(--flare-shape-extra-large)",
@@ -375,6 +390,17 @@ public class MaterialDesign3Tokens
     };
     internal static readonly ChipTokens Chip = new()
     {
+        // 18dp at md - md.comp.*-chip.with-icon.icon.size; the ramp follows the label scale.
+        IconSizeXs = "0.875rem",
+        IconSizeSm = "1rem",
+        IconSizeMd = "1.125rem",
+        IconSizeLg = "1.25rem",
+        IconSizeXl = "1.5rem",
+        AvatarSizeXs = "1rem",
+        AvatarSizeSm = "1.125rem",
+        AvatarSizeMd = "1.5rem",
+        AvatarSizeLg = "1.875rem",
+        AvatarSizeXl = "2.25rem",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp
@@ -382,6 +408,8 @@ public class MaterialDesign3Tokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        // md.comp.primary-navigation-tab.with-icon.icon.size: 24dp.
+        IconSize = "1.5rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
@@ -482,7 +510,10 @@ public class MaterialDesign3Tokens
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
-        PanelRadius = "var(--flare-shape-large)",     // 16dp
+        // Baseline M3 is one classic surface: a 4dp panel with square items and no group islands.
+        // The 16dp panel, the rounded items and the floating group sections are Expressive, and the
+        // Expressive theme states them.
+        PanelRadius = "var(--flare-shape-extra-small)", // 4dp
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-3)",     // elevation 3
         PanelPaddingInline = "0.125rem",              // group padding 2dp
@@ -493,18 +524,19 @@ public class MaterialDesign3Tokens
         // but never a dense one. Unchanged.
         ItemPaddingBlockDense = "0.375rem",
         ItemGapDense = "0.5rem",
-        ItemGapBetween = "0.125rem",                  // gap between items 2dp
-        ItemRadius = "var(--flare-shape-extra-small)",// 4dp
-        ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
-        GroupRadius = "var(--flare-shape-small)",     // group 8dp
-        GroupPadding = "0.125rem",                    // group padding 2dp
-        // Expressive "island" group sections: each group is a separate rounded surface tone with its
-        // own elevation, on a transparent backing panel, so adjacent sections read as two cards.
-        GroupBg = "var(--flare-color-surface-container-high)",
-        GroupGap = "0.5rem",
-        GroupShadow = "var(--flare-elevation-3)",
-        GroupedPanelBg = "transparent",
-        GroupedPanelShadow = "none",
+        ItemGapBetween = "0",
+        ItemRadius = "0",
+        ItemRadiusEnd = "0",
+        GroupRadius = "0",
+        GroupPadding = "0",
+        // Groups are sections of the one panel, marked by spacing alone - not the Expressive
+        // "island" model, where each group is its own rounded, elevated surface on a transparent
+        // backing panel.
+        GroupBg = "transparent",
+        GroupGap = "0",
+        GroupShadow = "none",
+        GroupedPanelBg = "var(--flare-color-surface-container)",
+        GroupedPanelShadow = "var(--flare-elevation-2)",
         ItemLabelFont = "var(--flare-typescale-label-large-font)",
         ItemLabelWeight = "var(--flare-typescale-label-large-weight)",
         ItemLabelSize = "var(--flare-typescale-label-large-size)",
@@ -716,6 +748,14 @@ public class MaterialDesign3Tokens
         LinearHeightMd = "4px",   // spec: linear height (the default)
         LinearHeightLg = "6px",
         LinearHeightXl = "8px",   // spec: linear thick height
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
         LinearIndeterminateDuration = "1500ms",
@@ -880,11 +920,14 @@ public class MaterialDesign3Tokens
         TrackRadiusMd = "0.75rem",
         TrackRadiusLg = "1rem",
         TrackRadiusXl = "1.75rem",
-        HandleHeightXs = "2.75rem",
-        HandleHeightSm = "2.75rem",
-        HandleHeightMd = "3.25rem",
-        HandleHeightLg = "4.25rem",
-        HandleHeightXl = "6.75rem",
+        // md.comp.slider.<size>.active.handle.height reads 44/44/44/68/108dp - the handle stays the
+        // same height for the first three steps and only grows for large and extra-large, which is
+        // why the ramp looks flat at the bottom. Md was 3.25rem against the table's 44dp.
+        HandleHeightXs = "2.75rem",  // 44dp
+        HandleHeightSm = "2.75rem",  // 44dp
+        HandleHeightMd = "2.75rem",  // 44dp
+        HandleHeightLg = "4.25rem",  // 68dp
+        HandleHeightXl = "6.75rem",  // 108dp
         // Flanking StartIcon/EndIcon ramp.
         IconSizeXs = "20px",
         IconSizeSm = "22px",

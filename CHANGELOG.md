@@ -3,6 +3,139 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.36.0] - 2026-09-13
+
+### Added
+
+- **`FlareProgressCircular` and `FlareProgressLinear` take `ChildContent`.** A percentage in the
+  middle of a ring is the commonest thing anyone wants there, and until now every caller wrote the
+  same relative-positioned wrapper and kept it centred by hand. The content is an overlay, not a
+  layout child, so the indicator's own geometry is untouched: the ring still measures itself and the
+  bar still fills by width. A linear track does not grow to fit a label - it is a few pixels tall by
+  design - so the label rides across it; keep it short. Its type size is a per-size theme token
+  (`ProgressTokens.ContentSizeXs..Xl`, plus `ContentColor`), so a label dropped into the smallest
+  indicator still fits it, and anything placed inside overrides it. The content is `aria-hidden`:
+  the indicator already announces its value and a reader would otherwise say the number twice - set
+  `aria-valuetext` when the content says something the value does not.
+
+### Changed
+
+- **Breaking for custom themes: `ProgressTokens` has six new `required` properties** -
+  `ContentColor` and `ContentSizeXs..Xl`, the colour and per-size type of the content an indicator
+  now centres on itself (see Added). A theme outside this repository must state all six.
+
+- **Breaking for custom themes: `FabTokens` gains `IconSizeSm` / `IconSizeMd` / `IconSizeLg` and
+  `TabsTokens` gains `IconSize`.** Neither component ever set an icon size, so the glyph fell back to
+  the icon component's own default - 22px on every FAB and every tab, whatever the size. On a FAB
+  that is worse than a wrong glyph: a FAB is its glyph plus padding, so the container was off too.
+  Material 3 Expressive's FABs measured 38, 54 and 78px against the 40, 56 and 96dp the spec
+  gives; with the spec glyph they are 40, 56 and 96, corners 12, 16 and 28. The large step also
+  takes 30dp of padding, because its 28dp corner makes it the large FAB rather than the medium one.
+  Tabs now draw a 24dp leading icon in Material 3 and Material 2 and 20px in Fluent, each from its
+  own spec; a speed dial's action buttons read the small FAB size instead of a hardcoded 20px. Aero
+  and Liquid Glass follow Material 3, Visual Studio follows Fluent.
+
+- **BREAKING: `PopoverPlacement` is now `Placement`, and `FlareFloatingActionMenu.Direction` is now
+  `Placement` of that same type.** A speed dial could say which side of its FAB the actions open on,
+  but not how they line up along it - they were always centred, so a FAB pinned to a screen corner
+  opened a menu that hung half its width past the edge the button sat against. That is exactly what
+  a popover already expressed, with a side and an alignment, so the speed dial takes the popover's
+  type instead of growing a second one: `TopStart` lines up the left edges, `TopEnd` the right, a
+  bare `Top` centres as before, and the left and right sides line up top or bottom edges the same
+  way. The type drops its popover prefix because it no longer belongs to one component. Replace
+  `PopoverPlacement.X` with `Placement.X`, and `Direction="FabMenuDirection.Up"` with
+  `Placement="Placement.Top"` (`Down`, `Left`, `Right` become `Bottom`, `Left`, `Right`). Measured
+  on the gallery with real clicks: the list's left edge meets the button's at `TopStart`, the
+  centres meet at `Top`, the right edges at `TopEnd`.
+
+- **Breaking for custom themes: `ChipTokens` has ten new `required` properties.**
+  `IconSizeXs..Xl` sizes a chip's leading and trailing icons and `AvatarSizeXs..Xl` its avatar. The
+  chip never had an icon size, so the glyph fell back to the icon component's own default and drew
+  22px on a 32dp chip - taller than wide, too - where Material asks for 18dp; the close glyph drew
+  12.6px. Both ends now read one ramp, since a language sizes the icon at one end the way it sizes
+  it at the other, and they read it through the library-wide icon property rather than a chip-only
+  one. The avatar ramp was already right and already correct at 24dp; it was just five literals in
+  the component stylesheet that no theme could reach. Measured afterwards on a medium chip: icon
+  18x18, close glyph 18px, avatar 24x24, height still 32.
+
+- **BREAKING: `ButtonTokens.TextPaddingInline` is now a ladder of five - `TextPaddingInlineXs`
+  through `TextPaddingInlineXl`.** The single property never reached a button. Two rules in
+  `button.css` wrote the same local property at equal specificity, and the one that won was the size
+  class - which every button carries - so a text button silently took the contained variant's
+  padding. Measured on the component gallery in Material 2: the theme handed over `0.5rem` and the
+  button painted `16px`. The variant now outranks the size, and the token is per size for the same
+  reason the contained padding is: the tightening that reads right beside a small label is cramped
+  beside a large one. A custom theme replaces its one value with five.
+
+- **BREAKING: `Md3` and `Fluent2` are gone; use `MaterialDesign3Tokens` and `FluentUI2Tokens`.** Both
+  were wrappers that forwarded `DesignReference` / `LightColors` / `DarkColors` to types that are
+  already public in the reference-tokens packages, and both lived in a *theme* package - so reaching
+  a lineage baseline meant depending on a theme, which is the coupling the reference packages exist
+  to avoid. `Md3.DesignReference` becomes `MaterialDesign3Tokens.Design`, `Fluent2.LightColors`
+  becomes `FluentUI2Tokens.LightColors`, and so on. `Aero`, `LiquidGlass` and `VisualStudio` keep
+  theirs: those wrap internal types and are the only public way in.
+
+- **Breaking for custom themes derived from `MaterialDesign3Tokens`: the reference package now holds
+  baseline Material 3, not Expressive.** It is what
+  every Material 3 theme derives from, and it carried Expressive's opinions: buttons whose label
+  ramps to title-medium / headline-small / headline-large with the container, and the Expressive
+  "island" menu - a 16dp panel with rounded items and each group its own elevated surface. Baseline
+  Material 3 uses one button type style at every size and one classic 4dp panel with square items.
+  The baseline theme had to subtract those again, so it derived from the Expressive assembly to get
+  back to values the reference should have had. The Expressive theme now states them itself, which
+  is what "Expressive overrides only what it changes" is supposed to mean. Neither theme moves: all
+  979 of the baseline theme's token values and all 983 of Expressive's are unchanged, compared
+  before and after.
+
+- **A text button is now tighter than a contained one, which is what every theme had already asked
+  for.** Because the old token never applied, text buttons rendered with the contained padding; they
+  now take the value their theme declares. In Material 3 Expressive a medium text button goes from
+  24px to 12px, in Material 2 from 16px to 8px. Icon-only buttons are untouched - they zero their
+  padding with a direct declaration rather than through the token.
+
+- **The Aero and Liquid Glass menus are the classic Material 3 menu again.** Both take the reference
+  menu as it stands, so both had been drawing Expressive's island groups - inherited, never chosen.
+  Eleven menu tokens change for each: the panel drops from 16dp to 4dp, items lose their 4dp corners
+  and 2dp gaps, and a group stops being a separate elevated surface. A theme that wants the island
+  back says so in eleven lines.
+
+### Fixed
+
+- **Material 3 Expressive now matches its own tables for the slider handle and the menu row.**
+  Three measurements disagreed with the published spec. The slider handle ramp reads 44/44/44/68/108dp
+  - flat for the first three steps, growing only for large and extra-large - and the medium step was
+  52px against the table's 44dp. A menu row is 44dp in Expressive
+  (`md.comp.menus.menu-item.height`) where baseline Material 3 keeps its 48dp list row
+  (`md.comp.menu.list-item.container.height`), and the first and last rows take a 12dp outer
+  corner so the ends of the list mirror the panel, against the 4dp every row between them takes.
+  Measured on the rendered page afterwards: panel 16px, five rows at 44px, ends 12px, middles 4px.
+  Baseline Material 3 is untouched - still a 48px row, square ends, a 4px panel - and so is every
+  other theme, each of which states its own handle heights.
+
+- **A meter separates its parts wherever the theme separates a progress bar's.** `FlareMeter`
+  already borrows the linear progress track tokens for its height, rounded ends and resting
+  background - the gap was the one member of that set it did not read, so under Material 3
+  Expressive a meter and a progress bar sat on the same page with one showing a 4dp gap and the
+  other running its parts together. The track now reads `--flare-progress-gap` too, rather than
+  owning a second token for the same distance. A theme that draws no gap (Fluent UI 2, Aero, Liquid
+  Glass, Visual Studio all set it to zero) gets the solid meter it had. Each part takes its own
+  rounded ends exactly when there is a gap to justify them, at half the track height - a real
+  length, because a 9999px corner beside a smaller one makes the browser scale the set down and
+  paint it square. Measured at 8x on the component gallery: a 2px part stays a lozenge.
+
+- **A slider under RTL fills from the correct end.** Its track, fill, zones, stop dots, marks and
+  value bubble were all placed with physical `left` / `right` / `margin-right` - about a dozen and a
+  half declarations in the stylesheet, plus the inline styles that position every band on the rail.
+  Under RTL the native input flips its own value axis, so the thumb moved right-to-left while the
+  paint stayed anchored to the left: the fill and the handle ended up at opposite ends of the same
+  track. Everything is now logical, corners included - a band names `border-start-start-radius`
+  rather than a corner order that only reads correctly left-to-right. Measured on the component
+  gallery with a real click a quarter of the way in from the left edge: left-to-right it sets 25 and
+  the fill hugs the left edge, right-to-left it sets 75 and the fill hugs the right, with the stop
+  dots and marks landing on the same percentages in both. A vertical slider runs along the block
+  axis and is unchanged. `slider.css` now sits under `LogicalDirectionTests` with progress and
+  meter; the guard was confirmed to fail on a planted `left:` and `margin-right:` before it passed.
+
 ## [0.35.0] - 2026-09-12
 
 ### Changed

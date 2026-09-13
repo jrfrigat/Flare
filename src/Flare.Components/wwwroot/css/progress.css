@@ -12,26 +12,31 @@
   --_lin-height: var(--flare-progress-linear-height-xs);
   --_circ-size: var(--flare-progress-circular-size-xs);
   --_circ-width: var(--flare-progress-circular-width-xs);
+  --_content-size: var(--flare-progress-content-size-xs);
 }
 .flare-progress--sm {
   --_lin-height: var(--flare-progress-linear-height-sm);
   --_circ-size: var(--flare-progress-circular-size-sm);
   --_circ-width: var(--flare-progress-circular-width-sm);
+  --_content-size: var(--flare-progress-content-size-sm);
 }
 .flare-progress--md {
   --_lin-height: var(--flare-progress-linear-height-md);
   --_circ-size: var(--flare-progress-circular-size-md);
   --_circ-width: var(--flare-progress-circular-width-md);
+  --_content-size: var(--flare-progress-content-size-md);
 }
 .flare-progress--lg {
   --_lin-height: var(--flare-progress-linear-height-lg);
   --_circ-size: var(--flare-progress-circular-size-lg);
   --_circ-width: var(--flare-progress-circular-width-lg);
+  --_content-size: var(--flare-progress-content-size-lg);
 }
 .flare-progress--xl {
   --_lin-height: var(--flare-progress-linear-height-xl);
   --_circ-size: var(--flare-progress-circular-size-xl);
   --_circ-width: var(--flare-progress-circular-width-xl);
+  --_content-size: var(--flare-progress-content-size-xl);
 }
 
 /* Linear */
@@ -209,3 +214,28 @@
     animation: none;
   }
 }
+
+/* ==========================================================================
+   Centred content (ChildContent): a percentage in a ring, an icon, "3 of 7".
+   An overlay rather than a layout child, so the indicator's own geometry is
+   untouched - the ring still measures itself, the bar still fills by width.
+   ========================================================================== */
+.flare-progress__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--flare-progress-content-color);
+  font-size: var(--_content-size);
+  line-height: 1;
+}
+
+/* A linear track clips to its own rounded ends, which would cut a label off at 4dp. The clip is
+   lifted only when there is content to show, so every indicator without it renders as before. */
+.flare-progress--with-content { overflow: visible; }
+
+/* The circular root is an inline-flex box sized by the ring; the overlay needs it as a positioning
+   context. The linear root already has one. */
+.flare-progress--circular { position: relative; }

@@ -1,0 +1,28 @@
+@* ChildContent sits on the indicator instead of beside it: the ring reads as one object, and the
+   label rides the bar rather than needing a row of its own. Its type size comes from the size step,
+   so the smallest ring gets a label that fits it. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row Gap="FlareSpacing.Medium" Wrap Align="FlareAlignItems.Center">
+        <FlareProgressCircular Value="72" Size="TrackSize.Lg" data-testid="progress-content-ring">
+            <FlareText Typo="TypographyScale.LabelLarge">72%</FlareText>
+        </FlareProgressCircular>
+        <FlareProgressCircular Value="40" Size="TrackSize.Xl" Color="FlareColor.Success">
+            <FlareText Typo="TypographyScale.TitleMedium">3/7</FlareText>
+        </FlareProgressCircular>
+        <FlareProgressCircular Value="90" Size="TrackSize.Lg" Color="FlareColor.Warning">
+            <FlareIconView Value="@MaterialDesign3Icons.Regular.Bolt" />
+        </FlareProgressCircular>
+        @* A ring holds a couple of glyphs, not a sentence: the box does not grow, so a long label
+           would spill over whatever sits next to it. *@
+        <FlareProgressCircular Size="TrackSize.Lg">
+            <FlareIconView Value="@MaterialDesign3Icons.Regular.Sync" />
+        </FlareProgressCircular>
+    </FlareStack>
+
+    @* A bar is a few pixels tall whatever its size step, so the label rides across it rather than
+       fitting inside: keep it short, and give it a colour that reads over both the fill and the
+       remaining track. *@
+    <FlareProgressLinear Value="64" Size="TrackSize.Xl" data-testid="progress-content-bar">
+        <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurface">64%</FlareText>
+    </FlareProgressLinear>
+</FlareStack>

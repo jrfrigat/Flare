@@ -55,7 +55,7 @@ public class FloatingPanelLayerTests : FlareTestContext
     {
         var cut = Render<FlarePopover>(p => p
             .Add(x => x.Open, true)
-            .Add(x => x.Placement, PopoverPlacement.RightEnd)
+            .Add(x => x.Placement, Placement.RightEnd)
             .Add(x => x.AnchorContent, Markup("<span>x</span>"))
             .Add(x => x.ChildContent, Markup("<span>body</span>")));
 

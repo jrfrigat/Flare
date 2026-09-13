@@ -286,13 +286,14 @@ dotnet run
 
 ```csharp
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 // Переопределить только нужное от reference-схемы:
 var ocean = new Palette
 {
     Id = "ocean", Name = "Ocean", Source = "Custom",
-    Light = Md3.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
-    Dark  = Md3.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
+    Light = MaterialDesign3Tokens.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
+    Dark  = MaterialDesign3Tokens.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
 };
 
 // ...или вывести полную палитру light+dark из бренд-цвета:
@@ -327,9 +328,9 @@ await themeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 Переопределить **любой** дизайн-токен через публичные reference-записи:
 
 ```csharp
-var design = Md3.DesignReference with
+var design = MaterialDesign3Tokens.Design with
 {
-    Shape = Md3.DesignReference.Shape with { Medium = "10px" },
+    Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "10px" },
 };
 ```
 

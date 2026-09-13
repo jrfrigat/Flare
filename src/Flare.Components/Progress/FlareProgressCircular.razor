@@ -28,9 +28,23 @@
             </g>
         }
     </svg>
+    @* aria-hidden because the value is already announced by the host's role/aria-valuenow: a reader
+       that also spoke the label would say the number twice. Content that is NOT the value - a state
+       word, a count on another scale - belongs in aria-valuetext on the component instead. *@
+    @if (ChildContent is not null)
+    {
+        <div class="@Css.Classes.Progress.Content" aria-hidden="true">@ChildContent</div>
+    }
 </div>
 
 @code {
+    /// <summary>
+    /// Content centred inside the ring - a percentage, an icon, a short count. Purely decorative to
+    /// assistive technology: the indicator already announces its value, so set <c>aria-valuetext</c>
+    /// on the component when the content says something the value does not.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
     private const double Circumference = 2 * Math.PI * 18;
 
     // The drawn arc as a share of the ring, for a theme that redraws the indicator and would

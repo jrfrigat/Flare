@@ -79,7 +79,7 @@
                         @foreach (var stop in _stops)
                         {
                             <span class="@(stop.Active ? $"{Css.Classes.Slider.Tick} {Css.Classes.Slider.TickActive}" : Css.Classes.Slider.Tick)"
-                                  style="@(Vertical ? "bottom" : "left"):@(stop.Pct.ToString("F2", CultureInfo.InvariantCulture))%"></span>
+                                  style="@(Vertical ? "inset-block-end" : "inset-inline-start"):@(stop.Pct.ToString("F2", CultureInfo.InvariantCulture))%"></span>
                         }
                     </div>
                 }
@@ -90,7 +90,7 @@
                         @foreach (var mark in _marks)
                         {
                             <span class="@(mark.Active ? $"{Css.Classes.Slider.Mark} {Css.Classes.Slider.MarkActive}" : Css.Classes.Slider.Mark)"
-                                  style="@(Vertical ? "bottom" : "left"):@(mark.Pct.ToString("F2", CultureInfo.InvariantCulture))%">@mark.Label</span>
+                                  style="@(Vertical ? "inset-block-end" : "inset-inline-start"):@(mark.Pct.ToString("F2", CultureInfo.InvariantCulture))%">@mark.Label</span>
                         }
                     </div>
                 }
@@ -359,12 +359,20 @@
             endOuter ? TrackRadius : GapRadius);
     }
 
-    // One painted band on the rail. The track runs start -> end: horizontal = left -> right, vertical =
-    // bottom -> top. Shared by the active/inactive segments and the colored zones so every band on the rail
-    // is shaped by the same theme tokens.
+    // One painted band on the rail. The track runs start -> end: horizontal along the inline axis,
+    // vertical along the block axis, bottom -> top. Shared by the active/inactive segments and the
+    // colored zones so every band on the rail is shaped by the same theme tokens.
+    // Logical throughout, corners included: under RTL a horizontal track fills from the right, and a
+    // physical `left` with a physical corner order would leave the fill and its rounding at opposite
+    // ends of the rail.
     private string _band(string start, string end, string rStart, string rEnd) => Vertical
-        ? $"bottom:{start};top:{end};border-radius:{rEnd} {rEnd} {rStart} {rStart};"
-        : $"left:{start};right:{end};border-radius:{rStart} {rEnd} {rEnd} {rStart};";
+        ? $"inset-block-end:{start};inset-block-start:{end};" + _radii(rEnd, rEnd, rStart, rStart)
+        : $"inset-inline-start:{start};inset-inline-end:{end};" + _radii(rStart, rEnd, rEnd, rStart);
+
+    // Corners named by flow, not by screen side: start-start is the block-start/inline-start corner.
+    private static string _radii(string ss, string se, string ee, string es) =>
+        $"border-start-start-radius:{ss};border-start-end-radius:{se};" +
+        $"border-end-end-radius:{ee};border-end-start-radius:{es};";
 
     // Filled span [lo,hi]: range -> [low,high]; single -> [Init,Value].
     private double _spanLoPct => Range ? _lowPct : Math.Min(_lowPct, _initPercent);

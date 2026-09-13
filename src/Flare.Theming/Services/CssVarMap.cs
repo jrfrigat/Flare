@@ -175,7 +175,11 @@ public static class CssVarMap
         v[Css.Tokens.Button.Gap.Xs] = t.Button.GapXs;
         v[Css.Tokens.Button.LoadingOpacity] = t.Button.LoadingOpacity;
         v[Css.Tokens.Button.ContainerRadius] = t.Button.ContainerRadius;
-        v[Css.Tokens.Button.TextPaddingInline] = t.Button.TextPaddingInline;
+        v[Css.Tokens.Button.TextPaddingInline.Xs] = t.Button.TextPaddingInlineXs;
+        v[Css.Tokens.Button.TextPaddingInline.Sm] = t.Button.TextPaddingInlineSm;
+        v[Css.Tokens.Button.TextPaddingInline.Md] = t.Button.TextPaddingInlineMd;
+        v[Css.Tokens.Button.TextPaddingInline.Lg] = t.Button.TextPaddingInlineLg;
+        v[Css.Tokens.Button.TextPaddingInline.Xl] = t.Button.TextPaddingInlineXl;
         v[Css.Tokens.Button.Gap.Sm] = t.Button.GapSm;
         v[Css.Tokens.Button.Gap.Md] = t.Button.GapMd;
         v[Css.Tokens.Button.Gap.Lg] = t.Button.GapLg;
@@ -383,6 +387,9 @@ public static class CssVarMap
         v[Css.Tokens.Fab.Shadow] = t.Fab.Shadow;
         v[Css.Tokens.Fab.HoverShadow] = t.Fab.HoverShadow;
         v[Css.Tokens.Fab.AnchorOffset] = t.Fab.AnchorOffset;
+        v[Css.Tokens.Fab.IconSize.Sm] = t.Fab.IconSizeSm;
+        v[Css.Tokens.Fab.IconSize.Md] = t.Fab.IconSizeMd;
+        v[Css.Tokens.Fab.IconSize.Lg] = t.Fab.IconSizeLg;
         #endregion
 
         #region MENU
@@ -406,6 +413,16 @@ public static class CssVarMap
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Chip.FilledBg] = t.Chip.FilledBg;
         v[Css.Tokens.Chip.ElevatedBg] = t.Chip.ElevatedBg;
+        v[Css.Tokens.Chip.IconSize.Xs] = t.Chip.IconSizeXs;
+        v[Css.Tokens.Chip.IconSize.Sm] = t.Chip.IconSizeSm;
+        v[Css.Tokens.Chip.IconSize.Md] = t.Chip.IconSizeMd;
+        v[Css.Tokens.Chip.IconSize.Lg] = t.Chip.IconSizeLg;
+        v[Css.Tokens.Chip.IconSize.Xl] = t.Chip.IconSizeXl;
+        v[Css.Tokens.Chip.AvatarSize.Xs] = t.Chip.AvatarSizeXs;
+        v[Css.Tokens.Chip.AvatarSize.Sm] = t.Chip.AvatarSizeSm;
+        v[Css.Tokens.Chip.AvatarSize.Md] = t.Chip.AvatarSizeMd;
+        v[Css.Tokens.Chip.AvatarSize.Lg] = t.Chip.AvatarSizeLg;
+        v[Css.Tokens.Chip.AvatarSize.Xl] = t.Chip.AvatarSizeXl;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
         v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
         v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;
@@ -428,6 +445,7 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.TabHeight] = t.Tabs.TabHeight;
         v[Css.Tokens.Tabs.TabMinWidth] = t.Tabs.TabMinWidth;
         v[Css.Tokens.Tabs.TabPaddingInline] = t.Tabs.TabPaddingInline;
+        v[Css.Tokens.Tabs.IconSize] = t.Tabs.IconSize;
         v[Css.Tokens.Tabs.ScrollDisabledOpacity] = t.Tabs.ScrollDisabledOpacity;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
         v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;
@@ -873,6 +891,12 @@ public static class CssVarMap
         v[Css.Tokens.ProgressField.LinearHeight.Md] = t.Progress.LinearHeightMd;
         v[Css.Tokens.ProgressField.LinearHeight.Lg] = t.Progress.LinearHeightLg;
         v[Css.Tokens.ProgressField.LinearHeight.Xl] = t.Progress.LinearHeightXl;
+        v[Css.Tokens.ProgressField.ContentColor] = t.Progress.ContentColor;
+        v[Css.Tokens.ProgressField.ContentSize.Xs] = t.Progress.ContentSizeXs;
+        v[Css.Tokens.ProgressField.ContentSize.Sm] = t.Progress.ContentSizeSm;
+        v[Css.Tokens.ProgressField.ContentSize.Md] = t.Progress.ContentSizeMd;
+        v[Css.Tokens.ProgressField.ContentSize.Lg] = t.Progress.ContentSizeLg;
+        v[Css.Tokens.ProgressField.ContentSize.Xl] = t.Progress.ContentSizeXl;
         v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
         v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
         v[Css.Tokens.ProgressField.LinearIndeterminateDuration] = t.Progress.LinearIndeterminateDuration;

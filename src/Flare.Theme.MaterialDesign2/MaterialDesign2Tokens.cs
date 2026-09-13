@@ -159,9 +159,13 @@ internal static class MaterialDesign2Tokens
         // and the message box's). A pill here made those two the only capsule buttons in a theme
         // whose every other button is a 4dp rectangle.
         ContainerRadius = "var(--flare-shape-extra-small)",
-        // 8dp, not the 16dp the container variants take: the text button trades its container for
-        // tighter padding (spec redline "Text button").
-        TextPaddingInline = "0.5rem",
+        // 8dp at M, not the 16dp the container variants take: the text button trades its container
+        // for tighter padding (spec redline "Text button"). Half the contained ladder throughout.
+        TextPaddingInlineXs = "0.25rem",
+        TextPaddingInlineSm = "0.375rem",
+        TextPaddingInlineMd = "0.5rem",
+        TextPaddingInlineLg = "0.625rem",
+        TextPaddingInlineXl = "0.75rem",
         HeightXs = "1.75rem",  // 28dp
         HeightSm = "2rem",     // 32dp
         HeightMd = "2.25rem",  // 36dp (classic MD2 contained button)
@@ -317,6 +321,10 @@ internal static class MaterialDesign2Tokens
     // FAB: padding-based sizing, large/medium/extra-large rounding.
     internal static readonly FabTokens Fab = new()
     {
+        // Material 2 draws a 24dp glyph on every FAB, mini and regular alike ($icon-size).
+        IconSizeSm = "1.5rem",
+        IconSizeMd = "1.5rem",
+        IconSizeLg = "1.5rem",
         PaddingSm = "0.5rem",
         PaddingMd = "1rem",
         PaddingLg = "1.75rem",
@@ -358,10 +366,12 @@ internal static class MaterialDesign2Tokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     // MD2 chips are fully rounded ("stadium") at 32dp.
-    internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)" };
+    internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = new()
     {
+        // Material 2 tab icon: 24px ($icon-size).
+        IconSize = "1.5rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
@@ -703,6 +713,14 @@ internal static class MaterialDesign2Tokens
         LinearHeightMd = "4px",   // spec: linear height (the default)
         LinearHeightLg = "6px",
         LinearHeightXl = "8px",   // spec: linear thick height
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
         LinearIndeterminateDuration = "1500ms",

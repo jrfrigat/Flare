@@ -256,7 +256,6 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.DropEdge`](enums/flare-components-dropedge.md) — Where a drop landed relative to the item under the pointer.
 - [`Flare.Components.DropPlacement`](enums/flare-components-dropplacement.md) — What a FlareDropZone accepts, which is also what the drop resolves to.
 - [`Flare.Components.DynamicVariant`](enums/flare-components-dynamicvariant.md) — Dynamic-color scheme variant - how the source (seed) color is expanded into tonal roles.
-- [`Flare.Components.FabMenuDirection`](enums/flare-components-fabmenudirection.md) — Direction a FlareFloatingActionMenu expands from its FAB.
 - [`Flare.Components.FabPosition`](enums/flare-components-fabposition.md) — Placement mode for a FlareFloatingActionButton.
 - [`Flare.Components.FabSize`](enums/flare-components-fabsize.md) — Size of a FlareFloatingActionButton. The steps are labels, not measurements: each theme maps them onto its own padding and radius tokens, so what a step is worth depends on the theme in use.
 - [`Flare.Components.FieldMargin`](enums/flare-components-fieldmargin.md) — Vertical (block) margin applied around a text field (FlareField / FlareTextField), mirroring the dense/normal spacing presets common in form layouts.
@@ -291,7 +290,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.NavMenuMode`](enums/flare-components-navmenumode.md) — How a FlareNavMenu presents its items. Set it explicitly to control the menu independently of any surrounding FlareLayout; leave it unset to keep the legacy behavior (driven by Rail or the collapsed layout drawer).
 - [`Flare.Components.PaginationSize`](enums/flare-components-paginationsize.md) — Size of FlarePagination controls. Medium is the default and matches the Xs..Xl scale used across Flare components (e.g. FlareButton, form fields).
 - [`Flare.Components.PickerOpenTo`](enums/flare-components-pickeropento.md) — The initial calendar view a date picker opens to. Year jumps straight to the year grid - handy for far-back dates like a date of birth so the user does not page through months.
-- [`Flare.Components.PopoverPlacement`](enums/flare-components-popoverplacement.md) — Side and alignment a FlarePopover is placed relative to its anchor.
+- [`Flare.Components.Placement`](enums/flare-components-placement.md) — Where something sits relative to what it hangs off: a side, and how it lines up along that side. Shared by every component that places a surface next to an anchor, so a popover and a speed-dial menu read the same words and mean the same thing.
 - [`Flare.Components.PopoverTrigger`](enums/flare-components-popovertrigger.md) — How a FlarePopover is opened.
 - [`Flare.Components.QrErrorCorrectionLevel`](enums/flare-components-qrerrorcorrectionlevel.md) — QR code error correction level. Higher levels allow more data recovery at the cost of reduced capacity.
 - [`Flare.Components.ResizableEdge`](enums/flare-components-resizableedge.md) — Which edge of a FlareResizable carries the drag handle.

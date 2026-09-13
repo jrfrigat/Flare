@@ -5,7 +5,7 @@
         <FlareFloatingActionButton Position="FabPosition.Static" AriaLabel="Actions (up)">
             <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></IconContent>
             <ChildContent>
-                <FlareFloatingActionMenu Direction="FabMenuDirection.Up">
+                <FlareFloatingActionMenu Placement="Placement.Top">
                     <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" Label="Edit" OnClick="@(() => Snackbar.Show("Edit"))" />
                     <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Share" Label="Share" OnClick="@(() => Snackbar.Show("Share"))" />
                     <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Delete" Label="Delete" OnClick="@(() => Snackbar.Show("Delete", SnackbarSeverity.Error))" />
@@ -24,7 +24,7 @@
             <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="Actions (right)">
                 <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreHoriz" /></IconContent>
                 <ChildContent>
-                    <FlareFloatingActionMenu Direction="@(bp <= Breakpoint.Sm ? FabMenuDirection.Up : FabMenuDirection.Right)">
+                    <FlareFloatingActionMenu Placement="@(bp <= Breakpoint.Sm ? Placement.Top : Placement.Right)">
                         <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Download" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />
                         <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Print" Label="Print" OnClick="@(() => Snackbar.Show("Printing…"))" />
                     </FlareFloatingActionMenu>

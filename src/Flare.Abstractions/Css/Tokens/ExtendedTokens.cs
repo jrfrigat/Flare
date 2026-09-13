@@ -185,6 +185,25 @@ public static class ProgressField
         public const string Xl = "--flare-progress-linear-height-xl";
     }
 
+    /// <summary>Type size of the content an indicator centres on itself, one per size step. The
+    /// smallest and largest indicators cannot carry the same label, so the ramp is the theme's rather
+    /// than the caller's: a percentage dropped into the smallest one still has to fit it.</summary>
+    public static class ContentSize
+    {
+        /// <summary>CSS custom-property name for the xs centred-content type size.</summary>
+        public const string Xs = "--flare-progress-content-size-xs";
+        /// <summary>CSS custom-property name for the sm centred-content type size.</summary>
+        public const string Sm = "--flare-progress-content-size-sm";
+        /// <summary>CSS custom-property name for the md centred-content type size.</summary>
+        public const string Md = "--flare-progress-content-size-md";
+        /// <summary>CSS custom-property name for the lg centred-content type size.</summary>
+        public const string Lg = "--flare-progress-content-size-lg";
+        /// <summary>CSS custom-property name for the xl centred-content type size.</summary>
+        public const string Xl = "--flare-progress-content-size-xl";
+    }
+
+    /// <summary>CSS custom-property name for the colour of content centred on an indicator.</summary>
+    public const string ContentColor = "--flare-progress-content-color";
     /// <summary>CSS custom-property name for the linear track corner radius.</summary>
     public const string TrackRadius = "--flare-progress-track-radius";
     /// <summary>CSS custom-property name for the gap between indicator and remaining track.</summary>
