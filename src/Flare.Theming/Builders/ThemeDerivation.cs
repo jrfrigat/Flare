@@ -34,8 +34,10 @@ public static class ThemeDerivation
     /// <param name="extendedDarkOverride">Overrides the dark-mode extras; defaults to the base theme's.</param>
     /// <param name="scriptAssets">Overrides the JavaScript module assets; defaults to the base theme's.</param>
     /// <param name="styleFamilyId">Overrides the style family. Defaults to the base theme's, which is
-    /// what keeps the base theme's scoped CSS applying to the derived theme's subtree; pass the new
-    /// id only together with <paramref name="styleAssets"/> of your own.</param>
+    /// what keeps the base theme's scoped CSS applying to the derived theme's subtree. Pass the new id
+    /// only when <paramref name="styleAssets"/> replaces the base theme's stylesheets entirely; to add
+    /// rules on top of them, keep the family, list the base assets followed by your own, and scope the
+    /// new rules to this theme's id, whose class the root always carries.</param>
     public static ITheme Derive(
         this ITheme baseTheme,
         string id,

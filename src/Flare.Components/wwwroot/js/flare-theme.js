@@ -24,6 +24,12 @@ export function setThemeClasses(themeId, styleFamilyId, paletteId, dark) {
     r.classList.add('flare-theme-' + themeId, 'flare-palette-' + paletteId);
     if (styleFamilyId && styleFamilyId !== themeId) r.classList.add('flare-theme-' + styleFamilyId);
     if (dark) r.classList.add('flare-mode-dark');
+    // flare-bootstrap.js paints the saved theme before .NET starts and cannot know a family by itself.
+    // Stored as "id family" so it is only ever applied to the theme it was recorded for.
+    try {
+        if (styleFamilyId && styleFamilyId !== themeId) localStorage.setItem('flare-theme-family', themeId + ' ' + styleFamilyId);
+        else localStorage.removeItem('flare-theme-family');
+    } catch { /* storage unavailable: the first paint simply lacks the family class */ }
 }
 
 // Runtime safety net: make sure a stylesheet <link> is present (for themes/palettes registered

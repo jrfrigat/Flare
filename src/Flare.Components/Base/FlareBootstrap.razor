@@ -16,5 +16,6 @@
         ThemeService.Palettes.Select(p => p.Id),
         ThemeService.CurrentTheme.Id,
         ThemeService.CurrentPalette.Id,
-        ThemeService.Mode);
+        ThemeService.Mode,
+        ThemeService.Themes.Where(t => t.StyleFamilyId != t.Id).ToDictionary(t => t.Id, t => t.StyleFamilyId));
 }

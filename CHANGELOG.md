@@ -168,6 +168,13 @@ All notable changes to Flare are documented here. This project adheres to
   receive the arrow keys. The ring round the panel is gone; the item's own ring is unchanged, and a
   `FreeContent` panel keeps its ring.
 
+- **A saved derived theme painted its first frame unstyled.** A theme made with `Derive` is styled by
+  its base theme's stylesheets, which answer to the base theme's class, but both boot scripts put only
+  the saved theme's own class on the page, so until .NET started the page showed no theme CSS at all.
+  `flare-bootstrap.js` and the `FlareBootstrap` component now add the family class too; for a
+  hand-pasted script, `FlareBootstrap.GenerateScript` has an overload that takes the families. The
+  guide also shows how to add a stylesheet on top of a base theme without leaving its family.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

@@ -41,6 +41,10 @@
     var dark = m === 'dark' || (m === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
 
     if (t) d.classList.add('flare-theme-' + t);
+    // A theme derived from another is styled by its base theme's stylesheets, scoped to the base's
+    // class; flare-theme.js records that pair whenever it applies such a theme.
+    var fam = (s.getItem('flare-theme-family') || '').split(' ');
+    if (t && fam[0] === t && fam[1]) d.classList.add('flare-theme-' + fam[1]);
     if (p) d.classList.add('flare-palette-' + p);
     if (dark) d.classList.add('flare-mode-dark');
 
