@@ -46,6 +46,7 @@
     private IThemeService? _subscribed;
     private int _version;
     private ITheme? _loadedTheme;
+    private Palette? _loadedPalette;
 
     protected override void OnInitialized()
     {
@@ -63,21 +64,25 @@
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // A scoped theme may be one the provider never activated, so its own stylesheets and modules
-        // are not in the document yet. Both loaders are idempotent, so a scope of the active theme
-        // costs one resolved call each.
+        // A scoped theme or palette may be one the provider never activated, so its own stylesheets
+        // and modules are not in the document yet. The loaders are idempotent, so a scope of the
+        // active theme costs one resolved call each.
         var theme = _theme;
-        if (ReferenceEquals(theme, _loadedTheme)) return;
+        var palette = _palette;
+        if (ReferenceEquals(theme, _loadedTheme) && ReferenceEquals(palette, _loadedPalette)) return;
         _loadedTheme = theme;
+        _loadedPalette = palette;
         try
         {
             foreach (var href in theme.StyleAssets)
                 await ThemeJsService.EnsureStylesheetAsync(href);
+            if (palette.StyleAsset is { Length: > 0 } paletteHref)
+                await ThemeJsService.EnsureStylesheetAsync(paletteHref);
             foreach (var src in theme.ScriptAssets)
                 await ThemeJsService.EnsureModuleAsync(src);
         }
-        catch (JSDisconnectedException) { _loadedTheme = null; }
-        catch (JSException) { _loadedTheme = null; }
+        catch (JSDisconnectedException) { _loadedTheme = null; _loadedPalette = null; }
+        catch (JSException) { _loadedTheme = null; _loadedPalette = null; }
     }
 
     private void Resolve()

@@ -53,7 +53,7 @@
     /// Whether the provider writes the theme stylesheet links itself (<see cref="ThemeStylesheets.Automatic"/>,
     /// the default) or the application has put them in its own head (<see cref="ThemeStylesheets.Manual"/>),
     /// which lets a WebAssembly app fetch them before .NET starts. In both modes the provider waits for the
-    /// active theme's sheets to load and adds any that are missing.
+    /// active theme's sheets and the active palette's <c>StyleAsset</c> to load and adds any that are missing.
     /// </summary>
     [Parameter] public ThemeStylesheets Stylesheets { get; set; } = ThemeStylesheets.Automatic;
 
@@ -198,6 +198,8 @@
         {
             foreach (var href in ThemeService.CurrentTheme.StyleAssets)
                 await ThemeJsService.EnsureStylesheetAsync(href);
+            if (ThemeService.CurrentPalette.StyleAsset is { Length: > 0 } paletteHref)
+                await ThemeJsService.EnsureStylesheetAsync(paletteHref);
 
             await ThemeJsService.SetThemeClassesAsync(
                 ThemeService.CurrentTheme.Id, ThemeService.CurrentTheme.StyleFamilyId,

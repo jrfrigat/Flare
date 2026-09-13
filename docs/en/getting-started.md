@@ -115,9 +115,10 @@ and tell the provider:
 ```
 
 In manual mode the provider writes no links of its own, so no sheet is fetched and applied twice. It
-still waits for the active theme's sheets, recognises a link you wrote by its address however it is
-spelled (`_content/...`, `/_content/...`, `./_content/...`), and adds only what is missing - a theme
-the user switches to at run time, or a sheet a newer theme version lists. A link you forget costs a late
+still waits for the active theme's sheets and the active palette's `StyleAsset`, recognises a link you
+wrote by its address however it is spelled (`_content/...`, `/_content/...`, `./_content/...`), and adds
+only what is missing - a theme or palette the user switches to at run time, or a sheet a newer theme
+version lists. A link you forget costs a late
 request, not an unstyled page.
 
 An in-box theme ships all of its own CSS as one stylesheet, `_content/Flare.Theme.<Name>/css/components.css`;
