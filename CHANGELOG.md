@@ -175,6 +175,20 @@ All notable changes to Flare are documented here. This project adheres to
   hand-pasted script, `FlareBootstrap.GenerateScript` has an overload that takes the families. The
   guide also shows how to add a stylesheet on top of a base theme without leaving its family.
 
+- **Visual Studio: checkboxes, radio buttons and menu items showed no keyboard focus.** Their focus rings
+  come from Fluent 2 and name Fluent's focus-stroke colours, which the Visual Studio theme did not
+  define, so the browser dropped the ring. They now draw Fluent's two-stroke ring - black inside white in
+  light mode, the reverse in dark.
+
+- **Chart bars, gauges and pull-to-refresh never animated.** Their motion named an easing curve that no
+  theme defines, which invalidated the whole `animation` or `transition`: `FlareChart` bars appeared
+  without growing, a `FlareGauge` jumped to a new value instead of sweeping, and `FlarePullToRefresh`
+  snapped back instead of settling. They now use the theme's decelerate curve.
+
+- **`FlareQueryBuilder` connectors had no keyboard focus ring, and `FlareQueryEditor` problems were not
+  indented.** Both stylesheets named variables that do not exist. The connector now shows the theme's
+  focus ring like every other control, and the problem list has its indent.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

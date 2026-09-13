@@ -448,6 +448,11 @@ internal class VisualStudioTokens
         // VS focus ring color used by the scoped button/input CSS.
         [VisualStudioCssVars.Focus] = "rgba(0,120,212,0.45)",
 
+        // The checkbox, radio and menu focus rings inherited from Fluent 2 name these, and this map
+        // replaces Fluent's rather than extending it.
+        [FluentCssVars.FocusStrokeColor] = "#000000",
+        [FluentCssVars.FocusStrokeOuter] = "#FFFFFF",
+
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
         [VisualStudioCssVars.TabGap] = "2px",
         [VisualStudioCssVars.TabStripBg] = "var(--flare-color-surface-container)",
@@ -610,6 +615,8 @@ internal class VisualStudioTokens
         return new Dictionary<string, string>(Extended)
         {
             [VisualStudioCssVars.Focus] = "rgba(55,148,255,0.5)",
+            [FluentCssVars.FocusStrokeColor] = "#FFFFFF",
+            [FluentCssVars.FocusStrokeOuter] = "#000000",
             // VS 2026: the active document tab takes the editor surface (#1E1E1E) -- darker than the
             // strip (#2D2D30) -- so the rounded tab reads as connected to the editor below it, rather
             // than as a lighter floating pill. (Light mode already uses the white editor surface.)

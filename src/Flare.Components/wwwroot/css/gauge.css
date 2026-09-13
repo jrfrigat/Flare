@@ -129,11 +129,11 @@
 
 /* The sweep. */
 .flare-gauge--animate .flare-gauge__fill {
-  transition: stroke-dashoffset var(--flare-motion-duration-long2) var(--flare-motion-easing-emphasized-decelerate);
+  transition: stroke-dashoffset var(--flare-motion-duration-long2) var(--flare-motion-easing-decelerate);
 }
 
 .flare-gauge--animate .flare-gauge__needle-group {
-  transition: transform var(--flare-motion-duration-long2) var(--flare-motion-easing-emphasized-decelerate);
+  transition: transform var(--flare-motion-duration-long2) var(--flare-motion-easing-decelerate);
 }
 
 @media (prefers-reduced-motion: reduce) {

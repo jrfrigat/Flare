@@ -167,11 +167,6 @@
     background: var(--flare-color-surface-container-highest);
 }
 
-.flare-qb__connector:focus-visible {
-    outline: var(--flare-state-focus-ring-width) solid var(--flare-color-primary);
-    outline-offset: var(--flare-state-focus-ring-offset);
-}
-
 .flare-qb__problems {
     margin: 0;
     padding-inline-start: var(--flare-spacing-6);
@@ -192,7 +187,7 @@
 
 .flare-qe__problems {
     margin: var(--flare-spacing-8) 0 0;
-    padding-inline-start: var(--flare-spacing-20);
+    padding-inline-start: var(--flare-spacing-16);
     color: var(--flare-color-error);
     font-size: var(--flare-typescale-body-small-size);
 }

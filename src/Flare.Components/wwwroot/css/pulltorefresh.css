@@ -36,8 +36,8 @@
    drag would make the content lag the finger, which reads as lag rather than as resistance. */
 .flare-ptr:not(:active) .flare-ptr__content,
 .flare-ptr:not(:active) .flare-ptr__indicator {
-  transition: transform var(--flare-motion-duration-medium1) var(--flare-motion-easing-emphasized-decelerate),
-              height var(--flare-motion-duration-medium1) var(--flare-motion-easing-emphasized-decelerate);
+  transition: transform var(--flare-motion-duration-medium1) var(--flare-motion-easing-decelerate),
+              height var(--flare-motion-duration-medium1) var(--flare-motion-easing-decelerate);
 }
 
 @media (prefers-reduced-motion: reduce) {
