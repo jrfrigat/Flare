@@ -136,6 +136,10 @@ All notable changes to Flare are documented here. This project adheres to
   `dir="rtl"` set on the slider itself was not honoured. The slider now follows the direction it
   actually resolves to.
 
+- **`FlareDateTimePicker.OpenAsync()` and `ToggleAsync()` did not show the popup.** The picker marked
+  itself open but did not render, so the panel appeared only after something else re-rendered the
+  component; opening it with its own button was unaffected. Both calls now show the panel at once.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

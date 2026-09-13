@@ -54,6 +54,16 @@ public class FlareDateTimePickerTests : FlareTestContext
     }
 
     [Fact]
+    public async Task OpenAsyncShowsThePanel()
+    {
+        var cut = Render<FlareDateTimePicker>();
+
+        await cut.InvokeAsync(() => cut.Instance.OpenAsync());
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.DateTimePicker.Panel}"));
+    }
+
+    [Fact]
     public void RendersHelperText()
     {
         var cut = Render<FlareDateTimePicker>(p => p

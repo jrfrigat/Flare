@@ -339,6 +339,8 @@
         // top layer. The hand-rolled version that used to live here assumed 380px of panel and left the
         // popup a plain fixed box, so any ancestor with a transform dragged it off the screen.
         await Opened.InvokeAsync();
+        // Called from OpenAsync/ToggleAsync as well as the toggle's click; only the click re-renders on its own.
+        StateHasChanged();
     }
 
     private void PrevMonth() => _viewDate = _viewDate.AddMonths(-1);
