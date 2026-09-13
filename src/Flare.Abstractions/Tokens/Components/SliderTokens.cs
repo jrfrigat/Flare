@@ -112,6 +112,15 @@ public sealed record SliderTokens
     /// <summary>State-layer opacity while pressed.</summary>
     [CssVar(Slider.StatePressedOpacity)] public required string StatePressedOpacity { get; init; }
 
+    /// <summary>
+    /// Outline (shorthand) drawn round the track area while the handle has keyboard focus. <c>none</c>
+    /// for a language that shows focus with the state layer alone.
+    /// </summary>
+    [CssVar(Slider.FocusOutline)] public required string FocusOutline { get; init; }
+
+    /// <summary>Gap between the track area and the keyboard focus outline.</summary>
+    [CssVar(Slider.FocusOutlineOffset)] public required string FocusOutlineOffset { get; init; }
+
     /// <summary>Stop-indicator color on the inactive track.</summary>
     [CssVar(Slider.StopColor)] public required string StopColor { get; init; }
 

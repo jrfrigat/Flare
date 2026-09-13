@@ -509,6 +509,8 @@ public static class CssVarMap
         v[Css.Tokens.Slider.StateLayerSize] = t.Slider.StateLayerSize;
         v[Css.Tokens.Slider.StateHoverOpacity] = t.Slider.StateHoverOpacity;
         v[Css.Tokens.Slider.StatePressedOpacity] = t.Slider.StatePressedOpacity;
+        v[Css.Tokens.Slider.FocusOutline] = t.Slider.FocusOutline;
+        v[Css.Tokens.Slider.FocusOutlineOffset] = t.Slider.FocusOutlineOffset;
         v[Css.Tokens.Slider.StopColor] = t.Slider.StopColor;
         v[Css.Tokens.Slider.StopColorSelected] = t.Slider.StopColorSelected;
         v[Css.Tokens.Slider.StopSize] = t.Slider.StopSize;

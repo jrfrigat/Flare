@@ -329,6 +329,8 @@ internal class VisualStudioTokens
         StateLayerSize = "24px",
         StateHoverOpacity = "0.06",
         StatePressedOpacity = "0.08",
+        FocusOutline = "none",
+        FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-outline)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",

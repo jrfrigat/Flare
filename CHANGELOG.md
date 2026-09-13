@@ -102,6 +102,14 @@ All notable changes to Flare are documented here. This project adheres to
   Glass and Fluent 2 base files also `@import`ed component files that `StyleAssets` linked a second
   time, so those rules were loaded twice; now each arrives once.
 
+- **Breaking for custom themes: `SliderTokens` gains `FocusOutline` and `FocusOutlineOffset`.** They draw
+  a stroke round the slider while its handle has keyboard focus, for a design language whose thumb has
+  no halo; set `none` and `0px` to keep focus on the state layer alone, which is what Material 2,
+  Material 3 and Visual Studio do. Fluent 2 now follows its own spec: the slider thumb no longer grows
+  a Material-style halo on hover, press and focus, and keyboard focus is Fluent's neutral 2px stroke
+  round the control instead. Its menu items' focus ring changes the same way, from a 3px ring in the
+  secondary colour to the neutral 2px stroke - black in light mode, white in dark.
+
 ### Fixed
 
 - **A closed `FlareDrawer` could still be tabbed into.** A temporary drawer was closed only by sliding

@@ -417,9 +417,10 @@ public class FluentUI2Tokens
         ItemLabelSize = "var(--flare-typescale-body-large-size)",
         ItemLabelHeight = "var(--flare-typescale-body-large-height)",
         ItemLabelSpacing = "var(--flare-typescale-body-large-spacing)",
-        ItemFocusRingColor = "var(--flare-color-secondary)",
-        ItemFocusRingThickness = "3px",
-        ItemFocusRingOffset = "-3px",
+        // createFocusOutlineStyle: a strokeWidthThick stroke in colorStrokeFocus2, black in light and white in dark.
+        ItemFocusRingColor = "var(--flare-fluent-focus-stroke-color)",
+        ItemFocusRingThickness = "2px",
+        ItemFocusRingOffset = "-2px",
         // Fluent repaints a disabled item rather than fading it.
         ItemDisabledOpacity = "1",
     };
@@ -582,9 +583,12 @@ public class FluentUI2Tokens
         HandleFill = "var(--flare-color-surface)",   // white thumb
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-outline-variant)",
-        StateLayerSize = "28px",
-        StateHoverOpacity = "0.06",
-        StatePressedOpacity = "0.08",
+        // Fluent's thumb has no halo: it shows focus with the neutral stroke round the control instead.
+        StateLayerSize = "0px",
+        StateHoverOpacity = "0",
+        StatePressedOpacity = "0",
+        FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
+        FocusOutlineOffset = "2px",
         StopColor = "var(--flare-color-outline)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",

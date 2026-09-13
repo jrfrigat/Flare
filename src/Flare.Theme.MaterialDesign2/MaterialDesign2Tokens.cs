@@ -927,6 +927,8 @@ internal static class MaterialDesign2Tokens
         StateLayerSize = "40px",
         StateHoverOpacity = "0.08",
         StatePressedOpacity = "0.10",
+        FocusOutline = "none",
+        FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-primary)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "4px",

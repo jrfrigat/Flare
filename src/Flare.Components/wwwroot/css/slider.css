@@ -244,6 +244,14 @@
                 box-shadow var(--flare-motion-duration-short2);
 }
 
+/* Keyboard focus as a stroke round the control, for a language whose thumb carries no halo. Keyed to the
+   input's :focus-visible, so a pointer drag does not draw it. */
+.flare-slider__track-wrap:has(.flare-slider__input:focus-visible) {
+    outline: var(--flare-slider-focus-outline);
+    outline-offset: var(--flare-slider-focus-outline-offset);
+    border-radius: var(--flare-shape-small);
+}
+
 /* State layer (hover/focus) - translucent halo around the handle */
 .flare-slider__input:hover::-webkit-slider-thumb,
 .flare-slider__input:focus-visible::-webkit-slider-thumb {
