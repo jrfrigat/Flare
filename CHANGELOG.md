@@ -109,6 +109,12 @@ All notable changes to Flare are documented here. This project adheres to
   at all. They take the theme's selected colours again, or the `Color` set on the button; the
   per-size text padding added in 0.36.0 is unchanged.
 
+- **A linear progress indicator with content drew its moving bar outside the track.** Since 0.36.0
+  giving `FlareProgressLinear` a `ChildContent` switched the track's clipping off entirely, so the
+  indeterminate and `Query` bars, which travel past both ends, painted over neighbouring content and
+  could widen the page's scroll area. The track now clips along its length and lets only the content
+  overflow above and below it.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

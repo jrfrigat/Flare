@@ -232,9 +232,14 @@
   line-height: 1;
 }
 
-/* A linear track clips to its own rounded ends, which would cut a label off at 4dp. The clip is
-   lifted only when there is content to show, so every indicator without it renders as before. */
-.flare-progress--with-content { overflow: visible; }
+/* A linear track clips to its own rounded ends, which would cut a label off at 4dp. With content the
+   clip is lifted in the block axis only: the indeterminate and query bars travel past both inline
+   ends and must stay hidden there. `clip` rather than `hidden`, because `hidden` on one axis turns
+   `visible` on the other into `auto`. */
+.flare-progress--with-content {
+  overflow-x: clip;
+  overflow-y: visible;
+}
 
 /* The circular root is an inline-flex box sized by the ring; the overlay needs it as a positioning
    context. The linear root already has one. */
