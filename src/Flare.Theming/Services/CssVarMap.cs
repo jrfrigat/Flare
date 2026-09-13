@@ -1132,6 +1132,14 @@ public static class CssVarMap
 
         #region TIMEPICKER
         v[Css.Tokens.TimePickerField.ColumnsSepSize] = t.TimePicker.ColumnsSepSize;
+        v[Css.Tokens.TimePickerField.DialCenterSize] = t.TimePicker.DialCenterSize;
+        v[Css.Tokens.TimePickerField.DialHandleSize] = t.TimePicker.DialHandleSize;
+        v[Css.Tokens.TimePickerField.DialSize] = t.TimePicker.DialSize;
+        v[Css.Tokens.TimePickerField.DialTrackWidth] = t.TimePicker.DialTrackWidth;
+        v[Css.Tokens.TimePickerField.PeriodHeight] = t.TimePicker.PeriodHeight;
+        v[Css.Tokens.TimePickerField.PeriodWidth] = t.TimePicker.PeriodWidth;
+        v[Css.Tokens.TimePickerField.TimeFieldHeight] = t.TimePicker.TimeFieldHeight;
+        v[Css.Tokens.TimePickerField.TimeFieldWidth] = t.TimePicker.TimeFieldWidth;
         v[Css.Tokens.TimePickerField.DisplaySize] = t.TimePicker.DisplaySize;
         v[Css.Tokens.TimePickerField.HeadlineTracking] = t.TimePicker.HeadlineTracking;
         v[Css.Tokens.TimePickerField.PanelRadius] = t.TimePicker.PanelRadius;

@@ -1317,10 +1317,18 @@ public class MaterialDesign3Tokens
     internal static readonly TimePickerTokens TimePicker = new()
     {
         ColumnsSepSize = "1.5rem",
-        DisplaySize = "2.75rem",
+        DialCenterSize = "0.5rem",
+        DialHandleSize = "3rem",
+        DialSize = "16rem",
+        DialTrackWidth = "0.125rem",
+        PeriodHeight = "5rem",
+        PeriodWidth = "3.25rem",
+        TimeFieldHeight = "5rem",
+        TimeFieldWidth = "6rem",
+        DisplaySize = "3.5625rem",
         HeadlineTracking = "0.05em",
         PanelRadius = "var(--flare-shape-extra-large)",
-        TimeSepSize = "2.5rem",
+        TimeSepSize = "3.5625rem",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----

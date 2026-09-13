@@ -1288,6 +1288,14 @@ internal static class MaterialDesign2Tokens
     internal static readonly TimePickerTokens TimePicker = new()
     {
         ColumnsSepSize = "1.5rem",
+        DialCenterSize = "0.5rem",
+        DialHandleSize = "2.25rem",
+        DialSize = "16rem",
+        DialTrackWidth = "0.125rem",
+        PeriodHeight = "auto",
+        PeriodWidth = "auto",
+        TimeFieldHeight = "auto",
+        TimeFieldWidth = "5rem",
         DisplaySize = "2.75rem",
         HeadlineTracking = "0.05em",
         PanelRadius = "var(--flare-shape-extra-large)",

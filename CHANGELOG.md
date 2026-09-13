@@ -3,6 +3,21 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.37.0] - Unreleased
+
+### Changed
+
+- **Breaking for custom themes: `TimePickerTokens` gains eight `required` properties** - `DialSize`,
+  `DialCenterSize`, `DialTrackWidth`, `DialHandleSize`, `TimeFieldWidth`, `TimeFieldHeight`,
+  `PeriodWidth` and `PeriodHeight`. The clock dial was drawn at a fixed 256px with its centre written
+  into the pointer maths, so no theme could size it, and it stayed the same size when the user
+  enlarged text while the numbers on it grew. A press is now resolved against the dial as rendered,
+  so any length works. Material 3 - and Aero and Liquid Glass, which follow it - now matches its
+  time-picker spec: the selected number sits in a 48dp handle instead of 36px, the hour and minute
+  fields are 96 by 80dp with 57pt digits instead of 80 by 52 with 44px, and the AM/PM selector is 52
+  by 80dp. The dropdown variant's header digits use the same size. Material 2 and Fluent keep their
+  previous geometry.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added
