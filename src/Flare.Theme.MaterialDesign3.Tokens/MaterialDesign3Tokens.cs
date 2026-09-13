@@ -552,7 +552,7 @@ public class MaterialDesign3Tokens
         PanelBg = "var(--flare-color-surface-container)",
         ItemPaddingInline = "1rem",
         ItemGap = "0.75rem",
-        ItemIconSize = "1.25rem",
+        ItemIconSize = "1.5rem", // md.comp.menu.list-item.*-icon.size 24dp
         ItemFocusRingColor = "var(--flare-color-secondary)",
         ItemFocusRingThickness = "3px",
         ItemFocusRingOffset = "-3px",
@@ -808,6 +808,9 @@ public class MaterialDesign3Tokens
         ActiveIndicator = "var(--flare-color-secondary-container)",
         ActiveLeftBar = "none",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // md.comp.navigation-drawer: 24dp icon in a 56dp active indicator.
+        IconSize = "1.5rem",
+        ItemHeight = "3.5rem",
     };
 
     internal static readonly BottomNavTokens BottomNav = new()

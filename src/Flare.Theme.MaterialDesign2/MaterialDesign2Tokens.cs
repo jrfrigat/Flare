@@ -773,6 +773,9 @@ internal static class MaterialDesign2Tokens
         ActiveIndicator = "var(--flare-color-secondary-container)",
         ActiveLeftBar = "none",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // Material 2 icons are 24dp; the drawer spec gives no row height, so the existing 40dp row stays.
+        IconSize = "1.5rem",
+        ItemHeight = "2.5rem",
     };
 
     internal static readonly BottomNavTokens BottomNav = new()

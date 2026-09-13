@@ -26,6 +26,18 @@ All notable changes to Flare are documented here. This project adheres to
   table - 22, 22, 26, 38 and 50dp - instead of borrowing the button's icon size (20, 20, 24, 32 and
   40px). The split-button sizes demo now shows all five sizes.
 
+- **Breaking for custom themes: `NavTokens` gains `IconSize` and `ItemHeight`.** A nav link and a nav
+  group header set their icon size on a wrapper, which sizes nothing, so the glyph took whatever the
+  caller passed or the icon component's own default, and the row was as tall as its padding made it.
+  Both now come from the theme and reach an icon placed in `IconContent` without a `Size`. Material 3
+  - with Aero and Liquid Glass - draws navigation rows 56dp tall with 24dp icons, as its drawer spec
+  does (they were 40px); Fluent and Visual Studio keep 40px rows with 20px icons; Material 2 uses its
+  24dp icons. In a rail the icon uses the same size instead of a separate fixed one.
+
+- **Menu icons follow the right Material generation.** Baseline Material 3 menu icons are 24dp and
+  Expressive ones 20dp; both themes drew 20px. A submenu's chevron now takes the menu item icon size
+  instead of a fixed 18px, so it matches the icons beside it in every theme.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

@@ -80,6 +80,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // read as two cards. Baseline M3 is one classic 4dp panel with square items.
         Menu = MaterialDesign3Tokens.Design.Menu with
         {
+            ItemIconSize = "1.25rem", // md.comp.menus.menu-item.*-icon.size 20dp
             PanelRadius = "var(--flare-shape-large)",         // 16dp
             ItemGapBetween = "0.125rem",                      // 2dp
             ItemRadius = "var(--flare-shape-extra-small)",    // 4dp  md.comp.menus.menu-item.shape

@@ -807,6 +807,9 @@ public class FluentUI2Tokens
         ActiveIndicator = "none",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
+        // NavItem: 20px icon, 10px block padding around a 20px line.
+        IconSize = "1.25rem",
+        ItemHeight = "2.5rem",
     };
 
     // Switch - Fluent's compact track + thin focus offset map to the typed record; the rest of the

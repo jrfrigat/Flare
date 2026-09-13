@@ -934,6 +934,8 @@ public static class CssVarMap
         v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
         v[Css.Tokens.NavField.LinkDisabledOpacity] = t.Nav.LinkDisabledOpacity;
+        v[Css.Tokens.NavField.IconSize] = t.Nav.IconSize;
+        v[Css.Tokens.NavField.ItemHeight] = t.Nav.ItemHeight;
         #endregion
 
         #region BOTTOM NAV

@@ -433,6 +433,8 @@ internal class VisualStudioTokens
         ActiveIndicator = "none",
         ActiveLeftBar = "2px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
+        IconSize = "1.25rem",
+        ItemHeight = "2.5rem",
     };
 
     /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS).</summary>

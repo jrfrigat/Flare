@@ -31,4 +31,10 @@ public sealed record NavTokens
     /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
     /// colour has no value meaning "leave this as painted".</summary>
     [CssVar(NavField.LinkDisabledOpacity)] public required string LinkDisabledOpacity { get; init; }
+
+    /// <summary>Size of the leading icon on a nav link and a nav group header, in the menu and in the rail.</summary>
+    [CssVar(NavField.IconSize)] public required string IconSize { get; init; }
+
+    /// <summary>Minimum height of a nav link and a nav group header; a longer label still grows the row.</summary>
+    [CssVar(NavField.ItemHeight)] public required string ItemHeight { get; init; }
 }

@@ -89,7 +89,7 @@
    (menu.css imports before icon.css, so equal specificity would otherwise lose). */
 .flare-icon.flare-submenu__icon {
     margin-left: auto;
-    font-size: 1.125rem;
+    font-size: var(--flare-menu-item-icon-size);
     color: var(--flare-color-on-surface-variant);
     transition: transform var(--flare-motion-duration-short2);
 }
