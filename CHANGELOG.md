@@ -15,8 +15,8 @@ All notable changes to Flare are documented here. This project adheres to
   nothing is applied twice. It still waits for the active theme's and palette's sheets and adds any
   that are missing, such as a theme or a palette with its own `StyleAsset` the user switches to.
   Measured on the gallery: the theme CSS moved from after the .NET runtime into the first wave, and
-  the page's stylesheet requests fell from 78 to 19, because only the linked theme is fetched up front. A link already on the page is now matched by
-  its resolved address, so `/_content/...` and `_content/...` count as the same sheet. See
+  only the linked theme is fetched up front rather than every registered one. A link already on the
+  page is now matched by its resolved address, so `/_content/...` and `_content/...` count as the same sheet. See
   [Getting started](docs/en/getting-started.md).
 
 ### Changed
