@@ -286,13 +286,14 @@ or generate a whole palette from one brand color - no need to fill 45 roles by h
 
 ```csharp
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 // Override only what you need from the reference scheme:
 var ocean = new Palette
 {
     Id = "ocean", Name = "Ocean", Source = "Custom",
-    Light = Md3.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
-    Dark  = Md3.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
+    Light = MaterialDesign3Tokens.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
+    Dark  = MaterialDesign3Tokens.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
 };
 
 // ...or derive a full light+dark palette from a brand color:
@@ -327,9 +328,9 @@ See [Theme creation -> Dynamic Color](docs/en/theme-creation-guide.md#dynamic-co
 Override **any** design token via the public reference records:
 
 ```csharp
-var design = Md3.DesignReference with
+var design = MaterialDesign3Tokens.Design with
 {
-    Shape = Md3.DesignReference.Shape with { Medium = "10px" },
+    Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "10px" },
 };
 ```
 

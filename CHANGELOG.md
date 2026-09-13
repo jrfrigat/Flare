@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.36.0] - Unreleased
+## [0.36.0] - 2026-09-13
 
 ### Added
 
@@ -19,6 +19,10 @@ All notable changes to Flare are documented here. This project adheres to
   `aria-valuetext` when the content says something the value does not.
 
 ### Changed
+
+- **Breaking for custom themes: `ProgressTokens` has six new `required` properties** -
+  `ContentColor` and `ContentSizeXs..Xl`, the colour and per-size type of the content an indicator
+  now centres on itself (see Added). A theme outside this repository must state all six.
 
 - **Breaking for custom themes: `FabTokens` gains `IconSizeSm` / `IconSizeMd` / `IconSizeLg` and
   `TabsTokens` gains `IconSize`.** Neither component ever set an icon size, so the glyph fell back to
@@ -71,7 +75,8 @@ All notable changes to Flare are documented here. This project adheres to
   becomes `FluentUI2Tokens.LightColors`, and so on. `Aero`, `LiquidGlass` and `VisualStudio` keep
   theirs: those wrap internal types and are the only public way in.
 
-- **The Material 3 reference package now holds baseline Material 3, not Expressive.** It is what
+- **Breaking for custom themes derived from `MaterialDesign3Tokens`: the reference package now holds
+  baseline Material 3, not Expressive.** It is what
   every Material 3 theme derives from, and it carried Expressive's opinions: buttons whose label
   ramps to title-medium / headline-small / headline-large with the container, and the Expressive
   "island" menu - a 16dp panel with rounded items and each group its own elevated surface. Baseline
