@@ -103,6 +103,12 @@ All notable changes to Flare are documented here. This project adheres to
   it will find it unfocusable now - open the drawer first. `Permanent`, `Mini` and `Persistent` are
   unchanged.
 
+- **A selected text button looked exactly like an unselected one.** Since 0.36.0
+  `FlareButton Selected="true"` and `FlareToggleButton` with `Variant="ButtonVariant.Text"` kept the
+  transparent background and primary label of the unselected state, so a text toggle showed no state
+  at all. They take the theme's selected colours again, or the `Color` set on the button; the
+  per-size text padding added in 0.36.0 is unchanged.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

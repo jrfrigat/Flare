@@ -138,13 +138,17 @@
     border-color: var(--fc-main, var(--flare-color-outline-variant));
 }
 
+.flare-btn--text {
+    background-color: transparent;
+    color: var(--fc-main, var(--flare-color-primary));
+}
+
 /* Two class names, not one, so the variant outranks the size class below: both write the same local
    property at equal specificity otherwise, and the size - which every button carries - would win by
    coming later in the file. The size rule picks which rung of the text ladder is in scope; this
-   swaps the whole ladder in. */
+   swaps the whole ladder in. Only the padding is raised: the paint above stays at one class so
+   .flare-btn--selected still repaints a selected text button. */
 .flare-btn.flare-btn--text {
-    background-color: transparent;
-    color: var(--fc-main, var(--flare-color-primary));
     --_flare-btn-padding-inline: var(--_flare-btn-text-padding-inline);
 }
 
