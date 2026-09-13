@@ -138,7 +138,7 @@ var isDark = ThemeService.IsDark;
 ```razor
 @* Семантическая роль -> общий кэшируемый класс темы (учитывает тему, доступность) *@
 <FlareButton Color="FlareColor.Primary">Primary</FlareButton>
-<FlareProgress Color="FlareColor.Success" Value="70" />
+<FlareProgressLinear Color="FlareColor.Success" Value="70" />
 
 @* Произвольный цвет -> инлайн CSS-токены (с санитизацией) *@
 <FlareSlider Color="FlareColor.Custom("#E91E63")" @bind-Value="_v" />
