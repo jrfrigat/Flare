@@ -636,6 +636,7 @@ public static class CssVarMap
         v[Css.Tokens.ListField.ItemSelectedBg] = t.List.ItemSelectedBg;
         v[Css.Tokens.ListField.ItemSelectedColor] = t.List.ItemSelectedColor;
         v[Css.Tokens.ListField.ItemDisabledOpacity] = t.List.ItemDisabledOpacity;
+        v[Css.Tokens.ListField.ItemIconSize] = t.List.ItemIconSize;
 
         v[Css.Tokens.AccordionField.Border] = t.Accordion.Border;
         v[Css.Tokens.AccordionField.Radius] = t.Accordion.Radius;
@@ -954,6 +955,8 @@ public static class CssVarMap
         v[Css.Tokens.BottomNavField.IndicatorSize] = t.BottomNav.IndicatorSize;
         v[Css.Tokens.BottomNavField.ItemDisabledOpacity] = t.BottomNav.ItemDisabledOpacity;
         v[Css.Tokens.BottomNavField.ZIndex] = t.BottomNav.ZIndex;
+        v[Css.Tokens.BottomNavField.IndicatorWidth] = t.BottomNav.IndicatorWidth;
+        v[Css.Tokens.BottomNavField.ItemGap] = t.BottomNav.ItemGap;
         #endregion
 
         #region SWITCH

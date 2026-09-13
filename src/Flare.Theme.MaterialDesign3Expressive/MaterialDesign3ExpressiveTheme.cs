@@ -151,6 +151,13 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             CaretSizeLg = "2.375rem",  // 38dp
             CaretSizeXl = "3.125rem",  // 50dp
         },
+        // Expressive's flexible navigation bar (md.comp.nav-bar) is shorter than the baseline one and its
+        // vertical item's indicator narrower: 64dp and 56dp against 80dp and 64dp.
+        BottomNav = MaterialDesign3Tokens.Design.BottomNav with
+        {
+            BarHeight = "4rem",        // 64dp
+            IndicatorWidth = "3.5rem", // 56dp
+        },
         Progress = MaterialDesign3Tokens.Design.Progress with
         {
             LinearIndeterminateDuration = "1750ms",

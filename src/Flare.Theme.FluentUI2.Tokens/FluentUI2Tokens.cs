@@ -343,6 +343,7 @@ public class FluentUI2Tokens
         ItemSelectedBg = "var(--flare-color-secondary-container)",
         ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "1",
+        ItemIconSize = "1.25rem", // Fluent's regular icon size; the List spec names none
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
@@ -1107,6 +1108,8 @@ public class FluentUI2Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        IndicatorWidth = "0",
+        ItemGap = "var(--flare-spacing-1)",
         ItemDisabledOpacity = "1",
         ZIndex = "1100",
     };

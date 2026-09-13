@@ -38,6 +38,14 @@ All notable changes to Flare are documented here. This project adheres to
   Expressive ones 20dp; both themes drew 20px. A submenu's chevron now takes the menu item icon size
   instead of a fixed 18px, so it matches the icons beside it in every theme.
 
+- **Breaking for custom themes: `ListTokens` gains `ItemIconSize`, and `BottomNavTokens` gains
+  `IndicatorWidth` and `ItemGap`.** An icon in a list item's leading or trailing slot fell back to the
+  icon component's 22px default; it now takes the theme's size - 24dp in Material 3 and Material 2,
+  20px in Fluent. An avatar or image there keeps its own size. The bottom navigation bar's active
+  pill was as wide as its padding made it, 48px, and sat 2px above its label; Material 3 now draws the
+  64 by 32dp pill 4dp above the label, and Material 3 Expressive its shorter 64dp bar with a 56dp
+  pill. Fluent and Material 2 keep their previous bar.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

@@ -438,6 +438,7 @@ internal static class MaterialDesign2Tokens
         ItemSelectedBg = "var(--flare-color-secondary-container)",
         ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        ItemIconSize = "1.5rem", // graphic-size 24px
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
@@ -793,6 +794,8 @@ internal static class MaterialDesign2Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        IndicatorWidth = "0",
+        ItemGap = "var(--flare-spacing-1)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ZIndex = "1100",
     };

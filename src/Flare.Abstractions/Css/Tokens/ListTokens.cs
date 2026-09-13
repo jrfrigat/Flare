@@ -43,4 +43,6 @@ public static class ListField
     public const string ItemSelectedColor = "--flare-list-item-selected-color";
     /// <summary>CSS custom-property name for the disabled item opacity token.</summary>
     public const string ItemDisabledOpacity = "--flare-list-item-disabled-opacity";
+    /// <summary>CSS custom-property name for the leading and trailing icon size token.</summary>
+    public const string ItemIconSize = "--flare-list-item-icon-size";
 }

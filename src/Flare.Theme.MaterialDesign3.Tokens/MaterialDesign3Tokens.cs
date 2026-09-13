@@ -472,6 +472,7 @@ public class MaterialDesign3Tokens
         ItemSelectedBg = "var(--flare-color-secondary-container)",
         ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        ItemIconSize = "1.5rem", // md.comp.list.list-item.leading-icon.size / trailing-icon.size 24dp
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
@@ -828,6 +829,8 @@ public class MaterialDesign3Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        IndicatorWidth = "4rem",           // md.comp.navigation-bar.active-indicator.width 64dp
+        ItemGap = "var(--flare-spacing-2)", // icon-label space 4dp
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ZIndex = "1100",
     };

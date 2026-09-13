@@ -35,6 +35,7 @@
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    --_flare-icon-size: var(--flare-list-item-icon-size);
 }
 
 .flare-list-item__content {
@@ -53,6 +54,7 @@
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    --_flare-icon-size: var(--flare-list-item-icon-size);
     color: var(--flare-list-item-trailing-color);
 }
 
