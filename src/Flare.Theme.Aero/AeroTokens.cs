@@ -131,7 +131,12 @@ internal class AeroTokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        TextPaddingInline = "0.75rem",
+        // Tighter than the contained ladder at every size - the text button has no glass to balance.
+        TextPaddingInlineXs = "0.375rem",
+        TextPaddingInlineSm = "0.5rem",
+        TextPaddingInlineMd = "0.75rem",
+        TextPaddingInlineLg = "1rem",
+        TextPaddingInlineXl = "1.25rem",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",
@@ -260,7 +265,7 @@ internal class AeroTokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
-    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)" };
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
     internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs;
 
     internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
@@ -315,6 +320,14 @@ internal class AeroTokens
     // Progress - thin classic bar; flat (no MD3 Expressive wavy/round-cap indicator).
     internal static readonly ProgressTokens Progress = MaterialDesign3Tokens.Design.Progress with
     {
+        // Centred content: the ramp follows the indicator sizes, so a label dropped into the
+        // smallest ring still fits it.
+        ContentColor = "var(--flare-color-on-surface)",
+        ContentSizeXs = "0.5rem",
+        ContentSizeSm = "0.625rem",
+        ContentSizeMd = "0.75rem",
+        ContentSizeLg = "1rem",
+        ContentSizeXl = "1.25rem",
         TrackRadius = "var(--flare-shape-extra-small)",
         // Aero's glossy capsule bar is chunky by design, so the whole ramp sits above MD3's.
         // Md is the thickness Aero has always drawn.

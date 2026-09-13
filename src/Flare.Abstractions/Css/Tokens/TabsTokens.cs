@@ -51,4 +51,6 @@ public static class Tabs
     public const string TabMinWidth = "--flare-tabs-tab-min-width";
     /// <summary>CSS custom-property name for the tab inline padding token.</summary>
     public const string TabPaddingInline = "--flare-tabs-tab-padding-inline";
+    /// <summary>CSS custom-property name for the glyph size of a tab's leading icon.</summary>
+    public const string IconSize = "--flare-tabs-icon-size";
 }

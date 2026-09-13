@@ -1,7 +1,7 @@
 @inject ISnackbarService Snackbar
 
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Start">
-    <FlarePopover @bind-Open="_popInfo" Placement="PopoverPlacement.BottomStart">
+    <FlarePopover @bind-Open="_popInfo" Placement="Placement.BottomStart">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _popInfo = !_popInfo)">User info ▾</FlareButton>
         </AnchorContent>
@@ -20,7 +20,7 @@
         </ChildContent>
     </FlarePopover>
 
-    <FlarePopover @bind-Open="_popHelp" Placement="PopoverPlacement.RightStart" Arrow="true">
+    <FlarePopover @bind-Open="_popHelp" Placement="Placement.RightStart" Arrow="true">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _popHelp = !_popHelp)">
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.Help" /> Help
@@ -36,7 +36,7 @@
         </ChildContent>
     </FlarePopover>
 
-    <FlarePopover @bind-Open="_popConfirm" Placement="PopoverPlacement.TopStart">
+    <FlarePopover @bind-Open="_popConfirm" Placement="Placement.TopStart">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _popConfirm = !_popConfirm)">Delete item</FlareButton>
         </AnchorContent>

@@ -22,14 +22,17 @@
     transition:
         background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
         border-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    /* The library-wide icon property, pointed at this component's own ramp. Without it the glyph fell
+       back to the icon component's default and drew larger than the chip's spec size. */
+    --_flare-icon-size: var(--flare-chip-icon-size-md);
 }
 
 .flare-chip__avatar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--flare-chip-avatar-size-md);
+    height: var(--flare-chip-avatar-size-md);
     margin-left: -0.5rem;
     border-radius: var(--flare-shape-full);
     overflow: hidden;
@@ -39,6 +42,15 @@
 
 /* Assist/suggestion leading icon uses the primary color; selected chips
    inherit the chip's foreground so the icon matches the filled state. */
+.flare-chip__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--_flare-icon-size);
+    height: var(--_flare-icon-size);
+    font-size: var(--_flare-icon-size);
+}
 .flare-chip__icon--leading { color: var(--flare-color-primary); }
 .flare-chip--selected .flare-chip__icon--leading { color: inherit; }
 
@@ -63,14 +75,14 @@
     border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-color-outline));
 }
 
-.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-spacing-4); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); }
-.flare-chip--xs .flare-chip__avatar { width: 1rem; height: 1rem; }
-.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-spacing-5); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); }
-.flare-chip--sm .flare-chip__avatar { width: 1.125rem; height: 1.125rem; }
-.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-spacing-10); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5); }
-.flare-chip--lg .flare-chip__avatar { width: 1.875rem; height: 1.875rem; }
-.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-spacing-12); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); }
-.flare-chip--xl .flare-chip__avatar { width: 2.25rem; height: 2.25rem; }
+.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-spacing-4); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); --_flare-icon-size: var(--flare-chip-icon-size-xs); }
+.flare-chip--xs .flare-chip__avatar { width: var(--flare-chip-avatar-size-xs); height: var(--flare-chip-avatar-size-xs); }
+.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-spacing-5); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); --_flare-icon-size: var(--flare-chip-icon-size-sm); }
+.flare-chip--sm .flare-chip__avatar { width: var(--flare-chip-avatar-size-sm); height: var(--flare-chip-avatar-size-sm); }
+.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-spacing-10); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5); --_flare-icon-size: var(--flare-chip-icon-size-lg); }
+.flare-chip--lg .flare-chip__avatar { width: var(--flare-chip-avatar-size-lg); height: var(--flare-chip-avatar-size-lg); }
+.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-spacing-12); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); --_flare-icon-size: var(--flare-chip-icon-size-xl); }
+.flare-chip--xl .flare-chip__avatar { width: var(--flare-chip-avatar-size-xl); height: var(--flare-chip-avatar-size-xl); }
 
 /* Hover/focus/pressed state layer comes from the shared flare-state-layer-hover/-focus/-pressed
    utilities (state-layer.css), added on the chip root; the chip keeps position:relative +
@@ -97,7 +109,7 @@
     border-radius: 50%;
     color: currentColor;
     opacity: 0.7;
-    font-size: 0.9em;
+    font-size: var(--_flare-icon-size);
     line-height: 1;
     transition: opacity var(--flare-motion-duration-short1), background var(--flare-motion-duration-short1);
 }

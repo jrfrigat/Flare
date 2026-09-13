@@ -26,6 +26,19 @@ public sealed record ProgressTokens
     /// <summary>Height of the linear track/indicator at the xl size.</summary>
     [CssVar(ProgressField.LinearHeight.Xl)] public required string LinearHeightXl { get; init; }
 
+    /// <summary>Colour of content the indicator centres on itself.</summary>
+    [CssVar(ProgressField.ContentColor)] public required string ContentColor { get; init; }
+    /// <summary>Type size of centred content at the xs size.</summary>
+    [CssVar(ProgressField.ContentSize.Xs)] public required string ContentSizeXs { get; init; }
+    /// <summary>Type size of centred content at the sm size.</summary>
+    [CssVar(ProgressField.ContentSize.Sm)] public required string ContentSizeSm { get; init; }
+    /// <summary>Type size of centred content at the md size.</summary>
+    [CssVar(ProgressField.ContentSize.Md)] public required string ContentSizeMd { get; init; }
+    /// <summary>Type size of centred content at the lg size.</summary>
+    [CssVar(ProgressField.ContentSize.Lg)] public required string ContentSizeLg { get; init; }
+    /// <summary>Type size of centred content at the xl size.</summary>
+    [CssVar(ProgressField.ContentSize.Xl)] public required string ContentSizeXl { get; init; }
+
     /// <summary>Corner radius of the linear track. One value serves every size: a theme that wants a pill
     /// references a shape token that resolves against the height, rather than a per-size literal.</summary>
     [CssVar(ProgressField.TrackRadius)] public required string TrackRadius { get; init; }

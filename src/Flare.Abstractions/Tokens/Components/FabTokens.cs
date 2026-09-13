@@ -37,4 +37,11 @@ public sealed record FabTokens
     // --- 5. Anchor offset from the screen edge ---
     /// <summary>Distance an anchored FAB sits from the screen edge.</summary>
     [CssVar(Fab.AnchorOffset)] public required string AnchorOffset { get; init; }
+
+    /// <summary>Glyph size of the icon on a small FAB.</summary>
+    [CssVar(Fab.IconSize.Sm)] public required string IconSizeSm { get; init; }
+    /// <summary>Glyph size of the icon on a baseline FAB.</summary>
+    [CssVar(Fab.IconSize.Md)] public required string IconSizeMd { get; init; }
+    /// <summary>Glyph size of the icon on a large FAB.</summary>
+    [CssVar(Fab.IconSize.Lg)] public required string IconSizeLg { get; init; }
 }

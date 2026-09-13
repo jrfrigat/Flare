@@ -6609,6 +6609,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Content on the indicator.
+        /// </summary>
+        public static string Progress_Content {
+            get {
+                return ResourceManager.GetString("Progress_Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ChildContent is centred on the ring or the bar..
+        /// </summary>
+        public static string Progress_ContentDesc {
+            get {
+                return ResourceManager.GetString("Progress_ContentDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Circular.
         /// </summary>
         public static string Progress_Circular {
@@ -11031,5 +11049,68 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized narrow wave label.</summary>
         public static string Progress_NarrowWave => ResourceManager.GetString("Progress_NarrowWave", resourceCulture);
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Alignment.
+        /// </summary>
+        public static string FabMenu_AlignTitle {
+            get {
+                return ResourceManager.GetString("FabMenu_AlignTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Placement takes a side and how the actio....
+        /// </summary>
+        public static string FabMenu_AlignDesc {
+            get {
+                return ResourceManager.GetString("FabMenu_AlignDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Start.
+        /// </summary>
+        public static string FabMenu_AlignStart {
+            get {
+                return ResourceManager.GetString("FabMenu_AlignStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Center.
+        /// </summary>
+        public static string FabMenu_AlignCenter {
+            get {
+                return ResourceManager.GetString("FabMenu_AlignCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на End.
+        /// </summary>
+        public static string FabMenu_AlignEnd {
+            get {
+                return ResourceManager.GetString("FabMenu_AlignEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit.
+        /// </summary>
+        public static string FabMenu_ActionEdit {
+            get {
+                return ResourceManager.GetString("FabMenu_ActionEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Share.
+        /// </summary>
+        public static string FabMenu_ActionShare {
+            get {
+                return ResourceManager.GetString("FabMenu_ActionShare", resourceCulture);
+            }
+        }
+        
     }
 }

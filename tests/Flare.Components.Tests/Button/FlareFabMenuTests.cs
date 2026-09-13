@@ -10,7 +10,7 @@ public class FlareFabMenuTests : FlareTestContext
             .Add(x => x.AriaLabel, "Actions")
             .Add(x => x.Position, FabPosition.Static)
             .AddChildContent<FlareFloatingActionMenu>(menu => menu
-                .Add(m => m.Direction, FabMenuDirection.Up)
+                .Add(m => m.Placement, Placement.Top)
                 .AddChildContent<FlareFloatingActionMenuItem>(item => item
                     .Add(i => i.Icon, FlareIcons.Edit)
                     .Add(i => i.Label, "Edit"))));
@@ -82,6 +82,33 @@ public class FlareFabMenuTests : FlareTestContext
 
         trigger.Click();
         Assert.Equal("true", cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").GetAttribute("aria-expanded"));
+    }
+
+    // Each Placement is a side and an alignment. A bare side centres, which is the side class's own
+    // layout, so it must carry NO alignment class - a stray one would pull a centred list to an edge.
+    [Theory]
+    [InlineData(Placement.Top,         Css.Classes.FabMenu.Up,    null)]
+    [InlineData(Placement.TopStart,    Css.Classes.FabMenu.Up,    Css.Classes.FabMenu.AlignStart)]
+    [InlineData(Placement.TopEnd,      Css.Classes.FabMenu.Up,    Css.Classes.FabMenu.AlignEnd)]
+    [InlineData(Placement.Bottom,      Css.Classes.FabMenu.Down,  null)]
+    [InlineData(Placement.BottomStart, Css.Classes.FabMenu.Down,  Css.Classes.FabMenu.AlignStart)]
+    [InlineData(Placement.BottomEnd,   Css.Classes.FabMenu.Down,  Css.Classes.FabMenu.AlignEnd)]
+    [InlineData(Placement.Left,        Css.Classes.FabMenu.Left,  null)]
+    [InlineData(Placement.LeftStart,   Css.Classes.FabMenu.Left,  Css.Classes.FabMenu.AlignStart)]
+    [InlineData(Placement.LeftEnd,     Css.Classes.FabMenu.Left,  Css.Classes.FabMenu.AlignEnd)]
+    [InlineData(Placement.Right,       Css.Classes.FabMenu.Right, null)]
+    [InlineData(Placement.RightStart,  Css.Classes.FabMenu.Right, Css.Classes.FabMenu.AlignStart)]
+    [InlineData(Placement.RightEnd,    Css.Classes.FabMenu.Right, Css.Classes.FabMenu.AlignEnd)]
+    public void Placement_MapsToOneSideAndAtMostOneAlignment(Placement placement, string side, string? align)
+    {
+        var cut = Render<FlareFloatingActionMenu>(p => p.Add(m => m.Placement, placement));
+        var classes = cut.Find($".{Css.Classes.FabMenu.List}").ClassList;
+
+        string[] sides = [Css.Classes.FabMenu.Up, Css.Classes.FabMenu.Down, Css.Classes.FabMenu.Left, Css.Classes.FabMenu.Right];
+        Assert.Equal([side], sides.Where(classes.Contains));
+
+        string[] aligns = [Css.Classes.FabMenu.AlignStart, Css.Classes.FabMenu.AlignEnd];
+        Assert.Equal(align is null ? [] : [align], aligns.Where(classes.Contains));
     }
 }
 

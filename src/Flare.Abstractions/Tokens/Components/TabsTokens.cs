@@ -77,4 +77,8 @@ public sealed record TabsTokens
 
     /// <summary>Padding either side of a tab's content.</summary>
     [CssVar(Tabs.TabPaddingInline)] public required string TabPaddingInline { get; init; }
+
+    /// <summary>Glyph size of a tab's leading icon. The icon is the caller's own fragment, so the size
+    /// reaches it through the shared icon property rather than a class on the icon.</summary>
+    [CssVar(Tabs.IconSize)] public required string IconSize { get; init; }
 }

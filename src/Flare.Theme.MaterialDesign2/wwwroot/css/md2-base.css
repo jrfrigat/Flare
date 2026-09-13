@@ -34,15 +34,6 @@
         box-shadow: none;
     }
 
-    /* A text button trades its container for tighter padding: 8dp, against the 16dp the contained
-       and outlined variants take. ButtonTokens.TextPaddingInline carries that value but does not
-       reach the button: `.flare-btn--text` sets the local padding property and `.flare-btn--md`
-       re-declares it lower in the same stylesheet at equal specificity, so the size wins. Applying
-       the token here is what makes it take effect. */
-    .flare-btn--text:not(.flare-btn--icon-only) {
-        padding-inline: var(--flare-btn-text-padding-inline);
-    }
-
     /* MD2 tabs use UPPERCASE labels. */
     .flare-tabs__tab {
         text-transform: uppercase;

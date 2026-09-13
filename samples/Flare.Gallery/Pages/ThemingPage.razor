@@ -3,6 +3,7 @@
 @inherits LocalizedPage
 @using Flare.Abstractions.Tokens
 @using Flare.Theming
+@using Flare.Theme.MaterialDesign3.Tokens
 
 <PageTitle>@GalleryStrings.Theming_Title - Flare</PageTitle>
 
@@ -221,17 +222,17 @@
         {
             Id = "ocean",
             Name = "Ocean",
-            Light = Md3.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
-            Dark  = Md3.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
+            Light = MaterialDesign3Tokens.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
+            Dark  = MaterialDesign3Tokens.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
         };
 
         // Or generate a whole palette from one brand color:
-        var brand = PaletteFactory.Brand("brand", "Brand", Md3.LightColors, Md3.DarkColors, "#7B1FA2");
+        var brand = PaletteFactory.Brand("brand", "Brand", MaterialDesign3Tokens.LightColors, MaterialDesign3Tokens.DarkColors, "#7B1FA2");
 
         // Override ANY design token (shape, typography, ...) from the reference:
-        var design = Md3.DesignReference with
+        var design = MaterialDesign3Tokens.Design with
         {
-            Shape = Md3.DesignReference.Shape with { Medium = "10px" },
+            Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "10px" },
         };
 
         // Register at startup...

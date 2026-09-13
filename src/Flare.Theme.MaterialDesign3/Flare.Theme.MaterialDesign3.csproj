@@ -18,6 +18,10 @@
     <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
     <!-- The baseline theme derives from the published MD3 reference tokens (Md3.DesignReference) and
          reuses the MD3 tonal palettes + generator, so it stays in lockstep with the MD3 color system. -->
+    <ProjectReference Include="..\Flare.Theme.MaterialDesign3.Tokens\Flare.Theme.MaterialDesign3.Tokens.csproj" />
+    <!-- Only for Md3Palettes / Md3TonalGenerator: the Material 3 colour system, which needs
+         Flare.Theming and so cannot live in the reference-tokens package (it references
+         Flare.Abstractions alone). The tokens themselves come from the reference above. -->
     <ProjectReference Include="..\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
   </ItemGroup>
 

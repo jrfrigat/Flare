@@ -4,7 +4,7 @@
 
 @if (Variant == LinearProgressVariant.Buffer)
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, SizeClass, ColorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, SizeClass, ColorClass, _contentClass)"
          role="progressbar"
          aria-valuenow="@AriaValueNow"
          aria-valuemin="0"
@@ -13,22 +13,30 @@
          @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Progress.BufferFill" style="width:@(_clampedBufferValue.ToString("F0"))%"></div>
         <div class="@Css.Classes.Progress.Bar" style="width:@(ClampedValue.ToString("F0"))%"></div>
+        @if (ChildContent is not null)
+        {
+            <div class="@Css.Classes.Progress.Content" aria-hidden="true">@ChildContent</div>
+        }
     </div>
 }
 else if (Variant == LinearProgressVariant.Query)
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Query, SizeClass, ColorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Query, SizeClass, ColorClass, _contentClass)"
          role="progressbar"
          aria-valuemin="0"
          aria-valuemax="100"
          style="@($"{ColorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Progress.Bar"></div>
+        @if (ChildContent is not null)
+        {
+            <div class="@Css.Classes.Progress.Content" aria-hidden="true">@ChildContent</div>
+        }
     </div>
 }
 else
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _trackClass, SizeClass, ColorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _trackClass, SizeClass, ColorClass, _contentClass)"
          role="progressbar"
          aria-valuenow="@AriaValueNow"
          aria-valuemin="0"
@@ -61,12 +69,28 @@ else
         {
             <CascadingValue TValue="IFlareZoneHost" Value="_zones" IsFixed="true">@Zones</CascadingValue>
         }
+        @if (ChildContent is not null)
+        {
+            <div class="@Css.Classes.Progress.Content" aria-hidden="true">@ChildContent</div>
+        }
     </div>
 }
 
 @code {
     /// <summary>Which shape the linear track takes.</summary>
     [Parameter] public LinearProgressVariant Variant { get; set; } = LinearProgressVariant.Bar;
+
+    /// <summary>
+    /// Content centred over the track - a percentage, a short count, an icon. The track does not grow
+    /// to fit it: a bar is a few dp tall by design, so a label sits across it and the caller picks a
+    /// size that reads. Purely decorative to assistive technology: the indicator already announces its
+    /// value, so set <c>aria-valuetext</c> on the component when the content says something else.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    // Lifts the track's own clip, but only when there is something to show - an indicator without
+    // content keeps clipping to its rounded ends exactly as before.
+    private string? _contentClass => ChildContent is null ? null : Css.Classes.Progress.WithContent;
 
     /// <summary>
     /// Secondary buffer fill percentage (0-100), used only with <see cref="LinearProgressVariant.Buffer"/>.

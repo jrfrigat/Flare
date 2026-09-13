@@ -41,8 +41,8 @@ public class FlareSliderZonesTests : FlareTestContext
         Assert.Contains(bands, z => z.ClassName!.Contains(Css.Classes.Color.Success));
         Assert.Contains(bands, z => z.ClassName!.Contains(Css.Classes.Color.Error));
         // First span starts flush on the track start with the full track radius.
-        Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("left:0")
-            && z.GetAttribute("style")!.Contains("right:calc(100% - 40.00% + var(--_gap))"));
+        Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("inset-inline-start:0")
+            && z.GetAttribute("style")!.Contains("inset-inline-end:calc(100% - 40.00% + var(--_gap))"));
     }
 
     // The bug this pins: a zone used to paint straight through the handle, filling the notch gap that the
@@ -68,10 +68,10 @@ public class FlareSliderZonesTests : FlareTestContext
 
         // Both sides of the notch are inset by the gap and take the gap radius, so the handle's gap shows
         // through the zone instead of being painted over.
-        Assert.Contains("right:calc(100% - 40.00% + var(--_gap))", bands[0].GetAttribute("style")!);
-        Assert.Contains("left:calc(40.00% + var(--_gap))", bands[1].GetAttribute("style")!);
-        Assert.Contains("border-radius:var(--_trk-radius) var(--_gap-radius) var(--_gap-radius) var(--_trk-radius)", bands[0].GetAttribute("style")!);
-        Assert.Contains("border-radius:var(--_gap-radius) var(--_trk-radius) var(--_trk-radius) var(--_gap-radius)", bands[1].GetAttribute("style")!);
+        Assert.Contains("inset-inline-end:calc(100% - 40.00% + var(--_gap))", bands[0].GetAttribute("style")!);
+        Assert.Contains("inset-inline-start:calc(40.00% + var(--_gap))", bands[1].GetAttribute("style")!);
+        Assert.Contains("border-start-start-radius:var(--_trk-radius);border-start-end-radius:var(--_gap-radius);border-end-end-radius:var(--_gap-radius);border-end-start-radius:var(--_trk-radius)", bands[0].GetAttribute("style")!);
+        Assert.Contains("border-start-start-radius:var(--_gap-radius);border-start-end-radius:var(--_trk-radius);border-end-end-radius:var(--_trk-radius);border-end-start-radius:var(--_gap-radius)", bands[1].GetAttribute("style")!);
     }
 
     // A zone is a band on the same rail as the active/inactive segments, so it must speak the same shape
@@ -101,12 +101,12 @@ public class FlareSliderZonesTests : FlareTestContext
         var second = bands[1].GetAttribute("style")!;
 
         // [0,70]: outer start (track radius, flush), interior end (gap radius, inset).
-        Assert.Contains("left:0", first);
-        Assert.Contains("border-radius:var(--_trk-radius) var(--_gap-radius) var(--_gap-radius) var(--_trk-radius)", first);
+        Assert.Contains("inset-inline-start:0", first);
+        Assert.Contains("border-start-start-radius:var(--_trk-radius);border-start-end-radius:var(--_gap-radius);border-end-end-radius:var(--_gap-radius);border-end-start-radius:var(--_trk-radius)", first);
         // [70,100]: interior start (inset by the gap -> a visible gap from the first zone), outer end.
-        Assert.Contains("left:calc(70.00% + var(--_gap))", second);
-        Assert.Contains("right:0", second);
-        Assert.Contains("border-radius:var(--_gap-radius) var(--_trk-radius) var(--_trk-radius) var(--_gap-radius)", second);
+        Assert.Contains("inset-inline-start:calc(70.00% + var(--_gap))", second);
+        Assert.Contains("inset-inline-end:0", second);
+        Assert.Contains("border-start-start-radius:var(--_gap-radius);border-start-end-radius:var(--_trk-radius);border-end-end-radius:var(--_trk-radius);border-end-start-radius:var(--_gap-radius)", second);
     }
 
     [Fact]

@@ -44,6 +44,12 @@ public static class FabMenu
     public const string Left = "flare-fab-menu__list--left";
     /// <summary>The <c>flare-fab-menu__list--right</c> CSS class.</summary>
     public const string Right = "flare-fab-menu__list--right";
+    /// <summary>Lines the actions up on their start edge - left on a top or bottom side, top on a left
+    /// or right side - instead of centring them on the FAB.</summary>
+    public const string AlignStart = "flare-fab-menu__list--align-start";
+    /// <summary>Lines the actions up on their end edge - right on a top or bottom side, bottom on a left
+    /// or right side - instead of centring them on the FAB.</summary>
+    public const string AlignEnd = "flare-fab-menu__list--align-end";
     /// <summary>The <c>flare-fab-menu__item</c> CSS class.</summary>
     public const string Item = "flare-fab-menu__item";
     /// <summary>The <c>flare-fab-menu__btn</c> CSS class.</summary>

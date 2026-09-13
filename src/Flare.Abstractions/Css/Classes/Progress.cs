@@ -49,4 +49,9 @@ public static class Progress
     public const string Zone = "flare-progress__zone";
     /// <summary>The <c>flare-progress--with-zones</c> CSS class (continuous track hosting colored zones).</summary>
     public const string WithZones = "flare-progress--with-zones";
+    /// <summary>The box that centres <c>ChildContent</c> on the indicator.</summary>
+    public const string Content = "flare-progress__content";
+    /// <summary>On the root when content is present: the track stops clipping, so a label taller than
+    /// the bar stays visible instead of being cut off by the track's own rounding.</summary>
+    public const string WithContent = "flare-progress--with-content";
 }

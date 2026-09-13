@@ -60,7 +60,7 @@ public class FlarePopoverTests : FlareTestContext
     {
         var cut = Render<FlarePopover>(p => p
             .Add(x => x.Open, true)
-            .Add(x => x.Placement, PopoverPlacement.BottomStart));
+            .Add(x => x.Placement, Placement.BottomStart));
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.PaperBottomStart}"));
     }
@@ -70,7 +70,7 @@ public class FlarePopoverTests : FlareTestContext
     {
         var cut = Render<FlarePopover>(p => p
             .Add(x => x.Open, true)
-            .Add(x => x.Placement, PopoverPlacement.Top));
+            .Add(x => x.Placement, Placement.Top));
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.PaperTop}"));
     }

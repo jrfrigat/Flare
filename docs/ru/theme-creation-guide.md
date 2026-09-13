@@ -69,12 +69,13 @@ services.AddFlareTheme(myFluent);
 dark-оверрайды), кроме переданных; в `design` приходит базовый `DesignTokens`, так что через `with` вы
 меняете только нужное.
 
-Каждый пакет темы также экспортирует свои reference-токены (`Md3`, `Fluent2`, `Aero`, `LiquidGlass`,
-`VisualStudio`) для прямой композиции при реализации `ITheme` с нуля:
+База линейки берется из ее reference-пакета токенов - `MaterialDesign3Tokens` или `FluentUI2Tokens`, -
+чтобы своя тема могла взять значения, не завися от пакета темы. У конкретной темы без отдельного
+пакета публичный доступ дает ее собственный reference-класс (`Aero`, `LiquidGlass`, `VisualStudio`):
 
 ```csharp
-public DesignTokens Design => Fluent2.DesignReference with { /* оверрайды */ };
-// цвета палитры:  Fluent2.LightColors with { Primary = "#0F6CBD" }
+public DesignTokens Design => FluentUI2Tokens.Design with { /* оверрайды */ };
+// цвета палитры:  FluentUI2Tokens.LightColors with { Primary = "#0F6CBD" }
 ```
 
 ### Прямая реализация ITheme

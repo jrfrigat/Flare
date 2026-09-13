@@ -30,10 +30,29 @@
     transition: content-visibility var(--flare-motion-duration-short2);
     transition-behavior: allow-discrete;
 }
-.flare-fab-menu__list--up    { bottom: calc(100% + 0.75rem); left: 50%; transform: translateX(-50%); flex-direction: column-reverse; align-items: center; }
-.flare-fab-menu__list--down  { top:    calc(100% + 0.75rem); left: 50%; transform: translateX(-50%); flex-direction: column;         align-items: center; }
-.flare-fab-menu__list--left  { right:  calc(100% + 0.75rem); top:  50%; transform: translateY(-50%); flex-direction: row-reverse;     align-items: center; }
-.flare-fab-menu__list--right { left:   calc(100% + 0.75rem); top:  50%; transform: translateY(-50%); flex-direction: row;             align-items: center; }
+/* Distance between the trigger and the nearest action. No FabTokens member names it yet (Gap is the
+   icon-label space on an extended FAB, AnchorOffset the distance from the screen edge), so it lives in
+   one place here instead of four until it becomes a token. */
+.flare-fab-menu__list { --_fab-menu-offset: 0.75rem; }
+
+/* SIDE: which edge of the trigger the actions open from. A bare side centres them on the trigger. */
+.flare-fab-menu__list--up    { bottom: calc(100% + var(--_fab-menu-offset)); left: 50%; transform: translateX(-50%); flex-direction: column-reverse; align-items: center; }
+.flare-fab-menu__list--down  { top:    calc(100% + var(--_fab-menu-offset)); left: 50%; transform: translateX(-50%); flex-direction: column;         align-items: center; }
+.flare-fab-menu__list--left  { right:  calc(100% + var(--_fab-menu-offset)); top:  50%; transform: translateY(-50%); flex-direction: row-reverse;     align-items: center; }
+.flare-fab-menu__list--right { left:   calc(100% + var(--_fab-menu-offset)); top:  50%; transform: translateY(-50%); flex-direction: row;             align-items: center; }
+
+/* ALIGNMENT: line an edge up with the trigger's instead of centring - the words and the meaning are
+   Placement's, shared with the popover. On a top/bottom side the cross axis is horizontal, so Start is
+   the left edge; on a left/right side it is vertical, so Start is the top edge. The centring transform
+   is dropped with the centring offset, or the list would still be pulled half its own width over. */
+.flare-fab-menu__list--up.flare-fab-menu__list--align-start,
+.flare-fab-menu__list--down.flare-fab-menu__list--align-start  { left: 0; right: auto; transform: none; align-items: flex-start; }
+.flare-fab-menu__list--up.flare-fab-menu__list--align-end,
+.flare-fab-menu__list--down.flare-fab-menu__list--align-end    { left: auto; right: 0; transform: none; align-items: flex-end; }
+.flare-fab-menu__list--left.flare-fab-menu__list--align-start,
+.flare-fab-menu__list--right.flare-fab-menu__list--align-start { top: 0; bottom: auto; transform: none; align-items: flex-start; }
+.flare-fab-menu__list--left.flare-fab-menu__list--align-end,
+.flare-fab-menu__list--right.flare-fab-menu__list--align-end   { top: auto; bottom: 0; transform: none; align-items: flex-end; }
 
 /* Items animate in when the list is open */
 .flare-fab-menu__item {
@@ -72,8 +91,8 @@
     box-shadow: var(--flare-elevation-1);
 }
 
-/* Small action FAB inherits themed .flare-fab / .flare-fab--sm; just size the glyph */
+/* Small action FAB inherits themed .flare-fab / .flare-fab--sm, glyph size included - it reads the small
+   FAB icon token through .flare-fab--sm rather than a literal of its own. */
 .flare-fab-menu__btn .flare-fab__icon {
-    font-size: 1.25rem;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

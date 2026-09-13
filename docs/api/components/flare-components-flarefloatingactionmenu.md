@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The FlareFloatingActionMenuItem entries. |
-| `Direction` | `FabMenuDirection` | `FabMenuDirection.Up` | Parameter |  | Direction the menu expands from the FAB. |
+| `Placement` | `Placement` | `Placement.Top` | Parameter |  | Which side of the FAB the actions open on, and how they line up along it - the same Placement a FlarePopover takes. A bare side centres the actions on the FAB; Start and End line up an edge instead, which is what keeps a speed dial pinned to a screen corner from hanging half off the screen. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

@@ -121,6 +121,9 @@
 .flare-tabs--vertical .flare-tabs__bar-wrap { border-bottom: none; flex-direction: column; flex-wrap: nowrap; }
 
 .flare-tabs__tab {
+  /* A leading icon is the caller's own fragment, so its size travels through the shared icon property
+     rather than a class on the icon. The close glyph keeps its own size: its rule sets font-size directly. */
+  --_flare-icon-size: var(--flare-tabs-icon-size);
   /* z-index:0 makes the tab its own stacking context so the state layer below can sit at -1: above
      the tab's own background, under everything it contains. See the layer rule for why that is
      preferable here to lifting each slot by name. */

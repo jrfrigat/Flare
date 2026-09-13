@@ -62,7 +62,7 @@ public sealed class ThemeIndependenceTests
         Assert.True(borrowed.Length == 0,
             "Flare.Theme.MaterialDesign2 references another theme package: " + string.Join(", ", borrowed) +
             ". Material 2 predates Material 3 and shares none of its opinions - it ships its own complete " +
-            "token set (MaterialDesign2BaseTokens) instead of inheriting one.");
+            "token set (MaterialDesign2Tokens) instead of inheriting one.");
     }
 
     // "Flare.Theme." (with the trailing dot) so this doesn't false-match "Flare.Theming" itself.

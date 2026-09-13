@@ -33,4 +33,16 @@ public static class Fab
     public const string HoverShadow = "--flare-fab-hover-shadow";
     /// <summary>CSS custom-property name for the anchor offset token.</summary>
     public const string AnchorOffset = "--flare-fab-anchor-offset";
+
+    /// <summary>Glyph size of the FAB's icon, one per size step. The icon grows with the container: a
+    /// language that sizes the hero FAB up sizes its glyph up too.</summary>
+    public static class IconSize
+    {
+        /// <summary>CSS custom-property name for the sm FAB icon size.</summary>
+        public const string Sm = "--flare-fab-icon-size-sm";
+        /// <summary>CSS custom-property name for the md FAB icon size.</summary>
+        public const string Md = "--flare-fab-icon-size-md";
+        /// <summary>CSS custom-property name for the lg FAB icon size.</summary>
+        public const string Lg = "--flare-fab-icon-size-lg";
+    }
 }

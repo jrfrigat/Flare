@@ -9,8 +9,21 @@ public static class Button
     public const string LoadingOpacity = "--flare-btn-loading-opacity";
     /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
     public const string ContainerRadius = "--flare-btn-radius";
-    /// <summary>CSS custom-property name for the text padding inline token.</summary>
-    public const string TextPaddingInline = "--flare-btn-text-padding-inline";
+    /// <summary>Inline padding of a text button, per size. Separate from <see cref="PaddingInline"/>
+    /// because a text button has no container to balance, so a language usually sets it tighter.</summary>
+    public static class TextPaddingInline
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-text-padding-inline-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-text-padding-inline-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-text-padding-inline-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-text-padding-inline-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-text-padding-inline-xl";
+    }
     /// <summary>Per-corner button radii, addressable by size and side.</summary>
     public static class Radius
     {

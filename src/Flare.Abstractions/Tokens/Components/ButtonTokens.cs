@@ -15,9 +15,21 @@ public sealed record ButtonTokens
     [CssVar(Button.LoadingOpacity)] public required string LoadingOpacity { get; init; }
     /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
     [CssVar(Button.ContainerRadius)] public required string ContainerRadius { get; init; }
-    /// <summary>Side padding for the Text variant, replacing the per-size inline padding at every size.
-    /// A text button has no container to sit inside, so it usually hugs its label more tightly.</summary>
-    [CssVar(Button.TextPaddingInline)] public required string TextPaddingInline { get; init; }
+    // --- 0a. TEXT-VARIANT INLINE PADDING ---
+    // A text button has no container to sit inside, so a language usually hugs its label more tightly
+    // than the contained variants do. It is a ladder rather than one value for the same reason
+    // PaddingInline is: the tightening that reads right beside a small label is cramped beside a
+    // large one. These replace PaddingInline on the Text variant at the matching size.
+    /// <summary>Side padding of a text button at the xs size.</summary>
+    [CssVar(Button.TextPaddingInline.Xs)] public required string TextPaddingInlineXs { get; init; }
+    /// <summary>Side padding of a text button at the sm size.</summary>
+    [CssVar(Button.TextPaddingInline.Sm)] public required string TextPaddingInlineSm { get; init; }
+    /// <summary>Side padding of a text button at the md size.</summary>
+    [CssVar(Button.TextPaddingInline.Md)] public required string TextPaddingInlineMd { get; init; }
+    /// <summary>Side padding of a text button at the lg size.</summary>
+    [CssVar(Button.TextPaddingInline.Lg)] public required string TextPaddingInlineLg { get; init; }
+    /// <summary>Side padding of a text button at the xl size.</summary>
+    [CssVar(Button.TextPaddingInline.Xl)] public required string TextPaddingInlineXl { get; init; }
 
     // --- 1. STRONGLY-TYPED GAPS (gaps between icon and text) ---
     /// <summary>Space between the icon and the label at the xs size.</summary>
