@@ -140,6 +140,12 @@ All notable changes to Flare are documented here. This project adheres to
   itself open but did not render, so the panel appeared only after something else re-rendered the
   component; opening it with its own button was unaffected. Both calls now show the panel at once.
 
+- **In side-by-side mode `FlareDateTimePicker` drew its Clear and OK buttons over the page.** With
+  `Mode="DateTimeVariant.Panels"`, and with `Auto` from the medium breakpoint up, the calendar and the
+  time are two separate cards and the popup around them has no background, but the buttons sat in that
+  popup below the cards, so their labels landed on whatever the page had underneath. They are now at
+  the bottom of the time card.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

@@ -63,6 +63,32 @@ public class FlareDateTimePickerTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.DateTimePicker.Panel}"));
     }
 
+    /// <summary>
+    /// The split panel has no surface of its own; actions placed beside the panes would paint straight
+    /// over the page.
+    /// </summary>
+    [Fact]
+    public async Task InPanelsModeTheActionsSitInsideAPane()
+    {
+        var cut = Render<FlareDateTimePicker>(p => p.Add(x => x.Mode, DateTimeVariant.Panels));
+
+        await cut.InvokeAsync(() => cut.Instance.OpenAsync());
+
+        var footer = Assert.Single(cut.FindAll($".{Css.Classes.DateTimePicker.Footer}"));
+        Assert.True(footer.ParentElement!.ClassList.Contains(Css.Classes.DateTimePicker.Pane));
+    }
+
+    [Fact]
+    public async Task InTabsModeTheActionsSitInThePanel()
+    {
+        var cut = Render<FlareDateTimePicker>(p => p.Add(x => x.Mode, DateTimeVariant.Tabs));
+
+        await cut.InvokeAsync(() => cut.Instance.OpenAsync());
+
+        var footer = Assert.Single(cut.FindAll($".{Css.Classes.DateTimePicker.Footer}"));
+        Assert.True(footer.ParentElement!.ClassList.Contains(Css.Classes.DateTimePicker.Panel));
+    }
+
     [Fact]
     public void RendersHelperText()
     {
