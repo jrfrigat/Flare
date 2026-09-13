@@ -46,7 +46,9 @@
     --_bubble-origin-x: left;
 }
 
-[dir="rtl"] .flare-slider {
+/* :dir() rather than [dir="rtl"] ancestors: the sign must follow the direction the slider itself
+   resolves to, so a dir="ltr" region inside an RTL page, and dir="rtl" on the slider, both hold. */
+.flare-slider:dir(rtl) {
     --_dir: -1;
     --_bubble-origin-x: right;
 }

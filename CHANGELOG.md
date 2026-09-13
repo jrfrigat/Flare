@@ -119,6 +119,12 @@ All notable changes to Flare are documented here. This project adheres to
   `prefers-reduced-motion: reduce` it kept travelling round the ring; it now stands still, as the linear
   wave and the indeterminate indicators already did.
 
+- **A slider in a left-to-right region of a right-to-left page shifted its labels the wrong way.** Since
+  0.36.0 the slider took its direction from any `dir="rtl"` ancestor, so inside a `dir="ltr"` form or
+  editor in an RTL app the value labels, tick marks and bubble sat off their positions, and
+  `dir="rtl"` set on the slider itself was not honoured. The slider now follows the direction it
+  actually resolves to.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added
