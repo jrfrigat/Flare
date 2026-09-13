@@ -123,6 +123,45 @@ public sealed class TokenReferenceTests
             + "reading them is dropped:\n  " + string.Join("\n  ", offenders));
     }
 
+    /// <summary>
+    /// A theme's own stylesheets, read against that theme alone - light and dark, since a dark-only extra
+    /// is still defined when the rule runs in dark mode. No theme fails it today; proved on 2026-09-13 with a
+    /// deliberately undefined name added to <c>aero-base.css</c>.
+    /// </summary>
+    [Theory]
+    [MemberData(nameof(ThemeIndexes))]
+    public void EveryVariableAThemeStylesheetNamesWithoutAFallbackIsDefined(int index)
+    {
+        var theme = Factories[index]();
+        var cssDir = Path.Combine(FindRepoRoot(), "src", theme.GetType().Assembly.GetName().Name!, "wwwroot", "css");
+        if (!Directory.Exists(cssDir)) return;
+
+        var palette = theme.Palettes.First(p => p.Id == theme.DefaultPaletteId);
+        var defined = theme.Design.Flatten(palette.Light).Keys.ToHashSet(StringComparer.Ordinal);
+        defined.UnionWith(theme.Design.Flatten(palette.Dark).Keys);
+        if (theme.ExtendedDarkOverride is { } extras) defined.UnionWith(extras.Keys);
+
+        var sheets = Directory.EnumerateDirectories(Path.Combine(FindRepoRoot(), "src"), "Flare.Components*")
+            .Select(d => Path.Combine(d, "wwwroot", "css"))
+            .Append(cssDir)
+            .Where(Directory.Exists)
+            .SelectMany(d => Directory.EnumerateFiles(d, "*.css", SearchOption.AllDirectories))
+            .Where(f => !_bundles.Contains(Path.GetFileName(f), StringComparer.OrdinalIgnoreCase))
+            .ToDictionary(f => f, f => _comment.Replace(File.ReadAllText(f), ""));
+        foreach (var css in sheets.Values)
+            defined.UnionWith(_declared.Matches(css).Select(m => m.Groups[1].Value));
+
+        var offenders = new SortedSet<string>(StringComparer.Ordinal);
+        foreach (var (file, css) in sheets.Where(s => s.Key.StartsWith(cssDir, StringComparison.OrdinalIgnoreCase)))
+            foreach (Match m in _bareReference.Matches(css))
+                if (!defined.Contains(m.Groups[1].Value))
+                    offenders.Add($"{m.Groups[1].Value} in {Path.GetFileName(file)}");
+
+        Assert.True(offenders.Count == 0,
+            $"The '{theme.Id}' theme's stylesheets name variables it never defines, so every declaration "
+            + "reading them is dropped:\n  " + string.Join("\n  ", offenders));
+    }
+
     private static string FindRepoRoot()
     {
         for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
