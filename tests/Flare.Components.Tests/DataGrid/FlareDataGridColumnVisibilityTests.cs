@@ -56,7 +56,3 @@ public class FlareDataGridColumnVisibilityTests : FlareTestContext
         Assert.Contains("dept", reported!); // tracked by key, not title
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareColumn per-column strategies: custom SortComparison + FilterFunc
-// ------------------------------------------------------------------------------

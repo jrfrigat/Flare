@@ -104,7 +104,3 @@ public class FlareSnackbarProviderTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Snackbar.Error}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareProgress  (6 tests from Wave3)
-// ------------------------------------------------------------------------------

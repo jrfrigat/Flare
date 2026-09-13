@@ -77,7 +77,3 @@ public class FlareFloatingActionButtonTests : FlareTestContext
         Assert.Equal("Create", label.TextContent);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareToggleButton  (5 tests from Wave3)
-// ------------------------------------------------------------------------------

@@ -80,7 +80,3 @@ public class FlareDialogTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Dialog.SizeMd}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareAlert  (7 tests from Wave3)
-// ------------------------------------------------------------------------------

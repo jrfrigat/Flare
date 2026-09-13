@@ -106,7 +106,3 @@ public class DialogServiceComponentTests
         Assert.Empty(service.OpenDialogs);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDialogProvider rendering of component dialogs  (bUnit)
-// ------------------------------------------------------------------------------

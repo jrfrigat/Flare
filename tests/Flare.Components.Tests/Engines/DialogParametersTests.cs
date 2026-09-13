@@ -41,7 +41,3 @@ public class DialogParametersTests
         Assert.False(parameters.TryGetValue("nope", out _));
     }
 }
-
-// ------------------------------------------------------------------------------
-// DialogService component-dialog API  (service-level, no rendering)
-// ------------------------------------------------------------------------------

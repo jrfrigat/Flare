@@ -49,7 +49,3 @@ public class C_FlareTagFieldTests : FlareTestContext
         Assert.Equal(2, chips.Count);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareSlider  (5 tests from Wave3)
-// ------------------------------------------------------------------------------

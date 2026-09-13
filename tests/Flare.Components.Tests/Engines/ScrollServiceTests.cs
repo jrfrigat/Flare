@@ -374,9 +374,3 @@ public class ScrollServiceTests : FlareTestContext
         await token.DisposeAsync();
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareScrollTop's subscription LIFECYCLE. The utility tests cover its markup and defaults; nothing
-// covered what happens when a parameter moves after the first render, and the answer was "nothing" -
-// the subscription was built once in OnAfterRenderAsync(firstRender) and never revisited.
-// ------------------------------------------------------------------------------

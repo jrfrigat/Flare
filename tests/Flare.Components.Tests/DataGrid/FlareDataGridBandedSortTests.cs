@@ -133,7 +133,3 @@ public class FlareDataGridBandedSortTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($"th.{Css.Classes.DataGrid.ThComposite}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareColumn stable identity (Key = Id ?? SortKey ?? Title)
-// ------------------------------------------------------------------------------

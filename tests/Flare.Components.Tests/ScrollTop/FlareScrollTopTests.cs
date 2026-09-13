@@ -55,7 +55,3 @@ public class FlareScrollTopTests : FlareTestContext
         Assert.Equal(500, cut.Instance.Threshold);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareFloatingActionButton + FlareFloatingActionMenu (FAB speed-dial)  (7 tests)
-// ------------------------------------------------------------------------------

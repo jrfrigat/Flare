@@ -74,7 +74,3 @@ public class FlareBusyTests : FlareTestContext
         Assert.NotNull(cut.Find("button"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// Password strength - the rule, which is the part with a right answer
-// ------------------------------------------------------------------------------

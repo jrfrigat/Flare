@@ -69,7 +69,3 @@ public class FlareAlertTests : FlareTestContext
         Assert.Contains(Css.Classes.Alert.Error, cut.Find($".{Css.Classes.Alert.Root}").ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareSnackbarProvider  (6 tests from Wave5)
-// ------------------------------------------------------------------------------

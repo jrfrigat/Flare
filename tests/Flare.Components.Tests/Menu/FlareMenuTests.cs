@@ -91,7 +91,3 @@ public class FlareMenuTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Menu.Backdrop}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareNavGroup auto-expand + nesting (active child reveals the group chain)
-// ------------------------------------------------------------------------------

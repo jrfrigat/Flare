@@ -168,7 +168,3 @@ public class FlareDataGridHeaderTests : FlareTestContext
         Assert.Equal("Alice", reported.Target.Name);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid column bands (grouped headers via <FlareColumnBand>)
-// ------------------------------------------------------------------------------

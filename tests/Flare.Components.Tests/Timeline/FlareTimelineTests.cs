@@ -48,7 +48,3 @@ public class FlareTimelineTests : FlareTestContext
         Assert.DoesNotContain(Css.Classes.Timeline.Alternate, className);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareRating  (6 tests from Wave3)
-// ------------------------------------------------------------------------------

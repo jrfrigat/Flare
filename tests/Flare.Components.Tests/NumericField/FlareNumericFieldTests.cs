@@ -80,7 +80,3 @@ public class FlareNumericFieldTests : FlareTestContext
         Assert.Equal("0", cut.Find("input").GetAttribute("placeholder"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareField FloatingLabel  (7 tests from Wave10)
-// ------------------------------------------------------------------------------

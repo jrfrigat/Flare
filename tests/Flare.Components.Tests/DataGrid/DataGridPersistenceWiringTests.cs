@@ -6,6 +6,10 @@ using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
+// FlareDataGrid persistence wiring - a PersistStateKey grid must save the user's
+// FIRST change even when storage starts empty. Regression guard: _persistenceLoaded
+// was only set when prior saved state existed, so a brand-new grid silently dropped
+// every change until something had already been stored.
 public class DataGridPersistenceWiringTests : FlareTestContext
 {
     private record Row(string Name, int Score);

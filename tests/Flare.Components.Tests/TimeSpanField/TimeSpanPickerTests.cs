@@ -97,7 +97,3 @@ public class TimeSpanPickerTests : FlareTestContext
         Assert.Equal(TimeSpan.FromHours(-2), captured);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlarePullToRefresh - the gesture
-// ------------------------------------------------------------------------------

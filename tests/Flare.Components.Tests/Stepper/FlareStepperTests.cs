@@ -210,7 +210,3 @@ public class FlareStepperTests : FlareTestContext
         Assert.Equal("Two", ActiveLabel(cut));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareBreadcrumb  (6 tests from Wave3)
-// ------------------------------------------------------------------------------

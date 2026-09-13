@@ -49,7 +49,3 @@ public class FlareToggleButtonTests : FlareTestContext
         Assert.Contains("Bookmark", cut.Find($".{Css.Classes.Button.Label}").TextContent);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareButton Loading  (8 tests from Wave7)
-// ------------------------------------------------------------------------------

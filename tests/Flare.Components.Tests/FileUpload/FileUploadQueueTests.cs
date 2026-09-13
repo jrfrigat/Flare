@@ -180,6 +180,3 @@ public class FileUploadQueueTests : FlareTestContext
         Assert.Equal(failed.Id, retried);
     }
 }
-// ------------------------------------------------------------------------------
-// The row surface: removal, and replacing the row wholesale.
-// ------------------------------------------------------------------------------

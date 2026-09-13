@@ -200,7 +200,3 @@ public class FlareDrawerTests : FlareTestContext
         Assert.True(cut.Find($".{Css.Classes.Drawer.Root}").HasAttribute("inert"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareMenu  (8 tests from Wave5)
-// ------------------------------------------------------------------------------

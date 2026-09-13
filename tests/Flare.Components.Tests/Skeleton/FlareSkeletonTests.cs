@@ -56,7 +56,3 @@ public class FlareSkeletonTests : FlareTestContext
         Assert.Contains("50px", style);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareOverlay  (7 tests from Wave5)
-// ------------------------------------------------------------------------------

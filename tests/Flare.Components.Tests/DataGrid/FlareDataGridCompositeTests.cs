@@ -104,7 +104,3 @@ public class FlareDataGridCompositeTests : FlareTestContext
         Assert.Equal(2, cut.FindAll("th[role=columnheader]").Count);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid banded composite (records span several rows, DevExpress-style)
-// ------------------------------------------------------------------------------

@@ -48,7 +48,3 @@ public class FlareAvatarTests : FlareTestContext
         Assert.Contains(Css.Classes.Avatar.Square, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareAvatarGroup  (4 tests from Wave3)
-// ------------------------------------------------------------------------------

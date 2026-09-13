@@ -6,6 +6,10 @@ using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
+// DataGridPersistence - round-trips grid state through browser localStorage using
+// the built-in localStorage.* interop (not a custom JS module export, which is the
+// bug this guards against: the old code imported flare-theme.js and called exports
+// that never existed, so persistence silently no-op'd / threw JSException).
 public class DataGridPersistenceTests
 {
     private record Person(string Name);
@@ -95,10 +99,3 @@ public class DataGridPersistenceTests
         Assert.False(js.Store.ContainsKey("grid-key"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid persistence wiring - a PersistStateKey grid must save the user's
-// FIRST change even when storage starts empty. Regression guard: _persistenceLoaded
-// was only set when prior saved state existed, so a brand-new grid silently dropped
-// every change until something had already been stored.
-// ------------------------------------------------------------------------------

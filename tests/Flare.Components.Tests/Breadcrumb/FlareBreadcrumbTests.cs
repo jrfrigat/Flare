@@ -71,7 +71,3 @@ public class FlareBreadcrumbTests : FlareTestContext
         Assert.Contains("»", sep.TextContent);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlarePagination  (6 tests from Wave3)
-// ------------------------------------------------------------------------------

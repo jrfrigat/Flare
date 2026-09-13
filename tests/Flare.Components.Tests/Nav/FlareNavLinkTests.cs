@@ -72,7 +72,3 @@ public class FlareNavLinkTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Navigation.NavLinkIcon}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDrawer  (8 tests from Wave1)
-// ------------------------------------------------------------------------------

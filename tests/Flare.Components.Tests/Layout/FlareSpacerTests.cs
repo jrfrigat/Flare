@@ -38,7 +38,3 @@ public class FlareSpacerTests : FlareTestContext
         Assert.Contains("flex-grow", style);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareResizable  (6 tests from Wave6)
-// ------------------------------------------------------------------------------

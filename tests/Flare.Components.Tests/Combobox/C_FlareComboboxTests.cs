@@ -84,7 +84,3 @@ public class C_FlareComboboxTests : FlareTestContext
         Assert.NotNull(cut.Find($"input.{Css.Classes.Input.Control}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareMultiSelect  (10 tests from Wave1)
-// ------------------------------------------------------------------------------

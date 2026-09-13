@@ -95,7 +95,3 @@ public class FlareMarkdownTests : FlareTestContext
         Assert.DoesNotContain("<script>", cut.Markup, StringComparison.OrdinalIgnoreCase);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareTreeView  (4 tests from Wave6)
-// ------------------------------------------------------------------------------

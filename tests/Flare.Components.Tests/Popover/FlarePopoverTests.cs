@@ -75,7 +75,3 @@ public class FlarePopoverTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Popover.PaperTop}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareTooltip  (5 tests from Wave3)
-// ------------------------------------------------------------------------------

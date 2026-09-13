@@ -117,7 +117,3 @@ public class FlareClipboardTests : FlareTestContext
         Assert.Contains(Css.Classes.Button.Loading, button.ClassList);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareShortcuts  (3 tests from Wave6)
-// ------------------------------------------------------------------------------

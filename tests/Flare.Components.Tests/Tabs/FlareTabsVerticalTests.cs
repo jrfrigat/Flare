@@ -92,7 +92,3 @@ public class FlareTabsVerticalTests : FlareTestContext
         Assert.Contains(Css.Classes.Tabs.PanelHidden, panels[1].ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareAccordion  (7 tests from Wave5)
-// ------------------------------------------------------------------------------

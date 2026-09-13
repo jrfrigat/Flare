@@ -83,7 +83,3 @@ public class FlareSelectSearchTests : FlareTestContext
         Assert.Contains("Apple", captured!);
     }
 }
-
-// ------------------------------------------------------------------------------
-// Combobox ARIA on the unified Select / MultiSelect
-// ------------------------------------------------------------------------------

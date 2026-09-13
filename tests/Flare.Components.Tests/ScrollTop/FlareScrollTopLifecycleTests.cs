@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Flare.Components.Tests;
 
+// FlareScrollTop's subscription LIFECYCLE. The utility tests cover its markup and defaults; nothing
+// covered what happens when a parameter moves after the first render, and the answer was "nothing" -
+// the subscription was built once in OnAfterRenderAsync(firstRender) and never revisited.
 public class FlareScrollTopLifecycleTests : FlareTestContext
 {
     // Records what was subscribed to and lets a test push a position at the component.
