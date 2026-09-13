@@ -9,7 +9,10 @@
 <CascadingValue Value="@_snapshot" IsFixed="false">
     <CascadingValue Value="@ThemeService" IsFixed="false">
         <CascadingValue Value="@IconMorph" TValue="FlareIconMorph?" IsFixed="false">
-        <FlareStyles />
+        @if (Stylesheets == ThemeStylesheets.Automatic)
+        {
+            <FlareStyles />
+        }
 
         <div class="@Css.Classes.Theme.Root @Css.Classes.Theme.ForTheme(ThemeService.CurrentTheme.Id, ThemeService.CurrentTheme.StyleFamilyId) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : Css.Classes.Theme.ModeLight) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
              data-flare-theme="@ThemeService.CurrentTheme.Id"
@@ -45,6 +48,14 @@
     /// background + animation. Set to false to signal readiness yourself.
     /// </summary>
     [Parameter] public bool ManageSplash { get; set; } = true;
+
+    /// <summary>
+    /// Whether the provider writes the theme stylesheet links itself (<see cref="ThemeStylesheets.Automatic"/>,
+    /// the default) or the application has put them in its own head (<see cref="ThemeStylesheets.Manual"/>),
+    /// which lets a WebAssembly app fetch them before .NET starts. In both modes the provider waits for the
+    /// active theme's sheets and the active palette's <c>StyleAsset</c> to load and adds any that are missing.
+    /// </summary>
+    [Parameter] public ThemeStylesheets Stylesheets { get; set; } = ThemeStylesheets.Automatic;
 
     private readonly string _id = Guid.NewGuid().ToString("N");
     private DotNetObjectReference<FlareThemeProvider>? _dotNetRef;
@@ -187,6 +198,8 @@
         {
             foreach (var href in ThemeService.CurrentTheme.StyleAssets)
                 await ThemeJsService.EnsureStylesheetAsync(href);
+            if (ThemeService.CurrentPalette.StyleAsset is { Length: > 0 } paletteHref)
+                await ThemeJsService.EnsureStylesheetAsync(paletteHref);
 
             await ThemeJsService.SetThemeClassesAsync(
                 ThemeService.CurrentTheme.Id, ThemeService.CurrentTheme.StyleFamilyId,

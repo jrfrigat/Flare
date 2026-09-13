@@ -22,13 +22,7 @@ public sealed class AeroTheme : ITheme
 
     public IReadOnlyList<string> StyleAssets =>
     [
-        "_content/Flare.Theme.Aero/css/aero-base.css",
-        "_content/Flare.Theme.Aero/css/components/button.css",
-        "_content/Flare.Theme.Aero/css/components/input.css",
-        "_content/Flare.Theme.Aero/css/components/controls.css",
-        "_content/Flare.Theme.Aero/css/components/surfaces.css",
-        "_content/Flare.Theme.Aero/css/components/chrome.css",
-        "_content/Flare.Theme.Aero/css/components/pickers.css",
+        "_content/Flare.Theme.Aero/css/components.css",
     ];
 
     // The Aero focus glow flips to the lighter blue in dark mode.

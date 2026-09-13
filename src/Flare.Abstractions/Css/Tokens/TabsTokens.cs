@@ -11,6 +11,8 @@ public static class Tabs
     public const string LabelFont = "--flare-tabs-label-font";
     /// <summary>CSS custom-property name for the label size token.</summary>
     public const string LabelSize = "--flare-tabs-label-size";
+    /// <summary>CSS custom-property name for the tab label letter-spacing token.</summary>
+    public const string LabelSpacing = "--flare-tabs-label-spacing";
     /// <summary>CSS custom-property name for the label weight token.</summary>
     public const string LabelWeight = "--flare-tabs-label-weight";
     /// <summary>CSS custom-property name for the scroll shadow opacity token.</summary>

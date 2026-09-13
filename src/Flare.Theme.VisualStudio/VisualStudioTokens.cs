@@ -215,7 +215,11 @@ internal class VisualStudioTokens
     internal static readonly SplitButtonTokens SplitButton = new()
     {
         Gap = "1px",
-        TriggerWidth = "1.25rem",
+        TriggerWidthXs = "1.25rem",
+        TriggerWidthSm = "1.25rem",
+        TriggerWidthMd = "1.25rem",
+        TriggerWidthLg = "1.25rem",
+        TriggerWidthXl = "1.25rem",
         CaretSizeXs = "0.75rem",
         CaretSizeSm = "0.75rem",
         CaretSizeMd = "0.75rem",
@@ -266,7 +270,7 @@ internal class VisualStudioTokens
         DisabledOpacity = "1",
     };
 
-    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-4)", PaddingInlineSm = "var(--flare-spacing-5)", PaddingInlineMd = "var(--flare-spacing-8)", PaddingInlineLg = "var(--flare-spacing-10)", PaddingInlineXl = "var(--flare-spacing-12)" };
 
     // VS 2026 document tabs: thin top accent line, neutral strip, the active tab fills with the
     // editor surface. The full document-tab look (gap, top accent, hover) is finished in the
@@ -279,6 +283,7 @@ internal class VisualStudioTokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
@@ -324,6 +329,8 @@ internal class VisualStudioTokens
         StateLayerSize = "24px",
         StateHoverOpacity = "0.06",
         StatePressedOpacity = "0.08",
+        FocusOutline = "none",
+        FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-outline)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
@@ -368,6 +375,8 @@ internal class VisualStudioTokens
         TonalBg = "var(--flare-color-surface-container-high)",
         Radius = "var(--flare-shape-small)",
         Elevation = "none",
+        FilledElevation = "none",
+        TonalElevation = "none",
         PaddingTop = "8px",
         PaddingRight = "8px",
         PaddingBottom = "8px",
@@ -429,6 +438,8 @@ internal class VisualStudioTokens
         ActiveIndicator = "none",
         ActiveLeftBar = "2px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
+        IconSize = "1.25rem",
+        ItemHeight = "2.5rem",
     };
 
     /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS).</summary>
@@ -436,6 +447,11 @@ internal class VisualStudioTokens
     {
         // VS focus ring color used by the scoped button/input CSS.
         [VisualStudioCssVars.Focus] = "rgba(0,120,212,0.45)",
+
+        // The checkbox, radio and menu focus rings inherited from Fluent 2 name these, and this map
+        // replaces Fluent's rather than extending it.
+        [FluentCssVars.FocusStrokeColor] = "#000000",
+        [FluentCssVars.FocusStrokeOuter] = "#FFFFFF",
 
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
         [VisualStudioCssVars.TabGap] = "2px",
@@ -599,6 +615,8 @@ internal class VisualStudioTokens
         return new Dictionary<string, string>(Extended)
         {
             [VisualStudioCssVars.Focus] = "rgba(55,148,255,0.5)",
+            [FluentCssVars.FocusStrokeColor] = "#FFFFFF",
+            [FluentCssVars.FocusStrokeOuter] = "#000000",
             // VS 2026: the active document tab takes the editor surface (#1E1E1E) -- darker than the
             // strip (#2D2D30) -- so the rounded tab reads as connected to the editor below it, rather
             // than as a lighter floating pill. (Light mode already uses the white editor surface.)

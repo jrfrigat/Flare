@@ -103,7 +103,3 @@ public class FlareButtonIconOnlyTests : FlareTestContext
         Assert.Equal("close dialog", cut.Find("button").GetAttribute("aria-label"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareButtonGroup  (6 tests)
-// ------------------------------------------------------------------------------

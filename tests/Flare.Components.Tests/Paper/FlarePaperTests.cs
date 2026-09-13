@@ -37,7 +37,3 @@ public class FlarePaperTests : FlareTestContext
         Assert.Contains(Css.Classes.Paper.Square, cut.Find($".{Css.Classes.Paper.Root}").ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareTimeline  (5 tests from Wave3)
-// ------------------------------------------------------------------------------

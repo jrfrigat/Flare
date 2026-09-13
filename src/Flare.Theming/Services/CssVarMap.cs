@@ -303,7 +303,11 @@ public static class CssVarMap
         #region SPLIT BUTTON
         // Base seam gap
         v[Css.Tokens.SplitButton.Gap] = t.SplitButton.Gap;
-        v[Css.Tokens.SplitButton.TriggerWidth] = t.SplitButton.TriggerWidth;
+        v[Css.Tokens.SplitButton.TriggerWidth.Xs] = t.SplitButton.TriggerWidthXs;
+        v[Css.Tokens.SplitButton.TriggerWidth.Sm] = t.SplitButton.TriggerWidthSm;
+        v[Css.Tokens.SplitButton.TriggerWidth.Md] = t.SplitButton.TriggerWidthMd;
+        v[Css.Tokens.SplitButton.TriggerWidth.Lg] = t.SplitButton.TriggerWidthLg;
+        v[Css.Tokens.SplitButton.TriggerWidth.Xl] = t.SplitButton.TriggerWidthXl;
 
         // Chevron caret sizes for all 5 sizes
         v[Css.Tokens.SplitButton.CaretSize.Xs] = t.SplitButton.CaretSizeXs;
@@ -423,11 +427,17 @@ public static class CssVarMap
         v[Css.Tokens.Chip.AvatarSize.Md] = t.Chip.AvatarSizeMd;
         v[Css.Tokens.Chip.AvatarSize.Lg] = t.Chip.AvatarSizeLg;
         v[Css.Tokens.Chip.AvatarSize.Xl] = t.Chip.AvatarSizeXl;
+        v[Css.Tokens.Chip.PaddingInline.Xs] = t.Chip.PaddingInlineXs;
+        v[Css.Tokens.Chip.PaddingInline.Sm] = t.Chip.PaddingInlineSm;
+        v[Css.Tokens.Chip.PaddingInline.Md] = t.Chip.PaddingInlineMd;
+        v[Css.Tokens.Chip.PaddingInline.Lg] = t.Chip.PaddingInlineLg;
+        v[Css.Tokens.Chip.PaddingInline.Xl] = t.Chip.PaddingInlineXl;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
         v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
         v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;
         v[Css.Tokens.Tabs.LabelFont] = t.Tabs.LabelFont;
         v[Css.Tokens.Tabs.LabelSize] = t.Tabs.LabelSize;
+        v[Css.Tokens.Tabs.LabelSpacing] = t.Tabs.LabelSpacing;
         v[Css.Tokens.Tabs.LabelWeight] = t.Tabs.LabelWeight;
         v[Css.Tokens.Tabs.ScrollShadowOpacity] = t.Tabs.ScrollShadowOpacity;
         v[Css.Tokens.Tabs.ActiveColor] = t.Tabs.ActiveColor;
@@ -499,6 +509,8 @@ public static class CssVarMap
         v[Css.Tokens.Slider.StateLayerSize] = t.Slider.StateLayerSize;
         v[Css.Tokens.Slider.StateHoverOpacity] = t.Slider.StateHoverOpacity;
         v[Css.Tokens.Slider.StatePressedOpacity] = t.Slider.StatePressedOpacity;
+        v[Css.Tokens.Slider.FocusOutline] = t.Slider.FocusOutline;
+        v[Css.Tokens.Slider.FocusOutlineOffset] = t.Slider.FocusOutlineOffset;
         v[Css.Tokens.Slider.StopColor] = t.Slider.StopColor;
         v[Css.Tokens.Slider.StopColorSelected] = t.Slider.StopColorSelected;
         v[Css.Tokens.Slider.StopSize] = t.Slider.StopSize;
@@ -632,6 +644,7 @@ public static class CssVarMap
         v[Css.Tokens.ListField.ItemSelectedBg] = t.List.ItemSelectedBg;
         v[Css.Tokens.ListField.ItemSelectedColor] = t.List.ItemSelectedColor;
         v[Css.Tokens.ListField.ItemDisabledOpacity] = t.List.ItemDisabledOpacity;
+        v[Css.Tokens.ListField.ItemIconSize] = t.List.ItemIconSize;
 
         v[Css.Tokens.AccordionField.Border] = t.Accordion.Border;
         v[Css.Tokens.AccordionField.Radius] = t.Accordion.Radius;
@@ -709,6 +722,8 @@ public static class CssVarMap
         v[Css.Tokens.SnackbarPanel.PaddingBlock] = t.Snackbar.PaddingBlock;
         v[Css.Tokens.SnackbarPanel.ProviderInset] = t.Snackbar.ProviderInset;
         v[Css.Tokens.SnackbarPanel.CloseOpacity] = t.Snackbar.CloseOpacity;
+        v[Css.Tokens.SnackbarPanel.MinWidth] = t.Snackbar.MinWidth;
+        v[Css.Tokens.SnackbarPanel.MaxWidth] = t.Snackbar.MaxWidth;
         #endregion
 
         #region TOOLTIP
@@ -755,6 +770,10 @@ public static class CssVarMap
         v[Css.Tokens.CardField.Radius] = t.Card.Radius;
         v[Css.Tokens.CardField.Elevation] = t.Card.Elevation;
         v[Css.Tokens.CardField.ElevationHover] = t.Card.ElevationHover;
+        v[Css.Tokens.CardField.FilledElevation] = t.Card.FilledElevation;
+        v[Css.Tokens.CardField.OutlinedElevation] = t.Card.OutlinedElevation;
+        v[Css.Tokens.CardField.TonalElevation] = t.Card.TonalElevation;
+        v[Css.Tokens.CardField.TextElevation] = t.Card.TextElevation;
         v[Css.Tokens.CardField.SelectedBorder] = t.Card.SelectedBorder;
         v[Css.Tokens.CardField.SelectedBg] = t.Card.SelectedBg;
         v[Css.Tokens.CardField.StateLayer] = t.Card.StateLayer;
@@ -930,6 +949,8 @@ public static class CssVarMap
         v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
         v[Css.Tokens.NavField.LinkDisabledOpacity] = t.Nav.LinkDisabledOpacity;
+        v[Css.Tokens.NavField.IconSize] = t.Nav.IconSize;
+        v[Css.Tokens.NavField.ItemHeight] = t.Nav.ItemHeight;
         #endregion
 
         #region BOTTOM NAV
@@ -948,6 +969,8 @@ public static class CssVarMap
         v[Css.Tokens.BottomNavField.IndicatorSize] = t.BottomNav.IndicatorSize;
         v[Css.Tokens.BottomNavField.ItemDisabledOpacity] = t.BottomNav.ItemDisabledOpacity;
         v[Css.Tokens.BottomNavField.ZIndex] = t.BottomNav.ZIndex;
+        v[Css.Tokens.BottomNavField.IndicatorWidth] = t.BottomNav.IndicatorWidth;
+        v[Css.Tokens.BottomNavField.ItemGap] = t.BottomNav.ItemGap;
         #endregion
 
         #region SWITCH
@@ -1071,6 +1094,7 @@ public static class CssVarMap
         v[Css.Tokens.LayoutField.DrawerWidth] = t.Layout.DrawerWidth;
         v[Css.Tokens.LayoutField.AppBarBorder] = t.Layout.AppBarBorder;
         v[Css.Tokens.LayoutField.DrawerBorder] = t.Layout.DrawerBorder;
+        v[Css.Tokens.LayoutField.AppBarShadow] = t.Layout.AppBarShadow;
         #endregion
 
         #region LINK
@@ -1092,6 +1116,15 @@ public static class CssVarMap
         v[Css.Tokens.PickerField.OutsideOpacity] = t.Picker.OutsideOpacity;
         v[Css.Tokens.PickerField.DisabledOpacity] = t.Picker.DisabledOpacity;
         v[Css.Tokens.PickerField.WeekNumberOpacity] = t.Picker.WeekNumberOpacity;
+        v[Css.Tokens.PickerField.PanelMinWidth] = t.Picker.PanelMinWidth;
+        v[Css.Tokens.PickerField.PanelRadius] = t.Picker.PanelRadius;
+        v[Css.Tokens.PickerField.HeaderHeight] = t.Picker.HeaderHeight;
+        v[Css.Tokens.PickerField.NavIconSize] = t.Picker.NavIconSize;
+        v[Css.Tokens.PickerField.WeekdayHeight] = t.Picker.WeekdayHeight;
+        v[Css.Tokens.PickerField.WeekdayFontSize] = t.Picker.WeekdayFontSize;
+        v[Css.Tokens.PickerField.DaySize] = t.Picker.DaySize;
+        v[Css.Tokens.PickerField.DayLayerSize] = t.Picker.DayLayerSize;
+        v[Css.Tokens.PickerField.DayFontSize] = t.Picker.DayFontSize;
         #endregion
 
         #region SCRIM
@@ -1132,6 +1165,14 @@ public static class CssVarMap
 
         #region TIMEPICKER
         v[Css.Tokens.TimePickerField.ColumnsSepSize] = t.TimePicker.ColumnsSepSize;
+        v[Css.Tokens.TimePickerField.DialCenterSize] = t.TimePicker.DialCenterSize;
+        v[Css.Tokens.TimePickerField.DialHandleSize] = t.TimePicker.DialHandleSize;
+        v[Css.Tokens.TimePickerField.DialSize] = t.TimePicker.DialSize;
+        v[Css.Tokens.TimePickerField.DialTrackWidth] = t.TimePicker.DialTrackWidth;
+        v[Css.Tokens.TimePickerField.PeriodHeight] = t.TimePicker.PeriodHeight;
+        v[Css.Tokens.TimePickerField.PeriodWidth] = t.TimePicker.PeriodWidth;
+        v[Css.Tokens.TimePickerField.TimeFieldHeight] = t.TimePicker.TimeFieldHeight;
+        v[Css.Tokens.TimePickerField.TimeFieldWidth] = t.TimePicker.TimeFieldWidth;
         v[Css.Tokens.TimePickerField.DisplaySize] = t.TimePicker.DisplaySize;
         v[Css.Tokens.TimePickerField.HeadlineTracking] = t.TimePicker.HeadlineTracking;
         v[Css.Tokens.TimePickerField.PanelRadius] = t.TimePicker.PanelRadius;

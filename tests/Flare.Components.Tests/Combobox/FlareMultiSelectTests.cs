@@ -143,7 +143,3 @@ public class FlareMultiSelectTests : FlareTestContext
         Assert.Equal(3, cut.FindAll($".{Css.Classes.Multiselect.Option} .tpl").Count);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareChipGroup  (8 tests from Wave1)
-// ------------------------------------------------------------------------------

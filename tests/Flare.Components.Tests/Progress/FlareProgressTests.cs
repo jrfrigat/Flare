@@ -76,7 +76,3 @@ public class FlareProgressTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($"svg.{Css.Classes.Progress.Svg}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareSkeleton  (6 tests from Wave3)
-// ------------------------------------------------------------------------------

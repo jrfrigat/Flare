@@ -24,4 +24,6 @@ public static class LayoutField
     /// <c>border</c> shorthand. Applied to the trailing edge, or the leading edge of an end-anchored
     /// drawer.</summary>
     public const string DrawerBorder = "--flare-layout-drawer-border";
+    /// <summary>CSS custom-property name for the app bar shadow token.</summary>
+    public const string AppBarShadow = "--flare-layout-appbar-shadow";
 }

@@ -76,7 +76,3 @@ public class FlareBadgeTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Badge.Standalone}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlarePaper  (4 tests from Wave3)
-// ------------------------------------------------------------------------------

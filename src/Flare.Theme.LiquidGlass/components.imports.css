@@ -1,0 +1,9 @@
+/* Flare.Theme.LiquidGlass styles, in load order. The build concatenates these into
+   wwwroot/css/components.css, the one stylesheet the theme ships (see Directory.Build.targets). */
+@import 'liquid-glass-base.css';
+@import 'components/button.css';
+@import 'components/input.css';
+@import 'components/controls.css';
+@import 'components/surfaces.css';
+@import 'components/chrome.css';
+@import 'components/pickers.css';

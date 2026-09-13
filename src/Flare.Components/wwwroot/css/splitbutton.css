@@ -38,13 +38,11 @@
     border-top-right-radius: var(--flare-split-btn-trigger-radius-md-top-right) !important;
     border-bottom-right-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
     border-bottom-left-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
-    /* Trigger width. A theme that wants a fixed width sets the token to a length; a theme that wants a
-       square trigger sets it to `auto` and lets the aspect ratio take the width from the actual height.
-       The token CANNOT do the square case itself: it is declared on :root, where the per-size
-       --_flare-btn-height does not exist, so a value referring to it resolves once against the fallback
-       and then inherits that one length to every size. `aspect-ratio` is ignored whenever the token
-       supplies a length, so a fixed-width theme is unaffected. */
-    width: var(--flare-split-btn-trigger-width);
+    /* Trigger width, per size. A length pins it; `auto` lets the aspect ratio take the width from the
+       actual height, which gives a square trigger. The token cannot do the square case itself: it is
+       declared on :root, where the per-size --_flare-btn-height does not exist, so a value referring to
+       it would resolve once against the fallback. `aspect-ratio` is ignored whenever a length is set. */
+    width: var(--_trigger-width, var(--flare-split-btn-trigger-width-md));
     aspect-ratio: 1;
     padding-inline: 0 !important;
 }
@@ -78,7 +76,7 @@
    ========================================================================== */
 
 /* Extra Small */
-.flare-split-btn--xs { --_caret-size: var(--flare-split-btn-caret-size-xs); }
+.flare-split-btn--xs { --_caret-size: var(--flare-split-btn-caret-size-xs); --_trigger-width: var(--flare-split-btn-trigger-width-xs); }
 .flare-split-btn--xs .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-xs-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-xs-top-right) !important;
@@ -93,7 +91,7 @@
 }
 
 /* Small */
-.flare-split-btn--sm { --_caret-size: var(--flare-split-btn-caret-size-sm); }
+.flare-split-btn--sm { --_caret-size: var(--flare-split-btn-caret-size-sm); --_trigger-width: var(--flare-split-btn-trigger-width-sm); }
 .flare-split-btn--sm .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-sm-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-sm-top-right) !important;
@@ -108,10 +106,10 @@
 }
 
 /* Medium */
-.flare-split-btn--md { --_caret-size: var(--flare-split-btn-caret-size-md); }
+.flare-split-btn--md { --_caret-size: var(--flare-split-btn-caret-size-md); --_trigger-width: var(--flare-split-btn-trigger-width-md); }
 
 /* Large */
-.flare-split-btn--lg { --_caret-size: var(--flare-split-btn-caret-size-lg); }
+.flare-split-btn--lg { --_caret-size: var(--flare-split-btn-caret-size-lg); --_trigger-width: var(--flare-split-btn-trigger-width-lg); }
 .flare-split-btn--lg .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-lg-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-lg-top-right) !important;
@@ -126,7 +124,7 @@
 }
 
 /* Extra Large */
-.flare-split-btn--xl { --_caret-size: var(--flare-split-btn-caret-size-xl); }
+.flare-split-btn--xl { --_caret-size: var(--flare-split-btn-caret-size-xl); --_trigger-width: var(--flare-split-btn-trigger-width-xl); }
 .flare-split-btn--xl .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-xl-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-xl-top-right) !important;

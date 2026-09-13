@@ -1,6 +1,5 @@
-/* Visual Studio 2026 theme base bundle.
-   The signature document-tab gap/selection lives in components/tabs.css (also listed in
-   VisualStudioTheme.StyleAssets, so each file is injected exactly once). */
+/* Visual Studio 2026 theme base styles.
+   The signature document-tab gap/selection lives in components/tabs.css. */
 
 /* Scoped chrome touches that apply to the whole VS surface. */
 @scope (.flare-theme-visualstudio) to (.flare-root:not(.flare-theme-visualstudio)) {

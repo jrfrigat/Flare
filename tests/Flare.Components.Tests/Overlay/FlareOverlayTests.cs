@@ -77,7 +77,3 @@ public class FlareOverlayTests : FlareTestContext
         Assert.Empty(cut.FindAll($".{Css.Classes.Overlay.Absolute}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlarePopover  (7 tests from Wave5)
-// ------------------------------------------------------------------------------

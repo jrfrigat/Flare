@@ -75,7 +75,3 @@ public class FlareEmptyStateTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateAction}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareConfirmDialogProvider  (8 tests from Wave6)
-// ------------------------------------------------------------------------------

@@ -54,6 +54,13 @@ public sealed record BottomNavTokens
     /// <summary>Fixed height of the active-item indicator pill.</summary>
     [CssVar(BottomNavField.IndicatorSize)] public required string IndicatorSize { get; init; }
 
+    /// <summary>Minimum width of the active-item indicator pill; the icon and the pill's inline padding
+    /// widen it past this. <c>0</c> leaves the width to the padding alone.</summary>
+    [CssVar(BottomNavField.IndicatorWidth)] public required string IndicatorWidth { get; init; }
+
+    /// <summary>Space between an item's indicator and its label.</summary>
+    [CssVar(BottomNavField.ItemGap)] public required string ItemGap { get; init; }
+
     /// <summary>How far a disabled item fades. A language that repaints disabled controls in a flat
     /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
     /// colour has no value meaning "leave this as painted".</summary>

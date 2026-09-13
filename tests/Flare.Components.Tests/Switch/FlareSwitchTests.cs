@@ -67,7 +67,3 @@ public class FlareSwitchTests : FlareTestContext
         Assert.Contains("Must be enabled", cut.Find($".{Css.Classes.Switch.Error}").TextContent);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareRadio  (6 tests from Wave4)
-// ------------------------------------------------------------------------------

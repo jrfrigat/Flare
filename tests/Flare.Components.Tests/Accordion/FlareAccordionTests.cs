@@ -68,7 +68,3 @@ public class FlareAccordionTests : FlareTestContext
         Assert.Contains("border", div.GetAttribute("style") ?? "");
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareAccordionPanel  (8 tests from Wave5)
-// ------------------------------------------------------------------------------

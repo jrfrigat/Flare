@@ -32,7 +32,3 @@ public class FlareShortcutsTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll("#b"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareScrollTop  (6 tests from Wave6)
-// ------------------------------------------------------------------------------

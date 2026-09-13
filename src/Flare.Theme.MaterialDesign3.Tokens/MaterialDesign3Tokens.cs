@@ -305,7 +305,11 @@ public class MaterialDesign3Tokens
         // reads the button's real height; a length here (as the other themes use) would win instead.
         // It cannot forward --_flare-btn-height: this record is emitted on :root, where that per-size
         // variable does not exist, so every size would end up the md fallback width.
-        TriggerWidth = "auto",
+        TriggerWidthXs = "auto",
+        TriggerWidthSm = "auto",
+        TriggerWidthMd = "auto",
+        TriggerWidthLg = "auto",
+        TriggerWidthXl = "auto",
 
         // Caret icon = Button icon size at the same size (token forwarded)
         CaretSizeXs = "var(--flare-btn-icon-size-xs)",
@@ -401,6 +405,11 @@ public class MaterialDesign3Tokens
         AvatarSizeMd = "1.5rem",
         AvatarSizeLg = "1.875rem",
         AvatarSizeXl = "2.25rem",
+        PaddingInlineXs = "var(--flare-spacing-4)",
+        PaddingInlineSm = "var(--flare-spacing-5)",
+        PaddingInlineMd = "var(--flare-spacing-8)",
+        PaddingInlineLg = "var(--flare-spacing-10)",
+        PaddingInlineXl = "var(--flare-spacing-12)",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp
@@ -414,6 +423,7 @@ public class MaterialDesign3Tokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
@@ -468,6 +478,7 @@ public class MaterialDesign3Tokens
         ItemSelectedBg = "var(--flare-color-secondary-container)",
         ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        ItemIconSize = "1.5rem", // md.comp.list.list-item.leading-icon.size / trailing-icon.size 24dp
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
@@ -548,7 +559,7 @@ public class MaterialDesign3Tokens
         PanelBg = "var(--flare-color-surface-container)",
         ItemPaddingInline = "1rem",
         ItemGap = "0.75rem",
-        ItemIconSize = "1.25rem",
+        ItemIconSize = "1.5rem", // md.comp.menu.list-item.*-icon.size 24dp
         ItemFocusRingColor = "var(--flare-color-secondary)",
         ItemFocusRingThickness = "3px",
         ItemFocusRingOffset = "-3px",
@@ -804,6 +815,9 @@ public class MaterialDesign3Tokens
         ActiveIndicator = "var(--flare-color-secondary-container)",
         ActiveLeftBar = "none",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // md.comp.navigation-drawer: 24dp icon in a 56dp active indicator.
+        IconSize = "1.5rem",
+        ItemHeight = "3.5rem",
     };
 
     internal static readonly BottomNavTokens BottomNav = new()
@@ -821,6 +835,8 @@ public class MaterialDesign3Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        IndicatorWidth = "4rem",           // md.comp.navigation-bar.active-indicator.width 64dp
+        ItemGap = "var(--flare-spacing-2)", // icon-label space 4dp
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ZIndex = "1100",
     };
@@ -892,6 +908,8 @@ public class MaterialDesign3Tokens
         PaddingBlock = "0.875rem",
         ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
+        MinWidth = "20rem",
+        MaxWidth = "36rem",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -949,6 +967,8 @@ public class MaterialDesign3Tokens
         StateLayerSize = "40px",
         StateHoverOpacity = "0.08",
         StatePressedOpacity = "0.10",
+        FocusOutline = "none",
+        FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-on-secondary-container)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "4px",
@@ -1240,6 +1260,7 @@ public class MaterialDesign3Tokens
         DrawerWidth = "260px",
         AppBarBorder = "none",
         DrawerBorder = "none",
+        AppBarShadow = "none",
     };
 
     internal static readonly LinkTokens Link = new()
@@ -1264,6 +1285,15 @@ public class MaterialDesign3Tokens
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
+        PanelMinWidth = "22.5rem",
+        PanelRadius = "var(--flare-shape-large)",
+        HeaderHeight = "4rem",
+        NavIconSize = "1.125rem",
+        WeekdayHeight = "2.75rem",
+        WeekdayFontSize = "var(--flare-typescale-body-large-size)",
+        DaySize = "3rem",
+        DayLayerSize = "2.5rem",
+        DayFontSize = "var(--flare-typescale-body-large-size)",
     };
 
     internal static readonly ScrimTokens Scrim = new()
@@ -1317,10 +1347,18 @@ public class MaterialDesign3Tokens
     internal static readonly TimePickerTokens TimePicker = new()
     {
         ColumnsSepSize = "1.5rem",
-        DisplaySize = "2.75rem",
+        DialCenterSize = "0.5rem",
+        DialHandleSize = "3rem",
+        DialSize = "16rem",
+        DialTrackWidth = "0.125rem",
+        PeriodHeight = "5rem",
+        PeriodWidth = "3.25rem",
+        TimeFieldHeight = "5rem",
+        TimeFieldWidth = "6rem",
+        DisplaySize = "3.5625rem",
         HeadlineTracking = "0.05em",
         PanelRadius = "var(--flare-shape-extra-large)",
-        TimeSepSize = "2.5rem",
+        TimeSepSize = "3.5625rem",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
@@ -1408,6 +1446,11 @@ public class MaterialDesign3Tokens
             TextColor = "var(--flare-color-on-surface)",
             Radius = "var(--flare-shape-medium)",
             Elevation = "var(--flare-elevation-1)",
+            // Only the elevated card rests on a shadow; filled and outlined sit at level 0 (md.comp.*-card.container.elevation).
+            FilledElevation = "none",
+            OutlinedElevation = "none",
+            TonalElevation = "none",
+            TextElevation = "none",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
             StateLayer = "var(--flare-state-hover-layer)",

@@ -28,7 +28,3 @@ internal sealed class TestDialogBody : ComponentBase
         builder.CloseElement();
     }
 }
-
-// ------------------------------------------------------------------------------
-// DialogResult / DialogParameters  (pure unit tests)
-// ------------------------------------------------------------------------------

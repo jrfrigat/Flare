@@ -95,6 +95,10 @@ public static class Slider
     public const string StateHoverOpacity = "--flare-slider-state-hover-opacity";
     /// <summary>CSS custom-property name for the state pressed opacity token.</summary>
     public const string StatePressedOpacity = "--flare-slider-state-pressed-opacity";
+    /// <summary>CSS custom-property name for the keyboard focus outline token.</summary>
+    public const string FocusOutline = "--flare-slider-focus-outline";
+    /// <summary>CSS custom-property name for the keyboard focus outline offset token.</summary>
+    public const string FocusOutlineOffset = "--flare-slider-focus-outline-offset";
     /// <summary>CSS custom-property name for the stop color token.</summary>
     public const string StopColor = "--flare-slider-stop-color";
     /// <summary>CSS custom-property name for the stop color selected token.</summary>

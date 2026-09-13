@@ -167,8 +167,36 @@ public class FlareDrawerTests : FlareTestContext
         Assert.Equal(role, drawer.GetAttribute("role"));
         Assert.Equal(ariaModal, drawer.GetAttribute("aria-modal"));
     }
-}
 
-// ------------------------------------------------------------------------------
-// FlareMenu  (8 tests from Wave5)
-// ------------------------------------------------------------------------------
+    // A closed overlay drawer is only translated off screen, so without inert its controls stay in the
+    // tab order and the accessibility tree while nobody can see them.
+    [Theory]
+    [InlineData(DrawerVariant.Temporary, false, true)]
+    [InlineData(DrawerVariant.Temporary, true, false)]
+    [InlineData(DrawerVariant.Responsive, false, true)]
+    [InlineData(DrawerVariant.Responsive, true, false)]
+    [InlineData(DrawerVariant.Permanent, false, false)]
+    [InlineData(DrawerVariant.Mini, false, false)]
+    [InlineData(DrawerVariant.Persistent, false, false)]
+    public void OnlyAClosedOverlayDrawerIsInert(DrawerVariant variant, bool open, bool inert)
+    {
+        var cut = Render<FlareDrawer>(p => p
+            .Add(x => x.Variant, variant)
+            .Add(x => x.Open, open));
+
+        Assert.Equal(inert, cut.Find($".{Css.Classes.Drawer.Root}").HasAttribute("inert"));
+    }
+
+    [Fact]
+    public void ClosingATemporaryDrawerMakesItInertAgain()
+    {
+        var cut = Render<FlareDrawer>(p => p
+            .Add(x => x.Variant, DrawerVariant.Temporary)
+            .Add(x => x.Open, true));
+        Assert.False(cut.Find($".{Css.Classes.Drawer.Root}").HasAttribute("inert"));
+
+        cut.Render(p => p.Add(x => x.Open, false));
+
+        Assert.True(cut.Find($".{Css.Classes.Drawer.Root}").HasAttribute("inert"));
+    }
+}

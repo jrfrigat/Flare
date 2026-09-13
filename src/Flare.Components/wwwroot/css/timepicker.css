@@ -99,9 +99,13 @@
 .flare-timepicker__time-fields { display: flex; align-items: center; gap: var(--flare-spacing-2); }
 .flare-timepicker__time-fields-sep { font-size: var(--flare-timepicker-time-sep-size); color: var(--flare-color-on-surface-variant); }
 .flare-timepicker__time-field {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: var(--flare-timepicker-display-size);
   line-height: 1;
-  min-width: 5rem;
+  min-width: var(--flare-timepicker-time-field-width);
+  min-height: var(--flare-timepicker-time-field-height);
   padding: var(--flare-spacing-2) var(--flare-spacing-4);
   border: none;
   border-radius: var(--flare-shape-small);
@@ -113,8 +117,9 @@
   background: var(--flare-color-primary-container);
   color: var(--flare-color-on-primary-container);
 }
-.flare-timepicker__period { display: inline-flex; flex-direction: column; border: var(--flare-border-outline); border-radius: var(--flare-shape-small); overflow: hidden; }
+.flare-timepicker__period { display: inline-flex; flex-direction: column; min-width: var(--flare-timepicker-period-width); min-height: var(--flare-timepicker-period-height); border: var(--flare-border-outline); border-radius: var(--flare-shape-small); overflow: hidden; }
 .flare-timepicker__period-btn {
+  flex: 1;
   padding: var(--flare-spacing-3) var(--flare-spacing-6);
   border: none;
   background: transparent;
@@ -129,8 +134,8 @@
 
 .flare-timepicker__dial {
   position: relative;
-  width: 256px;            /* fixed so pointer math (center = 128px) is exact */
-  height: 256px;
+  width: var(--flare-timepicker-dial-size);
+  height: var(--flare-timepicker-dial-size);
   margin: var(--flare-spacing-4) auto;
   border-radius: 50%;
   background: var(--flare-color-surface-container-highest);
@@ -146,8 +151,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 8px;
-  height: 8px;
+  width: var(--flare-timepicker-dial-center-size);
+  height: var(--flare-timepicker-dial-center-size);
   border-radius: 50%;
   background: var(--flare-color-primary);
   transform: translate(-50%, -50%);
@@ -157,7 +162,7 @@
   position: absolute;
   left: 50%;
   bottom: 50%;
-  width: 2px;
+  width: var(--flare-timepicker-dial-track-width);
   height: calc(var(--flare-dial-len, 40) * 1%);
   background: var(--flare-color-primary);
   transform-origin: bottom center;
@@ -171,8 +176,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: var(--flare-timepicker-dial-handle-size);
+  height: var(--flare-timepicker-dial-handle-size);
   transform: translate(-50%, -50%);
   border-radius: 50%;
   color: var(--flare-color-on-surface);

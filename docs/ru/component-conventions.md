@@ -49,7 +49,8 @@ Flare - это публикуемая NuGet-библиотека с токен-d
 - Файл перечисляется в `flare-components.imports.css` - это порядок загрузки, в котором сборка их склеивает. Не перечисленный файл роняет сборку, а не уезжает молча мимо пакета.
 - Если правишь компонент - убедись, что его CSS-файл существует и добавлен в бандл.
 - Примеры: `button.css` -> `FlareButton`, `menu.css`/`menuitem.css`/`menugroup.css` -> Menu-группа.
-- Theme-специфичные доводки (MD3 vs Fluent) - в `src/Flare.Theme.*/wwwroot/css/components/*.css`.
+- Theme-специфичные доводки (MD3 vs Fluent) - в `src/Flare.Theme.*/wwwroot/css/components/*.css`, с упоминанием
+  в `components.imports.css` этой темы; сборка склеивает их в единственный `components.css`, который тема поставляет.
 
 ### Устоявшееся состояние никогда не держит transform
 

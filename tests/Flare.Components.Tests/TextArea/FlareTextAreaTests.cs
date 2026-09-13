@@ -74,7 +74,3 @@ public class FlareTextAreaTests : FlareTestContext
         Assert.Equal("6", cut.Find("textarea").GetAttribute("rows"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareNumericField  (9 tests from Wave4)
-// ------------------------------------------------------------------------------

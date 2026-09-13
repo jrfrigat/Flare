@@ -91,7 +91,3 @@ public class FlareSelectTests : FlareTestContext
         Assert.Equal(2, cut.FindAll($".{Css.Classes.Select.Option} .tpl").Count);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareCombobox  (was FlareAutocomplete; absorbed in the select-family rebuild)
-// ------------------------------------------------------------------------------

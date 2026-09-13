@@ -22,8 +22,7 @@ public sealed class VisualStudioTheme : ITheme
 
     public IReadOnlyList<string> StyleAssets =>
     [
-        "_content/Flare.Theme.VisualStudio/css/vs-base.css",
-        "_content/Flare.Theme.VisualStudio/css/components/tabs.css",
+        "_content/Flare.Theme.VisualStudio/css/components.css",
     ];
 
     // The VS focus ring color flips to the brighter blue in dark mode.

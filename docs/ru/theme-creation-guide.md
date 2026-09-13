@@ -145,10 +145,20 @@ public string StyleFamilyId => MaterialDesign3ExpressiveTheme.ThemeId;
 var brand = new MaterialDesign3ExpressiveTheme()
     .Derive("md3-expressive-brand", design: d => d with { ... });
 
-// Приносит свои стили, поэтому сама себе семейство.
+// Добавляет свой файл поверх стилей Expressive: сохраняет семейство, ставит активы базы первыми и
+// ограничивает свои правила классом собственного id - .flare-theme-md3-expressive-gold.
+var baseTheme = new MaterialDesign3ExpressiveTheme();
+var gold = baseTheme.Derive("md3-expressive-gold",
+    styleAssets: [.. baseTheme.StyleAssets, "_content/Acme/css/gold.css"]);
+
+// Полностью заменяет стили, поэтому сама себе семейство.
 var standalone = new MaterialDesign3ExpressiveTheme()
     .Derive("acme", styleAssets: ["_content/Acme/css/acme.css"], styleFamilyId: "acme");
 ```
+
+`styleAssets` заменяет список активов базовой темы, а не дополняет его, а тема со своим семейством
+теряет все правила, ограниченные классом базы, - поэтому `styleFamilyId` передавайте только в
+последнем случае.
 
 Если тема поставляет собственные `StyleAssets`, `StyleFamilyId` трогать не нужно: он и так равен `Id`.
 
@@ -496,6 +506,13 @@ MyTheme/
 |       +-- dialog.css          # Доводки диалога
 |       +-- ...                 # Доводки прочих компонентов
 ```
+
+Файлов может быть сколько угодно, но поставляйте их одним файлом стилей и указывайте в `StyleAssets`
+только его. Каждая запись - это отдельный запрос, а приложению, которое пишет ссылки темы в свой head,
+придется повторить каждую. Склеивать части через `@import` тоже не стоит: браузер узнает об импорте,
+только когда уже загрузил файл, который его называет. Встроенные темы держат части в `wwwroot/css`,
+перечисляют их в манифесте `components.imports.css` рядом с файлом проекта, а сборка склеивает их в
+`wwwroot/css/components.css`.
 
 ### Базовый CSS
 

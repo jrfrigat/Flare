@@ -58,7 +58,3 @@ public class FlareListTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Item}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareListItem  (8 tests from Wave5)
-// ------------------------------------------------------------------------------

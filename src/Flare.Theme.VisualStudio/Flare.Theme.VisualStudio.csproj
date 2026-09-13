@@ -7,6 +7,8 @@
     <Description>Visual Studio 2026 light and dark themes for the Flare Blazor component library</Description>
     <PackageTags>blazor;theming;visual-studio;vs2026;microsoft;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Built from components.imports.css into wwwroot/css/components.css; see Directory.Build.targets. -->
+    <FlareCssBundle>components</FlareCssBundle>
   </PropertyGroup>
 
   <ItemGroup>

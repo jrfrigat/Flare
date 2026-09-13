@@ -3,6 +3,192 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.37.0] - 2026-09-13
+
+### Added
+
+- **`FlareThemeProvider.Stylesheets` lets an app link the theme CSS in its own head.** By default
+  (`ThemeStylesheets.Automatic`) the provider writes the links for `ITheme.StyleAssets` itself, which
+  in a WebAssembly app means they arrive only after .NET has started - a second wave of requests
+  before the first styled frame. With `ThemeStylesheets.Manual` the app puts those links in
+  `index.html`, the browser fetches them with the page, and the provider writes none of its own, so
+  nothing is applied twice. It still waits for the active theme's and palette's sheets and adds any
+  that are missing, such as a theme or a palette with its own `StyleAsset` the user switches to.
+  Measured on the gallery: the theme CSS moved from after the .NET runtime into the first wave, and
+  only the linked theme is fetched up front rather than every registered one. A link already on the
+  page is now matched by its resolved address, so `/_content/...` and `_content/...` count as the same sheet. See
+  [Getting started](docs/en/getting-started.md).
+
+### Changed
+
+- **Breaking for custom themes: `TimePickerTokens` gains eight `required` properties** - `DialSize`,
+  `DialCenterSize`, `DialTrackWidth`, `DialHandleSize`, `TimeFieldWidth`, `TimeFieldHeight`,
+  `PeriodWidth` and `PeriodHeight`. The clock dial was drawn at a fixed 256px with its centre written
+  into the pointer maths, so no theme could size it, and it stayed the same size when the user
+  enlarged text while the numbers on it grew. A press is now resolved against the dial as rendered,
+  so any length works. Material 3 - and Aero and Liquid Glass, which follow it - now matches its
+  time-picker spec: the selected number sits in a 48dp handle instead of 36px, the hour and minute
+  fields are 96 by 80dp with 57pt digits instead of 80 by 52 with 44px, and the AM/PM selector is 52
+  by 80dp. The dropdown variant's header digits use the same size. Material 2 and Fluent keep their
+  previous geometry.
+
+- **Breaking for custom themes: `PickerTokens` gains nine `required` properties** - `PanelMinWidth`,
+  `PanelRadius`, `HeaderHeight`, `NavIconSize`, `WeekdayHeight`, `WeekdayFontSize`, `DaySize`,
+  `DayLayerSize` and `DayFontSize`. The calendar of `FlareDatePicker`, `FlareDateRangePicker` and
+  `FlareDateTimePicker` was sized in the core stylesheet, so every theme drew the same 288px panel with
+  36px days. A day is now a cell of `DaySize` holding a circle of `DayLayerSize`; the cells touch,
+  so a selected range reads as one unbroken band instead of squares with gaps, and its two ends are
+  circles. A panel wider than the screen narrows its columns instead of overflowing. Material 3 - and
+  Aero and Liquid Glass, which follow it - now matches its docked date-picker spec: a 360dp panel with
+  16dp corners, a 64dp header with 18dp arrows, 48dp day cells with a 40dp circle, and day and weekday
+  labels in body large. Material 2 and Fluent keep their previous geometry; their panel is 2px taller.
+
+- **Breaking for custom themes: `SplitButtonTokens.TriggerWidth` is now `TriggerWidthXs..Xl`.** One
+  width could not describe a trigger that is wider than it is tall at the two small sizes and square
+  from medium up, which is what Material 3 Expressive specifies. Set all five to the old value to
+  keep a fixed width; `auto` still means square. In Material 3 Expressive the trigger is now 48dp
+  wide at extra small and small (it was square: 32 and 40px) and the caret follows the split-button
+  table - 22, 22, 26, 38 and 50dp - instead of borrowing the button's icon size (20, 20, 24, 32 and
+  40px). The split-button sizes demo now shows all five sizes.
+
+- **Breaking for custom themes: `NavTokens` gains `IconSize` and `ItemHeight`.** A nav link and a nav
+  group header set their icon size on a wrapper, which sizes nothing, so the glyph took whatever the
+  caller passed or the icon component's own default, and the row was as tall as its padding made it.
+  Both now come from the theme and reach an icon placed in `IconContent` without a `Size`. Material 3,
+  with Aero and Liquid Glass, draws navigation rows 56dp tall with 24dp icons, as its drawer spec
+  does (they were 40px); Fluent and Visual Studio keep 40px rows with 20px icons; Material 2 uses its
+  24dp icons. In a rail the icon uses the same size instead of a separate fixed one.
+
+- **Menu icons follow the right Material generation.** Baseline Material 3 menu icons are 24dp and
+  Expressive ones 20dp; both themes drew 20px. A submenu's chevron now takes the menu item icon size
+  instead of a fixed 18px, so it matches the icons beside it in every theme.
+
+- **Breaking for custom themes: `ListTokens` gains `ItemIconSize`, and `BottomNavTokens` gains
+  `IndicatorWidth` and `ItemGap`.** An icon in a list item's leading or trailing slot fell back to the
+  icon component's 22px default; it now takes the theme's size - 24dp in Material 3 and Material 2,
+  20px in Fluent. An avatar or image there keeps its own size. The bottom navigation bar's active
+  pill was as wide as its padding made it, 48px, and sat 2px above its label; Material 3 now draws the
+  64 by 32dp pill 4dp above the label, and Material 3 Expressive its shorter 64dp bar with a 56dp
+  pill. Fluent and Material 2 keep their previous bar.
+
+- **Breaking for custom themes: new `required` tokens for things a theme could not set.**
+  `CardTokens` gains `FilledElevation`, `OutlinedElevation`, `TonalElevation` and `TextElevation` -
+  every card variant used to take the elevated card's shadow, so an outlined card cast one although
+  both Material generations draw it flat. `TabsTokens.LabelSpacing` carries the tab label's
+  letter-spacing, `SnackbarTokens.MinWidth` / `MaxWidth` the snackbar's width range (a fixed 320 to
+  576px until now), `LayoutTokens.AppBarShadow` a shadow under the layout's app bar, and
+  `ChipTokens.PaddingInlineXs..Xl` the chip's side padding. Material 3 cards now shadow only the
+  elevated variant, as its spec gives level 0 to filled and outlined cards, and Liquid Glass follows it; the other values keep
+  every theme where it was.
+
+- **Material 2 measured against its own implementation, page by page.** Where the guidelines publish
+  no number, Material Components for the Web does, and Flare now follows it: the checkbox box is 18px
+  (the 24dp in the guidelines is the icon around it, so the box had been drawn a third too large),
+  tab labels carry the button type's 1.25px tracking, chips have 12px side padding and a 20px leading
+  icon, a two-line list row is 64px rather than 67, dense rows are 40 and 60px, an outlined card is
+  flat, menus are a plain list with 8px above and below and no gaps or rounded rows, the snackbar is
+  344 to 672px wide and 48px tall with its action, the layout drawer is 256dp, and the layout app bar
+  sits 4dp above the page so a white bar no longer disappears into a white background.
+
+- **Breaking for apps that link theme CSS by hand: an in-box theme now ships all of its own CSS as one
+  stylesheet, `_content/Flare.Theme.<Name>/css/components.css`.** A theme used to list each of its files
+  in `StyleAssets` - five for Material 3 Expressive, seven for Aero and Liquid Glass - so an app writing
+  the links into its own head (`ThemeStylesheets.Manual`) had to know and repeat every one of them, in
+  order, and do it again whenever a theme gained a file. The build now concatenates a theme's parts into
+  one sheet, the way it already builds `flare-components.css`, and the parts are no longer in the
+  package. Replace links to `md3-base.css`, `md2-base.css`, `aero-base.css`, `liquid-glass-base.css`,
+  `fluent2-base.css`, `vs-base.css` or anything under `css/components/` with the one `components.css`;
+  an app on the default `Automatic` mode has nothing to change. The Material 3 Expressive, Aero, Liquid
+  Glass and Fluent 2 base files also `@import`ed component files that `StyleAssets` linked a second
+  time, so those rules were loaded twice; now each arrives once.
+
+- **Breaking for custom themes: `SliderTokens` gains `FocusOutline` and `FocusOutlineOffset`.** They draw
+  a stroke round the slider while its handle has keyboard focus, for a design language whose thumb has
+  no halo; set `none` and `0px` to keep focus on the state layer alone, which is what Material 2,
+  Material 3 and Visual Studio do. Fluent 2 now follows its own spec: the slider thumb no longer grows
+  a Material-style halo on hover, press and focus, and keyboard focus is Fluent's neutral 2px stroke
+  round the control instead. Its menu items' focus ring changes the same way, from a 3px ring in the
+  secondary colour to the neutral 2px stroke - black in light mode, white in dark.
+
+- **Material 2's Indigo, Teal, Blue, Pink and Green palettes are written out by hand.** They were
+  derived from one seed colour, so all five kept the baseline's teal secondary and lilac inverse primary
+  (in `md2-teal` the primary and secondary were the same colour), their primary container was a pale
+  tint while Purple's is the deep `primaryVariant`, and the info colour took the brand colour. Each now
+  comes from the Material 2 swatches with its own accent: indigo with pink, teal with deep purple, blue
+  with purple, pink with indigo and green with pink. Containers are the 700 variant as in Purple,
+  inverse primary comes from the palette's own swatch, and info, success, warning and error stay the
+  theme's. Custom palettes generated from a seed are unchanged.
+
+### Fixed
+
+- **A closed `FlareDrawer` could still be tabbed into.** A temporary drawer was closed only by sliding
+  it off the edge, so its links and buttons stayed in the tab order and in the accessibility tree:
+  measured in the component gallery at 375px, Tab walked through five controls of each closed side
+  drawer the reader could not see, and a screen reader listed them as part of the page. A closed
+  `Temporary` drawer, and a closed `Responsive` one at any width, is now `inert` and
+  `visibility: hidden`. The hide waits for the slide to finish, so closing still animates, and opening
+  is visible from the first frame. Something that focused an element inside a drawer before opening
+  it will find it unfocusable now - open the drawer first. `Permanent`, `Mini` and `Persistent` are
+  unchanged.
+
+- **A selected text button looked exactly like an unselected one.** Since 0.36.0
+  `FlareButton Selected="true"` and `FlareToggleButton` with `Variant="ButtonVariant.Text"` kept the
+  transparent background and primary label of the unselected state, so a text toggle showed no state
+  at all. They take the theme's selected colours again, or the `Color` set on the button; the
+  per-size text padding added in 0.36.0 is unchanged.
+
+- **A linear progress indicator with content drew its moving bar outside the track.** Since 0.36.0
+  giving `FlareProgressLinear` a `ChildContent` switched the track's clipping off entirely, so the
+  indeterminate and `Query` bars, which travel past both ends, painted over neighbouring content and
+  could widen the page's scroll area. The track now clips along its length and lets only the content
+  overflow above and below it.
+
+- **Material 3 Expressive: the wave on a determinate circular indicator ignored reduced motion.** With
+  `prefers-reduced-motion: reduce` it kept travelling round the ring; it now stands still, as the linear
+  wave and the indeterminate indicators already did.
+
+- **A slider in a left-to-right region of a right-to-left page shifted its labels the wrong way.** Since
+  0.36.0 the slider took its direction from any `dir="rtl"` ancestor, so inside a `dir="ltr"` form or
+  editor in an RTL app the value labels, tick marks and bubble sat off their positions, and
+  `dir="rtl"` set on the slider itself was not honoured. The slider now follows the direction it
+  actually resolves to.
+
+- **`FlareDateTimePicker.OpenAsync()` and `ToggleAsync()` did not show the popup.** The picker marked
+  itself open but did not render, so the panel appeared only after something else re-rendered the
+  component; opening it with its own button was unaffected. Both calls now show the panel at once.
+
+- **In side-by-side mode `FlareDateTimePicker` drew its Clear and OK buttons over the page.** With
+  `Mode="DateTimeVariant.Panels"`, and with `Auto` from the medium breakpoint up, the calendar and the
+  time are two separate cards and the popup around them has no background, but the buttons sat in that
+  popup below the cards, so their labels landed on whatever the page had underneath. They are now at
+  the bottom of the time card.
+
+- **An open menu drew a focus ring round its whole panel.** Using the keyboard in `FlareMenu` put the
+  global focus ring on the panel as well as on the item, in every theme - the panel takes focus only to
+  receive the arrow keys. The ring round the panel is gone; the item's own ring is unchanged, and a
+  `FreeContent` panel keeps its ring.
+
+- **A saved derived theme painted its first frame unstyled.** A theme made with `Derive` is styled by
+  its base theme's stylesheets, which answer to the base theme's class, but both boot scripts put only
+  the saved theme's own class on the page, so until .NET started the page showed no theme CSS at all.
+  `flare-bootstrap.js` and the `FlareBootstrap` component now add the family class too; for a
+  hand-pasted script, `FlareBootstrap.GenerateScript` has an overload that takes the families. The
+  guide also shows how to add a stylesheet on top of a base theme without leaving its family.
+
+- **Visual Studio: checkboxes, radio buttons and menu items showed no keyboard focus.** Their focus rings
+  come from Fluent 2 and name Fluent's focus-stroke colours, which the Visual Studio theme did not
+  define, so the browser dropped the ring. They now draw Fluent's two-stroke ring - black inside white in
+  light mode, the reverse in dark.
+
+- **Chart bars, gauges and pull-to-refresh never animated.** Their motion named an easing curve that no
+  theme defines, which invalidated the whole `animation` or `transition`: `FlareChart` bars appeared
+  without growing, a `FlareGauge` jumped to a new value instead of sweeping, and `FlarePullToRefresh`
+  snapped back instead of settling. They now use the theme's decelerate curve.
+
+- **`FlareQueryBuilder` connectors had no keyboard focus ring, and `FlareQueryEditor` problems were not
+  indented.** Both stylesheets named variables that do not exist. The connector now shows the theme's
+  focus ring like every other control, and the problem list has its indent.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

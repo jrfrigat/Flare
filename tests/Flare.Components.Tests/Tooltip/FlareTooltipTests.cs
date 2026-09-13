@@ -55,7 +55,3 @@ public class FlareTooltipTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll(".trigger-btn"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareEmptyState  (6 tests from Wave1)
-// ------------------------------------------------------------------------------

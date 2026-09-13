@@ -80,6 +80,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // read as two cards. Baseline M3 is one classic 4dp panel with square items.
         Menu = MaterialDesign3Tokens.Design.Menu with
         {
+            ItemIconSize = "1.25rem", // md.comp.menus.menu-item.*-icon.size 20dp
             PanelRadius = "var(--flare-shape-large)",         // 16dp
             ItemGapBetween = "0.125rem",                      // 2dp
             ItemRadius = "var(--flare-shape-extra-small)",    // 4dp  md.comp.menus.menu-item.shape
@@ -133,6 +134,30 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
+        // The split button exists only in Expressive, so its trigger follows `md.comp.split-button.<size>`
+        // here rather than the baseline square. The trigger is its caret plus the trailing-button spaces:
+        // 13+22+13 = 48dp at xsmall and small, wider than the 32 and 40dp buttons, and square from medium
+        // up (15+26+15 = 56, 29+38+29 = 96, 43+50+43 = 136).
+        SplitButton = MaterialDesign3Tokens.Design.SplitButton with
+        {
+            TriggerWidthXs = "3rem",   // 48dp
+            TriggerWidthSm = "3rem",   // 48dp
+            TriggerWidthMd = "auto",   // 56dp, square
+            TriggerWidthLg = "auto",   // 96dp, square
+            TriggerWidthXl = "auto",   // 136dp, square
+            CaretSizeXs = "1.375rem",  // 22dp
+            CaretSizeSm = "1.375rem",  // 22dp
+            CaretSizeMd = "1.625rem",  // 26dp
+            CaretSizeLg = "2.375rem",  // 38dp
+            CaretSizeXl = "3.125rem",  // 50dp
+        },
+        // Expressive's flexible navigation bar (md.comp.nav-bar) is shorter than the baseline one and its
+        // vertical item's indicator narrower: 64dp and 56dp against 80dp and 64dp.
+        BottomNav = MaterialDesign3Tokens.Design.BottomNav with
+        {
+            BarHeight = "4rem",        // 64dp
+            IndicatorWidth = "3.5rem", // 56dp
+        },
         Progress = MaterialDesign3Tokens.Design.Progress with
         {
             LinearIndeterminateDuration = "1750ms",
@@ -162,11 +187,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
     public IReadOnlyList<string> StyleAssets =>
     [
         "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/md3-base.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css",
-        "_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css",
+        "_content/Flare.Theme.MaterialDesign3Expressive/css/components.css",
     ];
 }
 

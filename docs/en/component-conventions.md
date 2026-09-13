@@ -47,7 +47,8 @@ Flare is a published NuGet library with token-driven theming. All component styl
 - The file is named in `flare-components.imports.css`, which is the load order the build concatenates in. A stylesheet nobody names fails the build rather than silently not shipping.
 - When you touch a component, make sure its CSS file exists and is in the bundle.
 - Examples: `button.css` -> `FlareButton`, `menu.css`/`menuitem.css`/`menugroup.css` -> the Menu group.
-- Theme-specific tweaks (MD3 vs Fluent) go in `src/Flare.Theme.*/wwwroot/css/components/*.css`.
+- Theme-specific tweaks (MD3 vs Fluent) go in `src/Flare.Theme.*/wwwroot/css/components/*.css`, named in that
+  theme's `components.imports.css`; the build concatenates them into the one `components.css` the theme ships.
 
 ### A settled state never holds a transform
 

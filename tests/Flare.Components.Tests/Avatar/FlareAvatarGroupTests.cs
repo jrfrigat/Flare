@@ -38,7 +38,3 @@ public class FlareAvatarGroupTests : FlareTestContext
         Assert.Empty(cut.FindAll($".{Css.Classes.Avatar.GroupOverflow}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareChip single  (5 tests from Wave3)
-// ------------------------------------------------------------------------------

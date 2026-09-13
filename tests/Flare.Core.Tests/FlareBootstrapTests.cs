@@ -23,6 +23,28 @@ public class FlareBootstrapTests
         Assert.Contains($"{Css.Classes.Theme.PalettePrefix}'+p", js);
     }
 
+    /// <summary>
+    /// A saved derived theme is styled by its base theme's stylesheets, which answer only to the base's
+    /// class; without it the first frame paints unstyled until .NET starts.
+    /// </summary>
+    [Fact]
+    public void GenerateScript_AddsTheStyleFamilyClassOfADerivedTheme()
+    {
+        var js = FlareBootstrap.GenerateScript(
+            ["md3-expressive", "brand"], ["p"], "md3-expressive", "p", ThemeMode.Auto,
+            new Dictionary<string, string> { ["brand"] = "md3-expressive", ["md3-expressive"] = "md3-expressive" });
+
+        Assert.Contains("var F={'brand':'md3-expressive'};", js);
+        Assert.Contains($"d.classList.add('{Css.Classes.Theme.ThemePrefix}'+F[t])", js);
+    }
+
+    [Fact]
+    public void GenerateScript_WithoutFamilies_EmitsNoLookup()
+    {
+        var js = FlareBootstrap.GenerateScript(["t"], ["p"], "t", "p", ThemeMode.Auto, styleFamilies: null);
+        Assert.DoesNotContain("var F=", js);
+    }
+
     [Fact]
     public void GenerateScript_DefaultModeDark_IsLowercased()
     {

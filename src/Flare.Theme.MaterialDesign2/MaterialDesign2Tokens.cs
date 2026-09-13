@@ -280,7 +280,11 @@ internal static class MaterialDesign2Tokens
         // reads the button's real height; a length here (as the other themes use) would win instead.
         // It cannot forward --_flare-btn-height: this record is emitted on :root, where that per-size
         // variable does not exist, so every size would end up the md fallback width.
-        TriggerWidth = "auto",
+        TriggerWidthXs = "auto",
+        TriggerWidthSm = "auto",
+        TriggerWidthMd = "auto",
+        TriggerWidthLg = "auto",
+        TriggerWidthXl = "auto",
 
         // Caret icon = Button icon size at the same size (token forwarded)
         CaretSizeXs = "var(--flare-btn-icon-size-xs)",
@@ -337,11 +341,11 @@ internal static class MaterialDesign2Tokens
         AnchorOffset = "1.5rem",
     };
 
-    // The box is 24dp here, against Material 3's 18dp - and the difference is the whole control,
-    // since a checkbox IS its box (spec redline "Checkboxes").
+    // The guideline redline "Checkboxes" measures 24dp, but that is the icon's bounds: the box drawn
+    // inside it is 18px (@material/checkbox $icon-size), with the 40px ripple around both.
     internal static readonly CheckboxTokens Checkbox = new()
     {
-        Size = "1.5rem",
+        Size = "1.125rem",
         BorderWidth = "2px",
         Radius = "2px",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
@@ -366,7 +370,7 @@ internal static class MaterialDesign2Tokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     // MD2 chips are fully rounded ("stadium") at 32dp.
-    internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
+    internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.25rem", IconSizeLg = "1.375rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-3)", PaddingInlineSm = "var(--flare-spacing-4)", PaddingInlineMd = "var(--flare-spacing-6)", PaddingInlineLg = "var(--flare-spacing-8)", PaddingInlineXl = "var(--flare-spacing-10)" }; // md: @material/chips $leading-padding 12px
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = new()
     {
@@ -376,6 +380,7 @@ internal static class MaterialDesign2Tokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)", // @material/tab uses the button type: 1.25px
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
@@ -419,9 +424,9 @@ internal static class MaterialDesign2Tokens
         // and 72 (@material/list $deprecated-single-line-height, $deprecated-two-line-height).
         ItemHeight = "48px",
         ItemHeightTwoLine = "64px",
-        ItemHeightDense = "3rem",
-        ItemHeightTwoLineDense = "3.5rem",
-        ItemPaddingBlock = "var(--flare-spacing-6)",
+        ItemHeightDense = "2.5rem",        // @material/list dense single line 40px
+        ItemHeightTwoLineDense = "3.75rem", // dense two-line 60px
+        ItemPaddingBlock = "var(--flare-spacing-4)", // 8px, so a two-line row stays at 64px
         ItemPaddingBlockDense = "var(--flare-spacing-3)",
         ItemPaddingInline = "var(--flare-spacing-8)",
         ItemGap = "var(--flare-spacing-8)",
@@ -434,6 +439,7 @@ internal static class MaterialDesign2Tokens
         ItemSelectedBg = "var(--flare-color-secondary-container)",
         ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        ItemIconSize = "1.5rem", // graphic-size 24px
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
@@ -479,20 +485,20 @@ internal static class MaterialDesign2Tokens
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
-        PanelRadius = "var(--flare-shape-extra-small)", // 16dp,
+        PanelRadius = "var(--flare-shape-extra-small)", // 4px
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-4)", // elevation 3,
-        PanelPaddingInline = "0.125rem",              // group padding 2dp
-        PanelPaddingBlock = "0.125rem",               // 2dp
-        ItemHeight = "3rem",                          // item height 48dp (MD3 list-item)
+        PanelPaddingInline = "0",
+        PanelPaddingBlock = "0.5rem",                 // mdc-deprecated-list padding 8px 0
+        ItemHeight = "3rem",                          // single-line list item 48px
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
         // Dense: the value core used to hardcode in menuitem.css, so a theme could style a normal menu
         // but never a dense one. Unchanged.
         ItemPaddingBlockDense = "0.375rem",
         ItemGapDense = "0.5rem",
-        ItemGapBetween = "0.125rem",                  // gap between items 2dp
-        ItemRadius = "var(--flare-shape-extra-small)",// 4dp
-        ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
+        ItemGapBetween = "0",
+        ItemRadius = "0",
+        ItemRadiusEnd = "0",
         GroupRadius = "var(--flare-shape-small)",     // group 8dp
         GroupPadding = "0.125rem",                    // group padding 2dp
         // Expressive "island" group sections: each group is a separate rounded surface tone with its
@@ -769,6 +775,9 @@ internal static class MaterialDesign2Tokens
         ActiveIndicator = "var(--flare-color-secondary-container)",
         ActiveLeftBar = "none",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // Material 2 icons are 24dp; the drawer spec gives no row height, so the existing 40dp row stays.
+        IconSize = "1.5rem",
+        ItemHeight = "2.5rem",
     };
 
     internal static readonly BottomNavTokens BottomNav = new()
@@ -786,6 +795,8 @@ internal static class MaterialDesign2Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        IndicatorWidth = "0",
+        ItemGap = "var(--flare-spacing-1)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ZIndex = "1100",
     };
@@ -856,9 +867,11 @@ internal static class MaterialDesign2Tokens
     {
         Radius = "var(--flare-shape-extra-small)",
         MinHeight = "3rem",
-        PaddingBlock = "0.875rem",
+        PaddingBlock = "0.625rem",
         ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
+        MinWidth = "21.5rem", // @material/snackbar $min-width 344px
+        MaxWidth = "42rem",   // $max-width 672px
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -914,6 +927,8 @@ internal static class MaterialDesign2Tokens
         StateLayerSize = "40px",
         StateHoverOpacity = "0.08",
         StatePressedOpacity = "0.10",
+        FocusOutline = "none",
+        FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-primary)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "4px",
@@ -1203,14 +1218,17 @@ internal static class MaterialDesign2Tokens
     internal static readonly LayoutTokens Layout = new()
     {
         AppBarHeight = "64px",
-        AppBarHeightDense = "3rem",              // MD3 dense top app bar = 48dp
+        AppBarHeightDense = "3rem",              // dense top app bar 48px
         AppBarBg = "var(--flare-color-surface)",
         ContentPadding = "1.5rem 2rem",
         ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",
-        DrawerWidth = "260px",
+        DrawerWidth = "256px",
         AppBarBorder = "none",
         DrawerBorder = "none",
+        // The top app bar lifts 4dp off the page. At 0dp a surface-coloured bar on the white background
+        // has nothing separating it from the content (elevation table: top app bar 0 or 4dp).
+        AppBarShadow = "var(--flare-elevation-3)",
     };
 
     internal static readonly LinkTokens Link = new()
@@ -1235,6 +1253,15 @@ internal static class MaterialDesign2Tokens
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
+        PanelMinWidth = "18rem",
+        PanelRadius = "var(--flare-popover-radius)",
+        HeaderHeight = "2rem",
+        NavIconSize = "var(--flare-btn-icon-size-sm)",
+        WeekdayHeight = "1.25rem",
+        WeekdayFontSize = "0.75rem",
+        DaySize = "2.375rem",
+        DayLayerSize = "2.25rem",
+        DayFontSize = "0.875rem",
     };
 
     internal static readonly ScrimTokens Scrim = new()
@@ -1288,6 +1315,14 @@ internal static class MaterialDesign2Tokens
     internal static readonly TimePickerTokens TimePicker = new()
     {
         ColumnsSepSize = "1.5rem",
+        DialCenterSize = "0.5rem",
+        DialHandleSize = "2.25rem",
+        DialSize = "16rem",
+        DialTrackWidth = "0.125rem",
+        PeriodHeight = "auto",
+        PeriodWidth = "auto",
+        TimeFieldHeight = "auto",
+        TimeFieldWidth = "5rem",
         DisplaySize = "2.75rem",
         HeadlineTracking = "0.05em",
         PanelRadius = "var(--flare-shape-extra-large)",
@@ -1382,6 +1417,12 @@ internal static class MaterialDesign2Tokens
             TextColor = "var(--flare-color-on-surface)",
             Radius = "var(--flare-shape-medium)",
             Elevation = "var(--flare-elevation-1)",
+            // Material 2 has an elevated card and an outlined one, and the outlined card rests at 0dp
+            // (spec "Outlined cards"). A text card has no container, so no shadow either.
+            FilledElevation = "var(--flare-elevation-1)",
+            OutlinedElevation = "none",
+            TonalElevation = "var(--flare-elevation-1)",
+            TextElevation = "none",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
             StateLayer = "var(--flare-state-hover-layer)",

@@ -253,7 +253,3 @@ public class FlareButtonGroupTests : FlareTestContext
         Assert.Contains(Css.Classes.Button.Outlined, cut.Find($".{Css.Classes.Button.Root}").ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareFloatingActionButton  (8 tests)
-// ------------------------------------------------------------------------------

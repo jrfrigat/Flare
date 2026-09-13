@@ -55,7 +55,9 @@
             {
                 <div class="@Css.Classes.DateTimePicker.Panes">
                     <div class="@Css.Classes.DateTimePicker.Pane">@_calendar</div>
-                    <div class="@Css.Classes.DateTimePicker.Pane">@_time</div>
+                    @* The split panel itself is transparent - each pane is its own surface - so the actions
+                       live in the time pane, where they have a background. *@
+                    <div class="@Css.Classes.DateTimePicker.Pane">@_time @_footer</div>
                 </div>
             }
             else
@@ -67,11 +69,8 @@
                             type="button" @onclick='() => _activeTab = 1'>@(FlareStrings.DateTimePicker_TimeTab)</button>
                 </div>
                 @if (_activeTab == 0) { @_calendar } else { @_time }
+                @_footer
             }
-            <div class="@Css.Classes.DateTimePicker.Footer">
-                <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
-                <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
-            </div>
         </div>
         }
     </Field>
@@ -208,6 +207,11 @@
     </text>;
 
     // Time pane (clock dial or number inputs) - reused by Tabs and Panels.
+    private RenderFragment _footer => @<div class="@Css.Classes.DateTimePicker.Footer">
+        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
+        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
+    </div>;
+
     private RenderFragment _time => @<text>
         @if (TimeVariant == TimePickerVariant.Dial)
         {
@@ -339,6 +343,8 @@
         // top layer. The hand-rolled version that used to live here assumed 380px of panel and left the
         // popup a plain fixed box, so any ancestor with a transform dragged it off the screen.
         await Opened.InvokeAsync();
+        // Called from OpenAsync/ToggleAsync as well as the toggle's click; only the click re-renders on its own.
+        StateHasChanged();
     }
 
     private void PrevMonth() => _viewDate = _viewDate.AddMonths(-1);

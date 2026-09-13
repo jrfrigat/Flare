@@ -68,7 +68,3 @@ public class FlarePaginationTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Pagination.Ellipsis}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareNavLink  (6 tests from Wave6)
-// ------------------------------------------------------------------------------

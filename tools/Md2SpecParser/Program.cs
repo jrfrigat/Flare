@@ -11,7 +11,7 @@ Usage:
 
 Options:
   --config <path>    Config file (default: spec-config.json beside the binary).
-  --out <path>       Override the output root.
+  --out <path>       Override the output root (relative to the working directory).
   --types <a,b,...>  Only these types (matched case-insensitively).
   --list             Print the configured types and exit.
   --use-proxy        Go through HTTP(S)_PROXY instead of connecting directly.
@@ -74,7 +74,23 @@ catch (Exception ex)
     return 2;
 }
 
-if (outputRoot is not null) config.OutputRoot = Path.GetFullPath(outputRoot);
+if (outputRoot is not null)
+{
+    config.OutputRoot = Path.GetFullPath(outputRoot);
+}
+else if (!Path.IsPathRooted(config.OutputRoot))
+{
+    // The working directory decides which checkout is meant, so a worktree writes into itself; the
+    // config's own folder covers a run started outside any checkout (it sits in the build output).
+    var repoRoot = FindRepoRoot(Directory.GetCurrentDirectory())
+                   ?? FindRepoRoot(Path.GetDirectoryName(Path.GetFullPath(configPath))!);
+    if (repoRoot is null)
+    {
+        Console.Error.WriteLine($"Output root '{config.OutputRoot}' is relative, but no Flare.slnx was found above the working directory or the config file. Pass --out.");
+        return 2;
+    }
+    config.OutputRoot = Path.GetFullPath(Path.Combine(repoRoot, config.OutputRoot));
+}
 
 var selected = config.Pages.AsEnumerable();
 if (types.Count > 0)
@@ -133,3 +149,11 @@ foreach (var r in results)
 Console.WriteLine();
 Console.WriteLine(failed == 0 ? "Done." : $"Done with {failed} failure(s).");
 return failed == 0 ? 0 : 1;
+
+static string? FindRepoRoot(string start)
+{
+    for (var dir = new DirectoryInfo(start); dir is not null; dir = dir.Parent)
+        if (File.Exists(Path.Combine(dir.FullName, "Flare.slnx")))
+            return dir.FullName;
+    return null;
+}

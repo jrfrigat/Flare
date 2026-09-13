@@ -76,7 +76,3 @@ public class FlareToggleGroupTests : FlareTestContext
         Assert.Equal("toggle-group", cut.Find($".{Css.Classes.ToggleGroup.Root}").GetAttribute("data-testid"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareTagField  (5 tests from Wave3)
-// ------------------------------------------------------------------------------

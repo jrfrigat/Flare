@@ -33,13 +33,12 @@ internal static class TestCultureInitializer
 public sealed class StubThemeService : IThemeService
 {
     private readonly ITheme _theme = new StubTheme();
-    private static readonly Palette _palette = new()
-    {
-        Id = "stub",
-        Name = "Stub",
-        Light = null!,
-        Dark = null!,
-    };
+    private readonly Palette _palette;
+
+    public StubThemeService() : this(new Palette { Id = "stub", Name = "Stub", Light = null!, Dark = null! }) { }
+
+    /// <summary>Creates a stub whose current and only registered palette is <paramref name="palette"/>.</summary>
+    public StubThemeService(Palette palette) => _palette = palette;
 
     public ITheme CurrentTheme => _theme;
     public Palette CurrentPalette => _palette;

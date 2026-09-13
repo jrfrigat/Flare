@@ -111,7 +111,3 @@ public class FlareDataGridAdvancedTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.DataGrid.FilterRow} .{Css.Classes.Input.Control}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid column picker / extended  (7 tests from Wave9)
-// ------------------------------------------------------------------------------

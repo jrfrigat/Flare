@@ -46,7 +46,9 @@
     --_bubble-origin-x: left;
 }
 
-[dir="rtl"] .flare-slider {
+/* :dir() rather than [dir="rtl"] ancestors: the sign must follow the direction the slider itself
+   resolves to, so a dir="ltr" region inside an RTL page, and dir="rtl" on the slider, both hold. */
+.flare-slider:dir(rtl) {
     --_dir: -1;
     --_bubble-origin-x: right;
 }
@@ -240,6 +242,14 @@
     border: var(--_hnd-border-w) solid var(--_active);
     transition: width var(--flare-motion-duration-short2),
                 box-shadow var(--flare-motion-duration-short2);
+}
+
+/* Keyboard focus as a stroke round the control, for a language whose thumb carries no halo. Keyed to the
+   input's :focus-visible, so a pointer drag does not draw it. */
+.flare-slider__track-wrap:has(.flare-slider__input:focus-visible) {
+    outline: var(--flare-slider-focus-outline);
+    outline-offset: var(--flare-slider-focus-outline-offset);
+    border-radius: var(--flare-shape-small);
 }
 
 /* State layer (hover/focus) - translucent halo around the handle */

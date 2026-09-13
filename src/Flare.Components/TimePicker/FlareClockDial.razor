@@ -3,6 +3,9 @@
 @using System
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Flare.Components.Services
+@inject IElementJsService ElementJs
 
 @* Reusable analog clock dial (tap + drag + keyboard). Used by FlareTimePicker and FlareDateTimePicker. *@
 <div class="@Css.Classes.ClockDial.Root" tabindex="0" @ref="_root" @onkeydown="OnKey">
@@ -25,7 +28,7 @@
     }
 </div>
 
-<div class="@Css.Classes.ClockDial.Dial" role="slider"
+<div class="@Css.Classes.ClockDial.Dial" role="slider" @ref="_dial"
      aria-label="@(_mode == DialMode.Hour ? "Hours" : "Minutes")"
      aria-valuenow="@(_mode == DialMode.Hour ? Hour : Minute)"
      @onpointerdown="OnDown" @onpointermove="OnMove" @onpointerup="OnUp" @onpointerleave="OnUp">
@@ -56,13 +59,16 @@
 
     private enum DialMode { Hour, Minute }
 
-    private const double DialSize = 256;
     private const double OuterR = 40;
     private const double InnerR = 26;
 
     private DialMode _mode = DialMode.Hour;
     private bool _dragging;
     private ElementReference _root;
+    private ElementReference _dial;
+    // Half the rendered dial width, read when a press starts: the diameter is a theme token, so the
+    // centre cannot be a constant.
+    private double? _radius;
     private string _buf = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -116,8 +122,17 @@
 
     private Task SetPeriod(bool pm) => HourChanged.InvokeAsync((Hour % 12) + (pm ? 12 : 0));
 
-    private async Task OnDown(PointerEventArgs e) { _dragging = true; await Apply(e.OffsetX, e.OffsetY); }
-    private async Task OnMove(PointerEventArgs e) { if (_dragging) await Apply(e.OffsetX, e.OffsetY); }
+    private async Task OnDown(PointerEventArgs e)
+    {
+        _dragging = true;
+        // Taken before the measurement is awaited: a quick tap's pointerup lands meanwhile and moves
+        // the dial on to minutes, which would otherwise receive the hour that was tapped.
+        var mode = _mode;
+        try { _radius = (await ElementJs.GetBoundsAsync(_dial)).Width / 2; }
+        catch (JSException) { /* keep the last measurement */ }
+        await Apply(mode, e.OffsetX, e.OffsetY);
+    }
+    private async Task OnMove(PointerEventArgs e) { if (_dragging) await Apply(_mode, e.OffsetX, e.OffsetY); }
     private void OnUp(PointerEventArgs e)
     {
         if (!_dragging) return;
@@ -125,19 +140,20 @@
         if (_mode == DialMode.Hour) _mode = DialMode.Minute;
     }
 
-    private async Task Apply(double offsetX, double offsetY)
+    private async Task Apply(DialMode mode, double offsetX, double offsetY)
     {
-        var dx = offsetX - DialSize / 2;
-        var dy = offsetY - DialSize / 2;
+        if (_radius is not double radius || radius <= 0) return;
+        var dx = offsetX - radius;
+        var dy = offsetY - radius;
         var deg = (Math.Atan2(dx, -dy) * 180.0 / Math.PI + 360) % 360;
 
-        if (_mode == DialMode.Hour)
+        if (mode == DialMode.Hour)
         {
             var pos = (int)Math.Round(deg / 30) % 12;
             int hour;
             if (Is24Hour)
             {
-                var inner = Math.Sqrt(dx * dx + dy * dy) < DialSize / 2 * 0.66;
+                var inner = Math.Sqrt(dx * dx + dy * dy) < radius * 0.66;
                 hour = inner ? (pos == 0 ? 0 : pos + 12) : (pos == 0 ? 12 : pos);
             }
             else

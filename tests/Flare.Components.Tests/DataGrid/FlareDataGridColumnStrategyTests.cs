@@ -74,7 +74,3 @@ public class FlareDataGridColumnStrategyTests : FlareTestContext
         Assert.Contains("B", rows[0].TextContent);
     }
 }
-
-// ------------------------------------------------------------------------------
-// Type-aware cell rendering + auto-detection (ColumnDataType / DataGridValueFormatter)
-// ------------------------------------------------------------------------------

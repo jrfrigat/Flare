@@ -261,7 +261,11 @@ public class FluentUI2Tokens
         Gap = "1px", // Thin 1px Microsoft seam between the two parts
 
         // Fluent: fixed-width trigger 24dp (not square), no inline padding needed
-        TriggerWidth = "1.5rem", // 24dp
+        TriggerWidthXs = "1.5rem",
+        TriggerWidthSm = "1.5rem",
+        TriggerWidthMd = "1.5rem",
+        TriggerWidthLg = "1.5rem",
+        TriggerWidthXl = "1.5rem",
 
         // Fluent: fixed 12dp chevron at every size
         CaretSizeXs = "0.75rem",
@@ -339,6 +343,7 @@ public class FluentUI2Tokens
         ItemSelectedBg = "var(--flare-color-secondary-container)",
         ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "1",
+        ItemIconSize = "1.25rem", // Fluent's regular icon size; the List spec names none
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
@@ -412,9 +417,10 @@ public class FluentUI2Tokens
         ItemLabelSize = "var(--flare-typescale-body-large-size)",
         ItemLabelHeight = "var(--flare-typescale-body-large-height)",
         ItemLabelSpacing = "var(--flare-typescale-body-large-spacing)",
-        ItemFocusRingColor = "var(--flare-color-secondary)",
-        ItemFocusRingThickness = "3px",
-        ItemFocusRingOffset = "-3px",
+        // createFocusOutlineStyle: a strokeWidthThick stroke in colorStrokeFocus2, black in light and white in dark.
+        ItemFocusRingColor = "var(--flare-fluent-focus-stroke-color)",
+        ItemFocusRingThickness = "2px",
+        ItemFocusRingOffset = "-2px",
         // Fluent repaints a disabled item rather than fading it.
         ItemDisabledOpacity = "1",
     };
@@ -462,6 +468,11 @@ public class FluentUI2Tokens
         AvatarSizeMd = "1.5rem",
         AvatarSizeLg = "1.875rem",
         AvatarSizeXl = "2.25rem",
+        PaddingInlineXs = "var(--flare-spacing-4)",
+        PaddingInlineSm = "var(--flare-spacing-5)",
+        PaddingInlineMd = "var(--flare-spacing-8)",
+        PaddingInlineLg = "var(--flare-spacing-10)",
+        PaddingInlineXl = "var(--flare-spacing-12)",
         FilledBg = "var(--flare-color-surface-container-high)",
         ElevatedBg = "var(--flare-color-surface-container-low)",
         Radius = "var(--flare-shape-small)",
@@ -475,6 +486,7 @@ public class FluentUI2Tokens
         CloseOpacity = "0.6",
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
         LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
@@ -571,9 +583,12 @@ public class FluentUI2Tokens
         HandleFill = "var(--flare-color-surface)",   // white thumb
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-outline-variant)",
-        StateLayerSize = "28px",
-        StateHoverOpacity = "0.06",
-        StatePressedOpacity = "0.08",
+        // Fluent's thumb has no halo: it shows focus with the neutral stroke round the control instead.
+        StateLayerSize = "0px",
+        StateHoverOpacity = "0",
+        StatePressedOpacity = "0",
+        FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
+        FocusOutlineOffset = "2px",
         StopColor = "var(--flare-color-outline)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
@@ -803,6 +818,9 @@ public class FluentUI2Tokens
         ActiveIndicator = "none",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
+        // NavItem: 20px icon, 10px block padding around a 20px line.
+        IconSize = "1.25rem",
+        ItemHeight = "2.5rem",
     };
 
     // Switch - Fluent's compact track + thin focus offset map to the typed record; the rest of the
@@ -1100,6 +1118,8 @@ public class FluentUI2Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        IndicatorWidth = "0",
+        ItemGap = "var(--flare-spacing-1)",
         ItemDisabledOpacity = "1",
         ZIndex = "1100",
     };
@@ -1148,6 +1168,8 @@ public class FluentUI2Tokens
         PaddingBlock = "0.875rem",
         ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
+        MinWidth = "20rem",
+        MaxWidth = "36rem",
     };
 
     // Dialog - Fluent: large radius; the rest is the shared Material baseline.
@@ -1216,6 +1238,7 @@ public class FluentUI2Tokens
         DrawerWidth = "260px",
         AppBarBorder = "1px solid var(--flare-color-outline-variant)",
         DrawerBorder = "1px solid var(--flare-color-outline-variant)",
+        AppBarShadow = "none",
     };
 
     internal static readonly LinkTokens Link = new()
@@ -1240,6 +1263,15 @@ public class FluentUI2Tokens
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
+        PanelMinWidth = "18rem",
+        PanelRadius = "var(--flare-popover-radius)",
+        HeaderHeight = "1.75rem",
+        NavIconSize = "var(--flare-btn-icon-size-sm)",
+        WeekdayHeight = "1.25rem",
+        WeekdayFontSize = "0.75rem",
+        DaySize = "2.375rem",
+        DayLayerSize = "2.25rem",
+        DayFontSize = "0.875rem",
     };
 
     internal static readonly ScrimTokens Scrim = new()
@@ -1290,6 +1322,14 @@ public class FluentUI2Tokens
     internal static readonly TimePickerTokens TimePicker = new()
     {
         ColumnsSepSize = "1.5rem",
+        DialCenterSize = "0.5rem",
+        DialHandleSize = "2.25rem",
+        DialSize = "16rem",
+        DialTrackWidth = "0.125rem",
+        PeriodHeight = "auto",
+        PeriodWidth = "auto",
+        TimeFieldHeight = "auto",
+        TimeFieldWidth = "5rem",
         DisplaySize = "2.75rem",
         HeadlineTracking = "0.05em",
         PanelRadius = "var(--flare-shape-extra-large)",
@@ -1359,6 +1399,11 @@ public class FluentUI2Tokens
             ElevatedBg = "var(--flare-color-surface)",
             Elevation = "var(--flare-elevation-2)",
             ElevationHover = "var(--flare-elevation-3)",
+            // Filled cards cast the shadow; the outline and subtle appearances do not.
+            FilledElevation = "var(--flare-elevation-2)",
+            OutlinedElevation = "none",
+            TonalElevation = "var(--flare-elevation-2)",
+            TextElevation = "none",
             FilledBg = "var(--flare-color-surface)",
             OutlinedBg = "var(--flare-color-surface)",
             OutlinedBorder = "1px solid var(--flare-color-outline-variant)",

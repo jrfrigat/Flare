@@ -111,7 +111,3 @@ public class FlareFabMenuTests : FlareTestContext
         Assert.Equal(align is null ? [] : [align], aligns.Where(classes.Contains));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareToggleGroup  (8 tests from Wave7)
-// ------------------------------------------------------------------------------

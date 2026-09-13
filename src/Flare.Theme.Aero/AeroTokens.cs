@@ -214,7 +214,11 @@ internal class AeroTokens
     internal static readonly SplitButtonTokens SplitButton = new()
     {
         Gap = "1px",
-        TriggerWidth = "1.25rem",
+        TriggerWidthXs = "1.25rem",
+        TriggerWidthSm = "1.25rem",
+        TriggerWidthMd = "1.25rem",
+        TriggerWidthLg = "1.25rem",
+        TriggerWidthXl = "1.25rem",
         CaretSizeXs = "0.75rem",
         CaretSizeSm = "0.75rem",
         CaretSizeMd = "0.75rem",
@@ -265,7 +269,7 @@ internal class AeroTokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
-    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-4)", PaddingInlineSm = "var(--flare-spacing-5)", PaddingInlineMd = "var(--flare-spacing-8)", PaddingInlineLg = "var(--flare-spacing-10)", PaddingInlineXl = "var(--flare-spacing-12)" };
     internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs;
 
     internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
@@ -353,6 +357,8 @@ internal class AeroTokens
         ActiveIndicator = "none",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        IconSize = "1.25rem",
+        ItemHeight = "2.5rem",
     };
 
     /// <summary>Theme-specific extras (geometry/gloss hooks consumed by the scoped CSS).</summary>

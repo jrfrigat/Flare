@@ -571,7 +571,3 @@ public class FlareDataGridColumnPickerTests : FlareTestContext
         Assert.Contains("R100", rows[0].TextContent);      // the last item is now first
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid header rendering / column declaration order
-// ------------------------------------------------------------------------------

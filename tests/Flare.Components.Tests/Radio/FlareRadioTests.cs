@@ -58,7 +58,3 @@ public class FlareRadioTests : FlareTestContext
         Assert.Contains(Css.Classes.Radio.Disabled, cut.Find("label").ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareFormField  (9 tests from Wave10)
-// ------------------------------------------------------------------------------

@@ -138,7 +138,7 @@ Every color-aware component takes a single `Color` parameter of type `FlareColor
 ```razor
 @* Semantic role -> shared, cached theme class (theme-aware, accessible) *@
 <FlareButton Color="FlareColor.Primary">Primary</FlareButton>
-<FlareProgress Color="FlareColor.Success" Value="70" />
+<FlareProgressLinear Color="FlareColor.Success" Value="70" />
 
 @* Custom value -> inline CSS tokens (sanitized) *@
 <FlareSlider Color="FlareColor.Custom("#E91E63")" @bind-Value="_v" />

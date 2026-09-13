@@ -7,6 +7,8 @@
     <Description>Aero (Windows 7 Aero / Office 2010 / 1C) theme for the Flare Blazor component library</Description>
     <PackageTags>blazor;theming;aero;aero;windows7;office2010;1c;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Built from components.imports.css into wwwroot/css/components.css; see Directory.Build.targets. -->
+    <FlareCssBundle>components</FlareCssBundle>
   </PropertyGroup>
 
   <ItemGroup>

@@ -97,6 +97,14 @@ public static class CardField
     public const string Elevation = "--flare-card-elevation";
     /// <summary>CSS custom-property name for the elevation hover token.</summary>
     public const string ElevationHover = "--flare-card-elevation-hover";
+    /// <summary>CSS custom-property name for the filled card elevation token.</summary>
+    public const string FilledElevation = "--flare-card-filled-elevation";
+    /// <summary>CSS custom-property name for the outlined card elevation token.</summary>
+    public const string OutlinedElevation = "--flare-card-outlined-elevation";
+    /// <summary>CSS custom-property name for the tonal card elevation token.</summary>
+    public const string TonalElevation = "--flare-card-tonal-elevation";
+    /// <summary>CSS custom-property name for the text card elevation token.</summary>
+    public const string TextElevation = "--flare-card-text-elevation";
     /// <summary>CSS custom-property name for the selected border token.</summary>
     public const string SelectedBorder = "--flare-card-selected-border";
     /// <summary>CSS custom-property name for the selected bg token.</summary>
@@ -280,6 +288,10 @@ public static class NavField
     public const string ActiveLeftBar = "--flare-nav-active-left-bar";
     /// <summary>CSS custom-property name for the disabled nav-link opacity token.</summary>
     public const string LinkDisabledOpacity = "--flare-nav-link-disabled-opacity";
+    /// <summary>CSS custom-property name for the nav item icon size token.</summary>
+    public const string IconSize = "--flare-nav-icon-size";
+    /// <summary>CSS custom-property name for the nav item minimum height token.</summary>
+    public const string ItemHeight = "--flare-nav-item-height";
 }
 
 /// <summary>CSS variable tokens for switch field.</summary>

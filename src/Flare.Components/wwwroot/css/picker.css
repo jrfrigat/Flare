@@ -19,7 +19,7 @@
     position: fixed;
     z-index: var(--flare-z-dropdown, 1000);
     background: var(--flare-color-surface-container-high);
-    border-radius: var(--flare-popover-radius);
+    border-radius: var(--flare-picker-panel-radius);
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-6);
 }
@@ -36,21 +36,27 @@
    (distinct from the event FlareCalendar's flare-calendar__* grid). */
 .flare-picker__day-headers {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    align-items: center;
+    min-height: var(--flare-picker-weekday-height);
     text-align: center;
-    font-size: 0.75rem;
+    font-size: var(--flare-picker-weekday-font-size);
     color: var(--flare-color-on-surface-variant);
     margin-bottom: var(--flare-spacing-2);
 }
+/* A day is a cell (the row height, the column's share of the width) holding a circle of the layer size.
+   The cells touch, so a range highlight can run through a week without breaking between days. */
 .flare-picker__grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: var(--flare-spacing-1);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-auto-rows: var(--flare-picker-day-size);
+    align-items: center;
+    justify-items: center;
 }
 /* Week-number column: a leading auto-width column before the seven day columns. */
 .flare-picker__day-headers--weeks,
 .flare-picker__grid--weeks {
-    grid-template-columns: auto repeat(7, 1fr);
+    grid-template-columns: auto repeat(7, minmax(0, 1fr));
 }
 .flare-picker__weeknum {
     display: flex;
@@ -61,8 +67,12 @@
     color: var(--flare-color-on-surface-variant);
     opacity: var(--flare-picker-weeknum-opacity);
 }
+/* The width is capped by the column, and the height follows it, so a panel narrower than seven layers
+   still draws circles. */
 .flare-picker__day {
+    width: min(100%, var(--flare-picker-day-layer-size));
     aspect-ratio: 1;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,7 +80,7 @@
     background: transparent;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: var(--flare-picker-day-font-size);
     color: var(--flare-color-on-surface);
     font-family: inherit;
     transition: background-color var(--flare-motion-duration-short2);

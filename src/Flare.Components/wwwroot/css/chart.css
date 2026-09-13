@@ -41,7 +41,7 @@
 .flare-chart--animate .flare-chart__bar {
     transform-box: fill-box;
     transform-origin: bottom;
-    animation: flare-chart-grow var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized-decelerate) both;
+    animation: flare-chart-grow var(--flare-motion-duration-medium2) var(--flare-motion-easing-decelerate) both;
 }
 /* Only a solid line carries pathLength, and only in those normalised units does a "1 long" dash
    stroke the whole path. A patterned line keeps real units, so it is left out of the draw-on. */

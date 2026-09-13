@@ -119,4 +119,8 @@ public static class SnackbarPanel
     public const string ProviderInset = "--flare-snackbar-provider-inset";
     /// <summary>CSS custom-property name for the dismiss-button opacity.</summary>
     public const string CloseOpacity = "--flare-snackbar-close-opacity";
+    /// <summary>CSS custom-property name for the snackbar minimum width token.</summary>
+    public const string MinWidth = "--flare-snackbar-min-width";
+    /// <summary>CSS custom-property name for the snackbar maximum width token.</summary>
+    public const string MaxWidth = "--flare-snackbar-max-width";
 }

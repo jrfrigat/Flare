@@ -64,7 +64,3 @@ public class FlareDataGridColumnIdentityTests : FlareTestContext
         Assert.Single(sortIcons);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid interactive column visibility (ShowColumnPicker)
-// ------------------------------------------------------------------------------

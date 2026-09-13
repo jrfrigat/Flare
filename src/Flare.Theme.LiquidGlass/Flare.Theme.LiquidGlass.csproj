@@ -7,6 +7,8 @@
     <Description>Liquid Glass (frosted "liquid glass") theme for the Flare Blazor component library</Description>
     <PackageTags>blazor;theming;ios;glass;liquid-glass;apple;frosted;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Built from components.imports.css into wwwroot/css/components.css; see Directory.Build.targets. -->
+    <FlareCssBundle>components</FlareCssBundle>
   </PropertyGroup>
 
   <ItemGroup>

@@ -141,7 +141,3 @@ public class FlarePasswordFieldTests : FlareTestContext
         Assert.Contains(Css.Classes.Input.MarginDense, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareTextArea  (8 tests from Wave4)
-// ------------------------------------------------------------------------------

@@ -68,8 +68,8 @@
   display: flex;
   align-items: center;
   gap: var(--flare-spacing-4);
-  min-width: 20rem;
-  max-width: 36rem;
+  min-width: var(--flare-snackbar-min-width);
+  max-width: var(--flare-snackbar-max-width);
   /* Single-line 48dp, two-line grows to ~68dp via wrapping content */
   min-height: var(--flare-snackbar-min-height);
   padding: var(--flare-snackbar-padding-block) var(--flare-spacing-10);

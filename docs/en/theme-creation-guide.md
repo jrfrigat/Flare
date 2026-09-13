@@ -145,10 +145,19 @@ family it belongs to. `Derive` does this for you, keeping the base theme's famil
 var brand = new MaterialDesign3ExpressiveTheme()
     .Derive("md3-expressive-brand", design: d => d with { ... });
 
-// Brings its own stylesheets, so it is its own family.
+// Adds a stylesheet on top of Expressive's: keeps the family, lists the base assets first, and scopes
+// its own rules to .flare-theme-md3-expressive-gold, the class of its own id.
+var baseTheme = new MaterialDesign3ExpressiveTheme();
+var gold = baseTheme.Derive("md3-expressive-gold",
+    styleAssets: [.. baseTheme.StyleAssets, "_content/Acme/css/gold.css"]);
+
+// Replaces the stylesheets entirely, so it is its own family.
 var standalone = new MaterialDesign3ExpressiveTheme()
     .Derive("acme", styleAssets: ["_content/Acme/css/acme.css"], styleFamilyId: "acme");
 ```
+
+`styleAssets` replaces the base theme's list rather than adding to it, and a theme that sets its own
+family loses every rule scoped to the base's class - so pass `styleFamilyId` only in the last case.
 
 Leave `StyleFamilyId` alone when your theme ships its own `StyleAssets`: it already defaults to `Id`.
 
@@ -492,6 +501,13 @@ MyTheme/
 |       +-- dialog.css          # Dialog overrides
 |       +-- ...                 # Other component overrides
 ```
+
+Author as many files as you like, but ship them as one stylesheet and list only that one in
+`StyleAssets`. Every entry is a separate request, and an app that writes the theme's links into its own
+head has to repeat each of them. Do not stitch the parts together with `@import` either: a browser finds
+an import only after it has fetched the file that names it. The in-box themes keep their parts in
+`wwwroot/css`, list them in a `components.imports.css` manifest beside the project file, and the build
+concatenates them into `wwwroot/css/components.css`.
 
 ### Base CSS
 

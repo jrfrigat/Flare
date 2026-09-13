@@ -381,7 +381,9 @@
     .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg,
     .flare-progress--md3e-wavy.flare-progress--linear .flare-progress__bar,
     .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator,
-    .flare-progress--circular.flare-progress--indeterminate .flare-progress__track {
+    .flare-progress--circular.flare-progress--indeterminate .flare-progress__track,
+    .flare-progress--md3e-wavy.flare-progress--circular:not(.flare-progress--indeterminate)
+    .flare-progress__indicator {
       animation: none;
     }
 

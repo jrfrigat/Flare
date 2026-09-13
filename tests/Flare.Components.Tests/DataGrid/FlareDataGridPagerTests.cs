@@ -126,10 +126,3 @@ public class FlareDataGridPagerTests : FlareTestContext
         Assert.Equal(["5", "10", "25"], opts);
     }
 }
-
-// ------------------------------------------------------------------------------
-// DataGridPersistence - round-trips grid state through browser localStorage using
-// the built-in localStorage.* interop (not a custom JS module export, which is the
-// bug this guards against: the old code imported flare-theme.js and called exports
-// that never existed, so persistence silently no-op'd / threw JSException).
-// ------------------------------------------------------------------------------

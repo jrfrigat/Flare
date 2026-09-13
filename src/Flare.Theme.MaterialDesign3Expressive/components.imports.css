@@ -1,0 +1,6 @@
+/* Flare.Theme.MaterialDesign3Expressive styles, in load order. The build concatenates these into
+   wwwroot/css/components.css, the one stylesheet the theme ships (see Directory.Build.targets). */
+@import 'components/button.css';
+@import 'components/split-button.css';
+@import 'components/button-group.css';
+@import 'components/progress.css';

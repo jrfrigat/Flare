@@ -87,8 +87,43 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 > Icons are inline SVG (the built-in `FlareIcons` set), so there is **no icon font to add**. For provider
 > icon packages (Material Symbols / Fluent / Font Awesome), see [Icons](icons.md).
 
-> The active theme's CSS (`ITheme.StyleAssets` - fonts, base tokens) is wired up automatically by
-> `FlareThemeProvider` at startup, so you do not need to add theme CSS by hand.
+### Theme stylesheets: automatic or in your own head
+
+A theme ships its own CSS - fonts, base tokens, component overrides - listed in `ITheme.StyleAssets`.
+There are two ways to get it onto the page.
+
+**Automatic (the default).** `FlareThemeProvider` writes the links itself and waits for the active
+theme's sheets to load before it reveals the app. There is nothing to add. The cost shows in a
+WebAssembly app: the links reach the page only after .NET has started, so the theme CSS is a second
+wave of requests behind the runtime, and every registered theme's sheets are fetched, not just the
+active one. With server prerendering the links are already part of the first HTML.
+
+**Manual (fastest first frame).** Put the active theme's links in your `<head>`, next to the component
+CSS, so the browser fetches them with the page:
+
+```html
+<link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
+<!-- The active theme's StyleAssets (here: Material 3 Expressive - its font, then its one stylesheet) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components.css" />
+```
+
+and tell the provider:
+
+```razor
+<FlareThemeProvider Stylesheets="ThemeStylesheets.Manual">
+```
+
+In manual mode the provider writes no links of its own, so no sheet is fetched and applied twice. It
+still waits for the active theme's sheets and the active palette's `StyleAsset`, recognises a link you
+wrote by its address however it is spelled (`_content/...`, `/_content/...`, `./_content/...`), and adds
+only what is missing - a theme or palette the user switches to at run time, or a sheet a newer theme
+version lists. A link you forget costs a late request, not an unstyled page.
+
+An in-box theme ships all of its own CSS as one stylesheet, `_content/Flare.Theme.<Name>/css/components.css`;
+the Material themes add a Google Fonts link in front of it. The exact list is the theme's `StyleAssets` -
+print it once with `@foreach (var href in ThemeService.CurrentTheme.StyleAssets)` or read it from the
+browser's network panel - and its order is the order to keep.
 
 ---
 

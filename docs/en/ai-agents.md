@@ -94,7 +94,8 @@ registration needed. Other entry points: `AddFlareTheme`, `AddFlarePalette`, `Ad
         data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 ```
-Theme CSS (fonts, base tokens) is wired up automatically by `FlareThemeProvider`; do not add it by hand.
+Theme CSS (fonts, base tokens) is wired up automatically by `FlareThemeProvider`; do not add it by hand
+unless the app sets `Stylesheets="ThemeStylesheets.Manual"` - see [Getting started](getting-started.md).
 Icons are inline SVG (no icon font to add).
 
 **c) Imports - `_Imports.razor`:**

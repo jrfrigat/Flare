@@ -54,7 +54,3 @@ public class FlareContainerTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll("#container-child"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareSpacer  (4 tests from Wave7)
-// ------------------------------------------------------------------------------

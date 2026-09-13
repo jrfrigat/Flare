@@ -80,7 +80,3 @@ public class FlareButtonLoadingTests : FlareTestContext
         Assert.False(cut.Find("button").HasAttribute("disabled"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareSplitButton  (4 tests)
-// ------------------------------------------------------------------------------

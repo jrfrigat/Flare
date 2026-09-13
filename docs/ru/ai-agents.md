@@ -94,7 +94,8 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
         data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
 ```
-CSS темы (шрифты, базовые токены) подключается автоматически через `FlareThemeProvider`; вручную не добавляйте.
+CSS темы (шрифты, базовые токены) подключается автоматически через `FlareThemeProvider`; вручную не добавляйте,
+если приложение не задает `Stylesheets="ThemeStylesheets.Manual"` - см. [Начало работы](getting-started.md).
 Иконки - это inline-SVG (иконочный шрифт подключать не нужно).
 
 **c) Импорты - `_Imports.razor`:**

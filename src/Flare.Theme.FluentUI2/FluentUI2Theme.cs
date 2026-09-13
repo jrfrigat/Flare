@@ -23,8 +23,7 @@ public sealed class FluentUI2Theme : ITheme
 
     public IReadOnlyList<string> StyleAssets =>
     [
-        "_content/Flare.Theme.FluentUI2/css/fluent2-base.css",
-        "_content/Flare.Theme.FluentUI2/css/components/button.css",
+        "_content/Flare.Theme.FluentUI2/css/components.css",
     ];
 
     // Fluent flips a few focus/switch colors in dark mode (mode-specific Extended keys).

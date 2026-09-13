@@ -51,7 +51,3 @@ public class FlareHighlighterTests : FlareTestContext
         Assert.Empty(cut.FindAll($"mark.{Css.Classes.Highlighter.Mark}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareMarkdown component  (10 tests from Wave8)
-// ------------------------------------------------------------------------------

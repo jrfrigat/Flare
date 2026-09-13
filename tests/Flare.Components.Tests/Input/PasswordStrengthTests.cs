@@ -79,7 +79,3 @@ public class PasswordStrengthTests
         Assert.Empty(cut.FindAll($".{Css.Classes.Input.Strength}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareTimeSpanPicker - a duration, not a clock
-// ------------------------------------------------------------------------------

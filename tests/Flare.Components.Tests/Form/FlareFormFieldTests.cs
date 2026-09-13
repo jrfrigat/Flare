@@ -84,7 +84,3 @@ public class FlareFormFieldTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.ControlSlot}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareForm Layout  (8 tests from Wave10)
-// ------------------------------------------------------------------------------

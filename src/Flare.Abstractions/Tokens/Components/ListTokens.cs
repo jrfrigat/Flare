@@ -56,4 +56,8 @@ public sealed record ListTokens
     /// leaves this opaque and carries the change in its own stylesheet, since a foreground colour has no
     /// value meaning "leave this as painted".</summary>
     [CssVar(ListField.ItemDisabledOpacity)] public required string ItemDisabledOpacity { get; init; }
+
+    /// <summary>Size of an icon placed in an item's leading or trailing slot. A larger element there,
+    /// such as an avatar or an image, keeps its own size.</summary>
+    [CssVar(ListField.ItemIconSize)] public required string ItemIconSize { get; init; }
 }

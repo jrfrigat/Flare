@@ -87,7 +87,3 @@ public class FlareAccordionPanelTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Accordion.Expanded}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareStepper  (8 tests from Wave5)
-// ------------------------------------------------------------------------------

@@ -37,6 +37,7 @@
     height: var(--flare-layout-appbar-height);
     background: var(--flare-layout-appbar-bg);
     border-bottom: var(--flare-layout-appbar-border);
+    box-shadow: var(--flare-layout-appbar-shadow);
     z-index: 100;
     color: var(--flare-color-on-surface);
 }

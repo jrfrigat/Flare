@@ -7,6 +7,8 @@
     <Description>Material Design 3 Expressive (MD3) light and dark themes for the Flare Blazor component library</Description>
     <PackageTags>blazor;theming;material-design;md3;md3-expressive;material-you;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Built from components.imports.css into wwwroot/css/components.css; see Directory.Build.targets. -->
+    <FlareCssBundle>components</FlareCssBundle>
   </PropertyGroup>
 
   <ItemGroup>

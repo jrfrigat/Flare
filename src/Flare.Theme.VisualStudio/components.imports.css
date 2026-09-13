@@ -1,0 +1,4 @@
+/* Flare.Theme.VisualStudio styles, in load order. The build concatenates these into
+   wwwroot/css/components.css, the one stylesheet the theme ships (see Directory.Build.targets). */
+@import 'vs-base.css';
+@import 'components/tabs.css';

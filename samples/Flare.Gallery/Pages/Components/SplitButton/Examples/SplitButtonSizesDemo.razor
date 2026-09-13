@@ -1,25 +1,23 @@
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
-    <FlareSplitButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">
-        <ChildContent>Small</ChildContent>
-        <MenuItems>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SaveAs">Save as…</FlareMenuItem>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Download">Export…</FlareMenuItem>
-        </MenuItems>
-    </FlareSplitButton>
-
-    <FlareSplitButton Variant="ButtonVariant.Filled" Size="ButtonSize.Md">
-        <ChildContent>Medium</ChildContent>
-        <MenuItems>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SaveAs">Save as…</FlareMenuItem>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Download">Export…</FlareMenuItem>
-        </MenuItems>
-    </FlareSplitButton>
-
-    <FlareSplitButton Variant="ButtonVariant.Filled" Size="ButtonSize.Lg">
-        <ChildContent>Large</ChildContent>
-        <MenuItems>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SaveAs">Save as…</FlareMenuItem>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Download">Export…</FlareMenuItem>
-        </MenuItems>
-    </FlareSplitButton>
+    @foreach (var (size, label) in _sizes)
+    {
+        <FlareSplitButton Variant="ButtonVariant.Filled" Size="size">
+            <ChildContent>@label</ChildContent>
+            <MenuItems>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SaveAs">@GalleryStrings.SplitButton_SaveAs</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Download">@GalleryStrings.SplitButton_Export</FlareMenuItem>
+            </MenuItems>
+        </FlareSplitButton>
+    }
 </FlareStack>
+
+@code {
+    private readonly (ButtonSize Size, string Label)[] _sizes =
+    [
+        (ButtonSize.Xs, GalleryStrings.IconButton_AriaXSmall),
+        (ButtonSize.Sm, GalleryStrings.ButtonExtras_AriaSmall),
+        (ButtonSize.Md, GalleryStrings.ButtonExtras_AriaMedium),
+        (ButtonSize.Lg, GalleryStrings.ButtonExtras_AriaLarge),
+        (ButtonSize.Xl, GalleryStrings.IconButton_AriaXLarge),
+    ];
+}

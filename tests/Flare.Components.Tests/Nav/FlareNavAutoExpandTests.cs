@@ -65,7 +65,3 @@ public class FlareNavAutoExpandTests : FlareTestContext
         Assert.Equal(2, cut.FindAll($".{Css.Classes.Navigation.NavGroupExpanded}").Count);
     }
 }
-
-// ------------------------------------------------------------------------------
-// Href safety: relative links must survive, script-bearing schemes must not
-// ------------------------------------------------------------------------------

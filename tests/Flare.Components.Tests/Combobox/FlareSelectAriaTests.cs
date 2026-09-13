@@ -46,7 +46,3 @@ public class FlareSelectAriaTests : FlareTestContext
         Assert.NotNull(cut.Find($"#{active}"));
     }
 }
-
-// ------------------------------------------------------------------------------
-// Uncontrolled selection (no @bind-Value / @bind-Values)
-// ------------------------------------------------------------------------------

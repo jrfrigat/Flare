@@ -91,7 +91,3 @@ public class FlareDataGridBandTests : FlareTestContext
         Assert.Equal("90", firstRowCells[3].TextContent.Trim());
     }
 }
-
-// ------------------------------------------------------------------------------
-// FlareDataGrid composite columns (stacked fields in one cell)
-// ------------------------------------------------------------------------------
