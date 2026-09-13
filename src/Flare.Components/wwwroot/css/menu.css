@@ -27,6 +27,13 @@
     animation: var(--flare-menu-panel-enter-animation) var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
 }
 
+/* A menu panel takes focus only to receive the arrow keys; the item it points at through
+   aria-activedescendant carries the visible ring, so the global :focus-visible ring round the whole
+   panel is a second indicator. A free-content panel (role="group") keeps it. */
+.flare-menu__panel[role="menu"]:focus-visible {
+    outline: none;
+}
+
 /* When the menu is split into groups, the panel can become a transparent
    container so the groups read as separate floating "islands" with no backing behind them.
    Themes opt in via tokens; otherwise the panel keeps its normal surface. */

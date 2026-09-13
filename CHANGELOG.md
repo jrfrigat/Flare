@@ -154,6 +154,11 @@ All notable changes to Flare are documented here. This project adheres to
   popup below the cards, so their labels landed on whatever the page had underneath. They are now at
   the bottom of the time card.
 
+- **An open menu drew a focus ring round its whole panel.** Using the keyboard in `FlareMenu` put the
+  global focus ring on the panel as well as on the item, in every theme - the panel takes focus only to
+  receive the arrow keys. The ring round the panel is gone; the item's own ring is unchanged, and a
+  `FreeContent` panel keeps its ring.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added
