@@ -115,6 +115,10 @@ All notable changes to Flare are documented here. This project adheres to
   could widen the page's scroll area. The track now clips along its length and lets only the content
   overflow above and below it.
 
+- **Material 3 Expressive: the wave on a determinate circular indicator ignored reduced motion.** With
+  `prefers-reduced-motion: reduce` it kept travelling round the ring; it now stands still, as the linear
+  wave and the indeterminate indicators already did.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added
