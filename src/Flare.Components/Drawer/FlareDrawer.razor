@@ -16,6 +16,7 @@
      role="@_role"
      aria-modal="@(Variant == DrawerVariant.Temporary ? "true" : null)"
      aria-label="@AriaLabel"
+     inert="@_closedOverlay"
      @ref="_drawerEl"
      @attributes="AdditionalAttributes">
     @if (HeaderContent is not null)
@@ -110,6 +111,12 @@
     // of the page reachable beside it, so calling it a modal dialog tells a screen reader the page is
     // inert when it is not.
     private string _role => Variant == DrawerVariant.Temporary ? "dialog" : "navigation";
+
+    // A closed overlay drawer is only translated off screen, so without this its links and buttons stay in
+    // the tab order and the accessibility tree. Responsive is included at every width: below the breakpoint
+    // it is the same overlay, above it a closed drawer is zero wide and just as unseen. Permanent and Mini have
+    // no closed state, and Persistent is not covered here.
+    private bool _closedOverlay => !Open && Variant is DrawerVariant.Temporary or DrawerVariant.Responsive;
 
     private string BuildScrimCssClass()
     {
