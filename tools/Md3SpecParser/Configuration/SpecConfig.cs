@@ -8,13 +8,12 @@ namespace Flare.Tools.Md3SpecParser.Configuration;
 public sealed class SpecConfig
 {
     /// <summary>
-    /// Absolute (or relative-to-config) root directory where per-type spec
-    /// folders live. Each type produces <c>&lt;OutputRoot&gt;/&lt;folder&gt;/md3-expressive-spec.md</c>.
-    /// Defaults to the Flare repo's <c>docs/spec</c>.
+    /// Root directory where per-type spec folders live. Each type produces
+    /// <c>&lt;OutputRoot&gt;/&lt;folder&gt;/md3-expressive-spec.md</c>. A relative path is taken from the root of
+    /// the Flare checkout the tool runs in (the directory holding <c>Flare.slnx</c>).
     /// </summary>
     [JsonPropertyName("outputRoot")]
-    public string OutputRoot { get; set; } =
-        @"C:\Job\Projects\FrigaT\Flare\docs\spec";
+    public string OutputRoot { get; set; } = "docs/spec";
 
     /// <summary>
     /// Name of the file written per component folder.

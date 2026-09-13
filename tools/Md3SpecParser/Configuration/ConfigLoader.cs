@@ -15,8 +15,9 @@ public static class ConfigLoader
     };
 
     /// <summary>
-    /// Reads the config file, resolving a relative <see cref="SpecConfig.OutputRoot"/>
-    /// against the config file's own directory.
+    /// Reads the config file, resolving a relative <see cref="SpecConfig.OutputRoot"/> against the root of
+    /// the Flare checkout above the working directory, then above the config file, and only then against
+    /// the config file's own directory.
     /// </summary>
     /// <param name="path">Path to the JSON config file.</param>
     public static SpecConfig Load(string path)
@@ -44,8 +45,21 @@ public static class ConfigLoader
 
         var configDir = Path.GetDirectoryName(Path.GetFullPath(path))!;
         if (!Path.IsPathRooted(config.OutputRoot))
-            config.OutputRoot = Path.GetFullPath(Path.Combine(configDir, config.OutputRoot));
+        {
+            // The working directory decides which checkout is meant, so a worktree writes into itself;
+            // the config sits in the build output, so its folder alone would land the specs under bin.
+            var baseDir = FindRepoRoot(Directory.GetCurrentDirectory()) ?? FindRepoRoot(configDir) ?? configDir;
+            config.OutputRoot = Path.GetFullPath(Path.Combine(baseDir, config.OutputRoot));
+        }
 
         return config;
+    }
+
+    private static string? FindRepoRoot(string start)
+    {
+        for (var dir = new DirectoryInfo(start); dir is not null; dir = dir.Parent)
+            if (File.Exists(Path.Combine(dir.FullName, "Flare.slnx")))
+                return dir.FullName;
+        return null;
     }
 }
