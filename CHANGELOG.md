@@ -3,6 +3,20 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- **A closed `FlareDrawer` could still be tabbed into.** A temporary drawer was closed only by sliding
+  it off the edge, so its links and buttons stayed in the tab order and in the accessibility tree:
+  measured in the component gallery at 375px, Tab walked through five controls of each closed side
+  drawer the reader could not see, and a screen reader listed them as part of the page. A closed
+  `Temporary` drawer, and a closed `Responsive` one at any width, is now `inert` and
+  `visibility: hidden`. The hide waits for the slide to finish, so closing still animates, and opening
+  is visible from the first frame. Something that focused an element inside a drawer before opening
+  it will find it unfocusable now - open the drawer first. `Permanent`, `Mini` and `Persistent` are
+  unchanged.
+
 ## [0.36.0] - 2026-09-13
 
 ### Added

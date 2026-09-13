@@ -14,7 +14,13 @@
   z-index: 401;
   display: flex;
   flex-direction: column;
-  transition: transform var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+  /* A closed drawer is only moved off screen, and a moved element still paints its elevation shadow into
+     the viewport edge and still hands its links to Tab. `hidden` removes both. The flip to hidden waits
+     out the slide, so closing still animates; `.flare-drawer--open` drops the delay, so opening is visible
+     from the first frame. */
+  visibility: hidden;
+  transition: transform var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+              visibility 0s var(--flare-motion-duration-medium1);
   overflow: hidden;
 }
 
@@ -33,7 +39,11 @@
    slide is unaffected: interpolating a transform against `none` treats `none` as the identity matrix,
    which is exactly what `translate(0, 0)` was. During the transition the transform is a real matrix and
    the containing block is back, which is correct for a panel opened mid-animation. */
-.flare-drawer--open  { transform: none !important; }
+.flare-drawer--open  {
+  transform: none !important;
+  visibility: visible;
+  transition-delay: 0s;
+}
 
 .flare-drawer__header {
   padding: var(--flare-spacing-8) var(--flare-spacing-12);
