@@ -110,6 +110,15 @@ All notable changes to Flare are documented here. This project adheres to
   round the control instead. Its menu items' focus ring changes the same way, from a 3px ring in the
   secondary colour to the neutral 2px stroke - black in light mode, white in dark.
 
+- **Material 2's Indigo, Teal, Blue, Pink and Green palettes are written out by hand.** They were
+  derived from one seed colour, so all five kept the baseline's teal secondary and lilac inverse primary
+  (in `md2-teal` the primary and secondary were the same colour), their primary container was a pale
+  tint while Purple's is the deep `primaryVariant`, and the info colour took the brand colour. Each now
+  comes from the Material 2 swatches with its own accent: indigo with pink, teal with deep purple, blue
+  with purple, pink with indigo and green with pink. Containers are the 700 variant as in Purple,
+  inverse primary comes from the palette's own swatch, and info, success, warning and error stay the
+  theme's. Custom palettes generated from a seed are unchanged.
+
 ### Fixed
 
 - **A closed `FlareDrawer` could still be tabbed into.** A temporary drawer was closed only by sliding
