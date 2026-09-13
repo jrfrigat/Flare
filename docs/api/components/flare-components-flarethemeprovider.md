@@ -15,6 +15,7 @@ The root every Flare app is wrapped in: it cascades the active theme to every co
 |  |  |  |  |  | This is an app decision rather than a theme one: the theme already owns how the swap MOVES (the --flare-icon-morph-* tokens), while whether icons transition at all is a choice about the app's own character. Scope it to part of a page with a plain CascadingValue<FlareIconMorph?> instead. |
 | `ManageSplash` | `bool` | `true` | Parameter |  | When true (default), the provider signals app-readiness once the theme stylesheets and web fonts have loaded and the first themed frame has painted: it calls window.hideFlareSplash() (from flare-bootstrap.js), which dispatches a flare:ready event and fades out the app's own tagged splash element. Flare draws no splash itself - the app owns its loading background + animation. Set to false to signal readiness yourself. |
 | `RespectSystemColorScheme` | `bool` | `true` | Parameter |  | — |
+| `Stylesheets` | `ThemeStylesheets` | `ThemeStylesheets.Automatic` | Parameter |  | Whether the provider writes the theme stylesheet links itself (Automatic, the default) or the application has put them in its own head (Manual), which lets a WebAssembly app fetch them before .NET starts. In both modes the provider waits for the active theme's sheets to load and adds any that are missing. |
 
 ## Methods
 

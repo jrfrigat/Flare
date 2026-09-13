@@ -87,8 +87,46 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 > Иконки - это inline-SVG (встроенный набор `FlareIcons`), поэтому **иконочный шрифт подключать не нужно**. Про
 > пакеты провайдеров (Material Symbols / Fluent / Font Awesome) см. [Иконки](icons.md).
 
-> CSS активной темы (`ITheme.StyleAssets` - шрифты, базовые токены) подключается автоматически
-> `FlareThemeProvider` при старте, поэтому вручную добавлять CSS темы не нужно.
+### Стили темы: автоматически или в своем head
+
+Тема поставляет собственный CSS - шрифты, базовые токены, переопределения компонентов - списком в
+`ITheme.StyleAssets`. Попасть на страницу он может двумя способами.
+
+**Автоматически (по умолчанию).** `FlareThemeProvider` сам пишет ссылки и дожидается загрузки стилей
+активной темы, прежде чем показать приложение. Добавлять ничего не нужно. Цена видна в WebAssembly:
+ссылки попадают на страницу только после старта .NET, поэтому CSS темы идет второй волной запросов
+после рантайма, и загружаются стили всех зарегистрированных тем, а не только активной. При серверном
+пререндеринге ссылки уже есть в первом HTML.
+
+**Вручную (самый быстрый первый кадр).** Пропишите ссылки активной темы в своем `<head>` рядом с CSS
+компонентов - браузер загрузит их вместе со страницей:
+
+```html
+<link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
+<!-- StyleAssets активной темы в том же порядке (здесь: Material 3 Expressive) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/md3-base.css" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/button.css" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/split-button.css" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/button-group.css" />
+<link rel="stylesheet" href="_content/Flare.Theme.MaterialDesign3Expressive/css/components/progress.css" />
+```
+
+и сообщите провайдеру:
+
+```razor
+<FlareThemeProvider Stylesheets="ThemeStylesheets.Manual">
+```
+
+В ручном режиме провайдер не пишет своих ссылок, поэтому ни один стиль не загружается и не применяется
+дважды. Он по-прежнему дожидается стилей активной темы, узнает вашу ссылку по адресу, как бы он ни был
+записан (`_content/...`, `/_content/...`, `./_content/...`), и добавляет только недостающее - тему, на
+которую пользователь переключился во время работы, или файл, который появился в новой версии темы.
+Забытая ссылка обойдется поздним запросом, а не неоформленной страницей.
+
+Адреса - это `StyleAssets` темы; выведите их один раз через
+`@foreach (var href in ThemeService.CurrentTheme.StyleAssets)` или посмотрите во вкладке сети
+браузера. Сохраняйте порядок, который дает тема: более поздние файлы переопределяют ранние.
 
 ---
 

@@ -30,11 +30,13 @@ export function setThemeClasses(themeId, styleFamilyId, paletteId, dark) {
 // after the initial <head> render) AND resolve only once it has actually loaded -- so a caller can
 // reveal the UI without flashing unstyled content. Resolves on load, on error, or after a short
 // safety timeout, so a missing/blocked asset can never strand the caller. No-op (resolved) when the
-// sheet is already parsed.
+// sheet is already parsed. An existing link is matched by its resolved address, so one the app wrote
+// by hand as "/_content/..." or "./_content/..." is reused rather than fetched and applied twice.
 export function ensureStylesheet(href) {
     return new Promise((resolve) => {
         if (!href) { resolve(); return; }
-        const existing = document.querySelector(`link[rel="stylesheet"][href="${CSS.escape(href)}"]`);
+        const url = new URL(href, document.baseURI).href;
+        const existing = Array.from(document.querySelectorAll('link[rel~="stylesheet"]')).find(l => l.href === url);
         if (existing) {
             if (existing.sheet) { resolve(); return; } // already loaded and parsed
             existing.addEventListener('load', resolve, { once: true });

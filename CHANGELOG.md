@@ -5,6 +5,20 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.37.0] - Unreleased
 
+### Added
+
+- **`FlareThemeProvider.Stylesheets` lets an app link the theme CSS in its own head.** By default
+  (`ThemeStylesheets.Automatic`) the provider writes the links for `ITheme.StyleAssets` itself, which
+  in a WebAssembly app means they arrive only after .NET has started - a second wave of requests
+  before the first styled frame. With `ThemeStylesheets.Manual` the app puts those links in
+  `index.html`, the browser fetches them with the page, and the provider writes none of its own, so
+  nothing is applied twice. It still waits for the active theme's sheets and adds any that are
+  missing, such as a theme the user switches to. Measured on the gallery: the theme CSS moved from
+  after the .NET runtime into the first wave, and the page's stylesheet requests fell from 78 to 19,
+  because only the linked theme is fetched up front. A link already on the page is now matched by
+  its resolved address, so `/_content/...` and `_content/...` count as the same sheet. See
+  [Getting started](docs/en/getting-started.md).
+
 ### Changed
 
 - **Breaking for custom themes: `TimePickerTokens` gains eight `required` properties** - `DialSize`,

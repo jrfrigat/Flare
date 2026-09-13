@@ -318,6 +318,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.TextAreaResize`](enums/flare-components-textarearesize.md) — Controls the user-drag resize affordance of a FlareTextArea (the CSS resize property). Ignored when AutoGrow is on (auto-sizing owns the height).
 - [`Flare.Abstractions.Tokens.ThemeDelivery`](enums/flare-abstractions-tokens-themedelivery.md) — How theme/palette CSS reaches the document.
 - [`Flare.Abstractions.Tokens.ThemeMode`](enums/flare-abstractions-tokens-thememode.md) — Light/dark selection for a theme. A theme carries both schemes (via its palette); the mode chooses which one is active. Auto follows the OS preference. HighContrast uses a high-contrast color scheme for accessibility.
+- [`Flare.Components.ThemeStylesheets`](enums/flare-components-themestylesheets.md) — Who writes the active theme's stylesheet links into the document head.
 - [`Flare.Components.TimePickerVariant`](enums/flare-components-timepickervariant.md) — Visual style of the FlareTimePicker popup.
 - [`Flare.Components.TimeSpanUnits`](enums/flare-components-timespanunits.md) — Which segments a FlareTimeSpanPicker shows. Flags rather than a "smallest unit" enum: a field can legitimately show days and minutes and skip hours, and an ordered scale cannot say that.
 - [`Flare.Components.TimelineAlign`](enums/flare-components-timelinealign.md) — Which side of the rail FlareTimeline items are placed on.
