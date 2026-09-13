@@ -1259,6 +1259,15 @@ public class FluentUI2Tokens
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
+        PanelMinWidth = "18rem",
+        PanelRadius = "var(--flare-popover-radius)",
+        HeaderHeight = "1.75rem",
+        NavIconSize = "var(--flare-btn-icon-size-sm)",
+        WeekdayHeight = "1.25rem",
+        WeekdayFontSize = "0.75rem",
+        DaySize = "2.375rem",
+        DayLayerSize = "2.25rem",
+        DayFontSize = "0.875rem",
     };
 
     internal static readonly ScrimTokens Scrim = new()

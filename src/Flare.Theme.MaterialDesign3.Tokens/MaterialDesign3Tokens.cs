@@ -1283,6 +1283,15 @@ public class MaterialDesign3Tokens
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
+        PanelMinWidth = "22.5rem",
+        PanelRadius = "var(--flare-shape-large)",
+        HeaderHeight = "4rem",
+        NavIconSize = "1.125rem",
+        WeekdayHeight = "2.75rem",
+        WeekdayFontSize = "var(--flare-typescale-body-large-size)",
+        DaySize = "3rem",
+        DayLayerSize = "2.5rem",
+        DayFontSize = "var(--flare-typescale-body-large-size)",
     };
 
     internal static readonly ScrimTokens Scrim = new()

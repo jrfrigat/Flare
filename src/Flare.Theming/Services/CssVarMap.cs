@@ -1114,6 +1114,15 @@ public static class CssVarMap
         v[Css.Tokens.PickerField.OutsideOpacity] = t.Picker.OutsideOpacity;
         v[Css.Tokens.PickerField.DisabledOpacity] = t.Picker.DisabledOpacity;
         v[Css.Tokens.PickerField.WeekNumberOpacity] = t.Picker.WeekNumberOpacity;
+        v[Css.Tokens.PickerField.PanelMinWidth] = t.Picker.PanelMinWidth;
+        v[Css.Tokens.PickerField.PanelRadius] = t.Picker.PanelRadius;
+        v[Css.Tokens.PickerField.HeaderHeight] = t.Picker.HeaderHeight;
+        v[Css.Tokens.PickerField.NavIconSize] = t.Picker.NavIconSize;
+        v[Css.Tokens.PickerField.WeekdayHeight] = t.Picker.WeekdayHeight;
+        v[Css.Tokens.PickerField.WeekdayFontSize] = t.Picker.WeekdayFontSize;
+        v[Css.Tokens.PickerField.DaySize] = t.Picker.DaySize;
+        v[Css.Tokens.PickerField.DayLayerSize] = t.Picker.DayLayerSize;
+        v[Css.Tokens.PickerField.DayFontSize] = t.Picker.DayFontSize;
         #endregion
 
         #region SCRIM

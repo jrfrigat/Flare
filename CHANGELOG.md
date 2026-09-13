@@ -32,6 +32,17 @@ All notable changes to Flare are documented here. This project adheres to
   by 80dp. The dropdown variant's header digits use the same size. Material 2 and Fluent keep their
   previous geometry.
 
+- **Breaking for custom themes: `PickerTokens` gains nine `required` properties** - `PanelMinWidth`,
+  `PanelRadius`, `HeaderHeight`, `NavIconSize`, `WeekdayHeight`, `WeekdayFontSize`, `DaySize`,
+  `DayLayerSize` and `DayFontSize`. The calendar of `FlareDatePicker`, `FlareDateRangePicker` and
+  `FlareDateTimePicker` was sized in the core stylesheet, so every theme drew the same 288px panel with
+  36px days. A day is now a cell of `DaySize` holding a circle of `DayLayerSize`; the cells touch,
+  so a selected range reads as one unbroken band instead of squares with gaps, and its two ends are
+  circles. A panel wider than the screen narrows its columns instead of overflowing. Material 3 - and
+  Aero and Liquid Glass, which follow it - now matches its docked date-picker spec: a 360dp panel with
+  16dp corners, a 64dp header with 18dp arrows, 48dp day cells with a 40dp circle, and day and weekday
+  labels in body large. Material 2 and Fluent keep their previous geometry; their panel is 2px taller.
+
 - **Breaking for custom themes: `SplitButtonTokens.TriggerWidth` is now `TriggerWidthXs..Xl`.** One
   width could not describe a trigger that is wider than it is tall at the two small sizes and square
   from medium up, which is what Material 3 Expressive specifies. Set all five to the old value to

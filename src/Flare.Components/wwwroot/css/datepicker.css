@@ -17,7 +17,9 @@
 
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
    the calendar panel is JS-positioned (positionAnchoredPanel) to escape a Card's overflow:hidden. */
-.flare-datepicker__panel { min-width: 18rem; }
+/* min() against the containing block: a panel the theme sizes wider than a phone screen narrows its day
+   columns rather than running off the edge. */
+.flare-datepicker__panel { min-width: min(var(--flare-picker-panel-min-width), 100%); }
 
 /* Picker nav header (label + prev/next), shared with DateTimePicker's __nav (identical). */
 .flare-datepicker__header,
@@ -25,7 +27,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: var(--flare-picker-header-height);
   margin-bottom: var(--flare-spacing-4);
+}
+
+/* Two classes, so the picker's icon size outranks the size class of the button it sits in. */
+.flare-datepicker__header .flare-btn,
+.flare-datetimepicker__nav .flare-btn {
+  --_flare-icon-size: var(--flare-picker-nav-icon-size);
 }
 
 .flare-datepicker__month-label {
@@ -168,19 +177,45 @@
   max-width: 20rem;
   padding-top: var(--flare-spacing-4);
 }
+/* Range days fill their whole cell so the band meets the next day; the band is the layer's height.
+   The two ends draw the circle as a layer and half a band towards the inside of the range. */
+.flare-picker__day.flare-daterangepicker__day--in-range,
+.flare-picker__day.flare-daterangepicker__day--start,
+.flare-picker__day.flare-daterangepicker__day--end {
+  width: 100%;
+  height: var(--flare-picker-day-layer-size);
+  aspect-ratio: auto;
+  border-radius: 0;
+}
 .flare-picker__day.flare-daterangepicker__day--in-range {
   background: var(--flare-color-secondary-container);
   color: var(--flare-color-on-secondary-container);
-  border-radius: 0;
 }
 .flare-picker__day.flare-daterangepicker__day--start,
 .flare-picker__day.flare-daterangepicker__day--end {
-  background: var(--flare-color-primary);
+  position: relative;
+  z-index: 0;
   color: var(--flare-color-on-primary);
+  background: linear-gradient(var(--flare-color-secondary-container), var(--flare-color-secondary-container))
+              no-repeat right / 50% 100%;
 }
-.flare-picker__day.flare-daterangepicker__day--start { border-radius: var(--flare-shape-full) 0 0 var(--flare-shape-full); }
-.flare-picker__day.flare-daterangepicker__day--end { border-radius: 0 var(--flare-shape-full) var(--flare-shape-full) 0; }
-.flare-picker__day.flare-daterangepicker__day--start.flare-daterangepicker__day--end { border-radius: var(--flare-shape-full); }
+.flare-picker__day.flare-daterangepicker__day--end { background-position: left; }
+.flare-picker__day.flare-daterangepicker__day--start:dir(rtl) { background-position: left; }
+.flare-picker__day.flare-daterangepicker__day--end:dir(rtl) { background-position: right; }
+.flare-picker__day.flare-daterangepicker__day--start.flare-daterangepicker__day--end { background: none; }
+.flare-picker__day.flare-daterangepicker__day--start::before,
+.flare-picker__day.flare-daterangepicker__day--end::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 50%;
+  width: var(--flare-picker-day-layer-size);
+  height: 100%;
+  translate: -50% 0;
+  border-radius: var(--flare-shape-full);
+  background: var(--flare-color-primary);
+}
 
 /* Month + year views: two identical 3-column grids of selectable cells, so they share one rule set. */
 .flare-datepicker__month-grid,
