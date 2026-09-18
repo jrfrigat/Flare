@@ -9,7 +9,23 @@
   align-items: stretch;
   gap: 0;
   border-bottom: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
+  /* The bar scrolls its own run instead of pushing the rest of the row off the screen. A flex item
+     refuses to shrink below its content unless told to, so placed in an app-bar row this <nav> kept
+     the full width of its tabs and everything after it - a language picker, an account menu - ended
+     up past the right edge with no way to reach it. This is what .flare-tabs__bar does for the
+     in-page bar; the difference is that here the <nav> IS the bar. */
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
+
+.flare-link-tabs::-webkit-scrollbar { display: none; }
+
+/* Items keep their natural width so the deficit goes to the scroller rather than to the labels:
+   without this the tabs shrink to --flare-tabs-tab-min-width and the strip never scrolls. */
+.flare-link-tabs > .flare-tabs__tab { flex: none; }
 
 /* Each item (FlareLinkTab) is an <a> that reuses FlareTabs' item classes directly - flare-tabs__tab,
    __tab--active, __tab--disabled and __label (tabs.css, which carries text-decoration:none + a
