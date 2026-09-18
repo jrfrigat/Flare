@@ -1419,7 +1419,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AllowsCustomValue", @"bool", @"false", @"Allows committing a typed value not in the list (free typing). Requires CustomValueFactory for non-string values.", null, false, false, false, @"FlareCombobox"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup (used instead of Items).", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareCombobox"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"true", @"Shows a clear button that resets the value and text. Default: true.", null, false, false, false, @"FlareCombobox"),
                 new ApiParameterInfo(@"CustomValueFactory", @"Func<string, TValue?>?", null, @"Converts the typed text into a value when committing a custom entry. Defaults to identity for string values.", null, false, false, false, @"FlareCombobox"),
                 new ApiParameterInfo(@"DebounceMs", @"int", @"300", @"Milliseconds to wait after input before running an async search. Default: 300ms.", null, false, false, false, @"FlareCombobox"),
@@ -4039,7 +4039,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareMultiSelect"),
                 new ApiParameterInfo(@"ChipTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a selected chip's content.", null, false, false, false, @"FlareMultiSelect"),
                 new ApiParameterInfo(@"Chips", @"bool", @"false", @"Renders the selected values as removable chips instead of a comma list.", null, false, false, false, @"FlareMultiSelect"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear button that resets the selection.", null, false, false, false, @"FlareMultiSelect"),
@@ -5275,7 +5275,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup (used instead of Items).", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear button that resets the value.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field against an EditContext.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Fuzzy", @"bool", @"false", @"Ranks filtered options by fuzzy relevance (via FlareSearch) instead of insertion order.", null, false, false, false, @"FlareSelect"),

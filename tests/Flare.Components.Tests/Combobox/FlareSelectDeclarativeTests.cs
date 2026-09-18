@@ -1,3 +1,4 @@
+using Flare.Components.Combobox;
 using Flare.Abstractions;
 using Flare.Infrastructure;
 using Microsoft.AspNetCore.Components;
@@ -64,5 +65,69 @@ public class FlareSelectDeclarativeTests : FlareTestContext
             .AddChildContent("<option value=\"a\">Apple</option><option value=\"b\">Banana</option>"));
 
         Assert.Contains("Banana", cut.Find($".{Css.Classes.Select.Value}").TextContent);
+    }
+
+    // A wrapper component that writes @ChildContent between the tags compiles to a fragment that is
+    // never null, even when its own caller passed no children. Choosing the source on "is not null"
+    // therefore threw the Items away and left the list empty, with nothing wrong at the call site.
+    private static RenderFragment Empty => _ => { };
+
+    [Fact]
+    public void EmptyChildContent_FallsBackToItems()
+    {
+        var cut = Render<FlareSelect<string>>(p => p
+            .Add(x => x.Items, new[] { "a", "b", "c" })
+            .Add(x => x.ChildContent, Empty));
+
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Select.Option}").Count);
+    }
+
+    [Fact]
+    public void EmptyChildContent_WithNullOption_RendersItemsBesideTheNullRow()
+    {
+        var cut = Render<FlareSelect<string>>(p => p
+            .Add(x => x.Items, new[] { "a", "b", "c" })
+            .Add(x => x.NullOption, "No value")
+            .Add(x => x.ChildContent, Empty));
+
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+
+        // The null row plus every item - the reported failure showed the null row alone.
+        Assert.Equal(4, cut.FindAll($".{Css.Classes.Select.Option}").Count);
+    }
+
+    [Fact]
+    public void ParseOrNull_NullContent_ReturnsNull()
+        => Assert.Null(DeclaredOptions.ParseOrNull<string>(null));
+
+    [Fact]
+    public void ParseOrNull_EmptyFragment_ReturnsNull()
+        => Assert.Null(DeclaredOptions.ParseOrNull<string>(Empty));
+
+    [Fact]
+    public void ParseOrNull_DeclaredOptions_ReturnsTheSet()
+    {
+        var set = DeclaredOptions.ParseOrNull<string>(Options);
+
+        Assert.NotNull(set);
+        Assert.Equal(new[] { "a", "b" }, set!.Values);
+    }
+
+    [Fact]
+    public void Parse_EmptyFragment_ReportsNothingDeclared()
+        => Assert.False(DeclaredOptions.Parse<string>(Empty).Any);
+
+    [Fact]
+    public void DeclaredOptions_StillWinOverItems()
+    {
+        var cut = Render<FlareSelect<string>>(p => p
+            .Add(x => x.Items, new[] { "x", "y", "z", "w" })
+            .Add(x => x.ChildContent, Options));
+
+        cut.Find($".{Css.Classes.Select.Control}").Click();
+
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Select.Option}").Count);
     }
 }

@@ -155,7 +155,12 @@
     /// <summary>Collection of items to populate the dropdown.</summary>
     [Parameter] public IEnumerable<TValue>? Items { get; set; }
 
-    /// <summary>Declarative options as native <c>&lt;option&gt;</c> child markup (used instead of <see cref="Items"/>).</summary>
+    /// <summary>
+    /// Declarative options as native <c>&lt;option&gt;</c> child markup. Declared options take precedence
+    /// over <see cref="Items"/>; content that declares none leaves <see cref="Items"/> in charge, so a
+    /// wrapper component forwarding <c>@ChildContent</c> - which compiles to a non-empty fragment even
+    /// when its own caller supplied no children - does not suppress the item list.
+    /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>Returns the display text for an item. When null, the declarative label or <c>ToString()</c> is used.</summary>
@@ -264,9 +269,9 @@
         else if (!_seeded || !EqualityComparer<TValue?>.Default.Equals(Value, _prevValue)) { _internal = Value; _seeded = true; }
         _prevValue = Value;
 
-        _declared = ChildContent is not null
-            ? DeclaredOptions.Parse<TValue>(ChildContent, EqualityComparer<TValue>.Default)
-            : null;
+        // An empty declarative set is not a source: a wrapper forwarding @ChildContent produces a
+        // non-null fragment even with no children, and "no options declared" must leave Items in charge.
+        _declared = DeclaredOptions.ParseOrNull<TValue>(ChildContent, EqualityComparer<TValue>.Default);
         _state.SetSource(SourceItems());
         // With a null option "no value" IS a selection - the row renders checked - so an empty selection
         // set only means "nothing chosen" when there is no such row.

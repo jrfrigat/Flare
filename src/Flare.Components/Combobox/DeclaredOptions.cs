@@ -46,6 +46,27 @@ public sealed class DeclaredOptionSet<TValue>
 /// </summary>
 public static class DeclaredOptions
 {
+    /// <summary>
+    /// Parses <paramref name="content"/> and returns <c>null</c> when it declares no option, so that a
+    /// caller can treat "declares nothing" and "has no child content" alike. Presence of a fragment does
+    /// not mean options were declared: a wrapper component that writes <c>@ChildContent</c> between the
+    /// tags compiles to a non-null fragment even when its own caller supplied no children, so a source
+    /// chosen on <c>content is not null</c> silently discards the data-driven item list.
+    /// </summary>
+    /// <typeparam name="TValue">The option value type.</typeparam>
+    /// <param name="content">The child content holding <c>&lt;option&gt;</c> markup, or null.</param>
+    /// <param name="comparer">Equality used to key the label map.</param>
+    /// <param name="onWarning">Optional sink for a skipped, non-convertible option value.</param>
+    public static DeclaredOptionSet<TValue>? ParseOrNull<TValue>(
+        RenderFragment? content,
+        IEqualityComparer<TValue>? comparer = null,
+        Action<string>? onWarning = null)
+    {
+        if (content is null) return null;
+        var parsed = Parse(content, comparer, onWarning);
+        return parsed.Any ? parsed : null;
+    }
+
     /// <summary>Parses <paramref name="content"/> into option values and labels.</summary>
     /// <typeparam name="TValue">The option value type.</typeparam>
     /// <param name="content">The child content holding <c>&lt;option&gt;</c> markup, or null.</param>

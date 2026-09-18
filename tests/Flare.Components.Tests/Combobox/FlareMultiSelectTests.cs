@@ -39,6 +39,20 @@ public class FlareMultiSelectTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Multiselect.Dropdown}"));
     }
 
+    // A wrapper forwarding @ChildContent hands down a fragment that is never null; declaring no
+    // option in it must leave Items in charge rather than emptying the list.
+    [Fact]
+    public void EmptyChildContentFallsBackToItems()
+    {
+        var cut = Render<FlareMultiSelect<string>>(p => p
+            .Add(x => x.Items, _fruits)
+            .Add(x => x.ChildContent, (RenderFragment)(_ => { })));
+
+        cut.Find($".{Css.Classes.Multiselect.Control}").Click();
+
+        Assert.Equal(_fruits.Length, cut.FindAll($".{Css.Classes.Multiselect.Option}").Count);
+    }
+
     [Fact]
     public void DropdownClosesOnEscape()
     {

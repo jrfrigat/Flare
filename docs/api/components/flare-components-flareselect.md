@@ -10,7 +10,7 @@ Single-value dropdown over a list of items: a select-only combobox by default, o
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup (used instead of Items). |
+| `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list. |
 | `Clearable` | `bool` | `false` | Parameter |  | Shows a clear button that resets the value. |
 | `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
 | `Fuzzy` | `bool` | `false` | Parameter |  | Ranks filtered options by fuzzy relevance (via FlareSearch) instead of insertion order. |

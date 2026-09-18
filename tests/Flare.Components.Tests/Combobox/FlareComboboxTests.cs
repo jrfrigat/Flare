@@ -35,6 +35,20 @@ public class FlareComboboxTests : FlareTestContext
         Assert.Equal("true", cut.Find("input").GetAttribute("aria-expanded"));
     }
 
+    // A wrapper forwarding @ChildContent hands down a fragment that is never null; declaring no
+    // option in it must leave Items in charge rather than emptying the list.
+    [Fact]
+    public void Empty_child_content_falls_back_to_items()
+    {
+        var cut = Render<FlareCombobox<string>>(p => p
+            .Add(x => x.Items, Cities)
+            .Add(x => x.ChildContent, (RenderFragment)(_ => { })));
+
+        cut.Find("input").Focus();
+
+        Assert.Equal(4, cut.FindAll($".{Css.Classes.Listbox.Option}").Count);
+    }
+
     [Fact]
     public void Typing_filters_options()
     {
