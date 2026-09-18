@@ -3,6 +3,45 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **A stacking ladder, so detached surfaces stop disagreeing about what covers what.** `LayerTokens`
+  names seven rungs - `Chrome`, `Drawer`, `Dropdown`, `Modal`, `Toast`, `Tooltip`, `Drag` - and every
+  pinned bar, drawer, anchored panel, modal, toast and drag preview now reads one instead of naming a
+  number in its own stylesheet. The numbers had drifted apart: a fixed `FlareBottomNav` sat at 1100
+  over a dialog scrim at 1000, so on a phone the actions of a bottom-anchored dialog were painted
+  under the bar and could not be pressed, and a select's listbox tied with that same scrim at 1000,
+  where the winner is decided by document order rather than by intent. A theme owns where the ladder
+  sits and how far apart the rungs are, which is what an application embedding Flare beside chrome of
+  its own needs to move; the order itself is the same in every design language and is held by a guard
+  test. Rungs are spaced so a component can lift one of its own parts with
+  `calc(var(--flare-z-drawer) + 1)` - a drawer panel over its own scrim, a submenu over its parent
+  menu - without reaching the rung above.
+- **`DeclaredOptions.ParseOrNull`** returns `null` when child content declares no `<option>`, which is
+  the question the select family actually asks: "were options declared", not "is there a fragment".
+
+### Fixed
+
+- **Empty `ChildContent` no longer silently discards `Items`** in `FlareSelect`, `FlareCombobox` and
+  `FlareMultiSelect`. The source was chosen on `ChildContent is not null`, and a wrapper component
+  that writes `@ChildContent` between the tags compiles to a fragment that is never null - so a field
+  built on `Items` rendered an empty list while nothing was wrong at the call site. Content that
+  declares no option now leaves `Items` in charge; real `<option>` markup still takes precedence.
+- **`FlareLinkTabs` no longer pushes its neighbours off a narrow screen.** The bar would not shrink in
+  a flex row, so on a 390px app bar the eight route tabs kept their full 759px run and everything
+  after them - a language picker, an account menu - ended up past the right edge with no way to reach
+  it. The strip now gives way and scrolls its own run, as `FlareTabs` has since 0.35.0.
+
+### Changed
+
+- **Breaking for custom themes: `DesignTokens` gains a required `Layer`** (`LayerTokens`), and
+  `BottomNavTokens.ZIndex` is removed. The bar's stacking order was the one value of its kind exposed
+  per component, every in-box theme set it to a number that covered the overlays, and a theme had no
+  way to see where those overlays were. It is now the shared `Chrome` rung. The CSS variable
+  `--flare-z-appbar` is likewise replaced by `--flare-z-chrome`.
+
 ## [0.37.0] - 2026-09-13
 
 ### Added
