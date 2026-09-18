@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
-  z-index: 400;
+  z-index: var(--flare-z-drawer);
   animation: flare-scrim-in var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
 
@@ -11,7 +11,7 @@
   /* Sheet/drawer container = surface-container-low */
   background: var(--flare-color-surface-container-low);
   box-shadow: var(--flare-elevation-3);
-  z-index: 401;
+  z-index: calc(var(--flare-z-drawer) + 1);
   display: flex;
   flex-direction: column;
   /* A closed drawer is only moved off screen, and a moved element still paints its elevation shadow into

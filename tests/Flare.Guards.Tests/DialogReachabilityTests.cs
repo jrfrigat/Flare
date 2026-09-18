@@ -110,6 +110,36 @@ public class DialogReachabilityTests
         Assert.Contains($".{Css.Classes.Dialog.Header}", rule!.Groups["selectors"].Value, StringComparison.Ordinal);
     }
 
+    // Reachability is not only about the panel's own box. A bar pinned to the bottom of the window is
+    // painted by the same compositor and wins on z-index alone: measured in a consuming application at
+    // 375x812, the fixed FlareBottomNav sat at 1100 over this scrim at 1000, so the dialog's actions
+    // were drawn under the bar and could not be pressed. Both now name a rung of the ladder, and
+    // LayerLadderTests keeps chrome below modal - this holds the two ends to it.
+    [Fact]
+    public void ScrimTakesTheModalRung()
+    {
+        var body = RuleBody($".{Css.Classes.Dialog.Scrim}");
+
+        Assert.True(body is not null, $"`.{Css.Classes.Dialog.Scrim}` is missing.");
+        Assert.Contains($"var({Css.Tokens.Layer.Modal})", Normalize(body!), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void PinnedBottomNav_TakesTheChromeRung()
+    {
+        var css = StripComments(File.ReadAllText(Path.Combine(CssDir, "bottomnav.css")));
+        var pinned = Regex.Matches(css, @"(?<selectors>[^{}]+)\{(?<body>[^{}]*)\}")
+            .Where(m => Regex.IsMatch(m.Groups["body"].Value, @"position\s*:\s*(fixed|sticky)"))
+            .ToList();
+
+        Assert.True(pinned.Count > 0, "bottomnav.css pins nothing - has the bar stopped being pinnable?");
+        foreach (var rule in pinned)
+        {
+            Assert.Contains($"var({Css.Tokens.Layer.Chrome})", Normalize(rule.Groups["body"].Value),
+                StringComparison.Ordinal);
+        }
+    }
+
     private static string CssDir =>
         Path.Combine(FindRepoRoot(), "src", "Flare.Components", "wwwroot", "css");
 

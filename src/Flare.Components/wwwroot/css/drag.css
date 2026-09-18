@@ -66,12 +66,12 @@
     outline-offset: calc(-1 * var(--flare-border-width-emphasis));
 }
 
-/* Above the dialog (1000): a reorder inside a modal must still show what is being dragged. */
+/* The top rung: a reorder inside a modal must still show what is being dragged. */
 .flare-drag-preview {
     position: fixed;
     inset-block-start: 0;
     inset-inline-start: 0;
-    z-index: 1100;
+    z-index: var(--flare-z-drag);
     /* The hit test is elementFromPoint, and it has to see the drop zone under the pointer rather than
        the copy hanging off it. */
     pointer-events: none;
@@ -83,7 +83,7 @@
    line reads as "between these two" and not as "belonging to that one". */
 .flare-drag-indicator {
     position: fixed;
-    z-index: 1100;
+    z-index: var(--flare-z-drag);
     pointer-events: none;
     background: var(--flare-drag-indicator-color);
     inline-size: var(--flare-border-width-emphasis);

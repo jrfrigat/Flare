@@ -61,7 +61,7 @@
 .flare-select__dropdown,
 .flare-multiselect__dropdown {
     position: fixed;
-    z-index: var(--flare-z-dropdown, 1000);
+    z-index: var(--flare-z-dropdown);
 }
 
 /* Size grid (Xs..Xl) lives in input.css as the single source for the whole input family. */

@@ -780,6 +780,21 @@ internal static class MaterialDesign2Tokens
         ItemHeight = "2.5rem",
     };
 
+    // The stacking ladder. The order is universal - every design language agrees a dialog covers a
+    // navigation bar - so what this states is where the ladder sits and how far apart the rungs are.
+    // The gaps leave a component room to lift one of its own parts with calc(var(--rung) + 1), such as
+    // a drawer panel over its own scrim, without reaching the rung above.
+    internal static readonly LayerTokens Layer = new()
+    {
+        Chrome = "100",
+        Drawer = "200",
+        Dropdown = "300",
+        Modal = "400",
+        Toast = "500",
+        Tooltip = "600",
+        Drag = "700",
+    };
+
     internal static readonly BottomNavTokens BottomNav = new()
     {
         BarHeight = "5rem",
@@ -798,7 +813,6 @@ internal static class MaterialDesign2Tokens
         IndicatorWidth = "0",
         ItemGap = "var(--flare-spacing-1)",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
-        ZIndex = "1100",
     };
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
@@ -1371,6 +1385,7 @@ internal static class MaterialDesign2Tokens
         Snackbar = Snackbar,
         Nav = Nav,
         BottomNav = BottomNav,
+        Layer = Layer,
         TableOfContents = TableOfContents,
         ColorPicker = ColorPicker,
         // A 2px ring, not the 3px Material 3 widened it to.

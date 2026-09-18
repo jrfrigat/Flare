@@ -1,5 +1,5 @@
 /* Scrim layout comes from the shared modal scrim (confirmdialog.css); the message box sits above other overlays. */
-.flare-msgbox-scrim { z-index: 1100; }
+.flare-msgbox-scrim { z-index: var(--flare-z-modal); }
 
 .flare-msgbox {
     background: var(--flare-color-surface-container-high);

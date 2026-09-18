@@ -12,12 +12,12 @@
 .flare-picker__scrim {
     position: fixed;
     inset: 0;
-    z-index: var(--flare-z-dropdown, 1000);
+    z-index: var(--flare-z-dropdown);
 }
 
 .flare-picker__panel {
     position: fixed;
-    z-index: var(--flare-z-dropdown, 1000);
+    z-index: var(--flare-z-dropdown);
     background: var(--flare-color-surface-container-high);
     border-radius: var(--flare-picker-panel-radius);
     box-shadow: var(--flare-elevation-3);

@@ -9,7 +9,7 @@
    Token driven so every theme + light/dark read correctly.
    ========================================================================== */
 .flare-listbox {
-    z-index: var(--flare-z-dropdown, 1000);
+    z-index: var(--flare-z-dropdown);
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
     border: var(--flare-border-divider);

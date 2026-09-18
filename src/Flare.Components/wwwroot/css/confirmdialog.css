@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
 }
-.flare-confirmdialog__backdrop { z-index: 1000; }
+.flare-confirmdialog__backdrop { z-index: var(--flare-z-modal); }
 
 .flare-confirmdialog {
     background: var(--flare-color-surface-container-high);

@@ -6,13 +6,13 @@
 .flare-popover__backdrop {
     position: fixed;
     inset: 0;
-    z-index: 299;
+    z-index: var(--flare-z-dropdown);
     background: transparent;
 }
 
 .flare-popover__paper {
     position: absolute;
-    z-index: 300;
+    z-index: calc(var(--flare-z-dropdown) + 1);
     min-width: 12rem;
     max-width: 24rem;
     background: var(--flare-color-surface-container);

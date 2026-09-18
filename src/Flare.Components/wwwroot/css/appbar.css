@@ -14,7 +14,7 @@
 .flare-appbar--sticky {
     position: sticky;
     top: 0;
-    z-index: var(--flare-z-appbar, 1100);
+    z-index: var(--flare-z-chrome);
 }
 
 .flare-appbar--elevation-0 { box-shadow: var(--flare-elevation-0); }

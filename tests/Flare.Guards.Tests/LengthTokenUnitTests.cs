@@ -130,8 +130,13 @@ public sealed class LengthTokenUnitTests
         var result = new HashSet<string>(StringComparer.Ordinal);
         foreach (var text in sources)
         {
-            foreach (var body in CalcBodies(text))
+            foreach (var (property, body) in CalcBodies(text))
             {
+                // A <number> property types the whole expression as a number, so an addition there is
+                // between numbers and a unit would be the error. `z-index: calc(var(--flare-z-drawer) + 1)`
+                // is how a component lifts one of its own parts one step above the rung it was given.
+                if (NumberTypedProperties.Contains(property)) continue;
+
                 // Only an addition can clash this way, and only + / - can force two operands to agree on a
                 // type. `calc(var(--opacity) * 100%)` is exactly how the opacity tokens are meant to be
                 // used - multiplication takes a plain number, and demanding a unit there would be wrong.
@@ -187,8 +192,26 @@ public sealed class LengthTokenUnitTests
         return -1;
     }
 
-    /// <summary>Every <c>calc(...)</c> body in the text, paren-balanced so nested var() fallbacks stay whole.</summary>
-    private static IEnumerable<string> CalcBodies(string text)
+    /// <summary>
+    /// Properties whose value IS a <c>&lt;number&gt;</c>, so an addition inside their <c>calc()</c> is
+    /// between numbers and the operands must NOT carry a unit - the opposite of the rule this guard
+    /// enforces everywhere else. Deriving the requirement from the expression alone cannot tell the two
+    /// apart, which is what the KNOWN GAP note above is about; naming the number-typed properties is the
+    /// cheap half of closing it, and it is a closed list in CSS rather than something that grows with the
+    /// stylesheets.
+    /// </summary>
+    private static readonly HashSet<string> NumberTypedProperties = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "z-index", "opacity", "flex-grow", "flex-shrink", "order", "zoom",
+        "-webkit-line-clamp", "line-clamp", "orphans", "widows", "column-count", "font-size-adjust",
+    };
+
+    /// <summary>
+    /// Every <c>calc(...)</c> body in the text with the property it is the value of, paren-balanced so
+    /// nested var() fallbacks stay whole. The property is read back to the start of the declaration, so a
+    /// nested calc reports the same property as the one that encloses it.
+    /// </summary>
+    private static IEnumerable<(string Property, string Body)> CalcBodies(string text)
     {
         const string open = "calc(";
         var i = text.IndexOf(open, StringComparison.Ordinal);
@@ -203,9 +226,22 @@ public sealed class LengthTokenUnitTests
                 else if (text[j] == ')') depth--;
                 j++;
             }
-            if (depth == 0) yield return text[start..(j - 1)];
+            if (depth == 0) yield return (PropertyBefore(text, i), text[start..(j - 1)]);
             i = text.IndexOf(open, start, StringComparison.Ordinal);
         }
+    }
+
+    /// <summary>
+    /// The property this <c>calc(</c> is part of the value of: the text between the start of the
+    /// declaration and its <c>:</c>. Returns empty when there is no property to read, which keeps the
+    /// strict path as the default.
+    /// </summary>
+    private static string PropertyBefore(string text, int calcStart)
+    {
+        var declStart = text.LastIndexOfAny([';', '{', '}', '\n'], Math.Max(calcStart - 1, 0));
+        var slice = text[(declStart + 1)..calcStart];
+        var colon = slice.IndexOf(':');
+        return colon < 0 ? string.Empty : slice[..colon].Trim();
     }
 
     private static string FindRepoRoot()

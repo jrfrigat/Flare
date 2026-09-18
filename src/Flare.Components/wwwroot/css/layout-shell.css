@@ -38,7 +38,7 @@
     background: var(--flare-layout-appbar-bg);
     border-bottom: var(--flare-layout-appbar-border);
     box-shadow: var(--flare-layout-appbar-shadow);
-    z-index: 100;
+    z-index: var(--flare-z-chrome);
     color: var(--flare-color-on-surface);
 }
 
@@ -100,7 +100,7 @@
     bottom: 0;
     left: 0;
     width: var(--fld-w, var(--flare-layout-drawer-width));
-    z-index: 200;
+    z-index: calc(var(--flare-z-drawer) + 1);
     transform: translateX(-100%);
     transition: transform var(--flare-motion-duration-medium1) ease;
     box-shadow: var(--flare-elevation-3);
@@ -128,7 +128,7 @@
 .flare-layout-drawer--hover-expand {
     overflow: visible;
     position: relative;
-    z-index: 150;
+    z-index: calc(var(--flare-z-chrome) + 1);
 }
 .flare-layout-drawer--hover-expand .flare-layout-drawer__inner {
     position: absolute;
@@ -232,7 +232,7 @@
     display: block;
     position: fixed;
     inset: var(--flare-layout-appbar-height) 0 0 0;
-    z-index: 180;
+    z-index: var(--flare-z-drawer);
     background: var(--flare-color-scrim);
     opacity: 0.45;
 }

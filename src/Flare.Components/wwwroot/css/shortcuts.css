@@ -1,6 +1,6 @@
 /* Keyboard-shortcuts help dialog (FlareShortcuts). */
 /* Scrim layout comes from the shared modal scrim (confirmdialog.css). */
-.flare-shortcuts-help__scrim { z-index: 1000; }
+.flare-shortcuts-help__scrim { z-index: var(--flare-z-modal); }
 
 .flare-shortcuts-help {
     background: var(--flare-color-surface-container-high);

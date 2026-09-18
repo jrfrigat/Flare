@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: var(--flare-z-modal);
 }
 
 /* The panel never grows past the screen it is centred on. Without the cap it simply kept growing:

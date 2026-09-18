@@ -10,12 +10,12 @@
 .flare-menu__backdrop {
     position: fixed;
     inset: 0;
-    z-index: 199;
+    z-index: var(--flare-z-dropdown);
 }
 
 .flare-menu__panel {
     position: absolute;
-    z-index: 200;
+    z-index: calc(var(--flare-z-dropdown) + 1);
     display: flex;
     flex-direction: column;
     gap: var(--flare-menu-item-gap-between);
@@ -108,7 +108,7 @@
 
 .flare-submenu__panel {
     position: absolute;
-    z-index: 201;
+    z-index: calc(var(--flare-z-dropdown) + 2);
     min-width: var(--flare-menu-panel-min-width);
     background: var(--flare-menu-panel-bg);
     border-radius: var(--flare-menu-panel-radius);

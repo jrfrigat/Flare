@@ -60,7 +60,7 @@
 /* Positioning */
 .flare-fab-anchor {
     position: fixed;
-    z-index: 900;
+    z-index: var(--flare-z-chrome);
 }
 
 .flare-fab-anchor--bottom-right {

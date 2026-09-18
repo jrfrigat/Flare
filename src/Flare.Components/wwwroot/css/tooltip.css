@@ -11,13 +11,13 @@
 .flare-tooltip__backdrop {
   position: fixed;
   inset: 0;
-  z-index: 999;
+  z-index: var(--flare-z-tooltip);
   background: transparent;
 }
 
 .flare-tooltip__content {
   position: absolute;
-  z-index: 1000;
+  z-index: calc(var(--flare-z-tooltip) + 1);
   padding: var(--flare-spacing-3) var(--flare-spacing-6);
   background: var(--flare-color-inverse-surface);
   color: var(--flare-color-inverse-on-surface);

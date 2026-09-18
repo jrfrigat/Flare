@@ -76,7 +76,7 @@
 .flare-colorpicker__panel {
     /* Fixed + JS-positioned (positionAnchoredPanel) so the panel escapes a Card's overflow:hidden. */
     position: fixed;
-    z-index: 1000;
+    z-index: calc(var(--flare-z-dropdown) + 1);
     background: var(--flare-color-surface-container);
     border: var(--flare-border-divider);
     border-radius: var(--flare-shape-medium);

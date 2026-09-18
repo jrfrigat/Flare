@@ -20,13 +20,13 @@
   position: fixed;
   inset-inline: 0;
   bottom: 0;
-  z-index: var(--flare-bottom-nav-z-index);
+  z-index: var(--flare-z-chrome);
 }
 
 .flare-bottom-nav--sticky {
   position: sticky;
   bottom: 0;
-  z-index: var(--flare-bottom-nav-z-index);
+  z-index: var(--flare-z-chrome);
 }
 
 /* Sits immediately before the pinned bar, so it inherits nothing and has to recompute the height. */

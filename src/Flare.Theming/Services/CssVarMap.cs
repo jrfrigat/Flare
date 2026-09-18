@@ -968,9 +968,18 @@ public static class CssVarMap
         v[Css.Tokens.BottomNavField.IndicatorRadius] = t.BottomNav.IndicatorRadius;
         v[Css.Tokens.BottomNavField.IndicatorSize] = t.BottomNav.IndicatorSize;
         v[Css.Tokens.BottomNavField.ItemDisabledOpacity] = t.BottomNav.ItemDisabledOpacity;
-        v[Css.Tokens.BottomNavField.ZIndex] = t.BottomNav.ZIndex;
         v[Css.Tokens.BottomNavField.IndicatorWidth] = t.BottomNav.IndicatorWidth;
         v[Css.Tokens.BottomNavField.ItemGap] = t.BottomNav.ItemGap;
+        #endregion
+
+        #region LAYERS
+        v[Css.Tokens.Layer.Chrome] = t.Layer.Chrome;
+        v[Css.Tokens.Layer.Drawer] = t.Layer.Drawer;
+        v[Css.Tokens.Layer.Dropdown] = t.Layer.Dropdown;
+        v[Css.Tokens.Layer.Modal] = t.Layer.Modal;
+        v[Css.Tokens.Layer.Toast] = t.Layer.Toast;
+        v[Css.Tokens.Layer.Tooltip] = t.Layer.Tooltip;
+        v[Css.Tokens.Layer.Drag] = t.Layer.Drag;
         #endregion
 
         #region SWITCH

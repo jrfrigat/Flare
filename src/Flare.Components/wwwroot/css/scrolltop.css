@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: var(--flare-elevation-3);
-    z-index: 120;
+    z-index: var(--flare-z-chrome);
     opacity: 0;
     pointer-events: none;
     transform: translateY(0.75rem);

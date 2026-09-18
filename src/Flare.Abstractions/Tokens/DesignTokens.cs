@@ -144,6 +144,9 @@ public sealed record DesignTokens
     /// <summary>Mobile bottom-navigation bar tokens.</summary>
     public required BottomNavTokens BottomNav { get; init; }
 
+    /// <summary>Stacking ladder: where each kind of detached surface paints relative to the others.</summary>
+    public required LayerTokens Layer { get; init; }
+
     /// <summary>FlareTableOfContents / FlareOnThisPage tokens.</summary>
     public required TableOfContentsTokens TableOfContents { get; init; }
 

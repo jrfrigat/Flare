@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column-reverse;
   gap: var(--flare-spacing-4);
-  z-index: 9000;
+  z-index: var(--flare-z-toast);
   pointer-events: none;
   align-items: center;
 }
