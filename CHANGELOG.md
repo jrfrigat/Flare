@@ -92,6 +92,12 @@ All notable changes to Flare are documented here. This project adheres to
   `StateLayerSize` for the halo, whose diameter core also fixed. Every in-box theme states the numbers
   core used to hold, so nothing moves; measured in the browser, all five steps and the halo are
   unchanged at 14/16/18/22/26px and 16/18/20/24/28px.
+- **`ChipTokens` describes the label, not just the box.** It carried radius, height, icon, avatar and
+  padding but nothing about type, so a chip could only ever be set in the theme's UI face - and a chip is
+  as often an identifier as a word. `LabelFont`, `LabelWeight`, `LabelSpacing` and a `LabelSize` ramp
+  join the ones the neighbours already had. The defaults reproduce what core held: the sizes are the
+  typescale steps it used, and weight and spacing are `inherit`/`normal` because the chip declared
+  neither and took them from around it.
 - **A checkbox and a radio can be resized by a theme.** Their xs/sm/lg/xl steps were literals in core's
   own stylesheet, so a theme owned only the middle one - a hardwired opinion in a theme-agnostic core.
   `CheckboxTokens` and `RadioTokens` now carry the whole ramp (`SizeXs`..`SizeXl`) plus
@@ -120,6 +126,11 @@ All notable changes to Flare are documented here. This project adheres to
 - **The shell drawer's divider follows the writing direction.** It was `border-right` (and
   `border-left` when end-anchored), which put it on the wrong edge of a start-anchored drawer in an RTL
   document; both are logical now.
+- **`FlareRichTextEditor` follows `Value` after the first render.** `setContent` ran on the first
+  render alone, so the only route from the parameter to the DOM closed after the first paint: a
+  controlled binding or a form reset re-rendered the component and left the old HTML on screen. The
+  editor now tracks the last HTML it and the caller agreed on, which is also what stops its own
+  keystrokes coming back through the same door and collapsing the caret.
 - **Breaking: every control size constant is named `SizeXs`..`SizeXl`.** Three schemes were in use -
   `SizeXs` for some types, bare `Xs` for others, and a mix of both inside `Chip`, `Pagination` and
   `Avatar`. In a type that also holds `Disabled` and `Error`, `SizeSm` says what it is and `Sm` does
@@ -132,6 +143,14 @@ All notable changes to Flare are documented here. This project adheres to
   names its middle step, and that name follows the scale's own spelling.
 - **Breaking: `CheckboxTokens.Size` and `RadioTokens.Size` are replaced by `SizeMd`.** One value for
   "the size" beside another for "the medium size" are two ways to say the same thing.
+- **Breaking: `FlareRichTextEditor` filters its `Value` by default.** The value was assigned straight to
+  `innerHTML`, so an editor whose content survives a round trip through storage re-ran whatever was
+  smuggled into it on every later view. Markup arriving from `Value`, and markup pasted into the
+  surface, is now filtered against an allowlist; `Sanitize="false"` is the informed opt-out for markup
+  the application produced itself.
+  <br/>The filtering happens in the browser, on the parsed tree, using `Element.setHTML()` where the
+  engine has it and an inert `DOMParser` walk otherwise - not on the string in .NET, which would be
+  guessing at the tree a browser builds from it.
 
 ## [0.37.0] - 2026-09-13
 
