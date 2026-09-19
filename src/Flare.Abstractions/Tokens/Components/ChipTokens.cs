@@ -21,6 +21,28 @@ public sealed record ChipTokens
     // Leading and trailing icons share one ramp: the spec sizes both ends alike, and a chip that
     // sized them differently would read as two components. The avatar has its own, because it is a
     // cropped picture filling a shape rather than a glyph sitting in one.
+    /// <summary>Family of a chip label. Without it a chip could only ever be set in the theme's UI face,
+    /// so a monospace micro-tag - the shape a chip most often takes in a tool built around identifiers -
+    /// needed a stylesheet of the application's own.</summary>
+    [CssVar(Chip.LabelFont)] public required string LabelFont { get; init; }
+
+    /// <summary>Weight of a chip label.</summary>
+    [CssVar(Chip.LabelWeight)] public required string LabelWeight { get; init; }
+
+    /// <summary>Letter-spacing of a chip label.</summary>
+    [CssVar(Chip.LabelSpacing)] public required string LabelSpacing { get; init; }
+
+    /// <summary>Label size at the extra-small step.</summary>
+    [CssVar(Chip.LabelSize.Xs)] public required string LabelSizeXs { get; init; }
+    /// <summary>Label size at the small step.</summary>
+    [CssVar(Chip.LabelSize.Sm)] public required string LabelSizeSm { get; init; }
+    /// <summary>Label size at the medium step.</summary>
+    [CssVar(Chip.LabelSize.Md)] public required string LabelSizeMd { get; init; }
+    /// <summary>Label size at the large step.</summary>
+    [CssVar(Chip.LabelSize.Lg)] public required string LabelSizeLg { get; init; }
+    /// <summary>Label size at the extra-large step.</summary>
+    [CssVar(Chip.LabelSize.Xl)] public required string LabelSizeXl { get; init; }
+
     /// <summary>Leading and trailing icon glyph size at the xs size.</summary>
     [CssVar(Chip.IconSize.Xs)] public required string IconSizeXs { get; init; }
     /// <summary>Leading and trailing icon glyph size at the sm size.</summary>

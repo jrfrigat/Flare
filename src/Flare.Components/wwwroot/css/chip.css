@@ -13,8 +13,10 @@
     border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-color-outline));
     background-color: transparent;
     color: var(--fc-main, var(--flare-color-on-surface-variant));
-    font-family: var(--flare-typescale-label-large-font);
-    font-size: var(--flare-typescale-label-large-size);
+    font-family: var(--flare-chip-label-font);
+    font-size: var(--flare-chip-label-size-md);
+    font-weight: var(--flare-chip-label-weight);
+    letter-spacing: var(--flare-chip-label-spacing);
     cursor: pointer;
     user-select: none;
     position: relative;
@@ -79,16 +81,16 @@
    DOM said what size the chip was and no selector could name it. The base rule still resolves md for
    markup written by hand; this makes the class describe the size rather than mark it. The font size is
    the scale step the base rule uses, not a fourth opinion. */
-.flare-chip--md { padding: 0 var(--flare-chip-padding-inline-md); font-size: var(--flare-typescale-label-large-size); gap: var(--flare-spacing-4); --_flare-icon-size: var(--flare-chip-icon-size-md); }
+.flare-chip--md { padding: 0 var(--flare-chip-padding-inline-md); font-size: var(--flare-chip-label-size-md); gap: var(--flare-spacing-4); --_flare-icon-size: var(--flare-chip-icon-size-md); }
 .flare-chip--md .flare-chip__avatar { width: var(--flare-chip-avatar-size-md); height: var(--flare-chip-avatar-size-md); }
 
-.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-chip-padding-inline-xs); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); --_flare-icon-size: var(--flare-chip-icon-size-xs); }
+.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-chip-padding-inline-xs); font-size: var(--flare-chip-label-size-xs); gap: var(--flare-spacing-2); --_flare-icon-size: var(--flare-chip-icon-size-xs); }
 .flare-chip--xs .flare-chip__avatar { width: var(--flare-chip-avatar-size-xs); height: var(--flare-chip-avatar-size-xs); }
-.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-chip-padding-inline-sm); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); --_flare-icon-size: var(--flare-chip-icon-size-sm); }
+.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-chip-padding-inline-sm); font-size: var(--flare-chip-label-size-sm); gap: var(--flare-spacing-3); --_flare-icon-size: var(--flare-chip-icon-size-sm); }
 .flare-chip--sm .flare-chip__avatar { width: var(--flare-chip-avatar-size-sm); height: var(--flare-chip-avatar-size-sm); }
-.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-chip-padding-inline-lg); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5); --_flare-icon-size: var(--flare-chip-icon-size-lg); }
+.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-chip-padding-inline-lg); font-size: var(--flare-chip-label-size-lg); gap: var(--flare-spacing-5); --_flare-icon-size: var(--flare-chip-icon-size-lg); }
 .flare-chip--lg .flare-chip__avatar { width: var(--flare-chip-avatar-size-lg); height: var(--flare-chip-avatar-size-lg); }
-.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-chip-padding-inline-xl); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); --_flare-icon-size: var(--flare-chip-icon-size-xl); }
+.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-chip-padding-inline-xl); font-size: var(--flare-chip-label-size-xl); gap: var(--flare-spacing-6); --_flare-icon-size: var(--flare-chip-icon-size-xl); }
 .flare-chip--xl .flare-chip__avatar { width: var(--flare-chip-avatar-size-xl); height: var(--flare-chip-avatar-size-xl); }
 
 /* Hover/focus/pressed state layer comes from the shared flare-state-layer-hover/-focus/-pressed

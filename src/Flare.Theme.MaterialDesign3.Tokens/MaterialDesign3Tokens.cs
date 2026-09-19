@@ -411,6 +411,15 @@ public class MaterialDesign3Tokens
     };
     internal static readonly ChipTokens Chip = new()
     {
+        // The label typography core held in its own stylesheet. Font and sizes are the steps it used; weight and spacing are `inherit`/`normal` because the chip declared neither and took them from around it.
+        LabelFont = "var(--flare-typescale-label-large-font)",
+        LabelWeight = "inherit",
+        LabelSpacing = "normal",
+        LabelSizeXs = "var(--flare-typescale-label-small-size)",
+        LabelSizeSm = "var(--flare-typescale-label-small-size)",
+        LabelSizeMd = "var(--flare-typescale-label-large-size)",
+        LabelSizeLg = "var(--flare-typescale-title-small-size)",
+        LabelSizeXl = "var(--flare-typescale-title-medium-size)",
         // 18dp at md - md.comp.*-chip.with-icon.icon.size; the ramp follows the label scale.
         IconSizeXs = "0.875rem",
         IconSizeSm = "1rem",

@@ -428,6 +428,14 @@ public static class CssVarMap
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Chip.FilledBg] = t.Chip.FilledBg;
         v[Css.Tokens.Chip.ElevatedBg] = t.Chip.ElevatedBg;
+        v[Css.Tokens.Chip.LabelFont] = t.Chip.LabelFont;
+        v[Css.Tokens.Chip.LabelWeight] = t.Chip.LabelWeight;
+        v[Css.Tokens.Chip.LabelSpacing] = t.Chip.LabelSpacing;
+        v[Css.Tokens.Chip.LabelSize.Xs] = t.Chip.LabelSizeXs;
+        v[Css.Tokens.Chip.LabelSize.Sm] = t.Chip.LabelSizeSm;
+        v[Css.Tokens.Chip.LabelSize.Md] = t.Chip.LabelSizeMd;
+        v[Css.Tokens.Chip.LabelSize.Lg] = t.Chip.LabelSizeLg;
+        v[Css.Tokens.Chip.LabelSize.Xl] = t.Chip.LabelSizeXl;
         v[Css.Tokens.Chip.IconSize.Xs] = t.Chip.IconSizeXs;
         v[Css.Tokens.Chip.IconSize.Sm] = t.Chip.IconSizeSm;
         v[Css.Tokens.Chip.IconSize.Md] = t.Chip.IconSizeMd;
