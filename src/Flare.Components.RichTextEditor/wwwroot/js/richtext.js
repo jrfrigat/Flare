@@ -1,9 +1,11 @@
 const editors = new Map();
 
+// contentEditable is NOT set here. The component renders it as an attribute, so it is correct on the
+// first paint and follows its ReadOnly parameter without this module being told twice. Setting it here
+// as well would overrule that and make a read-only editor editable again.
 export function init(editorId, dotNetRef) {
     const el = document.getElementById(editorId);
     if (!el) return;
-    el.contentEditable = 'true';
     editors.set(editorId, { el, dotNetRef });
     el.addEventListener('input', () => {
         dotNetRef.invokeMethodAsync('OnContentChanged', el.innerHTML);

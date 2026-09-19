@@ -57,12 +57,22 @@
             }
         }
     </div>
+    @* contenteditable is rendered here rather than set from the init script. Out of JS it was
+       unconditional, so ReadOnly only greyed the toolbar while the surface still took typing and still
+       raised ValueChanged; and anything the script sets is absent for the first paint and has to be
+       re-pushed by hand whenever the parameter changes. As an attribute it is right from the first
+       frame and a re-render is the whole of the runtime sync.
+
+       aria-readonly is spelled out rather than bound to the bool: a bool lands in the DOM as an empty
+       attribute, and `aria-readonly=""` is not `true` - the accessibility tree read the read-only
+       example as settable. *@
     <div id="@_editorId"
          class="@Css.Classes.Rte.Content"
          role="textbox"
          aria-multiline="true"
          aria-label="@(Label ?? FlareStrings.RTE_Label)"
-         aria-readonly="@ReadOnly"
+         contenteditable="@(ReadOnly ? "false" : "true")"
+         aria-readonly="@(ReadOnly ? "true" : "false")"
          data-placeholder="@(Placeholder ?? FlareStrings.RTE_Placeholder)"
          style="@_minHeightStyle">
     </div>
@@ -117,7 +127,9 @@
 
     private async Task ExecAsync(string command, string? value = null)
     {
-        if (_module is null) return;
+        // The toolbar buttons are disabled while read-only, but a command can still arrive from a
+        // keyboard shortcut or a caller, and a read-only editor must not be edited by any route.
+        if (_module is null || ReadOnly) return;
         try
         {
             await _module.InvokeVoidAsync("execCommand", _editorId, command, value);
@@ -161,6 +173,11 @@
     [JSInvokable]
     public async Task OnContentChanged(string html)
     {
+        // contenteditable="false" already stops typing, so this is the belt to that brace: an input
+        // event can still be dispatched programmatically, and a read-only editor must not report a
+        // change the caller never allowed.
+        if (ReadOnly) return;
+
         Value = html;
         await ValueChanged.InvokeAsync(html);
     }
