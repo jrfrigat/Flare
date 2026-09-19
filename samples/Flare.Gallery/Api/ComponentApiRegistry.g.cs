@@ -1420,7 +1420,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AllowsCustomValue", @"bool", @"false", @"Allows committing a typed value not in the list (free typing). Requires CustomValueFactory for non-string values.", null, false, false, false, @"FlareCombobox"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareCombobox"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"true", @"Shows a clear button that resets the value and text. Default: true.", null, false, false, false, @"FlareCombobox"),
                 new ApiParameterInfo(@"CustomValueFactory", @"Func<string, TValue?>?", null, @"Converts the typed text into a value when committing a custom entry. Defaults to identity for string values.", null, false, false, false, @"FlareCombobox"),
                 new ApiParameterInfo(@"DebounceMs", @"int", @"300", @"Milliseconds to wait after input before running an async search. Default: 300ms.", null, false, false, false, @"FlareCombobox"),
@@ -4042,7 +4042,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareMultiSelect"),
                 new ApiParameterInfo(@"ChipTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a selected chip's content.", null, false, false, false, @"FlareMultiSelect"),
                 new ApiParameterInfo(@"Chips", @"bool", @"false", @"Renders the selected values as removable chips instead of a comma list.", null, false, false, false, @"FlareMultiSelect"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear button that resets the selection.", null, false, false, false, @"FlareMultiSelect"),
@@ -5278,7 +5278,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear button that resets the value.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field against an EditContext.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Fuzzy", @"bool", @"false", @"Ranks filtered options by fuzzy relevance (via FlareSearch) instead of insertion order.", null, false, false, false, @"FlareSelect"),
@@ -6105,7 +6105,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Text content rendered inside the typography element.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Text color. Role (FlareColor.Primary) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token. Default inherits.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Element", @"string?", null, @"HTML element to render (e.g. ""h1""..""h5"", ""p"", ""span""). When null a sensible default for the Typo is used.", null, false, false, false, @"FlareText"),
+                new ApiParameterInfo(@"MaxLines", @"int", @"0", @"Caps the text at this many lines and ends it with an ellipsis. 0 (the default) leaves it to wrap as far as it likes. One parameter rather than a Truncate flag beside a MaxLines count, because they are the same request at different depths and two knobs would have to explain which wins. The mechanism underneath is not the same, though, and that is why this is a count and not a bool: at one line the text stops wrapping and ends with an ellipsis, which keeps the element's own display type; past one it needs a clamped flex box, which does not. Asking for the count lets the component pick, where a caller writing the CSS by hand had to know.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Mono", @"bool", @"false", @"When true, renders in the monospace font - for code-like runs and keystrokes (pair with Element=""code""/""kbd""). It only swaps the font; for the tonal inline-code chip use FlareCode.", null, false, false, false, @"FlareText"),
+                new ApiParameterInfo(@"Transform", @"TextTransform", @"TextTransform.None", @"Letter-casing applied on top of the type-scale step. None (the default) leaves the text as written.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale", @"TypographyScale.BodyMedium", @"Type-scale role applied to the text (defaults to BodyMedium).", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Weight", @"FontWeight", @"FontWeight.Default", @"Font weight override. Default keeps the type scale's weight.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -9126,6 +9128,24 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareTextArea",
+            });
+
+        e[@"TextTransform"] = new ApiEnumInfo(
+            @"TextTransform",
+            @"Flare.Components.TextTransform",
+            @"Flare.Components",
+            @"Letter-casing applied to a FlareText on top of its type-scale step.",
+            @"Casing is a typographic level in most design languages - a section eyebrow, a group heading, a service label are set in capitals - but no step of the scale carries it, so it was reachable only through an inline style or a stylesheet of the caller's own.",
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"Leave the text as written, which is what the type scale alone gives."),
+                new ApiEnumMember(@"Uppercase", @"1", @"Set in capitals."),
+                new ApiEnumMember(@"Lowercase", @"2", @"Set in lower case."),
+                new ApiEnumMember(@"Capitalize", @"3", @"Capitalize the first letter of every word."),
+            },
+            new string[]
+            {
+                @"FlareText",
             });
 
         e[@"ThemeDelivery"] = new ApiEnumInfo(

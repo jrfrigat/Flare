@@ -42,6 +42,19 @@ All notable changes to Flare are documented here. This project adheres to
   construction. Getting an inset used to mean wrapping the content in a `FlarePaper`, which brings a
   background, an elevation and a radius a panel does not want.
 - **`ChipInteraction`**, and with it a chip that is a tag when nothing is wired to it.
+- **`ColorScheme.SurfaceContainerLowest`** (`--flare-color-surface-container-lowest`), the sixth surface
+  plane. Five containers plus `Background` meant a shell wanting its chrome on the darkest plane and its
+  canvas on `surface` had to spend `Background` - the colour of the document - as a substitute for a
+  panel, leaving nothing to describe the document itself. The colour page now shows all six side by side.
+- **`FlareText.Transform`** (`TextTransform`), the casing a type scale does not carry. An eyebrow label
+  set in capitals needed an inline style or a stylesheet of its own.
+- **`FlareText.MaxLines`**, which caps the text and ends it with an ellipsis. One parameter rather than a
+  `Truncate` flag beside a count: at one line the text stops wrapping, which keeps the element's own
+  display type, and past one it needs a clamp, which does not - asking for the count lets the component
+  pick the mechanism the caller would otherwise have had to know.
+- **A declarative `<option disabled>`** is now read by the select family, so the declarative and the
+  `Items` paths express the same thing. An option meant to be visible but not selectable used to force a
+  move to `Items` plus three delegates for the sake of one row.
 
 ### Fixed
 
@@ -68,6 +81,11 @@ All notable changes to Flare are documented here. This project adheres to
 - **A nav item's active text is readable in every in-box theme.** Fluent UI 2, Visual Studio and Aero
   all mark the selected item with a left accent bar and no pill, while core painted its label in the
   on-secondary-container role - a container foreground with no container under it.
+- **Thirty-seven command buttons no longer submit the form around them.** A `<button>` with no `type` is
+  a submit button by default, so a calendar's month arrows, a pagination strip, a tab, a stepper's next
+  button, a carousel arrow and the whole rich-text toolbar posted the nearest `EditForm` when pressed.
+  `FlareButton` was never affected - it renders its `ButtonType` - and the raw ones simply bypassed that
+  contract. A guard now reads the markup for any `<button>` that declares no type.
 
 ### Changed
 

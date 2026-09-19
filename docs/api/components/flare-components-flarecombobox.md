@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AllowsCustomValue` | `bool` | `false` | Parameter |  | Allows committing a typed value not in the list (free typing). Requires CustomValueFactory for non-string values. |
-| `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list. |
+| `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list. |
 | `Clearable` | `bool` | `true` | Parameter |  | Shows a clear button that resets the value and text. Default: true. |
 | `CustomValueFactory` | `Func<string, TValue?>?` | `` | Parameter |  | Converts the typed text into a value when committing a custom entry. Defaults to identity for string values. |
 | `DebounceMs` | `int` | `300` | Parameter |  | Milliseconds to wait after input before running an async search. Default: 300ms. |
