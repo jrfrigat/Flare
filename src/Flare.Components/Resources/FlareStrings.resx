@@ -148,6 +148,7 @@
 
   <!-- Input -->
   <data name="Input_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Input_ShowPassword" xml:space="preserve"><value>Show password</value></data>
 
   <!-- NumericField -->
   <data name="NumericField_Increment" xml:space="preserve"><value>Increment</value></data>

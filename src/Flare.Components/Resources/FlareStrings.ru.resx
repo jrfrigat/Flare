@@ -148,6 +148,7 @@
 
   <!-- Input -->
   <data name="Input_Clear" xml:space="preserve"><value>Очистить</value></data>
+  <data name="Input_ShowPassword" xml:space="preserve"><value>Показать пароль</value></data>
 
   <!-- NumericField -->
   <data name="NumericField_Increment" xml:space="preserve"><value>Увеличить</value></data>

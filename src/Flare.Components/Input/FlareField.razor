@@ -37,7 +37,12 @@
             }
             @if (LeadingIcon is not null)
             {
-                <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconLeading" aria-hidden="true">@LeadingIcon</span>
+                @* No aria-hidden on the slot. A decorative icon hides itself - FlareIcon sets
+                   aria-hidden when it carries no label - while hiding the whole slot also hid anything
+                   interactive a caller put in it. That is what happened to the password field's reveal
+                   button: it stayed in the tab order and vanished from the accessibility tree, so the
+                   focus landed on something that announced nothing. *@
+                <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconLeading">@LeadingIcon</span>
             }
             <FlareTextInput @ref="_input"
                                Value="@_displayText"
@@ -78,7 +83,7 @@
             }
             @if (TrailingIcon is not null)
             {
-                <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing" aria-hidden="true">@TrailingIcon</span>
+                <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing">@TrailingIcon</span>
             }
             @if (AdornmentEnd is not null)
             {

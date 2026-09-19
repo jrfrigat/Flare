@@ -1085,6 +1085,15 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Input_Clear", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show password.
+        /// </summary>
+        public static string Input_ShowPassword {
+            get {
+                return ResourceManager.GetString("Input_ShowPassword", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Search….
