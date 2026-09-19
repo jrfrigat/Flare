@@ -117,3 +117,80 @@ public class FlareLayoutDrawerTests : FlareTestContext
         Assert.True(changed);
     }
 }
+
+// FlareLayoutDrawer.ContentPadding: the shell drawer and the standalone FlareDrawer wrap the same panel
+// surface, so they answer the same step with the same inset. They do it by sharing the six modifier
+// classes rather than by each declaring a scale, which is what makes "the same value" true by
+// construction instead of by two lists agreeing.
+public class FlareLayoutDrawerContentPaddingTests : FlareTestContext
+{
+    [Fact]
+    public void DefaultsToFullBleed()
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p.Add(d => d.Open, true));
+
+        var root = cut.Find("nav");
+        Assert.DoesNotContain("content-pad", root.ClassName);
+        Assert.DoesNotContain("--_content-pad-x", root.GetAttribute("style") ?? "");
+    }
+
+    [Theory]
+    [InlineData(FlareSpacing.XXSmall, Css.Classes.Drawer.ContentPadXxSmall)]
+    [InlineData(FlareSpacing.XSmall, Css.Classes.Drawer.ContentPadXSmall)]
+    [InlineData(FlareSpacing.Small, Css.Classes.Drawer.ContentPadSmall)]
+    [InlineData(FlareSpacing.Medium, Css.Classes.Drawer.ContentPadMedium)]
+    [InlineData(FlareSpacing.Large, Css.Classes.Drawer.ContentPadLarge)]
+    [InlineData(FlareSpacing.XLarge, Css.Classes.Drawer.ContentPadXLarge)]
+    public void Step_AppliesTheMatchingClass(FlareSpacing step, string expected)
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Open, true)
+            .Add(d => d.ContentPadding, step));
+
+        Assert.Contains(expected, cut.Find("nav").ClassName);
+    }
+
+    // The two wrappers must select the SAME class for a step. Compared rather than asserted against a
+    // literal, so the day one of them grows a scale of its own this fails instead of drifting quietly.
+    [Theory]
+    [InlineData(FlareSpacing.XXSmall)]
+    [InlineData(FlareSpacing.Small)]
+    [InlineData(FlareSpacing.Medium)]
+    [InlineData(FlareSpacing.XLarge)]
+    public void Step_MatchesTheStandaloneDrawer(FlareSpacing step)
+    {
+        var shell = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Open, true)
+            .Add(d => d.ContentPadding, step));
+        var standalone = Render<FlareDrawer>(p => p
+            .Add(d => d.Open, true)
+            .Add(d => d.ContentPadding, step)
+            .Add(d => d.ChildContent, "<p>body</p>"));
+
+        var padClass = shell.Find("nav").ClassName.Split(' ')
+            .Single(c => c.Contains("content-pad", StringComparison.Ordinal));
+
+        Assert.Contains(padClass, standalone.Find($".{Css.Classes.Drawer.Root}").ClassName);
+    }
+
+    [Fact]
+    public void Step_CarriesNoGeometryInline()
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Open, true)
+            .Add(d => d.ContentPadding, FlareSpacing.Large));
+
+        Assert.DoesNotContain("--_content-pad-x", cut.Find("nav").GetAttribute("style") ?? "");
+    }
+
+    [Fact]
+    public void Custom_EmitsTheRawValue()
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Open, true)
+            .Add(d => d.ContentPadding, FlareSpacing.Custom)
+            .Add(d => d.ContentPaddingValue, "3.5rem"));
+
+        Assert.Contains("--_content-pad-x:3.5rem", cut.Find("nav").GetAttribute("style") ?? "");
+    }
+}

@@ -18,7 +18,7 @@
        scrolls). Self-sufficient: no host html/body/#app heights required. */
     height: 100dvh;
     overflow: hidden;
-    background: var(--flare-color-background);
+    background: var(--flare-layout-shell-bg);
     color: var(--flare-color-on-background);
     /* Animate track WIDTH changes (rail collapse/expand, push open/close). A change in track COUNT
        (a drawer mounting/unmounting, or the mobile switch) snaps -- which is what we want. */
@@ -57,22 +57,48 @@
 
 /* --- Drawer --- */
 .flare-layout-drawer {
-    background: var(--flare-color-surface-container-low);
+    background: var(--flare-layout-drawer-bg);
     overflow: hidden;       /* clips the fixed-width inner while a push drawer slides open/closed */
     min-width: 0;
+    /* The edge shadow goes here rather than on the inner: the inner is clipped by the rule above, so a
+       shadow on it would be cut off at exactly the edge it is meant to leave.
+
+       The sign is core's to set, not the theme's. A drawer casts toward the content, which is the
+       trailing edge for a start-anchored drawer and the leading edge for an end-anchored one, and both
+       flip under RTL - four cases a theme would otherwise have to know about to place one shadow. */
+    --_drawer-shadow-dir: 1;
+    box-shadow:
+        calc(var(--_drawer-shadow-dir) * var(--flare-layout-drawer-shadow-offset))
+        0
+        var(--flare-layout-drawer-shadow-blur)
+        var(--flare-layout-drawer-shadow-color);
 }
+.flare-layout-drawer--end { --_drawer-shadow-dir: -1; }
+[dir="rtl"] .flare-layout-drawer { --_drawer-shadow-dir: -1; }
+[dir="rtl"] .flare-layout-drawer--end { --_drawer-shadow-dir: 1; }
+
+/* The collapsed rail may be set apart from the panel it expands into; the in-box themes point this at
+   the drawer's own plane, so they stay one surface. */
+.flare-layout-drawer--mini { background: var(--flare-layout-rail-bg); }
+
 .flare-layout-drawer__inner {
     width: var(--fld-w, var(--flare-layout-drawer-width));
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
-    border-right: var(--flare-layout-drawer-border);
+    /* Logical, not border-right: a start-anchored drawer in an RTL document sits on the right and has
+       to draw its divider on its left. The physical form put it on the wrong edge there. */
+    border-inline-end: var(--flare-layout-drawer-border);
+    /* Set by a shared flare-drawer--content-pad-* modifier, the same six classes FlareDrawer uses, so
+       the same step gives the same inset in both. Absent means full-bleed, which is what a nav menu
+       wants: its own item insets carry the spacing and its state layer reaches the panel edge. */
+    padding-inline: var(--_content-pad-x, 0);
 }
 /* End-anchored drawers carry their divider on the leading edge instead. */
 .flare-layout-drawer--end .flare-layout-drawer__inner {
-    border-right: none;
-    border-left: var(--flare-layout-drawer-border);
+    border-inline-end: none;
+    border-inline-start: var(--flare-layout-drawer-border);
 }
 
 /* Persistent / Responsive / Permanent: the inner keeps its full width and the nav clips it, so
@@ -136,7 +162,7 @@
     bottom: 0;
     left: 0;
     width: var(--fld-w, var(--flare-layout-drawer-width));
-    background: var(--flare-color-surface-container-low);
+    background: var(--flare-layout-drawer-bg);
     box-shadow: var(--flare-elevation-3);
 }
 .flare-layout-drawer--hover-expand.flare-layout-drawer--end .flare-layout-drawer__inner {
@@ -148,6 +174,7 @@
 .flare-layout-content {
     overflow: auto;
     min-width: 0;
+    background: var(--flare-layout-content-bg);
     padding: var(--flare-layout-content-padding);
 }
 /* Tighter padding on mobile, where the content owns the full width. */

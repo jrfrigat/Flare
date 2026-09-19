@@ -26,4 +26,21 @@ public static class LayoutField
     public const string DrawerBorder = "--flare-layout-drawer-border";
     /// <summary>CSS custom-property name for the app bar shadow token.</summary>
     public const string AppBarShadow = "--flare-layout-appbar-shadow";
+    /// <summary>CSS custom-property name for the shell's own plane - the page behind every other one.</summary>
+    public const string ShellBg = "--flare-layout-shell-bg";
+    /// <summary>CSS custom-property name for the drawer plane.</summary>
+    public const string DrawerBg = "--flare-layout-drawer-bg";
+    /// <summary>CSS custom-property name for the collapsed rail's plane, so a theme may set the rail
+    /// apart from the expanded drawer. Point it at the drawer's own plane to keep them the same.</summary>
+    public const string RailBg = "--flare-layout-rail-bg";
+    /// <summary>CSS custom-property name for the content plane.</summary>
+    public const string ContentBg = "--flare-layout-content-bg";
+    /// <summary>CSS custom-property name for the inline offset of the drawer's edge shadow. Core gives it
+    /// its sign, so the shadow lands on the edge facing the content whichever side the drawer is anchored
+    /// to and whichever way the document reads.</summary>
+    public const string DrawerShadowOffset = "--flare-layout-drawer-shadow-offset";
+    /// <summary>CSS custom-property name for the blur of the drawer's edge shadow.</summary>
+    public const string DrawerShadowBlur = "--flare-layout-drawer-shadow-blur";
+    /// <summary>CSS custom-property name for the colour of the drawer's edge shadow.</summary>
+    public const string DrawerShadowColor = "--flare-layout-drawer-shadow-color";
 }

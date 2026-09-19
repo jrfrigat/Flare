@@ -6,8 +6,8 @@
 @* A self-contained navigation drawer. It owns its own open state (@bind-Open) and variant, registers
    with the parent FlareLayout, and the layout reserves a grid track for it (push variants) or lets it
    float over the content (overlay / mobile). Compose two drawers for a two-pane navigation. *@
-<nav class="@BuildCssClass(_variantClass, _anchorClass, _floatingClass, _openClass, _hoverClass)"
-     style="@(_styleVars + Style)"
+<nav class="@BuildCssClass(_variantClass, _anchorClass, _floatingClass, _openClass, _hoverClass, _contentPadClass)"
+     style="@(_styleVars + _contentPadStyle + Style)"
      aria-hidden="@(_visible ? null : "true")"
      inert="@(!_visible)"
      role="@(_isModalOverlay ? "dialog" : null)"
@@ -42,6 +42,21 @@
     /// <see cref="DrawerVariant.Permanent"/> (always visible, never collapses). Defaults to Persistent.
     /// </summary>
     [Parameter] public DrawerVariant Variant { get; set; } = DrawerVariant.Persistent;
+    /// <summary>
+    /// Horizontal inset on the drawer's content, on the shared <see cref="FlareSpacing"/> scale - the
+    /// same steps <c>FlareDrawer.ContentPadding</c> and <c>FlareStack.Gap</c> use, so the same step
+    /// gives the same value from the theme wherever it is asked for. Vertical padding is unaffected.
+    ///
+    /// <see cref="FlareSpacing.None"/> (the default) leaves the content full-bleed, because a drawer
+    /// cannot know what it holds: a nav menu carries its own item insets and wants its state layer to
+    /// reach the panel edge, while a form wants to sit off the edge. Set it for the form case instead
+    /// of wrapping the content in a <c>FlarePaper</c>, which brings a background, an elevation and a
+    /// radius a panel does not want.
+    /// </summary>
+    [Parameter] public FlareSpacing ContentPadding { get; set; } = FlareSpacing.None;
+    /// <summary>Raw CSS inline padding used when <see cref="ContentPadding"/> is
+    /// <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? ContentPaddingValue { get; set; }
     /// <summary>Which side of the layout the drawer attaches to (<see cref="DrawerAnchor.Left"/> or
     /// <see cref="DrawerAnchor.Right"/>; Top/Bottom are treated as Left). Defaults to Left.</summary>
     [Parameter] public DrawerAnchor Anchor { get; set; } = DrawerAnchor.Left;
@@ -127,6 +142,31 @@
     private bool _isModalOverlay => Floating && _open;
 
     private string _styleVars => $"--fld-w:{OpenWidth};--fld-rail-w:{RailWidthValue};";
+
+    // The same six modifiers FlareDrawer uses, reused rather than reproduced: both wrap the same panel
+    // surface, and a second set of classes would be a second scale to keep in step with the first. The
+    // class only selects a step; the value comes from the theme's spacing scale, so no geometry travels
+    // through C#. Custom is the escape hatch, sanitised like every other caller-supplied CSS value.
+    private string? _contentPadClass => ContentPadding switch
+    {
+        FlareSpacing.XXSmall => Css.Classes.Drawer.ContentPadXxSmall,
+        FlareSpacing.XSmall  => Css.Classes.Drawer.ContentPadXSmall,
+        FlareSpacing.Small   => Css.Classes.Drawer.ContentPadSmall,
+        FlareSpacing.Medium  => Css.Classes.Drawer.ContentPadMedium,
+        FlareSpacing.Large   => Css.Classes.Drawer.ContentPadLarge,
+        FlareSpacing.XLarge  => Css.Classes.Drawer.ContentPadXLarge,
+        _                    => null,   // None (full-bleed) and Custom carry no class
+    };
+
+    private string? _contentPadStyle
+    {
+        get
+        {
+            if (ContentPadding != FlareSpacing.Custom) return null;
+            var safe = Flare.Components.Security.CssValidator.StripDangerous(ContentPaddingValue);
+            return safe is null ? null : $"--_content-pad-x:{safe};";
+        }
+    }
 
     private string _variantClass => Variant switch
     {

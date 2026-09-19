@@ -35,4 +35,43 @@ public sealed record LayoutTokens
 
     /// <summary>Shadow under the app bar, for a language that lifts the bar off the page instead of drawing a border or a tone step.</summary>
     [CssVar(LayoutField.AppBarShadow)] public required string AppBarShadow { get; init; }
+
+    /// <summary>The shell's own plane, behind every other one.</summary>
+    [CssVar(LayoutField.ShellBg)] public required string ShellBg { get; init; }
+
+    /// <summary>
+    /// The drawer's plane. Core used to pick this role itself, which left the shell's three planes -
+    /// page, chrome and canvas - decided in two different places: the app bar had a token and the
+    /// drawer and the content did not, so a language wanting its chrome on the darkest plane and its
+    /// canvas on the surface had to overwrite core rules by class name.
+    /// </summary>
+    [CssVar(LayoutField.DrawerBg)] public required string DrawerBg { get; init; }
+
+    /// <summary>The collapsed rail's plane, named apart from the drawer so a language can set an
+    /// icon rail against the panel it expands into. Point it at <see cref="DrawerBg"/> to keep them the
+    /// same, which is what the in-box themes do.</summary>
+    [CssVar(LayoutField.RailBg)] public required string RailBg { get; init; }
+
+    /// <summary>The content plane. It had no background at all, so the canvas was whatever the shell
+    /// happened to be painted.</summary>
+    [CssVar(LayoutField.ContentBg)] public required string ContentBg { get; init; }
+
+    /// <summary>
+    /// Inline offset of the shadow the drawer casts on the content, for a language that separates the
+    /// panel from the canvas by depth rather than by a line or a tone step. <c>0</c> - the in-box value -
+    /// draws none.
+    /// <para>
+    /// Three parts rather than one <c>box-shadow</c> shorthand, unlike <see cref="AppBarShadow"/>,
+    /// because this shadow has a side and the bar's does not: the bar always casts downward, while the
+    /// drawer casts toward the content, which is the opposite direction for an end-anchored drawer and
+    /// flips again under RTL. Core owns that sign so a theme never has to know which edge it is on.
+    /// </para>
+    /// </summary>
+    [CssVar(LayoutField.DrawerShadowOffset)] public required string DrawerShadowOffset { get; init; }
+
+    /// <summary>Blur of the drawer's edge shadow. See <see cref="DrawerShadowOffset"/>.</summary>
+    [CssVar(LayoutField.DrawerShadowBlur)] public required string DrawerShadowBlur { get; init; }
+
+    /// <summary>Colour of the drawer's edge shadow. See <see cref="DrawerShadowOffset"/>.</summary>
+    [CssVar(LayoutField.DrawerShadowColor)] public required string DrawerShadowColor { get; init; }
 }
