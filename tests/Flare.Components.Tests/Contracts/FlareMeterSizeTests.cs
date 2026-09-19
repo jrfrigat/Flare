@@ -18,11 +18,11 @@ public class FlareMeterSizeTests : FlareTestContext
     };
 
     [Theory]
-    [InlineData(TrackSize.Xs, Css.Classes.Meter.Xs)]
-    [InlineData(TrackSize.Sm, Css.Classes.Meter.Sm)]
-    [InlineData(TrackSize.Md, Css.Classes.Meter.Md)]
-    [InlineData(TrackSize.Lg, Css.Classes.Meter.Lg)]
-    [InlineData(TrackSize.Xl, Css.Classes.Meter.Xl)]
+    [InlineData(TrackSize.Xs, Css.Classes.Meter.SizeXs)]
+    [InlineData(TrackSize.Sm, Css.Classes.Meter.SizeSm)]
+    [InlineData(TrackSize.Md, Css.Classes.Meter.SizeMd)]
+    [InlineData(TrackSize.Lg, Css.Classes.Meter.SizeLg)]
+    [InlineData(TrackSize.Xl, Css.Classes.Meter.SizeXl)]
     public void Size_AppliesSizeClass(TrackSize size, string expected)
     {
         var cut = Render<FlareMeter>(p => p.Add(x => x.Size, size).Add(x => x.ChildContent, OneSegment));
@@ -36,7 +36,7 @@ public class FlareMeterSizeTests : FlareTestContext
         var meter = Render<FlareMeter>(p => p.Add(x => x.ChildContent, OneSegment));
         var progress = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d));
 
-        Assert.Contains(Css.Classes.Meter.Md, meter.Find($".{Css.Classes.Meter.Root}").ClassName);
-        Assert.Contains(Css.Classes.Progress.Md, progress.Find($".{Css.Classes.Progress.Root}").ClassName);
+        Assert.Contains(Css.Classes.Meter.SizeMd, meter.Find($".{Css.Classes.Meter.Root}").ClassName);
+        Assert.Contains(Css.Classes.Progress.SizeMd, progress.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
 }

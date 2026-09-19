@@ -39,6 +39,9 @@ public static class Input
     public const string SizeXs = "flare-input--xs";
     /// <summary>The <c>flare-input--sm</c> CSS class.</summary>
     public const string SizeSm = "flare-input--sm";
+    /// <summary>The <c>flare-input--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-input--md";
     /// <summary>The <c>flare-input--lg</c> CSS class.</summary>
     public const string SizeLg = "flare-input--lg";
     /// <summary>The <c>flare-input--xl</c> CSS class.</summary>

@@ -94,7 +94,7 @@
         FieldSize.Sm => Css.Classes.Rating.SizeSm,
         FieldSize.Lg => Css.Classes.Rating.SizeLg,
         FieldSize.Xl => Css.Classes.Rating.SizeXl,
-        _ => string.Empty,
+        _ => Css.Classes.Rating.SizeMd,   // Md is the default and now names itself
     };
     private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
 

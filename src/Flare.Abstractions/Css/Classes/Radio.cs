@@ -11,6 +11,9 @@ public static class Radio
     public const string SizeXs = "flare-radio--xs";
     /// <summary>The <c>flare-radio--sm</c> CSS class.</summary>
     public const string SizeSm = "flare-radio--sm";
+    /// <summary>The <c>flare-radio--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-radio--md";
     /// <summary>The <c>flare-radio--lg</c> CSS class.</summary>
     public const string SizeLg = "flare-radio--lg";
     /// <summary>The <c>flare-radio--xl</c> CSS class.</summary>

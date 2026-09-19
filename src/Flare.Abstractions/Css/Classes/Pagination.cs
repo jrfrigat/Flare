@@ -16,9 +16,12 @@ public static class Pagination
     /// <summary>The <c>flare-pagination--xs</c> CSS class.</summary>
     public const string SizeXs = "flare-pagination--xs";
     /// <summary>The <c>flare-pagination--sm</c> CSS class.</summary>
-    public const string Sm = "flare-pagination--sm";
+    public const string SizeSm = "flare-pagination--sm";
+    /// <summary>The <c>flare-pagination--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-pagination--md";
     /// <summary>The <c>flare-pagination--lg</c> CSS class.</summary>
-    public const string Lg = "flare-pagination--lg";
+    public const string SizeLg = "flare-pagination--lg";
     /// <summary>The <c>flare-pagination--xl</c> CSS class.</summary>
     public const string SizeXl = "flare-pagination--xl";
     /// <summary>The <c>flare-pagination__rows</c> CSS class.</summary>

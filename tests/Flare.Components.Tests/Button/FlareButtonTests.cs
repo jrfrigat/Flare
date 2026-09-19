@@ -131,7 +131,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Size, ButtonSize.Sm)
             .AddChildContent("Small"));
 
-        Assert.Contains(Css.Classes.Button.Sm, cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.SizeSm, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class FlareButtonTests : FlareTestContext
             .Add(c => c.Size, ButtonSize.Lg)
             .AddChildContent("Large"));
 
-        Assert.Contains(Css.Classes.Button.Lg, cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.SizeLg, cut.Find("button").ClassName);
     }
 
     [Fact]

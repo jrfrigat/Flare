@@ -11,11 +11,11 @@ namespace Flare.Components.Tests;
 public class FlareProgressSizeTests : FlareTestContext
 {
     [Theory]
-    [InlineData(TrackSize.Xs, Css.Classes.Progress.Xs)]
-    [InlineData(TrackSize.Sm, Css.Classes.Progress.Sm)]
-    [InlineData(TrackSize.Md, Css.Classes.Progress.Md)]
-    [InlineData(TrackSize.Lg, Css.Classes.Progress.Lg)]
-    [InlineData(TrackSize.Xl, Css.Classes.Progress.Xl)]
+    [InlineData(TrackSize.Xs, Css.Classes.Progress.SizeXs)]
+    [InlineData(TrackSize.Sm, Css.Classes.Progress.SizeSm)]
+    [InlineData(TrackSize.Md, Css.Classes.Progress.SizeMd)]
+    [InlineData(TrackSize.Lg, Css.Classes.Progress.SizeLg)]
+    [InlineData(TrackSize.Xl, Css.Classes.Progress.SizeXl)]
     public void Size_AppliesSizeClass_OnLinear(TrackSize size, string expected)
     {
         var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, size));
@@ -25,8 +25,8 @@ public class FlareProgressSizeTests : FlareTestContext
 
     // The same step has to reach the circular variant too, or one Size would mean two different things.
     [Theory]
-    [InlineData(TrackSize.Xs, Css.Classes.Progress.Xs)]
-    [InlineData(TrackSize.Xl, Css.Classes.Progress.Xl)]
+    [InlineData(TrackSize.Xs, Css.Classes.Progress.SizeXs)]
+    [InlineData(TrackSize.Xl, Css.Classes.Progress.SizeXl)]
     public void Size_AppliesSizeClass_OnCircular(TrackSize size, string expected)
     {
         var cut = Render<FlareProgressCircular>(p => p
@@ -41,7 +41,7 @@ public class FlareProgressSizeTests : FlareTestContext
     {
         var cut = Render<FlareProgressLinear>(p => p.Add(x => x.Value, 50d));
 
-        Assert.Contains(Css.Classes.Progress.Md, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
+        Assert.Contains(Css.Classes.Progress.SizeMd, cut.Find($".{Css.Classes.Progress.Root}").ClassName);
     }
 
     // Regression: the circular variant used to write width/height px inline from an int Size that defaulted

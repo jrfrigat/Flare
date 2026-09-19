@@ -52,7 +52,7 @@
         FieldSize.Sm => Css.Classes.Badge.SizeSm,
         FieldSize.Lg => Css.Classes.Badge.SizeLg,
         FieldSize.Xl => Css.Classes.Badge.SizeXl,
-        _ => string.Empty,
+        _ => Css.Classes.Badge.SizeMd,   // Md is the default and now names itself
     };
 
     private string _label => Text ?? (Count > Max ? $"{Max}+" : Count.ToString());

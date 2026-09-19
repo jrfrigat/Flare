@@ -18,15 +18,15 @@ public static class Button
     public const string Elevated = "flare-btn--elevated";
 
     /// <summary>The <c>flare-btn--xs</c> CSS class.</summary>
-    public const string Xs = "flare-btn--xs";
+    public const string SizeXs = "flare-btn--xs";
     /// <summary>The <c>flare-btn--sm</c> CSS class.</summary>
-    public const string Sm = "flare-btn--sm";
+    public const string SizeSm = "flare-btn--sm";
     /// <summary>The <c>flare-btn--md</c> CSS class.</summary>
-    public const string Md = "flare-btn--md";
+    public const string SizeMd = "flare-btn--md";
     /// <summary>The <c>flare-btn--lg</c> CSS class.</summary>
-    public const string Lg = "flare-btn--lg";
+    public const string SizeLg = "flare-btn--lg";
     /// <summary>The <c>flare-btn--xl</c> CSS class.</summary>
-    public const string Xl = "flare-btn--xl";
+    public const string SizeXl = "flare-btn--xl";
 
     /// <summary>The <c>flare-btn--rounded</c> CSS class.</summary>
     public const string Rounded = "flare-btn--rounded";
@@ -66,15 +66,15 @@ public static class SplitButton
     public const string Root = "flare-split-btn";
 
     /// <summary>The <c>flare-split-btn--xs</c> CSS class.</summary>
-    public const string Xs = "flare-split-btn--xs";
+    public const string SizeXs = "flare-split-btn--xs";
     /// <summary>The <c>flare-split-btn--sm</c> CSS class.</summary>
-    public const string Sm = "flare-split-btn--sm";
+    public const string SizeSm = "flare-split-btn--sm";
     /// <summary>The <c>flare-split-btn--md</c> CSS class.</summary>
-    public const string Md = "flare-split-btn--md";
+    public const string SizeMd = "flare-split-btn--md";
     /// <summary>The <c>flare-split-btn--lg</c> CSS class.</summary>
-    public const string Lg = "flare-split-btn--lg";
+    public const string SizeLg = "flare-split-btn--lg";
     /// <summary>The <c>flare-split-btn--xl</c> CSS class.</summary>
-    public const string Xl = "flare-split-btn--xl";
+    public const string SizeXl = "flare-split-btn--xl";
 
     /// <summary>The <c>flare-split-btn__main</c> CSS class.</summary>
     public const string Main = "flare-split-btn__main";

@@ -47,7 +47,7 @@
         FieldSize.Sm => Css.Classes.Radio.SizeSm,
         FieldSize.Lg => Css.Classes.Radio.SizeLg,
         FieldSize.Xl => Css.Classes.Radio.SizeXl,
-        _ => string.Empty,
+        _ => Css.Classes.Radio.SizeMd,   // Md is the default and now names itself
     };
 
     private async Task HandleChange()

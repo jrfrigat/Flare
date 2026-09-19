@@ -47,10 +47,10 @@ public abstract class FlareProgressBase : FlareComponentBase
     /// <summary>The size class only selects a theme token; it carries no measurement itself.</summary>
     private protected string SizeClass => Size switch
     {
-        TrackSize.Sm => Css.Classes.Progress.Sm,
-        TrackSize.Md => Css.Classes.Progress.Md,
-        TrackSize.Lg => Css.Classes.Progress.Lg,
-        TrackSize.Xl => Css.Classes.Progress.Xl,
-        _ => Css.Classes.Progress.Xs,
+        TrackSize.Sm => Css.Classes.Progress.SizeSm,
+        TrackSize.Md => Css.Classes.Progress.SizeMd,
+        TrackSize.Lg => Css.Classes.Progress.SizeLg,
+        TrackSize.Xl => Css.Classes.Progress.SizeXl,
+        _ => Css.Classes.Progress.SizeXs,
     };
 }

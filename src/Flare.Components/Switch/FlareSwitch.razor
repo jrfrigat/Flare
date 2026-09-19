@@ -70,11 +70,11 @@
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string _sizeClass => Size switch
     {
-        SwitchSize.Xs => Css.Classes.Switch.Xs,
-        SwitchSize.Sm => Css.Classes.Switch.Sm,
-        SwitchSize.Lg => Css.Classes.Switch.Lg,
-        SwitchSize.Xl => Css.Classes.Switch.Xl,
-        _             => string.Empty, // Md is the default (base tokens)
+        SwitchSize.Xs => Css.Classes.Switch.SizeXs,
+        SwitchSize.Sm => Css.Classes.Switch.SizeSm,
+        SwitchSize.Lg => Css.Classes.Switch.SizeLg,
+        SwitchSize.Xl => Css.Classes.Switch.SizeXl,
+        _             => Css.Classes.Switch.SizeMd,   // Md is the default and now names itself
     };
     private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.Switch.LabelStart : string.Empty;
     private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;

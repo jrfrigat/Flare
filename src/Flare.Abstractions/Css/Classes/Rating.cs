@@ -13,6 +13,9 @@ public static class Rating
     public const string SizeXs = "flare-rating--xs";
     /// <summary>The <c>flare-rating--sm</c> CSS class.</summary>
     public const string SizeSm = "flare-rating--sm";
+    /// <summary>The <c>flare-rating--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-rating--md";
     /// <summary>The <c>flare-rating--lg</c> CSS class.</summary>
     public const string SizeLg = "flare-rating--lg";
     /// <summary>The <c>flare-rating--xl</c> CSS class.</summary>

@@ -124,10 +124,10 @@
     private string _sizeClass => Size switch
     {
         ChipSize.Xs => Css.Classes.Chip.SizeXs,
-        ChipSize.Sm => Css.Classes.Chip.Sm,
-        ChipSize.Lg => Css.Classes.Chip.Lg,
+        ChipSize.Sm => Css.Classes.Chip.SizeSm,
+        ChipSize.Lg => Css.Classes.Chip.SizeLg,
         ChipSize.Xl => Css.Classes.Chip.SizeXl,
-        _           => string.Empty,
+        _           => Css.Classes.Chip.SizeMd,   // Md is the default and now names itself
     };
 
     private async Task HandleClick()

@@ -119,10 +119,10 @@
     private string _sizeClass => Size switch
     {
         PaginationSize.Xs => Css.Classes.Pagination.SizeXs,
-        PaginationSize.Sm => Css.Classes.Pagination.Sm,
-        PaginationSize.Lg => Css.Classes.Pagination.Lg,
+        PaginationSize.Sm => Css.Classes.Pagination.SizeSm,
+        PaginationSize.Lg => Css.Classes.Pagination.SizeLg,
         PaginationSize.Xl => Css.Classes.Pagination.SizeXl,
-        _                 => string.Empty,
+        _                 => Css.Classes.Pagination.SizeMd,   // Md is the default and now names itself
     };
 
     private string _colorClass => Color.CssClass ?? string.Empty;

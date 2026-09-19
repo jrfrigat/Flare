@@ -66,11 +66,11 @@
     // The size class only selects which per-size theme token the CSS reads; it carries no geometry itself.
     private string _sizeClass => Size switch
     {
-        TrackSize.Sm => Css.Classes.Meter.Sm,
-        TrackSize.Md => Css.Classes.Meter.Md,
-        TrackSize.Lg => Css.Classes.Meter.Lg,
-        TrackSize.Xl => Css.Classes.Meter.Xl,
-        _ => Css.Classes.Meter.Xs,
+        TrackSize.Sm => Css.Classes.Meter.SizeSm,
+        TrackSize.Md => Css.Classes.Meter.SizeMd,
+        TrackSize.Lg => Css.Classes.Meter.SizeLg,
+        TrackSize.Xl => Css.Classes.Meter.SizeXl,
+        _ => Css.Classes.Meter.SizeXs,
     };
 
     // Shared zone registration; the collection pokes StateHasChanged when segments change.

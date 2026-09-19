@@ -73,7 +73,7 @@ public class FlareButtonGroupTests : FlareTestContext
         var btn = cut.Find("button");
         Assert.Contains(Css.Classes.Button.Root, btn.ClassName);
         Assert.Contains(Css.Classes.Button.Outlined, btn.ClassName);
-        Assert.Contains(Css.Classes.Button.Lg, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.SizeLg, btn.ClassName);
         Assert.Contains(Css.Classes.Button.Selected, btn.ClassName);
         // An unselected toggle must still say it is a toggle: an absent aria-pressed reads as a plain
         // command, so "false" is the state and not the absence of one.
@@ -234,7 +234,7 @@ public class FlareButtonGroupTests : FlareTestContext
             }));
 
         var btn = cut.Find($".{Css.Classes.Button.Root}");
-        Assert.Contains(Css.Classes.Button.Lg, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.SizeLg, btn.ClassName);
         Assert.Contains(Css.Classes.Button.Tonal, btn.ClassName);
     }
 

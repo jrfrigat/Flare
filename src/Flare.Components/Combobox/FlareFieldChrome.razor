@@ -127,7 +127,7 @@
         FieldSize.Sm => Css.Classes.Input.SizeSm,
         FieldSize.Lg => Css.Classes.Input.SizeLg,
         FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => null,
+        _ => Css.Classes.Input.SizeMd,   // Md is the default and now names itself
     };
 
     private string? VariantClassOf() => Variant switch

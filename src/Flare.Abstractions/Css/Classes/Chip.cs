@@ -26,9 +26,12 @@ public static class Chip
     /// <summary>The <c>flare-chip--xs</c> CSS class.</summary>
     public const string SizeXs = "flare-chip--xs";
     /// <summary>The <c>flare-chip--sm</c> CSS class.</summary>
-    public const string Sm = "flare-chip--sm";
+    public const string SizeSm = "flare-chip--sm";
+    /// <summary>The <c>flare-chip--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-chip--md";
     /// <summary>The <c>flare-chip--lg</c> CSS class.</summary>
-    public const string Lg = "flare-chip--lg";
+    public const string SizeLg = "flare-chip--lg";
     /// <summary>The <c>flare-chip--xl</c> CSS class.</summary>
     public const string SizeXl = "flare-chip--xl";
     /// <summary>The <c>flare-chip__avatar</c> CSS class.</summary>

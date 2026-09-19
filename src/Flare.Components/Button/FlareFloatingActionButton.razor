@@ -61,9 +61,9 @@ else
 
     private string? _sizeClass => Size switch
     {
-        FabSize.Sm => Css.Classes.Fab.Sm,
-        FabSize.Lg => Css.Classes.Fab.Lg,
-        _          => null,
+        FabSize.Sm => Css.Classes.Fab.SizeSm,
+        FabSize.Lg => Css.Classes.Fab.SizeLg,
+        _          => Css.Classes.Fab.SizeMd,   // Md is the default and now names itself
     };
 
     // Anchor CSS modifier for the current position (Static has no anchor).

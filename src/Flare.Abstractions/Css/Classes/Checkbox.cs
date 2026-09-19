@@ -13,6 +13,9 @@ public static class Checkbox
     public const string SizeXs = "flare-checkbox--xs";
     /// <summary>The <c>flare-checkbox--sm</c> CSS class.</summary>
     public const string SizeSm = "flare-checkbox--sm";
+    /// <summary>The <c>flare-checkbox--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-checkbox--md";
     /// <summary>The <c>flare-checkbox--lg</c> CSS class.</summary>
     public const string SizeLg = "flare-checkbox--lg";
     /// <summary>The <c>flare-checkbox--xl</c> CSS class.</summary>

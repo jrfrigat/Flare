@@ -19,7 +19,7 @@ public class FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Size, FabSize.Sm));
 
-        Assert.Contains(Css.Classes.Fab.Sm, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
+        Assert.Contains(Css.Classes.Fab.SizeSm, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class FlareFloatingActionButtonTests : FlareTestContext
         var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Size, FabSize.Lg));
 
-        Assert.Contains(Css.Classes.Fab.Lg, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
+        Assert.Contains(Css.Classes.Fab.SizeLg, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
     }
 
     [Fact]

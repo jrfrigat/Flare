@@ -49,11 +49,11 @@ public class FlareFileUploadButtonTests : FlareTestContext
     }
 
     [Theory]
-    [InlineData(ButtonSize.Xs, Css.Classes.Button.Xs)]
-    [InlineData(ButtonSize.Sm, Css.Classes.Button.Sm)]
-    [InlineData(ButtonSize.Md, Css.Classes.Button.Md)]
-    [InlineData(ButtonSize.Lg, Css.Classes.Button.Lg)]
-    [InlineData(ButtonSize.Xl, Css.Classes.Button.Xl)]
+    [InlineData(ButtonSize.Xs, Css.Classes.Button.SizeXs)]
+    [InlineData(ButtonSize.Sm, Css.Classes.Button.SizeSm)]
+    [InlineData(ButtonSize.Md, Css.Classes.Button.SizeMd)]
+    [InlineData(ButtonSize.Lg, Css.Classes.Button.SizeLg)]
+    [InlineData(ButtonSize.Xl, Css.Classes.Button.SizeXl)]
     public void SizeMapsToTheButtonFamilysClass(ButtonSize size, string expected)
     {
         var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.Size, size));

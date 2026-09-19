@@ -22,19 +22,19 @@ public static class Slider
     /// <summary>The <c>flare-slider__helper</c> CSS class.</summary>
     public const string Helper = "flare-slider__helper";
     /// <summary>The <c>flare-slider--lg</c> CSS class.</summary>
-    public const string Lg = "flare-slider--lg";
+    public const string SizeLg = "flare-slider--lg";
     /// <summary>The <c>flare-slider--md</c> CSS class.</summary>
-    public const string Md = "flare-slider--md";
+    public const string SizeMd = "flare-slider--md";
     /// <summary>The <c>flare-slider--range</c> CSS class.</summary>
     public const string Range = "flare-slider--range";
     /// <summary>The <c>flare-slider--sm</c> CSS class.</summary>
-    public const string Sm = "flare-slider--sm";
+    public const string SizeSm = "flare-slider--sm";
     /// <summary>The <c>flare-slider--vertical</c> CSS class.</summary>
     public const string Vertical = "flare-slider--vertical";
     /// <summary>The <c>flare-slider--xl</c> CSS class.</summary>
-    public const string Xl = "flare-slider--xl";
+    public const string SizeXl = "flare-slider--xl";
     /// <summary>The <c>flare-slider--xs</c> CSS class.</summary>
-    public const string Xs = "flare-slider--xs";
+    public const string SizeXs = "flare-slider--xs";
     /// <summary>The <c>flare-slider__bubble</c> CSS class.</summary>
     public const string Bubble = "flare-slider__bubble";
     /// <summary>The <c>flare-slider__bubble--high</c> CSS class.</summary>

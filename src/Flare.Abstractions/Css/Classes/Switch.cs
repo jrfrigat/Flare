@@ -20,13 +20,16 @@ public static class Switch
     /// <summary>The <c>flare-switch--label-start</c> CSS class.</summary>
     public const string LabelStart = "flare-switch--label-start";
     /// <summary>The <c>flare-switch--xs</c> CSS class.</summary>
-    public const string Xs = "flare-switch--xs";
+    public const string SizeXs = "flare-switch--xs";
     /// <summary>The <c>flare-switch--sm</c> CSS class.</summary>
-    public const string Sm = "flare-switch--sm";
+    public const string SizeSm = "flare-switch--sm";
+    /// <summary>The <c>flare-switch--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-switch--md";
     /// <summary>The <c>flare-switch--lg</c> CSS class.</summary>
-    public const string Lg = "flare-switch--lg";
+    public const string SizeLg = "flare-switch--lg";
     /// <summary>The <c>flare-switch--xl</c> CSS class.</summary>
-    public const string Xl = "flare-switch--xl";
+    public const string SizeXl = "flare-switch--xl";
     /// <summary>The <c>flare-switch--with-icon</c> CSS class.</summary>
     public const string WithIcon = "flare-switch--with-icon";
     /// <summary>The <c>flare-switch__handle</c> CSS class.</summary>

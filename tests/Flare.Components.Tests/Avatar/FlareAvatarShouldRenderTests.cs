@@ -36,7 +36,7 @@ public class FlareAvatarShouldRenderTests : FlareTestContext
     public void SmallSizeAppliesClass()
     {
         var cut = Render<FlareAvatar>(p => p.Add(x => x.Size, AvatarSize.Sm));
-        Assert.Contains(Css.Classes.Avatar.Sm, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
+        Assert.Contains(Css.Classes.Avatar.SizeSm, cut.Find($".{Css.Classes.Avatar.Root}").ClassName);
     }
 
     [Fact]

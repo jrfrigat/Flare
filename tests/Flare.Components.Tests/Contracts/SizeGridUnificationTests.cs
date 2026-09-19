@@ -10,8 +10,8 @@ public class SizeGridUnificationTests : FlareTestContext
 {
     [Theory]
     [InlineData(ChipSize.Xs, Css.Classes.Chip.SizeXs)]
-    [InlineData(ChipSize.Sm, Css.Classes.Chip.Sm)]
-    [InlineData(ChipSize.Lg, Css.Classes.Chip.Lg)]
+    [InlineData(ChipSize.Sm, Css.Classes.Chip.SizeSm)]
+    [InlineData(ChipSize.Lg, Css.Classes.Chip.SizeLg)]
     [InlineData(ChipSize.Xl, Css.Classes.Chip.SizeXl)]
     public void Chip_Size_AppliesModifier(ChipSize size, string expected)
     {
@@ -30,6 +30,6 @@ public class SizeGridUnificationTests : FlareTestContext
     public void Slider_Xl_AppliesModifier()
     {
         var cut = Render<FlareSlider>(p => p.Add(x => x.Size, TrackSize.Xl));
-        Assert.Contains(Css.Classes.Slider.Xl, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
+        Assert.Contains(Css.Classes.Slider.SizeXl, cut.Find($".{Css.Classes.Slider.Root}").ClassName);
     }
 }

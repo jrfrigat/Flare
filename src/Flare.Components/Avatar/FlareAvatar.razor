@@ -90,10 +90,10 @@
     internal static string SizeClass(AvatarSize size) => size switch
     {
         AvatarSize.Xs => Css.Classes.Avatar.SizeXs,
-        AvatarSize.Sm => Css.Classes.Avatar.Sm,
-        AvatarSize.Lg => Css.Classes.Avatar.Lg,
-        AvatarSize.Xl => Css.Classes.Avatar.Xl,
-        _             => Css.Classes.Avatar.Md
+        AvatarSize.Sm => Css.Classes.Avatar.SizeSm,
+        AvatarSize.Lg => Css.Classes.Avatar.SizeLg,
+        AvatarSize.Xl => Css.Classes.Avatar.SizeXl,
+        _             => Css.Classes.Avatar.SizeMd
     };
 
     private string _shapeClass => Shape switch

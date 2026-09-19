@@ -68,7 +68,7 @@ public class FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "small"));
 
-        Assert.Contains(Css.Classes.Button.Sm, cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.SizeSm, cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class FlareButtonIconOnlyTests : FlareTestContext
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "large"));
 
-        Assert.Contains(Css.Classes.Button.Lg, cut.Find("button").ClassName);
+        Assert.Contains(Css.Classes.Button.SizeLg, cut.Find("button").ClassName);
     }
 
     [Fact]

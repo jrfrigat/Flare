@@ -26,12 +26,12 @@ public static class ButtonCssClasses
     /// <summary>Class for a <see cref="ButtonSize"/>. Unknown values fall back to medium.</summary>
     public static string Size(ButtonSize size) => size switch
     {
-        ButtonSize.Xs => Css.Classes.Button.Xs,
-        ButtonSize.Sm => Css.Classes.Button.Sm,
-        ButtonSize.Md => Css.Classes.Button.Md,
-        ButtonSize.Lg => Css.Classes.Button.Lg,
-        ButtonSize.Xl => Css.Classes.Button.Xl,
-        _ => Css.Classes.Button.Md,
+        ButtonSize.Xs => Css.Classes.Button.SizeXs,
+        ButtonSize.Sm => Css.Classes.Button.SizeSm,
+        ButtonSize.Md => Css.Classes.Button.SizeMd,
+        ButtonSize.Lg => Css.Classes.Button.SizeLg,
+        ButtonSize.Xl => Css.Classes.Button.SizeXl,
+        _ => Css.Classes.Button.SizeMd,
     };
 
     /// <summary>Class for a <see cref="ButtonShape"/>, or an empty string for the default shape.</summary>

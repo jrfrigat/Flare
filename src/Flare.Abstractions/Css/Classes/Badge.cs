@@ -21,6 +21,9 @@ public static class Badge
     public const string SizeXs = "flare-badge--xs";
     /// <summary>The <c>flare-badge--sm</c> CSS class.</summary>
     public const string SizeSm = "flare-badge--sm";
+    /// <summary>The <c>flare-badge--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-badge--md";
     /// <summary>The <c>flare-badge--lg</c> CSS class.</summary>
     public const string SizeLg = "flare-badge--lg";
     /// <summary>The <c>flare-badge--xl</c> CSS class.</summary>

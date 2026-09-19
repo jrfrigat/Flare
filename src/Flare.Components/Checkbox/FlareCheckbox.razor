@@ -100,7 +100,7 @@
         FieldSize.Sm => Css.Classes.Checkbox.SizeSm,
         FieldSize.Lg => Css.Classes.Checkbox.SizeLg,
         FieldSize.Xl => Css.Classes.Checkbox.SizeXl,
-        _ => string.Empty,
+        _ => Css.Classes.Checkbox.SizeMd,   // Md is the default and now names itself
     };
     private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.Checkbox.LabelStart : string.Empty;
     private bool _hasIcons => CheckedIcon is not null || UncheckedIcon is not null || IndeterminateIcon is not null;

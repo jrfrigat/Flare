@@ -80,12 +80,12 @@
     // Size mapping for the split-button CSS isolation
     private string _sizeClass => Size switch
     {
-        ButtonSize.Xs => Css.Classes.SplitButton.Xs,
-        ButtonSize.Sm => Css.Classes.SplitButton.Sm,
-        ButtonSize.Md => Css.Classes.SplitButton.Md,
-        ButtonSize.Lg => Css.Classes.SplitButton.Lg,
-        ButtonSize.Xl => Css.Classes.SplitButton.Xl,
-        _ => Css.Classes.SplitButton.Md,
+        ButtonSize.Xs => Css.Classes.SplitButton.SizeXs,
+        ButtonSize.Sm => Css.Classes.SplitButton.SizeSm,
+        ButtonSize.Md => Css.Classes.SplitButton.SizeMd,
+        ButtonSize.Lg => Css.Classes.SplitButton.SizeLg,
+        ButtonSize.Xl => Css.Classes.SplitButton.SizeXl,
+        _ => Css.Classes.SplitButton.SizeMd,
     };
 
     private string _openedClass => _menuOpen ? Css.Classes.SplitButton.Opened : string.Empty;

@@ -6,9 +6,12 @@ public static class Fab
     /// <summary>The <c>flare-fab</c> CSS class.</summary>
     public const string Root = "flare-fab";
     /// <summary>The <c>flare-fab--sm</c> CSS class.</summary>
-    public const string Sm = "flare-fab--sm";
+    public const string SizeSm = "flare-fab--sm";
+    /// <summary>The <c>flare-fab--md</c> CSS class: the default step, named rather than left as the
+    /// absence of a class so the DOM says the size and a selector can reach it.</summary>
+    public const string SizeMd = "flare-fab--md";
     /// <summary>The <c>flare-fab--lg</c> CSS class.</summary>
-    public const string Lg = "flare-fab--lg";
+    public const string SizeLg = "flare-fab--lg";
     /// <summary>The <c>flare-fab--surface</c> CSS class.</summary>
     public const string Surface = "flare-fab--surface";
     /// <summary>The <c>flare-fab__icon</c> CSS class.</summary>

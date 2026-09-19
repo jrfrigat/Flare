@@ -49,7 +49,7 @@ public class FlareFabMenuTests : FlareTestContext
         var cut = RenderFabMenu();
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.FabMenu.Item}"));
-        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.FabMenu.Btn}.{Css.Classes.Fab.Sm}"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.FabMenu.Btn}.{Css.Classes.Fab.SizeSm}"));
     }
 
     [Fact]

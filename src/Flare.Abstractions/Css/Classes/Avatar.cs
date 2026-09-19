@@ -10,13 +10,13 @@ public static class Avatar
     /// <summary>The <c>flare-avatar--xs</c> CSS class.</summary>
     public const string SizeXs = "flare-avatar--xs";
     /// <summary>The <c>flare-avatar--sm</c> CSS class.</summary>
-    public const string Sm = "flare-avatar--sm";
+    public const string SizeSm = "flare-avatar--sm";
     /// <summary>The <c>flare-avatar--md</c> CSS class.</summary>
-    public const string Md = "flare-avatar--md";
+    public const string SizeMd = "flare-avatar--md";
     /// <summary>The <c>flare-avatar--lg</c> CSS class.</summary>
-    public const string Lg = "flare-avatar--lg";
+    public const string SizeLg = "flare-avatar--lg";
     /// <summary>The <c>flare-avatar--xl</c> CSS class.</summary>
-    public const string Xl = "flare-avatar--xl";
+    public const string SizeXl = "flare-avatar--xl";
     /// <summary>The <c>flare-avatar--rounded</c> CSS class.</summary>
     public const string Rounded = "flare-avatar--rounded";
     /// <summary>The <c>flare-avatar--square</c> CSS class.</summary>

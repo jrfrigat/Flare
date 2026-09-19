@@ -20,7 +20,7 @@ public class FlareToggleGroupCascadeTests : FlareTestContext
                 .Add(x => x.Value, (object?)"a")
                 .AddChildContent("A")));
 
-        Assert.Contains(Css.Classes.Button.Lg, cut.Find($"button.{Css.Classes.Button.Root}").ClassName);
+        Assert.Contains(Css.Classes.Button.SizeLg, cut.Find($"button.{Css.Classes.Button.Root}").ClassName);
     }
 
     [Fact]

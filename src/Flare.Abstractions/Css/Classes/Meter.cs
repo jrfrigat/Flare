@@ -8,15 +8,15 @@ public static class Meter
     /// <summary>The <c>flare-meter--empty</c> CSS class (no renderable segments; shows the bare track).</summary>
     public const string Empty = "flare-meter--empty";
     /// <summary>The <c>flare-meter--xs</c> CSS class (track thickness step).</summary>
-    public const string Xs = "flare-meter--xs";
+    public const string SizeXs = "flare-meter--xs";
     /// <summary>The <c>flare-meter--sm</c> CSS class (track thickness step).</summary>
-    public const string Sm = "flare-meter--sm";
+    public const string SizeSm = "flare-meter--sm";
     /// <summary>The <c>flare-meter--md</c> CSS class (track thickness step).</summary>
-    public const string Md = "flare-meter--md";
+    public const string SizeMd = "flare-meter--md";
     /// <summary>The <c>flare-meter--lg</c> CSS class (track thickness step).</summary>
-    public const string Lg = "flare-meter--lg";
+    public const string SizeLg = "flare-meter--lg";
     /// <summary>The <c>flare-meter--xl</c> CSS class (track thickness step).</summary>
-    public const string Xl = "flare-meter--xl";
+    public const string SizeXl = "flare-meter--xl";
     /// <summary>The <c>flare-meter__track</c> CSS class (the rounded bar that holds the segments).</summary>
     public const string Track = "flare-meter__track";
     /// <summary>The <c>flare-meter__seg</c> CSS class (one proportional colored segment).</summary>
