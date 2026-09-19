@@ -81,6 +81,18 @@ public sealed record ColorScheme
     public required string OnSurfaceVariant2 { get; init; }
     /// <summary>Surface container color role.</summary>
     public required string SurfaceContainer { get; init; }
+    /// <summary>
+    /// The plane furthest from the content - whiter than <see cref="SurfaceContainerLow"/> in a light
+    /// scheme and darker in a dark one. It completes the five-step container ladder into the six planes
+    /// the surface roles are meant to describe, and it is what a shell puts its chrome on while the
+    /// canvas stays on <see cref="Surface"/>.
+    /// <para>
+    /// Distinct from <see cref="Background"/>, which is the colour of the document rather than a panel:
+    /// with only five planes that distinction had to be spent as a substitute for this one, leaving
+    /// nothing to describe the document itself.
+    /// </para>
+    /// </summary>
+    public required string SurfaceContainerLowest { get; init; }
     /// <summary>Surface container low color role.</summary>
     public required string SurfaceContainerLow { get; init; }
     /// <summary>Surface container high color role.</summary>

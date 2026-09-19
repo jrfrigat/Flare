@@ -30,6 +30,23 @@
 </section>
 
 <section>
+    <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Layers" Title="@GalleryStrings.Color_PlanesTitle" />
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
+            @GalleryStrings.Color_PlanesDesc
+        </FlareText>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.75rem;">
+            @foreach (var plane in _planes)
+            {
+                <div style="background:var(@plane);color:var(--flare-color-on-surface);border:var(--flare-border-outline);border-radius:var(--flare-shape-medium);padding:0.875rem 1rem;min-height:84px;display:flex;align-items:flex-end;">
+                    <code style="font-size:0.7rem;">@plane.Replace("--flare-color-", "")</code>
+                </div>
+            }
+        </div>
+    </FlareCard>
+</section>
+
+<section>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.FormatColorText" Title="@GalleryStrings.Color_TextTonesTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
@@ -125,6 +142,18 @@
         """;
 
     private sealed record RoleInfo(string Name, string Class);
+
+    // Furthest from the content first, so the strip reads as the ladder it is. Named from the token
+    // registry rather than spelled out, which is what makes a renamed plane a compile error here.
+    private static readonly string[] _planes =
+    [
+        Css.Tokens.Color.SurfaceContainerLowest,
+        Css.Tokens.Color.SurfaceContainerLow,
+        Css.Tokens.Color.SurfaceContainer,
+        Css.Tokens.Color.SurfaceContainerHigh,
+        Css.Tokens.Color.SurfaceContainerHighest,
+        Css.Tokens.Color.Surface,
+    ];
 
     private static readonly RoleInfo[] _roles =
     [

@@ -75,6 +75,7 @@ public class TokensToCssTests
         OnSurfaceVariant = "#333",
         OnSurfaceVariant2 = "#444",
         SurfaceContainer = "#EEE",
+        SurfaceContainerLowest = "#ffffff",
         SurfaceContainerLow = "#F5F5F5",
         SurfaceContainerHigh = "#DDD",
         SurfaceContainerHighest = "#CCC",

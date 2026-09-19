@@ -2268,6 +2268,12 @@
   <data name="Color_TextTonesTitle" xml:space="preserve">
     <value>Тоны текста</value>
   </data>
+  <data name="Color_PlanesTitle" xml:space="preserve">
+    <value>Плоскости поверхности</value>
+  </data>
+  <data name="Color_PlanesDesc" xml:space="preserve">
+    <value>Шесть плоскостей, начиная с самой дальней от контента. Оболочка кладет хром на нижнюю плоскость и оставляет полотно на surface; карточки и колонки живут на промежуточных ступенях.</value>
+  </data>
   <data name="Color_TextTonesDesc" xml:space="preserve">
     <value>Три нейтральных тона поверх поверхности для иерархии текста: основной / вторичный / третичный. Третий тон (on-surface-variant2) тусклее, чем on-surface-variant.</value>
   </data>

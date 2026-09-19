@@ -2309,6 +2309,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Surface planes.
+        /// </summary>
+        public static string Color_PlanesTitle {
+            get {
+                return ResourceManager.GetString("Color_PlanesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Six planes.
+        /// </summary>
+        public static string Color_PlanesDesc {
+            get {
+                return ResourceManager.GetString("Color_PlanesDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на On surface variant - secondary text.
         /// </summary>
         public static string Color_TextToneVariant {

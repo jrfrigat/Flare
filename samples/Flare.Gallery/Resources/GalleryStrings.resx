@@ -2268,6 +2268,12 @@
   <data name="Color_TextTonesTitle" xml:space="preserve">
     <value>Text tones</value>
   </data>
+  <data name="Color_PlanesTitle" xml:space="preserve">
+    <value>Surface planes</value>
+  </data>
+  <data name="Color_PlanesDesc" xml:space="preserve">
+    <value>Six planes, furthest from the content first. A shell puts its chrome on the lowest plane and leaves the canvas on surface; cards and columns sit on the steps between.</value>
+  </data>
   <data name="Color_TextTonesDesc" xml:space="preserve">
     <value>Three neutral on-surface tones for a primary / secondary / tertiary text hierarchy. The third tone (on-surface-variant2) is fainter than on-surface-variant.</value>
   </data>

@@ -252,6 +252,7 @@ public class TokenParityTests
             OnSurfaceVariant = "#49454F",
             OnSurfaceVariant2 = "#615D67",
             SurfaceContainer = "#F3EDF7",
+            SurfaceContainerLowest = "#ffffff",
             SurfaceContainerLow = "#F7F2FA",
             SurfaceContainerHigh = "#ECE6F0",
             SurfaceContainerHighest = "#E6E0E9",
