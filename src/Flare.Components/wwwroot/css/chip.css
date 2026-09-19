@@ -132,3 +132,10 @@
 
 /* Color is set via the Color parameter (string) -> fills --_chip-fg/-border/-sel-bg/-sel-fg
    inline. There are no separate per-color classes. */
+
+/* A chip that is a tag, not a control: nothing to press, so no pointer, and its text is there to be
+   read and copied - an identifier or a version is exactly the kind of label someone selects. */
+.flare-chip--static {
+    cursor: default;
+    user-select: text;
+}

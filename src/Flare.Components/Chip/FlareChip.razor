@@ -1,7 +1,12 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_resolvedSelectedClass, _disabledClass, _sizeClass, _variantClass, _colorClass, Css.Classes.State.LayerHover, Css.Classes.State.LayerFocus, Css.Classes.State.LayerPressed)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" aria-disabled="@(Disabled ? "true" : null)" tabindex="@(Disabled ? -1 : 0)" @onclick="HandleClick" @onkeydown="HandleKeyDown">
+@* A span, not a div: a chip is an inline run - a tag beside prose, a label in a table cell - and a div
+   inside a <p> is invalid. It has always painted as inline-flex, so nothing moves.
+
+   A static chip drops the role, the tab stop, the handlers and the state layers rather than switching
+   them off: a control that announces itself and then refuses is worse than no control. *@
+<span class="@BuildCssClass(_resolvedSelectedClass, _disabledClass, _sizeClass, _variantClass, _colorClass, _staticClass, _hoverLayerClass, _focusLayerClass, _pressedLayerClass)" style="@_chipStyle" @attributes="AdditionalAttributes" role="@(_isInteractive ? "button" : null)" aria-disabled="@(_isInteractive && Disabled ? "true" : null)" tabindex="@(_isInteractive ? (Disabled ? -1 : 0) : default(int?))" @onclick="HandleClick" @onkeydown="HandleKeyDown">
     @if (AvatarContent is not null)
     {
         <span class="@Css.Classes.Chip.Avatar">@AvatarContent</span>
@@ -20,7 +25,7 @@
             &#x2715;
         </button>
     }
-</div>
+</span>
 
 @code {
     /// <summary>Text label displayed inside the chip. Ignored when <see cref="ChildContent"/> is set.</summary>
@@ -66,6 +71,17 @@
     /// leaves the tab order. A chip inside a <see cref="FlareChipGroup"/> also stops taking part in
     /// selection, so a disabled chip can neither be selected nor cleared.</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>
+    /// Whether the chip is something to press or something to read. <see cref="ChipInteraction.Auto"/>
+    /// (the default) reads it off what the chip is wired to: bound <see cref="OnClick"/> or
+    /// <see cref="SelectedChanged"/>, or membership of a <see cref="FlareChipGroup"/>, makes it a
+    /// control, and anything else is a tag with no role and no tab stop.
+    /// <para>
+    /// Set <see cref="ChipInteraction.Button"/> when the handler arrives by attribute splatting rather
+    /// than through a parameter - that is the one wiring <see cref="ChipInteraction.Auto"/> cannot see.
+    /// </para>
+    /// </summary>
+    [Parameter] public ChipInteraction Interaction { get; set; } = ChipInteraction.Auto;
 
     /// <summary>Parent chip group context providing selection state management.</summary>
     [CascadingParameter] public FlareChipGroupContext? GroupContext { get; set; }
@@ -78,6 +94,21 @@
 
     private string _resolvedSelectedClass => _isSelected ? Css.Classes.Chip.Selected : string.Empty;
     private string _disabledClass => Disabled ? Css.Classes.Chip.Disabled : string.Empty;
+
+    // A chip is a control when something is wired to it. Closeable does not count: the close button is
+    // its own control with its own focus, and the body around it is still only a label.
+    private bool _isInteractive => Interaction switch
+    {
+        ChipInteraction.Button => true,
+        ChipInteraction.Static => false,
+        _ => OnClick.HasDelegate || SelectedChanged.HasDelegate || GroupContext is not null,
+    };
+
+    private string _staticClass => _isInteractive ? string.Empty : Css.Classes.Chip.Static;
+    // The state layers answer a pointer and a focus ring the static chip does not have.
+    private string _hoverLayerClass => _isInteractive ? Css.Classes.State.LayerHover : string.Empty;
+    private string _focusLayerClass => _isInteractive ? Css.Classes.State.LayerFocus : string.Empty;
+    private string _pressedLayerClass => _isInteractive ? Css.Classes.State.LayerPressed : string.Empty;
     // Elevated bool is a back-compat shorthand for Variant=Elevated and wins when set.
     private ChipVariant _effectiveVariant => Elevated ? ChipVariant.Elevated : Variant;
     private string _variantClass => _effectiveVariant switch
@@ -103,7 +134,7 @@
     {
         // pointer-events:none already stops the mouse, but a click can still be
         // raised programmatically or by an assistive technology.
-        if (Disabled) return;
+        if (Disabled || !_isInteractive) return;
 
         if (GroupContext is not null)
         {

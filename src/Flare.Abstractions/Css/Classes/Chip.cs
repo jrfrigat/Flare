@@ -11,6 +11,8 @@ public static class Chip
     public const string Selected = "flare-chip--selected";
     /// <summary>The <c>flare-chip--disabled</c> CSS class.</summary>
     public const string Disabled = "flare-chip--disabled";
+    /// <summary>The <c>flare-chip--static</c> CSS class: a chip that is a tag rather than a control.</summary>
+    public const string Static = "flare-chip--static";
     /// <summary>The <c>flare-chip__label</c> CSS class.</summary>
     public const string Label = "flare-chip__label";
     /// <summary>The <c>flare-chip__close</c> CSS class.</summary>
