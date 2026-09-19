@@ -5,6 +5,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+Upgrading a custom theme or a stylesheet that names Flare classes? See
+[Migrating to 0.38](docs/en/migrating-to-0.38.md).
+
 ### Added
 
 - **A stacking ladder, so detached surfaces stop disagreeing about what covers what.** `LayerTokens`
