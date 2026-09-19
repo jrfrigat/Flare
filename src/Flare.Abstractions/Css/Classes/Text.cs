@@ -67,6 +67,19 @@ public static class Text
     public const string AlignJustify = "flare-text--align-justify";
     /// <summary>The <c>flare-text--mono</c> CSS class: renders the text in the monospace font.</summary>
     public const string Mono = "flare-text--mono";
+
+    /// <summary>The <c>flare-text--transform-uppercase</c> CSS class.</summary>
+    public const string TransformUppercase = "flare-text--transform-uppercase";
+    /// <summary>The <c>flare-text--transform-lowercase</c> CSS class.</summary>
+    public const string TransformLowercase = "flare-text--transform-lowercase";
+    /// <summary>The <c>flare-text--transform-capitalize</c> CSS class.</summary>
+    public const string TransformCapitalize = "flare-text--transform-capitalize";
+
+    /// <summary>The <c>flare-text--truncate</c> CSS class: one line, ended with an ellipsis.</summary>
+    public const string TruncateLine = "flare-text--truncate";
+    /// <summary>The <c>flare-text--clamp</c> CSS class: capped at the line count carried by
+    /// <c>--flare-text-max-lines</c>, ended with an ellipsis.</summary>
+    public const string Clamp = "flare-text--clamp";
     /// <summary>The <c>flare-text-center</c> CSS class.</summary>
     public const string Center = "flare-text-center";
     /// <summary>The <c>flare-text-left</c> CSS class.</summary>

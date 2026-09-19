@@ -117,3 +117,31 @@
 
 /* Monospace override (FlareText Mono) - swaps only the font family, keeps the type-scale metrics. */
 .flare-text--mono { font-family: var(--flare-font-mono); }
+
+/* Letter-casing (FlareText Transform). A typographic level of its own - a section eyebrow, a group
+   heading - that no step of the scale carries. */
+.flare-text--transform-uppercase  { text-transform: uppercase; }
+.flare-text--transform-lowercase  { text-transform: lowercase; }
+.flare-text--transform-capitalize { text-transform: capitalize; }
+
+/* One line, ended with an ellipsis (FlareText MaxLines="1"). Deliberately NOT the clamp below: this
+   leaves the element's own display type alone, so a heading stays a heading. min-inline-size lets it
+   shrink inside a flex row, which is where a title that needs truncating usually sits. */
+.flare-text--truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-inline-size: 0;
+}
+
+/* Capped at N lines (FlareText MaxLines >= 2). The line count arrives per instance on the element.
+   -webkit-line-clamp with its box display is still the only form every engine implements; the standard
+   `line-clamp` is listed first so the two agree wherever both are understood. */
+.flare-text--clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: var(--flare-text-max-lines, 2);
+    -webkit-line-clamp: var(--flare-text-max-lines, 2);
+    overflow: hidden;
+    min-inline-size: 0;
+}

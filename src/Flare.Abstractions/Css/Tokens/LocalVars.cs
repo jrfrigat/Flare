@@ -53,4 +53,6 @@ public static class LocalVars
     public const string TreeIndent = "--flare-vtree-indent";
     /// <summary>CSS custom-property name for the marker colour of one chart data point.</summary>
     public const string ChartDot = "--flare-chart-dot";
+    /// <summary>CSS custom-property name for the line count one clamped text run stops at.</summary>
+    public const string TextMaxLines = "--flare-text-max-lines";
 }

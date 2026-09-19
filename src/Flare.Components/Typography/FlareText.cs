@@ -28,6 +28,24 @@ public sealed class FlareText : FlareComponentBase
     /// <see cref="FlareCode"/>.</summary>
     [Parameter] public bool Mono { get; set; }
 
+    /// <summary>Letter-casing applied on top of the type-scale step. <see cref="TextTransform.None"/>
+    /// (the default) leaves the text as written.</summary>
+    [Parameter] public TextTransform Transform { get; set; } = TextTransform.None;
+
+    /// <summary>
+    /// Caps the text at this many lines and ends it with an ellipsis. <c>0</c> (the default) leaves it
+    /// to wrap as far as it likes.
+    /// <para>
+    /// One parameter rather than a <c>Truncate</c> flag beside a <c>MaxLines</c> count, because they are
+    /// the same request at different depths and two knobs would have to explain which wins. The
+    /// mechanism underneath is not the same, though, and that is why this is a count and not a bool: at
+    /// one line the text stops wrapping and ends with an ellipsis, which keeps the element's own display
+    /// type; past one it needs a clamped flex box, which does not. Asking for the count lets the
+    /// component pick, where a caller writing the CSS by hand had to know.
+    /// </para>
+    /// </summary>
+    [Parameter] public int MaxLines { get; set; }
+
     /// <summary>The component's root CSS class.</summary>
     protected override string ComponentCssClass => Css.Classes.Text.Root;
 
@@ -35,7 +53,7 @@ public sealed class FlareText : FlareComponentBase
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, _safeElement);
-        builder.AddAttribute(1, "class", BuildCssClass(_scaleClass, Color.CssClass, _weightClass, _alignClass, _monoClass));
+        builder.AddAttribute(1, "class", BuildCssClass(_scaleClass, Color.CssClass, _weightClass, _alignClass, _monoClass, _transformClass, _clampClass));
         if (_inlineStyle is not null)
             builder.AddAttribute(2, "style", _inlineStyle);
         if (AdditionalAttributes is not null)
@@ -74,6 +92,28 @@ public sealed class FlareText : FlareComponentBase
 
     private string? _monoClass => Mono ? Css.Classes.Text.Mono : null;
 
+    private string? _transformClass => Transform switch
+    {
+        TextTransform.Uppercase => Css.Classes.Text.TransformUppercase,
+        TextTransform.Lowercase => Css.Classes.Text.TransformLowercase,
+        TextTransform.Capitalize => Css.Classes.Text.TransformCapitalize,
+        _ => null,
+    };
+
+    // One line is not a one-line clamp: nowrap + ellipsis leaves the element's display type alone,
+    // while the clamp needs -webkit-box and would turn a heading into a flex box to say the same thing.
+    private string? _clampClass => MaxLines switch
+    {
+        <= 0 => null,
+        1 => Css.Classes.Text.TruncateLine,
+        _ => Css.Classes.Text.Clamp,
+    };
+
+    // The line count is per instance, so it travels as a local channel rather than as a class per depth.
+    private string? _clampStyle => MaxLines >= 2
+        ? $"{Css.Tokens.LocalVars.TextMaxLines}:{MaxLines.ToString(System.Globalization.CultureInfo.InvariantCulture)};"
+        : null;
+
     private string _htmlElement => Typo switch
     {
         TypographyScale.DisplayLarge
@@ -93,8 +133,15 @@ public sealed class FlareText : FlareComponentBase
 
     private string _safeElement => Element is not null && AllowedElements.Contains(Element) ? Element : _htmlElement;
 
-    // Custom color -> inline the shared --fc-main token; role/default need no inline.
-    private string? _inlineStyle => Color.IsCustom
-        ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}"
-        : Style;
+    // Custom color -> inline the shared --fc-main token; role/default need no inline. The clamp depth
+    // joins it as a second channel, so a clamped run with a custom colour carries both.
+    private string? _inlineStyle
+    {
+        get
+        {
+            var color = Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : null;
+            var combined = color + _clampStyle + Style;
+            return string.IsNullOrEmpty(combined) ? null : combined;
+        }
+    }
 }
