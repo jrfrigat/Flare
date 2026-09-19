@@ -125,10 +125,17 @@
     [Parameter] public IEnumerable<TValue>? Items { get; set; }
 
     /// <summary>
-    /// Declarative options as native <c>&lt;option&gt;</c> child markup. Declared options take precedence
-    /// over <see cref="Items"/>; content that declares none leaves <see cref="Items"/> in charge, so a
-    /// wrapper component forwarding <c>@ChildContent</c> - which compiles to a non-empty fragment even
-    /// when its own caller supplied no children - does not suppress the item list.
+    /// Declarative options as native <c>&lt;option&gt;</c> child markup. Two attributes are read:
+    /// <c>value</c> (falling back to the label text when absent) and <c>disabled</c>, which makes the
+    /// option visible but not selectable and skipped by the arrow keys - the same thing
+    /// <c>ItemDisabled</c> says for the <see cref="Items"/> path. Grouping is not declarative; use
+    /// <c>GroupBy</c>.
+    /// <para>
+    /// Declared options take precedence over <see cref="Items"/>; content that declares none leaves
+    /// <see cref="Items"/> in charge, so a wrapper component forwarding <c>@ChildContent</c> - which
+    /// compiles to a non-empty fragment even when its own caller supplied no children - does not
+    /// suppress the item list.
+    /// </para>
     /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -237,7 +244,7 @@
         // Delegates read the current parameters via `this`, so the policy is built once but stays live.
         Label = ResolveLabel,
         Group = GroupBy,
-        ItemDisabled = ItemDisabled,
+        ItemDisabled = ResolveDisabled,
         Fuzzy = Fuzzy,
         RankScorer = RankFunc,
         Comparer = EqualityComparer<TValue>.Default,
@@ -281,6 +288,12 @@
         if (!_editing)
             _state.SetInputSilent(Current is not null ? ResolveLabel(Current) : string.Empty);
     }
+
+    // Both sources answer. A declared `<option disabled>` and an ItemDisabled predicate say the same
+    // thing about the same item, so the declarative and the data-driven paths give identical semantics
+    // and a caller using both gets the union rather than whichever the shell happened to read first.
+    private bool ResolveDisabled(TValue item)
+        => (_declared is not null && _declared.IsDisabled(item)) || (ItemDisabled is not null && ItemDisabled(item));
 
     private IReadOnlyList<TValue> SourceItems()
     {

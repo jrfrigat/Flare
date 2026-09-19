@@ -18,10 +18,13 @@ namespace Flare.Components.Combobox;
 /// <typeparam name="TValue">The option value type.</typeparam>
 public sealed class DeclaredOptionSet<TValue>
 {
-    internal DeclaredOptionSet(List<TValue> values, Dictionary<TValue, string> labels)
+    private readonly HashSet<TValue> _disabled;
+
+    internal DeclaredOptionSet(List<TValue> values, Dictionary<TValue, string> labels, HashSet<TValue> disabled)
     {
         Values = values;
         Labels = labels;
+        _disabled = disabled;
     }
 
     /// <summary>The parsed option values, in declaration order.</summary>
@@ -32,6 +35,14 @@ public sealed class DeclaredOptionSet<TValue>
 
     /// <summary>Whether any declarative option was parsed.</summary>
     public bool Any => Values.Count > 0;
+
+    /// <summary>
+    /// Whether the option was declared <c>disabled</c> - visible in the list, but not selectable and
+    /// skipped by the arrow keys, which is the same thing <c>ItemDisabled</c> says for the data-driven
+    /// path. An option not declared here is not disabled by this set.
+    /// </summary>
+    /// <param name="value">The parsed option value to ask about.</param>
+    public bool IsDisabled(TValue value) => value is not null && _disabled.Contains(value);
 }
 
 /// <summary>
@@ -78,10 +89,12 @@ public static class DeclaredOptions
         Action<string>? onWarning = null)
     {
         var values = new List<TValue>();
-        var labels = new Dictionary<TValue, string>(comparer ?? EqualityComparer<TValue>.Default);
-        if (content is null) return new DeclaredOptionSet<TValue>(values, labels);
+        var eq = comparer ?? EqualityComparer<TValue>.Default;
+        var labels = new Dictionary<TValue, string>(eq);
+        var disabled = new HashSet<TValue>(eq);
+        if (content is null) return new DeclaredOptionSet<TValue>(values, labels, disabled);
 
-        void Add(string? rawValue, string labelText)
+        void Add(string? rawValue, string labelText, bool isDisabled)
         {
             var raw = rawValue ?? labelText;
             if (!TryConvert<TValue>(raw, out var converted) || converted is null)
@@ -91,6 +104,7 @@ public static class DeclaredOptions
             }
             values.Add(converted);
             labels[converted] = labelText;
+            if (isDisabled) disabled.Add(converted);
         }
 
         var builder = new RenderTreeBuilder();
@@ -114,6 +128,7 @@ public static class DeclaredOptions
                     continue;
 
                 string? optionValue = null;
+                var optionDisabled = false;
                 var label = new StringBuilder();
                 var end = i + frame.ElementSubtreeLength;
                 for (var j = i + 1; j < end; j++)
@@ -123,6 +138,8 @@ public static class DeclaredOptions
                     {
                         if (string.Equals(child.AttributeName, "value", StringComparison.OrdinalIgnoreCase))
                             optionValue = child.AttributeValue?.ToString();
+                        else if (string.Equals(child.AttributeName, "disabled", StringComparison.OrdinalIgnoreCase))
+                            optionDisabled = IsTruthyAttribute(child.AttributeValue);
                     }
                     else if (child.FrameType is RenderTreeFrameType.Text or RenderTreeFrameType.Markup)
                     {
@@ -130,7 +147,7 @@ public static class DeclaredOptions
                     }
                 }
                 i = end - 1;
-                Add(optionValue, label.ToString().Trim());
+                Add(optionValue, label.ToString().Trim(), optionDisabled);
             }
         }
         finally
@@ -138,12 +155,26 @@ public static class DeclaredOptions
             ((IDisposable)builder).Dispose();
         }
 
-        return new DeclaredOptionSet<TValue>(values, labels);
+        return new DeclaredOptionSet<TValue>(values, labels, disabled);
     }
+
+    /// <summary>
+    /// Whether a boolean HTML attribute counts as set. Presence alone means true - that is what
+    /// <c>&lt;option disabled&gt;</c> is - and Blazor hands a bare attribute through as <c>true</c>, as
+    /// an empty string, or as its own name. Only an explicit <c>false</c> turns it off, which is the
+    /// spelling a caller reaches for when the flag is bound to a variable.
+    /// </summary>
+    private static bool IsTruthyAttribute(object? attributeValue) => attributeValue switch
+    {
+        null => true,
+        bool b => b,
+        string s => !string.Equals(s, "false", StringComparison.OrdinalIgnoreCase),
+        _ => true,
+    };
 
     // Forward-only scan for <option ...>label</option> in a raw HTML string. Attribute values are read
     // quote-aware so a '>' inside value="a>b" does not end the tag early (the regex could not do this).
-    private static void ScanMarkup(string? html, Action<string?, string> add)
+    private static void ScanMarkup(string? html, Action<string?, string, bool> add)
     {
         if (string.IsNullOrEmpty(html)) return;
         int i = 0, n = html.Length;
@@ -159,6 +190,7 @@ public static class DeclaredOptions
             }
 
             string? value = null;
+            var isDisabled = false;
             var selfClose = false;
             while (p < n && html[p] != '>')
             {
@@ -192,19 +224,23 @@ public static class DeclaredOptions
                     }
                 }
                 if (string.Equals(name, "value", StringComparison.OrdinalIgnoreCase)) value = attrVal;
+                // Bare in raw markup (`<option disabled>`) it has no value at all, which is the usual
+                // spelling and still means true.
+                else if (string.Equals(name, "disabled", StringComparison.OrdinalIgnoreCase))
+                    isDisabled = IsTruthyAttribute(attrVal);
             }
             if (p < n && html[p] == '>') p++;
 
             if (selfClose)
             {
-                add(value, string.Empty);
+                add(value, string.Empty, isDisabled);
                 i = p;
                 continue;
             }
 
             var close = html.IndexOf("</option>", p, StringComparison.OrdinalIgnoreCase);
             var inner = close < 0 ? html[p..] : html.Substring(p, close - p);
-            add(value, StripTags(inner));
+            add(value, StripTags(inner), isDisabled);
             i = close < 0 ? n : close + 9;
         }
     }
