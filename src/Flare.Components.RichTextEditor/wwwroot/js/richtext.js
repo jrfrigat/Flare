@@ -1,3 +1,5 @@
+import { setSanitizedHtml, sanitizeToString } from "./richtext-sanitize.js";
+
 const editors = new Map();
 
 // contentEditable is NOT set here. The component renders it as an attribute, so it is correct on the
@@ -9,6 +11,37 @@ export function init(editorId, dotNetRef) {
     editors.set(editorId, { el, dotNetRef });
     el.addEventListener('input', () => {
         dotNetRef.invokeMethodAsync('OnContentChanged', el.innerHTML);
+    });
+
+    // Paste is the third way markup enters, beside the initial value and an external update, and the
+    // only one the component never sees before the browser has it. Taking it over is what keeps the
+    // contract whole: the default paste drops the clipboard HTML straight into the live tree.
+    el.addEventListener("paste", e => {
+        const data = e.clipboardData;
+        if (!data) return;
+        const html = data.getData("text/html");
+        if (!html) return;                     // plain text needs no filtering
+
+        e.preventDefault();
+        const clean = sanitizeToString(html);
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        const holder = document.createElement("div");
+        holder.innerHTML = clean;              // sanitized on the line above
+        const fragment = document.createDocumentFragment();
+        fragment.append(...holder.childNodes);
+        const last = fragment.lastChild;
+        range.insertNode(fragment);
+        if (last) {
+            range.setStartAfter(last);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+        dotNetRef.invokeMethodAsync("OnContentChanged", el.innerHTML);
     });
 }
 
@@ -35,9 +68,17 @@ export function getContent(editorId) {
     return editors.get(editorId)?.el?.innerHTML ?? '';
 }
 
+// The one door for markup arriving from C#. It never assigns innerHTML: Value is public API, so what a
+// caller binds to it - a stored draft, a server response - is untrusted by construction.
 export function setContent(editorId, html) {
     const entry = editors.get(editorId);
-    if (entry) entry.el.innerHTML = html;
+    if (entry) setSanitizedHtml(entry.el, html);
+}
+
+// The opt-out, for a caller that has stated its markup is trusted and wants it through untouched.
+export function setContentUnsafe(editorId, html) {
+    const entry = editors.get(editorId);
+    if (entry) entry.el.innerHTML = html ?? "";
 }
 
 export function destroy(editorId) {
