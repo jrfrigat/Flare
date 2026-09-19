@@ -24,6 +24,31 @@ public sealed record NavTokens
     /// <summary>Background of the active indicator.</summary>
     [CssVar(NavField.ActiveIndicator)] public required string ActiveIndicator { get; init; }
 
+    /// <summary>
+    /// Text and icon colour of the active item. The other half of <see cref="ActiveIndicator"/>: the
+    /// theme picks what the active row is painted on, so it has to pick what is read against it. These
+    /// two were split before - the indicator was a token and the foreground was fixed in core to the
+    /// on-secondary-container role - which left a theme with a tinted pill it could choose and a text
+    /// colour it could not, and a theme whose indicator is <c>none</c> with a container foreground on a
+    /// plain surface.
+    /// </summary>
+    [CssVar(NavField.ActiveColor)] public required string ActiveColor { get; init; }
+
+    /// <summary>Resting text and icon colour of a nav item.</summary>
+    [CssVar(NavField.ItemColor)] public required string ItemColor { get; init; }
+
+    /// <summary>Text and icon colour of a hovered nav item, which a language may lift above its resting
+    /// colour to answer the hover state layer underneath it.</summary>
+    [CssVar(NavField.ItemHoverColor)] public required string ItemHoverColor { get; init; }
+
+    /// <summary>Colour of a nav group's header, separate from the items so a language can set the
+    /// section heading quieter or louder than the rows under it.</summary>
+    [CssVar(NavField.GroupColor)] public required string GroupColor { get; init; }
+
+    /// <summary>Colour of the supplementary caption pinned in a nav menu's header or footer - a build
+    /// version, an account line. Reads as a caption rather than as a row.</summary>
+    [CssVar(NavField.MetaColor)] public required string MetaColor { get; init; }
+
     /// <summary>Left accent bar drawn on the active item; set to none for no bar.</summary>
     [CssVar(NavField.ActiveLeftBar)] public required string ActiveLeftBar { get; init; }
 
