@@ -38,6 +38,7 @@ public class ThemeIntegrationTests
     {
         var customTypography = new TypographyTokens
         {
+            MonoFont = "JetBrains Mono, monospace",
             DisplayLarge = new TypeStyle { FontFamily = "Inter", FontWeight = "700", FontSize = "3rem", LineHeight = "3.5rem", LetterSpacing = "0em" },
             DisplayMedium = new TypeStyle { FontFamily = "Inter", FontWeight = "700", FontSize = "2.5rem", LineHeight = "3rem", LetterSpacing = "0em" },
             DisplaySmall = new TypeStyle { FontFamily = "Inter", FontWeight = "700", FontSize = "2rem", LineHeight = "2.5rem", LetterSpacing = "0em" },

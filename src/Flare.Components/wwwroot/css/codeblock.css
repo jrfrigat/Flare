@@ -5,10 +5,11 @@
     /* Not hidden: the suggestion list is anchored to the caret and has to be able to hang past the
        bottom edge. The layers inside round and clip themselves instead. */
     overflow: visible;
-    /* Twice, on purpose: naming a generic family alone makes several engines fall back to their
-       "monospace default size" instead of the size set here, and the text layers would then be
-       measured in one size and painted in another. */
-    font-family: monospace, monospace;
+    /* The theme's code face. It has to name a family rather than a bare generic: a generic alone makes
+       several engines fall back to their "monospace default size" instead of the size set here, and the
+       two text layers would then be measured in one size and painted in another. The token's own
+       fallback repeats the generic for exactly that reason. */
+    font-family: var(--flare-font-mono);
     font-size: 0.875rem;
     /* Pinned rather than left at "normal", which differs between a pre and a textarea. Every layer
        inherits this one number, so a line sits at the same height in all of them. */

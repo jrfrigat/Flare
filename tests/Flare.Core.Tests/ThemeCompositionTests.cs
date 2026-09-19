@@ -13,6 +13,7 @@ public class ThemeCompositionTests
         FocusRing = "2px solid #000",
         Typography = new()
         {
+            MonoFont = "monospace, monospace",
             DisplayLarge = T(),
             DisplayMedium = T(),
             DisplaySmall = T(),

@@ -4,7 +4,7 @@
 .flare-markdown h2 { font-size: 1.5em; border-bottom: var(--flare-border-divider); padding-bottom: var(--flare-spacing-2); }
 .flare-markdown h3 { font-size: 1.25em; }
 .flare-markdown p { margin: var(--flare-spacing-6) 0; }
-.flare-markdown code { background: var(--flare-color-surface-container); padding: 0.1em 0.3em; border-radius: var(--flare-shape-extra-small); font-family: monospace; font-size: 0.875em; }
+.flare-markdown code { background: var(--flare-color-surface-container); padding: 0.1em 0.3em; border-radius: var(--flare-shape-extra-small); font-family: var(--flare-font-mono); font-size: 0.875em; }
 .flare-markdown pre { background: var(--flare-color-surface-container-high); padding: var(--flare-spacing-8); border-radius: var(--flare-shape-small); overflow-x: auto; margin: var(--flare-spacing-6) 0; }
 .flare-markdown pre code { background: none; padding: 0; }
 .flare-markdown ul,.flare-markdown ol { padding-left: var(--flare-spacing-12); margin: var(--flare-spacing-4) 0; }

@@ -135,6 +135,7 @@ public class TokenParityTests
             FocusRing = "2px solid blue",
             Typography = new TypographyTokens
             {
+                MonoFont = "monospace, monospace",
                 DisplayLarge = typeStyle,
                 DisplayMedium = typeStyle,
                 DisplaySmall = typeStyle,

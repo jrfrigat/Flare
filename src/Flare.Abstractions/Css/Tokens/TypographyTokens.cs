@@ -11,6 +11,16 @@ namespace Flare.Css.Tokens;
 /// </summary>
 public static class Typography
 {
+    /// <summary>
+    /// CSS custom-property name for the monospace face. A family role rather than a step of the scale:
+    /// the same face serves every run that has to line up character by character - a <c>FlareText</c>
+    /// in mono, inline <c>FlareCode</c>, a code block, code inside markdown - and none of those is a
+    /// typescale step. Name a real family first and a generic after it
+    /// (<c>"JetBrains Mono", monospace</c>): several engines fall back to their own "monospace default
+    /// size" when a generic family stands alone, painting text at a size nothing else measured.
+    /// </summary>
+    public const string MonoFont = "--flare-font-mono";
+
     /// <summary>Type-scale tokens for the display large step.</summary>
     public static class DisplayLarge
     {

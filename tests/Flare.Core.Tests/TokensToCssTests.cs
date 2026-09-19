@@ -15,6 +15,7 @@ public class TokensToCssTests
         FocusRing = "2px solid #000",
         Typography = new()
         {
+            MonoFont = "monospace, monospace",
             DisplayLarge = TS(),
             DisplayMedium = TS(),
             DisplaySmall = TS(),
