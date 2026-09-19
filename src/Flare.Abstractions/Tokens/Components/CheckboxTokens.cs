@@ -5,8 +5,28 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme tokens for <c>FlareCheckbox</c> (box, state-layer, focus ring).</summary>
 public sealed record CheckboxTokens
 {
-    /// <summary>Size.</summary>
-    [CssVar(Checkbox.Size)] public required string Size { get; init; }
+    /// <summary>Extra-small box size.</summary>
+    [CssVar(Checkbox.SizeXs)] public required string SizeXs { get; init; }
+
+    /// <summary>Small box size.</summary>
+    [CssVar(Checkbox.SizeSm)] public required string SizeSm { get; init; }
+
+    /// <summary>
+    /// Medium box size - the default step. There is no separate unsuffixed size token beside it: one
+    /// value for "the size" and another for "the medium size" are two ways to say the same thing, and
+    /// the ramp is what the size classes read.
+    /// </summary>
+    [CssVar(Checkbox.SizeMd)] public required string SizeMd { get; init; }
+
+    /// <summary>Large box size.</summary>
+    [CssVar(Checkbox.SizeLg)] public required string SizeLg { get; init; }
+
+    /// <summary>Extra-large box size.</summary>
+    [CssVar(Checkbox.SizeXl)] public required string SizeXl { get; init; }
+
+    /// <summary>Diameter of the state-layer halo drawn around the box. Core used to fix it, so a theme
+    /// enlarging the control got a halo still sized for the medium step.</summary>
+    [CssVar(Checkbox.StateLayerSize)] public required string StateLayerSize { get; init; }
     /// <summary>Border (outline) thickness of the box.</summary>
     [CssVar(Checkbox.BorderWidth)] public required string BorderWidth { get; init; }
 

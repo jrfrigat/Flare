@@ -4,8 +4,10 @@
   gap: var(--flare-spacing-6);
   cursor: pointer;
   user-select: none;
-  /* Single source for the ring dimension; size classes below override --_rb-size. */
-  --_rb-size: var(--flare-radio-size);
+  /* Single source for the ring dimension; the size classes below repoint it at another step of the
+     theme ramp. The medium step is named rather than assumed, so .flare-radio--md describes the size
+     instead of being an empty marker for "whatever the base rule happened to set". */
+  --_rb-size: var(--flare-radio-size-md);
 }
 
 /* Label before each radio (group-level LabelPlacement=Start) */
@@ -26,8 +28,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 2.5rem;
-  height: 2.5rem;
+  /* Sized by the theme, so the halo follows the step instead of staying at the diameter the medium
+     ring once needed. */
+  width: var(--flare-radio-state-layer-size);
+  height: var(--flare-radio-state-layer-size);
   border-radius: 50%;
   background: transparent;
   pointer-events: none;
@@ -99,11 +103,13 @@
 }
 
 /* Size grid (Xs..Xl): scales the ring via --_rb-size; the label font tracks the size. */
-.flare-radio--xs { --_rb-size: 1rem; gap: var(--flare-spacing-4); }
+.flare-radio--xs { --_rb-size: var(--flare-radio-size-xs); gap: var(--flare-spacing-4); }
 .flare-radio--xs .flare-radio__label { font-size: var(--flare-typescale-body-small-size); }
-.flare-radio--sm { --_rb-size: 1.125rem; gap: var(--flare-spacing-5); }
+.flare-radio--sm { --_rb-size: var(--flare-radio-size-sm); gap: var(--flare-spacing-5); }
 .flare-radio--sm .flare-radio__label { font-size: var(--flare-typescale-body-medium-size); }
-.flare-radio--lg { --_rb-size: 1.5rem; }
+.flare-radio--md { --_rb-size: var(--flare-radio-size-md); }
+.flare-radio--md .flare-radio__label { font-size: var(--flare-typescale-body-large-size); }
+.flare-radio--lg { --_rb-size: var(--flare-radio-size-lg); }
 .flare-radio--lg .flare-radio__label { font-size: var(--flare-typescale-title-medium-size); }
-.flare-radio--xl { --_rb-size: 1.75rem; }
+.flare-radio--xl { --_rb-size: var(--flare-radio-size-xl); }
 .flare-radio--xl .flare-radio__label { font-size: var(--flare-typescale-title-large-size); }

@@ -118,6 +118,26 @@
    Each class only re-points --_pg-size at the theme's token for that size - the btn / ellipsis /
    rows-select all read --_pg-size - so no size value is hardcoded here. Must stay AFTER the base rule
    (same specificity). Only the type scale is per-size in its own right. */
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the control was and no selector could name it. The base rule still resolves md
+   for markup written by hand; this makes the class describe the size rather than mark it. */
+.flare-pagination--md { --_pg-size: var(--flare-pagination-size-md); }
+.flare-pagination--md .flare-pagination__btn,
+.flare-pagination--md .flare-pagination__ellipsis,
+.flare-pagination--md .flare-pagination__rows-select { font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--sm .flare-pagination__btn,
+.flare-pagination--sm .flare-pagination__ellipsis,
+.flare-pagination--sm .flare-pagination__rows-select { font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--lg .flare-pagination__btn,
+.flare-pagination--lg .flare-pagination__ellipsis,
+.flare-pagination--lg .flare-pagination__rows-select { font-size: var(--flare-typescale-title-medium-size); }
+.flare-pagination--xl .flare-pagination__btn,
+.flare-pagination--xl .flare-pagination__ellipsis,
+.flare-pagination--xl .flare-pagination__rows-select { font-size: var(--flare-typescale-title-large-size); }
+
+/* Semantic color of the active page button */
+
+
 .flare-pagination--xs { --_pg-size: var(--flare-pagination-size-xs); }
 .flare-pagination--sm { --_pg-size: var(--flare-pagination-size-sm); }
 .flare-pagination--lg { --_pg-size: var(--flare-pagination-size-lg); }

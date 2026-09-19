@@ -431,7 +431,14 @@ public class FluentUI2Tokens
     // Checkbox - Fluent: 1px border, 4dp corner, no MD3 halo, double focus ring.
     internal static readonly CheckboxTokens Checkbox = new()
     {
-        Size = "1.125rem",
+        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
+        // could move only the middle step; the medium value below is exactly what it was before.
+        SizeXs = "0.875rem",
+        SizeSm = "1rem",
+        SizeMd = "1.125rem",
+        SizeLg = "1.375rem",
+        SizeXl = "1.625rem",
+        StateLayerSize = "2.5rem",
         BorderWidth = "1px",
         Radius = "var(--flare-shape-small)",
         StateLayerHover = "transparent",
@@ -446,7 +453,14 @@ public class FluentUI2Tokens
     // Radio - Fluent: no MD3 state-layer halo.
     internal static readonly RadioTokens Radio = new()
     {
-        Size = "1.25rem",
+        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
+        // could move only the middle step; the medium value below is exactly what it was before.
+        SizeXs = "1rem",
+        SizeSm = "1.125rem",
+        SizeMd = "1.25rem",
+        SizeLg = "1.5rem",
+        SizeXl = "1.75rem",
+        StateLayerSize = "2.5rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
         // Fluent's two-stroke focus indicator, as stated for the checkbox above.

@@ -5,8 +5,28 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme tokens for <c>FlareRadio</c> (ring + state-layer).</summary>
 public sealed record RadioTokens
 {
-    /// <summary>Diameter of the radio control itself, excluding the state-layer halo around it.</summary>
-    [CssVar(Radio.Size)] public required string Size { get; init; }
+    /// <summary>Extra-small ring diameter, excluding the state-layer halo around it.</summary>
+    [CssVar(Radio.SizeXs)] public required string SizeXs { get; init; }
+
+    /// <summary>Small ring diameter.</summary>
+    [CssVar(Radio.SizeSm)] public required string SizeSm { get; init; }
+
+    /// <summary>
+    /// Medium ring diameter - the default step. There is no separate unsuffixed size token beside it:
+    /// one value for "the size" and another for "the medium size" are two ways to say the same thing,
+    /// and the ramp is what the size classes read.
+    /// </summary>
+    [CssVar(Radio.SizeMd)] public required string SizeMd { get; init; }
+
+    /// <summary>Large ring diameter.</summary>
+    [CssVar(Radio.SizeLg)] public required string SizeLg { get; init; }
+
+    /// <summary>Extra-large ring diameter.</summary>
+    [CssVar(Radio.SizeXl)] public required string SizeXl { get; init; }
+
+    /// <summary>Diameter of the state-layer halo drawn around the ring. Core used to fix it, so a theme
+    /// enlarging the control got a halo still sized for the medium step.</summary>
+    [CssVar(Radio.StateLayerSize)] public required string StateLayerSize { get; init; }
     /// <summary>Background of the state-layer halo on hover while unselected.</summary>
     [CssVar(Radio.StateLayerHover)] public required string StateLayerHover { get; init; }
 

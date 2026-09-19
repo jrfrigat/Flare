@@ -371,7 +371,14 @@ public class MaterialDesign3Tokens
 
     internal static readonly CheckboxTokens Checkbox = new()
     {
-        Size = "1.125rem",
+        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
+        // could move only the middle step; the medium value below is exactly what it was before.
+        SizeXs = "0.875rem",
+        SizeSm = "1rem",
+        SizeMd = "1.125rem",
+        SizeLg = "1.375rem",
+        SizeXl = "1.625rem",
+        StateLayerSize = "2.5rem",
         BorderWidth = "2px",
         Radius = "2px",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
@@ -384,7 +391,14 @@ public class MaterialDesign3Tokens
     };
     internal static readonly RadioTokens Radio = new()
     {
-        Size = "1.25rem",
+        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
+        // could move only the middle step; the medium value below is exactly what it was before.
+        SizeXs = "1rem",
+        SizeSm = "1.125rem",
+        SizeMd = "1.25rem",
+        SizeLg = "1.5rem",
+        SizeXl = "1.75rem",
+        StateLayerSize = "2.5rem",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
         StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
         // The focus this theme already states for the checkbox and the switch - the selection

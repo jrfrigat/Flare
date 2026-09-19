@@ -187,6 +187,20 @@
 /* Size grid (xs..xl). Default is Medium (52x32dp = base tokens, no class). All metrics are
    token-driven; on-left = 100% - (thumb-on-size + 0.25rem), off-left = track-height x 0.125. */
 /* Each size class only SELECTS which step of the theme's ramp the locals point at - no values here. */
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the control was and no selector could name it. The base rule still resolves md
+   for markup written by hand; this makes the class describe the size rather than mark it. */
+.flare-switch--md {
+    --_track-width: var(--flare-switch-track-width-md);
+    --_track-height: var(--flare-switch-track-height-md);
+    --_thumb-off-size: var(--flare-switch-thumb-off-size-md);
+    --_thumb-on-size: var(--flare-switch-thumb-on-size-md);
+    --_thumb-pressed-off-size: var(--flare-switch-thumb-pressed-off-size-md);
+    --_thumb-pressed-on-size: var(--flare-switch-thumb-pressed-on-size-md);
+    --_thumb-off-left: var(--flare-switch-thumb-off-left-md);
+    --_thumb-on-left: var(--flare-switch-thumb-on-left-md);
+}
+
 .flare-switch--xs {
     --_track-width: var(--flare-switch-track-width-xs);
     --_track-height: var(--flare-switch-track-height-xs);

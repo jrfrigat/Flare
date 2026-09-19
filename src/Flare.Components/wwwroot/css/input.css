@@ -166,6 +166,44 @@
    DateTimePicker) all render .flare-input__control, so they need no per-component entry; only the
    three structurally different controls -- TagField's chip input, the combobox trigger (shared by
    Select/MultiSelect) and the TimeSpanPicker's segment row -- carry their own control element. */
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the control was and no selector could name it. The base rule still resolves md
+   for markup written by hand; this makes the class describe the size rather than mark it. */
+.flare-input--md .flare-input__control,
+.flare-input--md .flare-select__control,
+.flare-input--md .flare-multiselect__control,
+.flare-input--md .flare-timespan__segments { padding: var(--flare-input-padding-md);  font-size: var(--flare-typescale-label-medium-size); }
+.flare-input--sm .flare-input__control,
+.flare-input--sm .flare-select__control,
+.flare-input--sm .flare-multiselect__control,
+.flare-input--sm .flare-timespan__segments { padding: var(--flare-input-padding-sm); font-size: var(--flare-typescale-body-medium-size); }
+.flare-input--lg .flare-input__control,
+.flare-input--lg .flare-select__control,
+.flare-input--lg .flare-multiselect__control,
+.flare-input--lg .flare-timespan__segments { padding: var(--flare-input-padding-lg); font-size: var(--flare-typescale-title-medium-size); }
+.flare-input--xl .flare-input__control,
+.flare-input--xl .flare-select__control,
+.flare-input--xl .flare-multiselect__control,
+.flare-input--xl .flare-timespan__segments { padding: var(--flare-input-padding-xl);  font-size: var(--flare-typescale-title-large-size); }
+
+/* The height half of the same grid. Keyed on the shared .flare-input--* modifier like the padding
+   above, and applied to the WELL rather than the control, so it covers every field in the family at
+   once - the ones rendering .flare-input__control and the two combobox triggers alike. */
+.flare-input--md .flare-input__field { --_flare-input-height: var(--flare-input-height-md); }
+.flare-input--sm .flare-input__field { --_flare-input-height: var(--flare-input-height-sm); }
+.flare-input--lg .flare-input__field { --_flare-input-height: var(--flare-input-height-lg); }
+.flare-input--xl .flare-input__field { --_flare-input-height: var(--flare-input-height-xl); }
+
+/* The two wells whose height IS their content: a TextArea grows by rows, a TagField by rows of chips.
+   They take the same step as a MINIMUM, so an empty one still matches the field beside it and a full
+   one is free to grow. Both live here rather than in their own files because the tie in specificity
+   with the rule above is decided by source order, and here that order is not a file-order accident. */
+.flare-input__field--grow,
+.flare-tag-input__field {
+    block-size: auto;
+    min-block-size: var(--_flare-input-height);
+}
+
 .flare-input--xs .flare-input__control,
 .flare-input--xs .flare-select__control,
 .flare-input--xs .flare-multiselect__control,

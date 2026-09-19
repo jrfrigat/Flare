@@ -27,6 +27,15 @@
         box-shadow: var(--flare-fab-hover-shadow);
     }
 
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the control was and no selector could name it. The base rule still resolves md
+   for markup written by hand; this makes the class describe the size rather than mark it. */
+.flare-fab--md {
+    padding: var(--flare-fab-padding-md);
+    --_flare-icon-size: var(--flare-fab-icon-size-md);
+    border-radius: var(--flare-fab-radius-md);
+}
+
 .flare-fab--sm {
     padding: var(--flare-fab-padding-sm);
     --_flare-icon-size: var(--flare-fab-icon-size-sm);

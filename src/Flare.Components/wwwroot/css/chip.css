@@ -75,6 +75,13 @@
     border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-color-outline));
 }
 
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the chip was and no selector could name it. The base rule still resolves md for
+   markup written by hand; this makes the class describe the size rather than mark it. The font size is
+   the scale step the base rule uses, not a fourth opinion. */
+.flare-chip--md { padding: 0 var(--flare-chip-padding-inline-md); font-size: var(--flare-typescale-label-large-size); gap: var(--flare-spacing-4); --_flare-icon-size: var(--flare-chip-icon-size-md); }
+.flare-chip--md .flare-chip__avatar { width: var(--flare-chip-avatar-size-md); height: var(--flare-chip-avatar-size-md); }
+
 .flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-chip-padding-inline-xs); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); --_flare-icon-size: var(--flare-chip-icon-size-xs); }
 .flare-chip--xs .flare-chip__avatar { width: var(--flare-chip-avatar-size-xs); height: var(--flare-chip-avatar-size-xs); }
 .flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-chip-padding-inline-sm); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); --_flare-icon-size: var(--flare-chip-icon-size-sm); }

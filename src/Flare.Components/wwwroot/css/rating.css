@@ -8,6 +8,11 @@
 
 /* Size grid (Xs..Xl): each class only selects the theme's token for that size, so the ramp lives in the
    theme and no size value is hardcoded here. Must stay AFTER the block above (same specificity). */
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the control was and no selector could name it. The base rule still resolves md
+   for markup written by hand; this makes the class describe the size rather than mark it. */
+.flare-rating--md { --_rt-size: var(--flare-rating-size-md); }
+
 .flare-rating--xs { --_rt-size: var(--flare-rating-size-xs); }
 .flare-rating--sm { --_rt-size: var(--flare-rating-size-sm); }
 .flare-rating--lg { --_rt-size: var(--flare-rating-size-lg); }

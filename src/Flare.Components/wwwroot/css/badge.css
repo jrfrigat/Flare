@@ -10,6 +10,11 @@
     --_dot-size:  var(--flare-badge-dot-size-md);
     --_label:     var(--flare-badge-label-size-md);
 }
+/* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
+   DOM said what size the control was and no selector could name it. The base rule still resolves md
+   for markup written by hand; this makes the class describe the size rather than mark it. */
+.flare-badge--md { --_height: var(--flare-badge-height-md); --_min-width: var(--flare-badge-min-width-md); --_padding-x: var(--flare-badge-padding-x-md); --_dot-size: var(--flare-badge-dot-size-md); --_label: var(--flare-badge-label-size-md); }
+
 .flare-badge--xs { --_height: var(--flare-badge-height-xs); --_min-width: var(--flare-badge-min-width-xs); --_padding-x: var(--flare-badge-padding-x-xs); --_dot-size: var(--flare-badge-dot-size-xs); --_label: var(--flare-badge-label-size-xs); }
 .flare-badge--sm { --_height: var(--flare-badge-height-sm); --_min-width: var(--flare-badge-min-width-sm); --_padding-x: var(--flare-badge-padding-x-sm); --_dot-size: var(--flare-badge-dot-size-sm); --_label: var(--flare-badge-label-size-sm); }
 .flare-badge--lg { --_height: var(--flare-badge-height-lg); --_min-width: var(--flare-badge-min-width-lg); --_padding-x: var(--flare-badge-padding-x-lg); --_dot-size: var(--flare-badge-dot-size-lg); --_label: var(--flare-badge-label-size-lg); }
