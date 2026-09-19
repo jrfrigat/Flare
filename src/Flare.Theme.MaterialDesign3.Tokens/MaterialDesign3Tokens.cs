@@ -21,6 +21,9 @@ public class MaterialDesign3Tokens
 {
     internal static readonly TypographyTokens Typography = new()
     {
+        // No design language names a code face, so this is the generic - twice, because a generic
+        // family standing alone makes several engines use their own "monospace default size".
+        MonoFont = "monospace, monospace",
         DisplayLarge = T("Roboto", "400", "3.5625rem", "4rem", "-0.015625em"),
         DisplayMedium = T("Roboto", "400", "2.8125rem", "3.25rem", "0em"),
         DisplaySmall = T("Roboto", "400", "2.25rem", "2.75rem", "0em"),
@@ -813,6 +816,12 @@ public class MaterialDesign3Tokens
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "var(--flare-shape-full)",
         ActiveIndicator = "var(--flare-color-secondary-container)",
+        // The indicator is a tinted pill, so the label is read against that container.
+        ActiveColor = "var(--flare-color-on-secondary-container)",
+        ItemColor = "var(--flare-color-on-surface-variant)",
+        ItemHoverColor = "var(--flare-color-on-surface)",
+        GroupColor = "var(--flare-color-on-surface-variant)",
+        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "none",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
         // md.comp.navigation-drawer: 24dp icon in a 56dp active indicator.
@@ -1275,6 +1284,16 @@ public class MaterialDesign3Tokens
         AppBarBorder = "none",
         DrawerBorder = "none",
         AppBarShadow = "none",
+        // The shell's three planes, named by the theme rather than picked in core CSS. These values
+        // reproduce what core chose before, so nothing moves until a theme says otherwise.
+        ShellBg = "var(--flare-color-background)",
+        DrawerBg = "var(--flare-color-surface-container-low)",
+        RailBg = "var(--flare-layout-drawer-bg)",
+        ContentBg = "transparent",
+        // No in-box language separates the drawer from the canvas by depth; they use DrawerBorder.
+        DrawerShadowOffset = "0px",
+        DrawerShadowBlur = "0px",
+        DrawerShadowColor = "transparent",
     };
 
     internal static readonly LinkTokens Link = new()

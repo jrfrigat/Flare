@@ -29,6 +29,7 @@ public static class CssVarMap
         v[Css.Tokens.Vars.FocusRing] = t.FocusRing;
 
         // Typography
+        v[Css.Tokens.Typography.MonoFont] = t.Typography.MonoFont;
         FlattenType(v, Css.Tokens.Typography.DisplayLarge.Font, Css.Tokens.Typography.DisplayLarge.Weight, Css.Tokens.Typography.DisplayLarge.Size, Css.Tokens.Typography.DisplayLarge.Height, Css.Tokens.Typography.DisplayLarge.Spacing, t.Typography.DisplayLarge);
         FlattenType(v, Css.Tokens.Typography.DisplayMedium.Font, Css.Tokens.Typography.DisplayMedium.Weight, Css.Tokens.Typography.DisplayMedium.Size, Css.Tokens.Typography.DisplayMedium.Height, Css.Tokens.Typography.DisplayMedium.Spacing, t.Typography.DisplayMedium);
         FlattenType(v, Css.Tokens.Typography.DisplaySmall.Font, Css.Tokens.Typography.DisplaySmall.Weight, Css.Tokens.Typography.DisplaySmall.Size, Css.Tokens.Typography.DisplaySmall.Height, Css.Tokens.Typography.DisplaySmall.Spacing, t.Typography.DisplaySmall);
@@ -947,6 +948,11 @@ public static class CssVarMap
         v[Css.Tokens.NavField.RailLabelLineHeight] = t.Nav.RailLabelLineHeight;
         v[Css.Tokens.NavField.IndicatorRadius] = t.Nav.IndicatorRadius;
         v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
+        v[Css.Tokens.NavField.ActiveColor] = t.Nav.ActiveColor;
+        v[Css.Tokens.NavField.ItemColor] = t.Nav.ItemColor;
+        v[Css.Tokens.NavField.ItemHoverColor] = t.Nav.ItemHoverColor;
+        v[Css.Tokens.NavField.GroupColor] = t.Nav.GroupColor;
+        v[Css.Tokens.NavField.MetaColor] = t.Nav.MetaColor;
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
         v[Css.Tokens.NavField.LinkDisabledOpacity] = t.Nav.LinkDisabledOpacity;
         v[Css.Tokens.NavField.IconSize] = t.Nav.IconSize;
@@ -1104,6 +1110,13 @@ public static class CssVarMap
         v[Css.Tokens.LayoutField.AppBarBorder] = t.Layout.AppBarBorder;
         v[Css.Tokens.LayoutField.DrawerBorder] = t.Layout.DrawerBorder;
         v[Css.Tokens.LayoutField.AppBarShadow] = t.Layout.AppBarShadow;
+        v[Css.Tokens.LayoutField.ShellBg] = t.Layout.ShellBg;
+        v[Css.Tokens.LayoutField.DrawerBg] = t.Layout.DrawerBg;
+        v[Css.Tokens.LayoutField.RailBg] = t.Layout.RailBg;
+        v[Css.Tokens.LayoutField.ContentBg] = t.Layout.ContentBg;
+        v[Css.Tokens.LayoutField.DrawerShadowOffset] = t.Layout.DrawerShadowOffset;
+        v[Css.Tokens.LayoutField.DrawerShadowBlur] = t.Layout.DrawerShadowBlur;
+        v[Css.Tokens.LayoutField.DrawerShadowColor] = t.Layout.DrawerShadowColor;
         #endregion
 
         #region LINK

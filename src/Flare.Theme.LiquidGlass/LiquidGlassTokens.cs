@@ -17,6 +17,9 @@ internal class LiquidGlassTokens
 
     internal static readonly TypographyTokens Typography = new()
     {
+        // No design language names a code face, so this is the generic - twice, because a generic
+        // family standing alone makes several engines use their own "monospace default size".
+        MonoFont = "monospace, monospace",
         DisplayLarge = T("700", "2.5rem", "3rem"),
         DisplayMedium = T("700", "2.125rem", "2.5rem"),
         DisplaySmall = T("700", "1.75rem", "2.125rem"),

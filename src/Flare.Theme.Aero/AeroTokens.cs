@@ -16,6 +16,9 @@ internal class AeroTokens
 
     internal static readonly TypographyTokens Typography = new()
     {
+        // No design language names a code face, so this is the generic - twice, because a generic
+        // family standing alone makes several engines use their own "monospace default size".
+        MonoFont = "monospace, monospace",
         DisplayLarge = T("700", "2.25rem", "2.875rem"),
         DisplayMedium = T("700", "1.75rem", "2.25rem"),
         DisplaySmall = T("700", "1.375rem", "1.75rem"),
@@ -355,6 +358,14 @@ internal class AeroTokens
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
+        // The selected item is marked with a left accent bar and no pill (ActiveIndicator is none), so
+        // the label is read against the panel surface. It was painted on-secondary-container, a
+        // container role with no container under it.
+        ActiveColor = "var(--flare-color-on-surface)",
+        ItemColor = "var(--flare-color-on-surface-variant)",
+        ItemHoverColor = "var(--flare-color-on-surface)",
+        GroupColor = "var(--flare-color-on-surface-variant)",
+        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
         IconSize = "1.25rem",

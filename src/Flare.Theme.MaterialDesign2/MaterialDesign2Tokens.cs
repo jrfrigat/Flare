@@ -18,6 +18,9 @@ internal static class MaterialDesign2Tokens
     // ---- Typography: the Material Design 2 type scale (Roboto) mapped onto Flare's 15 roles. ----
     internal static readonly TypographyTokens Typography = new()
     {
+        // No design language names a code face, so this is the generic - twice, because a generic
+        // family standing alone makes several engines use their own "monospace default size".
+        MonoFont = "monospace, monospace",
         // Display = H1..H3
         DisplayLarge = T("Roboto", "300", "6rem", "7rem", "-0.015625em"),       // H1 96/112 -1.5px
         DisplayMedium = T("Roboto", "300", "3.75rem", "4.5rem", "-0.008333em"), // H2 60/72 -0.5px
@@ -773,6 +776,12 @@ internal static class MaterialDesign2Tokens
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "var(--flare-shape-full)",
         ActiveIndicator = "var(--flare-color-secondary-container)",
+        // The indicator is a tinted pill, so the label is read against that container.
+        ActiveColor = "var(--flare-color-on-secondary-container)",
+        ItemColor = "var(--flare-color-on-surface-variant)",
+        ItemHoverColor = "var(--flare-color-on-surface)",
+        GroupColor = "var(--flare-color-on-surface-variant)",
+        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "none",
         LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
         // Material 2 icons are 24dp; the drawer spec gives no row height, so the existing 40dp row stays.
@@ -1243,6 +1252,16 @@ internal static class MaterialDesign2Tokens
         // The top app bar lifts 4dp off the page. At 0dp a surface-coloured bar on the white background
         // has nothing separating it from the content (elevation table: top app bar 0 or 4dp).
         AppBarShadow = "var(--flare-elevation-3)",
+        // The shell's three planes, named by the theme rather than picked in core CSS. These values
+        // reproduce what core chose before, so nothing moves until a theme says otherwise.
+        ShellBg = "var(--flare-color-background)",
+        DrawerBg = "var(--flare-color-surface-container-low)",
+        RailBg = "var(--flare-layout-drawer-bg)",
+        ContentBg = "transparent",
+        // No in-box language separates the drawer from the canvas by depth; they use DrawerBorder.
+        DrawerShadowOffset = "0px",
+        DrawerShadowBlur = "0px",
+        DrawerShadowColor = "transparent",
     };
 
     internal static readonly LinkTokens Link = new()

@@ -18,6 +18,9 @@ public class FluentUI2Tokens
     // role names map onto Fluent's named text styles largeTitle..caption2.
     internal static readonly TypographyTokens Typography = new()
     {
+        // No design language names a code face, so this is the generic - twice, because a generic
+        // family standing alone makes several engines use their own "monospace default size".
+        MonoFont = "monospace, monospace",
         DisplayLarge = T("Segoe UI", "600", "2.5rem", "3.25rem", "0em"),     // largeTitle 40/52
         DisplayMedium = T("Segoe UI", "600", "2rem", "2.5rem", "0em"),       // title1 32/40
         DisplaySmall = T("Segoe UI", "600", "1.75rem", "2.25rem", "0em"),    // title2 28/36
@@ -816,6 +819,14 @@ public class FluentUI2Tokens
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
+        // Fluent marks the selected item with a left accent bar and no pill (ActiveIndicator is none),
+        // so the label is read against the panel surface. It was painted on-secondary-container, a
+        // container role with no container under it.
+        ActiveColor = "var(--flare-color-on-surface)",
+        ItemColor = "var(--flare-color-on-surface-variant)",
+        ItemHoverColor = "var(--flare-color-on-surface)",
+        GroupColor = "var(--flare-color-on-surface-variant)",
+        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
         // NavItem: 20px icon, 10px block padding around a 20px line.
@@ -1253,6 +1264,16 @@ public class FluentUI2Tokens
         AppBarBorder = "1px solid var(--flare-color-outline-variant)",
         DrawerBorder = "1px solid var(--flare-color-outline-variant)",
         AppBarShadow = "none",
+        // The shell's three planes, named by the theme rather than picked in core CSS. These values
+        // reproduce what core chose before, so nothing moves until a theme says otherwise.
+        ShellBg = "var(--flare-color-background)",
+        DrawerBg = "var(--flare-color-surface-container-low)",
+        RailBg = "var(--flare-layout-drawer-bg)",
+        ContentBg = "transparent",
+        // No in-box language separates the drawer from the canvas by depth; they use DrawerBorder.
+        DrawerShadowOffset = "0px",
+        DrawerShadowBlur = "0px",
+        DrawerShadowColor = "transparent",
     };
 
     internal static readonly LinkTokens Link = new()
