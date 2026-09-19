@@ -399,7 +399,12 @@ public static class CssVarMap
 
         #region MENU
         v[Css.Tokens.Checkbox.BorderWidth] = t.Checkbox.BorderWidth;
-        v[Css.Tokens.Checkbox.Size] = t.Checkbox.Size;
+        v[Css.Tokens.Checkbox.SizeXs] = t.Checkbox.SizeXs;
+        v[Css.Tokens.Checkbox.SizeSm] = t.Checkbox.SizeSm;
+        v[Css.Tokens.Checkbox.SizeMd] = t.Checkbox.SizeMd;
+        v[Css.Tokens.Checkbox.SizeLg] = t.Checkbox.SizeLg;
+        v[Css.Tokens.Checkbox.SizeXl] = t.Checkbox.SizeXl;
+        v[Css.Tokens.Checkbox.StateLayerSize] = t.Checkbox.StateLayerSize;
         v[Css.Tokens.Checkbox.Radius] = t.Checkbox.Radius;
         v[Css.Tokens.Checkbox.StateLayerHover] = t.Checkbox.StateLayerHover;
         v[Css.Tokens.Checkbox.StateLayerHoverChecked] = t.Checkbox.StateLayerHoverChecked;
@@ -408,7 +413,12 @@ public static class CssVarMap
         v[Css.Tokens.Checkbox.FocusShadow] = t.Checkbox.FocusShadow;
         v[Css.Tokens.Checkbox.DisabledOpacity] = t.Checkbox.DisabledOpacity;
         v[Css.Tokens.Radio.StateLayerHover] = t.Radio.StateLayerHover;
-        v[Css.Tokens.Radio.Size] = t.Radio.Size;
+        v[Css.Tokens.Radio.SizeXs] = t.Radio.SizeXs;
+        v[Css.Tokens.Radio.SizeSm] = t.Radio.SizeSm;
+        v[Css.Tokens.Radio.SizeMd] = t.Radio.SizeMd;
+        v[Css.Tokens.Radio.SizeLg] = t.Radio.SizeLg;
+        v[Css.Tokens.Radio.SizeXl] = t.Radio.SizeXl;
+        v[Css.Tokens.Radio.StateLayerSize] = t.Radio.StateLayerSize;
         v[Css.Tokens.Radio.StateLayerHoverChecked] = t.Radio.StateLayerHoverChecked;
         v[Css.Tokens.Radio.FocusOutline] = t.Radio.FocusOutline;
         v[Css.Tokens.Radio.FocusOutlineOffset] = t.Radio.FocusOutlineOffset;
