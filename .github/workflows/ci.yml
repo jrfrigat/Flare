@@ -56,6 +56,25 @@ jobs:
       - name: Test (all TFMs)
         run: dotnet test Flare.slnx -c Release --no-build --report-trx
 
+      # The JavaScript Flare ships in wwwroot is not reachable from a .NET test, and one piece of it -
+      # the rich text editor's HTML filter - is a security boundary. Verifying it by hand proves it
+      # works today and does nothing about tomorrow, so it runs here.
+      #
+      # jsdom implements no Element.setHTML, so what CI covers is the DOMParser fallback: our own code.
+      # The platform path is the engine's and is exercised in a real browser, not here.
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.x
+          cache: npm
+          cache-dependency-path: tests/Flare.Js.Tests/package-lock.json
+
+      - name: Test (JavaScript)
+        working-directory: tests/Flare.Js.Tests
+        run: |
+          npm ci
+          npm test
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v7

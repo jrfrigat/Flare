@@ -1,0 +1,13 @@
+{
+  "name": "flare-js-tests",
+  "private": true,
+  "type": "module",
+  "description": "Tests for the JavaScript Flare ships in wwwroot - the parts no .NET test can reach.",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4"
+  }
+}

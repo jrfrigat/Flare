@@ -65,35 +65,41 @@ function schemeOf(value, base) {
     catch { return null; }
 }
 
-function scrubAttributes(el) {
-    const tag = el.tagName.toLowerCase();
+/* Builds a fresh element of the same tag carrying only the attributes that pass.
+ *
+ * Fresh rather than `cloneNode` + remove: an element does not give everything back. `is` is read when
+ * the element is created and binds it to a customized built-in, and removing the attribute afterwards
+ * does not always even clear the attribute, let alone the binding - measured in jsdom, where
+ * `removeAttribute("is")` leaves it in place. Copying onto a new element makes the question moot:
+ * nothing is carried over that was not deliberately copied. */
+function createSafe(source) {
+    const tag = source.tagName.toLowerCase();
     const allowed = TAG_ATTRS[tag];
+    const el = document.createElement(tag);
 
-    for (const attr of [...el.attributes]) {
+    for (const attr of [...source.attributes]) {
         const name = attr.name.toLowerCase();
 
-        // Every on* handler, and anything not on a list. Checking the list rather than hunting for
-        // known-bad names is what makes a handler spelled in an unexpected way still fail to survive.
-        if (!GLOBAL_ATTRS.has(name) && !(allowed && allowed.has(name))) {
-            el.removeAttribute(attr.name);
-            continue;
-        }
+        // An allowlist, not a hunt for known-bad names. That is what makes an attribute nobody thought
+        // of - a handler spelled unusually, a capability added to HTML next year - fail to survive.
+        if (!GLOBAL_ATTRS.has(name) && !(allowed && allowed.has(name))) continue;
 
-        if (name === 'style' && DANGEROUS_CSS.test(attr.value)) {
-            el.removeAttribute(attr.name);
-            continue;
-        }
+        if (name === 'style' && DANGEROUS_CSS.test(attr.value)) continue;
 
         if (name === 'href' || name === 'src') {
             const schemes = tag === 'img' ? SAFE_IMAGE_SCHEMES : SAFE_LINK_SCHEMES;
-            if (!schemes.has(schemeOf(attr.value))) el.removeAttribute(attr.name);
+            if (!schemes.has(schemeOf(attr.value))) continue;
         }
+
+        el.setAttribute(attr.name, attr.value);
     }
 
     // A link that opens a new context must not hand it a live opener reference.
     if (tag === 'a' && el.getAttribute('target') === '_blank') {
         el.setAttribute('rel', 'noopener noreferrer');
     }
+
+    return el;
 }
 
 /* Walks an inert tree and returns a DocumentFragment of what survived.
@@ -118,8 +124,7 @@ function keepAllowed(node, out) {
             continue;
         }
 
-        const clone = child.cloneNode(false);
-        scrubAttributes(clone);
+        const clone = createSafe(child);
         keepAllowed(child, clone);
         out.appendChild(clone);
     }
