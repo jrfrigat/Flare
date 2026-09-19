@@ -37,13 +37,13 @@
     }
     @if (ShowFirstLast)
     {
-        <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+        <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
                 disabled="@(Current <= 1)"
                 aria-label="@(FlareStrings.Pagination_First)"
                 @onclick="@(() => GoTo(1))">«</button>
     }
 
-    <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+    <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
             disabled="@(Current <= 1)"
             aria-label="@(FlareStrings.Pagination_Prev)"
             @onclick="@(() => GoTo(Current - 1))">‹</button>
@@ -57,21 +57,21 @@
         else
         {
             var p = page.Value;
-            <button class="@Css.Classes.Pagination.Btn @(p == Current ? Css.Classes.Pagination.BtnActive : "")"
+            <button type="button" class="@Css.Classes.Pagination.Btn @(p == Current ? Css.Classes.Pagination.BtnActive : "")"
                     aria-label="@(string.Format(FlareStrings.Pagination_Page, p))"
                     aria-current="@(p == Current ? "page" : null)"
                     @onclick="@(() => GoTo(p))">@p</button>
         }
     }
 
-    <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+    <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
             disabled="@(Current >= TotalPages)"
             aria-label="@(FlareStrings.Pagination_Next)"
             @onclick="@(() => GoTo(Current + 1))">›</button>
 
     @if (ShowFirstLast)
     {
-        <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+        <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
                 disabled="@(Current >= TotalPages)"
                 aria-label="@(FlareStrings.Pagination_Last)"
                 @onclick="@(() => GoTo(TotalPages))">»</button>

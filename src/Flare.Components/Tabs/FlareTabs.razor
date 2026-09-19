@@ -21,7 +21,7 @@
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _context?.ActiveTab;
-            <button class="@Css.Classes.Tabs.TabButton @(isActive ? Css.Classes.Tabs.TabActive : "")"
+            <button type="button" class="@Css.Classes.Tabs.TabButton @(isActive ? Css.Classes.Tabs.TabActive : "")"
                     id="@tab.TabId"
                     role="tab"
                     aria-selected="@isActive"
@@ -45,7 +45,7 @@
                 }
                 @if (tab.Closeable)
                 {
-                    <button class="@Css.Classes.Tabs.TabClose" @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Aria_CloseTab)">
+                    <button type="button" class="@Css.Classes.Tabs.TabClose" @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Aria_CloseTab)">
                         <FlareIconView Value="FlareIcons.Close" />
                     </button>
                 }

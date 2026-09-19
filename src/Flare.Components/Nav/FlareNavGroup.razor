@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
-    <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
+    <button type="button" class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
         @if (Icon is not null)
         {
             <FlareIconView Value="Icon" Class="@Css.Classes.Navigation.GroupIcon" />

@@ -6,7 +6,7 @@
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _activeTab;
-            <button class="@Css.Classes.Ide.Ribbon.Tab @(isActive ? Css.Classes.Ide.Ribbon.TabActive : "")"
+            <button type="button" class="@Css.Classes.Ide.Ribbon.Tab @(isActive ? Css.Classes.Ide.Ribbon.TabActive : "")"
                     id="@tab.TabButtonId"
                     role="tab"
                     aria-selected="@isActive"

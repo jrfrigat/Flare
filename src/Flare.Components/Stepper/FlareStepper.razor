@@ -91,11 +91,11 @@
             <div class="@Css.Classes.Stepper.Nav">
                 @if (!IsFirst)
                 {
-                    <button class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(FlareStrings.Stepper_Back)</button>
+                    <button type="button" class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(FlareStrings.Stepper_Back)</button>
                 }
                 @if (!IsLast)
                 {
-                    <button class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(FlareStrings.Stepper_Next)</button>
+                    <button type="button" class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(FlareStrings.Stepper_Next)</button>
                 }
             </div>
         </div>

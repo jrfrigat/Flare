@@ -39,9 +39,9 @@
             <div class="@Css.Classes.Msgbox.Actions">
                 @if (req.Kind != MessageBoxKind.Alert)
                 {
-                    <button class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="Cancel">@req.CancelLabel</button>
+                    <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="Cancel">@req.CancelLabel</button>
                 }
-                <button class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="Confirm">@req.ConfirmLabel</button>
+                <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="Confirm">@req.ConfirmLabel</button>
             </div>
         </div>
     </div>

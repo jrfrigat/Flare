@@ -17,7 +17,7 @@
              tabindex="@(node.IsSelected ? 0 : -1)">
             @if (node.HasChildren || node.IsLoading)
             {
-                <button class="@Css.Classes.TreeView.VExpandBtn"
+                <button type="button" class="@Css.Classes.TreeView.VExpandBtn"
                         @onclick="@(() => ToggleAsync(node))"
                         @onclick:stopPropagation="true"
                         disabled="@node.IsLoading"

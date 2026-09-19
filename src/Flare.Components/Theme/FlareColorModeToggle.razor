@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 @using Flare.Abstractions.Tokens
 
-<button class="@BuildCssClass()" @onclick="ToggleAsync"
+<button type="button" class="@BuildCssClass()" @onclick="ToggleAsync"
         aria-label="@(_isDark ? (FlareStrings.Theme_ToggleLight) : (FlareStrings.Theme_ToggleDark))">
     <FlareIconView Value="@(_isDark ? FlareIcons.LightMode : FlareIcons.DarkMode)" />
     @if (ShowLabel)

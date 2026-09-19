@@ -196,7 +196,7 @@
                         @if (RowDetailTemplate != null)
                         {
                             <td class="@Css.Classes.DataGrid.DetailToggle">
-                                <button class="@Css.Classes.DataGrid.DetailBtn"
+                                <button type="button" class="@Css.Classes.DataGrid.DetailBtn"
                                         @onclick:stopPropagation="true"
                                         @onclick="@(() => ToggleRowDetail(rowKey))"
                                         aria-expanded="@(isExpandedDetail.ToString().ToLowerInvariant())">

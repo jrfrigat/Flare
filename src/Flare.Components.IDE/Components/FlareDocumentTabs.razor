@@ -26,7 +26,7 @@
                 }
                 @if (tab.Closeable)
                 {
-                    <button class="@Css.Classes.Ide.DocTabs.Close"
+                    <button type="button" class="@Css.Classes.Ide.DocTabs.Close"
                             @onclick="@(() => CloseTab(tab))"
                             @onclick:stopPropagation="true"
                             aria-label="Close tab">
@@ -48,7 +48,7 @@
             <div class="@Css.Classes.Ide.DocTabs.Dropdown" @onfocusout="CloseDropdown">
                 @foreach (var tab in _hiddenTabs)
                 {
-                    <button class="@Css.Classes.Ide.DocTabs.DropdownItem"
+                    <button type="button" class="@Css.Classes.Ide.DocTabs.DropdownItem"
                             @onclick="@(() => { _ = ActivateTab(tab); CloseDropdown(); })">
                         @tab.Title
                     </button>

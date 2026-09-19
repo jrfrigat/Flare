@@ -26,13 +26,13 @@
 
     @if (ShowArrows && _count > 1)
     {
-        <button class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowPrev"
+        <button type="button" class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowPrev"
                 @onclick="Prev"
                 aria-label="@(FlareStrings.Carousel_Prev)"
                 disabled="@(!Loop && _current == 0)">
             <FlareIconView Value="@FlareIcons.ChevronLeft" />
         </button>
-        <button class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowNext"
+        <button type="button" class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowNext"
                 @onclick="Next"
                 aria-label="@(FlareStrings.Carousel_Next)"
                 disabled="@(!Loop && _current >= _count - 1)">
@@ -46,7 +46,7 @@
             @for (int i = 0; i < _count; i++)
             {
                 var idx = i;
-                <button class="@Css.Classes.Carousel.Dot @(_current == idx ? Css.Classes.Carousel.DotActive : "")"
+                <button type="button" class="@Css.Classes.Carousel.Dot @(_current == idx ? Css.Classes.Carousel.DotActive : "")"
                         @onclick="@(() => GoTo(idx))"
                         role="tab"
                         aria-selected="@(_current == idx)"
