@@ -21,6 +21,27 @@ All notable changes to Flare are documented here. This project adheres to
   menu - without reaching the rung above.
 - **`DeclaredOptions.ParseOrNull`** returns `null` when child content declares no `<option>`, which is
   the question the select family actually asks: "were options declared", not "is there a fragment".
+- **A monospace face a theme can choose.** `TypographyTokens.MonoFont` (`--flare-font-mono`) is read by
+  `FlareText` in mono, inline `FlareCode`, `FlareCodeBlock` and code inside markdown, all four of which
+  said `font-family: monospace` outright. A generic family is the user agent's choice, not a design
+  language's, and a theme that set a code face watched every mono run ignore it. The in-box value keeps
+  the generic - doubled, because a generic standing alone makes several engines use their own
+  "monospace default size" - so nothing moves until a theme names a face.
+- **The nav item's colours, all five of them.** `NavTokens` gains `ActiveColor`, `ItemColor`,
+  `ItemHoverColor`, `GroupColor` and `MetaColor`. The active indicator was already a token while the
+  text on it was fixed in core to the on-secondary-container role, so a theme could choose the pill and
+  not what is read against it.
+- **The shell's planes and the drawer's shadow.** `LayoutTokens` gains `ShellBg`, `DrawerBg`, `RailBg`,
+  `ContentBg` and the three-part `DrawerShadowOffset` / `DrawerShadowBlur` / `DrawerShadowColor`. Core
+  picked the colour role for the drawer, gave the content none at all, and offered no way to separate
+  the panel from the canvas by depth. The shadow is three parts rather than one shorthand because it has
+  a side: core gives it its sign, so it lands on the edge facing the content for either anchor and under
+  either writing direction, and a theme never has to know which edge it is on.
+- **`FlareLayoutDrawer.ContentPadding` / `ContentPaddingValue`**, on the same `FlareSpacing` scale as
+  `FlareDrawer` - by sharing its six modifier classes, so the same step is the same inset by
+  construction. Getting an inset used to mean wrapping the content in a `FlarePaper`, which brings a
+  background, an elevation and a radius a panel does not want.
+- **`ChipInteraction`**, and with it a chip that is a tag when nothing is wired to it.
 
 ### Fixed
 
@@ -33,6 +54,20 @@ All notable changes to Flare are documented here. This project adheres to
   a flex row, so on a 390px app bar the eight route tabs kept their full 759px run and everything
   after them - a language picker, an account menu - ended up past the right edge with no way to reach
   it. The strip now gives way and scrolls its own run, as `FlareTabs` has since 0.35.0.
+- **The password field's reveal button exists for a screen reader.** `FlareField` wrapped its whole
+  icon slot in `aria-hidden`, so anything interactive a caller put there left the accessibility tree
+  while staying in the tab order: focus landed on a control that announced nothing. The slot no longer
+  hides its contents - a decorative icon already hides itself - and the button is now a proper toggle,
+  with a localized name and `aria-pressed` for its state instead of an English label that swapped.
+- **`FlareRichTextEditor.ReadOnly` reaches the editor, not just the toolbar.** The init script set
+  `contentEditable` unconditionally, so a read-only editor still took typing and still raised
+  `ValueChanged`; `aria-readonly` was bound to a bool, which lands in the DOM as an empty attribute, and
+  an accessibility tree read the read-only example as settable. Both are rendered from the component
+  now, so they are right on the first paint and follow the parameter without the editor being
+  re-initialised.
+- **A nav item's active text is readable in every in-box theme.** Fluent UI 2, Visual Studio and Aero
+  all mark the selected item with a left accent bar and no pill, while core painted its label in the
+  on-secondary-container role - a container foreground with no container under it.
 
 ### Changed
 
@@ -41,6 +76,20 @@ All notable changes to Flare are documented here. This project adheres to
   per component, every in-box theme set it to a number that covered the overlays, and a theme had no
   way to see where those overlays were. It is now the shared `Chrome` rung. The CSS variable
   `--flare-z-appbar` is likewise replaced by `--flare-z-chrome`.
+- **Breaking for custom themes: `TypographyTokens` gains a required `MonoFont`, `NavTokens` five
+  required colours and `LayoutTokens` seven required members.** Each replaces a value core had already
+  chosen; the in-box themes set them to what core used to hardcode, so a theme copying those values
+  renders identically.
+- **Breaking: a `FlareChip` with nothing wired to it is no longer a button.** It rendered
+  `role="button"`, a tab stop and hover, focus and pressed layers whether or not anything listened, so
+  a screenful of identifiers and version labels was a screenful of fake controls and tab stops. A chip
+  is now a control when `OnClick` or `SelectedChanged` is bound or it belongs to a `FlareChipGroup`,
+  and a tag otherwise; `Interaction="ChipInteraction.Button"` forces the old behaviour, which is what a
+  handler arriving by attribute splatting needs. The root element is a `<span>` rather than a `<div>`,
+  since a chip is an inline run and painted as one already.
+- **The shell drawer's divider follows the writing direction.** It was `border-right` (and
+  `border-left` when end-anchored), which put it on the wrong edge of a start-anchored drawer in an RTL
+  document; both are logical now.
 
 ## [0.37.0] - 2026-09-13
 

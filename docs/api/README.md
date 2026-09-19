@@ -229,6 +229,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.ChartScaleMode`](enums/flare-components-chartscalemode.md) — What the plot does when a series is switched off in the legend.
 - [`Flare.Components.ChartSeriesKind`](enums/flare-components-chartserieskind.md) — How a single series draws in a Combo chart.
 - [`Flare.Components.ChartType`](enums/flare-components-charttype.md) — The kind of chart FlareChart renders from its data.
+- [`Flare.Components.ChipInteraction`](enums/flare-components-chipinteraction.md) — Whether a FlareChip is something to press or something to read.
 - [`Flare.Components.ChipSize`](enums/flare-components-chipsize.md) — Size of FlareChip (shared Xs..Xl scale; Md is the default).
 - [`Flare.Components.ChipVariant`](enums/flare-components-chipvariant.md) — Visual style of a FlareChip, independent of the active theme. Provides three chip styles: Outlined (the default - a bordered, transparent chip), Filled (a solid surface fill with no border) and Elevated (a filled surface lifted by a drop shadow).
 - [`Flare.Components.ColorFormat`](enums/flare-components-colorformat.md) — Output format for the color value produced by FlareColorPicker.

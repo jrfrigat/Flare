@@ -16,6 +16,7 @@
 | `Disabled` | `bool` | `false` | Parameter |  | Dims the chip and stops it responding: no click, keyboard or close callback fires, and it leaves the tab order. A chip inside a FlareChipGroup also stops taking part in selection, so a disabled chip can neither be selected nor cleared. |
 | `Elevated` | `bool` | `false` | Parameter |  | Renders the chip as an elevated chip (filled surface with a shadow, no border). Convenience shorthand for Variant="ChipVariant.Elevated"; when true it overrides Variant. |
 | `GroupContext` | `FlareChipGroupContext?` | `` | Cascading |  | Parent chip group context providing selection state management. |
+| `Interaction` | `ChipInteraction` | `ChipInteraction.Auto` | Parameter |  | Whether the chip is something to press or something to read. Auto (the default) reads it off what the chip is wired to: bound OnClick or SelectedChanged, or membership of a FlareChipGroup, makes it a control, and anything else is a tag with no role and no tab stop. Set Button when the handler arrives by attribute splatting rather than through a parameter - that is the one wiring Auto cannot see. |
 | `Label` | `string?` | `` | Parameter |  | Text label displayed inside the chip. Ignored when ChildContent is set. |
 | `LeadingIcon` | `RenderFragment?` | `` | Parameter |  | Icon content rendered before the chip label. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the chip body is clicked. |

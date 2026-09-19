@@ -903,6 +903,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Dims the chip and stops it responding: no click, keyboard or close callback fires, and it leaves the tab order. A chip inside a FlareChipGroup also stops taking part in selection, so a disabled chip can neither be selected nor cleared.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Elevated", @"bool", @"false", @"Renders the chip as an elevated chip (filled surface with a shadow, no border). Convenience shorthand for Variant=""ChipVariant.Elevated""; when true it overrides Variant.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"GroupContext", @"FlareChipGroupContext?", null, @"Parent chip group context providing selection state management.", null, true, false, false, @"FlareChip"),
+                new ApiParameterInfo(@"Interaction", @"ChipInteraction", @"ChipInteraction.Auto", @"Whether the chip is something to press or something to read. Auto (the default) reads it off what the chip is wired to: bound OnClick or SelectedChanged, or membership of a FlareChipGroup, makes it a control, and anything else is a tag with no role and no tab stop. Set Button when the handler arrives by attribute splatting rather than through a parameter - that is the one wiring Auto cannot see.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Text label displayed inside the chip. Ignored when ChildContent is set.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon content rendered before the chip label.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the chip body is clicked.", null, false, true, false, @"FlareChip"),
@@ -3470,6 +3471,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Anchor", @"DrawerAnchor", @"DrawerAnchor.Left", @"Which side of the layout the drawer attaches to (Left or Right; Top/Bottom are treated as Left). Defaults to Left.", null, false, false, false, @"FlareLayoutDrawer"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name applied (as aria-label) while the drawer is an open modal overlay (the Temporary variant, or any drawer on mobile). Recommended so the modal navigation surface has an accessible name.", null, false, false, false, @"FlareLayoutDrawer"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Drawer content (typically a FlareNavMenu).", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"ContentPadding", @"FlareSpacing", @"FlareSpacing.None", @"Horizontal inset on the drawer's content, on the shared FlareSpacing scale - the same steps FlareDrawer.ContentPadding and FlareStack.Gap use, so the same step gives the same value from the theme wherever it is asked for. Vertical padding is unaffected. None (the default) leaves the content full-bleed, because a drawer cannot know what it holds: a nav menu carries its own item insets and wants its state layer to reach the panel edge, while a form wants to sit off the edge. Set it for the form case instead of wrapping the content in a FlarePaper, which brings a background, an elevation and a radius a panel does not want.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"ContentPaddingValue", @"string?", null, @"Raw CSS inline padding used when ContentPadding is Custom.", null, false, false, false, @"FlareLayoutDrawer"),
                 new ApiParameterInfo(@"HoverExpand", @"bool", @"false", @"Mini variant only: while collapsed, expand to full Width as a floating overlay on pointer/keyboard hover, then collapse again on leave.", null, false, false, false, @"FlareLayoutDrawer"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Whether the drawer is open (expanded). Supports @bind-Open.", null, false, false, false, @"FlareLayoutDrawer"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Raised when the open state changes, for two-way binding.", null, false, true, false, @"FlareLayoutDrawer"),
@@ -7519,6 +7522,23 @@ public static class ComponentApiRegistry
                 @"FlareChart",
             });
 
+        e[@"ChipInteraction"] = new ApiEnumInfo(
+            @"ChipInteraction",
+            @"Flare.Components.ChipInteraction",
+            @"Flare.Components",
+            @"Whether a FlareChip is something to press or something to read.",
+            @"A chip used as a tag - an identifier, a status, a version - is not a control, and rendering it as one puts a role=""button"" and a tab stop on every label on the screen. A chip used as a filter is a control and needs both. The component can tell which it is from whether anything is wired to it, so Auto is the default and the two explicit values exist for the cases it cannot see.",
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Auto", @"0", @"Decide from what the chip is wired to: a chip with OnClick or SelectedChanged bound, or one taking part in a FlareChipGroup, is a control; anything else is a tag. A close button is not counted, because it is its own control and carries its own focus."),
+                new ApiEnumMember(@"Button", @"1", @"Always a control. Needed when the handler reaches the chip by attribute splatting rather than through a parameter, which Auto cannot see."),
+                new ApiEnumMember(@"Static", @"2", @"Always a tag: no role, no tab stop, no hover or pressed layer, and its text stays selectable so it can be copied. Use it for a chip that shows state it does not let you change."),
+            },
+            new string[]
+            {
+                @"FlareChip",
+            });
+
         e[@"ChipSize"] = new ApiEnumInfo(
             @"ChipSize",
             @"Flare.Components.ChipSize",
@@ -8248,6 +8268,7 @@ public static class ComponentApiRegistry
                 @"FlareCardActions",
                 @"FlareDrawer",
                 @"FlareGrid",
+                @"FlareLayoutDrawer",
                 @"FlarePaper",
                 @"FlareStack",
             });
