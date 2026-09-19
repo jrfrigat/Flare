@@ -284,6 +284,18 @@ public static class NavField
     public const string IndicatorRadius = "--flare-nav-indicator-radius";
     /// <summary>CSS custom-property name for the active-indicator background token.</summary>
     public const string ActiveIndicator = "--flare-nav-active-indicator";
+    /// <summary>CSS custom-property name for the text and icon colour of the active item - the other
+    /// half of <see cref="ActiveIndicator"/>, which is the background it is read against.</summary>
+    public const string ActiveColor = "--flare-nav-active-color";
+    /// <summary>CSS custom-property name for the resting text and icon colour of a nav item.</summary>
+    public const string ItemColor = "--flare-nav-item-color";
+    /// <summary>CSS custom-property name for the text and icon colour of a hovered nav item.</summary>
+    public const string ItemHoverColor = "--flare-nav-item-hover-color";
+    /// <summary>CSS custom-property name for the colour of a nav group's header.</summary>
+    public const string GroupColor = "--flare-nav-group-color";
+    /// <summary>CSS custom-property name for the colour of the supplementary caption pinned in a nav
+    /// menu's header or footer.</summary>
+    public const string MetaColor = "--flare-nav-meta-color";
     /// <summary>CSS custom-property name for the active item left-bar token (an optional left accent bar).</summary>
     public const string ActiveLeftBar = "--flare-nav-active-left-bar";
     /// <summary>CSS custom-property name for the disabled nav-link opacity token.</summary>
