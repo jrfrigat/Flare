@@ -86,6 +86,18 @@ All notable changes to Flare are documented here. This project adheres to
   button, a carousel arrow and the whole rich-text toolbar posted the nearest `EditForm` when pressed.
   `FlareButton` was never affected - it renders its `ButtonType` - and the raw ones simply bypassed that
   contract. A guard now reads the markup for any `<button>` that declares no type.
+- **A checkbox and a radio can be resized by a theme.** Their xs/sm/lg/xl steps were literals in core's
+  own stylesheet, so a theme owned only the middle one - a hardwired opinion in a theme-agnostic core.
+  `CheckboxTokens` and `RadioTokens` now carry the whole ramp (`SizeXs`..`SizeXl`) plus
+  `StateLayerSize` for the halo, whose diameter core also fixed. Every in-box theme states the numbers
+  core used to hold, so nothing moves; measured in the browser, all five steps and the halo are
+  unchanged at 14/16/18/22/26px and 16/18/20/24/28px.
+- **A checkbox and a radio can be resized by a theme.** Their xs/sm/lg/xl steps were literals in core's
+  own stylesheet, so a theme owned only the middle one - a hardwired opinion in a theme-agnostic core.
+  `CheckboxTokens` and `RadioTokens` now carry the whole ramp (`SizeXs`..`SizeXl`) plus
+  `StateLayerSize` for the halo, whose diameter core also fixed. Every in-box theme states the numbers
+  core used to hold, so nothing moves; measured in the browser, all five steps and the halo are
+  unchanged at 14/16/18/22/26px and 16/18/20/24/28px.
 
 ### Changed
 
@@ -108,6 +120,18 @@ All notable changes to Flare are documented here. This project adheres to
 - **The shell drawer's divider follows the writing direction.** It was `border-right` (and
   `border-left` when end-anchored), which put it on the wrong edge of a start-anchored drawer in an RTL
   document; both are logical now.
+- **Breaking: every control size constant is named `SizeXs`..`SizeXl`.** Three schemes were in use -
+  `SizeXs` for some types, bare `Xs` for others, and a mix of both inside `Chip`, `Pagination` and
+  `Avatar`. In a type that also holds `Disabled` and `Error`, `SizeSm` says what it is and `Sm` does
+  not. `Container` keeps its bare `Xs`..`Xl`: those are breakpoint max-widths, not a control size.
+- **Breaking: the medium size now has a class of its own.** It used to be the absence of one, so nothing
+  in the DOM said what size a control was and no stylesheet could reach the default step except by
+  excluding all four others by name. `Css.Classes.X.SizeMd` exists for every scale, components emit it,
+  and a matching `.flare-x--md` rule states the size rather than marking it. The base rule still
+  resolves the medium step, so markup written by hand is unaffected. Two guards hold it: every scale
+  names its middle step, and that name follows the scale's own spelling.
+- **Breaking: `CheckboxTokens.Size` and `RadioTokens.Size` are replaced by `SizeMd`.** One value for
+  "the size" beside another for "the medium size" are two ways to say the same thing.
 
 ## [0.37.0] - 2026-09-13
 
