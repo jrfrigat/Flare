@@ -78,9 +78,12 @@ All notable changes to Flare are documented here. This project adheres to
   an accessibility tree read the read-only example as settable. Both are rendered from the component
   now, so they are right on the first paint and follow the parameter without the editor being
   re-initialised.
-- **A nav item's active text is readable in every in-box theme.** Fluent UI 2, Visual Studio and Aero
-  all mark the selected item with a left accent bar and no pill, while core painted its label in the
-  on-secondary-container role - a container foreground with no container under it.
+- **A nav item's active text is the theme's to choose.** Fluent UI 2, Visual Studio and Aero mark the
+  selected item with a left accent bar and no pill, so core was painting the label in the
+  on-secondary-container role with no container under it. Measured against the in-box palettes the old
+  pairing still cleared AA - those three put on-secondary-container close to on-surface - so this is a
+  structural fix rather than a contrast one: what it unblocks is a theme whose containers diverge, or
+  whose indicator is a different role entirely, which could not reach the label at all.
 - **Thirty-seven command buttons no longer submit the form around them.** A `<button>` with no `type` is
   a submit button by default, so a calendar's month arrows, a pagination strip, a tab, a stepper's next
   button, a carousel arrow and the whole rich-text toolbar posted the nearest `EditForm` when pressed.
