@@ -1,13 +1,19 @@
+using Microsoft.AspNetCore.Components;
+
 namespace Flare.Components.Tests;
 
 public class FlareMenuItemTests : FlareTestContext
 {
+    // These tests are about the items, not about the button that opens them: the activator context is
+    // taken and dropped.
+    private static RenderFragment<FlareMenuActivatorContext> MenuActivator(string html) =>
+        _ => b => b.AddMarkupContent(0, html);
+
     [Fact]
     public void RendersButton()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(x => x.Activator, b =>
-                b.AddMarkupContent(0, "<button>Open</button>"))
+            .Add(x => x.Activator, MenuActivator("<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
                 mi.AddChildContent("Save")));
 
@@ -20,8 +26,7 @@ public class FlareMenuItemTests : FlareTestContext
     public void RendersLabel()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(x => x.Activator, b =>
-                b.AddMarkupContent(0, "<button>Open</button>"))
+            .Add(x => x.Activator, MenuActivator("<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
                 mi.AddChildContent("Delete")));
 
@@ -34,8 +39,7 @@ public class FlareMenuItemTests : FlareTestContext
     public void DisabledMenuItem_HasDisabledAttribute()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(x => x.Activator, b =>
-                b.AddMarkupContent(0, "<button>Open</button>"))
+            .Add(x => x.Activator, MenuActivator("<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi
                 .Add(x => x.Disabled, true)
                 .AddChildContent("Disabled Action")));
@@ -50,8 +54,7 @@ public class FlareMenuItemTests : FlareTestContext
     public void DisabledMenuItem_HasDisabledClass()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(x => x.Activator, b =>
-                b.AddMarkupContent(0, "<button>Open</button>"))
+            .Add(x => x.Activator, MenuActivator("<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi
                 .Add(x => x.Disabled, true)
                 .AddChildContent("Disabled Action")));
@@ -65,8 +68,7 @@ public class FlareMenuItemTests : FlareTestContext
     public void MenuItemHasRoleMenuitem()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(x => x.Activator, b =>
-                b.AddMarkupContent(0, "<button>Open</button>"))
+            .Add(x => x.Activator, MenuActivator("<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
                 mi.AddChildContent("Item")));
 
@@ -79,8 +81,7 @@ public class FlareMenuItemTests : FlareTestContext
     public void ItemWithIcon_RendersIconSpan()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(x => x.Activator, b =>
-                b.AddMarkupContent(0, "<button>Open</button>"))
+            .Add(x => x.Activator, MenuActivator("<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi
                 .Add(x => x.Icon, FlareIcons.Settings)
                 .AddChildContent("Settings")));

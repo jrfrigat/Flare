@@ -5,6 +5,25 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking: `FlareMenu` hands the menu button's ARIA to the activator.** `Activator` is now a
+  `RenderFragment<FlareMenuActivatorContext>`, and the three attributes it carries -
+  `aria-haspopup="menu"`, `aria-expanded` and `aria-controls` - belong on the element inside the slot
+  that actually takes the focus: `<FlareButton @attributes="context.Attributes">`. They used to sit on
+  the wrapper the menu renders around the slot, a `div` with no role that cannot be focused, where ARIA
+  announces nothing at all - a screen reader said "button, More actions" and neither that there was a
+  menu nor whether it was open, on every menu in the library including the caret of `FlareSplitButton`.
+  Markup keeps compiling as it was, because Razor supplies the implicit `context`; what changes is that
+  an activator has to pass the attributes on, and one that does not still renders and clicks but stays
+  silent. A fragment assigned from code (`Activator="@fragment"`) needs the context parameter, and an
+  activator whose scope already has a `context` names its own with `Context="act"`. The context also
+  says whether the menu is `Open`, for an activator that turns a chevron. Closing the menu now hands
+  the focus back to the activator as well, which nothing did before: Escape emptied the panel and left
+  the focus on the document body.
+
+## [0.38.0] - 2026-09-20
+
 Upgrading a custom theme or a stylesheet that names Flare classes? See
 [Migrating to 0.38](docs/en/migrating-to-0.38.md).
 

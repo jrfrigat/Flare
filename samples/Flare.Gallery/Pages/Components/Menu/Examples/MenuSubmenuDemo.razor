@@ -6,7 +6,7 @@
     
     <FlareMenu>
         <Activator>
-            <FlareButton>Open Menu with Submenus</FlareButton>
+            <FlareButton @attributes="context.Attributes">Open Menu with Submenus</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Home" OnClick="@(() => _lastAction = "Home")">Home</FlareMenuItem>
@@ -34,7 +34,7 @@
     <FlareText Typo="TypographyScale.TitleMedium">Submenu with Groups</FlareText>
     <FlareMenu>
         <Activator>
-            <FlareButton>Actions Menu</FlareButton>
+            <FlareButton @attributes="context.Attributes">Actions Menu</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuGroup Label="File">

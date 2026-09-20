@@ -100,13 +100,18 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
 
     private static RenderFragment Markup(string html) => b => b.AddMarkupContent(0, html);
 
+    // The menu's activator slot is a template that receives the popup's ARIA; these cases are about
+    // where the panel lands, so they take the context and ignore it.
+    private static RenderFragment<FlareMenuActivatorContext> MenuActivator(string html) =>
+        _ => b => b.AddMarkupContent(0, html);
+
     [Fact]
     public void Menu_RightClickActivation_OpensAtCursor_LeftClickIgnored()
     {
         var cut = Render<FlareMenu>(p => p
             .Add(m => m.Activation, MenuActivation.RightClick)
             .Add(m => m.PositionAtCursor, true)
-            .Add(m => m.Activator, Markup("<span>x</span>")));
+            .Add(m => m.Activator, MenuActivator("<span>x</span>")));
 
         // Left click must not open a right-click menu.
         cut.Find($".{Css.Classes.Menu.Activator}").Click();
@@ -126,7 +131,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
     {
         var cut = Render<FlareMenu>(p => p
             .Add(m => m.MaxHeight, "14rem")
-            .Add(m => m.Activator, Markup("<span>x</span>")));
+            .Add(m => m.Activator, MenuActivator("<span>x</span>")));
 
         cut.Find($".{Css.Classes.Menu.Activator}").Click();
         var panel = cut.Find($".{Css.Classes.Menu.Panel}");
@@ -146,7 +151,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
     public void MenuItem_AutoCloseFalse_KeepsMenuOpen()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(m => m.Activator, Markup("<span>x</span>"))
+            .Add(m => m.Activator, MenuActivator("<span>x</span>"))
             .Add(m => m.ChildContent, MenuItem(autoClose: false)));
 
         cut.Find($".{Css.Classes.Menu.Activator}").Click();
@@ -160,7 +165,7 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
     public void MenuItem_DefaultAutoClose_ClosesMenu()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(m => m.Activator, Markup("<span>x</span>"))
+            .Add(m => m.Activator, MenuActivator("<span>x</span>"))
             .Add(m => m.ChildContent, MenuItem(autoClose: true)));
 
         cut.Find($".{Css.Classes.Menu.Activator}").Click();

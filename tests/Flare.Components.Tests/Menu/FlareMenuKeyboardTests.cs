@@ -26,11 +26,21 @@ public class FlareMenuKeyboardTests : FlareTestContext
     private static Microsoft.AspNetCore.Components.Web.MouseEventArgs FromKeyboard() => new() { Detail = 0 };
     private static Microsoft.AspNetCore.Components.Web.MouseEventArgs FromPointer() => new() { Detail = 1 };
 
+    // A real button wearing the ARIA the menu hands to its activator slot - which is also what these
+    // tests then look for, so they open the menu the way a user does: through the focusable element.
+    private static RenderFragment<FlareMenuActivatorContext> ActivatorButton() => ctx => b =>
+    {
+        b.OpenElement(0, "button");
+        b.AddMultipleAttributes(1, ctx.Attributes);
+        b.AddContent(2, "open");
+        b.CloseElement();
+    };
+
     [Fact]
     public async Task OpenedByKeyboard_SetsActiveDescendant_AndArrowMovesIt()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(m => m.Activator, "<span>open</span>")
+            .Add(m => m.Activator, ActivatorButton())
             .Add(m => m.ChildContent, ThreeItems()));
 
         await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
@@ -51,7 +61,7 @@ public class FlareMenuKeyboardTests : FlareTestContext
     public async Task OpenedByPointer_HighlightsNothing_UntilTheFirstArrow()
     {
         var cut = Render<FlareMenu>(p => p
-            .Add(m => m.Activator, "<span>open</span>")
+            .Add(m => m.Activator, ActivatorButton())
             .Add(m => m.ChildContent, ThreeItems()));
 
         await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromPointer()));

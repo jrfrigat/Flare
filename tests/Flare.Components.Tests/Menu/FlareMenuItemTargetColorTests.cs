@@ -11,7 +11,8 @@ namespace Flare.Components.Tests;
 // ------------------------------------------------------------------------------
 public class FlareMenuItemTargetColorTests : FlareTestContext
 {
-    private static RenderFragment Activator => b => b.AddMarkupContent(0, "<button>Open</button>");
+    private static RenderFragment<FlareMenuActivatorContext> Activator =>
+        _ => b => b.AddMarkupContent(0, "<button>Open</button>");
 
     [Fact]
     public void Target_Blank_AddsTargetAndRel()

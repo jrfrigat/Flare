@@ -3,12 +3,14 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes">
+    @* The wrapper carries the click, the position anchor and nothing a screen reader reads: the ARIA of
+       the popup travels to the activator itself through the context, because this div has no role and
+       cannot take the focus, and ARIA on such an element announces nothing at all. *@
     <div class="@Css.Classes.Menu.Activator" @ref="_activatorEl"
          @onclick="HandleActivatorClick"
          @oncontextmenu="HandleActivatorContextMenu"
-         @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)"
-         aria-haspopup="menu" aria-expanded="@_open.ToString().ToLowerInvariant()" aria-controls="@_panelId">
-        @Activator
+         @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)">
+        @Activator?.Invoke(ActivatorContext)
     </div>
     @if (_open)
     {
@@ -26,8 +28,13 @@
 </div>
 
 @code {
-    /// <summary>Element that opens the menu when clicked.</summary>
-    [Parameter] public RenderFragment? Activator { get; set; }
+    /// <summary>
+    /// Element that opens the menu when clicked. The slot receives a
+    /// <see cref="FlareMenuActivatorContext"/>, whose <c>Attributes</c> belong on the focusable element
+    /// inside it - <c>&lt;FlareButton @attributes="context.Attributes"&gt;</c> - so that the button a
+    /// screen reader lands on is the one announcing the menu and whether it is open.
+    /// </summary>
+    [Parameter] public RenderFragment<FlareMenuActivatorContext>? Activator { get; set; }
     /// <summary>Menu items rendered inside the dropdown panel.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Corner of the activator the panel aligns to.</summary>
@@ -88,6 +95,15 @@
     private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
+    // What the activator slot is handed. Rebuilt only when the open state moves: the slot re-renders
+    // together with its parent, and a fresh dictionary every frame would allocate for three values that
+    // did not change.
+    private FlareMenuActivatorContext? _activatorContext;
+
+    private FlareMenuActivatorContext ActivatorContext =>
+        _activatorContext is { } ctx && ctx.Open == _open
+            ? ctx
+            : _activatorContext = new FlareMenuActivatorContext(_open, _panelId);
 
     protected override void OnInitialized()
     {
@@ -124,6 +140,12 @@
         else if (!_open && _wasOpen)
         {
             _wasOpen = false;
+            // The focus was on the panel, and the panel has just gone: without this it falls to the
+            // document body and a keyboard user resumes from the top of the page instead of from the
+            // button they pressed. The menu asks the wrapper for its first focusable element rather than
+            // holding a reference of its own, because which element the activator is belongs to whoever
+            // filled the slot.
+            try { await Overlay.FocusFirstAsync(_activatorEl); } catch (JSException) { }
         }
     }
 

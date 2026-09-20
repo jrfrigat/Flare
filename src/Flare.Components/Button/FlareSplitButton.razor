@@ -12,9 +12,11 @@
     </FlareButton>
     <FlareMenu @ref="_menu" Anchor="Placement" AriaLabel="@MenuAriaLabel" Class="@Css.Classes.SplitButton.Menu" OnToggle="ToggleMenuState">
         <Activator>
+            @* The caret is the button a screen reader reaches, so the menu's ARIA rides on it. *@
             <FlareButton Class="@Css.Classes.SplitButton.Trigger"
                          Variant="Variant" Color="Color" Size="Size"
-                         Disabled="Disabled" AriaLabel="@MenuAriaLabel">
+                         Disabled="Disabled" AriaLabel="@MenuAriaLabel"
+                         @attributes="context.Attributes">
                 <FlareIconView Value="FlareIcons.ExpandMore" Class="@Css.Classes.SplitButton.Caret" />
             </FlareButton>
         </Activator>

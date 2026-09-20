@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Activation` | `MenuActivation` | `MenuActivation.LeftClick` | Parameter |  | How the menu opens from its activator. RightClick turns it into a context menu (and suppresses the browser's own menu). |
-| `Activator` | `RenderFragment?` | `` | Parameter |  | Element that opens the menu when clicked. |
+| `Activator` | `RenderFragment<FlareMenuActivatorContext>?` | `` | Parameter |  | Element that opens the menu when clicked. The slot receives a FlareMenuActivatorContext, whose Attributes belong on the focusable element inside it - <FlareButton @attributes="context.Attributes"> - so that the button a screen reader lands on is the one announcing the menu and whether it is open. |
 | `Anchor` | `MenuAnchor` | `MenuAnchor.BottomLeft` | Parameter |  | Corner of the activator the panel aligns to. |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the menu panel (role="menu"). |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Menu items rendered inside the dropdown panel. |

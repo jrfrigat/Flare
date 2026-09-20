@@ -9,6 +9,7 @@
         <Activator>
             <FlareButton Variant="@ButtonVariant.Text" Size="@(IsLarge ? ButtonSize.Lg : ButtonSize.Sm)"
                          Disabled="@Disabled" AriaLabel="@Tooltip"
+                         @attributes="context.Attributes"
                          class="@(IsLarge ? $"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}" : Css.Classes.Ide.Ribbon.Button)">
                 @if (Icon is not null)
                 {

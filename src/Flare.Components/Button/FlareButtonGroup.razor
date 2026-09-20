@@ -31,15 +31,18 @@
                        FreeContent
                        Anchor="@(Vertical ? MenuAnchor.BottomLeft : MenuAnchor.BottomRight)"
                        AriaLabel="@_overflowLabel"
-                       OnToggle="@(open => _overflowOpen = open)"
                        data-flare-bg-hidden="@(_hiddenCount == 0 ? "" : null)">
                 <Activator>
                     @* Size/Variant/Color come from the group's own cascade, the same way every other
                        segment gets them - passing them again would only be a second source of truth.
                        The dots run across the bar, so they turn with it: a row folds into a vertical
-                       ellipsis, a column into a horizontal one. *@
+                       ellipsis, a column into a horizontal one.
+
+                       aria-expanded arrives with the rest of the popup's ARIA from the menu's own
+                       context, which is also why the group no longer mirrors the open state into a
+                       field of its own: one attribute, one owner. *@
                     <FlareButton AriaLabel="@_overflowLabel"
-                                 aria-expanded="@(_overflowOpen ? "true" : "false")">
+                                 @attributes="context.Attributes">
                         <FlareIconView Value="@(Vertical ? FlareIcons.MoreHoriz : FlareIcons.MoreVert)" />
                     </FlareButton>
                 </Activator>
@@ -103,7 +106,6 @@
     private ElementReference _root;
     private DotNetObjectReference<FlareButtonGroup>? _selfRef;
     private bool _observing;
-    private bool _overflowOpen;
     private FlareMenu? _menu;
     private int _hiddenCount;
 

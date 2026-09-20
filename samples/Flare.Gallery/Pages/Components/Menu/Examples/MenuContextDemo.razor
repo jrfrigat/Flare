@@ -16,7 +16,7 @@
     @* MaxHeight caps the panel so a long list scrolls instead of overflowing. *@
     <FlareMenu MaxHeight="14rem">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Menu_Scroll</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">@GalleryStrings.Menu_Scroll</FlareButton>
         </Activator>
         <ChildContent>
             @for (var i = 1; i <= 12; i++)
@@ -30,7 +30,7 @@
     @* AutoClose=false keeps the menu open so several toggle items can be flipped in one pass. *@
     <FlareMenu AriaLabel="@GalleryStrings.Menu_KeepOpen">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Filled">@GalleryStrings.Menu_KeepOpen</FlareButton>
+            <FlareButton Variant="ButtonVariant.Filled" @attributes="context.Attributes">@GalleryStrings.Menu_KeepOpen</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem AutoClose="false" Icon="@(_a ? MaterialDesign3Icons.Regular.CheckBox : MaterialDesign3Icons.Regular.CheckBoxOutlineBlank)" OnClick="@(() => _a = !_a)">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>

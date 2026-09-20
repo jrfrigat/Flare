@@ -3,7 +3,7 @@
 <FlareStack Row Wrap Gap="FlareSpacing.Small">
     <FlareMenu Anchor="MenuAnchor.BottomLeft">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">Actions ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Actions ▾</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" OnClick="@(() => Snackbar.Show("Edit clicked"))">Edit</FlareMenuItem>
@@ -16,7 +16,7 @@
 
     <FlareMenu Anchor="MenuAnchor.BottomRight">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Filled">Right-aligned ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Filled" @attributes="context.Attributes">Right-aligned ▾</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Settings" OnClick="@(() => Snackbar.Show("Settings"))">Settings</FlareMenuItem>
@@ -27,7 +27,7 @@
 
     <FlareMenu Anchor="MenuAnchor.BottomLeft" Dense="true">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">Dense ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Dense ▾</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" OnClick="@(() => Snackbar.Show("Edit"))">Edit</FlareMenuItem>

@@ -2,7 +2,7 @@
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Style="padding-bottom:8rem;">
     <FlareMenu>
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreVert" /></LeadingIcon>
                 <ChildContent>Actions</ChildContent>
             </FlareButton>

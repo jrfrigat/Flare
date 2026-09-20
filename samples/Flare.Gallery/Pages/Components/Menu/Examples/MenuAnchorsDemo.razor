@@ -2,7 +2,7 @@
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Style="padding:4rem 0;">
     <FlareMenu Anchor="MenuAnchor.BottomLeft">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">Bottom-left ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Bottom-left ▾</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NorthWest">Bottom-left</FlareMenuItem>
@@ -12,7 +12,7 @@
 
     <FlareMenu Anchor="MenuAnchor.BottomRight">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">Bottom-right ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Bottom-right ▾</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NorthEast">Bottom-right</FlareMenuItem>
@@ -22,7 +22,7 @@
 
     <FlareMenu Anchor="MenuAnchor.TopLeft">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">Top-left ▴</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Top-left ▴</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SouthWest">Top-left</FlareMenuItem>
@@ -32,7 +32,7 @@
 
     <FlareMenu Anchor="MenuAnchor.TopRight">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined">Top-right ▴</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Top-right ▴</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SouthEast">Top-right</FlareMenuItem>

@@ -3827,7 +3827,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Activation", @"MenuActivation", @"MenuActivation.LeftClick", @"How the menu opens from its activator. RightClick turns it into a context menu (and suppresses the browser's own menu).", null, false, false, false, @"FlareMenu"),
-                new ApiParameterInfo(@"Activator", @"RenderFragment?", null, @"Element that opens the menu when clicked.", null, false, false, false, @"FlareMenu"),
+                new ApiParameterInfo(@"Activator", @"RenderFragment<FlareMenuActivatorContext>?", null, @"Element that opens the menu when clicked. The slot receives a FlareMenuActivatorContext, whose Attributes belong on the focusable element inside it - <FlareButton @attributes=""context.Attributes""> - so that the button a screen reader lands on is the one announcing the menu and whether it is open.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Anchor", @"MenuAnchor", @"MenuAnchor.BottomLeft", @"Corner of the activator the panel aligns to.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the menu panel (role=""menu"").", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the dropdown panel.", null, false, false, false, @"FlareMenu"),

@@ -3,7 +3,7 @@
 
 <FlareMenu Anchor="MenuAnchor.BottomLeft">
     <Activator>
-        <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Menu_Groups_Activator ▾</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">@GalleryStrings.Menu_Groups_Activator ▾</FlareButton>
     </Activator>
     <ChildContent>
         <FlareMenuGroup Label="@GalleryStrings.Menu_Group_Edit">
