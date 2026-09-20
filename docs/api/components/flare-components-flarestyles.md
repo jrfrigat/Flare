@@ -4,13 +4,13 @@
 
 `Flare.Components.FlareStyles`
 
-Emits the stylesheet links for the registered themes and palettes. By default it emits them all, which is what lets the app switch theme at runtime by swapping a class; restricting it to the active one trades that away for a smaller payload.
+Emits the stylesheet links a theme needs in the document head. By default only the active theme and palette, because that is all the first frame paints with and every other sheet is a request nothing uses; switching theme still works, since the provider fetches the incoming theme's sheet before it swaps the classes.
 
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `ActiveOnly` | `bool` | `false` | Parameter |  | When true, only emits CSS for the currently active theme and palette. Default false (emits all registered themes/palettes for runtime switching). |
+| `ActiveOnly` | `bool` | `true` | Parameter |  | Whether to emit the stylesheets of the active theme and palette alone (the default) or of every registered theme and palette. An app that registers several themes pays a request per sheet for the ones nothing is painting with, and in a WebAssembly app those requests leave only after .NET has started - the most expensive moment of the load. Set it to false when CSS of your own reads an inactive theme's variables, or when the theme is switched without FlareThemeProvider, which otherwise fetches an incoming theme's sheet on the way in. |
 
 ## Methods
 

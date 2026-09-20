@@ -1,10 +1,11 @@
 @namespace Flare.Components
 @inject IThemeService ThemeService
 
-@* Emits <link> tags for static assets of registered themes/palettes.
-   By default, emits ALL registered assets (required for ClassToggle switching).
-   Set ActiveOnly="true" to emit only the current theme/palette CSS (smaller payload,
-   but prevents runtime switching to other themes without additional CSS). *@
+@* Emits <link> tags for the static assets of the ACTIVE theme and palette. Switching theme at run
+   time stays possible without the other sheets: FlareThemeProvider asks the browser for the incoming
+   theme's stylesheet and waits for it before it swaps the classes on the root. Set ActiveOnly="false"
+   to emit every registered theme's sheet up front, which only matters for CSS of your own that reads
+   an inactive theme's variables, or for switching theme past the provider. *@
 <HeadContent>
     @foreach (var href in _hrefs)
     {
@@ -14,10 +15,14 @@
 
 @code {
     /// <summary>
-    /// When true, only emits CSS for the currently active theme and palette.
-    /// Default false (emits all registered themes/palettes for runtime switching).
+    /// Whether to emit the stylesheets of the active theme and palette alone (the default) or of every
+    /// registered theme and palette. An app that registers several themes pays a request per sheet for
+    /// the ones nothing is painting with, and in a WebAssembly app those requests leave only after .NET
+    /// has started - the most expensive moment of the load. Set it to <c>false</c> when CSS of your own
+    /// reads an inactive theme's variables, or when the theme is switched without
+    /// <c>FlareThemeProvider</c>, which otherwise fetches an incoming theme's sheet on the way in.
     /// </summary>
-    [Parameter] public bool ActiveOnly { get; set; }
+    [Parameter] public bool ActiveOnly { get; set; } = true;
 
     private IEnumerable<string> _hrefs => ActiveOnly ? ActiveHrefs : AllHrefs;
 

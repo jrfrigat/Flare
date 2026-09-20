@@ -7,6 +7,15 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **The head gets the active theme's stylesheet, not every registered theme's.**
+  `FlareStyles.ActiveOnly` now defaults to `true`, which is what `FlareThemeProvider` renders in its
+  `Automatic` mode. An app that registers several themes was paying a request per sheet for CSS nothing
+  was painting with - on the Gallery, six theme sheets of which one was in use, about 40 KB of the
+  other five - and in a WebAssembly app those requests leave only after .NET has started, the most
+  expensive moment of the load. Switching theme at run time is unaffected: the provider already asks
+  the browser for the incoming theme's sheet and waits for it before swapping the classes on the root,
+  which is the same path `ThemeStylesheets.Manual` has always taken. Set `ActiveOnly="false"` if CSS of
+  your own reads an inactive theme's variables, or if you switch theme without the provider.
 - **Breaking: `FlareMenu` hands the menu button's ARIA to the activator.** `Activator` is now a
   `RenderFragment<FlareMenuActivatorContext>`, and the three attributes it carries -
   `aria-haspopup="menu"`, `aria-expanded` and `aria-controls` - belong on the element inside the slot

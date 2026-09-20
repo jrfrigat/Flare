@@ -166,7 +166,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareStatusBar`](components/flare-components-ide-flarestatusbar.md)
 - [`FlareStep`](components/flare-components-flarestep.md) — One stage of a FlareStepper: its label, its optional description, and the content shown while it is the active stage. It registers with the stepper and draws nothing on its own - the stepper renders both the indicator and the panel.
 - [`FlareStepper`](components/flare-components-flarestepper.md)
-- [`FlareStyles`](components/flare-components-flarestyles.md) — Emits the stylesheet links for the registered themes and palettes. By default it emits them all, which is what lets the app switch theme at runtime by swapping a class; restricting it to the active one trades that away for a smaller payload.
+- [`FlareStyles`](components/flare-components-flarestyles.md) — Emits the stylesheet links a theme needs in the document head. By default only the active theme and palette, because that is all the first frame paints with and every other sheet is a request nothing uses; switching theme still works, since the provider fetches the incoming theme's sheet before it swaps the classes.
 - [`FlareSubMenu`](components/flare-components-flaresubmenu.md)
 - [`FlareSwitch`](components/flare-components-flareswitch.md)
 - [`FlareTab`](components/flare-components-flaretab.md)

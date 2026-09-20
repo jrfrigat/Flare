@@ -5809,11 +5809,11 @@ public static class ComponentApiRegistry
             @"FlareStyles",
             @"Flare.Components.FlareStyles",
             @"Flare.Components",
-            @"Emits the stylesheet links for the registered themes and palettes. By default it emits them all, which is what lets the app switch theme at runtime by swapping a class; restricting it to the active one trades that away for a smaller payload.",
+            @"Emits the stylesheet links a theme needs in the document head. By default only the active theme and palette, because that is all the first frame paints with and every other sheet is a request nothing uses; switching theme still works, since the provider fetches the incoming theme's sheet before it swaps the classes.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ActiveOnly", @"bool", @"false", @"When true, only emits CSS for the currently active theme and palette. Default false (emits all registered themes/palettes for runtime switching).", null, false, false, false, @"FlareStyles"),
+                new ApiParameterInfo(@"ActiveOnly", @"bool", @"true", @"Whether to emit the stylesheets of the active theme and palette alone (the default) or of every registered theme and palette. An app that registers several themes pays a request per sheet for the ones nothing is painting with, and in a WebAssembly app those requests leave only after .NET has started - the most expensive moment of the load. Set it to false when CSS of your own reads an inactive theme's variables, or when the theme is switched without FlareThemeProvider, which otherwise fetches an incoming theme's sheet on the way in.", null, false, false, false, @"FlareStyles"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -9188,7 +9188,7 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Automatic", @"0", @"FlareThemeProvider emits a link for every registered theme's StyleAssets and makes sure the active theme's sheets have loaded before it reveals the app. Nothing to write by hand, but in a WebAssembly app the links reach the page only once .NET has started."),
+                new ApiEnumMember(@"Automatic", @"0", @"FlareThemeProvider emits the links itself - the active theme's StyleAssets and the active palette's sheet - and makes sure they have loaded before it reveals the app. Nothing to write by hand, but in a WebAssembly app the links reach the page only once .NET has started. A theme the user switches to has its sheet fetched on the way in; to have every registered theme's sheet in the head from the start, render FlareStyles with ActiveOnly=""false"" yourself."),
                 new ApiEnumMember(@"Manual", @"1", @"The application writes the theme's <link rel=""stylesheet""> tags into its own head, so the browser fetches them with the first wave of the page instead of after .NET starts. The provider emits no links of its own; it still waits for the active theme's sheets and the active palette's StyleAsset, reuses a link the page already has for the same address, and adds only a sheet that is missing, such as one for a theme or palette the user switches to at run time."),
             },
             new string[]

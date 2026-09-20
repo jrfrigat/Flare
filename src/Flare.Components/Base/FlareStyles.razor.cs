@@ -1,8 +1,9 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Emits the stylesheet links for the registered themes and palettes. By default it emits them all,
-/// which is what lets the app switch theme at runtime by swapping a class; restricting it to the active
-/// one trades that away for a smaller payload.
+/// Emits the stylesheet links a theme needs in the document head. By default only the active theme and
+/// palette, because that is all the first frame paints with and every other sheet is a request nothing
+/// uses; switching theme still works, since the provider fetches the incoming theme's sheet before it
+/// swaps the classes.
 /// </summary>
 public partial class FlareStyles;

@@ -4,9 +4,12 @@ namespace Flare.Components;
 public enum ThemeStylesheets
 {
     /// <summary>
-    /// <c>FlareThemeProvider</c> emits a link for every registered theme's <c>StyleAssets</c> and makes
-    /// sure the active theme's sheets have loaded before it reveals the app. Nothing to write by hand,
-    /// but in a WebAssembly app the links reach the page only once .NET has started.
+    /// <c>FlareThemeProvider</c> emits the links itself - the active theme's <c>StyleAssets</c> and the
+    /// active palette's sheet - and makes sure they have loaded before it reveals the app. Nothing to
+    /// write by hand, but in a WebAssembly app the links reach the page only once .NET has started.
+    /// A theme the user switches to has its sheet fetched on the way in; to have every registered
+    /// theme's sheet in the head from the start, render <c>FlareStyles</c> with
+    /// <c>ActiveOnly="false"</c> yourself.
     /// </summary>
     Automatic,
 
