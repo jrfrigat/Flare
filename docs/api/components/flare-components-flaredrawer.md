@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Anchor` | `DrawerAnchor` | `DrawerAnchor.Left` | Parameter |  | Edge from which the drawer slides in. |
-| `AriaLabel` | `string` | `"Drawer"` | Parameter |  | Accessible label for the drawer dialog element. |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the drawer element. Null uses the localized default. |
 | `AutoCloseBelow` | `Breakpoint?` | `` | Parameter |  | Breakpoint below which the drawer is automatically hidden. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main content rendered inside the drawer body. |
 | `CloseOnEsc` | `bool` | `true` | Parameter |  | Closes the drawer when the Escape key is pressed. |

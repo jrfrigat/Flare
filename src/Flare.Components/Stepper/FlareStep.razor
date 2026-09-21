@@ -19,8 +19,8 @@
     [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Marks the step as optional (shows a small "optional" caption under the label).</summary>
     [Parameter] public bool Optional { get; set; }
-    /// <summary>Caption shown for an optional step. Default "Optional".</summary>
-    [Parameter] public string OptionalText { get; set; } = "Optional";
+    /// <summary>Caption shown for an optional step. Null uses the localized default.</summary>
+    [Parameter] public string? OptionalText { get; set; }
     /// <summary>
     /// Allows jumping past this step in a linear stepper. When true, forward navigation (a
     /// step-indicator click or <c>GoTo</c>) may move beyond this step without it being completed.

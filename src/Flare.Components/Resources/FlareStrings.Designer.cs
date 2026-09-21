@@ -149,6 +149,15 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Aria_MoreActions", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer.
+        /// </summary>
+        public static string Drawer_Label {
+            get {
+                return ResourceManager.GetString("Drawer_Label", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0} more.
@@ -1400,6 +1409,24 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Stepper_Error", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Optional.
+        /// </summary>
+        public static string Stepper_Optional {
+            get {
+                return ResourceManager.GetString("Stepper_Optional", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Resize.
+        /// </summary>
+        public static string Splitter_Resize {
+            get {
+                return ResourceManager.GetString("Splitter_Resize", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Next.
@@ -1452,6 +1479,24 @@ namespace Flare.Components.Resources {
         public static string TagInput_Remove {
             get {
                 return ResourceManager.GetString("TagInput_Remove", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string Theme_Dark {
+            get {
+                return ResourceManager.GetString("Theme_Dark", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string Theme_Light {
+            get {
+                return ResourceManager.GetString("Theme_Light", resourceCulture);
             }
         }
         

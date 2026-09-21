@@ -10,12 +10,12 @@
                  OnClick="OnClick">
         @ChildContent
     </FlareButton>
-    <FlareMenu @ref="_menu" Anchor="Placement" AriaLabel="@MenuAriaLabel" Class="@Css.Classes.SplitButton.Menu" OnToggle="ToggleMenuState">
+    <FlareMenu @ref="_menu" Anchor="Placement" AriaLabel="@_menuAriaLabel" Class="@Css.Classes.SplitButton.Menu" OnToggle="ToggleMenuState">
         <Activator>
             @* The caret is the button a screen reader reaches, so the menu's ARIA rides on it. *@
             <FlareButton Class="@Css.Classes.SplitButton.Trigger"
                          Variant="Variant" Color="Color" Size="Size"
-                         Disabled="Disabled" AriaLabel="@MenuAriaLabel"
+                         Disabled="Disabled" AriaLabel="@_menuAriaLabel"
                          @attributes="context.Attributes">
                 <FlareIconView Value="FlareIcons.ExpandMore" Class="@Css.Classes.SplitButton.Caret" />
             </FlareButton>
@@ -54,8 +54,8 @@
     [Parameter] public MenuAnchor Placement { get; set; } = MenuAnchor.BottomRight;
     /// <summary>Callback invoked when the primary action button is clicked.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
-    /// <summary>Accessible label for the dropdown trigger (aria-label / menu label).</summary>
-    [Parameter] public string MenuAriaLabel { get; set; } = "More actions";
+    /// <summary>Accessible label for the dropdown trigger and menu. Null uses the localized default.</summary>
+    [Parameter] public string? MenuAriaLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.SplitButton.Root;
 
@@ -73,6 +73,7 @@
     public Task Close() => _menu?.CloseAsync() ?? Task.CompletedTask;
 
     private string _fullClass => FullWidth ? Css.Classes.SplitButton.Full : string.Empty;
+    private string _menuAriaLabel => MenuAriaLabel ?? FlareStrings.Aria_MoreActions;
 
     private void ToggleMenuState(bool opened)
     {

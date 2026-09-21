@@ -111,6 +111,8 @@
   <data name="ColorCustomizer_Reset" xml:space="preserve"><value>Reset</value></data>
   <data name="Theme_ToggleDark" xml:space="preserve"><value>Switch to dark mode</value></data>
   <data name="Theme_ToggleLight" xml:space="preserve"><value>Switch to light mode</value></data>
+  <data name="Theme_Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Theme_Light" xml:space="preserve"><value>Light</value></data>
 
   <!-- Chip -->
   <data name="Chip_Delete" xml:space="preserve"><value>Delete chip</value></data>
@@ -126,6 +128,7 @@
   <data name="Stepper_Back" xml:space="preserve"><value>Back</value></data>
   <data name="Stepper_Next" xml:space="preserve"><value>Next</value></data>
   <data name="Stepper_Error" xml:space="preserve"><value>Error</value></data>
+  <data name="Stepper_Optional" xml:space="preserve"><value>Optional</value></data>
 
   <!-- DropZone -->
   <data name="DropZone_DropFiles" xml:space="preserve"><value>Drop files here</value></data>
@@ -145,6 +148,8 @@
   <data name="Aria_TogglePassword" xml:space="preserve"><value>Toggle password visibility</value></data>
   <data name="Aria_ToggleList" xml:space="preserve"><value>Show or hide the list</value></data>
   <data name="Aria_MoreActions" xml:space="preserve"><value>More actions</value></data>
+  <data name="Drawer_Label" xml:space="preserve"><value>Drawer</value></data>
+  <data name="Splitter_Resize" xml:space="preserve"><value>Resize</value></data>
 
   <!-- Input -->
   <data name="Input_Clear" xml:space="preserve"><value>Clear</value></data>

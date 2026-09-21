@@ -17,7 +17,7 @@ One stage of a FlareStepper: its label, its optional description, and the conten
 | `IconContent` | `RenderFragment?` | `` | Parameter |  | Custom icon shown in the step indicator (instead of the step number) when not completed/errored. |
 | `Label` | `string` | `""` | Parameter |  | Short label displayed in the step indicator. |
 | `Optional` | `bool` | `false` | Parameter |  | Marks the step as optional (shows a small "optional" caption under the label). |
-| `OptionalText` | `string` | `"Optional"` | Parameter |  | Caption shown for an optional step. Default "Optional". |
+| `OptionalText` | `string?` | `` | Parameter |  | Caption shown for an optional step. Null uses the localized default. |
 | `Skippable` | `bool` | `false` | Parameter |  | Allows jumping past this step in a linear stepper. When true, forward navigation (a step-indicator click or GoTo) may move beyond this step without it being completed. Has no effect in a non-linear stepper, where every step is already reachable. |
 
 ## Methods

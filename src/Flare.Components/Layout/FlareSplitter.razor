@@ -10,7 +10,7 @@
      role="separator"
      tabindex="0"
      aria-orientation="@_ariaOrientation"
-     aria-label="@AriaLabel"
+     aria-label="@(AriaLabel ?? FlareStrings.Splitter_Resize)"
      style="@_rootStyle"
      @ref="_gutter"
      @onkeydown="HandleKeyDown"
@@ -60,8 +60,8 @@
     /// <summary>Keyboard step (px) applied when the handle is focused and arrowed. Default 16.</summary>
     [Parameter] public int KeyboardStep { get; set; } = 16;
 
-    /// <summary>Accessible label for the resize handle. Default "Resize".</summary>
-    [Parameter] public string? AriaLabel { get; set; } = "Resize";
+    /// <summary>Accessible label for the resize handle. Null uses the localized default.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     /// <summary>Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Default 0.5rem.</summary>
     [Parameter] public string? Size { get; set; }

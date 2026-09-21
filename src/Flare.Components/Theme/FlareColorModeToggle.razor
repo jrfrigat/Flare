@@ -7,7 +7,7 @@
     <FlareIconView Value="@(_isDark ? FlareIcons.LightMode : FlareIcons.DarkMode)" />
     @if (ShowLabel)
     {
-        <span class="@Css.Classes.Color.ModeToggleLabel">@(_isDark ? LightLabel : DarkLabel)</span>
+        <span class="@Css.Classes.Color.ModeToggleLabel">@(_isDark ? _lightLabel : _darkLabel)</span>
     }
 </button>
 
@@ -19,10 +19,13 @@
 
     /// <summary>Show a text label beside the icon.</summary>
     [Parameter] public bool ShowLabel { get; set; }
-    /// <summary>Label text when clicking switches to light mode.</summary>
-    [Parameter] public string LightLabel { get; set; } = "Light";
-    /// <summary>Label text when clicking switches to dark mode.</summary>
-    [Parameter] public string DarkLabel { get; set; } = "Dark";
+    /// <summary>Label text when clicking switches to light mode. Null uses the localized default.</summary>
+    [Parameter] public string? LightLabel { get; set; }
+    /// <summary>Label text when clicking switches to dark mode. Null uses the localized default.</summary>
+    [Parameter] public string? DarkLabel { get; set; }
+
+    private string _lightLabel => LightLabel ?? FlareStrings.Theme_Light;
+    private string _darkLabel => DarkLabel ?? FlareStrings.Theme_Dark;
 
     protected override string ComponentCssClass => Css.Classes.Color.ModeToggle;
 

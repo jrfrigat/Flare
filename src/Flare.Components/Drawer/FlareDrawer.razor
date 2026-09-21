@@ -15,7 +15,7 @@
      style="@_sizeStyle @_contentPadStyle @Style"
      role="@_role"
      aria-modal="@(Variant == DrawerVariant.Temporary ? "true" : null)"
-     aria-label="@AriaLabel"
+     aria-label="@(AriaLabel ?? FlareStrings.Drawer_Label)"
      inert="@_closedOverlay"
      @ref="_drawerEl"
      @attributes="AdditionalAttributes">
@@ -52,8 +52,8 @@
     [Parameter] public bool CloseOnScrimClick { get; set; } = true;
     /// <summary>Closes the drawer when the Escape key is pressed.</summary>
     [Parameter] public bool CloseOnEsc { get; set; } = true;
-    /// <summary>Accessible label for the drawer dialog element.</summary>
-    [Parameter] public string AriaLabel { get; set; } = "Drawer";
+    /// <summary>Accessible label for the drawer element. Null uses the localized default.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Breakpoint below which the drawer is automatically hidden.</summary>
     [Parameter] public Breakpoint? AutoCloseBelow { get; set; }
     /// <summary>

@@ -14,7 +14,7 @@
 | `FullWidth` | `bool` | `false` | Parameter |  | Stretches the split button to the full width of its container (the primary action grows). |
 | `Href` | `string?` | `` | Parameter |  | When set, the primary action button renders as a link (<a>) to this URL. |
 | `Loading` | `bool` | `false` | Parameter |  | Shows a spinner on the primary action button and disables it. |
-| `MenuAriaLabel` | `string` | `"More actions"` | Parameter |  | Accessible label for the dropdown trigger (aria-label / menu label). |
+| `MenuAriaLabel` | `string?` | `` | Parameter |  | Accessible label for the dropdown trigger and menu. Null uses the localized default. |
 | `MenuItems` | `RenderFragment?` | `` | Parameter |  | FlareMenuItem entries shown in the dropdown opened by the trigger. |
 | `OnClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback invoked when the primary action button is clicked. |
 | `Placement` | `MenuAnchor` | `MenuAnchor.BottomRight` | Parameter |  | Corner of the trigger the dropdown menu aligns to. Defaults to BottomRight. |

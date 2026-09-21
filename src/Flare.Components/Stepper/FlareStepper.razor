@@ -48,7 +48,7 @@
                     <span class="@Css.Classes.Stepper.Label">@step.Label</span>
                     @if (step.Optional)
                     {
-                        <span class="@Css.Classes.Stepper.Optional">@step.OptionalText</span>
+                        <span class="@Css.Classes.Stepper.Optional">@(step.OptionalText ?? FlareStrings.Stepper_Optional)</span>
                     }
                     @if (step.HasError && !string.IsNullOrEmpty(step.ErrorText))
                     {

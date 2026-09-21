@@ -8,8 +8,8 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `DarkLabel` | `string` | `"Dark"` | Parameter |  | Label text when clicking switches to dark mode. |
-| `LightLabel` | `string` | `"Light"` | Parameter |  | Label text when clicking switches to light mode. |
+| `DarkLabel` | `string?` | `` | Parameter |  | Label text when clicking switches to dark mode. Null uses the localized default. |
+| `LightLabel` | `string?` | `` | Parameter |  | Label text when clicking switches to light mode. Null uses the localized default. |
 | `ShowLabel` | `bool` | `false` | Parameter |  | Show a text label beside the icon. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

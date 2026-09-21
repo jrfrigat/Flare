@@ -1256,8 +1256,8 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"DarkLabel", @"string", @"""Dark""", @"Label text when clicking switches to dark mode.", null, false, false, false, @"FlareColorModeToggle"),
-                new ApiParameterInfo(@"LightLabel", @"string", @"""Light""", @"Label text when clicking switches to light mode.", null, false, false, false, @"FlareColorModeToggle"),
+                new ApiParameterInfo(@"DarkLabel", @"string?", null, @"Label text when clicking switches to dark mode. Null uses the localized default.", null, false, false, false, @"FlareColorModeToggle"),
+                new ApiParameterInfo(@"LightLabel", @"string?", null, @"Label text when clicking switches to light mode. Null uses the localized default.", null, false, false, false, @"FlareColorModeToggle"),
                 new ApiParameterInfo(@"ShowLabel", @"bool", @"false", @"Show a text label beside the icon.", null, false, false, false, @"FlareColorModeToggle"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -2566,7 +2566,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Anchor", @"DrawerAnchor", @"DrawerAnchor.Left", @"Edge from which the drawer slides in.", null, false, false, false, @"FlareDrawer"),
-                new ApiParameterInfo(@"AriaLabel", @"string", @"""Drawer""", @"Accessible label for the drawer dialog element.", null, false, false, false, @"FlareDrawer"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the drawer element. Null uses the localized default.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"AutoCloseBelow", @"Breakpoint?", null, @"Breakpoint below which the drawer is automatically hidden.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main content rendered inside the drawer body.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"CloseOnEsc", @"bool", @"true", @"Closes the drawer when the Escape key is pressed.", null, false, false, false, @"FlareDrawer"),
@@ -5650,7 +5650,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"Stretches the split button to the full width of its container (the primary action grows).", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"When set, the primary action button renders as a link (<a>) to this URL.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a spinner on the primary action button and disables it.", null, false, false, false, @"FlareSplitButton"),
-                new ApiParameterInfo(@"MenuAriaLabel", @"string", @"""More actions""", @"Accessible label for the dropdown trigger (aria-label / menu label).", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"MenuAriaLabel", @"string?", null, @"Accessible label for the dropdown trigger and menu. Null uses the localized default.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"MenuItems", @"RenderFragment?", null, @"FlareMenuItem entries shown in the dropdown opened by the trigger.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the primary action button is clicked.", null, false, true, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Placement", @"MenuAnchor", @"MenuAnchor.BottomRight", @"Corner of the trigger the dropdown menu aligns to. Defaults to BottomRight.", null, false, false, false, @"FlareSplitButton"),
@@ -5688,7 +5688,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AriaLabel", @"string?", @"""Resize""", @"Accessible label for the resize handle. Default ""Resize"".", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the resize handle. Null uses the localized default.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Fully custom centre content, overriding Icon and the default grip bar.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Color", @"string?", null, @"Handle color (CSS color) shown when idle. Defaults to the surface-variant token.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"HoverColor", @"string?", null, @"Handle color (CSS color) shown on hover/focus. Defaults to a primary tint.", null, false, false, false, @"FlareSplitter"),
@@ -5798,7 +5798,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"IconContent", @"RenderFragment?", null, @"Custom icon shown in the step indicator (instead of the step number) when not completed/errored.", null, false, false, false, @"FlareStep"),
                 new ApiParameterInfo(@"Label", @"string", @"""""", @"Short label displayed in the step indicator.", null, false, false, false, @"FlareStep"),
                 new ApiParameterInfo(@"Optional", @"bool", @"false", @"Marks the step as optional (shows a small ""optional"" caption under the label).", null, false, false, false, @"FlareStep"),
-                new ApiParameterInfo(@"OptionalText", @"string", @"""Optional""", @"Caption shown for an optional step. Default ""Optional"".", null, false, false, false, @"FlareStep"),
+                new ApiParameterInfo(@"OptionalText", @"string?", null, @"Caption shown for an optional step. Null uses the localized default.", null, false, false, false, @"FlareStep"),
                 new ApiParameterInfo(@"Skippable", @"bool", @"false", @"Allows jumping past this step in a linear stepper. When true, forward navigation (a step-indicator click or GoTo) may move beyond this step without it being completed. Has no effect in a non-linear stepper, where every step is already reachable.", null, false, false, false, @"FlareStep"),
             },
             new ApiMethodInfo[]

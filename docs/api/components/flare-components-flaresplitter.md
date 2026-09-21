@@ -8,7 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AriaLabel` | `string?` | `"Resize"` | Parameter |  | Accessible label for the resize handle. Default "Resize". |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the resize handle. Null uses the localized default. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Fully custom centre content, overriding Icon and the default grip bar. |
 | `Color` | `string?` | `` | Parameter |  | Handle color (CSS color) shown when idle. Defaults to the surface-variant token. |
 | `HoverColor` | `string?` | `` | Parameter |  | Handle color (CSS color) shown on hover/focus. Defaults to a primary tint. |
