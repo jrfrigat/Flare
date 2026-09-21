@@ -8,8 +8,10 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `CardTemplate` | `RenderFragment<KanbanCard>?` | `` | Parameter |  | Custom content rendered inside each card while Flare retains its surface and drag behavior. |
 | `Cards` | `IReadOnlyList<KanbanCard>?` | `` | Parameter |  | Cards to distribute across the Kanban columns. |
 | `CardsChanged` | `EventCallback<IReadOnlyList<KanbanCard>>` | `` | Callback |  | Callback raised when cards are moved between columns. |
+| `ColumnTemplate` | `RenderFragment<KanbanColumnTemplateContext>?` | `` | Parameter |  | Custom content rendered inside each column header while Flare retains the column structure. |
 | `Columns` | `IReadOnlyList<KanbanColumn>?` | `` | Parameter |  | Column definitions that structure the Kanban board. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

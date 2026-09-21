@@ -1434,6 +1434,60 @@
   <data name="Kanban_Board" xml:space="preserve">
     <value>Board</value>
   </data>
+  <data name="Kanban_Templates" xml:space="preserve">
+    <value>Rich templates</value>
+  </data>
+  <data name="Kanban_Templates_Hint" xml:space="preserve">
+    <value>Templates replace card contents and column headers while Flare keeps drag, focus and list semantics.</value>
+  </data>
+  <data name="Kanban_Templates_Backlog" xml:space="preserve">
+    <value>Backlog</value>
+  </data>
+  <data name="Kanban_Templates_Doing" xml:space="preserve">
+    <value>In progress</value>
+  </data>
+  <data name="Kanban_Templates_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="Kanban_Templates_FirstTitle" xml:space="preserve">
+    <value>Map the onboarding journey</value>
+  </data>
+  <data name="Kanban_Templates_FirstDescription" xml:space="preserve">
+    <value>Interview new users and group the friction points.</value>
+  </data>
+  <data name="Kanban_Templates_SecondTitle" xml:space="preserve">
+    <value>Build the guided checklist</value>
+  </data>
+  <data name="Kanban_Templates_SecondDescription" xml:space="preserve">
+    <value>Connect progress to the first successful workflow.</value>
+  </data>
+  <data name="Kanban_Templates_ThirdTitle" xml:space="preserve">
+    <value>Review keyboard flow</value>
+  </data>
+  <data name="Kanban_Templates_ThirdDescription" xml:space="preserve">
+    <value>Verify focus order and reorder announcements.</value>
+  </data>
+  <data name="Kanban_Templates_Research" xml:space="preserve">
+    <value>Research</value>
+  </data>
+  <data name="Kanban_Templates_Feature" xml:space="preserve">
+    <value>Feature</value>
+  </data>
+  <data name="Kanban_Templates_Review" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="Kanban_Templates_Owner" xml:space="preserve">
+    <value>Owner: {0}</value>
+  </data>
+  <data name="Kanban_Templates_Due" xml:space="preserve">
+    <value>Due {0}</value>
+  </data>
+  <data name="Kanban_Templates_Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Kanban_Templates_Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
   <data name="Stack_Title" xml:space="preserve">
     <value>Stack</value>
   </data>

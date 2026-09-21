@@ -1,0 +1,54 @@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareKanban Columns="_columns" Cards="_cards">
+        <ColumnTemplate Context="column">
+            <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                <FlareText Typo="TypographyScale.LabelLarge">@column.Column.Title</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@column.Cards.Count</FlareText>
+            </FlareStack>
+        </ColumnTemplate>
+        <CardTemplate Context="card">
+            <FlareStack Gap="FlareSpacing.XSmall">
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">#@card.Id</FlareText>
+                <FlareText Typo="TypographyScale.BodyMedium">@card.Title</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@card.Description</FlareText>
+                <FlareStack Row Wrap Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
+                    <FlareBadge Text="@card.Tag" Standalone="true" Color="FlareColor.Primary" />
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@Owner(card.Id)</FlareText>
+                </FlareStack>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@Due(card.Id)</FlareText>
+            </FlareStack>
+        </CardTemplate>
+    </FlareKanban>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Kanban_Templates_Hint
+    </FlareText>
+</FlareStack>
+
+@code {
+    private readonly List<KanbanColumn> _columns =
+    [
+        new("backlog", GalleryStrings.Kanban_Templates_Backlog, "#94a3b8"),
+        new("doing", GalleryStrings.Kanban_Templates_Doing, "#f59e0b"),
+        new("done", GalleryStrings.Kanban_Templates_Done, "#10b981"),
+    ];
+
+    private readonly List<KanbanCard> _cards =
+    [
+        new("FLR-201", "backlog", GalleryStrings.Kanban_Templates_FirstTitle,
+            GalleryStrings.Kanban_Templates_FirstDescription, GalleryStrings.Kanban_Templates_Research),
+        new("FLR-202", "doing", GalleryStrings.Kanban_Templates_SecondTitle,
+            GalleryStrings.Kanban_Templates_SecondDescription, GalleryStrings.Kanban_Templates_Feature),
+        new("FLR-203", "done", GalleryStrings.Kanban_Templates_ThirdTitle,
+            GalleryStrings.Kanban_Templates_ThirdDescription, GalleryStrings.Kanban_Templates_Review),
+    ];
+
+    private static string Owner(string id) => string.Format(
+        System.Globalization.CultureInfo.CurrentCulture,
+        GalleryStrings.Kanban_Templates_Owner,
+        id == "FLR-201" ? "Alex" : id == "FLR-202" ? "Morgan" : "Sam");
+
+    private static string Due(string id) => string.Format(
+        System.Globalization.CultureInfo.CurrentCulture,
+        GalleryStrings.Kanban_Templates_Due,
+        id == "FLR-201" ? GalleryStrings.Kanban_Templates_Monday : GalleryStrings.Kanban_Templates_Friday);
+}

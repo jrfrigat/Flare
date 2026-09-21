@@ -19,8 +19,15 @@
                                aria-label="@col.Title">
                     <div class="@Css.Classes.Kanban.ColumnHeader"
                          style="@(col.Color != null ? $"border-top:3px solid {col.Color}" : "")">
-                        <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
-                        <span class="@Css.Classes.Kanban.Count" aria-label="@colCards.Count cards">@colCards.Count</span>
+                        @if (ColumnTemplate is not null)
+                        {
+                            @ColumnTemplate(new KanbanColumnTemplateContext(col, colCards))
+                        }
+                        else
+                        {
+                            <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
+                            <span class="@Css.Classes.Kanban.Count" aria-label="@colCards.Count cards">@colCards.Count</span>
+                        }
                     </div>
                     <div class="@Css.Classes.Kanban.Cards" role="list">
                         @foreach (var card in colCards)
@@ -28,16 +35,23 @@
                             var c = card;
                             <FlareDraggable @key="c.Id" Id="@c.Id" Payload="c"
                                             Class="@Css.Classes.Kanban.Card" role="listitem">
-                                @if (c.Tag is not null)
+                                @if (CardTemplate is not null)
                                 {
-                                    <span class="@Css.Classes.Kanban.Tag"
-                                          style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
+                                    @CardTemplate(c)
                                 }
-                                <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
-                                @if (c.Description is not null)
+                                else
                                 {
-                                    <FlareText Typo="TypographyScale.BodySmall"
-                                               Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
+                                    @if (c.Tag is not null)
+                                    {
+                                        <span class="@Css.Classes.Kanban.Tag"
+                                              style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
+                                    }
+                                    <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
+                                    @if (c.Description is not null)
+                                    {
+                                        <FlareText Typo="TypographyScale.BodySmall"
+                                                   Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
+                                    }
                                 }
                             </FlareDraggable>
                         }
@@ -55,6 +69,10 @@
     [Parameter] public IReadOnlyList<KanbanCard>? Cards { get; set; }
     /// <summary>Callback raised when cards are moved between columns.</summary>
     [Parameter] public EventCallback<IReadOnlyList<KanbanCard>> CardsChanged { get; set; }
+    /// <summary>Custom content rendered inside each card while Flare retains its surface and drag behavior.</summary>
+    [Parameter] public RenderFragment<KanbanCard>? CardTemplate { get; set; }
+    /// <summary>Custom content rendered inside each column header while Flare retains the column structure.</summary>
+    [Parameter] public RenderFragment<KanbanColumnTemplateContext>? ColumnTemplate { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Kanban.Root;
 

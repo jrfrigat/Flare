@@ -5122,6 +5122,60 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Kanban_Board", resourceCulture);
             }
         }
+
+        /// <summary>Looks up the localized Kanban templates section title.</summary>
+        public static string Kanban_Templates => ResourceManager.GetString("Kanban_Templates", resourceCulture);
+
+        /// <summary>Looks up the localized Kanban templates description.</summary>
+        public static string Kanban_Templates_Hint => ResourceManager.GetString("Kanban_Templates_Hint", resourceCulture);
+
+        /// <summary>Looks up the localized backlog column title.</summary>
+        public static string Kanban_Templates_Backlog => ResourceManager.GetString("Kanban_Templates_Backlog", resourceCulture);
+
+        /// <summary>Looks up the localized active column title.</summary>
+        public static string Kanban_Templates_Doing => ResourceManager.GetString("Kanban_Templates_Doing", resourceCulture);
+
+        /// <summary>Looks up the localized completed column title.</summary>
+        public static string Kanban_Templates_Done => ResourceManager.GetString("Kanban_Templates_Done", resourceCulture);
+
+        /// <summary>Looks up the localized first card title.</summary>
+        public static string Kanban_Templates_FirstTitle => ResourceManager.GetString("Kanban_Templates_FirstTitle", resourceCulture);
+
+        /// <summary>Looks up the localized first card description.</summary>
+        public static string Kanban_Templates_FirstDescription => ResourceManager.GetString("Kanban_Templates_FirstDescription", resourceCulture);
+
+        /// <summary>Looks up the localized second card title.</summary>
+        public static string Kanban_Templates_SecondTitle => ResourceManager.GetString("Kanban_Templates_SecondTitle", resourceCulture);
+
+        /// <summary>Looks up the localized second card description.</summary>
+        public static string Kanban_Templates_SecondDescription => ResourceManager.GetString("Kanban_Templates_SecondDescription", resourceCulture);
+
+        /// <summary>Looks up the localized third card title.</summary>
+        public static string Kanban_Templates_ThirdTitle => ResourceManager.GetString("Kanban_Templates_ThirdTitle", resourceCulture);
+
+        /// <summary>Looks up the localized third card description.</summary>
+        public static string Kanban_Templates_ThirdDescription => ResourceManager.GetString("Kanban_Templates_ThirdDescription", resourceCulture);
+
+        /// <summary>Looks up the localized research label.</summary>
+        public static string Kanban_Templates_Research => ResourceManager.GetString("Kanban_Templates_Research", resourceCulture);
+
+        /// <summary>Looks up the localized feature label.</summary>
+        public static string Kanban_Templates_Feature => ResourceManager.GetString("Kanban_Templates_Feature", resourceCulture);
+
+        /// <summary>Looks up the localized review label.</summary>
+        public static string Kanban_Templates_Review => ResourceManager.GetString("Kanban_Templates_Review", resourceCulture);
+
+        /// <summary>Looks up the localized owner format.</summary>
+        public static string Kanban_Templates_Owner => ResourceManager.GetString("Kanban_Templates_Owner", resourceCulture);
+
+        /// <summary>Looks up the localized due date format.</summary>
+        public static string Kanban_Templates_Due => ResourceManager.GetString("Kanban_Templates_Due", resourceCulture);
+
+        /// <summary>Looks up the localized Monday label.</summary>
+        public static string Kanban_Templates_Monday => ResourceManager.GetString("Kanban_Templates_Monday", resourceCulture);
+
+        /// <summary>Looks up the localized Friday label.</summary>
+        public static string Kanban_Templates_Friday => ResourceManager.GetString("Kanban_Templates_Friday", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareKanban - drag-and-drop task board with columns and cards..

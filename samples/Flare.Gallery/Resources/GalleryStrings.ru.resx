@@ -1434,6 +1434,60 @@
   <data name="Kanban_Board" xml:space="preserve">
     <value>Доска</value>
   </data>
+  <data name="Kanban_Templates" xml:space="preserve">
+    <value>Расширенные шаблоны</value>
+  </data>
+  <data name="Kanban_Templates_Hint" xml:space="preserve">
+    <value>Шаблоны заменяют содержимое карточек и заголовки колонок, а Flare сохраняет перетаскивание, фокус и семантику списка.</value>
+  </data>
+  <data name="Kanban_Templates_Backlog" xml:space="preserve">
+    <value>Бэклог</value>
+  </data>
+  <data name="Kanban_Templates_Doing" xml:space="preserve">
+    <value>В работе</value>
+  </data>
+  <data name="Kanban_Templates_Done" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="Kanban_Templates_FirstTitle" xml:space="preserve">
+    <value>Описать путь нового пользователя</value>
+  </data>
+  <data name="Kanban_Templates_FirstDescription" xml:space="preserve">
+    <value>Провести интервью и сгруппировать проблемные места.</value>
+  </data>
+  <data name="Kanban_Templates_SecondTitle" xml:space="preserve">
+    <value>Собрать пошаговый список</value>
+  </data>
+  <data name="Kanban_Templates_SecondDescription" xml:space="preserve">
+    <value>Связать прогресс с первым успешным сценарием.</value>
+  </data>
+  <data name="Kanban_Templates_ThirdTitle" xml:space="preserve">
+    <value>Проверить работу с клавиатурой</value>
+  </data>
+  <data name="Kanban_Templates_ThirdDescription" xml:space="preserve">
+    <value>Проверить порядок фокуса и объявления при перестановке.</value>
+  </data>
+  <data name="Kanban_Templates_Research" xml:space="preserve">
+    <value>Исследование</value>
+  </data>
+  <data name="Kanban_Templates_Feature" xml:space="preserve">
+    <value>Функция</value>
+  </data>
+  <data name="Kanban_Templates_Review" xml:space="preserve">
+    <value>Проверка</value>
+  </data>
+  <data name="Kanban_Templates_Owner" xml:space="preserve">
+    <value>Ответственный: {0}</value>
+  </data>
+  <data name="Kanban_Templates_Due" xml:space="preserve">
+    <value>Срок: {0}</value>
+  </data>
+  <data name="Kanban_Templates_Monday" xml:space="preserve">
+    <value>понедельник</value>
+  </data>
+  <data name="Kanban_Templates_Friday" xml:space="preserve">
+    <value>пятница</value>
+  </data>
   <data name="Stack_Title" xml:space="preserve">
     <value>Стек (Stack)</value>
   </data>
