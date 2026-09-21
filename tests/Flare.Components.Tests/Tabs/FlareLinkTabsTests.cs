@@ -5,6 +5,8 @@ namespace Flare.Components.Tests;
 
 public class FlareLinkTabsTests : FlareTestContext
 {
+    private const string UiModule = "./_content/Flare.Components/js/flare-ui.js";
+
     private static RenderFragment TwoLinkTabs(NavMatchMode match = NavMatchMode.Prefix) => b =>
     {
         b.OpenComponent<FlareLinkTabs>(0);
@@ -150,6 +152,46 @@ public class FlareLinkTabsTests : FlareTestContext
         anchors = cut.FindAll($"a.{Css.Classes.Tabs.TabButton}");
         Assert.DoesNotContain(Css.Classes.Tabs.TabActive, anchors[0].ClassName);
         Assert.Contains(Css.Classes.Tabs.TabActive, anchors[1].ClassName);
+    }
+
+    [Fact]
+    public void InitialRender_RequestsActiveLinkReveal()
+    {
+        var module = JSInterop.SetupModule(UiModule);
+        Services.GetRequiredService<NavigationManager>().NavigateTo("/register");
+
+        var cut = Render(TwoLinkTabs());
+
+        Assert.Equal("page", cut.Find("a[href='/register']").GetAttribute("aria-current"));
+        Assert.Single(module.Invocations["revealActiveLinkTab"]);
+    }
+
+    [Fact]
+    public void RouteChange_RequestsRevealAfterActiveLinkChanges()
+    {
+        var module = JSInterop.SetupModule(UiModule);
+        var nav = Services.GetRequiredService<NavigationManager>();
+        nav.NavigateTo("/login");
+        var cut = Render(TwoLinkTabs());
+
+        nav.NavigateTo("/register");
+
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Equal("page", cut.Find("a[href='/register']").GetAttribute("aria-current"));
+            Assert.Equal(2, module.Invocations["revealActiveLinkTab"].Count);
+        });
+    }
+
+    [Fact]
+    public void UnrelatedRender_DoesNotRequestAnotherReveal()
+    {
+        var module = JSInterop.SetupModule(UiModule);
+        var cut = Render<FlareLinkTabs>(p => p.Add(x => x.AriaLabel, "Routes"));
+
+        cut.Render(p => p.Add(x => x.AriaLabel, "Pages"));
+
+        Assert.Single(module.Invocations["revealActiveLinkTab"]);
     }
 
     [Fact]

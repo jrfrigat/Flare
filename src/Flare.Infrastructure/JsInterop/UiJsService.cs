@@ -19,6 +19,9 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask ScrollTabsAsync(ElementReference bar, int direction) => InvokeVoidAsync("scrollTabs", bar, direction);
 
     /// <inheritdoc />
+    public ValueTask RevealActiveLinkTabAsync(ElementReference bar) => InvokeVoidAsync("revealActiveLinkTab", bar);
+
+    /// <inheritdoc />
     public ValueTask RemoveTabScrollerAsync(ElementReference bar) => InvokeVoidAsync("removeTabScroller", bar);
 
     /// <inheritdoc />

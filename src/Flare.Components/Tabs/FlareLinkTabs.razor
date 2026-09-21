@@ -1,7 +1,10 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject NavigationManager Navigation
+@inject Flare.Components.Services.IUiJsService Ui
+@using Microsoft.AspNetCore.Components.Routing
 
-<nav class="@BuildCssClass(_variantClass)" aria-label="@AriaLabel" style="@Style" @attributes="AdditionalAttributes">
+<nav class="@BuildCssClass(_variantClass)" aria-label="@AriaLabel" style="@Style" @attributes="AdditionalAttributes" @ref="_barRef">
     @ChildContent
 </nav>
 
@@ -20,6 +23,37 @@
     [Parameter] public LinkTabsVariant Variant { get; set; } = LinkTabsVariant.Default;
 
     protected override string ComponentCssClass => Css.Classes.LinkTabs.Root;
+
+    private ElementReference _barRef;
+    private bool _revealPending = true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+        => _ = InvokeAsync(() =>
+        {
+            _revealPending = true;
+            StateHasChanged();
+        });
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_revealPending) return;
+        _revealPending = false;
+        try { await Ui.RevealActiveLinkTabAsync(_barRef); }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+        await base.DisposeAsync();
+    }
 
     private string? _variantClass => Variant switch
     {

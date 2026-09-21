@@ -37,6 +37,22 @@ export function scrollTabs(bar, dir) {
     bar.scrollBy({ left: dir * bar.clientWidth * 0.8, behavior: 'smooth' });
 }
 
+export function revealActiveLinkTab(bar) {
+    if (!bar?.isConnected) return;
+    const active = Array.from(bar.querySelectorAll(':scope > a[aria-current="page"]'))
+        .reduce((best, link) => !best || link.href.length > best.href.length ? link : best, null);
+    if (!active) return;
+
+    const viewport = bar.getBoundingClientRect();
+    const link = active.getBoundingClientRect();
+    const left = viewport.left;
+    const right = viewport.right;
+    const delta = link.width > right - left || link.left < left - 1
+        ? link.left - left
+        : link.right > right + 1 ? link.right - right : 0;
+    if (Math.abs(delta) > 1) bar.scrollBy({ left: delta, behavior: 'smooth' });
+}
+
 export function removeTabScroller(bar) {
     _tabScrollers.drop(bar);
 }

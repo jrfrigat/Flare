@@ -19,6 +19,10 @@ public interface IUiJsService : IAsyncDisposable
     /// <summary>Scrolls the tab bar by ~80% of its width in <paramref name="direction"/> (-1 left, +1 right).</summary>
     ValueTask ScrollTabsAsync(ElementReference bar, int direction);
 
+    /// <summary>Reveals the active route link within its own scrollable bar without moving the page.</summary>
+    /// <param name="bar">The scrollable link-tab bar.</param>
+    ValueTask RevealActiveLinkTabAsync(ElementReference bar);
+
     /// <summary>Removes the tab-scroller observer for <paramref name="bar"/>.</summary>
     ValueTask RemoveTabScrollerAsync(ElementReference bar);
 
