@@ -1299,6 +1299,15 @@
   <data name="Switch_Icons" xml:space="preserve">
     <value>With icons</value>
   </data>
+  <data name="Choice_Title" xml:space="preserve">
+    <value>Choice Card</value>
+  </data>
+  <data name="Choice_Subtitle" xml:space="preserve">
+    <value>FlareChoiceGroup - a grid of option cards, each with a title and a hint.</value>
+  </data>
+  <data name="Choice_Basic" xml:space="preserve">
+    <value>Three options, two columns, and a disabled option</value>
+  </data>
   <data name="Radio_Title" xml:space="preserve">
     <value>Radio Group</value>
   </data>

@@ -1893,6 +1893,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Checkbox_Subtitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Three options, two columns, and a disabled option.
+        /// </summary>
+        public static string Choice_Basic {
+            get {
+                return ResourceManager.GetString("Choice_Basic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to FlareChoiceGroup - a grid of option cards, each with a title and a hint.
+        /// </summary>
+        public static string Choice_Subtitle {
+            get {
+                return ResourceManager.GetString("Choice_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Choice Card.
+        /// </summary>
+        public static string Choice_Title {
+            get {
+                return ResourceManager.GetString("Choice_Title", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Checkbox.

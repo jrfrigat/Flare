@@ -1,0 +1,68 @@
+@namespace Flare.Components
+@typeparam TValue
+
+<label class="@_cssClass">
+    <input class="@Css.Classes.ChoiceCard.Input"
+           type="radio"
+           name="@GroupContext?.GroupName"
+           checked="@_selected"
+           disabled="@_disabled"
+           @onchange="HandleChange" />
+    <span class="@Css.Classes.ChoiceCard.Body">
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <span class="@Css.Classes.ChoiceCard.Title">@Title</span>
+        }
+        @if (!string.IsNullOrEmpty(Hint))
+        {
+            <span class="@Css.Classes.ChoiceCard.Hint">@Hint</span>
+        }
+        @ChildContent
+    </span>
+    <span class="@Css.Classes.ChoiceCard.Control" aria-hidden="true"></span>
+</label>
+
+@code {
+    [CascadingParameter] private FlareChoiceGroupContext? GroupContext { get; set; }
+
+    /// <summary>Value this card represents in the group.</summary>
+    [Parameter] public TValue? Value { get; set; }
+
+    /// <summary>Title of the option.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Explanatory line under the title.</summary>
+    [Parameter] public string? Hint { get; set; }
+
+    /// <summary>Disables this card individually.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Extra markup rendered under the title and hint, for an option whose body is more than two
+    /// lines. Writing it between the tags binds here.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool _selected => GroupContext is not null
+        && GroupContext.SelectedValue is TValue selected
+        && EqualityComparer<TValue>.Default.Equals(selected, Value);
+
+    private bool _disabled => Disabled || (GroupContext?.GroupDisabled ?? false);
+
+    private string _cssClass
+    {
+        get
+        {
+            var parts = new List<string>(3) { Css.Classes.ChoiceCard.Root };
+            if (_selected) parts.Add(Css.Classes.ChoiceCard.Selected);
+            if (_disabled) parts.Add(Css.Classes.ChoiceCard.Disabled);
+            return string.Join(' ', parts);
+        }
+    }
+
+    private async Task HandleChange()
+    {
+        if (GroupContext is not null)
+            await GroupContext.Select(Value);
+    }
+}

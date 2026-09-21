@@ -1,0 +1,37 @@
+@using Flare.Components
+
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChoiceGroup TValue="string" @bind-Value="_scopePolicy" Label="Scope-overlap policy">
+        <FlareChoiceCard TValue="string" Value="@("deny")" Title="Block the run"
+                         Hint="The overlapping card waits until the conflicting run finishes" />
+        <FlareChoiceCard TValue="string" Value="@("ask")" Title="Warn and ask"
+                         Hint="The run starts only after you approve it" />
+        <FlareChoiceCard TValue="string" Value="@("allow")" Title="Allow"
+                         Hint="Both runs proceed; overlapping edits are merged" />
+    </FlareChoiceGroup>
+
+    <FlareChoiceGroup TValue="string" @bind-Value="_commitPolicy" Label="Commit policy (two columns)"
+                      Columns="2">
+        <FlareChoiceCard TValue="string" Value="@("ask")" Title="Ask me"
+                         Hint="A pending commit waits for your approval" />
+        <FlareChoiceCard TValue="string" Value="@("allow")" Title="Commit automatically"
+                         Hint="A finished stage commits on its own" />
+    </FlareChoiceGroup>
+
+    <FlareChoiceGroup TValue="string" @bind-Value="_size" Label="With a disabled option">
+        <FlareChoiceCard TValue="string" Value="@("xs")" Title="XS" Hint="One file, under an hour" />
+        <FlareChoiceCard TValue="string" Value="@("s")" Title="S" Hint="Half a day or less" />
+        <FlareChoiceCard TValue="string" Value="@("xl")" Title="XL" Hint="Not available yet"
+                         Disabled="true" />
+    </FlareChoiceGroup>
+</FlareStack>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+    Scope: @_scopePolicy · Commit: @_commitPolicy · Size: @_size
+</FlareText>
+
+@code {
+    private string? _scopePolicy = "ask";
+    private string? _commitPolicy = "ask";
+    private string? _size = "s";
+}

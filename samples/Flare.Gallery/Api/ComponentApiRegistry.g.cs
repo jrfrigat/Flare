@@ -983,6 +983,57 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareChoiceCard"] = new ApiComponentInfo(
+            @"FlareChoiceCard",
+            @"Flare.Components.FlareChoiceCard",
+            @"Flare.Components",
+            @"One option of a FlareChoiceGroup: a card with a title, a hint and a radio control, laid out by the group. It takes its name, its selected and its disabled state from the enclosing group, so the group stays the one place the answer lives.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Extra markup rendered under the title and hint, for an option whose body is more than two lines. Writing it between the tags binds here.", null, false, false, false, @"FlareChoiceCard"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables this card individually.", null, false, false, false, @"FlareChoiceCard"),
+                new ApiParameterInfo(@"Hint", @"string?", null, @"Explanatory line under the title.", null, false, false, false, @"FlareChoiceCard"),
+                new ApiParameterInfo(@"Title", @"string?", null, @"Title of the option.", null, false, false, false, @"FlareChoiceCard"),
+                new ApiParameterInfo(@"Value", @"TValue?", null, @"Value this card represents in the group.", null, false, false, false, @"FlareChoiceCard"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareChoiceGroup"] = new ApiComponentInfo(
+            @"FlareChoiceGroup",
+            @"Flare.Components.FlareChoiceGroup",
+            @"Flare.Components",
+            @"A single choice among several presented as a grid of FlareChoiceCard options - the ""selectable option card"" composition, where each option carries a title and a hint rather than a one-line label. The group owns the value; a card reports its title, its hint and the value it contributes, and reads the selection and the disabled state from the enclosing group.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The cards rendered as options, written between the tags.", null, false, false, false, @"FlareChoiceGroup"),
+                new ApiParameterInfo(@"Columns", @"int", @"3", @"Number of grid columns the cards are laid out in. Default 3.", null, false, false, false, @"FlareChoiceGroup"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables every card in the group.", null, false, false, false, @"FlareChoiceGroup"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Visible label of the group, which also names it for assistive technology.", null, false, false, false, @"FlareChoiceGroup"),
+                new ApiParameterInfo(@"Value", @"TValue?", null, @"Currently selected value in the group.", null, false, false, false, @"FlareChoiceGroup"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the selected value changes.", null, false, true, false, @"FlareChoiceGroup"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareClipboard"] = new ApiComponentInfo(
             @"FlareClipboard",
             @"Flare.Components.FlareClipboard",
@@ -1523,6 +1574,7 @@ public static class ComponentApiRegistry
                 @"FlareChip",
                 @"FlareChipGroup",
                 @"FlareChipStrip",
+                @"FlareChoiceGroup",
                 @"FlareClipboard",
                 @"FlareClockDial",
                 @"FlareCode",

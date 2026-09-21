@@ -162,4 +162,33 @@ public class ControlledStateContractTests : FlareTestContext
         cut.Render(ps => ps.Add(p => p.Tick, 1));
         Assert.Equal("true", cut.Find("button").GetAttribute("aria-expanded"));
     }
+
+    // ---- FlareChoiceGroup ----------------------------------------------------------------------
+
+    // The group deliberately holds no local selection: the answer lives in the Value parameter, so a
+    // parent that listens always wins. This pins the half that matters - the cards follow the
+    // parameter on every render, including after the parent moves it itself.
+    [Fact]
+    public void ChoiceGroup_SelectionFollowsTheValueParameter()
+    {
+        var cut = Render<FlareChoiceGroup<string>>(ps => ps
+            .Add(p => p.Value, "b")
+            .Add(p => p.ChildContent, (RenderFragment)(c =>
+            {
+                c.OpenComponent<FlareChoiceCard<string>>(0);
+                c.AddAttribute(1, "Value", "a");
+                c.CloseComponent();
+                c.OpenComponent<FlareChoiceCard<string>>(10);
+                c.AddAttribute(11, "Value", "b");
+                c.CloseComponent();
+            })));
+
+        Assert.DoesNotContain(Css.Classes.ChoiceCard.Selected, cut.FindAll($".{Css.Classes.ChoiceCard.Root}")[0].ClassName);
+        Assert.Contains(Css.Classes.ChoiceCard.Selected, cut.FindAll($".{Css.Classes.ChoiceCard.Root}")[1].ClassName);
+
+        cut.Render(ps => ps.Add(p => p.Value, "a"));
+
+        Assert.Contains(Css.Classes.ChoiceCard.Selected, cut.FindAll($".{Css.Classes.ChoiceCard.Root}")[0].ClassName);
+        Assert.DoesNotContain(Css.Classes.ChoiceCard.Selected, cut.FindAll($".{Css.Classes.ChoiceCard.Root}")[1].ClassName);
+    }
 }

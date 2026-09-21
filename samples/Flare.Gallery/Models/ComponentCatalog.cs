@@ -100,6 +100,7 @@ public static class ComponentCatalog
         new ComponentEntry("components/text-field",        "Text Field",              "Input_Title",           ComponentGroup.Field),
 
         // -- Input (pointer-driven) ----------------------------------------------
+        new ComponentEntry("components/choice",          "Choice Card",             "Choice_Title",          ComponentGroup.Input),
         new ComponentEntry("components/checkbox",          "Checkbox",                "Checkbox_Title",        ComponentGroup.Input),
         new ComponentEntry("components/colorpicker",       "Color Picker",            "ColorPicker_Title",     ComponentGroup.Input),
         new ComponentEntry("components/multi-select",      "Multi Select",            "MultiSelect_Title",     ComponentGroup.Input),

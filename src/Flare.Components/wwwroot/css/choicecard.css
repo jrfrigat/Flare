@@ -1,0 +1,145 @@
+/* Choice card: a grid of selectable option cards.
+   The card half is a card, so it reads the card surface and selection tokens - CardTokens already
+   states SelectedBorder / SelectedBg / StateLayer for a selected card - and the control half is a
+   radio, so it reads the radio size, focus and disabled tokens. One family per likeness rather than a
+   third token set: a theme repaints the choice card through tokens it already supplies. */
+
+.flare-choice-group {
+    display: block;
+}
+
+.flare-choice-group--disabled {
+    cursor: not-allowed;
+}
+
+.flare-choice-group__label {
+    display: block;
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size);
+    color: var(--flare-color-on-surface-variant);
+    margin-bottom: var(--flare-spacing-2);
+}
+
+.flare-choice-group__options {
+    display: grid;
+    /* The column count is a parameter of the group and arrives as a private variable; the fallback is
+       the component's own default, not a value a theme is expected to supply. */
+    grid-template-columns: repeat(var(--_cc-columns, 3), minmax(0, 1fr));
+    gap: var(--flare-spacing-4);
+}
+
+/* Two options read better side by side than stretched; a narrow viewport stacks the grid. */
+@media (max-width: 37.5rem) {
+    .flare-choice-group__options {
+        grid-template-columns: 1fr;
+    }
+}
+
+.flare-choice-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--flare-spacing-4);
+    padding: var(--flare-card-content-padding);
+    border: var(--flare-card-outlined-border);
+    border-radius: var(--flare-card-radius);
+    background-color: var(--flare-card-outlined-bg);
+    color: var(--flare-color-on-surface);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        border-color var(--flare-card-transition-duration) var(--flare-card-transition-easing),
+        background-color var(--flare-card-transition-duration) var(--flare-card-transition-easing);
+}
+
+/* Hover paints on a layer of its own, from the card's state-layer token - the shape card.css uses. */
+.flare-choice-card:hover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: var(--flare-card-state-layer);
+}
+
+.flare-choice-card--selected {
+    border: var(--flare-card-selected-border);
+    background-color: var(--flare-card-selected-bg);
+}
+
+.flare-choice-card--disabled {
+    opacity: var(--flare-radio-disabled-opacity);
+    pointer-events: none;
+}
+
+/* Focus is the theme's to state, exactly as it is for the radio the control mirrors. */
+.flare-choice-card:has(.flare-choice-card__input:focus-visible) {
+    outline: var(--flare-radio-focus-outline);
+    outline-offset: var(--flare-radio-focus-outline-offset);
+    box-shadow: var(--flare-radio-focus-shadow);
+}
+
+/* The native radio carries the semantics - role radio, its checked state and the roving tab stop -
+   while the whole card is the click target. It stays focusable and covers the surface; only its
+   paint is hidden. */
+.flare-choice-card__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.flare-choice-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2);
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.flare-choice-card__title {
+    font-size: var(--flare-typescale-body-large-size);
+    color: var(--flare-color-on-surface);
+}
+
+.flare-choice-card__hint {
+    font-size: var(--flare-typescale-body-small-size);
+    color: var(--flare-color-on-surface-variant);
+}
+
+/* The control sits in the card's header, as the design asks. */
+.flare-choice-card__control {
+    position: relative;
+    flex-shrink: 0;
+    width: var(--flare-radio-size-md);
+    height: var(--flare-radio-size-md);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-on-surface-variant);
+    border-radius: 50%;
+    transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-choice-card__control::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    background: var(--fc-main, var(--flare-color-primary));
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-choice-card__input:checked ~ .flare-choice-card__control {
+    border-color: var(--fc-main, var(--flare-color-primary));
+}
+
+.flare-choice-card__input:checked ~ .flare-choice-card__control::after {
+    transform: translate(-50%, -50%) scale(1);
+}

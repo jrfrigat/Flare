@@ -36,6 +36,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareChip`](components/flare-components-flarechip.md)
 - [`FlareChipGroup`](components/flare-components-flarechipgroup.md)
 - [`FlareChipStrip`](components/flare-components-flarechipstrip.md)
+- [`FlareChoiceCard`](components/flare-components-flarechoicecard.md) — One option of a FlareChoiceGroup: a card with a title, a hint and a radio control, laid out by the group. It takes its name, its selected and its disabled state from the enclosing group, so the group stays the one place the answer lives.
+- [`FlareChoiceGroup`](components/flare-components-flarechoicegroup.md) — A single choice among several presented as a grid of FlareChoiceCard options - the "selectable option card" composition, where each option carries a title and a hint rather than a one-line label. The group owns the value; a card reports its title, its hint and the value it contributes, and reads the selection and the disabled state from the enclosing group.
 - [`FlareClipboard`](components/flare-components-flareclipboard.md)
 - [`FlareClockDial`](components/flare-components-flareclockdial.md)
 - [`FlareCode`](components/flare-components-flarecode.md)

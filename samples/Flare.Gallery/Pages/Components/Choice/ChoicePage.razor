@@ -1,0 +1,11 @@
+@page "/components/choice"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Choice_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareChoiceGroup">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Choice_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Choice_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Choice_Basic" DemoType="typeof(Examples.ChoiceCardsDemo)" />

@@ -1299,6 +1299,15 @@
   <data name="Switch_Icons" xml:space="preserve">
     <value>С иконками</value>
   </data>
+  <data name="Choice_Title" xml:space="preserve">
+    <value>Карточка-опция (Choice Card)</value>
+  </data>
+  <data name="Choice_Subtitle" xml:space="preserve">
+    <value>FlareChoiceGroup - сетка карточек-опций с заголовком и пояснением.</value>
+  </data>
+  <data name="Choice_Basic" xml:space="preserve">
+    <value>Три опции, две колонки и выключенная опция</value>
+  </data>
   <data name="Radio_Title" xml:space="preserve">
     <value>Группа радио (Radio Group)</value>
   </data>

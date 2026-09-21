@@ -1,0 +1,76 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TValue
+
+<div class="@BuildCssClass(_disabledClass)"
+     role="radiogroup"
+     aria-labelledby="@_labelledBy"
+     style="@_gridStyle"
+     @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span id="@_labelId" class="@Css.Classes.ChoiceGroup.Label">@Label</span>
+    }
+    <div class="@Css.Classes.ChoiceGroup.Options">
+        @* Not fixed: the context record is rebuilt from Value/Disabled, and value equality means the
+           cards are notified only when the selection or the disabled state really moves. *@
+        <CascadingValue Value="_context">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
+
+@code {
+    /// <summary>Currently selected value in the group.</summary>
+    [Parameter] public TValue? Value { get; set; }
+
+    /// <summary>Callback invoked when the selected value changes.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+
+    /// <summary>The cards rendered as options, written between the tags.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Visible label of the group, which also names it for assistive technology.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Number of grid columns the cards are laid out in. Default 3.</summary>
+    [Parameter] public int Columns { get; set; } = 3;
+
+    /// <summary>Disables every card in the group.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.ChoiceGroup.Root;
+
+    // One name for the whole group: native radio inputs sharing it are what gives the group a single
+    // tab stop and arrow-key navigation between the cards, without any JavaScript.
+    private readonly string _groupName = $"flare-choice-{Guid.NewGuid():N}";
+    private readonly string _labelId = $"flare-choice-label-{Guid.NewGuid():N}";
+    private FlareChoiceGroupContext _context = default!;
+
+    private string? _disabledClass => Disabled ? Css.Classes.ChoiceGroup.Disabled : null;
+
+    private string? _labelledBy => string.IsNullOrEmpty(Label) ? null : _labelId;
+
+    // The column count travels as a private custom property; the stylesheet reads it with the
+    // component's own default, so nothing about it is a theme value.
+    private string? _gridStyle
+    {
+        get
+        {
+            var columns = Columns < 1 ? 1 : Columns;
+            var grid = $"--_cc-columns:{columns}";
+            return string.IsNullOrWhiteSpace(Style) ? grid : $"{grid};{Style}";
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        _context = new FlareChoiceGroupContext(Value, Disabled, SelectBoxedAsync, _groupName);
+    }
+
+    private async Task SelectBoxedAsync(object? boxedValue)
+    {
+        TValue? value = boxedValue is TValue typed ? typed : default;
+        await ValueChanged.InvokeAsync(value);
+    }
+}

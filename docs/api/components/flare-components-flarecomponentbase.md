@@ -54,6 +54,7 @@ This component exposes no documented public methods.
 - `FlareChip`
 - `FlareChipGroup`
 - `FlareChipStrip`
+- `FlareChoiceGroup`
 - `FlareClipboard`
 - `FlareClockDial`
 - `FlareCode`

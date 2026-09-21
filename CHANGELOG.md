@@ -5,6 +5,21 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- **`FlareChoiceGroup<TValue>` and `FlareChoiceCard<TValue>`: a selectable option card.** The catalog
+  knew only linear choosers - `FlareRadioGroup` draws a control-and-label row, `FlareOptionList` is a
+  listbox and `FlareToggleGroup` a compact segmented switch - so the card-with-title-and-hint grid a
+  policy picker wants was assembled in the application's own markup and its own CSS. The group owns the
+  value and lays the cards out in a `Columns`-wide grid (default 3); each card contributes its `Value`
+  and reports a `Title` and a `Hint`, and the whole card is the click target. The option is a native
+  radio input inside the card, so a group is one tab stop, the arrow keys move the selection and the
+  accessible tree carries `radio` with its checked state without a line of JavaScript; the group itself
+  is `role="radiogroup"`. `Disabled` works on the group and on a single card. The look is tokens only -
+  the card reads the card surface and selection tokens (`--flare-card-selected-border`,
+  `--flare-card-selected-bg`, `--flare-card-state-layer`) and the control the radio's - so a consumer
+  needs no CSS of its own and a theme needs no change to adopt it.
+
 ### Changed
 
 - **The head gets the active theme's stylesheet, not every registered theme's.**
