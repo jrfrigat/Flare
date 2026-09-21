@@ -1,0 +1,32 @@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareKanban Columns="_columns" Cards="_cards" ReadOnly>
+        <CardTemplate Context="card">
+            <FlareStack Gap="FlareSpacing.XSmall">
+                <FlareStack Row Wrap Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
+                    <FlareText Typo="TypographyScale.BodyMedium">@card.Title</FlareText>
+                    <FlareBadge Text="@GalleryStrings.Kanban_ReadOnly_Status" Standalone="true" Color="FlareColor.Secondary" />
+                </FlareStack>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@card.Description</FlareText>
+            </FlareStack>
+        </CardTemplate>
+    </FlareKanban>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Kanban_ReadOnly_Hint
+    </FlareText>
+</FlareStack>
+
+@code {
+    private readonly List<KanbanColumn> _columns =
+    [
+        new("backlog", GalleryStrings.Kanban_Templates_Backlog, "#94a3b8"),
+        new("done", GalleryStrings.Kanban_Templates_Done, "#10b981"),
+    ];
+
+    private readonly List<KanbanCard> _cards =
+    [
+        new("FLR-201", "backlog", GalleryStrings.Kanban_Templates_FirstTitle,
+            GalleryStrings.Kanban_Templates_FirstDescription),
+        new("FLR-203", "done", GalleryStrings.Kanban_Templates_ThirdTitle,
+            GalleryStrings.Kanban_Templates_ThirdDescription),
+    ];
+}

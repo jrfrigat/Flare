@@ -13,6 +13,7 @@
 | `CardsChanged` | `EventCallback<IReadOnlyList<KanbanCard>>` | `` | Callback |  | Callback raised when cards are moved between columns. |
 | `ColumnTemplate` | `RenderFragment<KanbanColumnTemplateContext>?` | `` | Parameter |  | Custom content rendered inside each column header while Flare retains the column structure. |
 | `Columns` | `IReadOnlyList<KanbanColumn>?` | `` | Parameter |  | Column definitions that structure the Kanban board. |
+| `ReadOnly` | `bool` | `false` | Parameter |  | Disables pointer and keyboard card movement while preserving readable, focusable card content. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

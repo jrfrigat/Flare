@@ -3418,6 +3418,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"CardsChanged", @"EventCallback<IReadOnlyList<KanbanCard>>", null, @"Callback raised when cards are moved between columns.", null, false, true, false, @"FlareKanban"),
                 new ApiParameterInfo(@"ColumnTemplate", @"RenderFragment<KanbanColumnTemplateContext>?", null, @"Custom content rendered inside each column header while Flare retains the column structure.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"Columns", @"IReadOnlyList<KanbanColumn>?", null, @"Column definitions that structure the Kanban board.", null, false, false, false, @"FlareKanban"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Disables pointer and keyboard card movement while preserving readable, focusable card content.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

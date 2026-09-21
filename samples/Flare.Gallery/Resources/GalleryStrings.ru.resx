@@ -3463,4 +3463,13 @@
   <data name="SplitButton_Export" xml:space="preserve">
     <value>Экспорт</value>
   </data>
+  <data name="Kanban_ReadOnly" xml:space="preserve">
+    <value>Доска только для чтения</value>
+  </data>
+  <data name="Kanban_ReadOnly_Hint" xml:space="preserve">
+    <value>Карточки остаются доступными для чтения и фокуса с клавиатуры, но перемещение мышью и клавиатурой отключено.</value>
+  </data>
+  <data name="Kanban_ReadOnly_Status" xml:space="preserve">
+    <value>Только чтение</value>
+  </data>
 </root>

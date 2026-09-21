@@ -3463,4 +3463,13 @@
   <data name="SplitButton_Export" xml:space="preserve">
     <value>Export</value>
   </data>
+  <data name="Kanban_ReadOnly" xml:space="preserve">
+    <value>Read-only board</value>
+  </data>
+  <data name="Kanban_ReadOnly_Hint" xml:space="preserve">
+    <value>Cards remain readable and keyboard-focusable, but pointer and keyboard movement are disabled.</value>
+  </data>
+  <data name="Kanban_ReadOnly_Status" xml:space="preserve">
+    <value>Read only</value>
+  </data>
 </root>

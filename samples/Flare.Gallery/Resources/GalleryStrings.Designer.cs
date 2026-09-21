@@ -11228,6 +11228,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("FabMenu_ActionShare", resourceCulture);
             }
         }
+
+        /// <summary>Looks up the localized Kanban read-only demo title.</summary>
+        public static string Kanban_ReadOnly => ResourceManager.GetString("Kanban_ReadOnly", resourceCulture);
+
+        /// <summary>Looks up the localized Kanban read-only demo hint.</summary>
+        public static string Kanban_ReadOnly_Hint => ResourceManager.GetString("Kanban_ReadOnly_Hint", resourceCulture);
+
+        /// <summary>Looks up the localized Kanban read-only status.</summary>
+        public static string Kanban_ReadOnly_Status => ResourceManager.GetString("Kanban_ReadOnly_Status", resourceCulture);
         
     }
 }
