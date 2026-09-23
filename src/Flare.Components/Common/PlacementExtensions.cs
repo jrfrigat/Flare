@@ -23,5 +23,11 @@ internal static class PlacementExtensions
     };
 
     /// <summary>The side alone - top, bottom, left or right - which is what an arrow points away from.</summary>
-    public static string ToPanelSide(this Placement placement) => placement.ToPanelPlacement().Split('-')[0];
+    public static string ToPanelSide(this Placement placement) => placement switch
+    {
+        Placement.Top or Placement.TopStart or Placement.TopEnd           => PanelPlacement.Top,
+        Placement.Left or Placement.LeftStart or Placement.LeftEnd        => PanelPlacement.Left,
+        Placement.Right or Placement.RightStart or Placement.RightEnd     => PanelPlacement.Right,
+        _                                                                 => PanelPlacement.Bottom,
+    };
 }

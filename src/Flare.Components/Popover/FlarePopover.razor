@@ -5,7 +5,7 @@
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" @ref="_anchorRef"
      @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave"
-     @onfocusin="HandleFocusIn" @onfocusout="HandleFocusOut" @onkeydown="HandleKeyDown">
+     @onfocusin="_focusIn" @onfocusout="_focusOut" @onkeydown="_keyDown">
     @if (Trigger == PopoverTrigger.Click)
     {
         <span style="display:inline-flex;cursor:pointer" @onclick="ToggleAsync">@AnchorContent</span>
@@ -202,6 +202,16 @@
     // Keyboard path for Trigger="Hover": focus entering the anchor or the panel opens it the way the pointer
     // does, and focus leaving closes it after the same grace period. Both share the hover generation, so
     // focus moving between two elements inside - a focusout followed by a focusin - cancels the close.
+    // Bound only for Trigger="Hover". A handler on the root hears every keystroke and focus move inside
+    // the panel, and each one would re-render the popover - on Blazor Server, a round trip per key typed
+    // into a form in a Click popover. A callback with no delegate attaches no listener at all.
+    private EventCallback<FocusEventArgs> _focusIn =>
+        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusIn) : default;
+    private EventCallback<FocusEventArgs> _focusOut =>
+        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusOut) : default;
+    private EventCallback<KeyboardEventArgs> _keyDown =>
+        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDown) : default;
+
     private Task HandleFocusIn(FocusEventArgs _) => HandleMouseEnter();
 
     private Task HandleFocusOut(FocusEventArgs _) => HandleMouseLeave();

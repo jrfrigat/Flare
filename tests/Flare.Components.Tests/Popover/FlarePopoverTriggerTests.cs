@@ -115,6 +115,24 @@ public class FlarePopoverTriggerTests : FlareTestContext
         Assert.Contains(false, states);
     }
 
+    // The keyboard path is the hover trigger's alone. On any other trigger a root handler would hear every
+    // keystroke typed into the panel and re-render the popover for each one.
+    [Theory]
+    [InlineData(PopoverTrigger.Click)]
+    [InlineData(PopoverTrigger.Manual)]
+    public void NonHoverTriggers_ListenToNoKeysOrFocusOnTheRoot(PopoverTrigger trigger)
+    {
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, trigger)
+            .Add(x => x.Open, true)
+            .Add(x => x.AnchorContent, "<button>anchor</button>"));
+        var root = cut.Find($".{Css.Classes.Popover.Anchor}");
+
+        Assert.Throws<MissingEventHandlerException>(() => root.KeyDown("a"));
+        Assert.Throws<MissingEventHandlerException>(() => root.FocusIn());
+        Assert.Throws<MissingEventHandlerException>(() => root.FocusOut());
+    }
+
     // Focus moving between two elements inside fires focusout then focusin; the close must not survive it.
     [Fact]
     public async Task HoverTrigger_FocusMovingInside_DoesNotClose()
