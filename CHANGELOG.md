@@ -35,6 +35,28 @@ All notable changes to Flare are documented here. This project adheres to
   (`--flare-font-mono`) - for identifiers, paths, templates and prompts - the same switch `FlareText`
   already has. An explicit `Typo` still sets the font.
 
+### Changed
+
+- **Breaking: `FlareTooltip.Placement` takes the shared `Placement`.** The tooltip had a vocabulary of its
+  own, `TooltipPlacement` with four sides, while `FlarePopover` and the speed-dial menu use `Placement`
+  with twelve. `TooltipPlacement` is removed: write `Placement.Bottom` where you wrote
+  `TooltipPlacement.Bottom`. The tooltip also gains the alignments it lacked - `TopStart`, `BottomEnd`
+  and the rest line the bubble up with an edge of the trigger instead of centring it.
+- **Breaking for custom themes: `PopoverTokens` gains a required `Offset`** (`--flare-popover-offset`),
+  the distance between a popover and its anchor. The built-in themes set `0.5rem`, the distance the
+  popover used before. `FlarePopover.Offset` becomes `int?`: left unset, the theme decides; a number
+  still sets it on that instance. It used to be a fixed 8 that no theme could change.
+- **A hover popover opens from the keyboard.** `Trigger="Hover"` listened to the pointer only, so a
+  keyboard reader could not open it at all. Focus entering the anchor now opens it the way hovering does,
+  focus leaving closes it after the same `HideDelay`, and Escape closes it.
+
+- **Breaking for custom themes: `MenuTokens` gains a required `PanelOffset`** (`--flare-menu-offset`),
+  the distance between a menu - or a submenu flyout - and what it opens from. It was a hard 4px in every
+  theme, in two places that had to agree: the placement engine and the CSS that holds the panel for the
+  frame before it is placed. Both now read the token. The Material themes set it to `0px`, so a menu sits
+  flush against its button as MDC and material-web place it; Fluent 2 and Visual Studio keep `0.25rem`.
+  A zero needs its unit: the value is used inside `calc()`.
+
 ### Fixed
 
 - **A click on a draggable reaches it again.** The drag gesture took pointer capture on the press, so
@@ -49,6 +71,9 @@ All notable changes to Flare are documented here. This project adheres to
   `FlareTabs` from its `FlareTab` children, and a render of the page reached the bar before it reached
   the tabs, so a count in a label or a badge showed the previous render's value until something else
   re-rendered the bar. A tab now tells the bar when what it draws there has changed.
+- **A tooltip opened by a click or by `Open` sits as far from its trigger as a hovered one.** The hover
+  path read the theme's `--flare-tooltip-offset`; the path that opens from code handed the placement
+  engine a 4px default, so the same tooltip stood at two distances depending on how it was opened.
 
 ## [0.39.0] - 2026-09-22
 

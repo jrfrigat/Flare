@@ -4,7 +4,8 @@
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" @ref="_anchorRef"
-     @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave">
+     @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave"
+     @onfocusin="_focusIn" @onfocusout="_focusOut" @onkeydown="_keyDown">
     @if (Trigger == PopoverTrigger.Click)
     {
         <span style="display:inline-flex;cursor:pointer" @onclick="ToggleAsync">@AnchorContent</span>
@@ -42,7 +43,7 @@
     /// <summary>Callback raised when the open state should change.</summary>
     [Parameter] public EventCallback<bool>  OpenChanged   { get; set; }
     /// <summary>How the popover opens. <see cref="PopoverTrigger.Click"/> toggles it from the anchor,
-    /// <see cref="PopoverTrigger.Hover"/> opens on hover, and <see cref="PopoverTrigger.Manual"/> (default)
+    /// <see cref="PopoverTrigger.Hover"/> opens on hover or keyboard focus, and <see cref="PopoverTrigger.Manual"/> (default)
     /// leaves it fully controlled. All modes still drive <see cref="Open"/>/<see cref="OpenChanged"/>.</summary>
     [Parameter] public PopoverTrigger       Trigger       { get; set; } = PopoverTrigger.Manual;
     /// <summary>Position of the panel relative to the anchor element.</summary>
@@ -59,8 +60,9 @@
     [Parameter] public bool                 MatchAnchorWidth { get; set; }
     /// <summary>Shows a directional arrow pointing to the anchor.</summary>
     [Parameter] public bool                 Arrow         { get; set; }
-    /// <summary>Offset in pixels between anchor and popover.</summary>
-    [Parameter] public int                  Offset        { get; set; } = 8;
+    /// <summary>Distance in pixels between the anchor and the panel. Leave it unset to use the active
+    /// theme's <c>--flare-popover-offset</c>, which is what a theme expects to control.</summary>
+    [Parameter] public int?                 Offset        { get; set; }
     /// <summary>For <see cref="PopoverTrigger.Hover"/>: milliseconds to wait before opening on hover.</summary>
     [Parameter] public int                  Delay         { get; set; }
     /// <summary>For <see cref="PopoverTrigger.Hover"/>: milliseconds to wait before closing after the pointer
@@ -96,25 +98,9 @@
     private string _arrowClass => Arrow ? Css.Classes.Popover.Arrow : string.Empty;
     private string _matchWidthClass => MatchAnchorWidth ? Css.Classes.Popover.PaperMatchWidth : string.Empty;
 
-    // The twelve placements collapse to the four sides the engine and the arrow work in; the alignment
-    // half travels in the placement string.
-    private string _placement => Placement switch
-    {
-        Placement.Top         => PanelPlacement.Top,
-        Placement.TopStart    => PanelPlacement.TopStart,
-        Placement.TopEnd      => PanelPlacement.TopEnd,
-        Placement.Bottom      => PanelPlacement.Bottom,
-        Placement.BottomEnd   => PanelPlacement.BottomEnd,
-        Placement.Left        => PanelPlacement.Left,
-        Placement.LeftStart   => PanelPlacement.LeftStart,
-        Placement.LeftEnd     => PanelPlacement.LeftEnd,
-        Placement.Right       => PanelPlacement.Right,
-        Placement.RightStart  => PanelPlacement.RightStart,
-        Placement.RightEnd    => PanelPlacement.RightEnd,
-        _                            => PanelPlacement.BottomStart,
-    };
+    private string _placement => Placement.ToPanelPlacement();
 
-    private string _sideName => _placement.Split('-')[0];
+    private string _sideName => Placement.ToPanelSide();
 
     // Width/height caps ride on the panel style.
     // MatchAnchorWidth owns the width, so the min/max-width params are skipped in that mode.
@@ -148,7 +134,8 @@
         await _layer.SyncAsync(Overlay, Open, _anchorRef, _floatingRef, new AnchoredPanelOptions
         {
             Placement = _placement,
-            Gap = Offset,
+            Gap = Offset ?? 8,
+            GapToken = Offset is null ? Css.Tokens.PopoverPopup.Offset : null,
             MatchWidth = MatchAnchorWidth,
         });
 
@@ -209,6 +196,31 @@
             await Task.Delay(HideDelay);
             if (gen != _hoverGen) return;
         }
+        await OpenChanged.InvokeAsync(false);
+    }
+
+    // Keyboard path for Trigger="Hover": focus entering the anchor or the panel opens it the way the pointer
+    // does, and focus leaving closes it after the same grace period. Both share the hover generation, so
+    // focus moving between two elements inside - a focusout followed by a focusin - cancels the close.
+    // Bound only for Trigger="Hover". A handler on the root hears every keystroke and focus move inside
+    // the panel, and each one would re-render the popover - on Blazor Server, a round trip per key typed
+    // into a form in a Click popover. A callback with no delegate attaches no listener at all.
+    private EventCallback<FocusEventArgs> _focusIn =>
+        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusIn) : default;
+    private EventCallback<FocusEventArgs> _focusOut =>
+        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusOut) : default;
+    private EventCallback<KeyboardEventArgs> _keyDown =>
+        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDown) : default;
+
+    private Task HandleFocusIn(FocusEventArgs _) => HandleMouseEnter();
+
+    private Task HandleFocusOut(FocusEventArgs _) => HandleMouseLeave();
+
+    // Escape closes an open hover popover; Click and Manual popovers close through their own paths.
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (Trigger != PopoverTrigger.Hover || !Open || e.Key != "Escape") return;
+        ++_hoverGen;
         await OpenChanged.InvokeAsync(false);
     }
 

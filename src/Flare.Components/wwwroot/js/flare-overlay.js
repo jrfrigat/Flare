@@ -138,6 +138,8 @@ function demote(panel) {
 //               The side flips when the panel does not fit and the opposite side has more room;
 //               the alignment does not flip, it is clamped to the viewport like everything else.
 //   gap         distance from the anchor in px (default 4).
+//   gapToken    name of a CSS custom property, read from the panel, holding the distance; wins over
+//               gap when it resolves to a length, so the theme decides it.
 //   matchWidth  keep the panel at least as wide as the anchor.
 //   anchorPoint {xPct, yPct} - anchor to a POINT inside the anchor element rather than to its box,
 //               given as a percentage of that box. This is how a chart tooltip anchors to a data
@@ -165,7 +167,8 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     const opts = options || {};
     const fixedRect = opts.anchorRect;
     if (!anchor && !fixedRect) return;
-    const gap = opts.gap ?? 4;
+    // A gap token lets the theme decide the distance; the number is the fallback when it is unset.
+    const gap = opts.gapToken ? cssLengthPx(panel, opts.gapToken, opts.gap ?? 4) : (opts.gap ?? 4);
     const margin = 4; // keep this far from the viewport edge
     const point = opts.anchorPoint;
     const offset = opts.anchorOffset;
@@ -315,6 +318,9 @@ function placeTooltip(e) {
     if (!bubble?.id) return;
     let side = 'top';
     for (const [cls, name] of TOOLTIP_SIDES) { if (root.classList.contains(cls)) { side = name; break; } }
+    // The side class places the bubble at rest; the full placement - side plus start/end alignment -
+    // rides on a data attribute so the engine aligns it the way the caller asked.
+    const placement = root.dataset.flarePlacement || side;
 
     // A bubble at rest is `content-visibility: hidden`, so it measures as if it had no contents: 24px
     // wide instead of 181 on the Gallery's own tooltip. Placed from that measurement, a centred bubble
@@ -332,7 +338,7 @@ function placeTooltip(e) {
     bubble.style.transitionProperty = 'opacity, visibility';
     bubble.style.contentVisibility = 'visible';
     positionAnchoredPanel(bubble.id, root, bubble, {
-        placement: side,
+        placement,
         gap: cssLengthPx(bubble, '--flare-tooltip-offset', 8),
     });
 }

@@ -17,11 +17,11 @@
 | `MaxHeight` | `string?` | `` | Parameter |  | CSS max-height applied to the panel; taller content scrolls inside it. |
 | `MaxWidth` | `string?` | `` | Parameter |  | CSS max-width applied to the popover panel. |
 | `MinWidth` | `string?` | `` | Parameter |  | CSS min-width applied to the popover panel. |
-| `Offset` | `int` | `8` | Parameter |  | Offset in pixels between anchor and popover. |
+| `Offset` | `int?` | `` | Parameter |  | Distance in pixels between the anchor and the panel. Leave it unset to use the active theme's --flare-popover-offset, which is what a theme expects to control. |
 | `Open` | `bool` | `false` | Parameter |  | Controls whether the popover panel is visible. |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the open state should change. |
 | `Placement` | `Placement` | `Placement.BottomStart` | Parameter |  | Position of the panel relative to the anchor element. |
-| `Trigger` | `PopoverTrigger` | `PopoverTrigger.Manual` | Parameter |  | How the popover opens. Click toggles it from the anchor, Hover opens on hover, and Manual (default) leaves it fully controlled. All modes still drive Open/OpenChanged. |
+| `Trigger` | `PopoverTrigger` | `PopoverTrigger.Manual` | Parameter |  | How the popover opens. Click toggles it from the anchor, Hover opens on hover or keyboard focus, and Manual (default) leaves it fully controlled. All modes still drive Open/OpenChanged. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

@@ -4688,11 +4688,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MaxHeight", @"string?", null, @"CSS max-height applied to the panel; taller content scrolls inside it.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"MaxWidth", @"string?", null, @"CSS max-width applied to the popover panel.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"MinWidth", @"string?", null, @"CSS min-width applied to the popover panel.", null, false, false, false, @"FlarePopover"),
-                new ApiParameterInfo(@"Offset", @"int", @"8", @"Offset in pixels between anchor and popover.", null, false, false, false, @"FlarePopover"),
+                new ApiParameterInfo(@"Offset", @"int?", null, @"Distance in pixels between the anchor and the panel. Leave it unset to use the active theme's --flare-popover-offset, which is what a theme expects to control.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the popover panel is visible.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback raised when the open state should change.", null, false, true, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Placement", @"Placement", @"Placement.BottomStart", @"Position of the panel relative to the anchor element.", null, false, false, false, @"FlarePopover"),
-                new ApiParameterInfo(@"Trigger", @"PopoverTrigger", @"PopoverTrigger.Manual", @"How the popover opens. Click toggles it from the anchor, Hover opens on hover, and Manual (default) leaves it fully controlled. All modes still drive Open/OpenChanged.", null, false, false, false, @"FlarePopover"),
+                new ApiParameterInfo(@"Trigger", @"PopoverTrigger", @"PopoverTrigger.Manual", @"How the popover opens. Click toggles it from the anchor, Hover opens on hover or keyboard focus, and Manual (default) leaves it fully controlled. All modes still drive Open/OpenChanged.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -6826,11 +6826,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Offset", @"int?", null, @"Distance in pixels between the trigger and the bubble. Leave it unset to use the active theme's --flare-tooltip-offset, which is what a theme expects to control.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the tooltip is visible (for programmatic control).", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback raised when the open state should change.", null, false, true, false, @"FlareTooltip"),
-                new ApiParameterInfo(@"Placement", @"TooltipPlacement", @"TooltipPlacement.Top", @"Preferred position of the tooltip relative to the trigger element. The bubble flips to the opposite side when it would not fit there, so this is a preference and not a guarantee.", null, false, false, false, @"FlareTooltip"),
+                new ApiParameterInfo(@"Placement", @"Placement", @"Placement.Top", @"Preferred position of the tooltip relative to the trigger element: a side and, with Start/End, the edge it lines up with - the same values as FlarePopover. The bubble flips to the opposite side when it would not fit there, so this is a preference and not a guarantee. Default Top.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"ShowOnClick", @"bool", @"false", @"Toggles the tooltip when the trigger is clicked or tapped (dismissed by an outside click or Escape). Default false.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"ShowOnFocus", @"bool", @"true", @"Shows the tooltip while the trigger (or a child) has keyboard focus - important for keyboard and screen-reader users. Default true.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"ShowOnHover", @"bool", @"true", @"Shows the tooltip while the trigger is hovered. Default true.", null, false, false, false, @"FlareTooltip"),
-                new ApiParameterInfo(@"TooltipContent", @"RenderFragment?", null, @"Rich content rendered inside the tooltip bubble. Takes priority over Content.", null, false, false, false, @"FlareTooltip"),
+                new ApiParameterInfo(@"TooltipContent", @"RenderFragment?", null, @"Rich content rendered inside the tooltip bubble. Takes priority over Content. A tooltip describes; it is never focused, so a link or button placed here cannot be reached from the keyboard or a screen reader - interactive content belongs in a FlarePopover.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -8796,6 +8796,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareFloatingActionMenu",
                 @"FlarePopover",
+                @"FlareTooltip",
             });
 
         e[@"PopoverTrigger"] = new ApiEnumInfo(
@@ -8808,7 +8809,7 @@ public static class ComponentApiRegistry
             {
                 new ApiEnumMember(@"Manual", @"0", @"The consumer drives Open/OpenChanged (default) -- no built-in handler."),
                 new ApiEnumMember(@"Click", @"1", @"Clicking the anchor toggles the popover open and closed."),
-                new ApiEnumMember(@"Hover", @"2", @"Hovering the anchor opens the popover (after Delay) and leaving it closes it (after HideDelay). Not modal - no scrim or focus trap."),
+                new ApiEnumMember(@"Hover", @"2", @"Hovering the anchor - or moving keyboard focus into it - opens the popover (after Delay); leaving it, or Escape, closes it (leaving waits HideDelay). Not modal - no scrim or focus trap."),
             },
             new string[]
             {
@@ -9358,24 +9359,6 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareToolPanel",
-            });
-
-        e[@"TooltipPlacement"] = new ApiEnumInfo(
-            @"TooltipPlacement",
-            @"Flare.Components.TooltipPlacement",
-            @"Flare.Components",
-            @"Side of the anchor a FlareTooltip is placed on.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Top", @"0", @"Top."),
-                new ApiEnumMember(@"Bottom", @"1", @"Bottom."),
-                new ApiEnumMember(@"Left", @"2", @"Left."),
-                new ApiEnumMember(@"Right", @"3", @"Right."),
-            },
-            new string[]
-            {
-                @"FlareTooltip",
             });
 
         e[@"TrackSize"] = new ApiEnumInfo(

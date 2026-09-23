@@ -66,7 +66,7 @@
 .flare-menu__panel--bottom-left,
 .flare-menu__panel--bottom-right,
 .flare-menu__panel--top-left,
-.flare-menu__panel--top-right { top: calc(100% + 0.25rem); left: 0; }
+.flare-menu__panel--top-right { top: calc(100% + var(--flare-menu-offset)); left: 0; }
 
 .flare-menu__panel--bottom-left  { transform-origin: top left; }
 .flare-menu__panel--bottom-right { transform-origin: top right; }
@@ -123,7 +123,7 @@
    of the window always did. */
 .flare-submenu__panel--end {
     top: 0;
-    left: calc(100% + 0.25rem);
+    left: calc(100% + var(--flare-menu-offset));
 }
 
 .flare-submenu__panel--start {
@@ -132,7 +132,7 @@
 }
 
 .flare-submenu__panel--bottom {
-    top: calc(100% + 0.25rem);
+    top: calc(100% + var(--flare-menu-offset));
     left: 0;
 }
 

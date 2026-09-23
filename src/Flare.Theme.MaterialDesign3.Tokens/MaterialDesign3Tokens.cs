@@ -547,6 +547,8 @@ public class MaterialDesign3Tokens
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
+        // Flush against the anchor, as material-web md-menu places it (x/y offset 0).
+        PanelOffset = "0px",
         // Baseline M3 is one classic surface: a 4dp panel with square items and no group islands.
         // The 16dp panel, the rounded items and the floating group sections are Expressive, and the
         // Expressive theme states them.
@@ -926,6 +928,7 @@ public class MaterialDesign3Tokens
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-medium)",
+        Offset = "0.5rem",
     };
 
     internal static readonly AvatarTokens Avatar = new()

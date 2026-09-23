@@ -4,7 +4,7 @@
 @* A ribbon button that opens a dropdown menu / gallery (Office "Styles", "Paste options" etc.).
    Built on the base FlareMenu: the activator is a ribbon-styled button and MenuContent holds the
    menu items (FlareMenuItem). Large (icon + label + chevron) or small (icon + chevron) modes. *@
-<FlareTooltip Content="@Tooltip" Placement="@TooltipPlacement.Bottom">
+<FlareTooltip Content="@Tooltip" Placement="@Placement.Bottom">
     <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="@Tooltip">
         <Activator>
             <FlareButton Variant="@ButtonVariant.Text" Size="@(IsLarge ? ButtonSize.Lg : ButtonSize.Sm)"

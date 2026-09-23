@@ -75,6 +75,12 @@ public sealed class AnchoredPanelOptions
     public int Gap { get; init; } = 4;
 
     /// <summary>
+    /// Name of a CSS custom property, read from the panel, that holds the distance to the anchor - so the
+    /// active theme decides it. <see cref="Gap"/> is used when the property is unset or not a length.
+    /// </summary>
+    public string? GapToken { get; init; }
+
+    /// <summary>
     /// Keeps the panel at least as wide as the anchor. It still grows past that when its content needs
     /// the room, and never past the viewport.
     /// </summary>

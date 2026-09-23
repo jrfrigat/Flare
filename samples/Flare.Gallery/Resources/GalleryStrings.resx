@@ -2215,6 +2215,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Tooltip_Placement" xml:space="preserve">
     <value>Placement</value>
   </data>
+  <data name="Tooltip_AlignedStart" xml:space="preserve">
+    <value>Lines up with the trigger's start edge</value>
+  </data>
+  <data name="Tooltip_AlignedEnd" xml:space="preserve">
+    <value>Lines up with the trigger's end edge</value>
+  </data>
   <data name="Tooltip_Delay" xml:space="preserve">
     <value>Delay</value>
   </data>

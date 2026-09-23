@@ -79,6 +79,80 @@ public class FlarePopoverTriggerTests : FlareTestContext
         Assert.DoesNotContain(true, states);
     }
 
+    // A hover popover used to listen to the pointer only: a keyboard reader could not open it at all.
+    [Fact]
+    public async Task HoverTrigger_OpensWhenFocusEntersTheAnchor()
+    {
+        var states = new List<bool>();
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Hover)
+            .Add(x => x.AnchorContent, "<button>anchor</button>")
+            .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
+
+        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Popover.Anchor}").FocusIn());
+
+        Assert.Equal(new[] { true }, states);
+    }
+
+    [Fact]
+    public async Task HoverTrigger_ClosesOnEscapeAndWhenFocusLeaves()
+    {
+        var states = new List<bool>();
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Hover)
+            .Add(x => x.Open, true)
+            .Add(x => x.HideDelay, 20)
+            .Add(x => x.AnchorContent, "<button>anchor</button>")
+            .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
+        var root = cut.Find($".{Css.Classes.Popover.Anchor}");
+
+        await cut.InvokeAsync(() => root.KeyDown("Escape"));
+        Assert.Equal(new[] { false }, states);
+
+        states.Clear();
+        await cut.InvokeAsync(() => root.FocusOut());
+        await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
+        Assert.Contains(false, states);
+    }
+
+    // The keyboard path is the hover trigger's alone. On any other trigger a root handler would hear every
+    // keystroke typed into the panel and re-render the popover for each one.
+    [Theory]
+    [InlineData(PopoverTrigger.Click)]
+    [InlineData(PopoverTrigger.Manual)]
+    public void NonHoverTriggers_ListenToNoKeysOrFocusOnTheRoot(PopoverTrigger trigger)
+    {
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, trigger)
+            .Add(x => x.Open, true)
+            .Add(x => x.AnchorContent, "<button>anchor</button>"));
+        var root = cut.Find($".{Css.Classes.Popover.Anchor}");
+
+        Assert.Throws<MissingEventHandlerException>(() => root.KeyDown("a"));
+        Assert.Throws<MissingEventHandlerException>(() => root.FocusIn());
+        Assert.Throws<MissingEventHandlerException>(() => root.FocusOut());
+    }
+
+    // Focus moving between two elements inside fires focusout then focusin; the close must not survive it.
+    [Fact]
+    public async Task HoverTrigger_FocusMovingInside_DoesNotClose()
+    {
+        var states = new List<bool>();
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Hover)
+            .Add(x => x.Open, true)
+            .Add(x => x.HideDelay, 60)
+            .Add(x => x.AnchorContent, "<button>anchor</button>")
+            .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
+        var root = cut.Find($".{Css.Classes.Popover.Anchor}");
+
+        await cut.InvokeAsync(() => root.FocusOut());
+        await cut.InvokeAsync(() => root.FocusIn());
+        await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
+
+        Assert.DoesNotContain(false, states);
+    }
+
     // The other half of the same generation counter: a leave with no re-entry must still close.
     [Fact]
     public async Task HoverLeave_WithoutReentry_StillCloses()

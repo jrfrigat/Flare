@@ -16,11 +16,13 @@ public static class TooltipPopup
 /// <summary>CSS variable tokens for popover popup.</summary>
 public static class PopoverPopup
 {
-    // Popover surface/elevation/padding/width/offset/scrim/motion are NOT tokens here - popover.css and
-    // menu.css read the shared color/elevation/spacing/motion tokens directly. Only the corner radius is a
-    // popover-family token (themes vary it: shape-medium vs shape-small), shared by all popover-like surfaces.
+    // Popover surface/elevation/padding/width/scrim/motion are NOT tokens here - popover.css and menu.css
+    // read the shared color/elevation/spacing/motion tokens directly. The corner radius is a popover-family
+    // token (themes vary it: shape-medium vs shape-small), and so is the distance from the anchor.
     /// <summary>CSS custom-property name for the popover-family corner radius.</summary>
     public const string Radius = "--flare-popover-radius";
+    /// <summary>CSS custom-property name for the distance between a popover and its anchor.</summary>
+    public const string Offset = "--flare-popover-offset";
 }
 
 /// <summary>CSS variable tokens for data grid field.</summary>

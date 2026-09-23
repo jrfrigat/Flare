@@ -83,8 +83,6 @@
     private ElementReference _panelEl;
     private ElementReference _activatorEl;
     private readonly AnchoredLayer _layer = new();
-    // Matches the 0.25rem the panel rests at before the engine places it.
-    private const int MenuGap = 4;
     private FlareMenuItem? _focusedItem;
     // Whether this opening came from the keyboard, which decides if an item starts out active. A pointer
     // user is looking at where they clicked and has no use for a highlight on the first item; a keyboard
@@ -120,7 +118,8 @@
         await _layer.SyncAsync(Overlay, _open, _activatorEl, _panelEl, new AnchoredPanelOptions
         {
             Placement = _placement,
-            Gap = MenuGap,
+            // The theme decides the distance; the same token places the panel for the frame before this.
+            GapToken = Css.Tokens.MenuPanel.Offset,
             AnchorRect = _cursorX is not null && _cursorY is not null
                 ? new PanelAnchorRect(_cursorX.Value, _cursorY.Value)
                 : null,

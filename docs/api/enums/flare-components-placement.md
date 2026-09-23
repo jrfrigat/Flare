@@ -31,3 +31,4 @@ A bare side (Top) centres on the anchor. Start and End name the edge that lines 
 
 - `FlareFloatingActionMenu`
 - `FlarePopover`
+- `FlareTooltip`

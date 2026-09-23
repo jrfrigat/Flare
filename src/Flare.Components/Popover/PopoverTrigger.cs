@@ -9,7 +9,8 @@ public enum PopoverTrigger
     /// <summary>Clicking the anchor toggles the popover open and closed.</summary>
     Click,
 
-    /// <summary>Hovering the anchor opens the popover (after <see cref="FlarePopover.Delay"/>) and leaving it
-    /// closes it (after <see cref="FlarePopover.HideDelay"/>). Not modal - no scrim or focus trap.</summary>
+    /// <summary>Hovering the anchor - or moving keyboard focus into it - opens the popover (after
+    /// <see cref="FlarePopover.Delay"/>); leaving it, or Escape, closes it (leaving waits
+    /// <see cref="FlarePopover.HideDelay"/>). Not modal - no scrim or focus trap.</summary>
     Hover,
 }

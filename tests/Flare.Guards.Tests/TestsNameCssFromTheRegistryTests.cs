@@ -25,7 +25,8 @@ public class TestsNameCssFromTheRegistryTests
         Assert.True(known.Count > 500, "The registry scan found almost nothing, so this guard proves nothing.");
 
         var pattern = new Regex(
-            "(" + string.Join("|", known.OrderByDescending(n => n.Length).Select(Regex.Escape)) + ")(?![a-z0-9-])",
+            // A name followed by ".js" is a script module path (flare-overlay.js), not a class.
+            "(" + string.Join("|", known.OrderByDescending(n => n.Length).Select(Regex.Escape)) + @")(?![a-z0-9-]|\.js\b)",
             RegexOptions.Compiled);
 
         var offenders = new List<string>();
