@@ -74,11 +74,10 @@ All notable changes to Flare are documented here. This project adheres to
 - **A tooltip opened by a click or by `Open` sits as far from its trigger as a hovered one.** The hover
   path read the theme's `--flare-tooltip-offset`; the path that opens from code handed the placement
   engine a 4px default, so the same tooltip stood at two distances depending on how it was opened.
-- **`FlareToggleGroup`'s border stays tight around its buttons.** A group narrower than its buttons
-  scrolled them underneath a border that stayed put, and a group stretched by its parent - a grid cell,
-  a stretching flex column - drew its border past the last button. The buttons now share the group's
-  width: they grow to fill a stretched group and shrink in a narrow one, where a label that does not
-  fit ends in an ellipsis. Icons keep their size.
+- **`FlareToggleGroup`'s border scrolls with its buttons.** A group narrower than its buttons scrolled
+  them underneath a border that stayed put, and a group stretched by its parent - a grid cell, a
+  stretching flex column - drew its border past the last button. The border is now drawn by the buttons
+  themselves, so it ends where they end and moves with them when the group scrolls.
 
 ## [0.39.0] - 2026-09-22
 
