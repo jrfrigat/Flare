@@ -25,7 +25,7 @@
                 {
                     <p class="@Css.Classes.Timeline.Title">@Title</p>
                 }
-                <span class="@Css.Classes.Timeline.Status">
+                <div class="@Css.Classes.Timeline.Status">
                     @if (StatusContent is not null)
                     {
                         @StatusContent
@@ -34,7 +34,7 @@
                     {
                         <FlareBadge Standalone Text="@Status" Color="@Color" />
                     }
-                </span>
+                </div>
             </div>
         }
         else if (!string.IsNullOrEmpty(Title))
