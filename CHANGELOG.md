@@ -19,6 +19,11 @@ All notable changes to Flare are documented here. This project adheres to
   `title` - the same parameter `FlareTab`, `FlareLinkTab`, `FlareNavLink` and `FlareBottomNavItem`
   already have. An icon button is where it matters most, since the icon alone rarely says what the
   button does. For a styled bubble, wrap the button in `FlareTooltip` as before.
+- **`FlareTimelineItem` shows the entry's state on the title's line.** `Status` puts a short state -
+  "Running", "Completed" - next to the title as a badge in the item's own `Color`, so the dot and the
+  badge are colored from one value instead of the caller mapping the same state twice. `StatusContent`
+  takes any markup in the same place when a single badge is not enough. The state used to have nowhere
+  to go but the top of the body, under the title. An item without a state renders exactly as before.
 
 ### Fixed
 

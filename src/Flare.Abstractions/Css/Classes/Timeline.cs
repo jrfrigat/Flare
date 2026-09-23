@@ -33,6 +33,11 @@ public static class Timeline
     public const string Body = "flare-timeline-item__body";
     /// <summary>The <c>flare-timeline-item__title</c> CSS class.</summary>
     public const string Title = "flare-timeline-item__title";
+    /// <summary>The <c>flare-timeline-item__header</c> CSS class: the title's line when the item carries a
+    /// state.</summary>
+    public const string Header = "flare-timeline-item__header";
+    /// <summary>The <c>flare-timeline-item__status</c> CSS class: the state next to the title.</summary>
+    public const string Status = "flare-timeline-item__status";
     /// <summary>The <c>flare-timeline-item__content</c> CSS class.</summary>
     public const string Content = "flare-timeline-item__content";
 }

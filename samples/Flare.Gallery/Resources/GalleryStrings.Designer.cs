@@ -9299,6 +9299,96 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на State on the title's line.
+        /// </summary>
+        public static string Timeline_Status {
+            get {
+                return ResourceManager.GetString("Timeline_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Status puts a badge next to the title in the item's own Color, so the dot and the badge always agree. StatusContent takes any markup instead - here, a progress count..
+        /// </summary>
+        public static string Timeline_StatusDesc {
+            get {
+                return ResourceManager.GetString("Timeline_StatusDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Build.
+        /// </summary>
+        public static string Timeline_StatusBuild {
+            get {
+                return ResourceManager.GetString("Timeline_StatusBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tests.
+        /// </summary>
+        public static string Timeline_StatusTests {
+            get {
+                return ResourceManager.GetString("Timeline_StatusTests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Review.
+        /// </summary>
+        public static string Timeline_StatusReview {
+            get {
+                return ResourceManager.GetString("Timeline_StatusReview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Deploy.
+        /// </summary>
+        public static string Timeline_StatusDeploy {
+            get {
+                return ResourceManager.GetString("Timeline_StatusDeploy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Completed.
+        /// </summary>
+        public static string Timeline_StatusCompleted {
+            get {
+                return ResourceManager.GetString("Timeline_StatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Needs attention.
+        /// </summary>
+        public static string Timeline_StatusAttention {
+            get {
+                return ResourceManager.GetString("Timeline_StatusAttention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Waiting.
+        /// </summary>
+        public static string Timeline_StatusWaiting {
+            get {
+                return ResourceManager.GetString("Timeline_StatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} of {1} checks.
+        /// </summary>
+        public static string Timeline_StatusProgress {
+            get {
+                return ResourceManager.GetString("Timeline_StatusProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Alternating Layout.
         /// </summary>
         public static string Timeline_Alternating {

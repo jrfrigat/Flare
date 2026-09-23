@@ -11,6 +11,8 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Additional body content for this timeline item. |
 | `Color` | `FlareColor` | `` | Parameter |  | Dot/connector color. Defaults to Primary. Role (FlareColor.Secondary) -> shared class; custom (FlareColor.Custom("#...")) -> inline token. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in the dot - any provider (a bare string is a Material Symbols name). |
+| `Status` | `string?` | `` | Parameter |  | Short state of the entry ("Running", "Completed"), shown as a badge on the title's line in the item's Color, so one value colors both the dot and the badge. |
+| `StatusContent` | `RenderFragment?` | `` | Parameter |  | Custom content for the state on the title's line, in place of the Status badge. |
 | `Time` | `string?` | `` | Parameter |  | Timestamp or date string shown above the title. |
 | `Title` | `string?` | `` | Parameter |  | Title text displayed in the item body. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

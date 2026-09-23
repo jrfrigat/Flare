@@ -2157,6 +2157,36 @@
   <data name="Timeline_Align" xml:space="preserve">
     <value>Выравнивание вправо и свой цвет точки</value>
   </data>
+  <data name="Timeline_Status" xml:space="preserve">
+    <value>Состояние в строке заголовка</value>
+  </data>
+  <data name="Timeline_StatusDesc" xml:space="preserve">
+    <value>Status ставит бейдж рядом с заголовком в цвете самого элемента, поэтому точка и бейдж всегда совпадают. StatusContent принимает любую разметку - здесь это счетчик прогресса.</value>
+  </data>
+  <data name="Timeline_StatusBuild" xml:space="preserve">
+    <value>Сборка</value>
+  </data>
+  <data name="Timeline_StatusTests" xml:space="preserve">
+    <value>Тесты</value>
+  </data>
+  <data name="Timeline_StatusReview" xml:space="preserve">
+    <value>Проверка</value>
+  </data>
+  <data name="Timeline_StatusDeploy" xml:space="preserve">
+    <value>Развертывание</value>
+  </data>
+  <data name="Timeline_StatusCompleted" xml:space="preserve">
+    <value>Завершено</value>
+  </data>
+  <data name="Timeline_StatusAttention" xml:space="preserve">
+    <value>Требует внимания</value>
+  </data>
+  <data name="Timeline_StatusWaiting" xml:space="preserve">
+    <value>Ожидает</value>
+  </data>
+  <data name="Timeline_StatusProgress" xml:space="preserve">
+    <value>{0} из {1} проверок</value>
+  </data>
   <data name="Tooltip_Title" xml:space="preserve">
     <value>Подсказка</value>
   </data>

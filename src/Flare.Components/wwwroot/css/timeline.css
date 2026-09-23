@@ -69,6 +69,32 @@
     color: var(--flare-color-on-surface);
 }
 
+/* The title's line when the item carries a state: the gap under the title moves to the line, and the
+   state wraps below the title rather than squeezing it. */
+.flare-timeline-item__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--flare-spacing-2);
+    margin-bottom: var(--flare-spacing-3);
+}
+
+.flare-timeline-item__header .flare-timeline-item__title {
+    margin: 0;
+}
+
+.flare-timeline-item__status {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Where the body is right-aligned, the title's line hugs the same edge. */
+.flare-timeline--right .flare-timeline-item__header,
+.flare-timeline--alternate .flare-timeline-item:nth-child(even) .flare-timeline-item__header,
+.flare-timeline--alternating .flare-timeline__item--right .flare-timeline-item__header {
+    justify-content: flex-end;
+}
+
 .flare-timeline-item__content {
     font-family: var(--flare-typescale-body-medium-font);
     font-size: var(--flare-typescale-body-medium-size);
