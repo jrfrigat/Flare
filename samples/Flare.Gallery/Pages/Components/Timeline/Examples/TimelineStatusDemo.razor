@@ -1,0 +1,18 @@
+@* Status puts the entry's state on the title's line as a badge in the item's own Color, so the dot and
+   the badge are colored from one value. StatusContent takes any markup in the same place. *@
+<FlareStack Style="max-width:32rem;">
+    <FlareTimeline>
+        <FlareTimelineItem Title="@GalleryStrings.Timeline_StatusBuild" Time="09:14"
+                           Status="@GalleryStrings.Timeline_StatusCompleted" Color="FlareColor.Success" />
+        <FlareTimelineItem Title="@GalleryStrings.Timeline_StatusTests" Time="09:21"
+                           Status="@GalleryStrings.Timeline_StatusAttention" Color="FlareColor.Error" />
+        <FlareTimelineItem Title="@GalleryStrings.Timeline_StatusReview" Time="09:40" Color="FlareColor.Warning">
+            <StatusContent>
+                <FlareBadge Standalone Text="@string.Format(GalleryStrings.Timeline_StatusProgress, 3, 5)"
+                            Color="FlareColor.Warning" />
+            </StatusContent>
+        </FlareTimelineItem>
+        <FlareTimelineItem Title="@GalleryStrings.Timeline_StatusDeploy"
+                           Status="@GalleryStrings.Timeline_StatusWaiting" Color="FlareColor.Secondary" />
+    </FlareTimeline>
+</FlareStack>

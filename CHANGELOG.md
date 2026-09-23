@@ -3,6 +3,16 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **`FlareTimelineItem` shows the entry's state on the title's line.** `Status` puts a short state -
+  "Running", "Completed" - next to the title as a badge in the item's own `Color`, so the dot and the
+  badge are colored from one value instead of the caller mapping the same state twice. `StatusContent`
+  takes any markup in the same place when a single badge is not enough. The state used to have nowhere
+  to go but the top of the body, under the title. An item without a state renders exactly as before.
+
 ## [0.39.0] - 2026-09-22
 
 ### Added

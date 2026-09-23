@@ -6597,6 +6597,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Additional body content for this timeline item.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Dot/connector color. Defaults to Primary. Role (FlareColor.Secondary) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in the dot - any provider (a bare string is a Material Symbols name).", null, false, false, false, @"FlareTimelineItem"),
+                new ApiParameterInfo(@"Status", @"string?", null, @"Short state of the entry (""Running"", ""Completed""), shown as a badge on the title's line in the item's Color, so one value colors both the dot and the badge.", null, false, false, false, @"FlareTimelineItem"),
+                new ApiParameterInfo(@"StatusContent", @"RenderFragment?", null, @"Custom content for the state on the title's line, in place of the Status badge.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"Time", @"string?", null, @"Timestamp or date string shown above the title.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Title text displayed in the item body.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),

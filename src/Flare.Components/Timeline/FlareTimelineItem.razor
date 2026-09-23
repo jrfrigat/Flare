@@ -16,7 +16,28 @@
         {
             <span class="@Css.Classes.Timeline.Time">@Time</span>
         }
-        @if (!string.IsNullOrEmpty(Title))
+        @if (_hasStatus)
+        {
+            @* The state sits on the title's line, where a reader scanning the timeline looks first. A
+               Status badge takes the item's own Color, so the dot and the badge cannot disagree. *@
+            <div class="@Css.Classes.Timeline.Header">
+                @if (!string.IsNullOrEmpty(Title))
+                {
+                    <p class="@Css.Classes.Timeline.Title">@Title</p>
+                }
+                <span class="@Css.Classes.Timeline.Status">
+                    @if (StatusContent is not null)
+                    {
+                        @StatusContent
+                    }
+                    else
+                    {
+                        <FlareBadge Standalone Text="@Status" Color="@Color" />
+                    }
+                </span>
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(Title))
         {
             <p class="@Css.Classes.Timeline.Title">@Title</p>
         }
@@ -40,6 +61,14 @@
     [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Dot/connector color. Defaults to <c>Primary</c>. Role (<c>FlareColor.Secondary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Primary;
+    /// <summary>Short state of the entry ("Running", "Completed"), shown as a badge on the title's line in
+    /// the item's <see cref="Color"/>, so one value colors both the dot and the badge.</summary>
+    [Parameter] public string? Status { get; set; }
+    /// <summary>Custom content for the state on the title's line, in place of the <see cref="Status"/>
+    /// badge.</summary>
+    [Parameter] public RenderFragment? StatusContent { get; set; }
+
+    private bool _hasStatus => StatusContent is not null || !string.IsNullOrEmpty(Status);
 
     protected override string ComponentCssClass => Css.Classes.Timeline.Item;
 
