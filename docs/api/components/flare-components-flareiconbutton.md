@@ -23,6 +23,7 @@
 | `Shape` | `ButtonShape` | `ButtonShape.Default` | Parameter |  | Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons). |
 | `Size` | `ButtonSize` | `ButtonSize.Md` | Parameter |  | Size of the button. |
 | `Target` | `string?` | `` | Parameter |  | Target for the link button (e.g. "_blank"). Only used with Href. |
+| `Tooltip` | `string?` | `` | Parameter |  | Hint shown on hover (native title) - an icon alone rarely says what the button does to a sighted reader. For a styled bubble, wrap the button in a FlareTooltip instead. |
 | `Type` | `ButtonType` | `ButtonType.Button` | Parameter |  | HTML type attribute of the button element (Button, Submit, or Reset). |
 | `Variant` | `ButtonVariant` | `ButtonVariant.Text` | Parameter |  | Visual style variant. Defaults to Text (a standard, chrome-less icon button). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

@@ -487,6 +487,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native shape; Rounded, Circular and Square force a rounded rectangle, pill, or sharp corners.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareButton"),
+                new ApiParameterInfo(@"Tooltip", @"string?", null, @"Hint shown on hover (native title). For a styled bubble, wrap the button in a FlareTooltip instead.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"TrailingIcon", @"RenderFragment?", null, @"Icon rendered after the button label.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Type", @"ButtonType", @"ButtonType.Button", @"HTML type attribute of the button element (Button, Submit, or Reset).", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Overrides the label's typography with a type-scale value (font family/size/weight/line-height). When null (default) the label uses the per-Size button label typography.", null, false, false, false, @"FlareButton"),
@@ -517,6 +518,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the group, forwarded as aria-label. Name a group whose buttons belong together for a reason the buttons alone do not say - ""Filter by status"", ""Text alignment"".", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The buttons to render inside the group.", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"Collapsible", @"bool", @"false", @"Folds the segments that no longer fit into an overflow menu at the trailing end, and unfolds them again when the room comes back. Whether something fits is a question only the browser can answer, so this is the one part of the group measured in script rather than decided in CSS. Suits the standard model, which hugs its buttons and therefore can run out of room; a connected group is meant to span its surface and share the width out instead of overflowing.", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"Color", @"FlareColor?", null, @"Color applied to all buttons in the group. Null keeps each button's own Color.", null, false, false, false, @"FlareButtonGroup"),
@@ -1599,6 +1601,7 @@ public static class ComponentApiRegistry
                 @"FlareDocumentTab",
                 @"FlareDocumentTabs",
                 @"FlareDragContext",
+                @"FlareDragHandle",
                 @"FlareDraggable",
                 @"FlareDrawer",
                 @"FlareDropZone",
@@ -2526,6 +2529,29 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareDragHandle"] = new ApiComponentInfo(
+            @"FlareDragHandle",
+            @"Flare.Components.FlareDragHandle",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"What the handle shows. Defaults to the drag-indicator icon. Placing a handle inside a FlareDraggable makes it the only place the item can be picked up from with a pointer; the rest of the item keeps its clicks, text selection and touch scrolling.", null, false, false, false, @"FlareDragHandle"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareDraggable"] = new ApiComponentInfo(
             @"FlareDraggable",
             @"Flare.Components.FlareDraggable",
@@ -3237,6 +3263,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Tooltip", @"string?", null, @"Hint shown on hover (native title) - an icon alone rarely says what the button does to a sighted reader. For a styled bubble, wrap the button in a FlareTooltip instead.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Type", @"ButtonType", @"ButtonType.Button", @"HTML type attribute of the button element (Button, Submit, or Reset).", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Text", @"Visual style variant. Defaults to Text (a standard, chrome-less icon button).", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),

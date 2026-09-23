@@ -45,10 +45,29 @@
     private bool _isActive => TabsContext?.ActiveTab == this;
     private bool _lazy => TabsContext?.Lazy == true;
 
+    // What the tab bar last drew from this tab. The bar belongs to FlareTabs, which renders it BEFORE
+    // this tab receives its new parameters, so a changed label or badge would stay one render behind
+    // unless the tab says so. The icon is compared by presence only: a fragment written in markup is a
+    // new delegate on every render, and comparing it would re-render the bar every time.
+    private (string Label, string? Badge, bool Dot, FlareColor BadgeColor, bool Disabled, bool Closeable,
+        string? Tooltip, bool HasIcon) _header;
+
+    private (string, string?, bool, FlareColor, bool, bool, string?, bool) CurrentHeader =>
+        (Label, Badge, BadgeDot, BadgeColor, Disabled, Closeable, Tooltip, LeadingIcon is not null);
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        _header = CurrentHeader;
         TabsContext?.Register(this);
+    }
+
+    protected override void OnParametersSet()
+    {
+        var header = CurrentHeader;
+        if (header == _header) return;
+        _header = header;
+        TabsContext?.HeaderChanged?.Invoke();
     }
 
     public override async ValueTask DisposeAsync()

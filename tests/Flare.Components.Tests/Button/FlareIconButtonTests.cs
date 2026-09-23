@@ -43,4 +43,25 @@ public class FlareIconButtonTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll($"a.{Css.Classes.Button.Root}"));
     }
+
+    [Fact]
+    public void Tooltip_RendersNativeTitle()
+    {
+        var cut = Render<FlareIconButton>(p => p
+            .Add(x => x.Icon, FlareIcons.Add)
+            .Add(x => x.AriaLabel, "Add")
+            .Add(x => x.Tooltip, "Add a card"));
+
+        Assert.Equal("Add a card", cut.Find($"button.{Css.Classes.Button.Root}").GetAttribute("title"));
+    }
+
+    [Fact]
+    public void NoTooltip_RendersNoTitle()
+    {
+        var cut = Render<FlareIconButton>(p => p
+            .Add(x => x.Icon, FlareIcons.Add)
+            .Add(x => x.AriaLabel, "Add"));
+
+        Assert.False(cut.Find($"button.{Css.Classes.Button.Root}").HasAttribute("title"));
+    }
 }

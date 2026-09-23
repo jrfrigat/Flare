@@ -26,6 +26,7 @@
 | `Shape` | `ButtonShape` | `ButtonShape.Default` | Parameter |  | Corner shape of the button. Default keeps the theme's native shape; Rounded, Circular and Square force a rounded rectangle, pill, or sharp corners. |
 | `Size` | `ButtonSize` | `ButtonSize.Md` | Parameter |  | Size of the button. |
 | `Target` | `string?` | `` | Parameter |  | Target for the link button (e.g. "_blank"). Only used with Href. |
+| `Tooltip` | `string?` | `` | Parameter |  | Hint shown on hover (native title). For a styled bubble, wrap the button in a FlareTooltip instead. |
 | `TrailingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered after the button label. |
 | `Type` | `ButtonType` | `ButtonType.Button` | Parameter |  | HTML type attribute of the button element (Button, Submit, or Reset). |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Overrides the label's typography with a type-scale value (font family/size/weight/line-height). When null (default) the label uses the per-Size button label typography. |

@@ -16,6 +16,7 @@
              Type="Type"
              AriaPressed="AriaPressed"
              AriaLabel="@AriaLabel"
+             Tooltip="@Tooltip"
              Href="@Href"
              Target="@Target"
              Rel="@Rel"
@@ -66,6 +67,9 @@
     [Parameter] public bool? AriaPressed { get; set; }
     /// <summary>Accessible label for the button, forwarded as aria-label. Strongly recommended for icon-only buttons.</summary>
     [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Hint shown on hover (native <c>title</c>) - an icon alone rarely says what the button does
+    /// to a sighted reader. For a styled bubble, wrap the button in a <see cref="FlareTooltip"/> instead.</summary>
+    [Parameter] public string? Tooltip { get; set; }
     /// <summary>When set, the button renders as a link (&lt;a&gt;) to this URL. Disabled/Loading removes the href.</summary>
     [Parameter] public string? Href { get; set; }
     /// <summary>Target for the link button (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>

@@ -3,6 +3,38 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **`FlareDragHandle`: pick an item up by its grip only.** Placed anywhere inside a `FlareDraggable`,
+  it becomes the one place a pointer starts a drag from; the rest of the item is an ordinary surface
+  again - it takes clicks, lets text be selected and scrolls under a finger. It renders the
+  drag-indicator icon unless given content of its own. Nothing changes on `FlareDraggable`: an item
+  without a handle is still picked up anywhere, and the keyboard reorder works on the item either way.
+- **`FlareButtonGroup` is a named group.** The root now carries `role="group"`, and the new
+  `AriaLabel` gives it the name a screen reader announces on entering it - "Filter by status" for a
+  row of filter buttons. It used to be an anonymous `div`, named only through `AdditionalAttributes`.
+- **`Tooltip` on `FlareButton` and `FlareIconButton`.** The hover hint, rendered as the native
+  `title` - the same parameter `FlareTab`, `FlareLinkTab`, `FlareNavLink` and `FlareBottomNavItem`
+  already have. An icon button is where it matters most, since the icon alone rarely says what the
+  button does. For a styled bubble, wrap the button in `FlareTooltip` as before.
+
+### Fixed
+
+- **A click on a draggable reaches it again.** The drag gesture took pointer capture on the press, so
+  the release - and with it the click - went to the drag context's root instead of the element that was
+  pressed. The 4px threshold that was meant to keep a click a click did not: every `@onclick` inside a
+  draggable was dead. That covered a clickable card in a `FlareDraggable` or on a `FlareKanban`, a row
+  click in `FlareDataGrid` with `RowReorderable`, sorting by a header click with
+  `ReorderableColumns`, and selecting a `Draggable` tree node with the mouse. The pointer is now
+  captured only once it has travelled far enough to start a drag; a real drag still ends without a
+  click.
+- **`FlareTabs` shows a tab's new label and badge in the same render.** The tab bar is drawn by
+  `FlareTabs` from its `FlareTab` children, and a render of the page reached the bar before it reached
+  the tabs, so a count in a label or a badge showed the previous render's value until something else
+  re-rendered the bar. A tab now tells the bar when what it draws there has changed.
+
 ## [0.39.0] - 2026-09-22
 
 ### Added

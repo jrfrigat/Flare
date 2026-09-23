@@ -3416,6 +3416,27 @@
   <data name="DragDrop_SurfacesDesc" xml:space="preserve">
     <value>Три поверхности, у которых нет ничего общего внешне, переупорядочиваются через один и тот же контекст. Дерево и таблица рисуют собственные li и tr, поэтому подключаются к модели атрибутом, а не оберткой, - а дерево отказывает броску внутрь собственного поддерева.</value>
   </data>
+  <data name="DragDrop_Handle" xml:space="preserve">
+    <value>Ручка, и карточка по-прежнему нажимается</value>
+  </data>
+  <data name="DragDrop_HandleDesc" xml:space="preserve">
+    <value>Поставьте FlareDragHandle внутрь элемента, и поднимать его будет только ручка: остальная карточка сохраняет клик, выделение текста и прокрутку касанием. Нажмите на карточку, чтобы открыть ее, или перетащите за ручку, чтобы переставить.</value>
+  </data>
+  <data name="DragDrop_HandleOpened" xml:space="preserve">
+    <value>Открыта: {0}</value>
+  </data>
+  <data name="DragDrop_HandleNothingOpened" xml:space="preserve">
+    <value>Нажмите на карточку, чтобы открыть ее.</value>
+  </data>
+  <data name="DragDrop_HandleItem1" xml:space="preserve">
+    <value>Написать заметки к выпуску</value>
+  </data>
+  <data name="DragDrop_HandleItem2" xml:space="preserve">
+    <value>Проверить модель перетаскивания</value>
+  </data>
+  <data name="DragDrop_HandleItem3" xml:space="preserve">
+    <value>Замерить холодный старт</value>
+  </data>
   <data name="Anchor_Copy" xml:space="preserve">
     <value>Скопировать ссылку на раздел</value>
   </data>

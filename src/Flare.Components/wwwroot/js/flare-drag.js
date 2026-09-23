@@ -19,8 +19,8 @@ import { registry } from './flare-dom.js';
 // `filter` decides whether a press starts a gesture at all - the drag-and-drop layer binds ONE gesture
 // to a container and uses it to accept only presses that landed on a draggable descendant.
 // `threshold` (px, default 0) delays the gesture until the pointer has actually travelled: below it the
-// press is left alone, so a click on a draggable is still a click. A gesture with a threshold does not
-// preventDefault the press, for the same reason.
+// press is left alone, so a click on a draggable is still a click. A gesture with a threshold neither
+// preventDefaults nor captures the press, for the same reason.
 // `touchAction` is written to the handle so a drag does not also pan the page; pass null when the
 // handle is a container whose scrolling must survive and the draggable children declare it themselves.
 export function startDrag(handle, opts) {
@@ -34,13 +34,16 @@ export function startDrag(handle, opts) {
     // A drag handle should not also pan/scroll the page on touch.
     if (o.touchAction !== null) handle.style.touchAction = o.touchAction || 'none';
 
-    // onStart is handed the PRESS, never the move that crossed the threshold. Pointer capture is taken
-    // on pointerdown, and from then on every pointer event is retargeted to the handle - so the move's
-    // `target` is the container, not what was pressed. A thresholded gesture that read `e.target` in
+    // onStart is handed the PRESS, never the move that crossed the threshold. The move's `target` is
+    // whatever the pointer happens to be over (or the handle, once captured), not what was pressed. A thresholded gesture that read `e.target` in
     // onStart would find the container every time and start nothing. Its clientX/clientY are the press
     // point too, which is what a grab offset is measured from.
     function begin() {
         active = true;
+        // A thresholded gesture captures only now. Captured on the press, the release is retargeted to
+        // the handle and the browser sends the click to it as well, so the pressed element never gets
+        // its click - the very thing the threshold exists to keep.
+        if (threshold) { try { handle.setPointerCapture(pid); } catch (_) { } }
         if (o.cursor) { prevCursor = document.body.style.cursor; document.body.style.cursor = o.cursor; }
         prevSelect = document.body.style.userSelect; document.body.style.userSelect = 'none';
         o.onStart && o.onStart(downEvent);
@@ -49,8 +52,8 @@ export function startDrag(handle, opts) {
         if (e.pointerType === 'mouse' && e.button !== button) return;
         if (o.filter && !o.filter(e)) return;
         armed = true; startX = e.clientX; startY = e.clientY; pid = e.pointerId; downEvent = e;
-        try { handle.setPointerCapture(e.pointerId); } catch (_) { }
         if (threshold) return;   // the press stays a press until the pointer travels
+        try { handle.setPointerCapture(e.pointerId); } catch (_) { }
         begin();
         e.preventDefault();
     }
@@ -58,6 +61,9 @@ export function startDrag(handle, opts) {
         if (!armed || e.pointerId !== pid) return;
         const dx = e.clientX - startX, dy = e.clientY - startY;
         if (!active) {
+            // Uncaptured, a release outside the handle never reaches `end`; a mouse that moves with no
+            // button held has already let go, and must not start a drag nobody is holding.
+            if (e.pointerType === 'mouse' && e.buttons === 0) { armed = false; downEvent = null; return; }
             if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
             begin();
         }

@@ -240,7 +240,8 @@
             tab => _ = InvokeAsync(() => SelectTab(tab)),
             RegisterTab,
             UnregisterTab,
-            Lazy);
+            Lazy,
+            StateHasChanged);
     }
 
     private void RegisterTab(FlareTab tab)

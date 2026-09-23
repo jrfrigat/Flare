@@ -422,4 +422,16 @@ public sealed class DragModelTests : FlareTestContext
         Assert.Equal("todo", drop!.TargetId);
     }
 
+    // A handle is only a marker: which press starts a drag is decided in the browser, which reads it.
+    [Fact]
+    public void AHandleMarksItselfForTheGesture()
+    {
+        var cut = Render<FlareDraggable>(p => p
+            .Add(x => x.Id, "c1")
+            .AddChildContent<FlareDragHandle>());
+
+        var handle = cut.Find($"[data-flare-drag='c1'] .{Css.Classes.Drag.Handle}");
+        Assert.True(handle.HasAttribute($"data-{Css.Classes.Drag.Handle}"));
+        Assert.Equal("true", handle.GetAttribute("aria-hidden"));
+    }
 }

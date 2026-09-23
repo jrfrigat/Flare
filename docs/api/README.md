@@ -71,6 +71,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDocumentTab`](components/flare-components-ide-flaredocumenttab.md)
 - [`FlareDocumentTabs`](components/flare-components-ide-flaredocumenttabs.md)
 - [`FlareDragContext`](components/flare-components-flaredragcontext.md)
+- [`FlareDragHandle`](components/flare-components-flaredraghandle.md)
 - [`FlareDraggable`](components/flare-components-flaredraggable.md)
 - [`FlareDrawer`](components/flare-components-flaredrawer.md)
 - [`FlareDropZone`](components/flare-components-flaredropzone.md)

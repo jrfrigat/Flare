@@ -1,0 +1,30 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* aria-hidden because the handle is only a pointer affordance: the item itself stays focusable and is
+   picked up from the keyboard, so a second control announcing the same move would be noise. *@
+<span class="@BuildCssClass()"
+      style="@Style"
+      data-flare-drag-handle
+      aria-hidden="true"
+      @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <FlareIconView Value="FlareIcons.DragIndicator" />
+    }
+</span>
+
+@code {
+    /// <summary>
+    /// What the handle shows. Defaults to the drag-indicator icon. Placing a handle inside a
+    /// <see cref="FlareDraggable"/> makes it the only place the item can be picked up from with a
+    /// pointer; the rest of the item keeps its clicks, text selection and touch scrolling.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Drag.Handle;
+}

@@ -11108,6 +11108,69 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на A handle, and a card you can still click.
+        /// </summary>
+        public static string DragDrop_Handle {
+            get {
+                return ResourceManager.GetString("DragDrop_Handle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Put a FlareDragHandle inside an item and only the handle picks it up: the rest of the card keeps its clicks, its text selection and its touch scrolling. Click a card to open it, or drag it by the grip to reorder..
+        /// </summary>
+        public static string DragDrop_HandleDesc {
+            get {
+                return ResourceManager.GetString("DragDrop_HandleDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Opened: {0}.
+        /// </summary>
+        public static string DragDrop_HandleOpened {
+            get {
+                return ResourceManager.GetString("DragDrop_HandleOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click a card to open it..
+        /// </summary>
+        public static string DragDrop_HandleNothingOpened {
+            get {
+                return ResourceManager.GetString("DragDrop_HandleNothingOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Write the release notes.
+        /// </summary>
+        public static string DragDrop_HandleItem1 {
+            get {
+                return ResourceManager.GetString("DragDrop_HandleItem1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Review the drag model.
+        /// </summary>
+        public static string DragDrop_HandleItem2 {
+            get {
+                return ResourceManager.GetString("DragDrop_HandleItem2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Measure the cold start.
+        /// </summary>
+        public static string DragDrop_HandleItem3 {
+            get {
+                return ResourceManager.GetString("DragDrop_HandleItem3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Copy link to this section.
         /// </summary>
         public static string Anchor_Copy {

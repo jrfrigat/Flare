@@ -79,6 +79,7 @@ This component exposes no documented public methods.
 - `FlareDocumentTab`
 - `FlareDocumentTabs`
 - `FlareDragContext`
+- `FlareDragHandle`
 - `FlareDraggable`
 - `FlareDrawer`
 - `FlareDropZone`

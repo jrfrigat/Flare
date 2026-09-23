@@ -17,6 +17,9 @@ public static class Drag
     public const string ItemDropInto = "flare-draggable--drop-into";
     /// <summary>The <c>flare-draggable--disabled</c> CSS class.</summary>
     public const string ItemDisabled = "flare-draggable--disabled";
+    /// <summary>The <c>flare-drag-handle</c> CSS class: the part of an item a pointer drag starts from
+    /// when the item declares one.</summary>
+    public const string Handle = "flare-drag-handle";
     /// <summary>The <c>flare-drop-zone</c> CSS class.</summary>
     public const string Zone = "flare-drop-zone";
     /// <summary>The <c>flare-drop-zone--candidate</c> CSS class, applied to every zone that accepts the
