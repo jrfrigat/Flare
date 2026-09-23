@@ -51,6 +51,7 @@
        rel="@_rel"
        role="button"
        aria-label="@AriaLabel"
+       title="@Tooltip"
        aria-disabled="@(Disabled || Loading ? "true" : null)"
        aria-busy="@(Loading ? "true" : null)"
        tabindex="@(Disabled || Loading ? "-1" : null)"
@@ -65,6 +66,7 @@ else
             disabled="@(Disabled || Loading)"
             type="@Type.ToString().ToLowerInvariant()"
             aria-label="@AriaLabel"
+            title="@Tooltip"
             aria-pressed="@(AriaPressed is { } p ? (p ? "true" : "false") : null)"
             aria-busy="@(Loading ? "true" : null)"
             @onclick="OnClick"
@@ -101,6 +103,9 @@ else
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
     /// <summary>Accessible label for the button, forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Hint shown on hover (native <c>title</c>). For a styled bubble, wrap the button in a
+    /// <see cref="FlareTooltip"/> instead.</summary>
+    [Parameter] public string? Tooltip { get; set; }
     /// <summary>
     /// Toggle state, forwarded as <c>aria-pressed</c>. Left <c>null</c> the attribute is absent and the
     /// button is an ordinary command; <c>false</c> renders <c>aria-pressed="false"</c>, which is what makes

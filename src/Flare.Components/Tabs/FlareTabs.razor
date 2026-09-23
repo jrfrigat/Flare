@@ -178,6 +178,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        _headerRefreshPending = false;
         if (firstRender && !_vertical)
         {
             _dotNetRef = DotNetObjectReference.Create(this);
@@ -240,7 +241,20 @@
             tab => _ = InvokeAsync(() => SelectTab(tab)),
             RegisterTab,
             UnregisterTab,
-            Lazy);
+            Lazy,
+            OnHeaderChanged);
+    }
+
+    // A tab's header change re-renders the bar, and that render hands the tabs their parameters again.
+    // A label that differs on every evaluation (a clock, a random id) would then ping-pong forever, so
+    // the bar catches up at most once per render batch; the flag clears after the batch lands.
+    private bool _headerRefreshPending;
+
+    private void OnHeaderChanged()
+    {
+        if (_headerRefreshPending) return;
+        _headerRefreshPending = true;
+        StateHasChanged();
     }
 
     private void RegisterTab(FlareTab tab)

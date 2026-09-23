@@ -23,6 +23,30 @@
     touch-action: auto;
 }
 
+/* An item with a handle is picked up only by it, so the rest of the item is ordinary again: it scrolls
+   under a finger and shows no grab cursor it would not honour. */
+.flare-draggable:has(.flare-drag-handle) {
+    touch-action: auto;
+    cursor: auto;
+}
+
+.flare-drag-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    cursor: grab;
+}
+
+.flare-drag-handle:active {
+    cursor: grabbing;
+}
+
+.flare-draggable--disabled .flare-drag-handle {
+    cursor: inherit;
+    touch-action: auto;
+}
+
 /* The item stays where it is and dims; the thing that follows the pointer is a copy. */
 .flare-draggable--dragging {
     opacity: var(--flare-drag-source-opacity);

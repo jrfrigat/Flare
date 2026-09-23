@@ -8,6 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the group, forwarded as aria-label. Name a group whose buttons belong together for a reason the buttons alone do not say - "Filter by status", "Text alignment". |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The buttons to render inside the group. |
 | `Collapsible` | `bool` | `false` | Parameter |  | Folds the segments that no longer fit into an overflow menu at the trailing end, and unfolds them again when the room comes back. Whether something fits is a question only the browser can answer, so this is the one part of the group measured in script rather than decided in CSS. Suits the standard model, which hugs its buttons and therefore can run out of room; a connected group is meant to span its surface and share the width out instead of overflowing. |
 | `Color` | `FlareColor?` | `` | Parameter |  | Color applied to all buttons in the group. Null keeps each button's own Color. |

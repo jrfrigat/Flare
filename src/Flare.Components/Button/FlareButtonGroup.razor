@@ -7,6 +7,8 @@
 <div @ref="_root"
      class="@BuildCssClass(_verticalClass, _fullWidthClass, _modelClass, _collapsibleClass)"
      style="@Style"
+     role="group"
+     aria-label="@AriaLabel"
      @attributes="AdditionalAttributes">
 
     <CascadingValue Value="_context">
@@ -85,6 +87,10 @@
     /// group is meant to span its surface and share the width out instead of overflowing.
     /// </summary>
     [Parameter] public bool Collapsible { get; set; }
+
+    /// <summary>Accessible name of the group, forwarded as <c>aria-label</c>. Name a group whose buttons
+    /// belong together for a reason the buttons alone do not say - "Filter by status", "Text alignment".</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     /// <summary>Accessible label for the overflow button. Defaults to Flare's localized "More actions".</summary>
     [Parameter] public string? OverflowLabel { get; set; }

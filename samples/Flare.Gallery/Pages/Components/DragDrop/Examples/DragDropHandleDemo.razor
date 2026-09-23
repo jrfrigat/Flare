@@ -1,0 +1,43 @@
+@* A FlareDragHandle inside the item makes the grip the only place a pointer picks the card up, so the
+   card itself stays an ordinary clickable surface. Without a handle a press anywhere on the item may
+   become a drag, and a press that never travels is still delivered as a click. *@
+<FlareDragContext TPayload="Todo" Group="handles" OnDrop="Moved">
+    <FlareDropZone Target="list" Placement="DropPlacement.Between" Style="inline-size:min(100%,22rem)">
+        <FlareStack Gap="FlareSpacing.Small">
+            @foreach (var todo in _todos)
+            {
+                <FlareDraggable @key="todo.Id" Id="@todo.Id" Payload="todo">
+                    <FlareCard Variant="CardVariant.Filled" OnClick="@(() => _opened = todo)">
+                        <FlareStack Row="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                            <FlareDragHandle />
+                            <FlareText Typo="TypographyScale.BodyMedium">@todo.Title</FlareText>
+                        </FlareStack>
+                    </FlareCard>
+                </FlareDraggable>
+            }
+        </FlareStack>
+    </FlareDropZone>
+</FlareDragContext>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+    @(_opened is null ? GalleryStrings.DragDrop_HandleNothingOpened : string.Format(GalleryStrings.DragDrop_HandleOpened, _opened.Title))
+</FlareText>
+
+@code {
+    private sealed record Todo(string Id, string Title);
+
+    private readonly List<Todo> _todos =
+    [
+        new("t1", GalleryStrings.DragDrop_HandleItem1),
+        new("t2", GalleryStrings.DragDrop_HandleItem2),
+        new("t3", GalleryStrings.DragDrop_HandleItem3),
+    ];
+
+    private Todo? _opened;
+
+    private void Moved(FlareDropEventArgs<Todo> e)
+    {
+        _todos.Remove(e.Payload);
+        _todos.Insert(Math.Clamp(e.Index, 0, _todos.Count), e.Payload);
+    }
+}

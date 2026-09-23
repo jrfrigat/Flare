@@ -252,4 +252,14 @@ public class FlareButtonGroupTests : FlareTestContext
 
         Assert.Contains(Css.Classes.Button.Outlined, cut.Find($".{Css.Classes.Button.Root}").ClassName);
     }
+
+    [Fact]
+    public void IsAGroupNamedByAriaLabel()
+    {
+        var cut = Render<FlareButtonGroup>(p => p.Add(x => x.AriaLabel, "Filter by status"));
+
+        var root = cut.Find($".{Css.Classes.ButtonGroup.Root}");
+        Assert.Equal("group", root.GetAttribute("role"));
+        Assert.Equal("Filter by status", root.GetAttribute("aria-label"));
+    }
 }

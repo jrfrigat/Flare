@@ -22,6 +22,7 @@ const ITEM = '[data-flare-drag]';
 const ZONE = '[data-flare-drop]';
 const CONTEXT = '.flare-drag-context';
 const HIT = ':scope > [data-flare-drag-hit]';
+const HANDLE = '[data-flare-drag-handle]';
 
 const _contexts = registry();
 
@@ -56,6 +57,13 @@ function _ownItems(zoneEl) {
 // instead. Scoped to direct children so a nested item's row is not mistaken for this one's.
 function _hitBox(itemEl) {
     return itemEl.querySelector(HIT) ?? itemEl;
+}
+
+// Whether the item carries a drag handle of its own. A handle inside a nested item belongs to that one.
+function _hasOwnHandle(itemEl) {
+    for (const h of itemEl.querySelectorAll(HANDLE))
+        if (h.closest(ITEM) === itemEl) return true;
+    return false;
 }
 
 // Which part of the item the pointer is over. `both` splits it into thirds (a tree row: land before it,
@@ -280,7 +288,12 @@ export function registerDragContext(root, dotNetRef) {
         filter(e) {
             const item = e.target instanceof Element ? e.target.closest(ITEM) : null;
             if (!item || item.dataset.flareDragDisabled === 'true') return false;
-            return item.closest(CONTEXT) === root;
+            if (item.closest(CONTEXT) !== root) return false;
+            // An item that declares a handle of its own is picked up only by it; the rest of it keeps
+            // its clicks, its text selection and, on a touch screen, its scrolling.
+            if (!_hasOwnHandle(item)) return true;
+            const handle = e.target.closest(HANDLE);
+            return !!handle && handle.closest(ITEM) === item;
         },
         onStart(e) {
             const sourceEl = e.target.closest(ITEM);
