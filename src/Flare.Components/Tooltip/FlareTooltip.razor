@@ -5,6 +5,7 @@
 
 <div class="@BuildCssClass(_placementClass, _triggerClasses)" style="@_rootStyle" @attributes="AdditionalAttributes"
      @ref="_rootRef"
+     data-flare-placement="@_panelPlacement"
      aria-describedby="@(_hasTooltip ? _tooltipId : null)"
      @onclick="HandleRootClick"
      @onkeydown="HandleKeyDown">
@@ -36,11 +37,15 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Text displayed inside the tooltip bubble.</summary>
     [Parameter] public string? Content { get; set; }
-    /// <summary>Rich content rendered inside the tooltip bubble. Takes priority over <see cref="Content"/>.</summary>
+    /// <summary>Rich content rendered inside the tooltip bubble. Takes priority over <see cref="Content"/>.
+    /// A tooltip describes; it is never focused, so a link or button placed here cannot be reached from the
+    /// keyboard or a screen reader - interactive content belongs in a <see cref="FlarePopover"/>.</summary>
     [Parameter] public RenderFragment? TooltipContent { get; set; }
-    /// <summary>Preferred position of the tooltip relative to the trigger element. The bubble flips to
-    /// the opposite side when it would not fit there, so this is a preference and not a guarantee.</summary>
-    [Parameter] public TooltipPlacement Placement { get; set; } = TooltipPlacement.Top;
+    /// <summary>Preferred position of the tooltip relative to the trigger element: a side and, with
+    /// <c>Start</c>/<c>End</c>, the edge it lines up with - the same values as <see cref="FlarePopover"/>. The
+    /// bubble flips to the opposite side when it would not fit there, so this is a preference and not a
+    /// guarantee. Default <see cref="Placement.Top"/>.</summary>
+    [Parameter] public Placement Placement { get; set; } = Placement.Top;
     /// <summary>Distance in pixels between the trigger and the bubble. Leave it unset to use the
     /// active theme's <c>--flare-tooltip-offset</c>, which is what a theme expects to control.</summary>
     [Parameter] public int? Offset { get; set; }
@@ -74,20 +79,17 @@
     private readonly AnchoredLayer _layer = new();
     private bool _clickOpen;
 
-    private string _placementClass => Placement switch
-    {
-        TooltipPlacement.Bottom => Css.Classes.Tooltip.Bottom,
-        TooltipPlacement.Left   => Css.Classes.Tooltip.Left,
-        TooltipPlacement.Right  => Css.Classes.Tooltip.Right,
-        _                       => Css.Classes.Tooltip.Top,
-    };
+    // The side class places the bubble at rest (pure CSS); the engine then aligns it with the full
+    // placement, which travels on data-flare-placement for the page-wide hover/focus listener.
+    private string _sideName => Placement.ToPanelSide();
+    private string _panelPlacement => Placement.ToPanelPlacement();
 
-    private string _sideName => Placement switch
+    private string _placementClass => _sideName switch
     {
-        TooltipPlacement.Bottom => PanelPlacement.Bottom,
-        TooltipPlacement.Left   => PanelPlacement.Left,
-        TooltipPlacement.Right  => PanelPlacement.Right,
-        _                       => PanelPlacement.Top,
+        PanelPlacement.Bottom => Css.Classes.Tooltip.Bottom,
+        PanelPlacement.Left   => Css.Classes.Tooltip.Left,
+        PanelPlacement.Right  => Css.Classes.Tooltip.Right,
+        _                     => Css.Classes.Tooltip.Top,
     };
 
     // Hover and focus are revealed by CSS and placed by the page-wide delegated listener, so they cost
@@ -135,7 +137,14 @@
     {
         if (firstRender) await Overlay.InitFloatingTooltipsAsync();
         await _layer.SyncAsync(Overlay, _scriptOpen, _rootRef, _floatingRef,
-            new AnchoredPanelOptions { Placement = _sideName });
+            new AnchoredPanelOptions
+            {
+                Placement = _panelPlacement,
+                // The same token the hover path reads, so a click- or Open-revealed bubble sits exactly
+                // as far from the trigger as a hovered one.
+                GapToken = Css.Tokens.TooltipPopup.Offset,
+                Gap = 8,
+            });
     }
 
     private async Task HandleRootClick()

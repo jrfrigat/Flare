@@ -30,7 +30,7 @@ public class FlareTooltipTests : FlareTestContext
     {
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "tip")
-            .Add(x => x.Placement, TooltipPlacement.Top));
+            .Add(x => x.Placement, Placement.Top));
 
         Assert.Contains(Css.Classes.Tooltip.Top, cut.Find($".{Css.Classes.Tooltip.Root}").ClassName);
     }
@@ -40,7 +40,7 @@ public class FlareTooltipTests : FlareTestContext
     {
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.Content, "tip")
-            .Add(x => x.Placement, TooltipPlacement.Bottom));
+            .Add(x => x.Placement, Placement.Bottom));
 
         Assert.Contains(Css.Classes.Tooltip.Bottom, cut.Find($".{Css.Classes.Tooltip.Root}").ClassName);
     }

@@ -877,6 +877,7 @@ internal static class MaterialDesign2Tokens
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-medium)",
+        Offset = "0.5rem",
     };
 
     internal static readonly AvatarTokens Avatar = new()

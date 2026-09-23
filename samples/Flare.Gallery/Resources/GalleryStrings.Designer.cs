@@ -9488,6 +9488,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Lines up with the trigger's start edge.
+        /// </summary>
+        public static string Tooltip_AlignedStart {
+            get {
+                return ResourceManager.GetString("Tooltip_AlignedStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Lines up with the trigger's end edge.
+        /// </summary>
+        public static string Tooltip_AlignedEnd {
+            get {
+                return ResourceManager.GetString("Tooltip_AlignedEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Rich content.
         /// </summary>
         public static string Tooltip_Rich {

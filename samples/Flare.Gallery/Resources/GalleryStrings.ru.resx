@@ -2166,6 +2166,12 @@
   <data name="Tooltip_Placement" xml:space="preserve">
     <value>Расположение</value>
   </data>
+  <data name="Tooltip_AlignedStart" xml:space="preserve">
+    <value>Выровнен по начальному краю триггера</value>
+  </data>
+  <data name="Tooltip_AlignedEnd" xml:space="preserve">
+    <value>Выровнен по конечному краю триггера</value>
+  </data>
   <data name="Tooltip_Delay" xml:space="preserve">
     <value>Задержка</value>
   </data>

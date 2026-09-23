@@ -16,11 +16,11 @@
 | `Offset` | `int?` | `` | Parameter |  | Distance in pixels between the trigger and the bubble. Leave it unset to use the active theme's --flare-tooltip-offset, which is what a theme expects to control. |
 | `Open` | `bool` | `false` | Parameter |  | Controls whether the tooltip is visible (for programmatic control). |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback raised when the open state should change. |
-| `Placement` | `TooltipPlacement` | `TooltipPlacement.Top` | Parameter |  | Preferred position of the tooltip relative to the trigger element. The bubble flips to the opposite side when it would not fit there, so this is a preference and not a guarantee. |
+| `Placement` | `Placement` | `Placement.Top` | Parameter |  | Preferred position of the tooltip relative to the trigger element: a side and, with Start/End, the edge it lines up with - the same values as FlarePopover. The bubble flips to the opposite side when it would not fit there, so this is a preference and not a guarantee. Default Top. |
 | `ShowOnClick` | `bool` | `false` | Parameter |  | Toggles the tooltip when the trigger is clicked or tapped (dismissed by an outside click or Escape). Default false. |
 | `ShowOnFocus` | `bool` | `true` | Parameter |  | Shows the tooltip while the trigger (or a child) has keyboard focus - important for keyboard and screen-reader users. Default true. |
 | `ShowOnHover` | `bool` | `true` | Parameter |  | Shows the tooltip while the trigger is hovered. Default true. |
-| `TooltipContent` | `RenderFragment?` | `` | Parameter |  | Rich content rendered inside the tooltip bubble. Takes priority over Content. |
+| `TooltipContent` | `RenderFragment?` | `` | Parameter |  | Rich content rendered inside the tooltip bubble. Takes priority over Content. A tooltip describes; it is never focused, so a link or button placed here cannot be reached from the keyboard or a screen reader - interactive content belongs in a FlarePopover. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

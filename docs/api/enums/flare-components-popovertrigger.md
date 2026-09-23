@@ -12,7 +12,7 @@ How a FlarePopover is opened.
 | --- | --- | --- |
 | `Manual` | `0` | The consumer drives Open/OpenChanged (default) -- no built-in handler. |
 | `Click` | `1` | Clicking the anchor toggles the popover open and closed. |
-| `Hover` | `2` | Hovering the anchor opens the popover (after Delay) and leaving it closes it (after HideDelay). Not modal - no scrim or focus trap. |
+| `Hover` | `2` | Hovering the anchor - or moving keyboard focus into it - opens the popover (after Delay); leaving it, or Escape, closes it (leaving waits HideDelay). Not modal - no scrim or focus trap. |
 
 ## Used by components
 

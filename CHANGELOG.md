@@ -3,6 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- **Breaking: `FlareTooltip.Placement` takes the shared `Placement`.** The tooltip had a vocabulary of its
+  own, `TooltipPlacement` with four sides, while `FlarePopover` and the speed-dial menu use `Placement`
+  with twelve. `TooltipPlacement` is removed: write `Placement.Bottom` where you wrote
+  `TooltipPlacement.Bottom`. The tooltip also gains the alignments it lacked - `TopStart`, `BottomEnd`
+  and the rest line the bubble up with an edge of the trigger instead of centring it.
+- **Breaking for custom themes: `PopoverTokens` gains a required `Offset`** (`--flare-popover-offset`),
+  the distance between a popover and its anchor. The built-in themes set `0.5rem`, the distance the
+  popover used before. `FlarePopover.Offset` becomes `int?`: left unset, the theme decides; a number
+  still sets it on that instance. It used to be a fixed 8 that no theme could change.
+- **A hover popover opens from the keyboard.** `Trigger="Hover"` listened to the pointer only, so a
+  keyboard reader could not open it at all. Focus entering the anchor now opens it the way hovering does,
+  focus leaving closes it after the same `HideDelay`, and Escape closes it.
+
+### Fixed
+
+- **A tooltip opened by a click or by `Open` sits as far from its trigger as a hovered one.** The hover
+  path read the theme's `--flare-tooltip-offset`; the path that opens from code handed the placement
+  engine a 4px default, so the same tooltip stood at two distances depending on how it was opened.
+
 ## [0.39.0] - 2026-09-22
 
 ### Added

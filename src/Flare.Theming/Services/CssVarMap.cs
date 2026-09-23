@@ -752,6 +752,7 @@ public static class CssVarMap
 
         #region POPOVER
         v[Css.Tokens.PopoverPopup.Radius] = t.Popover.Radius;
+        v[Css.Tokens.PopoverPopup.Offset] = t.Popover.Offset;
         #endregion
 
         #region DATAGRID

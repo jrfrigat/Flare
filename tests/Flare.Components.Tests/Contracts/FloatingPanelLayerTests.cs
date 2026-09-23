@@ -14,11 +14,11 @@ public class FloatingPanelLayerTests : FlareTestContext
     private static RenderFragment Markup(string html) => b => b.AddMarkupContent(0, html);
 
     [Theory]
-    [InlineData(TooltipPlacement.Top, "top")]
-    [InlineData(TooltipPlacement.Bottom, "bottom")]
-    [InlineData(TooltipPlacement.Left, "left")]
-    [InlineData(TooltipPlacement.Right, "right")]
-    public void Tooltip_BubbleNamesItsSide(TooltipPlacement placement, string expected)
+    [InlineData(Placement.Top, "top")]
+    [InlineData(Placement.Bottom, "bottom")]
+    [InlineData(Placement.Left, "left")]
+    [InlineData(Placement.Right, "right")]
+    public void Tooltip_BubbleNamesItsSide(Placement placement, string expected)
     {
         var cut = Render<FlareTooltip>(p => p
             .Add(t => t.Content, "hello")
