@@ -85,7 +85,7 @@
     /// <inheritdoc />
     protected override Task OnAfterRenderAsync(bool firstRender) =>
         _layer.SyncAsync(Overlay, _open, _activatorEl, _panelEl,
-            new AnchoredPanelOptions { Placement = _placement }).AsTask();
+            new AnchoredPanelOptions { Placement = _placement, GapToken = Css.Tokens.MenuPanel.Offset }).AsTask();
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
 

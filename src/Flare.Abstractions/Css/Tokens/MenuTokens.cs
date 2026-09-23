@@ -5,6 +5,8 @@ public static class MenuPanel
 {
     /// <summary>CSS custom-property name for the group divider token.</summary>
     public const string GroupDivider = "--flare-menu-group-divider";
+    /// <summary>CSS custom-property name for the distance between a menu panel and its anchor.</summary>
+    public const string Offset = "--flare-menu-offset";
     /// <summary>CSS custom-property name for the min width token.</summary>
     public const string MinWidth = "--flare-menu-panel-min-width";
     /// <summary>CSS custom-property name for the enter animation token.</summary>

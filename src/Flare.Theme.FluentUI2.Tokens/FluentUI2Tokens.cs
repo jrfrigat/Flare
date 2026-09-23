@@ -389,6 +389,8 @@ public class FluentUI2Tokens
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
+        // No authoritative Fluent 2 figure for the flyout gap; keeps the 4px the menu has always used.
+        PanelOffset = "0.25rem",
         PanelMinWidth = "10rem",
         EnterAnimation = "flare-menu-in-fade",
         PanelRadius = "var(--flare-popover-radius, var(--flare-shape-small))",

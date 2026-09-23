@@ -20,6 +20,13 @@ All notable changes to Flare are documented here. This project adheres to
   keyboard reader could not open it at all. Focus entering the anchor now opens it the way hovering does,
   focus leaving closes it after the same `HideDelay`, and Escape closes it.
 
+- **Breaking for custom themes: `MenuTokens` gains a required `PanelOffset`** (`--flare-menu-offset`),
+  the distance between a menu - or a submenu flyout - and what it opens from. It was a hard 4px in every
+  theme, in two places that had to agree: the placement engine and the CSS that holds the panel for the
+  frame before it is placed. Both now read the token. The Material themes set it to `0px`, so a menu sits
+  flush against its button as MDC and material-web place it; Fluent 2 and Visual Studio keep `0.25rem`.
+  A zero needs its unit: the value is used inside `calc()`.
+
 ### Fixed
 
 - **A tooltip opened by a click or by `Open` sits as far from its trigger as a hovered one.** The hover

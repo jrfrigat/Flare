@@ -608,6 +608,7 @@ public static class CssVarMap
 
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.GroupDivider] = t.Menu.GroupDivider;
+        v[Css.Tokens.MenuPanel.Offset] = t.Menu.PanelOffset;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;
         v[Css.Tokens.MenuPanel.Bg] = t.Menu.PanelBg;

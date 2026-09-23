@@ -44,6 +44,18 @@ public sealed class FloatingPanelGapTests : FlareTestContext
         Assert.Equal(20, options.Gap);
     }
 
+    // The menu used a hard 4px for every theme; flush Material menus and gapped Fluent ones need the theme.
+    [Fact]
+    public void Menu_AsksTheEngineForTheThemeToken()
+    {
+        var module = JSInterop.SetupModule(Module);
+        var cut = Render<FlareMenu>();
+
+        cut.Find($".{Css.Classes.Menu.Activator}").Click();
+
+        Assert.Equal(Css.Tokens.MenuPanel.Offset, LastPlacement(module).GapToken);
+    }
+
     // A tooltip revealed from C# (Open, or a click) used to hand the engine its 4px default while the
     // hovered bubble read the theme token - the same tooltip sat at two distances.
     [Fact]

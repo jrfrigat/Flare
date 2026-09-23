@@ -502,6 +502,8 @@ internal static class MaterialDesign2Tokens
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
+        // Flush against the anchor, as MDC menu-surface places it (anchorMargin 0).
+        PanelOffset = "0px",
         PanelRadius = "var(--flare-shape-extra-small)", // 4px
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-4)", // elevation 3,

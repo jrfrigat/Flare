@@ -8,6 +8,10 @@ public sealed record MenuTokens
     /// <summary>Rule drawn between groups of items, as a CSS <c>border</c> shorthand.</summary>
     [CssVar(MenuPanel.GroupDivider)] public required string GroupDivider { get; init; }
     // --- 1. PANEL ---
+    /// <summary>Distance between the panel and the button (or item) it opens from, as a CSS length. A theme
+    /// whose menus sit flush against their anchor gives a zero length with a unit - a bare zero is not a
+    /// length inside <c>calc()</c>.</summary>
+    [CssVar(MenuPanel.Offset)] public required string PanelOffset { get; init; }
     /// <summary>Floor on the panel width, so a menu of short labels does not collapse to a sliver.</summary>
     [CssVar(MenuPanel.MinWidth)] public required string PanelMinWidth { get; init; }
     /// <summary>Name of the panel entrance @keyframes animation (e.g. scale+fade, or fade/slide without scale).</summary>
