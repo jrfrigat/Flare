@@ -41,8 +41,8 @@
     flex: 1 1 auto;
 }
 
-/* A shrinking segment gives up label text, never its icons or padding: a flex item that clips its
-   overflow has no content-based minimum, so the label is the only part that can go below its width. */
+/* A shrinking segment gives up label text first: its icons do not shrink, and a label that clips its
+   overflow has no content-based minimum, so it is the part that goes below its natural width. */
 .flare-togglegroup > .flare-btn > .flare-btn__label {
     overflow: hidden;
     text-overflow: ellipsis;
