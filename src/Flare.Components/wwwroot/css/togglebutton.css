@@ -1,10 +1,10 @@
-/* FlareToggleGroup - the SEGMENTED control: several toggle buttons seamed into one bordered container.
+/* FlareToggleGroup - the SEGMENTED control: several toggle buttons seamed into one bordered run.
 
    What is NOT here is the point of the file. A toggle button used to be a control of its own, with a
    parallel size scale, its own padding, typography, corners, rest colours and disabled fade - a second
    answer to every question .flare-btn had already answered, and one that drifted from it. It is now a
    FlareButton carrying .flare-btn--selected, so all of that comes from the button family and a toggle
-   dropped into a FlareButtonGroup is a segment on identical terms. Only what the CONTAINER adds is left:
+   dropped into a FlareButtonGroup is a segment on identical terms. Only what the GROUP adds is left:
    its border, its corners, and the rule between its segments.
 
    The seam is drawn by squaring the buttons' own corners and giving each a divider, so the group reads as
@@ -12,42 +12,57 @@
    FlareButtonGroup: a connected group keeps its segments' corners and gaps them, while a segmented group
    removes both. */
 
+/* The element itself is only the scroller. A segmented control cannot wrap without producing rounded
+   corners in the middle of the run, so a group wider than its container scrolls. The frame is NOT drawn
+   here: a scroller that owns the border keeps it fixed while the segments slide underneath it, and a
+   parent that stretches the element (a grid cell, a stretching flex column) would draw the border past
+   the last segment. The segments draw it instead, so it always ends where they end and moves with them. */
 .flare-togglegroup {
     display: inline-flex;
-    border: var(--flare-togglegroup-border);
-    border-radius: var(--flare-togglegroup-radius);
-    /* Y stays hidden so the rounded ends keep clipping their segments; X becomes a scroller because a
-       segmented control cannot wrap without producing rounded corners in the middle of the run. Before
-       this the group simply grew past its container and clipped the segments beyond the edge. */
-    overflow: auto hidden;
+    overflow-x: auto;
     max-inline-size: 100%;
 }
 
 .flare-togglegroup--vertical {
     flex-direction: column;
-    border-radius: var(--flare-togglegroup-radius-vertical);
 }
 
-/* Items inside a group give up their own container: the group draws the border, and each segment is
-   separated from the next by a rule rather than by a gap. */
+/* Every segment carries its share of the frame - the long edges on each, the ends on the first and last -
+   in place of the transparent border every button reserves, so a segment keeps the button's size. Each
+   is separated from the next by a rule rather than by a gap. The fill stops at the padding box so a
+   selected segment does not paint under a translucent frame. */
 .flare-togglegroup > .flare-btn {
     border-radius: 0;
     background: transparent;
+    background-clip: padding-box;
+    border-top: var(--flare-togglegroup-border);
+    border-bottom: var(--flare-togglegroup-border);
+    border-left: none;
     border-right: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
     flex: 0 0 auto;
 }
 
+.flare-togglegroup > .flare-btn:first-child {
+    border-left: var(--flare-togglegroup-border);
+}
+
 .flare-togglegroup > .flare-btn:last-child {
-    border-right: none;
+    border-right: var(--flare-togglegroup-border);
 }
 
 .flare-togglegroup--vertical > .flare-btn {
-    border-right: none;
+    border-left: var(--flare-togglegroup-border);
+    border-right: var(--flare-togglegroup-border);
+    border-top: none;
     border-bottom: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
 }
 
+.flare-togglegroup--vertical > .flare-btn:first-child {
+    border-top: var(--flare-togglegroup-border);
+}
+
 .flare-togglegroup--vertical > .flare-btn:last-child {
-    border-bottom: none;
+    border-bottom: var(--flare-togglegroup-border);
 }
 
 /* Restore rounded corners on first/last items of group */
@@ -80,6 +95,7 @@
 .flare-togglegroup > .flare-btn.flare-btn--selected {
     border-radius: 0;
     background: var(--fc-container, var(--flare-btn-selected-bg));
+    background-clip: padding-box;
     color: var(--fc-on-container, var(--flare-btn-selected-color));
 }
 .flare-togglegroup > .flare-btn.flare-btn--selected:first-child {
