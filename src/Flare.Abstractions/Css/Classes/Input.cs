@@ -35,6 +35,11 @@ public static class Input
     public const string VariantFilled = "flare-input-variant--filled";
     /// <summary>The <c>flare-input-variant--outlined</c> CSS class.</summary>
     public const string VariantOutlined = "flare-input-variant--outlined";
+    /// <summary>The <c>flare-input-variant--bare</c> CSS class: a field with no container, border or
+    /// indicator, for a row the surrounding layout paints.</summary>
+    public const string VariantBare = "flare-input-variant--bare";
+    /// <summary>The <c>flare-input--mono</c> CSS class: the entered text in the monospace font.</summary>
+    public const string Mono = "flare-input--mono";
     /// <summary>The <c>flare-input--xs</c> CSS class.</summary>
     public const string SizeXs = "flare-input--xs";
     /// <summary>The <c>flare-input--sm</c> CSS class.</summary>

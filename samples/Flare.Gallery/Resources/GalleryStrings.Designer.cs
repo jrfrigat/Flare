@@ -6265,6 +6265,61 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Field_FocusInteraction", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bare and monospace: an identifier row and a prompt editor.
+        /// </summary>
+        public static string Field_Bare {
+            get {
+                return ResourceManager.GetString("Field_Bare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Variant="Bare" drops the field's container, border and indicator, so the row around it can paint the surface; Mono sets the text in the monospace font. The field keeps everything else - validation, Clearable, adornments, keyboard. A prompt editor needs no field at all: FlareCodeBlock with ReadOnly="false" is an editor for one document, and its header is ordinary layout..
+        /// </summary>
+        public static string Field_BareDesc {
+            get {
+                return ResourceManager.GetString("Field_BareDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Branch name template.
+        /// </summary>
+        public static string Field_BareBranchCaption {
+            get {
+                return ResourceManager.GetString("Field_BareBranchCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Substitutions: {agent}, {card_id}, {slug}.
+        /// </summary>
+        public static string Field_BareBranchHint {
+            get {
+                return ResourceManager.GetString("Field_BareBranchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на System instruction for the agent.
+        /// </summary>
+        public static string Field_BarePromptCaption {
+            get {
+                return ResourceManager.GetString("Field_BarePromptCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You are the reviewer of this project.
+        ///Read the card, check the tests, and report what is left..
+        /// </summary>
+        public static string Field_BarePromptSample {
+            get {
+                return ResourceManager.GetString("Field_BarePromptSample", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to Resize, clearable &amp; spellcheck.

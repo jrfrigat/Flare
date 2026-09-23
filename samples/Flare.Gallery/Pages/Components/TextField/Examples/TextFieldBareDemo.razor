@@ -1,0 +1,30 @@
+@* Variant="Bare" leaves the surface to the row around the field; Mono sets the text in the monospace
+   font. The prompt editor is FlareCodeBlock in edit mode - an editor for one document - under a header
+   that is ordinary layout, not a field. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:36rem;">
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Field_BareBranchCaption</FlareText>
+        <FlarePaper Elevation="0" Style="background:var(--flare-color-surface-container);">
+            <FlareTextField @bind-Value="_branch" Variant="InputVariant.Bare" Mono Clearable
+                            AriaLabel="@GalleryStrings.Field_BareBranchCaption">
+                <LeadingIcon><FlareIconView Value="MaterialDesign3Icons.Regular.AccountTree" /></LeadingIcon>
+            </FlareTextField>
+        </FlarePaper>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Field_BareBranchHint</FlareText>
+    </FlareStack>
+
+    <FlarePaper Outlined>
+        <FlareStack Row="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center"
+                    Style="padding:var(--flare-spacing-3) var(--flare-spacing-4);border-bottom:var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline-variant);">
+            <FlareIconView Value="MaterialDesign3Icons.Regular.Description" />
+            <FlareText Mono Typo="TypographyScale.LabelMedium">instruction.prompt.md</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Field_BarePromptCaption</FlareText>
+        </FlareStack>
+        <FlareCodeBlock @bind-Value="_prompt" Language="markdown" ReadOnly="false" Rows="5" Wrap="true" />
+    </FlarePaper>
+</FlareStack>
+
+@code {
+    private string? _branch = "aiko/{agent}/{card_id}-{slug}";
+    private string? _prompt = GalleryStrings.Field_BarePromptSample;
+}

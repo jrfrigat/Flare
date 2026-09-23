@@ -15,6 +15,7 @@
 | `Immediate` | `bool` | `false` | Parameter |  | When true, the value updates on every keystroke (oninput) rather than only on change/blur. |
 | `MaxLength` | `int` | `0` | Parameter |  | Maximum number of characters allowed. 0 = no limit. Server-side validation is always required. |
 | `MaxLines` | `int` | `0` | Parameter |  | With AutoGrow, caps growth at this many lines (then scrolls). 0 = unlimited. |
+| `Mono` | `bool` | `false` | Parameter |  | Renders the entered text in the monospace font - for prompts, snippets and templates. An explicit Typo still sets the font. |
 | `OnBlur` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the textarea loses focus. |
 | `OnClearButtonClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Invoked when the clear (x) button is clicked, after the value has been reset. |
 | `OnFocus` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the textarea gains focus. |
@@ -41,7 +42,7 @@
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl). Md (the default) is the standard field height. Inherited from `FlareFieldBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default. Inherited from `FlareFieldBase`. |
-| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
+| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
 
 ## Methods
 

@@ -45,7 +45,7 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
     /// <summary>Marks the field as required (visual indicator + native <c>required</c> where applicable).</summary>
     [Parameter] public bool Required { get; set; }
 
-    /// <summary>Visual variant (Filled/Outlined) of the field, independent of the active theme.
+    /// <summary>Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme.
     /// <see cref="InputVariant.Default"/> (the default) keeps the theme's own field style.</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
 

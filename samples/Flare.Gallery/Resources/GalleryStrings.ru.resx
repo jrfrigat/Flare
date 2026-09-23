@@ -1266,6 +1266,25 @@
   <data name="Field_FocusInteraction" xml:space="preserve">
     <value>Фокус, автофокус, паттерны и события</value>
   </data>
+  <data name="Field_Bare" xml:space="preserve">
+    <value>Без рамки и моноширинный: строка-идентификатор и редактор инструкции</value>
+  </data>
+  <data name="Field_BareDesc" xml:space="preserve">
+    <value>Variant="Bare" убирает у поля подложку, рамку и индикатор, чтобы поверхность рисовала строка вокруг; Mono выводит текст моноширинным шрифтом. Все остальное у поля остается - валидация, Clearable, украшения, клавиатура. Редактору инструкции поле вообще не нужно: FlareCodeBlock с ReadOnly="false" - редактор одного документа, а его шапка - обычная раскладка.</value>
+  </data>
+  <data name="Field_BareBranchCaption" xml:space="preserve">
+    <value>Шаблон имени ветки</value>
+  </data>
+  <data name="Field_BareBranchHint" xml:space="preserve">
+    <value>Подстановки: {agent}, {card_id}, {slug}</value>
+  </data>
+  <data name="Field_BarePromptCaption" xml:space="preserve">
+    <value>Системная инструкция для агента</value>
+  </data>
+  <data name="Field_BarePromptSample" xml:space="preserve">
+    <value>Ты - ревьюер этого проекта.
+Прочитай карточку, проверь тесты и сообщи, что осталось.</value>
+  </data>
   <data name="TextArea_Resize" xml:space="preserve">
     <value>Изменение размера, очистка и проверка орфографии</value>
   </data>
