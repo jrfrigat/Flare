@@ -1508,7 +1508,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2126,7 +2126,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2182,7 +2182,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"StartDateChanged", @"EventCallback<DateOnly?>", null, @"Callback invoked when the start date changes.", null, false, true, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"StartLabel", @"string?", null, @"Label for the start date picker (Fields mode). When null, falls back to DateRangePicker_StartLabel.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) for the input fields (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) for the input fields (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -2237,7 +2237,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2686,6 +2686,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered inside the leading edge of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"Margin", @"FieldMargin", @"FieldMargin.None", @"Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Mono", @"bool", @"false", @"Renders the entered text in the monospace font - for identifiers, paths and templates. An explicit Typo still sets the font.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"OnBlur", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input loses focus.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"OnClearButtonClick", @"EventCallback<MouseEventArgs>", null, @"Invoked when the clear (x) button is clicked, after the value has been reset.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"OnFocus", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input gains focus.", null, false, true, false, @"FlareField"),
@@ -2713,7 +2714,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2768,7 +2769,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LabelId", @"string?", null, @"The label element id (for aria-labelledby from a div trigger).", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Read-only state; forwarded by fields to their control (the frame draws no read-only chrome).", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), emitted as the shared size modifier class.", null, false, false, false, @"FlareFieldChrome"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined), emitted as the shared variant modifier class.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare), emitted as the shared variant modifier class.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -3828,7 +3829,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4137,7 +4138,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4327,7 +4328,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4469,7 +4470,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4623,7 +4624,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -5372,7 +5373,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -6136,7 +6137,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -6199,6 +6200,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Immediate", @"bool", @"false", @"When true, the value updates on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"MaxLines", @"int", @"0", @"With AutoGrow, caps growth at this many lines (then scrolls). 0 = unlimited.", null, false, false, false, @"FlareTextArea"),
+                new ApiParameterInfo(@"Mono", @"bool", @"false", @"Renders the entered text in the monospace font - for prompts, snippets and templates. An explicit Typo still sets the font.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"OnBlur", @"EventCallback<FocusEventArgs>", null, @"Invoked when the textarea loses focus.", null, false, true, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"OnClearButtonClick", @"EventCallback<MouseEventArgs>", null, @"Invoked when the clear (x) button is clicked, after the value has been reset.", null, false, true, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"OnFocus", @"EventCallback<FocusEventArgs>", null, @"Invoked when the textarea gains focus.", null, false, true, false, @"FlareTextArea"),
@@ -6225,7 +6227,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -6283,6 +6285,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered inside the leading edge of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"Margin", @"FieldMargin", @"FieldMargin.None", @"Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Mono", @"bool", @"false", @"Renders the entered text in the monospace font - for identifiers, paths and templates. An explicit Typo still sets the font.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"OnBlur", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input loses focus.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"OnClearButtonClick", @"EventCallback<MouseEventArgs>", null, @"Invoked when the clear (x) button is clicked, after the value has been reset.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"OnFocus", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input gains focus.", null, false, true, false, @"FlareField"),
@@ -6301,7 +6304,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Current value of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the value changes.", null, false, true, false, @"FlareField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -6485,7 +6488,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -6546,7 +6549,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -8469,6 +8472,7 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Default", @"0", @"Use the active theme's own field style."),
                 new ApiEnumMember(@"Filled", @"1", @"Filled: surface container background + bottom active indicator."),
                 new ApiEnumMember(@"Outlined", @"2", @"Outlined: transparent background + full outline, brand outline on focus."),
+                new ApiEnumMember(@"Bare", @"3", @"Bare: no container, border or indicator - only the text and its adornments, for a row whose surface the surrounding layout paints (an identifier strip, a toolbar search). Focus stays visible through the library's focus ring, and an error still shows."),
             },
             new string[]
             {

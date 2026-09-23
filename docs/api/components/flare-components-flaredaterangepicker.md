@@ -29,7 +29,7 @@
 | `StartDateChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | Callback invoked when the start date changes. |
 | `StartLabel` | `string?` | `` | Parameter |  | Label for the start date picker (Fields mode). When null, falls back to DateRangePicker_StartLabel. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional typography scale for the input text (Fields mode). |
-| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined) for the input fields (Fields mode). |
+| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare) for the input fields (Fields mode). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

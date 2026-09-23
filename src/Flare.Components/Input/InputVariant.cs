@@ -12,4 +12,8 @@ public enum InputVariant
     Filled,
     /// <summary>Outlined: transparent background + full outline, brand outline on focus.</summary>
     Outlined,
+    /// <summary>Bare: no container, border or indicator - only the text and its adornments, for a row
+    /// whose surface the surrounding layout paints (an identifier strip, a toolbar search). Focus stays
+    /// visible through the library's focus ring, and an error still shows.</summary>
+    Bare,
 }

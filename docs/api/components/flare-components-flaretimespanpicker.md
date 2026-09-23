@@ -34,7 +34,7 @@
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl). Md (the default) is the standard field height. Inherited from `FlareFieldBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default. Inherited from `FlareFieldBase`. |
-| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
+| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
 
 ## Methods
 

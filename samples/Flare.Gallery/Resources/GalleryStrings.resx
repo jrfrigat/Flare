@@ -1266,6 +1266,25 @@
   <data name="Field_FocusInteraction" xml:space="preserve">
     <value>Focus, autofocus, patterns &amp; events</value>
   </data>
+  <data name="Field_Bare" xml:space="preserve">
+    <value>Bare and monospace: an identifier row and a prompt editor</value>
+  </data>
+  <data name="Field_BareDesc" xml:space="preserve">
+    <value>Variant="Bare" drops the field's container, border and indicator, so the row around it can paint the surface; Mono sets the text in the monospace font. The field keeps everything else - validation, Clearable, adornments, keyboard. A prompt editor needs no field at all: FlareCodeBlock with ReadOnly="false" is an editor for one document, and its header is ordinary layout.</value>
+  </data>
+  <data name="Field_BareBranchCaption" xml:space="preserve">
+    <value>Branch name template</value>
+  </data>
+  <data name="Field_BareBranchHint" xml:space="preserve">
+    <value>Substitutions: {agent}, {card_id}, {slug}</value>
+  </data>
+  <data name="Field_BarePromptCaption" xml:space="preserve">
+    <value>System instruction for the agent</value>
+  </data>
+  <data name="Field_BarePromptSample" xml:space="preserve">
+    <value>You are the reviewer of this project.
+Read the card, check the tests, and report what is left.</value>
+  </data>
   <data name="TextArea_Resize" xml:space="preserve">
     <value>Resize, clearable &amp; spellcheck</value>
   </data>

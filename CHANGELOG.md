@@ -3,6 +3,21 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **`InputVariant.Bare`: a field without a surface of its own.** Next to `Filled` and `Outlined`, the
+  bare variant drops the container, the border and the indicator, so the row around the field paints
+  the surface - an identifier strip, a search in a toolbar. The field keeps everything else: value,
+  placeholder, adornments, `Clearable`, validation, keyboard. With no border the library's focus ring
+  is what shows focus, and an error still colors the edge. It is a variant of the whole field family,
+  so a select or a date picker takes it too. Until now such a row had to be a raw `<input>` with CSS
+  of its own, losing what the field guarantees.
+- **`Mono` on `FlareTextField` and `FlareTextArea`.** Sets the entered text in the monospace font
+  (`--flare-font-mono`) - for identifiers, paths, templates and prompts - the same switch `FlareText`
+  already has. An explicit `Typo` still sets the font.
+
 ## [0.39.0] - 2026-09-22
 
 ### Added

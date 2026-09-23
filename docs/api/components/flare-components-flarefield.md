@@ -29,6 +29,7 @@
 | `LeadingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered inside the leading edge of the input. |
 | `Margin` | `FieldMargin` | `FieldMargin.None` | Parameter |  | Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below. |
 | `MaxLength` | `int` | `0` | Parameter |  | Maximum number of characters allowed. 0 = no limit. Server-side validation is always required. |
+| `Mono` | `bool` | `false` | Parameter |  | Renders the entered text in the monospace font - for identifiers, paths and templates. An explicit Typo still sets the font. |
 | `OnBlur` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the input loses focus. |
 | `OnClearButtonClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Invoked when the clear (x) button is clicked, after the value has been reset. |
 | `OnFocus` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the input gains focus. |
@@ -56,7 +57,7 @@
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl). Md (the default) is the standard field height. Inherited from `FlareFieldBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default. Inherited from `FlareFieldBase`. |
-| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
+| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
 
 ## Methods
 

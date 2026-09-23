@@ -40,6 +40,7 @@ A single-line text field. Convenience over FlareField for the common string case
 | `LeadingIcon` | `RenderFragment?` | `` | Parameter |  | Icon rendered inside the leading edge of the input. Inherited from `FlareField`. |
 | `Margin` | `FieldMargin` | `FieldMargin.None` | Parameter |  | Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below. Inherited from `FlareField`. |
 | `MaxLength` | `int` | `0` | Parameter |  | Maximum number of characters allowed. 0 = no limit. Server-side validation is always required. Inherited from `FlareField`. |
+| `Mono` | `bool` | `false` | Parameter |  | Renders the entered text in the monospace font - for identifiers, paths and templates. An explicit Typo still sets the font. Inherited from `FlareField`. |
 | `OnBlur` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the input loses focus. Inherited from `FlareField`. |
 | `OnClearButtonClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Invoked when the clear (x) button is clicked, after the value has been reset. Inherited from `FlareField`. |
 | `OnFocus` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the input gains focus. Inherited from `FlareField`. |
@@ -58,7 +59,7 @@ A single-line text field. Convenience over FlareField for the common string case
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default. Inherited from `FlareFieldBase`. |
 | `Value` | `string?` | `` | Parameter |  | Current value of the input. Inherited from `FlareField`. |
 | `ValueChanged` | `EventCallback<string?>` | `` | Callback |  | Callback invoked when the value changes. Inherited from `FlareField`. |
-| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
+| `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style. Inherited from `FlareFieldBase`. |
 
 ## Methods
 

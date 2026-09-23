@@ -41,7 +41,7 @@
     /// <summary>Any extra component-specific modifier classes (open/floating/auto/margin/adornment).</summary>
     [Parameter] public string? ExtraClass { get; set; }
 
-    /// <summary>Visual variant (Filled/Outlined), emitted as the shared variant modifier class.</summary>
+    /// <summary>Visual variant (Filled/Outlined/Bare), emitted as the shared variant modifier class.</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
 
     /// <summary>Control size (Xs..Xl), emitted as the shared size modifier class.</summary>
@@ -134,6 +134,7 @@
     {
         InputVariant.Filled => Css.Classes.Input.VariantFilled,
         InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        InputVariant.Bare => Css.Classes.Input.VariantBare,
         _ => null,
     };
 
