@@ -35,9 +35,9 @@ export function startDrag(handle, opts) {
     if (o.touchAction !== null) handle.style.touchAction = o.touchAction || 'none';
 
     // onStart is handed the PRESS, never the move that crossed the threshold. The move's `target` is
-    // whatever the pointer happens to be over (or the handle, once captured), not what was pressed. A thresholded gesture that read `e.target` in
-    // onStart would find the container every time and start nothing. Its clientX/clientY are the press
-    // point too, which is what a grab offset is measured from.
+    // whatever the pointer has travelled onto (or the handle, once captured), not what was pressed, so a
+    // thresholded gesture that read it in onStart would pick up the wrong element or none. The press's
+    // clientX/clientY are the press point too, which is what a grab offset is measured from.
     function begin() {
         active = true;
         // A thresholded gesture captures only now. Captured on the press, the release is retargeted to
@@ -61,9 +61,10 @@ export function startDrag(handle, opts) {
         if (!armed || e.pointerId !== pid) return;
         const dx = e.clientX - startX, dy = e.clientY - startY;
         if (!active) {
-            // Uncaptured, a release outside the handle never reaches `end`; a mouse that moves with no
-            // button held has already let go, and must not start a drag nobody is holding.
-            if (e.pointerType === 'mouse' && e.buttons === 0) { armed = false; downEvent = null; return; }
+            // Uncaptured, a release outside the handle never reaches `end`; a pointer that moves with no
+            // button held has already let go, and must not start a drag nobody is holding. (A touch in
+            // contact always reports a button.)
+            if (e.buttons === 0) { armed = false; downEvent = null; return; }
             if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
             begin();
         }

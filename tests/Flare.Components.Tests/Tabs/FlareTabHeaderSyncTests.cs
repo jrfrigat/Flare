@@ -37,6 +37,27 @@ public sealed class FlareTabHeaderSyncTests : FlareTestContext
         Assert.Equal("4", cut.Find($".{Css.Classes.Tabs.Badge}").TextContent);
     }
 
+    // Each bar render hands the tab its parameters again, so a label that is different on every
+    // evaluation would keep the two re-rendering each other if nothing capped it.
+    [Fact(Timeout = 10000)]
+    public async Task LabelThatChangesOnEveryEvaluation_DoesNotRenderForever()
+    {
+        var n = 0;
+        RenderFragment ticking = b =>
+        {
+            b.OpenComponent<FlareTab>(0);
+            b.AddAttribute(1, nameof(FlareTab.Label), $"tick {n++}");
+            b.CloseComponent();
+        };
+
+        var cut = await Task.Run(() => Render<FlareTabs>(p => p.Add(x => x.ChildContent, ticking)),
+            Xunit.TestContext.Current.CancellationToken);
+        await Task.Run(() => cut.Render(p => p.Add(x => x.ChildContent, ticking)),
+            Xunit.TestContext.Current.CancellationToken);
+
+        Assert.StartsWith("tick ", cut.Find($".{Css.Classes.Tabs.Label}").TextContent);
+    }
+
     [Fact]
     public void UnchangedHeader_DoesNotRenderTheBarAgain()
     {
