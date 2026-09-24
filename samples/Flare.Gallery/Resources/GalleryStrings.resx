@@ -2017,6 +2017,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Slider_Vertical" xml:space="preserve">
     <value>Vertical</value>
   </data>
+  <data name="Slider_IconLength" xml:space="preserve"><value>Icons inside the length</value></data>
+  <data name="Slider_NoIcons" xml:space="preserve"><value>Without icons</value></data>
+  <data name="Slider_WithIcons" xml:space="preserve"><value>With icons</value></data>
   <data name="Slider_Range" xml:space="preserve">
     <value>Range (two handles)</value>
   </data>

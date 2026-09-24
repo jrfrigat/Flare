@@ -401,16 +401,19 @@
    segments / ticks are laid out along the block (top<->bottom) axis. A horizontal slider fills its
    container, but a vertical one has no height to fill, so its length comes from the theme's
    --flare-slider-length; a consumer overrides it per instance with an inline value on the root.
+   The length is the whole row, icons and gaps included - the track takes what is left, exactly as
+   a horizontal track takes the width left beside its icons.
    ========================================================================== */
 .flare-slider--vertical .flare-slider__row {
     flex-direction: column-reverse;   /* DOM start/end icons -> bottom/top */
     align-items: center;
     width: max-content;
+    block-size: var(--flare-slider-length);
 }
 .flare-slider--vertical .flare-slider__track-area {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-block-size: 0;
     width: var(--_hnd-height);
-    height: var(--flare-slider-length);
 }
 .flare-slider--vertical .flare-slider__track-wrap {
     width: 100%;

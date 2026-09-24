@@ -65,8 +65,9 @@ public static class Slider
         public const string Xl = "--flare-slider-icon-size-xl";
     }
 
-    /// <summary>CSS custom-property name for the vertical-slider length token. A consumer can override it
-    /// per instance (it is read on the component root, so an inline style wins over the theme's value).</summary>
+    /// <summary>CSS custom-property name for the vertical-slider length token - the whole row, icons included.
+    /// A consumer can override it per instance (it is read on the component root, so an inline style wins
+    /// over the theme's value).</summary>
     public const string Length = "--flare-slider-length";
 
     /// <summary>CSS custom-property name for the gap radius token.</summary>
