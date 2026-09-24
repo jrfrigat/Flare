@@ -3000,6 +3000,22 @@
   <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Текущая версия</value></data>
   <data name="Services_VersionCheckUpToDate" xml:space="preserve"><value>Актуальная версия - обновлений нет</value></data>
   <data name="Services_VersionCheckChecking" xml:space="preserve"><value>Проверка обновлений...</value></data>
+  <data name="Services_WebPushTitle" xml:space="preserve"><value>Сервис Web Push</value></data>
+  <data name="Services_WebPushSubtitle" xml:space="preserve"><value>IFlareWebPush - разрешение на уведомления и push-подписка, на которую ваш сервер отправляет сообщения, без обращения к IJSRuntime.</value></data>
+  <data name="Services_WebPushSupported" xml:space="preserve"><value>Push доступен в этом браузере</value></data>
+  <data name="Services_WebPushNotSupported" xml:space="preserve"><value>Push здесь недоступен - нужен защищенный контекст, а на iOS - веб-приложение, добавленное на экран Домой</value></data>
+  <data name="Services_WebPushPermission" xml:space="preserve"><value>Разрешение:</value></data>
+  <data name="Services_WebPushRequest" xml:space="preserve"><value>Разрешить уведомления</value></data>
+  <data name="Services_WebPushKey" xml:space="preserve"><value>Публичный ключ сервера (VAPID)</value></data>
+  <data name="Services_WebPushSubscribe" xml:space="preserve"><value>Подписаться</value></data>
+  <data name="Services_WebPushUnsubscribe" xml:space="preserve"><value>Отписаться</value></data>
+  <data name="Services_WebPushSubscription" xml:space="preserve"><value>Подписка для отправки на ваш сервер:</value></data>
+  <data name="Services_WebPushNone" xml:space="preserve"><value>Подписки нет</value></data>
+  <data name="Services_WebPushNote" xml:space="preserve"><value>Демонстрационный ключ - только публичный: его приватная половина не сохранялась, поэтому на эту подписку ничего нельзя отправить. Настоящее приложение берет ключ со своего сервера, который хранит приватную половину и отправляет сообщения.</value></data>
+  <data name="Services_WebPushPermissionNotGranted" xml:space="preserve"><value>Сначала разрешите уведомления.</value></data>
+  <data name="Services_WebPushNoServiceWorker" xml:space="preserve"><value>У страницы нет service worker, который принимал бы сообщения.</value></data>
+  <data name="Services_WebPushKeyMismatch" xml:space="preserve"><value>Подписка уже сделана с другим ключом - сначала отпишитесь.</value></data>
+  <data name="Services_WebPushFailed" xml:space="preserve"><value>Браузер отказал:</value></data>
   <data name="Services_VersionCheckCheckNow" xml:space="preserve"><value>Проверить сейчас</value></data>
   <data name="Services_VersionCheckUpdate" xml:space="preserve"><value>Обновить</value></data>
   <data name="Services_VersionCheckUpdating" xml:space="preserve"><value>Обновление...</value></data>

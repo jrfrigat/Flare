@@ -292,6 +292,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Abstractions.MessageBoxKind`](enums/flare-abstractions-messageboxkind.md) — The kind of message box to display.
 - [`Flare.Components.NavMatchMode`](enums/flare-components-navmatchmode.md) — How a nav link's href is matched against the current URL to decide the active state.
 - [`Flare.Components.NavMenuMode`](enums/flare-components-navmenumode.md) — How a FlareNavMenu presents its items. Set it explicitly to control the menu independently of any surrounding FlareLayout; leave it unset to keep the legacy behavior (driven by Rail or the collapsed layout drawer).
+- [`Flare.Components.NotificationPermission`](enums/flare-components-notificationpermission.md) — The user's answer to the browser's notification permission prompt.
 - [`Flare.Components.PaginationSize`](enums/flare-components-paginationsize.md) — Size of FlarePagination controls. Medium is the default and matches the Xs..Xl scale used across Flare components (e.g. FlareButton, form fields).
 - [`Flare.Components.PickerOpenTo`](enums/flare-components-pickeropento.md) — The initial calendar view a date picker opens to. Year jumps straight to the year grid - handy for far-back dates like a date of birth so the user does not page through months.
 - [`Flare.Components.Placement`](enums/flare-components-placement.md) — Where something sits relative to what it hangs off: a side, and how it lines up along that side. Shared by every component that places a surface next to an anchor, so a popover and a speed-dial menu read the same words and mean the same thing.
@@ -332,3 +333,4 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.TreeDropPosition`](enums/flare-components-treedropposition.md) — Position where an item is dropped relative to the target.
 - [`Flare.Components.Combobox.TriState`](enums/flare-components-combobox-tristate.md) — Tri-state of a "select all" affordance over the currently visible, enabled options.
 - [`Flare.Components.TypographyScale`](enums/flare-components-typographyscale.md) — Semantic type-scale roles mapped to semantic HTML elements and CSS utility classes.
+- [`Flare.Components.WebPushSubscribeStatus`](enums/flare-components-webpushsubscribestatus.md) — How a call to SubscribeAsync ended.
