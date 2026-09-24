@@ -177,7 +177,9 @@
     [Parameter] public IReadOnlyDictionary<double, string>? Marks { get; set; }
     /// <summary>Shows the floating value indicator above the handle(s) while interacting.</summary>
     [Parameter] public bool Indicator { get; set; }
-    /// <summary>Renders the slider vertically (value increases upward). Length is set via the <c>--flare-slider-length</c> CSS var (default 12rem).</summary>
+    /// <summary>Renders the slider vertically (value increases upward). Its length comes from the theme's
+    /// <c>--flare-slider-length</c>, which an inline value on the root overrides; the length covers the start
+    /// and end icons too, so the track is shorter by the icons and their gaps, as a horizontal track is.</summary>
     [Parameter] public bool Vertical { get; set; }
     /// <summary>
     /// When true, hovering the slider and turning the mouse wheel adjusts <see cref="Value"/>: each

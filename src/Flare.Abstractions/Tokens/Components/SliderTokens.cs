@@ -62,8 +62,9 @@ public sealed record SliderTokens
 
     /// <summary>
     /// Default length of a VERTICAL slider (a horizontal one fills its container, but a vertical one has no
-    /// height to fill). This is the theme's default; a consumer overrides it per instance with an inline
-    /// <c>--flare-slider-length</c>, which wins over the theme's value.
+    /// height to fill). The length is the whole row - start and end icons and their gaps included - and the
+    /// track takes what is left. This is the theme's default; a consumer overrides it per instance with an
+    /// inline <c>--flare-slider-length</c>, which wins over the theme's value.
     /// </summary>
     [CssVar(Slider.Length)] public required string Length { get; init; }
 

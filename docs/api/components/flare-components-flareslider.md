@@ -36,7 +36,7 @@
 | `ValueChanged` | `EventCallback<double>` | `` | Callback |  | Callback invoked when Value changes. |
 | `ValueEnd` | `double` | `100` | Parameter |  | Upper bound of the selected range (range mode only). |
 | `ValueEndChanged` | `EventCallback<double>` | `` | Callback |  | Callback invoked when ValueEnd changes. |
-| `Vertical` | `bool` | `false` | Parameter |  | Renders the slider vertically (value increases upward). Length is set via the --flare-slider-length CSS var (default 12rem). |
+| `Vertical` | `bool` | `false` | Parameter |  | Renders the slider vertically (value increases upward). Its length comes from the theme's --flare-slider-length, which an inline value on the root overrides; the length covers the start and end icons too, so the track is shorter by the icons and their gaps, as a horizontal track is. |
 | `Zones` | `RenderFragment?` | `` | Parameter |  | Declarative colored zones on the track: one or more FlareZone children, each a static [Start,End] range on the Min..Max scale in its own color. Zones are read-only scale annotations (safe/warning/danger ranges, a media buffer band, per-step coloring) drawn on top of the inactive track but under the active fill, so the accent fill always shows the current value on top. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

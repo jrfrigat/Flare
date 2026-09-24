@@ -3,6 +3,18 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- **Breaking: a vertical slider's length now includes its icons.** `--flare-slider-length` used to be the
+  length of the track alone, and the start and end icons with their gaps were added on top, so a
+  vertical slider with icons came out taller than the same slider without them (13rem became 13rem plus
+  two icons and two gaps). The length is now the whole row and the track takes what is left - the way a
+  horizontal slider already fits its icons into its width. Without icons nothing changes; with icons the
+  track is shorter by the icons and their gaps. An app that sized the length for the track alone adds the
+  icons to it.
+
 ## [0.40.0] - 2026-09-23
 
 ### Added

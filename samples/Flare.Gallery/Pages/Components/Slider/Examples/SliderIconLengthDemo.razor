@@ -1,0 +1,20 @@
+@* Icons sit inside the slider's size in both orientations: a horizontal slider keeps its width and a
+   vertical one keeps its --flare-slider-length, and the track is shorter by the icons and their gaps. *@
+<FlareStack Row Wrap Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
+    <FlareStack Gap="FlareSpacing.Large" Style="width:13rem">
+        <FlareSlider @bind-Value="_value" ShowValue="false" AriaLabel="@GalleryStrings.Slider_NoIcons" />
+        <FlareSlider @bind-Value="_value" ShowValue="false" AriaLabel="@GalleryStrings.Slider_WithIcons"
+                     StartIcon="@MaterialDesign3Icons.Regular.VolumeMute" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp" />
+    </FlareStack>
+    <FlareStack Row Gap="FlareSpacing.Large">
+        <FlareSlider @bind-Value="_value" Vertical="true" ShowValue="false" AriaLabel="@GalleryStrings.Slider_NoIcons"
+                     Style="--flare-slider-length:13rem" />
+        <FlareSlider @bind-Value="_value" Vertical="true" ShowValue="false" AriaLabel="@GalleryStrings.Slider_WithIcons"
+                     StartIcon="@MaterialDesign3Icons.Regular.VolumeMute" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp"
+                     Style="--flare-slider-length:13rem" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _value = 60;
+}

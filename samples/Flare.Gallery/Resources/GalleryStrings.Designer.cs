@@ -8365,6 +8365,33 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Icons inside the length.
+        /// </summary>
+        public static string Slider_IconLength {
+            get {
+                return ResourceManager.GetString("Slider_IconLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Without icons.
+        /// </summary>
+        public static string Slider_NoIcons {
+            get {
+                return ResourceManager.GetString("Slider_NoIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With icons.
+        /// </summary>
+        public static string Slider_WithIcons {
+            get {
+                return ResourceManager.GetString("Slider_WithIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Mouse wheel.
         /// </summary>
         public static string Slider_Wheel {

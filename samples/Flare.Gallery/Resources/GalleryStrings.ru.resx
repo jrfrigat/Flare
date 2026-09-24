@@ -2017,6 +2017,9 @@
   <data name="Slider_Vertical" xml:space="preserve">
     <value>Вертикальный</value>
   </data>
+  <data name="Slider_IconLength" xml:space="preserve"><value>Иконки внутри длины</value></data>
+  <data name="Slider_NoIcons" xml:space="preserve"><value>Без иконок</value></data>
+  <data name="Slider_WithIcons" xml:space="preserve"><value>С иконками</value></data>
   <data name="Slider_Range" xml:space="preserve">
     <value>Диапазон (два бегунка)</value>
   </data>
