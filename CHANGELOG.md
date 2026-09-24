@@ -3,6 +3,21 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- **`IFlareWebPush`: browser notification permission and Web Push subscription.** Registered by
+  `AddFlare`. It reports whether the browser can receive push messages, reads the notification permission
+  without asking, asks for it only when called (from a user action - browsers ignore a request made
+  without one), and reads, creates and cancels the push subscription of the app's service worker with the
+  server's public VAPID key. Subscribing never opens the permission prompt on its own: without a granted
+  permission it returns `WebPushSubscribeStatus.PermissionNotGranted`, and every other outcome - no
+  service worker, a subscription made with another key, a browser refusal - is a status, not an
+  exception. `WebPushSubscription` serializes to the browser's `PushSubscription.toJSON()` shape, which
+  server-side web-push libraries accept as it is. The service worker, sending and storing subscriptions
+  stay with the app.
+
 ## [0.40.0] - 2026-09-23
 
 ### Added
@@ -34,16 +49,6 @@ All notable changes to Flare are documented here. This project adheres to
 - **`Mono` on `FlareTextField` and `FlareTextArea`.** Sets the entered text in the monospace font
   (`--flare-font-mono`) - for identifiers, paths, templates and prompts - the same switch `FlareText`
   already has. An explicit `Typo` still sets the font.
-- **`IFlareWebPush`: browser notification permission and Web Push subscription.** Registered by
-  `AddFlare`. It reports whether the browser can receive push messages, reads the notification permission
-  without asking, asks for it only when called (from a user action - browsers ignore a request made
-  without one), and reads, creates and cancels the push subscription of the app's service worker with the
-  server's public VAPID key. Subscribing never opens the permission prompt on its own: without a granted
-  permission it returns `WebPushSubscribeStatus.PermissionNotGranted`, and every other outcome - no
-  service worker, a subscription made with another key, a browser refusal - is a status, not an
-  exception. `WebPushSubscription` serializes to the browser's `PushSubscription.toJSON()` shape, which
-  server-side web-push libraries accept as it is. The service worker, sending and storing subscriptions
-  stay with the app.
 
 ### Changed
 
