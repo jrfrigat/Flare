@@ -1,0 +1,126 @@
+@page "/services/web-push"
+@using System.Text.Json
+@inherits LocalizedPage
+@inject IFlareWebPush WebPush
+
+<PageTitle>@GalleryStrings.Services_WebPushTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_WebPushTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_WebPushSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:40rem;">
+    <FlareStack Gap="FlareSpacing.Medium">
+        @if (_supported is { } supported)
+        {
+            <FlareAlert Severity="@(supported ? AlertSeverity.Success : AlertSeverity.Warning)" Variant="AlertVariant.Outlined">
+                @(supported ? GalleryStrings.Services_WebPushSupported : GalleryStrings.Services_WebPushNotSupported)
+            </FlareAlert>
+        }
+
+        <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_WebPushPermission <code>@_permission</code></FlareText>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="RequestAsync"
+                         Disabled="@(_permission != NotificationPermission.Default)">
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.NotificationsActive" /></LeadingIcon>
+                <ChildContent>@GalleryStrings.Services_WebPushRequest</ChildContent>
+            </FlareButton>
+        </FlareStack>
+
+        <FlareField TValue="string" @bind-Value="_key" Label="@GalleryStrings.Services_WebPushKey" />
+
+        <FlareStack Row Gap="FlareSpacing.Small">
+            <FlareButton OnClick="SubscribeAsync" Disabled="@(_supported != true)">
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.NotificationAdd" /></LeadingIcon>
+                <ChildContent>@GalleryStrings.Services_WebPushSubscribe</ChildContent>
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" OnClick="UnsubscribeAsync" Disabled="@(_subscription is null)">
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.NotificationsOff" /></LeadingIcon>
+                <ChildContent>@GalleryStrings.Services_WebPushUnsubscribe</ChildContent>
+            </FlareButton>
+        </FlareStack>
+
+        @if (_message is not null)
+        {
+            <FlareAlert Severity="AlertSeverity.Info" Variant="AlertVariant.Outlined">@_message</FlareAlert>
+        }
+
+        @if (_subscription is not null)
+        {
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_WebPushSubscription</FlareText>
+            <FlareCodeBlock Value="@JsonSerializer.Serialize(_subscription, _indented)" Language="json" ReadOnly="true" />
+        }
+        else
+        {
+            <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Services_WebPushNone</FlareText>
+        }
+
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Services_WebPushNote</FlareText>
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    // A public key only: its private half was never kept, so nothing can be sent to what it subscribes.
+    private string _key = "BE0zVRQv6-IzSb0eAdXnHJFPjm3zvfZh_U1ksqSAXhu1euj0NaFgqGCVzQBh42B_HfwTNKz6a-ZwQp3hUXmTYpo";
+    private bool? _supported;
+    private NotificationPermission _permission = NotificationPermission.Unsupported;
+    private WebPushSubscription? _subscription;
+    private string? _message;
+    private static readonly JsonSerializerOptions _indented = new() { WriteIndented = true };
+
+    private const string _usage = """
+        @inject IFlareWebPush WebPush
+        @inject HttpClient Http
+
+        <FlareButton OnClick="EnableAsync">Turn on notifications</FlareButton>
+
+        @code {
+            // Ask from the click - browsers ignore a permission request made without one.
+            async Task EnableAsync()
+            {
+                if (await WebPush.RequestPermissionAsync() != NotificationPermission.Granted) return;
+
+                var key = await Http.GetStringAsync("api/push/public-key");
+                var result = await WebPush.SubscribeAsync(key);
+                if (result.Succeeded)
+                    await Http.PostAsJsonAsync("api/push/subscriptions", result.Subscription);
+            }
+        }
+        """;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        _supported = await WebPush.IsSupportedAsync();
+        _permission = await WebPush.GetPermissionAsync();
+        _subscription = await WebPush.GetSubscriptionAsync();
+        StateHasChanged();
+    }
+
+    private async Task RequestAsync() => _permission = await WebPush.RequestPermissionAsync();
+
+    private async Task SubscribeAsync()
+    {
+        var result = await WebPush.SubscribeAsync(_key);
+        _subscription = result.Subscription ?? _subscription;
+        _message = result.Status switch
+        {
+            WebPushSubscribeStatus.Subscribed => null,
+            WebPushSubscribeStatus.PermissionNotGranted => GalleryStrings.Services_WebPushPermissionNotGranted,
+            WebPushSubscribeStatus.NoServiceWorker => GalleryStrings.Services_WebPushNoServiceWorker,
+            WebPushSubscribeStatus.KeyMismatch => GalleryStrings.Services_WebPushKeyMismatch,
+            WebPushSubscribeStatus.Unsupported => GalleryStrings.Services_WebPushNotSupported,
+            _ => $"{GalleryStrings.Services_WebPushFailed} {result.Error}",
+        };
+    }
+
+    private async Task UnsubscribeAsync()
+    {
+        if (await WebPush.UnsubscribeAsync()) _subscription = null;
+        _message = null;
+    }
+}

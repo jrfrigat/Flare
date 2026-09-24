@@ -8734,6 +8734,21 @@ public static class ComponentApiRegistry
                 @"FlareNavMenu",
             });
 
+        e[@"NotificationPermission"] = new ApiEnumInfo(
+            @"NotificationPermission",
+            @"Flare.Components.NotificationPermission",
+            @"Flare.Components",
+            @"The user's answer to the browser's notification permission prompt.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Default", @"0", @"Not decided yet: the prompt has not been answered, so it can still be shown."),
+                new ApiEnumMember(@"Granted", @"1", @"Notifications are allowed."),
+                new ApiEnumMember(@"Denied", @"2", @"Notifications are blocked. The page cannot prompt again; only the browser's site settings can change it."),
+                new ApiEnumMember(@"Unsupported", @"3", @"The browser has no notifications, or the page is not interactive yet."),
+            },
+            System.Array.Empty<string>());
+
         e[@"PaginationSize"] = new ApiEnumInfo(
             @"PaginationSize",
             @"Flare.Components.PaginationSize",
@@ -9460,6 +9475,23 @@ public static class ComponentApiRegistry
                 @"FlareTimeSpanPicker",
                 @"FlareToggleButton",
             });
+
+        e[@"WebPushSubscribeStatus"] = new ApiEnumInfo(
+            @"WebPushSubscribeStatus",
+            @"Flare.Components.WebPushSubscribeStatus",
+            @"Flare.Components",
+            @"How a call to SubscribeAsync ended.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Subscribed", @"0", @"The service worker is subscribed; Subscription holds the subscription to send to the server."),
+                new ApiEnumMember(@"Unsupported", @"1", @"The browser cannot receive push messages in this context."),
+                new ApiEnumMember(@"PermissionNotGranted", @"2", @"The notification permission is not granted. Ask for it with RequestPermissionAsync from a user action first."),
+                new ApiEnumMember(@"NoServiceWorker", @"3", @"The page has no registered service worker to receive the messages."),
+                new ApiEnumMember(@"KeyMismatch", @"4", @"A subscription made with a different server key already exists. Unsubscribe first - and let the server forget the old subscription - then subscribe with the new key."),
+                new ApiEnumMember(@"Failed", @"5", @"The browser or its push service rejected the subscription; Error says why."),
+            },
+            System.Array.Empty<string>());
 
         return e;
     }

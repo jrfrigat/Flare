@@ -22,4 +22,10 @@
     <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- The web-push service reads its module's reply into an internal record; the tests stand in for
+         that module, so they have to build the same record. -->
+    <InternalsVisibleTo Include="Flare.Components.Tests" />
+  </ItemGroup>
+
 </Project>

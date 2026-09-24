@@ -3000,6 +3000,22 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Current version</value></data>
   <data name="Services_VersionCheckUpToDate" xml:space="preserve"><value>Up to date - no newer version</value></data>
   <data name="Services_VersionCheckChecking" xml:space="preserve"><value>Checking for updates...</value></data>
+  <data name="Services_WebPushTitle" xml:space="preserve"><value>Web Push service</value></data>
+  <data name="Services_WebPushSubtitle" xml:space="preserve"><value>IFlareWebPush - the notification permission and the push subscription your server sends messages to, without touching IJSRuntime.</value></data>
+  <data name="Services_WebPushSupported" xml:space="preserve"><value>Push is available in this browser</value></data>
+  <data name="Services_WebPushNotSupported" xml:space="preserve"><value>Push is not available here - it needs a secure context, and on iOS a web app added to the Home Screen</value></data>
+  <data name="Services_WebPushPermission" xml:space="preserve"><value>Permission:</value></data>
+  <data name="Services_WebPushRequest" xml:space="preserve"><value>Allow notifications</value></data>
+  <data name="Services_WebPushKey" xml:space="preserve"><value>Server public key (VAPID)</value></data>
+  <data name="Services_WebPushSubscribe" xml:space="preserve"><value>Subscribe</value></data>
+  <data name="Services_WebPushUnsubscribe" xml:space="preserve"><value>Unsubscribe</value></data>
+  <data name="Services_WebPushSubscription" xml:space="preserve"><value>Subscription to send to your server:</value></data>
+  <data name="Services_WebPushNone" xml:space="preserve"><value>Not subscribed</value></data>
+  <data name="Services_WebPushNote" xml:space="preserve"><value>The demo key is only a public key - its private half was never kept, so nothing can be sent to this subscription. A real app takes the key from its server, which keeps the private half and sends the messages.</value></data>
+  <data name="Services_WebPushPermissionNotGranted" xml:space="preserve"><value>Allow notifications first.</value></data>
+  <data name="Services_WebPushNoServiceWorker" xml:space="preserve"><value>This page has no service worker to receive the messages.</value></data>
+  <data name="Services_WebPushKeyMismatch" xml:space="preserve"><value>Already subscribed with another key - unsubscribe first.</value></data>
+  <data name="Services_WebPushFailed" xml:space="preserve"><value>The browser refused:</value></data>
   <data name="Services_VersionCheckCheckNow" xml:space="preserve"><value>Check now</value></data>
   <data name="Services_VersionCheckUpdate" xml:space="preserve"><value>Update</value></data>
   <data name="Services_VersionCheckUpdating" xml:space="preserve"><value>Updating...</value></data>

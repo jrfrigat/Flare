@@ -7807,6 +7807,150 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Web Push service.
+        /// </summary>
+        public static string Services_WebPushTitle {
+            get {
+                return ResourceManager.GetString("Services_WebPushTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на IFlareWebPush - the notification permission and the push subscription your server sends messages to, without touching IJSRuntime..
+        /// </summary>
+        public static string Services_WebPushSubtitle {
+            get {
+                return ResourceManager.GetString("Services_WebPushSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Push is available in this browser.
+        /// </summary>
+        public static string Services_WebPushSupported {
+            get {
+                return ResourceManager.GetString("Services_WebPushSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Push is not available here - it needs a secure context, and on iOS a web app added to the Home Screen.
+        /// </summary>
+        public static string Services_WebPushNotSupported {
+            get {
+                return ResourceManager.GetString("Services_WebPushNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Permission:.
+        /// </summary>
+        public static string Services_WebPushPermission {
+            get {
+                return ResourceManager.GetString("Services_WebPushPermission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Allow notifications.
+        /// </summary>
+        public static string Services_WebPushRequest {
+            get {
+                return ResourceManager.GetString("Services_WebPushRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Server public key (VAPID).
+        /// </summary>
+        public static string Services_WebPushKey {
+            get {
+                return ResourceManager.GetString("Services_WebPushKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Subscribe.
+        /// </summary>
+        public static string Services_WebPushSubscribe {
+            get {
+                return ResourceManager.GetString("Services_WebPushSubscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsubscribe.
+        /// </summary>
+        public static string Services_WebPushUnsubscribe {
+            get {
+                return ResourceManager.GetString("Services_WebPushUnsubscribe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Subscription to send to your server:.
+        /// </summary>
+        public static string Services_WebPushSubscription {
+            get {
+                return ResourceManager.GetString("Services_WebPushSubscription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Not subscribed.
+        /// </summary>
+        public static string Services_WebPushNone {
+            get {
+                return ResourceManager.GetString("Services_WebPushNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The demo key is only a public key - its private half was never kept, so nothing can be sent to this subscription. A real app takes the key from its server, which keeps the private half and sends the messages..
+        /// </summary>
+        public static string Services_WebPushNote {
+            get {
+                return ResourceManager.GetString("Services_WebPushNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Allow notifications first..
+        /// </summary>
+        public static string Services_WebPushPermissionNotGranted {
+            get {
+                return ResourceManager.GetString("Services_WebPushPermissionNotGranted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This page has no service worker to receive the messages..
+        /// </summary>
+        public static string Services_WebPushNoServiceWorker {
+            get {
+                return ResourceManager.GetString("Services_WebPushNoServiceWorker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Already subscribed with another key - unsubscribe first..
+        /// </summary>
+        public static string Services_WebPushKeyMismatch {
+            get {
+                return ResourceManager.GetString("Services_WebPushKeyMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The browser refused:.
+        /// </summary>
+        public static string Services_WebPushFailed {
+            get {
+                return ResourceManager.GetString("Services_WebPushFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Check now.
         /// </summary>
         public static string Services_VersionCheckCheckNow {

@@ -56,6 +56,13 @@ public sealed class AddFlareServiceCompletenessTests
         Assert.Contains(typeof(TimeProvider), RegisteredServiceTypes());
     }
 
+    // No component injects it, so the completeness check above cannot see it; an application does.
+    [Fact]
+    public void AddFlare_RegistersWebPush()
+    {
+        Assert.Contains(typeof(IFlareWebPush), RegisteredServiceTypes());
+    }
+
     [Fact]
     public void AddFlare_DoesNotReplaceAnApplicationsOwnTimeProvider()
     {
