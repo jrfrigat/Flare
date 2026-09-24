@@ -18,7 +18,7 @@
        each csproj). GlobalPackageReference implies PrivateAssets="all". -->
   <ItemGroup>
     <GlobalPackageReference Include="MinVer" Version="7.0.0" />
-    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401" />
   </ItemGroup>
   <ItemGroup>
     <!-- Roslyn source generator (samples/Flare.Gallery.Generators). These two are CEILINGED by the
@@ -34,26 +34,26 @@
          consumer and needs a different major per TFM, so it carries the whole version there via
          VersionOverride. A central pin would be dead weight that reads like the real one. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.12" />
     <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
          its text language are needed by the designer; the Gallery adds two renderers to demo one
          spec becoming several dialects. -->
-    <PackageVersion Include="Querio" Version="0.0.1" />
-    <PackageVersion Include="Querio.Language" Version="0.0.1" />
-    <PackageVersion Include="Querio.Sql" Version="0.0.1" />
-    <PackageVersion Include="Querio.OneC" Version="0.0.1" />
+    <PackageVersion Include="Querio" Version="0.1.0" />
+    <PackageVersion Include="Querio.Language" Version="0.1.0" />
+    <PackageVersion Include="Querio.Sql" Version="0.1.0" />
+    <PackageVersion Include="Querio.OneC" Version="0.1.0" />
     <!-- Test stack (tests/Flare.*.Tests). xunit.v3 4.0.0 makes the test projects
          Microsoft.Testing.Platform applications, which global.json selects as the "dotnet test"
          runner. Under MTP a TRX report is an opt-in extension rather than a built-in logger, so it
          takes a package: without it the report flag in ci.yml is just an unknown option and CI
          uploads no test results. Keep it on the MTP version the platform itself resolves to. -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
-    <PackageVersion Include="xunit.v3" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.3.3" />
-    <PackageVersion Include="bunit" Version="2.9.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.4.1" />
+    <PackageVersion Include="bunit" Version="2.11.3" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <!-- Build-time only: the FluentIconGen tool reads real Fluent UI System Icons SVG data from this package
          and generates a curated FluentUIIcons catalog. Not referenced by any shipped package. -->
