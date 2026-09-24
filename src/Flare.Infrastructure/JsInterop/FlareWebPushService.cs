@@ -9,10 +9,10 @@ namespace Flare.Components;
 /// older than this service (a PWA serves library scripts from its own cache) - degrades to "unsupported"
 /// or "nothing" instead of throwing into the page.
 /// </remarks>
-public sealed class WebPushService : FlareJsModule, IFlareWebPush
+public sealed class FlareWebPushService : FlareJsModule, IFlareWebPush
 {
     /// <param name="js">The JS runtime (injected).</param>
-    public WebPushService(IJSRuntime js)
+    public FlareWebPushService(IJSRuntime js)
         : base(js, "./_content/Flare.Components/js/flare-web-push.js") { }
 
     /// <inheritdoc />

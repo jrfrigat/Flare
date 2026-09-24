@@ -1,4 +1,4 @@
-// Web Push plumbing behind IFlareWebPush (Flare.Infrastructure WebPushService).
+// Web Push plumbing behind IFlareWebPush (Flare.Infrastructure FlareWebPushService).
 //
 // The service worker is the application's; this module only reads and changes the push subscription
 // of whatever worker the page has registered. Nothing here prompts the user except requestPermission:

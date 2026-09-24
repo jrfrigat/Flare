@@ -3,18 +3,18 @@ using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
-public class WebPushServiceTests : FlareTestContext
+public class FlareWebPushServiceTests : FlareTestContext
 {
     private const string Module = "./_content/Flare.Components/js/flare-web-push.js";
     private const string Key = "BExampleServerKey_base64url-123";
 
     private readonly Bunit.BunitJSModuleInterop _module;
-    private readonly WebPushService _push;
+    private readonly FlareWebPushService _push;
 
-    public WebPushServiceTests()
+    public FlareWebPushServiceTests()
     {
         _module = JSInterop.SetupModule(Module);
-        _push = new WebPushService(JSInterop.JSRuntime);
+        _push = new FlareWebPushService(JSInterop.JSRuntime);
     }
 
     private static WebPushSubscription Sample(long? expires = null) => new()
@@ -62,8 +62,8 @@ public class WebPushServiceTests : FlareTestContext
     [InlineData("unsupported", WebPushSubscribeStatus.Unsupported)]
     public async Task Subscribe_ReportsWhyItDidNotSubscribe(string status, WebPushSubscribeStatus expected)
     {
-        _module.Setup<WebPushService.SubscribeReply?>("subscribe", _ => true)
-            .SetResult(new WebPushService.SubscribeReply(status, null, null));
+        _module.Setup<FlareWebPushService.SubscribeReply?>("subscribe", _ => true)
+            .SetResult(new FlareWebPushService.SubscribeReply(status, null, null));
 
         var result = await _push.SubscribeAsync(Key);
 
@@ -75,8 +75,8 @@ public class WebPushServiceTests : FlareTestContext
     [Fact]
     public async Task Subscribe_ReturnsTheSubscription_AndPassesTheKey()
     {
-        _module.Setup<WebPushService.SubscribeReply?>("subscribe", _ => true)
-            .SetResult(new WebPushService.SubscribeReply("subscribed", Sample(), null));
+        _module.Setup<FlareWebPushService.SubscribeReply?>("subscribe", _ => true)
+            .SetResult(new FlareWebPushService.SubscribeReply("subscribed", Sample(), null));
 
         var result = await _push.SubscribeAsync($"  {Key} ");
 
@@ -88,8 +88,8 @@ public class WebPushServiceTests : FlareTestContext
     [Fact]
     public async Task Subscribe_CarriesTheBrowsersReason()
     {
-        _module.Setup<WebPushService.SubscribeReply?>("subscribe", _ => true)
-            .SetResult(new WebPushService.SubscribeReply("failed", null, "AbortError: push service unreachable"));
+        _module.Setup<FlareWebPushService.SubscribeReply?>("subscribe", _ => true)
+            .SetResult(new FlareWebPushService.SubscribeReply("failed", null, "AbortError: push service unreachable"));
 
         var result = await _push.SubscribeAsync(Key);
 
@@ -110,7 +110,7 @@ public class WebPushServiceTests : FlareTestContext
     public async Task AModuleWithoutTheFunction_DegradesInsteadOfThrowing()
     {
         _module.Setup<bool>("isSupported").SetException(new JSException("isSupported is not a function"));
-        _module.Setup<WebPushService.SubscribeReply?>("subscribe", _ => true)
+        _module.Setup<FlareWebPushService.SubscribeReply?>("subscribe", _ => true)
             .SetException(new JSException("subscribe is not a function"));
         _module.Setup<string?>("getPermission").SetException(new JSException("getPermission is not a function"));
 
