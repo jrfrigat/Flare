@@ -41,6 +41,13 @@ All notable changes to Flare are documented here. This project adheres to
 - **Fluent 2 eases ordinary transitions on `curveEasyEase`**, as its own components do. `EasingStandard` was
   `curveDecelerateMax`, which made every hover and state change start abruptly.
 
+### Fixed
+
+- **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
+  written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced
+  -0.89px instead of -0.25px, and small labels came out tighter than specified. Both Material Design 3 and
+  Material Design 3 Expressive now use the published values.
+
 ## [0.41.0] - 2026-09-24
 
 ### Added
