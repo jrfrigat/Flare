@@ -375,6 +375,10 @@ internal class LiquidGlassTokens
         ThumbPressedOnSizeMd = "27px",
         ThumbOffColor = "#FFFFFF",
         ThumbOnColor = "#FFFFFF",
+        // The handle's resting offsets, stated here: the Material record measures them for its own
+        // outlined 52x32 track, not for this borderless one.
+        ThumbOffLeftXs = "0.15625rem", ThumbOffLeftSm = "0.1875rem", ThumbOffLeftMd = "0.25rem", ThumbOffLeftLg = "0.3125rem", ThumbOffLeftXl = "0.375rem",
+        ThumbOnLeftXs = "calc(100% - 1.1875rem)", ThumbOnLeftSm = "calc(100% - 1.375rem)", ThumbOnLeftMd = "calc(100% - 1.75rem)", ThumbOnLeftLg = "calc(100% - 2.125rem)", ThumbOnLeftXl = "calc(100% - 2.5rem)",
     };
 
     internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
