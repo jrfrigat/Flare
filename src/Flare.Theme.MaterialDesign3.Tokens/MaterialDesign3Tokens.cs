@@ -24,21 +24,23 @@ public class MaterialDesign3Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        DisplayLarge = T("Roboto", "400", "3.5625rem", "4rem", "-0.015625em"),
-        DisplayMedium = T("Roboto", "400", "2.8125rem", "3.25rem", "0em"),
-        DisplaySmall = T("Roboto", "400", "2.25rem", "2.75rem", "0em"),
-        HeadlineLarge = T("Roboto", "400", "2rem", "2.5rem", "0em"),
-        HeadlineMedium = T("Roboto", "400", "1.75rem", "2.25rem", "0em"),
-        HeadlineSmall = T("Roboto", "400", "1.5rem", "2rem", "0em"),
-        TitleLarge = T("Roboto", "400", "1.375rem", "1.75rem", "0em"),
-        TitleMedium = T("Roboto", "500", "1rem", "1.5rem", "0.009375em"),
-        TitleSmall = T("Roboto", "500", "0.875rem", "1.25rem", "0.00625em"),
-        BodyLarge = T("Roboto", "400", "1rem", "1.5rem", "0.03125em"),
-        BodyMedium = T("Roboto", "400", "0.875rem", "1.25rem", "0.015625em"),
-        BodySmall = T("Roboto", "400", "0.75rem", "1rem", "0.025em"),
-        LabelLarge = T("Roboto", "500", "0.875rem", "1.25rem", "0.00625em"),
-        LabelMedium = T("Roboto", "500", "0.75rem", "1rem", "0.03125em"),
-        LabelSmall = T("Roboto", "500", "0.6875rem", "1rem", "0.03125em"),
+        // md.sys.typescale tracking is absolute, in rem: -0.25px on Display Large whatever its size. Material 2
+        // states tracking relative to the font size (em); written in em here it grew 3.5x on the display steps.
+        DisplayLarge = T("Roboto", "400", "3.5625rem", "4rem", "-0.015625rem"),
+        DisplayMedium = T("Roboto", "400", "2.8125rem", "3.25rem", "0rem"),
+        DisplaySmall = T("Roboto", "400", "2.25rem", "2.75rem", "0rem"),
+        HeadlineLarge = T("Roboto", "400", "2rem", "2.5rem", "0rem"),
+        HeadlineMedium = T("Roboto", "400", "1.75rem", "2.25rem", "0rem"),
+        HeadlineSmall = T("Roboto", "400", "1.5rem", "2rem", "0rem"),
+        TitleLarge = T("Roboto", "400", "1.375rem", "1.75rem", "0rem"),
+        TitleMedium = T("Roboto", "500", "1rem", "1.5rem", "0.009375rem"),
+        TitleSmall = T("Roboto", "500", "0.875rem", "1.25rem", "0.00625rem"),
+        BodyLarge = T("Roboto", "400", "1rem", "1.5rem", "0.03125rem"),
+        BodyMedium = T("Roboto", "400", "0.875rem", "1.25rem", "0.015625rem"),
+        BodySmall = T("Roboto", "400", "0.75rem", "1rem", "0.025rem"),
+        LabelLarge = T("Roboto", "500", "0.875rem", "1.25rem", "0.00625rem"),
+        LabelMedium = T("Roboto", "500", "0.75rem", "1rem", "0.03125rem"),
+        LabelSmall = T("Roboto", "500", "0.6875rem", "1rem", "0.03125rem"),
     };
 
     internal static readonly ShapeTokens Shape = new()
