@@ -7,6 +7,7 @@
   <Folder Name="/src/Core/">
     <Project Path="src/Flare.Abstractions/Flare.Abstractions.csproj" />
     <Project Path="src/Flare.Theming/Flare.Theming.csproj" />
+    <Project Path="src/Flare.Theming.Generators/Flare.Theming.Generators.csproj" />
     <Project Path="src/Flare.Infrastructure/Flare.Infrastructure.csproj" />
     <Project Path="src/Flare.Icons/Flare.Icons.csproj" />
     <Project Path="src/Flare.Components/Flare.Components.csproj" />

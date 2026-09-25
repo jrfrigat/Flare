@@ -8,32 +8,6 @@ public static partial class CssVarMap
     // be invisible to it.
     private static void FlattenMotion(Dictionary<string, string> v, MotionTokens m)
     {
-        v[Css.Tokens.Motion.DurationStateChange] = m.DurationStateChange;
-        v[Css.Tokens.Motion.DurationSmallMove] = m.DurationSmallMove;
-        v[Css.Tokens.Motion.DurationEnterSmall] = m.DurationEnterSmall;
-        v[Css.Tokens.Motion.DurationEnterMedium] = m.DurationEnterMedium;
-        v[Css.Tokens.Motion.DurationEnterLarge] = m.DurationEnterLarge;
-        v[Css.Tokens.Motion.DurationExitSmall] = m.DurationExitSmall;
-        v[Css.Tokens.Motion.DurationExitMedium] = m.DurationExitMedium;
-        v[Css.Tokens.Motion.DurationExitLarge] = m.DurationExitLarge;
-        v[Css.Tokens.Motion.DurationCycle] = m.DurationCycle;
-        v[Css.Tokens.Motion.DurationCycleLong] = m.DurationCycleLong;
-        v[Css.Tokens.Motion.EasingStandard] = m.EasingStandard;
-        v[Css.Tokens.Motion.EasingDecelerate] = m.EasingDecelerate;
-        v[Css.Tokens.Motion.EasingAccelerate] = m.EasingAccelerate;
-        v[Css.Tokens.Motion.EasingEmphasized] = m.EasingEmphasized;
-        v[Css.Tokens.Motion.EasingEmphasizedDecelerate] = m.EasingEmphasizedDecelerate;
-        v[Css.Tokens.Motion.EasingEmphasizedAccelerate] = m.EasingEmphasizedAccelerate;
-        v[Css.Tokens.Motion.EasingSubtle] = m.EasingSubtle;
-        v[Css.Tokens.Motion.EasingSubtleDecelerate] = m.EasingSubtleDecelerate;
-        v[Css.Tokens.Motion.EasingSubtleAccelerate] = m.EasingSubtleAccelerate;
-        v[Css.Tokens.Motion.EasingLinear] = m.EasingLinear;
-        v[Css.Tokens.Motion.EasingSpringFast] = m.EasingSpringFast;
-        v[Css.Tokens.Motion.EasingSpring] = m.EasingSpring;
-        v[Css.Tokens.Motion.EasingSpringSlow] = m.EasingSpringSlow;
-        v[Css.Tokens.Motion.DurationSpringFast] = m.DurationSpringFast;
-        v[Css.Tokens.Motion.DurationSpring] = m.DurationSpring;
-        v[Css.Tokens.Motion.DurationSpringSlow] = m.DurationSpringSlow;
 
         v[Css.Tokens.Motion.Dialog.EnterDelay] = m.Dialog.Enter.Delay;
         v[Css.Tokens.Motion.Dialog.EnterDuration] = m.Dialog.Enter.Duration;

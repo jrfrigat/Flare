@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <!-- Generates CssVarMap.FlattenAttributed from the [CssVar] attributes; build-time only, not a package dependency. -->
+    <ProjectReference Include="..\Flare.Theming.Generators\Flare.Theming.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

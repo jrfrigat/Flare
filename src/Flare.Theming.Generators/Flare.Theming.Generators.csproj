@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Build-time only: generates CssVarMap's token table for Flare.Theming. Never packed, and referenced as an
+	     analyzer without its output assembly, so the Flare.Theming package carries no dependency on it. -->
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>12.0</LangVersion>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<IsRoslynComponent>true</IsRoslynComponent>
+		<AnalyzerLanguage>cs</AnalyzerLanguage>
+		<!-- Internal build-time generator: no public analyzer release to track. -->
+		<NoWarn>$(NoWarn);RS2008</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+	</ItemGroup>
+
+</Project>

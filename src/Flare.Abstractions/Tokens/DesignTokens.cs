@@ -13,7 +13,7 @@ namespace Flare.Abstractions.Tokens;
 public sealed record DesignTokens
 {
     /// <summary>CSS value for the focus ring outline.</summary>
-    public required string FocusRing { get; init; }
+    [Flare.Css.CssVar(Flare.Css.Tokens.Vars.FocusRing)] public required string FocusRing { get; init; }
 
     /// <summary>Typography token.</summary>
     public required TypographyTokens Typography { get; init; }

@@ -5,11 +5,13 @@ namespace Flare.Css;
 /// two token systems: the value records under <c>Flare.Abstractions.Tokens(.Components)</c> (per-theme
 /// settings) and the name constants under <c>Flare.Css.Tokens.*</c> (the <c>--flare-*</c> registry).
 /// <para>
-/// The mapping is otherwise expressed only imperatively in <c>CssVarMap.FlattenDesign</c>; this
-/// attribute makes it declarative and self-documenting, and the <c>CssVar</c> drift test asserts that
-/// every annotated name is actually emitted by the flatten - so the value/name systems cannot diverge.
+/// The attribute IS the mapping: a source generator in Flare.Theming reads it off every string token property
+/// reachable from <c>DesignTokens</c> and writes the assignment into <c>CssVarMap.FlattenDesign</c>, so a new
+/// token reaches the browser as soon as its record property is declared - there is no table row to forget. Two
+/// properties naming the same variable fail the build.
 /// Apply it to scalar string token properties (one var name each). Compound tokens that expand to
-/// several variables (per-corner radii, typography styles) are intentionally left unannotated.
+/// several variables (per-corner radii, typography styles) are intentionally left unannotated and are
+/// mapped by hand in <c>CssVarMap</c>.
 /// </para>
 /// </summary>
 /// <param name="name">The CSS custom-property name (an <c>--flare-*</c> string, typically a
