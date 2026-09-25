@@ -427,6 +427,8 @@ internal class AeroTokens
     // Progress - thin classic bar; flat (no MD3 Expressive wavy/round-cap indicator).
     internal static readonly ProgressTokens Progress = MaterialDesign3Tokens.Design.Progress with
     {
+        // The large ring keeps the 4px stroke of the smaller ones; the Material record thickens it.
+        CircularWidthLg = "4px",
         // Centred content: the ramp follows the indicator sizes, so a label dropped into the
         // smallest ring still fits it.
         ContentColor = "var(--flare-color-on-surface)",

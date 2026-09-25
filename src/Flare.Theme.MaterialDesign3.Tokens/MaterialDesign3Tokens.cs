@@ -906,7 +906,7 @@ public class MaterialDesign3Tokens
         CircularWidthXs = "3px",
         CircularWidthSm = "3px",
         CircularWidthMd = "4px",  // spec: circular active-indicator thickness
-        CircularWidthLg = "4px",  // spec: same 4dp on the thick ring
+        CircularWidthLg = "8px",  // spec: thick-active-indicator-thickness 8dp on the thick ring
         CircularWidthXl = "5px",
         CircularCap = "round",
         CircularGap = "4px",
@@ -1587,7 +1587,7 @@ public class MaterialDesign3Tokens
         // 16px inner padding on raw-content cards. Variant bg roles come from the base CardTokens.
         Card = new()
         {
-            ElevationHover = "var(--flare-elevation-3)",
+            ElevationHover = "var(--flare-elevation-2)", // md.comp.elevated-card.hover.container.elevation
             OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
             PaddingTop = "16px",
             PaddingRight = "16px",
