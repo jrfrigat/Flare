@@ -93,17 +93,6 @@ public class FluentUI2Tokens
 
     internal static readonly MotionTokens Motion = new()
     {
-        // The scale that predates the roles. Fluent has no names for Short3/Short4 and repeats them as
-        // Medium1/Medium2; the roles below are what carries Fluent's own ramp.
-        DurationShort1 = "50ms",   // durationUltraFast
-        DurationShort2 = "100ms",  // durationFaster
-        DurationShort3 = "150ms",
-        DurationShort4 = "200ms",
-        DurationMedium1 = "150ms", // durationFast
-        DurationMedium2 = "200ms", // durationNormal
-        DurationLong1 = "300ms",   // durationSlow
-        DurationLong2 = "500ms",   // durationUltraSlow
-
         EasingStandard = CurveEasyEase,                               // curveEasyEase
         EasingDecelerate = CurveDecelerateMid,                        // curveDecelerateMid
         EasingAccelerate = "cubic-bezier(1, 0, 1, 1)",                // curveAccelerateMid
@@ -1445,7 +1434,7 @@ public class FluentUI2Tokens
     // it: the glyph crosses over in place, so the geometry axes stay parked and the swap is opacity only.
     internal static readonly IconTokens Icon = new()
     {
-        MorphDuration = "var(--flare-motion-duration-short3)",
+        MorphDuration = "var(--flare-motion-duration-state-change)",
         MorphEasing = "var(--flare-motion-easing-decelerate)",
         MorphScale = "1",
         MorphRotate = "0deg",
@@ -1576,7 +1565,7 @@ public class FluentUI2Tokens
             SubtitleColor = "var(--flare-color-on-surface-variant)",
             SubtitleFontFamily = "var(--flare-typescale-body-medium-font)",
             SubtitleFontSize = "var(--flare-typescale-body-medium-size)",
-            TransitionDuration = "var(--flare-motion-duration-short2)",
+            TransitionDuration = "var(--flare-motion-duration-state-change)",
             TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,

@@ -55,7 +55,7 @@ public class TokenParityTests
         Assert.Contains(Css.Tokens.Shape.Small, flat.Keys);
         Assert.Contains(Css.Tokens.Shape.Medium, flat.Keys);
         Assert.Contains(Css.Tokens.Elevation.Level1, flat.Keys);
-        Assert.Contains(Css.Tokens.Motion.DurationShort1, flat.Keys);
+        Assert.Contains(Css.Tokens.Motion.DurationStateChange, flat.Keys);
         Assert.Contains(Css.Tokens.Motion.EasingStandard, flat.Keys);
         Assert.Contains(Css.Tokens.State.HoverOpacity, flat.Keys);
         Assert.Contains(Css.Tokens.Vars.FocusRing, flat.Keys);

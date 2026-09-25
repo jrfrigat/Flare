@@ -39,7 +39,7 @@
   font-family: var(--flare-typescale-label-large-font);
   font-size: var(--flare-typescale-body-medium-size);
   margin-bottom: -1px;
-  transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  transition: color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-datetimepicker__tab--active {

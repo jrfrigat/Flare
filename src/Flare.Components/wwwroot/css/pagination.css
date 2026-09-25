@@ -32,8 +32,8 @@
   font-size: var(--flare-typescale-label-large-size);
   cursor: pointer;
   transition:
-    background-color var(--flare-motion-duration-short1),
-    border-color var(--flare-motion-duration-short1);
+    background-color var(--flare-motion-duration-state-change),
+    border-color var(--flare-motion-duration-state-change);
 }
 
 /* State layer - the theme names the paint; core only says where it goes. Under the content at
@@ -47,7 +47,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* The current page is a state, not a target, so it never lights up: excluded here rather than

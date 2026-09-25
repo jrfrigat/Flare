@@ -52,7 +52,7 @@
   height: 100%;
   background: var(--fc-main, var(--flare-color-primary));
   border-radius: var(--flare-progress-track-radius);
-  transition: width 0.3s var(--flare-motion-easing-standard);
+  transition: width var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 /* The second segment and segmented track stay inert unless a theme activates them. */
@@ -161,7 +161,7 @@
   stroke: var(--fc-main, var(--flare-color-primary));
   stroke-width: var(--_circ-width);
   stroke-linecap: var(--flare-progress-circular-cap);
-  transition: stroke-dasharray 0.3s var(--flare-motion-easing-standard);
+  transition: stroke-dasharray var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 /* Determinate circular: the active arc + remaining-track arc (with the gap)
@@ -169,30 +169,29 @@
    no CSS calc() in stroke-dasharray, which several browsers reject. */
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
-  animation: flare-progress-rotate var(--flare-progress-circular-indeterminate-rotation-duration)
-             linear infinite;
+  animation: flare-spin var(--flare-progress-circular-indeterminate-rotation-duration)
+             var(--flare-motion-easing-linear) infinite;
 }
 
 .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
   stroke-dasharray: 70.74 100;
   animation: flare-progress-dash var(--flare-progress-circular-indeterminate-progress-duration)
-             ease-in-out infinite;
+             var(--flare-motion-easing-standard) infinite;
 }
 
-@keyframes flare-progress-rotate { 100% { transform: rotate(360deg); } }
 
 /* Buffer variant */
 .flare-progress--buffer .flare-progress__track { background: transparent; }
 .flare-progress__buffer-fill {
     position: absolute; inset-inline-start: 0; top: 0; height: 100%;
     background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) var(--flare-progress-buffer-opacity), transparent);
-    transition: width 0.3s ease;
+    transition: width var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 /* Query variant */
 .flare-progress--query .flare-progress__bar {
     width: 100% !important;
-    animation: flare-query 1.4s ease infinite;
+    animation: flare-query var(--flare-motion-duration-cycle-long) var(--flare-motion-easing-standard) infinite;
     background: linear-gradient(90deg, transparent, var(--fc-main, var(--flare-color-primary)), transparent);
 }
 

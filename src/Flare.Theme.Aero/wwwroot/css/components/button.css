@@ -10,9 +10,9 @@
         border: 1px solid var(--flare-color-outline);
         box-shadow: inset 0 1px 0 color-mix(in srgb, var(--flare-color-surface) 60%, #ffffff);
         transition:
-            background-color var(--flare-motion-duration-short2, 90ms) ease,
-            border-color var(--flare-motion-duration-short2, 90ms) ease,
-            box-shadow var(--flare-motion-duration-short2, 90ms) ease;
+            background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+            border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+            box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     }
 
     /* The gradient swap IS the hover effect here, so the state layer must paint nothing - said by

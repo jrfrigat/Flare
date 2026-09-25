@@ -83,7 +83,7 @@
     font-size: var(--flare-picker-day-font-size);
     color: var(--flare-color-on-surface);
     font-family: inherit;
-    transition: background-color var(--flare-motion-duration-short2);
+    transition: background-color var(--flare-motion-duration-state-change);
 }
 .flare-picker__day:hover:not(:disabled) {
     background: var(--flare-state-hover-layer);

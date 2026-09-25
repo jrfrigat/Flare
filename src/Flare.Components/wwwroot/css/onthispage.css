@@ -48,9 +48,9 @@
   border-radius: var(--flare-toc-active-radius);
   color: var(--flare-toc-inactive-color);
   text-decoration: none;
-  transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-              background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-              border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  transition: color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+              background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+              border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-toc__link:hover {

@@ -28,7 +28,7 @@
     font-family: var(--flare-typescale-body-medium-font);
     font-size: var(--flare-typescale-body-medium-size);
     color: var(--flare-color-on-surface);
-    transition: border-color var(--flare-motion-duration-short2);
+    transition: border-color var(--flare-motion-duration-state-change);
 }
 
 .flare-colorpicker__trigger:hover {
@@ -200,7 +200,7 @@
     border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-colorpicker-thumb-border-color);
     box-shadow: var(--flare-elevation-1);
     cursor: pointer;
-    transition: box-shadow var(--flare-motion-duration-short1);
+    transition: box-shadow var(--flare-motion-duration-state-change);
 }
 
 .flare-colorpicker__slider::-moz-range-thumb {
@@ -246,8 +246,8 @@
     font-weight: 600;
     cursor: pointer;
     letter-spacing: 0.05em;
-    transition: border-color var(--flare-motion-duration-short2),
-                color var(--flare-motion-duration-short2);
+    transition: border-color var(--flare-motion-duration-state-change),
+                color var(--flare-motion-duration-state-change);
 }
 
 .flare-colorpicker__tab:hover {
@@ -284,7 +284,7 @@
     font-variant-numeric: tabular-nums;
     text-align: center;
     outline: none;
-    transition: border-color var(--flare-motion-duration-short2);
+    transition: border-color var(--flare-motion-duration-state-change);
     box-sizing: border-box;
 }
 
@@ -330,8 +330,8 @@
     border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline-variant);
     cursor: pointer;
     padding: 0;
-    transition: transform var(--flare-motion-duration-short1),
-                border-color var(--flare-motion-duration-short1);
+    transition: transform var(--flare-motion-duration-small-move),
+                border-color var(--flare-motion-duration-state-change);
 }
 
 .flare-colorpicker__preset:hover {
@@ -386,7 +386,7 @@
     border: var(--flare-border-divider);
     border-radius: var(--flare-shape-small);
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short2);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 /* State layer - the theme names the paint; core only says where it goes (see tabs.css). The wash is
@@ -401,7 +401,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-colorpicker__eyedropper-btn:hover::before {

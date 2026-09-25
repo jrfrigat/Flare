@@ -1,0 +1,80 @@
+/* Motion primitives shared by components. One rotation serves every spinner - button, autocomplete,
+   virtual tree and the circular progress indicator - so a loop reads the same wherever it turns;
+   each spinner sets its own period (the theme's cycle role, or the progress indicator's own token). */
+@keyframes flare-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Reduced motion, once, for every component and theme. The motion tokens every transition reads are set
+   to 0.01ms rather than 0s, so transitionend and animationend still fire and nothing waiting on them hangs.
+   !important is what lets one rule win in both delivery modes: over the .flare-theme-* class rule and over
+   variables injected inline on the root. Loops keep their period - a spinner is how a page says it is
+   still loading - and the tooltip keeps its hover delays, which are waiting, not motion. */
+@media (prefers-reduced-motion: reduce) {
+    :root,
+    [class*="flare-theme-"] {
+        --flare-motion-duration-state-change: 0.01ms !important;
+        --flare-motion-duration-small-move: 0.01ms !important;
+        --flare-motion-duration-enter-small: 0.01ms !important;
+        --flare-motion-duration-enter-medium: 0.01ms !important;
+        --flare-motion-duration-enter-large: 0.01ms !important;
+        --flare-motion-duration-exit-small: 0.01ms !important;
+        --flare-motion-duration-exit-medium: 0.01ms !important;
+        --flare-motion-duration-exit-large: 0.01ms !important;
+        --flare-motion-duration-spring-fast: 0.01ms !important;
+        --flare-motion-duration-spring: 0.01ms !important;
+        --flare-motion-duration-spring-slow: 0.01ms !important;
+        --flare-motion-dialog-enter-delay: 0.01ms !important;
+        --flare-motion-dialog-enter-duration: 0.01ms !important;
+        --flare-motion-dialog-enter-fade-delay: 0.01ms !important;
+        --flare-motion-dialog-enter-fade-duration: 0.01ms !important;
+        --flare-motion-dialog-exit-delay: 0.01ms !important;
+        --flare-motion-dialog-exit-duration: 0.01ms !important;
+        --flare-motion-dialog-exit-fade-delay: 0.01ms !important;
+        --flare-motion-dialog-exit-fade-duration: 0.01ms !important;
+        --flare-motion-sheet-enter-delay: 0.01ms !important;
+        --flare-motion-sheet-enter-duration: 0.01ms !important;
+        --flare-motion-sheet-enter-fade-delay: 0.01ms !important;
+        --flare-motion-sheet-enter-fade-duration: 0.01ms !important;
+        --flare-motion-sheet-exit-delay: 0.01ms !important;
+        --flare-motion-sheet-exit-duration: 0.01ms !important;
+        --flare-motion-sheet-exit-fade-delay: 0.01ms !important;
+        --flare-motion-sheet-exit-fade-duration: 0.01ms !important;
+        --flare-motion-menu-enter-delay: 0.01ms !important;
+        --flare-motion-menu-enter-duration: 0.01ms !important;
+        --flare-motion-menu-enter-fade-delay: 0.01ms !important;
+        --flare-motion-menu-enter-fade-duration: 0.01ms !important;
+        --flare-motion-menu-exit-delay: 0.01ms !important;
+        --flare-motion-menu-exit-duration: 0.01ms !important;
+        --flare-motion-menu-exit-fade-delay: 0.01ms !important;
+        --flare-motion-menu-exit-fade-duration: 0.01ms !important;
+        --flare-motion-popover-enter-delay: 0.01ms !important;
+        --flare-motion-popover-enter-duration: 0.01ms !important;
+        --flare-motion-popover-enter-fade-delay: 0.01ms !important;
+        --flare-motion-popover-enter-fade-duration: 0.01ms !important;
+        --flare-motion-popover-exit-delay: 0.01ms !important;
+        --flare-motion-popover-exit-duration: 0.01ms !important;
+        --flare-motion-popover-exit-fade-delay: 0.01ms !important;
+        --flare-motion-popover-exit-fade-duration: 0.01ms !important;
+        --flare-motion-tooltip-enter-duration: 0.01ms !important;
+        --flare-motion-tooltip-enter-fade-duration: 0.01ms !important;
+        --flare-motion-tooltip-exit-duration: 0.01ms !important;
+        --flare-motion-tooltip-exit-fade-duration: 0.01ms !important;
+        --flare-motion-snackbar-enter-delay: 0.01ms !important;
+        --flare-motion-snackbar-enter-duration: 0.01ms !important;
+        --flare-motion-snackbar-enter-fade-delay: 0.01ms !important;
+        --flare-motion-snackbar-enter-fade-duration: 0.01ms !important;
+        --flare-motion-snackbar-exit-delay: 0.01ms !important;
+        --flare-motion-snackbar-exit-duration: 0.01ms !important;
+        --flare-motion-snackbar-exit-fade-delay: 0.01ms !important;
+        --flare-motion-snackbar-exit-fade-duration: 0.01ms !important;
+        --flare-motion-drawer-enter-delay: 0.01ms !important;
+        --flare-motion-drawer-enter-duration: 0.01ms !important;
+        --flare-motion-drawer-enter-fade-delay: 0.01ms !important;
+        --flare-motion-drawer-enter-fade-duration: 0.01ms !important;
+        --flare-motion-drawer-exit-delay: 0.01ms !important;
+        --flare-motion-drawer-exit-duration: 0.01ms !important;
+        --flare-motion-drawer-exit-fade-delay: 0.01ms !important;
+        --flare-motion-drawer-exit-fade-duration: 0.01ms !important;
+    }
+}

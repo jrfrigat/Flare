@@ -42,9 +42,9 @@
      collapsing mid-transition; a browser without it fades out at a collapsed width, which is the same
      pixels nobody looks at. */
   content-visibility: hidden;
-  transition: opacity var(--flare-motion-duration-short1),
-              visibility var(--flare-motion-duration-short1),
-              content-visibility var(--flare-motion-duration-short1);
+  transition: opacity var(--flare-motion-duration-enter-small),
+              visibility var(--flare-motion-duration-enter-small),
+              content-visibility var(--flare-motion-duration-enter-small);
   transition-behavior: allow-discrete;
 }
 

@@ -62,8 +62,8 @@
   background: var(--flare-color-surface);
   color: var(--flare-color-on-surface-variant);
   cursor: pointer;
-  transition: background var(--flare-motion-duration-short1),
-              color var(--flare-motion-duration-short1);
+  transition: background var(--flare-motion-duration-state-change),
+              color var(--flare-motion-duration-state-change);
 }
 
 /* State layer for the tab strip's two interactive surfaces. Their hover used to be computed here as
@@ -86,7 +86,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-tabs__scroll:hover:not(:disabled)::before {
@@ -153,8 +153,8 @@
   font-weight: var(--flare-tabs-label-weight);
   cursor: pointer;
   white-space: nowrap;
-  transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-              border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  transition: color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+              border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-tabs__tab:hover:not(:disabled)::before {
@@ -322,8 +322,8 @@
   color: inherit;
   cursor: pointer;
   opacity: var(--flare-tabs-close-opacity);
-  transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-              background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+              background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* A hover, so it reads the hover layer. It used to mix from the SELECTED opacity, which made the

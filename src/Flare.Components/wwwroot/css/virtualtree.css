@@ -18,7 +18,7 @@
     padding-left: var(--flare-vtree-indent, 0);
     cursor: pointer;
     border-radius: var(--flare-nav-item-radius);
-    transition: background var(--flare-motion-duration-short2);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 /* State layer for the node row and its expand toggle - the theme names the paint; core only says
@@ -33,7 +33,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-vtree__node:hover::before {
@@ -61,7 +61,7 @@
 
 .flare-vtree__expand-btn .flare-icon {
     font-size: 1rem;
-    transition: transform var(--flare-motion-duration-short2) ease;
+    transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 .flare-vtree__node[aria-expanded="true"] .flare-vtree__expand-btn .flare-icon {
@@ -92,11 +92,7 @@
     font-style: italic;
 }
 
-@keyframes flare-vtree-spin {
-    to { transform: rotate(360deg); }
-}
-
 .flare-vtree__expand-btn[disabled] .flare-icon {
     display: inline-block;
-    animation: flare-vtree-spin 0.8s linear infinite;
+    animation: flare-spin var(--flare-motion-duration-cycle) var(--flare-motion-easing-linear) infinite;
 }

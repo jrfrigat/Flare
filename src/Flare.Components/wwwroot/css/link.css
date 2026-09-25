@@ -7,8 +7,8 @@
     line-height: inherit;
     /* Role class sets --fc-main; custom inlines it; FlareColor.Default -> inherit. */
     color: var(--fc-main, inherit);
-    transition: color var(--flare-motion-duration-short1),
-                opacity var(--flare-motion-duration-short1);
+    transition: color var(--flare-motion-duration-state-change),
+                opacity var(--flare-motion-duration-state-change);
 }
 
 .flare-link--underline-always { text-decoration: underline; }

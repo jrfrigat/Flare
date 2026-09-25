@@ -64,7 +64,7 @@
     background: transparent;
     color: var(--flare-color-on-surface-variant);
     cursor: pointer;
-    transition: background-color var(--flare-motion-duration-short2);
+    transition: background-color var(--flare-motion-duration-state-change);
 }
 
 .flare-dialog__close:hover {
@@ -194,8 +194,8 @@
     border-end-end-radius: 0;
     padding-bottom: env(safe-area-inset-bottom, 0px);
     animation: flare-dialog-sheet-in
-        var(--flare-motion-duration-medium2)
-        var(--flare-motion-easing-emphasized);
+        var(--flare-motion-sheet-enter-duration)
+        var(--flare-motion-sheet-enter-easing);
 }
 
 /* The sheet drag-grabber handle. */

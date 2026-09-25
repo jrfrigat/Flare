@@ -21,7 +21,7 @@
 .flare-breadcrumb__link {
   color: var(--flare-color-primary);
   text-decoration: none;
-  transition: opacity var(--flare-motion-duration-short1);
+  transition: opacity var(--flare-motion-duration-state-change);
 }
 
 .flare-breadcrumb__link:hover { opacity: var(--flare-breadcrumb-link-hover-opacity); text-decoration: underline; }
@@ -54,7 +54,7 @@
   line-height: 1;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: background var(--flare-motion-duration-short1);
+  transition: background var(--flare-motion-duration-state-change);
 }
 
 /* Also a hover reading the selected opacity - see the note in tabs.css on the close button. */

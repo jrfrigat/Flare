@@ -229,7 +229,7 @@
                   0 0 / var(--_wave-len) 100% repeat-x;
     mask: var(--flare-progress-wave-mask, var(--_wave-mask))
           0 0 / var(--_wave-len) 100% repeat-x;
-    animation: flare-md3e-wave-travel var(--flare-progress-wave-speed) linear infinite;
+    animation: flare-md3e-wave-travel var(--flare-progress-wave-speed) var(--flare-motion-easing-linear) infinite;
   }
 
   .flare-progress--md3e-wavy.flare-progress--linear .flare-progress__remain {
@@ -256,13 +256,13 @@
   .flare-progress--circular.flare-progress--indeterminate {
     animation: flare-progress-ring-progress
                var(--flare-progress-circular-indeterminate-progress-duration)
-               linear infinite;
+               var(--flare-motion-easing-linear) infinite;
   }
 
   .flare-progress--circular.flare-progress--indeterminate > .flare-progress__svg {
     animation: flare-progress-wavy-rotate
                var(--flare-progress-circular-indeterminate-rotation-duration)
-               linear infinite;
+               var(--flare-motion-easing-linear) infinite;
   }
 
   .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
@@ -365,7 +365,7 @@
     transform: rotate(calc(var(--_ring-wave-spin) * 360deg));
     animation: flare-md3e-ring-wave-travel
                calc(var(--flare-progress-wave-speed) * var(--_ring-waves))
-               linear infinite;
+               var(--flare-motion-easing-linear) infinite;
   }
 
   /* The remaining track is not wavy: it keeps the thickness its size step asks for,

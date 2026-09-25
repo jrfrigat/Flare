@@ -8,14 +8,6 @@ public static partial class CssVarMap
     // be invisible to it.
     private static void FlattenMotion(Dictionary<string, string> v, MotionTokens m)
     {
-        v[Css.Tokens.Motion.DurationShort1] = m.DurationShort1;
-        v[Css.Tokens.Motion.DurationShort2] = m.DurationShort2;
-        v[Css.Tokens.Motion.DurationShort3] = m.DurationShort3;
-        v[Css.Tokens.Motion.DurationShort4] = m.DurationShort4;
-        v[Css.Tokens.Motion.DurationMedium1] = m.DurationMedium1;
-        v[Css.Tokens.Motion.DurationMedium2] = m.DurationMedium2;
-        v[Css.Tokens.Motion.DurationLong1] = m.DurationLong1;
-        v[Css.Tokens.Motion.DurationLong2] = m.DurationLong2;
         v[Css.Tokens.Motion.DurationStateChange] = m.DurationStateChange;
         v[Css.Tokens.Motion.DurationSmallMove] = m.DurationSmallMove;
         v[Css.Tokens.Motion.DurationEnterSmall] = m.DurationEnterSmall;

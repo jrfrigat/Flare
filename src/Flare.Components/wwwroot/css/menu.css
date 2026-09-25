@@ -24,7 +24,7 @@
     border-radius: var(--flare-menu-panel-radius);
     box-shadow: var(--flare-menu-panel-shadow);
     padding: var(--flare-menu-panel-padding-block) var(--flare-menu-panel-padding-inline);
-    animation: var(--flare-menu-panel-enter-animation) var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+    animation: var(--flare-menu-panel-enter-animation) var(--flare-motion-duration-enter-small) var(--flare-motion-easing-decelerate);
 }
 
 /* A menu panel takes focus only to receive the arrow keys; the item it points at through
@@ -98,7 +98,7 @@
     margin-left: auto;
     font-size: var(--flare-menu-item-icon-size);
     color: var(--flare-color-on-surface-variant);
-    transition: transform var(--flare-motion-duration-short2);
+    transition: transform var(--flare-motion-duration-small-move);
 }
 
 .flare-submenu:hover > .flare-submenu__activator .flare-submenu__icon,

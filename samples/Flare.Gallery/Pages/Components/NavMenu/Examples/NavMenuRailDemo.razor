@@ -3,7 +3,7 @@
    FlareLayout with MiniRail this turns on automatically while the drawer is collapsed. *@
 <div style="display:flex;gap:1rem;align-items:flex-start;">
     <FlareCard Variant="CardVariant.Filled"
-               Style="@($"width:{(_rail ? "4rem" : "240px")};padding:0.75rem 0;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-medium);transition:width var(--flare-motion-duration-medium2,250ms) var(--flare-motion-easing-emphasized,ease);")">
+               Style="@($"width:{(_rail ? "4rem" : "240px")};padding:0.75rem 0;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-medium);transition:width var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized);")">
         <FlareNavMenu Rail="_rail">
             <FlareNavLink Href="" Match="NavMatchMode.Exact" Tooltip="Dashboard">
                 <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Dashboard" /></IconContent>

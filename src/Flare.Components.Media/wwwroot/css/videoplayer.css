@@ -41,7 +41,7 @@
     display: inline-flex;
     align-items: center;
     border-radius: var(--flare-shape-extra-small);
-    transition: background var(--flare-motion-duration-short1, 100ms);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-video-player__btn:hover {

@@ -228,8 +228,8 @@
     background: var(--_hnd-color);
     border: var(--_hnd-border-w) solid var(--_active);
     box-shadow: 0 0 0 0 transparent;
-    transition: width var(--flare-motion-duration-short2),
-                box-shadow var(--flare-motion-duration-short2);
+    transition: width var(--flare-motion-duration-small-move),
+                box-shadow var(--flare-motion-duration-state-change);
 }
 
 .flare-slider__input::-moz-range-thumb {
@@ -240,8 +240,8 @@
     clip-path: var(--_hnd-clip);
     background: var(--_hnd-color);
     border: var(--_hnd-border-w) solid var(--_active);
-    transition: width var(--flare-motion-duration-short2),
-                box-shadow var(--flare-motion-duration-short2);
+    transition: width var(--flare-motion-duration-small-move),
+                box-shadow var(--flare-motion-duration-state-change);
 }
 
 /* Keyboard focus as a stroke round the control, for a language whose thumb carries no halo. Keyed to the
@@ -362,8 +362,8 @@
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2),
-                transform var(--flare-motion-duration-short2);
+    transition: opacity var(--flare-motion-duration-state-change),
+                transform var(--flare-motion-duration-small-move);
 }
 .flare-slider__track-wrap:hover .flare-slider__bubble,
 .flare-slider__track-wrap:focus-within .flare-slider__bubble {
@@ -528,15 +528,15 @@
 @media (hover: hover) {
     .flare-slider--handle-on-hover .flare-slider__input::-webkit-slider-thumb {
         opacity: 0;
-        transition: width var(--flare-motion-duration-short2),
-                    box-shadow var(--flare-motion-duration-short2),
-                    opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+        transition: width var(--flare-motion-duration-small-move),
+                    box-shadow var(--flare-motion-duration-state-change),
+                    opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     }
     .flare-slider--handle-on-hover .flare-slider__input::-moz-range-thumb {
         opacity: 0;
-        transition: width var(--flare-motion-duration-short2),
-                    box-shadow var(--flare-motion-duration-short2),
-                    opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+        transition: width var(--flare-motion-duration-small-move),
+                    box-shadow var(--flare-motion-duration-state-change),
+                    opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     }
 
     /* Revealed by hovering the track, by keyboard focus, and while dragging - a drag that leaves the

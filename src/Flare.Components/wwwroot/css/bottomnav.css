@@ -48,7 +48,7 @@
   text-decoration: none;
   color: var(--flare-bottom-nav-inactive-color);
   -webkit-tap-highlight-color: transparent;
-  transition: color var(--flare-motion-duration-short1);
+  transition: color var(--flare-motion-duration-state-change);
 }
 
 .flare-bottom-nav-item:hover {
@@ -65,7 +65,7 @@
   min-width: var(--flare-bottom-nav-indicator-width);
   height: var(--flare-bottom-nav-indicator-size);
   background: transparent;
-  transition: background-color var(--flare-motion-duration-short1);
+  transition: background-color var(--flare-motion-duration-state-change);
 }
 
 /* Caller-supplied icon fragment - size travels as --_flare-icon-size (see .flare-dialog__icon). */

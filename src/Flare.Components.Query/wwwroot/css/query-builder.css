@@ -160,7 +160,7 @@
     font: inherit;
     font-weight: var(--flare-typescale-label-large-weight);
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-qb__connector:hover {

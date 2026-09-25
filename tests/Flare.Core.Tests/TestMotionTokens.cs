@@ -27,14 +27,6 @@ internal static class TestMotionTokens
 
     public static readonly MotionTokens Minimal = new()
     {
-        DurationShort1 = "50ms",
-        DurationShort2 = "100ms",
-        DurationShort3 = "150ms",
-        DurationShort4 = "200ms",
-        DurationMedium1 = "250ms",
-        DurationMedium2 = "300ms",
-        DurationLong1 = "450ms",
-        DurationLong2 = "500ms",
         EasingStandard = "ease",
         EasingDecelerate = "ease-out",
         EasingAccelerate = "ease-in",

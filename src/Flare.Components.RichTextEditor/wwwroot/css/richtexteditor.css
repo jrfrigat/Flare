@@ -3,7 +3,7 @@
     border-radius: var(--flare-shape-medium);
     overflow: hidden;
     background: var(--flare-color-surface);
-    transition: border-color var(--flare-motion-duration-short2);
+    transition: border-color var(--flare-motion-duration-state-change);
 }
 
 .flare-rte:focus-within {
@@ -35,7 +35,7 @@
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
     color: var(--flare-color-on-surface);
-    transition: background var(--flare-motion-duration-short1, 100ms);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-rte__tool:hover {

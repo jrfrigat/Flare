@@ -51,7 +51,7 @@
     border-radius: var(--flare-shape-full);
     cursor: pointer;
     color: var(--flare-color-on-surface);
-    transition: background var(--flare-motion-duration-short2);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-calendar__nav-btn:hover {
@@ -80,7 +80,7 @@
     padding: var(--flare-spacing-2);
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short2);
+    transition: background var(--flare-motion-duration-state-change);
     display: flex;
     flex-direction: column;
     gap: var(--flare-spacing-1);
@@ -97,7 +97,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-calendar__cell:hover:not(.flare-calendar__cell--other)::before {

@@ -47,7 +47,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-accordion-panel__header:hover:not(:disabled)::before {
@@ -97,7 +97,7 @@
   font-style: normal;
   font-size: var(--flare-accordion-icon-size);
   display: inline-block;
-  transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 .flare-accordion-panel--expanded .flare-accordion-panel__icon {
@@ -111,7 +111,7 @@
 .flare-accordion-panel__content {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+  transition: grid-template-rows var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
 }
 
 .flare-accordion-panel--expanded .flare-accordion-panel__content {
@@ -131,7 +131,7 @@
   padding-block: 0;
   padding-inline: var(--flare-accordion-body-padding-inline);
   color: var(--flare-accordion-body-color);
-  transition: padding-block var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+  transition: padding-block var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
 }
 
 .flare-accordion-panel--expanded .flare-accordion-panel__body {

@@ -72,7 +72,7 @@
     cursor: pointer;
     font-size: var(--flare-typescale-label-large-size);
     font-weight: var(--flare-typescale-label-large-weight);
-    transition: background var(--flare-motion-duration-short2);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-msgbox__btn--cancel {
@@ -92,7 +92,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-msgbox__btn:hover::before {

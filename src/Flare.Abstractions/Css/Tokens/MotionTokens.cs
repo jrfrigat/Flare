@@ -37,22 +37,6 @@ public static partial class Motion
     /// <summary>CSS custom-property name for the constant-rate curve.</summary>
     public const string EasingLinear = "--flare-motion-easing-linear";
 
-    /// <summary>CSS custom-property name for the duration short 1 token.</summary>
-    public const string DurationShort1 = "--flare-motion-duration-short1";
-    /// <summary>CSS custom-property name for the duration short 2 token.</summary>
-    public const string DurationShort2 = "--flare-motion-duration-short2";
-    /// <summary>CSS custom-property name for the duration short 3 token.</summary>
-    public const string DurationShort3 = "--flare-motion-duration-short3";
-    /// <summary>CSS custom-property name for the duration short 4 token.</summary>
-    public const string DurationShort4 = "--flare-motion-duration-short4";
-    /// <summary>CSS custom-property name for the duration medium 1 token.</summary>
-    public const string DurationMedium1 = "--flare-motion-duration-medium1";
-    /// <summary>CSS custom-property name for the duration medium 2 token.</summary>
-    public const string DurationMedium2 = "--flare-motion-duration-medium2";
-    /// <summary>CSS custom-property name for the duration long 1 token.</summary>
-    public const string DurationLong1 = "--flare-motion-duration-long1";
-    /// <summary>CSS custom-property name for the duration long 2 token.</summary>
-    public const string DurationLong2 = "--flare-motion-duration-long2";
 
     /// <summary>CSS custom-property name for the fast spring duration token.</summary>
     public const string DurationSpringFast = "--flare-motion-duration-spring-fast";

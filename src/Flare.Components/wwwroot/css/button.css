@@ -50,7 +50,7 @@
        on a theme SWITCH - does not apply: a switch replaces the token itself, and a token change is
        not an interpolated transition. */
     --_morph-duration: var(--flare-shape-morph-duration);
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-shape-morph-easing);
+    transition: box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard), color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-shape-morph-easing);
     /* Reserve the border on EVERY button, whatever its variant, so switching variant never shifts
        layout. The width is the theme's and ramps with the size - a stroke that reads as a hairline
        beside a small label is a thread beside a large one, which is why Material thickens it as the
@@ -72,7 +72,7 @@
         /* Base is invisible; each state paints its own layer token (theme owns the paint). */
         background: transparent;
         opacity: 0;
-        transition: opacity var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+        transition: opacity var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
         pointer-events: none;
     }
 
@@ -99,7 +99,7 @@
     .flare-btn:active::before {
         background: var(--flare-state-pressed-layer);
         opacity: 1;
-        transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+        transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     }
 
     /* A press is an order of magnitude shorter than the morph. Measured: :active survives about two
@@ -109,7 +109,7 @@
        Entering the pressed state uses a short duration so it arrives at once; LEAVING it falls back
        to the rule above and springs, which is where the overshoot belongs anyway. */
     .flare-btn:active {
-        --_morph-duration: var(--flare-motion-duration-short2);
+        --_morph-duration: var(--flare-motion-duration-small-move);
     }
 
     .flare-btn:focus-visible {
@@ -465,15 +465,9 @@
     border: 2px solid currentColor;
     border-top-color: transparent;
     border-radius: 50%;
-    animation: flare-spin 0.7s linear infinite;
+    animation: flare-spin var(--flare-motion-duration-cycle) var(--flare-motion-easing-linear) infinite;
     display: inline-block;
     flex-shrink: 0;
-}
-
-@keyframes flare-spin {
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 /* ==========================================================================

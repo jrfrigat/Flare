@@ -13,7 +13,7 @@
 
 .flare-carousel__track {
     display: flex;
-    transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-emphasized, ease);
+    transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized, ease);
     will-change: transform;
 }
 
@@ -38,7 +38,7 @@
     color: var(--flare-color-on-surface);
     border: 1px solid var(--flare-color-outline-variant);
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short2, 150ms);
+    transition: background var(--flare-motion-duration-state-change);
     backdrop-filter: blur(4px);
 }
 
@@ -80,8 +80,8 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    transition: background var(--flare-motion-duration-short2, 150ms),
-                width var(--flare-motion-duration-short2, 150ms);
+    transition: background var(--flare-motion-duration-state-change),
+                width var(--flare-motion-duration-small-move);
 }
 
 .flare-carousel__dot--active {

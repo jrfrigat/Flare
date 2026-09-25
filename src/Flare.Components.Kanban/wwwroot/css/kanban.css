@@ -53,8 +53,8 @@
     border-radius: var(--flare-shape-small);
     padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
     /* cursor and touch-action come from .flare-draggable now, with the rest of the drag model. */
-    transition: box-shadow var(--flare-motion-duration-short2, 150ms),
-                opacity var(--flare-motion-duration-short2, 150ms);
+    transition: box-shadow var(--flare-motion-duration-state-change),
+                opacity var(--flare-motion-duration-state-change);
     display: flex;
     flex-direction: column;
 }

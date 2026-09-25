@@ -20,8 +20,8 @@
     background: var(--flare-color-surface);
     color: var(--flare-color-on-surface);
     outline: none;
-    transition: border-color var(--flare-motion-duration-short2),
-                box-shadow  var(--flare-motion-duration-short2);
+    transition: border-color var(--flare-motion-duration-state-change),
+                box-shadow  var(--flare-motion-duration-state-change);
     caret-color: transparent;
     cursor: pointer;
 }

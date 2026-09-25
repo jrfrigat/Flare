@@ -27,8 +27,8 @@
     text-align: center;
     color: var(--flare-color-on-surface-variant);
     user-select: none;
-    transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-                background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+                background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* Hover hangs off the WRAP, not the zone. The input covers the zone (that is what carries the browser's
@@ -49,7 +49,7 @@
 .flare-file-upload__icon {
     font-size: var(--flare-file-upload-icon-size);
     color: var(--flare-color-primary);
-    transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 .flare-file-upload--dragging .flare-file-upload__icon { transform: scale(1.15); }

@@ -17,9 +17,9 @@
     opacity: 0;
     pointer-events: none;
     transform: translateY(0.75rem);
-    transition: opacity var(--flare-motion-duration-short3),
-                transform var(--flare-motion-duration-short3) var(--flare-motion-easing-decelerate),
-                background var(--flare-motion-duration-short1);
+    transition: opacity var(--flare-motion-duration-enter-small),
+                transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-decelerate),
+                background var(--flare-motion-duration-state-change);
 }
 
 .flare-scroll-top--visible {
@@ -42,7 +42,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-scroll-top:hover::before {

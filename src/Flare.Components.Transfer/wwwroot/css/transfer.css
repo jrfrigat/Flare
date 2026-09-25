@@ -34,7 +34,7 @@
     border-bottom: 1px solid var(--flare-color-outline-variant);
     font-size: var(--flare-typescale-body-medium-size);
     color: var(--flare-color-on-surface);
-    transition: background var(--flare-motion-duration-short1);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-transfer__item:last-child {

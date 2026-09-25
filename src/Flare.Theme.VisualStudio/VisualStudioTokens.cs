@@ -88,15 +88,6 @@ internal class VisualStudioTokens
 
     internal static readonly MotionTokens Motion = new()
     {
-        DurationShort1 = "40ms",
-        DurationShort2 = "80ms",
-        DurationShort3 = "150ms",
-        DurationShort4 = "200ms",
-        DurationMedium1 = "120ms",
-        DurationMedium2 = "180ms",
-        DurationLong1 = "260ms",
-        DurationLong2 = "360ms",
-
         EasingStandard = CurveStandard,
         EasingDecelerate = CurveDecelerate,
         EasingAccelerate = CurveAccelerate,

@@ -55,7 +55,7 @@
   position: relative;
   z-index: 0;
   cursor: pointer;
-  transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* State layer - the theme names the paint; core only says where it goes (see tabs.css). The wash is
@@ -69,7 +69,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-datepicker__month-label--clickable:hover::before {
@@ -137,9 +137,9 @@
   font-family: var(--flare-typescale-label-large-font);
   font-size: var(--flare-typescale-label-large-size);
   cursor: pointer;
-  transition: background var(--flare-motion-duration-short1),
-              color var(--flare-motion-duration-short1),
-              border-color var(--flare-motion-duration-short1);
+  transition: background var(--flare-motion-duration-state-change),
+              color var(--flare-motion-duration-state-change),
+              border-color var(--flare-motion-duration-state-change);
 }
 
 /* State layer - see the month label above. */
@@ -152,7 +152,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-daterangepicker__preset:hover:not(:disabled)::before {
@@ -237,7 +237,7 @@
   color: var(--flare-color-on-surface);
   text-align: center;
   font-family: inherit;
-  transition: background-color var(--flare-motion-duration-short2);
+  transition: background-color var(--flare-motion-duration-state-change);
 }
 
 /* Content-coloured, like every other hover in the library. These two mixed `primary`, so picking a

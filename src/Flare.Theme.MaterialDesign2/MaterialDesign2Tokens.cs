@@ -115,15 +115,6 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly MotionTokens Motion = new()
     {
-        DurationShort1 = "100ms",
-        DurationShort2 = "150ms",
-        DurationShort3 = "150ms",
-        DurationShort4 = "200ms",
-        DurationMedium1 = "200ms",
-        DurationMedium2 = "250ms",
-        DurationLong1 = "300ms",
-        DurationLong2 = "375ms",
-
         EasingStandard = CurveStandard,
         EasingDecelerate = CurveDecelerate,
         EasingAccelerate = CurveAccelerate,
@@ -1561,7 +1552,7 @@ internal static class MaterialDesign2Tokens
             SubtitleColor = "var(--flare-color-on-surface-variant)",
             SubtitleFontFamily = "var(--flare-typescale-body-medium-font)",
             SubtitleFontSize = "var(--flare-typescale-body-medium-size)",
-            TransitionDuration = "var(--flare-motion-duration-short2)",
+            TransitionDuration = "var(--flare-motion-duration-state-change)",
             TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,

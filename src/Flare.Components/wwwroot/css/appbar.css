@@ -8,7 +8,7 @@
     color: var(--flare-color-on-surface);
     box-shadow: var(--flare-elevation-0);
     border-bottom: var(--flare-appbar-border);
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+    transition: box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-appbar--sticky {

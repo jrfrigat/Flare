@@ -37,7 +37,7 @@
     font-size: 0.6rem;
     line-height: 1;
     cursor: pointer;
-    transition: background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 /* State layer - the theme names the paint; core only says where it goes. See tabs.css. */
 .flare-numericfield__step::before {
@@ -48,7 +48,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 .flare-numericfield__step:hover:not(:disabled)::before {
     background: var(--flare-state-hover-layer);

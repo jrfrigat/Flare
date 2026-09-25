@@ -22,7 +22,7 @@
     color: var(--flare-color-on-background);
     /* Animate track WIDTH changes (rail collapse/expand, push open/close). A change in track COUNT
        (a drawer mounting/unmounting, or the mobile switch) snaps -- which is what we want. */
-    transition: grid-template-columns var(--flare-motion-duration-medium2)
+    transition: grid-template-columns var(--flare-motion-duration-enter-medium)
                 var(--flare-motion-easing-emphasized);
 }
 
@@ -113,7 +113,7 @@
    collapsed, so only the centered icons remain. */
 .flare-layout-drawer--mini .flare-layout-drawer__inner {
     width: 100%;
-    transition: width var(--flare-motion-duration-medium2)
+    transition: width var(--flare-motion-duration-enter-medium)
                 var(--flare-motion-easing-emphasized);
 }
 
@@ -128,7 +128,7 @@
     width: var(--fld-w, var(--flare-layout-drawer-width));
     z-index: calc(var(--flare-z-drawer) + 1);
     transform: translateX(-100%);
-    transition: transform var(--flare-motion-duration-medium1) ease;
+    transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
     box-shadow: var(--flare-elevation-3);
 }
 .flare-layout-drawer--floating.flare-layout-drawer--end,
@@ -222,7 +222,7 @@
     border-radius: var(--flare-shape-full);
     color: inherit;
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short2);
+    transition: background var(--flare-motion-duration-state-change);
 }
 .flare-layout-appbar__toggle:hover {
     background: var(--flare-color-surface-container-highest);
@@ -242,9 +242,9 @@
     height: 2px;
     border-radius: 1px;
     background: currentColor;
-    transition: top var(--flare-motion-duration-short4) ease,
-                transform var(--flare-motion-duration-short4) ease,
-                opacity var(--flare-motion-duration-short2) ease;
+    transition: top var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+                transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+                opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 .flare-burger__bar:nth-child(1) { top: 0; }
 .flare-burger__bar:nth-child(2) { top: 6px; }

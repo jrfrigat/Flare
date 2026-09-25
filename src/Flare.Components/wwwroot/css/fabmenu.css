@@ -9,7 +9,7 @@
 
 /* Trigger icon morphs (+ -> x) while the menu is open */
 .flare-fab .flare-fab__icon {
-    transition: transform var(--flare-motion-duration-short3) var(--flare-motion-easing-standard);
+    transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 .flare-fab--menu-open .flare-fab__icon {
     transform: rotate(45deg);
@@ -27,7 +27,7 @@
        the closed list to nothing; `allow-discrete` holds the collapse until the items have finished
        animating out, so the close still animates. Same fix, same reason as the hidden tooltip bubble. */
     content-visibility: hidden;
-    transition: content-visibility var(--flare-motion-duration-short2);
+    transition: content-visibility var(--flare-motion-duration-enter-small);
     transition-behavior: allow-discrete;
 }
 /* Distance between the trigger and the nearest action. No FabTokens member names it yet (Gap is the
@@ -62,8 +62,8 @@
     opacity: 0;
     transform: scale(0.4);
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2),
-                transform var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+    transition: opacity var(--flare-motion-duration-state-change),
+                transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-decelerate);
 }
 .flare-fab-menu__list--open { content-visibility: visible; }
 

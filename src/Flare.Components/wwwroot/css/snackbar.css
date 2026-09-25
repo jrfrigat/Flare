@@ -80,7 +80,7 @@
   font-size: var(--flare-typescale-body-medium-size);
   box-shadow: var(--flare-elevation-3);
   pointer-events: auto;
-  animation: flare-snackbar-in var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+  animation: flare-snackbar-in var(--flare-motion-duration-enter-small) var(--flare-motion-easing-decelerate);
 }
 
 @keyframes flare-snackbar-in {
@@ -138,7 +138,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-snackbar__action-btn:hover::before {

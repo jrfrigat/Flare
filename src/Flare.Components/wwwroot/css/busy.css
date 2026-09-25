@@ -9,7 +9,7 @@
 }
 
 .flare-busy__content {
-  transition: filter var(--flare-motion-duration-short4) var(--flare-motion-easing-standard);
+  transition: filter var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-busy--active .flare-busy__content {
@@ -29,7 +29,7 @@
      source order - which put it under anything positioned later in the same container. */
   z-index: var(--flare-z-overlay, 2);
   background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
-  animation: flare-busy-in var(--flare-motion-duration-short4) var(--flare-motion-easing-standard);
+  animation: flare-busy-in var(--flare-motion-duration-enter-small) var(--flare-motion-easing-standard);
 }
 
 .flare-busy__label {

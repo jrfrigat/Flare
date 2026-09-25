@@ -105,16 +105,6 @@ public class MaterialDesign3Tokens
 
     internal static readonly MotionTokens Motion = new()
     {
-        // The scale that predates the roles: md.sys.motion.duration short1..4, medium1..2, long1..2.
-        DurationShort1 = "50ms",
-        DurationShort2 = "100ms",
-        DurationShort3 = "150ms",
-        DurationShort4 = "200ms",
-        DurationMedium1 = "250ms",
-        DurationMedium2 = "300ms",
-        DurationLong1 = "450ms",
-        DurationLong2 = "500ms",
-
         EasingStandard = "cubic-bezier(0.2, 0, 0, 1)",      // standard
         EasingDecelerate = CurveStandardDecelerate,         // standard-decelerate
         EasingAccelerate = CurveStandardAccelerate,         // standard-accelerate
@@ -1608,7 +1598,7 @@ public class MaterialDesign3Tokens
             SubtitleColor = "var(--flare-color-on-surface-variant)",
             SubtitleFontFamily = "var(--flare-typescale-body-medium-font)",
             SubtitleFontSize = "var(--flare-typescale-body-medium-size)",
-            TransitionDuration = "var(--flare-motion-duration-short2)",
+            TransitionDuration = "var(--flare-motion-duration-state-change)",
             TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,

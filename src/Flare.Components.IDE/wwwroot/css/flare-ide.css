@@ -134,7 +134,7 @@
     background: none;
     color: inherit;
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 .flare-ide-layout__panel--left .flare-ide-layout__rail,
@@ -168,7 +168,7 @@
     flex-shrink: 0;
     z-index: 5;
     background: transparent;
-    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 .flare-ide-layout__resizer--col {
@@ -213,7 +213,7 @@
     font-size: 0.8125rem;
     border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
     color: inherit;
-    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 .flare-ribbon__tab:hover {
@@ -385,8 +385,8 @@
     color: inherit;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
-    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease),
-                border-color var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease),
+                border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 .flare-doc-tabs__tab:hover {
@@ -417,8 +417,8 @@
     background: none;
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
-    transition: opacity var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease),
-                background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: opacity var(--flare-motion-duration-enter-small) var(--flare-motion-easing-standard, ease),
+                background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 /* Fading in on hover is the editor convention, and it is only available where a pointer can hover. A
@@ -651,7 +651,7 @@
     font-size: 0.875rem;
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 .flare-backstage__nav-item:hover {
@@ -757,7 +757,7 @@
     cursor: pointer;
     font-size: 0.8125rem;
     border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
-    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
 
 .flare-sheet-tabs__tab:hover {

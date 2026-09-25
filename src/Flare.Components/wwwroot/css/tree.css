@@ -22,7 +22,7 @@
     border-radius: var(--flare-nav-item-radius);
     cursor: pointer;
     user-select: none;
-    transition: background var(--flare-motion-duration-short1);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 /* State layer - see tabs.css for why it sits under the content at z-index -1 rather than above it
@@ -36,7 +36,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-tree-item__row:hover::before {
@@ -62,7 +62,7 @@
     color: inherit;
     flex-shrink: 0;
     padding: 0;
-    transition: background var(--flare-motion-duration-short1);
+    transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-tree-item__toggle:hover {
@@ -72,7 +72,7 @@
 .flare-tree-item__toggle .flare-icon {
     font-size: var(--flare-tree-icon-size);
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    transition: transform var(--flare-motion-duration-short2) ease;
+    transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 .flare-tree-item[aria-expanded="true"] > .flare-tree-item__row > .flare-tree-item__toggle .flare-icon {
@@ -119,7 +119,7 @@
     cursor: grab;
     color: var(--flare-color-on-surface-variant);
     opacity: 1;
-    transition: opacity var(--flare-motion-duration-short1);
+    transition: opacity var(--flare-motion-duration-state-change);
 }
 
 /* The reorder now runs on pointer events and works with a finger, so the handle is no longer hidden

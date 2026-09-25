@@ -67,7 +67,7 @@
     .flare-tabs__tab {
         border-radius: calc(var(--flare-shape-medium) - 2px);
         border-bottom-color: transparent !important;
-        transition: color 150ms ease;
+        transition: color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     }
     .flare-tabs__tab--active {
         background-color: var(--flare-liquid-tint-strong);

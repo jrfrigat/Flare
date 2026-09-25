@@ -61,7 +61,7 @@
   color: var(--flare-color-on-surface);
   font-size: var(--flare-typescale-body-large-size);
   text-align: center;
-  transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 /* State layer - the theme names the paint; core only says where it goes. Under the content at
    z-index -1, since a cell's content is a bare number. See tabs.css. */
@@ -74,7 +74,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-timepicker__cell:hover::before {
@@ -167,8 +167,8 @@
   background: var(--flare-color-primary);
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--flare-dial-angle, 0deg));
-  transition: transform var(--flare-motion-duration-short3) var(--flare-motion-easing-standard),
-              height var(--flare-motion-duration-short3) var(--flare-motion-easing-standard);
+  transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+              height var(--flare-motion-duration-enter-small) var(--flare-motion-easing-standard);
   z-index: 1;
 }
 .flare-timepicker__dial-num {

@@ -61,5 +61,5 @@
 
 .flare-autocomplete__spinner {
     font-size: 1rem;
-    animation: flare-spin 1s linear infinite;
+    animation: flare-spin var(--flare-motion-duration-cycle) var(--flare-motion-easing-linear) infinite;
 }

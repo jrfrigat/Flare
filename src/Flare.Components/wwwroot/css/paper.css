@@ -3,7 +3,7 @@
     color: var(--flare-color-on-surface);
     border-radius: var(--flare-shape-medium);
     position: relative;
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+    transition: box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-paper--square { border-radius: 0; }

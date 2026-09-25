@@ -1,5 +1,5 @@
 .flare-tabs__panel {
-  animation: flare-tab-fade var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+  animation: flare-tab-fade var(--flare-motion-duration-enter-small) var(--flare-motion-easing-decelerate);
 }
 
 .flare-tab-panel--hidden {

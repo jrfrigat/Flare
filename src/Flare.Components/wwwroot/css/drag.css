@@ -56,8 +56,8 @@
    drag states rather than snap to them, or a pointer crossing a board reads as flicker. */
 .flare-drop-zone {
     transition:
-        background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
-        outline-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+        background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+        outline-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* A zone the item in flight could land in. Marked while the drag lasts and not only on hover, because

@@ -88,7 +88,7 @@
   width: 100%;
   text-align: left;
   border-radius: var(--flare-nav-item-radius);
-  transition: background-color var(--flare-motion-duration-short1);
+  transition: background-color var(--flare-motion-duration-state-change);
 }
 
 /* State layer for the two navigation surfaces. Their hover was computed here as
@@ -105,7 +105,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-nav-group__header:hover::before {
@@ -120,7 +120,7 @@
 
 .flare-nav-group__chevron {
   font-size: 1rem;
-  transition: transform var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized);
+  transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized);
   display: inline-block;
   margin-left: auto;
   transform: rotate(0deg);
@@ -136,7 +136,7 @@
 .flare-nav-group__items {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized);
+  transition: grid-template-rows var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized);
 }
 
 .flare-nav-group__items--open { grid-template-rows: 1fr; }
@@ -166,7 +166,7 @@
   font-family: var(--flare-typescale-label-large-font);
   font-size: var(--flare-typescale-label-large-size);
   font-weight: var(--flare-typescale-label-large-weight);
-  transition: background-color var(--flare-motion-duration-short1), color var(--flare-motion-duration-short1);
+  transition: background-color var(--flare-motion-duration-state-change), color var(--flare-motion-duration-state-change);
 }
 
 /* The current destination is a state, not a target, so it never lights up - excluded here rather

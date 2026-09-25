@@ -115,13 +115,13 @@
   line-height: 1;
   color: inherit;
   flex-shrink: 0;
-  transition: opacity var(--flare-motion-duration-short1);
+  transition: opacity var(--flare-motion-duration-state-change);
 }
 
 .flare-alert__close:hover { opacity: 1; }
 
 .flare-alert--dismissing {
-  animation: flare-alert-dismiss 0.3s ease forwards;
+  animation: flare-alert-dismiss var(--flare-motion-duration-exit-small) var(--flare-motion-easing-accelerate) forwards;
 }
 
 @keyframes flare-alert-dismiss {

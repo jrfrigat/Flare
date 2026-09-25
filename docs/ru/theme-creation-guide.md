@@ -459,7 +459,7 @@ Fluent UI 2 делает ровно второе - короткое затуха
     border-radius: var(--flare-shape-medium);
     padding: var(--flare-input-padding-md);
     font-family: var(--flare-typescale-body-large-font);
-    transition: all var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: all var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 ```
 

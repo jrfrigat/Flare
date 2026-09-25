@@ -37,7 +37,7 @@
     font-size: var(--_rt-size);
     line-height: 1;
     color: var(--flare-rating-empty-color);
-    transition: color var(--flare-motion-duration-short1), transform var(--flare-motion-duration-short1);
+    transition: color var(--flare-motion-duration-state-change), transform var(--flare-motion-duration-small-move);
 }
 
 .flare-rating__star:hover:not(:disabled) {

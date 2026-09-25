@@ -20,7 +20,7 @@
     /* Keep wheel/touch scrolling inside the list -- don't chain to the page at the ends. */
     overscroll-behavior: contain;
     padding: var(--flare-spacing-2);
-    animation: flare-listbox-in var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    animation: flare-listbox-in var(--flare-motion-duration-enter-small) var(--flare-motion-easing-standard);
 }
 
 /* Shared anchoring: absolutely position the popup just under the field. Carried alongside
@@ -50,7 +50,7 @@
     font-size: var(--flare-typescale-body-medium-size);
     cursor: pointer;
     user-select: none;
-    transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    transition: background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* State layer - the theme names the paint; core only says where it goes, under the content at
@@ -66,7 +66,7 @@
     background: transparent;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-listbox__option:hover::before {
@@ -106,8 +106,8 @@
     border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline);
     border-radius: var(--flare-shape-extra-small);
     position: relative;
-    transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
-                border-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    transition: background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+                border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-listbox__checkbox[data-checked],

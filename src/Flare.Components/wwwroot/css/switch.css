@@ -46,8 +46,8 @@
     background: var(--flare-switch-track-off-bg);
     position: relative;
     transition:
-        background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-        border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+        background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+        border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* The circular handle - a real element so it can hold an optional icon (with-icon mode). */
@@ -75,8 +75,8 @@
         left var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         width var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         height var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
-        background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-        box-shadow var(--flare-motion-duration-short1) ease;
+        background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+        box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* Handle icon size (default 16dp). */

@@ -29,7 +29,7 @@
     inset: calc((var(--flare-checkbox-state-layer-size) - var(--_cb-size)) / -2);
     border-radius: 50%;
     background: transparent;
-    transition: background var(--flare-motion-duration-short1) ease;
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     pointer-events: none;
 }
 
@@ -65,8 +65,8 @@
     border: var(--flare-checkbox-border-width) solid var(--flare-color-on-surface-variant);
     background-color: transparent;
     transition:
-        background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-        border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+        background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+        border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* Checked state - filled with the accent (--fc-main, default primary) + checkmark */

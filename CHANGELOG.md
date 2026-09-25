@@ -19,10 +19,25 @@ All notable changes to Flare are documented here. This project adheres to
   opacity, reveal, blur and a separately timed fade). They are published as `--flare-motion-*` variables
   such as `--flare-motion-dialog-enter-duration`. Every built-in theme fills them; a custom theme built with
   `new MotionTokens { ... }` has to set them too.
-- **Material Design 3 motion follows the published tokens.** `DurationMedium1` is 250ms (was 200ms) and
-  `DurationLong2` 500ms (was 600ms); `EasingEmphasized` is the curve the Material web components play,
-  `cubic-bezier(0.3, 0, 0, 1)`. The baseline theme now springs on the standard motion scheme, which settles
-  without a visible overshoot; the bouncier Expressive springs stay with Material Design 3 Expressive.
+- **Breaking: the ordinal duration scale is gone.** `DurationShort1..4`, `DurationMedium1..2` and
+  `DurationLong1..2`, with their `--flare-motion-duration-short1` ... `-long2` variables, are removed; every
+  stylesheet now reads the role durations above, so a theme sets the pace of hover feedback, small moves and
+  expanding regions each in one place. App CSS that read the scale switches to the role that matches what
+  moves: colour, background, border and shadow changes to `--flare-motion-duration-state-change`; a thumb,
+  indicator or other small element moving in place to `--flare-motion-duration-small-move`; a region opening
+  to `--flare-motion-duration-enter-small`, `-medium` or `-large`.
+- **`prefers-reduced-motion` is honoured by every component and theme.** One rule sets the transition and
+  surface-motion durations to near zero when the user asks for reduced motion, so anything that reads a
+  motion token stops moving; before, 11 of 66 stylesheets handled it. Spinners keep turning - they are how a
+  page says it is still loading - and a tooltip keeps its hover delay.
+- **Motion no longer hides literal timings.** 21 fixed durations and 20 fixed curves (an alert dismissing
+  over `0.3s ease`, a table row, a resize handle, the Aero and Liquid Glass inputs) now take the theme's
+  roles, and every spinner - button, autocomplete, virtual tree, circular progress - shares one rotation
+  that turns at the theme's `DurationCycle` instead of 0.7s, 1s and 0.8s apiece.
+- **Material Design 3 motion follows the published tokens.** `EasingEmphasized` is the curve the Material
+  web components play, `cubic-bezier(0.3, 0, 0, 1)`. The baseline theme now springs on the standard motion
+  scheme, which settles without a visible overshoot; the bouncier Expressive springs stay with Material
+  Design 3 Expressive.
 - **Fluent 2 eases ordinary transitions on `curveEasyEase`**, as its own components do. `EasingStandard` was
   `curveDecelerateMax`, which made every hover and state change start abruptly.
 

@@ -13,10 +13,10 @@
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* 0. State-layer timing per MD3 spec: hover/focus overlay fade 150ms [specs]
-       (pressed/ripple is overridden below to short1 50ms via :active) */
+    /* 0. State-layer timing: the hover/focus overlay fades at the theme's state-change pace
+       (the pressed ripple below adds its own scale on the small-move pace via :active) */
     .flare-btn::before {
-        transition: opacity 150ms var(--flare-motion-easing-standard) !important;
+        transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard) !important;
     }
 
     /* 1. Outlined hover: Google requires a semi-transparent background tint [specs] */
@@ -32,7 +32,7 @@
     /* 3. Emulate the Expressive Ripple (pulse from center) on click [specs] */
     .flare-btn:active::before {
         transform: scale(2) !important;
-        transition: opacity var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard), transform var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard) !important;
+        transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard), transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard) !important;
     }
 
     /* ======================================================================

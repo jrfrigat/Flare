@@ -94,7 +94,7 @@ html, body { height: 100%; }
     line-height: 1;
     vertical-align: baseline;
     opacity: 0.7;
-    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 @media (hover: hover) {

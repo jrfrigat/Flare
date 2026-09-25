@@ -47,8 +47,8 @@
   font-size: var(--flare-typescale-label-large-size);
   font-weight: var(--flare-typescale-label-large-weight);
   transition:
-    background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-    border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+    border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-stepper__step--upcoming .flare-stepper__circle {
@@ -124,7 +124,7 @@
   align-self: flex-start;
   margin-top: var(--flare-spacing-8);
   min-width: var(--flare-stepper-connector-min-length);
-  transition: background var(--flare-motion-duration-short2);
+  transition: background var(--flare-motion-duration-state-change);
 }
 
 .flare-stepper__connector--completed { background: var(--flare-stepper-connector-active-color); }
@@ -156,7 +156,7 @@
   font-size: var(--flare-typescale-label-large-size);
   font-weight: var(--flare-typescale-label-large-weight);
   cursor: pointer;
-  transition: background var(--flare-motion-duration-short1);
+  transition: background var(--flare-motion-duration-state-change);
 }
 
 /* State layer - the theme names the paint; core only says where it goes (see tabs.css for the
@@ -172,7 +172,7 @@
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-stepper__nav-btn:hover::before {

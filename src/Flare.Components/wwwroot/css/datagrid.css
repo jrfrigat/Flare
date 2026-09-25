@@ -286,7 +286,7 @@
   width: var(--flare-datagrid-resize-handle-width);
   cursor: col-resize;
   background: var(--flare-color-outline-variant);
-  transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* Hidden until the header is hovered - but only where hovering exists. On a touch screen there is no
@@ -679,7 +679,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 /* Selected and editing rows are excluded here rather than switched off below: a rule that turns the
@@ -745,7 +745,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   background: transparent;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-datagrid__detail-btn:hover::before {
@@ -895,8 +895,8 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   color: var(--flare-color-on-surface-variant);
   cursor: pointer;
   vertical-align: middle;
-  transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
-              color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+  transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+              color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
 .flare-datagrid__filter-trigger > .flare-icon { font-size: var(--flare-datagrid-filter-icon-size); }

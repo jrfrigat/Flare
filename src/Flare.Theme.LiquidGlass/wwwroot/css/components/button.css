@@ -10,10 +10,10 @@
 
     .flare-btn {
         transition:
-            transform var(--flare-motion-duration-short1, 100ms) var(--flare-motion-easing-emphasized),
-            filter 120ms ease,
-            background-color 150ms ease,
-            box-shadow 150ms ease;
+            transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-emphasized),
+            filter var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+            background-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+            box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
     }
     /* The sheen IS the feedback here, so the state layer must paint nothing - said by naming the
        paint rather than by suppressing the core's element with `opacity: 0 !important`. The layer

@@ -9,23 +9,6 @@ namespace Flare.Abstractions.Tokens;
 /// </summary>
 public sealed record MotionTokens
 {
-    /// <summary>Duration short 1 token.</summary>
-    [CssVar(Motion.DurationShort1)] public required string DurationShort1 { get; init; }
-    /// <summary>Duration short 2 token.</summary>
-    [CssVar(Motion.DurationShort2)] public required string DurationShort2 { get; init; }
-    /// <summary>Duration short 3 token.</summary>
-    [CssVar(Motion.DurationShort3)] public required string DurationShort3 { get; init; }
-    /// <summary>Duration short 4 token.</summary>
-    [CssVar(Motion.DurationShort4)] public required string DurationShort4 { get; init; }
-    /// <summary>Duration medium 1 token.</summary>
-    [CssVar(Motion.DurationMedium1)] public required string DurationMedium1 { get; init; }
-    /// <summary>Duration medium 2 token.</summary>
-    [CssVar(Motion.DurationMedium2)] public required string DurationMedium2 { get; init; }
-    /// <summary>Duration long 1 token.</summary>
-    [CssVar(Motion.DurationLong1)] public required string DurationLong1 { get; init; }
-    /// <summary>Duration long 2 token.</summary>
-    [CssVar(Motion.DurationLong2)] public required string DurationLong2 { get; init; }
-
     // Curves: three levels of expression, each for movement that stays on screen, that arrives and that leaves,
     // plus a constant rate.
 

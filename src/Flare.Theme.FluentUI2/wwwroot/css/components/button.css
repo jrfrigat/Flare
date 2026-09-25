@@ -48,7 +48,7 @@
     */
     .flare-btn:active::before {
         /* Switch to Microsoft timing (83ms) and springy easing */
-        transition: opacity var(--flare-motion-duration-short2, 83ms) var(--flare-motion-easing-standard) !important;
+        transition: opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard) !important;
     }
 
     /*
