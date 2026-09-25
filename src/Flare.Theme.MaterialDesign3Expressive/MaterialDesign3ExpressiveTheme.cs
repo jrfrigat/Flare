@@ -74,6 +74,50 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             LabelMd = MaterialDesign3Tokens.Design.Typography.TitleMedium,
             LabelLg = MaterialDesign3Tokens.Design.Typography.HeadlineSmall,
             LabelXl = MaterialDesign3Tokens.Design.Typography.HeadlineLarge,
+
+            TextPaddingInlineLg = "1rem",
+            TextPaddingInlineXl = "1.25rem",
+
+            // `md.comp.button.<size>.icon.size` beside a label, `md.comp.icon-button.<size>.icon.size` for a
+            // lone glyph: the two part only at small, where an icon button draws 24dp against 20dp.
+            IconSizeXs = "1.25rem", // 20dp
+            IconSizeSm = "1.25rem", // 20dp
+            IconSizeMd = "1.5rem",  // 24dp
+            IconSizeLg = "2rem",    // 32dp
+            IconSizeXl = "2.5rem",  // 40dp
+            IconOnlyIconSizeXs = "1.25rem", // 20dp
+            IconOnlyIconSizeSm = "1.5rem",  // 24dp
+            IconOnlyIconSizeMd = "1.5rem",  // 24dp
+            IconOnlyIconSizeLg = "2rem",    // 32dp
+            IconOnlyIconSizeXl = "2.5rem",  // 40dp
+            // The size tables state one leading and one trailing space with no with-icon variant, so the
+            // icon side is not tucked.
+            IconInset = "0",
+            TextIconInset = "0",
+            // md.comp.button.outlined: Expressive draws the outlined button neutral, on a quieter stroke.
+            OutlinedColor = "var(--flare-color-on-surface-variant)",
+            OutlinedBorderColor = "var(--flare-color-outline-variant)",
+
+            // Selected: `md.comp.button.<size>.selected.container.shape.round` - 12/12/16/28/28dp. These are
+            // the SQUARE shape values, which is the whole idea: a round button that gets selected takes the
+            // square shape and a square one takes the capsule, so selection reads as a change of kind rather
+            // than a change of degree.
+            SelectedRadiusXs = "0.75rem",  // 12dp
+            SelectedRadiusSm = "0.75rem",  // 12dp
+            SelectedRadiusMd = "1rem",     // 16dp
+            SelectedRadiusLg = "1.75rem",  // 28dp
+            SelectedRadiusXl = "1.75rem",  // 28dp
+            SelectedRadiusSquare = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+
+            // The Expressive toggle table (md.comp.button.<variant>.selected/unselected): tonal steps down
+            // from the container to the tone itself when selected, and a filled toggle at rest is a neutral
+            // container rather than the primary fill.
+            TonalSelectedBg = "var(--flare-color-secondary)",
+            TonalSelectedColor = "var(--flare-color-on-secondary)",
+            TonalUnselectedBg = "var(--flare-color-secondary-container)",
+            TonalUnselectedColor = "var(--flare-color-on-secondary-container)",
+            FilledUnselectedBg = "var(--flare-color-surface-container)",
+            FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
         },
         // Expressive menus: a 16dp panel with rounded items, and group sections drawn as "islands" -
         // each its own rounded, elevated surface on a transparent backing panel, so adjacent sections

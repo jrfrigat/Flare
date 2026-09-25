@@ -255,6 +255,9 @@ internal class VisualStudioTokens
         OutlinedSelectedColor = "var(--flare-color-on-primary)",
         FilledUnselectedBg = "var(--flare-color-surface-container)",
         FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
+        // The tonal toggle keeps its variant's container until selected.
+        TonalUnselectedBg = "var(--flare-color-secondary-container)",
+        TonalUnselectedColor = "var(--flare-color-on-secondary-container)",
 
         FocusOutline = "1px solid var(--flare-color-primary)",
         FocusOutlineOffset = "1px",
@@ -269,6 +272,16 @@ internal class VisualStudioTokens
         IconSizeMd = "1rem",
         IconSizeLg = "1.125rem",
         IconSizeXl = "1.25rem",
+        // A lone glyph takes the labelled size, and the icon side is tucked by one small step.
+        IconOnlyIconSizeXs = "var(--flare-btn-icon-size-xs)",
+        IconOnlyIconSizeSm = "var(--flare-btn-icon-size-sm)",
+        IconOnlyIconSizeMd = "var(--flare-btn-icon-size-md)",
+        IconOnlyIconSizeLg = "var(--flare-btn-icon-size-lg)",
+        IconOnlyIconSizeXl = "var(--flare-btn-icon-size-xl)",
+        IconInset = "var(--flare-spacing-2)",
+        TextIconInset = "var(--flare-spacing-2)",
+        OutlinedColor = "var(--flare-color-on-surface-variant)",
+        OutlinedBorderColor = "var(--flare-color-outline-variant)",
 
         LabelXs = Typography.LabelMedium,
         LabelSm = Typography.LabelLarge,

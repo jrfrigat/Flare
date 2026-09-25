@@ -276,12 +276,25 @@ internal static class MaterialDesign2Tokens
         OutlinedSelectedColor = "var(--flare-color-on-primary)",
         FilledUnselectedBg = "var(--flare-color-surface-container)",
         FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
+        // The tonal toggle keeps its variant's container until selected.
+        TonalUnselectedBg = "var(--flare-color-secondary-container)",
+        TonalUnselectedColor = "var(--flare-color-on-secondary-container)",
 
         IconSizeXs = "1.125rem", // 18dp
         IconSizeSm = "1.125rem",
         IconSizeMd = "1.125rem",
         IconSizeLg = "1.25rem",
         IconSizeXl = "1.5rem",
+        // A lone glyph takes the labelled size, and the icon side is tucked by one small step.
+        IconOnlyIconSizeXs = "var(--flare-btn-icon-size-xs)",
+        IconOnlyIconSizeSm = "var(--flare-btn-icon-size-sm)",
+        IconOnlyIconSizeMd = "var(--flare-btn-icon-size-md)",
+        IconOnlyIconSizeLg = "var(--flare-btn-icon-size-lg)",
+        IconOnlyIconSizeXl = "var(--flare-btn-icon-size-xl)",
+        IconInset = "var(--flare-spacing-2)",
+        TextIconInset = "var(--flare-spacing-2)",
+        OutlinedColor = "var(--flare-color-on-surface-variant)",
+        OutlinedBorderColor = "var(--flare-color-outline-variant)",
 
         GapXs = "0.5rem",
         GapSm = "0.5rem",

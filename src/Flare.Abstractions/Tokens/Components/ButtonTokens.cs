@@ -154,6 +154,12 @@ public sealed record ButtonTokens
     [CssVar(Button.Toggle.FilledUnselectedBg)] public required string FilledUnselectedBg { get; init; }
     /// <summary>Icon and label of an unselected Filled toggle.</summary>
     [CssVar(Button.Toggle.FilledUnselectedColor)] public required string FilledUnselectedColor { get; init; }
+    /// <summary>Container of a Tonal button that is a toggle and currently unselected. A theme whose
+    /// selected tonal toggle moves off the tonal container points this at that container; one whose
+    /// selected toggle keeps it moves the unselected toggle to a neutral surface here instead.</summary>
+    [CssVar(Button.Toggle.TonalUnselectedBg)] public required string TonalUnselectedBg { get; init; }
+    /// <summary>Icon and label of an unselected Tonal toggle.</summary>
+    [CssVar(Button.Toggle.TonalUnselectedColor)] public required string TonalUnselectedColor { get; init; }
 
     // --- 5. FOCUS AND BEHAVIOR ---
     /// <summary>Shorthand <c>outline</c> drawn around the button on keyboard focus
@@ -189,6 +195,29 @@ public sealed record ButtonTokens
     [CssVar(Button.IconSize.Lg)] public required string IconSizeLg { get; init; }
     /// <summary>Leading/trailing icon glyph size at the xl size.</summary>
     [CssVar(Button.IconSize.Xl)] public required string IconSizeXl { get; init; }
+
+    /// <summary>Glyph size of an icon-only button at the xs size. Separate from the labelled ramp because
+    /// a lone glyph is often drawn larger than one beside a label in a button of the same height.</summary>
+    [CssVar(Button.IconOnlyIconSize.Xs)] public required string IconOnlyIconSizeXs { get; init; }
+    /// <summary>Glyph size of an icon-only button at the sm size.</summary>
+    [CssVar(Button.IconOnlyIconSize.Sm)] public required string IconOnlyIconSizeSm { get; init; }
+    /// <summary>Glyph size of an icon-only button at the md size.</summary>
+    [CssVar(Button.IconOnlyIconSize.Md)] public required string IconOnlyIconSizeMd { get; init; }
+    /// <summary>Glyph size of an icon-only button at the lg size.</summary>
+    [CssVar(Button.IconOnlyIconSize.Lg)] public required string IconOnlyIconSizeLg { get; init; }
+    /// <summary>Glyph size of an icon-only button at the xl size.</summary>
+    [CssVar(Button.IconOnlyIconSize.Xl)] public required string IconOnlyIconSizeXl { get; init; }
+    /// <summary>How far a leading or trailing icon is pulled toward the button edge on its side, taken
+    /// out of that side's inline padding. A language that keeps both sides even sets zero.</summary>
+    [CssVar(Button.IconInset)] public required string IconInset { get; init; }
+    /// <summary>Icon inset of the Text variant. Separate because a text button has its own padding
+    /// ladder, and a language may keep its icon side at the full text padding.</summary>
+    [CssVar(Button.TextIconInset)] public required string TextIconInset { get; init; }
+    /// <summary>Icon and label colour of an Outlined button with no Color set. A language may draw its
+    /// outlined button in the accent or keep it neutral; a Color on the button still wins.</summary>
+    [CssVar(Button.OutlinedColor)] public required string OutlinedColor { get; init; }
+    /// <summary>Outline colour of an Outlined button with no Color set.</summary>
+    [CssVar(Button.OutlinedBorderColor)] public required string OutlinedBorderColor { get; init; }
 
     // --- 7. LABEL TYPOGRAPHY for the 5 sizes ---
     // (compound: each TypeStyle expands to several --flare-btn-label-* vars in CssVarMap.FlattenDesign)

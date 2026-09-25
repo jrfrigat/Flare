@@ -133,6 +133,37 @@ public static class Button
         public const string Xl = "--flare-btn-icon-size-xl";
     }
 
+    /// <summary>Glyph size of an icon-only button, per size. A separate ramp from <see cref="IconSize"/>
+    /// because a design language may draw a lone glyph larger than one beside a label in a button of the
+    /// same height.</summary>
+    public static class IconOnlyIconSize
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-icon-only-icon-size-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-icon-only-icon-size-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-icon-only-icon-size-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-icon-only-icon-size-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-icon-only-icon-size-xl";
+    }
+
+    /// <summary>CSS custom-property name for how far a leading or trailing icon is pulled toward the
+    /// button edge on its side, so the icon side of a labelled button carries less inline space than the
+    /// label side.</summary>
+    public const string IconInset = "--flare-btn-icon-inset";
+    /// <summary>CSS custom-property name for the icon inset of the Text variant, which has its own
+    /// padding ladder and so its own balance between the icon side and the label side.</summary>
+    public const string TextIconInset = "--flare-btn-text-icon-inset";
+    /// <summary>CSS custom-property name for the icon and label colour of an Outlined button that has
+    /// no Color of its own.</summary>
+    public const string OutlinedColor = "--flare-btn-outlined-color";
+    /// <summary>CSS custom-property name for the outline colour of an Outlined button that has no Color
+    /// of its own.</summary>
+    public const string OutlinedBorderColor = "--flare-btn-outlined-border-color";
+
     /// <summary>Width of the container's border, per size. Reserved on every button whatever its variant
     /// so switching variant never shifts layout, and painted only by the ones that draw an outline.</summary>
     public static class OutlineWidth
@@ -203,6 +234,10 @@ public static class Button
         public const string FilledUnselectedBg = "--flare-btn-filled-unselected-bg";
         /// <summary>CSS custom-property name for the unselected filled toggle icon and label.</summary>
         public const string FilledUnselectedColor = "--flare-btn-filled-unselected-color";
+        /// <summary>CSS custom-property name for the UNselected tonal toggle container.</summary>
+        public const string TonalUnselectedBg = "--flare-btn-tonal-unselected-bg";
+        /// <summary>CSS custom-property name for the unselected tonal toggle icon and label.</summary>
+        public const string TonalUnselectedColor = "--flare-btn-tonal-unselected-color";
     }
 
     /// <summary>

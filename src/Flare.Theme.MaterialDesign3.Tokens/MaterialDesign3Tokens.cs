@@ -236,68 +236,68 @@ public class MaterialDesign3Tokens
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
-        // A text button takes half the contained padding: 12dp against 24dp at M (spec
-        // "Text button"), and the same halving across the rest of the ladder.
+        // A text button takes half the contained padding: 12dp against 24dp at M (md.comp.text-button),
+        // and the same halving across the rest of the ladder.
         TextPaddingInlineXs = "0.375rem",
         TextPaddingInlineSm = "0.5rem",
         TextPaddingInlineMd = "0.75rem",
-        TextPaddingInlineLg = "1rem",
-        TextPaddingInlineXl = "1.25rem",
-        // 5 gap sizes (Gap) between text and icon
-        // XS/S - height matches the MD3 spec -> gap = spec (8dp);
-        // M=8 matches; L/XL - adapted to the reduced height.
-        GapXs = "0.5rem",  // 8dp (spec)
-        GapSm = "0.5rem",  // 8dp (spec)
-        GapMd = "0.5rem",  // 8dp (= spec)
-        GapLg = "0.5rem",  // adapted (spec 12dp at height 96)
-        GapXl = "0.75rem", // adapted (spec 16dp at height 136)
+        TextPaddingInlineLg = "0.875rem",
+        TextPaddingInlineXl = "1rem",
+        // 8dp between icon and label (md.comp.button.icon-label-space).
+        GapXs = "0.5rem",
+        GapSm = "0.5rem",
+        GapMd = "0.5rem",
+        GapLg = "0.5rem",
+        GapXl = "0.5rem",
 
-        // 5 container heights
+        // Baseline M3 has ONE button, 40dp tall (md.comp.filled-button.container.height), and Md is the
+        // size every button takes by default, so Md is that button. The other steps are Flare's ramp
+        // around it - the Expressive theme states its own 32/40/56/96/136dp one - with Xl at the FAB's
+        // 56dp. Md used to be 48dp, which made every default button, icon button and segmented control
+        // 8dp taller than the spec.
         HeightXs = "2rem",       // 32dp
-        HeightSm = "2.5rem",      // 40dp
-        HeightMd = "3rem",       // 48dp
-        HeightLg = "3.5rem",      // 56dp
-        HeightXl = "4rem",       // 64dp
+        HeightSm = "2.25rem",    // 36dp
+        HeightMd = "2.5rem",     // 40dp (spec)
+        HeightLg = "3rem",       // 48dp
+        HeightXl = "3.5rem",     // 56dp
 
-        // 5 inline paddings
+        // 24dp leading and trailing space at Md (md-filled-button leading-space).
         PaddingInlineXs = "0.75rem",
         PaddingInlineSm = "1rem",
-        PaddingInlineMd = "1.5rem",
-        PaddingInlineLg = "2rem",
-        PaddingInlineXl = "2.5rem",
+        PaddingInlineMd = "1.5rem",  // 24dp (spec)
+        PaddingInlineLg = "1.75rem",
+        PaddingInlineXl = "2rem",
 
-        // Selected: `md.comp.button.<size>.selected.container.shape.round` - 12/12/16/28/28dp. These are
-        // the SQUARE shape values, which is the whole idea: a round button that gets selected takes the
-        // square shape and a square one takes the capsule, so selection reads as a change of kind rather
-        // than a change of degree. The other direction is arithmetic on the height and belongs to the
-        // core rule, not here.
-        SelectedRadiusXs = "0.75rem",  // 12dp
-        SelectedRadiusSm = "0.75rem",  // 12dp
-        SelectedRadiusMd = "1rem",     // 16dp
-        SelectedRadiusLg = "1.75rem",  // 28dp
-        SelectedRadiusXl = "1.75rem",  // 28dp
-        SelectedRadiusSquare = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+        // Baseline M3 does not reshape a selected button - swapping round and square on selection is an
+        // Expressive behaviour, stated in that theme - so a selected button keeps the corners it stands in.
+        SelectedRadiusXs = "calc(var(--flare-btn-height-xs) / 2)",
+        SelectedRadiusSm = "calc(var(--flare-btn-height-sm) / 2)",
+        SelectedRadiusMd = "calc(var(--flare-btn-height-md) / 2)",
+        SelectedRadiusLg = "calc(var(--flare-btn-height-lg) / 2)",
+        SelectedRadiusXl = "calc(var(--flare-btn-height-xl) / 2)",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
         // The fallback pair, which in Material's own table reaches only the text style - the one style it
         // says a toggle should not use. Named anyway so a text toggle reads as on rather than as nothing.
         SelectedBg = "var(--flare-color-secondary-container)",
         SelectedColor = "var(--flare-color-on-secondary-container)",
 
-        // The toggle colour table, read straight across: elevated fills with the accent, filled returns to
-        // it, tonal steps down from the container to the tone itself, and outlined inverts the surface.
-        // Each lands somewhere its own default never goes, which is what makes "selected" legible without
-        // a checkmark beside it.
+        // The baseline toggle table (md.comp.filled-icon-button / filled-tonal-icon-button /
+        // outlined-icon-button): a selected filled or tonal toggle keeps its variant's own container, and
+        // it is the UNselected one that moves - to surface-container-highest - so the row does not read as
+        // already chosen. Outlined inverts the surface. Baseline has no elevated toggle; the accent fill
+        // below is the Expressive reading, kept so an elevated toggle still reads as on.
         ElevatedSelectedBg = "var(--flare-color-primary)",
         ElevatedSelectedColor = "var(--flare-color-on-primary)",
         FilledSelectedBg = "var(--flare-color-primary)",
         FilledSelectedColor = "var(--flare-color-on-primary)",
-        TonalSelectedBg = "var(--flare-color-secondary)",
-        TonalSelectedColor = "var(--flare-color-on-secondary)",
+        TonalSelectedBg = "var(--flare-color-secondary-container)",
+        TonalSelectedColor = "var(--flare-color-on-secondary-container)",
         OutlinedSelectedBg = "var(--flare-color-inverse-surface)",
         OutlinedSelectedColor = "var(--flare-color-inverse-on-surface)",
-        // And the one asymmetry in that table: a filled toggle AT REST is a neutral container, not the
-        // primary fill a filled button is, or every option in a row would read as already chosen.
-        FilledUnselectedBg = "var(--flare-color-surface-container)",
-        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
+        FilledUnselectedBg = "var(--flare-color-surface-container-highest)",
+        FilledUnselectedColor = "var(--flare-color-primary)",
+        TonalUnselectedBg = "var(--flare-color-surface-container-highest)",
+        TonalUnselectedColor = "var(--flare-color-on-surface-variant)",
 
         // Per-corner radii: a fully rounded capsule at all 5 sizes, expressed as half the size's own
         // height rather than through the Shape.Full scale.
@@ -325,12 +325,25 @@ public class MaterialDesign3Tokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
         DisabledLayer = "transparent",
 
-        // Icon size per the MD3 Expressive spec
-        IconSizeXs = "1.25rem", // 20dp
-        IconSizeSm = "1.25rem", // 20dp
-        IconSizeMd = "1.5rem",  // 24dp
-        IconSizeLg = "2rem",    // 32dp
-        IconSizeXl = "2.5rem",  // 40dp
+        // An icon beside a label is 18dp (md.comp.filled-button.with-icon.icon.size); a lone glyph in an
+        // icon button of the same 40dp is 24dp (md.comp.icon-button.icon.size).
+        IconSizeXs = "1.125rem", // 18dp
+        IconSizeSm = "1.125rem", // 18dp
+        IconSizeMd = "1.125rem", // 18dp (spec)
+        IconSizeLg = "1.25rem",  // 20dp
+        IconSizeXl = "1.5rem",   // 24dp
+        IconOnlyIconSizeXs = "1.25rem", // 20dp
+        IconOnlyIconSizeSm = "1.5rem",  // 24dp
+        IconOnlyIconSizeMd = "1.5rem",  // 24dp (spec)
+        IconOnlyIconSizeLg = "1.5rem",  // 24dp
+        IconOnlyIconSizeXl = "1.75rem", // 28dp
+        // The icon side of a contained button is 16dp against 24dp on the label side (with-leading-icon
+        // leading-space). A text button keeps its 12dp on the icon side, so it tucks nothing.
+        IconInset = "0.5rem",
+        TextIconInset = "0",
+        // md.comp.outlined-button: the label is the accent and the stroke the plain outline role.
+        OutlinedColor = "var(--flare-color-primary)",
+        OutlinedBorderColor = "var(--flare-color-outline)",
 
         // Baseline M3 uses the one button type style at every size. Ramping the label up to
         // title-medium / headline-small / headline-large is an Expressive behaviour and lives in

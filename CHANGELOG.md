@@ -40,8 +40,22 @@ All notable changes to Flare are documented here. This project adheres to
   Design 3 Expressive.
 - **Fluent 2 eases ordinary transitions on `curveEasyEase`**, as its own components do. `EasingStandard` was
   `curveDecelerateMax`, which made every hover and state change start abruptly.
+- **Breaking for custom themes: `ButtonTokens` requires nine more values.** `IconOnlyIconSizeXs..Xl` size the
+  glyph of an icon-only button separately from an icon beside a label; `IconInset` and `TextIconInset` say how
+  far a leading or trailing icon is tucked toward the edge, which was a fixed small spacing step;
+  `OutlinedColor` and `OutlinedBorderColor` colour an outlined button with no `Color`, which was fixed to the
+  neutral pair; `TonalUnselectedBg` and `TonalUnselectedColor` paint an unselected tonal toggle. The built-in
+  themes other than Material Design 3 keep their look.
 
 ### Fixed
+
+- **Material Design 3 buttons match the baseline spec.** A default-size button, icon button and segmented
+  button is 40px tall instead of 48px, with an 18px icon beside a label, a 24px icon in an icon button and a
+  16px inset on the icon side. The outlined button draws its label in the primary colour on the outline
+  role. A selected toggle keeps its shape, and filled and tonal toggles mark the unselected state on
+  `surface-container-highest` as the spec does, instead of showing Expressive colours. Material Design 3
+  Expressive is unchanged except that its icons are no longer tucked toward the edge, which its size tables
+  do not specify.
 
 - **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced

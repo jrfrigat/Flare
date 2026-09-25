@@ -133,9 +133,9 @@
 
 .flare-btn--outlined {
     background-color: transparent;
-    /* Default (no colour) = neutral (on-surface-variant / outline-variant); role/custom = accent. */
-    color: var(--fc-main, var(--flare-color-on-surface-variant));
-    border-color: var(--fc-main, var(--flare-color-outline-variant));
+    /* Default (no colour) = the theme's outlined pair; role/custom = accent. */
+    color: var(--fc-main, var(--flare-btn-outlined-color));
+    border-color: var(--fc-main, var(--flare-btn-outlined-border-color));
 }
 
 .flare-btn--text {
@@ -146,10 +146,11 @@
 /* Two class names, not one, so the variant outranks the size class below: both write the same local
    property at equal specificity otherwise, and the size - which every button carries - would win by
    coming later in the file. The size rule picks which rung of the text ladder is in scope; this
-   swaps the whole ladder in. Only the padding is raised: the paint above stays at one class so
-   .flare-btn--selected still repaints a selected text button. */
+   swaps the whole ladder in, with the text variant's own icon inset. Only the padding is raised: the
+   paint above stays at one class so .flare-btn--selected still repaints a selected text button. */
 .flare-btn.flare-btn--text {
     --_flare-btn-padding-inline: var(--_flare-btn-text-padding-inline);
+    --_flare-btn-icon-inset: var(--flare-btn-text-icon-inset);
 }
 
 .flare-btn--elevated {
@@ -358,7 +359,7 @@
     color: var(--fc-on-container, var(--flare-btn-outlined-selected-color));
 }
 
-/* The filled toggle is the only one that differs from its variant's default BEFORE anything is selected:
+/* The filled toggle differs from its variant's default BEFORE anything is selected:
    a filled button is a primary fill, but a filled toggle sitting unselected is a neutral container, or
    the row would read as though every option were already chosen.
 
@@ -368,6 +369,13 @@
 .flare-btn--filled[aria-pressed="false"] {
     background-color: var(--fc-main, var(--flare-btn-filled-unselected-bg));
     color: var(--fc-on, var(--flare-btn-filled-unselected-color));
+}
+
+/* Tonal has the same pair for the language that keeps the tonal container on the SELECTED toggle and
+   has to move the unselected one off it instead. */
+.flare-btn--tonal[aria-pressed="false"] {
+    background-color: var(--fc-container, var(--flare-btn-tonal-unselected-bg));
+    color: var(--fc-on-container, var(--flare-btn-tonal-unselected-color));
 }
 
 .flare-btn--selected.flare-btn--xs { border-radius: var(--flare-btn-selected-radius-xs); }
@@ -425,13 +433,14 @@
     position: relative;
 }
 
-/* Optically tuck each icon toward the button edge on its side (the icon side gets
-   slightly less padding than the label side). */
+/* Tuck each icon toward the button edge on its side, so the icon side carries less inline space
+   than the label side. How far is the theme's: Material takes 8dp off a 24dp side, a language with
+   even sides takes nothing. */
 .flare-btn__icon--leading {
-    margin-inline-start: calc(-1 * var(--flare-spacing-2));
+    margin-inline-start: calc(-1 * var(--_flare-btn-icon-inset, var(--flare-btn-icon-inset)));
 }
 .flare-btn__icon--trailing {
-    margin-inline-end: calc(-1 * var(--flare-spacing-2));
+    margin-inline-end: calc(-1 * var(--_flare-btn-icon-inset, var(--flare-btn-icon-inset)));
 }
 
 /* ==========================================================================
@@ -445,7 +454,16 @@
     gap: 0;
     width: var(--_flare-btn-height, var(--flare-btn-height-md));
     aspect-ratio: 1 / 1;
+    --_flare-icon-size: var(--flare-btn-icon-only-icon-size-md);
 }
+
+/* A lone glyph has its own ramp: a language may draw it larger than one beside a label in a button of
+   the same height. Two classes, so it outranks the size class that sets the labelled size. */
+.flare-btn--icon-only.flare-btn--xs { --_flare-icon-size: var(--flare-btn-icon-only-icon-size-xs); }
+.flare-btn--icon-only.flare-btn--sm { --_flare-icon-size: var(--flare-btn-icon-only-icon-size-sm); }
+.flare-btn--icon-only.flare-btn--md { --_flare-icon-size: var(--flare-btn-icon-only-icon-size-md); }
+.flare-btn--icon-only.flare-btn--lg { --_flare-icon-size: var(--flare-btn-icon-only-icon-size-lg); }
+.flare-btn--icon-only.flare-btn--xl { --_flare-icon-size: var(--flare-btn-icon-only-icon-size-xl); }
 
 /* An icon-only button has no label for the leading/trailing optical tuck to balance against, so the
    lone glyph would sit ~2px off-center. Neutralize the tuck when there is no label. */
