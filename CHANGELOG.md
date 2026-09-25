@@ -70,6 +70,9 @@ All notable changes to Flare are documented here. This project adheres to
   indicator instead of 3px of primary above a grey line, and an invalid field hovers to on-error-container.
   Menus sit at elevation 2 with 8px above and below the items, as the baseline menu does; Material Design 3
   Expressive keeps its 2px inset.
+- **Material Design 3 tabs and navigation bar match the spec.** Tabs are 48px tall with 16px at the sides,
+  where their height followed the content (46 to 51px) and the sides were 20px, and the navigation bar
+  drops the divider line the spec's tonal container does not have.
 
 - **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced

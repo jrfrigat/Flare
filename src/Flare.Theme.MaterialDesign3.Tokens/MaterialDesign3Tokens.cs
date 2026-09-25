@@ -565,9 +565,9 @@ public class MaterialDesign3Tokens
         TabDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ScrollDisabledOpacity = "var(--flare-state-disabled-opacity)",
         // The label and its padding decide the height here; no minimum width.
-        TabHeight = "auto",
+        TabHeight = "3rem",                          // md.comp.primary-navigation-tab.container.height 48dp
         TabMinWidth = "0",
-        TabPaddingInline = "var(--flare-spacing-10)",
+        TabPaddingInline = "var(--flare-spacing-8)", // md-tabs 16dp
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,
@@ -966,7 +966,8 @@ public class MaterialDesign3Tokens
     {
         BarHeight = "5rem",
         BarBg = "var(--flare-color-surface-container)",
-        BorderColor = "var(--flare-color-surface-variant)",
+        // The tonal container is the edge (md.comp.navigation-bar has no divider); the 1px stays reserved.
+        BorderColor = "transparent",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
         ActiveColor = "var(--flare-color-on-secondary-container)",

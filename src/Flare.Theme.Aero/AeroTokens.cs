@@ -364,7 +364,12 @@ internal class AeroTokens
     };
 
     internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelColor = "var(--flare-color-on-surface-variant)", LabelFont = "var(--flare-typescale-label-large-font)", LabelWeight = "inherit", LabelSpacing = "normal", LabelSizeXs = "var(--flare-typescale-label-small-size)", LabelSizeSm = "var(--flare-typescale-label-small-size)", LabelSizeMd = "var(--flare-typescale-label-large-size)", LabelSizeLg = "var(--flare-typescale-title-small-size)", LabelSizeXl = "var(--flare-typescale-title-medium-size)", Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-4)", PaddingInlineSm = "var(--flare-spacing-5)", PaddingInlineMd = "var(--flare-spacing-8)", PaddingInlineLg = "var(--flare-spacing-10)", PaddingInlineXl = "var(--flare-spacing-12)" };
-    internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs;
+    internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs with
+    {
+        // Sized by their content, as these tabs always were; the Material record states its 48dp tab.
+        TabHeight = "auto",
+        TabPaddingInline = "var(--flare-spacing-10)",
+    };
 
     internal static readonly SliderTokens Slider = MaterialDesign3Tokens.Design.Slider with
     {
@@ -498,6 +503,8 @@ internal class AeroTokens
         Radio = Radio,
         Chip = Chip,
         Tabs = Tabs,
+        // A hairline above the bar, which the Material record leaves out.
+        BottomNav = MaterialDesign3Tokens.Design.BottomNav with { BorderColor = "var(--flare-color-surface-variant)" },
         Slider = Slider,
         // Aero cards: flat glass panels with a 1px border, small radius, no drop shadow.
         Card = MaterialDesign3Tokens.Design.Card with
