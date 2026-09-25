@@ -74,6 +74,45 @@ internal static class MaterialDesign2Tokens
     };
 
     // ---- Motion: the Material Design 2 standard / decelerate / accelerate / sharp curves. ----
+    // Material 2 has one level of expression, so the emphasized and subtle roles repeat its only
+    // decelerate and accelerate curves rather than inventing new ones.
+    private const string CurveStandard = "cubic-bezier(0.4, 0, 0.2, 1)";
+    private const string CurveDecelerate = "cubic-bezier(0, 0, 0.2, 1)";
+    private const string CurveAccelerate = "cubic-bezier(0.4, 0, 1, 1)";
+
+    // A surface phase that neither moves nor fades; each family states only what it changes.
+    private static readonly MotionPhaseTokens Still = new()
+    {
+        Delay = "0ms",
+        Duration = "0ms",
+        Easing = "linear",
+        Offset = "0px",
+        Scale = "1",
+        Opacity = "1",
+        Reveal = "100%",
+        Blur = "0px",
+        FadeDelay = "0ms",
+        FadeDuration = "0ms",
+        FadeEasing = "linear",
+    };
+
+    // The MDC pop: scale up from 80% on the deceleration curve while fading in linearly, then fade out in 75ms.
+    private static MotionPhaseTokens PopIn(string duration, string fade) =>
+        Still with { Duration = duration, Easing = CurveDecelerate, Scale = "0.8", Opacity = "0", FadeDuration = fade };
+
+    private static readonly MotionPhaseTokens FadeOut = Still with { Opacity = "0", FadeDuration = "75ms" };
+
+    // mdc-menu-surface: 120ms scale-up with a 30ms fade, 75ms fade out. Select and autocomplete panels are
+    // menu surfaces in MDC.
+    private static readonly SurfaceMotionTokens MenuMotion = new() { Enter = PopIn("120ms", "30ms"), Exit = FadeOut };
+
+    // mdc-drawer (modal): slides its width in over 250ms on deceleration and out over 200ms on acceleration.
+    private static readonly SurfaceMotionTokens EdgeMotion = new()
+    {
+        Enter = Still with { Duration = "250ms", Easing = CurveDecelerate, Offset = "100%" },
+        Exit = Still with { Duration = "200ms", Easing = CurveAccelerate, Offset = "100%" },
+    };
+
     internal static readonly MotionTokens Motion = new()
     {
         DurationShort1 = "100ms",
@@ -84,19 +123,52 @@ internal static class MaterialDesign2Tokens
         DurationMedium2 = "250ms",
         DurationLong1 = "300ms",
         DurationLong2 = "375ms",
-        EasingStandard = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingDecelerate = "cubic-bezier(0, 0, 0.2, 1)",
-        EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
+
+        EasingStandard = CurveStandard,
+        EasingDecelerate = CurveDecelerate,
+        EasingAccelerate = CurveAccelerate,
         EasingEmphasized = "cubic-bezier(0.4, 0, 0.6, 1)", // MD2 "sharp"
+        EasingEmphasizedDecelerate = CurveDecelerate,
+        EasingEmphasizedAccelerate = CurveAccelerate,
+        EasingSubtle = CurveStandard,
+        EasingSubtleDecelerate = CurveDecelerate,
+        EasingSubtleAccelerate = CurveAccelerate,
+        EasingLinear = "linear",
+
+        DurationStateChange = "100ms",
+        DurationSmallMove = "150ms",
+        DurationEnterSmall = "150ms",
+        DurationEnterMedium = "250ms",
+        DurationEnterLarge = "300ms",
+        DurationExitSmall = "75ms",
+        DurationExitMedium = "200ms",
+        DurationExitLarge = "250ms",
+        DurationCycle = "1568ms",     // mdc-circular-progress container rotation
+        DurationCycleLong = "2000ms", // mdc-linear-progress indeterminate pass
 
         // Springs arrived with Material 3 Expressive; Material 2 predates them, so these resolve to
         // the standard curve and keep this theme reading as its own era.
-        EasingSpringFast = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingSpring = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingSpringSlow = "cubic-bezier(0.4, 0, 0.2, 1)",
+        EasingSpringFast = CurveStandard,
+        EasingSpring = CurveStandard,
+        EasingSpringSlow = CurveStandard,
         DurationSpringFast = "150ms",
         DurationSpring = "250ms",
         DurationSpringSlow = "375ms",
+
+        // mdc-dialog: 150ms pop in, 75ms fade out.
+        Dialog = new() { Enter = PopIn("150ms", "150ms"), Exit = FadeOut },
+        Sheet = EdgeMotion,
+        Menu = MenuMotion,
+        Popover = MenuMotion,
+        // mdc-tooltip: waits SHOW_DELAY_MS (500) and HIDE_DELAY_MS (600), then the same pop.
+        Tooltip = new()
+        {
+            Enter = PopIn("150ms", "150ms") with { Delay = "500ms", FadeDelay = "500ms" },
+            Exit = FadeOut with { FadeDelay = "600ms" },
+        },
+        // mdc-snackbar: 150ms pop in, 75ms fade out.
+        Snackbar = new() { Enter = PopIn("150ms", "150ms"), Exit = FadeOut },
+        Drawer = EdgeMotion,
     };
 
     // ---- State layers: Material Design 2 overlay opacities. ----

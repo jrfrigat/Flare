@@ -53,7 +53,39 @@ internal class VisualStudioTokens
         MorphEasing = "cubic-bezier(0.4, 0, 0.2, 1)",
     };
 
-    // Snappy IDE transitions.
+    // Snappy IDE transitions: surfaces fade rather than travel, and menus close at once.
+    private const string CurveStandard = "cubic-bezier(0.4, 0, 0.2, 1)";
+    private const string CurveDecelerate = "cubic-bezier(0, 0, 0, 1)";
+    private const string CurveAccelerate = "cubic-bezier(0.4, 0, 1, 1)";
+
+    // A surface phase that neither moves nor fades; each family states only what it changes.
+    private static readonly MotionPhaseTokens Still = new()
+    {
+        Delay = "0ms",
+        Duration = "0ms",
+        Easing = "linear",
+        Offset = "0px",
+        Scale = "1",
+        Opacity = "1",
+        Reveal = "100%",
+        Blur = "0px",
+        FadeDelay = "0ms",
+        FadeDuration = "0ms",
+        FadeEasing = "linear",
+    };
+
+    private static readonly SurfaceMotionTokens MenuMotion = new()
+    {
+        Enter = Still with { Opacity = "0", FadeDuration = "80ms", FadeEasing = CurveDecelerate },
+        Exit = Still with { Opacity = "0" },
+    };
+
+    private static readonly SurfaceMotionTokens EdgeMotion = new()
+    {
+        Enter = Still with { Duration = "180ms", Easing = CurveDecelerate, Offset = "100%" },
+        Exit = Still with { Duration = "120ms", Easing = CurveAccelerate, Offset = "100%" },
+    };
+
     internal static readonly MotionTokens Motion = new()
     {
         DurationShort1 = "40ms",
@@ -64,19 +96,58 @@ internal class VisualStudioTokens
         DurationMedium2 = "180ms",
         DurationLong1 = "260ms",
         DurationLong2 = "360ms",
-        EasingStandard = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
-        EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
-        EasingEmphasized = "cubic-bezier(0.4, 0, 0.2, 1)",
+
+        EasingStandard = CurveStandard,
+        EasingDecelerate = CurveDecelerate,
+        EasingAccelerate = CurveAccelerate,
+        EasingEmphasized = CurveStandard,
+        EasingEmphasizedDecelerate = CurveDecelerate,
+        EasingEmphasizedAccelerate = CurveAccelerate,
+        EasingSubtle = CurveStandard,
+        EasingSubtleDecelerate = CurveDecelerate,
+        EasingSubtleAccelerate = CurveAccelerate,
+        EasingLinear = "linear",
+
+        DurationStateChange = "80ms",
+        DurationSmallMove = "120ms",
+        DurationEnterSmall = "120ms",
+        DurationEnterMedium = "180ms",
+        DurationEnterLarge = "260ms",
+        DurationExitSmall = "80ms",
+        DurationExitMedium = "120ms",
+        DurationExitLarge = "180ms",
+        DurationCycle = "1000ms",
+        DurationCycleLong = "2000ms",
 
         // An IDE chrome theme wants motion to stay out of the way, so nothing here springs; the
         // durations are the short end of the ramp for the same reason.
-        EasingSpringFast = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingSpring = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingSpringSlow = "cubic-bezier(0.4, 0, 0.2, 1)",
+        EasingSpringFast = CurveStandard,
+        EasingSpring = CurveStandard,
+        EasingSpringSlow = CurveStandard,
         DurationSpringFast = "90ms",
         DurationSpring = "180ms",
         DurationSpringSlow = "360ms",
+
+        Dialog = new()
+        {
+            Enter = Still with { Opacity = "0", FadeDuration = "120ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Opacity = "0", FadeDuration = "80ms", FadeEasing = CurveAccelerate },
+        },
+        Sheet = EdgeMotion,
+        Menu = MenuMotion,
+        Popover = MenuMotion,
+        Tooltip = new()
+        {
+            Enter = Still with { Delay = "400ms", Opacity = "0", FadeDelay = "400ms", FadeDuration = "80ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Opacity = "0" },
+        },
+        // An info bar slides in from its edge and fades out.
+        Snackbar = new()
+        {
+            Enter = Still with { Duration = "180ms", Easing = CurveDecelerate, Offset = "100%", Opacity = "0", FadeDuration = "120ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Opacity = "0", FadeDuration = "120ms", FadeEasing = CurveAccelerate },
+        },
+        Drawer = EdgeMotion,
     };
 
     internal static readonly StateTokens State = new()

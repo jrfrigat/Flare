@@ -4,6 +4,31 @@
 [семантическому версионированию](https://semver.org/). Записи, отсутствующие в этом файле,
 показываются на английском из `CHANGELOG.md`.
 
+## [Unreleased]
+
+### Изменено
+
+- **Ломающее для своих тем: `MotionTokens` описывает движение по ролям.** Запись была шкалой одного
+  дизайн-языка - восемь длительностей и четыре кривые. Fluent 2 не мог ее заполнить, не потеряв пять кривых
+  из девяти, а Material 3 - не потеряв кривые emphasized-decelerate и emphasized-accelerate, на которых по
+  спецификации появляются его диалоги и листы. Теперь запись требует еще шесть кривых
+  (`EasingEmphasizedDecelerate`, `EasingEmphasizedAccelerate`, `EasingSubtle`, `EasingSubtleDecelerate`,
+  `EasingSubtleAccelerate`, `EasingLinear`), десять ролей длительности (`DurationStateChange`,
+  `DurationSmallMove`, появление и уход малых, средних и крупных областей, `DurationCycle`,
+  `DurationCycleLong`) и движение появления и ухода семи семейств поверхностей - `Dialog`, `Sheet`, `Menu`,
+  `Popover`, `Tooltip`, `Snackbar`, `Drawer`. Каждое семейство - `SurfaceMotionTokens` из двух
+  `MotionPhaseTokens` (задержка, длительность, кривая, сдвиг, масштаб, прозрачность, раскрытие, размытие и
+  отдельно рассчитанное растворение). Они публикуются переменными `--flare-motion-*`, например
+  `--flare-motion-dialog-enter-duration`. Все встроенные темы их заполняют; своя тема, собранная через
+  `new MotionTokens { ... }`, должна задать их тоже.
+- **Движение Material Design 3 соответствует опубликованным токенам.** `DurationMedium1` - 250ms (было
+  200ms), `DurationLong2` - 500ms (было 600ms); `EasingEmphasized` - кривая, которую играют веб-компоненты
+  Material, `cubic-bezier(0.3, 0, 0, 1)`. Базовая тема теперь пружинит по стандартной схеме, которая
+  успокаивается без заметного перелета; более упругие пружины Expressive остаются у Material Design 3
+  Expressive.
+- **Fluent 2 ведет обычные переходы по `curveEasyEase`**, как его собственные компоненты. `EasingStandard`
+  был `curveDecelerateMax`, из-за чего любой hover и смена состояния начинались рывком.
+
 ## [0.41.0] - 2026-09-24
 
 ### Добавлено

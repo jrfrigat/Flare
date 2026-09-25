@@ -173,27 +173,7 @@ public class TokenParityTests
                 Level4 = "0 8px 16px",
                 Level5 = "0 16px 32px"
             },
-            Motion = new MotionTokens
-            {
-                DurationShort1 = "50ms",
-                DurationShort2 = "100ms",
-                DurationShort3 = "150ms",
-                DurationShort4 = "200ms",
-                DurationMedium1 = "200ms",
-                DurationMedium2 = "300ms",
-                DurationLong1 = "400ms",
-                DurationLong2 = "500ms",
-                EasingStandard = "cubic-bezier(0.2, 0, 0, 1)",
-                EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
-                EasingAccelerate = "cubic-bezier(0.3, 0, 1, 1)",
-                EasingEmphasized = "cubic-bezier(0.2, 0, 0, 1)",
-                EasingSpringFast = "cubic-bezier(0.2, 0, 0, 1)",
-                EasingSpring = "cubic-bezier(0.2, 0, 0, 1)",
-                EasingSpringSlow = "cubic-bezier(0.2, 0, 0, 1)",
-                DurationSpringFast = "300ms",
-                DurationSpring = "350ms",
-                DurationSpringSlow = "500ms"
-            },
+            Motion = TestMotionTokens.Minimal,
             State = new StateTokens
             {
                 HoverOpacity = "0.08",

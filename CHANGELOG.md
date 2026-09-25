@@ -3,6 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- **Breaking for custom themes: `MotionTokens` describes motion by role.** The record used to be one design
+  language's scale - eight durations and four curves - which Fluent 2 could not fill without dropping five of
+  its nine curves, and Material 3 not without losing the emphasized-decelerate and emphasized-accelerate
+  curves its dialogs and sheets are specified with. It now also requires six curves
+  (`EasingEmphasizedDecelerate`, `EasingEmphasizedAccelerate`, `EasingSubtle`, `EasingSubtleDecelerate`,
+  `EasingSubtleAccelerate`, `EasingLinear`), ten role durations (`DurationStateChange`, `DurationSmallMove`,
+  enter and exit for small, medium and large regions, `DurationCycle`, `DurationCycleLong`) and the appearing
+  and leaving motion of seven surface families - `Dialog`, `Sheet`, `Menu`, `Popover`, `Tooltip`, `Snackbar`,
+  `Drawer` - each a `SurfaceMotionTokens` of two `MotionPhaseTokens` (delay, duration, curve, offset, scale,
+  opacity, reveal, blur and a separately timed fade). They are published as `--flare-motion-*` variables
+  such as `--flare-motion-dialog-enter-duration`. Every built-in theme fills them; a custom theme built with
+  `new MotionTokens { ... }` has to set them too.
+- **Material Design 3 motion follows the published tokens.** `DurationMedium1` is 250ms (was 200ms) and
+  `DurationLong2` 500ms (was 600ms); `EasingEmphasized` is the curve the Material web components play,
+  `cubic-bezier(0.3, 0, 0, 1)`. The baseline theme now springs on the standard motion scheme, which settles
+  without a visible overshoot; the bouncier Expressive springs stay with Material Design 3 Expressive.
+- **Fluent 2 eases ordinary transitions on `curveEasyEase`**, as its own components do. `EasingStandard` was
+  `curveDecelerateMax`, which made every hover and state change start abruptly.
+
 ## [0.41.0] - 2026-09-24
 
 ### Added

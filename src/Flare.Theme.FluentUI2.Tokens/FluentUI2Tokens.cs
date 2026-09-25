@@ -53,10 +53,48 @@ public class FluentUI2Tokens
         MorphEasing = "cubic-bezier(0.1, 0.9, 0.2, 1)",
     };
 
-    // Fluent 2 motion: the durationUltraFast..durationUltraSlow ramp and the named curves
-    // (curveDecelerateMax/Min, curveAccelerateMax, curveEasyEase).
+    // Fluent 2 motion: the nine named curves and the durationUltraFast..durationUltraSlow ramp of
+    // @fluentui/tokens, placed by role.
+    private const string CurveDecelerateMid = "cubic-bezier(0, 0, 0, 1)";
+    private const string CurveAccelerateMin = "cubic-bezier(0.8, 0, 0.78, 1)";
+    private const string CurveEasyEase = "cubic-bezier(0.33, 0, 0.67, 1)";
+
+    // A surface phase that neither moves nor fades; each family states only what it changes.
+    private static readonly MotionPhaseTokens Still = new()
+    {
+        Delay = "0ms",
+        Duration = "0ms",
+        Easing = "linear",
+        Offset = "0px",
+        Scale = "1",
+        Opacity = "1",
+        Reveal = "100%",
+        Blur = "0px",
+        FadeDelay = "0ms",
+        FadeDuration = "0ms",
+        FadeEasing = "linear",
+    };
+
+    // PopoverSurfaceMotion / MenuSurfaceMotion: slide 10px from the anchor and fade in over durationSlower on
+    // curveDecelerateMid. They have no exit - the surface unmounts at once.
+    private static readonly SurfaceMotionTokens AnchoredMotion = new()
+    {
+        Enter = Still with { Duration = "400ms", Easing = CurveDecelerateMid, Offset = "10px", Opacity = "0", FadeDuration = "400ms", FadeEasing = CurveDecelerateMid },
+        Exit = Still with { Opacity = "0" },
+    };
+
+    // drawerMotions: slide in the drawer's own size and fade, curveDecelerateMid in and curveAccelerateMin out,
+    // durationSlow for the default (medium) size. A bottom sheet is the same drawer at position="bottom".
+    private static readonly SurfaceMotionTokens EdgeMotion = new()
+    {
+        Enter = Still with { Duration = "300ms", Easing = CurveDecelerateMid, Offset = "100%", Opacity = "0", FadeDuration = "300ms", FadeEasing = CurveDecelerateMid },
+        Exit = Still with { Duration = "300ms", Easing = CurveAccelerateMin, Offset = "100%", Opacity = "0", FadeDuration = "300ms", FadeEasing = CurveAccelerateMin },
+    };
+
     internal static readonly MotionTokens Motion = new()
     {
+        // The scale that predates the roles. Fluent has no names for Short3/Short4 and repeats them as
+        // Medium1/Medium2; the roles below are what carries Fluent's own ramp.
         DurationShort1 = "50ms",   // durationUltraFast
         DurationShort2 = "100ms",  // durationFaster
         DurationShort3 = "150ms",
@@ -65,10 +103,28 @@ public class FluentUI2Tokens
         DurationMedium2 = "200ms", // durationNormal
         DurationLong1 = "300ms",   // durationSlow
         DurationLong2 = "500ms",   // durationUltraSlow
-        EasingStandard = "cubic-bezier(0.1, 0.9, 0.2, 1)",   // curveDecelerateMax
-        EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",       // curveDecelerateMid
-        EasingAccelerate = "cubic-bezier(0.9, 0.1, 1, 0.2)", // curveAccelerateMax
-        EasingEmphasized = "cubic-bezier(0.33, 0, 0.67, 1)", // curveEasyEase
+
+        EasingStandard = CurveEasyEase,                               // curveEasyEase
+        EasingDecelerate = CurveDecelerateMid,                        // curveDecelerateMid
+        EasingAccelerate = "cubic-bezier(1, 0, 1, 1)",                // curveAccelerateMid
+        EasingEmphasized = "cubic-bezier(0.8, 0, 0.2, 1)",            // curveEasyEaseMax
+        EasingEmphasizedDecelerate = "cubic-bezier(0.1, 0.9, 0.2, 1)", // curveDecelerateMax
+        EasingEmphasizedAccelerate = "cubic-bezier(0.9, 0.1, 1, 0.2)", // curveAccelerateMax
+        EasingSubtle = CurveEasyEase,                                 // no gentler on-screen curve in Fluent
+        EasingSubtleDecelerate = "cubic-bezier(0.33, 0, 0.1, 1)",     // curveDecelerateMin
+        EasingSubtleAccelerate = CurveAccelerateMin,                  // curveAccelerateMin
+        EasingLinear = "linear",                                      // curveLinear
+
+        DurationStateChange = "100ms", // durationFaster
+        DurationSmallMove = "200ms",   // durationNormal
+        DurationEnterSmall = "250ms",  // durationGentle
+        DurationEnterMedium = "300ms", // durationSlow
+        DurationEnterLarge = "400ms",  // durationSlower
+        DurationExitSmall = "250ms",   // Fluent leaves at the pace it arrives
+        DurationExitMedium = "300ms",
+        DurationExitLarge = "400ms",
+        DurationCycle = "1500ms",      // Spinner rotation
+        DurationCycleLong = "3000ms",  // ProgressBar indeterminate pass
 
         // Fluent 2 has no spring in its motion language - it moves on decelerating curves and never
         // overshoots - so the spring easings resolve to curveDecelerateMax and only the durations
@@ -79,6 +135,32 @@ public class FluentUI2Tokens
         DurationSpringFast = "150ms",  // durationFast
         DurationSpring = "200ms",      // durationNormal
         DurationSpringSlow = "300ms",  // durationSlow
+
+        // DialogSurfaceMotion: scale from 0.85 and fade, durationGentle both ways, curveDecelerateMid in and
+        // curveAccelerateMin out.
+        Dialog = new()
+        {
+            Enter = Still with { Duration = "250ms", Easing = CurveDecelerateMid, Scale = "0.85", Opacity = "0", FadeDuration = "250ms", FadeEasing = CurveDecelerateMid },
+            Exit = Still with { Duration = "250ms", Easing = CurveAccelerateMin, Scale = "0.85", Opacity = "0", FadeDuration = "250ms", FadeEasing = CurveAccelerateMin },
+        },
+        Sheet = EdgeMotion,
+        Menu = AnchoredMotion,
+        Popover = AnchoredMotion,
+        // Tooltip: no motion of its own - it waits showDelay (250ms) to appear and hideDelay (250ms) to go.
+        Tooltip = new()
+        {
+            Enter = Still with { Delay = "250ms", Opacity = "0", FadeDelay = "250ms" },
+            Exit = Still with { Delay = "250ms", Opacity = "0", FadeDelay = "250ms" },
+        },
+        // Toast (CollapseDelayed): the height opens over durationNormal and the content fades in over
+        // durationSlower after a durationNormal stagger; leaving, it fades first and collapses after
+        // durationSlower. curveEasyEase throughout.
+        Snackbar = new()
+        {
+            Enter = Still with { Duration = "200ms", Easing = CurveEasyEase, Opacity = "0", Reveal = "0%", FadeDelay = "200ms", FadeDuration = "400ms", FadeEasing = CurveEasyEase },
+            Exit = Still with { Delay = "400ms", Duration = "200ms", Easing = CurveEasyEase, Opacity = "0", Reveal = "0%", FadeDuration = "400ms", FadeEasing = CurveEasyEase },
+        },
+        Drawer = EdgeMotion,
     };
 
     internal static readonly StateTokens State = new()

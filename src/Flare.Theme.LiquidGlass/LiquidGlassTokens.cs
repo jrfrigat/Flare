@@ -53,7 +53,42 @@ internal class LiquidGlassTokens
         MorphEasing = "cubic-bezier(0.34, 1.4, 0.5, 1)",
     };
 
-    // Smooth iOS easing with a touch of spring on emphasized motion.
+    // Smooth iOS easing with a touch of spring on emphasized motion: glass arrives on the overshooting curve,
+    // out of a blur, and leaves on a plain acceleration.
+    private const string CurveStandard = "cubic-bezier(0.25, 0.1, 0.25, 1)";
+    private const string CurveDecelerate = "cubic-bezier(0.16, 1, 0.3, 1)";
+    private const string CurveAccelerate = "cubic-bezier(0.4, 0, 1, 1)";
+    private const string CurveOvershoot = "cubic-bezier(0.34, 1.4, 0.5, 1)";
+
+    // A surface phase that neither moves nor fades; each family states only what it changes.
+    private static readonly MotionPhaseTokens Still = new()
+    {
+        Delay = "0ms",
+        Duration = "0ms",
+        Easing = "linear",
+        Offset = "0px",
+        Scale = "1",
+        Opacity = "1",
+        Reveal = "100%",
+        Blur = "0px",
+        FadeDelay = "0ms",
+        FadeDuration = "0ms",
+        FadeEasing = "linear",
+    };
+
+    // Menus and popovers bloom out of their anchor through a blur.
+    private static readonly SurfaceMotionTokens AnchoredMotion = new()
+    {
+        Enter = Still with { Duration = "350ms", Easing = CurveOvershoot, Scale = "0.8", Opacity = "0", Blur = "8px", FadeDuration = "250ms", FadeEasing = CurveDecelerate },
+        Exit = Still with { Duration = "150ms", Easing = CurveAccelerate, Scale = "0.9", Opacity = "0", Blur = "8px", FadeDuration = "150ms", FadeEasing = CurveAccelerate },
+    };
+
+    private static readonly SurfaceMotionTokens EdgeMotion = new()
+    {
+        Enter = Still with { Duration = "450ms", Easing = CurveDecelerate, Offset = "100%" },
+        Exit = Still with { Duration = "350ms", Easing = CurveAccelerate, Offset = "100%" },
+    };
+
     internal static readonly MotionTokens Motion = new()
     {
         DurationShort1 = "100ms",
@@ -64,19 +99,57 @@ internal class LiquidGlassTokens
         DurationMedium2 = "350ms",
         DurationLong1 = "450ms",
         DurationLong2 = "600ms",
-        EasingStandard = "cubic-bezier(0.25, 0.1, 0.25, 1)",
-        EasingDecelerate = "cubic-bezier(0.16, 1, 0.3, 1)",
-        EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
-        EasingEmphasized = "cubic-bezier(0.34, 1.4, 0.5, 1)",
+
+        EasingStandard = CurveStandard,
+        EasingDecelerate = CurveDecelerate,
+        EasingAccelerate = CurveAccelerate,
+        EasingEmphasized = CurveOvershoot,
+        EasingEmphasizedDecelerate = CurveOvershoot,
+        EasingEmphasizedAccelerate = CurveAccelerate,
+        EasingSubtle = CurveStandard,
+        EasingSubtleDecelerate = CurveDecelerate,
+        EasingSubtleAccelerate = CurveAccelerate,
+        EasingLinear = "linear",
+
+        DurationStateChange = "150ms",
+        DurationSmallMove = "250ms",
+        DurationEnterSmall = "250ms",
+        DurationEnterMedium = "350ms",
+        DurationEnterLarge = "450ms",
+        DurationExitSmall = "150ms",
+        DurationExitMedium = "250ms",
+        DurationExitLarge = "350ms",
+        DurationCycle = "1000ms",
+        DurationCycleLong = "2000ms",
 
         // This theme already overshoots on its emphasized curve - the wobble is the point of the
         // glass - so the springs stay on it rather than inventing a second bounce alongside.
-        EasingSpringFast = "cubic-bezier(0.34, 1.4, 0.5, 1)",
-        EasingSpring = "cubic-bezier(0.34, 1.4, 0.5, 1)",
-        EasingSpringSlow = "cubic-bezier(0.34, 1.4, 0.5, 1)",
+        EasingSpringFast = CurveOvershoot,
+        EasingSpring = CurveOvershoot,
+        EasingSpringSlow = CurveOvershoot,
         DurationSpringFast = "250ms",
         DurationSpring = "350ms",
         DurationSpringSlow = "600ms",
+
+        Dialog = new()
+        {
+            Enter = Still with { Duration = "350ms", Easing = CurveOvershoot, Scale = "0.9", Opacity = "0", Blur = "8px", FadeDuration = "250ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Duration = "250ms", Easing = CurveAccelerate, Scale = "0.95", Opacity = "0", Blur = "8px", FadeDuration = "250ms", FadeEasing = CurveAccelerate },
+        },
+        Sheet = EdgeMotion,
+        Menu = AnchoredMotion,
+        Popover = AnchoredMotion,
+        Tooltip = new()
+        {
+            Enter = Still with { Delay = "500ms", Duration = "250ms", Easing = CurveDecelerate, Scale = "0.9", Opacity = "0", FadeDelay = "500ms", FadeDuration = "250ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Opacity = "0", FadeDuration = "150ms", FadeEasing = CurveAccelerate },
+        },
+        Snackbar = new()
+        {
+            Enter = Still with { Duration = "450ms", Easing = CurveOvershoot, Offset = "100%", Opacity = "0", Blur = "8px", FadeDuration = "250ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Duration = "250ms", Easing = CurveAccelerate, Offset = "100%", Opacity = "0", FadeDuration = "250ms", FadeEasing = CurveAccelerate },
+        },
+        Drawer = EdgeMotion,
     };
 
     internal static readonly StateTokens State = new()

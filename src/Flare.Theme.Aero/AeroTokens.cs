@@ -52,7 +52,41 @@ internal class AeroTokens
         MorphEasing = "cubic-bezier(0, 0, 0, 1)",
     };
 
-    // Snappy, short transitions - the quick hover fades of the Aero era.
+    // Snappy, short transitions - the quick hover fades of the Aero era. The era has one decelerating and
+    // one accelerating curve, so every level of expression shares them.
+    private const string CurveStandard = "cubic-bezier(0.4, 0, 0.2, 1)";
+    private const string CurveDecelerate = "cubic-bezier(0, 0, 0, 1)";
+    private const string CurveAccelerate = "cubic-bezier(0.4, 0, 1, 1)";
+
+    // A surface phase that neither moves nor fades; each family states only what it changes.
+    private static readonly MotionPhaseTokens Still = new()
+    {
+        Delay = "0ms",
+        Duration = "0ms",
+        Easing = "linear",
+        Offset = "0px",
+        Scale = "1",
+        Opacity = "1",
+        Reveal = "100%",
+        Blur = "0px",
+        FadeDelay = "0ms",
+        FadeDuration = "0ms",
+        FadeEasing = "linear",
+    };
+
+    // Menus of the era fade in briefly and vanish at once.
+    private static readonly SurfaceMotionTokens MenuMotion = new()
+    {
+        Enter = Still with { Opacity = "0", FadeDuration = "130ms", FadeEasing = CurveDecelerate },
+        Exit = Still with { Opacity = "0" },
+    };
+
+    private static readonly SurfaceMotionTokens EdgeMotion = new()
+    {
+        Enter = Still with { Duration = "280ms", Easing = CurveDecelerate, Offset = "100%" },
+        Exit = Still with { Duration = "200ms", Easing = CurveAccelerate, Offset = "100%" },
+    };
+
     internal static readonly MotionTokens Motion = new()
     {
         DurationShort1 = "50ms",
@@ -63,19 +97,59 @@ internal class AeroTokens
         DurationMedium2 = "200ms",
         DurationLong1 = "280ms",
         DurationLong2 = "400ms",
-        EasingStandard = "cubic-bezier(0.4, 0, 0.2, 1)",
-        EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
-        EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
-        EasingEmphasized = "cubic-bezier(0.4, 0, 0.2, 1)",
+
+        EasingStandard = CurveStandard,
+        EasingDecelerate = CurveDecelerate,
+        EasingAccelerate = CurveAccelerate,
+        EasingEmphasized = CurveStandard,
+        EasingEmphasizedDecelerate = CurveDecelerate,
+        EasingEmphasizedAccelerate = CurveAccelerate,
+        EasingSubtle = CurveStandard,
+        EasingSubtleDecelerate = CurveDecelerate,
+        EasingSubtleAccelerate = CurveAccelerate,
+        EasingLinear = "linear",
+
+        DurationStateChange = "90ms",
+        DurationSmallMove = "150ms",
+        DurationEnterSmall = "130ms",
+        DurationEnterMedium = "200ms",
+        DurationEnterLarge = "280ms",
+        DurationExitSmall = "90ms",
+        DurationExitMedium = "130ms",
+        DurationExitLarge = "200ms",
+        DurationCycle = "1000ms",
+        DurationCycleLong = "2000ms",
 
         // Aero's motion is glide and glow, not bounce, so the springs resolve to the same
         // decelerating curve as everything else and only the settling times differ.
-        EasingSpringFast = "cubic-bezier(0, 0, 0, 1)",
-        EasingSpring = "cubic-bezier(0, 0, 0, 1)",
-        EasingSpringSlow = "cubic-bezier(0, 0, 0, 1)",
+        EasingSpringFast = CurveDecelerate,
+        EasingSpring = CurveDecelerate,
+        EasingSpringSlow = CurveDecelerate,
         DurationSpringFast = "150ms",
         DurationSpring = "200ms",
         DurationSpringSlow = "400ms",
+
+        // A window of the era opens with a slight zoom and a fade, and closes the same way, faster.
+        Dialog = new()
+        {
+            Enter = Still with { Duration = "200ms", Easing = CurveDecelerate, Scale = "0.9", Opacity = "0", FadeDuration = "200ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Duration = "130ms", Easing = CurveAccelerate, Scale = "0.9", Opacity = "0", FadeDuration = "130ms", FadeEasing = CurveAccelerate },
+        },
+        Sheet = EdgeMotion,
+        Menu = MenuMotion,
+        Popover = MenuMotion,
+        Tooltip = new()
+        {
+            Enter = Still with { Delay = "500ms", Opacity = "0", FadeDelay = "500ms", FadeDuration = "130ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Opacity = "0", FadeDuration = "90ms", FadeEasing = CurveAccelerate },
+        },
+        // A notification balloon slides up from its edge and fades away.
+        Snackbar = new()
+        {
+            Enter = Still with { Duration = "280ms", Easing = CurveDecelerate, Offset = "100%", Opacity = "0", FadeDuration = "200ms", FadeEasing = CurveDecelerate },
+            Exit = Still with { Opacity = "0", FadeDuration = "200ms", FadeEasing = CurveAccelerate },
+        },
+        Drawer = EdgeMotion,
     };
 
     internal static readonly StateTokens State = new()

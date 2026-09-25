@@ -3,7 +3,7 @@ using Flare.Abstractions.Tokens;
 namespace Flare.Theming;
 
 /// <summary>Flattens theme token records into the CSS-variable name/value map injected at runtime.</summary>
-public static class CssVarMap
+public static partial class CssVarMap
 {
     /// <summary>
     /// Merges the two theme axes into the full CSS-variable map consumed by the var-injection
@@ -96,24 +96,7 @@ public static class CssVarMap
         v[Css.Tokens.Elevation.Level5] = t.Elevation.Level5;
 
         // Motion
-        v[Css.Tokens.Motion.DurationShort1] = t.Motion.DurationShort1;
-        v[Css.Tokens.Motion.DurationShort2] = t.Motion.DurationShort2;
-        v[Css.Tokens.Motion.DurationShort3] = t.Motion.DurationShort3;
-        v[Css.Tokens.Motion.DurationShort4] = t.Motion.DurationShort4;
-        v[Css.Tokens.Motion.DurationMedium1] = t.Motion.DurationMedium1;
-        v[Css.Tokens.Motion.DurationMedium2] = t.Motion.DurationMedium2;
-        v[Css.Tokens.Motion.DurationLong1] = t.Motion.DurationLong1;
-        v[Css.Tokens.Motion.DurationLong2] = t.Motion.DurationLong2;
-        v[Css.Tokens.Motion.EasingStandard] = t.Motion.EasingStandard;
-        v[Css.Tokens.Motion.EasingDecelerate] = t.Motion.EasingDecelerate;
-        v[Css.Tokens.Motion.EasingAccelerate] = t.Motion.EasingAccelerate;
-        v[Css.Tokens.Motion.EasingEmphasized] = t.Motion.EasingEmphasized;
-        v[Css.Tokens.Motion.EasingSpringFast] = t.Motion.EasingSpringFast;
-        v[Css.Tokens.Motion.EasingSpring] = t.Motion.EasingSpring;
-        v[Css.Tokens.Motion.EasingSpringSlow] = t.Motion.EasingSpringSlow;
-        v[Css.Tokens.Motion.DurationSpringFast] = t.Motion.DurationSpringFast;
-        v[Css.Tokens.Motion.DurationSpring] = t.Motion.DurationSpring;
-        v[Css.Tokens.Motion.DurationSpringSlow] = t.Motion.DurationSpringSlow;
+        FlattenMotion(v, t.Motion);
 
         // State layers
         v[Css.Tokens.State.HoverOpacity] = t.State.HoverOpacity;

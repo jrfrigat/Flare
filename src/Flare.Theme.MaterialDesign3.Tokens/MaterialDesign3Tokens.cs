@@ -71,36 +71,118 @@ public class MaterialDesign3Tokens
         Level5 = "0px 8px 12px 6px var(--flare-shadow-penumbra), 0px 4px 4px var(--flare-shadow-umbra)",
     };
 
+    // md.sys.motion easings (@material/web tokens). Emphasized is the one exception: the token aliases it to
+    // standard because the real curve is a path, and the components themselves play (.3, 0, 0, 1) instead.
+    private const string CurveEmphasized = "cubic-bezier(0.3, 0, 0, 1)";
+    private const string CurveEmphasizedDecelerate = "cubic-bezier(0.05, 0.7, 0.1, 1)";
+    private const string CurveEmphasizedAccelerate = "cubic-bezier(0.3, 0, 0.8, 0.15)";
+    private const string CurveStandardDecelerate = "cubic-bezier(0, 0, 0, 1)";
+    private const string CurveStandardAccelerate = "cubic-bezier(0.3, 0, 1, 1)";
+
+    // A surface phase that neither moves nor fades; each family states only what it changes.
+    private static readonly MotionPhaseTokens Still = new()
+    {
+        Delay = "0ms",
+        Duration = "0ms",
+        Easing = "linear",
+        Offset = "0px",
+        Scale = "1",
+        Opacity = "1",
+        Reveal = "100%",
+        Blur = "0px",
+        FadeDelay = "0ms",
+        FadeDuration = "0ms",
+        FadeEasing = "linear",
+    };
+
+    // md-menu: the surface grows open from nothing over the long2 emphasized travel while the container fades
+    // in within the first 50ms; on close it shrinks to 35% and fades in the last 50ms.
+    private static readonly SurfaceMotionTokens MenuMotion = new()
+    {
+        Enter = Still with { Duration = "500ms", Easing = CurveEmphasized, Opacity = "0", Reveal = "0%", FadeDuration = "50ms" },
+        Exit = Still with { Duration = "150ms", Easing = CurveEmphasizedAccelerate, Opacity = "0", Reveal = "35%", FadeDelay = "100ms", FadeDuration = "50ms" },
+    };
+
     internal static readonly MotionTokens Motion = new()
     {
+        // The scale that predates the roles: md.sys.motion.duration short1..4, medium1..2, long1..2.
         DurationShort1 = "50ms",
         DurationShort2 = "100ms",
         DurationShort3 = "150ms",
         DurationShort4 = "200ms",
-        DurationMedium1 = "200ms",
+        DurationMedium1 = "250ms",
         DurationMedium2 = "300ms",
         DurationLong1 = "450ms",
-        DurationLong2 = "600ms",
-        EasingStandard = "cubic-bezier(0.2, 0, 0, 1)",
-        EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
-        EasingAccelerate = "cubic-bezier(0.3, 0, 1, 1)",
-        EasingEmphasized = "cubic-bezier(0.2, 0, 0, 1)",
+        DurationLong2 = "500ms",
 
-        // Expressive spatial springs, sampled from a damped harmonic oscillator and expressed as
-        // linear() so the browser can play the real curve rather than an eyeballed bezier - a cubic
-        // cannot describe a settling overshoot at all. Parameters are the Expressive motion scheme's,
-        // not the standard one's: fast = stiffness 800 / damping 0.6 (a pronounced 9% overshoot on the
-        // small, quick moves), default and slow = stiffness 380 and 200 at damping 0.8 (a restrained
-        // 1.5%). Each is sampled over its own duration below, so the two must move together.
-        //
-        // The effects springs of the scheme are critically damped - no overshoot - so on the web they
-        // are indistinguishable from the emphasized curve above and are deliberately not tokenized.
-        EasingSpringFast = "linear(0, 0.0315, 0.1124, 0.2244, 0.3524, 0.4842, 0.611, 0.7265, 0.8269, 0.9103, 0.9764, 1.0258, 1.0603, 1.0817, 1.0924, 1.0947, 1.0906, 1.0823, 1.0713, 1.059, 1.0465, 1.0347, 1.024, 1.0148, 1.0072, 1.0012, 0.9968, 0.9938, 0.992, 0.9911, 0.9911, 0.9915, 1)",
-        EasingSpring = "linear(0, 0.0203, 0.0723, 0.1449, 0.2293, 0.3189, 0.4087, 0.4952, 0.5761, 0.6499, 0.7158, 0.7736, 0.8233, 0.8655, 0.9006, 0.9294, 0.9526, 0.9709, 0.985, 0.9956, 1.0033, 1.0087, 1.0122, 1.0142, 1.0151, 1.0151, 1.0146, 1.0136, 1.0124, 1.0111, 1.0097, 1.0084, 1)",
-        EasingSpringSlow = "linear(0, 0.0217, 0.077, 0.1536, 0.2421, 0.3353, 0.428, 0.5165, 0.5984, 0.6724, 0.7378, 0.7944, 0.8426, 0.8829, 0.916, 0.9427, 0.9638, 0.98, 0.9923, 1.0012, 1.0074, 1.0115, 1.0139, 1.015, 1.0151, 1.0146, 1.0137, 1.0124, 1.0111, 1.0096, 1.0083, 1.0069, 1)",
-        DurationSpringFast = "300ms",
-        DurationSpring = "350ms",
-        DurationSpringSlow = "500ms",
+        EasingStandard = "cubic-bezier(0.2, 0, 0, 1)",      // standard
+        EasingDecelerate = CurveStandardDecelerate,         // standard-decelerate
+        EasingAccelerate = CurveStandardAccelerate,         // standard-accelerate
+        EasingEmphasized = CurveEmphasized,                 // emphasized (as played by the components)
+        EasingEmphasizedDecelerate = CurveEmphasizedDecelerate,
+        EasingEmphasizedAccelerate = CurveEmphasizedAccelerate,
+        EasingSubtle = "cubic-bezier(0.4, 0, 0.2, 1)",      // legacy
+        EasingSubtleDecelerate = "cubic-bezier(0, 0, 0.2, 1)", // legacy-decelerate
+        EasingSubtleAccelerate = "cubic-bezier(0.4, 0, 1, 1)", // legacy-accelerate
+        EasingLinear = "linear",                            // linear
+
+        DurationStateChange = "100ms", // short2
+        DurationSmallMove = "200ms",   // short4
+        DurationEnterSmall = "250ms",  // medium1
+        DurationEnterMedium = "400ms", // medium4
+        DurationEnterLarge = "500ms",  // long2
+        DurationExitSmall = "150ms",   // short3
+        DurationExitMedium = "200ms",  // short4
+        DurationExitLarge = "250ms",   // medium1
+        DurationCycle = "1568ms",      // md-circular-progress container rotation
+        DurationCycleLong = "2000ms",  // md-linear-progress indeterminate pass
+
+        // Standard-scheme spatial springs (fast 1400 / default 700 / slow 300, damping 0.9), sampled from a
+        // damped harmonic oscillator into linear() so the browser plays the real curve. Each is sampled over
+        // its own duration below, so the two must move together. The Expressive theme replaces them with its
+        // own scheme; the effects springs are critically damped and add nothing a bezier does not.
+        EasingSpringFast = "linear(0, 0.0238, 0.0828, 0.1622, 0.2516, 0.3436, 0.4331, 0.517, 0.5936, 0.6619, 0.7218, 0.7734, 0.8174, 0.8544, 0.8852, 0.9104, 0.931, 0.9476, 0.9608, 0.9712, 0.9793, 0.9856, 0.9903, 0.9939, 0.9965, 0.9983, 0.9996, 1.0005, 1.001, 1.0013, 1.0015, 1.0015, 1)",
+        EasingSpring = "linear(0, 0.0189, 0.0668, 0.133, 0.2094, 0.2902, 0.3711, 0.4493, 0.5227, 0.5903, 0.6515, 0.706, 0.7541, 0.7959, 0.8321, 0.8629, 0.8891, 0.911, 0.9293, 0.9445, 0.9569, 0.967, 0.9751, 0.9816, 0.9867, 0.9907, 0.9938, 0.9961, 0.9979, 0.9992, 1.0001, 1.0007, 1)",
+        EasingSpringSlow = "linear(0, 0.016, 0.0572, 0.1151, 0.1831, 0.2563, 0.3308, 0.4041, 0.4743, 0.5401, 0.6009, 0.6562, 0.7059, 0.7502, 0.7893, 0.8235, 0.8531, 0.8786, 0.9005, 0.919, 0.9347, 0.9478, 0.9587, 0.9677, 0.9751, 0.9811, 0.9859, 0.9898, 0.9928, 0.9952, 0.9971, 0.9985, 1)",
+        DurationSpringFast = "200ms",
+        DurationSpring = "250ms",
+        DurationSpringSlow = "350ms",
+
+        // md-dialog: slides 50px down from above over long2 emphasized while the container grows open from 35%
+        // and fades in within 50ms; closes in 150ms emphasized-accelerate, fading in the last 50ms.
+        Dialog = new()
+        {
+            Enter = Still with { Duration = "500ms", Easing = CurveEmphasized, Offset = "50px", Opacity = "0", Reveal = "35%", FadeDuration = "50ms" },
+            Exit = Still with { Duration = "150ms", Easing = CurveEmphasizedAccelerate, Offset = "50px", Opacity = "0", Reveal = "35%", FadeDelay = "100ms", FadeDuration = "50ms" },
+        },
+        // Sheets and the modal drawer enter from their edge on emphasized-decelerate over long2 and leave on
+        // emphasized-accelerate over short4 - the M3 transition rule for large surfaces entering and exiting.
+        Sheet = new()
+        {
+            Enter = Still with { Duration = "500ms", Easing = CurveEmphasizedDecelerate, Offset = "100%" },
+            Exit = Still with { Duration = "200ms", Easing = CurveEmphasizedAccelerate, Offset = "100%" },
+        },
+        Menu = MenuMotion,
+        // Select, autocomplete and date-picker panels are md-menu surfaces in Material 3.
+        Popover = MenuMotion,
+        // A plain tooltip waits out a hover, then scales up from 80% and fades in on standard-decelerate.
+        Tooltip = new()
+        {
+            Enter = Still with { Delay = "500ms", Duration = "150ms", Easing = CurveStandardDecelerate, Scale = "0.8", Opacity = "0", FadeDelay = "500ms", FadeDuration = "150ms", FadeEasing = CurveStandardDecelerate },
+            Exit = Still with { Opacity = "0", FadeDuration = "100ms", FadeEasing = CurveStandardAccelerate },
+        },
+        // Snackbar (MDC BaseTransientBottomBar, slide mode): slides its own height over long2 on the emphasized
+        // curve both ways, fading in over 150ms and out over medium1.
+        Snackbar = new()
+        {
+            Enter = Still with { Duration = "500ms", Easing = CurveEmphasized, Offset = "100%", Opacity = "0", FadeDuration = "150ms", FadeEasing = CurveEmphasized },
+            Exit = Still with { Duration = "500ms", Easing = CurveEmphasized, Offset = "100%", Opacity = "0", FadeDelay = "250ms", FadeDuration = "250ms", FadeEasing = CurveEmphasized },
+        },
+        Drawer = new()
+        {
+            Enter = Still with { Duration = "500ms", Easing = CurveEmphasizedDecelerate, Offset = "100%" },
+            Exit = Still with { Duration = "200ms", Easing = CurveEmphasizedAccelerate, Offset = "100%" },
+        },
     };
 
     internal static readonly StateTokens State = new()
