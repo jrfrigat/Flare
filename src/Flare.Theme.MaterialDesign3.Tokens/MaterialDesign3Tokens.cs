@@ -1438,8 +1438,8 @@ public class MaterialDesign3Tokens
 
     internal static readonly PickerTokens Picker = new()
     {
-        OutsideOpacity = "0.4",
-        DisabledOpacity = "0.3",
+        OutsideOpacity = "0.38",                           // date-unselected-outside-month-label-text-opacity
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "22.5rem",
         PanelRadius = "var(--flare-shape-large)",
@@ -1512,7 +1512,7 @@ public class MaterialDesign3Tokens
         TimeFieldHeight = "5rem",
         TimeFieldWidth = "6rem",
         DisplaySize = "3.5625rem",
-        HeadlineTracking = "0.05em",
+        HeadlineTracking = "var(--flare-typescale-label-medium-spacing)", // headline is label-medium
         PanelRadius = "var(--flare-shape-extra-large)",
         TimeSepSize = "3.5625rem",
     };

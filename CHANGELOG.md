@@ -75,6 +75,9 @@ All notable changes to Flare are documented here. This project adheres to
   drops the divider line the spec's tonal container does not have.
 - **Material Design 3 elevated cards lift to elevation 2 on hover**, not 3, and the large (52px) circular
   progress draws the spec's 8px stroke instead of the 4px of the smaller sizes.
+- **Material Design 3 date and time pickers use the spec's fades and spacing**: days outside the month and
+  unavailable days fade to 38%, where they were 40% and 30%, and the time picker headline is spaced 0.5px
+  as label-medium is, instead of growing with its font size.
 
 - **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced

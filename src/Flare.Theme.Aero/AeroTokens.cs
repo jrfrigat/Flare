@@ -505,6 +505,9 @@ internal class AeroTokens
         Radio = Radio,
         Chip = Chip,
         Tabs = Tabs,
+        // The date and time pickers keep their own fades and headline spacing; the Material record states the spec's.
+        Picker = MaterialDesign3Tokens.Design.Picker with { OutsideOpacity = "0.4", DisabledOpacity = "0.3" },
+        TimePicker = MaterialDesign3Tokens.Design.TimePicker with { HeadlineTracking = "0.05em" },
         // A hairline above the bar, which the Material record leaves out.
         BottomNav = MaterialDesign3Tokens.Design.BottomNav with { BorderColor = "var(--flare-color-surface-variant)" },
         Slider = Slider,
