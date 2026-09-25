@@ -19,6 +19,8 @@ public static class InputField
     public const string BorderBottomColor = "--flare-input-border-bottom-color";
     /// <summary>CSS custom-property name for the hover bottom-border COLOUR.</summary>
     public const string HoverBorderBottomColor = "--flare-input-hover-border-bottom-color";
+    /// <summary>CSS custom-property name for the bottom-border COLOUR while the field has focus.</summary>
+    public const string FocusBorderBottomColor = "--flare-input-focus-border-bottom-color";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
     // Inset around the control's content. The block half no longer sets the field height - the Height

@@ -645,9 +645,9 @@ public class MaterialDesign3Tokens
         // Expressive theme states them.
         PanelRadius = "var(--flare-shape-extra-small)", // 4dp
         PanelMinWidth = "7rem",                       // 112dp
-        PanelShadow = "var(--flare-elevation-3)",     // elevation 3
-        PanelPaddingInline = "0.125rem",              // group padding 2dp
-        PanelPaddingBlock = "0.125rem",               // 2dp
+        PanelShadow = "var(--flare-elevation-2)",     // md.comp.menu.container.elevation level2
+        PanelPaddingInline = "0",                     // md-menu: items run edge to edge
+        PanelPaddingBlock = "0.5rem",                 // md-menu top/bottom space 8dp
         ItemHeight = "3rem",                          // item height 48dp (MD3 list-item)
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
         // Dense: the value core used to hardcode in menuitem.css, so a theme could style a normal menu
@@ -695,8 +695,10 @@ public class MaterialDesign3Tokens
         BorderColor = "transparent",                  // filled default: no side border, colour only
         OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
         BorderBottomColor = "var(--flare-color-on-surface-variant)",
-        // Focus = a 2px primary active indicator drawn as a layout-neutral inset shadow (no jump).
-        FocusRing = "inset 0 -3px 0 0 var(--fc-main, var(--flare-color-primary))",
+        // Focus = the 2dp primary active indicator (md.comp.filled-text-field.focus.active-indicator.height):
+        // the 1dp bottom border turns primary and a 1dp inset shadow adds the second pixel without a jump.
+        FocusRing = "inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
         HoverBorderBottomColor = "var(--flare-color-on-surface)",
@@ -722,7 +724,7 @@ public class MaterialDesign3Tokens
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
-        ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
+        ErrorHoverIndicator = "var(--flare-color-on-error-container)", // error.hover.active-indicator.color
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 

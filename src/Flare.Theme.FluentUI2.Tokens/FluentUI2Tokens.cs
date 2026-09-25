@@ -728,6 +728,7 @@ public class FluentUI2Tokens
         FocusOutline = "none",
         FocusOutlineOffset = "0",
         HoverBorderBottomColor = "var(--flare-fluent-stroke-hover, #C7C7C7)",
+        FocusBorderBottomColor = "var(--flare-input-border-bottom-color)",
         HoverStateLayer = "none",
         PaddingXs = "0.1875rem 0.5rem",
         PaddingSm = "0.375rem 0.625rem",

@@ -127,6 +127,10 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ItemIconSize = "1.25rem", // md.comp.menus.menu-item.*-icon.size 20dp
             PanelRadius = "var(--flare-shape-large)",         // 16dp
             ItemGapBetween = "0.125rem",                      // 2dp
+            // md.comp.menus.group-padding: the panel wraps its items at 2dp all round, where the
+            // baseline menu leaves 8dp above and below and none at the sides.
+            PanelPaddingInline = "0.125rem",
+            PanelPaddingBlock = "0.125rem",
             ItemRadius = "var(--flare-shape-extra-small)",    // 4dp  md.comp.menus.menu-item.shape
             // The ends of the list mirror the panel: md.comp.menus.menu-item.first-child.shape and
             // .last-child.shape both read 12dp, against the 4dp every interior item takes.

@@ -48,6 +48,10 @@ public sealed record InputTokens
     /// <summary>Hover bottom-border colour.</summary>
     [CssVar(InputField.HoverBorderBottomColor)] public required string HoverBorderBottomColor { get; init; }
 
+    /// <summary>Bottom-border colour while the field has focus. It outranks the hover colour, so a
+    /// focused field keeps its focus indicator under the pointer.</summary>
+    [CssVar(InputField.FocusBorderBottomColor)] public required string FocusBorderBottomColor { get; init; }
+
     /// <summary>Hover state-layer overlay for the filled variant.</summary>
     [CssVar(InputField.HoverStateLayer)] public required string HoverStateLayer { get; init; }
 

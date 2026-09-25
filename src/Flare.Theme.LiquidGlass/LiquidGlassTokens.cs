@@ -327,7 +327,13 @@ internal class LiquidGlassTokens
         RadiusLg = "var(--flare-shape-extra-large)",
     };
 
-    internal static readonly MenuTokens Menu = MaterialDesign3Tokens.Design.Menu;
+    internal static readonly MenuTokens Menu = MaterialDesign3Tokens.Design.Menu with
+    {
+        // This panel keeps its own lift and a 2dp inset; the Material record states the baseline menu's.
+        PanelShadow = "var(--flare-elevation-3)",
+        PanelPaddingInline = "0.125rem",
+        PanelPaddingBlock = "0.125rem",
+    };
 
     internal static readonly CheckboxTokens Checkbox = MaterialDesign3Tokens.Design.Checkbox with
     {
@@ -462,6 +468,10 @@ internal class LiquidGlassTokens
     // translucent fill itself is mode-specific and stays in Extended (--flare-input-bg).
     internal static readonly InputTokens Input = MaterialDesign3Tokens.Design.Input with
     {
+        // Stated here rather than taken from the Material record, whose focus indicator follows its own spec.
+        FocusRing = "inset 0 -3px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FocusBorderBottomColor = "var(--flare-input-border-bottom-color)",
+        ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
         OutlinedRadius = "var(--flare-shape-medium)",
         BorderColor = "transparent",
         BorderBottomColor = "transparent",

@@ -134,6 +134,7 @@
    real --flare-input-focus-outline (a browser-native focus rectangle). The theme sets one, the other stays
    none; the filled/outlined variant classes override the ring and clear the outline. */
 .flare-input__field:focus-within {
+    border-bottom-color: var(--flare-input-focus-border-bottom-color);
     box-shadow: var(--flare-input-focus-ring);
     outline: var(--flare-input-focus-outline);
     outline-offset: var(--flare-input-focus-outline-offset);

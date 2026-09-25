@@ -48,6 +48,9 @@ All notable changes to Flare are documented here. This project adheres to
   themes other than Material Design 3 keep their look.
 - **Breaking for custom themes: `ChipTokens` requires `BorderColor` and `LabelColor`.** They colour the outline
   and the label of a chip with no `Color`, which were fixed to the outline and on-surface-variant roles.
+- **Breaking for custom themes: `InputTokens` requires `FocusBorderBottomColor`**, the colour of a field's
+  bottom border while it has focus. It now outranks the hover colour, so a focused field under the pointer
+  keeps its focus indicator.
 
 ### Fixed
 
@@ -63,6 +66,10 @@ All notable changes to Flare are documented here. This project adheres to
   track at both ends, where it sat 2px off.
 - **Material Design 3 chips match the spec**: an outline-variant border and a label-large label with its
   medium weight and tracking, instead of the stronger outline role and the surrounding text's weight.
+- **Material Design 3 fields and menus match the spec.** A focused filled field shows a 2px primary
+  indicator instead of 3px of primary above a grey line, and an invalid field hovers to on-error-container.
+  Menus sit at elevation 2 with 8px above and below the items, as the baseline menu does; Material Design 3
+  Expressive keeps its 2px inset.
 
 - **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced
