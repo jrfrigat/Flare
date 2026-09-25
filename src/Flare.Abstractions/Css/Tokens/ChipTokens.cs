@@ -11,6 +11,10 @@ public static class Chip
     public const string FilledBg = "--flare-chip-filled-bg";
     /// <summary>CSS custom-property name for the elevated container background token.</summary>
     public const string ElevatedBg = "--flare-chip-elevated-bg";
+    /// <summary>CSS custom-property name for the outline colour of a chip with no Color set.</summary>
+    public const string BorderColor = "--flare-chip-border-color";
+    /// <summary>CSS custom-property name for the label colour of an unselected chip with no Color set.</summary>
+    public const string LabelColor = "--flare-chip-label-color";
 
     /// <summary>Family of a chip label. A chip is as often an identifier - a ticket key, a version, a
     /// type tag - as it is a word, and an identifier wants the face the rest of the identifiers use.</summary>

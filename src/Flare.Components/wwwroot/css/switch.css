@@ -75,6 +75,7 @@
         left var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         width var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         height var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
+        transform var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
         box-shadow var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
@@ -112,13 +113,18 @@
 
 /* Pressed: the handle grows to 28dp. Token-gated so a theme that doesn't resize on
    press neutralizes it by setting the pressed sizes to its normal handle sizes. */
+/* The handle is placed by its left edge, so growing it alone would push its centre right. Moving it back
+   by half the growth keeps the centre where it was; with pressed sizes equal to the resting ones the
+   shift is zero. */
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__thumb .flare-switch__handle {
     width: var(--_thumb-pressed-off-size);
     height: var(--_thumb-pressed-off-size);
+    transform: translate(calc((var(--_thumb-off-size) - var(--_thumb-pressed-off-size)) / 2), -50%);
 }
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
     width: var(--_thumb-pressed-on-size);
     height: var(--_thumb-pressed-on-size);
+    transform: translate(calc((var(--_thumb-on-size) - var(--_thumb-pressed-on-size)) / 2), -50%);
 }
 
 /* Hover - track background (a theme may add a subtle fill on OFF hover; default = no change) */
@@ -185,7 +191,7 @@
 .flare-switch--label-start { flex-direction: row-reverse; }
 
 /* Size grid (xs..xl). Default is Medium (52x32dp = base tokens, no class). All metrics are
-   token-driven; on-left = 100% - (thumb-on-size + 0.25rem), off-left = track-height x 0.125. */
+   token-driven, including where the handle rests at each end. */
 /* Each size class only SELECTS which step of the theme's ramp the locals point at - no values here. */
 /* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the
    DOM said what size the control was and no selector could name it. The base rule still resolves md

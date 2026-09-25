@@ -498,10 +498,14 @@ public class MaterialDesign3Tokens
     };
     internal static readonly ChipTokens Chip = new()
     {
-        // The label typography core held in its own stylesheet. Font and sizes are the steps it used; weight and spacing are `inherit`/`normal` because the chip declared neither and took them from around it.
+        // md.comp.*-chip.label-text: label-large, including its 500 weight and 0.1px tracking.
         LabelFont = "var(--flare-typescale-label-large-font)",
-        LabelWeight = "inherit",
-        LabelSpacing = "normal",
+        LabelWeight = "var(--flare-typescale-label-large-weight)",
+        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
+        // The outline is the quiet outline-variant role (flat-outline-color); the label is the filter and
+        // suggestion chip's on-surface-variant.
+        BorderColor = "var(--flare-color-outline-variant)",
+        LabelColor = "var(--flare-color-on-surface-variant)",
         LabelSizeXs = "var(--flare-typescale-label-small-size)",
         LabelSizeSm = "var(--flare-typescale-label-small-size)",
         LabelSizeMd = "var(--flare-typescale-label-large-size)",
@@ -1273,8 +1277,11 @@ public class MaterialDesign3Tokens
         ThumbOnSizeXs = "0.9375rem", ThumbOnSizeSm = "1.125rem",  ThumbOnSizeMd = "1.5rem",  ThumbOnSizeLg = "1.875rem",  ThumbOnSizeXl = "2.25rem",
         ThumbPressedOffSizeXs = "1.0625rem", ThumbPressedOffSizeSm = "1.25rem", ThumbPressedOffSizeMd = "1.75rem", ThumbPressedOffSizeLg = "2.1875rem", ThumbPressedOffSizeXl = "2.625rem",
         ThumbPressedOnSizeXs = "1.0625rem",  ThumbPressedOnSizeSm = "1.25rem",  ThumbPressedOnSizeMd = "1.75rem",  ThumbPressedOnSizeLg = "2.1875rem",  ThumbPressedOnSizeXl = "2.625rem",
-        ThumbOffLeftXs = "0.15625rem", ThumbOffLeftSm = "0.1875rem", ThumbOffLeftMd = "0.25rem", ThumbOffLeftLg = "0.3125rem", ThumbOffLeftXl = "0.375rem",
-        ThumbOnLeftXs = "calc(100% - 1.1875rem)", ThumbOnLeftSm = "calc(100% - 1.375rem)", ThumbOnLeftMd = "calc(100% - 1.75rem)", ThumbOnLeftLg = "calc(100% - 2.125rem)", ThumbOnLeftXl = "calc(100% - 2.5rem)",
+        // The handle is centred in the track height at both ends - md.comp.switch puts the 16dp handle 8dp
+        // from the edge and the 24dp one 4dp - and `left` is measured inside the 2dp track outline, so
+        // each offset is (track height - handle) / 2 minus that outline.
+        ThumbOffLeftXs = "0.25rem", ThumbOffLeftSm = "0.3125rem", ThumbOffLeftMd = "0.375rem", ThumbOffLeftLg = "0.5rem", ThumbOffLeftXl = "0.625rem",
+        ThumbOnLeftXs = "calc(100% - 0.96875rem)", ThumbOnLeftSm = "calc(100% - 1.1875rem)", ThumbOnLeftMd = "calc(100% - 1.625rem)", ThumbOnLeftLg = "calc(100% - 2.0625rem)", ThumbOnLeftXl = "calc(100% - 2.5rem)",
         ThumbOffColor = "var(--flare-color-outline)",
         ThumbOnColor = "var(--flare-color-on-primary)",
         ThumbStateOffColor = "var(--flare-color-on-surface-variant)",

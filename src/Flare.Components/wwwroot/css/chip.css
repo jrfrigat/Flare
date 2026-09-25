@@ -10,9 +10,9 @@
     border-radius: var(--flare-chip-radius);
     /* Color via shared role tokens (--fc-*); default is neutral.
        Role -> flare-color-* class; custom -> inline --fc-main/--fc-on. */
-    border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-color-outline));
+    border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-chip-border-color));
     background-color: transparent;
-    color: var(--fc-main, var(--flare-color-on-surface-variant));
+    color: var(--fc-main, var(--flare-chip-label-color));
     font-family: var(--flare-chip-label-font);
     font-size: var(--flare-chip-label-size-md);
     font-weight: var(--flare-chip-label-weight);
@@ -74,7 +74,7 @@
 /* Outlined chip is the base style; the explicit modifier exists for parity/overrides. */
 .flare-chip--outlined {
     background-color: transparent;
-    border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-color-outline));
+    border: var(--flare-border-width) var(--flare-border-style) var(--fc-main, var(--flare-chip-border-color));
 }
 
 /* The medium step, stated rather than assumed. It was the absence of a class, so nothing in the

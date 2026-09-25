@@ -560,6 +560,8 @@ public class FluentUI2Tokens
     // Chip - Fluent: the same values (8dp/32dp).
     internal static readonly ChipTokens Chip = new()
     {
+        BorderColor = "var(--flare-color-outline)",
+        LabelColor = "var(--flare-color-on-surface-variant)",
         // The label typography core held in its own stylesheet. Font and sizes are the steps it used; weight and spacing are `inherit`/`normal` because the chip declared neither and took them from around it.
         LabelFont = "var(--flare-typescale-label-large-font)",
         LabelWeight = "inherit",

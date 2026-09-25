@@ -18,6 +18,12 @@ public sealed record ChipTokens
     /// <summary>Container behind an elevated chip - the one that carries a shadow instead of a border.</summary>
     [CssVar(Chip.ElevatedBg)] public required string ElevatedBg { get; init; }
 
+    /// <summary>Border of an outlined chip that has no Color of its own. A Color on the chip still wins.</summary>
+    [CssVar(Chip.BorderColor)] public required string BorderColor { get; init; }
+
+    /// <summary>Label and trailing-icon colour of an unselected chip that has no Color of its own.</summary>
+    [CssVar(Chip.LabelColor)] public required string LabelColor { get; init; }
+
     // Leading and trailing icons share one ramp: the spec sizes both ends alike, and a chip that
     // sized them differently would read as two components. The avatar has its own, because it is a
     // cropped picture filling a shape rather than a glyph sitting in one.

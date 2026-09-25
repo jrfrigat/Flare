@@ -46,6 +46,8 @@ All notable changes to Flare are documented here. This project adheres to
   `OutlinedColor` and `OutlinedBorderColor` colour an outlined button with no `Color`, which was fixed to the
   neutral pair; `TonalUnselectedBg` and `TonalUnselectedColor` paint an unselected tonal toggle. The built-in
   themes other than Material Design 3 keep their look.
+- **Breaking for custom themes: `ChipTokens` requires `BorderColor` and `LabelColor`.** They colour the outline
+  and the label of a chip with no `Color`, which were fixed to the outline and on-surface-variant roles.
 
 ### Fixed
 
@@ -56,6 +58,11 @@ All notable changes to Flare are documented here. This project adheres to
   `surface-container-highest` as the spec does, instead of showing Expressive colours. Material Design 3
   Expressive is unchanged except that its icons are no longer tucked toward the edge, which its size tables
   do not specify.
+- **A switch handle grows from its centre when pressed.** It used to grow from its left edge, so the pressed
+  handle drifted toward the far end of the track. The Material Design 3 handle also rests centred in the
+  track at both ends, where it sat 2px off.
+- **Material Design 3 chips match the spec**: an outline-variant border and a label-large label with its
+  medium weight and tracking, instead of the stronger outline role and the surrounding text's weight.
 
 - **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced
