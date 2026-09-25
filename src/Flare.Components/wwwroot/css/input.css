@@ -47,6 +47,8 @@
     --flare-input-radius: var(--flare-shape-extra-small);
     /* Inset ring on all four sides -> reads as a 2px accent border without a layout shift. */
     --flare-input-focus-ring: inset 0 0 0 1px var(--fc-main, var(--flare-color-primary));
+    /* The ring draws the focus on every side alike, so the bottom edge keeps its resting colour. */
+    --flare-input-focus-border-bottom-color: var(--flare-input-border-bottom-color);
     /* An explicit variant defines its own focus (a ring); clear any theme-level focus outline. */
     --flare-input-focus-outline: none;
 }
@@ -59,6 +61,7 @@
     --flare-input-border-color: transparent;
     --flare-input-border-bottom-color: transparent;
     --flare-input-hover-border-bottom-color: transparent;
+    --flare-input-focus-border-bottom-color: transparent;
     --flare-input-hover-state-layer: none;
     --flare-input-disabled-bg: transparent;
     --flare-input-disabled-indicator: transparent;
