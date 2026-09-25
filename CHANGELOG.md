@@ -78,6 +78,11 @@ All notable changes to Flare are documented here. This project adheres to
 - **Material Design 3 date and time pickers use the spec's fades and spacing**: days outside the month and
   unavailable days fade to 38%, where they were 40% and 30%, and the time picker headline is spaced 0.5px
   as label-medium is, instead of growing with its font size.
+- **Material Design 3 stays on its own type scale in components the spec does not cover.** Chart labels
+  are 11px label-small instead of 9px, below the smallest step of the scale; the navigation badge, the
+  "On this page" title, the one-time-code digits and the active "On this page" item use the scale's
+  weights (500 and 700) instead of 600; and a calendar's days outside the month fade to 38%, as the date
+  picker's do.
 
 - **Material Design 3 letter spacing matches the type scale.** The tracking of all fifteen type styles was
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced

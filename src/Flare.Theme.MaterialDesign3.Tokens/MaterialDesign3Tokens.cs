@@ -818,7 +818,7 @@ public class MaterialDesign3Tokens
         GridMinorColor = "color-mix(in srgb, var(--flare-color-outline-variant) 45%, transparent)",
         GridMinorWidth = "0.5",
         LabelColor = "var(--flare-color-on-surface-variant)",
-        LabelSize = "9px",
+        LabelSize = "var(--flare-typescale-label-small-size)", // the smallest step of the type scale
         ValueColor = "var(--flare-color-on-surface-variant)",
         ValueOnFillColor = "var(--flare-color-surface)",
         ValueSize = "8px",
@@ -929,7 +929,7 @@ public class MaterialDesign3Tokens
     internal static readonly NavTokens Nav = new()
     {
         ActiveWeight = "700",
-        BadgeWeight = "600",
+        BadgeWeight = "var(--flare-typescale-label-small-weight)", // the badge label is label-small
         RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "var(--flare-shape-full)",
@@ -985,11 +985,11 @@ public class MaterialDesign3Tokens
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
     {
-        ActiveWeight = "600",
+        ActiveWeight = "700", // weight-prominent, as the active navigation item
         HoverBgOpacity = "40%",
         LineHeight = "1.4",
         TitleTracking = "0.05em",
-        TitleWeight = "600",
+        TitleWeight = "var(--flare-typescale-title-small-weight)",
         ActiveColor = "var(--flare-color-on-secondary-container)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
         TitleColor = "var(--flare-color-on-surface-variant)",
@@ -1108,8 +1108,8 @@ public class MaterialDesign3Tokens
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-secondary-container)",
         StateLayerSize = "40px",
-        StateHoverOpacity = "0.08",
-        StatePressedOpacity = "0.10",
+        StateHoverOpacity = "var(--flare-state-hover-opacity)",
+        StatePressedOpacity = "var(--flare-state-pressed-opacity)",
         FocusOutline = "none",
         FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-on-secondary-container)",
@@ -1143,7 +1143,7 @@ public class MaterialDesign3Tokens
         ChevronSize = "1.25rem",
         DetailIconSize = "1.25rem",
         TreeToggleSize = "1.25rem",
-        CompositeLabelSize = "0.6875rem",
+        CompositeLabelSize = "var(--flare-typescale-label-small-size)",
         ResizeHandleWidth = "4px",
         RecordDividerWidth = "2px",
         AggregateDividerWidth = "2px",
@@ -1207,7 +1207,7 @@ public class MaterialDesign3Tokens
         TodayBg = "var(--flare-color-primary)",
         TodayColor = "var(--flare-color-on-primary)",
         SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))",
-        OtherMonthOpacity = "0.3",
+        OtherMonthOpacity = "0.38", // as the date picker's days outside the month
     };
 
     // Tree: 24dp indent per level, 24dp expander/handle, 20dp icons, primary-tinted selection.
@@ -1433,7 +1433,7 @@ public class MaterialDesign3Tokens
         CellWidth = "2.75rem",
         FocusRingWidth = "2px",
         FontSize = "1.25rem",
-        FontWeight = "600",
+        FontWeight = "var(--flare-typescale-title-medium-weight)",
     };
 
     internal static readonly PickerTokens Picker = new()

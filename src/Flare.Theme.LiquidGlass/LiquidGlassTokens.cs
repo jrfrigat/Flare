@@ -511,6 +511,7 @@ internal class LiquidGlassTokens
     // Nav - pill indicator (iOS tab/segmented look).
     internal static readonly NavTokens Nav = MaterialDesign3Tokens.Design.Nav with
     {
+        BadgeWeight = "600",
         ItemRadius = "var(--flare-shape-medium)",
         IndicatorRadius = "var(--flare-shape-full)",
     };
@@ -537,6 +538,11 @@ internal class LiquidGlassTokens
         Radio = Radio,
         Chip = Chip,
         Tabs = Tabs,
+        // Weights, label sizes and fades this theme set before the Material record moved onto its type scale.
+        TableOfContents = MaterialDesign3Tokens.Design.TableOfContents with { ActiveWeight = "600", TitleWeight = "600" },
+        Otp = MaterialDesign3Tokens.Design.Otp with { FontWeight = "600" },
+        Chart = MaterialDesign3Tokens.Design.Chart with { LabelSize = "9px" },
+        Calendar = MaterialDesign3Tokens.Design.Calendar with { OtherMonthOpacity = "0.3" },
         // The date and time pickers keep their own fades and headline spacing; the Material record states the spec's.
         Picker = MaterialDesign3Tokens.Design.Picker with { OutsideOpacity = "0.4", DisabledOpacity = "0.3" },
         TimePicker = MaterialDesign3Tokens.Design.TimePicker with { HeadlineTracking = "0.05em" },
