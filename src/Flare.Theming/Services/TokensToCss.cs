@@ -46,11 +46,15 @@ public static class TokensToCss
         return sb.ToString();
     }
 
-    /// <summary>Concatenated static CSS for all given themes and palettes (strategy A bundle).</summary>
+    /// <summary>
+    /// Concatenated static CSS for all given themes and palettes (strategy A bundle). A theme's rules come
+    /// after those of every theme it is built on: its root carries each ancestor's class too, and at equal
+    /// specificity the later rule is the one whose tokens apply.
+    /// </summary>
     public static string Bundle(IEnumerable<ITheme> themes, IEnumerable<Palette> palettes)
     {
         var sb = new StringBuilder();
-        foreach (var t in themes) sb.Append(ThemeCss(t));
+        foreach (var t in themes.OrderBy(t => ThemeLineage.Ids(t).Count)) sb.Append(ThemeCss(t));
         foreach (var p in palettes) sb.Append(PaletteCss(p));
         return sb.ToString();
     }

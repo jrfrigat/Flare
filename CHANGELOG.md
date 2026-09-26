@@ -120,6 +120,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A derived theme's tokens no longer lose to its base theme's.** The generated token stylesheet listed themes
+  in registration order, and a derived theme's root also answers to its base's class, so a base registered
+  after it - or pulled in by a `FlareThemeScope` - overrode the derived theme's values. A theme's tokens are
+  now always emitted after those of every theme it is built on.
 - **Fluent 2 and Visual Studio dialogs, toasts, tooltips and popovers follow Fluent.** They sit on the neutral
   background with Fluent's shadows (shadow64 for dialogs, shadow16 for popovers and rich tooltips, shadow8 for
   toasts and tooltips) instead of Material 3's inverse and container surfaces; a toast's action takes the brand

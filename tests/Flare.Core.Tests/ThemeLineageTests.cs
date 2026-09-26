@@ -102,6 +102,24 @@ public sealed class ThemeLineageTests
         Assert.Same(ThemeLineage.Ids(gold), ThemeLineage.Ids(gold));
     }
 
+    /// <summary>
+    /// A derived root also carries its ancestors' classes, so their token blocks match it at the same
+    /// specificity; the derived theme's tokens apply only if its block comes last, whatever order the
+    /// themes were registered in.
+    /// </summary>
+    [Fact]
+    public void TheTokenBundleEmitsATheme_AfterEveryThemeItIsBuiltOn()
+    {
+        var (better, gold) = ThreeGenerations();
+
+        var css = TokensToCss.Bundle([gold, better, Md3e], []);
+
+        var md3e = css.IndexOf(".flare-theme-md3-expressive{", StringComparison.Ordinal);
+        var middle = css.IndexOf(".flare-theme-md3e-better{", StringComparison.Ordinal);
+        var leaf = css.IndexOf(".flare-theme-md3e-better-gold{", StringComparison.Ordinal);
+        Assert.True(md3e >= 0 && md3e < middle && middle < leaf, $"order was md3e={md3e}, better={middle}, gold={leaf}");
+    }
+
     [Fact]
     public void AChainThatLoopsBackOnItselfIsAnError()
     {

@@ -11,8 +11,10 @@ export function setCssVariables(vars) {
 
 // ClassToggle strategy: put the active theme/palette/mode classes on <html> so the
 // generated CSS applies to everything, including overlays portaled to <body>.
-// themeIds is the active theme's lineage: its own id first, then each ancestor's.
-export function setThemeClasses(themeIds, paletteId, dark) {
+// themeIds is the active theme's lineage: its own id first, then each ancestor's. A new name rather than
+// the old setThemeClasses(themeId, familyId, ...), so a stale cached copy of this module fails loudly
+// (a caught JSException) instead of binding the id list to the old parameters.
+export function setThemeLineageClasses(themeIds, paletteId, dark) {
     const r = document.documentElement;
     r.className = r.className
         .replace(/\bflare-theme-\S+/g, '')
