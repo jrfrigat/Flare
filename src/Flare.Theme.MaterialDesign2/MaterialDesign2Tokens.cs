@@ -1421,6 +1421,12 @@ internal static class MaterialDesign2Tokens
         DrawerShadowOffset = "0px",
         DrawerShadowBlur = "0px",
         DrawerShadowColor = "transparent",
+        // The top app bar's navigation icon is a 48px icon button (12px padding around the 24px `menu`
+        // icon, whose bars are 18px wide, 2px thick and 5px apart).
+        AppBarToggleSize = "48px",
+        AppBarToggleGlyphWidth = "18px",
+        AppBarToggleGlyphHeight = "12px",
+        AppBarToggleBarThickness = "2px",
     };
 
     internal static readonly LinkTokens Link = new()

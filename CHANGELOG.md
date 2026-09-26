@@ -100,6 +100,12 @@ All notable changes to Flare are documented here. This project adheres to
   `Radius`, `Shadow`), which it already matched in Material 3.
 - **Breaking for custom themes: `TooltipTokens` requires `Shadow`**, the shadow under the plain tooltip - `none`
   for a dark tooltip chip, a real shadow for a light one.
+- **Breaking for custom themes: `LayoutTokens` requires the drawer toggle's geometry.** `AppBarToggleSize`,
+  `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight` and `AppBarToggleBarThickness` size the app bar's burger
+  button and its three bars, which were a fixed 36px button with an 18x14 glyph in every theme. Material Design
+  3 and 3 Expressive now draw it as their 40px icon button with an 18x12 glyph, Material Design 2 as a 48px
+  one, and Fluent 2 as its 32px Hamburger with 1px bars; Aero, Liquid Glass and Visual Studio keep the 36px
+  burger.
 - **Breaking: a theme names its parent instead of a style family.** One `StyleFamilyId` could name only one
   ancestor, so a theme three generations deep whose middle generation brought its own stylesheets lost the
   CSS of either its base or its parent. `ITheme.Base` now names the theme this one is built on, and the root

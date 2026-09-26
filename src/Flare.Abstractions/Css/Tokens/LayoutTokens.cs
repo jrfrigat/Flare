@@ -43,4 +43,13 @@ public static class LayoutField
     public const string DrawerShadowBlur = "--flare-layout-drawer-shadow-blur";
     /// <summary>CSS custom-property name for the colour of the drawer's edge shadow.</summary>
     public const string DrawerShadowColor = "--flare-layout-drawer-shadow-color";
+    /// <summary>CSS custom-property name for the side of the app bar's drawer-toggle button.</summary>
+    public const string AppBarToggleSize = "--flare-layout-appbar-toggle-size";
+    /// <summary>CSS custom-property name for the width of the drawer-toggle glyph's bars.</summary>
+    public const string AppBarToggleGlyphWidth = "--flare-layout-appbar-toggle-glyph-width";
+    /// <summary>CSS custom-property name for the height of the drawer-toggle glyph, from the top of its
+    /// first bar to the bottom of its last.</summary>
+    public const string AppBarToggleGlyphHeight = "--flare-layout-appbar-toggle-glyph-height";
+    /// <summary>CSS custom-property name for the thickness of each drawer-toggle glyph bar.</summary>
+    public const string AppBarToggleBarThickness = "--flare-layout-appbar-toggle-bar-thickness";
 }

@@ -1482,6 +1482,12 @@ public class MaterialDesign3Tokens
         DrawerShadowOffset = "0px",
         DrawerShadowBlur = "0px",
         DrawerShadowColor = "transparent",
+        // The navigation icon of a top app bar is a standard icon button: a 40dp container around the
+        // 24dp `menu` symbol, whose bars are 18dp wide, 2dp thick and 5dp apart (y = 6, 11, 16).
+        AppBarToggleSize = "40px",
+        AppBarToggleGlyphWidth = "18px",
+        AppBarToggleGlyphHeight = "12px",
+        AppBarToggleBarThickness = "2px",
     };
 
     internal static readonly LinkTokens Link = new()

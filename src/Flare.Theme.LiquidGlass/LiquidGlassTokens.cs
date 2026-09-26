@@ -579,6 +579,8 @@ internal class LiquidGlassTokens
         Dialog = MaterialDesign3Tokens.Design.Dialog with { Radius = "var(--flare-shape-extra-large)" },
         Popover = MaterialDesign3Tokens.Design.Popover with { Radius = "var(--flare-shape-large)" },
         Snackbar = MaterialDesign3Tokens.Design.Snackbar with { Radius = "var(--flare-shape-large)" },
+        // The drawer toggle keeps the burger this theme drew before the Material record took the icon button's size.
+        Layout = MaterialDesign3Tokens.Design.Layout with { AppBarToggleSize = "36px", AppBarToggleGlyphWidth = "18px", AppBarToggleGlyphHeight = "14px", AppBarToggleBarThickness = "2px" },
         Extended = Extended,
     };
 

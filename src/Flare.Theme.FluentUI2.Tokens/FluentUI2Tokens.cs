@@ -1452,6 +1452,12 @@ public class FluentUI2Tokens
         DrawerShadowOffset = "0px",
         DrawerShadowBlur = "0px",
         DrawerShadowColor = "transparent",
+        // Fluent's Hamburger is an icon-only medium Button - 32px square - around Navigation20Regular,
+        // whose three bars are 16px wide, 1px thick and 5px apart.
+        AppBarToggleSize = "32px",
+        AppBarToggleGlyphWidth = "16px",
+        AppBarToggleGlyphHeight = "11px",
+        AppBarToggleBarThickness = "1px",
     };
 
     internal static readonly LinkTokens Link = new()

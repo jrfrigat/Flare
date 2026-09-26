@@ -213,8 +213,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: var(--flare-layout-appbar-toggle-size);
+    height: var(--flare-layout-appbar-toggle-size);
     padding: 0;
     flex-shrink: 0;
     background: transparent;
@@ -228,30 +228,38 @@
     background: var(--flare-color-surface-container-highest);
 }
 
-/* Animated hamburger that morphs into an X when the primary drawer is open */
+/* Animated hamburger that morphs into an X when the primary drawer is open. Its geometry is the
+   theme's: the middle bar sits at the centre of the glyph height and the last at its bottom, and the
+   open glyph crosses the outer bars at that centre. */
 .flare-burger {
     position: relative;
     display: inline-block;
-    width: 18px;
-    height: 14px;
+    width: var(--flare-layout-appbar-toggle-glyph-width);
+    height: var(--flare-layout-appbar-toggle-glyph-height);
 }
 .flare-burger__bar {
     position: absolute;
     left: 0;
     right: 0;
-    height: 2px;
-    border-radius: 1px;
+    height: var(--flare-layout-appbar-toggle-bar-thickness);
+    border-radius: calc(var(--flare-layout-appbar-toggle-bar-thickness) / 2);
     background: currentColor;
     transition: top var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
                 transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
                 opacity var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 .flare-burger__bar:nth-child(1) { top: 0; }
-.flare-burger__bar:nth-child(2) { top: 6px; }
-.flare-burger__bar:nth-child(3) { top: 12px; }
-.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(1) { top: 6px; transform: rotate(45deg); }
+.flare-burger__bar:nth-child(2),
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(1),
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(3) {
+    top: calc((var(--flare-layout-appbar-toggle-glyph-height) - var(--flare-layout-appbar-toggle-bar-thickness)) / 2);
+}
+.flare-burger__bar:nth-child(3) {
+    top: calc(var(--flare-layout-appbar-toggle-glyph-height) - var(--flare-layout-appbar-toggle-bar-thickness));
+}
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(1) { transform: rotate(45deg); }
 .flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(2) { opacity: 0; }
-.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(3) { transform: rotate(-45deg); }
 
 /* --- Scrim behind a floating drawer --- */
 .flare-layout__scrim { display: none; }

@@ -74,4 +74,20 @@ public sealed record LayoutTokens
 
     /// <summary>Colour of the drawer's edge shadow. See <see cref="DrawerShadowOffset"/>.</summary>
     [CssVar(LayoutField.DrawerShadowColor)] public required string DrawerShadowColor { get; init; }
+
+    /// <summary>Side of the round button that toggles the primary drawer from the app bar. On a coarse
+    /// pointer it still grows to the touch-target minimum.</summary>
+    [CssVar(LayoutField.AppBarToggleSize)] public required string AppBarToggleSize { get; init; }
+
+    /// <summary>Width of the three bars the drawer-toggle glyph is drawn from.</summary>
+    [CssVar(LayoutField.AppBarToggleGlyphWidth)] public required string AppBarToggleGlyphWidth { get; init; }
+
+    /// <summary>
+    /// Height of the drawer-toggle glyph, from the top of its first bar to the bottom of its last. The
+    /// middle bar is centred in it, and the open glyph crosses the outer bars at that centre.
+    /// </summary>
+    [CssVar(LayoutField.AppBarToggleGlyphHeight)] public required string AppBarToggleGlyphHeight { get; init; }
+
+    /// <summary>Thickness of each drawer-toggle glyph bar. Its ends are rounded by half of it.</summary>
+    [CssVar(LayoutField.AppBarToggleBarThickness)] public required string AppBarToggleBarThickness { get; init; }
 }
