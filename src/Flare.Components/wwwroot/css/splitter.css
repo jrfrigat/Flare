@@ -21,7 +21,14 @@
 .flare-splitter:hover,
 .flare-splitter:focus-visible {
     background: var(--flare-splitter-hover-color);
-    outline: none;
+}
+
+/* Keyboard focus draws the theme's focus ring, as on every other control; the hover tint alone looks
+   the same as a mouse passing over and vanishes in a theme with no tint. The ring sits inside the
+   handle because the handle spans the full height of a container that usually clips its overflow. */
+.flare-splitter:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: -2px;
 }
 
 /* Optional centre icon (replaces the grip bar); a hover icon swaps in on hover/focus. */

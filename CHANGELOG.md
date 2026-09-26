@@ -148,6 +148,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A focused splitter shows the focus ring.** Keyboard focus on `FlareSplitter` removed the outline and only
+  tinted the gutter, the same tint a mouse passing over gives. It now draws the theme's focus ring inside the handle,
+  like every other control.
 - **The app bar's burger button lights up like the other controls.** Hovering it painted a fixed
   surface-container-highest fill, and pressing or keyboard-focusing it showed nothing beyond the focus ring. It
   now takes the theme's hover, focus and pressed state layers, in the button's own shape.
