@@ -1017,12 +1017,23 @@ public class MaterialDesign3Tokens
     {
         MaxWidth = "18rem",
         Offset = "0.5rem",
+        Bg = "var(--flare-color-inverse-surface)",
+        Color = "var(--flare-color-inverse-on-surface)",
+        Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
+        // md.comp.rich-tooltip: surface-container at level 2, supporting text on-surface-variant.
+        RichBg = "var(--flare-color-surface-container)",
+        RichColor = "var(--flare-color-on-surface-variant)",
+        RichShadow = "var(--flare-elevation-2)",
+        RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-medium)",
         Offset = "0.5rem",
+        Bg = "var(--flare-color-surface-container)",
+        Color = "var(--flare-color-on-surface)",
+        Shadow = "var(--flare-elevation-2)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
@@ -1053,6 +1064,11 @@ public class MaterialDesign3Tokens
         CloseOpacity = "0.75",
         MinWidth = "20rem",
         MaxWidth = "36rem",
+        PaddingInline = "var(--flare-spacing-10)",
+        Bg = "var(--flare-color-inverse-surface)",
+        Color = "var(--flare-color-inverse-on-surface)",
+        ActionColor = "var(--flare-color-inverse-primary)",
+        Shadow = "var(--flare-elevation-3)",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -1128,6 +1144,9 @@ public class MaterialDesign3Tokens
     {
         Radius = "var(--flare-shape-extra-large)",
         IconSize = "1.5rem",
+        Bg = "var(--flare-color-surface-container-high)",
+        Color = "var(--flare-color-on-surface)",
+        Shadow = "var(--flare-elevation-3)",
     };
 
     // DataGrid baseline geometry/colors. No theme customizes the grid, so both references carry the
@@ -1608,6 +1627,13 @@ public class MaterialDesign3Tokens
             OutlinedElevation = "none",
             TonalElevation = "none",
             TextElevation = "none",
+            // Filled and outlined cards rise to level 1 on hover (md.comp.*-card.hover.container.elevation);
+            // tonal is not an M3 variant and stays flat.
+            FilledElevationHover = "var(--flare-elevation-1)",
+            OutlinedElevationHover = "var(--flare-elevation-1)",
+            TonalElevationHover = "none",
+            // md.sys.state.focus-indicator: 3dp, secondary.
+            FocusRing = "3px solid var(--flare-color-secondary)",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
             StateLayer = "var(--flare-state-hover-layer)",

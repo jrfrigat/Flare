@@ -18,9 +18,9 @@
 .flare-tooltip__content {
   position: absolute;
   z-index: calc(var(--flare-z-tooltip) + 1);
-  padding: var(--flare-spacing-3) var(--flare-spacing-6);
-  background: var(--flare-color-inverse-surface);
-  color: var(--flare-color-inverse-on-surface);
+  padding: var(--flare-tooltip-padding);
+  background: var(--flare-tooltip-bg);
+  color: var(--flare-tooltip-color);
   font-family: var(--flare-typescale-body-small-font);
   font-size: var(--flare-typescale-body-small-size);
   line-height: var(--flare-typescale-body-small-height);
@@ -48,13 +48,13 @@
   transition-behavior: allow-discrete;
 }
 
-/* Rich tooltip: surface container, on-surface text, elevation, medium shape, wraps. Unlike the plain
+/* Rich tooltip: its own surface, text and shadow tokens, medium shape, wraps. Unlike the plain
    tooltip it is interactive (may hold a subhead + action), so it re-enables pointer events that the
    base bubble suppresses -- otherwise its actions are unclickable. */
 .flare-tooltip__content--rich {
-  background: var(--flare-color-surface-container);
-  color: var(--flare-color-on-surface);
-  box-shadow: var(--flare-elevation-3);
+  background: var(--flare-tooltip-rich-bg);
+  color: var(--flare-tooltip-rich-color);
+  box-shadow: var(--flare-tooltip-rich-shadow);
   border-radius: var(--flare-shape-medium);
   pointer-events: auto;
   white-space: normal;
@@ -66,7 +66,7 @@
      applies to that. Measured on the Gallery's own rich tooltip: 96x168 -> 256x84. */
   width: max-content;
   max-width: var(--flare-tooltip-max-width);
-  padding: var(--flare-spacing-6) var(--flare-spacing-8);
+  padding: var(--flare-tooltip-rich-padding);
 }
 
 /* Show triggers are opt-in via modifier classes, so the component can gate hover / focus / click
@@ -120,19 +120,18 @@
   transform: translateY(-50%);
 }
 
-/* -- Arrow: a rotated square that inherits the bubble's surface color (inverse for the standard
-   bubble, surface-container for the rich variant). -- */
+/* -- Arrow: a rotated square painted with its bubble's background token (plain or rich). -- */
 .flare-tooltip--arrow .flare-tooltip__content::after {
   content: '';
   position: absolute;
   width: 0.5rem;
   height: 0.5rem;
-  background: var(--flare-color-inverse-surface);
+  background: var(--flare-tooltip-bg);
   transform: rotate(45deg);
 }
 
 .flare-tooltip--arrow .flare-tooltip__content--rich::after {
-  background: var(--flare-color-surface-container);
+  background: var(--flare-tooltip-rich-bg);
 }
 
 /* The arrow points away from the side the bubble is ON, which is not always the side that was asked

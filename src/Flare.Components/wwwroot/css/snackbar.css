@@ -72,13 +72,13 @@
   max-width: var(--flare-snackbar-max-width);
   /* Single-line 48dp, two-line grows to ~68dp via wrapping content */
   min-height: var(--flare-snackbar-min-height);
-  padding: var(--flare-snackbar-padding-block) var(--flare-spacing-10);
+  padding: var(--flare-snackbar-padding-block) var(--flare-snackbar-padding-inline);
   border-radius: var(--flare-snackbar-radius);
-  background: var(--flare-color-inverse-surface);
-  color: var(--flare-color-inverse-on-surface);
+  background: var(--flare-snackbar-bg);
+  color: var(--flare-snackbar-color);
   font-family: var(--flare-typescale-body-medium-font);
   font-size: var(--flare-typescale-body-medium-size);
-  box-shadow: var(--flare-elevation-3);
+  box-shadow: var(--flare-snackbar-shadow);
   pointer-events: auto;
   animation: flare-snackbar-in var(--flare-motion-duration-enter-small) var(--flare-motion-easing-decelerate);
 }
@@ -117,8 +117,8 @@
   z-index: 0;
   background: transparent;
   border: none;
-  /* Default suits the inverse-surface snackbar; severity surfaces flip this to currentColor below. */
-  color: var(--_snackbar-action-color, var(--flare-color-inverse-primary));
+  /* The theme's action color suits its default surface; severity surfaces flip this to currentColor below. */
+  color: var(--_snackbar-action-color, var(--flare-snackbar-action-color));
   font-size: var(--flare-typescale-label-large-size);
   font-weight: var(--flare-typescale-label-large-weight);
   cursor: pointer;
@@ -149,7 +149,7 @@
 .flare-snackbar__close-btn {
   background: transparent;
   border: none;
-  color: var(--_snackbar-btn-color, var(--flare-color-inverse-on-surface));
+  color: inherit;
   cursor: pointer;
   padding: var(--flare-spacing-2);
   border-radius: var(--flare-shape-full);
@@ -163,15 +163,14 @@
 }
 
 /* -- Severity variants -- */
-/* Severity surfaces use a colored/tonal background, so the action + close buttons must follow that
-   surface's on-color (currentColor) instead of the inverse-* defaults, which are only legible on the
-   default inverse-surface snackbar (and barely visible on e.g. the light Info / primary-container). */
+/* Severity surfaces use a colored/tonal background, so the action button must follow that surface's
+   on-color (currentColor) instead of the theme's action color, which is chosen for the default surface
+   (and barely visible on e.g. the light Info / primary-container). The dismiss button always inherits. */
 .flare-snackbar--error,
 .flare-snackbar--success,
 .flare-snackbar--warning,
 .flare-snackbar--info {
   --_snackbar-action-color: currentColor;
-  --_snackbar-btn-color: currentColor;
 }
 
 .flare-snackbar--error {

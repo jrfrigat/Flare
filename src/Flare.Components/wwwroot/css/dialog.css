@@ -21,14 +21,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: var(--flare-color-surface-container-high);
-    color: var(--flare-color-on-surface);
+    background-color: var(--flare-dialog-bg);
+    color: var(--flare-dialog-color);
     border-radius: var(--flare-dialog-radius);
     min-width: 17.5rem;
     max-width: 35rem;
     width: 100%;
     max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
-    box-shadow: var(--flare-elevation-3);
+    box-shadow: var(--flare-dialog-shadow);
     overflow: hidden;
 }
 

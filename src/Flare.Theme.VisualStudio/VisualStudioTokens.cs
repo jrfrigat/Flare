@@ -462,6 +462,9 @@ internal class VisualStudioTokens
         Elevation = "none",
         FilledElevation = "none",
         TonalElevation = "none",
+        // Flat panels stay flat on hover; the Fluent card lifts its shadowed variants.
+        FilledElevationHover = "none",
+        TonalElevationHover = "none",
         PaddingTop = "8px",
         PaddingRight = "8px",
         PaddingBottom = "8px",

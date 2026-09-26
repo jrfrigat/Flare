@@ -951,12 +951,22 @@ internal static class MaterialDesign2Tokens
     {
         MaxWidth = "18rem",
         Offset = "0.5rem",
+        Bg = "var(--flare-color-inverse-surface)",
+        Color = "var(--flare-color-inverse-on-surface)",
+        Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
+        RichBg = "var(--flare-color-surface-container)",
+        RichColor = "var(--flare-color-on-surface)",
+        RichShadow = "var(--flare-elevation-3)",
+        RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-medium)",
         Offset = "0.5rem",
+        Bg = "var(--flare-color-surface-container)",
+        Color = "var(--flare-color-on-surface)",
+        Shadow = "var(--flare-elevation-2)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
@@ -989,6 +999,11 @@ internal static class MaterialDesign2Tokens
         CloseOpacity = "0.75",
         MinWidth = "21.5rem", // @material/snackbar $min-width 344px
         MaxWidth = "42rem",   // $max-width 672px
+        PaddingInline = "var(--flare-spacing-10)",
+        Bg = "var(--flare-color-inverse-surface)",
+        Color = "var(--flare-color-inverse-on-surface)",
+        ActionColor = "var(--flare-color-inverse-primary)",
+        Shadow = "var(--flare-elevation-3)",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -1063,6 +1078,9 @@ internal static class MaterialDesign2Tokens
     {
         Radius = "var(--flare-shape-extra-small)",
         IconSize = "1.5rem",
+        Bg = "var(--flare-color-surface-container-high)",
+        Color = "var(--flare-color-on-surface)",
+        Shadow = "var(--flare-elevation-3)",
     };
 
     // DataGrid baseline geometry/colors. No theme customizes the grid, so both references carry the
@@ -1551,6 +1569,11 @@ internal static class MaterialDesign2Tokens
             OutlinedElevation = "none",
             TonalElevation = "var(--flare-elevation-1)",
             TextElevation = "none",
+            // Only the elevated card lifts on hover; the others keep their resting shadow.
+            FilledElevationHover = "var(--flare-elevation-1)",
+            OutlinedElevationHover = "none",
+            TonalElevationHover = "var(--flare-elevation-1)",
+            FocusRing = "var(--flare-focus-ring)",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
             StateLayer = "var(--flare-state-hover-layer)",

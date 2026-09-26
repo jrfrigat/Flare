@@ -39,8 +39,24 @@ public sealed record CardTokens
     /// <summary>Elevation (box-shadow) of the elevated variant.</summary>
     [CssVar(CardField.Elevation)] public required string Elevation { get; init; }
 
-    /// <summary>Elevation on hover for clickable/elevated cards.</summary>
+    /// <summary>Elevation of a clickable elevated card on hover.</summary>
     [CssVar(CardField.ElevationHover)] public required string ElevationHover { get; init; }
+
+    /// <summary>Elevation of a clickable filled card on hover; set it to the resting value for a card that
+    /// does not lift.</summary>
+    [CssVar(CardField.FilledElevationHover)] public required string FilledElevationHover { get; init; }
+
+    /// <summary>Elevation of a clickable outlined card on hover; set it to the resting value for a card that
+    /// does not lift.</summary>
+    [CssVar(CardField.OutlinedElevationHover)] public required string OutlinedElevationHover { get; init; }
+
+    /// <summary>Elevation of a clickable tonal card on hover; set it to the resting value for a card that
+    /// does not lift.</summary>
+    [CssVar(CardField.TonalElevationHover)] public required string TonalElevationHover { get; init; }
+
+    /// <summary>Keyboard focus indicator of a clickable card, as an <c>outline</c> shorthand. Point it at the
+    /// shared focus ring for a card that focuses like every other control.</summary>
+    [CssVar(CardField.FocusRing)] public required string FocusRing { get; init; }
 
     /// <summary>Elevation (box-shadow) of the filled variant at rest.</summary>
     [CssVar(CardField.FilledElevation)] public required string FilledElevation { get; init; }

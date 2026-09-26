@@ -1273,12 +1273,22 @@ public class FluentUI2Tokens
     {
         MaxWidth = "18rem",
         Offset = "0.5rem",
+        Bg = "var(--flare-color-inverse-surface)",
+        Color = "var(--flare-color-inverse-on-surface)",
+        Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
+        RichBg = "var(--flare-color-surface-container)",
+        RichColor = "var(--flare-color-on-surface)",
+        RichShadow = "var(--flare-elevation-3)",
+        RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-small)",
         Offset = "0.5rem",
+        Bg = "var(--flare-color-surface-container)",
+        Color = "var(--flare-color-on-surface)",
+        Shadow = "var(--flare-elevation-2)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
@@ -1308,6 +1318,11 @@ public class FluentUI2Tokens
         CloseOpacity = "0.75",
         MinWidth = "20rem",
         MaxWidth = "36rem",
+        PaddingInline = "var(--flare-spacing-10)",
+        Bg = "var(--flare-color-inverse-surface)",
+        Color = "var(--flare-color-inverse-on-surface)",
+        ActionColor = "var(--flare-color-inverse-primary)",
+        Shadow = "var(--flare-elevation-3)",
     };
 
     // Dialog - Fluent: large radius; the rest is the shared Material baseline.
@@ -1315,6 +1330,9 @@ public class FluentUI2Tokens
     {
         Radius = "var(--flare-shape-large)",
         IconSize = "1.5rem",
+        Bg = "var(--flare-color-surface-container-high)",
+        Color = "var(--flare-color-on-surface)",
+        Shadow = "var(--flare-elevation-3)",
     };
 
     internal static readonly AppBarTokens AppBar = new()
@@ -1553,6 +1571,11 @@ public class FluentUI2Tokens
             OutlinedElevation = "none",
             TonalElevation = "var(--flare-elevation-2)",
             TextElevation = "none",
+            // Only the elevated card lifts on hover; the others keep their resting shadow.
+            FilledElevationHover = "var(--flare-elevation-2)",
+            OutlinedElevationHover = "none",
+            TonalElevationHover = "var(--flare-elevation-2)",
+            FocusRing = "var(--flare-focus-ring)",
             FilledBg = "var(--flare-color-surface)",
             OutlinedBg = "var(--flare-color-surface)",
             OutlinedBorder = "1px solid var(--flare-color-outline-variant)",

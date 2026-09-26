@@ -51,6 +51,14 @@ All notable changes to Flare are documented here. This project adheres to
 - **Breaking for custom themes: `InputTokens` requires `FocusBorderBottomColor`**, the colour of a field's
   bottom border while it has focus. It now outranks the hover colour, so a focused field under the pointer
   keeps its focus indicator.
+- **Breaking for custom themes: dialogs, snackbars, tooltips, popovers and cards take their surfaces from the
+  theme.** Their backgrounds, text colours and shadows were fixed to Material 3 roles, so no other theme could
+  change them. `DialogTokens` now requires `Bg`, `Color` and `Shadow`; `SnackbarTokens` requires `Bg`,
+  `Color`, `ActionColor`, `Shadow` and `PaddingInline`; `TooltipTokens` requires `Bg`, `Color` and `Padding`
+  for the plain tooltip and `RichBg`, `RichColor`, `RichShadow` and `RichPadding` for the rich one;
+  `PopoverTokens` requires `Bg`, `Color` and `Shadow`; `CardTokens` requires `FocusRing` and a hover
+  elevation for the filled, outlined and tonal variants (`FilledElevationHover`, `OutlinedElevationHover`,
+  `TonalElevationHover`). The built-in themes keep their look, except as listed under Fixed.
 
 ### Fixed
 
@@ -88,6 +96,11 @@ All notable changes to Flare are documented here. This project adheres to
   written in `em` while Material 3 gives it in `rem`, so it grew with the font size: Display Large was spaced
   -0.89px instead of -0.25px, and small labels came out tighter than specified. Both Material Design 3 and
   Material Design 3 Expressive now use the published values.
+- **Material Design 3 rich tooltips and clickable cards match the spec.** A rich tooltip draws its text in
+  on-surface-variant at elevation 2, where it was on-surface at elevation 3, and clickable filled and
+  outlined cards lift to elevation 1 on hover, where only the elevated card moved.
+- **Clickable cards in Fluent 2, Material Design 2 and Visual Studio show their theme's focus ring**, instead
+  of the 3px secondary-colour outline Material 3 uses.
 
 ## [0.41.0] - 2026-09-24
 

@@ -92,12 +92,23 @@
     background: var(--flare-card-state-layer);
 }
 .flare-card--clickable:focus-visible {
-    outline: 3px solid var(--flare-color-secondary);
+    outline: var(--flare-card-focus-ring);
     outline-offset: 2px;
 }
-/* Only interactive elevated cards lift on hover (static cards must not move). */
+/* Only interactive cards lift on hover (static cards must not move). Each variant has its own hover
+   elevation; a theme whose variant does not lift sets it to the resting value. The text variant has no
+   container to lift. */
 .flare-card--elevated.flare-card--clickable:hover {
     box-shadow: var(--flare-card-elevation-hover);
+}
+.flare-card--filled.flare-card--clickable:hover {
+    box-shadow: var(--flare-card-filled-elevation-hover);
+}
+.flare-card--outlined.flare-card--clickable:hover {
+    box-shadow: var(--flare-card-outlined-elevation-hover);
+}
+.flare-card--tonal.flare-card--clickable:hover {
+    box-shadow: var(--flare-card-tonal-elevation-hover);
 }
 
 /* ----- Selectable: accent ring on selection (no explicit checkbox) ----- */

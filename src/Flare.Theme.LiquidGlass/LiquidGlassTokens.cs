@@ -551,7 +551,11 @@ internal class LiquidGlassTokens
         Switch = Switch,
         Slider = Slider,
         // Card geometry is typed; the translucent variant fills stay mode-specific in Extended.
-        Card = MaterialDesign3Tokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", ElevationHover = "var(--flare-elevation-2)", OutlinedBorder = "1px solid var(--flare-color-outline-variant)" },
+        Card = MaterialDesign3Tokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", ElevationHover = "var(--flare-elevation-2)", OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
+            // Only the elevated card lifts on hover, whatever the Material card steps the others to.
+            FilledElevationHover = "none", OutlinedElevationHover = "none" },
+        // The rich tooltip keeps its on-surface text and level 3 shadow; the Material record states the spec's.
+        Tooltip = MaterialDesign3Tokens.Design.Tooltip with { RichColor = "var(--flare-color-on-surface)", RichShadow = "var(--flare-elevation-3)" },
         Input = Input,
         Progress = Progress,
         Nav = Nav,

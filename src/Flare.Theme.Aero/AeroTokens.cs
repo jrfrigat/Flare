@@ -532,7 +532,12 @@ internal class AeroTokens
             PaddingRight = "8px",
             PaddingBottom = "8px",
             PaddingLeft = "8px",
+            // Flat panels stay flat on hover, whatever the Material card steps to.
+            FilledElevationHover = "none",
+            OutlinedElevationHover = "none",
         },
+        // The rich tooltip keeps its on-surface text and level 3 shadow; the Material record states the spec's.
+        Tooltip = MaterialDesign3Tokens.Design.Tooltip with { RichColor = "var(--flare-color-on-surface)", RichShadow = "var(--flare-elevation-3)" },
         Input = Input,
         Progress = Progress,
         Nav = Nav,

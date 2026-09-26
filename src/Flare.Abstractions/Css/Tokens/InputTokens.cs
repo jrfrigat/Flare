@@ -77,13 +77,19 @@ public static class InputField
 /// <summary>CSS variable tokens for the dialog panel.</summary>
 public static class DialogPanel
 {
-    // Dialog surface/elevation/scrim/padding/title/content font+color/motion and the per-size widths reuse
-    // the shared color/elevation/spacing/typescale tokens (or hardcoded size classes) directly in dialog.css.
-    // Only the two dialog-specific geometry knobs the CSS reads remain.
+    // Dialog scrim/padding/title/content font+color/motion and the per-size widths reuse the shared
+    // color/spacing/typescale tokens (or hardcoded size classes) directly in dialog.css. The panel surface,
+    // text and shadow are the dialog's own, next to its geometry knobs.
     /// <summary>CSS custom-property name for the dialog corner radius.</summary>
     public const string Radius = "--flare-dialog-radius";
     /// <summary>CSS custom-property name for the dialog header/close icon size.</summary>
     public const string IconSize = "--flare-dialog-icon-size";
+    /// <summary>CSS custom-property name for the dialog panel background.</summary>
+    public const string Bg = "--flare-dialog-bg";
+    /// <summary>CSS custom-property name for the dialog panel text color.</summary>
+    public const string Color = "--flare-dialog-color";
+    /// <summary>CSS custom-property name for the dialog panel shadow.</summary>
+    public const string Shadow = "--flare-dialog-shadow";
 }
 
 /// <summary>CSS variable tokens for the navigation drawer.</summary>
@@ -108,9 +114,9 @@ public static class DrawerPanel
 /// <summary>CSS variable tokens for the snackbar.</summary>
 public static class SnackbarPanel
 {
-    // Snackbar surface/text/action colors, fonts, elevation, widths, offsets, gaps and motion reuse the
-    // shared color/typescale/elevation/spacing/motion tokens directly in snackbar.css. Only the snackbar-
-    // specific geometry the CSS reads remains.
+    // Snackbar fonts, gaps, severity surfaces and motion reuse the shared color/typescale/spacing/motion
+    // tokens directly in snackbar.css. The default surface, text, action color, shadow and geometry are
+    // the snackbar's own.
     /// <summary>CSS custom-property name for the snackbar corner radius.</summary>
     public const string Radius = "--flare-snackbar-radius";
     /// <summary>CSS custom-property name for the single-line minimum height.</summary>
@@ -125,4 +131,14 @@ public static class SnackbarPanel
     public const string MinWidth = "--flare-snackbar-min-width";
     /// <summary>CSS custom-property name for the snackbar maximum width token.</summary>
     public const string MaxWidth = "--flare-snackbar-max-width";
+    /// <summary>CSS custom-property name for the horizontal (inline) padding.</summary>
+    public const string PaddingInline = "--flare-snackbar-padding-inline";
+    /// <summary>CSS custom-property name for the default snackbar background.</summary>
+    public const string Bg = "--flare-snackbar-bg";
+    /// <summary>CSS custom-property name for the default snackbar text color.</summary>
+    public const string Color = "--flare-snackbar-color";
+    /// <summary>CSS custom-property name for the default snackbar action label color.</summary>
+    public const string ActionColor = "--flare-snackbar-action-color";
+    /// <summary>CSS custom-property name for the snackbar shadow.</summary>
+    public const string Shadow = "--flare-snackbar-shadow";
 }

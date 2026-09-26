@@ -3,26 +3,43 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for tooltip popup.</summary>
 public static class TooltipPopup
 {
-    // Tooltip color/radius/padding/font/motion are NOT tokenized here: the tooltip reuses the shared
-    // inverse-surface role, --flare-shape-*, --flare-spacing-*, --flare-typescale-* and --flare-motion-*
-    // directly (per the "reuse shared tokens, do not duplicate" mandate). Only the two tooltip-specific
-    // geometry values remain.
+    // Radius/font/motion reuse the shared shape/typescale/motion scales; surface, text, shadow and padding
+    // are tokens per bubble kind, because each design language picks its own.
     /// <summary>CSS custom-property name for the rich-tooltip max width.</summary>
     public const string MaxWidth = "--flare-tooltip-max-width";
     /// <summary>CSS custom-property name for the tooltip's distance from its anchor.</summary>
     public const string Offset = "--flare-tooltip-offset";
+    /// <summary>CSS custom-property name for the plain tooltip background.</summary>
+    public const string Bg = "--flare-tooltip-bg";
+    /// <summary>CSS custom-property name for the plain tooltip text color.</summary>
+    public const string Color = "--flare-tooltip-color";
+    /// <summary>CSS custom-property name for the plain tooltip padding.</summary>
+    public const string Padding = "--flare-tooltip-padding";
+    /// <summary>CSS custom-property name for the rich tooltip background.</summary>
+    public const string RichBg = "--flare-tooltip-rich-bg";
+    /// <summary>CSS custom-property name for the rich tooltip text color.</summary>
+    public const string RichColor = "--flare-tooltip-rich-color";
+    /// <summary>CSS custom-property name for the rich tooltip shadow.</summary>
+    public const string RichShadow = "--flare-tooltip-rich-shadow";
+    /// <summary>CSS custom-property name for the rich tooltip padding.</summary>
+    public const string RichPadding = "--flare-tooltip-rich-padding";
 }
 
 /// <summary>CSS variable tokens for popover popup.</summary>
 public static class PopoverPopup
 {
-    // Popover surface/elevation/padding/width/scrim/motion are NOT tokens here - popover.css and menu.css
-    // read the shared color/elevation/spacing/motion tokens directly. The corner radius is a popover-family
-    // token (themes vary it: shape-medium vs shape-small), and so is the distance from the anchor.
+    // Padding/width/scrim/motion reuse the shared scales. The radius is a popover-family token (the pickers
+    // read it too); the anchor distance and the panel surface, text and shadow are the popover's own.
     /// <summary>CSS custom-property name for the popover-family corner radius.</summary>
     public const string Radius = "--flare-popover-radius";
     /// <summary>CSS custom-property name for the distance between a popover and its anchor.</summary>
     public const string Offset = "--flare-popover-offset";
+    /// <summary>CSS custom-property name for the popover panel background.</summary>
+    public const string Bg = "--flare-popover-bg";
+    /// <summary>CSS custom-property name for the popover panel text color.</summary>
+    public const string Color = "--flare-popover-color";
+    /// <summary>CSS custom-property name for the popover panel shadow.</summary>
+    public const string Shadow = "--flare-popover-shadow";
 }
 
 /// <summary>CSS variable tokens for data grid field.</summary>
@@ -107,6 +124,14 @@ public static class CardField
     public const string TonalElevation = "--flare-card-tonal-elevation";
     /// <summary>CSS custom-property name for the text card elevation token.</summary>
     public const string TextElevation = "--flare-card-text-elevation";
+    /// <summary>CSS custom-property name for the filled card hover elevation token.</summary>
+    public const string FilledElevationHover = "--flare-card-filled-elevation-hover";
+    /// <summary>CSS custom-property name for the outlined card hover elevation token.</summary>
+    public const string OutlinedElevationHover = "--flare-card-outlined-elevation-hover";
+    /// <summary>CSS custom-property name for the tonal card hover elevation token.</summary>
+    public const string TonalElevationHover = "--flare-card-tonal-elevation-hover";
+    /// <summary>CSS custom-property name for the interactive card focus ring token.</summary>
+    public const string FocusRing = "--flare-card-focus-ring";
     /// <summary>CSS custom-property name for the selected border token.</summary>
     public const string SelectedBorder = "--flare-card-selected-border";
     /// <summary>CSS custom-property name for the selected bg token.</summary>

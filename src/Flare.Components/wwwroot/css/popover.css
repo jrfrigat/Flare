@@ -15,10 +15,10 @@
     z-index: calc(var(--flare-z-dropdown) + 1);
     min-width: 12rem;
     max-width: 24rem;
-    background: var(--flare-color-surface-container);
-    color: var(--flare-color-on-surface);
+    background: var(--flare-popover-bg);
+    color: var(--flare-popover-color);
     border-radius: var(--flare-popover-radius);
-    box-shadow: var(--flare-elevation-2);
+    box-shadow: var(--flare-popover-shadow);
     overflow: auto;
     animation: flare-popover-in var(--flare-motion-duration-enter-small) var(--flare-motion-easing-decelerate);
 }
@@ -68,7 +68,7 @@
     position: absolute;
     width: 0.625rem;
     height: 0.625rem;
-    background: var(--flare-color-surface-container);
+    background: var(--flare-popover-bg);
     transform: rotate(45deg);
 }
 
