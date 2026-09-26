@@ -23,4 +23,12 @@ public static class Splitter
     public const string GripColor = "--flare-splitter-grip-color";
     /// <summary>CSS custom-property name for the grip corner-radius token.</summary>
     public const string GripRadius = "--flare-splitter-grip-radius";
+    /// <summary>CSS custom-property name for the grip colour while the handle is pressed or dragged.</summary>
+    public const string GripPressedColor = "--flare-splitter-grip-pressed-color";
+    /// <summary>CSS custom-property name for the grip thickness while the handle is pressed or dragged.</summary>
+    public const string GripPressedThickness = "--flare-splitter-grip-pressed-thickness";
+    /// <summary>CSS custom-property name for the grip length while the handle is pressed or dragged.</summary>
+    public const string GripPressedLength = "--flare-splitter-grip-pressed-length";
+    /// <summary>CSS custom-property name for the grip corner radius while the handle is pressed or dragged.</summary>
+    public const string GripPressedRadius = "--flare-splitter-grip-pressed-radius";
 }

@@ -59,11 +59,29 @@
     pointer-events: none;
     width: var(--flare-splitter-grip-thickness);
     height: var(--flare-splitter-grip-length);
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+                width var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+                height var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+                border-radius var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
 }
 
 .flare-splitter--vertical .flare-splitter__gutter-bar {
     width: var(--flare-splitter-grip-length);
     height: var(--flare-splitter-grip-thickness);
+}
+
+/* Pressed and dragged are one state: the drag captures the pointer on the handle, so :active holds for
+   the whole drag. */
+.flare-splitter:active .flare-splitter__gutter-bar {
+    background: var(--flare-splitter-grip-pressed-color);
+    border-radius: var(--flare-splitter-grip-pressed-radius);
+    width: var(--flare-splitter-grip-pressed-thickness);
+    height: var(--flare-splitter-grip-pressed-length);
+}
+
+.flare-splitter--vertical:active .flare-splitter__gutter-bar {
+    width: var(--flare-splitter-grip-pressed-length);
+    height: var(--flare-splitter-grip-pressed-thickness);
 }
 
 @media (forced-colors: active) {

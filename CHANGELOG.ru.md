@@ -104,6 +104,11 @@
 - **Ломающее для собственных тем: `SplitterTokens` требует `GripColor` и `GripRadius`.** Полоска-захват внутри
   `FlareSplitter` всегда рисовалась цветом outline в форме пилюли, что бы тема ни задала для ее размера; теперь
   тема выбирает и то и другое. Все встроенные темы сохраняют пилюлю цвета outline.
+- **Ломающее для собственных тем: у захвата сплиттера появилось состояние нажатия.** `SplitterTokens` требует
+  `GripPressedColor`, `GripPressedThickness`, `GripPressedLength` и `GripPressedRadius` - они действуют, пока
+  ручка зажата, и все перетаскивание. Material Design 3 и 3 Expressive затемняют захват до on-surface, как их
+  drag handle; Fluent 2 переводит его в нажатый нейтральный штрих. Material Design 2, Aero, Liquid Glass и
+  Visual Studio оставляют его прежним, и во всех темах размер захвата при нажатии не меняется.
 - **Ломающее для собственных тем: `LayoutTokens` требует геометрию кнопки меню.** `AppBarToggleSize`,
   `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` и `AppBarToggleRadius` задают
   размер и форму кнопки-бургера панели приложения и трех ее полос - раньше это был одинаковый во всех темах

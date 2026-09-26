@@ -39,4 +39,18 @@ public sealed record SplitterTokens
     /// <summary>Corner radius of the grip bar - a pill for a rounded language, a small radius or zero for
     /// a square one. Usually a reference to a shape step.</summary>
     [CssVar(Splitter.GripRadius)] public required string GripRadius { get; init; }
+
+    /// <summary>Grip colour while the handle is pressed and for the whole drag that follows. Set it to
+    /// <see cref="GripColor"/> for a language whose grip does not react to a press.</summary>
+    [CssVar(Splitter.GripPressedColor)] public required string GripPressedColor { get; init; }
+
+    /// <summary>Grip thickness while pressed or dragged. It has to fit inside <see cref="GutterSize"/>,
+    /// or the grip spills onto the panes on either side.</summary>
+    [CssVar(Splitter.GripPressedThickness)] public required string GripPressedThickness { get; init; }
+
+    /// <summary>Grip length while pressed or dragged.</summary>
+    [CssVar(Splitter.GripPressedLength)] public required string GripPressedLength { get; init; }
+
+    /// <summary>Grip corner radius while pressed or dragged.</summary>
+    [CssVar(Splitter.GripPressedRadius)] public required string GripPressedRadius { get; init; }
 }

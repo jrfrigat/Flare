@@ -664,6 +664,11 @@ public class FluentUI2Tokens
         IconColor = "var(--flare-color-on-surface-variant)",
         GripColor = "var(--flare-color-outline)",
         GripRadius = "var(--flare-shape-full)",
+        // colorNeutralStroke1 at rest (the outline role), colorNeutralStroke1Pressed while held.
+        GripPressedColor = "var(--flare-fluent-stroke-pressed)",
+        GripPressedThickness = "var(--flare-splitter-grip-thickness)",
+        GripPressedLength = "var(--flare-splitter-grip-length)",
+        GripPressedRadius = "var(--flare-splitter-grip-radius)",
     };
 
     // Slider - Fluent: thin 4px rail, round white thumb (20px) with a 2px brand ring,

@@ -563,6 +563,8 @@ internal class AeroTokens
         Snackbar = MaterialDesign3Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         // The drawer toggle keeps the burger this theme drew before the Material record took the icon button's size.
         Layout = MaterialDesign3Tokens.Design.Layout with { AppBarToggleSize = "36px", AppBarToggleGlyphWidth = "18px", AppBarToggleGlyphHeight = "14px", AppBarToggleBarThickness = "2px" },
+        // The splitter grip keeps its resting colour under a press; the Material record now darkens it.
+        Splitter = MaterialDesign3Tokens.Design.Splitter with { GripPressedColor = "var(--flare-splitter-grip-color)" },
         Extended = Extended,
     };
 

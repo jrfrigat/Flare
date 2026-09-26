@@ -608,6 +608,8 @@ internal class VisualStudioTokens
         Snackbar = FluentUI2Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         // The drawer toggle keeps the burger this theme drew before the Fluent record took the Hamburger's size and shape.
         Layout = FluentUI2Tokens.Design.Layout with { AppBarToggleSize = "36px", AppBarToggleGlyphWidth = "18px", AppBarToggleGlyphHeight = "14px", AppBarToggleBarThickness = "2px", AppBarToggleRadius = "var(--flare-shape-full)" },
+        // The Fluent record darkens the pressed grip through a Fluent-only variable this theme does not declare.
+        Splitter = FluentUI2Tokens.Design.Splitter with { GripPressedColor = "var(--flare-splitter-grip-color)" },
         Extended = Extended,
     };
 

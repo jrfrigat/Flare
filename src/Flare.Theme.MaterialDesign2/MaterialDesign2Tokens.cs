@@ -1064,6 +1064,11 @@ internal static class MaterialDesign2Tokens
         IconColor = "var(--flare-color-on-surface-variant)",
         GripColor = "var(--flare-color-outline)",
         GripRadius = "var(--flare-shape-full)",
+        // Material 2 specifies no pane divider handle; the grip does not react to a press.
+        GripPressedColor = "var(--flare-splitter-grip-color)",
+        GripPressedThickness = "var(--flare-splitter-grip-thickness)",
+        GripPressedLength = "var(--flare-splitter-grip-length)",
+        GripPressedRadius = "var(--flare-splitter-grip-radius)",
     };
 
     // MD2 slider: thin 4px rail with a round 20dp thumb (no MD3 Expressive bar handle).

@@ -1130,6 +1130,12 @@ public class MaterialDesign3Tokens
         IconColor = "var(--flare-color-on-surface-variant)",
         GripColor = "var(--flare-color-outline)",
         GripRadius = "var(--flare-shape-full)",
+        // DragHandleTokens: Pressed/Dragged colour is OnSurface. The pressed 12x52dp geometry needs the
+        // 24dp container, which this record does not have yet, so the grip keeps its resting size.
+        GripPressedColor = "var(--flare-color-on-surface)",
+        GripPressedThickness = "var(--flare-splitter-grip-thickness)",
+        GripPressedLength = "var(--flare-splitter-grip-length)",
+        GripPressedRadius = "var(--flare-splitter-grip-radius)",
     };
 
     internal static readonly SliderTokens Slider = new()

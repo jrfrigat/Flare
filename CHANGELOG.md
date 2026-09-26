@@ -103,6 +103,11 @@ All notable changes to Flare are documented here. This project adheres to
 - **Breaking for custom themes: `SplitterTokens` requires `GripColor` and `GripRadius`.** The grip bar inside a
   `FlareSplitter` was always painted in the outline colour as a pill, whatever the theme set for its size; a
   theme now chooses both. Every built-in theme keeps the outline pill.
+- **Breaking for custom themes: the splitter grip has a pressed state.** `SplitterTokens` requires
+  `GripPressedColor`, `GripPressedThickness`, `GripPressedLength` and `GripPressedRadius`, applied while the
+  handle is held and for the whole drag. Material Design 3 and 3 Expressive darken the grip to on-surface, as
+  their drag handle does; Fluent 2 moves it to the pressed neutral stroke. Material Design 2, Aero, Liquid
+  Glass and Visual Studio keep it unchanged, and every theme keeps its resting size.
 - **Breaking for custom themes: `LayoutTokens` requires the drawer toggle's geometry.** `AppBarToggleSize`,
   `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` and `AppBarToggleRadius`
   size and shape the app bar's burger button and its three bars, which were a fixed 36px circle with an 18x14
