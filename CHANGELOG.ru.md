@@ -90,6 +90,10 @@
   тональных, приподнятых и плавающих кнопок, `DisabledContent` для подписи и иконки любой кнопки и
   `DisabledStroke` для кнопок с обводкой. Замените `DisabledLayer` на `DisabledContainer` и задайте
   `DisabledRepaint` = `100%`, либо `0%`, если слой был `transparent`.
+- **Ломающее для собственных тем: снэкбары с уровнем важности берут цвета из темы.** Снэкбары error, success,
+  warning и info окрашивались ролями Material 3, зашитыми в таблицу стилей ядра. `SnackbarTokens` теперь
+  требует `ErrorBg`, `ErrorColor`, `SuccessBg`, `SuccessColor`, `WarningBg`, `WarningColor`, `InfoBg` и
+  `InfoColor`. Встроенные темы выглядят как прежде.
 
 ### Исправлено
 

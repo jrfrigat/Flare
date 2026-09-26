@@ -1355,6 +1355,16 @@ public class FluentUI2Tokens
         Color = "var(--flare-color-inverse-on-surface)",
         ActionColor = "var(--flare-color-inverse-primary)",
         Shadow = "var(--flare-elevation-3)",
+        // Severity surfaces, as the snackbar has always drawn them: error on the error role, the others on
+        // the secondary, tertiary and primary containers.
+        ErrorBg = "var(--flare-color-error)",
+        ErrorColor = "var(--flare-color-on-error)",
+        SuccessBg = "var(--flare-color-secondary-container)",
+        SuccessColor = "var(--flare-color-on-secondary-container)",
+        WarningBg = "var(--flare-color-tertiary-container)",
+        WarningColor = "var(--flare-color-on-tertiary-container)",
+        InfoBg = "var(--flare-color-primary-container)",
+        InfoColor = "var(--flare-color-on-primary-container)",
     };
 
     // Dialog - Fluent: large radius; the rest is the shared Material baseline.

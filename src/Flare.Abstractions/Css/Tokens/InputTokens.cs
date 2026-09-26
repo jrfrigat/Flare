@@ -174,8 +174,8 @@ public static class DrawerPanel
 /// <summary>CSS variable tokens for the snackbar.</summary>
 public static class SnackbarPanel
 {
-    // Snackbar fonts, gaps, severity surfaces and motion reuse the shared color/typescale/spacing/motion
-    // tokens directly in snackbar.css. The default surface, text, action color, shadow and geometry are
+    // Snackbar fonts, gaps and motion reuse the shared typescale/spacing/motion
+    // tokens directly in snackbar.css. The default and severity surfaces, text, action color, shadow and geometry are
     // the snackbar's own.
     /// <summary>CSS custom-property name for the snackbar corner radius.</summary>
     public const string Radius = "--flare-snackbar-radius";
@@ -201,4 +201,20 @@ public static class SnackbarPanel
     public const string ActionColor = "--flare-snackbar-action-color";
     /// <summary>CSS custom-property name for the snackbar shadow.</summary>
     public const string Shadow = "--flare-snackbar-shadow";
+    /// <summary>CSS custom-property name for the error snackbar background.</summary>
+    public const string ErrorBg = "--flare-snackbar-error-bg";
+    /// <summary>CSS custom-property name for the error snackbar text colour.</summary>
+    public const string ErrorColor = "--flare-snackbar-error-color";
+    /// <summary>CSS custom-property name for the success snackbar background.</summary>
+    public const string SuccessBg = "--flare-snackbar-success-bg";
+    /// <summary>CSS custom-property name for the success snackbar text colour.</summary>
+    public const string SuccessColor = "--flare-snackbar-success-color";
+    /// <summary>CSS custom-property name for the warning snackbar background.</summary>
+    public const string WarningBg = "--flare-snackbar-warning-bg";
+    /// <summary>CSS custom-property name for the warning snackbar text colour.</summary>
+    public const string WarningColor = "--flare-snackbar-warning-color";
+    /// <summary>CSS custom-property name for the info snackbar background.</summary>
+    public const string InfoBg = "--flare-snackbar-info-bg";
+    /// <summary>CSS custom-property name for the info snackbar text colour.</summary>
+    public const string InfoColor = "--flare-snackbar-info-color";
 }

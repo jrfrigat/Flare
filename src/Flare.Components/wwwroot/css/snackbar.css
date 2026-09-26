@@ -165,7 +165,7 @@
 /* -- Severity variants -- */
 /* Severity surfaces use a colored/tonal background, so the action button must follow that surface's
    on-color (currentColor) instead of the theme's action color, which is chosen for the default surface
-   (and barely visible on e.g. the light Info / primary-container). The dismiss button always inherits. */
+   (and barely visible on a light tonal surface). The dismiss button always inherits. */
 .flare-snackbar--error,
 .flare-snackbar--success,
 .flare-snackbar--warning,
@@ -174,21 +174,21 @@
 }
 
 .flare-snackbar--error {
-  background: var(--flare-color-error);
-  color: var(--flare-color-on-error);
+  background: var(--flare-snackbar-error-bg);
+  color: var(--flare-snackbar-error-color);
 }
 
 .flare-snackbar--success {
-  background: var(--flare-color-secondary-container);
-  color: var(--flare-color-on-secondary-container);
+  background: var(--flare-snackbar-success-bg);
+  color: var(--flare-snackbar-success-color);
 }
 
 .flare-snackbar--warning {
-  background: var(--flare-color-tertiary-container);
-  color: var(--flare-color-on-tertiary-container);
+  background: var(--flare-snackbar-warning-bg);
+  color: var(--flare-snackbar-warning-color);
 }
 
 .flare-snackbar--info {
-  background: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  background: var(--flare-snackbar-info-bg);
+  color: var(--flare-snackbar-info-color);
 }

@@ -3,9 +3,9 @@ using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
-/// Design tokens for the Snackbar: the default surface, text, action color and shadow, and the snackbar
-/// geometry. Fonts, gaps, the severity surfaces and motion are NOT tokens here - snackbar.css reuses the
-/// shared color/typescale/spacing/motion scales directly.
+/// Design tokens for the Snackbar: the default and per-severity surfaces, text, action color and shadow, and
+/// the snackbar geometry. Fonts, gaps and motion are NOT tokens here - snackbar.css reuses the shared
+/// typescale/spacing/motion scales directly.
 /// </summary>
 public sealed record SnackbarTokens
 {
@@ -45,4 +45,23 @@ public sealed record SnackbarTokens
 
     /// <summary>Shadow (<c>box-shadow</c>) under every snackbar; <c>none</c> for a flat one.</summary>
     [CssVar(SnackbarPanel.Shadow)] public required string Shadow { get; init; }
+
+    // Severity surfaces. The action button and the dismiss button follow each surface's text color.
+
+    /// <summary>Background of an error snackbar.</summary>
+    [CssVar(SnackbarPanel.ErrorBg)] public required string ErrorBg { get; init; }
+    /// <summary>Text color of an error snackbar.</summary>
+    [CssVar(SnackbarPanel.ErrorColor)] public required string ErrorColor { get; init; }
+    /// <summary>Background of a success snackbar.</summary>
+    [CssVar(SnackbarPanel.SuccessBg)] public required string SuccessBg { get; init; }
+    /// <summary>Text color of a success snackbar.</summary>
+    [CssVar(SnackbarPanel.SuccessColor)] public required string SuccessColor { get; init; }
+    /// <summary>Background of a warning snackbar.</summary>
+    [CssVar(SnackbarPanel.WarningBg)] public required string WarningBg { get; init; }
+    /// <summary>Text color of a warning snackbar.</summary>
+    [CssVar(SnackbarPanel.WarningColor)] public required string WarningColor { get; init; }
+    /// <summary>Background of an info snackbar.</summary>
+    [CssVar(SnackbarPanel.InfoBg)] public required string InfoBg { get; init; }
+    /// <summary>Text color of an info snackbar.</summary>
+    [CssVar(SnackbarPanel.InfoColor)] public required string InfoColor { get; init; }
 }

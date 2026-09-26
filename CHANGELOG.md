@@ -89,6 +89,10 @@ All notable changes to Flare are documented here. This project adheres to
   filled, tonal, elevated and floating action buttons, `DisabledContent` for every label and icon, and
   `DisabledStroke` for outlined buttons. Replace `DisabledLayer` with `DisabledContainer` and set
   `DisabledRepaint` to `100%`, or to `0%` if the layer was `transparent`.
+- **Breaking for custom themes: severity snackbars take their colours from the theme.** Error, success, warning
+  and info snackbars were painted with Material 3 roles fixed in the core stylesheet. `SnackbarTokens` now
+  requires `ErrorBg`, `ErrorColor`, `SuccessBg`, `SuccessColor`, `WarningBg`, `WarningColor`, `InfoBg` and
+  `InfoColor`. The built-in themes keep their look.
 
 ### Fixed
 

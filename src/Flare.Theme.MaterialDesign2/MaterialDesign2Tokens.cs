@@ -1035,6 +1035,16 @@ internal static class MaterialDesign2Tokens
         ActionColor = "var(--flare-color-inverse-primary)",
         // 6dp: the shared scale has no step for it (spec "Default elevation values").
         Shadow = "0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12)",
+        // Severity surfaces, as the snackbar has always drawn them: error on the error role, the others on
+        // the secondary, tertiary and primary containers.
+        ErrorBg = "var(--flare-color-error)",
+        ErrorColor = "var(--flare-color-on-error)",
+        SuccessBg = "var(--flare-color-secondary-container)",
+        SuccessColor = "var(--flare-color-on-secondary-container)",
+        WarningBg = "var(--flare-color-tertiary-container)",
+        WarningColor = "var(--flare-color-on-tertiary-container)",
+        InfoBg = "var(--flare-color-primary-container)",
+        InfoColor = "var(--flare-color-on-primary-container)",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
