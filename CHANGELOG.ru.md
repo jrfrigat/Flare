@@ -113,7 +113,10 @@
   `GripPressedColor`, `GripPressedThickness`, `GripPressedLength` и `GripPressedRadius` - они действуют, пока
   ручка зажата, и все перетаскивание. Material Design 3 и 3 Expressive затемняют захват до on-surface, как их
   drag handle; Fluent 2 переводит его в нажатый нейтральный штрих. Material Design 2, Aero, Liquid Glass и
-  Visual Studio оставляют его прежним, и во всех темах размер захвата при нажатии не меняется.
+  Visual Studio оставляют его прежним.
+- **Сплиттеры Material Design 3 следуют спецификации drag handle.** Желоб 24px вместо 8px, захват 4 x 48px вместо
+  2 x 28px, а пока ручка зажата, захват расширяется до 12 x 52px со средним скруглением. Material Design 3 Expressive
+  следует за ним; Aero и Liquid Glass сохраняют узкий сплиттер.
 - **Ломающее для собственных тем: `LayoutTokens` требует геометрию кнопки меню.** `AppBarToggleSize`,
   `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` и `AppBarToggleRadius` задают
   размер и форму кнопки-бургера панели приложения и трех ее полос - раньше это был одинаковый во всех темах

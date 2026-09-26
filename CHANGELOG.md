@@ -112,7 +112,10 @@ All notable changes to Flare are documented here. This project adheres to
   `GripPressedColor`, `GripPressedThickness`, `GripPressedLength` and `GripPressedRadius`, applied while the
   handle is held and for the whole drag. Material Design 3 and 3 Expressive darken the grip to on-surface, as
   their drag handle does; Fluent 2 moves it to the pressed neutral stroke. Material Design 2, Aero, Liquid
-  Glass and Visual Studio keep it unchanged, and every theme keeps its resting size.
+  Glass and Visual Studio keep it unchanged.
+- **Material Design 3 splitters follow the drag handle spec.** The gutter is 24px instead of 8px and the grip
+  4 x 48px instead of 2 x 28px, and while held the grip widens to 12 x 52px with a medium corner. Material Design 3
+  Expressive follows; Aero and Liquid Glass keep the narrow splitter.
 - **Breaking for custom themes: `LayoutTokens` requires the drawer toggle's geometry.** `AppBarToggleSize`,
   `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` and `AppBarToggleRadius`
   size and shape the app bar's burger button and its three bars, which were a fixed 36px circle with an 18x14

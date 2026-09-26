@@ -1126,23 +1126,23 @@ public class MaterialDesign3Tokens
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
     // mark, tinted with the primary wash on hover the way the rest of the theme signals an active target.
+    // Geometry and colours of the pane drag handle (androidx DragHandleTokens): a 24dp container around a
+    // 4 x 48dp grip that widens to 12 x 52dp with a medium corner while pressed or dragged.
     internal static readonly SplitterTokens Splitter = new()
     {
-        GutterSize = "0.5rem",
-        GripThickness = "2px",
-        GripLength = "1.75rem",
+        GutterSize = "24px",
+        GripThickness = "4px",
+        GripLength = "48px",
         Color = "var(--flare-color-surface-variant)",
         HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         IconSize = "1.125rem",
         IconColor = "var(--flare-color-on-surface-variant)",
         GripColor = "var(--flare-color-outline)",
         GripRadius = "var(--flare-shape-full)",
-        // DragHandleTokens: Pressed/Dragged colour is OnSurface. The pressed 12x52dp geometry needs the
-        // 24dp container, which this record does not have yet, so the grip keeps its resting size.
         GripPressedColor = "var(--flare-color-on-surface)",
-        GripPressedThickness = "var(--flare-splitter-grip-thickness)",
-        GripPressedLength = "var(--flare-splitter-grip-length)",
-        GripPressedRadius = "var(--flare-splitter-grip-radius)",
+        GripPressedThickness = "12px",
+        GripPressedLength = "52px",
+        GripPressedRadius = "var(--flare-shape-medium)",
     };
 
     internal static readonly SliderTokens Slider = new()
