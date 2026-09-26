@@ -101,6 +101,23 @@
   `Color`, `Radius`, `Shadow`), с которой в Material 3 и так совпадала.
 - **Ломающее для собственных тем: `TooltipTokens` требует `Shadow`** - тень обычной подсказки: `none` для
   темной плашки, настоящая тень для светлой подсказки.
+- **Ломающее: тема называет родителя, а не семейство стилей.** Один `StyleFamilyId` мог назвать только одного
+  предка, поэтому тема в третьем поколении, чье среднее поколение приносило свои стили, теряла CSS либо базы,
+  либо родителя. Теперь `ITheme.Base` называет тему, поверх которой построена эта, а корень несет по классу
+  `flare-theme-{id}` на каждое поколение (`ThemeLineage.RootClasses`), и CSS каждого предка действует.
+  `ITheme.StyleFamilyId`, `FlareThemeBuilder.WithStyleFamily`, аргумент `styleFamilyId` у `Derive` и
+  `Css.Classes.Theme.ForTheme(themeId, styleFamilyId)` удалены: `Derive` ставит `Base` сам, собранная тема
+  вызывает `WithBase(parent)`, тема-класс реализует `Base`.
+- **Ломающее: `Derive` добавляет `styleAssets` и `scriptAssets` к ассетам базы, а не заменяет их.** Они
+  подключаются после ассетов базы, поэтому правило производной темы побеждает правило базы для того же
+  свойства. Список, который уже начинается с ассетов базы, дает прежний результат; чтобы отказаться от стилей
+  базы, передайте `inheritStyleAssets: false`. `FlareThemeBuilder.WithBase` так же ставит ассеты родителя первыми.
+- **Ломающее: `ThemeJsonSerializer` пишет id родителя (`baseId`).** `ImportTheme` принимает темы, среди которых
+  ищет родителя (`ImportTheme(json, themeService.Themes)`), и бросает исключение, если его нет, вместо темы без
+  ее CSS. Экспорт со старым `styleFamilyId` импортируется с этой темой в роли родителя.
+- **Ломающее для адаптеров JS-interop:** `IThemeJsService.SetThemeClassesAsync(themeId, styleFamilyId, ...)`
+  заменен на `SetThemeClassesAsync(themeLineage, paletteId, isDark)`, а карта для `FlareBootstrap.GenerateScript`
+  перечисляет всех предков темы (`IReadOnlyList<string>`), а не одно семейство.
 
 ### Исправлено
 

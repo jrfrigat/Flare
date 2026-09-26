@@ -41,10 +41,10 @@
     var dark = m === 'dark' || (m === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
 
     if (t) d.classList.add('flare-theme-' + t);
-    // A theme derived from another is styled by its base theme's stylesheets, scoped to the base's
-    // class; flare-theme.js records that pair whenever it applies such a theme.
-    var fam = (s.getItem('flare-theme-family') || '').split(' ');
-    if (t && fam[0] === t && fam[1]) d.classList.add('flare-theme-' + fam[1]);
+    // A theme built on others is styled by each ancestor's stylesheets, scoped to that ancestor's
+    // class; flare-theme.js records the lineage whenever it applies such a theme.
+    var line = (s.getItem('flare-theme-lineage') || '').split(' ');
+    if (t && line[0] === t) for (var i = 1; i < line.length; i++) if (line[i]) d.classList.add('flare-theme-' + line[i]);
     if (p) d.classList.add('flare-palette-' + p);
     if (dark) d.classList.add('flare-mode-dark');
 

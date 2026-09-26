@@ -29,15 +29,18 @@ public static class ThemeDerivation
     /// when null the base design is used unchanged.</param>
     /// <param name="palettes">Overrides the palettes; defaults to the base theme's.</param>
     /// <param name="defaultPaletteId">Overrides the default palette id; defaults to the base theme's.</param>
-    /// <param name="styleAssets">Overrides the static style assets; defaults to the base theme's.</param>
+    /// <param name="styleAssets">Stylesheets this theme adds. They are loaded after the base theme's, so a
+    /// rule scoped to this theme's id wins over the base's rule for the same property; an asset the base
+    /// already lists is not repeated.</param>
     /// <param name="paletteGenerator">Overrides the palette generator; defaults to the base theme's.</param>
     /// <param name="extendedDarkOverride">Overrides the dark-mode extras; defaults to the base theme's.</param>
-    /// <param name="scriptAssets">Overrides the JavaScript module assets; defaults to the base theme's.</param>
-    /// <param name="styleFamilyId">Overrides the style family. Defaults to the base theme's, which is
-    /// what keeps the base theme's scoped CSS applying to the derived theme's subtree. Pass the new id
-    /// only when <paramref name="styleAssets"/> replaces the base theme's stylesheets entirely; to add
-    /// rules on top of them, keep the family, list the base assets followed by your own, and scope the
-    /// new rules to this theme's id, whose class the root always carries.</param>
+    /// <param name="scriptAssets">JavaScript modules this theme adds, loaded after the base theme's; an
+    /// asset the base already lists is not repeated.</param>
+    /// <param name="inheritStyleAssets">Whether the base theme's stylesheets are loaded at all. Pass
+    /// <c>false</c> to replace them with <paramref name="styleAssets"/> - for example to self-host a font
+    /// the base loads from a CDN. The root still carries the base theme's class either way.</param>
+    /// <remarks>The derived theme's <see cref="ITheme.Base"/> is <paramref name="baseTheme"/>, so its root
+    /// carries the class of every theme in the chain and the stylesheets of each keep applying to it.</remarks>
     public static ITheme Derive(
         this ITheme baseTheme,
         string id,
@@ -49,12 +52,12 @@ public static class ThemeDerivation
         IPaletteGenerator? paletteGenerator = null,
         IReadOnlyDictionary<string, string>? extendedDarkOverride = null,
         IReadOnlyList<string>? scriptAssets = null,
-        string? styleFamilyId = null)
+        bool inheritStyleAssets = true)
     {
         ArgumentNullException.ThrowIfNull(baseTheme);
         ArgumentException.ThrowIfNullOrEmpty(id);
         return new DerivedTheme(baseTheme, id, displayName, design, palettes,
-            defaultPaletteId, styleAssets, scriptAssets, styleFamilyId, paletteGenerator, extendedDarkOverride);
+            defaultPaletteId, styleAssets, scriptAssets, inheritStyleAssets, paletteGenerator, extendedDarkOverride);
     }
 }
 
@@ -66,7 +69,6 @@ internal sealed class DerivedTheme : ITheme
     private readonly string _defaultPaletteId;
     private readonly IReadOnlyList<string> _styleAssets;
     private readonly IReadOnlyList<string> _scriptAssets;
-    private readonly string _styleFamilyId;
     private readonly IPaletteGenerator? _paletteGenerator;
     private readonly IReadOnlyDictionary<string, string>? _extendedDarkOverride;
 
@@ -74,33 +76,33 @@ internal sealed class DerivedTheme : ITheme
         ITheme baseTheme, string id, string? displayName,
         Func<DesignTokens, DesignTokens>? design, IReadOnlyList<Palette>? palettes,
         string? defaultPaletteId, IReadOnlyList<string>? styleAssets, IReadOnlyList<string>? scriptAssets,
-        string? styleFamilyId,
+        bool inheritStyleAssets,
         IPaletteGenerator? paletteGenerator, IReadOnlyDictionary<string, string>? extendedDarkOverride)
     {
         Id = id;
+        Base = baseTheme;
         DisplayName = displayName ?? baseTheme.DisplayName;
         // Compute the derived design once: the base design is stable, so there is no need to re-run
         // the transform on every Design access.
         _design = design is null ? baseTheme.Design : design(baseTheme.Design);
         _palettes = palettes ?? baseTheme.Palettes;
         _defaultPaletteId = defaultPaletteId ?? baseTheme.DefaultPaletteId;
-        _styleAssets = styleAssets ?? baseTheme.StyleAssets;
-        _scriptAssets = scriptAssets ?? baseTheme.ScriptAssets;
-        // The base theme's family, not this theme's id: a derived theme re-values tokens and is
-        // styled by the stylesheets it inherited, which are scoped to the family class.
-        _styleFamilyId = styleFamilyId ?? baseTheme.StyleFamilyId;
+        // Ancestors first: the rules of a later stylesheet win a tie, and the root carries every
+        // generation's class on the same element, so load order is what lets this theme override its base.
+        _styleAssets = ThemeLineage.Compose(inheritStyleAssets ? baseTheme.StyleAssets : [], styleAssets ?? []);
+        _scriptAssets = ThemeLineage.Compose(baseTheme.ScriptAssets, scriptAssets ?? []);
         _paletteGenerator = paletteGenerator ?? baseTheme.PaletteGenerator;
         _extendedDarkOverride = extendedDarkOverride ?? baseTheme.ExtendedDarkOverride;
     }
 
     public string Id { get; }
+    public ITheme Base { get; }
     public string DisplayName { get; }
     public DesignTokens Design => _design;
     public string DefaultPaletteId => _defaultPaletteId;
     public IReadOnlyList<Palette> Palettes => _palettes;
     public IReadOnlyList<string> StyleAssets => _styleAssets;
     public IReadOnlyList<string> ScriptAssets => _scriptAssets;
-    public string StyleFamilyId => _styleFamilyId;
     public IPaletteGenerator? PaletteGenerator => _paletteGenerator;
     public IReadOnlyDictionary<string, string>? ExtendedDarkOverride => _extendedDarkOverride;
 }

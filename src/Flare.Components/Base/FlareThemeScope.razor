@@ -102,7 +102,7 @@
 
         _cssClass = string.Join(' ',
             Css.Classes.Theme.Root,
-            Css.Classes.Theme.ForTheme(_theme.Id, _theme.StyleFamilyId),
+            ThemeLineage.RootClasses(_theme),
             Css.Classes.Theme.ForPalette(_palette.Id),
             Css.Classes.Theme.Mode(_isDark),
             Class);

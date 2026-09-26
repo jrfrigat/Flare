@@ -21,17 +21,16 @@ public interface IThemeJsService : IAsyncDisposable
     ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default);
 
     /// <summary>
-    /// Sets the root element's theme classes, including the style-family class that a theme derived
-    /// from another needs for the base theme's stylesheets to keep applying to it. Defaults to the
-    /// single-id overload, which emits the theme's own class only.
+    /// Sets the root element's theme classes, one per generation of the active theme's
+    /// <see cref="ITheme.Base"/> chain, so the stylesheets of every ancestor keep applying to it.
+    /// Defaults to the single-id overload with the first id, which emits the theme's own class only.
     /// </summary>
-    /// <param name="themeId">The active theme's id.</param>
-    /// <param name="styleFamilyId">The active theme's <see cref="ITheme.StyleFamilyId"/>.</param>
+    /// <param name="themeLineage">Ids of the active theme and its ancestors, the theme itself first.</param>
     /// <param name="paletteId">The active palette's id.</param>
     /// <param name="isDark">Whether the dark scheme is active.</param>
     /// <param name="ct">A cancellation token.</param>
-    ValueTask SetThemeClassesAsync(string themeId, string styleFamilyId, string paletteId, bool isDark, CancellationToken ct = default)
-        => SetThemeClassesAsync(themeId, paletteId, isDark, ct);
+    ValueTask SetThemeClassesAsync(IReadOnlyList<string> themeLineage, string paletteId, bool isDark, CancellationToken ct = default)
+        => SetThemeClassesAsync(themeLineage[0], paletteId, isDark, ct);
 
     /// <summary>
     /// Ensures a stylesheet link is present and completes only once it has finished loading (or a

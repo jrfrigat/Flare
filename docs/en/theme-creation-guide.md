@@ -65,9 +65,10 @@ var myFluent = new FluentUI2Theme().Derive(
 services.AddFlareTheme(myFluent);
 ```
 
-`Derive` forwards every member of the base theme (palettes, default palette, style assets, palette
-generator, dark overrides) except the ones you pass; `design` receives the base `DesignTokens` so you
-`with`-override just what you need.
+`Derive` forwards every member of the base theme (palettes, default palette, palette generator, dark
+overrides) except the ones you pass; `design` receives the base `DesignTokens` so you `with`-override
+just what you need. Style and script assets you pass are added to the base theme's (see
+[Building a theme on another one](#building-a-theme-on-another-one)).
 
 A lineage baseline comes from its reference-tokens package - `MaterialDesign3Tokens` or
 `FluentUI2Tokens` - so a custom theme can take the values without depending on a theme. A concrete
@@ -127,39 +128,52 @@ If you genuinely want a from-scratch design system with no Material/Fluent ances
 `DesignTokens` yourself (setting every `required` group) - the compiler (CS9035) will list any token
 you miss.
 
-### Reusing another theme's stylesheets
+### Building a theme on another one
 
 A theme's stylesheet is scoped to the class its own id produces (`.flare-theme-md3-expressive`), so a
-theme that reuses another's CSS has to keep answering to that class. That is what `StyleFamilyId` is:
+theme built on another has to keep answering to its ancestors' classes. You never list them: a theme
+names its parent in `ITheme.Base`, and Flare follows the chain. The root element carries one class per
+generation, the theme's own first:
 
 ```csharp
-public string StyleFamilyId => MaterialDesign3ExpressiveTheme.ThemeId;
+var md3e   = new MaterialDesign3ExpressiveTheme();
+var better = md3e.Derive("md3e-better", styleAssets: ["_content/Acme/css/better.css"]);
+var gold   = better.Derive("md3e-better-gold", styleAssets: ["_content/Acme/css/gold.css"]);
+
+// <div class="flare-root flare-theme-md3e-better-gold flare-theme-md3e-better flare-theme-md3-expressive ...">
 ```
 
-The root element then carries both classes - the theme is selectable by its own id and styled by the
-family it belongs to. `Derive` does this for you, keeping the base theme's family unless you pass
-`styleFamilyId` yourself:
+`Derive` sets `Base` for you. `styleAssets` and `scriptAssets` are **added** after the base theme's, so
+`gold` loads Expressive's sheets, then `better.css`, then `gold.css`. Scope each theme's own rules to
+its own id (`@scope (.flare-theme-md3e-better-gold) to (.flare-root:not(.flare-theme-md3e-better-gold))`).
+Every class sits on the same element and every rule selects one of them, so specificity is equal and
+load order decides: a descendant's rule wins over its ancestor's for the same property.
+
+To drop the base theme's stylesheets - for example to self-host a font the base loads from a CDN -
+pass `inheritStyleAssets: false`; the list you pass then replaces them, and the root still carries the
+base theme's class:
 
 ```csharp
-// Re-values tokens, keeps Expressive's stylesheets, and is styled by them.
-var brand = new MaterialDesign3ExpressiveTheme()
-    .Derive("md3-expressive-brand", design: d => d with { ... });
-
-// Adds a stylesheet on top of Expressive's: keeps the family, lists the base assets first, and scopes
-// its own rules to .flare-theme-md3-expressive-gold, the class of its own id.
-var baseTheme = new MaterialDesign3ExpressiveTheme();
-var gold = baseTheme.Derive("md3-expressive-gold",
-    styleAssets: [.. baseTheme.StyleAssets, "_content/Acme/css/gold.css"]);
-
-// Replaces the stylesheets entirely, so it is its own family.
-var standalone = new MaterialDesign3ExpressiveTheme()
-    .Derive("acme", styleAssets: ["_content/Acme/css/acme.css"], styleFamilyId: "acme");
+var selfHosted = md3e.Derive("md3e-self-hosted",
+    styleAssets: ["_content/Acme/css/roboto.css", "_content/Flare.Theme.MaterialDesign3Expressive/css/components.css"],
+    inheritStyleAssets: false);
 ```
 
-`styleAssets` replaces the base theme's list rather than adding to it, and a theme that sets its own
-family loses every rule scoped to the base's class - so pass `styleFamilyId` only in the last case.
+`FlareThemeBuilder.WithBase(parent)` does the same for a built theme, and a theme written as a class
+implements `Base` itself - listing the parent's `StyleAssets` before its own:
 
-Leave `StyleFamilyId` alone when your theme ships its own `StyleAssets`: it already defaults to `Id`.
+```csharp
+public sealed class GoldTheme : ITheme
+{
+    private static readonly ITheme Parent = new MaterialDesign3ExpressiveTheme();
+    public ITheme? Base => Parent;
+    public IReadOnlyList<string> StyleAssets => [.. Parent.StyleAssets, "_content/Acme/css/gold.css"];
+    // Id, DisplayName, Design, DefaultPaletteId ...
+}
+```
+
+`ThemeLineage.Ids(theme)` and `ThemeLineage.RootClasses(theme)` return the chain and its classes,
+computed once per theme instance.
 
 ### Theme-owned JavaScript
 
@@ -479,8 +493,9 @@ if (errors.Count > 0)
 // Export to JSON
 string json = ThemeJsonSerializer.ExportTheme(myTheme);
 
-// Import from JSON
-ITheme importedTheme = ThemeJsonSerializer.ImportTheme(json);
+// Import from JSON. A theme exported with a parent is rebuilt on the theme of that id, looked up
+// among the themes you pass; an unknown parent is an error rather than a theme without its CSS.
+ITheme importedTheme = ThemeJsonSerializer.ImportTheme(json, themeService.Themes);
 
 // Export palette
 string paletteJson = ThemeJsonSerializer.ExportPalette(myPalette);

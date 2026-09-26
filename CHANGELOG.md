@@ -100,6 +100,23 @@ All notable changes to Flare are documented here. This project adheres to
   `Radius`, `Shadow`), which it already matched in Material 3.
 - **Breaking for custom themes: `TooltipTokens` requires `Shadow`**, the shadow under the plain tooltip - `none`
   for a dark tooltip chip, a real shadow for a light one.
+- **Breaking: a theme names its parent instead of a style family.** One `StyleFamilyId` could name only one
+  ancestor, so a theme three generations deep whose middle generation brought its own stylesheets lost the
+  CSS of either its base or its parent. `ITheme.Base` now names the theme this one is built on, and the root
+  carries one `flare-theme-{id}` class per generation (`ThemeLineage.RootClasses`), so every ancestor's CSS
+  applies. `ITheme.StyleFamilyId`, `FlareThemeBuilder.WithStyleFamily`, the `styleFamilyId` argument of
+  `Derive` and `Css.Classes.Theme.ForTheme(themeId, styleFamilyId)` are removed: `Derive` sets `Base` itself,
+  a built theme calls `WithBase(parent)`, and a theme written as a class implements `Base`.
+- **Breaking: `Derive` adds `styleAssets` and `scriptAssets` to the base theme's instead of replacing them.**
+  They load after the base's, so a derived theme's rule wins over its base's for the same property. A list
+  that already starts with the base's assets gives the same result as before; to drop the base's stylesheets,
+  pass `inheritStyleAssets: false`. `FlareThemeBuilder.WithBase` loads the parent's assets first the same way.
+- **Breaking: `ThemeJsonSerializer` writes the parent's id (`baseId`).** `ImportTheme` takes the themes to find
+  the parent in (`ImportTheme(json, themeService.Themes)`) and throws when it is not there, rather than
+  returning a theme without its CSS. An export written with `styleFamilyId` imports with that theme as its parent.
+- **Breaking for JS-interop adapters:** `IThemeJsService.SetThemeClassesAsync(themeId, styleFamilyId, ...)` is
+  replaced by `SetThemeClassesAsync(themeLineage, paletteId, isDark)`, and the ancestor map passed to
+  `FlareBootstrap.GenerateScript` lists every ancestor of a theme (`IReadOnlyList<string>`) instead of one family.
 
 ### Fixed
 

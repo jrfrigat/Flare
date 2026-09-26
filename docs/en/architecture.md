@@ -145,11 +145,11 @@ A runtime-only **Dynamic Color** palette (`Palette.DynamicId = "dynamic"`) can a
   built-in theme: a theme's own rendering belongs in its stylesheet wherever CSS can express it. A
   module must key its behavior off its own public CSS classes rather than off a theme id, so that it
   also serves themes derived from it.
-- `StyleFamilyId` names the visual family whose stylesheets style the theme, and is emitted as a
-  second root class next to the theme's own. It defaults to `Id`, because a theme that ships its own
-  stylesheets is its own family. A theme built with `Derive` keeps the base theme's family: it
-  re-values tokens and inherits the base theme's CSS, which is scoped to the base theme's class.
-  Without this a derived theme would render unstyled.
+- `Base` names the theme this one is built on (null for a theme that stands alone). Every theme
+  stylesheet is scoped to its own theme's class, so the root carries one `flare-theme-{id}` class per
+  generation of the chain (`ThemeLineage.RootClasses`, computed once per theme instance) and the CSS
+  of every ancestor keeps applying. `Derive` and `FlareThemeBuilder.WithBase` set it and load the
+  ancestors' assets before the theme's own, so a descendant's rule wins a tie by load order.
 
 **NuGet:** each theme package depends on `Flare.Abstractions` + `Flare.Theming` + its lineage's
 reference token package (`Flare.Theme.MaterialDesign3.Tokens` or `Flare.Theme.FluentUI2.Tokens`),
@@ -259,7 +259,7 @@ ITheme
   +-- Id, DisplayName, DefaultPaletteId
   +-- StyleAssets (IReadOnlyList<string>)        - static CSS/fonts (anti-FOUC)
   +-- ScriptAssets (IReadOnlyList<string>)      - theme-owned JS modules (optional, empty by default)
-  +-- StyleFamilyId (string)                    - whose stylesheets style this theme (defaults to Id)
+  +-- Base (ITheme?)                            - the theme this one is built on (null = stands alone)
   +-- Palettes (IReadOnlyList<Palette>)          - colors that travel with the theme
   +-- PaletteGenerator (IPaletteGenerator?)      - design-system color rules (MD3 tonal / ramp)
   +-- ExtendedDarkOverride (dict?)               - rare dark-mode non-color extras

@@ -24,7 +24,8 @@ public sealed class FlareThemeBuilder
     private DesignTokens _design;
     private readonly List<string> _styleAssets = [];
     private readonly List<string> _scriptAssets = [];
-    private string? _styleFamilyId;
+    private ITheme? _base;
+    private bool _inheritStyleAssets = true;
     private string _defaultPaletteId = "default";
     private IReadOnlyDictionary<string, string>? _extendedDarkOverride;
     private IPaletteGenerator? _paletteGenerator;
@@ -134,13 +135,20 @@ public sealed class FlareThemeBuilder
     }
 
     /// <summary>
-    /// Points this theme at another theme's stylesheets. Use it when the theme only re-values tokens
-    /// and expects the named theme's CSS to style it; leave it unset when the theme ships its own.
+    /// Builds this theme on <paramref name="parent"/>: the built theme's <see cref="ITheme.Base"/> is the
+    /// parent, so its root carries the class of every theme in the parent's chain and their stylesheets
+    /// keep applying. The parent's style and script assets are loaded before the ones added with
+    /// <see cref="WithStyleAsset"/> and <see cref="WithScriptAsset"/>, whatever order the calls come in.
+    /// The design is not taken from the parent; pass <c>parent.Design</c> to the constructor for that.
     /// </summary>
-    /// <param name="styleFamilyId">Id of the theme whose stylesheets style this one.</param>
-    public FlareThemeBuilder WithStyleFamily(string styleFamilyId)
+    /// <param name="parent">The theme this one is built on.</param>
+    /// <param name="inheritStyleAssets">Whether the parent's stylesheets are loaded at all; <c>false</c>
+    /// replaces them with this theme's own. The root still carries the parent's class either way.</param>
+    public FlareThemeBuilder WithBase(ITheme parent, bool inheritStyleAssets = true)
     {
-        _styleFamilyId = styleFamilyId;
+        ArgumentNullException.ThrowIfNull(parent);
+        _base = parent;
+        _inheritStyleAssets = inheritStyleAssets;
         return this;
     }
 
@@ -183,14 +191,7 @@ public sealed class FlareThemeBuilder
     public ITheme Build()
     {
         var validator = new ThemeValidator();
-        var theme = new BuiltTheme(
-            _id, _displayName, _design,
-            _styleAssets.ToArray(),
-            _scriptAssets.ToArray(),
-            _styleFamilyId,
-            _defaultPaletteId,
-            _extendedDarkOverride,
-            _paletteGenerator);
+        var theme = BuildUnsafe();
 
         var errors = validator.Validate(theme);
         if (errors.Count > 0)
@@ -205,9 +206,9 @@ public sealed class FlareThemeBuilder
     {
         return new BuiltTheme(
             _id, _displayName, _design,
-            _styleAssets.ToArray(),
-            _scriptAssets.ToArray(),
-            _styleFamilyId,
+            ThemeLineage.Compose(_base is not null && _inheritStyleAssets ? _base.StyleAssets : [], _styleAssets),
+            ThemeLineage.Compose(_base?.ScriptAssets ?? [], _scriptAssets),
+            _base,
             _defaultPaletteId,
             _extendedDarkOverride,
             _paletteGenerator);
@@ -221,12 +222,12 @@ public sealed class FlareThemeBuilder
         public string DefaultPaletteId { get; }
         public IReadOnlyList<string> StyleAssets { get; }
         public IReadOnlyList<string> ScriptAssets { get; }
-        public string StyleFamilyId { get; }
+        public ITheme? Base { get; }
         public IReadOnlyDictionary<string, string>? ExtendedDarkOverride { get; }
         public IPaletteGenerator? PaletteGenerator { get; }
 
         public BuiltTheme(string id, string displayName, DesignTokens design,
-            string[] styleAssets, string[] scriptAssets, string? styleFamilyId, string defaultPaletteId,
+            string[] styleAssets, string[] scriptAssets, ITheme? baseTheme, string defaultPaletteId,
             IReadOnlyDictionary<string, string>? extendedDarkOverride,
             IPaletteGenerator? paletteGenerator)
         {
@@ -235,7 +236,7 @@ public sealed class FlareThemeBuilder
             Design = design;
             StyleAssets = styleAssets;
             ScriptAssets = scriptAssets;
-            StyleFamilyId = styleFamilyId ?? id;
+            Base = baseTheme;
             DefaultPaletteId = defaultPaletteId;
             ExtendedDarkOverride = extendedDarkOverride;
             PaletteGenerator = paletteGenerator;

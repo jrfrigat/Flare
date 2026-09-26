@@ -14,7 +14,7 @@
             <FlareStyles />
         }
 
-        <div class="@Css.Classes.Theme.Root @Css.Classes.Theme.ForTheme(ThemeService.CurrentTheme.Id, ThemeService.CurrentTheme.StyleFamilyId) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : Css.Classes.Theme.ModeLight) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
+        <div class="@Css.Classes.Theme.Root @ThemeLineage.RootClasses(ThemeService.CurrentTheme) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : Css.Classes.Theme.ModeLight) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
              data-flare-theme="@ThemeService.CurrentTheme.Id"
              dir="@(ThemeService.IsRtl ? "rtl" : "ltr")">
             @ChildContent
@@ -202,7 +202,7 @@
                 await ThemeJsService.EnsureStylesheetAsync(paletteHref);
 
             await ThemeJsService.SetThemeClassesAsync(
-                ThemeService.CurrentTheme.Id, ThemeService.CurrentTheme.StyleFamilyId,
+                ThemeLineage.Ids(ThemeService.CurrentTheme),
                 ThemeService.CurrentPalette.Id, ThemeService.IsDark);
 
             foreach (var src in ThemeService.CurrentTheme.ScriptAssets)

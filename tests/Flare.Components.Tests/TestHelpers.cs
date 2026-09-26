@@ -40,6 +40,9 @@ public sealed class StubThemeService : IThemeService
     /// <summary>Creates a stub whose current and only registered palette is <paramref name="palette"/>.</summary>
     public StubThemeService(Palette palette) => _palette = palette;
 
+    /// <summary>Creates a stub whose current and only registered theme is <paramref name="theme"/>.</summary>
+    public StubThemeService(ITheme theme) : this() => _theme = theme;
+
     public ITheme CurrentTheme => _theme;
     public Palette CurrentPalette => _palette;
     public bool IsDynamicPalette => false;

@@ -11,7 +11,8 @@ export function setCssVariables(vars) {
 
 // ClassToggle strategy: put the active theme/palette/mode classes on <html> so the
 // generated CSS applies to everything, including overlays portaled to <body>.
-export function setThemeClasses(themeId, styleFamilyId, paletteId, dark) {
+// themeIds is the active theme's lineage: its own id first, then each ancestor's.
+export function setThemeClasses(themeIds, paletteId, dark) {
     const r = document.documentElement;
     r.className = r.className
         .replace(/\bflare-theme-\S+/g, '')
@@ -19,17 +20,18 @@ export function setThemeClasses(themeId, styleFamilyId, paletteId, dark) {
         .replace(/\bflare-mode-dark\b/g, '')
         .replace(/\s+/g, ' ')
         .trim();
-    // Both classes, because theme stylesheets are scoped to the family class: a derived theme is
-    // selectable by its own id and still styled by the theme it came from.
-    r.classList.add('flare-theme-' + themeId, 'flare-palette-' + paletteId);
-    if (styleFamilyId && styleFamilyId !== themeId) r.classList.add('flare-theme-' + styleFamilyId);
+    // One class per generation, because every theme stylesheet is scoped to its own theme's class:
+    // a derived theme is selectable by its own id and still styled by every theme it is built on.
+    for (const id of themeIds) r.classList.add('flare-theme-' + id);
+    r.classList.add('flare-palette-' + paletteId);
     if (dark) r.classList.add('flare-mode-dark');
-    // flare-bootstrap.js paints the saved theme before .NET starts and cannot know a family by itself.
-    // Stored as "id family" so it is only ever applied to the theme it was recorded for.
+    // flare-bootstrap.js paints the saved theme before .NET starts and cannot know its ancestors by
+    // itself. Stored as "id ancestor ..." so it is only ever applied to the theme it was recorded for.
     try {
-        if (styleFamilyId && styleFamilyId !== themeId) localStorage.setItem('flare-theme-family', themeId + ' ' + styleFamilyId);
-        else localStorage.removeItem('flare-theme-family');
-    } catch { /* storage unavailable: the first paint simply lacks the family class */ }
+        localStorage.removeItem('flare-theme-family');
+        if (themeIds.length > 1) localStorage.setItem('flare-theme-lineage', themeIds.join(' '));
+        else localStorage.removeItem('flare-theme-lineage');
+    } catch { /* storage unavailable: the first paint simply lacks the ancestor classes */ }
 }
 
 // Runtime safety net: make sure a stylesheet <link> is present (for themes/palettes registered

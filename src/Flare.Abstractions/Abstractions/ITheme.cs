@@ -22,14 +22,15 @@ public interface ITheme
     IReadOnlyList<string> StyleAssets { get; }
 
     /// <summary>
-    /// Id of the visual family whose stylesheets style this theme, emitted as a second root class
-    /// (<c>flare-theme-{StyleFamilyId}</c>) next to <see cref="Id"/>'s own. A theme that ships its
-    /// own stylesheets is its own family, which is why this defaults to <see cref="Id"/>. A theme
-    /// derived from another one only re-values tokens, so it keeps the base theme's family and the
-    /// base theme's CSS keeps applying to it; without this a derived theme would render unstyled,
-    /// because every theme stylesheet is scoped to the class its own id produces.
+    /// The theme this one is built on, or null for a theme that stands on its own. Every theme
+    /// stylesheet is scoped to the class its own id produces, so the root of a theme carries one
+    /// <c>flare-theme-{id}</c> class per generation of this chain and the CSS of every ancestor keeps
+    /// applying. The chain is followed transitively; a theme names only its direct parent.
+    /// <see cref="StyleAssets"/> and <see cref="ScriptAssets"/> of a theme with a base are expected
+    /// to list the base's assets first, which is what <c>Derive</c> and <c>FlareThemeBuilder.WithBase</c>
+    /// do. The value must not change over the theme's lifetime.
     /// </summary>
-    string StyleFamilyId => Id;
+    ITheme? Base => null;
 
     /// <summary>
     /// Optional JavaScript modules that implement theme-owned rendering behavior. Loaded once when

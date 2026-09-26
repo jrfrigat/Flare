@@ -18,7 +18,10 @@ public static class ThemeJsonSerializer
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
-    /// <summary>Serializes a theme to JSON.</summary>
+    /// <summary>
+    /// Serializes a theme to JSON. The theme's <see cref="ITheme.Base"/> is written as the parent's id
+    /// (<c>baseId</c>); the asset lists are written complete, the inherited ones included.
+    /// </summary>
     public static string ExportTheme(ITheme theme)
     {
         var model = new ThemeExportModel
@@ -28,14 +31,22 @@ public static class ThemeJsonSerializer
             DefaultPaletteId = theme.DefaultPaletteId,
             StyleAssets = theme.StyleAssets.ToArray(),
             ScriptAssets = theme.ScriptAssets.ToArray(),
-            StyleFamilyId = theme.StyleFamilyId,
+            BaseId = theme.Base?.Id,
             Design = theme.Design,
         };
         return JsonSerializer.Serialize(model, s_options);
     }
 
-    /// <summary>Deserializes a theme from JSON. Returns a BuiltTheme that can be registered.</summary>
-    public static ITheme ImportTheme(string json)
+    /// <summary>
+    /// Deserializes a theme from JSON. Returns a theme that can be registered. A theme exported with a
+    /// parent is rebuilt on the theme of that id from <paramref name="knownThemes"/> - typically the
+    /// registered themes - with its asset lists exactly as exported. An export written by an older Flare
+    /// with a <c>styleFamilyId</c> other than its own id names its parent the same way.
+    /// </summary>
+    /// <param name="json">The exported theme.</param>
+    /// <param name="knownThemes">Themes a parent id is looked up in; only needed when the export names a parent.</param>
+    /// <exception cref="InvalidOperationException">The JSON is not a theme, or it names a parent that is not among <paramref name="knownThemes"/>.</exception>
+    public static ITheme ImportTheme(string json, IEnumerable<ITheme>? knownThemes = null)
     {
         var model = JsonSerializer.Deserialize<ThemeExportModel>(json, s_options)
             ?? throw new InvalidOperationException("Invalid theme JSON.");
@@ -45,9 +56,17 @@ public static class ThemeJsonSerializer
             .WithStyleAssets(model.StyleAssets)
             .WithScriptAssets(model.ScriptAssets);
 
-        // Older exports carry no family; such a theme ships its own stylesheets, so its id is its family.
-        if (!string.IsNullOrEmpty(model.StyleFamilyId))
-            builder = builder.WithStyleFamily(model.StyleFamilyId);
+        var baseId = !string.IsNullOrEmpty(model.BaseId) ? model.BaseId
+            : model.StyleFamilyId is { Length: > 0 } family && family != model.Id ? family
+            : null;
+        if (baseId is not null)
+        {
+            var parent = knownThemes?.FirstOrDefault(t => t.Id == baseId)
+                ?? throw new InvalidOperationException(
+                    $"Theme '{model.Id}' is built on theme '{baseId}', which is not among the known themes. Register it and pass it in knownThemes.");
+            // The exported lists already hold the parent's assets in order, so nothing is inherited twice.
+            builder = builder.WithBase(parent, inheritStyleAssets: false);
+        }
 
         return builder.BuildUnsafe();
     }
@@ -72,6 +91,8 @@ public static class ThemeJsonSerializer
         public string DefaultPaletteId { get; set; } = "";
         public string[] StyleAssets { get; set; } = [];
         public string[] ScriptAssets { get; set; } = [];
+        public string? BaseId { get; set; }
+        // Only read, never written: exports from 0.39-0.41 named the theme whose stylesheets styled this one here.
         public string? StyleFamilyId { get; set; }
         public DesignTokens Design { get; set; } = null!;
     }

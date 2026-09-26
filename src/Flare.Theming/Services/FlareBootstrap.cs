@@ -20,21 +20,22 @@ public static class FlareBootstrap
         string defaultTheme,
         string defaultPalette,
         ThemeMode defaultMode)
-        => GenerateScript(themeIds, paletteIds, defaultTheme, defaultPalette, defaultMode, styleFamilies: null);
+        => GenerateScript(themeIds, paletteIds, defaultTheme, defaultPalette, defaultMode, ancestors: null);
 
     /// <summary>
-    /// Builds the bootstrap JavaScript (no &lt;script&gt; wrapper), also adding the style-family class of a
-    /// theme whose stylesheets come from another theme, so a saved derived theme is styled from the first
-    /// paint rather than only once .NET has started.
+    /// Builds the bootstrap JavaScript (no &lt;script&gt; wrapper), also adding the class of every ancestor
+    /// of a theme built on others, so a saved derived theme is styled by its ancestors' stylesheets from
+    /// the first paint rather than only once .NET has started.
     /// </summary>
     /// <param name="themeIds">Ids of the registered themes; a saved id outside this list falls back to the default.</param>
     /// <param name="paletteIds">Ids of the registered palettes; a saved id outside this list falls back to the default.</param>
     /// <param name="defaultTheme">Theme applied when nothing valid is saved.</param>
     /// <param name="defaultPalette">Palette applied when nothing valid is saved.</param>
     /// <param name="defaultMode">Mode applied when nothing is saved.</param>
-    /// <param name="styleFamilies">
-    /// Theme id to <see cref="Flare.Abstractions.ITheme.StyleFamilyId"/> for the themes whose family differs
-    /// from their id. Null or empty emits no family lookup.
+    /// <param name="ancestors">
+    /// Theme id to the ids of its ancestors, nearest first, for the themes that have a
+    /// <see cref="Flare.Abstractions.ITheme.Base"/> (<see cref="ThemeLineage.Ids"/> without its first id).
+    /// Null or empty emits no ancestor lookup.
     /// </param>
     public static string GenerateScript(
         IEnumerable<string> themeIds,
@@ -42,7 +43,7 @@ public static class FlareBootstrap
         string defaultTheme,
         string defaultPalette,
         ThemeMode defaultMode,
-        IReadOnlyDictionary<string, string>? styleFamilies)
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? ancestors)
     {
         var themes = JsArray(themeIds);
         var palettes = JsArray(paletteIds);
@@ -55,11 +56,11 @@ public static class FlareBootstrap
         sb.Append("var p=s.getItem('flare-palette');if(P.indexOf(p)<0)p='").Append(Esc(defaultPalette)).Append("';");
         sb.Append("var m=s.getItem('flare-mode')||'").Append(mode).Append("';");
         sb.Append("d.classList.add('flare-theme-'+t,'flare-palette-'+p);");
-        var families = styleFamilies?.Where(f => f.Key != f.Value).ToList();
-        if (families is { Count: > 0 })
+        var lineages = ancestors?.Where(a => a.Value.Count > 0).ToList();
+        if (lineages is { Count: > 0 })
         {
-            sb.Append("var F={").Append(string.Join(",", families.Select(f => "'" + Esc(f.Key) + "':'" + Esc(f.Value) + "'"))).Append("};");
-            sb.Append("if(Object.prototype.hasOwnProperty.call(F,t))d.classList.add('flare-theme-'+F[t]);");
+            sb.Append("var A={").Append(string.Join(",", lineages.Select(a => "'" + Esc(a.Key) + "':" + JsArray(a.Value)))).Append("};");
+            sb.Append("if(Object.prototype.hasOwnProperty.call(A,t))for(var i=0;i<A[t].length;i++)d.classList.add('flare-theme-'+A[t][i]);");
         }
         // Both classes, not just the dark one: flare-mode-light declares color-scheme:light, which is
         // what stops native controls rendering dark inside a light Flare page.

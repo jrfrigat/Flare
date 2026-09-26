@@ -30,6 +30,7 @@ public sealed class ThemeDerivationTests
         var d = b.Derive(id: "derived", design: x => x with { FocusRing = "9px solid red" });
 
         Assert.Equal("derived", d.Id);                       // overridden
+        Assert.Same(b, d.Base);                              // built on the base
         Assert.Equal("Base", d.DisplayName);                 // forwarded
         Assert.Equal("base-pal", d.DefaultPaletteId);        // forwarded
         Assert.Equal(b.StyleAssets, d.StyleAssets);          // forwarded

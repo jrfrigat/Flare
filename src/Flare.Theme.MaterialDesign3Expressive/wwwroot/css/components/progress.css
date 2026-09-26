@@ -103,8 +103,8 @@
 
 /* Wrapped in @scope like every other MD3 Expressive component sheet: these rules apply only inside
    the nearest .flare-theme-md3-expressive root and stop at any nested .flare-root that is not one,
-   so a Fluent scope inside an Expressive app keeps Fluent's progress. The class is emitted for the
-   theme's style family, not its id, so a theme derived from this one is styled by these rules too. */
+   so a Fluent scope inside an Expressive app keeps Fluent's progress. A root carries the class of
+   every theme in its theme's lineage, so a theme derived from this one is styled by these rules too. */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
   .flare-progress--linear.flare-progress--indeterminate {
     --_progress-mask-direction: right;

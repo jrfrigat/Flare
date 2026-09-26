@@ -2,6 +2,7 @@ using System.Globalization;
 using Flare.Abstractions;
 using Flare.Components;
 using Flare.Abstractions.Tokens;
+using Flare.Theming;
 using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components.Tests;
@@ -21,6 +22,20 @@ public class FlareThemeScopeTests : FlareTestContext
         Assert.Contains("flare-palette-stub", cls);
         Assert.Contains(Css.Classes.Theme.ModeDark, cls);
         Assert.NotEmpty(cut.FindAll(".kid"));
+    }
+
+    [Fact]
+    public void ADerivedTheme_CarriesTheClassOfEveryGeneration()
+    {
+        var gold = new StubTheme().Derive("better").Derive("gold");
+        var cut = Render<FlareThemeScope>(p => p
+            .AddCascadingValue<IThemeService>(new StubThemeService(gold))
+            .AddChildContent("<span>x</span>"));
+
+        var classes = cut.Find("div").ClassList;
+        Assert.Contains("flare-theme-gold", classes);
+        Assert.Contains("flare-theme-better", classes);
+        Assert.Contains("flare-theme-stub", classes);
     }
 
     [Fact]

@@ -24,25 +24,30 @@ public class FlareBootstrapTests
     }
 
     /// <summary>
-    /// A saved derived theme is styled by its base theme's stylesheets, which answer only to the base's
-    /// class; without it the first frame paints unstyled until .NET starts.
+    /// A saved derived theme is styled by the stylesheets of every ancestor, each of which answers only to
+    /// its own theme's class; without them the first frame paints unstyled until .NET starts.
     /// </summary>
     [Fact]
-    public void GenerateScript_AddsTheStyleFamilyClassOfADerivedTheme()
+    public void GenerateScript_AddsTheClassOfEveryAncestorOfADerivedTheme()
     {
         var js = FlareBootstrap.GenerateScript(
-            ["md3-expressive", "brand"], ["p"], "md3-expressive", "p", ThemeMode.Auto,
-            new Dictionary<string, string> { ["brand"] = "md3-expressive", ["md3-expressive"] = "md3-expressive" });
+            ["md3-expressive", "better", "gold"], ["p"], "md3-expressive", "p", ThemeMode.Auto,
+            new Dictionary<string, IReadOnlyList<string>>
+            {
+                ["gold"] = ["better", "md3-expressive"],
+                ["better"] = ["md3-expressive"],
+                ["md3-expressive"] = [],
+            });
 
-        Assert.Contains("var F={'brand':'md3-expressive'};", js);
-        Assert.Contains($"d.classList.add('{Css.Classes.Theme.ThemePrefix}'+F[t])", js);
+        Assert.Contains("var A={'gold':['better','md3-expressive'],'better':['md3-expressive']};", js);
+        Assert.Contains($"d.classList.add('{Css.Classes.Theme.ThemePrefix}'+A[t][i])", js);
     }
 
     [Fact]
-    public void GenerateScript_WithoutFamilies_EmitsNoLookup()
+    public void GenerateScript_WithoutAncestors_EmitsNoLookup()
     {
-        var js = FlareBootstrap.GenerateScript(["t"], ["p"], "t", "p", ThemeMode.Auto, styleFamilies: null);
-        Assert.DoesNotContain("var F=", js);
+        var js = FlareBootstrap.GenerateScript(["t"], ["p"], "t", "p", ThemeMode.Auto, ancestors: null);
+        Assert.DoesNotContain("var A=", js);
     }
 
     [Fact]
