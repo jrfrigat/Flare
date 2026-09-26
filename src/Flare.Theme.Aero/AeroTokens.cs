@@ -542,7 +542,7 @@ internal class AeroTokens
         Progress = Progress,
         Nav = Nav,
         Dialog = MaterialDesign3Tokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
-        Popover = MaterialDesign3Tokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
+        Popover = MaterialDesign3Tokens.Design.Popover with { Radius = "var(--flare-shape-small)", Shadow = "var(--flare-elevation-3)" },
         Snackbar = MaterialDesign3Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };

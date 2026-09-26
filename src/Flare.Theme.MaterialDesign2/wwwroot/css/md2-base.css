@@ -45,24 +45,17 @@
        a modal sheet 16dp, a snackbar 6dp and a card 1dp. Flare's shared scale
        has six steps (0/1/2/4/8/12dp) and hands dialog, drawer and snackbar the
        same one, so three components that Material puts four times apart would
-       arrive identical. Until an elevation token exists per component, the
-       three dp values with no step of their own are written out here, from the
-       same umbra 20% / penumbra 14% / ambient 12% recipe as the steps.
+       arrive identical. The drawer has no elevation token of its own, so its dp
+       value is written out here, from the same umbra 20% / penumbra 14% /
+       ambient 12% recipe as the steps.
        See docs/spec/_foundation/md2-spec.md, "Default elevation values".
        ---------------------------------------------------------------------- */
-    .flare-dialog {
-        box-shadow: 0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12);
-    }
-
     /* The drawer is also what a side/bottom sheet is built from here, so one rule covers both. */
     .flare-drawer {
         box-shadow: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12);
     }
 
-    .flare-snackbar {
-        box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
-    }
-
-    /* The card and the top app bar are absent from this list: each owns an elevation token
-       (CardTokens, LayoutTokens.AppBarShadow), so their values are set there rather than here. */
+    /* The dialog, snackbar, card and top app bar are absent from this list: each owns an elevation
+       token (DialogTokens.Shadow, SnackbarTokens.Shadow, CardTokens, LayoutTokens.AppBarShadow), so
+       their values are set there rather than here. */
 }

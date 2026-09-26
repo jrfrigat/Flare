@@ -1003,7 +1003,8 @@ internal static class MaterialDesign2Tokens
         Bg = "var(--flare-color-inverse-surface)",
         Color = "var(--flare-color-inverse-on-surface)",
         ActionColor = "var(--flare-color-inverse-primary)",
-        Shadow = "var(--flare-elevation-3)",
+        // 6dp: the shared scale has no step for it (spec "Default elevation values").
+        Shadow = "0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12)",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -1080,7 +1081,8 @@ internal static class MaterialDesign2Tokens
         IconSize = "1.5rem",
         Bg = "var(--flare-color-surface-container-high)",
         Color = "var(--flare-color-on-surface)",
-        Shadow = "var(--flare-elevation-3)",
+        // 24dp: the shared scale has no step for it (spec "Default elevation values").
+        Shadow = "0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12)",
     };
 
     // DataGrid baseline geometry/colors. No theme customizes the grid, so both references carry the
