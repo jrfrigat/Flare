@@ -13,6 +13,12 @@ public static class PickerField
     public const string PanelMinWidth = "--flare-picker-panel-min-width";
     /// <summary>CSS custom-property name for the panel corner radius token.</summary>
     public const string PanelRadius = "--flare-picker-panel-radius";
+    /// <summary>CSS custom-property name for the panel background token.</summary>
+    public const string PanelBg = "--flare-picker-panel-bg";
+    /// <summary>CSS custom-property name for the panel text colour token.</summary>
+    public const string PanelColor = "--flare-picker-panel-color";
+    /// <summary>CSS custom-property name for the panel shadow token.</summary>
+    public const string PanelShadow = "--flare-picker-panel-shadow";
     /// <summary>CSS custom-property name for the month header minimum height token.</summary>
     public const string HeaderHeight = "--flare-picker-header-height";
     /// <summary>CSS custom-property name for the previous/next icon size token.</summary>

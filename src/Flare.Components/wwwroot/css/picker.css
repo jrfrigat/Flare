@@ -18,9 +18,10 @@
 .flare-picker__panel {
     position: fixed;
     z-index: var(--flare-z-dropdown);
-    background: var(--flare-color-surface-container-high);
+    background: var(--flare-picker-panel-bg);
+    color: var(--flare-picker-panel-color);
     border-radius: var(--flare-picker-panel-radius);
-    box-shadow: var(--flare-elevation-3);
+    box-shadow: var(--flare-picker-panel-shadow);
     padding: var(--flare-spacing-6);
 }
 /* Inline/static picker: rendered in normal flow under the field (no fixed positioning, no scrim). */

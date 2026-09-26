@@ -1473,6 +1473,10 @@ public class FluentUI2Tokens
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "18rem",
         PanelRadius = "var(--flare-popover-radius)",
+        // The picker panel surface this theme has always drawn: a high container at level 3.
+        PanelBg = "var(--flare-color-surface-container-high)",
+        PanelColor = "var(--flare-color-on-surface)",
+        PanelShadow = "var(--flare-elevation-3)",
         HeaderHeight = "1.75rem",
         NavIconSize = "var(--flare-btn-icon-size-sm)",
         WeekdayHeight = "1.25rem",

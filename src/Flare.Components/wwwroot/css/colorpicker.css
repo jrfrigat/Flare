@@ -77,10 +77,11 @@
     /* Fixed + JS-positioned (positionAnchoredPanel) so the panel escapes a Card's overflow:hidden. */
     position: fixed;
     z-index: calc(var(--flare-z-dropdown) + 1);
-    background: var(--flare-color-surface-container);
+    background: var(--flare-popover-bg);
+    color: var(--flare-popover-color);
     border: var(--flare-border-divider);
-    border-radius: var(--flare-shape-medium);
-    box-shadow: var(--flare-elevation-2);
+    border-radius: var(--flare-popover-radius);
+    box-shadow: var(--flare-popover-shadow);
     padding: var(--flare-spacing-6);
     display: flex;
     flex-direction: column;

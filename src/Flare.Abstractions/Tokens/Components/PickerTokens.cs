@@ -23,6 +23,17 @@ public sealed record PickerTokens
     /// <summary>Corner radius of the date and date-time picker panels.</summary>
     [CssVar(PickerField.PanelRadius)] public required string PanelRadius { get; init; }
 
+    /// <summary>Background of the date, time and date-time picker panels, including each pane of a
+    /// split date-time picker. Its own surface rather than the popover's: a design language may raise a
+    /// picker above the menus and popovers beside it.</summary>
+    [CssVar(PickerField.PanelBg)] public required string PanelBg { get; init; }
+
+    /// <summary>Text colour inside the picker panels.</summary>
+    [CssVar(PickerField.PanelColor)] public required string PanelColor { get; init; }
+
+    /// <summary>Shadow (<c>box-shadow</c>) under a floating picker panel; an inline picker has none.</summary>
+    [CssVar(PickerField.PanelShadow)] public required string PanelShadow { get; init; }
+
     /// <summary>Minimum height of the month header that holds the previous/next buttons and the month label.</summary>
     [CssVar(PickerField.HeaderHeight)] public required string HeaderHeight { get; init; }
 

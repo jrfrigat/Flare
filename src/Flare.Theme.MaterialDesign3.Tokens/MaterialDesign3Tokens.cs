@@ -1506,6 +1506,11 @@ public class MaterialDesign3Tokens
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "22.5rem",
         PanelRadius = "var(--flare-shape-large)",
+        // The panel surface as it has always been drawn: surface-container-high at level 3
+        // (md.comp.date-picker.docked.container), on-surface text.
+        PanelBg = "var(--flare-color-surface-container-high)",
+        PanelColor = "var(--flare-color-on-surface)",
+        PanelShadow = "var(--flare-elevation-3)",
         HeaderHeight = "4rem",
         NavIconSize = "1.125rem",
         WeekdayHeight = "2.75rem",

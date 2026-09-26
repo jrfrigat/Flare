@@ -93,8 +93,19 @@ All notable changes to Flare are documented here. This project adheres to
   and info snackbars were painted with Material 3 roles fixed in the core stylesheet. `SnackbarTokens` now
   requires `ErrorBg`, `ErrorColor`, `SuccessBg`, `SuccessColor`, `WarningBg`, `WarningColor`, `InfoBg` and
   `InfoColor`. The built-in themes keep their look.
+- **Breaking for custom themes: picker panels take their surface from the theme.** The date, time and date-time
+  picker panels were fixed to Material 3's surface-container-high at elevation 3. `PickerTokens` now requires
+  `PanelBg`, `PanelColor` and `PanelShadow`; each pane of a split date-time picker uses them too, with the
+  picker's `PanelRadius`. The colour picker panel now draws the popover surface (`PopoverTokens` `Bg`, `Color`,
+  `Radius`, `Shadow`), which it already matched in Material 3.
 
 ### Fixed
+
+- **The colour picker panel matches the theme's popovers**, where its radius and shadow were Material 3's in
+  every theme - Aero and Visual Studio now give it their small radius and deeper shadow, Fluent 2 its small
+  radius and Liquid Glass its large one.
+- **The panes of a split date-time picker are rounded like the other picker panels**, instead of taking the
+  popover's radius.
 
 - **Disabled Material 3 buttons are grey, as the spec draws them.** The container is on-surface at 12% and the
   label on-surface at 38%, where the whole button used to fade to a pale copy of its colour.

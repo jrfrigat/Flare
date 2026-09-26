@@ -8,7 +8,6 @@
 .flare-timepicker__panel {
   min-width: 17rem;
   padding: var(--flare-spacing-8);
-  color: var(--flare-color-on-surface);
   border-radius: var(--flare-timepicker-panel-radius);
 }
 .flare-timepicker__panel-headline {
