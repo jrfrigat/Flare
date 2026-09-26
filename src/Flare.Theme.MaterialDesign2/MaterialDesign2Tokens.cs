@@ -1427,6 +1427,8 @@ internal static class MaterialDesign2Tokens
         AppBarToggleGlyphWidth = "18px",
         AppBarToggleGlyphHeight = "12px",
         AppBarToggleBarThickness = "2px",
+        // An icon button's state area is a circle, unlike the 4px container of a labelled button.
+        AppBarToggleRadius = "var(--flare-shape-full)",
     };
 
     internal static readonly LinkTokens Link = new()

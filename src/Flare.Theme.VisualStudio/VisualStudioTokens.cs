@@ -606,8 +606,8 @@ internal class VisualStudioTokens
         Dialog = FluentUI2Tokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
         Popover = FluentUI2Tokens.Design.Popover with { Radius = "var(--flare-shape-small)", Shadow = "var(--flare-elevation-3)" },
         Snackbar = FluentUI2Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
-        // The drawer toggle keeps the burger this theme drew before the Fluent record took the Hamburger's size.
-        Layout = FluentUI2Tokens.Design.Layout with { AppBarToggleSize = "36px", AppBarToggleGlyphWidth = "18px", AppBarToggleGlyphHeight = "14px", AppBarToggleBarThickness = "2px" },
+        // The drawer toggle keeps the burger this theme drew before the Fluent record took the Hamburger's size and shape.
+        Layout = FluentUI2Tokens.Design.Layout with { AppBarToggleSize = "36px", AppBarToggleGlyphWidth = "18px", AppBarToggleGlyphHeight = "14px", AppBarToggleBarThickness = "2px", AppBarToggleRadius = "var(--flare-shape-full)" },
         Extended = Extended,
     };
 

@@ -52,4 +52,6 @@ public static class LayoutField
     public const string AppBarToggleGlyphHeight = "--flare-layout-appbar-toggle-glyph-height";
     /// <summary>CSS custom-property name for the thickness of each drawer-toggle glyph bar.</summary>
     public const string AppBarToggleBarThickness = "--flare-layout-appbar-toggle-bar-thickness";
+    /// <summary>CSS custom-property name for the corner radius of the app bar's drawer-toggle button.</summary>
+    public const string AppBarToggleRadius = "--flare-layout-appbar-toggle-radius";
 }

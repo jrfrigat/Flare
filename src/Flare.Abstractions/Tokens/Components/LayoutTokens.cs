@@ -90,4 +90,8 @@ public sealed record LayoutTokens
 
     /// <summary>Thickness of each drawer-toggle glyph bar. Its ends are rounded by half of it.</summary>
     [CssVar(LayoutField.AppBarToggleBarThickness)] public required string AppBarToggleBarThickness { get; init; }
+
+    /// <summary>Corner radius of the drawer-toggle button - a circle for a language whose icon buttons are
+    /// round, a small radius for one whose icon buttons are squares. Usually a reference to a shape step.</summary>
+    [CssVar(LayoutField.AppBarToggleRadius)] public required string AppBarToggleRadius { get; init; }
 }

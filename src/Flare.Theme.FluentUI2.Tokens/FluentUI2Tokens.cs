@@ -1458,6 +1458,8 @@ public class FluentUI2Tokens
         AppBarToggleGlyphWidth = "16px",
         AppBarToggleGlyphHeight = "11px",
         AppBarToggleBarThickness = "1px",
+        // The Button's borderRadiusMedium (4px), not a circle.
+        AppBarToggleRadius = "var(--flare-shape-small)",
     };
 
     internal static readonly LinkTokens Link = new()

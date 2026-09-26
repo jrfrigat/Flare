@@ -219,7 +219,7 @@
     flex-shrink: 0;
     background: transparent;
     border: none;
-    border-radius: var(--flare-shape-full);
+    border-radius: var(--flare-layout-appbar-toggle-radius);
     color: inherit;
     cursor: pointer;
     transition: background var(--flare-motion-duration-state-change);

@@ -102,11 +102,11 @@
 - **Ломающее для собственных тем: `TooltipTokens` требует `Shadow`** - тень обычной подсказки: `none` для
   темной плашки, настоящая тень для светлой подсказки.
 - **Ломающее для собственных тем: `LayoutTokens` требует геометрию кнопки меню.** `AppBarToggleSize`,
-  `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight` и `AppBarToggleBarThickness` задают размер кнопки-бургера
-  панели приложения и трех ее полос - раньше это была одинаковая во всех темах кнопка 36px с глифом 18x14.
-  Material Design 3 и 3 Expressive теперь рисуют ее своей icon button 40px с глифом 18x12, Material Design 2 -
-  кнопкой 48px, Fluent 2 - своим Hamburger 32px с полосами 1px; Aero, Liquid Glass и Visual Studio сохраняют
-  бургер 36px.
+  `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` и `AppBarToggleRadius` задают
+  размер и форму кнопки-бургера панели приложения и трех ее полос - раньше это был одинаковый во всех темах
+  круг 36px с глифом 18x14. Material Design 3 и 3 Expressive теперь рисуют ее своей icon button 40px с глифом
+  18x12, Material Design 2 - кнопкой 48px, Fluent 2 - своим Hamburger 32px с полосами 1px и углами 4px; Aero,
+  Liquid Glass и Visual Studio сохраняют круглый бургер 36px.
 - **Ломающее: тема называет родителя, а не семейство стилей.** Один `StyleFamilyId` мог назвать только одного
   предка, поэтому тема в третьем поколении, чье среднее поколение приносило свои стили, теряла CSS либо базы,
   либо родителя. Теперь `ITheme.Base` называет тему, поверх которой построена эта, а корень несет по классу

@@ -1488,6 +1488,7 @@ public class MaterialDesign3Tokens
         AppBarToggleGlyphWidth = "18px",
         AppBarToggleGlyphHeight = "12px",
         AppBarToggleBarThickness = "2px",
+        AppBarToggleRadius = "var(--flare-shape-full)",
     };
 
     internal static readonly LinkTokens Link = new()
