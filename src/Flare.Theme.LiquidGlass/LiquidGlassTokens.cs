@@ -480,6 +480,20 @@ internal class LiquidGlassTokens
         OutlinedRadius = "var(--flare-shape-medium)",
         BorderColor = "transparent",
         BorderBottomColor = "transparent",
+        // Focus and error keep the look this theme has always had: the border stays as it rests, and an error
+        // outlines the whole well with a 1px error ring on focus. The Material record states its own spec.
+        FocusBorderColor = "transparent",
+        ErrorBorderColor = "var(--flare-color-error)",
+        ErrorBorderBottomColor = "var(--flare-color-error)",
+        ErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        // Explicit variants keep the fields this theme drew before they became theme tokens.
+        FilledVariantFocusBorderBottomColor = "var(--flare-color-on-surface-variant)",
+        FilledVariantErrorBorderColor = "var(--flare-color-error)",
+        FilledVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        OutlinedVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderColor = "var(--flare-color-outline)",
+        OutlinedVariantFocusBorderBottomColor = "var(--flare-color-outline)",
+        OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
     };
 
     // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).

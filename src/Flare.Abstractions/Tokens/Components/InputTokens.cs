@@ -122,4 +122,66 @@ public sealed record InputTokens
     /// opaque and carries the change in its own stylesheet, since a foreground colour has no value
     /// meaning "leave this as painted".</summary>
     [CssVar(InputField.DisabledOpacity)] public required string DisabledOpacity { get; init; }
+
+    /// <summary>Border colour on all four sides while the field has focus; the bottom edge follows
+    /// <see cref="FocusBorderBottomColor"/>. The resting colour for a theme whose focus leaves the border alone.</summary>
+    [CssVar(InputField.FocusBorderColor)] public required string FocusBorderColor { get; init; }
+
+    /// <summary>Border colour on all four sides of a field in the error state; the bottom edge follows
+    /// <see cref="ErrorBorderBottomColor"/>. <c>transparent</c> for a language that marks errors with the
+    /// bottom indicator alone.</summary>
+    [CssVar(InputField.ErrorBorderColor)] public required string ErrorBorderColor { get; init; }
+
+    /// <summary>Bottom-border colour of a field in the error state.</summary>
+    [CssVar(InputField.ErrorBorderBottomColor)] public required string ErrorBorderBottomColor { get; init; }
+
+    /// <summary>Focus indicator (<c>box-shadow</c>) of a focused field in the error state, in place of
+    /// <see cref="FocusRing"/>.</summary>
+    [CssVar(InputField.ErrorFocusRing)] public required string ErrorFocusRing { get; init; }
+
+    // Explicit variants. A field with Variant="Filled" or "Outlined" points its own well variables at one of
+    // the two sets below, so each theme decides what its filled and outlined fields look like. The values
+    // must not refer to the field's own --flare-input-* variables: the variant class rebinds those.
+
+    /// <summary>Well background of a filled field.</summary>
+    [CssVar(InputField.Filled.Bg)] public required string FilledVariantBg { get; init; }
+    /// <summary>Border colour (all four sides) of a filled field.</summary>
+    [CssVar(InputField.Filled.BorderColor)] public required string FilledVariantBorderColor { get; init; }
+    /// <summary>Bottom-border colour (the active indicator) of a filled field.</summary>
+    [CssVar(InputField.Filled.BorderBottomColor)] public required string FilledVariantBorderBottomColor { get; init; }
+    /// <summary>Corner radius of a filled field.</summary>
+    [CssVar(InputField.Filled.Radius)] public required string FilledVariantRadius { get; init; }
+    /// <summary>Focus indicator (<c>box-shadow</c>) of a filled field.</summary>
+    [CssVar(InputField.Filled.FocusRing)] public required string FilledVariantFocusRing { get; init; }
+    /// <summary>Border colour (all four sides) of a focused filled field.</summary>
+    [CssVar(InputField.Filled.FocusBorderColor)] public required string FilledVariantFocusBorderColor { get; init; }
+    /// <summary>Bottom-border colour of a focused filled field.</summary>
+    [CssVar(InputField.Filled.FocusBorderBottomColor)] public required string FilledVariantFocusBorderBottomColor { get; init; }
+    /// <summary>Border colour (all four sides) of a filled field in the error state.</summary>
+    [CssVar(InputField.Filled.ErrorBorderColor)] public required string FilledVariantErrorBorderColor { get; init; }
+    /// <summary>Bottom-border colour of a filled field in the error state.</summary>
+    [CssVar(InputField.Filled.ErrorBorderBottomColor)] public required string FilledVariantErrorBorderBottomColor { get; init; }
+    /// <summary>Focus indicator (<c>box-shadow</c>) of a focused filled field in the error state.</summary>
+    [CssVar(InputField.Filled.ErrorFocusRing)] public required string FilledVariantErrorFocusRing { get; init; }
+
+    /// <summary>Well background of an outlined field.</summary>
+    [CssVar(InputField.Outlined.Bg)] public required string OutlinedVariantBg { get; init; }
+    /// <summary>Border colour (all four sides) of an outlined field.</summary>
+    [CssVar(InputField.Outlined.BorderColor)] public required string OutlinedVariantBorderColor { get; init; }
+    /// <summary>Bottom-border colour of an outlined field.</summary>
+    [CssVar(InputField.Outlined.BorderBottomColor)] public required string OutlinedVariantBorderBottomColor { get; init; }
+    /// <summary>Corner radius of an outlined field.</summary>
+    [CssVar(InputField.Outlined.Radius)] public required string OutlinedVariantRadius { get; init; }
+    /// <summary>Focus indicator (<c>box-shadow</c>) of an outlined field.</summary>
+    [CssVar(InputField.Outlined.FocusRing)] public required string OutlinedVariantFocusRing { get; init; }
+    /// <summary>Border colour (all four sides) of a focused outlined field.</summary>
+    [CssVar(InputField.Outlined.FocusBorderColor)] public required string OutlinedVariantFocusBorderColor { get; init; }
+    /// <summary>Bottom-border colour of a focused outlined field.</summary>
+    [CssVar(InputField.Outlined.FocusBorderBottomColor)] public required string OutlinedVariantFocusBorderBottomColor { get; init; }
+    /// <summary>Border colour (all four sides) of an outlined field in the error state.</summary>
+    [CssVar(InputField.Outlined.ErrorBorderColor)] public required string OutlinedVariantErrorBorderColor { get; init; }
+    /// <summary>Bottom-border colour of an outlined field in the error state.</summary>
+    [CssVar(InputField.Outlined.ErrorBorderBottomColor)] public required string OutlinedVariantErrorBorderBottomColor { get; init; }
+    /// <summary>Focus indicator (<c>box-shadow</c>) of a focused outlined field in the error state.</summary>
+    [CssVar(InputField.Outlined.ErrorFocusRing)] public required string OutlinedVariantErrorFocusRing { get; init; }
 }

@@ -72,6 +72,66 @@ public static class InputField
     public const string FocusOutlineOffset = "--flare-input-focus-outline-offset";
     /// <summary>CSS custom-property name for the disabled-field content opacity token.</summary>
     public const string DisabledOpacity = "--flare-input-disabled-opacity";
+    /// <summary>CSS custom-property name for the border COLOUR (all four sides) while the field has focus.</summary>
+    public const string FocusBorderColor = "--flare-input-focus-border-color";
+    /// <summary>CSS custom-property name for the border COLOUR (all four sides) of an errored field.</summary>
+    public const string ErrorBorderColor = "--flare-input-error-border-color";
+    /// <summary>CSS custom-property name for the bottom-border COLOUR of an errored field.</summary>
+    public const string ErrorBorderBottomColor = "--flare-input-error-border-bottom-color";
+    /// <summary>CSS custom-property name for the focus indicator box-shadow of an errored field.</summary>
+    public const string ErrorFocusRing = "--flare-input-error-focus-ring";
+
+    /// <summary>CSS variable names of the explicit filled variant (<c>Variant="Filled"</c>). The variant
+    /// class points the field's own variables at these.</summary>
+    public static class Filled
+    {
+        /// <summary>Well background.</summary>
+        public const string Bg = "--flare-input-filled-bg";
+        /// <summary>Border colour on all four sides.</summary>
+        public const string BorderColor = "--flare-input-filled-border-color";
+        /// <summary>Bottom-border colour (the active indicator).</summary>
+        public const string BorderBottomColor = "--flare-input-filled-border-bottom-color";
+        /// <summary>Well corner radius.</summary>
+        public const string Radius = "--flare-input-filled-radius";
+        /// <summary>Focus indicator box-shadow.</summary>
+        public const string FocusRing = "--flare-input-filled-focus-ring";
+        /// <summary>Border colour while focused.</summary>
+        public const string FocusBorderColor = "--flare-input-filled-focus-border-color";
+        /// <summary>Bottom-border colour while focused.</summary>
+        public const string FocusBorderBottomColor = "--flare-input-filled-focus-border-bottom-color";
+        /// <summary>Border colour of an errored field.</summary>
+        public const string ErrorBorderColor = "--flare-input-filled-error-border-color";
+        /// <summary>Bottom-border colour of an errored field.</summary>
+        public const string ErrorBorderBottomColor = "--flare-input-filled-error-border-bottom-color";
+        /// <summary>Focus indicator box-shadow of an errored field.</summary>
+        public const string ErrorFocusRing = "--flare-input-filled-error-focus-ring";
+    }
+
+    /// <summary>CSS variable names of the explicit outlined variant (<c>Variant="Outlined"</c>). The variant
+    /// class points the field's own variables at these.</summary>
+    public static class Outlined
+    {
+        /// <summary>Well background.</summary>
+        public const string Bg = "--flare-input-outlined-bg";
+        /// <summary>Border colour on all four sides.</summary>
+        public const string BorderColor = "--flare-input-outlined-border-color";
+        /// <summary>Bottom-border colour.</summary>
+        public const string BorderBottomColor = "--flare-input-outlined-border-bottom-color";
+        /// <summary>Well corner radius.</summary>
+        public const string Radius = "--flare-input-outlined-radius";
+        /// <summary>Focus indicator box-shadow.</summary>
+        public const string FocusRing = "--flare-input-outlined-focus-ring";
+        /// <summary>Border colour while focused.</summary>
+        public const string FocusBorderColor = "--flare-input-outlined-focus-border-color";
+        /// <summary>Bottom-border colour while focused.</summary>
+        public const string FocusBorderBottomColor = "--flare-input-outlined-focus-border-bottom-color";
+        /// <summary>Border colour of an errored field.</summary>
+        public const string ErrorBorderColor = "--flare-input-outlined-error-border-color";
+        /// <summary>Bottom-border colour of an errored field.</summary>
+        public const string ErrorBorderBottomColor = "--flare-input-outlined-error-border-bottom-color";
+        /// <summary>Focus indicator box-shadow of an errored field.</summary>
+        public const string ErrorFocusRing = "--flare-input-outlined-error-focus-ring";
+    }
 }
 
 /// <summary>CSS variable tokens for the dialog panel.</summary>

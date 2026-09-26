@@ -27,29 +27,34 @@
 .flare-input--margin-dense  { margin-block: var(--flare-spacing-2); }
 .flare-input--margin-normal { margin-block: var(--flare-spacing-4); }
 
-/* Per-field variant override (independent of theme) - drives the shared --flare-input-* tokens.
-   Applied to FlareInput / FlareNumericField / FlareTextArea roots. Default = theme decides. */
+/* Per-field variant (Variant="Filled" / "Outlined") on FlareInput / FlareNumericField / FlareTextArea roots.
+   Default = the theme's own field. The theme owns what its filled and outlined fields look like: each class
+   only points the shared well variables at that variant's token set. An explicit variant draws its focus
+   with the ring (a layout-neutral inset box-shadow), so the theme-level focus outline is cleared. */
 .flare-input-variant--filled {
-    --flare-input-bg: var(--flare-color-surface-container-highest);
-    --flare-input-border-color: transparent;
-    --flare-input-border-bottom-color: var(--flare-color-on-surface-variant);
-    --flare-input-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
-    /* Focus emphasis = an inset box-shadow (layout-neutral), so the field never grows / "jumps"
-       when focused. The 1px border stays; the shadow adds the second accent pixel at the bottom. */
-    --flare-input-focus-ring: inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary));
-    /* An explicit variant defines its own focus (a ring); clear any theme-level focus outline. */
+    --flare-input-bg: var(--flare-input-filled-bg);
+    --flare-input-border-color: var(--flare-input-filled-border-color);
+    --flare-input-border-bottom-color: var(--flare-input-filled-border-bottom-color);
+    --flare-input-radius: var(--flare-input-filled-radius);
+    --flare-input-focus-ring: var(--flare-input-filled-focus-ring);
+    --flare-input-focus-border-color: var(--flare-input-filled-focus-border-color);
+    --flare-input-focus-border-bottom-color: var(--flare-input-filled-focus-border-bottom-color);
+    --flare-input-error-border-color: var(--flare-input-filled-error-border-color);
+    --flare-input-error-border-bottom-color: var(--flare-input-filled-error-border-bottom-color);
+    --flare-input-error-focus-ring: var(--flare-input-filled-error-focus-ring);
     --flare-input-focus-outline: none;
 }
 .flare-input-variant--outlined {
-    --flare-input-bg: transparent;
-    --flare-input-border-color: var(--flare-color-outline);
-    --flare-input-border-bottom-color: var(--flare-color-outline);
-    --flare-input-radius: var(--flare-shape-extra-small);
-    /* Inset ring on all four sides -> reads as a 2px accent border without a layout shift. */
-    --flare-input-focus-ring: inset 0 0 0 1px var(--fc-main, var(--flare-color-primary));
-    /* The ring draws the focus on every side alike, so the bottom edge keeps its resting colour. */
-    --flare-input-focus-border-bottom-color: var(--flare-input-border-bottom-color);
-    /* An explicit variant defines its own focus (a ring); clear any theme-level focus outline. */
+    --flare-input-bg: var(--flare-input-outlined-bg);
+    --flare-input-border-color: var(--flare-input-outlined-border-color);
+    --flare-input-border-bottom-color: var(--flare-input-outlined-border-bottom-color);
+    --flare-input-radius: var(--flare-input-outlined-radius);
+    --flare-input-focus-ring: var(--flare-input-outlined-focus-ring);
+    --flare-input-focus-border-color: var(--flare-input-outlined-focus-border-color);
+    --flare-input-focus-border-bottom-color: var(--flare-input-outlined-focus-border-bottom-color);
+    --flare-input-error-border-color: var(--flare-input-outlined-error-border-color);
+    --flare-input-error-border-bottom-color: var(--flare-input-outlined-error-border-bottom-color);
+    --flare-input-error-focus-ring: var(--flare-input-outlined-error-focus-ring);
     --flare-input-focus-outline: none;
 }
 
@@ -67,7 +72,12 @@
     --flare-input-disabled-indicator: transparent;
     --flare-input-radius: 0;
     --flare-input-focus-ring: none;
+    --flare-input-focus-border-color: transparent;
     --flare-input-focus-outline: var(--flare-focus-ring);
+    /* With no edge of its own, a bare field shows an error the way the theme's outlined field does. */
+    --flare-input-error-border-color: var(--flare-input-outlined-error-border-color);
+    --flare-input-error-border-bottom-color: var(--flare-input-outlined-error-border-bottom-color);
+    --flare-input-error-focus-ring: var(--flare-input-outlined-error-focus-ring);
 }
 
 /* Mono: the entered text in the monospace font - identifiers, paths, templates. */
@@ -137,14 +147,15 @@
    real --flare-input-focus-outline (a browser-native focus rectangle). The theme sets one, the other stays
    none; the filled/outlined variant classes override the ring and clear the outline. */
 .flare-input__field:focus-within {
+    border-color: var(--flare-input-focus-border-color);
     border-bottom-color: var(--flare-input-focus-border-bottom-color);
     box-shadow: var(--flare-input-focus-ring);
     outline: var(--flare-input-focus-outline);
     outline-offset: var(--flare-input-focus-outline-offset);
 }
-/* Invalid field: the focus indicator follows the error color instead of the accent. */
+/* Invalid field: the theme's error focus indicator replaces the accent one. */
 .flare-input--error .flare-input__field:focus-within {
-    box-shadow: inset 0 0 0 1px var(--flare-color-error);
+    box-shadow: var(--flare-input-error-focus-ring);
     outline: none;
 }
 
@@ -405,8 +416,8 @@
 .flare-input--error .flare-input__counter { color: var(--flare-color-error); }
 
 .flare-input--error .flare-input__field {
-  border-color: var(--flare-color-error);
-  border-bottom-color: var(--flare-color-error);
+  border-color: var(--flare-input-error-border-color);
+  border-bottom-color: var(--flare-input-error-border-bottom-color);
 }
 /* Error hover: the indicator darkens (blend error with 8% on-surface, so darker in light /
    lighter in dark). The 8% state layer itself already shows via the generic :hover rule. */

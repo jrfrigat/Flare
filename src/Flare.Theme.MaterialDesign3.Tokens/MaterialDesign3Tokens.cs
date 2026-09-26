@@ -726,6 +726,36 @@ public class MaterialDesign3Tokens
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
         ErrorHoverIndicator = "var(--flare-color-on-error-container)", // error.hover.active-indicator.color
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        FocusBorderColor = "transparent",
+        // The default field is filled, so an error is the active indicator alone
+        // (md.comp.filled-text-field.error-active-indicator.color), 2dp while focused.
+        ErrorBorderColor = "transparent",
+        ErrorBorderBottomColor = "var(--flare-color-error)",
+        ErrorFocusRing = "inset 0 -1px 0 0 var(--flare-color-error)",
+        // md.comp.filled-text-field: container surface-container-highest, corner-extra-small-top, a 1dp
+        // on-surface-variant indicator that turns primary and 2dp on focus, error-coloured on error.
+        FilledVariantBg = "var(--flare-color-surface-container-highest)",
+        FilledVariantBorderColor = "transparent",
+        FilledVariantBorderBottomColor = "var(--flare-color-on-surface-variant)",
+        FilledVariantRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
+        FilledVariantFocusRing = "inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FilledVariantFocusBorderColor = "transparent",
+        FilledVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
+        FilledVariantErrorBorderColor = "transparent",
+        FilledVariantErrorBorderBottomColor = "var(--flare-color-error)",
+        FilledVariantErrorFocusRing = "inset 0 -1px 0 0 var(--flare-color-error)",
+        // md.comp.outlined-text-field: a 1dp outline, corner-extra-small, and a 3dp primary outline on focus -
+        // the border turns primary and a 2dp inset ring adds the rest without a layout shift.
+        OutlinedVariantBg = "transparent",
+        OutlinedVariantBorderColor = "var(--flare-color-outline)",
+        OutlinedVariantBorderBottomColor = "var(--flare-color-outline)",
+        OutlinedVariantRadius = "var(--flare-shape-extra-small)",
+        OutlinedVariantFocusRing = "inset 0 0 0 2px var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
+        OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
+        OutlinedVariantErrorFocusRing = "inset 0 0 0 2px var(--flare-color-error)",
     };
 
     // Chart. The categorical palette is built from the theme's OWN hues rather than from fixed ink, so a

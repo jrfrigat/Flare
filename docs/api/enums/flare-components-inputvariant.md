@@ -4,15 +4,15 @@
 
 `Flare.Components.InputVariant`
 
-Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea), independent of the active theme. Default keeps the theme's own field style.
+Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). Default keeps the theme's own field style; Filled and Outlined ask for the active theme's filled or outlined field, so the same variant follows each design language.
 
 ## Values
 
 | Name | Value | Description |
 | --- | --- | --- |
 | `Default` | `0` | Use the active theme's own field style. |
-| `Filled` | `1` | Filled: surface container background + bottom active indicator. |
-| `Outlined` | `2` | Outlined: transparent background + full outline, brand outline on focus. |
+| `Filled` | `1` | The theme's filled field: a background fill, usually with a bottom indicator. |
+| `Outlined` | `2` | The theme's outlined field: a stroke around the field, usually with no fill. |
 | `Bare` | `3` | Bare: no container, border or indicator - only the text and its adornments, for a row whose surface the surrounding layout paints (an identifier strip, a toolbar search). Focus stays visible through the library's focus ring, and an error still shows. |
 
 ## Used by components

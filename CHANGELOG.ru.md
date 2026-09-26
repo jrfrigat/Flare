@@ -74,8 +74,23 @@
   остальные встроенные темы и генераторы палитр выводят их из своих ролей (fixed-заливка - светлый контейнер,
   ступень dim - темный акцент). В `PaletteFactory` добавлены `WithPrimaryFixedFromPrimary` и
   `WithTertiaryFixedFromTertiary` для палитр, перекрашивающих акценты базовой схемы.
+- **Ломающее для собственных тем: вид полей с `Variant="Filled"` и `Variant="Outlined"` задает тема.** Их цвета,
+  скругление и кольца фокуса были значениями Material 3, зашитыми в таблицу стилей ядра, поэтому поле с явным
+  вариантом выглядело как Material 3 в любой теме. `InputTokens` теперь требует по десять значений на вариант
+  (`FilledVariantBg`, `FilledVariantBorderColor`, `FilledVariantBorderBottomColor`, `FilledVariantRadius`,
+  `FilledVariantFocusRing`, `FilledVariantFocusBorderColor`, `FilledVariantFocusBorderBottomColor`,
+  `FilledVariantErrorBorderColor`, `FilledVariantErrorBorderBottomColor`, `FilledVariantErrorFocusRing` и те же
+  десять `OutlinedVariant*`), а также собственные `FocusBorderColor`, `ErrorBorderColor`, `ErrorBorderBottomColor`
+  и `ErrorFocusRing` темы - они заменяют окраску ошибки, которую ядро навязывало каждому полю.
 
 ### Исправлено
+
+- **Поля с явным вариантом сохраняют язык дизайна темы.** В Fluent 2 заполненное поле - нейтральное
+  filled-darker с полосой бренда при фокусе, а поле с обводкой - собственное поле Fluent; Material Design 2 и
+  Visual Studio тоже рисуют свои заполненные и обведенные поля.
+- **Поля Material 3 и Material Design 2 показывают ошибку по спецификации.** Заполненное поле с ошибкой красит
+  нижний индикатор, а не рисует красную рамку со всех сторон, а поле Material 3 с обводкой в фокусе получает
+  обводку primary толщиной 3px вместо кольца 1px внутри серой рамки.
 
 - **Кнопки Material Design 3 соответствуют базовой спецификации.** Кнопка, кнопка-иконка и сегментированная
   кнопка размера по умолчанию - 40px в высоту вместо 48px, иконка рядом с подписью - 18px, в кнопке-иконке -

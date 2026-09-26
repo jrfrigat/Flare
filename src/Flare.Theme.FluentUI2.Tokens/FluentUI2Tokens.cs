@@ -750,6 +750,34 @@ public class FluentUI2Tokens
         DisabledIndicator = "var(--flare-fluent-disabled-border, #E0E0E0)",
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
         DisabledOpacity = "1",
+        // The stroke stays as it rests on focus; the brand bar underneath carries it. An invalid field is
+        // stroked in the error colour.
+        FocusBorderColor = "var(--flare-color-outline)",
+        ErrorBorderColor = "var(--flare-color-error)",
+        ErrorBorderBottomColor = "var(--flare-color-error)",
+        ErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        // Filled = Fluent's filled-darker appearance: a neutral fill with no stroke, the same brand bar on focus.
+        FilledVariantBg = "var(--flare-color-surface-container-low)",
+        FilledVariantBorderColor = "transparent",
+        FilledVariantBorderBottomColor = "transparent",
+        FilledVariantRadius = "var(--flare-shape-small)",
+        FilledVariantFocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FilledVariantFocusBorderColor = "transparent",
+        FilledVariantFocusBorderBottomColor = "transparent",
+        FilledVariantErrorBorderColor = "var(--flare-color-error)",
+        FilledVariantErrorBorderBottomColor = "var(--flare-color-error)",
+        FilledVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        // Outlined = Fluent's own outline appearance, the field this theme draws by default.
+        OutlinedVariantBg = "var(--flare-color-surface)",
+        OutlinedVariantBorderColor = "var(--flare-color-outline)",
+        OutlinedVariantBorderBottomColor = "var(--flare-color-outline)",
+        OutlinedVariantRadius = "var(--flare-shape-small)",
+        OutlinedVariantFocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderColor = "var(--flare-color-outline)",
+        OutlinedVariantFocusBorderBottomColor = "var(--flare-color-outline)",
+        OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
+        OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
+        OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
     };
 
     // Chart - Fluent: flat marks, square legend swatches, hairline solid grid, no frame around the plot.

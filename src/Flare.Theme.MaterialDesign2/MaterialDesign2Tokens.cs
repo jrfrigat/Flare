@@ -661,6 +661,33 @@ internal static class MaterialDesign2Tokens
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        FocusBorderColor = "transparent",
+        // The default field is filled: an error turns the activation indicator red and 2dp, with no side border.
+        ErrorBorderColor = "transparent",
+        ErrorBorderBottomColor = "var(--flare-color-error)",
+        ErrorFocusRing = "inset 0 -1px 0 0 var(--flare-color-error)",
+        // Filled text field: a 1dp indicator that becomes a 2dp primary one on focus.
+        FilledVariantBg = "var(--flare-color-surface-container-highest)",
+        FilledVariantBorderColor = "transparent",
+        FilledVariantBorderBottomColor = "var(--flare-color-on-surface-variant)",
+        FilledVariantRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
+        FilledVariantFocusRing = "inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FilledVariantFocusBorderColor = "transparent",
+        FilledVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
+        FilledVariantErrorBorderColor = "transparent",
+        FilledVariantErrorBorderBottomColor = "var(--flare-color-error)",
+        FilledVariantErrorFocusRing = "inset 0 -1px 0 0 var(--flare-color-error)",
+        // Outlined text field: a 1dp outline that becomes a 2dp primary one on focus.
+        OutlinedVariantBg = "transparent",
+        OutlinedVariantBorderColor = "var(--flare-color-outline)",
+        OutlinedVariantBorderBottomColor = "var(--flare-color-outline)",
+        OutlinedVariantRadius = "var(--flare-shape-extra-small)",
+        OutlinedVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
+        OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
+        OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
     };
 
     // Chart. The categorical palette is built from the theme's OWN hues rather than from fixed ink, so a

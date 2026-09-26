@@ -8494,13 +8494,13 @@ public static class ComponentApiRegistry
             @"InputVariant",
             @"Flare.Components.InputVariant",
             @"Flare.Components",
-            @"Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea), independent of the active theme. Default keeps the theme's own field style.",
+            @"Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). Default keeps the theme's own field style; Filled and Outlined ask for the active theme's filled or outlined field, so the same variant follows each design language.",
             null,
             new ApiEnumMember[]
             {
                 new ApiEnumMember(@"Default", @"0", @"Use the active theme's own field style."),
-                new ApiEnumMember(@"Filled", @"1", @"Filled: surface container background + bottom active indicator."),
-                new ApiEnumMember(@"Outlined", @"2", @"Outlined: transparent background + full outline, brand outline on focus."),
+                new ApiEnumMember(@"Filled", @"1", @"The theme's filled field: a background fill, usually with a bottom indicator."),
+                new ApiEnumMember(@"Outlined", @"2", @"The theme's outlined field: a stroke around the field, usually with no fill."),
                 new ApiEnumMember(@"Bare", @"3", @"Bare: no container, border or indicator - only the text and its adornments, for a row whose surface the surrounding layout paints (an identifier strip, a toolbar search). Focus stays visible through the library's focus ring, and an error still shows."),
             },
             new string[]

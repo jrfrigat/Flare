@@ -72,8 +72,24 @@ All notable changes to Flare are documented here. This project adheres to
   other built-in themes and the palette generators derive them from their own roles (the fixed fill is the light
   container, the dim step the dark accent). `PaletteFactory` gains `WithPrimaryFixedFromPrimary` and
   `WithTertiaryFixedFromTertiary` for palettes that recolour a base scheme's accents.
+- **Breaking for custom themes: the theme decides what `Variant="Filled"` and `Variant="Outlined"` fields look
+  like.** Their colours, radius and focus rings were Material 3 values fixed in the core stylesheet, so a field
+  with an explicit variant looked like Material 3 under every theme. `InputTokens` now requires ten values for
+  each variant (`FilledVariantBg`, `FilledVariantBorderColor`, `FilledVariantBorderBottomColor`,
+  `FilledVariantRadius`, `FilledVariantFocusRing`, `FilledVariantFocusBorderColor`,
+  `FilledVariantFocusBorderBottomColor`, `FilledVariantErrorBorderColor`, `FilledVariantErrorBorderBottomColor`,
+  `FilledVariantErrorFocusRing`, and the same ten `OutlinedVariant*`), plus the theme's own `FocusBorderColor`,
+  `ErrorBorderColor`, `ErrorBorderBottomColor` and `ErrorFocusRing`, which replace the error colouring the core
+  applied to every field.
 
 ### Fixed
+
+- **Fields keep their design language with an explicit variant.** In Fluent 2 a filled field is the neutral
+  filled-darker field with the brand bar on focus and an outlined field is Fluent's own; Material Design 2 and
+  Visual Studio draw their own filled and outlined fields too.
+- **Material 3 and Material Design 2 fields show an error the way the spec does.** A filled field in error turns
+  its bottom indicator red instead of drawing a red frame on all four sides, and a Material 3 outlined field
+  focuses with a 3px primary outline instead of a 1px ring inside a grey border.
 
 - **Material Design 3 buttons match the baseline spec.** A default-size button, icon button and segmented
   button is 40px tall instead of 48px, with an 18px icon beside a label, a 24px icon in an icon button and a

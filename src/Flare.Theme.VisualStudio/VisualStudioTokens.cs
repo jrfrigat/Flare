@@ -486,6 +486,16 @@ internal class VisualStudioTokens
         FocusRing = "none",
         FocusOutline = "2px solid var(--fc-main, var(--flare-color-primary))",
         FocusOutlineOffset = "1px",
+        // An explicit variant draws its focus with the ring, so both variants show the 2px accent rectangle as
+        // the accent border plus a 1px inset ring.
+        FilledVariantRadius = "var(--flare-shape-extra-small)",
+        FilledVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        FilledVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
+        FilledVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantRadius = "var(--flare-shape-extra-small)",
+        OutlinedVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
+        OutlinedVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
     };
 
     // Progress - thin VS bar (derives Fluent's already-flat progress).
