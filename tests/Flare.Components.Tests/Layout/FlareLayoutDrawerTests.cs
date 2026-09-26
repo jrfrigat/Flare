@@ -167,7 +167,7 @@ public class FlareLayoutDrawerContentPaddingTests : FlareTestContext
             .Add(d => d.ContentPadding, step)
             .Add(d => d.ChildContent, "<p>body</p>"));
 
-        var padClass = shell.Find("nav").ClassName.Split(' ')
+        var padClass = shell.Find("nav").ClassList
             .Single(c => c.Contains("content-pad", StringComparison.Ordinal));
 
         Assert.Contains(padClass, standalone.Find($".{Css.Classes.Drawer.Root}").ClassName);
