@@ -341,6 +341,11 @@ public class MaterialDesign3Tokens
         IconOnlyIconSizeMd = "1.5rem",  // 24dp (spec)
         IconOnlyIconSizeLg = "1.5rem",  // 24dp
         IconOnlyIconSizeXl = "1.75rem", // 28dp
+        IconOnlySizeXs = "var(--flare-btn-height-xs)",
+        IconOnlySizeSm = "var(--flare-btn-height-sm)",
+        IconOnlySizeMd = "var(--flare-btn-height-md)",
+        IconOnlySizeLg = "var(--flare-btn-height-lg)",
+        IconOnlySizeXl = "var(--flare-btn-height-xl)",
         // An icon-only button rounds like a labelled one of the same size.
         IconOnlyRadiusXs = "var(--flare-btn-radius-xs-top-left)",
         IconOnlyRadiusSm = "var(--flare-btn-radius-sm-top-left)",

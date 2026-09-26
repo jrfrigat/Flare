@@ -215,6 +215,17 @@ public sealed record ButtonTokens
     [CssVar(Button.IconOnlyIconSize.Lg)] public required string IconOnlyIconSizeLg { get; init; }
     /// <summary>Glyph size of an icon-only button at the xl size.</summary>
     [CssVar(Button.IconOnlyIconSize.Xl)] public required string IconOnlyIconSizeXl { get; init; }
+    /// <summary>Side of an icon-only button at the xs size, in place of the labelled height. Point it at the
+    /// labelled height to keep an icon-only button as tall as a labelled one.</summary>
+    [CssVar(Button.IconOnlySize.Xs)] public required string IconOnlySizeXs { get; init; }
+    /// <summary>Side of an icon-only button at the sm size.</summary>
+    [CssVar(Button.IconOnlySize.Sm)] public required string IconOnlySizeSm { get; init; }
+    /// <summary>Side of an icon-only button at the md size.</summary>
+    [CssVar(Button.IconOnlySize.Md)] public required string IconOnlySizeMd { get; init; }
+    /// <summary>Side of an icon-only button at the lg size.</summary>
+    [CssVar(Button.IconOnlySize.Lg)] public required string IconOnlySizeLg { get; init; }
+    /// <summary>Side of an icon-only button at the xl size.</summary>
+    [CssVar(Button.IconOnlySize.Xl)] public required string IconOnlySizeXl { get; init; }
     /// <summary>Corner radius of an icon-only button at the xs size, in place of the labelled
     /// <see cref="RadiusXs"/>. Point it at the labelled radius to round both the same way. An explicit
     /// button shape or the selected state still decides the radius when one applies.</summary>

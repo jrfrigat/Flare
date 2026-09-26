@@ -286,18 +286,26 @@ internal static class MaterialDesign2Tokens
         IconSizeLg = "1.25rem",
         IconSizeXl = "1.5rem",
         // A lone glyph takes the labelled size, and the icon side is tucked by one small step.
-        IconOnlyIconSizeXs = "var(--flare-btn-icon-size-xs)",
-        IconOnlyIconSizeSm = "var(--flare-btn-icon-size-sm)",
-        IconOnlyIconSizeMd = "var(--flare-btn-icon-size-md)",
-        IconOnlyIconSizeLg = "var(--flare-btn-icon-size-lg)",
-        IconOnlyIconSizeXl = "var(--flare-btn-icon-size-xl)",
+        // The MDC icon button draws a 24dp icon at every density, larger than the 18dp beside a label.
+        IconOnlyIconSizeXs = "1.5rem",
+        IconOnlyIconSizeSm = "1.5rem",
+        IconOnlyIconSizeMd = "1.5rem",
+        IconOnlyIconSizeLg = "1.5rem",
+        IconOnlyIconSizeXl = "1.5rem",
+        // MDC icon button: a 48dp container, 40 / 32dp at density -2 / -4. lg and xl are not in MDC; they continue
+        // the 8px step above md.
+        IconOnlySizeXs = "2rem",    // 32dp
+        IconOnlySizeSm = "2.5rem",  // 40dp
+        IconOnlySizeMd = "3rem",    // 48dp
+        IconOnlySizeLg = "3.5rem",  // 56px
+        IconOnlySizeXl = "4rem",    // 64px
         // Material 2 icon buttons are round (a circular ripple), unlike its 4px labelled buttons. Half the
         // height rather than 9999px, so a morph to another radius interpolates through painted values.
-        IconOnlyRadiusXs = "calc(var(--flare-btn-height-xs) / 2)",
-        IconOnlyRadiusSm = "calc(var(--flare-btn-height-sm) / 2)",
-        IconOnlyRadiusMd = "calc(var(--flare-btn-height-md) / 2)",
-        IconOnlyRadiusLg = "calc(var(--flare-btn-height-lg) / 2)",
-        IconOnlyRadiusXl = "calc(var(--flare-btn-height-xl) / 2)",
+        IconOnlyRadiusXs = "calc(var(--flare-btn-icon-only-size-xs) / 2)",
+        IconOnlyRadiusSm = "calc(var(--flare-btn-icon-only-size-sm) / 2)",
+        IconOnlyRadiusMd = "calc(var(--flare-btn-icon-only-size-md) / 2)",
+        IconOnlyRadiusLg = "calc(var(--flare-btn-icon-only-size-lg) / 2)",
+        IconOnlyRadiusXl = "calc(var(--flare-btn-icon-only-size-xl) / 2)",
 
         IconInset = "var(--flare-spacing-2)",
         TextIconInset = "var(--flare-spacing-2)",

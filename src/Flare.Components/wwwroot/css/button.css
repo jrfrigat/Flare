@@ -304,15 +304,31 @@
     letter-spacing: var(--flare-btn-label-xl-spacing);
 }
 
-/* Icon-only radius: the theme rounds a lone icon on its own ramp, which may differ from the labelled
-   one (a language with square text buttons and round icon buttons). One class each, placed after the
+/* Icon-only size and radius: the theme sizes and rounds a lone icon on its own ramps, which may differ
+   from the labelled ones (a language with 36px text buttons and 48px round icon buttons). The size
+   replaces the height the size class set, and the width follows it. One class each, placed after the
    size grid so it wins on source order and before the shape axis so an explicit shape, the selected
-   state and group rules still override it. */
-.flare-btn--icon-only { border-radius: var(--flare-btn-icon-only-radius-md); }
-.flare-btn--icon-only:where(.flare-btn--xs) { border-radius: var(--flare-btn-icon-only-radius-xs); }
-.flare-btn--icon-only:where(.flare-btn--sm) { border-radius: var(--flare-btn-icon-only-radius-sm); }
-.flare-btn--icon-only:where(.flare-btn--lg) { border-radius: var(--flare-btn-icon-only-radius-lg); }
-.flare-btn--icon-only:where(.flare-btn--xl) { border-radius: var(--flare-btn-icon-only-radius-xl); }
+   state and group rules still override the radius. */
+.flare-btn--icon-only {
+    --_flare-btn-height: var(--flare-btn-icon-only-size-md);
+    border-radius: var(--flare-btn-icon-only-radius-md);
+}
+.flare-btn--icon-only:where(.flare-btn--xs) {
+    --_flare-btn-height: var(--flare-btn-icon-only-size-xs);
+    border-radius: var(--flare-btn-icon-only-radius-xs);
+}
+.flare-btn--icon-only:where(.flare-btn--sm) {
+    --_flare-btn-height: var(--flare-btn-icon-only-size-sm);
+    border-radius: var(--flare-btn-icon-only-radius-sm);
+}
+.flare-btn--icon-only:where(.flare-btn--lg) {
+    --_flare-btn-height: var(--flare-btn-icon-only-size-lg);
+    border-radius: var(--flare-btn-icon-only-radius-lg);
+}
+.flare-btn--icon-only:where(.flare-btn--xl) {
+    --_flare-btn-height: var(--flare-btn-icon-only-size-xl);
+    border-radius: var(--flare-btn-icon-only-radius-xl);
+}
 
 /* ==========================================================================
    SHAPE AXIS. Default = no class (theme's own

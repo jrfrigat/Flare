@@ -150,6 +150,22 @@ public static class Button
         public const string Xl = "--flare-btn-icon-only-icon-size-xl";
     }
 
+    /// <summary>Side of an icon-only button, per size. Separate from the labelled heights because a design
+    /// language may give a lone icon a larger (or smaller) square than a labelled button of the same size.</summary>
+    public static class IconOnlySize
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-icon-only-size-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-icon-only-size-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-icon-only-size-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-icon-only-size-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-icon-only-size-xl";
+    }
+
     /// <summary>Corner radius of an icon-only button, per size. Separate from the labelled radii because a
     /// design language may round a lone icon differently from a button with a label of the same size.</summary>
     public static class IconOnlyRadius

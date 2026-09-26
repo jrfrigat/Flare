@@ -100,6 +100,11 @@ All notable changes to Flare are documented here. This project adheres to
   `Radius`, `Shadow`), which it already matched in Material 3.
 - **Breaking for custom themes: `TooltipTokens` requires `Shadow`**, the shadow under the plain tooltip - `none`
   for a dark tooltip chip, a real shadow for a light one.
+- **Breaking for custom themes: `ButtonTokens` requires `IconOnlySizeXs` to `IconOnlySizeXl`.** An icon-only button
+  was always as tall as a labelled button of its size, so Material Design 2 drew a 36px icon button with an 18px
+  glyph where its spec has a 48px one with a 24px icon. The icon-only side is now the theme's own: Material Design 2
+  icon buttons are 32 / 40 / 48 / 56 / 64px from xs to xl with a 24px icon, and every other built-in theme keeps
+  them as tall as its labelled buttons.
 - **Breaking for custom themes: `ButtonTokens` requires `IconOnlyRadiusXs` to `IconOnlyRadiusXl`.** An icon-only
   button - `FlareIconButton`, or a `FlareButton` with an icon and no label - took the radius of a labelled button
   of its size, so Material Design 2 drew its icon buttons as 4px rounded squares instead of circles. The icon-only
