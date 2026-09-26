@@ -95,22 +95,7 @@
     .flare-btn--outlined:hover  { border-color: var(--flare-fluent-stroke-hover, #C7C7C7); }
     .flare-btn--outlined:active { border-color: var(--flare-fluent-stroke-pressed, #B3B3B3); }
 
-    /*
-       6. DISABLED: FLAT FLUENT PALETTE (not element opacity) [specs]
-       Fluent renders disabled controls with discrete flat colors (colorNeutralBackgroundDisabled /
-       ForegroundDisabled / StrokeDisabled), NOT a 40%-faded copy of the enabled look. Solid variants
-       take the disabled grey fill; outlined keeps a transparent fill + disabled stroke; text stays
-       transparent. All take the disabled foreground and drop the element-opacity fade.
-    */
-    /* Staying opaque and taking the flat fill are both tokens now (ButtonTokens.DisabledOpacity /
-       DisabledLayer), so those two rules are gone. The foreground and the stroke stay here: neither
-       `color` nor `border-color` has a value meaning "leave this as the variant painted it", so a
-       theme that fades cannot neutralise them, and putting them in the core would hand every theme
-       a repaint it did not ask for. That asymmetry is the whole reason disabled is two-track. */
-    .flare-btn:disabled, .flare-btn[disabled] {
-        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
-    }
-    .flare-btn--outlined:disabled, .flare-btn--outlined[disabled] {
-        border-color: var(--flare-fluent-disabled-border, #E0E0E0) !important;
-    }
+    /* Disabled: Fluent's flat palette (colorNeutralBackgroundDisabled / ForegroundDisabled / StrokeDisabled)
+       rather than a faded copy of the enabled look is entirely ButtonTokens now - DisabledOpacity 1 and a
+       full DisabledRepaint into the disabled fill, foreground and stroke. */
 }

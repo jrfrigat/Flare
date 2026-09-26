@@ -81,8 +81,22 @@ All notable changes to Flare are documented here. This project adheres to
   `FilledVariantErrorFocusRing`, and the same ten `OutlinedVariant*`), plus the theme's own `FocusBorderColor`,
   `ErrorBorderColor`, `ErrorBorderBottomColor` and `ErrorFocusRing`, which replace the error colouring the core
   applied to every field.
+- **Breaking for custom themes: a disabled button is repainted with `ButtonTokens`, and `DisabledLayer` is
+  gone.** The layer lay over the variant's own fill, so a translucent disabled colour tinted it instead of
+  replacing it, and the label and outline could not be repainted at all. `ButtonTokens` now requires
+  `DisabledRepaint` - how far the button is repainted, `0%` to keep the variant's colours (a theme that fades
+  with `DisabledOpacity`) and `100%` to replace them - and the colours it repaints to: `DisabledContainer` for
+  filled, tonal, elevated and floating action buttons, `DisabledContent` for every label and icon, and
+  `DisabledStroke` for outlined buttons. Replace `DisabledLayer` with `DisabledContainer` and set
+  `DisabledRepaint` to `100%`, or to `0%` if the layer was `transparent`.
 
 ### Fixed
+
+- **Disabled Material 3 buttons are grey, as the spec draws them.** The container is on-surface at 12% and the
+  label on-surface at 38%, where the whole button used to fade to a pale copy of its colour.
+- **Disabled Fluent 2 and Visual Studio buttons match Fluent.** Text and outlined buttons keep a transparent
+  fill instead of the grey one the filled buttons take, and Visual Studio repaints the label, which stayed
+  white on the grey fill.
 
 - **Fields keep their design language with an explicit variant.** In Fluent 2 a filled field is the neutral
   filled-darker field with the brand bar on focus and an outlined field is Fluent's own; Material Design 2 and

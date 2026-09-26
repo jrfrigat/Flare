@@ -265,9 +265,12 @@ internal class LiquidGlassTokens
         FocusOutlineOffset = "0px",
         FocusShadow = "0 0 0 4px var(--flare-liquid-glow, rgba(0,122,255,0.35))",
         FilledHoverShadow = "none",
-        // Fades like its Material lineage.
+        // Fades the whole control; no repaint, so the disabled colours are never mixed in.
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
-        DisabledLayer = "transparent",
+        DisabledRepaint = "0%",
+        DisabledContainer = "transparent",
+        DisabledContent = "transparent",
+        DisabledStroke = "transparent",
 
         IconSizeXs = "1rem",
         IconSizeSm = "1.125rem",

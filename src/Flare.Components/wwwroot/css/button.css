@@ -121,9 +121,13 @@
 /* ==========================================================================
    BASE STYLE VARIANTS
    ========================================================================== */
+/* Each variant names its paint in three private properties and reads them back. The disabled rules below
+   mix the theme's disabled colours into exactly those, so a variant never needs a disabled rule of its own. */
 .flare-btn--filled {
-    background-color: var(--fc-main, var(--flare-color-primary));
-    color: var(--fc-on, var(--flare-color-on-primary));
+    --_flare-btn-container: var(--fc-main, var(--flare-color-primary));
+    --_flare-btn-content: var(--fc-on, var(--flare-color-on-primary));
+    background-color: var(--_flare-btn-container);
+    color: var(--_flare-btn-content);
     box-shadow: var(--flare-elevation-0);
 }
 
@@ -132,15 +136,18 @@
     }
 
 .flare-btn--outlined {
-    background-color: transparent;
     /* Default (no colour) = the theme's outlined pair; role/custom = accent. */
-    color: var(--fc-main, var(--flare-btn-outlined-color));
-    border-color: var(--fc-main, var(--flare-btn-outlined-border-color));
+    --_flare-btn-content: var(--fc-main, var(--flare-btn-outlined-color));
+    --_flare-btn-stroke: var(--fc-main, var(--flare-btn-outlined-border-color));
+    background-color: transparent;
+    color: var(--_flare-btn-content);
+    border-color: var(--_flare-btn-stroke);
 }
 
 .flare-btn--text {
+    --_flare-btn-content: var(--fc-main, var(--flare-color-primary));
     background-color: transparent;
-    color: var(--fc-main, var(--flare-color-primary));
+    color: var(--_flare-btn-content);
 }
 
 /* Two class names, not one, so the variant outranks the size class below: both write the same local
@@ -154,8 +161,10 @@
 }
 
 .flare-btn--elevated {
-    background-color: var(--flare-color-surface-container-low);
-    color: var(--fc-main, var(--flare-color-primary));
+    --_flare-btn-container: var(--flare-color-surface-container-low);
+    --_flare-btn-content: var(--fc-main, var(--flare-color-primary));
+    background-color: var(--_flare-btn-container);
+    color: var(--_flare-btn-content);
     box-shadow: var(--flare-elevation-1);
 }
 
@@ -164,25 +173,36 @@
     }
 
 .flare-btn--tonal {
-    background-color: var(--fc-container, var(--flare-color-secondary-container));
-    color: var(--fc-on-container, var(--flare-color-on-secondary-container));
+    --_flare-btn-container: var(--fc-container, var(--flare-color-secondary-container));
+    --_flare-btn-content: var(--fc-on-container, var(--flare-color-on-secondary-container));
+    background-color: var(--_flare-btn-container);
+    color: var(--_flare-btn-content);
     box-shadow: var(--flare-elevation-0);
 }
 
-/* Disabled carries BOTH mechanisms, and each theme neutralises the one its language does not use
-   with a real value - never by leaving a token unset, which this codebase bans outright.
-   Dimming: the opacity token, a fraction for a language that fades and 1 for one that repaints.
-   Repainting: a layer over the container, transparent for a language that fades. Transparent is the
-   only genuinely neutral answer available, which is exactly why the repaint is a layer and not a
-   background-color - no CSS value means "leave the colour as the variant painted it". */
+/* Disabled has two mechanisms and a theme uses either or both. Dimming: the opacity token, a fraction for
+   a language that fades and 1 for one that repaints. Repainting: the variant's own paint mixed toward the
+   theme's disabled colours by --flare-btn-disabled-repaint - 0% keeps the variant's colours, 100% replaces
+   them. A share is the neutral answer because no CSS value means "leave the colour as the variant painted
+   it". Only a variant with a container repaints one, and only the outlined variant a stroke.
+   The repaint rules carry one class of specificity (the state sits in :where) and follow the variants, so
+   they outrank the core variants but not a theme's own variant rules or a selected button's paint. */
 .flare-btn:disabled, .flare-btn[disabled] {
     pointer-events: none;
     opacity: var(--flare-btn-disabled-opacity);
     box-shadow: var(--flare-elevation-0) !important;
 }
-.flare-btn:disabled::before, .flare-btn[disabled]::before {
-    background: var(--flare-btn-disabled-layer);
-    opacity: 1;
+.flare-btn:where(:disabled, [disabled]) {
+    color: color-mix(in srgb, var(--flare-btn-disabled-content) var(--flare-btn-disabled-repaint), var(--_flare-btn-content, currentColor));
+}
+.flare-btn--filled:where(:disabled, [disabled]),
+.flare-btn--tonal:where(:disabled, [disabled]),
+.flare-btn--elevated:where(:disabled, [disabled]) {
+    background-color: color-mix(in srgb, var(--flare-btn-disabled-container) var(--flare-btn-disabled-repaint), var(--_flare-btn-container));
+}
+.flare-btn--outlined:where(:disabled, [disabled]) {
+    border-color: color-mix(in srgb, var(--flare-btn-disabled-stroke) var(--flare-btn-disabled-repaint), var(--_flare-btn-stroke));
+}
 }
 
 /* Edge alignment (ButtonEdge): pull an icon/toggle button toward the container edge so its glyph lines

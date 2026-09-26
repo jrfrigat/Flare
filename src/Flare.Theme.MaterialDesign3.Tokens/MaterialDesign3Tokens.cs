@@ -321,9 +321,13 @@ public class MaterialDesign3Tokens
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
         FilledHoverShadow = "var(--flare-elevation-1)",
-        // Material fades the whole control, so the repaint layer stays out of the way.
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
-        DisabledLayer = "transparent",
+        // md.comp.*-button.disabled: the container on-surface at 12%, the label and icon on-surface at 38%,
+        // the outline on-surface at 12% - a repaint, not a fade of the whole control.
+        DisabledOpacity = "1",
+        DisabledRepaint = "100%",
+        DisabledContainer = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
+        DisabledContent = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
+        DisabledStroke = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
 
         // An icon beside a label is 18dp (md.comp.filled-button.with-icon.icon.size); a lone glyph in an
         // icon button of the same 40dp is 24dp (md.comp.icon-button.icon.size).

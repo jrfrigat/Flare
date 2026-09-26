@@ -263,9 +263,13 @@ internal class VisualStudioTokens
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 2px var(--flare-vs-focus, rgba(0,120,212,0.4))",
         FilledHoverShadow = "none",
-        // Repaints like its Fluent lineage.
+        // Fluent repaints disabled controls in a flat palette rather than fading them: the solid variants take
+        // the disabled fill, every variant the disabled foreground, the outlined one the disabled stroke.
         DisabledOpacity = "1",
-        DisabledLayer = "var(--flare-fluent-disabled-bg, #F0F0F0)",
+        DisabledRepaint = "100%",
+        DisabledContainer = "var(--flare-fluent-disabled-bg, #F0F0F0)",
+        DisabledContent = "var(--flare-fluent-disabled-fg, #BDBDBD)",
+        DisabledStroke = "var(--flare-fluent-disabled-border, #E0E0E0)",
 
         IconSizeXs = "0.875rem",
         IconSizeSm = "1rem",

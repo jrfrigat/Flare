@@ -14,8 +14,10 @@
     border-radius: var(--flare-fab-radius-md);
     /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
        Role -> flare-color-* class; custom -> inline --fc-container/--fc-on-container. */
-    background-color: var(--fc-container, var(--flare-color-primary-container));
-    color: var(--fc-on-container, var(--flare-color-on-primary-container));
+    --_flare-btn-container: var(--fc-container, var(--flare-color-primary-container));
+    --_flare-btn-content: var(--fc-on-container, var(--flare-color-on-primary-container));
+    background-color: var(--_flare-btn-container);
+    color: var(--_flare-btn-content);
     box-shadow: var(--flare-fab-shadow);
     font-family: var(--flare-typescale-label-large-font);
     font-size: var(--flare-typescale-label-large-size);
@@ -50,8 +52,17 @@
 
 /* Surface variant: used by the small action FABs inside a FAB menu. */
 .flare-fab--surface {
-    background-color: var(--flare-color-surface-container-high);
-    color: var(--flare-color-primary);
+    --_flare-btn-container: var(--flare-color-surface-container-high);
+    --_flare-btn-content: var(--flare-color-primary);
+    background-color: var(--_flare-btn-container);
+    color: var(--_flare-btn-content);
+}
+
+/* A disabled FAB repaints like a filled button. Both properties are restated here because the FAB's own
+   paint above comes after button.css and would otherwise outrank its disabled rules. */
+.flare-fab:where(:disabled, [disabled]) {
+    background-color: color-mix(in srgb, var(--flare-btn-disabled-container) var(--flare-btn-disabled-repaint), var(--_flare-btn-container));
+    color: color-mix(in srgb, var(--flare-btn-disabled-content) var(--flare-btn-disabled-repaint), var(--_flare-btn-content));
 }
 
 /* Colour is set via the Color (FlareColor) parameter, which fills --fc-container/--fc-on-container

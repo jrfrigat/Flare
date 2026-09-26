@@ -265,9 +265,12 @@ internal class AeroTokens
         FocusOutlineOffset = "-3px",
         FocusShadow = "0 0 0 2px var(--flare-aero-glow, rgba(60,127,177,0.45))",
         FilledHoverShadow = "none",
-        // Fades like its Material lineage.
+        // Fades the whole control; no repaint, so the disabled colours are never mixed in.
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
-        DisabledLayer = "transparent",
+        DisabledRepaint = "0%",
+        DisabledContainer = "transparent",
+        DisabledContent = "transparent",
+        DisabledStroke = "transparent",
 
         IconSizeXs = "0.875rem",
         IconSizeSm = "1rem",

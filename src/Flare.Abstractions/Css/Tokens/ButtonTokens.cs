@@ -330,6 +330,12 @@ public static class Button
     public const string FilledHoverShadow = "--flare-btn-filled-hover-shadow";
     /// <summary>CSS custom-property name for the disabled opacity token.</summary>
     public const string DisabledOpacity = "--flare-btn-disabled-opacity";
-    /// <summary>CSS custom-property name for the disabled state layer token.</summary>
-    public const string DisabledLayer = "--flare-btn-disabled-layer";
+    /// <summary>CSS custom-property name for how far a disabled button repaints toward its disabled colours.</summary>
+    public const string DisabledRepaint = "--flare-btn-disabled-repaint";
+    /// <summary>CSS custom-property name for the disabled container colour.</summary>
+    public const string DisabledContainer = "--flare-btn-disabled-container";
+    /// <summary>CSS custom-property name for the disabled label and icon colour.</summary>
+    public const string DisabledContent = "--flare-btn-disabled-content";
+    /// <summary>CSS custom-property name for the disabled outline colour.</summary>
+    public const string DisabledStroke = "--flare-btn-disabled-stroke";
 }

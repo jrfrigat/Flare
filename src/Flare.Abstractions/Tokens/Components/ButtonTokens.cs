@@ -176,13 +176,21 @@ public sealed record ButtonTokens
 
     /// <summary>How far a disabled button fades. A language that signals disabled by dimming the whole
     /// control sets a fraction here; one that repaints it in a flat palette leaves it fully opaque and
-    /// carries the change in <see cref="DisabledLayer"/> instead. Per component rather than shared,
+    /// carries the change in <see cref="DisabledRepaint"/> instead. Per component rather than shared,
     /// because a theme may well dim its other controls while repainting this one.</summary>
     [CssVar(Button.DisabledOpacity)] public required string DisabledOpacity { get; init; }
-    /// <summary>Paint laid over a disabled button's container. A language that dims parks this at a
-    /// transparent value - the only genuinely neutral answer, since no CSS value means "leave the
-    /// colour alone" - while one that repaints puts its flat disabled fill here.</summary>
-    [CssVar(Button.DisabledLayer)] public required string DisabledLayer { get; init; }
+    /// <summary>How far a disabled button is repainted toward <see cref="DisabledContainer"/>,
+    /// <see cref="DisabledContent"/> and <see cref="DisabledStroke"/>, as a percentage: <c>0%</c> keeps the
+    /// colours its variant paints (a language that dims), <c>100%</c> replaces them (a language that repaints).
+    /// A share rather than a switch, because no CSS value means "leave the colour as the variant painted it".</summary>
+    [CssVar(Button.DisabledRepaint)] public required string DisabledRepaint { get; init; }
+    /// <summary>Container of a disabled filled, tonal or elevated button (and a FAB). Text and outlined
+    /// buttons have no container and keep none.</summary>
+    [CssVar(Button.DisabledContainer)] public required string DisabledContainer { get; init; }
+    /// <summary>Label and icon colour of a disabled button.</summary>
+    [CssVar(Button.DisabledContent)] public required string DisabledContent { get; init; }
+    /// <summary>Outline colour of a disabled outlined button.</summary>
+    [CssVar(Button.DisabledStroke)] public required string DisabledStroke { get; init; }
 
     // --- 6. ICON SIZE for the 5 sizes ---
     /// <summary>Leading/trailing icon glyph size at the xs size.</summary>
