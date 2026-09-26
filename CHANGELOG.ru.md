@@ -120,8 +120,9 @@
   drag handle; Fluent 2 переводит его в нажатый нейтральный штрих. Material Design 2, Aero, Liquid Glass и
   Visual Studio оставляют его прежним.
 - **Сплиттеры Material Design 3 следуют спецификации drag handle.** Желоб 24px вместо 8px, захват 4 x 48px вместо
-  2 x 28px, а пока ручка зажата, захват расширяется до 12 x 52px со средним скруглением. Material Design 3 Expressive
-  следует за ним; Aero и Liquid Glass сохраняют узкий сплиттер.
+  2 x 28px, а пока ручка зажата, захват расширяется до 12 x 52px со средним скруглением. В покое желоб прозрачный:
+  панели разделяет промежуток, а не залитая полоса; при наведении и фокусе с клавиатуры он по-прежнему подсвечивается.
+  Material Design 3 Expressive следует за ним; Aero и Liquid Glass сохраняют узкий залитый сплиттер.
 - **Ломающее для собственных тем: `LayoutTokens` требует геометрию кнопки меню.** `AppBarToggleSize`,
   `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` и `AppBarToggleRadius` задают
   размер и форму кнопки-бургера панели приложения и трех ее полос - раньше это был одинаковый во всех темах

@@ -1138,7 +1138,8 @@ public class MaterialDesign3Tokens
         GutterSize = "24px",
         GripThickness = "4px",
         GripLength = "48px",
-        Color = "var(--flare-color-surface-variant)",
+        // The handle has no container colour; the gap shows the panes' shared background.
+        Color = "transparent",
         HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         IconSize = "1.125rem",
         IconColor = "var(--flare-color-on-surface-variant)",

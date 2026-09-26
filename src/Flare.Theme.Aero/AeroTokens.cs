@@ -579,6 +579,7 @@ internal class AeroTokens
         Splitter = MaterialDesign3Tokens.Design.Splitter with
         {
             GutterSize = "0.5rem", GripThickness = "2px", GripLength = "1.75rem",
+            Color = "var(--flare-color-surface-variant)",
             GripPressedColor = "var(--flare-splitter-grip-color)",
             GripPressedThickness = "var(--flare-splitter-grip-thickness)",
             GripPressedLength = "var(--flare-splitter-grip-length)",
