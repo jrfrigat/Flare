@@ -22,11 +22,15 @@ public interface IDialogService
 {
     /// <summary>
     /// Shows a confirm dialog. Returns <see langword="true"/> when confirmed,
-    /// <see langword="false"/> when cancelled, or <see langword="null"/> when dismissed (Escape).
+    /// <see langword="false"/> when the cancel button is clicked, or <see langword="null"/> when dismissed
+    /// without an answer (a scrim click, Escape, or navigation to another route).
     /// </summary>
     Task<bool?> ConfirmAsync(string title, string message,
         string confirmLabel = "OK", string cancelLabel = "Cancel");
-    /// <summary>Shows an alert dialog with a single close button. Returns when dismissed.</summary>
+    /// <summary>
+    /// Shows an alert dialog with a single close button. Returns when the button is clicked or the dialog
+    /// is dismissed (a scrim click, Escape, or navigation to another route).
+    /// </summary>
     Task AlertAsync(string title, string message, string closeLabel = "Close");
 
     /// <summary>

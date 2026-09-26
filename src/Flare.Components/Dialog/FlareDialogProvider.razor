@@ -8,8 +8,7 @@
     var req = DialogService.Current;
     <FlareDialog Visible="true"
                  Title="@req.Title"
-                 CloseOnScrimClick="false"
-                 CloseOnEsc="false">
+                 VisibleChanged="@(visible => HandleRequestVisibleChanged(req, visible))">
         <ChildContent>
             <p class="@Css.Classes.Dialog.ProviderMessage">@req.Message</p>
         </ChildContent>
@@ -68,6 +67,14 @@
     }
 
     private void HandleStateChanged() => InvokeAsync(StateHasChanged);
+
+    // A scrim click, Escape or route change dismisses the confirm/alert request without an answer (null).
+    // The request is compared so a late event from a replaced request cannot answer the new one.
+    private void HandleRequestVisibleChanged(DialogRequest request, bool visible)
+    {
+        if (!visible && ReferenceEquals(DialogService.Current, request))
+            DialogService.Respond(null);
+    }
 
     // FlareDialog raises VisibleChanged(false) on a scrim click or Escape (when enabled by options);
     // treat that dismissal as a cancellation of the component dialog.

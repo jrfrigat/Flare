@@ -3,6 +3,17 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- **A confirmation from `IDialogService` can be dismissed.** `ConfirmAsync` and `AlertAsync` ignored a click on the
+  scrim and the Escape key, and a route change neither closed the dialog nor ended the caller's wait. They now close
+  the way every other Flare dialog does: `ConfirmAsync` returns `null` - the "dismissed without an answer" result its
+  documentation always described - and `AlertAsync` returns. Code that only proceeds on `== true` needs no change;
+  code that tells `false` from `null` sees `null` for a dismissal. For a confirmation that must be answered, open it
+  with `ShowAsync` and `DialogOptions { CloseOnScrimClick = false, CloseOnEsc = false }`.
+
 ## [0.42.0] - 2026-09-26
 
 ### Changed

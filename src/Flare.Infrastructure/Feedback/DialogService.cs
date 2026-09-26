@@ -24,7 +24,10 @@ public sealed class DialogService : IDialogService
         return _tcs.Task;
     }
 
-    /// <summary>Shows a confirm dialog; resolves true=confirmed, false=cancelled, null=dismissed.</summary>
+    /// <summary>
+    /// Shows a confirm dialog; resolves true=confirmed, false=cancelled, null=dismissed (scrim click,
+    /// Escape or navigation).
+    /// </summary>
     public Task<bool?> ConfirmAsync(string title, string message,
         string confirmLabel = "OK", string cancelLabel = "Cancel")
         => Show(new(title, message, confirmLabel, cancelLabel, ShowCancel: true));
