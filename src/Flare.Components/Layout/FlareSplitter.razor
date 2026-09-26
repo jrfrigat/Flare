@@ -63,13 +63,16 @@
     /// <summary>Accessible label for the resize handle. Null uses the localized default.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
-    /// <summary>Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Default 0.5rem.</summary>
+    /// <summary>Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Null uses the theme's gutter
+    /// size (the <c>--flare-splitter-gutter-size</c> token).</summary>
     [Parameter] public string? Size { get; set; }
 
-    /// <summary>Handle color (CSS color) shown when idle. Defaults to the surface-variant token.</summary>
+    /// <summary>Handle color (CSS color) shown when idle. Null uses the theme's handle color (the
+    /// <c>--flare-splitter-color</c> token).</summary>
     [Parameter] public string? Color { get; set; }
 
-    /// <summary>Handle color (CSS color) shown on hover/focus. Defaults to a primary tint.</summary>
+    /// <summary>Handle color (CSS color) shown on hover/focus. Null uses the theme's hover color (the
+    /// <c>--flare-splitter-hover-color</c> token).</summary>
     [Parameter] public string? HoverColor { get; set; }
 
     /// <summary>Icon shown in the centre of the handle, replacing the default grip bar - any provider.</summary>

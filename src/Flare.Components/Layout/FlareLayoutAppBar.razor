@@ -31,10 +31,10 @@
     /// non-overlay start drawer) via the cascading <see cref="FlareLayoutContext"/>.</summary>
     [Parameter] public bool DrawerToggle { get; set; }
     /// <summary>An explicit app bar height (any CSS length, e.g. <c>"50px"</c> or <c>"3.5rem"</c>). Overrides
-    /// the default 64px and the <see cref="Dense"/> preset. Sets the <c>--flare-layout-appbar-height</c> token.</summary>
+    /// the theme's app bar height and the <see cref="Dense"/> preset. Sets the <c>--flare-layout-appbar-height</c> token.</summary>
     [Parameter] public string? Height { get; set; }
-    /// <summary>Renders a slimmer app bar (the <c>--flare-layout-appbar-height-dense</c> token, 3rem by
-    /// default) - a common request for tool-window / IDE-style shells. Ignored when <see cref="Height"/> is set.</summary>
+    /// <summary>Renders a slimmer app bar at the theme's dense height (the <c>--flare-layout-appbar-height-dense</c>
+    /// token) - a common request for tool-window / IDE-style shells. Ignored when <see cref="Height"/> is set.</summary>
     [Parameter] public bool Dense { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Layout.AppBar;

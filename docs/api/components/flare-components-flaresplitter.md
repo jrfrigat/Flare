@@ -10,8 +10,8 @@
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the resize handle. Null uses the localized default. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Fully custom centre content, overriding Icon and the default grip bar. |
-| `Color` | `string?` | `` | Parameter |  | Handle color (CSS color) shown when idle. Defaults to the surface-variant token. |
-| `HoverColor` | `string?` | `` | Parameter |  | Handle color (CSS color) shown on hover/focus. Defaults to a primary tint. |
+| `Color` | `string?` | `` | Parameter |  | Handle color (CSS color) shown when idle. Null uses the theme's handle color (the --flare-splitter-color token). |
+| `HoverColor` | `string?` | `` | Parameter |  | Handle color (CSS color) shown on hover/focus. Null uses the theme's hover color (the --flare-splitter-hover-color token). |
 | `HoverIcon` | `FlareIcon?` | `` | Parameter |  | Icon swapped in on hover/focus (only when Icon is set) - any provider. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in the centre of the handle, replacing the default grip bar - any provider. |
 | `KeyboardStep` | `int` | `16` | Parameter |  | Keyboard step (px) applied when the handle is focused and arrowed. Default 16. |
@@ -19,7 +19,7 @@
 | `MinSize` | `string?` | `` | Parameter |  | Minimum size in pixels (e.g. "120px") that either neighbour may be dragged to. Optional. |
 | `OnSizeChanged` | `EventCallback<string>` | `` | Callback |  | Invoked with the previous neighbour's new pixel size (e.g. "240px") after a resize. |
 | `Orientation` | `SplitterOrientation` | `SplitterOrientation.Auto` | Parameter |  | Resize axis. Default Auto: the splitter reads the parent flex container's direction, so you usually do not need to set this. Provide an explicit value only to override (e.g. a non-flex parent). |
-| `Size` | `string?` | `` | Parameter |  | Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Default 0.5rem. |
+| `Size` | `string?` | `` | Parameter |  | Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Null uses the theme's gutter size (the --flare-splitter-gutter-size token). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

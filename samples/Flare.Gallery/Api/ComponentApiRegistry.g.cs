@@ -3498,9 +3498,9 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered in the app bar.", null, false, false, false, @"FlareLayoutAppBar"),
-                new ApiParameterInfo(@"Dense", @"bool", @"false", @"Renders a slimmer app bar (the --flare-layout-appbar-height-dense token, 3rem by default) - a common request for tool-window / IDE-style shells. Ignored when Height is set.", null, false, false, false, @"FlareLayoutAppBar"),
+                new ApiParameterInfo(@"Dense", @"bool", @"false", @"Renders a slimmer app bar at the theme's dense height (the --flare-layout-appbar-height-dense token) - a common request for tool-window / IDE-style shells. Ignored when Height is set.", null, false, false, false, @"FlareLayoutAppBar"),
                 new ApiParameterInfo(@"DrawerToggle", @"bool", @"false", @"When true, renders a hamburger that toggles the layout's primary drawer (the first non-overlay start drawer) via the cascading FlareLayoutContext.", null, false, false, false, @"FlareLayoutAppBar"),
-                new ApiParameterInfo(@"Height", @"string?", null, @"An explicit app bar height (any CSS length, e.g. ""50px"" or ""3.5rem""). Overrides the default 64px and the Dense preset. Sets the --flare-layout-appbar-height token.", null, false, false, false, @"FlareLayoutAppBar"),
+                new ApiParameterInfo(@"Height", @"string?", null, @"An explicit app bar height (any CSS length, e.g. ""50px"" or ""3.5rem""). Overrides the theme's app bar height and the Dense preset. Sets the --flare-layout-appbar-height token.", null, false, false, false, @"FlareLayoutAppBar"),
                 new ApiParameterInfo(@"MenuButton", @"RenderFragment?", null, @"Custom menu/hamburger button at the leading edge (slot-based API).", null, false, false, false, @"FlareLayoutAppBar"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -5725,8 +5725,8 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the resize handle. Null uses the localized default.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Fully custom centre content, overriding Icon and the default grip bar.", null, false, false, false, @"FlareSplitter"),
-                new ApiParameterInfo(@"Color", @"string?", null, @"Handle color (CSS color) shown when idle. Defaults to the surface-variant token.", null, false, false, false, @"FlareSplitter"),
-                new ApiParameterInfo(@"HoverColor", @"string?", null, @"Handle color (CSS color) shown on hover/focus. Defaults to a primary tint.", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"Color", @"string?", null, @"Handle color (CSS color) shown when idle. Null uses the theme's handle color (the --flare-splitter-color token).", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"HoverColor", @"string?", null, @"Handle color (CSS color) shown on hover/focus. Null uses the theme's hover color (the --flare-splitter-hover-color token).", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"HoverIcon", @"FlareIcon?", null, @"Icon swapped in on hover/focus (only when Icon is set) - any provider.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in the centre of the handle, replacing the default grip bar - any provider.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"KeyboardStep", @"int", @"16", @"Keyboard step (px) applied when the handle is focused and arrowed. Default 16.", null, false, false, false, @"FlareSplitter"),
@@ -5734,7 +5734,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MinSize", @"string?", null, @"Minimum size in pixels (e.g. ""120px"") that either neighbour may be dragged to. Optional.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"OnSizeChanged", @"EventCallback<string>", null, @"Invoked with the previous neighbour's new pixel size (e.g. ""240px"") after a resize.", null, false, true, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Orientation", @"SplitterOrientation", @"SplitterOrientation.Auto", @"Resize axis. Default Auto: the splitter reads the parent flex container's direction, so you usually do not need to set this. Provide an explicit value only to override (e.g. a non-flex parent).", null, false, false, false, @"FlareSplitter"),
-                new ApiParameterInfo(@"Size", @"string?", null, @"Thickness of the handle as a CSS length (e.g. ""8px"", ""0.75rem""). Default 0.5rem.", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"Size", @"string?", null, @"Thickness of the handle as a CSS length (e.g. ""8px"", ""0.75rem""). Null uses the theme's gutter size (the --flare-splitter-gutter-size token).", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

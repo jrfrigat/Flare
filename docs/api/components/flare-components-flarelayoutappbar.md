@@ -9,9 +9,9 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Child content rendered in the app bar. |
-| `Dense` | `bool` | `false` | Parameter |  | Renders a slimmer app bar (the --flare-layout-appbar-height-dense token, 3rem by default) - a common request for tool-window / IDE-style shells. Ignored when Height is set. |
+| `Dense` | `bool` | `false` | Parameter |  | Renders a slimmer app bar at the theme's dense height (the --flare-layout-appbar-height-dense token) - a common request for tool-window / IDE-style shells. Ignored when Height is set. |
 | `DrawerToggle` | `bool` | `false` | Parameter |  | When true, renders a hamburger that toggles the layout's primary drawer (the first non-overlay start drawer) via the cascading FlareLayoutContext. |
-| `Height` | `string?` | `` | Parameter |  | An explicit app bar height (any CSS length, e.g. "50px" or "3.5rem"). Overrides the default 64px and the Dense preset. Sets the --flare-layout-appbar-height token. |
+| `Height` | `string?` | `` | Parameter |  | An explicit app bar height (any CSS length, e.g. "50px" or "3.5rem"). Overrides the theme's app bar height and the Dense preset. Sets the --flare-layout-appbar-height token. |
 | `MenuButton` | `RenderFragment?` | `` | Parameter |  | Custom menu/hamburger button at the leading edge (slot-based API). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
