@@ -55,6 +55,6 @@ public sealed class AeroRampGenerator : IPaletteGenerator
                 OnInfoContainer = ColorMath.Lighten(main, 0.82),
                 InversePrimary = main,
             },
-        };
+        }.WithPrimaryFixedFromPrimary().WithTertiaryFixedFromTertiary();
     }
 }

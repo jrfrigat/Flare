@@ -18,11 +18,72 @@ public static class PaletteFactory
     public static Palette FromColors(string id, string name, string main, string? background = null, string? source = null) =>
         DefaultPaletteGenerator.Instance.Generate(id, name, new PaletteSeed(main, background), source);
 
+    /// <summary>
+    /// Re-derives the primary fixed roles of both schemes from the palette's own primary roles. A palette
+    /// that takes a base scheme and overrides only its primary roles would otherwise keep the base
+    /// palette's primary in its fixed roles. The fixed fill becomes the light primary container, the dim
+    /// step the dark primary, and the text on both the light on-primary-container.
+    /// </summary>
+    public static Palette WithPrimaryFixedFromPrimary(this Palette palette)
+    {
+        var light = palette.Light;
+        var fixedFill = light.PrimaryContainer;
+        var fixedDim = palette.Dark.Primary;
+        var onFixed = light.OnPrimaryContainer;
+        return palette with
+        {
+            Light = light with
+            {
+                PrimaryFixed = fixedFill,
+                PrimaryFixedDim = fixedDim,
+                OnPrimaryFixed = onFixed,
+                OnPrimaryFixedVariant = onFixed,
+            },
+            Dark = palette.Dark with
+            {
+                PrimaryFixed = fixedFill,
+                PrimaryFixedDim = fixedDim,
+                OnPrimaryFixed = onFixed,
+                OnPrimaryFixedVariant = onFixed,
+            },
+        };
+    }
+
+    /// <summary>
+    /// Re-derives the tertiary fixed roles of both schemes from the palette's own tertiary roles, the
+    /// tertiary counterpart of <see cref="WithPrimaryFixedFromPrimary"/> for a palette that overrides the
+    /// tertiary roles of its base scheme.
+    /// </summary>
+    public static Palette WithTertiaryFixedFromTertiary(this Palette palette)
+    {
+        var light = palette.Light;
+        var fixedFill = light.TertiaryContainer;
+        var fixedDim = palette.Dark.Tertiary;
+        var onFixed = light.OnTertiaryContainer;
+        return palette with
+        {
+            Light = light with
+            {
+                TertiaryFixed = fixedFill,
+                TertiaryFixedDim = fixedDim,
+                OnTertiaryFixed = onFixed,
+                OnTertiaryFixedVariant = onFixed,
+            },
+            Dark = palette.Dark with
+            {
+                TertiaryFixed = fixedFill,
+                TertiaryFixedDim = fixedDim,
+                OnTertiaryFixed = onFixed,
+                OnTertiaryFixedVariant = onFixed,
+            },
+        };
+    }
+
     /// <summary>Brand.</summary>
     public static Palette Brand(string id, string name, ColorScheme baseLight, ColorScheme baseDark, string seed, string? source = null)
     {
         var darkSeed = ColorMath.Lighten(seed, 0.35); // brighter brand on dark surfaces
-        return new Palette
+        return WithPrimaryFixedFromPrimary(new Palette
         {
             Id = id,
             Name = name,
@@ -49,6 +110,6 @@ public static class PaletteFactory
                 InfoContainer = ColorMath.Darken(seed, 0.30),
                 OnInfoContainer = ColorMath.Lighten(seed, 0.82),
             },
-        };
+        });
     }
 }

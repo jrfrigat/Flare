@@ -153,7 +153,7 @@ public static partial class CssVarMap
         return v;
     }
 
-    /// <summary>The ~47 color-role CSS variables for one mode (palette half).</summary>
+    /// <summary>The ~61 color-role CSS variables for one mode (palette half).</summary>
     public static Dictionary<string, string> FlattenColors(this ColorScheme c)
     {
         var v = new Dictionary<string, string>
@@ -196,6 +196,20 @@ public static partial class CssVarMap
             [Css.Tokens.Color.SurfaceContainerLow] = c.SurfaceContainerLow,
             [Css.Tokens.Color.SurfaceContainerHigh] = c.SurfaceContainerHigh,
             [Css.Tokens.Color.SurfaceContainerHighest] = c.SurfaceContainerHighest,
+            [Css.Tokens.Color.SurfaceBright] = c.SurfaceBright,
+            [Css.Tokens.Color.SurfaceDim] = c.SurfaceDim,
+            [Css.Tokens.Color.PrimaryFixed] = c.PrimaryFixed,
+            [Css.Tokens.Color.PrimaryFixedDim] = c.PrimaryFixedDim,
+            [Css.Tokens.Color.OnPrimaryFixed] = c.OnPrimaryFixed,
+            [Css.Tokens.Color.OnPrimaryFixedVariant] = c.OnPrimaryFixedVariant,
+            [Css.Tokens.Color.SecondaryFixed] = c.SecondaryFixed,
+            [Css.Tokens.Color.SecondaryFixedDim] = c.SecondaryFixedDim,
+            [Css.Tokens.Color.OnSecondaryFixed] = c.OnSecondaryFixed,
+            [Css.Tokens.Color.OnSecondaryFixedVariant] = c.OnSecondaryFixedVariant,
+            [Css.Tokens.Color.TertiaryFixed] = c.TertiaryFixed,
+            [Css.Tokens.Color.TertiaryFixedDim] = c.TertiaryFixedDim,
+            [Css.Tokens.Color.OnTertiaryFixed] = c.OnTertiaryFixed,
+            [Css.Tokens.Color.OnTertiaryFixedVariant] = c.OnTertiaryFixedVariant,
             [Css.Tokens.Color.Background] = c.Background,
             [Css.Tokens.Color.OnBackground] = c.OnBackground,
             [Css.Tokens.Color.Outline] = c.Outline,

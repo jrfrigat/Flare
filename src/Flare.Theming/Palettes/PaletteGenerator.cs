@@ -36,6 +36,18 @@ public sealed class DefaultPaletteGenerator : IPaletteGenerator
         var secBase = seed.Secondary ?? ColorMath.WithSaturation(main, Math.Min(0.30, ColorMath.ToHsl(main).S));
         var terBase = ColorMath.RotateHue(main, 60);
 
+        // Fixed roles do not change with the mode: each is the light container pair, and the dim step
+        // is the dark accent.
+        var primaryFixed = ColorMath.Lighten(main, 0.82);
+        var primaryFixedDim = ColorMath.Lighten(main, 0.35);
+        var onPrimaryFixed = ColorMath.Darken(main, 0.55);
+        var secondaryFixed = ColorMath.Lighten(secBase, 0.82);
+        var secondaryFixedDim = ColorMath.Lighten(secBase, 0.55);
+        var onSecondaryFixed = ColorMath.Darken(secBase, 0.55);
+        var tertiaryFixed = ColorMath.Lighten(terBase, 0.82);
+        var tertiaryFixedDim = ColorMath.Lighten(terBase, 0.55);
+        var onTertiaryFixed = ColorMath.Darken(terBase, 0.55);
+
         if (!dark)
         {
             var surface = seed.Background ?? Neutral(0.99);
@@ -79,6 +91,20 @@ public sealed class DefaultPaletteGenerator : IPaletteGenerator
                 SurfaceContainer = Neutral(0.94),
                 SurfaceContainerHigh = Neutral(0.92),
                 SurfaceContainerHighest = Neutral(0.90),
+                SurfaceBright = surface,
+                SurfaceDim = Neutral(0.90),
+                PrimaryFixed = primaryFixed,
+                PrimaryFixedDim = primaryFixedDim,
+                OnPrimaryFixed = onPrimaryFixed,
+                OnPrimaryFixedVariant = onPrimaryFixed,
+                SecondaryFixed = secondaryFixed,
+                SecondaryFixedDim = secondaryFixedDim,
+                OnSecondaryFixed = onSecondaryFixed,
+                OnSecondaryFixedVariant = onSecondaryFixed,
+                TertiaryFixed = tertiaryFixed,
+                TertiaryFixedDim = tertiaryFixedDim,
+                OnTertiaryFixed = onTertiaryFixed,
+                OnTertiaryFixedVariant = onTertiaryFixed,
                 Background = surface,
                 OnBackground = Neutral(0.12, 0.12),
                 Outline = Neutral(0.50, 0.08),
@@ -135,6 +161,20 @@ public sealed class DefaultPaletteGenerator : IPaletteGenerator
             SurfaceContainer = Neutral(0.14),
             SurfaceContainerHigh = Neutral(0.17),
             SurfaceContainerHighest = Neutral(0.20),
+            SurfaceBright = Neutral(0.20),
+            SurfaceDim = dSurface,
+            PrimaryFixed = primaryFixed,
+            PrimaryFixedDim = primaryFixedDim,
+            OnPrimaryFixed = onPrimaryFixed,
+            OnPrimaryFixedVariant = onPrimaryFixed,
+            SecondaryFixed = secondaryFixed,
+            SecondaryFixedDim = secondaryFixedDim,
+            OnSecondaryFixed = onSecondaryFixed,
+            OnSecondaryFixedVariant = onSecondaryFixed,
+            TertiaryFixed = tertiaryFixed,
+            TertiaryFixedDim = tertiaryFixedDim,
+            OnTertiaryFixed = onTertiaryFixed,
+            OnTertiaryFixedVariant = onTertiaryFixed,
             Background = Neutral(0.08),
             OnBackground = Neutral(0.90),
             Outline = Neutral(0.55, 0.06),

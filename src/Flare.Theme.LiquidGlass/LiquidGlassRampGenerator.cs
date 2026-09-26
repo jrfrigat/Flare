@@ -54,6 +54,6 @@ public sealed class LiquidGlassRampGenerator : IPaletteGenerator
                 OnInfoContainer = ColorMath.Lighten(main, 0.82),
                 InversePrimary = main,
             },
-        };
+        }.WithPrimaryFixedFromPrimary().WithTertiaryFixedFromTertiary();
     }
 }

@@ -1,7 +1,7 @@
 namespace Flare.Abstractions.Tokens;
 
 /// <summary>
-/// The color half of a theme: ~45 semantic color roles for a single mode (light or dark).
+/// The color half of a theme: ~60 semantic color roles for a single mode (light or dark).
 /// A <see cref="Palette"/> bundles one <see cref="ColorScheme"/> for light and one for dark.
 /// Non-color tokens (typography, shape, motion, elevation geometry, components) live in
 /// <see cref="DesignTokens"/>; the two are composed at render time.
@@ -99,6 +99,38 @@ public sealed record ColorScheme
     public required string SurfaceContainerHigh { get; init; }
     /// <summary>Surface container highest color role.</summary>
     public required string SurfaceContainerHighest { get; init; }
+    /// <summary>A surface that is the brighter end of the surface ladder in both modes - the canvas
+    /// in a light scheme, a raised plane in a dark one.</summary>
+    public required string SurfaceBright { get; init; }
+    /// <summary>A surface that is the dimmer end of the surface ladder in both modes - a recessed
+    /// plane in a light scheme, the canvas in a dark one.</summary>
+    public required string SurfaceDim { get; init; }
+
+    /// <summary>A primary fill that keeps the same colour in light and dark schemes, for content that
+    /// must not change between modes.</summary>
+    public required string PrimaryFixed { get; init; }
+    /// <summary>A stronger variant of <see cref="PrimaryFixed"/>, also the same in both modes.</summary>
+    public required string PrimaryFixedDim { get; init; }
+    /// <summary>Text and icons on <see cref="PrimaryFixed"/> and <see cref="PrimaryFixedDim"/>.</summary>
+    public required string OnPrimaryFixed { get; init; }
+    /// <summary>Lower-emphasis text and icons on <see cref="PrimaryFixed"/> and <see cref="PrimaryFixedDim"/>.</summary>
+    public required string OnPrimaryFixedVariant { get; init; }
+    /// <summary>A secondary fill that keeps the same colour in light and dark schemes.</summary>
+    public required string SecondaryFixed { get; init; }
+    /// <summary>A stronger variant of <see cref="SecondaryFixed"/>, also the same in both modes.</summary>
+    public required string SecondaryFixedDim { get; init; }
+    /// <summary>Text and icons on <see cref="SecondaryFixed"/> and <see cref="SecondaryFixedDim"/>.</summary>
+    public required string OnSecondaryFixed { get; init; }
+    /// <summary>Lower-emphasis text and icons on <see cref="SecondaryFixed"/> and <see cref="SecondaryFixedDim"/>.</summary>
+    public required string OnSecondaryFixedVariant { get; init; }
+    /// <summary>A tertiary fill that keeps the same colour in light and dark schemes.</summary>
+    public required string TertiaryFixed { get; init; }
+    /// <summary>A stronger variant of <see cref="TertiaryFixed"/>, also the same in both modes.</summary>
+    public required string TertiaryFixedDim { get; init; }
+    /// <summary>Text and icons on <see cref="TertiaryFixed"/> and <see cref="TertiaryFixedDim"/>.</summary>
+    public required string OnTertiaryFixed { get; init; }
+    /// <summary>Lower-emphasis text and icons on <see cref="TertiaryFixed"/> and <see cref="TertiaryFixedDim"/>.</summary>
+    public required string OnTertiaryFixedVariant { get; init; }
     /// <summary>Background color role.</summary>
     public required string Background { get; init; }
     /// <summary>On background color role.</summary>

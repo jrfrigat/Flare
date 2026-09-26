@@ -86,6 +86,35 @@ public static class Color
     public const string SurfaceContainerHigh = "--flare-color-surface-container-high";
     /// <summary>CSS custom-property name <c>--flare-color-surface-container-highest</c>.</summary>
     public const string SurfaceContainerHighest = "--flare-color-surface-container-highest";
+    /// <summary>CSS custom-property name <c>--flare-color-surface-bright</c>.</summary>
+    public const string SurfaceBright = "--flare-color-surface-bright";
+    /// <summary>CSS custom-property name <c>--flare-color-surface-dim</c>.</summary>
+    public const string SurfaceDim = "--flare-color-surface-dim";
+
+    /// <summary>CSS custom-property name <c>--flare-color-primary-fixed</c>.</summary>
+    public const string PrimaryFixed = "--flare-color-primary-fixed";
+    /// <summary>CSS custom-property name <c>--flare-color-primary-fixed-dim</c>.</summary>
+    public const string PrimaryFixedDim = "--flare-color-primary-fixed-dim";
+    /// <summary>CSS custom-property name <c>--flare-color-on-primary-fixed</c>.</summary>
+    public const string OnPrimaryFixed = "--flare-color-on-primary-fixed";
+    /// <summary>CSS custom-property name <c>--flare-color-on-primary-fixed-variant</c>.</summary>
+    public const string OnPrimaryFixedVariant = "--flare-color-on-primary-fixed-variant";
+    /// <summary>CSS custom-property name <c>--flare-color-secondary-fixed</c>.</summary>
+    public const string SecondaryFixed = "--flare-color-secondary-fixed";
+    /// <summary>CSS custom-property name <c>--flare-color-secondary-fixed-dim</c>.</summary>
+    public const string SecondaryFixedDim = "--flare-color-secondary-fixed-dim";
+    /// <summary>CSS custom-property name <c>--flare-color-on-secondary-fixed</c>.</summary>
+    public const string OnSecondaryFixed = "--flare-color-on-secondary-fixed";
+    /// <summary>CSS custom-property name <c>--flare-color-on-secondary-fixed-variant</c>.</summary>
+    public const string OnSecondaryFixedVariant = "--flare-color-on-secondary-fixed-variant";
+    /// <summary>CSS custom-property name <c>--flare-color-tertiary-fixed</c>.</summary>
+    public const string TertiaryFixed = "--flare-color-tertiary-fixed";
+    /// <summary>CSS custom-property name <c>--flare-color-tertiary-fixed-dim</c>.</summary>
+    public const string TertiaryFixedDim = "--flare-color-tertiary-fixed-dim";
+    /// <summary>CSS custom-property name <c>--flare-color-on-tertiary-fixed</c>.</summary>
+    public const string OnTertiaryFixed = "--flare-color-on-tertiary-fixed";
+    /// <summary>CSS custom-property name <c>--flare-color-on-tertiary-fixed-variant</c>.</summary>
+    public const string OnTertiaryFixedVariant = "--flare-color-on-tertiary-fixed-variant";
 
 
     /// <summary>CSS custom-property name <c>--flare-color-inverse-surface</c>.</summary>

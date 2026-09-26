@@ -19,6 +19,14 @@ public sealed class Fluent2RampGenerator : IPaletteGenerator
     {
         var main = seed.Main;
         var tertiary = ColorMath.RotateHue(main, -40);
+        // Fixed roles do not change with the mode: the light container pair, and the dark accent as the
+        // dim step.
+        var primaryFixed = ColorMath.Lighten(main, 0.85);
+        var primaryFixedDim = ColorMath.Lighten(main, 0.30);
+        var onPrimaryFixed = ColorMath.Darken(main, 0.50);
+        var tertiaryFixed = ColorMath.Lighten(tertiary, 0.85);
+        var tertiaryFixedDim = ColorMath.Lighten(tertiary, 0.45);
+        var onTertiaryFixed = ColorMath.Darken(tertiary, 0.50);
 
         return new Palette
         {
@@ -65,6 +73,20 @@ public sealed class Fluent2RampGenerator : IPaletteGenerator
                 SurfaceContainer = "#EBEBEB",
                 SurfaceContainerHigh = "#E0E0E0",
                 SurfaceContainerHighest = "#D6D6D6",
+                SurfaceBright = "#FFFFFF",
+                SurfaceDim = "#D6D6D6",
+                PrimaryFixed = primaryFixed,
+                PrimaryFixedDim = primaryFixedDim,
+                OnPrimaryFixed = onPrimaryFixed,
+                OnPrimaryFixedVariant = onPrimaryFixed,
+                SecondaryFixed = Gray(0.92),
+                SecondaryFixedDim = Gray(0.68),
+                OnSecondaryFixed = Gray(0.14),
+                OnSecondaryFixedVariant = Gray(0.14),
+                TertiaryFixed = tertiaryFixed,
+                TertiaryFixedDim = tertiaryFixedDim,
+                OnTertiaryFixed = onTertiaryFixed,
+                OnTertiaryFixedVariant = onTertiaryFixed,
                 Background = "#F5F5F5",
                 OnBackground = "#242424",
                 Outline = "#D1D1D1",
@@ -117,6 +139,20 @@ public sealed class Fluent2RampGenerator : IPaletteGenerator
                 SurfaceContainer = "#2A2A2A",
                 SurfaceContainerHigh = "#333333",
                 SurfaceContainerHighest = "#3D3D3D",
+                SurfaceBright = "#3D3D3D",
+                SurfaceDim = "#1A1A1A",
+                PrimaryFixed = primaryFixed,
+                PrimaryFixedDim = primaryFixedDim,
+                OnPrimaryFixed = onPrimaryFixed,
+                OnPrimaryFixedVariant = onPrimaryFixed,
+                SecondaryFixed = Gray(0.92),
+                SecondaryFixedDim = Gray(0.68),
+                OnSecondaryFixed = Gray(0.14),
+                OnSecondaryFixedVariant = Gray(0.14),
+                TertiaryFixed = tertiaryFixed,
+                TertiaryFixedDim = tertiaryFixedDim,
+                OnTertiaryFixed = onTertiaryFixed,
+                OnTertiaryFixedVariant = onTertiaryFixed,
                 Background = "#141414",
                 OnBackground = "#F0F0F0",
                 Outline = "#4A4A4A",

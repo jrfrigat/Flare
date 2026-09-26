@@ -67,6 +67,13 @@
   устанавливался и Material 3 Expressive со своей таблицей стилей. Теперь обе темы Material 3 берут цветовую
   систему из общего пакета токенов, который ссылается на `Flare.Theming`. Добавьте
   `using Flare.Theme.MaterialDesign3.Tokens;` там, где используется `Md3Palettes`.
+- **Ломающее для собственных тем: `ColorScheme` требует дополнительные роли Material 3** `SurfaceBright`,
+  `SurfaceDim` и для primary, secondary и tertiary - `*Fixed`, `*FixedDim`, `On*Fixed` и `On*FixedVariant`:
+  четырнадцать ролей, публикуемых как `--flare-color-surface-bright`, `--flare-color-primary-fixed` и так далее.
+  Fixed-роли сохраняют один цвет в светлой и темной схеме. Material 3 использует опубликованные значения;
+  остальные встроенные темы и генераторы палитр выводят их из своих ролей (fixed-заливка - светлый контейнер,
+  ступень dim - темный акцент). В `PaletteFactory` добавлены `WithPrimaryFixedFromPrimary` и
+  `WithTertiaryFixedFromTertiary` для палитр, перекрашивающих акценты базовой схемы.
 
 ### Исправлено
 

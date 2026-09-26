@@ -65,6 +65,13 @@ All notable changes to Flare are documented here. This project adheres to
   Material 3 also installed Material 3 Expressive with its stylesheet. Both Material 3 themes now take the
   colour system from the shared tokens package, which references `Flare.Theming`. Add
   `using Flare.Theme.MaterialDesign3.Tokens;` where you use `Md3Palettes`.
+- **Breaking for custom themes: `ColorScheme` requires the Material 3 add-on roles** `SurfaceBright`,
+  `SurfaceDim` and, for each of primary, secondary and tertiary, `*Fixed`, `*FixedDim`, `On*Fixed` and
+  `On*FixedVariant` - fourteen roles published as `--flare-color-surface-bright`, `--flare-color-primary-fixed`
+  and so on. Fixed roles keep one colour in light and dark schemes. Material 3 uses the published values; the
+  other built-in themes and the palette generators derive them from their own roles (the fixed fill is the light
+  container, the dim step the dark accent). `PaletteFactory` gains `WithPrimaryFixedFromPrimary` and
+  `WithTertiaryFixedFromTertiary` for palettes that recolour a base scheme's accents.
 
 ### Fixed
 
