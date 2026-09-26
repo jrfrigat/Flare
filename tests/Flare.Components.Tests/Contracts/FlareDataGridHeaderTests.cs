@@ -125,7 +125,7 @@ public class FlareDataGridHeaderTests : FlareTestContext
     }
 
     [Fact]
-    public void DragDropColumn_ReordersAndRaisesCallback()
+    public async Task DragDropColumn_ReordersAndRaisesCallback()
     {
         IReadOnlyList<string>? reported = null;
         var cut = Render(ReorderGrid(reorderableColumns: true, onColumnOrderChanged: o => reported = o));
@@ -133,7 +133,7 @@ public class FlareDataGridHeaderTests : FlareTestContext
         // Drag "Dept" onto the front of the header row. The browser reports the index the column ends
         // up at, counted with the dragged one already taken out.
         var drag = cut.FindComponent<FlareDragContext<object>>();
-        cut.InvokeAsync(() => drag.Instance.OnDropAsync("c:Dept", "flare-datagrid-columns", 0, "before", "c:Name")).Wait();
+        await cut.InvokeAsync(() => drag.Instance.OnDropAsync("c:Dept", "flare-datagrid-columns", 0, "before", "c:Name"));
 
         var titles = cut.FindAll("th[role=columnheader]").Select(t => t.TextContent.Trim()).ToList();
         Assert.Equal(["Dept", "Name"], titles);
@@ -152,14 +152,14 @@ public class FlareDataGridHeaderTests : FlareTestContext
     }
 
     [Fact]
-    public void DragDropRow_RaisesOnRowReorderedWithIndices()
+    public async Task DragDropRow_RaisesOnRowReorderedWithIndices()
     {
         DataGridRowReorder<Person>? reported = null;
         var cut = Render(ReorderGrid(rowReorderable: true, onRowReordered: e => reported = e));
 
         // Drag row 1 (Bob) in front of row 0 (Alice).
         var drag = cut.FindComponent<FlareDragContext<object>>();
-        cut.InvokeAsync(() => drag.Instance.OnDropAsync("1", "flare-datagrid-rows", 0, "before", "0")).Wait();
+        await cut.InvokeAsync(() => drag.Instance.OnDropAsync("1", "flare-datagrid-rows", 0, "before", "0"));
 
         Assert.NotNull(reported);
         Assert.Equal(1, reported!.OldIndex);
