@@ -288,35 +288,37 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 
 ### Available Token Records
 
-| Token | Purpose | Fields |
-|-------|---------|--------|
-| `TypographyTokens` | Font families, sizes, weights | 15 type scales |
-| `ShapeTokens` | Corner radii | 7 levels |
-| `ElevationTokens` | Box shadows | 6 levels |
-| `MotionTokens` | Durations + easings | 6 durations + 4 easings |
-| `StateTokens` | Opacity levels | 6 states |
-| `ButtonTokens` | Button geometry, selected state, toggle colour | 62 fields |
-| `ButtonGroupTokens` | Both group models, per size | 20 fields |
-| `ToggleButtonTokens` | The segmented container only | 4 fields |
-| `InputTokens` | Form field geometry | 23 fields |
-| `DialogTokens` | Modal dialog | 26 fields |
-| `DrawerTokens` | Navigation drawer | 18 fields |
-| `SnackbarTokens` | Notifications | 22 fields |
-| `SelectTokens` | Dropdowns | 24 fields |
-| `TooltipTokens` | Tooltips | 15 fields |
-| `PopoverTokens` | Popovers | 12 fields |
-| `DataGridTokens` | Data grids | 33 fields |
-| `CardTokens` | Cards | 20 fields |
-| `AvatarTokens` | Avatars | 17 fields |
-| `ProgressTokens` | Progress indicators | 18 fields |
-| `SwitchTokens` | Toggle switches | 28 fields |
-| `NavTokens` | Nav item + active indicator | 4 fields |
-| `RatingTokens` | Star rating | 4 fields |
-| `PaginationTokens` | Pagination controls | 4 fields |
-| `TimelineTokens` | Timeline dot + connector | 7 fields |
-| `StepperTokens` | Stepper circle + connector | 8 fields |
-| `TreeTokens` | Tree view rows | 6 fields |
-| `CalendarTokens` | Calendar month/day grid | 9 fields |
+| Token | What it sets |
+|-------|--------------|
+| `ColorScheme` | The colour roles of one mode, including surface-bright/dim and the fixed accent roles |
+| `TypographyTokens` | Font family, size, weight, line height and tracking of each type style |
+| `ShapeTokens` | The corner-radius scale |
+| `ElevationTokens` | The shadow scale |
+| `MotionTokens` | Durations and curves by role, and how each surface family appears and leaves |
+| `StateTokens` | Hover, focus, pressed, dragged and disabled layers |
+| `ButtonTokens` | Button geometry, labels, focus, selected state, and the disabled fade or repaint |
+| `ButtonGroupTokens` | Both group models, per size |
+| `ToggleButtonTokens` | The segmented container only |
+| `InputTokens` | Field geometry, the theme's own field, the explicit filled and outlined variants, focus and error |
+| `DialogTokens` | Dialog surface, text, shadow and radius |
+| `DrawerTokens` | Navigation drawer |
+| `SnackbarTokens` | Snackbar surface, text, action, shadow and geometry, and the error/success/warning/info surfaces |
+| `MenuTokens` | Menu panel, items and groups |
+| `TooltipTokens` | Plain and rich tooltip surfaces, text, shadows and padding |
+| `PopoverTokens` | Popover surface, text, shadow and radius (the colour picker panel uses it too) |
+| `PickerTokens` | Date and time picker panel surface, calendar geometry |
+| `DataGridTokens` | Data grids |
+| `CardTokens` | Card variants, hover elevation and focus ring |
+| `AvatarTokens` | Avatars |
+| `ProgressTokens` | Progress indicators |
+| `SwitchTokens` | Toggle switches |
+| `NavTokens` | Nav item + active indicator |
+| `RatingTokens` | Star rating |
+| `PaginationTokens` | Pagination controls |
+| `TimelineTokens` | Timeline dot + connector |
+| `StepperTokens` | Stepper circle + connector |
+| `TreeTokens` | Tree view rows |
+| `CalendarTokens` | Calendar month/day grid |
 
 This is a representative subset; the full set of component token records lives in
 `Flare.Abstractions/Tokens/Components/`. Every record's members are `required`, so the compiler

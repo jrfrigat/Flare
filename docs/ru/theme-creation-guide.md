@@ -290,35 +290,37 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 
 ### Доступные token-записи
 
-| Токен | Назначение | Поля |
-|-------|---------|--------|
-| `TypographyTokens` | Шрифты, размеры, насыщенность | 15 type scales |
-| `ShapeTokens` | Радиусы скругления | 7 уровней |
-| `ElevationTokens` | Тени | 6 уровней |
-| `MotionTokens` | Длительности + easings | 6 длительностей + 4 easing |
-| `StateTokens` | Уровни прозрачности | 6 состояний |
-| `ButtonTokens` | Геометрия кнопки, выбранное состояние, цвета toggle | 62 поля |
-| `ButtonGroupTokens` | Обе модели группы, по размерам | 20 полей |
-| `ToggleButtonTokens` | Только сегментированный контейнер | 4 поля |
-| `InputTokens` | Геометрия поля ввода | 23 поля |
-| `DialogTokens` | Модальный диалог | 26 полей |
-| `DrawerTokens` | Навигационный drawer | 18 полей |
-| `SnackbarTokens` | Уведомления | 22 поля |
-| `SelectTokens` | Выпадающие списки | 24 поля |
-| `TooltipTokens` | Тултипы | 15 полей |
-| `PopoverTokens` | Поповеры | 12 полей |
-| `DataGridTokens` | Таблицы данных | 33 поля |
-| `CardTokens` | Карточки | 20 полей |
-| `AvatarTokens` | Аватары | 17 полей |
-| `ProgressTokens` | Индикаторы прогресса | 18 полей |
-| `SwitchTokens` | Переключатели | 28 полей |
-| `NavTokens` | Элемент навигации + индикатор | 4 поля |
-| `RatingTokens` | Рейтинг (звезды) | 4 поля |
-| `PaginationTokens` | Пагинация | 4 поля |
-| `TimelineTokens` | Точка + коннектор таймлайна | 7 полей |
-| `StepperTokens` | Круг + коннектор степпера | 8 полей |
-| `TreeTokens` | Строки дерева | 6 полей |
-| `CalendarTokens` | Сетка месяца/дней календаря | 9 полей |
+| Токен | Что задает |
+|-------|------------|
+| `ColorScheme` | Цветовые роли одного режима, включая surface-bright/dim и fixed-роли акцентов |
+| `TypographyTokens` | Шрифт, размер, насыщенность, межстрочный интервал и трекинг каждого стиля текста |
+| `ShapeTokens` | Шкала радиусов скругления |
+| `ElevationTokens` | Шкала теней |
+| `MotionTokens` | Длительности и кривые по ролям, появление и уход каждого семейства поверхностей |
+| `StateTokens` | Слои hover, focus, pressed, dragged и disabled |
+| `ButtonTokens` | Геометрия кнопки, подписи, фокус, выбранное состояние, гашение или перекраска в disabled |
+| `ButtonGroupTokens` | Обе модели группы, по размерам |
+| `ToggleButtonTokens` | Только сегментированный контейнер |
+| `InputTokens` | Геометрия поля, поле темы по умолчанию, явные варианты filled и outlined, фокус и ошибка |
+| `DialogTokens` | Поверхность, текст, тень и скругление диалога |
+| `DrawerTokens` | Навигационный drawer |
+| `SnackbarTokens` | Поверхность, текст, действие, тень и геометрия снэкбара, поверхности error/success/warning/info |
+| `MenuTokens` | Панель меню, пункты и группы |
+| `TooltipTokens` | Поверхности, текст, тени и отступы обычной и расширенной подсказки |
+| `PopoverTokens` | Поверхность, текст, тень и скругление поповера (его же использует панель выбора цвета) |
+| `PickerTokens` | Поверхность панели выбора даты и времени, геометрия календаря |
+| `DataGridTokens` | Таблицы данных |
+| `CardTokens` | Варианты карточки, подъем при наведении и кольцо фокуса |
+| `AvatarTokens` | Аватары |
+| `ProgressTokens` | Индикаторы прогресса |
+| `SwitchTokens` | Переключатели |
+| `NavTokens` | Элемент навигации + индикатор |
+| `RatingTokens` | Рейтинг (звезды) |
+| `PaginationTokens` | Пагинация |
+| `TimelineTokens` | Точка + коннектор таймлайна |
+| `StepperTokens` | Круг + коннектор степпера |
+| `TreeTokens` | Строки дерева |
+| `CalendarTokens` | Сетка месяца/дней календаря |
 
 Это репрезентативная выборка; полный набор записей токенов компонентов лежит в
 `Flare.Abstractions/Tokens/Components/`. Все члены каждой записи объявлены `required`, поэтому
