@@ -222,10 +222,6 @@
     border-radius: var(--flare-layout-appbar-toggle-radius);
     color: inherit;
     cursor: pointer;
-    transition: background var(--flare-motion-duration-state-change);
-}
-.flare-layout-appbar__toggle:hover {
-    background: var(--flare-color-surface-container-highest);
 }
 
 /* Animated hamburger that morphs into an X when the primary drawer is open. Its geometry is the

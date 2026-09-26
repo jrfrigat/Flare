@@ -126,6 +126,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The app bar's burger button lights up like the other controls.** Hovering it painted a fixed
+  surface-container-highest fill, and pressing or keyboard-focusing it showed nothing beyond the focus ring. It
+  now takes the theme's hover, focus and pressed state layers, in the button's own shape.
 - **A derived theme's tokens no longer lose to its base theme's.** The generated token stylesheet listed themes
   in registration order, and a derived theme's root also answers to its base's class, so a base registered
   after it - or pulled in by a `FlareThemeScope` - overrode the derived theme's values. A theme's tokens are

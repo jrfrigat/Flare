@@ -62,4 +62,17 @@ public sealed class IconLayoutSparklineGapTests : FlareTestContext
         Assert.DoesNotContain(Css.Tokens.LayoutField.AppBarHeight, header.GetAttribute("style") ?? "");
         Assert.DoesNotContain(Css.Classes.Layout.AppBarDense, header.ClassList);
     }
+
+    // The drawer toggle is lit by the theme's state layers, like the other interactive controls, so a theme
+    // that changes its hover wash changes the toggle's too.
+    [Fact]
+    public void AppBar_DrawerToggle_UsesThemeStateLayers()
+    {
+        var cut = Render<FlareLayoutAppBar>(p => p.Add(x => x.DrawerToggle, true));
+        var toggle = cut.Find($".{Css.Classes.Layout.AppBarToggle}");
+
+        Assert.Contains(Css.Classes.State.LayerHover, toggle.ClassList);
+        Assert.Contains(Css.Classes.State.LayerFocus, toggle.ClassList);
+        Assert.Contains(Css.Classes.State.LayerPressed, toggle.ClassList);
+    }
 }
