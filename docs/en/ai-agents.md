@@ -72,6 +72,7 @@ Opt-in heavier components live in their own packages - add only what you use:
 ```csharp
 using Flare.Extensions;
 using Flare.Theme.MaterialDesign3Expressive;
+using Flare.Theme.MaterialDesign3.Tokens;   // Md3Palettes
 using Flare.Theme.FluentUI2;
 
 builder.Services.AddFlare(opts =>

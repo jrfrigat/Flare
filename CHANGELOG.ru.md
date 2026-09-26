@@ -61,6 +61,12 @@
   `Color` и `Shadow`; `CardTokens` - `FocusRing` и высоту при наведении для вариантов filled, outlined и
   tonal (`FilledElevationHover`, `OutlinedElevationHover`, `TonalElevationHover`). Встроенные темы выглядят
   как прежде, кроме перечисленного в разделе "Исправлено".
+- **Ломающее: `Md3Palettes` и `Md3TonalGenerator` переехали в `Flare.Theme.MaterialDesign3.Tokens`**
+  (пространство имен `Flare.Theme.MaterialDesign3.Tokens`) из `Flare.Theme.MaterialDesign3Expressive`. Пакет
+  `Flare.Theme.MaterialDesign3` ссылался на пакет Expressive только ради них, поэтому вместе с Material 3
+  устанавливался и Material 3 Expressive со своей таблицей стилей. Теперь обе темы Material 3 берут цветовую
+  систему из общего пакета токенов, который ссылается на `Flare.Theming`. Добавьте
+  `using Flare.Theme.MaterialDesign3.Tokens;` там, где используется `Md3Palettes`.
 
 ### Исправлено
 

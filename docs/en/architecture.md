@@ -27,18 +27,18 @@ root (`Flare.Blazor`) is the only package that binds ports to their adapter impl
                |
         Flare (Flare.Blazor)   (Ring 4 - composition root; -> Components, Infrastructure)
 
-Reference token packages (-> Flare.Abstractions only): hold the fully-populated baseline
+Reference token packages (-> Flare.Abstractions): hold the fully-populated baseline
 DesignTokens each lineage derives from (the core itself ships no default token values):
-  Flare.Theme.MaterialDesign3.Tokens (MaterialDesign3Tokens.Design),
+  Flare.Theme.MaterialDesign3.Tokens (MaterialDesign3Tokens.Design, plus the Material 3 colour system
+    both MD3 themes share - Md3Palettes and Md3TonalGenerator - which is why it also references
+    Flare.Theming),
   Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
 
 Theme packages (each -> Flare.Abstractions + Flare.Theming, plus a lineage's *.Tokens package if it
 shares that lineage's opinions; none referenced by the umbrella): the seven shipped design systems -
   Material 3 lineage (-> MaterialDesign3.Tokens): .MaterialDesign3, .MaterialDesign3Expressive,
     .Aero, .LiquidGlass - every one takes its token values from the reference and overrides only
-    what its own language changes. (.MaterialDesign3 also references .MaterialDesign3Expressive, but
-    only for Md3Palettes / Md3TonalGenerator: the Material 3 colour system needs Flare.Theming,
-    which a reference-tokens package may not depend on.)
+    what its own language changes. No theme of the lineage references another.
   Fluent lineage (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
   Self-contained: .MaterialDesign2 - it predates the tonal palettes, pill shapes and surface-tint
     elevation the Material 3 baseline carries, so it states all of its own tokens instead

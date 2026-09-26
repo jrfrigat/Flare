@@ -2,7 +2,7 @@ using Flare.Abstractions;
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
 
-namespace Flare.Theme.MaterialDesign3Expressive;
+namespace Flare.Theme.MaterialDesign3.Tokens;
 
 /// <summary>
 /// Material Design 3 palette generator: derives roles from tonal palettes (key color -> tones),

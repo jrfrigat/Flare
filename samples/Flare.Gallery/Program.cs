@@ -9,6 +9,7 @@ using Flare.Theme.LiquidGlass;
 using Flare.Theme.MaterialDesign2;
 using Flare.Theme.MaterialDesign3;
 using Flare.Theme.MaterialDesign3Expressive;
+using Flare.Theme.MaterialDesign3.Tokens;   // Md3Palettes
 using Flare.Theme.VisualStudio;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

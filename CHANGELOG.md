@@ -59,6 +59,12 @@ All notable changes to Flare are documented here. This project adheres to
   `PopoverTokens` requires `Bg`, `Color` and `Shadow`; `CardTokens` requires `FocusRing` and a hover
   elevation for the filled, outlined and tonal variants (`FilledElevationHover`, `OutlinedElevationHover`,
   `TonalElevationHover`). The built-in themes keep their look, except as listed under Fixed.
+- **Breaking: `Md3Palettes` and `Md3TonalGenerator` moved to `Flare.Theme.MaterialDesign3.Tokens`** (namespace
+  `Flare.Theme.MaterialDesign3.Tokens`), from `Flare.Theme.MaterialDesign3Expressive`. The baseline
+  `Flare.Theme.MaterialDesign3` package referenced the Expressive package only for them, so installing
+  Material 3 also installed Material 3 Expressive with its stylesheet. Both Material 3 themes now take the
+  colour system from the shared tokens package, which references `Flare.Theming`. Add
+  `using Flare.Theme.MaterialDesign3.Tokens;` where you use `Md3Palettes`.
 
 ### Fixed
 

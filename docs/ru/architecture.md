@@ -24,18 +24,18 @@ Flare построен как **чистая / луковичная (порты 
                ^
         Flare (Flare.Blazor)   (Кольцо 4 - корень композиции; -> Components, Infrastructure)
 
-Reference-пакеты токенов (-> только Flare.Abstractions): содержат полностью заполненный базовый
+Reference-пакеты токенов (-> Flare.Abstractions): содержат полностью заполненный базовый
 DesignTokens, от которого производится каждая линейка тем (сам core не несет значений по умолчанию):
-  Flare.Theme.MaterialDesign3.Tokens (MaterialDesign3Tokens.Design),
+  Flare.Theme.MaterialDesign3.Tokens (MaterialDesign3Tokens.Design, а также общая для обеих MD3-тем
+    цветовая система Material 3 - Md3Palettes и Md3TonalGenerator; поэтому он ссылается и на
+    Flare.Theming),
   Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
 
 Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming, плюс reference-пакет линейки, если тема
 разделяет ее мнения; umbrella не ссылается ни на один): семь поставляемых дизайн-систем -
   Линейка Material 3 (-> MaterialDesign3.Tokens): .MaterialDesign3, .MaterialDesign3Expressive,
     .Aero, .LiquidGlass - каждая берет значения токенов из reference-пакета и переопределяет только
-    то, что меняет ее язык. (.MaterialDesign3 дополнительно ссылается на .MaterialDesign3Expressive,
-    но только ради Md3Palettes / Md3TonalGenerator: цветовой системе Material 3 нужен Flare.Theming,
-    а reference-пакету токенов зависеть от него нельзя.)
+    то, что меняет ее язык. Ни одна тема линейки не ссылается на другую.
   Линейка Fluent (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
   Самодостаточная: .MaterialDesign2 - она предшествует тональным палитрам, капсульным формам и
     возвышению заливкой, которые несет база Material 3, поэтому задает все свои токены сама

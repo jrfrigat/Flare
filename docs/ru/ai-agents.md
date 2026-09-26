@@ -72,6 +72,7 @@ dotnet add package Flare.Theme.MaterialDesign3Expressive
 ```csharp
 using Flare.Extensions;
 using Flare.Theme.MaterialDesign3Expressive;
+using Flare.Theme.MaterialDesign3.Tokens;   // Md3Palettes
 using Flare.Theme.FluentUI2;
 
 builder.Services.AddFlare(opts =>
