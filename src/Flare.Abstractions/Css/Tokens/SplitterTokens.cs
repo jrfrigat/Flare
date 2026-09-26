@@ -1,7 +1,7 @@
 namespace Flare.Css.Tokens;
 
-/// <summary>CSS custom properties for <c>FlareSplitter</c> (gutter thickness, grip geometry, idle/hover
-/// colors, centre-icon size/color). Every one of these is supplied by the active theme through
+/// <summary>CSS custom properties for <c>FlareSplitter</c> (gutter thickness, grip geometry, colour and
+/// shape, idle/hover colors, centre-icon size/color). Every one of these is supplied by the active theme through
 /// <c>SplitterTokens</c>; the stylesheet holds no value of its own.</summary>
 public static class Splitter
 {
@@ -19,4 +19,8 @@ public static class Splitter
     public const string IconSize = "--flare-splitter-icon-size";
     /// <summary>CSS custom-property name for the centre-icon colour token.</summary>
     public const string IconColor = "--flare-splitter-icon-color";
+    /// <summary>CSS custom-property name for the grip colour token.</summary>
+    public const string GripColor = "--flare-splitter-grip-color";
+    /// <summary>CSS custom-property name for the grip corner-radius token.</summary>
+    public const string GripRadius = "--flare-splitter-grip-radius";
 }

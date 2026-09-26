@@ -1128,6 +1128,8 @@ public class MaterialDesign3Tokens
         HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         IconSize = "1.125rem",
         IconColor = "var(--flare-color-on-surface-variant)",
+        GripColor = "var(--flare-color-outline)",
+        GripRadius = "var(--flare-shape-full)",
     };
 
     internal static readonly SliderTokens Slider = new()

@@ -54,8 +54,8 @@
 
 /* Grip bar: short rounded line centered in the handle (horizontal default). */
 .flare-splitter__gutter-bar {
-    background: var(--flare-color-outline);
-    border-radius: var(--flare-shape-full);
+    background: var(--flare-splitter-grip-color);
+    border-radius: var(--flare-splitter-grip-radius);
     pointer-events: none;
     width: var(--flare-splitter-grip-thickness);
     height: var(--flare-splitter-grip-length);

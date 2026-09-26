@@ -1062,6 +1062,8 @@ internal static class MaterialDesign2Tokens
         HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         IconSize = "1.125rem",
         IconColor = "var(--flare-color-on-surface-variant)",
+        GripColor = "var(--flare-color-outline)",
+        GripRadius = "var(--flare-shape-full)",
     };
 
     // MD2 slider: thin 4px rail with a round 20dp thumb (no MD3 Expressive bar handle).

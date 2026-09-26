@@ -100,6 +100,9 @@ All notable changes to Flare are documented here. This project adheres to
   `Radius`, `Shadow`), which it already matched in Material 3.
 - **Breaking for custom themes: `TooltipTokens` requires `Shadow`**, the shadow under the plain tooltip - `none`
   for a dark tooltip chip, a real shadow for a light one.
+- **Breaking for custom themes: `SplitterTokens` requires `GripColor` and `GripRadius`.** The grip bar inside a
+  `FlareSplitter` was always painted in the outline colour as a pill, whatever the theme set for its size; a
+  theme now chooses both. Every built-in theme keeps the outline pill.
 - **Breaking for custom themes: `LayoutTokens` requires the drawer toggle's geometry.** `AppBarToggleSize`,
   `AppBarToggleGlyphWidth`, `AppBarToggleGlyphHeight`, `AppBarToggleBarThickness` and `AppBarToggleRadius`
   size and shape the app bar's burger button and its three bars, which were a fixed 36px circle with an 18x14

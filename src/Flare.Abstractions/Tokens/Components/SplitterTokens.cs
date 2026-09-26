@@ -31,4 +31,12 @@ public sealed record SplitterTokens
     /// <summary>Colour of the centre icon, which must stay legible on <see cref="Color"/> and
     /// <see cref="HoverColor"/> alike.</summary>
     [CssVar(Splitter.IconColor)] public required string IconColor { get; init; }
+
+    /// <summary>Colour of the grip bar. It sits on <see cref="Color"/> at rest and on
+    /// <see cref="HoverColor"/> while hovered, so it has to read against both.</summary>
+    [CssVar(Splitter.GripColor)] public required string GripColor { get; init; }
+
+    /// <summary>Corner radius of the grip bar - a pill for a rounded language, a small radius or zero for
+    /// a square one. Usually a reference to a shape step.</summary>
+    [CssVar(Splitter.GripRadius)] public required string GripRadius { get; init; }
 }
