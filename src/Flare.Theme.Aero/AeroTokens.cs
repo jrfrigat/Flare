@@ -283,6 +283,13 @@ internal class AeroTokens
         IconOnlyIconSizeMd = "var(--flare-btn-icon-size-md)",
         IconOnlyIconSizeLg = "var(--flare-btn-icon-size-lg)",
         IconOnlyIconSizeXl = "var(--flare-btn-icon-size-xl)",
+        // An icon-only button rounds like a labelled one of the same size.
+        IconOnlyRadiusXs = "var(--flare-btn-radius-xs-top-left)",
+        IconOnlyRadiusSm = "var(--flare-btn-radius-sm-top-left)",
+        IconOnlyRadiusMd = "var(--flare-btn-radius-md-top-left)",
+        IconOnlyRadiusLg = "var(--flare-btn-radius-lg-top-left)",
+        IconOnlyRadiusXl = "var(--flare-btn-radius-xl-top-left)",
+
         IconInset = "var(--flare-spacing-2)",
         TextIconInset = "var(--flare-spacing-2)",
         OutlinedColor = "var(--flare-color-on-surface-variant)",

@@ -291,6 +291,14 @@ internal static class MaterialDesign2Tokens
         IconOnlyIconSizeMd = "var(--flare-btn-icon-size-md)",
         IconOnlyIconSizeLg = "var(--flare-btn-icon-size-lg)",
         IconOnlyIconSizeXl = "var(--flare-btn-icon-size-xl)",
+        // Material 2 icon buttons are round (a circular ripple), unlike its 4px labelled buttons. Half the
+        // height rather than 9999px, so a morph to another radius interpolates through painted values.
+        IconOnlyRadiusXs = "calc(var(--flare-btn-height-xs) / 2)",
+        IconOnlyRadiusSm = "calc(var(--flare-btn-height-sm) / 2)",
+        IconOnlyRadiusMd = "calc(var(--flare-btn-height-md) / 2)",
+        IconOnlyRadiusLg = "calc(var(--flare-btn-height-lg) / 2)",
+        IconOnlyRadiusXl = "calc(var(--flare-btn-height-xl) / 2)",
+
         IconInset = "var(--flare-spacing-2)",
         TextIconInset = "var(--flare-spacing-2)",
         OutlinedColor = "var(--flare-color-on-surface-variant)",

@@ -215,6 +215,18 @@ public sealed record ButtonTokens
     [CssVar(Button.IconOnlyIconSize.Lg)] public required string IconOnlyIconSizeLg { get; init; }
     /// <summary>Glyph size of an icon-only button at the xl size.</summary>
     [CssVar(Button.IconOnlyIconSize.Xl)] public required string IconOnlyIconSizeXl { get; init; }
+    /// <summary>Corner radius of an icon-only button at the xs size, in place of the labelled
+    /// <see cref="RadiusXs"/>. Point it at the labelled radius to round both the same way. An explicit
+    /// button shape or the selected state still decides the radius when one applies.</summary>
+    [CssVar(Button.IconOnlyRadius.Xs)] public required string IconOnlyRadiusXs { get; init; }
+    /// <summary>Corner radius of an icon-only button at the sm size.</summary>
+    [CssVar(Button.IconOnlyRadius.Sm)] public required string IconOnlyRadiusSm { get; init; }
+    /// <summary>Corner radius of an icon-only button at the md size.</summary>
+    [CssVar(Button.IconOnlyRadius.Md)] public required string IconOnlyRadiusMd { get; init; }
+    /// <summary>Corner radius of an icon-only button at the lg size.</summary>
+    [CssVar(Button.IconOnlyRadius.Lg)] public required string IconOnlyRadiusLg { get; init; }
+    /// <summary>Corner radius of an icon-only button at the xl size.</summary>
+    [CssVar(Button.IconOnlyRadius.Xl)] public required string IconOnlyRadiusXl { get; init; }
     /// <summary>How far a leading or trailing icon is pulled toward the button edge on its side, taken
     /// out of that side's inline padding. A language that keeps both sides even sets zero.</summary>
     [CssVar(Button.IconInset)] public required string IconInset { get; init; }

@@ -150,6 +150,22 @@ public static class Button
         public const string Xl = "--flare-btn-icon-only-icon-size-xl";
     }
 
+    /// <summary>Corner radius of an icon-only button, per size. Separate from the labelled radii because a
+    /// design language may round a lone icon differently from a button with a label of the same size.</summary>
+    public static class IconOnlyRadius
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-icon-only-radius-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-icon-only-radius-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-icon-only-radius-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-icon-only-radius-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-icon-only-radius-xl";
+    }
+
     /// <summary>CSS custom-property name for how far a leading or trailing icon is pulled toward the
     /// button edge on its side, so the icon side of a labelled button carries less inline space than the
     /// label side.</summary>

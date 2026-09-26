@@ -341,6 +341,13 @@ public class MaterialDesign3Tokens
         IconOnlyIconSizeMd = "1.5rem",  // 24dp (spec)
         IconOnlyIconSizeLg = "1.5rem",  // 24dp
         IconOnlyIconSizeXl = "1.75rem", // 28dp
+        // An icon-only button rounds like a labelled one of the same size.
+        IconOnlyRadiusXs = "var(--flare-btn-radius-xs-top-left)",
+        IconOnlyRadiusSm = "var(--flare-btn-radius-sm-top-left)",
+        IconOnlyRadiusMd = "var(--flare-btn-radius-md-top-left)",
+        IconOnlyRadiusLg = "var(--flare-btn-radius-lg-top-left)",
+        IconOnlyRadiusXl = "var(--flare-btn-radius-xl-top-left)",
+
         // The icon side of a contained button is 16dp against 24dp on the label side (with-leading-icon
         // leading-space). A text button keeps its 12dp on the icon side, so it tucks nothing.
         IconInset = "0.5rem",

@@ -100,6 +100,11 @@ All notable changes to Flare are documented here. This project adheres to
   `Radius`, `Shadow`), which it already matched in Material 3.
 - **Breaking for custom themes: `TooltipTokens` requires `Shadow`**, the shadow under the plain tooltip - `none`
   for a dark tooltip chip, a real shadow for a light one.
+- **Breaking for custom themes: `ButtonTokens` requires `IconOnlyRadiusXs` to `IconOnlyRadiusXl`.** An icon-only
+  button - `FlareIconButton`, or a `FlareButton` with an icon and no label - took the radius of a labelled button
+  of its size, so Material Design 2 drew its icon buttons as 4px rounded squares instead of circles. The icon-only
+  radius is now the theme's own; Material Design 2 icon buttons are round, and every other built-in theme keeps
+  rounding them like its labelled buttons. An explicit `Shape` and the selected state still take precedence.
 - **Breaking for custom themes: `SplitterTokens` requires `GripColor` and `GripRadius`.** The grip bar inside a
   `FlareSplitter` was always painted in the outline colour as a pill, whatever the theme set for its size; a
   theme now chooses both. Every built-in theme keeps the outline pill.
