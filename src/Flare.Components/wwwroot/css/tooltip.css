@@ -21,6 +21,7 @@
   padding: var(--flare-tooltip-padding);
   background: var(--flare-tooltip-bg);
   color: var(--flare-tooltip-color);
+  box-shadow: var(--flare-tooltip-shadow);
   font-family: var(--flare-typescale-body-small-font);
   font-size: var(--flare-typescale-body-small-size);
   line-height: var(--flare-typescale-body-small-height);

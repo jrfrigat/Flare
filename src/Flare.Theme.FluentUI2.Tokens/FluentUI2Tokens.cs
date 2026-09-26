@@ -1305,22 +1305,25 @@ public class FluentUI2Tokens
     {
         MaxWidth = "18rem",
         Offset = "0.5rem",
-        Bg = "var(--flare-color-inverse-surface)",
-        Color = "var(--flare-color-inverse-on-surface)",
+        // Fluent tooltip (normal appearance): colorNeutralBackground1 / colorNeutralForeground1 with its drop-shadow (shadow8 geometry). No rich tooltip in Fluent: the rich one is a popover surface at shadow16.
+        Bg = "var(--flare-color-surface)",
+        Color = "var(--flare-color-on-surface)",
         Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
-        RichBg = "var(--flare-color-surface-container)",
+        RichBg = "var(--flare-color-surface)",
         RichColor = "var(--flare-color-on-surface)",
-        RichShadow = "var(--flare-elevation-3)",
+        RichShadow = "0 0 2px var(--flare-shadow-penumbra), 0 8px 16px var(--flare-shadow-umbra)",
         RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
+        Shadow = "0 0 2px var(--flare-shadow-penumbra), 0 4px 8px var(--flare-shadow-umbra)",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-small)",
         Offset = "0.5rem",
-        Bg = "var(--flare-color-surface-container)",
+        // Fluent popover surface: colorNeutralBackground1 / colorNeutralForeground1 at shadow16.
+        Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",
-        Shadow = "var(--flare-elevation-2)",
+        Shadow = "0 0 2px var(--flare-shadow-penumbra), 0 8px 16px var(--flare-shadow-umbra)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
@@ -1351,20 +1354,21 @@ public class FluentUI2Tokens
         MinWidth = "20rem",
         MaxWidth = "36rem",
         PaddingInline = "var(--flare-spacing-10)",
-        Bg = "var(--flare-color-inverse-surface)",
-        Color = "var(--flare-color-inverse-on-surface)",
-        ActionColor = "var(--flare-color-inverse-primary)",
-        Shadow = "var(--flare-elevation-3)",
+        // Fluent toast: colorNeutralBackground1 / colorNeutralForeground1, the action in colorBrandForeground1, shadow8. Intents use the theme's status containers rather than Material's accent containers.
+        Bg = "var(--flare-color-surface)",
+        Color = "var(--flare-color-on-surface)",
+        ActionColor = "var(--flare-color-primary)",
+        Shadow = "0 0 2px var(--flare-shadow-penumbra), 0 4px 8px var(--flare-shadow-umbra)",
         // Severity surfaces, as the snackbar has always drawn them: error on the error role, the others on
         // the secondary, tertiary and primary containers.
-        ErrorBg = "var(--flare-color-error)",
-        ErrorColor = "var(--flare-color-on-error)",
-        SuccessBg = "var(--flare-color-secondary-container)",
-        SuccessColor = "var(--flare-color-on-secondary-container)",
-        WarningBg = "var(--flare-color-tertiary-container)",
-        WarningColor = "var(--flare-color-on-tertiary-container)",
-        InfoBg = "var(--flare-color-primary-container)",
-        InfoColor = "var(--flare-color-on-primary-container)",
+        ErrorBg = "var(--flare-color-error-container)",
+        ErrorColor = "var(--flare-color-on-error-container)",
+        SuccessBg = "var(--flare-color-success-container)",
+        SuccessColor = "var(--flare-color-on-success-container)",
+        WarningBg = "var(--flare-color-warning-container)",
+        WarningColor = "var(--flare-color-on-warning-container)",
+        InfoBg = "var(--flare-color-info-container)",
+        InfoColor = "var(--flare-color-on-info-container)",
     };
 
     // Dialog - Fluent: large radius; the rest is the shared Material baseline.
@@ -1372,9 +1376,10 @@ public class FluentUI2Tokens
     {
         Radius = "var(--flare-shape-large)",
         IconSize = "1.5rem",
-        Bg = "var(--flare-color-surface-container-high)",
+        // Fluent dialog surface: colorNeutralBackground1 / colorNeutralForeground1 at shadow64.
+        Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",
-        Shadow = "var(--flare-elevation-3)",
+        Shadow = "0 0 8px var(--flare-shadow-penumbra), 0 32px 64px var(--flare-shadow-umbra)",
     };
 
     internal static readonly AppBarTokens AppBar = new()

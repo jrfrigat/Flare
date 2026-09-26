@@ -98,8 +98,18 @@ All notable changes to Flare are documented here. This project adheres to
   `PanelBg`, `PanelColor` and `PanelShadow`; each pane of a split date-time picker uses them too, with the
   picker's `PanelRadius`. The colour picker panel now draws the popover surface (`PopoverTokens` `Bg`, `Color`,
   `Radius`, `Shadow`), which it already matched in Material 3.
+- **Breaking for custom themes: `TooltipTokens` requires `Shadow`**, the shadow under the plain tooltip - `none`
+  for a dark tooltip chip, a real shadow for a light one.
 
 ### Fixed
+
+- **Fluent 2 and Visual Studio dialogs, toasts, tooltips and popovers follow Fluent.** They sit on the neutral
+  background with Fluent's shadows (shadow64 for dialogs, shadow16 for popovers and rich tooltips, shadow8 for
+  toasts and tooltips) instead of Material 3's inverse and container surfaces; a toast's action takes the brand
+  colour, and error, success, warning and info toasts use the theme's status colours.
+- **Material Design 2 dialogs, snackbars, tooltips and popovers follow Material Design 2.** Dialogs and menus sit
+  on the surface colour, popovers at 8dp, snackbars on on-surface mixed into surface, and tooltips are the
+  translucent black chip with white text.
 
 - **The colour picker panel matches the theme's popovers**, where its radius and shadow were Material 3's in
   every theme - Aero and Visual Studio now give it their small radius and deeper shadow, Fluent 2 its small

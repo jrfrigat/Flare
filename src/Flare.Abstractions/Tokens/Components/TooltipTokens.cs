@@ -24,6 +24,10 @@ public sealed record TooltipTokens
     /// <summary>Padding of the plain tooltip, as a <c>padding</c> shorthand.</summary>
     [CssVar(TooltipPopup.Padding)] public required string Padding { get; init; }
 
+    /// <summary>Shadow (<c>box-shadow</c>) under the plain tooltip; <c>none</c> for a language whose tooltip
+    /// is a dark chip that stands out on its own, a real shadow for one whose tooltip is a light surface.</summary>
+    [CssVar(TooltipPopup.Shadow)] public required string Shadow { get; init; }
+
     /// <summary>Background of the rich tooltip and its arrow.</summary>
     [CssVar(TooltipPopup.RichBg)] public required string RichBg { get; init; }
 

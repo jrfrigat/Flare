@@ -981,22 +981,25 @@ internal static class MaterialDesign2Tokens
     {
         MaxWidth = "18rem",
         Offset = "0.5rem",
-        Bg = "var(--flare-color-inverse-surface)",
-        Color = "var(--flare-color-inverse-on-surface)",
+        // MDC tooltip: black at medium emphasis with white text and no elevation; the rich one is surface with medium-emphasis text.
+        Bg = "rgba(0,0,0,0.6)",
+        Color = "#FFFFFF",
         Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
-        RichBg = "var(--flare-color-surface-container)",
-        RichColor = "var(--flare-color-on-surface)",
+        RichBg = "var(--flare-color-surface)",
+        RichColor = "var(--flare-color-on-surface-variant)",
         RichShadow = "var(--flare-elevation-3)",
         RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
+        Shadow = "none",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-medium)",
         Offset = "0.5rem",
-        Bg = "var(--flare-color-surface-container)",
+        // Menu surface: surface at 8dp.
+        Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",
-        Shadow = "var(--flare-elevation-2)",
+        Shadow = "var(--flare-elevation-4)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
@@ -1030,8 +1033,9 @@ internal static class MaterialDesign2Tokens
         MinWidth = "21.5rem", // @material/snackbar $min-width 344px
         MaxWidth = "42rem",   // $max-width 672px
         PaddingInline = "var(--flare-spacing-10)",
-        Bg = "var(--flare-color-inverse-surface)",
-        Color = "var(--flare-color-inverse-on-surface)",
+        // MDC snackbar: on-surface mixed 80% into surface, label in surface at high emphasis.
+        Bg = "color-mix(in srgb, var(--flare-color-on-surface) 80%, var(--flare-color-surface))",
+        Color = "color-mix(in srgb, var(--flare-color-surface) 87%, transparent)",
         ActionColor = "var(--flare-color-inverse-primary)",
         // 6dp: the shared scale has no step for it (spec "Default elevation values").
         Shadow = "0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12)",
@@ -1119,7 +1123,8 @@ internal static class MaterialDesign2Tokens
     {
         Radius = "var(--flare-shape-extra-small)",
         IconSize = "1.5rem",
-        Bg = "var(--flare-color-surface-container-high)",
+        // Dialog: surface at 24dp.
+        Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",
         // 24dp: the shared scale has no step for it (spec "Default elevation values").
         Shadow = "0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12)",

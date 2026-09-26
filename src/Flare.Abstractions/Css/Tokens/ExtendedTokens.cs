@@ -15,6 +15,8 @@ public static class TooltipPopup
     public const string Color = "--flare-tooltip-color";
     /// <summary>CSS custom-property name for the plain tooltip padding.</summary>
     public const string Padding = "--flare-tooltip-padding";
+    /// <summary>CSS custom-property name for the plain tooltip shadow.</summary>
+    public const string Shadow = "--flare-tooltip-shadow";
     /// <summary>CSS custom-property name for the rich tooltip background.</summary>
     public const string RichBg = "--flare-tooltip-rich-bg";
     /// <summary>CSS custom-property name for the rich tooltip text color.</summary>

@@ -1054,6 +1054,8 @@ public class MaterialDesign3Tokens
         Bg = "var(--flare-color-inverse-surface)",
         Color = "var(--flare-color-inverse-on-surface)",
         Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
+        // md.comp.plain-tooltip has no elevation: the inverse-surface chip stands out on its own.
+        Shadow = "none",
         // md.comp.rich-tooltip: surface-container at level 2, supporting text on-surface-variant.
         RichBg = "var(--flare-color-surface-container)",
         RichColor = "var(--flare-color-on-surface-variant)",
