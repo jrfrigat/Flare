@@ -17,6 +17,8 @@ public sealed record DialogRequest(
 
 /// <summary>
 /// Imperative confirm/alert dialog service, surfaced by a single host component at the app root.
+/// Confirm and alert requests are shown one at a time: a request made while another is open waits its
+/// turn, and each caller receives the answer to its own request.
 /// </summary>
 public interface IDialogService
 {
@@ -87,14 +89,20 @@ public interface IDialogService
     // Provider communication
     /// <summary>Raised when the pending request changes, so the host component can re-render.</summary>
     event Action? OnStateChanged;
-    /// <summary>The request currently awaiting a response, or null when no dialog is open.</summary>
+    /// <summary>
+    /// The confirm/alert request on screen, or null when none is open. Requests made while one is open
+    /// become current in call order as each is answered.
+    /// </summary>
     DialogRequest? Current { get; }
     /// <summary>
     /// The component dialogs currently open, in display order. The dialog provider host renders these
     /// (it is not part of the typical app-facing API).
     /// </summary>
     IReadOnlyList<FlareDialogInstance> OpenDialogs { get; }
-    /// <summary>Completes the pending request: true=confirmed, false=cancelled, null=dismissed.</summary>
+    /// <summary>
+    /// Completes the current request (true=confirmed, false=cancelled, null=dismissed) and brings up the
+    /// next queued one. Does nothing when no request is open.
+    /// </summary>
     /// <param name="confirmed">The user's choice, or null when dismissed.</param>
     void Respond(bool? confirmed);
 }

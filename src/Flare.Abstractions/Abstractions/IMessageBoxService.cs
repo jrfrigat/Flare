@@ -2,7 +2,9 @@ namespace Flare.Abstractions;
 
 /// <summary>
 /// Imperative message-box service for prompt, confirm and alert dialogs, surfaced by a single
-/// host component placed at the app root. Inject it to request a dialog from code.
+/// host component placed at the app root. Inject it to request a dialog from code. Requests are shown
+/// one at a time: a request made while another is open waits its turn, and each caller receives the
+/// answer to its own request.
 /// </summary>
 public interface IMessageBoxService
 {
@@ -20,9 +22,15 @@ public interface IMessageBoxService
     // Provider communication
     /// <summary>Raised when the pending request changes, so the host component can re-render.</summary>
     event Action? OnStateChanged;
-    /// <summary>The request currently awaiting a response, or null when no dialog is open.</summary>
+    /// <summary>
+    /// The request on screen, or null when none is open. Requests made while one is open become current
+    /// in call order as each is answered.
+    /// </summary>
     MessageBoxRequest? Current { get; }
-    /// <summary>Completes the pending request with the given value (the input text, "ok", or null when cancelled).</summary>
+    /// <summary>
+    /// Completes the current request with the given value (the input text, "ok", or null when cancelled)
+    /// and brings up the next queued one. Does nothing when no request is open.
+    /// </summary>
     /// <param name="value">The user's response, or null when the dialog was dismissed/cancelled.</param>
     void Respond(string? value);
 }

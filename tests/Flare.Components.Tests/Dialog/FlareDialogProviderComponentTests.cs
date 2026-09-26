@@ -98,8 +98,34 @@ public class FlareDialogProviderComponentTests : FlareTestContext
 
         cut.Find($".{Css.Classes.Dialog.Scrim}").Click();
 
-        Assert.True(pending.IsCompleted);
-        await pending;
+        // AlertAsync is an async wrapper whose continuation may be posted, so wait with a bound.
+        await pending.WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken);
         Assert.Null(service.Current);
+    }
+
+    [Fact]
+    public async Task SecondConfirm_ShowsAfterTheFirstIsAnswered()
+    {
+        var service = Services.GetRequiredService<IDialogService>();
+        var cut = Render<FlareDialogProvider>();
+
+        var first = service.ConfirmAsync("Delete draft?", "a", "Delete", "Keep");
+        var second = service.ConfirmAsync("Leave page?", "b", "Leave", "Stay");
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Dialog.Title}").Count > 0);
+        Assert.Contains("Delete draft?", cut.Find($".{Css.Classes.Dialog.Title}").TextContent);
+
+        cut.FindAll("button").First(b => b.TextContent.Contains("Delete")).Click();
+
+        Assert.True(first.IsCompleted);
+        Assert.True(await first);
+        Assert.False(second.IsCompleted);
+        cut.WaitForState(() => cut.Find($".{Css.Classes.Dialog.Title}").TextContent.Contains("Leave page?"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Dialog.Scrim}"));
+
+        cut.FindAll("button").First(b => b.TextContent.Contains("Stay")).Click();
+
+        Assert.True(second.IsCompleted);
+        Assert.False(await second);
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Dialog.Scrim}").Count == 0);
     }
 }

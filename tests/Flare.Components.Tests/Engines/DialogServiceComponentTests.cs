@@ -105,4 +105,60 @@ public class DialogServiceComponentTests
         second.Cancel();
         Assert.Empty(service.OpenDialogs);
     }
+
+    [Fact]
+    public async Task ConfirmWhileAnotherIsOpen_WaitsItsTurn_AndEachCallerGetsItsOwnAnswer()
+    {
+        var service = new DialogService();
+
+        var first = service.ConfirmAsync("First", "a");
+        var second = service.AlertAsync("Second", "b");
+        var third = service.ConfirmAsync("Third", "c");
+
+        Assert.Equal("First", service.Current?.Title);
+
+        service.Respond(true);
+        Assert.True(first.IsCompleted);
+        Assert.True(await first);
+        Assert.False(second.IsCompleted);
+        Assert.Equal("Second", service.Current?.Title);
+
+        service.Respond(null);
+        // AlertAsync is an async wrapper whose continuation may be posted, so wait with a bound.
+        await second.WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken);
+        Assert.Equal("Third", service.Current?.Title);
+
+        service.Respond(false);
+        Assert.True(third.IsCompleted);
+        Assert.False(await third);
+        Assert.Null(service.Current);
+    }
+
+    [Fact]
+    public void QueuedConfirm_DoesNotRaiseStateChanged_UntilItIsShown()
+    {
+        var service = new DialogService();
+        var stateChanges = 0;
+        service.OnStateChanged += () => stateChanges++;
+
+        _ = service.ConfirmAsync("First", "a");
+        _ = service.ConfirmAsync("Second", "b");
+        Assert.Equal(1, stateChanges);
+
+        service.Respond(true);
+        Assert.Equal(2, stateChanges);
+    }
+
+    [Fact]
+    public void Respond_WithNothingOpen_DoesNothing()
+    {
+        var service = new DialogService();
+        var stateChanges = 0;
+        service.OnStateChanged += () => stateChanges++;
+
+        service.Respond(true);
+
+        Assert.Null(service.Current);
+        Assert.Equal(0, stateChanges);
+    }
 }

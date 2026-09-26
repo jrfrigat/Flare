@@ -6,7 +6,10 @@
 @if (DialogService.Current is not null)
 {
     var req = DialogService.Current;
-    <FlareDialog Visible="true"
+    @* Keyed by request identity (records compare by value, and a double click queues two equal ones) so
+       the next queued request opens a fresh dialog: Escape, focus trap and focus are set up on open. *@
+    <FlareDialog @key="System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(req)"
+                 Visible="true"
                  Title="@req.Title"
                  VisibleChanged="@(visible => HandleRequestVisibleChanged(req, visible))">
         <ChildContent>

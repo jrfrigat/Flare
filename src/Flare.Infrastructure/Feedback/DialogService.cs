@@ -6,11 +6,15 @@ namespace Flare.Infrastructure;
 /// <summary>Default <see cref="Flare.Abstractions.IDialogService"/> backed by a host dialog component.</summary>
 public sealed class DialogService : IDialogService
 {
-    private TaskCompletionSource<bool?>? _tcs;
+    // Confirm/alert requests in call order; the head is the one on screen.
+    private readonly Queue<(DialogRequest Request, TaskCompletionSource<bool?> Tcs)> _pending = new();
     private readonly List<FlareDialogInstance> _openDialogs = [];
 
-    /// <summary>The request currently awaiting a response, or null when no dialog is open.</summary>
-    public DialogRequest? Current { get; private set; }
+    /// <summary>
+    /// The request currently awaiting a response, or null when no dialog is open. Requests made while one
+    /// is open wait their turn and become current, in call order, as each is answered.
+    /// </summary>
+    public DialogRequest? Current => _pending.TryPeek(out var head) ? head.Request : null;
     /// <summary>The component dialogs currently open, in display order.</summary>
     public IReadOnlyList<FlareDialogInstance> OpenDialogs => _openDialogs;
     /// <summary>Raised when the pending request changes so the host can re-render.</summary>
@@ -18,10 +22,12 @@ public sealed class DialogService : IDialogService
 
     private Task<bool?> Show(DialogRequest request)
     {
-        _tcs = new TaskCompletionSource<bool?>();
-        Current = request;
-        OnStateChanged?.Invoke();
-        return _tcs.Task;
+        var tcs = new TaskCompletionSource<bool?>();
+        _pending.Enqueue((request, tcs));
+        // A queued request changes nothing on screen until the ones before it are answered.
+        if (_pending.Count == 1)
+            OnStateChanged?.Invoke();
+        return tcs.Task;
     }
 
     /// <summary>
@@ -98,13 +104,12 @@ public sealed class DialogService : IDialogService
             OnStateChanged?.Invoke();
     }
 
-    /// <summary>Completes the pending request with the user's choice.</summary>
+    /// <summary>Completes the current request with the user's choice and brings up the next queued one.</summary>
     public void Respond(bool? confirmed)
     {
-        var tcs = _tcs;
-        _tcs = null;
-        Current = null;
+        if (!_pending.TryDequeue(out var answered))
+            return;
         OnStateChanged?.Invoke();
-        tcs?.TrySetResult(confirmed);
+        answered.Tcs.TrySetResult(confirmed);
     }
 }

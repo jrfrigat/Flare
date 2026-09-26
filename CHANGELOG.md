@@ -13,6 +13,10 @@ All notable changes to Flare are documented here. This project adheres to
   documentation always described - and `AlertAsync` returns. Code that only proceeds on `== true` needs no change;
   code that tells `false` from `null` sees `null` for a dismissal. For a confirmation that must be answered, open it
   with `ShowAsync` and `DialogOptions { CloseOnScrimClick = false, CloseOnEsc = false }`.
+- **A second question no longer swallows the first.** Calling `IDialogService.ConfirmAsync` / `AlertAsync`, or any
+  `IMessageBoxService` method, while another of its dialogs was open replaced it: the first dialog vanished and the
+  code awaiting it never resumed. Requests now wait their turn - the next one opens when the current one is
+  answered - and every caller gets the answer to its own question.
 
 ## [0.42.0] - 2026-09-26
 
