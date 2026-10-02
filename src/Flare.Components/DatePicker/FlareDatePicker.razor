@@ -255,23 +255,16 @@
     // Effective display/parse format (culture short pattern when not set).
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
     private string _separator => Nz(_culture.DateTimeFormat.DateSeparator, ".");
-    private bool _dayFirst => _culture.DateTimeFormat.ShortDatePattern.IndexOf('d') < _culture.DateTimeFormat.ShortDatePattern.IndexOf('M');
-    // Normalised numeric mask (always dd<sep>MM<sep>yyyy or MM<sep>dd<sep>yyyy), used for typing + placeholder.
-    private string _numericPattern => _dayFirst ? $"dd{_separator}MM{_separator}yyyy" : $"MM{_separator}dd{_separator}yyyy";
+    // Normalised numeric mask used for typing + placeholder, with the segments in the culture's own order so
+    // year-first cultures (ja-JP, sv-SE, ...) mask and parse too (TASK-110).
+    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _separator);
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     private string DisplayValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
 
-    // Strip to digits, insert the culture date separator after the 2nd and 4th digit. "01062026" -> "01.06.2026".
-    private string MaskDate(string? raw)
-    {
-        if (string.IsNullOrEmpty(raw)) return string.Empty;
-        var digits = new string(raw.Where(char.IsDigit).Take(8).ToArray());
-        if (digits.Length <= 2) return digits;
-        if (digits.Length <= 4) return digits[..2] + _separator + digits[2..];
-        return digits[..2] + _separator + digits[2..4] + _separator + digits[4..];
-    }
+    // Strip to digits and lay them on the numeric pattern. "01062026" -> "01.06.2026" (ru), "2026/10/15" (ja).
+    private string MaskDate(string? raw) => MaskedInput.MaskByPattern(raw, _numericPattern);
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
 
     private string HeaderLabel => _calView switch

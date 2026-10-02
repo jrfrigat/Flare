@@ -176,8 +176,8 @@
         ? $"{_culture.DateTimeFormat.ShortDatePattern} {_culture.DateTimeFormat.ShortTimePattern}"
         : DateTimeFormat;
     private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
-    private bool _dayFirst => _culture.DateTimeFormat.ShortDatePattern.IndexOf('d') < _culture.DateTimeFormat.ShortDatePattern.IndexOf('M');
-    private string _numericPattern => (_dayFirst ? $"dd{_dateSep}MM{_dateSep}yyyy" : $"MM{_dateSep}dd{_dateSep}yyyy") + " HH:mm";
+    // Date segments in the culture's own order, so year-first cultures mask and parse too (TASK-110).
+    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + " HH:mm";
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
@@ -272,21 +272,8 @@
         }
     }
 
-    // Strip to digits, format as dd<sep>MM<sep>yyyy HH:mm. "010620261233" -> "01.06.2026 12:33".
-    private string MaskDateTime(string? raw)
-    {
-        if (string.IsNullOrEmpty(raw)) return string.Empty;
-        var d = new string(raw.Where(char.IsDigit).Take(12).ToArray());
-        var sb = new System.Text.StringBuilder();
-        for (var i = 0; i < d.Length; i++)
-        {
-            if (i == 2 || i == 4) sb.Append(_dateSep);
-            else if (i == 8) sb.Append(' ');
-            else if (i == 10) sb.Append(':');
-            sb.Append(d[i]);
-        }
-        return sb.ToString();
-    }
+    // Strip to digits and lay them on the numeric pattern. "010620261233" -> "01.06.2026 12:33" (ru).
+    private string MaskDateTime(string? raw) => MaskedInput.MaskByPattern(raw, _numericPattern);
 
     private bool TryParse(string s, out DateTimeOffset value)
     {
