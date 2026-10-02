@@ -33,7 +33,8 @@ public class MaskedInputCaretTests
         // 15.10.2026, caret after "15" (position 2); Backspace removes '5' -> "1.10.2026", caret 1.
         const string raw = "1.10.2026";
         const int domCaret = 1;
-        const string masked = "11.02.026"; // what MaskDate produces
+        var masked = MaskedInput.MaskByPattern(raw, "dd.MM.yyyy");
+        Assert.Equal("11.02.026", masked);
 
         var digits = MaskedInput.DigitsBefore(raw, domCaret);
         var caret = MaskedInput.CaretAfterDigit(masked, digits);
@@ -48,7 +49,8 @@ public class MaskedInputCaretTests
         // 12:33, caret after "12" (position 2); Backspace removes '2' -> "1:33", caret 1.
         const string raw = "1:33";
         const int domCaret = 1;
-        const string masked = "1:33";
+        var masked = MaskedInput.MaskTime(raw, showSeconds: false);
+        Assert.Equal("13:3", masked);   // the digits are laid on HH:mm, they do not keep the typed shape
 
         var digits = MaskedInput.DigitsBefore(raw, domCaret);
         var caret = MaskedInput.CaretAfterDigit(masked, digits);
