@@ -299,16 +299,23 @@
     {
         UpdateFieldIdentifier(For);
 
-        // Sync the field text when Value changes externally (not while the user is editing).
-        if (!_focused && !Equals(Value, _syncedValue))
+        // Sync the field text when Value or its display (DateFormat, Culture) changes externally - not while
+        // the user is editing (TASK-113).
+        if (!_focused)
         {
-            _syncedValue = Value;
-            _text = DisplayValue;
+            var display = DisplayValue;
+            if (!Equals(Value, _syncedValue) || display != _syncedText)
+            {
+                _syncedValue = Value;
+                _syncedText = display;
+                _text = display;
+            }
         }
     }
 
     private string _text = string.Empty;
     private DateOnly? _syncedValue;
+    private string? _syncedText;
     private bool _focused;
     private bool _autofocused;
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);

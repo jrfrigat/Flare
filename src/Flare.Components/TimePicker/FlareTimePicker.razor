@@ -173,6 +173,7 @@
     private int _tempSecond;
     private string _text = string.Empty;
     private TimeOnly? _syncedValue;
+    private string? _syncedText;
     private bool _is24Hour;
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
     // -1 when there is nothing to restore.
@@ -229,10 +230,13 @@
         _is24Hour = Use24Hour ?? !CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern.Contains('h');
         UpdateFieldIdentifier(For);
 
-        if (!Equals(Value, _syncedValue))
+        // A new value always re-syncs the text; a new display (ShowSeconds) only outside editing (TASK-113).
+        var display = Value?.ToString(_timeFormat) ?? string.Empty;
+        if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
             _syncedValue = Value;
-            _text = Value?.ToString(_timeFormat) ?? string.Empty;
+            _syncedText = display;
+            _text = display;
         }
     }
 
