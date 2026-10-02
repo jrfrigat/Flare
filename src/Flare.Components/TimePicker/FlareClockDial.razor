@@ -52,8 +52,12 @@
     [Parameter] public EventCallback<int> HourChanged { get; set; }
     /// <summary>Minute (0-59).</summary>
     [Parameter] public int Minute { get; set; }
-    /// <summary>Raised when the minute changes.</summary>
+    /// <summary>Raised when the minute changes, including every step of a drag.</summary>
     [Parameter] public EventCallback<int> MinuteChanged { get; set; }
+    /// <summary>Raised once the minute is settled: the pointer is released on the minute dial, or both
+    /// minute digits are typed. Hosts that finish on the last unit (auto-close) listen to this rather
+    /// than to <see cref="MinuteChanged"/>, which also fires mid-drag.</summary>
+    [Parameter] public EventCallback<int> MinuteSelected { get; set; }
     /// <summary>24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.</summary>
     [Parameter] public bool Is24Hour { get; set; }
 
@@ -107,7 +111,11 @@
             var (v, buf, complete) = TimeKeyboardEntry.Feed(_buf, c, 59);
             _buf = buf;
             await MinuteChanged.InvokeAsync(v);
-            if (complete) _buf = string.Empty;
+            if (complete)
+            {
+                _buf = string.Empty;
+                await MinuteSelected.InvokeAsync(v);
+            }
         }
     }
 
@@ -135,11 +143,12 @@
         await Apply(mode, e.OffsetX, e.OffsetY);
     }
     private async Task OnMove(PointerEventArgs e) { if (_dragging) await Apply(_mode, e.OffsetX, e.OffsetY); }
-    private void OnUp(PointerEventArgs e)
+    private async Task OnUp(PointerEventArgs e)
     {
         if (!_dragging) return;
         _dragging = false;
         if (_mode == DialMode.Hour) _mode = DialMode.Minute;
+        else await MinuteSelected.InvokeAsync(Minute);
     }
 
     private async Task Apply(DialMode mode, double offsetX, double offsetY)

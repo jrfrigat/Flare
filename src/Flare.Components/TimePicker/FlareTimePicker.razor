@@ -61,6 +61,7 @@
             {
                 <FlareClockDial Hour="_tempHour" HourChanged="h => _tempHour = h"
                                 Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
+                                MinuteSelected="OnDialMinuteSelected"
                                 Is24Hour="_is24Hour" />
             }
             else
@@ -152,7 +153,9 @@
     [Parameter] public TimeOnly? Min { get; set; }
     /// <summary>Latest selectable time (inclusive); out-of-range cells are disabled.</summary>
     [Parameter] public TimeOnly? Max { get; set; }
-    /// <summary>Confirms and closes as soon as the last time unit is selected (no OK press). Default false.</summary>
+    /// <summary>Confirms and closes as soon as the last time unit is selected (no OK press): the minute on
+    /// the dial (released or typed), the minute or second column in the dropdown. A time outside
+    /// Min/Max is not confirmed and the popup stays open. Default false.</summary>
     [Parameter] public bool AutoClose { get; set; }
     /// <summary>Requests focus on the time input after the first render (best-effort). Only one field per
     /// page should set this.</summary>
@@ -207,6 +210,13 @@
     private async Task SelectSecond(int s)
     {
         _tempSecond = s;
+        if (AutoClose) await Confirm();
+    }
+
+    // The dial edits hours and minutes only, so the settled minute is its last unit (TASK-112).
+    private async Task OnDialMinuteSelected(int m)
+    {
+        _tempMinute = m;
         if (AutoClose) await Confirm();
     }
     private ElementReference _panelEl;

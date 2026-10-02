@@ -8,7 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AutoClose` | `bool` | `false` | Parameter |  | Confirms and closes as soon as the last time unit is selected (no OK press). Default false. |
+| `AutoClose` | `bool` | `false` | Parameter |  | Confirms and closes as soon as the last time unit is selected (no OK press): the minute on the dial (released or typed), the minute or second column in the dropdown. A time outside Min/Max is not confirmed and the popup stays open. Default false. |
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the time input after the first render (best-effort). Only one field per page should set this. |
 | `CancelText` | `string?` | `` | Parameter |  | Cancel button text. When null, falls back to the localized "Cancel". |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the picker popup closes. |

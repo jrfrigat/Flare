@@ -12,7 +12,8 @@
 | `HourChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the hour changes. |
 | `Is24Hour` | `bool` | `false` | Parameter |  | 24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false. |
 | `Minute` | `int` | `0` | Parameter |  | Minute (0-59). |
-| `MinuteChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the minute changes. |
+| `MinuteChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the minute changes, including every step of a drag. |
+| `MinuteSelected` | `EventCallback<int>` | `` | Callback |  | Raised once the minute is settled: the pointer is released on the minute dial, or both minute digits are typed. Hosts that finish on the last unit (auto-close) listen to this rather than to MinuteChanged, which also fires mid-drag. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

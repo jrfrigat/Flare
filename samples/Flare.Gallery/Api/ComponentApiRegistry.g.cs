@@ -1081,7 +1081,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when the hour changes.", null, false, true, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Minute", @"int", @"0", @"Minute (0-59).", null, false, false, false, @"FlareClockDial"),
-                new ApiParameterInfo(@"MinuteChanged", @"EventCallback<int>", null, @"Raised when the minute changes.", null, false, true, false, @"FlareClockDial"),
+                new ApiParameterInfo(@"MinuteChanged", @"EventCallback<int>", null, @"Raised when the minute changes, including every step of a drag.", null, false, true, false, @"FlareClockDial"),
+                new ApiParameterInfo(@"MinuteSelected", @"EventCallback<int>", null, @"Raised once the minute is settled: the pointer is released on the minute dial, or both minute digits are typed. Hosts that finish on the last unit (auto-close) listen to this rather than to MinuteChanged, which also fires mid-drag.", null, false, true, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -6485,7 +6486,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AutoClose", @"bool", @"false", @"Confirms and closes as soon as the last time unit is selected (no OK press). Default false.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"AutoClose", @"bool", @"false", @"Confirms and closes as soon as the last time unit is selected (no OK press): the minute on the dial (released or typed), the minute or second column in the dropdown. A time outside Min/Max is not confirmed and the popup stays open. Default false.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the time input after the first render (best-effort). Only one field per page should set this.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"CancelText", @"string?", null, @"Cancel button text. When null, falls back to the localized ""Cancel"".", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the picker popup closes.", null, false, true, false, @"FlareTimePicker"),
