@@ -375,8 +375,18 @@
         StateHasChanged();
     }
 
-    private void PrevMonth() => _viewDate = _viewDate.AddMonths(-1);
-    private void NextMonth() => _viewDate = _viewDate.AddMonths(1);
+    // Anchor on the first of the month so AddMonths cannot overflow at 0001-01 or 9999-12 (TASK-105).
+    private void PrevMonth()
+    {
+        var firstOfMonth = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
+        if (firstOfMonth != DateOnly.MinValue) _viewDate = firstOfMonth.AddMonths(-1);
+    }
+
+    private void NextMonth()
+    {
+        var firstOfMonth = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
+        if (firstOfMonth.Year != 9999 || firstOfMonth.Month != 12) _viewDate = firstOfMonth.AddMonths(1);
+    }
 
     private void SelectDate(DateOnly d)
     {

@@ -59,7 +59,7 @@
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel" @ref="_panelEl">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(!CanPrev)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                     </FlareButton>
                 </span>
@@ -68,7 +68,7 @@
                     @HeaderLabel
                 </button>
                 <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="@FlareStrings.Picker_Next">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(!CanNext)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
                     </FlareButton>
                 </span>
@@ -377,8 +377,25 @@
         };
     }
 
+    // Navigation stays inside the DateOnly range: year 0 and 10000+ would throw when the header or the
+    // month grid builds a date from them (TASK-105).
+    private bool CanPrev => _calView switch
+    {
+        CalendarView.Day => _viewYear > 1 || _viewMonth > 1,
+        CalendarView.Month => _viewYear > 1,
+        _ => _viewYear > 13,
+    };
+
+    private bool CanNext => _calView switch
+    {
+        CalendarView.Day => _viewYear < 9999 || _viewMonth < 12,
+        CalendarView.Month => _viewYear < 9999,
+        _ => _viewYear <= 9999 - 12,
+    };
+
     private void PrevView()
     {
+        if (!CanPrev) return;
         switch (_calView)
         {
             case CalendarView.Day:
@@ -396,6 +413,7 @@
 
     private void NextView()
     {
+        if (!CanNext) return;
         switch (_calView)
         {
             case CalendarView.Day:
@@ -413,13 +431,13 @@
 
     private void SelectMonth(int m)
     {
-        _viewMonth = m;
+        _viewMonth = Math.Clamp(m, 1, 12);
         _calView = CalendarView.Day;
     }
 
     private void SelectYear(int y)
     {
-        _viewYear = y;
+        _viewYear = Math.Clamp(y, 1, 9999);
         _calView = CalendarView.Month;
     }
 

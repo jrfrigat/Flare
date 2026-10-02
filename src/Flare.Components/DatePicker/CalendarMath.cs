@@ -37,10 +37,15 @@ internal static class CalendarMath
     /// </summary>
     public static IEnumerable<DateOnly> MonthGrid(int year, int month, DayOfWeek firstDayOfWeek)
     {
+        year = Math.Clamp(year, 1, 9999);
+        month = Math.Clamp(month, 1, 12);
         var first = new DateOnly(year, month, 1);
         int offset = ((int)first.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
-        var start = first.AddDays(-offset);
+        // Work in day numbers so the leading/trailing weeks of January 0001 and December 9999 cannot
+        // underflow / overflow DateOnly (TASK-105).
+        var start = Math.Max(0, first.DayNumber - offset);
+        var last = DateOnly.MaxValue.DayNumber;
         for (int i = 0; i < 42; i++)
-            yield return start.AddDays(i);
+            yield return DateOnly.FromDayNumber(Math.Min(start + i, last));
     }
 }
