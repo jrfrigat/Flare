@@ -7,6 +7,7 @@
 @using Microsoft.JSInterop
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject Flare.Components.Services.IElementJsService ElementJs
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date field owns its
    trigger well (input + calendar toggle) and the anchored calendar popup, rendered in the Field slot. *@
@@ -79,7 +80,7 @@
                                 FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                                 AriaLabel="@HeaderLabel"
                                 Selected="@(d => d == Value)"
-                                Disabled="IsDisabled"
+                                Disabled="IsDayUnavailable"
                                 DayClass="ComposeDayClass"
                                 OnDayClick="SelectDay"
                                 OnKeyDown="HandleGridKeyDown" />
@@ -308,6 +309,9 @@
     private DateOnly? _syncedValue;
     private bool _focused;
     private bool _autofocused;
+    // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
+    // -1 when there is nothing to restore.
+    private int _pendingCaret = -1;
 
     // Fixed-position the calendar under the field on open (and clean up on close) so it escapes a
     // Card's overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
@@ -317,6 +321,21 @@
         {
             _autofocused = true;
             try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
+        }
+        if (_pendingCaret >= 0)
+        {
+            var caret = _pendingCaret;
+            _pendingCaret = -1;
+            // Only restore while the field still holds focus: the selection read is awaited, so the user may
+            // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
+            if (_focused)
+            {
+                // Rewrite the value as well as the caret: Blazor skips the DOM write when the masked text
+                // equals the previous text (e.g. deleting a separator), so it would keep the half-edited text.
+                try { await ElementJs.SetValueAndCaretAsync(_inputEl, _text, caret, caret); }
+                catch (JSDisconnectedException) { }
+                catch (JSException) { }
+            }
         }
         if (Inline) return; // inline panel sits in normal flow - no anchored positioning
         if (_open == _panelPositioned) return;
@@ -344,6 +363,9 @@
     private bool IsDisabled(DateOnly d) =>
         (Min.HasValue && d < Min.Value) || (Max.HasValue && d > Max.Value) ||
         (IsDateDisabled?.Invoke(d) ?? false);
+
+    // A disabled or read-only field makes every day unselectable, inline calendar included (TASK-104).
+    private bool IsDayUnavailable(DateOnly d) => Disabled || ReadOnly || IsDisabled(d);
 
     private void CycleCalendarView()
     {
@@ -414,6 +436,7 @@
 
     private async Task SelectDay(DateOnly d)
     {
+        if (Disabled || ReadOnly || IsDisabled(d)) return;
         await ValueChanged.InvokeAsync(d);
         NotifyFieldChanged();
         if (AutoClose) await SetOpenAsync(false);
@@ -428,18 +451,41 @@
 
     private async Task HandleInput(ChangeEventArgs e)
     {
-        _text = MaskDate(e.Value?.ToString());
+        var raw = e.Value?.ToString() ?? string.Empty;
+        var caretDigits = await SelectionDigitsAsync(raw);
+        _text = MaskDate(raw);
+        if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _numericPattern.Length && TryParseDate(_text, out var d) && !IsDisabled(d))
             await CommitDate(d);
+    }
+
+    // Digits standing before the caret in the DOM's current (pre-remask) text, so the caret can be put back
+    // on the segment being edited. -1 when the selection is unavailable (tests, or a non-text control).
+    private async Task<int> SelectionDigitsAsync(string raw)
+    {
+        try
+        {
+            var sel = await ElementJs.GetSelectionAsync(_inputEl);
+            if (sel is not { Length: 2 } || sel[0] < 0) return -1;
+            return MaskedInput.DigitsBefore(raw, sel[0]);
+        }
+        catch (JSDisconnectedException) { return -1; }
+        catch (JSException) { return -1; }
     }
 
     private async Task HandleTextChange(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
-        _text = raw;
-        if (string.IsNullOrEmpty(raw)) { await CommitDate(null); return; }
+        if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitDate(null); return; }
         if (TryParseDate(raw, out var d) && !IsDisabled(d))
+        {
+            _text = raw;
             await CommitDate(d);
+            return;
+        }
+        // Incomplete or unparsable text is not committed; put the field back to what it currently shows so a
+        // stale half-edit is not left behind (TASK-119).
+        _text = DisplayValue;
     }
 
     private void HandleBlur()
@@ -452,7 +498,11 @@
     {
         if (DateOnly.TryParseExact(s, _numericPattern, _culture, DateTimeStyles.None, out d)) return true;
         if (DateOnly.TryParseExact(s, _format, _culture, DateTimeStyles.None, out d)) return true;
-        return DateOnly.TryParse(s, _culture, DateTimeStyles.None, out d);
+        // A half-edited mask ("11.02.026") must never fall through to the lenient parser and be committed
+        // as a different month/year (TASK-119): only a complete date (8 digits) may use it.
+        if (s.Count(char.IsDigit) == 8 && DateOnly.TryParse(s, _culture, DateTimeStyles.None, out d)) return true;
+        d = default;
+        return false;
     }
 
     private async Task CommitDate(DateOnly? d)
@@ -465,6 +515,7 @@
 
     private async Task ClearValue()
     {
+        if (Disabled || ReadOnly) return;
         await ValueChanged.InvokeAsync(null);
         NotifyFieldChanged();
         await SetOpenAsync(false);
@@ -472,6 +523,7 @@
 
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
+        if (Disabled || ReadOnly) return;
         var current = Value ?? Today;
 
         if (e.Key is "Enter" or " ")

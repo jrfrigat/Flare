@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject Flare.Components.Services.IElementJsService ElementJs
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The time field owns its
    trigger well (input + clock toggle) and the anchored clock/dropdown popup, rendered in the Field slot. *@
@@ -39,6 +40,8 @@
                    aria-describedby="@SupportDescribedBy"
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
+                   @onfocus="@(() => _focused = true)"
+                   @onblur="@(() => _focused = false)"
                    @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                     disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
@@ -168,6 +171,10 @@
     private string _text = string.Empty;
     private TimeOnly? _syncedValue;
     private bool _is24Hour;
+    // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
+    // -1 when there is nothing to restore.
+    private int _pendingCaret = -1;
+    private bool _focused;
 
     private ElementReference _inputEl;
     private ElementReference _fieldEl;
@@ -234,9 +241,27 @@
 
     private async Task HandleInput(ChangeEventArgs e)
     {
-        _text = MaskTime(e.Value?.ToString());
-        if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
+        var raw = e.Value?.ToString() ?? string.Empty;
+        var caretDigits = await SelectionDigitsAsync(raw);
+        _text = MaskTime(raw);
+        if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
+        if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t)
+            && TimeInRange(t))
             await Commit(t);
+    }
+
+    // Digits standing before the caret in the DOM's current (pre-remask) text, so the caret can be put back
+    // on the segment being edited. -1 when the selection is unavailable (tests, or a non-text control).
+    private async Task<int> SelectionDigitsAsync(string raw)
+    {
+        try
+        {
+            var sel = await ElementJs.GetSelectionAsync(_inputEl);
+            if (sel is not { Length: 2 } || sel[0] < 0) return -1;
+            return MaskedInput.DigitsBefore(raw, sel[0]);
+        }
+        catch (JSDisconnectedException) { return -1; }
+        catch (JSException) { return -1; }
     }
 
     private async Task HandleCommitText(ChangeEventArgs e)
@@ -246,25 +271,23 @@
         if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t) ||
             TimeOnly.TryParse(_text, CultureInfo.CurrentUICulture, DateTimeStyles.None, out t))
         {
-            _text = t.ToString(_timeFormat);
-            await Commit(t);
+            // Out-of-range text is not committed; the field snaps back to the current value (TASK-102).
+            if (TimeInRange(t))
+            {
+                _text = t.ToString(_timeFormat);
+                await Commit(t);
+            }
+            else
+            {
+                _text = Value?.ToString(_timeFormat) ?? string.Empty;
+            }
         }
     }
 
-    private string MaskTime(string? raw)
-    {
-        if (string.IsNullOrEmpty(raw)) return string.Empty;
-        var digits = new string(raw.Where(char.IsDigit).Take(ShowSeconds ? 6 : 4).ToArray());
-        if (digits.Length <= 2) return digits;
-        var hh = digits[..2];
-        if (int.TryParse(hh, out var h) && h > 23) hh = "23";
-        var mm = digits.Length <= 4 ? digits[2..] : digits[2..4];
-        if (mm.Length == 2 && int.TryParse(mm, out var m) && m > 59) mm = "59";
-        if (digits.Length <= 4) return $"{hh}:{mm}";
-        var ss = digits[4..];
-        if (ss.Length == 2 && int.TryParse(ss, out var s) && s > 59) ss = "59";
-        return $"{hh}:{mm}:{ss}";
-    }
+    // The mask lives in the shared, unit-tested MaskedInput helper (TASK-118): it lays the digits out on
+    // the HH:mm[:ss] skeleton without clamping, so an incomplete edit never rewrites a neighbour segment.
+    // Out-of-range input simply fails to parse and is not committed.
+    private string MaskTime(string? raw) => MaskedInput.MaskTime(raw, ShowSeconds);
 
     private ElementReference _dropRef;
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
@@ -310,6 +333,20 @@
         {
             _autofocused = true;
             try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
+        }
+
+        if (_pendingCaret >= 0)
+        {
+            var caret = _pendingCaret;
+            _pendingCaret = -1;
+            // Only restore while the field still holds focus: the selection read is awaited, so the user may
+            // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
+            if (_focused)
+            {
+                try { await ElementJs.SelectRangeAsync(_inputEl, caret, caret); }
+                catch (JSDisconnectedException) { }
+                catch (JSException) { }
+            }
         }
 
         // Fixed-position the popup under the field on open (clean up on close) so it escapes a Card's
@@ -370,7 +407,9 @@
     {
         _open = false;
         await Closed.InvokeAsync();
-        await Commit(new TimeOnly(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0));
+        var t = new TimeOnly(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0);
+        // Min/Max bound the popup too, not only the disabled cells (TASK-102).
+        if (TimeInRange(t)) await Commit(t);
     }
 
     private async Task Commit(TimeOnly? value)

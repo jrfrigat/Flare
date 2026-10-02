@@ -6,6 +6,7 @@
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject IBrowserViewportService Viewport
+@inject Flare.Components.Services.IElementJsService ElementJs
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date-time field owns its
    trigger well (input + calendar/clock toggle) and the anchored combined popup, rendered in the Field slot. *@
@@ -163,6 +164,9 @@
     private string _text = string.Empty;
     private DateTimeOffset? _syncedValue;
     private bool _focused;
+    // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
+    // -1 when there is nothing to restore.
+    private int _pendingCaret = -1;
 
     private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
     private string _format => string.IsNullOrEmpty(DateTimeFormat)
@@ -202,6 +206,7 @@
                         FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                         AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
                         Selected="@(d => d == _selectedDate)"
+                        Disabled="IsDayDisabled"
                         DayClass="ComposeDayClass"
                         OnDayClick="SelectDate" />
     </text>;
@@ -292,9 +297,26 @@
 
     private async Task HandleInput(ChangeEventArgs e)
     {
-        _text = MaskDateTime(e.Value?.ToString());
+        var raw = e.Value?.ToString() ?? string.Empty;
+        var caretDigits = await SelectionDigitsAsync(raw);
+        _text = MaskDateTime(raw);
+        if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _numericPattern.Length && TryParse(_text, out var dt) && InRange(dt))
             await CommitValue(dt);
+    }
+
+    // Digits standing before the caret in the DOM's current (pre-remask) text, so the caret can be put back
+    // on the segment being edited. -1 when the selection is unavailable (tests, or a non-text control).
+    private async Task<int> SelectionDigitsAsync(string raw)
+    {
+        try
+        {
+            var sel = await ElementJs.GetSelectionAsync(_inputEl);
+            if (sel is not { Length: 2 } || sel[0] < 0) return -1;
+            return MaskedInput.DigitsBefore(raw, sel[0]);
+        }
+        catch (JSDisconnectedException) { return -1; }
+        catch (JSException) { return -1; }
     }
 
     private async Task HandleTextChange(ChangeEventArgs e)
@@ -314,6 +336,12 @@
 
     private bool InRange(DateTimeOffset dt) =>
         (!Min.HasValue || dt >= Min.Value) && (!Max.HasValue || dt <= Max.Value);
+
+    // A day is unselectable only when every moment of it lies outside [Min; Max]; a boundary day stays
+    // selectable so the time part can decide (TASK-101).
+    private bool IsDayDisabled(DateOnly d) =>
+        (Min.HasValue && d < DateOnly.FromDateTime(Min.Value.DateTime)) ||
+        (Max.HasValue && d > DateOnly.FromDateTime(Max.Value.DateTime));
 
     private async Task CommitValue(DateTimeOffset? dt)
     {
@@ -352,6 +380,7 @@
 
     private void SelectDate(DateOnly d)
     {
+        if (IsDayDisabled(d)) return;
         _selectedDate = d;
         _activeTab = 1;
     }
@@ -365,7 +394,14 @@
     private async Task Confirm()
     {
         if (_selectedDate.HasValue)
-            await CommitValue(new DateTimeOffset(_selectedDate.Value.ToDateTime(new TimeOnly(_hour, _minute))));
+        {
+            // Keep the value's offset and seconds: re-confirming without editing must not move the instant,
+            // and seconds are not editable here (TASK-103). Range is checked as for the text input (TASK-101).
+            var wall = _selectedDate.Value.ToDateTime(new TimeOnly(_hour, _minute, Value?.Second ?? 0));
+            var offset = Value?.Offset ?? TimeZoneInfo.Local.GetUtcOffset(wall);
+            var dt = new DateTimeOffset(wall, offset);
+            if (InRange(dt)) await CommitValue(dt);
+        }
         await CloseAsync();
     }
 
@@ -392,6 +428,20 @@
                 _bpSubscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
             }
             catch { /* breakpoint sync is best-effort */ }
+        }
+
+        if (_pendingCaret >= 0)
+        {
+            var caret = _pendingCaret;
+            _pendingCaret = -1;
+            // Only restore while the field still holds focus: the selection read is awaited, so the user may
+            // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
+            if (_focused)
+            {
+                try { await ElementJs.SelectRangeAsync(_inputEl, caret, caret); }
+                catch (JSDisconnectedException) { }
+                catch (JSException) { }
+            }
         }
 
         if (_open == _panelPositioned) return;
