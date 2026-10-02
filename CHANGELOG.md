@@ -5,6 +5,26 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking for custom themes: the picker panels are sized by tokens.** `DateTimePickerTokens` now requires
+  `PanelMinWidth`, `DialPanelMinWidth`, `SplitPanelMinWidth`, `PaneBasis`, `DialPaneWidth` and `TimeInputWidth`;
+  `TimePickerTokens` requires `PanelMinWidth`, `DialPanelMinWidth`, `ColumnMaxHeight` and `CellMinWidth`; and
+  `PickerTokens` requires `WeekNumberWidth`, `RangeFieldBasis`, `RangeCalendarMaxWidth` and `RangeSeparatorSize`.
+  The built-in themes set the sizes the stylesheets used to hard-code, so nothing moves; a custom theme built with
+  `new ... { }` has to set them too.
+- **The arrow keys in a date picker calendar move a cursor instead of changing the value.** The day is chosen with
+  Enter, Space or a click, as in the date-time and range calendars; keyboard focus follows the cursor, and a month
+  shown without the value or today still has one day to Tab to.
+- **`IElementJsService` has two more members**, `GetSelectionAsync` and `SetValueAndCaretAsync`; an application
+  that implements the interface itself has to add them.
+
+### Added
+
+- **`FlareClockDial.MinuteSelected`** is raised once the minute is settled (released or typed), and
+  `FlareTimePicker.AutoClose` now finishes the clock dial as well as the columns.
+- **`Css.Classes.TimePicker.PanelDropdown`** names the panel of the columns popup.
+
 ### Fixed
 
 - **A confirmation from `IDialogService` can be dismissed.** `ConfirmAsync` and `AlertAsync` ignored a click on the
@@ -17,6 +37,21 @@ All notable changes to Flare are documented here. This project adheres to
   `IMessageBoxService` method, while another of its dialogs was open replaced it: the first dialog vanished and the
   code awaiting it never resumed. Requests now wait their turn - the next one opens when the current one is
   answered - and every caller gets the answer to its own question.
+- **Typing into a date, time or date-time field keeps the caret and the other segments.** The mask no longer
+  throws the caret to the end, rewrites a neighbouring hour or minute, or saves a half-typed value as a different
+  date or time on blur; a field the user has left is never focused again.
+- **The date and time pickers respect their bounds and state.** Min/Max apply to the popups as well as to typing
+  (the OK button stays off for a value outside them), a disabled or read-only inline calendar cannot be changed,
+  range presets obey Min/Max and `IsDateDisabled`, and confirming a date-time keeps its UTC offset and seconds.
+- **Calendars work at the ends of the `DateOnly` range**, put January 0001 in its weekday columns and stop
+  navigating at 0001 and 9999 instead of throwing.
+- **Changing `DateFormat`, `DateTimeFormat`, `Culture` or `ShowSeconds`** rewrites the shown text without waiting
+  for a new value, and cultures that write the year first (ja-JP, sv-SE, ...) can type a date.
+- **The date-time popup starts from the current value each time it opens**: a pick dismissed with the scrim or
+  Escape is dropped, and a parent re-render no longer wipes a pick in progress.
+- **Keyboard and screen readers**: the calendar grid has rows, full-date names and one tabbable day, the range
+  calendar moves with the arrow keys, the popups are dialogs closed by Escape, the 12-hour clock dial announces
+  1-12, and the time picker dial and columns show the keyboard focus ring.
 
 ## [0.42.0] - 2026-09-26
 
