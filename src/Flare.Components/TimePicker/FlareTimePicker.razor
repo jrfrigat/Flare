@@ -41,7 +41,7 @@
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
                    @onfocus="@(() => _focused = true)"
-                   @onblur="@(() => _focused = false)"
+                   @onblur="HandleBlur"
                    @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                     disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
@@ -181,6 +181,15 @@
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
     private bool _focused;
+    // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
+    // its awaited selection read in an older generation is stale and drops its result (TASK-138).
+    private int _editGeneration;
+
+    private void HandleBlur()
+    {
+        _focused = false;
+        _editGeneration++;
+    }
 
     private ElementReference _inputEl;
     private ElementReference _fieldEl;
@@ -239,11 +248,13 @@
             _syncedValue = Value;
             _syncedText = display;
             _text = display;
+            _editGeneration++;
         }
     }
 
     public override async ValueTask DisposeAsync()
     {
+        _editGeneration++;
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
@@ -258,7 +269,9 @@
     private async Task HandleInput(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString() ?? string.Empty;
+        var generation = ++_editGeneration;
         var caretDigits = await SelectionDigitsAsync(raw);
+        if (generation != _editGeneration) return;
         _text = MaskTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t)
@@ -282,6 +295,7 @@
 
     private async Task HandleCommitText(ChangeEventArgs e)
     {
+        _editGeneration++;
         _text = MaskTime(e.Value?.ToString());
         if (string.IsNullOrEmpty(_text)) { await Commit(null); return; }
         // The text is already on the HH:mm[:ss] skeleton, so a complete time parses exactly; a lenient parse

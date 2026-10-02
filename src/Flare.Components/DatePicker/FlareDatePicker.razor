@@ -302,6 +302,7 @@
                 _syncedValue = Value;
                 _syncedText = display;
                 _text = display;
+                _editGeneration++;
             }
         }
     }
@@ -310,6 +311,9 @@
     private DateOnly? _syncedValue;
     private string? _syncedText;
     private bool _focused;
+    // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
+    // its awaited selection read in an older generation is stale and drops its result (TASK-138).
+    private int _editGeneration;
     private bool _autofocused;
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
     // -1 when there is nothing to restore.
@@ -359,6 +363,7 @@
 
     public override async ValueTask DisposeAsync()
     {
+        _editGeneration++;
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
@@ -476,7 +481,9 @@
     private async Task HandleInput(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString() ?? string.Empty;
+        var generation = ++_editGeneration;
         var caretDigits = await SelectionDigitsAsync(raw);
+        if (generation != _editGeneration) return;
         _text = MaskDate(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _numericPattern.Length && TryParseDate(_text, out var d) && !IsDisabled(d))
@@ -499,6 +506,7 @@
 
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        _editGeneration++;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitDate(null); return; }
         if (TryParseDate(raw, out var d) && !IsDisabled(d))
@@ -515,6 +523,7 @@
     private void HandleBlur()
     {
         _focused = false;
+        _editGeneration++;
         _text = DisplayValue; // reformat to the display format on blur
     }
 

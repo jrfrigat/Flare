@@ -170,6 +170,9 @@
     private DateTimeOffset? _syncedValue;
     private string? _syncedText;
     private bool _focused;
+    // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
+    // its awaited selection read in an older generation is stale and drops its result (TASK-138).
+    private int _editGeneration;
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
@@ -271,6 +274,7 @@
                 _syncedValue = Value;
                 _syncedText = display;
                 _text = display;
+                _editGeneration++;
             }
         }
     }
@@ -342,7 +346,9 @@
     private async Task HandleInput(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString() ?? string.Empty;
+        var generation = ++_editGeneration;
         var caretDigits = await SelectionDigitsAsync(raw);
+        if (generation != _editGeneration) return;
         _text = MaskDateTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _numericPattern.Length && TryParse(_text, out var dt) && InRange(dt))
@@ -365,6 +371,7 @@
 
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        _editGeneration++;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         _text = raw;
         if (string.IsNullOrEmpty(raw)) { await CommitValue(null); return; }
@@ -375,6 +382,7 @@
     private void HandleBlur()
     {
         _focused = false;
+        _editGeneration++;
         _text = FormattedValue;
     }
 
@@ -591,6 +599,7 @@
 
     public override async ValueTask DisposeAsync()
     {
+        _editGeneration++;
         if (_bpSubscription is not null)
         {
             try { await _bpSubscription.DisposeAsync(); } catch { }

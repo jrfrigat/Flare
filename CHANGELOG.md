@@ -39,7 +39,8 @@ All notable changes to Flare are documented here. This project adheres to
   answered - and every caller gets the answer to its own question.
 - **Typing into a date, time or date-time field keeps the caret and the other segments.** The mask no longer
   throws the caret to the end, rewrites a neighbouring hour or minute, or saves a half-typed value as a different
-  date or time on blur; a field the user has left is never focused again.
+  date or time on blur; a field the user has left is never focused again, and a slow caret read that finishes
+  after the user left, typed on or the value changed no longer brings the half-typed text back.
 - **The date and time pickers respect their bounds and state.** Min/Max apply to the popups as well as to typing
   (the OK button stays off for a value outside them), a disabled or read-only inline calendar cannot be changed,
   range presets obey Min/Max and `IsDateDisabled`, and a date-time keeps its UTC offset and the seconds its
