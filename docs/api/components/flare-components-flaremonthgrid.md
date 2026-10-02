@@ -28,7 +28,11 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 
 ## Methods
 
-This component exposes no documented public methods.
+### `FocusCursorAsync()`
+
+Moves keyboard focus onto the day carrying the roving tabindex="0" (best-effort; does nothing before the grid is rendered or when no day of the month is available).
+Returns: `Task`.
+
 
 ## Inheritance
 

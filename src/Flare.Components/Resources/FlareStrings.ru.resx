@@ -224,6 +224,7 @@
   <data name="MultiSelect_SelectAll" xml:space="preserve"><value>Выбрать все</value></data>
 
   <!-- DatePicker / DateTimePicker / DateRangePicker -->
+  <data name="DatePicker_Open" xml:space="preserve"><value>Открыть выбор даты</value></data>
   <data name="DatePicker_Today" xml:space="preserve"><value>Сегодня</value></data>
   <data name="DateTimePicker_DateTab" xml:space="preserve"><value>Дата</value></data>
   <data name="DateTimePicker_TimeTab" xml:space="preserve"><value>Время</value></data>

@@ -29,7 +29,7 @@
 </div>
 
 <div class="@Css.Classes.ClockDial.Dial" role="slider" @ref="_dial"
-     aria-label="@(_mode == DialMode.Hour ? "Hours" : "Minutes")"
+     aria-label="@(_mode == DialMode.Hour ? FlareStrings.TimePicker_Hours : FlareStrings.TimePicker_Minutes)"
      aria-valuemin="@(_mode == DialMode.Hour && !Is24Hour ? 1 : 0)"
      aria-valuemax="@(_mode == DialMode.Hour ? (Is24Hour ? 23 : 12) : 59)"
      aria-valuenow="@(_mode == DialMode.Hour ? (Is24Hour ? Hour : _displayHour) : Minute)"

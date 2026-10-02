@@ -163,6 +163,18 @@
         await OnKeyDown.InvokeAsync(e);
     }
 
+    /// <summary>Moves keyboard focus onto the day carrying the roving <c>tabindex="0"</c> (best-effort; does
+    /// nothing before the grid is rendered or when no day of the month is available).</summary>
+    public async Task FocusCursorAsync()
+    {
+        if (_tabTarget is not { } target) return;
+        var index = Array.IndexOf(_weeks.SelectMany(w => w).ToArray(), target);
+        if (index < 0) return;
+        try { await _cells[index].FocusAsync(); }
+        catch (JSException) { }
+        catch (InvalidOperationException) { /* not attached yet */ }
+    }
+
     private async Task ClickDay(DateOnly day)
     {
         if (day != FocusedDate) await FocusedDateChanged.InvokeAsync(day);

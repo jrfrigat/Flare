@@ -799,6 +799,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Open date picker.
+        /// </summary>
+        public static string DatePicker_Open {
+            get {
+                return ResourceManager.GetString("DatePicker_Open", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Today.
         /// </summary>
         public static string DatePicker_Today {

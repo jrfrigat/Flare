@@ -44,7 +44,7 @@
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                        aria-label="@(FlareStrings.DatePicker_Today)" @onclick="Toggle">
+                        aria-label="@(FlareStrings.DatePicker_Open)" @ref="_toggleEl" @onclick="Toggle">
                     <FlareIconView Value="@FlareIcons.CalendarMonth" />
                 </button>
             }
@@ -57,7 +57,8 @@
         @if (_open || Inline)
         {
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
-             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@HeaderLabel" @ref="_panelEl">
+             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
+             @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(!CanPrev)">
@@ -77,7 +78,7 @@
 
             @if (_calView == CalendarView.Day)
             {
-                <FlareMonthGrid ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+                <FlareMonthGrid @ref="_grid" ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
                                 FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                                 AriaLabel="@HeaderLabel"
                                 Selected="@(d => d == Value)"
@@ -312,6 +313,11 @@
     private DateOnly? _syncedValue;
     private string? _syncedText;
     private bool _focused;
+    private FlareMonthGrid? _grid;
+    private ElementReference _toggleEl;
+    private string _trapId => _panelId + "-trap";
+    private bool _trapped;
+    private bool _returnToInput;
     // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
     // its awaited selection read in an older generation is stale and drops its result (TASK-138).
     private int _editGeneration;
@@ -349,22 +355,31 @@
             }
         }
         if (Inline) return; // inline panel sits in normal flow - no anchored positioning
-        if (_open == _panelPositioned) return;
-        try
+        if (_open != _panelPositioned)
         {
-            if (_open)
-                await Overlay.PositionAnchoredPanelAsync(_panelId, _fieldEl, _panelEl);
-            else
-                await Overlay.RemoveAnchoredPanelAsync(_panelId);
-            _panelPositioned = _open;
+            try
+            {
+                if (_open)
+                    await Overlay.PositionAnchoredPanelAsync(_panelId, _fieldEl, _panelEl);
+                else
+                    await Overlay.RemoveAnchoredPanelAsync(_panelId);
+                _panelPositioned = _open;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        await SyncFocusTrapAsync();
     }
 
     public override async ValueTask DisposeAsync()
     {
         _editGeneration++;
+        if (_trapped)
+        {
+            try { await Overlay.ReleaseFocusTrapAsync(_trapId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
@@ -578,12 +593,41 @@
         }
     }
 
-    // Escape closes the popup and puts focus back on the trigger field (TASK-106).
+    // Escape closes the popup and puts focus back on the trigger field once the panel is gone (TASK-106).
     private async Task ClosePopupAsync()
     {
         if (!_open) return;
+        _returnToInput = true;
         await SetOpenAsync(false);
-        try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
+    }
+
+    // Escape anywhere in the popup - header, month or year view - closes it, not only in the day grid
+    // (TASK-134).
+    private Task HandlePanelKeyDown(KeyboardEventArgs e) =>
+        !Inline && e.Key == "Escape" ? ClosePopupAsync() : Task.CompletedTask;
+
+    // The popup is a modal dialog: Tab stays inside while it is open and the cursor day takes focus;
+    // closing returns focus to the toggle, or to the field after Escape (TASK-134).
+    private async Task SyncFocusTrapAsync()
+    {
+        var open = _open && !Inline;
+        if (open == _trapped) return;
+        _trapped = open;
+        try
+        {
+            if (open) await Overlay.TrapFocusAsync(_trapId, _panelEl);
+            else await Overlay.ReleaseFocusTrapAsync(_trapId);
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        if (open)
+        {
+            if (_grid is not null) await _grid.FocusCursorAsync();
+            return;
+        }
+        var target = _returnToInput || !AllowPicker ? _inputEl : _toggleEl;
+        _returnToInput = false;
+        try { await target.FocusAsync(); } catch { /* best-effort */ }
     }
 
 }

@@ -56,8 +56,10 @@ All notable changes to Flare are documented here. This project adheres to
 - **The date-time popup starts from the current value each time it opens**: a pick dismissed with the scrim or
   Escape is dropped, and a parent re-render no longer wipes a pick in progress.
 - **Keyboard and screen readers**: the calendar grid has rows, full-date names and one tabbable day, the range
-  calendar moves with the arrow keys, the arrows start from the focused day after a month change or a click, the popups are dialogs closed by Escape, the 12-hour clock dial announces
-  1-12, and the time picker dial and columns show the keyboard focus ring.
+  calendar moves with the arrow keys, the arrows start from the focused day after a month change or a click, the popups are dialogs that hold Tab
+  inside, close on Escape from any part of them without saving and give focus back to the field, the 12-hour clock
+  dial announces 1-12 and names hours and minutes in the UI language, the date picker's toggle is announced as
+  opening the picker rather than as "Today", and the time picker dial and columns show the keyboard focus ring.
 
 ## [0.42.0] - 2026-09-26
 

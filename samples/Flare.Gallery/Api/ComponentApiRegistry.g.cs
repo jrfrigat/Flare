@@ -4115,7 +4115,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ViewMonth", @"int", @"0", @"The 1-12 month displayed.", null, false, false, true, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"ViewYear", @"int", @"0", @"The year of the displayed month.", null, false, false, true, @"FlareMonthGrid"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusCursorAsync", @"FocusCursorAsync()", @"Task", null, @"Moves keyboard focus onto the day carrying the roving tabindex=""0"" (best-effort; does nothing before the grid is rendered or when no day of the month is available).",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"ComponentBase",

@@ -44,7 +44,7 @@
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                        aria-label="@FlareStrings.DateTimePicker_Open" @onclick="TogglePanel">
+                        aria-label="@FlareStrings.DateTimePicker_Open" @ref="_toggleEl" @onclick="TogglePanel">
                     <FlareIconView Value="@FlareIcons.CalendarClock" />
                 </button>
             }
@@ -53,7 +53,8 @@
         {
         <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)"
-             role="dialog" aria-modal="true" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl">
+             role="dialog" aria-modal="true" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
+             @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>
             @if (_panels)
             {
                 <div class="@Css.Classes.DateTimePicker.Panes">
@@ -136,6 +137,39 @@
     }
     /// <summary>Toggles the picker popup.</summary>
     public Task ToggleAsync() => TogglePanel();
+
+    // Escape anywhere in the popup - calendar, navigation, tabs, time pane - drops the draft and puts focus
+    // back in the field once the panel is gone (TASK-134).
+    private Task CancelAsync()
+    {
+        _returnToInput = true;
+        return CloseAsync();
+    }
+
+    private Task HandlePanelKeyDown(KeyboardEventArgs e) => e.Key == "Escape" ? CancelAsync() : Task.CompletedTask;
+
+    // The popup is a modal dialog: Tab stays inside while it is open and the cursor day takes focus;
+    // closing returns focus to the toggle, or to the field after Escape (TASK-134).
+    private async Task SyncFocusTrapAsync()
+    {
+        if (_open == _trapped) return;
+        _trapped = _open;
+        try
+        {
+            if (_open) await Overlay.TrapFocusAsync(_trapId, _panelEl);
+            else await Overlay.ReleaseFocusTrapAsync(_trapId);
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        if (_open)
+        {
+            if (_grid is not null) await _grid.FocusCursorAsync();
+            return;
+        }
+        var target = _returnToInput || !AllowPicker ? _inputEl : _toggleEl;
+        _returnToInput = false;
+        try { await target.FocusAsync(); } catch { /* best-effort */ }
+    }
     /// <summary>Clears the selected value.</summary>
     public Task ClearAsync() => Clear();
     /// <summary>Sets keyboard focus to the input.</summary>
@@ -167,6 +201,11 @@
     private ElementReference _panelEl;
     private bool _panelPositioned;
     private readonly string _panelId = $"flare-datetimepicker-{Guid.NewGuid():N}";
+    private string _trapId => _panelId + "-trap";
+    private bool _trapped;
+    private bool _returnToInput;
+    private ElementReference _toggleEl;
+    private FlareMonthGrid? _grid;
     private bool _is24Hour;
     private Breakpoint _bp = Breakpoint.Xs;
     private IAsyncDisposable? _bpSubscription;
@@ -215,7 +254,7 @@
                 </FlareButton>
             </span>
         </div>
-        <FlareMonthGrid ViewYear="_viewDate.Year" ViewMonth="_viewDate.Month" Culture="_culture" Today="Today"
+        <FlareMonthGrid @ref="_grid" ViewYear="_viewDate.Year" ViewMonth="_viewDate.Month" Culture="_culture" Today="Today"
                         FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                         AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
                         Selected="@(d => d == _selectedDate)"
@@ -487,7 +526,7 @@
     {
         if (Disabled || ReadOnly) return;
 
-        if (e.Key == "Escape") { await CloseAsync(); return; }
+        if (e.Key == "Escape") { await CancelAsync(); return; }
 
         if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
                 FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled) is not { } day) return;
@@ -565,18 +604,21 @@
             }
         }
 
-        if (_open == _panelPositioned) return;
-        try
+        if (_open != _panelPositioned)
         {
-            if (_open)
-                await Overlay.PositionAnchoredPanelAsync(_panelId, _fieldRef, _panelEl,
-                    new AnchoredPanelOptions { MatchWidth = true });
-            else
-                await Overlay.RemoveAnchoredPanelAsync(_panelId);
-            _panelPositioned = _open;
+            try
+            {
+                if (_open)
+                    await Overlay.PositionAnchoredPanelAsync(_panelId, _fieldRef, _panelEl,
+                        new AnchoredPanelOptions { MatchWidth = true });
+                else
+                    await Overlay.RemoveAnchoredPanelAsync(_panelId);
+                _panelPositioned = _open;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        await SyncFocusTrapAsync();
     }
 
     private Task OnBreakpointAsync(Breakpoint breakpoint)
@@ -591,6 +633,12 @@
         if (_bpSubscription is not null)
         {
             try { await _bpSubscription.DisposeAsync(); } catch { }
+        }
+        if (_trapped)
+        {
+            try { await Overlay.ReleaseFocusTrapAsync(_trapId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }

@@ -45,7 +45,7 @@
                    @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                     disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                    aria-label="@FlareStrings.TimePicker_Open" @onclick="Toggle">
+                    aria-label="@FlareStrings.TimePicker_Open" @ref="_toggleEl" @onclick="Toggle">
                 <FlareIconView Value="@FlareIcons.Schedule" />
             </button>
         </div>
@@ -54,7 +54,8 @@
         {
         <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
         <div class="@($"{Css.Classes.Picker.Panel} {Css.Classes.TimePicker.Panel} {(PopupVariant == TimePickerVariant.Dial ? Css.Classes.TimePicker.PanelDial : Css.Classes.TimePicker.PanelDropdown)}")"
-             @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@_headline">
+             @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@_headline"
+             @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>
             <div class="@Css.Classes.TimePicker.PanelHeadline">@_headline</div>
 
             @if (PopupVariant == TimePickerVariant.Dial)
@@ -234,6 +235,10 @@
     private ElementReference _panelEl;
     private bool _panelPositioned;
     private readonly string _panelId = $"flare-timepicker-{Guid.NewGuid():N}";
+    private string _trapId => _panelId + "-trap";
+    private bool _trapped;
+    private bool _returnToInput;
+    private ElementReference _toggleEl;
 
     protected override void OnParametersSet()
     {
@@ -255,6 +260,12 @@
     public override async ValueTask DisposeAsync()
     {
         _editGeneration++;
+        if (_trapped)
+        {
+            try { await Overlay.ReleaseFocusTrapAsync(_trapId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
@@ -396,11 +407,34 @@
             catch (JSException) { }
         }
 
+        await SyncFocusTrapAsync();
+
         if (_focusDrop)
         {
             _focusDrop = false;
             try { await _dropRef.FocusAsync(); } catch { /* best-effort */ }
         }
+    }
+
+    // The popup is a modal dialog: Tab stays inside while it is open, and closing it returns focus to what
+    // had it before (the toggle), or to the field after Escape (TASK-134).
+    private async Task SyncFocusTrapAsync()
+    {
+        if (_open == _trapped) return;
+        _trapped = _open;
+        try
+        {
+            if (_open) await Overlay.TrapFocusAsync(_trapId, _panelEl);
+            else await Overlay.ReleaseFocusTrapAsync(_trapId);
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        if (_open) return;
+        // Focus goes back explicitly: the trap's own restore may point at the dial, which took focus inside
+        // the popup before the trap was set and is gone now.
+        var target = _returnToInput ? _inputEl : _toggleEl;
+        _returnToInput = false;
+        try { await target.FocusAsync(); } catch { /* best-effort */ }
     }
 
     private void OnDropKey(KeyboardEventArgs e)
@@ -432,6 +466,14 @@
         _open = false;
         await Closed.InvokeAsync();
         StateHasChanged();
+    }
+
+    // Escape anywhere in the popup drops the pick and puts focus back in the field (TASK-134).
+    private async Task HandlePanelKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key != "Escape") return;
+        _returnToInput = true;
+        await Close();
     }
 
     private TimeOnly TempTime => new(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0);
