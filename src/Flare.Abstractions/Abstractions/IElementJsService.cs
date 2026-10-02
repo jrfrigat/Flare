@@ -36,9 +36,10 @@ public interface IElementJsService
     /// back on the segment the user was editing.</summary>
     ValueTask<int[]?> GetSelectionAsync(ElementReference element);
 
-    /// <summary>Writes <paramref name="value"/> to <paramref name="element"/> when the DOM differs from it and
-    /// puts the caret at <c>[start, end)</c>. Blazor skips the DOM update when the rendered text equals the
-    /// previous text, so a field that rewrites its value on input uses this to keep the DOM in step.</summary>
+    /// <summary>Writes <paramref name="value"/> to <paramref name="element"/> when the DOM differs from it and,
+    /// only while the element has focus, puts the caret at <c>[start, end)</c>; focus is never moved. Blazor
+    /// skips the DOM update when the rendered text equals the previous text, so a field that rewrites its
+    /// value on input uses this to keep the DOM in step.</summary>
     ValueTask SetValueAndCaretAsync(ElementReference element, string value, int start, int end);
 
     /// <summary>Returns the element's viewport rectangle and the current viewport size.</summary>

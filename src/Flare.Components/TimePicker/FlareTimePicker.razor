@@ -343,7 +343,9 @@
             // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
             if (_focused)
             {
-                try { await ElementJs.SelectRangeAsync(_inputEl, caret, caret); }
+                // Rewrite the value as well as the caret: Blazor skips the DOM write when the masked text
+                // equals the previous text (e.g. deleting a separator), so it would keep the half-edited text.
+                try { await ElementJs.SetValueAndCaretAsync(_inputEl, _text, caret, caret); }
                 catch (JSDisconnectedException) { }
                 catch (JSException) { }
             }

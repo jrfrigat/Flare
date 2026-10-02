@@ -44,16 +44,17 @@ export const flareField = {
         }
         return null;
     },
-    // Writes value to the control when the DOM differs from it and puts the caret at [start, end). Blazor
-    // skips the DOM write when the rendered text is unchanged, so a masked field that rewrites its value on
-    // input (e.g. deleting a separator) uses this to keep the DOM in step with the component.
+    // Writes value to the control when the DOM differs from it and puts the caret at [start, end) while the
+    // control has focus. Blazor skips the DOM write when the rendered text is unchanged, so a masked field
+    // that rewrites its value on input (e.g. deleting a separator) uses this to keep the DOM in step with
+    // the component. Focus is never moved: the call is deferred and may land after the user left the field.
     setValueAndCaret: function (el, value, start, end) {
         if (!el) return;
         try {
             if (el.value !== value) el.value = value;
-            // Do not steal focus: a deferred caller may run after the user left the field.
-            if (document.activeElement !== el) el.focus();
-            if (typeof el.setSelectionRange === 'function') el.setSelectionRange(start, end);
+            if (document.activeElement === el && typeof el.setSelectionRange === 'function') {
+                el.setSelectionRange(start, end);
+            }
         } catch (_) { }
     }
 };
