@@ -65,6 +65,8 @@ public static class TimePicker
     public const string Cell = "flare-timepicker__cell";
     /// <summary>The <c>flare-timepicker__cell--selected</c> CSS class.</summary>
     public const string CellSelected = "flare-timepicker__cell--selected";
+    /// <summary>The <c>flare-timepicker__cell--active</c> CSS class: the cell the keyboard is on (the selected cell of the active column).</summary>
+    public const string CellActive = "flare-timepicker__cell--active";
     /// <summary>The <c>flare-timepicker__actions</c> CSS class.</summary>
     public const string Actions = "flare-timepicker__actions";
     /// <summary>The <c>flare-timepicker__actions-lead</c> CSS class: the start-aligned slot of the actions row (the keyboard toggle).</summary>

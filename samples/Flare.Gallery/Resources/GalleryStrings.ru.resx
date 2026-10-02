@@ -3696,6 +3696,12 @@
   <data name="TpDemo_Dial24Helper" xml:space="preserve">
     <value>Два кольца, без AM/PM</value>
   </data>
+  <data name="TpDemo_ListLabel" xml:space="preserve">
+    <value>Список времени</value>
+  </data>
+  <data name="TpDemo_ListHelper" xml:space="preserve">
+    <value>Каждые 30 минут: стрелки перемещают, Enter выбирает</value>
+  </data>
   <data name="TpDemo_DropdownLabel" xml:space="preserve">
     <value>Колонки</value>
   </data>

@@ -35,7 +35,7 @@ public partial class FlareDateTimePicker
     [Parameter] public bool AllowInput { get; set; } = true;
     /// <summary>Allows opening the picker popup (shows the icon button). Default true.</summary>
     [Parameter] public bool AllowPicker { get; set; } = true;
-    /// <summary>Time tab style: <see cref="TimePickerVariant.Dial"/> (clock) or <see cref="TimePickerVariant.Dropdown"/> (number fields, default).</summary>
+    /// <summary>Time tab style: <see cref="TimePickerVariant.Dial"/> (clock) or <see cref="TimePickerVariant.Dropdown"/> (number fields, default); <see cref="TimePickerVariant.List"/> shows the number fields too.</summary>
     [Parameter] public TimePickerVariant TimeVariant { get; set; } = TimePickerVariant.Dropdown;
     /// <summary>Popup layout: <see cref="DateTimeVariant.Auto"/> (default, responsive), <see cref="DateTimeVariant.Tabs"/> or <see cref="DateTimeVariant.Panels"/> (side by side).</summary>
     [Parameter] public DateTimeVariant Mode { get; set; } = DateTimeVariant.Auto;

@@ -217,6 +217,7 @@ public partial class FlareTimePicker
     private async Task Toggle()
     {
         if (Disabled || ReadOnly) return;
+        if (_isList) { await ToggleListAsync(); return; }
         if (!_open)
         {
             _tempHour = Value?.Hour ?? 0;
@@ -268,7 +269,8 @@ public partial class FlareTimePicker
 
         // The popup sits under the field in the top layer (escaping a Card's overflow:hidden) and holds Tab
         // while open; the scrim handles dismissal (TASK-134).
-        await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, _toggleEl);
+        if (_isList) await SyncListAsync();
+        else await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, _toggleEl);
 
         if (_focusDrop)
         {
@@ -276,6 +278,22 @@ public partial class FlareTimePicker
             try { await _dropRef.FocusAsync(); } catch { /* best-effort */ }
         }
     }
+
+    // The columns announce the selected cell of the active column through aria-activedescendant (TASK-131);
+    // a value off the step grid has no cell, so nothing is announced until a cell is picked.
+    private readonly string _columnsId = $"flare-timepicker-cols-{Guid.NewGuid():N}";
+    private string CellId(char unit, int n) => $"{_columnsId}-{unit}-{n}";
+    private string CellClass(bool selected, int column) =>
+        Css.Classes.TimePicker.Cell
+        + (selected ? " " + Css.Classes.TimePicker.CellSelected : "")
+        + (selected && column == _dropActive ? " " + Css.Classes.TimePicker.CellActive : "");
+    private string? _columnsActiveId => _dropActive switch
+    {
+        0 when _tempHour % _hourStep == 0 => CellId('h', _tempHour),
+        1 when MinuteStep > 0 && _tempMinute % MinuteStep == 0 => CellId('m', _tempMinute),
+        2 => CellId('s', _tempSecond),
+        _ => null,
+    };
 
     private void OnDropKey(KeyboardEventArgs e)
     {

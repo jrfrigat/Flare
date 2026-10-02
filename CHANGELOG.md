@@ -44,6 +44,10 @@ All notable changes to Flare are documented here. This project adheres to
   minute text field (with AM/PM on a 12-hour clock) and back, as the Material time pickers do; Min/Max apply as on
   the dial. It is on by default and `FlareTimePicker.ShowKeyboardToggle` turns it off. The fields are the new
   `FlareTimeEntry`, which a custom host can place next to `FlareClockDial`.
+- **`TimePickerVariant.List`**: the time picker as a combobox over a list of times, as in Fluent UI 2. The field
+  keeps focus, the arrow keys move through the times from `Min` to `Max` every `MinuteStep` minutes and Enter picks
+  one; the list is the same dropdown as `FlareSelect`'s, so every theme styles it alike. The column popup now
+  announces the cell the keyboard is on (`aria-activedescendant`) and outlines it.
 
 ### Fixed
 

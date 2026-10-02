@@ -30,7 +30,7 @@ Date and time field: a masked text input with a popup holding a calendar and a t
 | `ParseInput` | `Func<string, DateTimeOffset?>?` | `` | Parameter |  | Reads typed text instead of the built-in parser: return the value - offset included - or null when the text is not one (the value is kept and the field shows it again). With a parser the field takes free text - no digit mask - and judges it on change (blur or Enter); Min/Max and IsDateDisabled still apply. |
 | `ShowSeconds` | `bool` | `false` | Parameter |  | Adds seconds to the field (the default format uses the culture's long time pattern) and a seconds box to the number-field time pane. The clock dial picks hours and minutes only and keeps the seconds, as in FlareTimePicker. |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |
-| `TimeVariant` | `TimePickerVariant` | `TimePickerVariant.Dropdown` | Parameter |  | Time tab style: Dial (clock) or Dropdown (number fields, default). |
+| `TimeVariant` | `TimePickerVariant` | `TimePickerVariant.Dropdown` | Parameter |  | Time tab style: Dial (clock) or Dropdown (number fields, default); List shows the number fields too. |
 | `Use24Hour` | `bool?` | `` | Parameter |  | Forces 12/24-hour clock on the dial. Null auto-detects from culture. |
 | `Value` | `DateTimeOffset?` | `` | Parameter |  | Currently selected date and time (supports @bind-Value). |
 | `ValueChanged` | `EventCallback<DateTimeOffset?>` | `` | Callback |  | Raised when the value changes (the @bind-Value callback). |

@@ -11764,6 +11764,12 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized TpDemo_Dial24Helper string.</summary>
         public static string TpDemo_Dial24Helper => ResourceManager.GetString("TpDemo_Dial24Helper", resourceCulture);
 
+        /// <summary>Looks up the localized TpDemo_ListLabel string.</summary>
+        public static string TpDemo_ListLabel => ResourceManager.GetString("TpDemo_ListLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_ListHelper string.</summary>
+        public static string TpDemo_ListHelper => ResourceManager.GetString("TpDemo_ListHelper", resourceCulture);
+
         /// <summary>Looks up the localized TpDemo_DropdownLabel string.</summary>
         public static string TpDemo_DropdownLabel => ResourceManager.GetString("TpDemo_DropdownLabel", resourceCulture);
 

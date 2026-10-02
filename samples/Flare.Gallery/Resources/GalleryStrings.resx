@@ -3696,6 +3696,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="TpDemo_Dial24Helper" xml:space="preserve">
     <value>Two rings, no AM/PM</value>
   </data>
+  <data name="TpDemo_ListLabel" xml:space="preserve">
+    <value>Time list</value>
+  </data>
+  <data name="TpDemo_ListHelper" xml:space="preserve">
+    <value>Every 30 minutes: the arrow keys move, Enter picks</value>
+  </data>
   <data name="TpDemo_DropdownLabel" xml:space="preserve">
     <value>Columns</value>
   </data>

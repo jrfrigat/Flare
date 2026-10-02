@@ -10,6 +10,9 @@
         <FlareTimePicker @bind-Value="_columns" Label="@GalleryStrings.TpDemo_DropdownLabel"
                          PopupVariant="TimePickerVariant.Dropdown" MinuteStep="5"
                          HelperText="@GalleryStrings.TpDemo_DropdownHelper" Style="flex:1;min-width:12rem;" />
+        <FlareTimePicker @bind-Value="_list" Label="@GalleryStrings.TpDemo_ListLabel"
+                         PopupVariant="TimePickerVariant.List" MinuteStep="30"
+                         HelperText="@GalleryStrings.TpDemo_ListHelper" Style="flex:1;min-width:12rem;" />
         <FlareTimePicker Label="@GalleryStrings.TpDemo_DisabledLabel" Disabled Style="flex:1;min-width:12rem;" />
         <FlareTimePicker @bind-Value="_required" Label="@GalleryStrings.TpDemo_RequiredLabel" Required="true"
                          ErrorText="@(_required is null ? GalleryStrings.TpDemo_RequiredError : null)"
@@ -25,5 +28,6 @@
     private TimeOnly? _dial;
     private TimeOnly? _dial24;
     private TimeOnly? _columns;
+    private TimeOnly? _list;
     private TimeOnly? _required;
 }

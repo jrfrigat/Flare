@@ -78,6 +78,8 @@
   background: var(--flare-color-primary-container);
   color: var(--flare-color-on-primary-container);
 }
+/* The keyboard sits on the columns container; the active cell shows where (aria-activedescendant). */
+.flare-timepicker__columns:focus-visible .flare-timepicker__cell--active { outline: var(--flare-focus-ring); outline-offset: -2px; }
 .flare-timepicker__actions { display: flex; justify-content: flex-end; gap: var(--flare-spacing-4); margin-top: var(--flare-spacing-6); }
 .flare-timepicker__actions-lead { margin-inline-end: auto; }
 

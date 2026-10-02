@@ -2244,7 +2244,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ParseInput", @"Func<string, DateTimeOffset?>?", null, @"Reads typed text instead of the built-in parser: return the value - offset included - or null when the text is not one (the value is kept and the field shows it again). With a parser the field takes free text - no digit mask - and judges it on change (blur or Enter); Min/Max and IsDateDisabled still apply.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"ShowSeconds", @"bool", @"false", @"Adds seconds to the field (the default format uses the culture's long time pattern) and a seconds box to the number-field time pane. The clock dial picks hours and minutes only and keeps the seconds, as in FlareTimePicker.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"ShowWeekNumbers", @"bool", @"false", @"Shows a leading week-of-year number column in the calendar.", null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"TimeVariant", @"TimePickerVariant", @"TimePickerVariant.Dropdown", @"Time tab style: Dial (clock) or Dropdown (number fields, default).", null, false, false, false, @"FlareDateTimePicker"),
+                new ApiParameterInfo(@"TimeVariant", @"TimePickerVariant", @"TimePickerVariant.Dropdown", @"Time tab style: Dial (clock) or Dropdown (number fields, default); List shows the number fields too.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Use24Hour", @"bool?", null, @"Forces 12/24-hour clock on the dial. Null auto-detects from culture.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Value", @"DateTimeOffset?", null, @"Currently selected date and time (supports @bind-Value).", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<DateTimeOffset?>", null, @"Raised when the value changes (the @bind-Value callback).", null, false, true, false, @"FlareDateTimePicker"),
@@ -9371,8 +9371,9 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Dial", @"0", @"Analog clock dial, 12-hour with AM/PM or 24-hour with two rings: pick the hour, then the minute, by pointer or by typing digits. Some design systems put a keyboard-entry mode inside the dial dialog; this popup has none - typing goes into the field, which is always editable."),
-                new ApiEnumMember(@"Dropdown", @"1", @"Scrollable hour, minute and (with seconds) second columns, offered by every theme. Design systems whose time picker is a single combobox list of times get these columns too; that list is not provided."),
+                new ApiEnumMember(@"Dial", @"0", @"Analog clock dial, 12-hour with AM/PM or 24-hour with two rings: pick the hour, then the minute, by pointer or by typing digits. A button in the dialog switches to keyboard entry (an hour and a minute text field), see FlareTimePicker.ShowKeyboardToggle."),
+                new ApiEnumMember(@"Dropdown", @"1", @"Scrollable hour, minute and (with seconds) second columns, offered by every theme."),
+                new ApiEnumMember(@"List", @"2", @"A single list of times under the field, as in a combobox (the time picker of combobox-based design systems): the field keeps focus, the arrow keys move through the list and Enter picks a time. The list runs from Min to Max every MinuteStep minutes, so set a step such as 15 or 30 - the default of 1 lists all 1440 minutes. FlareDateTimePicker shows its number fields for this value, as for Dropdown."),
             },
             new string[]
             {
