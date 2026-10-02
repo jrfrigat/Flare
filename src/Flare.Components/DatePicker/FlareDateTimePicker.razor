@@ -382,10 +382,15 @@
         (!Min.HasValue || dt >= Min.Value) && (!Max.HasValue || dt <= Max.Value);
 
     // A day is unselectable only when every moment of it lies outside [Min; Max]; a boundary day stays
-    // selectable so the time part can decide (TASK-101).
-    private bool IsDayDisabled(DateOnly d) =>
-        (Min.HasValue && d < DateOnly.FromDateTime(Min.Value.DateTime)) ||
-        (Max.HasValue && d > DateOnly.FromDateTime(Max.Value.DateTime));
+    // selectable so the time part can decide (TASK-101). The day is taken in the offset the picked value will
+    // have, not in the bound's own one, and compared in UTC ticks so the 0001/9999 edges cannot throw (TASK-137).
+    private bool IsDayDisabled(DateOnly d)
+    {
+        if (!Min.HasValue && !Max.HasValue) return false;
+        var startUtc = d.DayNumber * TimeSpan.TicksPerDay - OffsetFor(d.ToDateTime(TimeOnly.MinValue)).Ticks;
+        var endUtc = startUtc + TimeSpan.TicksPerDay - 1;
+        return (Min.HasValue && endUtc < Min.Value.UtcTicks) || (Max.HasValue && startUtc > Max.Value.UtcTicks);
+    }
 
     private async Task CommitValue(DateTimeOffset? dt)
     {
