@@ -3639,6 +3639,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DrpDemo_Submitted" xml:space="preserve">
     <value>Booked: {0}</value>
   </data>
+  <data name="DrpDemo_FormHelper" xml:space="preserve">
+    <value>From 2 to 14 days; the calendar turns off ends outside that</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Keeps its UTC offset</value>
   </data>

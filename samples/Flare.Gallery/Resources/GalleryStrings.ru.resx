@@ -3639,6 +3639,9 @@
   <data name="DrpDemo_Submitted" xml:space="preserve">
     <value>Забронировано: {0}</value>
   </data>
+  <data name="DrpDemo_FormHelper" xml:space="preserve">
+    <value>От 2 до 14 дней; календарь выключает концы вне этих границ</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Сохраняет смещение UTC</value>
   </data>

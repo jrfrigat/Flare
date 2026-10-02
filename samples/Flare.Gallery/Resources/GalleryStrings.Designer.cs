@@ -11707,6 +11707,9 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DrpDemo_Submitted string.</summary>
         public static string DrpDemo_Submitted => ResourceManager.GetString("DrpDemo_Submitted", resourceCulture);
 
+        /// <summary>Looks up the localized DrpDemo_FormHelper string.</summary>
+        public static string DrpDemo_FormHelper => ResourceManager.GetString("DrpDemo_FormHelper", resourceCulture);
+
         /// <summary>Looks up the localized DtpDemo_OffsetLabel string.</summary>
         public static string DtpDemo_OffsetLabel => ResourceManager.GetString("DtpDemo_OffsetLabel", resourceCulture);
 

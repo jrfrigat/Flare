@@ -31,6 +31,9 @@ All notable changes to Flare are documented here. This project adheres to
   (passed to its fields), a read-only state, and a form field per end, so an `EditForm` sees both ends change and
   the calendar shows their validation messages. Without `Culture` the range calendar now follows
   `CurrentUICulture`, like its fields and the single pickers, instead of `CurrentCulture`.
+- **`FlareDateRangePicker.MinDays`, `MaxDays` and `AllowDisabledDatesInRange`** limit the length of a picked
+  range (both ends counted) and, when disabled days may not lie inside, stop it at the first one. The calendar,
+  the fields and the presets follow the same rules; a value bound from outside is shown as it is.
 - **Calendar keys**: Home/End move to the start/end of the week and PageUp/PageDown by a month (with Shift by a
   year) in the date, date-time and range calendars. `FlareMonthGrid.FocusedDateChanged` reports the day the
   keyboard cursor actually sits on to a custom host.

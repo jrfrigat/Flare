@@ -2165,6 +2165,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AllowDisabledDatesInRange", @"bool", @"true", @"Whether a day IsDateDisabled rejects may lie between the two ends (default true, e.g. weekends inside a holiday). When false, the pick stops at the first disabled day.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the picker when true.", null, false, false, false, @"FlareDateRangePicker"),
@@ -2178,7 +2179,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"IsDateDisabled", @"Func<DateOnly, bool>?", null, @"Predicate to disable specific dates.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Overall label shown above the picker.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Max", @"DateOnly?", null, @"Latest selectable date (inclusive).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"MaxDays", @"int?", null, @"Longest range the user may pick, in days counting both ends (null or below 1 = no limit), applied as MinDays.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Min", @"DateOnly?", null, @"Earliest selectable date (inclusive).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"MinDays", @"int?", null, @"Shortest range the user may pick, in days counting both ends (null or below 1 = no limit). The calendar disables ends that would be too close, the fields narrow their bounds, and a shorter preset is not applied. A value bound from outside is shown as it is.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Mode", @"DateRangePickerMode", @"DateRangePickerMode.Fields", @"How the range is selected: two linked inputs (Fields, default) or a single inline range calendar (Calendar).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Presets", @"IReadOnlyList<DateRangePreset>?", null, @"Custom preset list. When null, a localized default set is used (requires ShowPresets).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Shows the range without letting it change: the fields stay focusable but read-only, and the calendar can be browsed while day clicks and presets are ignored.", null, false, false, false, @"FlareDateRangePicker"),

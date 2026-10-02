@@ -8,6 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AllowDisabledDatesInRange` | `bool` | `true` | Parameter |  | Whether a day IsDateDisabled rejects may lie between the two ends (default true, e.g. weekends inside a holiday). When false, the pick stops at the first disabled day. |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the picker when true. |
@@ -21,7 +22,9 @@
 | `IsDateDisabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate to disable specific dates. |
 | `Label` | `string?` | `` | Parameter |  | Overall label shown above the picker. |
 | `Max` | `DateOnly?` | `` | Parameter |  | Latest selectable date (inclusive). |
+| `MaxDays` | `int?` | `` | Parameter |  | Longest range the user may pick, in days counting both ends (null or below 1 = no limit), applied as MinDays. |
 | `Min` | `DateOnly?` | `` | Parameter |  | Earliest selectable date (inclusive). |
+| `MinDays` | `int?` | `` | Parameter |  | Shortest range the user may pick, in days counting both ends (null or below 1 = no limit). The calendar disables ends that would be too close, the fields narrow their bounds, and a shorter preset is not applied. A value bound from outside is shown as it is. |
 | `Mode` | `DateRangePickerMode` | `DateRangePickerMode.Fields` | Parameter |  | How the range is selected: two linked inputs (Fields, default) or a single inline range calendar (Calendar). |
 | `Presets` | `IReadOnlyList<DateRangePreset>?` | `` | Parameter |  | Custom preset list. When null, a localized default set is used (requires ShowPresets). |
 | `ReadOnly` | `bool` | `false` | Parameter |  | Shows the range without letting it change: the fields stay focusable but read-only, and the calendar can be browsed while day clicks and presets are ignored. |

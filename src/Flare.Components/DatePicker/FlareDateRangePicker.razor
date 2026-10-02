@@ -40,7 +40,7 @@
                              Typo="@Typo"
                              Variant="@Variant"
                              Size="@Size"
-                             Min="@Min"
+                             Min="@StartFieldMin"
                              Max="@StartFieldMax"
                              ShowWeekNumbers="@ShowWeekNumbers"
                              FirstDayOfWeek="@FirstDayOfWeek"
@@ -58,7 +58,7 @@
                              Variant="@Variant"
                              Size="@Size"
                              Min="@EndFieldMin"
-                             Max="@Max"
+                             Max="@EndFieldMax"
                              ShowWeekNumbers="@ShowWeekNumbers"
                              FirstDayOfWeek="@FirstDayOfWeek"
                              DayClassFunc="@DayClassFunc"
@@ -85,7 +85,7 @@
                             FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                             AriaLabel="@HeaderLabel"
                             Selected="@(d => d == StartDate || d == EndDate)"
-                            Disabled="@(d => Disabled || IsDayDisabled(d))"
+                            Disabled="@(d => Disabled || IsDayUnavailable(d))"
                             FocusedDate="@FocusedCursor"
                             FocusedDateChanged="@(d => _focusedDate = d)"
                             OnKeyDown="HandleGridKeyDown"
@@ -135,6 +135,16 @@
     [Parameter] public DateOnly? Max { get; set; }
     /// <summary>Predicate to disable specific dates.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
+    /// <summary>Shortest range the user may pick, in days counting both ends (null or below 1 = no limit). The
+    /// calendar disables ends that would be too close, the fields narrow their bounds, and a shorter preset is
+    /// not applied. A value bound from outside is shown as it is.</summary>
+    [Parameter] public int? MinDays { get; set; }
+    /// <summary>Longest range the user may pick, in days counting both ends (null or below 1 = no limit), applied
+    /// as <see cref="MinDays"/>.</summary>
+    [Parameter] public int? MaxDays { get; set; }
+    /// <summary>Whether a day <see cref="IsDateDisabled"/> rejects may lie between the two ends (default true,
+    /// e.g. weekends inside a holiday). When false, the pick stops at the first disabled day.</summary>
+    [Parameter] public bool AllowDisabledDatesInRange { get; set; } = true;
     /// <summary>Disables the picker when true.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Shows the range without letting it change: the fields stay focusable but read-only, and the
@@ -213,9 +223,36 @@
     // The range the visible month was last anchored to, so a re-render does not undo month navigation.
     private (DateOnly?, DateOnly?)? _anchoredRange;
 
-    // Effective bounds for the inner pickers so they can never produce start > end.
-    private DateOnly? StartFieldMax => Earlier(EndDate, Max);
-    private DateOnly? EndFieldMin => Later(StartDate, Min);
+    private DateRangeRules _rules => new(MinDays, MaxDays, AllowDisabledDatesInRange, IsDateDisabled);
+    private int _minLength => MinDays is > 1 ? MinDays.Value : 1;
+
+    // Reach of the last two anchors (the pending start, or the field ends), so a render does not rescan.
+    private (DateRangeRules Rules, DateOnly Anchor, (DateOnly? Lo, DateOnly? Hi) Reach)? _reachA, _reachB;
+
+    private (DateOnly? Lo, DateOnly? Hi) ReachOf(DateOnly anchor)
+    {
+        var rules = _rules;
+        if (_reachA is { } a && a.Rules == rules && a.Anchor == anchor) return a.Reach;
+        if (_reachB is { } b && b.Rules == rules && b.Anchor == anchor) return b.Reach;
+        var reach = rules.Reach(anchor);
+        _reachB = _reachA;
+        _reachA = (rules, anchor, reach);
+        return reach;
+    }
+
+    // Effective bounds for the inner pickers: never start > end, and the length/blackout rules from the other end.
+    private DateOnly? StartFieldMin => Later(Min, EndDate is { } e ? ReachOf(e).Lo : null);
+    private DateOnly? StartFieldMax => Earlier(EndDate is { } e ? Shift(e, -(_minLength - 1)) : null, Max);
+    private DateOnly? EndFieldMin => Later(StartDate is { } s ? Shift(s, _minLength - 1) : null, Min);
+    private DateOnly? EndFieldMax => Earlier(Max, StartDate is { } s ? ReachOf(s).Hi : null);
+
+    private static DateOnly Shift(DateOnly d, int days) =>
+        DateOnly.FromDayNumber(Math.Clamp(d.DayNumber + days, 0, DateOnly.MaxValue.DayNumber));
+
+    // While the end is being picked, a day it cannot be is off in the calendar and skipped by the arrows. The
+    // pending start keeps its look; a click on it is refused by the rules like any other too-short end.
+    private bool IsDayUnavailable(DateOnly d) =>
+        IsDayDisabled(d) || (_pendingStart is { } p && d != p && !_rules.CanEnd(p, d, ReachOf(p)));
 
     private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresets;
 
@@ -322,7 +359,9 @@
         }
         else
         {
-            // Second click: complete it (swap if the end precedes the start).
+            // Second click: complete it (swap if the end precedes the start) - unless the length or blackout
+            // rules refuse the range, which keeps the start waiting for another end (TASK-148).
+            if (!_rules.Allows(_pendingStart.Value, date)) return;
             var lo = Earliest(_pendingStart.Value, date);
             var hi = Latest(_pendingStart.Value, date);
             _pendingStart = null;
@@ -340,7 +379,7 @@
         if (Disabled) return;
         // The grid has synced the cursor to the day the user sees focused before this runs (TASK-133).
         if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
-                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled) is not { } day) return;
+                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayUnavailable) is not { } day) return;
 
         _focusedDate = day;
         if (_pendingStart is not null) _hover = day;
@@ -363,8 +402,9 @@
         if (Disabled || ReadOnly) return;
         var (s, e) = preset.Range(Today);
         if (s > e) (s, e) = (e, s);
-        // A preset obeys the same bounds as a manual pick: Min/Max and IsDateDisabled (TASK-114).
-        if (IsDayDisabled(s) || IsDayDisabled(e)) return;
+        // A preset obeys the same bounds as a manual pick: Min/Max and IsDateDisabled (TASK-114), and the
+        // length and blackout rules (TASK-148).
+        if (IsDayDisabled(s) || IsDayDisabled(e) || !_rules.Allows(s, e)) return;
         _pendingStart = null;
         _hover = null;
         await SetStartAsync(s);
