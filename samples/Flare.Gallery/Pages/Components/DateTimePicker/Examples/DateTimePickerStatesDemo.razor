@@ -12,6 +12,11 @@
                          Min="_min" Max="_max"
                          HelperText="@GalleryStrings.DtpDemo_BoundsHelper" />
 
+    <FlareDateTimePicker @bind-Value="_options" Label="@GalleryStrings.DtpDemo_OptionsLabel"
+                         HelperText="@GalleryStrings.DtpDemo_OptionsHelper"
+                         ShowSeconds="true" MinuteStep="15" Mode="DateTimeVariant.Panels"
+                         IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)" />
+
     <FlareStack Gap="FlareSpacing.XSmall">
         <FlareDateTimePicker @bind-Value="_offset" Label="@GalleryStrings.DtpDemo_OffsetLabel"
                              HelperText="@GalleryStrings.DtpDemo_OffsetHelper" />
@@ -40,6 +45,7 @@
 
     private DateTimeOffset? _readOnly = new DateTimeOffset(DateTime.Today.AddHours(10));
     private DateTimeOffset? _bounded;
+    private DateTimeOffset? _options;
     private readonly DateTimeOffset _min = DateTimeOffset.Now;
     private readonly DateTimeOffset _max = DateTimeOffset.Now.AddDays(7);
     private DateTimeOffset? _offset = new DateTimeOffset(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 30, 0, Plus5);

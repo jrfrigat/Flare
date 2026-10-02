@@ -24,6 +24,9 @@ All notable changes to Flare are documented here. This project adheres to
 - **`FlareClockDial.MinuteSelected`** is raised once the minute is settled (released or typed), and
   `FlareTimePicker.AutoClose` now finishes the clock dial as well as the columns.
 - **`Css.Classes.TimePicker.PanelDropdown`** names the panel of the columns popup.
+- **`FlareDateTimePicker.ShowSeconds`, `HourStep`, `MinuteStep` and `IsDateDisabled`** work as on
+  `FlareTimePicker` and `FlareDatePicker`: seconds in the field and the time pane, stepped hour and minute boxes,
+  and days that cannot be picked, typed or confirmed.
 - **Calendar keys**: Home/End move to the start/end of the week and PageUp/PageDown by a month (with Shift by a
   year) in the date, date-time and range calendars. `FlareMonthGrid.FocusedDateChanged` reports the day the
   keyboard cursor actually sits on to a custom host.

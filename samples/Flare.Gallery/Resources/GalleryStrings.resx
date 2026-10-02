@@ -3612,6 +3612,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DtpDemo_BoundsHelper" xml:space="preserve">
     <value>Days outside Min/Max are off; OK stays off for a time outside the range</value>
   </data>
+  <data name="DtpDemo_OptionsLabel" xml:space="preserve">
+    <value>Seconds, 15-minute steps, no weekends</value>
+  </data>
+  <data name="DtpDemo_OptionsHelper" xml:space="preserve">
+    <value>ShowSeconds, MinuteStep and IsDateDisabled, as on the time and date pickers</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Keeps its UTC offset</value>
   </data>

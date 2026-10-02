@@ -17,10 +17,14 @@
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays). |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week (null = use the culture's). |
 | `For` | `Expression<Func<DateTimeOffset?>>?` | `` | Parameter |  | Expression used to bind and validate the field inside an EditForm. |
+| `HourStep` | `int` | `1` | Parameter |  | Hour increment of the number-field time pane (default 1): a typed hour drops to the step below it. The dial and the text field are not stepped, as in FlareTimePicker. |
+| `IsDateDisabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed. |
 | `Max` | `DateTimeOffset?` | `` | Parameter |  | — |
 | `Min` | `DateTimeOffset?` | `` | Parameter |  | — |
+| `MinuteStep` | `int` | `1` | Parameter |  | Minute increment of the number-field time pane (default 1): a typed minute drops to the step below it. The dial and the text field are not stepped, as in FlareTimePicker. |
 | `Mode` | `DateTimeVariant` | `DateTimeVariant.Auto` | Parameter |  | Popup layout: Auto (default, responsive), Tabs or Panels (side by side). |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the picker popup opens. |
+| `ShowSeconds` | `bool` | `false` | Parameter |  | Adds seconds to the field (the default format uses the culture's long time pattern) and a seconds box to the number-field time pane. The clock dial picks hours and minutes only and keeps the seconds, as in FlareTimePicker. |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |
 | `TimeVariant` | `TimePickerVariant` | `TimePickerVariant.Dropdown` | Parameter |  | Time tab style: Dial (clock) or Dropdown (number fields, default). |
 | `Use24Hour` | `bool?` | `` | Parameter |  | Forces 12/24-hour clock on the dial. Null auto-detects from culture. |

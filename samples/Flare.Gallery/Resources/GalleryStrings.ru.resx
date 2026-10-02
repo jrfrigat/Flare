@@ -3612,6 +3612,12 @@
   <data name="DtpDemo_BoundsHelper" xml:space="preserve">
     <value>Дни вне Min/Max недоступны; OK не включается для времени вне диапазона</value>
   </data>
+  <data name="DtpDemo_OptionsLabel" xml:space="preserve">
+    <value>Секунды, шаг 15 минут, без выходных</value>
+  </data>
+  <data name="DtpDemo_OptionsHelper" xml:space="preserve">
+    <value>ShowSeconds, MinuteStep и IsDateDisabled, как у выбора времени и даты</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Сохраняет смещение UTC</value>
   </data>

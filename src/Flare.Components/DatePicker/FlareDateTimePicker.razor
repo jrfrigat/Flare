@@ -105,6 +105,19 @@
     [Parameter] public DateTimeVariant Mode { get; set; } = DateTimeVariant.Auto;
     /// <summary>Forces 12/24-hour clock on the dial. Null auto-detects from culture.</summary>
     [Parameter] public bool? Use24Hour { get; set; }
+    /// <summary>Adds seconds to the field (the default format uses the culture's long time pattern) and a seconds
+    /// box to the number-field time pane. The clock dial picks hours and minutes only and keeps the seconds,
+    /// as in <c>FlareTimePicker</c>.</summary>
+    [Parameter] public bool ShowSeconds { get; set; }
+    /// <summary>Hour increment of the number-field time pane (default 1): a typed hour drops to the step below
+    /// it. The dial and the text field are not stepped, as in <c>FlareTimePicker</c>.</summary>
+    [Parameter] public int HourStep { get; set; } = 1;
+    /// <summary>Minute increment of the number-field time pane (default 1): a typed minute drops to the step
+    /// below it. The dial and the text field are not stepped, as in <c>FlareTimePicker</c>.</summary>
+    [Parameter] public int MinuteStep { get; set; } = 1;
+    /// <summary>Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the
+    /// calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed.</summary>
+    [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
     /// <summary>Culture for the calendar and parsing. Default = CurrentUICulture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
@@ -196,6 +209,7 @@
     private DateOnly FocusedCursor => _focusedDate ?? _selectedDate ?? _viewDate;
     private int _hour;
     private int _minute;
+    private int _second;
     private DateOnly _viewDate;
     private ElementReference _fieldRef;
     private ElementReference _panelEl;
@@ -222,11 +236,11 @@
 
     private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
     private string _format => string.IsNullOrEmpty(DateTimeFormat)
-        ? $"{_culture.DateTimeFormat.ShortDatePattern} {_culture.DateTimeFormat.ShortTimePattern}"
+        ? $"{_culture.DateTimeFormat.ShortDatePattern} {(ShowSeconds ? _culture.DateTimeFormat.LongTimePattern : _culture.DateTimeFormat.ShortTimePattern)}"
         : DateTimeFormat;
     private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Date segments in the culture's own order, so year-first cultures mask and parse too (TASK-110).
-    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + " HH:mm";
+    private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + (ShowSeconds ? " HH:mm:ss" : " HH:mm");
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
@@ -282,11 +296,20 @@
         else
         {
             <div class="@Css.Classes.DateTimePicker.Time">
-                <input type="number" min="0" max="23" class="@Css.Classes.DateTimePicker.TimeInput"
+                <input type="number" min="0" max="23" step="@_hourStep" class="@Css.Classes.DateTimePicker.TimeInput"
+                       aria-label="@FlareStrings.TimePicker_Hours"
                        value="@_hour" @onchange="e => SetHour(e.Value?.ToString())" />
                 <span>:</span>
-                <input type="number" min="0" max="59" class="@Css.Classes.DateTimePicker.TimeInput"
+                <input type="number" min="0" max="59" step="@_minuteStep" class="@Css.Classes.DateTimePicker.TimeInput"
+                       aria-label="@FlareStrings.TimePicker_Minutes"
                        value="@_minute" @onchange="e => SetMinute(e.Value?.ToString())" />
+                @if (ShowSeconds)
+                {
+                    <span>:</span>
+                    <input type="number" min="0" max="59" class="@Css.Classes.DateTimePicker.TimeInput"
+                           aria-label="@FlareStrings.TimePicker_Seconds"
+                           value="@_second" @onchange="e => SetSecond(e.Value?.ToString())" />
+                }
             </div>
         }
     </text>;
@@ -395,7 +418,7 @@
         if (generation != _editGeneration) return;
         _text = MaskDateTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
-        if (_text.Length == _numericPattern.Length && TryParse(_text, out var dt) && InRange(dt))
+        if (_text.Length == _numericPattern.Length && TryParse(_text, out var dt) && IsAllowed(dt))
             await CommitValue(dt);
     }
 
@@ -419,7 +442,7 @@
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         _text = raw;
         if (string.IsNullOrEmpty(raw)) { await CommitValue(null); return; }
-        if (TryParse(raw, out var dt) && InRange(dt))
+        if (TryParse(raw, out var dt) && IsAllowed(dt))
             await CommitValue(dt);
     }
 
@@ -433,11 +456,16 @@
     private bool InRange(DateTimeOffset dt) =>
         (!Min.HasValue || dt >= Min.Value) && (!Max.HasValue || dt <= Max.Value);
 
+    // A value may be committed - typed or confirmed - only inside [Min; Max] and on a day IsDateDisabled allows.
+    private bool IsAllowed(DateTimeOffset dt) =>
+        InRange(dt) && !(IsDateDisabled?.Invoke(DateOnly.FromDateTime(dt.DateTime)) ?? false);
+
     // A day is unselectable only when every moment of it lies outside [Min; Max]; a boundary day stays
     // selectable so the time part can decide (TASK-101). The day is taken in the offset the picked value will
     // have, not in the bound's own one, and compared in UTC ticks so the 0001/9999 edges cannot throw (TASK-137).
     private bool IsDayDisabled(DateOnly d)
     {
+        if (IsDateDisabled?.Invoke(d) ?? false) return true;
         if (!Min.HasValue && !Max.HasValue) return false;
         var startUtc = d.DayNumber * TimeSpan.TicksPerDay - OffsetFor(d.ToDateTime(TimeOnly.MinValue)).Ticks;
         var endUtc = startUtc + TimeSpan.TicksPerDay - 1;
@@ -451,6 +479,7 @@
             _selectedDate = DateOnly.FromDateTime(dt.Value.DateTime);
             _hour = dt.Value.Hour;
             _minute = dt.Value.Minute;
+            _second = dt.Value.Second;
             _viewDate = _selectedDate.Value;
         }
         else
@@ -488,6 +517,7 @@
             _selectedDate = DateOnly.FromDateTime(v.DateTime);
             _hour = v.Hour;
             _minute = v.Minute;
+            _second = v.Second;
             _viewDate = _selectedDate.Value;
         }
         else
@@ -495,6 +525,7 @@
             _selectedDate = null;
             _hour = 0;
             _minute = 0;
+            _second = 0;
             _viewDate = Today;
         }
     }
@@ -537,24 +568,36 @@
             _viewDate = day;
     }
 
+    private int _hourStep => HourStep < 1 ? 1 : HourStep;
+    private int _minuteStep => MinuteStep < 1 ? 1 : MinuteStep;
+
+    // A typed hour or minute drops to the step below it, as only step values are offered by the time columns.
     private void SetHour(string? v) =>
-        _hour = int.TryParse(v, out var h) ? Math.Clamp(h, 0, 23) : _hour;
+        _hour = int.TryParse(v, out var h) ? Snap(Math.Clamp(h, 0, 23), _hourStep) : _hour;
 
     private void SetMinute(string? v) =>
-        _minute = int.TryParse(v, out var m) ? Math.Clamp(m, 0, 59) : _minute;
+        _minute = int.TryParse(v, out var m) ? Snap(Math.Clamp(m, 0, 59), _minuteStep) : _minute;
+
+    private void SetSecond(string? v) =>
+        _second = int.TryParse(v, out var s) ? Math.Clamp(s, 0, 59) : _second;
+
+    private static int Snap(int value, int step) => value - value % step;
 
     // The value the popup would commit, or null when no day is picked. Keeps the value's offset and every tick
-    // below the minute: re-confirming without editing must not move the instant, and only the day, hour and
-    // minute are editable here (TASK-103, TASK-136).
+    // the popup cannot edit - below the minute, or below the second with ShowSeconds: re-confirming without
+    // editing must not move the instant (TASK-103, TASK-136).
     private DateTimeOffset? ComposeValue()
     {
         if (_selectedDate is not { } day) return null;
-        var wall = day.ToDateTime(new TimeOnly(_hour, _minute)).AddTicks((Value?.Ticks ?? 0) % TimeSpan.TicksPerMinute);
+        var ticks = Value?.Ticks ?? 0;
+        var wall = ShowSeconds
+            ? day.ToDateTime(new TimeOnly(_hour, _minute, _second)).AddTicks(ticks % TimeSpan.TicksPerSecond)
+            : day.ToDateTime(new TimeOnly(_hour, _minute)).AddTicks(ticks % TimeSpan.TicksPerMinute);
         return new DateTimeOffset(wall, OffsetFor(wall));
     }
 
     // OK is offered only for a value inside [Min; Max], as for the text input (TASK-101, TASK-125).
-    private bool CanConfirm => ComposeValue() is not { } dt || InRange(dt);
+    private bool CanConfirm => ComposeValue() is not { } dt || IsAllowed(dt);
 
     private async Task Confirm()
     {

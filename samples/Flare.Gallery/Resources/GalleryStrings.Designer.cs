@@ -11680,6 +11680,12 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DtpDemo_BoundsHelper string.</summary>
         public static string DtpDemo_BoundsHelper => ResourceManager.GetString("DtpDemo_BoundsHelper", resourceCulture);
 
+        /// <summary>Looks up the localized DtpDemo_OptionsLabel string.</summary>
+        public static string DtpDemo_OptionsLabel => ResourceManager.GetString("DtpDemo_OptionsLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_OptionsHelper string.</summary>
+        public static string DtpDemo_OptionsHelper => ResourceManager.GetString("DtpDemo_OptionsHelper", resourceCulture);
+
         /// <summary>Looks up the localized DtpDemo_OffsetLabel string.</summary>
         public static string DtpDemo_OffsetLabel => ResourceManager.GetString("DtpDemo_OffsetLabel", resourceCulture);
 

@@ -25,6 +25,9 @@
 - **`FlareClockDial.MinuteSelected`** вызывается, когда минута выбрана окончательно (отпущен указатель или набраны
   цифры), и `FlareTimePicker.AutoClose` теперь завершает выбор и на циферблате, а не только в колонках.
 - **`Css.Classes.TimePicker.PanelDropdown`** - класс панели с колонками.
+- **`FlareDateTimePicker.ShowSeconds`, `HourStep`, `MinuteStep` и `IsDateDisabled`** работают как у
+  `FlareTimePicker` и `FlareDatePicker`: секунды в поле и в панели времени, поля часов и минут с шагом и дни,
+  которые нельзя выбрать, ввести или подтвердить.
 - **Клавиши календаря**: Home/End переносят к началу и концу недели, PageUp/PageDown - на месяц (с Shift - на год)
   в календарях даты, даты-времени и диапазона. `FlareMonthGrid.FocusedDateChanged` сообщает собственному хосту
   день, на котором фактически стоит курсор клавиатуры.
