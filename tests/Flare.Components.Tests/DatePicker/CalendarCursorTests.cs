@@ -24,7 +24,7 @@ public class CalendarCursorTests : FlareTestContext
         var cut = Render<FlareDatePicker>(p => p.Add(x => x.Inline, true).Add(x => x.Culture, Ru)
             .Add(x => x.Value, new DateOnly(2000, 1, 15)));
 
-        cut.FindAll(".flare-datepicker__header button").Last().Click();
+        cut.FindAll($".{Css.Classes.DatePicker.Header} button").Last().Click();
         Assert.Equal(Label(2000, 2, 1), Tabbable(cut));
         cut.Find($".{Css.Classes.Picker.Grid}").KeyDown("ArrowRight");
 
@@ -37,7 +37,7 @@ public class CalendarCursorTests : FlareTestContext
         var cut = Render<FlareDateRangePicker>(p => p.Add(x => x.Mode, DateRangePickerMode.Calendar)
             .Add(x => x.StartDate, new DateOnly(2000, 1, 15)));
 
-        cut.FindAll(".flare-datepicker__header button").Last().Click();
+        cut.FindAll($".{Css.Classes.DatePicker.Header} button").Last().Click();
         cut.Find($".{Css.Classes.Picker.Grid}").KeyDown("ArrowRight");
 
         Assert.Equal(new DateOnly(2000, 2, 2).ToString("D", CultureInfo.CurrentCulture), Tabbable(cut));
@@ -103,7 +103,7 @@ public class CalendarCursorTests : FlareTestContext
         var cut = Render<FlareDatePicker>(p => p.Add(x => x.Inline, true).Add(x => x.Culture, Ru)
             .Add(x => x.Value, new DateOnly(2000, 1, 15)).Add(x => x.ValueChanged, (DateOnly? v) => picked = v));
 
-        cut.FindAll(".flare-datepicker__header button").Last().Click();
+        cut.FindAll($".{Css.Classes.DatePicker.Header} button").Last().Click();
         cut.Find($".{Css.Classes.Picker.Grid}").KeyDown("ArrowRight");
         // Enter is the native click of the focused (tabbable) day button.
         cut.Find($".{Css.Classes.Picker.Day}[tabindex='0']").Click();
