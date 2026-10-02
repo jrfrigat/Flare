@@ -28,6 +28,14 @@ public sealed class ElementJsService : FlareJsModule, IElementJsService
         InvokeVoidAsync("flareField.selectRange", element, start, end);
 
     /// <inheritdoc />
+    public ValueTask<int[]?> GetSelectionAsync(ElementReference element) =>
+        InvokeAsync<int[]?>("flareField.selection", element);
+
+    /// <inheritdoc />
+    public ValueTask SetValueAndCaretAsync(ElementReference element, string value, int start, int end) =>
+        InvokeVoidAsync("flareField.setValueAndCaret", element, value, start, end);
+
+    /// <inheritdoc />
     public ValueTask<ElementBounds> GetBoundsAsync(ElementReference element) =>
         InvokeAsync<ElementBounds>("flareGetBounds", element);
 }

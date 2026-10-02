@@ -31,6 +31,16 @@ public interface IElementJsService
     /// <summary>Focuses <paramref name="element"/> and selects the character range [<paramref name="start"/>, <paramref name="end"/>).</summary>
     ValueTask SelectRangeAsync(ElementReference element, int start, int end);
 
+    /// <summary>The current caret/selection of a text control as <c>[start, end)</c>, or <c>null</c> when the
+    /// element is not a text control. Read before a masked field rewrites its text, so the caret can be put
+    /// back on the segment the user was editing.</summary>
+    ValueTask<int[]?> GetSelectionAsync(ElementReference element);
+
+    /// <summary>Writes <paramref name="value"/> to <paramref name="element"/> when the DOM differs from it and
+    /// puts the caret at <c>[start, end)</c>. Blazor skips the DOM update when the rendered text equals the
+    /// previous text, so a field that rewrites its value on input uses this to keep the DOM in step.</summary>
+    ValueTask SetValueAndCaretAsync(ElementReference element, string value, int start, int end);
+
     /// <summary>Returns the element's viewport rectangle and the current viewport size.</summary>
     ValueTask<ElementBounds> GetBoundsAsync(ElementReference element);
 }

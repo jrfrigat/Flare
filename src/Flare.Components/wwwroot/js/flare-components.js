@@ -30,8 +30,31 @@ export const flareField = {
     blur: function (el) { if (el && el.blur) el.blur(); },
     selectRange: function (el, start, end) {
         if (el && el.setSelectionRange) {
-            try { el.focus(); el.setSelectionRange(start, end); } catch (_) { }
+            try {
+                if (document.activeElement !== el) el.focus();
+                el.setSelectionRange(start, end);
+            } catch (_) { }
         }
+    },
+    // The caret/selection of a text control as [start, end), or null when it is not one. Read before a
+    // masked field rewrites its value so the caret can be restored on the segment being edited.
+    selection: function (el) {
+        if (el && typeof el.selectionStart === 'number') {
+            return [el.selectionStart, el.selectionEnd];
+        }
+        return null;
+    },
+    // Writes value to the control when the DOM differs from it and puts the caret at [start, end). Blazor
+    // skips the DOM write when the rendered text is unchanged, so a masked field that rewrites its value on
+    // input (e.g. deleting a separator) uses this to keep the DOM in step with the component.
+    setValueAndCaret: function (el, value, start, end) {
+        if (!el) return;
+        try {
+            if (el.value !== value) el.value = value;
+            // Do not steal focus: a deferred caller may run after the user left the field.
+            if (document.activeElement !== el) el.focus();
+            if (typeof el.setSelectionRange === 'function') el.setSelectionRange(start, end);
+        } catch (_) { }
     }
 };
 
