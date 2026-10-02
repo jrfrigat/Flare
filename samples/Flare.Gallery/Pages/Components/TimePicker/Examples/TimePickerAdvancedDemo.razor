@@ -1,6 +1,8 @@
+@inherits LocalizedPage
+
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:24rem;">
     <FlareTimePicker @bind-Value="_time"
-                     Label="With seconds (Dropdown), 15-min steps, 09:00-17:00 only"
+                     Label="@GalleryStrings.TpDemo_AdvancedLabel"
                      PopupVariant="TimePickerVariant.Dropdown"
                      ShowSeconds="true"
                      MinuteStep="15"
@@ -8,11 +10,17 @@
                      Max="@(new TimeOnly(17, 0))"
                      AutoClose="true" />
 
+    <FlareTimePicker @bind-Value="_dialTime"
+                     Label="@GalleryStrings.TpDemo_DialAutoCloseLabel"
+                     HelperText="@GalleryStrings.TpDemo_DialAutoCloseHelper"
+                     AutoClose="true" />
+
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
-        Value: @(_time?.ToString("HH:mm:ss") ?? "(none)")
+        @string.Format(GalleryStrings.TpDemo_Value, _time?.ToString("HH:mm:ss") ?? "-")
     </FlareText>
 </FlareStack>
 
 @code {
     private TimeOnly? _time = new(9, 30, 0);
+    private TimeOnly? _dialTime;
 }

@@ -1820,7 +1820,7 @@
     <value>FlareDateTimePicker - совместный выбор даты и времени.</value>
   </data>
   <data name="DateTimePicker_Basic" xml:space="preserve">
-    <value>Формат, min/max и отключение</value>
+    <value>Раскладки</value>
   </data>
   <data name="Progress_Title" xml:space="preserve">
     <value>Прогресс</value>
@@ -3566,5 +3566,113 @@
   </data>
   <data name="Kanban_ReadOnly_Status" xml:space="preserve">
     <value>Только чтение</value>
+  </data>
+  <data name="DateTimePicker_States" xml:space="preserve">
+    <value>Состояния, границы и формы</value>
+  </data>
+  <data name="DtpDemo_AutoLabel" xml:space="preserve">
+    <value>По умолчанию (автоматическая раскладка)</value>
+  </data>
+  <data name="DtpDemo_AutoHelper" xml:space="preserve">
+    <value>На широком экране - две карточки, на узком - вкладки. Введите 01.06.2026 14:30</value>
+  </data>
+  <data name="DtpDemo_Placeholder" xml:space="preserve">
+    <value>Выберите дату и время</value>
+  </data>
+  <data name="DtpDemo_TabsFieldsLabel" xml:space="preserve">
+    <value>Вкладки, время в числовых полях</value>
+  </data>
+  <data name="DtpDemo_TabsDialLabel" xml:space="preserve">
+    <value>Вкладки, время на циферблате</value>
+  </data>
+  <data name="DtpDemo_PanelsDialLabel" xml:space="preserve">
+    <value>Две карточки, циферблат</value>
+  </data>
+  <data name="DtpDemo_PanelsFieldsLabel" xml:space="preserve">
+    <value>Две карточки, числовые поля</value>
+  </data>
+  <data name="DtpDemo_Selected" xml:space="preserve">
+    <value>Выбрано: {0}</value>
+  </data>
+  <data name="DtpDemo_None" xml:space="preserve">
+    <value>нет</value>
+  </data>
+  <data name="DtpDemo_ReadOnlyLabel" xml:space="preserve">
+    <value>Только чтение</value>
+  </data>
+  <data name="DtpDemo_ReadOnlyHelper" xml:space="preserve">
+    <value>Получает фокус и копируется, но не редактируется и не открывается</value>
+  </data>
+  <data name="DtpDemo_DisabledLabel" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="DtpDemo_BoundsLabel" xml:space="preserve">
+    <value>В ближайшие 7 дней</value>
+  </data>
+  <data name="DtpDemo_BoundsHelper" xml:space="preserve">
+    <value>Дни вне Min/Max недоступны; OK не включается для времени вне диапазона</value>
+  </data>
+  <data name="DtpDemo_OffsetLabel" xml:space="preserve">
+    <value>Сохраняет смещение UTC</value>
+  </data>
+  <data name="DtpDemo_OffsetHelper" xml:space="preserve">
+    <value>Значение в +05:00; выбор другого времени сохраняет смещение</value>
+  </data>
+  <data name="DtpDemo_OffsetValue" xml:space="preserve">
+    <value>Значение: {0}</value>
+  </data>
+  <data name="DtpDemo_FormLabel" xml:space="preserve">
+    <value>Встреча (обязательно)</value>
+  </data>
+  <data name="DtpDemo_FormRequired" xml:space="preserve">
+    <value>Выберите дату и время встречи</value>
+  </data>
+  <data name="DtpDemo_Submit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="DtpDemo_Submitted" xml:space="preserve">
+    <value>Отправлено: {0}</value>
+  </data>
+  <data name="TpDemo_DialLabel" xml:space="preserve">
+    <value>Циферблат</value>
+  </data>
+  <data name="TpDemo_DialHelper" xml:space="preserve">
+    <value>Введите 1233 для 12:33 или выберите на циферблате</value>
+  </data>
+  <data name="TpDemo_Dial24Label" xml:space="preserve">
+    <value>Циферблат, 24 часа</value>
+  </data>
+  <data name="TpDemo_Dial24Helper" xml:space="preserve">
+    <value>Два кольца, без AM/PM</value>
+  </data>
+  <data name="TpDemo_DropdownLabel" xml:space="preserve">
+    <value>Колонки</value>
+  </data>
+  <data name="TpDemo_DropdownHelper" xml:space="preserve">
+    <value>Колонки часов и минут, шаг 5 минут</value>
+  </data>
+  <data name="TpDemo_DisabledLabel" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="TpDemo_RequiredLabel" xml:space="preserve">
+    <value>Обязательно</value>
+  </data>
+  <data name="TpDemo_RequiredError" xml:space="preserve">
+    <value>Выберите время</value>
+  </data>
+  <data name="TpDemo_Summary" xml:space="preserve">
+    <value>Циферблат: {0} | Колонки: {1}</value>
+  </data>
+  <data name="TpDemo_AdvancedLabel" xml:space="preserve">
+    <value>Секунды, шаг 15 минут, только 09:00-17:00, закрывается после последнего выбора</value>
+  </data>
+  <data name="TpDemo_DialAutoCloseLabel" xml:space="preserve">
+    <value>Циферблат, который закрывается после выбора минуты</value>
+  </data>
+  <data name="TpDemo_DialAutoCloseHelper" xml:space="preserve">
+    <value>AutoClose: выбор минуты подтверждает время</value>
+  </data>
+  <data name="TpDemo_Value" xml:space="preserve">
+    <value>Значение: {0}</value>
   </data>
 </root>

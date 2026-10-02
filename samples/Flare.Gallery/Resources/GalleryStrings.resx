@@ -1820,7 +1820,7 @@ Read the card, check the tests, and report what is left.</value>
     <value>FlareDateTimePicker - combined date and time selection.</value>
   </data>
   <data name="DateTimePicker_Basic" xml:space="preserve">
-    <value>Format, min/max &amp; disabled</value>
+    <value>Layouts</value>
   </data>
   <data name="Progress_Title" xml:space="preserve">
     <value>Progress</value>
@@ -3566,5 +3566,113 @@ Read the card, check the tests, and report what is left.</value>
   </data>
   <data name="Kanban_ReadOnly_Status" xml:space="preserve">
     <value>Read only</value>
+  </data>
+  <data name="DateTimePicker_States" xml:space="preserve">
+    <value>States, bounds and forms</value>
+  </data>
+  <data name="DtpDemo_AutoLabel" xml:space="preserve">
+    <value>Default (automatic layout)</value>
+  </data>
+  <data name="DtpDemo_AutoHelper" xml:space="preserve">
+    <value>Two cards on a wide screen, tabs on a narrow one. Type 01.06.2026 14:30</value>
+  </data>
+  <data name="DtpDemo_Placeholder" xml:space="preserve">
+    <value>Select date and time</value>
+  </data>
+  <data name="DtpDemo_TabsFieldsLabel" xml:space="preserve">
+    <value>Tabs, time in number fields</value>
+  </data>
+  <data name="DtpDemo_TabsDialLabel" xml:space="preserve">
+    <value>Tabs, time on the clock dial</value>
+  </data>
+  <data name="DtpDemo_PanelsDialLabel" xml:space="preserve">
+    <value>Two cards, clock dial</value>
+  </data>
+  <data name="DtpDemo_PanelsFieldsLabel" xml:space="preserve">
+    <value>Two cards, number fields</value>
+  </data>
+  <data name="DtpDemo_Selected" xml:space="preserve">
+    <value>Selected: {0}</value>
+  </data>
+  <data name="DtpDemo_None" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="DtpDemo_ReadOnlyLabel" xml:space="preserve">
+    <value>Read-only</value>
+  </data>
+  <data name="DtpDemo_ReadOnlyHelper" xml:space="preserve">
+    <value>Can be focused and copied, but not edited or opened</value>
+  </data>
+  <data name="DtpDemo_DisabledLabel" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="DtpDemo_BoundsLabel" xml:space="preserve">
+    <value>Within the next 7 days</value>
+  </data>
+  <data name="DtpDemo_BoundsHelper" xml:space="preserve">
+    <value>Days outside Min/Max are off; OK stays off for a time outside the range</value>
+  </data>
+  <data name="DtpDemo_OffsetLabel" xml:space="preserve">
+    <value>Keeps its UTC offset</value>
+  </data>
+  <data name="DtpDemo_OffsetHelper" xml:space="preserve">
+    <value>The value is in +05:00; picking another time keeps the offset</value>
+  </data>
+  <data name="DtpDemo_OffsetValue" xml:space="preserve">
+    <value>Value: {0}</value>
+  </data>
+  <data name="DtpDemo_FormLabel" xml:space="preserve">
+    <value>Meeting (required)</value>
+  </data>
+  <data name="DtpDemo_FormRequired" xml:space="preserve">
+    <value>Pick the meeting date and time</value>
+  </data>
+  <data name="DtpDemo_Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="DtpDemo_Submitted" xml:space="preserve">
+    <value>Submitted: {0}</value>
+  </data>
+  <data name="TpDemo_DialLabel" xml:space="preserve">
+    <value>Clock dial</value>
+  </data>
+  <data name="TpDemo_DialHelper" xml:space="preserve">
+    <value>Type 1233 for 12:33, or pick on the clock</value>
+  </data>
+  <data name="TpDemo_Dial24Label" xml:space="preserve">
+    <value>Clock dial, 24-hour</value>
+  </data>
+  <data name="TpDemo_Dial24Helper" xml:space="preserve">
+    <value>Two rings, no AM/PM</value>
+  </data>
+  <data name="TpDemo_DropdownLabel" xml:space="preserve">
+    <value>Columns</value>
+  </data>
+  <data name="TpDemo_DropdownHelper" xml:space="preserve">
+    <value>Hour and minute columns, 5-minute steps</value>
+  </data>
+  <data name="TpDemo_DisabledLabel" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="TpDemo_RequiredLabel" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="TpDemo_RequiredError" xml:space="preserve">
+    <value>Pick a time</value>
+  </data>
+  <data name="TpDemo_Summary" xml:space="preserve">
+    <value>Dial: {0} | Columns: {1}</value>
+  </data>
+  <data name="TpDemo_AdvancedLabel" xml:space="preserve">
+    <value>Seconds, 15-minute steps, 09:00-17:00 only, closes on the last pick</value>
+  </data>
+  <data name="TpDemo_DialAutoCloseLabel" xml:space="preserve">
+    <value>Clock dial that closes after the minute</value>
+  </data>
+  <data name="TpDemo_DialAutoCloseHelper" xml:space="preserve">
+    <value>AutoClose: picking the minute confirms the time</value>
+  </data>
+  <data name="TpDemo_Value" xml:space="preserve">
+    <value>Value: {0}</value>
   </data>
 </root>

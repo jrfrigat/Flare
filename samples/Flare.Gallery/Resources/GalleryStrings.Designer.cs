@@ -11635,5 +11635,113 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized Kanban read-only status.</summary>
         public static string Kanban_ReadOnly_Status => ResourceManager.GetString("Kanban_ReadOnly_Status", resourceCulture);
         
+        /// <summary>Looks up the localized DateTimePicker_States string.</summary>
+        public static string DateTimePicker_States => ResourceManager.GetString("DateTimePicker_States", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_AutoLabel string.</summary>
+        public static string DtpDemo_AutoLabel => ResourceManager.GetString("DtpDemo_AutoLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_AutoHelper string.</summary>
+        public static string DtpDemo_AutoHelper => ResourceManager.GetString("DtpDemo_AutoHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_Placeholder string.</summary>
+        public static string DtpDemo_Placeholder => ResourceManager.GetString("DtpDemo_Placeholder", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_TabsFieldsLabel string.</summary>
+        public static string DtpDemo_TabsFieldsLabel => ResourceManager.GetString("DtpDemo_TabsFieldsLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_TabsDialLabel string.</summary>
+        public static string DtpDemo_TabsDialLabel => ResourceManager.GetString("DtpDemo_TabsDialLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_PanelsDialLabel string.</summary>
+        public static string DtpDemo_PanelsDialLabel => ResourceManager.GetString("DtpDemo_PanelsDialLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_PanelsFieldsLabel string.</summary>
+        public static string DtpDemo_PanelsFieldsLabel => ResourceManager.GetString("DtpDemo_PanelsFieldsLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_Selected string.</summary>
+        public static string DtpDemo_Selected => ResourceManager.GetString("DtpDemo_Selected", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_None string.</summary>
+        public static string DtpDemo_None => ResourceManager.GetString("DtpDemo_None", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_ReadOnlyLabel string.</summary>
+        public static string DtpDemo_ReadOnlyLabel => ResourceManager.GetString("DtpDemo_ReadOnlyLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_ReadOnlyHelper string.</summary>
+        public static string DtpDemo_ReadOnlyHelper => ResourceManager.GetString("DtpDemo_ReadOnlyHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_DisabledLabel string.</summary>
+        public static string DtpDemo_DisabledLabel => ResourceManager.GetString("DtpDemo_DisabledLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_BoundsLabel string.</summary>
+        public static string DtpDemo_BoundsLabel => ResourceManager.GetString("DtpDemo_BoundsLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_BoundsHelper string.</summary>
+        public static string DtpDemo_BoundsHelper => ResourceManager.GetString("DtpDemo_BoundsHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_OffsetLabel string.</summary>
+        public static string DtpDemo_OffsetLabel => ResourceManager.GetString("DtpDemo_OffsetLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_OffsetHelper string.</summary>
+        public static string DtpDemo_OffsetHelper => ResourceManager.GetString("DtpDemo_OffsetHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_OffsetValue string.</summary>
+        public static string DtpDemo_OffsetValue => ResourceManager.GetString("DtpDemo_OffsetValue", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_FormLabel string.</summary>
+        public static string DtpDemo_FormLabel => ResourceManager.GetString("DtpDemo_FormLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_FormRequired string.</summary>
+        public static string DtpDemo_FormRequired => ResourceManager.GetString("DtpDemo_FormRequired", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_Submit string.</summary>
+        public static string DtpDemo_Submit => ResourceManager.GetString("DtpDemo_Submit", resourceCulture);
+
+        /// <summary>Looks up the localized DtpDemo_Submitted string.</summary>
+        public static string DtpDemo_Submitted => ResourceManager.GetString("DtpDemo_Submitted", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DialLabel string.</summary>
+        public static string TpDemo_DialLabel => ResourceManager.GetString("TpDemo_DialLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DialHelper string.</summary>
+        public static string TpDemo_DialHelper => ResourceManager.GetString("TpDemo_DialHelper", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_Dial24Label string.</summary>
+        public static string TpDemo_Dial24Label => ResourceManager.GetString("TpDemo_Dial24Label", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_Dial24Helper string.</summary>
+        public static string TpDemo_Dial24Helper => ResourceManager.GetString("TpDemo_Dial24Helper", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DropdownLabel string.</summary>
+        public static string TpDemo_DropdownLabel => ResourceManager.GetString("TpDemo_DropdownLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DropdownHelper string.</summary>
+        public static string TpDemo_DropdownHelper => ResourceManager.GetString("TpDemo_DropdownHelper", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DisabledLabel string.</summary>
+        public static string TpDemo_DisabledLabel => ResourceManager.GetString("TpDemo_DisabledLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_RequiredLabel string.</summary>
+        public static string TpDemo_RequiredLabel => ResourceManager.GetString("TpDemo_RequiredLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_RequiredError string.</summary>
+        public static string TpDemo_RequiredError => ResourceManager.GetString("TpDemo_RequiredError", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_Summary string.</summary>
+        public static string TpDemo_Summary => ResourceManager.GetString("TpDemo_Summary", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_AdvancedLabel string.</summary>
+        public static string TpDemo_AdvancedLabel => ResourceManager.GetString("TpDemo_AdvancedLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DialAutoCloseLabel string.</summary>
+        public static string TpDemo_DialAutoCloseLabel => ResourceManager.GetString("TpDemo_DialAutoCloseLabel", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_DialAutoCloseHelper string.</summary>
+        public static string TpDemo_DialAutoCloseHelper => ResourceManager.GetString("TpDemo_DialAutoCloseHelper", resourceCulture);
+
+        /// <summary>Looks up the localized TpDemo_Value string.</summary>
+        public static string TpDemo_Value => ResourceManager.GetString("TpDemo_Value", resourceCulture);
+
     }
 }

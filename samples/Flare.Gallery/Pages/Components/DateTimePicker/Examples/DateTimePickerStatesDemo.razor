@@ -1,0 +1,56 @@
+@inherits LocalizedPage
+@using System.ComponentModel.DataAnnotations
+@using Flare.Gallery.Resources
+
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:24rem;">
+    <FlareDateTimePicker @bind-Value="_readOnly" Label="@GalleryStrings.DtpDemo_ReadOnlyLabel"
+                         HelperText="@GalleryStrings.DtpDemo_ReadOnlyHelper" ReadOnly="true" />
+
+    <FlareDateTimePicker Value="_readOnly" Label="@GalleryStrings.DtpDemo_DisabledLabel" Disabled="true" />
+
+    <FlareDateTimePicker @bind-Value="_bounded" Label="@GalleryStrings.DtpDemo_BoundsLabel"
+                         Min="_min" Max="_max"
+                         HelperText="@GalleryStrings.DtpDemo_BoundsHelper" />
+
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareDateTimePicker @bind-Value="_offset" Label="@GalleryStrings.DtpDemo_OffsetLabel"
+                             HelperText="@GalleryStrings.DtpDemo_OffsetHelper" />
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+            @string.Format(GalleryStrings.DtpDemo_OffsetValue, _offset?.ToString("yyyy-MM-dd HH:mm zzz") ?? GalleryStrings.DtpDemo_None)
+        </FlareText>
+    </FlareStack>
+
+    <EditForm Model="_model" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareDateTimePicker @bind-Value="_model.Meeting" For="@(() => _model.Meeting)"
+                                 Label="@GalleryStrings.DtpDemo_FormLabel" Required="true" />
+            <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                <FlareButton Type="ButtonType.Submit">@GalleryStrings.DtpDemo_Submit</FlareButton>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+                    @string.Format(GalleryStrings.DtpDemo_Submitted, _submitted?.ToString("g") ?? GalleryStrings.DtpDemo_None)
+                </FlareText>
+            </FlareStack>
+        </FlareStack>
+    </EditForm>
+</FlareStack>
+
+@code {
+    private static readonly TimeSpan Plus5 = TimeSpan.FromHours(5);
+
+    private DateTimeOffset? _readOnly = new DateTimeOffset(DateTime.Today.AddHours(10));
+    private DateTimeOffset? _bounded;
+    private readonly DateTimeOffset _min = DateTimeOffset.Now;
+    private readonly DateTimeOffset _max = DateTimeOffset.Now.AddDays(7);
+    private DateTimeOffset? _offset = new DateTimeOffset(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 9, 30, 0, Plus5);
+    private readonly MeetingModel _model = new();
+    private DateTimeOffset? _submitted;
+
+    private void Submit() => _submitted = _model.Meeting;
+
+    private sealed class MeetingModel
+    {
+        [Required(ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.DtpDemo_FormRequired))]
+        public DateTimeOffset? Meeting { get; set; }
+    }
+}
