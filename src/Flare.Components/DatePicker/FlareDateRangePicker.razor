@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
 @inject TimeProvider TimeProvider
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
@@ -77,6 +78,8 @@
                             AriaLabel="@HeaderLabel"
                             Selected="@(d => d == StartDate || d == EndDate)"
                             Disabled="@(d => Disabled || IsDayDisabled(d))"
+                            FocusedDate="@FocusedCursor"
+                            OnKeyDown="HandleGridKeyDown"
                             DayClass="RangeDayClass"
                             OnDayClick="PickDayAsync"
                             OnDayHover="@(d => { _hover = d; })" />
@@ -150,6 +153,11 @@
     private int _viewMonth;
     private DateOnly? _hover;
     private DateOnly? _pendingStart;
+    // The keyboard cursor (roving focus); starts from the range and moves with the arrow keys (TASK-128).
+    private DateOnly? _focusedDate;
+    private DateOnly FocusedCursor => _focusedDate ?? _pendingStart ?? StartDate ?? Today;
+    // The range the visible month was last anchored to, so a re-render does not undo month navigation.
+    private (DateOnly?, DateOnly?)? _anchoredRange;
 
     // Effective bounds for the inner pickers so they can never produce start > end.
     private DateOnly? StartFieldMax => Earlier(EndDate, Max);
@@ -177,9 +185,11 @@
 
     protected override void OnParametersSet()
     {
-        // Anchor the visible month to the range (or today) while not actively picking the end.
-        if (_pendingStart is null)
+        // Anchor the visible month to the range (or today) when the range changes, while not actively
+        // picking the end; a plain re-render keeps the month the user navigated to.
+        if (_pendingStart is null && _anchoredRange != (StartDate, EndDate))
         {
+            _anchoredRange = (StartDate, EndDate);
             var anchor = StartDate ?? EndDate ?? Today;
             _viewYear = anchor.Year;
             _viewMonth = anchor.Month;
@@ -241,6 +251,41 @@
             _hover = null;
             await SetStartAsync(lo);
             await SetEndAsync(hi);
+        }
+    }
+
+    // Arrow keys move the cursor over available days, crossing months as needed; while the end is being
+    // picked the preview follows the cursor as it follows the pointer. Enter/Space are left to the native
+    // click of the focused day button, which the grid keeps on the cursor (TASK-124, TASK-128).
+    private void HandleGridKeyDown(KeyboardEventArgs e)
+    {
+        if (Disabled) return;
+        var step = e.Key switch
+        {
+            "ArrowRight" => 1,
+            "ArrowLeft"  => -1,
+            "ArrowDown"  => 7,
+            "ArrowUp"    => -7,
+            _ => 0
+        };
+        if (step == 0) return;
+
+        DateOnly? next = null;
+        var candidate = FocusedCursor;
+        for (var i = 0; i < 400; i++)
+        {
+            try { candidate = candidate.AddDays(step); }
+            catch (ArgumentOutOfRangeException) { break; }
+            if (!IsDayDisabled(candidate)) { next = candidate; break; }
+        }
+        if (next is not { } day) return;
+
+        _focusedDate = day;
+        if (_pendingStart is not null) _hover = day;
+        if (day.Year != _viewYear || day.Month != _viewMonth)
+        {
+            _viewYear = day.Year;
+            _viewMonth = day.Month;
         }
     }
 
