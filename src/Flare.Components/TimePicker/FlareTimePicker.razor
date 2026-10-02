@@ -268,19 +268,18 @@
     {
         _text = MaskTime(e.Value?.ToString());
         if (string.IsNullOrEmpty(_text)) { await Commit(null); return; }
-        if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t) ||
-            TimeOnly.TryParse(_text, CultureInfo.CurrentUICulture, DateTimeStyles.None, out t))
+        // The text is already on the HH:mm[:ss] skeleton, so a complete time parses exactly; a lenient parse
+        // would only ever accept a half-edit ("12:3" as 12:03, TASK-126). Incomplete, unparsable or
+        // out-of-range text is not committed and the field snaps back to the current value (TASK-102).
+        if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t)
+            && TimeInRange(t))
         {
-            // Out-of-range text is not committed; the field snaps back to the current value (TASK-102).
-            if (TimeInRange(t))
-            {
-                _text = t.ToString(_timeFormat);
-                await Commit(t);
-            }
-            else
-            {
-                _text = Value?.ToString(_timeFormat) ?? string.Empty;
-            }
+            _text = t.ToString(_timeFormat);
+            await Commit(t);
+        }
+        else
+        {
+            _text = Value?.ToString(_timeFormat) ?? string.Empty;
         }
     }
 

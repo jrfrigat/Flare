@@ -290,7 +290,12 @@
     {
         if (DateTimeOffset.TryParseExact(s, _numericPattern, _culture, DateTimeStyles.None, out value)) return true;
         if (DateTimeOffset.TryParseExact(s, _format, _culture, DateTimeStyles.None, out value)) return true;
-        return DateTimeOffset.TryParse(s, _culture, DateTimeStyles.None, out value);
+        // A half-edited mask ("15.10.2026 12:3") must never fall through to the lenient parser and be
+        // committed as a different time (TASK-126, as TASK-119 for the date): only a complete one may use it.
+        if (s.Count(char.IsDigit) == _numericPattern.Count(char.IsLetter)
+            && DateTimeOffset.TryParse(s, _culture, DateTimeStyles.None, out value)) return true;
+        value = default;
+        return false;
     }
 
     private void HandleFocus()
