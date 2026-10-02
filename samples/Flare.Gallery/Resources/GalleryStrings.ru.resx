@@ -3642,6 +3642,24 @@
   <data name="DrpDemo_FormHelper" xml:space="preserve">
     <value>От 2 до 14 дней; календарь выключает концы вне этих границ</value>
   </data>
+  <data name="DatePicker_Extending" xml:space="preserve">
+    <value>Содержимое дня и свой разбор</value>
+  </data>
+  <data name="DpDemo_EventsLabel" xml:space="preserve">
+    <value>Дни с событиями отмечены</value>
+  </data>
+  <data name="DpDemo_ParseLabel" xml:space="preserve">
+    <value>Введите сегодня, завтра или +3</value>
+  </data>
+  <data name="DpDemo_ParseHelper" xml:space="preserve">
+    <value>ParseInput читает свободный текст; прочее сохраняет значение</value>
+  </data>
+  <data name="DpDemo_WordToday" xml:space="preserve">
+    <value>сегодня</value>
+  </data>
+  <data name="DpDemo_WordTomorrow" xml:space="preserve">
+    <value>завтра</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Сохраняет смещение UTC</value>
   </data>

@@ -17,6 +17,7 @@
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture. |
 | `DateFormat` | `string?` | `` | Parameter |  | Display/parse format. Null (default) uses the culture short date pattern; can be a long format like "dd MMMM yyyy". |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays or highlight days). |
+| `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number. |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week when set (null = use the culture's, e.g. for a Monday-first calendar regardless of locale). |
 | `For` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | — |
 | `HasError` | `bool` | `false` | Parameter |  | Forces the error visual state without an error message (e.g. driven by external validation). |
@@ -26,6 +27,7 @@
 | `Min` | `DateOnly?` | `` | Parameter |  | — |
 | `OpenTo` | `PickerOpenTo` | `PickerOpenTo.Day` | Parameter |  | The calendar view the picker opens to (Day/Month/Year). Year is handy for far-back dates like a date of birth. |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the calendar popup opens. |
+| `ParseInput` | `Func<string, DateOnly?>?` | `` | Parameter |  | Reads typed text instead of the built-in parser: return the date, or null when the text is not one (the value is kept and the field shows it again). With a parser the field takes free text - no digit mask - and judges it on change (blur or Enter). |
 | `ShowClearButton` | `bool` | `true` | Parameter |  | — |
 | `ShowTodayButton` | `bool` | `true` | Parameter |  | — |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |

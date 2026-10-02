@@ -13,6 +13,7 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the grid (usually the displayed month and year). |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture. |
 | `DayClass` | `Func<DateOnly, string>?` | `` | Parameter |  | Extra CSS class(es) per day for component-specific selection or range-highlight decoration. |
+| `DayContent` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content rendered inside a day button instead of the day number. The grid keeps the button, its full-date label, roving focus, disabled state and selection. |
 | `Disabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate disabling a day (sets the disabled attribute and the disabled day class). |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week when set (null = use the culture's). |
 | `FocusedDate` | `DateOnly?` | `` | Parameter |  | The keyboard cursor: the day that carries the single tabindex="0" (roving focus) and receives focus when a key press moves it. A cursor outside the displayed month or on a disabled day falls back to Today, then to the first available day of the month. |

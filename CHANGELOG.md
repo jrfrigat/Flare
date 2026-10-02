@@ -34,6 +34,9 @@ All notable changes to Flare are documented here. This project adheres to
 - **`FlareDateRangePicker.MinDays`, `MaxDays` and `AllowDisabledDatesInRange`** limit the length of a picked
   range (both ends counted) and, when disabled days may not lie inside, stop it at the first one. The calendar,
   the fields and the presets follow the same rules; a value bound from outside is shown as it is.
+- **`DayTemplate`** on `FlareDatePicker`, `FlareDateTimePicker` and `FlareDateRangePicker` fills a day cell (an
+  event mark, a price) while the picker keeps the cell's button, full-date label, focus and selection; and
+  **`ParseInput`** on `FlareDatePicker` and `FlareDateTimePicker` reads typed free text with your own parser.
 - **Calendar keys**: Home/End move to the start/end of the week and PageUp/PageDown by a month (with Shift by a
   year) in the date, date-time and range calendars. `FlareMonthGrid.FocusedDateChanged` reports the day the
   keyboard cursor actually sits on to a custom host.

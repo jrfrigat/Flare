@@ -1,0 +1,39 @@
+@inherits LocalizedPage
+@using Flare.Gallery.Resources
+
+@* DayTemplate fills the day cell (here: a mark under days with events) while the picker keeps the cell's
+   button, full-date label, focus and selection. ParseInput replaces the built-in parser: the field takes
+   free text and reads it on change; a null result keeps the value. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:22rem;">
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.DpDemo_EventsLabel</FlareText>
+        <FlareDatePicker @bind-Value="_day" Inline="true" DayTemplate="DayWithEvent" />
+    </FlareStack>
+
+    <FlareDatePicker @bind-Value="_typed" Label="@GalleryStrings.DpDemo_ParseLabel"
+                     HelperText="@GalleryStrings.DpDemo_ParseHelper" ParseInput="ParseWords" />
+</FlareStack>
+
+@code {
+    private static DateOnly Today => DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? _day = Today;
+    private DateOnly? _typed;
+    private readonly HashSet<DateOnly> _events = [Today.AddDays(2), Today.AddDays(5), Today.AddDays(9)];
+
+    private RenderFragment DayWithEvent(DateOnly day) => @<FlareStack Gap="FlareSpacing.None" Align="FlareAlignItems.Center">
+        <span>@day.Day</span>
+        @if (_events.Contains(day))
+        {
+            <FlareText Color="FlareColor.Primary" Typo="TypographyScale.LabelSmall">&#8226;</FlareText>
+        }
+    </FlareStack>;
+
+    private static DateOnly? ParseWords(string text)
+    {
+        var s = text.Trim().ToLowerInvariant();
+        if (s == GalleryStrings.DpDemo_WordToday) return Today;
+        if (s == GalleryStrings.DpDemo_WordTomorrow) return Today.AddDays(1);
+        if (s.StartsWith('+') && int.TryParse(s[1..], out var days) && days is >= 0 and < 3650) return Today.AddDays(days);
+        return DateOnly.TryParse(text, out var d) ? d : null;
+    }
+}

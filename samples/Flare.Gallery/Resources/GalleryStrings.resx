@@ -3642,6 +3642,24 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DrpDemo_FormHelper" xml:space="preserve">
     <value>From 2 to 14 days; the calendar turns off ends outside that</value>
   </data>
+  <data name="DatePicker_Extending" xml:space="preserve">
+    <value>Day content and your own parser</value>
+  </data>
+  <data name="DpDemo_EventsLabel" xml:space="preserve">
+    <value>Days with events are marked</value>
+  </data>
+  <data name="DpDemo_ParseLabel" xml:space="preserve">
+    <value>Type today, tomorrow or +3</value>
+  </data>
+  <data name="DpDemo_ParseHelper" xml:space="preserve">
+    <value>ParseInput reads free text; anything else keeps the value</value>
+  </data>
+  <data name="DpDemo_WordToday" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="DpDemo_WordTomorrow" xml:space="preserve">
+    <value>tomorrow</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Keeps its UTC offset</value>
   </data>

@@ -45,6 +45,7 @@
                              ShowWeekNumbers="@ShowWeekNumbers"
                              FirstDayOfWeek="@FirstDayOfWeek"
                              DayClassFunc="@DayClassFunc"
+                             DayTemplate="@DayTemplate"
                              IsDateDisabled="@IsDateDisabled" />
             <FlareIconView Value="FlareIcons.ArrowForward" Class="@Css.Classes.Daterangepicker.Sep" />
             <FlareDatePicker Value="@EndDate"
@@ -62,6 +63,7 @@
                              ShowWeekNumbers="@ShowWeekNumbers"
                              FirstDayOfWeek="@FirstDayOfWeek"
                              DayClassFunc="@DayClassFunc"
+                             DayTemplate="@DayTemplate"
                              IsDateDisabled="@IsDateDisabled" />
         </div>
     }
@@ -90,6 +92,7 @@
                             FocusedDateChanged="@(d => _focusedDate = d)"
                             OnKeyDown="HandleGridKeyDown"
                             DayClass="RangeDayClass"
+                            DayContent="DayTemplate"
                             OnDayClick="PickDayAsync"
                             OnDayHover="@(d => { _hover = d; })" />
         </div>
@@ -177,6 +180,9 @@
     [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
     /// <summary>Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight.</summary>
     [Parameter] public Func<DateOnly, string>? DayClassFunc { get; set; }
+    /// <summary>Content of a day cell in the calendar and in the fields' calendars. The picker keeps the cell
+    /// itself - button, full-date label, focus, disabled state and range highlight. Null shows the day number.</summary>
+    [Parameter] public RenderFragment<DateOnly>? DayTemplate { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 

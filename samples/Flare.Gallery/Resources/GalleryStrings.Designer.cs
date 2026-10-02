@@ -11710,6 +11710,24 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DrpDemo_FormHelper string.</summary>
         public static string DrpDemo_FormHelper => ResourceManager.GetString("DrpDemo_FormHelper", resourceCulture);
 
+        /// <summary>Looks up the localized DatePicker_Extending string.</summary>
+        public static string DatePicker_Extending => ResourceManager.GetString("DatePicker_Extending", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_EventsLabel string.</summary>
+        public static string DpDemo_EventsLabel => ResourceManager.GetString("DpDemo_EventsLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_ParseLabel string.</summary>
+        public static string DpDemo_ParseLabel => ResourceManager.GetString("DpDemo_ParseLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_ParseHelper string.</summary>
+        public static string DpDemo_ParseHelper => ResourceManager.GetString("DpDemo_ParseHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_WordToday string.</summary>
+        public static string DpDemo_WordToday => ResourceManager.GetString("DpDemo_WordToday", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_WordTomorrow string.</summary>
+        public static string DpDemo_WordTomorrow => ResourceManager.GetString("DpDemo_WordTomorrow", resourceCulture);
+
         /// <summary>Looks up the localized DtpDemo_OffsetLabel string.</summary>
         public static string DtpDemo_OffsetLabel => ResourceManager.GetString("DtpDemo_OffsetLabel", resourceCulture);
 
