@@ -56,7 +56,8 @@
         }
         @if (_open || Inline)
         {
-        <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel" @ref="_panelEl">
+        <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
+             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@HeaderLabel" @ref="_panelEl">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(!CanPrev)">
@@ -81,6 +82,7 @@
                                 AriaLabel="@HeaderLabel"
                                 Selected="@(d => d == Value)"
                                 Disabled="IsDayUnavailable"
+                                FocusedDate="@FocusedCursor"
                                 DayClass="ComposeDayClass"
                                 OnDayClick="SelectDay"
                                 OnKeyDown="HandleGridKeyDown" />
@@ -312,6 +314,10 @@
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
+    // The cell the keyboard cursor sits on (roving focus); starts from the value (or today) and moves
+    // with the arrow keys, independently of Value (TASK-106).
+    private DateOnly? _focusedDate;
+    private DateOnly FocusedCursor => _focusedDate ?? Value ?? Today;
 
     // Fixed-position the calendar under the field on open (and clean up on close) so it escapes a
     // Card's overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
@@ -542,12 +548,15 @@
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
         if (Disabled || ReadOnly) return;
-        var current = Value ?? Today;
+
+        if (e.Key == "Escape") { await ClosePopupAsync(); return; }
+
+        // Movement is relative to the focused cell, not the value (TASK-106).
+        var current = FocusedCursor;
 
         if (e.Key is "Enter" or " ")
         {
-            if (!IsDisabled(current))
-                await SelectDay(current);
+            if (!IsDisabled(current)) { _focusedDate = current; await SelectDay(current); }
             return;
         }
 
@@ -567,10 +576,13 @@
         var candidate = current;
         for (var i = 0; i < 400; i++)
         {
-            candidate = candidate.AddDays(step);
+            try { candidate = candidate.AddDays(step); }
+            catch (ArgumentOutOfRangeException) { break; }
             if (!IsDisabled(candidate)) { next = candidate; break; }
         }
         if (next is null) return;
+
+        _focusedDate = next.Value;
 
         // Navigate the visible month if the cursor crossed a boundary.
         if (next.Value.Year != _viewYear || next.Value.Month != _viewMonth)
@@ -581,6 +593,14 @@
 
         await ValueChanged.InvokeAsync(next.Value);
         NotifyFieldChanged();
+    }
+
+    // Escape closes the popup and puts focus back on the trigger field (TASK-106).
+    private async Task ClosePopupAsync()
+    {
+        if (!_open) return;
+        await SetOpenAsync(false);
+        try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
     }
 
 }

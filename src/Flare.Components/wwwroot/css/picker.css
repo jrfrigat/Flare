@@ -59,6 +59,9 @@
 .flare-picker__grid--weeks {
     grid-template-columns: auto repeat(7, minmax(0, 1fr));
 }
+/* The role="row" wrapper of one week. display:contents keeps the wrapper out of the grid layout, so the
+   seven day cells still sit directly in the grid's columns. */
+.flare-picker__row { display: contents; }
 .flare-picker__weeknum {
     display: flex;
     align-items: center;

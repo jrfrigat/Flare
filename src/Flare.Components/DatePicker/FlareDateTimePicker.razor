@@ -3,6 +3,7 @@
 @implements IFlareField<DateTimeOffset?>
 @using System.Globalization
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Web
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject IBrowserViewportService Viewport
@@ -51,7 +52,8 @@
         @if (_open)
         {
         <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
-        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" @ref="_panelEl">
+        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)"
+             role="dialog" aria-modal="true" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl">
             @if (_panels)
             {
                 <div class="@Css.Classes.DateTimePicker.Panes">
@@ -207,6 +209,8 @@
                         AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
                         Selected="@(d => d == _selectedDate)"
                         Disabled="IsDayDisabled"
+                        FocusedDate="@(_selectedDate ?? _viewDate)"
+                        OnKeyDown="HandleGridKeyDown"
                         DayClass="ComposeDayClass"
                         OnDayClick="SelectDate" />
     </text>;
@@ -393,6 +397,41 @@
         if (IsDayDisabled(d)) return;
         _selectedDate = d;
         _activeTab = 1;
+    }
+
+    // Keyboard navigation inside the date pane: movement is relative to the selected/visible day and
+    // Enter selects; Escape closes the popup (TASK-106).
+    private async Task HandleGridKeyDown(KeyboardEventArgs e)
+    {
+        if (Disabled || ReadOnly) return;
+
+        if (e.Key == "Escape") { await CloseAsync(); return; }
+
+        var current = _selectedDate ?? _viewDate;
+
+        if (e.Key is "Enter" or " ")
+        {
+            SelectDate(current);
+            return;
+        }
+
+        var step = e.Key switch
+        {
+            "ArrowRight" => 1,
+            "ArrowLeft"  => -1,
+            "ArrowDown"  => 7,
+            "ArrowUp"    => -7,
+            _ => 0
+        };
+        if (step == 0) return;
+
+        DateOnly next;
+        try { next = current.AddDays(step); }
+        catch (ArgumentOutOfRangeException) { return; }
+
+        _selectedDate = next;
+        if (next.Year != _viewDate.Year || next.Month != _viewDate.Month)
+            _viewDate = next;
     }
 
     private void SetHour(string? v) =>

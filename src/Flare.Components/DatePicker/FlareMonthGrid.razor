@@ -21,30 +21,34 @@
      @onkeydown="OnKeyDown" @onkeydown:stopPropagation>
     @foreach (var week in _weeks)
     {
-        @if (ShowWeekNumbers)
-        {
-            <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
-                  aria-label="@string.Format(FlareStrings.Picker_WeekNumber, CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek))">
-                @CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek)
-            </span>
-        }
-        @foreach (var date in week)
-        {
-            var day = date;
-            var outside = day.Month != ViewMonth;
-            var disabled = Disabled?.Invoke(day) ?? false;
-            <button type="button"
-                    role="gridcell"
-                    aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
-                    aria-current="@(day == Today ? "date" : null)"
-                    class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
-                    disabled="@disabled"
-                    @onclick="@(() => OnDayClick.InvokeAsync(day))"
-                    @onclick:stopPropagation
-                    @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
-                @day.Day
-            </button>
-        }
+        <div class="@Css.Classes.Picker.Row" role="row">
+            @if (ShowWeekNumbers)
+            {
+                <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
+                      aria-label="@string.Format(FlareStrings.Picker_WeekNumber, CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek))">
+                    @CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek)
+                </span>
+            }
+            @foreach (var date in week)
+            {
+                var day = date;
+                var outside = day.Month != ViewMonth;
+                var disabled = Disabled?.Invoke(day) ?? false;
+                <button type="button"
+                        role="gridcell"
+                        tabindex="@(day == TabTarget ? "0" : "-1")"
+                        aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
+                        aria-current="@(day == Today ? "date" : null)"
+                        aria-label="@day.ToString("D", _culture)"
+                        class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
+                        disabled="@disabled"
+                        @onclick="@(() => OnDayClick.InvokeAsync(day))"
+                        @onclick:stopPropagation
+                        @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
+                    @day.Day
+                </button>
+            }
+        </div>
     }
 </div>
 
@@ -75,9 +79,13 @@
     [Parameter] public EventCallback<DateOnly> OnDayHover { get; set; }
     /// <summary>Raised on keydown over the grid, so the host can own roving keyboard navigation.</summary>
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+    /// <summary>The day that carries the single <c>tabindex="0"</c> (roving focus); defaults to <see cref="Today"/>.</summary>
+    [Parameter] public DateOnly? FocusedDate { get; set; }
 
     private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
+    // Roving tabindex: exactly one cell is reachable by Tab.
+    private DateOnly TabTarget => FocusedDate ?? Today;
     // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row).
     private DateOnly[][] _weeks => CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
 }

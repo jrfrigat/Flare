@@ -35,4 +35,7 @@ public static class Picker
     public const string DayHeadersWeeks = "flare-picker__day-headers--weeks";
     /// <summary>The <c>flare-picker__weeknum</c> CSS class: a week-of-year number cell in the leading column.</summary>
     public const string WeekNum = "flare-picker__weeknum";
+    /// <summary>The <c>flare-picker__row</c> CSS class: the <c>role="row"</c> wrapper of one grid week
+    /// (layout-neutral, so the seven day columns still line up).</summary>
+    public const string Row = "flare-picker__row";
 }
