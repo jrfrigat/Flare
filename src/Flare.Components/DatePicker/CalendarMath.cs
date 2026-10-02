@@ -33,19 +33,23 @@ internal static class CalendarMath
 
     /// <summary>
     /// The 42-cell (6 weeks x 7 days) month grid, starting on the first-day-of-week on or before the
-    /// 1st of the given month, so a full leading/trailing week is always shown.
+    /// 1st of the given month, so a full leading/trailing week is always shown. A cell that falls outside
+    /// the <see cref="DateOnly"/> range (the leading days of January 0001, the trailing days of December
+    /// 9999) is <c>null</c>, so every day keeps its weekday column.
     /// </summary>
-    public static IEnumerable<DateOnly> MonthGrid(int year, int month, DayOfWeek firstDayOfWeek)
+    public static IEnumerable<DateOnly?> MonthGrid(int year, int month, DayOfWeek firstDayOfWeek)
     {
         year = Math.Clamp(year, 1, 9999);
         month = Math.Clamp(month, 1, 12);
         var first = new DateOnly(year, month, 1);
         int offset = ((int)first.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
-        // Work in day numbers so the leading/trailing weeks of January 0001 and December 9999 cannot
-        // underflow / overflow DateOnly (TASK-105).
-        var start = Math.Max(0, first.DayNumber - offset);
+        // Day numbers, so the cells around the DateOnly bounds are never built as dates (TASK-105).
+        var start = first.DayNumber - offset;
         var last = DateOnly.MaxValue.DayNumber;
         for (int i = 0; i < 42; i++)
-            yield return DateOnly.FromDayNumber(Math.Min(start + i, last));
+        {
+            var n = start + i;
+            yield return n < 0 || n > last ? null : DateOnly.FromDayNumber(n);
+        }
     }
 }

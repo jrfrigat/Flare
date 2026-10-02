@@ -7,21 +7,42 @@ namespace Flare.Components.Tests;
 public class DatePickerBoundsTests : FlareTestContext
 {
     [Fact]
-    public void MonthGrid_AtTheMinimumDate_DoesNotUnderflow()
+    public void MonthGrid_AtTheMinimumDate_KeepsWeekdayColumnsAndLeavesTheGapEmpty()
     {
         var days = CalendarMath.MonthGrid(1, 1, DayOfWeek.Sunday).ToList();
 
         Assert.Equal(42, days.Count);
-        Assert.All(days, d => Assert.True(d >= DateOnly.MinValue));
+        // 0001-01-01 is a Monday: with Sunday first, the Sunday cell before it lies outside DateOnly.
+        Assert.Null(days[0]);
+        Assert.Equal(DateOnly.MinValue, days[1]);
+        Assert.Equal(DayOfWeek.Monday, days[1]!.Value.DayOfWeek);
+        var dates = days.Where(d => d.HasValue).ToList();
+        Assert.Equal(dates.Count, dates.Distinct().Count());
     }
 
     [Fact]
-    public void MonthGrid_AtTheMaximumDate_DoesNotOverflow()
+    public void MonthGrid_AtTheMaximumDate_HasNoRepeatedLastDay()
     {
         var days = CalendarMath.MonthGrid(9999, 12, DayOfWeek.Sunday).ToList();
 
         Assert.Equal(42, days.Count);
-        Assert.All(days, d => Assert.True(d <= DateOnly.MaxValue));
+        var dates = days.Where(d => d.HasValue).ToList();
+        Assert.Equal(dates.Count, dates.Distinct().Count());
+        Assert.Equal(DateOnly.MaxValue, dates[^1]);
+        Assert.All(days.SkipWhile(d => d != DateOnly.MaxValue).Skip(1), d => Assert.Null(d));
+    }
+
+    [Fact]
+    public void InlineGrid_AtTheMinimumDate_RendersEachDayOnce()
+    {
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.Inline, true)
+            .Add(x => x.FirstDayOfWeek, DayOfWeek.Sunday)
+            .Add(x => x.Value, DateOnly.MinValue));
+
+        var labels = cut.FindAll($".{Css.Classes.Picker.Day}").Select(b => b.GetAttribute("aria-label")).ToList();
+        Assert.Equal(labels.Count, labels.Distinct().Count());
+        Assert.Equal(41, labels.Count);
     }
 
     [Fact]

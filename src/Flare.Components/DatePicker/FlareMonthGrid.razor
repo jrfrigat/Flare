@@ -24,14 +24,28 @@
         <div class="@Css.Classes.Picker.Row" role="row">
             @if (ShowWeekNumbers)
             {
-                <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
-                      aria-label="@string.Format(FlareStrings.Picker_WeekNumber, CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek))">
-                    @CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek)
-                </span>
+                var anchor = week.FirstOrDefault(d => d.HasValue);
+                if (anchor is { } a)
+                {
+                    var weekNo = CalendarMath.WeekOfYear(a, _culture, _firstDayOfWeek);
+                    <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
+                          aria-label="@string.Format(FlareStrings.Picker_WeekNumber, weekNo)">
+                        @weekNo
+                    </span>
+                }
+                else
+                {
+                    <span class="@Css.Classes.Picker.WeekNum" aria-hidden="true"></span>
+                }
             }
             @foreach (var date in week)
             {
-                var day = date;
+                if (date is not { } day)
+                {
+                    @* Outside the DateOnly range: an empty cell that keeps the weekday columns aligned. *@
+                    <span role="gridcell" aria-hidden="true"></span>
+                    continue;
+                }
                 var outside = day.Month != ViewMonth;
                 var disabled = Disabled?.Invoke(day) ?? false;
                 <button type="button"
@@ -87,5 +101,5 @@
     // Roving tabindex: exactly one cell is reachable by Tab.
     private DateOnly TabTarget => FocusedDate ?? Today;
     // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row).
-    private DateOnly[][] _weeks => CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
+    private DateOnly?[][] _weeks => CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
 }
