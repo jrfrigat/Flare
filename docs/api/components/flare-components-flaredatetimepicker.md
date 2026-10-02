@@ -13,7 +13,7 @@
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the input after the first render (best-effort). Only one field per page should set this. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the picker popup closes. |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar and parsing. Default = CurrentUICulture. |
-| `DateTimeFormat` | `string?` | `` | Parameter |  | Display/parse format. Null (default) uses the culture short date + time pattern. |
+| `DateTimeFormat` | `string?` | `` | Parameter |  | Display/parse format. Null (default) uses the culture short date + time pattern. Typed text changes the wall date and time; the value keeps its offset and the seconds or fractions the format does not show, and a new value takes the local zone's offset. A format with an offset specifier (z, K) lets the user type the offset instead. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays). |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week (null = use the culture's). |
 | `For` | `Expression<Func<DateTimeOffset?>>?` | `` | Parameter |  | Expression used to bind and validate the field inside an EditForm. |

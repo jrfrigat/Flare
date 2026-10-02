@@ -42,7 +42,9 @@ All notable changes to Flare are documented here. This project adheres to
   date or time on blur; a field the user has left is never focused again.
 - **The date and time pickers respect their bounds and state.** Min/Max apply to the popups as well as to typing
   (the OK button stays off for a value outside them), a disabled or read-only inline calendar cannot be changed,
-  range presets obey Min/Max and `IsDateDisabled`, and confirming a date-time keeps its UTC offset and seconds.
+  range presets obey Min/Max and `IsDateDisabled`, and a date-time keeps its UTC offset and the seconds its
+  format does not show, whether it is confirmed in the popup or typed (a `DateTimeFormat` with `z`/`K` takes the
+  typed offset).
 - **Calendars work at the ends of the `DateOnly` range**, put January 0001 in its weekday columns and stop
   navigating at 0001 and 9999 instead of throwing.
 - **Changing `DateFormat`, `DateTimeFormat`, `Culture` or `ShowSeconds`** rewrites the shown text without waiting
