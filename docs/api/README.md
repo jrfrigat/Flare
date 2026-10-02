@@ -60,9 +60,9 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDataGridPager`](components/flare-components-flaredatagridpager.md) — Page navigation for a FlareDataGrid, placed wherever the layout wants it rather than where the grid would put it. The grid keeps owning the page and page size - the data concern - while this owns how paging is presented. It renders nothing when there is nothing to navigate: a virtualized or infinite-scroll grid, or a single page with no page-size choice.
 - [`FlareDataGridQuickFilter`](components/flare-components-flaredatagridquickfilter.md) — A debounced search box that narrows a FlareDataGrid to the rows where any visible column contains the typed text, case-insensitively. Placed in the grid's toolbar it finds the grid through the cascade; anywhere else it is pointed at one explicitly.
 - [`FlareDataTree`](components/flare-components-flaredatatree.md)
-- [`FlareDatePicker`](components/flare-components-flaredatepicker.md)
+- [`FlareDatePicker`](components/flare-components-flaredatepicker.md) — Date field with a masked text entry and a calendar popup (or an inline calendar), bound to a DateOnly.
 - [`FlareDateRangePicker`](components/flare-components-flaredaterangepicker.md)
-- [`FlareDateTimePicker`](components/flare-components-flaredatetimepicker.md)
+- [`FlareDateTimePicker`](components/flare-components-flaredatetimepicker.md) — Date and time field: a masked text input with a popup holding a calendar and a time pane, either as tabs or side by side. The value is a DateTimeOffset; edits change its wall date and time and keep its offset.
 - [`FlareDescriptionItem`](components/flare-components-flaredescriptionitem.md)
 - [`FlareDescriptionList`](components/flare-components-flaredescriptionlist.md)
 - [`FlareDialog`](components/flare-components-flaredialog.md)
@@ -183,7 +183,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareTextInput`](components/flare-components-flaretextinput.md)
 - [`FlareThemeProvider`](components/flare-components-flarethemeprovider.md) — The root every Flare app is wrapped in: it cascades the active theme to every component below, restores the visitor's saved theme, palette and mode, follows the OS light/dark preference and its accent colour, and holds the app's splash until the themed first frame has painted.
 - [`FlareThemeScope`](components/flare-components-flarethemescope.md) — Re-themes one subtree without disturbing the rest of the app - a dark toolbar over a light page, or a preview pane showing another design system. Each axis left unset keeps the surrounding theme's answer, so a scope can change only the mode, only the palette, or all three.
-- [`FlareTimePicker`](components/flare-components-flaretimepicker.md)
+- [`FlareTimePicker`](components/flare-components-flaretimepicker.md) — Time field with a masked text entry and a clock-dial or column popup, bound to a TimeOnly.
 - [`FlareTimeSpanPicker`](components/flare-components-flaretimespanpicker.md)
 - [`FlareTimeline`](components/flare-components-flaretimeline.md)
 - [`FlareTimelineItem`](components/flare-components-flaretimelineitem.md)

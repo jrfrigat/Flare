@@ -4,6 +4,8 @@
 
 `Flare.Components.FlareDatePicker`
 
+Date field with a masked text entry and a calendar popup (or an inline calendar), bound to a DateOnly.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
@@ -19,21 +21,21 @@
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays or highlight days). |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number. |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week when set (null = use the culture's, e.g. for a Monday-first calendar regardless of locale). |
-| `For` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | — |
+| `For` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | Model field bound inside an EditForm: changes reach the edit context and its validation message is shown. |
 | `HasError` | `bool` | `false` | Parameter |  | Forces the error visual state without an error message (e.g. driven by external validation). |
 | `Inline` | `bool` | `false` | Parameter |  | Renders the calendar inline (always visible under the field) rather than in a popup. |
 | `IsDateDisabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate that disables specific dates (return true to disable). Applied on top of Min/Max. |
-| `Max` | `DateOnly?` | `` | Parameter |  | — |
-| `Min` | `DateOnly?` | `` | Parameter |  | — |
+| `Max` | `DateOnly?` | `` | Parameter |  | Latest date that can be picked or typed (inclusive); later days are disabled. |
+| `Min` | `DateOnly?` | `` | Parameter |  | Earliest date that can be picked or typed (inclusive); earlier days are disabled. |
 | `OpenTo` | `PickerOpenTo` | `PickerOpenTo.Day` | Parameter |  | The calendar view the picker opens to (Day/Month/Year). Year is handy for far-back dates like a date of birth. |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the calendar popup opens. |
 | `ParseInput` | `Func<string, DateOnly?>?` | `` | Parameter |  | Reads typed text instead of the built-in parser: return the date, or null when the text is not one (the value is kept and the field shows it again). With a parser the field takes free text - no digit mask - and judges it on change (blur or Enter). |
-| `ShowClearButton` | `bool` | `true` | Parameter |  | — |
-| `ShowTodayButton` | `bool` | `true` | Parameter |  | — |
+| `ShowClearButton` | `bool` | `true` | Parameter |  | Shows the Clear button in the calendar footer. Default true. |
+| `ShowTodayButton` | `bool` | `true` | Parameter |  | Shows the Today button in the calendar footer. Default true. |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |
 | `TodayText` | `string?` | `` | Parameter |  | Override text for the Today button. When null, falls back to the localizer key DatePicker_Today. |
 | `Value` | `DateOnly?` | `` | Parameter |  | Currently selected date (supports @bind-Value). |
-| `ValueChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | — |
+| `ValueChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | Raised when the user commits a date (typed, picked or cleared). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the field (no input, dimmed). Inherited from `FlareFieldBase`. |

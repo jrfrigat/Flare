@@ -4,6 +4,8 @@
 
 `Flare.Components.FlareDateTimePicker`
 
+Date and time field: a masked text input with a popup holding a calendar and a time pane, either as tabs or side by side. The value is a DateTimeOffset; edits change its wall date and time and keep its offset.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
@@ -20,8 +22,8 @@
 | `For` | `Expression<Func<DateTimeOffset?>>?` | `` | Parameter |  | Expression used to bind and validate the field inside an EditForm. |
 | `HourStep` | `int` | `1` | Parameter |  | Hour increment of the number-field time pane (default 1): a typed hour drops to the step below it. The dial and the text field are not stepped, as in FlareTimePicker. |
 | `IsDateDisabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed. |
-| `Max` | `DateTimeOffset?` | `` | Parameter |  | — |
-| `Min` | `DateTimeOffset?` | `` | Parameter |  | — |
+| `Max` | `DateTimeOffset?` | `` | Parameter |  | Latest value that may be committed; later days are disabled in the calendar. |
+| `Min` | `DateTimeOffset?` | `` | Parameter |  | Earliest value that may be committed; earlier days are disabled in the calendar. |
 | `MinuteStep` | `int` | `1` | Parameter |  | Minute increment of the number-field time pane (default 1): a typed minute drops to the step below it. The dial and the text field are not stepped, as in FlareTimePicker. |
 | `Mode` | `DateTimeVariant` | `DateTimeVariant.Auto` | Parameter |  | Popup layout: Auto (default, responsive), Tabs or Panels (side by side). |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the picker popup opens. |
@@ -31,7 +33,7 @@
 | `TimeVariant` | `TimePickerVariant` | `TimePickerVariant.Dropdown` | Parameter |  | Time tab style: Dial (clock) or Dropdown (number fields, default). |
 | `Use24Hour` | `bool?` | `` | Parameter |  | Forces 12/24-hour clock on the dial. Null auto-detects from culture. |
 | `Value` | `DateTimeOffset?` | `` | Parameter |  | Currently selected date and time (supports @bind-Value). |
-| `ValueChanged` | `EventCallback<DateTimeOffset?>` | `` | Callback |  | — |
+| `ValueChanged` | `EventCallback<DateTimeOffset?>` | `` | Callback |  | Raised when the value changes (the @bind-Value callback). |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the field (no input, dimmed). Inherited from `FlareFieldBase`. |

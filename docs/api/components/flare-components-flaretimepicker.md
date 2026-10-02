@@ -4,6 +4,8 @@
 
 `Flare.Components.FlareTimePicker`
 
+Time field with a masked text entry and a clock-dial or column popup, bound to a TimeOnly.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
