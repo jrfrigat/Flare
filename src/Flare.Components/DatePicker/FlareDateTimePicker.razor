@@ -218,7 +218,7 @@
     // Time pane (clock dial or number inputs) - reused by Tabs and Panels.
     private RenderFragment _footer => @<div class="@Css.Classes.DateTimePicker.Footer">
         <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
-        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
+        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(!CanConfirm)" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
     </div>;
 
     private RenderFragment _time => @<text>
@@ -441,17 +441,22 @@
     private void SetMinute(string? v) =>
         _minute = int.TryParse(v, out var m) ? Math.Clamp(m, 0, 59) : _minute;
 
+    // The value the popup would commit, or null when no day is picked. Keeps the value's offset and seconds:
+    // re-confirming without editing must not move the instant, and seconds are not editable here (TASK-103).
+    private DateTimeOffset? ComposeValue()
+    {
+        if (_selectedDate is not { } day) return null;
+        var wall = day.ToDateTime(new TimeOnly(_hour, _minute, Value?.Second ?? 0));
+        return new DateTimeOffset(wall, Value?.Offset ?? TimeZoneInfo.Local.GetUtcOffset(wall));
+    }
+
+    // OK is offered only for a value inside [Min; Max], as for the text input (TASK-101, TASK-125).
+    private bool CanConfirm => ComposeValue() is not { } dt || InRange(dt);
+
     private async Task Confirm()
     {
-        if (_selectedDate.HasValue)
-        {
-            // Keep the value's offset and seconds: re-confirming without editing must not move the instant,
-            // and seconds are not editable here (TASK-103). Range is checked as for the text input (TASK-101).
-            var wall = _selectedDate.Value.ToDateTime(new TimeOnly(_hour, _minute, Value?.Second ?? 0));
-            var offset = Value?.Offset ?? TimeZoneInfo.Local.GetUtcOffset(wall);
-            var dt = new DateTimeOffset(wall, offset);
-            if (InRange(dt)) await CommitValue(dt);
-        }
+        if (!CanConfirm) return;
+        if (ComposeValue() is { } dt) await CommitValue(dt);
         await CloseAsync();
     }
 

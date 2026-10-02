@@ -116,7 +116,7 @@
 
             <div class="@Css.Classes.TimePicker.Actions">
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Close">@(CancelText ?? FlareStrings.Picker_Cancel)</FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm">@(OkText ?? FlareStrings.Picker_Ok)</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm" Disabled="@(!CanConfirm)">@(OkText ?? FlareStrings.Picker_Ok)</FlareButton>
             </div>
         </div>
         }
@@ -405,13 +405,19 @@
         StateHasChanged();
     }
 
+    private TimeOnly TempTime => new(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0);
+
+    // Min/Max bound the popup too, not only the disabled cells (TASK-102): OK is offered only for a time
+    // inside the range, and a refused confirm (AutoClose included) keeps the popup open (TASK-125).
+    private bool CanConfirm => TimeInRange(TempTime);
+
     private async Task Confirm()
     {
+        if (!CanConfirm) return;
+        var t = TempTime;
         _open = false;
         await Closed.InvokeAsync();
-        var t = new TimeOnly(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0);
-        // Min/Max bound the popup too, not only the disabled cells (TASK-102).
-        if (TimeInRange(t)) await Commit(t);
+        await Commit(t);
     }
 
     private async Task Commit(TimeOnly? value)
