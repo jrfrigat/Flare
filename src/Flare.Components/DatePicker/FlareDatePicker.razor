@@ -115,7 +115,7 @@
                                 class="@Css.Classes.DatePicker.YearBtn @(year == _viewYear ? Css.Classes.DatePicker.YearSelected : "")"
                                 @onclick="@(() => SelectYear(year))"
                                 @onclick:stopPropagation>
-                            @year
+                            @CalendarMath.YearLabel(year, _culture)
                         </button>
                     }
                 </div>
@@ -161,7 +161,8 @@
     [Parameter] public bool ShowTodayButton { get; set; } = true;
     /// <summary>Predicate that disables specific dates (return true to disable). Applied on top of Min/Max.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture.</summary>
+    /// <summary>Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture.
+    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>The calendar view the picker opens to (Day/Month/Year). <see cref="PickerOpenTo.Year"/> is
     /// handy for far-back dates like a date of birth.</summary>
@@ -257,7 +258,8 @@
 
     private int _decadeStart => (_viewYear / 12) * 12;
 
-    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
 
     private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
 
@@ -280,8 +282,8 @@
 
     private string HeaderLabel => _calView switch
     {
-        CalendarView.Month => _viewYear.ToString(),
-        CalendarView.Year  => $"{_decadeStart}-{_decadeStart + 11}",
+        CalendarView.Month => CalendarMath.YearLabel(_viewYear, _culture),
+        CalendarView.Year  => $"{CalendarMath.YearLabel(_decadeStart, _culture)}-{CalendarMath.YearLabel(_decadeStart + 11, _culture)}",
         _                  => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture),
     };
 

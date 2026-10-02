@@ -68,6 +68,10 @@ All notable changes to Flare are documented here. This project adheres to
   for a new value, and cultures that write the year first (ja-JP, sv-SE, ...) can type a date.
 - **A date-time popup forced to `DateTimeVariant.Panels` fits a phone screen**: the calendar and time panes stack
   and the panel scrolls instead of running off the right and bottom edges.
+- **Cultures with a non-Gregorian calendar name the date the grid shows.** The calendars are Gregorian; a
+  culture whose months differ (fa-IR, ar-SA, ...) labelled the October grid with a Persian or Hijri month. Such
+  a culture now formats, parses and labels on its Gregorian calendar, while Thai Buddhist and Japanese years are
+  kept, also in the year view.
 - **The date-time popup starts from the current value each time it opens**: a pick dismissed with the scrim or
   Escape is dropped, and a parent re-render no longer wipes a pick in progress.
 - **Keyboard and screen readers**: the calendar grid has rows, full-date names and one tabbable day, the range

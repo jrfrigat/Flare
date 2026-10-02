@@ -79,7 +79,8 @@
     [Parameter, EditorRequired] public int ViewYear { get; set; }
     /// <summary>The 1-12 month displayed.</summary>
     [Parameter, EditorRequired] public int ViewMonth { get; set; }
-    /// <summary>Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture.</summary>
+    /// <summary>Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture.
+    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Overrides the culture's first day of week when set (null = use the culture's).</summary>
     [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
@@ -114,7 +115,8 @@
     /// the key press starts from the day the user sees focused.</summary>
     [Parameter] public EventCallback<DateOnly> FocusedDateChanged { get; set; }
 
-    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
     // Roving tabindex: exactly one available cell of the displayed month is reachable by Tab.
     private DateOnly? _tabTarget;

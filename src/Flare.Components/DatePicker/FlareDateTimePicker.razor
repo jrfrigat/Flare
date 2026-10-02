@@ -118,7 +118,8 @@
     /// <summary>Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the
     /// calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture for the calendar and parsing. Default = CurrentUICulture.</summary>
+    /// <summary>Culture for the calendar and parsing. Default = CurrentUICulture.
+    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
     [Parameter] public bool ShowWeekNumbers { get; set; }
@@ -242,7 +243,8 @@
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
 
-    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
     private string _format => string.IsNullOrEmpty(DateTimeFormat)
         ? $"{_culture.DateTimeFormat.ShortDatePattern} {(ShowSeconds ? _culture.DateTimeFormat.LongTimePattern : _culture.DateTimeFormat.ShortTimePattern)}"
         : DateTimeFormat;

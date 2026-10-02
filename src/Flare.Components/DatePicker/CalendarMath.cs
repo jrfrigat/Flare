@@ -9,6 +9,40 @@ namespace Flare.Components;
 /// </summary>
 internal static class CalendarMath
 {
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<CultureInfo, CultureInfo> PickerCultures = new();
+
+    /// <summary>
+    /// The culture a picker formats, parses and labels with. The grid is Gregorian, so a culture whose calendar
+    /// has Gregorian months (Gregorian, Thai Buddhist, Japanese, Korean, Taiwan - only the year differs) is used
+    /// as is; one with other months (Persian, Hijri, Um al-Qura, Hebrew, ...) gets a copy on its Gregorian
+    /// optional calendar, so the header, the grid and the field name the same date. Cached per culture object.
+    /// </summary>
+    public static CultureInfo PickerCulture(CultureInfo culture) =>
+        HasGregorianMonths(culture.DateTimeFormat.Calendar) ? culture : PickerCultures.GetValue(culture, OnGregorian);
+
+    private static bool HasGregorianMonths(Calendar calendar) => calendar is GregorianCalendar or ThaiBuddhistCalendar
+        or JapaneseCalendar or KoreanCalendar or TaiwanCalendar;
+
+    private static CultureInfo OnGregorian(CultureInfo culture)
+    {
+        var gregorian = culture.OptionalCalendars.OfType<GregorianCalendar>().FirstOrDefault();
+        if (gregorian is null) return CultureInfo.InvariantCulture;
+        var copy = (CultureInfo)culture.Clone();
+        copy.DateTimeFormat.Calendar = gregorian;
+        return copy;
+    }
+
+    /// <summary>The year as the culture's calendar writes it (2569 for 2026 in th-TH); the Gregorian number when
+    /// the year lies outside that calendar's range (the Japanese calendar starts in 1868).</summary>
+    public static string YearLabel(int year, CultureInfo culture)
+    {
+        var mid = new DateTime(Math.Clamp(year, 1, 9999), 7, 1);
+        var calendar = culture.DateTimeFormat.Calendar;
+        return mid >= calendar.MinSupportedDateTime && mid <= calendar.MaxSupportedDateTime
+            ? mid.ToString("yyyy", culture)
+            : year.ToString(CultureInfo.InvariantCulture);
+    }
+
     /// <summary>The seven weekday short-names ordered from the culture's first day of week.</summary>
     public static IReadOnlyList<string> DayHeaders(CultureInfo culture)
         => DayHeaders(culture, culture.DateTimeFormat.FirstDayOfWeek);

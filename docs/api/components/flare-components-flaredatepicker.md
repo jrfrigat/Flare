@@ -14,7 +14,7 @@
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the date input after the first render (best-effort). Only one field per page should set this. |
 | `ClearText` | `string?` | `` | Parameter |  | Override text for the Clear button. When null, falls back to the localizer key Picker_Clear. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the calendar popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept. |
 | `DateFormat` | `string?` | `` | Parameter |  | Display/parse format. Null (default) uses the culture short date pattern; can be a long format like "dd MMMM yyyy". |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays or highlight days). |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number. |

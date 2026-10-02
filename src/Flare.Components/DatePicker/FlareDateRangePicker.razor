@@ -154,7 +154,7 @@
     /// calendar can be browsed while day clicks and presets are ignored.</summary>
     [Parameter] public bool ReadOnly { get; set; }
     /// <summary>Culture for the month names, the first day of week and the fields' format. Default =
-    /// CurrentUICulture, as for <c>FlareDatePicker</c>.</summary>
+    /// CurrentUICulture, as for <c>FlareDatePicker</c>. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Model field of the start date inside an <c>EditForm</c>: the start field (or the calendar)
     /// reports changes to the edit context and shows its validation message.</summary>
@@ -187,7 +187,8 @@
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
-    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
 
     // The calendar has no inner field to show validation, so it shows the first message of either end itself;
     // in Fields mode each inner field shows its own.
