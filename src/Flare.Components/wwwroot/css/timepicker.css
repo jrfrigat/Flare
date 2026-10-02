@@ -28,11 +28,6 @@
 .flare-timepicker__display-sep { color: var(--flare-color-on-surface-variant); }
 .flare-timepicker__display-part--active { color: var(--flare-color-primary); }
 
-/* Keyboard-focusable surfaces - selection is shown by the dial/cells, so no visible ring. */
-.flare-clock-dial:focus,
-.flare-clock-dial:focus-visible,
-.flare-timepicker__columns:focus,
-.flare-timepicker__columns:focus-visible { outline: none; }
 .flare-clock-dial { display: block; }
 .flare-timepicker__columns { display: flex; align-items: stretch; justify-content: center; gap: var(--flare-spacing-4); }
 .flare-timepicker__columns-sep { align-self: center; font-size: var(--flare-timepicker-columns-sep-size); color: var(--flare-color-on-surface-variant); }

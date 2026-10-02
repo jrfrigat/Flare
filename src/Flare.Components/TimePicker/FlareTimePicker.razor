@@ -131,7 +131,9 @@
     [Parameter] public EventCallback<TimeOnly?> ValueChanged { get; set; }
     // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
     // FlareFieldBase (IFlareField). ReadOnly keeps the trigger focusable but blocks typing and the popup.
-    /// <summary>Popup style: an analog clock <see cref="TimePickerVariant.Dial"/> (default) or <see cref="TimePickerVariant.Dropdown"/> columns.</summary>
+    /// <summary>Popup style: an analog clock <see cref="TimePickerVariant.Dial"/> (default) or <see cref="TimePickerVariant.Dropdown"/>
+    /// columns. Both variants are offered by every theme; where a theme's own specification differs (a keyboard-entry
+    /// mode inside the Material dialog, the Fluent UI 2 combobox list), the variant's description says so.</summary>
     [Parameter] public TimePickerVariant PopupVariant { get; set; } = TimePickerVariant.Dial;
     /// <summary>Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture.</summary>
     [Parameter] public bool? Use24Hour { get; set; }
