@@ -104,11 +104,20 @@
    them (like SplitButton). The outer panel becomes a transparent container; each
    pane is its own surface. */
 .flare-datetimepicker__panel--split {
-  /* !important beats the inline min-width the overlay engine copies from the field. */
-  min-width: var(--flare-datetimepicker-split-panel-min-width) !important;
+  /* !important beats the inline min-width the overlay engine copies from the field. Capped by the viewport:
+     a min-width beats the engine's max-width, so on a phone the panes wrap instead of leaving the screen. */
+  min-width: min(var(--flare-datetimepicker-split-panel-min-width), calc(100vw - var(--flare-overlay-viewport-inset))) !important;
   background: transparent;
   box-shadow: none;
   padding: 0;
+}
+/* Below the md breakpoint Panels only appears when forced, and its wrapped panes stack taller than a phone
+   screen: the panel scrolls rather than hiding OK below it. Above it the panes keep their unclipped shadows. */
+@media (max-width: 959.98px) {
+  .flare-datetimepicker__panel--split {
+    max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
+    overflow-y: auto;
+  }
 }
 .flare-datetimepicker__panes {
   display: flex;

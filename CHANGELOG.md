@@ -53,6 +53,8 @@ All notable changes to Flare are documented here. This project adheres to
   navigating at 0001 and 9999 instead of throwing.
 - **Changing `DateFormat`, `DateTimeFormat`, `Culture` or `ShowSeconds`** rewrites the shown text without waiting
   for a new value, and cultures that write the year first (ja-JP, sv-SE, ...) can type a date.
+- **A date-time popup forced to `DateTimeVariant.Panels` fits a phone screen**: the calendar and time panes stack
+  and the panel scrolls instead of running off the right and bottom edges.
 - **The date-time popup starts from the current value each time it opens**: a pick dismissed with the scrim or
   Escape is dropped, and a parent re-render no longer wipes a pick in progress.
 - **Keyboard and screen readers**: the calendar grid has rows, full-date names and one tabbable day, the range
