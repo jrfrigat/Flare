@@ -399,8 +399,9 @@
         _activeTab = 1;
     }
 
-    // Keyboard navigation inside the date pane: movement is relative to the selected/visible day and
-    // Enter selects; Escape closes the popup (TASK-106).
+    // Keyboard navigation inside the date pane: movement is relative to the selected/visible day and skips
+    // unavailable days; Escape closes the popup (TASK-106). Enter/Space are left to the native click of the
+    // focused day button, which the grid keeps on the cursor (TASK-124).
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
         if (Disabled || ReadOnly) return;
@@ -408,12 +409,6 @@
         if (e.Key == "Escape") { await CloseAsync(); return; }
 
         var current = _selectedDate ?? _viewDate;
-
-        if (e.Key is "Enter" or " ")
-        {
-            SelectDate(current);
-            return;
-        }
 
         var step = e.Key switch
         {
@@ -425,13 +420,19 @@
         };
         if (step == 0) return;
 
-        DateOnly next;
-        try { next = current.AddDays(step); }
-        catch (ArgumentOutOfRangeException) { return; }
+        DateOnly? next = null;
+        var candidate = current;
+        for (var i = 0; i < 400; i++)
+        {
+            try { candidate = candidate.AddDays(step); }
+            catch (ArgumentOutOfRangeException) { break; }
+            if (!IsDayDisabled(candidate)) { next = candidate; break; }
+        }
+        if (next is not { } day) return;
 
-        _selectedDate = next;
-        if (next.Year != _viewDate.Year || next.Month != _viewDate.Month)
-            _viewDate = next;
+        _selectedDate = day;
+        if (day.Year != _viewDate.Year || day.Month != _viewDate.Month)
+            _viewDate = day;
     }
 
     private void SetHour(string? v) =>

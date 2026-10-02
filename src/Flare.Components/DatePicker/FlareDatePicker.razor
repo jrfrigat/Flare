@@ -551,14 +551,9 @@
 
         if (e.Key == "Escape") { await ClosePopupAsync(); return; }
 
-        // Movement is relative to the focused cell, not the value (TASK-106).
+        // Movement is relative to the focused cell, not the value (TASK-106). Enter/Space are left to the
+        // native click of the focused day button, which the grid keeps on the cursor (TASK-124).
         var current = FocusedCursor;
-
-        if (e.Key is "Enter" or " ")
-        {
-            if (!IsDisabled(current)) { _focusedDate = current; await SelectDay(current); }
-            return;
-        }
 
         var step = e.Key switch
         {
@@ -590,9 +585,6 @@
             _viewYear = next.Value.Year;
             _viewMonth = next.Value.Month;
         }
-
-        await ValueChanged.InvokeAsync(next.Value);
-        NotifyFieldChanged();
     }
 
     // Escape closes the popup and puts focus back on the trigger field (TASK-106).

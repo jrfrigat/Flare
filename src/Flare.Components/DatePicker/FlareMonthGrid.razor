@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
 
 @* Shared month calendar grid used by FlareDatePicker, FlareDateTimePicker and FlareDateRangePicker:
    the weekday header row and the 6x7 day-button grid. Selection/range decoration is supplied by the
@@ -18,8 +19,13 @@
     }
 </div>
 <div class="@Css.Classes.Picker.Grid @(ShowWeekNumbers ? Css.Classes.Picker.GridWeeks : null)" role="grid" aria-label="@AriaLabel"
-     @onkeydown="OnKeyDown" @onkeydown:stopPropagation>
-    @foreach (var week in _weeks)
+     @onkeydown="HandleKeyDown" @onkeydown:stopPropagation>
+    @{
+        var weeks = _weeks;
+        _tabTarget = ResolveTabTarget(weeks);
+        var position = 0;
+    }
+    @foreach (var week in weeks)
     {
         <div class="@Css.Classes.Picker.Row" role="row">
             @if (ShowWeekNumbers)
@@ -40,6 +46,7 @@
             }
             @foreach (var date in week)
             {
+                var index = position++;
                 if (date is not { } day)
                 {
                     @* Outside the DateOnly range: an empty cell that keeps the weekday columns aligned. *@
@@ -50,12 +57,13 @@
                 var disabled = Disabled?.Invoke(day) ?? false;
                 <button type="button"
                         role="gridcell"
-                        tabindex="@(day == TabTarget ? "0" : "-1")"
+                        tabindex="@(day == _tabTarget ? "0" : "-1")"
                         aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
                         aria-current="@(day == Today ? "date" : null)"
                         aria-label="@day.ToString("D", _culture)"
                         class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
                         disabled="@disabled"
+                        @ref="_cells[index]"
                         @onclick="@(() => OnDayClick.InvokeAsync(day))"
                         @onclick:stopPropagation
                         @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
@@ -93,13 +101,55 @@
     [Parameter] public EventCallback<DateOnly> OnDayHover { get; set; }
     /// <summary>Raised on keydown over the grid, so the host can own roving keyboard navigation.</summary>
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
-    /// <summary>The day that carries the single <c>tabindex="0"</c> (roving focus); defaults to <see cref="Today"/>.</summary>
+    /// <summary>The keyboard cursor: the day that carries the single <c>tabindex="0"</c> (roving focus) and
+    /// receives focus when a key press moves it. A cursor outside the displayed month or on a disabled day
+    /// falls back to <see cref="Today"/>, then to the first available day of the month.</summary>
     [Parameter] public DateOnly? FocusedDate { get; set; }
 
     private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
-    // Roving tabindex: exactly one cell is reachable by Tab.
-    private DateOnly TabTarget => FocusedDate ?? Today;
+    // Roving tabindex: exactly one available cell of the displayed month is reachable by Tab.
+    private DateOnly? _tabTarget;
+    // Day buttons by grid position. Blazor captures a reference only when the element is created and keeps
+    // the element across renders, so a position (not a date, which changes with the month) identifies it.
+    private readonly ElementReference[] _cells = new ElementReference[42];
+    // Set by a key press: after the next render, focus follows the cursor when the host moved it.
+    private bool _followFocus;
+    private DateOnly? _focusBefore;
     // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row).
     private DateOnly?[][] _weeks => CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
+
+    private DateOnly? ResolveTabTarget(DateOnly?[][] weeks)
+    {
+        bool Available(DateOnly d) => d.Year == ViewYear && d.Month == ViewMonth && !(Disabled?.Invoke(d) ?? false);
+        if (FocusedDate is { } f && Available(f)) return f;
+        if (Available(Today)) return Today;
+        foreach (var week in weeks)
+            foreach (var d in week)
+                if (d is { } day && Available(day)) return day;
+        return null;
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        _followFocus = true;
+        _focusBefore = _tabTarget;
+        await OnKeyDown.InvokeAsync(e);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_followFocus) return;
+        _followFocus = false;
+        // Move DOM focus onto the new cursor, so the native click of Enter/Space lands on the day the
+        // cursor shows rather than on the cell the focus was left on (TASK-124).
+        if (_tabTarget is not { } target || target == _focusBefore) return;
+        var index = Array.IndexOf(_weeks.SelectMany(w => w).ToArray(), target);
+        if (index >= 0)
+        {
+            try { await _cells[index].FocusAsync(); }
+            catch (JSException) { }
+            catch (InvalidOperationException) { /* not attached yet */ }
+        }
+    }
 }
