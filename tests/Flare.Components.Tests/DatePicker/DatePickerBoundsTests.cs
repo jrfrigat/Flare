@@ -80,4 +80,25 @@ public class DatePickerBoundsTests : FlareTestContext
 
         Assert.Contains("0001", cut.Markup);
     }
+
+    // TASK-129: the range calendar stops at the DateOnly bounds as well.
+    [Theory]
+    [InlineData(1, 1, true)]
+    [InlineData(9999, 12, false)]
+    public void RangeCalendar_AtTheBounds_DisablesNavigationAndDoesNotThrow(int year, int month, bool prev)
+    {
+        var day = new DateOnly(year, month, 1);
+        var cut = Render<FlareDateRangePicker>(p => p
+            .Add(x => x.Mode, DateRangePickerMode.Calendar)
+            .Add(x => x.StartDate, day)
+            .Add(x => x.EndDate, day));
+
+        var buttons = cut.FindAll($".{Css.Classes.DatePicker.Header} button");
+        var nav = prev ? buttons.First() : buttons.Last();
+        Assert.True(nav.HasAttribute("disabled"));
+
+        nav.Click();
+
+        Assert.Contains(year.ToString("0000"), cut.Find($".{Css.Classes.DatePicker.MonthLabel}").TextContent);
+    }
 }

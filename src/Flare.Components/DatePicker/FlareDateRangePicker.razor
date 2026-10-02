@@ -62,13 +62,13 @@
         <div class="@Css.Classes.Daterangepicker.Calendar" @onmouseleave="@(() => { _hover = null; })">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Calendar_PrevMonth" Disabled="@Disabled">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Calendar_PrevMonth" Disabled="@(Disabled || !CanPrev)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                     </FlareButton>
                 </span>
                 <span class="@Css.Classes.DatePicker.MonthLabel">@HeaderLabel</span>
                 <span @onclick:stopPropagation>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Calendar_NextMonth" Disabled="@Disabled">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Calendar_NextMonth" Disabled="@(Disabled || !CanNext)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
                     </FlareButton>
                 </span>
@@ -227,8 +227,25 @@
     private bool IsRangeStart(DateOnly d) => PaintedRange is { } r ? d == r.Lo : d == (_pendingStart ?? StartDate);
     private bool IsRangeEnd(DateOnly d) => PaintedRange is { } r && d == r.Hi && r.Hi != r.Lo;
 
-    private void PrevMonth() { var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(-1); _viewYear = d.Year; _viewMonth = d.Month; }
-    private void NextMonth() { var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(1); _viewYear = d.Year; _viewMonth = d.Month; }
+    // Month navigation stays inside the DateOnly range (TASK-129, as TASK-105 for the date picker).
+    private bool CanPrev => _viewYear > 1 || _viewMonth > 1;
+    private bool CanNext => _viewYear < 9999 || _viewMonth < 12;
+
+    private void PrevMonth()
+    {
+        if (!CanPrev) return;
+        var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(-1);
+        _viewYear = d.Year;
+        _viewMonth = d.Month;
+    }
+
+    private void NextMonth()
+    {
+        if (!CanNext) return;
+        var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(1);
+        _viewYear = d.Year;
+        _viewMonth = d.Month;
+    }
 
     private async Task PickDayAsync(DateOnly date)
     {
