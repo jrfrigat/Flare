@@ -24,6 +24,9 @@ All notable changes to Flare are documented here. This project adheres to
 - **`FlareClockDial.MinuteSelected`** is raised once the minute is settled (released or typed), and
   `FlareTimePicker.AutoClose` now finishes the clock dial as well as the columns.
 - **`Css.Classes.TimePicker.PanelDropdown`** names the panel of the columns popup.
+- **Calendar keys**: Home/End move to the start/end of the week and PageUp/PageDown by a month (with Shift by a
+  year) in the date, date-time and range calendars. `FlareMonthGrid.FocusedDateChanged` reports the day the
+  keyboard cursor actually sits on to a custom host.
 
 ### Fixed
 
@@ -53,7 +56,7 @@ All notable changes to Flare are documented here. This project adheres to
 - **The date-time popup starts from the current value each time it opens**: a pick dismissed with the scrim or
   Escape is dropped, and a parent re-render no longer wipes a pick in progress.
 - **Keyboard and screen readers**: the calendar grid has rows, full-date names and one tabbable day, the range
-  calendar moves with the arrow keys, the popups are dialogs closed by Escape, the 12-hour clock dial announces
+  calendar moves with the arrow keys, the arrows start from the focused day after a month change or a click, the popups are dialogs closed by Escape, the 12-hour clock dial announces
   1-12, and the time picker dial and columns show the keyboard focus ring.
 
 ## [0.42.0] - 2026-09-26

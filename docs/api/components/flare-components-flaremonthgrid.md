@@ -16,6 +16,7 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 | `Disabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate disabling a day (sets the disabled attribute and the disabled day class). |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week when set (null = use the culture's). |
 | `FocusedDate` | `DateOnly?` | `` | Parameter |  | The keyboard cursor: the day that carries the single tabindex="0" (roving focus) and receives focus when a key press moves it. A cursor outside the displayed month or on a disabled day falls back to Today, then to the first available day of the month. |
+| `FocusedDateChanged` | `EventCallback<DateOnly>` | `` | Callback |  | Raised with the day the keyboard cursor actually sits on when it is not FocusedDate: a clicked day, or - before OnKeyDown - the fallback day the grid made tabbable because FocusedDate left the displayed month or became disabled. The host moves its cursor there so the key press starts from the day the user sees focused. |
 | `OnDayClick` | `EventCallback<DateOnly>` | `` | Callback |  | Raised when a day cell is clicked. |
 | `OnDayHover` | `EventCallback<DateOnly>` | `` | Callback |  | Raised when the pointer enters a day cell (for range hover preview). |
 | `OnKeyDown` | `EventCallback<KeyboardEventArgs>` | `` | Callback |  | Raised on keydown over the grid, so the host can own roving keyboard navigation. |

@@ -83,6 +83,7 @@
                                 Selected="@(d => d == Value)"
                                 Disabled="IsDayUnavailable"
                                 FocusedDate="@FocusedCursor"
+                                FocusedDateChanged="@(d => _focusedDate = d)"
                                 DayClass="ComposeDayClass"
                                 OnDayClick="SelectDay"
                                 OnKeyDown="HandleGridKeyDown" />
@@ -560,30 +561,11 @@
 
         if (e.Key == "Escape") { await ClosePopupAsync(); return; }
 
-        // Movement is relative to the focused cell, not the value (TASK-106). Enter/Space are left to the
-        // native click of the focused day button, which the grid keeps on the cursor (TASK-124).
-        var current = FocusedCursor;
-
-        var step = e.Key switch
-        {
-            "ArrowRight" => 1,
-            "ArrowLeft"  => -1,
-            "ArrowDown"  => 7,
-            "ArrowUp"    => -7,
-            _ => 0
-        };
-        if (step == 0) return;
-
-        // Move in the arrow direction, skipping over disabled dates (Min/Max/IsDateDisabled) so the
-        // cursor never lands on one. Bounded so a fully-disabled range just stops rather than looping.
-        DateOnly? next = null;
-        var candidate = current;
-        for (var i = 0; i < 400; i++)
-        {
-            try { candidate = candidate.AddDays(step); }
-            catch (ArgumentOutOfRangeException) { break; }
-            if (!IsDisabled(candidate)) { next = candidate; break; }
-        }
+        // Movement is relative to the focused cell, not the value (TASK-106), which the grid has just synced
+        // to the day the user sees focused (TASK-133). Disabled dates (Min/Max/IsDateDisabled) are skipped.
+        // Enter/Space are left to the native click of the focused day button (TASK-124).
+        var next = CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
+            FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDisabled);
         if (next is null) return;
 
         _focusedDate = next.Value;

@@ -64,7 +64,7 @@
                         class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
                         disabled="@disabled"
                         @ref="_cells[index]"
-                        @onclick="@(() => OnDayClick.InvokeAsync(day))"
+                        @onclick="@(() => ClickDay(day))"
                         @onclick:stopPropagation
                         @onmouseenter="HoverFor(day)">
                     @day.Day
@@ -105,6 +105,11 @@
     /// receives focus when a key press moves it. A cursor outside the displayed month or on a disabled day
     /// falls back to <see cref="Today"/>, then to the first available day of the month.</summary>
     [Parameter] public DateOnly? FocusedDate { get; set; }
+    /// <summary>Raised with the day the keyboard cursor actually sits on when it is not <see cref="FocusedDate"/>:
+    /// a clicked day, or - before <see cref="OnKeyDown"/> - the fallback day the grid made tabbable because
+    /// <see cref="FocusedDate"/> left the displayed month or became disabled. The host moves its cursor there so
+    /// the key press starts from the day the user sees focused.</summary>
+    [Parameter] public EventCallback<DateOnly> FocusedDateChanged { get; set; }
 
     private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
@@ -154,7 +159,14 @@
     {
         _followFocus = true;
         _focusBefore = _tabTarget;
+        if (_tabTarget is { } cursor && cursor != FocusedDate) await FocusedDateChanged.InvokeAsync(cursor);
         await OnKeyDown.InvokeAsync(e);
+    }
+
+    private async Task ClickDay(DateOnly day)
+    {
+        if (day != FocusedDate) await FocusedDateChanged.InvokeAsync(day);
+        await OnDayClick.InvokeAsync(day);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

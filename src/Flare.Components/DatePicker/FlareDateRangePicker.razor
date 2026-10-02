@@ -79,6 +79,7 @@
                             Selected="@(d => d == StartDate || d == EndDate)"
                             Disabled="@(d => Disabled || IsDayDisabled(d))"
                             FocusedDate="@FocusedCursor"
+                            FocusedDateChanged="@(d => _focusedDate = d)"
                             OnKeyDown="HandleGridKeyDown"
                             DayClass="RangeDayClass"
                             OnDayClick="PickDayAsync"
@@ -277,25 +278,9 @@
     private void HandleGridKeyDown(KeyboardEventArgs e)
     {
         if (Disabled) return;
-        var step = e.Key switch
-        {
-            "ArrowRight" => 1,
-            "ArrowLeft"  => -1,
-            "ArrowDown"  => 7,
-            "ArrowUp"    => -7,
-            _ => 0
-        };
-        if (step == 0) return;
-
-        DateOnly? next = null;
-        var candidate = FocusedCursor;
-        for (var i = 0; i < 400; i++)
-        {
-            try { candidate = candidate.AddDays(step); }
-            catch (ArgumentOutOfRangeException) { break; }
-            if (!IsDayDisabled(candidate)) { next = candidate; break; }
-        }
-        if (next is not { } day) return;
+        // The grid has synced the cursor to the day the user sees focused before this runs (TASK-133).
+        if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
+                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled) is not { } day) return;
 
         _focusedDate = day;
         if (_pendingStart is not null) _hover = day;

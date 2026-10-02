@@ -156,6 +156,10 @@
     private bool _autofocused;
     private int _activeTab;
     private DateOnly? _selectedDate;
+    // The keyboard cursor when it is not the picked day: the grid reports the day the user sees focused
+    // after a month change or a click (TASK-133).
+    private DateOnly? _focusedDate;
+    private DateOnly FocusedCursor => _focusedDate ?? _selectedDate ?? _viewDate;
     private int _hour;
     private int _minute;
     private DateOnly _viewDate;
@@ -216,7 +220,8 @@
                         AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
                         Selected="@(d => d == _selectedDate)"
                         Disabled="IsDayDisabled"
-                        FocusedDate="@(_selectedDate ?? _viewDate)"
+                        FocusedDate="@FocusedCursor"
+                        FocusedDateChanged="@(d => _focusedDate = d)"
                         OnKeyDown="HandleGridKeyDown"
                         DayClass="ComposeDayClass"
                         OnDayClick="SelectDate" />
@@ -438,6 +443,7 @@
     private void LoadDraft()
     {
         _activeTab = 0;
+        _focusedDate = null;
         if (Value is { } v)
         {
             _selectedDate = DateOnly.FromDateTime(v.DateTime);
@@ -483,29 +489,11 @@
 
         if (e.Key == "Escape") { await CloseAsync(); return; }
 
-        var current = _selectedDate ?? _viewDate;
-
-        var step = e.Key switch
-        {
-            "ArrowRight" => 1,
-            "ArrowLeft"  => -1,
-            "ArrowDown"  => 7,
-            "ArrowUp"    => -7,
-            _ => 0
-        };
-        if (step == 0) return;
-
-        DateOnly? next = null;
-        var candidate = current;
-        for (var i = 0; i < 400; i++)
-        {
-            try { candidate = candidate.AddDays(step); }
-            catch (ArgumentOutOfRangeException) { break; }
-            if (!IsDayDisabled(candidate)) { next = candidate; break; }
-        }
-        if (next is not { } day) return;
+        if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
+                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled) is not { } day) return;
 
         _selectedDate = day;
+        _focusedDate = null;
         if (day.Year != _viewDate.Year || day.Month != _viewDate.Month)
             _viewDate = day;
     }
