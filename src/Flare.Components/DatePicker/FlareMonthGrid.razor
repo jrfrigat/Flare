@@ -60,13 +60,13 @@
                         tabindex="@(day == _tabTarget ? "0" : "-1")"
                         aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
                         aria-current="@(day == Today ? "date" : null)"
-                        aria-label="@day.ToString("D", _culture)"
+                        aria-label="@_labels[index]"
                         class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
                         disabled="@disabled"
                         @ref="_cells[index]"
                         @onclick="@(() => OnDayClick.InvokeAsync(day))"
                         @onclick:stopPropagation
-                        @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
+                        @onmouseenter="HoverFor(day)">
                     @day.Day
                 </button>
             }
@@ -116,8 +116,28 @@
     // Set by a key press: after the next render, focus follows the cursor when the host moved it.
     private bool _followFocus;
     private DateOnly? _focusBefore;
-    // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row).
-    private DateOnly?[][] _weeks => CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
+    // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row), and
+    // each cell's full-date label. Rebuilt only when the month, first weekday or culture changes, not on
+    // every render (TASK-115).
+    private DateOnly?[][] _weeks = [];
+    private readonly string?[] _labels = new string?[42];
+    private (int Year, int Month, DayOfWeek First, string Culture)? _gridKey;
+
+    protected override void OnParametersSet()
+    {
+        var key = (ViewYear, ViewMonth, _firstDayOfWeek, _culture.Name);
+        if (_gridKey == key) return;
+        _gridKey = key;
+        _weeks = CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
+        var i = 0;
+        foreach (var week in _weeks)
+            foreach (var d in week)
+                _labels[i++] = d?.ToString("D", _culture);
+    }
+
+    // Hover is wired only for a host that listens (the range picker): the others render no handler.
+    private EventCallback HoverFor(DateOnly day) =>
+        OnDayHover.HasDelegate ? EventCallback.Factory.Create(this, () => OnDayHover.InvokeAsync(day)) : default;
 
     private DateOnly? ResolveTabTarget(DateOnly?[][] weeks)
     {
