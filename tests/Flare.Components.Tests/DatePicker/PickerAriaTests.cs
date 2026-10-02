@@ -17,7 +17,7 @@ public class PickerAriaTests : FlareTestContext
         Assert.Single(cut.FindAll($".{Css.Classes.Picker.Day}[tabindex='0']"));
 
         var cell = cut.Find($".{Css.Classes.Picker.Day}[role='gridcell']");
-        Assert.Equal("row", cell.ParentElement.GetAttribute("role"));
+        Assert.Equal("row", cell.ParentElement?.GetAttribute("role"));
 
         var selected = cut.Find($".{Css.Classes.Picker.Day}[aria-selected='true']");
         Assert.Contains("2026", selected.GetAttribute("aria-label") ?? string.Empty);
@@ -36,13 +36,26 @@ public class PickerAriaTests : FlareTestContext
         Assert.Empty(cut.FindAll($".{Css.Classes.Picker.Panel}"));
     }
 
+    // TASK-127: a 12-hour dial shows 1-12, so it announces that range and the displayed hour.
     [Fact]
-    public void ClockDial_Slider_AnnouncesItsRange()
+    public void ClockDial_TwelveHour_AnnouncesTheDisplayedHourInOneToTwelve()
     {
-        var cut = Render<FlareClockDial>();
+        var cut = Render<FlareClockDial>(p => p.Add(x => x.Hour, 15));
+
+        var dial = cut.Find($".{Css.Classes.ClockDial.Dial}");
+        Assert.Equal("1", dial.GetAttribute("aria-valuemin"));
+        Assert.Equal("12", dial.GetAttribute("aria-valuemax"));
+        Assert.Equal("3", dial.GetAttribute("aria-valuenow"));
+    }
+
+    [Fact]
+    public void ClockDial_TwentyFourHour_AnnouncesZeroToTwentyThree()
+    {
+        var cut = Render<FlareClockDial>(p => p.Add(x => x.Is24Hour, true).Add(x => x.Hour, 15));
 
         var dial = cut.Find($".{Css.Classes.ClockDial.Dial}");
         Assert.Equal("0", dial.GetAttribute("aria-valuemin"));
-        Assert.Equal("12", dial.GetAttribute("aria-valuemax"));
+        Assert.Equal("23", dial.GetAttribute("aria-valuemax"));
+        Assert.Equal("15", dial.GetAttribute("aria-valuenow"));
     }
 }
