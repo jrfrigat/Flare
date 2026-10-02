@@ -503,12 +503,13 @@
     private void SetMinute(string? v) =>
         _minute = int.TryParse(v, out var m) ? Math.Clamp(m, 0, 59) : _minute;
 
-    // The value the popup would commit, or null when no day is picked. Keeps the value's offset and seconds:
-    // re-confirming without editing must not move the instant, and seconds are not editable here (TASK-103).
+    // The value the popup would commit, or null when no day is picked. Keeps the value's offset and every tick
+    // below the minute: re-confirming without editing must not move the instant, and only the day, hour and
+    // minute are editable here (TASK-103, TASK-136).
     private DateTimeOffset? ComposeValue()
     {
         if (_selectedDate is not { } day) return null;
-        var wall = day.ToDateTime(new TimeOnly(_hour, _minute, Value?.Second ?? 0));
+        var wall = day.ToDateTime(new TimeOnly(_hour, _minute)).AddTicks((Value?.Ticks ?? 0) % TimeSpan.TicksPerMinute);
         return new DateTimeOffset(wall, OffsetFor(wall));
     }
 
