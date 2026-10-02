@@ -6,7 +6,6 @@
    flare-picker__panel (picker.css). The time-picker keeps its larger container:
    a wider radius + more padding (28dp). */
 .flare-timepicker__panel {
-  min-width: 17rem;
   padding: var(--flare-spacing-8);
   border-radius: var(--flare-timepicker-panel-radius);
 }
@@ -41,7 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--flare-spacing-1);
-  max-height: 12rem;
+  max-height: var(--flare-timepicker-column-max-height);
   overflow-y: auto;
   padding: var(--flare-spacing-2);
   scrollbar-width: none;          /* Firefox: hide scrollbar */
@@ -51,7 +50,7 @@
 .flare-timepicker__cell {
   position: relative;
   z-index: 0;
-  min-width: 3rem;
+  min-width: var(--flare-timepicker-cell-min-width);
   padding: var(--flare-spacing-4) var(--flare-spacing-6);
   border: none;
   background: transparent;
@@ -87,7 +86,8 @@
 .flare-timepicker__actions { display: flex; justify-content: flex-end; gap: var(--flare-spacing-4); margin-top: var(--flare-spacing-6); }
 
 /* ---- Dial variant (analog clock) ---- */
-.flare-timepicker__panel--dial { min-width: 19rem; }
+.flare-timepicker__panel--dropdown { min-width: var(--flare-timepicker-panel-min-width); }
+.flare-timepicker__panel--dial { min-width: var(--flare-timepicker-dial-panel-min-width); }
 .flare-timepicker__dial-top {
   display: flex;
   align-items: center;

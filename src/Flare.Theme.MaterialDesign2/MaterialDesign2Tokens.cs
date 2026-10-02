@@ -1394,6 +1394,12 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly DateTimePickerTokens DateTimePicker = new()
     {
+        PanelMinWidth = "280px",
+        DialPanelMinWidth = "320px",
+        SplitPanelMinWidth = "36rem",
+        PaneBasis = "14rem",
+        DialPaneWidth = "16.5rem",
+        TimeInputWidth = "3rem",
         PanelGap = "1rem",
     };
 
@@ -1473,6 +1479,10 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly PickerTokens Picker = new()
     {
+        WeekNumberWidth = "1.5rem",
+        RangeFieldBasis = "12rem",
+        RangeCalendarMaxWidth = "20rem",
+        RangeSeparatorSize = "1.25rem",
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
@@ -1541,6 +1551,10 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly TimePickerTokens TimePicker = new()
     {
+        PanelMinWidth = "17rem",
+        DialPanelMinWidth = "19rem",
+        ColumnMaxHeight = "12rem",
+        CellMinWidth = "3rem",
         ColumnsSepSize = "1.5rem",
         DialCenterSize = "0.5rem",
         DialHandleSize = "2.25rem",

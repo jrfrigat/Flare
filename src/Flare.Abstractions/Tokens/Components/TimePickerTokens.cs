@@ -43,4 +43,16 @@ public sealed record TimePickerTokens
 
     /// <summary>Time Sep Size.</summary>
     [CssVar(TimePickerField.TimeSepSize)] public required string TimeSepSize { get; init; }
+
+    /// <summary>Narrowest width of the time picker panel (dropdown variant).</summary>
+    [CssVar(TimePickerField.PanelMinWidth)] public required string PanelMinWidth { get; init; }
+
+    /// <summary>Narrowest width of the time picker panel while it shows the clock dial.</summary>
+    [CssVar(TimePickerField.DialPanelMinWidth)] public required string DialPanelMinWidth { get; init; }
+
+    /// <summary>Tallest a dropdown column (hours, minutes, seconds) grows before it scrolls.</summary>
+    [CssVar(TimePickerField.ColumnMaxHeight)] public required string ColumnMaxHeight { get; init; }
+
+    /// <summary>Narrowest width of one value cell in a dropdown column.</summary>
+    [CssVar(TimePickerField.CellMinWidth)] public required string CellMinWidth { get; init; }
 }

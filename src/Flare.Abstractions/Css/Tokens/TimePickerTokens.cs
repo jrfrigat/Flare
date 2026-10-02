@@ -29,4 +29,12 @@ public static class TimePickerField
     public const string PanelRadius = "--flare-timepicker-panel-radius";
     /// <summary>CSS custom-property name for the time sep size token.</summary>
     public const string TimeSepSize = "--flare-timepicker-time-sep-size";
+    /// <summary>CSS custom-property name for the panel minimum width token.</summary>
+    public const string PanelMinWidth = "--flare-timepicker-panel-min-width";
+    /// <summary>CSS custom-property name for the dial panel minimum width token.</summary>
+    public const string DialPanelMinWidth = "--flare-timepicker-dial-panel-min-width";
+    /// <summary>CSS custom-property name for the column maximum height token.</summary>
+    public const string ColumnMaxHeight = "--flare-timepicker-column-max-height";
+    /// <summary>CSS custom-property name for the cell minimum width token.</summary>
+    public const string CellMinWidth = "--flare-timepicker-cell-min-width";
 }

@@ -60,4 +60,17 @@ public sealed record PickerTokens
 
     /// <summary>Font size of the day numbers.</summary>
     [CssVar(PickerField.DayFontSize)] public required string DayFontSize { get; init; }
+
+    /// <summary>Narrowest width of the leading week-number column of the calendar grid.</summary>
+    [CssVar(PickerField.WeekNumberWidth)] public required string WeekNumberWidth { get; init; }
+
+    /// <summary>Starting width (<c>flex-basis</c>) of each of the two date-range fields; below two of them
+    /// side by side they stack.</summary>
+    [CssVar(PickerField.RangeFieldBasis)] public required string RangeFieldBasis { get; init; }
+
+    /// <summary>Widest the inline range calendar grows.</summary>
+    [CssVar(PickerField.RangeCalendarMaxWidth)] public required string RangeCalendarMaxWidth { get; init; }
+
+    /// <summary>Size of the arrow between the two date-range fields.</summary>
+    [CssVar(PickerField.RangeSeparatorSize)] public required string RangeSeparatorSize { get; init; }
 }

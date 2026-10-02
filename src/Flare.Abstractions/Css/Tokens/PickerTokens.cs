@@ -33,4 +33,12 @@ public static class PickerField
     public const string DayLayerSize = "--flare-picker-day-layer-size";
     /// <summary>CSS custom-property name for the day number font size token.</summary>
     public const string DayFontSize = "--flare-picker-day-font-size";
+    /// <summary>CSS custom-property name for the week-number column width token.</summary>
+    public const string WeekNumberWidth = "--flare-picker-weeknum-width";
+    /// <summary>CSS custom-property name for the range field basis token.</summary>
+    public const string RangeFieldBasis = "--flare-picker-range-field-basis";
+    /// <summary>CSS custom-property name for the range calendar maximum width token.</summary>
+    public const string RangeCalendarMaxWidth = "--flare-picker-range-calendar-max-width";
+    /// <summary>CSS custom-property name for the range separator size token.</summary>
+    public const string RangeSeparatorSize = "--flare-picker-range-separator-size";
 }

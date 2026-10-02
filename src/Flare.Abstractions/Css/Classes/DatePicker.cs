@@ -69,6 +69,8 @@ public static class TimePicker
     public const string Actions = "flare-timepicker__actions";
     /// <summary>The <c>flare-timepicker__panel--dial</c> CSS class.</summary>
     public const string PanelDial = "flare-timepicker__panel--dial";
+    /// <summary>The <c>flare-timepicker__panel--dropdown</c> CSS class: the panel of the dropdown (columns) variant.</summary>
+    public const string PanelDropdown = "flare-timepicker__panel--dropdown";
 }
 
 /// <summary>CSS classes for clock dial.</summary>

@@ -15,11 +15,11 @@
 /* Panel */
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
    top/left/min-width are set via inline style from JS bounds. */
-.flare-datetimepicker__panel { min-width: 280px; }
+.flare-datetimepicker__panel { min-width: var(--flare-datetimepicker-panel-min-width); }
 /* The clock dial is a fixed 256px; with the panel's own padding it needs more than the 280 floor.
    Read off the rendered dial the way the split panes below do, rather than from a C# variant check -
    the panel is positioned by the shared overlay engine and no longer carries a measured inline width. */
-.flare-datetimepicker__panel:has(.flare-clock-dial) { min-width: 320px; }
+.flare-datetimepicker__panel:has(.flare-clock-dial) { min-width: var(--flare-datetimepicker-dial-panel-min-width); }
 
 /* Tabs */
 .flare-datetimepicker__tabs {
@@ -35,10 +35,10 @@
   padding: var(--flare-spacing-4) var(--flare-spacing-8);
   cursor: pointer;
   color: var(--flare-color-on-surface-variant);
-  border-bottom: 2px solid transparent;
+  border-bottom: var(--flare-border-width-emphasis) solid transparent;
   font-family: var(--flare-typescale-label-large-font);
   font-size: var(--flare-typescale-body-medium-size);
-  margin-bottom: -1px;
+  margin-bottom: calc(-1 * var(--flare-border-width));
   transition: color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
@@ -70,7 +70,7 @@
 }
 
 .flare-datetimepicker__time-input {
-  width: 3rem;
+  width: var(--flare-datetimepicker-time-input-width);
   text-align: center;
   border: var(--flare-border-outline);
   border-radius: var(--flare-shape-small);
@@ -94,7 +94,7 @@
 
 .flare-datetimepicker__time-input:focus {
   border-color: var(--flare-color-primary);
-  border-width: 2px;
+  border-width: var(--flare-border-width-emphasis);
 }
 
 /* Footer layout is shared with DatePicker (datepicker.css); only the top margin is datetimepicker-specific. */
@@ -104,7 +104,8 @@
    them (like SplitButton). The outer panel becomes a transparent container; each
    pane is its own surface. */
 .flare-datetimepicker__panel--split {
-  min-width: 36rem !important;
+  /* !important beats the inline min-width the overlay engine copies from the field. */
+  min-width: var(--flare-datetimepicker-split-panel-min-width) !important;
   background: transparent;
   box-shadow: none;
   padding: 0;
@@ -116,7 +117,7 @@
   align-items: flex-start;
 }
 .flare-datetimepicker__panel--split .flare-datetimepicker__pane {
-  flex: 1 1 14rem;
+  flex: 1 1 var(--flare-datetimepicker-pane-basis);
   min-width: 0;
   background: var(--flare-picker-panel-bg);
   border-radius: var(--flare-picker-panel-radius);
@@ -125,6 +126,6 @@
 }
 /* The clock dial is a fixed 256px - its pane must not shrink below it. */
 .flare-datetimepicker__panel--split .flare-datetimepicker__pane:has(.flare-clock-dial) {
-  flex: 0 0 16.5rem;
-  min-width: 16.5rem;
+  flex: 0 0 var(--flare-datetimepicker-dial-pane-width);
+  min-width: var(--flare-datetimepicker-dial-pane-width);
 }

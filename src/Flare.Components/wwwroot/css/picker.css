@@ -66,8 +66,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 1.5rem;
-    font-size: 0.7rem;
+    min-width: var(--flare-picker-weeknum-width);
+    font-size: var(--flare-typescale-label-small-size);
     color: var(--flare-color-on-surface-variant);
     opacity: var(--flare-picker-weeknum-opacity);
 }

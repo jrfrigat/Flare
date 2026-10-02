@@ -109,10 +109,10 @@
   flex-wrap: wrap;
 }
 
-.flare-daterangepicker__fields > .flare-datepicker { flex: 1 1 12rem; min-inline-size: 0; }
+.flare-daterangepicker__fields > .flare-datepicker { flex: 1 1 var(--flare-picker-range-field-basis); min-inline-size: 0; }
 
 .flare-daterangepicker__sep {
-  font-size: 1.25rem;
+  font-size: var(--flare-picker-range-separator-size);
   color: var(--flare-color-on-surface-variant);
   padding-bottom: var(--flare-spacing-5);
   flex-shrink: 0;
@@ -174,7 +174,7 @@
 /* Calendar mode: an inline range calendar. Reuses the datepicker grid/day styles and adds the range
    highlight (start/end caps + the days between). */
 .flare-daterangepicker__calendar {
-  max-width: 20rem;
+  max-width: var(--flare-picker-range-calendar-max-width);
   padding-top: var(--flare-spacing-4);
 }
 /* Range days fill their whole cell so the band meets the next day; the band is the layer's height.
@@ -233,7 +233,7 @@
   cursor: pointer;
   padding: var(--flare-spacing-5) var(--flare-spacing-2);
   border-radius: var(--flare-shape-small);
-  font-size: 0.875rem;
+  font-size: var(--flare-typescale-label-large-size);
   color: var(--flare-color-on-surface);
   text-align: center;
   font-family: inherit;
