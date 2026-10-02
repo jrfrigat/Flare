@@ -257,13 +257,8 @@
     {
         UpdateFieldIdentifier(For);
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
-        if (Value.HasValue)
-        {
-            _selectedDate = DateOnly.FromDateTime(Value.Value.DateTime);
-            _hour = Value.Value.Hour;
-            _minute = Value.Value.Minute;
-            if (!_open) _viewDate = _selectedDate.Value;
-        }
+        // The popup draft (day, hour, minute) is loaded from Value when the popup opens, not here: a parent
+        // re-render must not wipe a pick in progress (TASK-107).
         // Re-sync on a new value or a new display (DateTimeFormat, Culture), not while editing (TASK-113).
         if (!_focused)
         {
@@ -381,6 +376,7 @@
     {
         if (Disabled || ReadOnly) return;
         if (_open) { await CloseAsync(); return; }
+        LoadDraft();
         _open = true;
         // Placement is the shared engine's job now (see OnAfterRenderAsync): it flips sides on its own
         // measurement rather than on a guessed panel height, follows scroll, and puts the panel in the
@@ -389,6 +385,27 @@
         await Opened.InvokeAsync();
         // Called from OpenAsync/ToggleAsync as well as the toggle's click; only the click re-renders on its own.
         StateHasChanged();
+    }
+
+    // Every opening starts from the current Value: a pick dismissed by the scrim or Escape is dropped, and
+    // a value cleared from outside opens with nothing selected (TASK-107).
+    private void LoadDraft()
+    {
+        _activeTab = 0;
+        if (Value is { } v)
+        {
+            _selectedDate = DateOnly.FromDateTime(v.DateTime);
+            _hour = v.Hour;
+            _minute = v.Minute;
+            _viewDate = _selectedDate.Value;
+        }
+        else
+        {
+            _selectedDate = null;
+            _hour = 0;
+            _minute = 0;
+            _viewDate = Today;
+        }
     }
 
     // Anchor on the first of the month so AddMonths cannot overflow at 0001-01 or 9999-12 (TASK-105).
