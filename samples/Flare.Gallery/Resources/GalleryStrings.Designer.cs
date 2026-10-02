@@ -11686,6 +11686,27 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DtpDemo_OptionsHelper string.</summary>
         public static string DtpDemo_OptionsHelper => ResourceManager.GetString("DtpDemo_OptionsHelper", resourceCulture);
 
+        /// <summary>Looks up the localized DateRangePicker_Form string.</summary>
+        public static string DateRangePicker_Form => ResourceManager.GetString("DateRangePicker_Form", resourceCulture);
+
+        /// <summary>Looks up the localized DrpDemo_FormLabel string.</summary>
+        public static string DrpDemo_FormLabel => ResourceManager.GetString("DrpDemo_FormLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DrpDemo_StartRequired string.</summary>
+        public static string DrpDemo_StartRequired => ResourceManager.GetString("DrpDemo_StartRequired", resourceCulture);
+
+        /// <summary>Looks up the localized DrpDemo_EndRequired string.</summary>
+        public static string DrpDemo_EndRequired => ResourceManager.GetString("DrpDemo_EndRequired", resourceCulture);
+
+        /// <summary>Looks up the localized DrpDemo_ReadOnlyLabel string.</summary>
+        public static string DrpDemo_ReadOnlyLabel => ResourceManager.GetString("DrpDemo_ReadOnlyLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DrpDemo_Submit string.</summary>
+        public static string DrpDemo_Submit => ResourceManager.GetString("DrpDemo_Submit", resourceCulture);
+
+        /// <summary>Looks up the localized DrpDemo_Submitted string.</summary>
+        public static string DrpDemo_Submitted => ResourceManager.GetString("DrpDemo_Submitted", resourceCulture);
+
         /// <summary>Looks up the localized DtpDemo_OffsetLabel string.</summary>
         public static string DtpDemo_OffsetLabel => ResourceManager.GetString("DtpDemo_OffsetLabel", resourceCulture);
 

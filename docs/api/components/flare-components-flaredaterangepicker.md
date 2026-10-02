@@ -8,10 +8,12 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the picker when true. |
 | `EndDate` | `DateOnly?` | `` | Parameter |  | End date of the selected range. |
 | `EndDateChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | Callback invoked when the end date changes. |
+| `EndFor` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | Model field of the end date inside an EditForm, as StartFor. |
 | `EndLabel` | `string?` | `` | Parameter |  | Label for the end date picker (Fields mode). When null, falls back to DateRangePicker_EndLabel. |
 | `ErrorText` | `string?` | `` | Parameter |  | Error message shown below the range picker. |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week (null = use the culture's). |
@@ -22,11 +24,13 @@
 | `Min` | `DateOnly?` | `` | Parameter |  | Earliest selectable date (inclusive). |
 | `Mode` | `DateRangePickerMode` | `DateRangePickerMode.Fields` | Parameter |  | How the range is selected: two linked inputs (Fields, default) or a single inline range calendar (Calendar). |
 | `Presets` | `IReadOnlyList<DateRangePreset>?` | `` | Parameter |  | Custom preset list. When null, a localized default set is used (requires ShowPresets). |
+| `ReadOnly` | `bool` | `false` | Parameter |  | Shows the range without letting it change: the fields stay focusable but read-only, and the calendar can be browsed while day clicks and presets are ignored. |
 | `ShowPresets` | `bool` | `false` | Parameter |  | Shows a row of quick-range preset chips (Today, Last 7 days, This month, ...). |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl) for the input fields (Fields mode). |
 | `StartDate` | `DateOnly?` | `` | Parameter |  | Start date of the selected range. |
-| `StartDateChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | Callback invoked when the start date changes. |
+| `StartDateChanged` | `EventCallback<DateOnly?>` | `` | Callback |  | Callback invoked when the start date changes. A range picked in the calendar is published in two steps: the first day sets the start and clears the end, the second sets both ends; a form sees the range as unfinished while only the start is set. |
+| `StartFor` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | Model field of the start date inside an EditForm: the start field (or the calendar) reports changes to the edit context and shows its validation message. |
 | `StartLabel` | `string?` | `` | Parameter |  | Label for the start date picker (Fields mode). When null, falls back to DateRangePicker_StartLabel. |
 | `Typo` | `TypographyScale?` | `` | Parameter |  | Optional typography scale for the input text (Fields mode). |
 | `Variant` | `InputVariant` | `InputVariant.Default` | Parameter |  | Visual variant (Filled/Outlined/Bare) for the input fields (Fields mode). |
@@ -36,7 +40,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `DisposeAsync()`
+
+Disposes the component; override to release JS interop or subscriptions.
+Returns: `ValueTask`.
+
 
 ## Inheritance
 

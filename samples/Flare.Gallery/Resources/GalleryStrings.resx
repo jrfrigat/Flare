@@ -3618,6 +3618,27 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DtpDemo_OptionsHelper" xml:space="preserve">
     <value>ShowSeconds, MinuteStep and IsDateDisabled, as on the time and date pickers</value>
   </data>
+  <data name="DateRangePicker_Form" xml:space="preserve">
+    <value>In a form and read-only</value>
+  </data>
+  <data name="DrpDemo_FormLabel" xml:space="preserve">
+    <value>Trip dates</value>
+  </data>
+  <data name="DrpDemo_StartRequired" xml:space="preserve">
+    <value>Pick the first day</value>
+  </data>
+  <data name="DrpDemo_EndRequired" xml:space="preserve">
+    <value>Pick the last day</value>
+  </data>
+  <data name="DrpDemo_ReadOnlyLabel" xml:space="preserve">
+    <value>Booked dates (read-only)</value>
+  </data>
+  <data name="DrpDemo_Submit" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="DrpDemo_Submitted" xml:space="preserve">
+    <value>Booked: {0}</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Keeps its UTC offset</value>
   </data>

@@ -27,6 +27,10 @@ All notable changes to Flare are documented here. This project adheres to
 - **`FlareDateTimePicker.ShowSeconds`, `HourStep`, `MinuteStep` and `IsDateDisabled`** work as on
   `FlareTimePicker` and `FlareDatePicker`: seconds in the field and the time pane, stepped hour and minute boxes,
   and days that cannot be picked, typed or confirmed.
+- **`FlareDateRangePicker.Culture`, `ReadOnly`, `StartFor` and `EndFor`**: the range picker takes a culture
+  (passed to its fields), a read-only state, and a form field per end, so an `EditForm` sees both ends change and
+  the calendar shows their validation messages. Without `Culture` the range calendar now follows
+  `CurrentUICulture`, like its fields and the single pickers, instead of `CurrentCulture`.
 - **Calendar keys**: Home/End move to the start/end of the week and PageUp/PageDown by a month (with Shift by a
   year) in the date, date-time and range calendars. `FlareMonthGrid.FocusedDateChanged` reports the day the
   keyboard cursor actually sits on to a custom host.

@@ -1,6 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @using System.Globalization
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 @inject TimeProvider TimeProvider
 
@@ -17,7 +19,7 @@
                 var p = preset;
                 <button type="button"
                         class="@Css.Classes.Daterangepicker.Preset @(IsActivePreset(p) ? Css.Classes.Daterangepicker.PresetActive : "")"
-                        disabled="@Disabled"
+                        disabled="@(Disabled || ReadOnly)"
                         aria-pressed="@(IsActivePreset(p) ? "true" : "false")"
                         @onclick="@(() => ApplyPreset(p))">@p.Label</button>
             }
@@ -32,6 +34,9 @@
                              Label="@(StartLabel ?? FlareStrings.DateRangePicker_StartLabel)"
                              ErrorText="@ErrorText"
                              Disabled="@Disabled"
+                             ReadOnly="@ReadOnly"
+                             Culture="@_culture"
+                             For="@StartFor"
                              Typo="@Typo"
                              Variant="@Variant"
                              Size="@Size"
@@ -46,6 +51,9 @@
                              ValueChanged="HandleEndChanged"
                              Label="@(EndLabel ?? FlareStrings.DateRangePicker_EndLabel)"
                              Disabled="@Disabled"
+                             ReadOnly="@ReadOnly"
+                             Culture="@_culture"
+                             For="@EndFor"
                              Typo="@Typo"
                              Variant="@Variant"
                              Size="@Size"
@@ -87,9 +95,9 @@
         </div>
     }
 
-    @if (!string.IsNullOrEmpty(ErrorText))
+    @if (!string.IsNullOrEmpty(_errorText))
     {
-        <span class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError">@ErrorText</span>
+        <span class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError">@_errorText</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
@@ -100,7 +108,9 @@
 @code {
     /// <summary>Start date of the selected range.</summary>
     [Parameter] public DateOnly? StartDate { get; set; }
-    /// <summary>Callback invoked when the start date changes.</summary>
+    /// <summary>Callback invoked when the start date changes. A range picked in the calendar is published in
+    /// two steps: the first day sets the start and clears the end, the second sets both ends; a form sees the
+    /// range as unfinished while only the start is set.</summary>
     [Parameter] public EventCallback<DateOnly?> StartDateChanged { get; set; }
     /// <summary>End date of the selected range.</summary>
     [Parameter] public DateOnly? EndDate { get; set; }
@@ -127,6 +137,20 @@
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
     /// <summary>Disables the picker when true.</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>Shows the range without letting it change: the fields stay focusable but read-only, and the
+    /// calendar can be browsed while day clicks and presets are ignored.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>Culture for the month names, the first day of week and the fields' format. Default =
+    /// CurrentUICulture, as for <c>FlareDatePicker</c>.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Model field of the start date inside an <c>EditForm</c>: the start field (or the calendar)
+    /// reports changes to the edit context and shows its validation message.</summary>
+    [Parameter] public Expression<Func<DateOnly?>>? StartFor { get; set; }
+    /// <summary>Model field of the end date inside an <c>EditForm</c>, as <see cref="StartFor"/>.</summary>
+    [Parameter] public Expression<Func<DateOnly?>>? EndFor { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+    private EditContext? _subscribedContext;
     /// <summary>Optional typography scale for the input text (Fields mode).</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Visual variant (Filled/Outlined/Bare) for the input fields (Fields mode).</summary>
@@ -147,7 +171,36 @@
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
-    private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
+    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+
+    // The calendar has no inner field to show validation, so it shows the first message of either end itself;
+    // in Fields mode each inner field shows its own.
+    private string? _errorText => ErrorText
+        ?? (Mode == DateRangePickerMode.Calendar ? ValidationMessage(StartFor) ?? ValidationMessage(EndFor) : null);
+
+    private string? ValidationMessage(Expression<Func<DateOnly?>>? field) =>
+        EditContext is not null && field is not null
+            ? EditContext.GetValidationMessages(FieldIdentifier.Create(field)).FirstOrDefault()
+            : null;
+
+    // Every change of an end reaches the edit context - a calendar pick or a preset changes it without an inner
+    // field, and a second notice after a field's own one only re-validates.
+    private void Notify(Expression<Func<DateOnly?>>? field)
+    {
+        if (EditContext is not null && field is not null)
+            EditContext.NotifyFieldChanged(FieldIdentifier.Create(field));
+    }
+
+    private void HandleValidationStateChanged(object? sender, ValidationStateChangedEventArgs e) =>
+        InvokeAsync(StateHasChanged);
+
+    /// <inheritdoc />
+    public override ValueTask DisposeAsync()
+    {
+        if (_subscribedContext is not null) _subscribedContext.OnValidationStateChanged -= HandleValidationStateChanged;
+        _subscribedContext = null;
+        return base.DisposeAsync();
+    }
 
     // --- Calendar-mode state ---
     private int _viewYear;
@@ -186,6 +239,13 @@
 
     protected override void OnParametersSet()
     {
+        if (!ReferenceEquals(_subscribedContext, EditContext))
+        {
+            if (_subscribedContext is not null) _subscribedContext.OnValidationStateChanged -= HandleValidationStateChanged;
+            _subscribedContext = EditContext;
+            if (_subscribedContext is not null) _subscribedContext.OnValidationStateChanged += HandleValidationStateChanged;
+        }
+
         // Anchor the visible month to the range (or today) when the range changes, while not actively
         // picking the end; a plain re-render keeps the month the user navigated to.
         if (_pendingStart is null && _anchoredRange != (StartDate, EndDate))
@@ -250,7 +310,7 @@
 
     private async Task PickDayAsync(DateOnly date)
     {
-        if (Disabled || IsDayDisabled(date)) return;
+        if (Disabled || ReadOnly || IsDayDisabled(date)) return;
 
         if (_pendingStart is null)
         {
@@ -300,7 +360,7 @@
 
     private async Task ApplyPreset(DateRangePreset preset)
     {
-        if (Disabled) return;
+        if (Disabled || ReadOnly) return;
         var (s, e) = preset.Range(Today);
         if (s > e) (s, e) = (e, s);
         // A preset obeys the same bounds as a manual pick: Min/Max and IsDateDisabled (TASK-114).
@@ -325,12 +385,14 @@
     {
         StartDate = v;
         await StartDateChanged.InvokeAsync(v);
+        Notify(StartFor);
     }
 
     private async Task SetEndAsync(DateOnly? v)
     {
         EndDate = v;
         await EndDateChanged.InvokeAsync(v);
+        Notify(EndFor);
     }
 
     private static DateOnly Earliest(DateOnly a, DateOnly b) => a <= b ? a : b;

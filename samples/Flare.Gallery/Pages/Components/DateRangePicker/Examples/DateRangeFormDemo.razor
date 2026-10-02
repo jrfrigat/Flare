@@ -1,0 +1,45 @@
+@inherits LocalizedPage
+@using System.ComponentModel.DataAnnotations
+@using Flare.Gallery.Resources
+
+@* StartFor/EndFor bind each end to the form: the calendar reports both to the EditForm and shows the
+   validation message itself, and a range with only the start picked reads as unfinished. ReadOnly shows a
+   range that can be browsed but not changed. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:22rem;">
+    <EditForm Model="_trip" OnValidSubmit="Book">
+        <DataAnnotationsValidator />
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareDateRangePicker @bind-StartDate="_trip.From" @bind-EndDate="_trip.To"
+                                  StartFor="@(() => _trip.From)" EndFor="@(() => _trip.To)"
+                                  Label="@GalleryStrings.DrpDemo_FormLabel"
+                                  Mode="DateRangePickerMode.Calendar" />
+            <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                <FlareButton Type="ButtonType.Submit">@GalleryStrings.DrpDemo_Submit</FlareButton>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+                    @string.Format(GalleryStrings.DrpDemo_Submitted, _booked ?? "-")
+                </FlareText>
+            </FlareStack>
+        </FlareStack>
+    </EditForm>
+
+    <FlareDateRangePicker StartDate="_bookedFrom" EndDate="_bookedTo" ReadOnly="true"
+                          Label="@GalleryStrings.DrpDemo_ReadOnlyLabel" />
+</FlareStack>
+
+@code {
+    private readonly Trip _trip = new();
+    private string? _booked;
+    private readonly DateOnly _bookedFrom = DateOnly.FromDateTime(DateTime.Today).AddDays(3);
+    private readonly DateOnly _bookedTo = DateOnly.FromDateTime(DateTime.Today).AddDays(8);
+
+    private void Book() => _booked = $"{_trip.From:d} - {_trip.To:d}";
+
+    private sealed class Trip
+    {
+        [Required(ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.DrpDemo_StartRequired))]
+        public DateOnly? From { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.DrpDemo_EndRequired))]
+        public DateOnly? To { get; set; }
+    }
+}

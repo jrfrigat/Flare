@@ -3618,6 +3618,27 @@
   <data name="DtpDemo_OptionsHelper" xml:space="preserve">
     <value>ShowSeconds, MinuteStep и IsDateDisabled, как у выбора времени и даты</value>
   </data>
+  <data name="DateRangePicker_Form" xml:space="preserve">
+    <value>В форме и только для чтения</value>
+  </data>
+  <data name="DrpDemo_FormLabel" xml:space="preserve">
+    <value>Даты поездки</value>
+  </data>
+  <data name="DrpDemo_StartRequired" xml:space="preserve">
+    <value>Выберите первый день</value>
+  </data>
+  <data name="DrpDemo_EndRequired" xml:space="preserve">
+    <value>Выберите последний день</value>
+  </data>
+  <data name="DrpDemo_ReadOnlyLabel" xml:space="preserve">
+    <value>Забронированные даты (только чтение)</value>
+  </data>
+  <data name="DrpDemo_Submit" xml:space="preserve">
+    <value>Забронировать</value>
+  </data>
+  <data name="DrpDemo_Submitted" xml:space="preserve">
+    <value>Забронировано: {0}</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Сохраняет смещение UTC</value>
   </data>

@@ -2165,10 +2165,12 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the picker when true.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"EndDate", @"DateOnly?", null, @"End date of the selected range.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"EndDateChanged", @"EventCallback<DateOnly?>", null, @"Callback invoked when the end date changes.", null, false, true, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"EndFor", @"Expression<Func<DateOnly?>>?", null, @"Model field of the end date inside an EditForm, as StartFor.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"EndLabel", @"string?", null, @"Label for the end date picker (Fields mode). When null, falls back to DateRangePicker_EndLabel.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error message shown below the range picker.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"FirstDayOfWeek", @"DayOfWeek?", null, @"Overrides the culture's first day of week (null = use the culture's).", null, false, false, false, @"FlareDateRangePicker"),
@@ -2179,11 +2181,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Min", @"DateOnly?", null, @"Earliest selectable date (inclusive).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Mode", @"DateRangePickerMode", @"DateRangePickerMode.Fields", @"How the range is selected: two linked inputs (Fields, default) or a single inline range calendar (Calendar).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Presets", @"IReadOnlyList<DateRangePreset>?", null, @"Custom preset list. When null, a localized default set is used (requires ShowPresets).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Shows the range without letting it change: the fields stay focusable but read-only, and the calendar can be browsed while day clicks and presets are ignored.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"ShowPresets", @"bool", @"false", @"Shows a row of quick-range preset chips (Today, Last 7 days, This month, ...).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"ShowWeekNumbers", @"bool", @"false", @"Shows a leading week-of-year number column in the calendar.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl) for the input fields (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"StartDate", @"DateOnly?", null, @"Start date of the selected range.", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"StartDateChanged", @"EventCallback<DateOnly?>", null, @"Callback invoked when the start date changes.", null, false, true, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"StartDateChanged", @"EventCallback<DateOnly?>", null, @"Callback invoked when the start date changes. A range picked in the calendar is published in two steps: the first day sets the start and clears the end, the second sets both ends; a form sees the range as unfinished while only the start is set.", null, false, true, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"StartFor", @"Expression<Func<DateOnly?>>?", null, @"Model field of the start date inside an EditForm: the start field (or the calendar) reports changes to the edit context and shows its validation message.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"StartLabel", @"string?", null, @"Label for the start date picker (Fields mode). When null, falls back to DateRangePicker_StartLabel.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) for the input fields (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
@@ -2191,7 +2195,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
