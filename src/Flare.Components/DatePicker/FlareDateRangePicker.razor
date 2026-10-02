@@ -255,6 +255,9 @@
     {
         if (Disabled) return;
         var (s, e) = preset.Range(Today);
+        if (s > e) (s, e) = (e, s);
+        // A preset obeys the same bounds as a manual pick: Min/Max and IsDateDisabled (TASK-114).
+        if (IsDayDisabled(s) || IsDayDisabled(e)) return;
         _pendingStart = null;
         _hover = null;
         await SetStartAsync(s);
