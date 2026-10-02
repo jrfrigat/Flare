@@ -1571,6 +1571,51 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("TimePicker_Seconds", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter time.
+        /// </summary>
+        public static string TimePicker_EnterTime {
+            get {
+                return ResourceManager.GetString("TimePicker_EnterTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to text input.
+        /// </summary>
+        public static string TimePicker_SwitchToKeyboard {
+            get {
+                return ResourceManager.GetString("TimePicker_SwitchToKeyboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to clock.
+        /// </summary>
+        public static string TimePicker_SwitchToDial {
+            get {
+                return ResourceManager.GetString("TimePicker_SwitchToDial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hour.
+        /// </summary>
+        public static string TimePicker_Hour {
+            get {
+                return ResourceManager.GetString("TimePicker_Hour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minute.
+        /// </summary>
+        public static string TimePicker_Minute {
+            get {
+                return ResourceManager.GetString("TimePicker_Minute", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Ищет локализованную строку, похожую на Open time picker.

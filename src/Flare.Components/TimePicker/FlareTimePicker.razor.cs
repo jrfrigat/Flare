@@ -45,6 +45,10 @@ public partial class FlareTimePicker
     /// the dial (released or typed), the minute or second column in the dropdown. A time outside
     /// Min/Max is not confirmed and the popup stays open. Default false.</summary>
     [Parameter] public bool AutoClose { get; set; }
+    /// <summary>Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour
+    /// and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch,
+    /// as its columns already take typed digits.</summary>
+    [Parameter] public bool ShowKeyboardToggle { get; set; } = true;
     /// <summary>Requests focus on the time input after the first render (best-effort). Only one field per
     /// page should set this.</summary>
     [Parameter] public bool Autofocus { get; set; }
@@ -149,7 +153,15 @@ public partial class FlareTimePicker
         await base.DisposeAsync();
     }
 
-    private string _headline => Headline ?? FlareStrings.TimePicker_Headline;
+    private string _headline => Headline ?? (_keyboardEntry ? FlareStrings.TimePicker_EnterTime : FlareStrings.TimePicker_Headline);
+    private bool _showKeyboardToggle => ShowKeyboardToggle && PopupVariant == TimePickerVariant.Dial;
+
+    // The view that mounts takes focus itself: the dial its root, the entry its hour field.
+    private void ToggleKeyboardEntry()
+    {
+        _keyboardEntry = !_keyboardEntry;
+        _entryInvalid = false;
+    }
 
     // Invalid drives the frame's error chrome (a resolved validation message).
     private bool _invalid => !string.IsNullOrEmpty(DisplayedErrorText);
@@ -196,6 +208,10 @@ public partial class FlareTimePicker
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
     private string _dropBuf = string.Empty;
     private bool _focusDrop;
+    // The dial popup shows FlareTimeEntry instead of the dial (TASK-130).
+    private bool _keyboardEntry;
+    // A keyboard-entry field holds a number out of range: the draft is the last valid time, so OK waits.
+    private bool _entryInvalid;
     private bool _autofocused;
 
     private async Task Toggle()
@@ -210,6 +226,8 @@ public partial class FlareTimePicker
             _dropActive = 0;
             _dropBuf = string.Empty;
             _focusDrop = PopupVariant == TimePickerVariant.Dropdown;
+            _keyboardEntry = false;
+            _entryInvalid = false;
             _open = true;
             await Opened.InvokeAsync();
         }
@@ -302,7 +320,7 @@ public partial class FlareTimePicker
 
     // Min/Max bound the popup too, not only the disabled cells (TASK-102): OK is offered only for a time
     // inside the range, and a refused confirm (AutoClose included) keeps the popup open (TASK-125).
-    private bool CanConfirm => TimeInRange(TempTime);
+    private bool CanConfirm => TimeInRange(TempTime) && !(_keyboardEntry && _entryInvalid);
 
     private async Task Confirm()
     {

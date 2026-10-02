@@ -15,6 +15,7 @@
                          ErrorText="@(_required is null ? GalleryStrings.TpDemo_RequiredError : null)"
                          Style="flex:1;min-width:12rem;" />
     </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">@GalleryStrings.TpDemo_KeyboardNote</FlareText>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         @string.Format(GalleryStrings.TpDemo_Summary, _dial?.ToString("HH:mm") ?? "-", _columns?.ToString("HH:mm") ?? "-")
     </FlareText>

@@ -11755,6 +11755,9 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized TpDemo_DialHelper string.</summary>
         public static string TpDemo_DialHelper => ResourceManager.GetString("TpDemo_DialHelper", resourceCulture);
 
+        /// <summary>Looks up the localized TpDemo_KeyboardNote string.</summary>
+        public static string TpDemo_KeyboardNote => ResourceManager.GetString("TpDemo_KeyboardNote", resourceCulture);
+
         /// <summary>Looks up the localized TpDemo_Dial24Label string.</summary>
         public static string TpDemo_Dial24Label => ResourceManager.GetString("TpDemo_Dial24Label", resourceCulture);
 

@@ -67,10 +67,27 @@ public static class TimePicker
     public const string CellSelected = "flare-timepicker__cell--selected";
     /// <summary>The <c>flare-timepicker__actions</c> CSS class.</summary>
     public const string Actions = "flare-timepicker__actions";
+    /// <summary>The <c>flare-timepicker__actions-lead</c> CSS class: the start-aligned slot of the actions row (the keyboard toggle).</summary>
+    public const string ActionsLead = "flare-timepicker__actions-lead";
     /// <summary>The <c>flare-timepicker__panel--dial</c> CSS class.</summary>
     public const string PanelDial = "flare-timepicker__panel--dial";
     /// <summary>The <c>flare-timepicker__panel--dropdown</c> CSS class: the panel of the dropdown (columns) variant.</summary>
     public const string PanelDropdown = "flare-timepicker__panel--dropdown";
+}
+
+/// <summary>CSS classes of <c>FlareTimeEntry</c>, the keyboard entry of the time picker popup.</summary>
+public static class TimeEntry
+{
+    /// <summary>The <c>flare-timepicker__entry</c> CSS class: the row of hour and minute fields.</summary>
+    public const string Root = "flare-timepicker__entry";
+    /// <summary>The <c>flare-timepicker__entry-field</c> CSS class: one field with its label below.</summary>
+    public const string Field = "flare-timepicker__entry-field";
+    /// <summary>The <c>flare-timepicker__entry-label</c> CSS class: the label under a field.</summary>
+    public const string Label = "flare-timepicker__entry-label";
+    /// <summary>The <c>flare-timepicker__entry-input</c> CSS class: the text input, drawn as a dial time field.</summary>
+    public const string Input = "flare-timepicker__entry-input";
+    /// <summary>The <c>flare-timepicker__entry-input--invalid</c> CSS class: the input holds a number out of range.</summary>
+    public const string InputInvalid = "flare-timepicker__entry-input--invalid";
 }
 
 /// <summary>CSS classes for clock dial.</summary>

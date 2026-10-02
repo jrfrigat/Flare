@@ -95,6 +95,11 @@
   <data name="TimePicker_Hours" xml:space="preserve"><value>Часы</value></data>
   <data name="TimePicker_Minutes" xml:space="preserve"><value>Минуты</value></data>
   <data name="TimePicker_Seconds" xml:space="preserve"><value>Секунды</value></data>
+  <data name="TimePicker_EnterTime" xml:space="preserve"><value>Введите время</value></data>
+  <data name="TimePicker_SwitchToKeyboard" xml:space="preserve"><value>Перейти к вводу текста</value></data>
+  <data name="TimePicker_SwitchToDial" xml:space="preserve"><value>Перейти к циферблату</value></data>
+  <data name="TimePicker_Hour" xml:space="preserve"><value>Час</value></data>
+  <data name="TimePicker_Minute" xml:space="preserve"><value>Минута</value></data>
 
   <!-- Field (shared field-family strings) -->
   <data name="Field_NoResults" xml:space="preserve"><value>Нет результатов</value></data>

@@ -23,6 +23,7 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 | `OkText` | `string?` | `` | Parameter |  | Confirm button text. When null, falls back to the localized "OK". |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the picker popup opens. |
 | `PopupVariant` | `TimePickerVariant` | `TimePickerVariant.Dial` | Parameter |  | Popup style: an analog clock Dial (default) or Dropdown columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry mode inside the dial dialog, a single combobox list of times), the variant's description says so. |
+| `ShowKeyboardToggle` | `bool` | `true` | Parameter |  | Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch, as its columns already take typed digits. |
 | `ShowSeconds` | `bool` | `false` | Parameter |  | Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false. |
 | `Use24Hour` | `bool?` | `` | Parameter |  | Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture. |
 | `Value` | `TimeOnly?` | `` | Parameter |  | Currently selected time. |

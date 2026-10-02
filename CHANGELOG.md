@@ -40,6 +40,10 @@ All notable changes to Flare are documented here. This project adheres to
 - **Calendar keys**: Home/End move to the start/end of the week and PageUp/PageDown by a month (with Shift by a
   year) in the date, date-time and range calendars. `FlareMonthGrid.FocusedDateChanged` reports the day the
   keyboard cursor actually sits on to a custom host.
+- **Keyboard entry in the time picker's clock popup.** A button in the popup switches the dial to an hour and a
+  minute text field (with AM/PM on a 12-hour clock) and back, as the Material time pickers do; Min/Max apply as on
+  the dial. It is on by default and `FlareTimePicker.ShowKeyboardToggle` turns it off. The fields are the new
+  `FlareTimeEntry`, which a custom host can place next to `FlareClockDial`.
 
 ### Fixed
 

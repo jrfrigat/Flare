@@ -183,6 +183,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareTextInput`](components/flare-components-flaretextinput.md)
 - [`FlareThemeProvider`](components/flare-components-flarethemeprovider.md) — The root every Flare app is wrapped in: it cascades the active theme to every component below, restores the visitor's saved theme, palette and mode, follows the OS light/dark preference and its accent colour, and holds the app's splash until the themed first frame has painted.
 - [`FlareThemeScope`](components/flare-components-flarethemescope.md) — Re-themes one subtree without disturbing the rest of the app - a dark toolbar over a light page, or a preview pane showing another design system. Each axis left unset keeps the surrounding theme's answer, so a scope can change only the mode, only the palette, or all three.
+- [`FlareTimeEntry`](components/flare-components-flaretimeentry.md)
 - [`FlareTimePicker`](components/flare-components-flaretimepicker.md) — Time field with a masked text entry and a clock-dial or column popup, bound to a TimeOnly.
 - [`FlareTimeSpanPicker`](components/flare-components-flaretimespanpicker.md)
 - [`FlareTimeline`](components/flare-components-flaretimeline.md)

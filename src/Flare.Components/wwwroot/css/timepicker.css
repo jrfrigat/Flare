@@ -79,6 +79,7 @@
   color: var(--flare-color-on-primary-container);
 }
 .flare-timepicker__actions { display: flex; justify-content: flex-end; gap: var(--flare-spacing-4); margin-top: var(--flare-spacing-6); }
+.flare-timepicker__actions-lead { margin-inline-end: auto; }
 
 /* ---- Dial variant (analog clock) ---- */
 .flare-timepicker__panel--dropdown { min-width: var(--flare-timepicker-panel-min-width); }
@@ -124,6 +125,37 @@
 .flare-timepicker__period-btn--selected {
   background: var(--flare-color-tertiary-container);
   color: var(--flare-color-on-tertiary-container);
+}
+
+/* ---- Keyboard entry (FlareTimeEntry): the dial's time fields as text inputs, labelled below ---- */
+.flare-timepicker__entry {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--flare-spacing-2);
+  margin: var(--flare-spacing-6) 0 var(--flare-spacing-4);
+}
+.flare-timepicker__entry .flare-timepicker__time-fields-sep { line-height: var(--flare-timepicker-time-field-height); }
+.flare-timepicker__entry .flare-timepicker__period { margin-inline-start: var(--flare-spacing-6); }
+.flare-timepicker__entry-field { display: flex; flex-direction: column; gap: var(--flare-spacing-2); }
+.flare-timepicker__entry-label { font-size: var(--flare-typescale-body-small-size); color: var(--flare-color-on-surface-variant); }
+.flare-timepicker__entry-input {
+  box-sizing: border-box;
+  width: var(--flare-timepicker-time-field-width);
+  font-family: inherit;
+  text-align: center;
+  cursor: text;
+}
+.flare-timepicker__entry-input:focus {
+  background: var(--flare-color-primary-container);
+  color: var(--flare-color-on-primary-container);
+  outline: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-primary);
+  outline-offset: 0;
+}
+.flare-timepicker__entry-input--invalid,
+.flare-timepicker__entry-input--invalid:focus {
+  outline: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-error);
+  outline-offset: 0;
 }
 
 .flare-timepicker__dial {

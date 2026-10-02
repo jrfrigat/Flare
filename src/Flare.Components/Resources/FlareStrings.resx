@@ -95,6 +95,11 @@
   <data name="TimePicker_Hours" xml:space="preserve"><value>Hours</value></data>
   <data name="TimePicker_Minutes" xml:space="preserve"><value>Minutes</value></data>
   <data name="TimePicker_Seconds" xml:space="preserve"><value>Seconds</value></data>
+  <data name="TimePicker_EnterTime" xml:space="preserve"><value>Enter time</value></data>
+  <data name="TimePicker_SwitchToKeyboard" xml:space="preserve"><value>Switch to text input</value></data>
+  <data name="TimePicker_SwitchToDial" xml:space="preserve"><value>Switch to clock</value></data>
+  <data name="TimePicker_Hour" xml:space="preserve"><value>Hour</value></data>
+  <data name="TimePicker_Minute" xml:space="preserve"><value>Minute</value></data>
 
   <!-- Field (shared field-family strings) -->
   <data name="Field_NoResults" xml:space="preserve"><value>No results</value></data>

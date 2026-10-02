@@ -181,6 +181,7 @@ This component exposes no documented public methods.
 - `FlareTextArea`
 - `FlareTextField`
 - `FlareTextInput`
+- `FlareTimeEntry`
 - `FlareTimePicker`
 - `FlareTimeSpanPicker`
 - `FlareTimeline`

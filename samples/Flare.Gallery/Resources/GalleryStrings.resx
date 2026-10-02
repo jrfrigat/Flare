@@ -3687,6 +3687,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="TpDemo_DialHelper" xml:space="preserve">
     <value>Type 1233 for 12:33, or pick on the clock</value>
   </data>
+  <data name="TpDemo_KeyboardNote" xml:space="preserve">
+    <value>The keyboard button in the clock popup switches to typing the hour and minute; the clock button switches back.</value>
+  </data>
   <data name="TpDemo_Dial24Label" xml:space="preserve">
     <value>Clock dial, 24-hour</value>
   </data>

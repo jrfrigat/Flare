@@ -1,0 +1,162 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
+@inject Flare.Components.Services.IElementJsService ElementJs
+
+@* Keyboard entry of the time picker popup: the hour and minute as text fields labelled below, plus AM/PM on
+   a 12-hour clock. The keyboard counterpart of FlareClockDial; the host switches between the two. *@
+<div class="@Css.Classes.TimeEntry.Root" role="group" aria-label="@FlareStrings.TimePicker_EnterTime">
+    <div class="@Css.Classes.TimeEntry.Field">
+        <input @ref="_hourEl" id="@($"{_id}-h")" class="@InputClass(_hourInvalid)"
+               type="text" inputmode="numeric" maxlength="2" autocomplete="off" value="@_hourText"
+               aria-invalid="@(_hourInvalid ? "true" : null)"
+               @oninput="OnHourInput" @onblur="OnHourBlur" @onkeyup="OnKey" />
+        <label class="@Css.Classes.TimeEntry.Label" for="@($"{_id}-h")">@FlareStrings.TimePicker_Hour</label>
+    </div>
+    <span class="@Css.Classes.ClockDial.TimeFieldsSep" aria-hidden="true">:</span>
+    <div class="@Css.Classes.TimeEntry.Field">
+        <input @ref="_minuteEl" id="@($"{_id}-m")" class="@InputClass(_minuteInvalid)"
+               type="text" inputmode="numeric" maxlength="2" autocomplete="off" value="@_minuteText"
+               aria-invalid="@(_minuteInvalid ? "true" : null)"
+               @oninput="OnMinuteInput" @onblur="OnMinuteBlur" @onkeyup="OnKey" />
+        <label class="@Css.Classes.TimeEntry.Label" for="@($"{_id}-m")">@FlareStrings.TimePicker_Minute</label>
+    </div>
+    @if (!Is24Hour)
+    {
+        <div class="@Css.Classes.ClockDial.Period">
+            <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(!_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
+                    aria-pressed="@(!_isPm)" @onclick="@(() => SetPeriod(false))">@_amText</button>
+            <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
+                    aria-pressed="@_isPm" @onclick="@(() => SetPeriod(true))">@_pmText</button>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Hour of day (0-23).</summary>
+    [Parameter] public int Hour { get; set; }
+    /// <summary>Raised when a valid hour is typed or the period changes.</summary>
+    [Parameter] public EventCallback<int> HourChanged { get; set; }
+    /// <summary>Minute (0-59).</summary>
+    [Parameter] public int Minute { get; set; }
+    /// <summary>Raised when a valid minute is typed.</summary>
+    [Parameter] public EventCallback<int> MinuteChanged { get; set; }
+    /// <summary>24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false.</summary>
+    [Parameter] public bool Is24Hour { get; set; }
+    /// <summary>Raised when Enter is pressed in a field, so the host can confirm the time.</summary>
+    [Parameter] public EventCallback Submitted { get; set; }
+    /// <summary>Raised with false when a field holds a number out of range, and with true once both are valid
+    /// again (fixed or left). The time already reported is the last valid one, so a host should not confirm
+    /// while the entry is invalid.</summary>
+    [Parameter] public EventCallback<bool> ValidityChanged { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.TimeEntry.Root;
+
+    private readonly string _id = $"flare-time-entry-{Guid.NewGuid():N}";
+    private ElementReference _hourEl;
+    private ElementReference _minuteEl;
+    private string _hourText = string.Empty;
+    private string _minuteText = string.Empty;
+    private bool _hourInvalid;
+    private bool _minuteInvalid;
+    // While a field is being typed in, its text is the user's: a parent re-render must not reformat "1"
+    // to "01" before the second digit arrives.
+    private bool _editingHour;
+    private bool _editingMinute;
+    private bool _focusMinute;
+
+    private bool _isPm => Hour >= 12;
+    private int _displayHour => Is24Hour ? Hour : (Hour % 12 == 0 ? 12 : Hour % 12);
+    private string _amText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator, "AM");
+    private string _pmText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator, "PM");
+    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
+
+    private static string InputClass(bool invalid) =>
+        $"{Css.Classes.ClockDial.TimeField} {Css.Classes.TimeEntry.Input}{(invalid ? " " + Css.Classes.TimeEntry.InputInvalid : "")}";
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        if (!_editingHour) _hourText = _displayHour.ToString("00", CultureInfo.InvariantCulture);
+        if (!_editingMinute) _minuteText = Minute.ToString("00", CultureInfo.InvariantCulture);
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try { await _hourEl.FocusAsync(); } catch { /* focus is best-effort */ }
+        }
+        if (_focusMinute)
+        {
+            _focusMinute = false;
+            try { await _minuteEl.FocusAsync(); } catch { /* focus is best-effort */ }
+        }
+    }
+
+    private static string Digits(string? raw) => new string((raw ?? string.Empty).Where(char.IsAsciiDigit).Take(2).ToArray());
+
+    // Keeps only digits; when the browser holds anything else the text is written back, as Blazor skips a
+    // DOM write whose value equals the last rendered one.
+    private async Task<string> CleanAsync(ElementReference el, string? raw)
+    {
+        var digits = Digits(raw);
+        if (digits != (raw ?? string.Empty)) await MaskedCaret.RestoreAsync(ElementJs, el, digits, digits.Length);
+        return digits;
+    }
+
+    private async Task OnHourInput(ChangeEventArgs e)
+    {
+        _editingHour = true;
+        _hourText = await CleanAsync(_hourEl, e.Value?.ToString());
+        var n = _hourText.Length == 0 ? -1 : int.Parse(_hourText, CultureInfo.InvariantCulture);
+        await SetInvalidAsync(hour: n >= 0 && !(Is24Hour ? n <= 23 : n is >= 1 and <= 12), _minuteInvalid);
+        if (n < 0 || _hourInvalid) return;
+        await HourChanged.InvokeAsync(Is24Hour ? n : (n % 12) + (_isPm ? 12 : 0));
+        // Two digits finish the hour; the minute is next, as on the dial.
+        if (_hourText.Length == 2) _focusMinute = true;
+    }
+
+    private async Task OnMinuteInput(ChangeEventArgs e)
+    {
+        _editingMinute = true;
+        _minuteText = await CleanAsync(_minuteEl, e.Value?.ToString());
+        var n = _minuteText.Length == 0 ? -1 : int.Parse(_minuteText, CultureInfo.InvariantCulture);
+        await SetInvalidAsync(_hourInvalid, minute: n > 59);
+        if (n < 0 || _minuteInvalid) return;
+        await MinuteChanged.InvokeAsync(n);
+    }
+
+    // Leaving a field shows the time the popup holds, whatever was left half-typed or out of range.
+    private async Task OnHourBlur()
+    {
+        _editingHour = false;
+        await SetInvalidAsync(false, _minuteInvalid);
+        _hourText = _displayHour.ToString("00", CultureInfo.InvariantCulture);
+    }
+
+    private async Task OnMinuteBlur()
+    {
+        _editingMinute = false;
+        await SetInvalidAsync(_hourInvalid, false);
+        _minuteText = Minute.ToString("00", CultureInfo.InvariantCulture);
+    }
+
+    private async Task SetInvalidAsync(bool hour, bool minute)
+    {
+        var wasValid = !_hourInvalid && !_minuteInvalid;
+        _hourInvalid = hour;
+        _minuteInvalid = minute;
+        var valid = !hour && !minute;
+        if (valid != wasValid) await ValidityChanged.InvokeAsync(valid);
+    }
+
+    // Enter confirms on key-up: confirming on key-down closes the popup and returns focus to the toggle
+    // button while the key is still down, and the browser then activates that button, opening the popup again.
+    private Task OnKey(KeyboardEventArgs e) => e.Key == "Enter" ? Submitted.InvokeAsync() : Task.CompletedTask;
+
+    private Task SetPeriod(bool pm) => HourChanged.InvokeAsync((Hour % 12) + (pm ? 12 : 0));
+}

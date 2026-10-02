@@ -58,7 +58,14 @@
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>
             <div class="@Css.Classes.TimePicker.PanelHeadline">@_headline</div>
 
-            @if (PopupVariant == TimePickerVariant.Dial)
+            @if (PopupVariant == TimePickerVariant.Dial && _keyboardEntry)
+            {
+                <FlareTimeEntry Hour="_tempHour" HourChanged="h => _tempHour = h"
+                                Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
+                                Is24Hour="_is24Hour" Submitted="Confirm"
+                                ValidityChanged="v => _entryInvalid = !v" />
+            }
+            else if (PopupVariant == TimePickerVariant.Dial)
             {
                 <FlareClockDial Hour="_tempHour" HourChanged="h => _tempHour = h"
                                 Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
@@ -117,6 +124,14 @@
             }
 
             <div class="@Css.Classes.TimePicker.Actions">
+                @if (_showKeyboardToggle)
+                {
+                    <span class="@Css.Classes.TimePicker.ActionsLead">
+                        <FlareIconButton Icon="@(_keyboardEntry ? FlareIcons.Schedule : FlareIcons.Keyboard)"
+                                         AriaLabel="@(_keyboardEntry ? FlareStrings.TimePicker_SwitchToDial : FlareStrings.TimePicker_SwitchToKeyboard)"
+                                         Size="ButtonSize.Sm" OnClick="ToggleKeyboardEntry" />
+                    </span>
+                }
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Close">@(CancelText ?? FlareStrings.Picker_Cancel)</FlareButton>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm" Disabled="@(!CanConfirm)">@(OkText ?? FlareStrings.Picker_Ok)</FlareButton>
             </div>

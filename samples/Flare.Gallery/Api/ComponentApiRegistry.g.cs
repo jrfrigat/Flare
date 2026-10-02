@@ -1704,6 +1704,7 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTextInput",
+                @"FlareTimeEntry",
                 @"FlareTimePicker",
                 @"FlareTimeSpanPicker",
                 @"FlareTimeline",
@@ -6504,6 +6505,35 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareTimeEntry"] = new ApiComponentInfo(
+            @"FlareTimeEntry",
+            @"Flare.Components.FlareTimeEntry",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Hour", @"int", @"0", @"Hour of day (0-23).", null, false, false, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when a valid hour is typed or the period changes.", null, false, true, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false.", null, false, false, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"Minute", @"int", @"0", @"Minute (0-59).", null, false, false, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"MinuteChanged", @"EventCallback<int>", null, @"Raised when a valid minute is typed.", null, false, true, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"Submitted", @"EventCallback", null, @"Raised when Enter is pressed in a field, so the host can confirm the time.", null, false, true, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"ValidityChanged", @"EventCallback<bool>", null, @"Raised with false when a field holds a number out of range, and with true once both are valid again (fixed or left). The time already reported is the last valid one, so a host should not confirm while the entry is invalid.", null, false, true, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareTimePicker"] = new ApiComponentInfo(
             @"FlareTimePicker",
             @"Flare.Components.FlareTimePicker",
@@ -6525,6 +6555,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OkText", @"string?", null, @"Confirm button text. When null, falls back to the localized ""OK"".", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Opened", @"EventCallback", null, @"Raised when the picker popup opens.", null, false, true, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"PopupVariant", @"TimePickerVariant", @"TimePickerVariant.Dial", @"Popup style: an analog clock Dial (default) or Dropdown columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry mode inside the dial dialog, a single combobox list of times), the variant's description says so.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"ShowKeyboardToggle", @"bool", @"true", @"Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch, as its columns already take typed digits.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"ShowSeconds", @"bool", @"false", @"Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Use24Hour", @"bool?", null, @"Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Value", @"TimeOnly?", null, @"Currently selected time.", null, false, false, false, @"FlareTimePicker"),

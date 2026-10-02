@@ -3687,6 +3687,9 @@
   <data name="TpDemo_DialHelper" xml:space="preserve">
     <value>Введите 1233 для 12:33 или выберите на циферблате</value>
   </data>
+  <data name="TpDemo_KeyboardNote" xml:space="preserve">
+    <value>Кнопка с клавиатурой в окне циферблата переключает на ввод часа и минуты, кнопка с часами возвращает циферблат.</value>
+  </data>
   <data name="TpDemo_Dial24Label" xml:space="preserve">
     <value>Циферблат, 24 часа</value>
   </data>
