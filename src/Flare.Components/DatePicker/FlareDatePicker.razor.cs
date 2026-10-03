@@ -189,18 +189,16 @@ public partial class FlareDatePicker
     {
         UpdateFieldIdentifier(For);
 
-        // Sync the field text when Value or its display (DateFormat, Culture) changes externally - not while
-        // the user is editing (TASK-113).
-        if (!_focused)
+        // A new value always re-syncs the text and cancels any input still in flight - a parent's value wins over
+        // keystrokes typed against the old one (TASK-163); a new display (DateFormat, Culture) only outside
+        // editing (TASK-113). A focused field takes the value in its editing form.
+        var display = DisplayValue;
+        if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
-            var display = DisplayValue;
-            if (!Equals(Value, _syncedValue) || display != _syncedText)
-            {
-                _syncedValue = Value;
-                _syncedText = display;
-                _text = display;
-                _editGeneration++;
-            }
+            _syncedValue = Value;
+            _syncedText = display;
+            _text = _focused && Value.HasValue && ParseInput is null ? Value.Value.ToString(_numericPattern, _culture) : display;
+            _editGeneration++;
         }
     }
 

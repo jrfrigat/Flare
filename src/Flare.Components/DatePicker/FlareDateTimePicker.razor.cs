@@ -195,17 +195,16 @@ public partial class FlareDateTimePicker
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         // The popup draft (day, hour, minute) is loaded from Value when the popup opens, not here: a parent
         // re-render must not wipe a pick in progress (TASK-107).
-        // Re-sync on a new value or a new display (DateTimeFormat, Culture), not while editing (TASK-113).
-        if (!_focused)
+        // A new value always re-syncs the text and cancels any input still in flight - a parent's value wins over
+        // keystrokes typed against the old one (TASK-163); a new display (DateTimeFormat, Culture) only outside
+        // editing (TASK-113). A focused field takes the value in its editing form.
+        var display = FormattedValue;
+        if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
-            var display = FormattedValue;
-            if (!Equals(Value, _syncedValue) || display != _syncedText)
-            {
-                _syncedValue = Value;
-                _syncedText = display;
-                _text = display;
-                _editGeneration++;
-            }
+            _syncedValue = Value;
+            _syncedText = display;
+            _text = _focused && Value.HasValue && ParseInput is null ? Value.Value.ToString(_numericPattern, _culture) : display;
+            _editGeneration++;
         }
     }
 

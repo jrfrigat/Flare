@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A value the parent sets while a date or date-time field has focus is no longer overwritten.** A keystroke
+  still waiting for its caret position used to commit the old typed text over the new value; now the new value
+  wins and the field shows it in its editing form, as the time picker already did.
 - **A date picker opened before its field was locked still closes.** If the parent made the field `Disabled` or
   `ReadOnly` while the calendar was open, `CloseAsync`, the scrim and Escape all left it open with its focus
   trap; now they close it, and the days stay unavailable.
