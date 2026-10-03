@@ -55,4 +55,7 @@ public static class LocalVars
     public const string ChartDot = "--flare-chart-dot";
     /// <summary>CSS custom-property name for the line count one clamped text run stops at.</summary>
     public const string TextMaxLines = "--flare-text-max-lines";
+    /// <summary>CSS custom-property name for the height an anchored panel has on the side it was placed on;
+    /// written by the placement engine when the panel does not fit, read by lists nested inside it.</summary>
+    public const string AnchoredRoom = "--flare-anchored-room";
 }

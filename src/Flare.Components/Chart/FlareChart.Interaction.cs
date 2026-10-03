@@ -24,8 +24,8 @@ public partial class FlareChart
     // the placement engine, which works in pixels - the same reason ICollisionService.Offset is one.
     private const int TooltipGap = 8;
 
-    private readonly string _tooltipLayerId = $"flare-chart-tooltip-{Guid.NewGuid():N}";
-    private bool _tooltipLayered;
+    // The bubble follows the hovered point: the shared anchored layer re-places it when the point moves.
+    private readonly AnchoredLayer _tooltipLayer = new();
     private double _placedXPct = double.NaN;
     private double _placedYPct = double.NaN;
 
@@ -75,34 +75,26 @@ public partial class FlareChart
     // then keeps the bubble on its point without the chart re-sending anything.
     private async Task SyncTooltipLayerAsync()
     {
-        try
+        if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {
-            if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
-            {
-                // Moving to a neighbouring point re-renders the chart; re-placing on a point that did not
-                // move would be a JS call per repaint.
-                if (_tooltipLayered && _placedXPct == _hoverXPct && _placedYPct == _hoverYPct) return;
-                await Overlay.PositionAnchoredPanelAsync(_tooltipLayerId, _plotRef, _tooltipRef,
-                    new AnchoredPanelOptions
-                    {
-                        Placement = PanelPlacement.Top,
-                        Gap = TooltipGap,
-                        AnchorPoint = new PanelAnchorPoint(_hoverXPct, _hoverYPct),
-                    });
-                _tooltipLayered = true;
-                _placedXPct = _hoverXPct;
-                _placedYPct = _hoverYPct;
-            }
-            else if (_tooltipLayered)
-            {
-                await Overlay.RemoveAnchoredPanelAsync(_tooltipLayerId);
-                _tooltipLayered = false;
-                _placedXPct = _placedYPct = double.NaN;
-            }
+            // Moving to a neighbouring point re-renders the chart; re-placing on a point that did not
+            // move would be a JS call per repaint.
+            if (_tooltipLayer.Placed && _placedXPct == _hoverXPct && _placedYPct == _hoverYPct) return;
+            await _tooltipLayer.ForceAsync(Overlay, _plotRef, _tooltipRef,
+                new AnchoredPanelOptions
+                {
+                    Placement = PanelPlacement.Top,
+                    Gap = TooltipGap,
+                    AnchorPoint = new PanelAnchorPoint(_hoverXPct, _hoverYPct),
+                });
+            _placedXPct = _hoverXPct;
+            _placedYPct = _hoverYPct;
         }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        else if (_tooltipLayer.Placed)
+        {
+            await _tooltipLayer.ReleaseAsync(Overlay);
+            _placedXPct = _placedYPct = double.NaN;
+        }
     }
 
     // Only an integer change matters: the viewBox is written in whole units, so re-rendering on sub-pixel
@@ -118,14 +110,7 @@ public partial class FlareChart
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
-        if (_tooltipLayered)
-        {
-            try { await Overlay.RemoveAnchoredPanelAsync(_tooltipLayerId); }
-            catch (InvalidOperationException) { }
-            catch (JSDisconnectedException) { }
-            catch (JSException) { }
-            _tooltipLayered = false;
-        }
+        await _tooltipLayer.ReleaseAsync(Overlay);
         if (_sizeSubscription is not null)
         {
             try { await _sizeSubscription.DisposeAsync(); }

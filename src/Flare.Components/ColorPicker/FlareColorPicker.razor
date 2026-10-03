@@ -119,6 +119,8 @@ else
     private ElementReference _triggerEl;
     private ElementReference _panelEl;
     private bool _outsideRegistered;
+    // Placement is the shared anchored layer's; the picker adds the outside-click dismissal.
+    private readonly AnchoredLayer _layer = new();
     // All JS interop for this component is via injected services: popup behaviours (IOverlayJsService),
     // the saturation/lightness canvas (IColorCanvasJsService) and the eye-dropper (IUiJsService).
 
@@ -202,14 +204,13 @@ else
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
                 await Overlay.RegisterDismissAsync(_triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
-                // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
-                await Overlay.PositionAnchoredPanelAsync(_triggerId, _triggerEl, _panelEl);
             }
             else
             {
                 await Overlay.RemoveDismissAsync(_triggerId);
-                await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
+            // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
+            await _layer.SyncAsync(Overlay, _open, _triggerEl, _panelEl);
             _outsideRegistered = _open;
         }
         catch (JSDisconnectedException) { }
@@ -241,10 +242,8 @@ else
         try
         {
             if (_outsideRegistered)
-            {
                 await Overlay.RemoveDismissAsync(_triggerId);
-                await Overlay.RemoveAnchoredPanelAsync(_triggerId);
-            }
+            await _layer.ReleaseAsync(Overlay);
             if (_canvasInitialized)
                 await Canvas.DestroyAsync(_canvas);
         }

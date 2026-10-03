@@ -11,14 +11,12 @@ namespace Flare.Components;
 /// </summary>
 internal sealed class PickerPopup(IOverlayJsService overlay, string id)
 {
-    private bool _positioned;
+    // Placement belongs to the shared anchored layer; this type adds only the modal focus handling.
+    private readonly AnchoredLayer _layer = new();
     private bool _trapped;
     private bool _returnToField;
 
     private string TrapId => id + "-trap";
-
-    /// <summary>The popup's anchored-panel id, unique per picker.</summary>
-    public string Id => id;
 
     /// <summary>Sends focus to the field rather than the toggle when the popup next closes (Escape).</summary>
     public void ReturnToField() => _returnToField = true;
@@ -32,17 +30,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     public async Task SyncAsync(bool open, ElementReference anchor, ElementReference panel, AnchoredPanelOptions? options,
         ElementReference field, ElementReference? toggle, Func<Task>? focusOnOpen = null)
     {
-        if (open != _positioned)
-        {
-            try
-            {
-                if (open) await overlay.PositionAnchoredPanelAsync(id, anchor, panel, options);
-                else await overlay.RemoveAnchoredPanelAsync(id);
-                _positioned = open;
-            }
-            catch (JSDisconnectedException) { }
-            catch (JSException) { }
-        }
+        await _layer.SyncAsync(overlay, open, anchor, panel, options);
 
         if (open == _trapped) return;
         _trapped = open;
@@ -73,8 +61,6 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
             catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
-        try { await overlay.RemoveAnchoredPanelAsync(id); }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        await _layer.ReleaseAsync(overlay);
     }
 }

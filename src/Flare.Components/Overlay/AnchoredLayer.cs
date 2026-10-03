@@ -12,6 +12,10 @@ namespace Flare.Components;
 /// to swallow. Written once here, a component adds a field and one call in
 /// <c>OnAfterRenderAsync</c> instead of fifteen lines that have to agree with fourteen other copies.
 ///
+/// It is the only caller of the placement interop in the library: dismissal (FlarePopup, the colour picker),
+/// modal focus (the date and time pickers' popup) and a moving tooltip (the chart) are added around it, so
+/// every panel gets the same side choice, viewport clamp and height cap.
+///
 /// It deliberately does NOT own the elements. An <see cref="ElementReference"/> captured by a parent and
 /// passed down as a parameter is a render behind, so the panel has to be declared by the component that
 /// shows it; only the lifecycle is shared.

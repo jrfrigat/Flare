@@ -149,6 +149,12 @@ function demote(panel) {
 //               (a context menu pinned to the pointer). Static by nature, so it does not follow
 //               scrolling; nothing that uses it did before either.
 //   topLayer    false to keep the panel out of the top layer (default true).
+//
+// Height: a panel taller than the room on the side it lands on is capped to that room and scrolls inside
+// (inline max-height + overflow-y), so no panel covers its anchor or leaves the screen - whether or not
+// its own stylesheet limits its height. The room is also published as --flare-anchored-room, so a list
+// nested inside the panel can shrink itself instead of the panel growing a second scrollbar. A panel
+// whose size changes while open (a tab switch, a month with one more week) is placed again.
 const _anchoredPanels = registry();
 // id -> the element currently held in the top layer. Separate from the listener registry because the
 // two have different lifetimes: a panel that follows a moving anchor (a chart tooltip tracking the
@@ -158,6 +164,32 @@ const _anchoredPanels = registry();
 const _topLayer = new Map();
 
 const SIDES = ['bottom', 'top', 'left', 'right'];
+const ROOM_VAR = '--flare-anchored-room';
+
+// Undoes the height cap a placement put on the panel; only the engine's own inline values are touched.
+function uncap(panel) {
+    if (!('flareCapped' in panel.dataset)) return;
+    delete panel.dataset.flareCapped;
+    panel.style.maxHeight = '';
+    panel.style.overflowY = '';
+    panel.style.removeProperty(ROOM_VAR);
+}
+
+// Re-places a panel whose own size changed after it was placed. The first report, which only states the
+// size the panel already had, and any report of an unchanged size are ignored, so capping inside place()
+// cannot feed back into itself.
+function observeSize(panel, place) {
+    if (typeof ResizeObserver !== 'function') return () => { };
+    let w = panel.offsetWidth, h = panel.offsetHeight;
+    const ro = new ResizeObserver(() => {
+        const nw = panel.offsetWidth, nh = panel.offsetHeight;
+        if (nw === w && nh === h) return;
+        place();
+        w = panel.offsetWidth; h = panel.offsetHeight;
+    });
+    ro.observe(panel);
+    return () => ro.disconnect();
+}
 
 export function positionAnchoredPanel(id, anchor, panel, options) {
     _anchoredPanels.drop(id);
@@ -193,6 +225,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     };
 
     const place = () => {
+        uncap(panel);
         const a = anchorBox();
         // The band the reader can actually SEE, not the window. An on-screen keyboard shrinks the
         // visual viewport and fires no window resize, so a panel opened from the field the user just
@@ -215,7 +248,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
             panel.style.width = 'max-content';
             panel.style.maxWidth = `${vw - 2 * margin}px`;
         }
-        const p = panel.getBoundingClientRect();
+        let p = panel.getBoundingClientRect();
         const room = { top: a.top - vTop, bottom: vBottom - a.bottom, left: a.left - vLeft, right: vRight - a.right };
         const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
         const need = (s) => (s === 'top' || s === 'bottom' ? p.height : p.width) + gap;
@@ -224,6 +257,20 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         const side = room[wantSide] >= need(wantSide) || room[wantSide] >= room[opposite[wantSide]]
             ? wantSide
             : opposite[wantSide];
+
+        // The room the panel actually gets on that side. A panel that does not fit is capped to it and
+        // scrolls inside; nested lists read the same number from the custom property and shrink first.
+        const vertical = side === 'top' || side === 'bottom';
+        const avail = Math.floor(vertical ? room[side] - gap - margin : vh - 2 * margin);
+        if (p.height > avail && avail > 0) {
+            panel.dataset.flareCapped = '';
+            panel.style.setProperty(ROOM_VAR, `${avail}px`);
+            if (panel.getBoundingClientRect().height > avail) {
+                panel.style.maxHeight = `${avail}px`;
+                panel.style.overflowY = 'auto';
+            }
+            p = panel.getBoundingClientRect();
+        }
 
         let top, left;
         if (side === 'bottom' || side === 'top') {
@@ -251,6 +298,8 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     place();
 
     _anchoredPanels.keep(id, all(
+        () => uncap(panel),
+        observeSize(panel, place),
         listen(window, 'scroll', place, { passive: true, capture: true }),
         listen(window, 'resize', place, { passive: true }),
         // The keyboard opening and closing reaches the page only here; listen() ignores a null target,

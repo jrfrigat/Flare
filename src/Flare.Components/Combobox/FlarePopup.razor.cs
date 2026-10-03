@@ -42,6 +42,8 @@ public partial class FlarePopup
 
     private ElementReference _panel;
     private readonly string _id = $"flare-popup-{Guid.NewGuid():N}";
+    // Placement is the shared anchored layer's; this component adds only the dismissal around it.
+    private readonly AnchoredLayer _layer = new();
     private DotNetObjectReference<FlarePopup>? _selfRef;
     private bool _registered;
 
@@ -52,20 +54,18 @@ public partial class FlarePopup
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (Open == _registered) return;
+        await _layer.SyncAsync(Overlay, Open, Anchor, _panel, new AnchoredPanelOptions { MatchWidth = MatchWidth });
         try
         {
             if (Open)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await Overlay.PositionAnchoredPanelAsync(_id, Anchor, _panel,
-                    new AnchoredPanelOptions { MatchWidth = MatchWidth });
                 await Overlay.RegisterDismissAsync(_id, DismissRoot, _selfRef, nameof(DismissFromJs));
                 _registered = true;
             }
             else
             {
                 await Overlay.RemoveDismissAsync(_id);
-                await Overlay.RemoveAnchoredPanelAsync(_id);
                 _registered = false;
             }
         }
@@ -91,14 +91,11 @@ public partial class FlarePopup
     {
         if (_registered)
         {
-            try
-            {
-                await Overlay.RemoveDismissAsync(_id);
-                await Overlay.RemoveAnchoredPanelAsync(_id);
-            }
+            try { await Overlay.RemoveDismissAsync(_id); }
             catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
+        await _layer.ReleaseAsync(Overlay);
         _selfRef?.Dispose();
         await base.DisposeAsync();
     }

@@ -51,6 +51,12 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **Popups no longer cover their field or run off a low screen.** A popup taller than the room on either side of its
+  field - a time picker's columns in a 600px window, a date-time picker on a phone - was placed on the roomier side
+  and then pushed back over the field it belongs to. Every anchored popup (pickers, select lists, colour picker,
+  menus, popovers) now gets the room on the side it opens to and scrolls inside when it needs more; a list inside it
+  shrinks first, so there is one scrollbar, not two. A popup that changes size while open - switching the date-time
+  picker's tab - is placed again.
 - **A confirmation from `IDialogService` can be dismissed.** `ConfirmAsync` and `AlertAsync` ignored a click on the
   scrim and the Escape key, and a route change neither closed the dialog nor ended the caller's wait. They now close
   the way every other Flare dialog does: `ConfirmAsync` returns `null` - the "dismissed without an answer" result its
