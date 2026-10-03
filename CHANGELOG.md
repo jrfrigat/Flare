@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The date-time picker no longer throws on the first and last day of the date range.** With an offset that
+  pushes the picked time past the earliest or latest representable instant (1 January 0001 at +05:00), rendering
+  the popup threw; now OK waits until the picked time is representable.
 - **Popups no longer cover their field or run off a low screen.** A popup taller than the room on either side of its
   field - a time picker's columns in a 600px window, a date-time picker on a phone - was placed on the roomier side
   and then pushed back over the field it belongs to. Every anchored popup (pickers, select lists, colour picker,

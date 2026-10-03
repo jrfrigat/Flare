@@ -379,24 +379,29 @@ public partial class FlareDateTimePicker
 
     // The value the popup would commit, or null when no day is picked. Keeps the value's offset and every tick
     // the popup cannot edit - below the minute, or below the second with ShowSeconds: re-confirming without
-    // editing must not move the instant (TASK-103, TASK-136).
-    private DateTimeOffset? ComposeValue()
+    // editing must not move the instant (TASK-103, TASK-136). Returns false when that wall time with its offset is
+    // not a representable instant - the first or last day of the DateTimeOffset range at an offset that pushes UTC
+    // past it (TASK-160).
+    private bool TryComposeDraft(out DateTimeOffset? value)
     {
-        if (_selectedDate is not { } day) return null;
+        value = null;
+        if (_selectedDate is not { } day) return true;
         var ticks = Value?.Ticks ?? 0;
-        var wall = ShowSeconds
-            ? day.ToDateTime(new TimeOnly(_hour, _minute, _second)).AddTicks(ticks % TimeSpan.TicksPerSecond)
-            : day.ToDateTime(new TimeOnly(_hour, _minute)).AddTicks(ticks % TimeSpan.TicksPerMinute);
-        return new DateTimeOffset(wall, OffsetFor(wall));
+        var (wall, hidden) = ShowSeconds
+            ? (day.ToDateTime(new TimeOnly(_hour, _minute, _second)), ticks % TimeSpan.TicksPerSecond)
+            : (day.ToDateTime(new TimeOnly(_hour, _minute)), ticks % TimeSpan.TicksPerMinute);
+        if (!TryCompose(wall, hidden, out var composed)) return false;
+        value = composed;
+        return true;
     }
 
-    // OK is offered only for a value inside [Min; Max], as for the text input (TASK-101, TASK-125).
-    private bool CanConfirm => ComposeValue() is not { } dt || IsAllowed(dt);
+    // OK is offered only for a representable value inside [Min; Max], as for the text input (TASK-101, TASK-125).
+    private bool CanConfirm => TryComposeDraft(out var dt) && (dt is not { } v || IsAllowed(v));
 
     private async Task Confirm()
     {
-        if (!CanConfirm) return;
-        if (ComposeValue() is { } dt) await CommitValue(dt);
+        if (!CanConfirm || !TryComposeDraft(out var dt)) return;
+        if (dt is { } v) await CommitValue(v);
         await CloseAsync();
     }
 
