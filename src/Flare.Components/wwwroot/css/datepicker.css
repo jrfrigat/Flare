@@ -259,3 +259,10 @@
 .flare-datepicker__year-btn--selected:hover {
   background: var(--flare-color-primary);
 }
+
+/* A month or year wholly outside Min/Max: dimmed like a disabled day. */
+.flare-datepicker__month-btn:disabled,
+.flare-datepicker__year-btn:disabled {
+  opacity: var(--flare-picker-disabled-opacity);
+  cursor: not-allowed;
+}

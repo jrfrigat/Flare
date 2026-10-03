@@ -98,7 +98,7 @@
                         var month = m;
                         <button type="button"
                                 class="@Css.Classes.DatePicker.MonthBtn @(month == _viewMonth ? Css.Classes.DatePicker.MonthSelected : "")"
-                                aria-pressed="@(month == _viewMonth ? "true" : "false")"
+                                aria-pressed="@(month == _viewMonth ? "true" : "false")" disabled="@MonthUnavailable(month)"
                                 @onclick="@(() => SelectMonth(month))"
                                 @onclick:stopPropagation>
                             @(new DateTime(2000, month, 1).ToString("MMM", _culture))
@@ -114,7 +114,7 @@
                         var year = y;
                         <button type="button"
                                 class="@Css.Classes.DatePicker.YearBtn @(year == _viewYear ? Css.Classes.DatePicker.YearSelected : "")"
-                                aria-pressed="@(year == _viewYear ? "true" : "false")"
+                                aria-pressed="@(year == _viewYear ? "true" : "false")" disabled="@YearUnavailable(year)"
                                 @onclick="@(() => SelectYear(year))"
                                 @onclick:stopPropagation>
                             @CalendarMath.YearLabel(year, _culture)

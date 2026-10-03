@@ -201,6 +201,9 @@ public partial class FlareDatePicker
         // keystrokes typed against the old one (TASK-163); a new display (DateFormat, Culture) only outside
         // editing (TASK-113). A focused field takes the value in its editing form.
         var display = DisplayValue;
+        // A new value set from outside shows its month: an inline calendar is never reopened to re-anchor it, and a
+        // new display alone (Culture, DateFormat) keeps the month the user browsed to (TASK-176).
+        if (!Equals(Value, _syncedValue) && Value is { } shown) { _viewYear = shown.Year; _viewMonth = shown.Month; }
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
             _syncedValue = Value;
@@ -331,14 +334,24 @@ public partial class FlareDatePicker
         }
     }
 
+    // A month or a year wholly outside [Min;Max] cannot be picked from the month and year views (TASK-176).
+    private bool MonthUnavailable(int month) => Disabled ||
+        (Min is { } min && new DateOnly(_viewYear, month, DateTime.DaysInMonth(_viewYear, month)) < min) ||
+        (Max is { } max && new DateOnly(_viewYear, month, 1) > max);
+
+    private bool YearUnavailable(int year) => Disabled || year < 1 || year > 9999 ||
+        (Min is { } min && year < min.Year) || (Max is { } max && year > max.Year);
+
     private void SelectMonth(int m)
     {
+        if (MonthUnavailable(Math.Clamp(m, 1, 12))) return;
         _viewMonth = Math.Clamp(m, 1, 12);
         _calView = CalendarView.Day;
     }
 
     private void SelectYear(int y)
     {
+        if (YearUnavailable(y)) return;
         _viewYear = Math.Clamp(y, 1, 9999);
         _calView = CalendarView.Month;
     }
