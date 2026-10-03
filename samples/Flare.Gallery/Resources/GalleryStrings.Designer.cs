@@ -11806,5 +11806,32 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized TpDemo_Value string.</summary>
         public static string TpDemo_Value => ResourceManager.GetString("TpDemo_Value", resourceCulture);
 
+        /// <summary>Looks up the localized DatePicker_Calendars string.</summary>
+        public static string DatePicker_Calendars => ResourceManager.GetString("DatePicker_Calendars", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_PersianLabel string.</summary>
+        public static string DpDemo_PersianLabel => ResourceManager.GetString("DpDemo_PersianLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_PersianHelper string.</summary>
+        public static string DpDemo_PersianHelper => ResourceManager.GetString("DpDemo_PersianHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_UmAlQuraLabel string.</summary>
+        public static string DpDemo_UmAlQuraLabel => ResourceManager.GetString("DpDemo_UmAlQuraLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_UmAlQuraHelper string.</summary>
+        public static string DpDemo_UmAlQuraHelper => ResourceManager.GetString("DpDemo_UmAlQuraHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_HebrewLabel string.</summary>
+        public static string DpDemo_HebrewLabel => ResourceManager.GetString("DpDemo_HebrewLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_HebrewHelper string.</summary>
+        public static string DpDemo_HebrewHelper => ResourceManager.GetString("DpDemo_HebrewHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_GregorianFaLabel string.</summary>
+        public static string DpDemo_GregorianFaLabel => ResourceManager.GetString("DpDemo_GregorianFaLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_GregorianFaHelper string.</summary>
+        public static string DpDemo_GregorianFaHelper => ResourceManager.GetString("DpDemo_GregorianFaHelper", resourceCulture);
+
     }
 }

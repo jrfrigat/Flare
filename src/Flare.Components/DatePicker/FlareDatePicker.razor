@@ -29,7 +29,7 @@
                    value="@_text"
                    readonly="@(!AllowInput || ReadOnly)"
                    required="@Required"
-                   placeholder="@(Placeholder ?? _numericPattern)"
+                   placeholder="@(Placeholder ?? (_digitEditing ? _numericPattern : _format))"
                    disabled="@Disabled"
                    aria-label="@(Label ?? Placeholder)"
                    aria-required="@(Required ? "true" : null)"
@@ -78,7 +78,7 @@
 
             @if (_calView == CalendarView.Day)
             {
-                <FlareMonthGrid @ref="_grid" ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+                <FlareMonthGrid @ref="_grid" ViewYear="_view.Year" ViewMonth="_view.Month" Culture="_culture" Today="Today"
                                 FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                                 AriaLabel="@HeaderLabel"
                                 Selected="@(d => d == Value)"
@@ -93,7 +93,7 @@
             else if (_calView == CalendarView.Month)
             {
                 <div class="@Css.Classes.DatePicker.MonthGrid">
-                    @for (var m = 1; m <= 12; m++)
+                    @for (var m = 1; m <= _monthsInView; m++)
                     {
                         var month = m;
                         <button type="button"
@@ -101,7 +101,7 @@
                                 aria-pressed="@(month == _viewMonth ? "true" : "false")" disabled="@MonthUnavailable(month)"
                                 @onclick="@(() => SelectMonth(month))"
                                 @onclick:stopPropagation>
-                            @(new DateTime(2000, month, 1).ToString("MMM", _culture))
+                            @MonthName(month)
                         </button>
                     }
                 </div>

@@ -83,7 +83,7 @@
                     </FlareButton>
                 </span>
             </div>
-            <FlareMonthGrid ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+            <FlareMonthGrid ViewYear="_view.Year" ViewMonth="_view.Month" Culture="_culture" Today="Today"
                             FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                             AriaLabel="@HeaderLabel"
                             Selected="@(d => d == StartDate || d == EndDate)"
@@ -154,8 +154,14 @@
     /// calendar can be browsed while day clicks and presets are ignored.</summary>
     [Parameter] public bool ReadOnly { get; set; }
     /// <summary>Culture for the month names, the first day of week and the fields' format. Default =
-    /// CurrentUICulture, as for <c>FlareDatePicker</c>. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
+    /// CurrentUICulture, as for <c>FlareDatePicker</c>. The calendar follows the culture's own: Persian months and
+    /// years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>The calendar to show and write dates on instead of the culture's own, for example a
+    /// <see cref="GregorianCalendar"/> for fa-IR or a <see cref="HebrewCalendar"/> for he-IL. Only a calendar the
+    /// culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the
+    /// culture's calendar.</summary>
+    [Parameter] public Calendar? Calendar { get; set; }
     /// <summary>Model field of the start date inside an <c>EditForm</c>: the start field (or the calendar)
     /// reports changes to the edit context and shows its validation message.</summary>
     [Parameter] public Expression<Func<DateOnly?>>? StartFor { get; set; }
@@ -187,8 +193,18 @@
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
-    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
+    // The culture on the calendar the picker shows and writes dates on (TASK-182).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
+    // The month the calendar shows, on the grid's calendar.
+    private CalendarMonth _view => CalendarMonth.Create(_gridCalendar, _viewYear, _viewMonth);
+
+    private void ShowMonthOf(DateOnly day)
+    {
+        var month = CalendarMonth.Of(day, _gridCalendar);
+        _viewYear = month.Year;
+        _viewMonth = month.Month;
+    }
 
     // The calendar has no inner field to show validation, so it shows the first message of either end itself;
     // in Fields mode each inner field shows its own.
@@ -261,24 +277,28 @@
     private bool IsDayUnavailable(DateOnly d) =>
         IsDayDisabled(d) || (_pendingStart is { } p && d != p && !_rules.CanEnd(p, d, ReachOf(p)));
 
-    private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresets;
+    private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresetsOn(_gridCalendar);
 
     /// <summary>
     /// The built-in quick-range presets (Today, Yesterday, Last 7 / 30 days, This / Last month, This
     /// year). Exposed so callers can keep the standard set AND add their own via the
     /// <see cref="Presets"/> parameter, e.g.
     /// <c>Presets="[.. FlareDateRangePicker.DefaultPresets, .. myPresets]"</c>. Built fresh on each
-    /// access so the localized labels follow the current culture.
+    /// access so the localized labels follow the current culture. The months and the year here are Gregorian;
+    /// with no <see cref="Presets"/> set, the picker uses the same set on its own calendar (the Persian month for fa-IR).
     /// </summary>
-    public static IReadOnlyList<DateRangePreset> DefaultPresets =>
+    public static IReadOnlyList<DateRangePreset> DefaultPresets => DefaultPresetsOn(CalendarMath.Gregorian);
+
+    // The default set with the month and the year of the grid calendar: "this month" is the Persian month for fa-IR (TASK-182).
+    private static IReadOnlyList<DateRangePreset> DefaultPresetsOn(System.Globalization.Calendar c) =>
     [
         new(FlareStrings.DateRangePicker_Today,      t => (t, t)),
         new(FlareStrings.DateRangePicker_Yesterday,  t => (t.AddDays(-1), t.AddDays(-1))),
         new(FlareStrings.DateRangePicker_Last7Days,  t => (t.AddDays(-6), t)),
         new(FlareStrings.DateRangePicker_Last30Days, t => (t.AddDays(-29), t)),
-        new(FlareStrings.DateRangePicker_ThisMonth,  t => (new DateOnly(t.Year, t.Month, 1), new DateOnly(t.Year, t.Month, 1).AddMonths(1).AddDays(-1))),
-        new(FlareStrings.DateRangePicker_LastMonth,  t => { var f = new DateOnly(t.Year, t.Month, 1).AddMonths(-1); return (f, f.AddMonths(1).AddDays(-1)); }),
-        new(FlareStrings.DateRangePicker_ThisYear,   t => (new DateOnly(t.Year, 1, 1), new DateOnly(t.Year, 12, 31))),
+        new(FlareStrings.DateRangePicker_ThisMonth,  t => { var m = CalendarMonth.Of(t, c); return (m.Start, m.End); }),
+        new(FlareStrings.DateRangePicker_LastMonth,  t => { var m = CalendarMonth.Of(t, c); var p = m.Prev ?? m; return (p.Start, p.End); }),
+        new(FlareStrings.DateRangePicker_ThisYear,   t => { var m = CalendarMonth.Of(t, c); return (CalendarMonth.Create(c, m.Year, 1).Start, CalendarMonth.Create(c, m.Year, m.MonthsInYear).End); }),
     ];
 
     protected override void OnParametersSet()
@@ -295,13 +315,11 @@
         if (_pendingStart is null && _anchoredRange != (StartDate, EndDate))
         {
             _anchoredRange = (StartDate, EndDate);
-            var anchor = StartDate ?? EndDate ?? Today;
-            _viewYear = anchor.Year;
-            _viewMonth = anchor.Month;
+            ShowMonthOf(StartDate ?? EndDate ?? Today);
         }
     }
 
-    private string HeaderLabel => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture);
+    private string HeaderLabel => CalendarMath.FormatSafe(_view.Start, "MMMM yyyy", _culture);
 
     // Day headers + the 6x7 grid are rendered by the shared FlareMonthGrid (CalendarMath); the
     // start/end/in-range highlight is supplied per day here.
@@ -332,24 +350,18 @@
     private bool IsRangeStart(DateOnly d) => PaintedRange is { } r ? d == r.Lo : d == (_pendingStart ?? StartDate);
     private bool IsRangeEnd(DateOnly d) => PaintedRange is { } r && d == r.Hi && r.Hi != r.Lo;
 
-    // Month navigation stays inside the DateOnly range (TASK-129, as TASK-105 for the date picker).
-    private bool CanPrev => _viewYear > 1 || _viewMonth > 1;
-    private bool CanNext => _viewYear < 9999 || _viewMonth < 12;
+    // Month navigation stays inside the range the grid calendar and DateOnly can both name (TASK-129, TASK-182).
+    private bool CanPrev => _view.Prev is not null;
+    private bool CanNext => _view.Next is not null;
 
     private void PrevMonth()
     {
-        if (!CanPrev) return;
-        var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(-1);
-        _viewYear = d.Year;
-        _viewMonth = d.Month;
+        if (_view.Prev is { } prev) ShowMonthOf(prev.Start);
     }
 
     private void NextMonth()
     {
-        if (!CanNext) return;
-        var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(1);
-        _viewYear = d.Year;
-        _viewMonth = d.Month;
+        if (_view.Next is { } next) ShowMonthOf(next.Start);
     }
 
     private async Task PickDayAsync(DateOnly date)
@@ -386,15 +398,11 @@
         if (Disabled) return;
         // The grid has synced the cursor to the day the user sees focused before this runs (TASK-133).
         if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
-                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayUnavailable) is not { } day) return;
+                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayUnavailable, _gridCalendar) is not { } day) return;
 
         _focusedDate = day;
         if (_pendingStart is not null) _hover = day;
-        if (day.Year != _viewYear || day.Month != _viewMonth)
-        {
-            _viewYear = day.Year;
-            _viewMonth = day.Month;
-        }
+        if (!_view.Contains(day)) ShowMonthOf(day);
     }
 
     private bool IsActivePreset(DateRangePreset preset)

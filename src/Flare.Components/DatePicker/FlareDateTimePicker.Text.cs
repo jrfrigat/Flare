@@ -45,7 +45,7 @@ public partial class FlareDateTimePicker
         if (TryParseExact(s, _format, out value)) return true;
         // A half-edited mask ("15.10.2026 12:3") must never fall through to the lenient parser and be
         // committed as a different time (TASK-126, as TASK-119 for the date): only a complete one may use it.
-        if (s.Count(char.IsDigit) == _numericPattern.Count(char.IsLetter)
+        if ((!CalendarMath.WritesDigits(_culture) || s.Count(char.IsDigit) == _numericPattern.Count(char.IsLetter))
             && DateTime.TryParse(s, _culture, DateTimeStyles.None, out var wall)
             && TryCompose(wall, HiddenTicks(_numericPattern), out value)) return true;
         value = default;

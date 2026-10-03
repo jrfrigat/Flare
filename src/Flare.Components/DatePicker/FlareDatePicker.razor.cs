@@ -41,9 +41,17 @@ public partial class FlareDatePicker
     [Parameter] public bool ShowTodayButton { get; set; } = true;
     /// <summary>Predicate that disables specific dates (return true to disable). Applied on top of Min/Max.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture.
-    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
+    /// <summary>Culture used for the calendar (day headers, month names, first day of week) and for writing and
+    /// reading the date. Default = CurrentUICulture. The calendar follows the culture's own: Persian months and years
+    /// for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write
+    /// their own years.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>The calendar to show and write dates on instead of the culture's own, for example a
+    /// <see cref="GregorianCalendar"/> for fa-IR or a <see cref="HebrewCalendar"/> for he-IL (13 months in a leap
+    /// year, dates written in letters - the field then takes free text instead of a digit mask). Only a calendar the
+    /// culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the
+    /// culture's calendar. The value stays a <see cref="DateOnly"/>.</summary>
+    [Parameter] public Calendar? Calendar { get; set; }
     /// <summary>The calendar view the picker opens to (Day/Month/Year). <see cref="PickerOpenTo.Year"/> is
     /// handy for far-back dates like a date of birth.</summary>
     [Parameter] public PickerOpenTo OpenTo { get; set; } = PickerOpenTo.Day;
@@ -105,9 +113,7 @@ public partial class FlareDatePicker
         _open = open;
         if (open)
         {
-            var anchor = Value ?? Today;
-            _viewYear = anchor.Year;
-            _viewMonth = anchor.Month;
+            ShowMonthOf(Value ?? Today);
             _calView = _initialView;
             await Opened.InvokeAsync();
         }
@@ -126,22 +132,15 @@ public partial class FlareDatePicker
         return string.IsNullOrEmpty(selected) ? extra : $"{selected} {extra}";
     }
 
-    private enum CalendarView { Day, Month, Year }
-
     private bool _open;
-    private int _viewYear;
-    private int _viewMonth;
-    private CalendarView _calView = CalendarView.Day;
 
     private ElementReference _fieldEl;
     private ElementReference _panelEl;
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-datepicker-{Guid.NewGuid():N}");
 
-    private int _decadeStart => (_viewYear / 12) * 12;
-
-    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
+    // The culture on the calendar the picker shows and writes dates on (TASK-182).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
 
     private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
 
@@ -153,31 +152,17 @@ public partial class FlareDatePicker
     // Normalised numeric mask used for typing + placeholder, with the segments in the culture's own order so
     // year-first cultures (ja-JP, sv-SE, ...) mask and parse too (TASK-110).
     private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _separator);
+    // The field edits digits on a mask unless a custom parser reads the text or the calendar writes letters
+    // (Hebrew): then it takes free text and judges it on change.
+    private bool _digitEditing => ParseInput is null && CalendarMath.WritesDigits(_culture);
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
-    private string DisplayValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
+    private string DisplayValue => Value.HasValue ? CalendarMath.FormatSafe(Value.Value, _format, _culture) : string.Empty;
 
     // Strip to digits and lay them on the numeric pattern. "01062026" -> "01.06.2026" (ru), "2026/10/15" (ja).
     private string MaskDate(string? raw) => MaskedInput.MaskByPattern(raw, _numericPattern);
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
-
-    // What the header button does next: it cycles day -> month -> year -> day.
-    private string ViewSwitchHint => _calView switch
-    {
-        CalendarView.Day => FlareStrings.Picker_ChooseMonth,
-        CalendarView.Month => FlareStrings.Picker_ChooseYear,
-        _ => FlareStrings.Picker_ShowDays,
-    };
-
-    private string HeaderLabel => _calView switch
-    {
-        CalendarView.Month => CalendarMath.YearLabel(_viewYear, _culture),
-        CalendarView.Year  => $"{CalendarMath.YearLabel(_decadeStart, _culture)}-{CalendarMath.YearLabel(_decadeStart + 11, _culture)}",
-        _                  => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture),
-    };
-
-    private string MonthLabel => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture);
 
     // Invalid drives the frame's error chrome: explicit HasError or a resolved validation message.
     private bool _invalid => HasError || !string.IsNullOrEmpty(DisplayedErrorText);
@@ -186,9 +171,7 @@ public partial class FlareDatePicker
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var anchor = Value ?? Today;
-        _viewYear = anchor.Year;
-        _viewMonth = anchor.Month;
+        ShowMonthOf(Value ?? Today);
         _calView = _initialView;
     }
 
@@ -203,12 +186,12 @@ public partial class FlareDatePicker
         var display = DisplayValue;
         // A new value set from outside shows its month: an inline calendar is never reopened to re-anchor it, and a
         // new display alone (Culture, DateFormat) keeps the month the user browsed to (TASK-176).
-        if (!Equals(Value, _syncedValue) && Value is { } shown) { _viewYear = shown.Year; _viewMonth = shown.Month; }
+        if (!Equals(Value, _syncedValue) && Value is { } shown) ShowMonthOf(shown);
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
             _syncedValue = Value;
             _syncedText = display;
-            _text = _focused && Value.HasValue && ParseInput is null ? Value.Value.ToString(_numericPattern, _culture) : display;
+            _text = _focused && Value.HasValue && _digitEditing ? CalendarMath.FormatSafe(Value.Value, _numericPattern, _culture) : display;
             _editGeneration++;
         }
     }
@@ -272,100 +255,9 @@ public partial class FlareDatePicker
     // A disabled or read-only field makes every day unselectable, inline calendar included (TASK-104).
     private bool IsDayUnavailable(DateOnly d) => Disabled || ReadOnly || IsDisabled(d);
 
-    private void CycleCalendarView()
-    {
-        _calView = _calView switch
-        {
-            CalendarView.Day   => CalendarView.Month,
-            CalendarView.Month => CalendarView.Year,
-            _                  => CalendarView.Day,
-        };
-    }
-
-    // Navigation stays inside the DateOnly range: year 0 and 10000+ would throw when the header or the
-    // month grid builds a date from them (TASK-105).
-    private bool CanPrev => _calView switch
-    {
-        CalendarView.Day => _viewYear > 1 || _viewMonth > 1,
-        CalendarView.Month => _viewYear > 1,
-        _ => _viewYear > 13,
-    };
-
-    private bool CanNext => _calView switch
-    {
-        CalendarView.Day => _viewYear < 9999 || _viewMonth < 12,
-        CalendarView.Month => _viewYear < 9999,
-        _ => _viewYear <= 9999 - 12,
-    };
-
-    private void PrevView()
-    {
-        if (!CanPrev) return;
-        switch (_calView)
-        {
-            case CalendarView.Day:
-                if (_viewMonth == 1) { _viewMonth = 12; _viewYear--; }
-                else _viewMonth--;
-                break;
-            case CalendarView.Month:
-                _viewYear--;
-                break;
-            case CalendarView.Year:
-                _viewYear -= 12;
-                break;
-        }
-    }
-
-    private void NextView()
-    {
-        if (!CanNext) return;
-        switch (_calView)
-        {
-            case CalendarView.Day:
-                if (_viewMonth == 12) { _viewMonth = 1; _viewYear++; }
-                else _viewMonth++;
-                break;
-            case CalendarView.Month:
-                _viewYear++;
-                break;
-            case CalendarView.Year:
-                _viewYear += 12;
-                break;
-        }
-    }
-
-    // A month or a year wholly outside [Min;Max] cannot be picked from the month and year views (TASK-176).
-    private bool MonthUnavailable(int month) => Disabled ||
-        (Min is { } min && new DateOnly(_viewYear, month, DateTime.DaysInMonth(_viewYear, month)) < min) ||
-        (Max is { } max && new DateOnly(_viewYear, month, 1) > max);
-
-    private bool YearUnavailable(int year) => Disabled || year < 1 || year > 9999 ||
-        (Min is { } min && year < min.Year) || (Max is { } max && year > max.Year);
-
-    private void SelectMonth(int m)
-    {
-        if (MonthUnavailable(Math.Clamp(m, 1, 12))) return;
-        _viewMonth = Math.Clamp(m, 1, 12);
-        _calView = CalendarView.Day;
-    }
-
-    private void SelectYear(int y)
-    {
-        if (YearUnavailable(y)) return;
-        _viewYear = Math.Clamp(y, 1, 9999);
-        _calView = CalendarView.Month;
-    }
-
     private Task Toggle() => SetOpenAsync(!_open);
 
     private Task Close() => SetOpenAsync(false);
-
-    private void GoToToday()
-    {
-        _viewYear = Today.Year;
-        _viewMonth = Today.Month;
-        _calView = CalendarView.Day;
-    }
 
     private async Task SelectDay(DateOnly d)
     {
@@ -380,15 +272,16 @@ public partial class FlareDatePicker
     {
         _focused = true;
         // Edit in numeric form; a custom parser edits the text as it is shown.
-        if (Value.HasValue && ParseInput is null) _text = Value.Value.ToString(_numericPattern, _culture);
+        if (Value.HasValue && _digitEditing) _text = CalendarMath.FormatSafe(Value.Value, _numericPattern, _culture);
     }
 
     private async Task HandleInput(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
-        // A custom parser reads free text: no mask, and the text is judged on change (blur or Enter).
-        if (ParseInput is not null) { _text = raw; return; }
+        // A custom parser or a calendar written in letters reads free text: no mask, and the text is judged on
+        // change (blur or Enter).
+        if (!_digitEditing) { _text = raw; return; }
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
         if (generation != _editGeneration) return;
         _text = MaskDate(raw);
@@ -431,15 +324,17 @@ public partial class FlareDatePicker
         if (DateOnly.TryParseExact(s, _numericPattern, _culture, DateTimeStyles.None, out d)) return true;
         if (DateOnly.TryParseExact(s, _format, _culture, DateTimeStyles.None, out d)) return true;
         // A half-edited mask ("11.02.026") must never fall through to the lenient parser and be committed
-        // as a different month/year (TASK-119): only a complete date (8 digits) may use it.
-        if (s.Count(char.IsDigit) == 8 && DateOnly.TryParse(s, _culture, DateTimeStyles.None, out d)) return true;
+        // as a different month/year (TASK-119): only a complete date (8 digits) may use it. A calendar written in
+        // letters has no digits to count, and its free text goes to the culture's parser as typed.
+        if ((!CalendarMath.WritesDigits(_culture) || s.Count(char.IsDigit) == 8)
+            && DateOnly.TryParse(s, _culture, DateTimeStyles.None, out d)) return true;
         d = default;
         return false;
     }
 
     private async Task CommitDate(DateOnly? d)
     {
-        if (d.HasValue) { _viewYear = d.Value.Year; _viewMonth = d.Value.Month; }
+        if (d.HasValue) ShowMonthOf(d.Value);
         _syncedValue = d;
         await ValueChanged.InvokeAsync(d);
         NotifyFieldChanged();
@@ -462,17 +357,13 @@ public partial class FlareDatePicker
         // to the day the user sees focused (TASK-133). Disabled dates (Min/Max/IsDateDisabled) are skipped.
         // Enter/Space are left to the native click of the focused day button (TASK-124).
         var next = CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
-            FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDisabled);
+            FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDisabled, _gridCalendar);
         if (next is null) return;
 
         _focusedDate = next.Value;
 
         // Navigate the visible month if the cursor crossed a boundary.
-        if (next.Value.Year != _viewYear || next.Value.Month != _viewMonth)
-        {
-            _viewYear = next.Value.Year;
-            _viewMonth = next.Value.Month;
-        }
+        if (!_view.Contains(next.Value)) ShowMonthOf(next.Value);
     }
 
     // Escape closes the popup and puts focus back on the trigger field once the panel is gone (TASK-106).

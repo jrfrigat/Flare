@@ -56,7 +56,7 @@
                     <span role="gridcell" aria-hidden="true"></span>
                     continue;
                 }
-                var outside = day.Month != ViewMonth;
+                var outside = !_month.Contains(day);
                 var disabled = Disabled?.Invoke(day) ?? false;
                 <button type="button"
                         role="gridcell"
@@ -70,7 +70,7 @@
                         @onclick="@(() => ClickDay(day))"
                         @onclick:stopPropagation
                         @onmouseenter="HoverFor(day)">
-                    @if (DayContent is null) { @day.Day } else { @DayContent(day) }
+                    @if (DayContent is null) { @DayNumber(day) } else { @DayContent(day) }
                 </button>
             }
         </div>
@@ -79,14 +79,21 @@
 </div>
 
 @code {
-    /// <summary>The year of the displayed month.</summary>
+    /// <summary>The year of the displayed month, numbered on the grid's calendar: 1405 on the Persian calendar,
+    /// the Gregorian year for Gregorian, Thai Buddhist and Japanese cultures.</summary>
     [Parameter, EditorRequired] public int ViewYear { get; set; }
-    /// <summary>The 1-12 month displayed.</summary>
+    /// <summary>The month displayed, numbered on the grid's calendar (1-12, or 1-13 in a Hebrew leap year).</summary>
     [Parameter, EditorRequired] public int ViewMonth { get; set; }
-    /// <summary>Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture.
-    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.
+    /// <summary>Culture for the weekday headers, the first day of week and the calendar. Defaults to the current UI
+    /// culture. The grid follows the culture's calendar: Persian months for fa-IR, Um al-Qura months for ar-SA;
+    /// Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years.
     /// To change the names, pass a new culture object: names edited on the object already passed are not picked up.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>The calendar to draw the grid on instead of the culture's own, for example a
+    /// <see cref="GregorianCalendar"/> for fa-IR or a <see cref="HebrewCalendar"/> for he-IL. Only a calendar the
+    /// culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the
+    /// culture's calendar.</summary>
+    [Parameter] public Calendar? Calendar { get; set; }
     /// <summary>Overrides the culture's first day of week when set (null = use the culture's).</summary>
     [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
     /// <summary>Shows a leading week-of-year number column.</summary>
@@ -120,9 +127,12 @@
     /// the key press starts from the day the user sees focused.</summary>
     [Parameter] public EventCallback<DateOnly> FocusedDateChanged { get; set; }
 
-    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
+    // The culture on the calendar the grid is drawn on (TASK-182).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
+
+    // The day of month on the grid's calendar: 11 for 3 October 2026 on the Persian one.
+    private int DayNumber(DateOnly day) => _month.Calendar.GetDayOfMonth(day.ToDateTime(TimeOnly.MinValue));
 
     // The full weekday names in header order, read by assistive tech in place of the short visible ones.
     private string[] DayNames()
@@ -146,6 +156,8 @@
     private DateOnly?[][] _weeks = [];
     private readonly string?[] _labels = new string?[42];
     private (int Year, int Month, DayOfWeek First)? _gridKey;
+    // The displayed month on the grid's calendar.
+    private CalendarMonth _month;
     // The culture by reference: a clone with other day names keeps the Name (TASK-164).
     private CultureInfo? _gridCulture;
 
@@ -156,11 +168,12 @@
         if (_gridKey == key && ReferenceEquals(_gridCulture, culture)) return;
         _gridKey = key;
         _gridCulture = culture;
-        _weeks = CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
+        _month = CalendarMonth.Create(CalendarMath.GridCalendar(culture), ViewYear, ViewMonth);
+        _weeks = CalendarMath.MonthGrid(_month, _firstDayOfWeek).Chunk(7).ToArray();
         var i = 0;
         foreach (var week in _weeks)
             foreach (var d in week)
-                _labels[i++] = d?.ToString("D", _culture);
+                _labels[i++] = d is { } day ? CalendarMath.FormatSafe(day, "D", culture) : null;
     }
 
     // Hover is wired only for a host that listens (the range picker): the others render no handler.
@@ -169,7 +182,7 @@
 
     private DateOnly? ResolveTabTarget(DateOnly?[][] weeks)
     {
-        bool Available(DateOnly d) => d.Year == ViewYear && d.Month == ViewMonth && !(Disabled?.Invoke(d) ?? false);
+        bool Available(DateOnly d) => _month.Contains(d) && !(Disabled?.Invoke(d) ?? false);
         if (FocusedDate is { } f && Available(f)) return f;
         if (Available(Today)) return Today;
         foreach (var week in weeks)

@@ -1,0 +1,28 @@
+@using System.Globalization
+@inherits LocalizedPage
+
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:48rem;">
+    <FlareDatePicker @bind-Value="_persian" Label="@GalleryStrings.DpDemo_PersianLabel"
+                     HelperText="@GalleryStrings.DpDemo_PersianHelper"
+                     Culture="_fa" Inline="true" Style="flex:1;min-width:18rem;" />
+    <FlareStack Gap="FlareSpacing.Large" Style="flex:1;min-width:18rem;">
+        <FlareDatePicker @bind-Value="_umAlQura" Label="@GalleryStrings.DpDemo_UmAlQuraLabel"
+                         HelperText="@GalleryStrings.DpDemo_UmAlQuraHelper" Culture="_ar" />
+        <FlareDatePicker @bind-Value="_hebrew" Label="@GalleryStrings.DpDemo_HebrewLabel"
+                         HelperText="@GalleryStrings.DpDemo_HebrewHelper" Culture="_he" Calendar="_hebrewCalendar" />
+        <FlareDatePicker @bind-Value="_gregorian" Label="@GalleryStrings.DpDemo_GregorianFaLabel"
+                         HelperText="@GalleryStrings.DpDemo_GregorianFaHelper" Culture="_fa" Calendar="_gregorianCalendar" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private readonly CultureInfo _fa = CultureInfo.GetCultureInfo("fa-IR");
+    private readonly CultureInfo _ar = CultureInfo.GetCultureInfo("ar-SA");
+    private readonly CultureInfo _he = CultureInfo.GetCultureInfo("he-IL");
+    private readonly Calendar _hebrewCalendar = new HebrewCalendar();
+    private readonly Calendar _gregorianCalendar = new GregorianCalendar();
+    private DateOnly? _persian = new(2026, 10, 3);
+    private DateOnly? _umAlQura = new(2026, 10, 3);
+    private DateOnly? _hebrew = new(2026, 10, 3);
+    private DateOnly? _gregorian = new(2026, 10, 3);
+}

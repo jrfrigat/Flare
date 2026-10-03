@@ -3738,4 +3738,31 @@
   <data name="TpDemo_Value" xml:space="preserve">
     <value>Значение: {0}</value>
   </data>
+  <data name="DatePicker_Calendars" xml:space="preserve">
+    <value>Календари культуры</value>
+  </data>
+  <data name="DpDemo_PersianLabel" xml:space="preserve">
+    <value>Персидский календарь (fa-IR)</value>
+  </data>
+  <data name="DpDemo_PersianHelper" xml:space="preserve">
+    <value>Персидские месяцы и годы по умолчанию; значение остается DateOnly</value>
+  </data>
+  <data name="DpDemo_UmAlQuraLabel" xml:space="preserve">
+    <value>Календарь Умм аль-Кура (ar-SA)</value>
+  </data>
+  <data name="DpDemo_UmAlQuraHelper" xml:space="preserve">
+    <value>Навигация останавливается на границах календаря, 1900-2077</value>
+  </data>
+  <data name="DpDemo_HebrewLabel" xml:space="preserve">
+    <value>Еврейский календарь (he-IL, Calendar = HebrewCalendar)</value>
+  </data>
+  <data name="DpDemo_HebrewHelper" xml:space="preserve">
+    <value>В високосном году 13 месяцев; поле пишет и читает даты буквами</value>
+  </data>
+  <data name="DpDemo_GregorianFaLabel" xml:space="preserve">
+    <value>fa-IR на григорианском календаре (Calendar = GregorianCalendar)</value>
+  </data>
+  <data name="DpDemo_GregorianFaHelper" xml:space="preserve">
+    <value>Явный календарь из тех, что предлагает культура</value>
+  </data>
 </root>

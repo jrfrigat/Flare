@@ -7,6 +7,13 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **The date pickers follow the culture's own calendar.** `FlareDatePicker`, `FlareDateRangePicker`,
+  `FlareDateTimePicker` and `FlareMonthGrid` draw, name and write dates on the culture's calendar - Persian
+  months and years for fa-IR, Um al-Qura for ar-SA - where they used to swap it for the Gregorian one; the value
+  stays a `DateOnly`. The new `Calendar` parameter picks another calendar the culture offers, for example
+  `new GregorianCalendar()` for the previous behaviour or `new HebrewCalendar()` for he-IL (13 months in a leap
+  year, dates written in letters - the field then takes free text). `FlareMonthGrid.ViewYear` and `ViewMonth`
+  are numbered on that calendar. Thai Buddhist and Japanese cultures keep the Gregorian months.
 - **Breaking for custom themes: the dropdown list's height is a token.** `InputTokens` now requires
   `DropdownMaxHeight` - the tallest the option list of a select, combobox or tag field grows before it scrolls -
   where the stylesheet used to hard-code `16rem`. The built-in themes set `16rem`, so nothing moves; a custom

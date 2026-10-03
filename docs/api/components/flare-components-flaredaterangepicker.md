@@ -9,7 +9,8 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AllowDisabledDatesInRange` | `bool` | `true` | Parameter |  | Whether a day IsDateDisabled rejects may lie between the two ends (default true, e.g. weekends inside a holiday). When false, the pick stops at the first disabled day. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept. |
+| `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL. Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight. |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell in the calendar and in the fields' calendars. The picker keeps the cell itself - button, full-date label, focus, disabled state and range highlight. Null shows the day number. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the picker when true. |

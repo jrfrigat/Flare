@@ -3738,4 +3738,31 @@ Read the card, check the tests, and report what is left.</value>
   <data name="TpDemo_Value" xml:space="preserve">
     <value>Value: {0}</value>
   </data>
+  <data name="DatePicker_Calendars" xml:space="preserve">
+    <value>Calendars of the culture</value>
+  </data>
+  <data name="DpDemo_PersianLabel" xml:space="preserve">
+    <value>Persian calendar (fa-IR)</value>
+  </data>
+  <data name="DpDemo_PersianHelper" xml:space="preserve">
+    <value>Persian months and years by default; the value stays a DateOnly</value>
+  </data>
+  <data name="DpDemo_UmAlQuraLabel" xml:space="preserve">
+    <value>Um al-Qura calendar (ar-SA)</value>
+  </data>
+  <data name="DpDemo_UmAlQuraHelper" xml:space="preserve">
+    <value>Navigation stops at the calendar range, 1900-2077</value>
+  </data>
+  <data name="DpDemo_HebrewLabel" xml:space="preserve">
+    <value>Hebrew calendar (he-IL, Calendar = HebrewCalendar)</value>
+  </data>
+  <data name="DpDemo_HebrewHelper" xml:space="preserve">
+    <value>A leap year has 13 months; the field writes and reads dates in letters</value>
+  </data>
+  <data name="DpDemo_GregorianFaLabel" xml:space="preserve">
+    <value>fa-IR on the Gregorian calendar (Calendar = GregorianCalendar)</value>
+  </data>
+  <data name="DpDemo_GregorianFaHelper" xml:space="preserve">
+    <value>An explicit calendar among the ones the culture offers</value>
+  </data>
 </root>

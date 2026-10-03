@@ -54,9 +54,15 @@ public partial class FlareDateTimePicker
     /// <summary>Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the
     /// calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture for the calendar and parsing. Default = CurrentUICulture.
-    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
+    /// <summary>Culture for the calendar and for writing and reading the value. Default = CurrentUICulture. The
+    /// calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist
+    /// and Japanese cultures keep the Gregorian months and write their own years.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>The calendar to show and write dates on instead of the culture's own, for example a
+    /// <see cref="GregorianCalendar"/> for fa-IR or a <see cref="HebrewCalendar"/> for he-IL (dates written in
+    /// letters - the field then takes free text instead of a digit mask). Only a calendar the culture offers among
+    /// its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar.</summary>
+    [Parameter] public Calendar? Calendar { get; set; }
     /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
     [Parameter] public bool ShowWeekNumbers { get; set; }
     /// <summary>Overrides the culture's first day of week (null = use the culture's).</summary>
@@ -155,7 +161,14 @@ public partial class FlareDateTimePicker
     private int _pendingCaret = -1;
 
     // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
+    // The culture on the calendar the picker shows and writes dates on (TASK-182).
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
+    // The month the date pane shows, on the grid's calendar.
+    private CalendarMonth _viewMonth => CalendarMonth.Of(_viewDate, _gridCalendar);
+    private string _viewLabel => CalendarMath.FormatSafe(_viewMonth.Start, "MMMM yyyy", _culture);
+    // Digits on a mask unless a custom parser reads the text or the calendar writes letters (Hebrew).
+    private bool _digitEditing => ParseInput is null && CalendarMath.WritesDigits(_culture);
     private string _format => string.IsNullOrEmpty(DateTimeFormat)
         ? $"{_culture.DateTimeFormat.ShortDatePattern} {(ShowSeconds ? _culture.DateTimeFormat.LongTimePattern : _culture.DateTimeFormat.ShortTimePattern)}"
         : DateTimeFormat;
@@ -184,7 +197,7 @@ public partial class FlareDateTimePicker
 
     // Day headers + the 6x7 grid are rendered by the shared FlareMonthGrid (CalendarMath).
 
-    private string FormattedValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
+    private string FormattedValue => Value.HasValue ? CalendarMath.FormatSafe(Value.Value, _format, _culture) : string.Empty;
 
     /// <inheritdoc />
     protected override void OnInitialized()
@@ -208,7 +221,7 @@ public partial class FlareDateTimePicker
         {
             _syncedValue = Value;
             _syncedText = display;
-            _text = _focused && Value.HasValue && ParseInput is null ? Value.Value.ToString(_editPattern, _culture) : display;
+            _text = _focused && Value.HasValue && _digitEditing ? CalendarMath.FormatSafe(Value.Value, _editPattern, _culture) : display;
             _editGeneration++;
         }
     }
@@ -217,15 +230,16 @@ public partial class FlareDateTimePicker
     {
         _focused = true;
         // Edit in numeric form; a custom parser edits the text as it is shown.
-        if (Value.HasValue && ParseInput is null) _text = Value.Value.ToString(_editPattern, _culture);
+        if (Value.HasValue && _digitEditing) _text = CalendarMath.FormatSafe(Value.Value, _editPattern, _culture);
     }
 
     private async Task HandleInput(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
-        // A custom parser reads free text: no mask, and the text is judged on change (blur or Enter).
-        if (ParseInput is not null) { _text = raw; return; }
+        // A custom parser or a calendar written in letters reads free text: no mask, and the text is judged on
+        // change (blur or Enter).
+        if (!_digitEditing) { _text = raw; return; }
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
         if (generation != _editGeneration) return;
         _text = MaskDateTime(raw);
@@ -328,17 +342,15 @@ public partial class FlareDateTimePicker
         }
     }
 
-    // Anchor on the first of the month so AddMonths cannot overflow at 0001-01 or 9999-12 (TASK-105).
+    // The neighbouring month on the grid's calendar; none past either end of its range (TASK-105, TASK-182).
     private void PrevMonth()
     {
-        var firstOfMonth = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
-        if (firstOfMonth != DateOnly.MinValue) _viewDate = firstOfMonth.AddMonths(-1);
+        if (_viewMonth.Prev is { } prev) _viewDate = prev.Start;
     }
 
     private void NextMonth()
     {
-        var firstOfMonth = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
-        if (firstOfMonth.Year != 9999 || firstOfMonth.Month != 12) _viewDate = firstOfMonth.AddMonths(1);
+        if (_viewMonth.Next is { } next) _viewDate = next.Start;
     }
 
     private void SelectDate(DateOnly d)
@@ -359,11 +371,11 @@ public partial class FlareDateTimePicker
         if (Disabled || ReadOnly) return;
 
         if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
-                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled) is not { } day) return;
+                FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled, _gridCalendar) is not { } day) return;
 
         _selectedDate = day;
         _focusedDate = null;
-        if (day.Year != _viewDate.Year || day.Month != _viewDate.Month)
+        if (!_viewMonth.Contains(day))
             _viewDate = day;
     }
 

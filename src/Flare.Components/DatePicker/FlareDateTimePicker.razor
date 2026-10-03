@@ -30,7 +30,7 @@
                    readonly="@(!AllowInput || ReadOnly)"
                    required="@Required"
                    aria-required="@(Required ? "true" : null)"
-                   placeholder="@(Placeholder ?? _editPattern)"
+                   placeholder="@(Placeholder ?? (_digitEditing ? _editPattern : _format))"
                    aria-label="@(Label ?? Placeholder)"
                    aria-invalid="@(_invalid ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"
@@ -96,16 +96,16 @@
                     <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                 </FlareButton>
             </span>
-            <span class="@Css.Classes.DateTimePicker.NavLabel" aria-live="polite">@_viewDate.ToString("MMMM yyyy", _culture)</span>
+            <span class="@Css.Classes.DateTimePicker.NavLabel" aria-live="polite">@_viewLabel</span>
             <span @onclick:stopPropagation @onclick="() => { }">
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Picker_Next">
                     <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
                 </FlareButton>
             </span>
         </div>
-        <FlareMonthGrid @ref="_grid" ViewYear="_viewDate.Year" ViewMonth="_viewDate.Month" Culture="_culture" Today="Today"
+        <FlareMonthGrid @ref="_grid" ViewYear="_viewMonth.Year" ViewMonth="_viewMonth.Month" Culture="_culture" Today="Today"
                         FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
-                        AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
+                        AriaLabel="@_viewLabel"
                         Selected="@(d => d == _selectedDate)"
                         Disabled="IsDayDisabled"
                         FocusedDate="@FocusedCursor"

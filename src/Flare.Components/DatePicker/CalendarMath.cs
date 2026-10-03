@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Globalization;
 
 namespace Flare.Components;
@@ -9,19 +10,63 @@ namespace Flare.Components;
 /// </summary>
 internal static class CalendarMath
 {
-    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<CultureInfo, CultureInfo> PickerCultures = new();
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<CultureInfo, ConcurrentDictionary<Type, CultureInfo>> OnCalendars = new();
+    private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<CultureInfo, CultureInfo> GregorianCultures = new();
+    internal static readonly GregorianCalendar Gregorian = new();
 
     /// <summary>
-    /// The culture a picker formats, parses and labels with. The grid is Gregorian, so a culture whose calendar
-    /// has Gregorian months (Gregorian, Thai Buddhist, Japanese, Korean, Taiwan - only the year differs) is used
-    /// as is; one with other months (Persian, Hijri, Um al-Qura, Hebrew, ...) gets a copy on its Gregorian
-    /// optional calendar, so the header, the grid and the field name the same date. Cached per culture object.
+    /// The culture a picker formats, parses and labels with: <paramref name="culture"/> on its own calendar
+    /// (Persian for fa-IR, Um al-Qura for ar-SA), or on <paramref name="calendar"/> when one is given and the culture
+    /// offers that kind of calendar among its optional ones (Gregorian or Hijri for ar-SA, Hebrew for he-IL). A
+    /// calendar the culture does not offer is ignored. Cached per culture object and calendar type (TASK-182).
     /// </summary>
-    public static CultureInfo PickerCulture(CultureInfo culture) =>
-        HasGregorianMonths(culture.DateTimeFormat.Calendar) ? culture : PickerCultures.GetValue(culture, OnGregorian);
+    public static CultureInfo PickerCulture(CultureInfo culture, Calendar? calendar = null)
+    {
+        if (calendar is null || culture.DateTimeFormat.Calendar.GetType() == calendar.GetType()) return culture;
+        var type = calendar.GetType();
+        if (culture.OptionalCalendars.FirstOrDefault(c => c.GetType() == type) is not { } offered) return culture;
+        return OnCalendars.GetValue(culture, _ => new ConcurrentDictionary<Type, CultureInfo>())
+            .GetOrAdd(type, _ =>
+            {
+                var copy = (CultureInfo)culture.Clone();
+                copy.DateTimeFormat.Calendar = offered;
+                return copy;
+            });
+    }
 
-    private static bool HasGregorianMonths(Calendar calendar) => calendar is GregorianCalendar or ThaiBuddhistCalendar
-        or JapaneseCalendar or KoreanCalendar or TaiwanCalendar;
+    /// <summary>
+    /// The calendar a picker's grid is drawn on for <paramref name="culture"/>: its own calendar when the months
+    /// differ from the Gregorian ones (Persian, Hijri, Um al-Qura, Hebrew); the Gregorian calendar when only the
+    /// year number differs (Thai Buddhist, Japanese, Korean, Taiwan), so an era change cannot break the year view
+    /// and the culture still writes its own year in the labels.
+    /// </summary>
+    public static Calendar GridCalendar(CultureInfo culture)
+    {
+        var calendar = culture.DateTimeFormat.Calendar;
+        return calendar is GregorianCalendar or ThaiBuddhistCalendar or JapaneseCalendar or KoreanCalendar or TaiwanCalendar
+            ? Gregorian
+            : calendar;
+    }
+
+    /// <summary>The date written with <paramref name="format"/> in <paramref name="culture"/>; on the culture's
+    /// Gregorian calendar when its own calendar cannot name the day (Um al-Qura before 1900).</summary>
+    public static string FormatSafe(DateOnly date, string format, CultureInfo culture)
+    {
+        try { return date.ToString(format, culture); }
+        catch (ArgumentOutOfRangeException) { return date.ToString(format, GregorianCultures.GetValue(culture, OnGregorian)); }
+    }
+
+    /// <summary>The moment written with <paramref name="format"/> in <paramref name="culture"/>; on the culture's
+    /// Gregorian calendar when its own calendar cannot name the day.</summary>
+    public static string FormatSafe(DateTimeOffset moment, string format, CultureInfo culture)
+    {
+        try { return moment.ToString(format, culture); }
+        catch (ArgumentOutOfRangeException) { return moment.ToString(format, GregorianCultures.GetValue(culture, OnGregorian)); }
+    }
+
+    /// <summary>Whether the culture's calendar writes dates in digits; the Hebrew calendar writes them in letters,
+    /// so a digit mask cannot edit them.</summary>
+    public static bool WritesDigits(CultureInfo culture) => culture.DateTimeFormat.Calendar is not HebrewCalendar;
 
     private static CultureInfo OnGregorian(CultureInfo culture)
     {
@@ -32,13 +77,18 @@ internal static class CalendarMath
         return copy;
     }
 
-    /// <summary>The year as the culture's calendar writes it (2569 for 2026 in th-TH); the Gregorian number when
-    /// the year lies outside that calendar's range (the Japanese calendar starts in 1868).</summary>
+    /// <summary>The year <paramref name="year"/> of the grid calendar as the culture writes it: 2569 for 2026 in
+    /// th-TH, 1405 in fa-IR, letters on the Hebrew calendar; the plain number when the culture's calendar cannot
+    /// name the year (the Japanese calendar starts in 1868).</summary>
     public static string YearLabel(int year, CultureInfo culture)
     {
-        var mid = new DateTime(Math.Clamp(year, 1, 9999), 7, 1);
+        var grid = GridCalendar(culture);
+        var (first, last) = CalendarMonth.Years(grid);
+        var day = CalendarMonth.Create(grid, Math.Clamp(year, first, last), 1).Start;
+        var mid = grid is GregorianCalendar ? new DateOnly(day.Year, 7, 1) : day;
         var calendar = culture.DateTimeFormat.Calendar;
-        return mid >= calendar.MinSupportedDateTime && mid <= calendar.MaxSupportedDateTime
+        var at = mid.ToDateTime(TimeOnly.MinValue);
+        return at >= calendar.MinSupportedDateTime && at <= calendar.MaxSupportedDateTime
             ? mid.ToString("yyyy", culture)
             : year.ToString(CultureInfo.InvariantCulture);
     }
@@ -74,18 +124,22 @@ internal static class CalendarMath
     /// 9999) is <c>null</c>, so every day keeps its weekday column.
     /// </summary>
     public static IEnumerable<DateOnly?> MonthGrid(int year, int month, DayOfWeek firstDayOfWeek)
+        => MonthGrid(CalendarMonth.Create(Gregorian, year, month), firstDayOfWeek);
+
+    /// <summary>The 42-cell grid of <paramref name="month"/> on its calendar; a cell that calendar or
+    /// <see cref="DateOnly"/> cannot name is <c>null</c>.</summary>
+    public static IEnumerable<DateOnly?> MonthGrid(CalendarMonth month, DayOfWeek firstDayOfWeek)
     {
-        year = Math.Clamp(year, 1, 9999);
-        month = Math.Clamp(month, 1, 12);
-        var first = new DateOnly(year, month, 1);
+        var first = month.Start;
         int offset = ((int)first.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
-        // Day numbers, so the cells around the DateOnly bounds are never built as dates (TASK-105).
+        // Day numbers, so the cells around the range bounds are never built as dates (TASK-105).
         var start = first.DayNumber - offset;
-        var last = DateOnly.MaxValue.DayNumber;
+        var lo = CalendarMonth.FirstDay(month.Calendar).DayNumber;
+        var hi = CalendarMonth.LastDay(month.Calendar).DayNumber;
         for (int i = 0; i < 42; i++)
         {
             var n = start + i;
-            yield return n < 0 || n > last ? null : DateOnly.FromDayNumber(n);
+            yield return n < lo || n > hi ? null : DateOnly.FromDayNumber(n);
         }
     }
 
@@ -93,11 +147,13 @@ internal static class CalendarMath
     /// The day a calendar key press moves the cursor to from <paramref name="from"/>, or null when the key
     /// is not a navigation key or nothing available lies that way. Arrows move by a day or a week, Home/End
     /// to the start/end of the week, PageUp/PageDown by a month (with Shift by a year, clamping the day to the
-    /// target month's length). A disabled target is skipped in the direction of travel, up to 400 days.
+    /// target month's length). A disabled target is skipped in the direction of travel, up to 400 days. The month
+    /// and the year are the ones of <paramref name="calendar"/>, the Gregorian calendar when it is null.
     /// </summary>
     public static DateOnly? KeyTarget(DateOnly from, string key, bool shift, DayOfWeek firstDayOfWeek,
-        Func<DateOnly, bool>? disabled)
+        Func<DateOnly, bool>? disabled, Calendar? calendar = null)
     {
+        calendar ??= Gregorian;
         var weekday = ((int)from.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
         int target, step;
         switch (key)
@@ -110,22 +166,29 @@ internal static class CalendarMath
             case "End": target = from.DayNumber + 6 - weekday; step = -1; break;
             case "PageUp":
             case "PageDown":
-                var months = (key == "PageDown" ? 1 : -1) * (shift ? 12 : 1);
-                var index = from.Year * 12 + from.Month - 1 + months;
-                var year = index / 12;
-                if (index < 12 || year > 9999) return null;
-                var month = index % 12 + 1;
-                target = new DateOnly(year, month, Math.Min(from.Day, DateTime.DaysInMonth(year, month))).DayNumber;
-                step = months > 0 ? 1 : -1;
+                var by = key == "PageDown" ? 1 : -1;
+                // The calendar keeps the day of month and clamps it to the target month's length.
+                DateTime moved;
+                try
+                {
+                    var at = from.ToDateTime(TimeOnly.MinValue);
+                    moved = shift ? calendar.AddYears(at, by) : calendar.AddMonths(at, by);
+                }
+                catch (ArgumentException) { return null; }
+                var landed = DateOnly.FromDateTime(moved);
+                if (landed < CalendarMonth.FirstDay(calendar) || landed > CalendarMonth.LastDay(calendar)) return null;
+                target = landed.DayNumber;
+                step = by;
                 break;
             default: return null;
         }
 
         // Arrows keep their own stride past disabled days; the jumps search day by day from where they land.
-        var last = DateOnly.MaxValue.DayNumber;
+        var first = CalendarMonth.FirstDay(calendar).DayNumber;
+        var last = CalendarMonth.LastDay(calendar).DayNumber;
         for (var i = 0; i < 400; i++, target += step)
         {
-            if (target < 0 || target > last) return null;
+            if (target < first || target > last) return null;
             var day = DateOnly.FromDayNumber(target);
             if (!(disabled?.Invoke(day) ?? false)) return day;
         }

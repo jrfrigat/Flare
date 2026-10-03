@@ -11,7 +11,8 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the grid (usually the displayed month and year). |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept. To change the names, pass a new culture object: names edited on the object already passed are not picked up. |
+| `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to draw the grid on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL. Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the weekday headers, the first day of week and the calendar. Defaults to the current UI culture. The grid follows the culture's calendar: Persian months for fa-IR, Um al-Qura months for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years. To change the names, pass a new culture object: names edited on the object already passed are not picked up. |
 | `DayClass` | `Func<DateOnly, string>?` | `` | Parameter |  | Extra CSS class(es) per day for component-specific selection or range-highlight decoration. |
 | `DayContent` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content rendered inside a day button instead of the day number. The grid keeps the button, its full-date label, roving focus, disabled state and selection. |
 | `Disabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate disabling a day (sets the disabled attribute and the disabled day class). |
@@ -24,8 +25,8 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 | `Selected` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate marking a day aria-selected; the visible selection style is supplied via DayClass. |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column. |
 | `Today` | `DateOnly` | `01/01/0001` | Parameter |  | Today's date, marked with the today indicator. |
-| `ViewMonth` | `int` | `0` | Parameter | Yes | The 1-12 month displayed. |
-| `ViewYear` | `int` | `0` | Parameter | Yes | The year of the displayed month. |
+| `ViewMonth` | `int` | `0` | Parameter | Yes | The month displayed, numbered on the grid's calendar (1-12, or 1-13 in a Hebrew leap year). |
+| `ViewYear` | `int` | `0` | Parameter | Yes | The year of the displayed month, numbered on the grid's calendar: 1405 on the Persian calendar, the Gregorian year for Gregorian, Thai Buddhist and Japanese cultures. |
 
 ## Methods
 
