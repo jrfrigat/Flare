@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A typed date range obeys its blackout days however long it is.** With `AllowDisabledDatesInRange` off, the
+  fields of `FlareDateRangePicker` accepted an end more than ten years from the start with a disabled day in between,
+  because they only looked that far for one. A typed start or end is now checked like a calendar pick.
 - **The date-time picker lets you type the offset its format shows.** With a `DateTimeFormat` holding `zzz` or `K`
   the field dropped a typed offset and kept the old one, so `+02:00` became `+05:00` again. The focused field now
   edits the offset after the time (`15.10.2026 14:30 +05:00`) and commits the one typed.

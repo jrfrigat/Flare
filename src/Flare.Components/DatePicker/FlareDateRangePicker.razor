@@ -418,15 +418,26 @@
         await SetEndAsync(e);
     }
 
+    // A typed end must pass the same length and blackout rules as a pick: the fields' Min/Max come from Reach,
+    // which stops looking for a blocking day after SearchLimit days, so a far end needs Allows (TASK-161).
     private async Task HandleStartChanged(DateOnly? value)
     {
-        await SetStartAsync(value);
         // clamp: if start > end, clear end
         if (value.HasValue && EndDate.HasValue && value.Value > EndDate.Value)
+        {
+            await SetStartAsync(value);
             await SetEndAsync(null);
+            return;
+        }
+        if (value is { } s && EndDate is { } e && !_rules.Allows(s, e)) return;
+        await SetStartAsync(value);
     }
 
-    private Task HandleEndChanged(DateOnly? value) => SetEndAsync(value);
+    private Task HandleEndChanged(DateOnly? value)
+    {
+        if (value is { } e && StartDate is { } s && !_rules.Allows(s, e)) return Task.CompletedTask;
+        return SetEndAsync(value);
+    }
 
     private async Task SetStartAsync(DateOnly? v)
     {
