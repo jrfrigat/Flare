@@ -7,6 +7,9 @@
         <FlareTimePicker @bind-Value="_dial24" Label="@GalleryStrings.TpDemo_Dial24Label"
                          Use24Hour="true"
                          HelperText="@GalleryStrings.TpDemo_Dial24Helper" Style="flex:1;min-width:12rem;" />
+        <FlareTimePicker @bind-Value="_twelve" Label="@GalleryStrings.TpDemo_TwelveLabel"
+                         Culture="@EnUs"
+                         HelperText="@GalleryStrings.TpDemo_TwelveHelper" Style="flex:1;min-width:12rem;" />
         <FlareTimePicker @bind-Value="_columns" Label="@GalleryStrings.TpDemo_DropdownLabel"
                          PopupVariant="TimePickerVariant.Dropdown" MinuteStep="5"
                          HelperText="@GalleryStrings.TpDemo_DropdownHelper" Style="flex:1;min-width:12rem;" />
@@ -27,6 +30,8 @@
 @code {
     private TimeOnly? _dial;
     private TimeOnly? _dial24;
+    private TimeOnly? _twelve;
+    private static readonly System.Globalization.CultureInfo EnUs = System.Globalization.CultureInfo.GetCultureInfo("en-US");
     private TimeOnly? _columns;
     private TimeOnly? _list;
     private TimeOnly? _required;

@@ -88,4 +88,42 @@ internal static class MaskedInput
         if (digits.Length <= 4) return $"{digits[..2]}:{digits[2..]}";
         return $"{digits[..2]}:{digits[2..4]}:{digits[4..]}";
     }
+
+    /// <summary>
+    /// The 12-hour form of <see cref="MaskTime"/>: the digits fill <c>hh:mm</c> (or <c>hh:mm:ss</c>) and, once all are
+    /// typed, the period follows. A letter typed beside the designator already shown - the one left once that
+    /// designator is taken out - picks it when it starts only one of <paramref name="am"/> and <paramref name="pm"/>
+    /// (a, p); otherwise the designator spelled out in the text does, and otherwise <paramref name="currentPm"/> keeps
+    /// the period the value already has.
+    /// </summary>
+    public static string MaskTime12(string? raw, bool showSeconds, string am, string pm, bool currentPm)
+    {
+        var time = MaskTime(raw, showSeconds);
+        if (string.IsNullOrEmpty(raw) || raw.Count(char.IsDigit) < (showSeconds ? 6 : 4)) return time;
+        return $"{time} {(PicksPm(raw, am, pm) ?? currentPm ? pm : am)}";
+    }
+
+    private static bool? PicksPm(string raw, string am, string pm)
+    {
+        static bool Starts(string designator, char c) =>
+            designator.Length > 0 && char.ToUpperInvariant(designator[0]) == char.ToUpperInvariant(c);
+        static string Without(string s, string designator)
+        {
+            var at = designator.Length > 0 ? s.IndexOf(designator, StringComparison.OrdinalIgnoreCase) : -1;
+            return at < 0 ? s : s.Remove(at, designator.Length);
+        }
+        // The caret sits before the designator the mask wrote, so a typed letter can land in front of it.
+        var typed = Without(Without(raw, pm), am);
+        for (var i = typed.Length - 1; i >= 0; i--)
+        {
+            var c = typed[i];
+            if (!char.IsLetter(c)) continue;
+            var isAm = Starts(am, c);
+            var isPm = Starts(pm, c);
+            if (isAm != isPm) return isPm;
+        }
+        var hasAm = am.Length > 0 && raw.Contains(am, StringComparison.OrdinalIgnoreCase);
+        var hasPm = pm.Length > 0 && raw.Contains(pm, StringComparison.OrdinalIgnoreCase);
+        return hasAm == hasPm ? null : hasPm;
+    }
 }

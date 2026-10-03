@@ -1077,6 +1077,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture.", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Hour", @"int", @"0", @"Hour of day (0-23).", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when the hour changes.", null, false, true, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.", null, false, false, false, @"FlareClockDial"),
@@ -6513,6 +6514,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour entry. Default = CurrentUICulture.", null, false, false, false, @"FlareTimeEntry"),
                 new ApiParameterInfo(@"Hour", @"int", @"0", @"Hour of day (0-23).", null, false, false, false, @"FlareTimeEntry"),
                 new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when a valid hour is typed or the period changes.", null, false, true, false, @"FlareTimeEntry"),
                 new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false.", null, false, false, false, @"FlareTimeEntry"),
@@ -6546,6 +6548,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the time input after the first render (best-effort). Only one field per page should set this.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"CancelText", @"string?", null, @"Cancel button text. When null, falls back to the localized ""Cancel"".", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the picker popup closes.", null, false, true, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TimeOnly?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Headline", @"string?", null, @"Headline shown at the top of the picker popup. When null, falls back to the localized default.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"HourStep", @"int", @"1", @"Hour increment shown in the Dropdown column. Default 1.", null, false, false, false, @"FlareTimePicker"),
@@ -6557,7 +6560,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"PopupVariant", @"TimePickerVariant", @"TimePickerVariant.Dial", @"Popup style: an analog clock Dial (default) or Dropdown columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry mode inside the dial dialog, a single combobox list of times), the variant's description says so.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"ShowKeyboardToggle", @"bool", @"true", @"Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch, as its columns already take typed digits.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"ShowSeconds", @"bool", @"false", @"Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Use24Hour", @"bool?", null, @"Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"Use24Hour", @"bool?", null, @"Forces a 12-hour (AM/PM) or 24-hour clock, for the field as well as the popup: on a 12-hour clock the field shows and takes ""hh:mm AM"". Null (default) follows the Culture short time pattern.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Value", @"TimeOnly?", null, @"Currently selected time.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<TimeOnly?>", null, @"Callback invoked when the selected time changes.", null, false, true, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),

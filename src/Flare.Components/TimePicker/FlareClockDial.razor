@@ -60,6 +60,8 @@
     [Parameter] public EventCallback<int> MinuteSelected { get; set; }
     /// <summary>24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.</summary>
     [Parameter] public bool Is24Hour { get; set; }
+    /// <summary>Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.ClockDial.Root;
 
@@ -125,8 +127,8 @@
     private string _hourFieldText => Is24Hour ? Hour.ToString("00") : _displayHour.ToString("00");
     private double _handAngle => _mode == DialMode.Hour ? (Hour % 12) * 30 : Minute * 6;
     private double _handLen => _mode == DialMode.Hour && _innerHour ? InnerR : OuterR;
-    private string _amText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator, "AM");
-    private string _pmText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator, "PM");
+    private string _amText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.AMDesignator, "AM");
+    private string _pmText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.PMDesignator, "PM");
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 

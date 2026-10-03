@@ -27,10 +27,10 @@
                    @ref="_inputEl"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
-                   inputmode="numeric"
-                   maxlength="@(ShowSeconds ? 8 : 5)"
+                   inputmode="@(_is24Hour ? "numeric" : null)"
+                   maxlength="@(_is24Hour ? (ShowSeconds ? 8 : 5) : null)"
                    value="@_text"
-                   placeholder="@(Placeholder ?? (ShowSeconds ? "HH:mm:ss" : "HH:mm"))"
+                   placeholder="@(Placeholder ?? _timePlaceholder)"
                    disabled="@Disabled"
                    readonly="@ReadOnly"
                    required="@Required"
@@ -81,7 +81,7 @@
             {
                 <FlareTimeEntry Hour="_tempHour" HourChanged="h => _tempHour = h"
                                 Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
-                                Is24Hour="_is24Hour" Submitted="Confirm"
+                                Is24Hour="_is24Hour" Culture="_culture" Submitted="Confirm"
                                 ValidityChanged="v => _entryInvalid = !v" />
             }
             else if (PopupVariant == TimePickerVariant.Dial)
@@ -89,7 +89,7 @@
                 <FlareClockDial Hour="_tempHour" HourChanged="h => _tempHour = h"
                                 Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
                                 MinuteSelected="OnDialMinuteSelected"
-                                Is24Hour="_is24Hour" />
+                                Is24Hour="_is24Hour" Culture="_culture" />
             }
             else
             {

@@ -55,6 +55,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **`FlareTimePicker` shows and takes a 12-hour time on a 12-hour clock.** With `Use24Hour="false"` (or a 12-hour
+  culture) the field still showed and took "14:30" while the dial showed 2:30 PM. The field now reads "02:30 PM"
+  with the culture's designators, and typing a or p picks the period ("0230p"). The new `Culture` parameter of
+  `FlareTimePicker`, `FlareClockDial` and `FlareTimeEntry` sets the default clock and the AM/PM text; it defaults
+  to the current UI culture, so an app on a 12-hour culture now gets the 12-hour field.
 - **A time or date-time field locked while its popup is open takes no value from it.** When the field became disabled
   or read-only after the popup opened, OK, Clear and the time list of `FlareTimePicker` and `FlareDateTimePicker`
   still wrote a new value. They are now disabled and change nothing; the popup still closes. `ClearAsync` on a locked

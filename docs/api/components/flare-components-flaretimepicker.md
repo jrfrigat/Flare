@@ -14,6 +14,7 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the time input after the first render (best-effort). Only one field per page should set this. |
 | `CancelText` | `string?` | `` | Parameter |  | Cancel button text. When null, falls back to the localized "Cancel". |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the picker popup closes. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture. |
 | `For` | `Expression<Func<TimeOnly?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
 | `Headline` | `string?` | `` | Parameter |  | Headline shown at the top of the picker popup. When null, falls back to the localized default. |
 | `HourStep` | `int` | `1` | Parameter |  | Hour increment shown in the Dropdown column. Default 1. |
@@ -25,7 +26,7 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 | `PopupVariant` | `TimePickerVariant` | `TimePickerVariant.Dial` | Parameter |  | Popup style: an analog clock Dial (default) or Dropdown columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry mode inside the dial dialog, a single combobox list of times), the variant's description says so. |
 | `ShowKeyboardToggle` | `bool` | `true` | Parameter |  | Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch, as its columns already take typed digits. |
 | `ShowSeconds` | `bool` | `false` | Parameter |  | Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false. |
-| `Use24Hour` | `bool?` | `` | Parameter |  | Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture. |
+| `Use24Hour` | `bool?` | `` | Parameter |  | Forces a 12-hour (AM/PM) or 24-hour clock, for the field as well as the popup: on a 12-hour clock the field shows and takes "hh:mm AM". Null (default) follows the Culture short time pattern. |
 | `Value` | `TimeOnly?` | `` | Parameter |  | Currently selected time. |
 | `ValueChanged` | `EventCallback<TimeOnly?>` | `` | Callback |  | Callback invoked when the selected time changes. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

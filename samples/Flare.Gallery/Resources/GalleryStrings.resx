@@ -3696,6 +3696,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="TpDemo_Dial24Helper" xml:space="preserve">
     <value>Two rings, no AM/PM</value>
   </data>
+  <data name="TpDemo_TwelveLabel" xml:space="preserve">
+    <value>12-hour clock (en-US)</value>
+  </data>
+  <data name="TpDemo_TwelveHelper" xml:space="preserve">
+    <value>Type 0230p for 2:30 PM; a or p switches the period</value>
+  </data>
   <data name="TpDemo_ListLabel" xml:space="preserve">
     <value>Time list</value>
   </data>

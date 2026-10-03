@@ -8,6 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the AM/PM designators of the 12-hour entry. Default = CurrentUICulture. |
 | `Hour` | `int` | `0` | Parameter |  | Hour of day (0-23). |
 | `HourChanged` | `EventCallback<int>` | `` | Callback |  | Raised when a valid hour is typed or the period changes. |
 | `Is24Hour` | `bool` | `false` | Parameter |  | 24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false. |

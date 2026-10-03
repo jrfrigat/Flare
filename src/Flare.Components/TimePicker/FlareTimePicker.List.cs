@@ -52,7 +52,7 @@ public partial class FlareTimePicker
         return rows.ToArray();
     }
 
-    private string ListLabel(TimeOnly t) => t.ToString(_is24Hour ? "HH:mm" : "h:mm tt", CultureInfo.CurrentUICulture);
+    private string ListLabel(TimeOnly t) => t.ToString(_is24Hour ? "HH:mm" : "h:mm tt", _culture);
 
     private bool ListSelected(TimeOnly t) => Value is { } v && v.Hour == t.Hour && v.Minute == t.Minute;
 

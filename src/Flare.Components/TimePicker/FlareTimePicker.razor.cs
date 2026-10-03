@@ -21,8 +21,11 @@ public partial class FlareTimePicker
     /// columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry
     /// mode inside the dial dialog, a single combobox list of times), the variant's description says so.</summary>
     [Parameter] public TimePickerVariant PopupVariant { get; set; } = TimePickerVariant.Dial;
-    /// <summary>Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture.</summary>
+    /// <summary>Forces a 12-hour (AM/PM) or 24-hour clock, for the field as well as the popup: on a 12-hour clock the field
+    /// shows and takes "hh:mm AM". Null (default) follows the <see cref="Culture"/> short time pattern.</summary>
     [Parameter] public bool? Use24Hour { get; set; }
+    /// <summary>Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Minute increment shown in the Dropdown column. Default 1.</summary>
     [Parameter] public int MinuteStep { get; set; } = 1;
     /// <summary>Headline shown at the top of the picker popup. When null, falls back to the localized default.</summary>
@@ -86,7 +89,6 @@ public partial class FlareTimePicker
     private ElementReference _fieldEl;
 
     private int _hourStep => HourStep < 1 ? 1 : HourStep;
-    private string _timeFormat => ShowSeconds ? "HH:mm:ss" : "HH:mm";
 
     /// <summary>Opens the picker popup.</summary>
     public Task OpenAsync() { if (!_open) return Toggle(); return Task.CompletedTask; }
@@ -131,11 +133,11 @@ public partial class FlareTimePicker
     protected override void OnParametersSet()
     {
         if (MinuteStep < 1) MinuteStep = 1;
-        _is24Hour = Use24Hour ?? !CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern.Contains('h');
+        _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         UpdateFieldIdentifier(For);
 
         // A new value always re-syncs the text; a new display (ShowSeconds) only outside editing (TASK-113).
-        var display = Value?.ToString(_timeFormat) ?? string.Empty;
+        var display = Value is { } v ? FormatTime(v) : string.Empty;
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
             _syncedValue = Value;
@@ -174,7 +176,7 @@ public partial class FlareTimePicker
         if (generation != _editGeneration) return;
         _text = MaskTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
-        if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var shown)
+        if (_text.Count(char.IsAsciiDigit) == (ShowSeconds ? 6 : 4) && TryParseTime(_text, out var shown)
             && Compose(shown) is var t && TimeInRange(t))
             await Commit(t);
     }
@@ -187,22 +189,21 @@ public partial class FlareTimePicker
         // The text is already on the HH:mm[:ss] skeleton, so a complete time parses exactly; a lenient parse
         // would only ever accept a half-edit ("12:3" as 12:03, TASK-126). Incomplete, unparsable or
         // out-of-range text is not committed and the field snaps back to the current value (TASK-102).
-        if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var shown)
+        if (TryParseTime(_text, out var shown)
             && Compose(shown) is var t && TimeInRange(t))
         {
-            _text = t.ToString(_timeFormat);
+            _text = FormatTime(t);
             await Commit(t);
         }
         else
         {
-            _text = Value?.ToString(_timeFormat) ?? string.Empty;
+            _text = Value is { } v ? FormatTime(v) : string.Empty;
         }
     }
 
     // The mask lives in the shared, unit-tested MaskedInput helper (TASK-118): it lays the digits out on
     // the HH:mm[:ss] skeleton without clamping, so an incomplete edit never rewrites a neighbour segment.
     // Out-of-range input simply fails to parse and is not committed.
-    private string MaskTime(string? raw) => MaskedInput.MaskTime(raw, ShowSeconds);
 
     private ElementReference _dropRef;
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
@@ -366,7 +367,7 @@ public partial class FlareTimePicker
     private async Task Commit(TimeOnly? value)
     {
         _syncedValue = value;
-        _text = value?.ToString(_timeFormat) ?? string.Empty;
+        _text = value is { } v ? FormatTime(v) : string.Empty;
         await ValueChanged.InvokeAsync(value);
         NotifyFieldChanged();
     }

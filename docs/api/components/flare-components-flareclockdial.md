@@ -8,6 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture. |
 | `Hour` | `int` | `0` | Parameter |  | Hour of day (0-23). |
 | `HourChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the hour changes. |
 | `Is24Hour` | `bool` | `false` | Parameter |  | 24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false. |

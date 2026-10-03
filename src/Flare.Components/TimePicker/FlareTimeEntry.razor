@@ -44,6 +44,8 @@
     [Parameter] public EventCallback<int> MinuteChanged { get; set; }
     /// <summary>24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false.</summary>
     [Parameter] public bool Is24Hour { get; set; }
+    /// <summary>Culture for the AM/PM designators of the 12-hour entry. Default = CurrentUICulture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Raised when Enter is pressed in a field, so the host can confirm the time.</summary>
     [Parameter] public EventCallback Submitted { get; set; }
     /// <summary>Raised with false when a field holds a number out of range, and with true once both are valid
@@ -69,8 +71,8 @@
 
     private bool _isPm => Hour >= 12;
     private int _displayHour => Is24Hour ? Hour : (Hour % 12 == 0 ? 12 : Hour % 12);
-    private string _amText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator, "AM");
-    private string _pmText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator, "PM");
+    private string _amText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.AMDesignator, "AM");
+    private string _pmText => Nz((Culture ?? CultureInfo.CurrentUICulture).DateTimeFormat.PMDesignator, "PM");
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
     private static string InputClass(bool invalid) =>
