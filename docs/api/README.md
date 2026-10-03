@@ -118,6 +118,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareMeter`](components/flare-components-flaremeter.md)
 - [`FlareMeterSegment`](components/flare-components-flaremetersegment.md) — One part of a FlareMeter, weighted rather than positioned: a meter has no external scale, so each segment carries a raw measurement and is sized in proportion to the sum of them all. That lets figures be declared as measured, with no cumulative boundaries to work out by hand.
 - [`FlareMonthGrid`](components/flare-components-flaremonthgrid.md) — The month calendar shared by the date, date-time and range pickers: the weekday header and the six-by-seven grid of day buttons. Each picker keeps its own selection and keyboard behaviour and supplies it through the decoration hooks, so the markup and the date arithmetic live here once.
+- [`FlareMonthPicker`](components/flare-components-flaremonthpicker.md) — Month field bound to a DateOnly: the first day of the chosen month on the calendar the picker shows (1 Mehr 1405 for fa-IR). The month is typed on a mask in the culture's order or picked from a month and year view in a popup or inline.
+- [`FlareMonthYearGrid`](components/flare-components-flaremonthyeargrid.md)
 - [`FlareMultiSelect`](components/flare-components-flaremultiselect.md)
 - [`FlareNavGroup`](components/flare-components-flarenavgroup.md)
 - [`FlareNavLink`](components/flare-components-flarenavlink.md)
@@ -291,6 +293,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.MenuAnchor`](enums/flare-components-menuanchor.md) — Corner of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Logical (RTL-aware) aliases are also provided.
 - [`Flare.Components.Combobox.MenuTrigger`](enums/flare-components-combobox-menutrigger.md) — What user gesture opens the dropdown.
 - [`Flare.Abstractions.MessageBoxKind`](enums/flare-abstractions-messageboxkind.md) — The kind of message box to display.
+- [`Flare.Components.MonthYearGridView`](enums/flare-components-monthyeargridview.md) — What a FlareMonthYearGrid lays out: the months of one year or the years of one decade.
 - [`Flare.Components.NavMatchMode`](enums/flare-components-navmatchmode.md) — How a nav link's href is matched against the current URL to decide the active state.
 - [`Flare.Components.NavMenuMode`](enums/flare-components-navmenumode.md) — How a FlareNavMenu presents its items. Set it explicitly to control the menu independently of any surrounding FlareLayout; leave it unset to keep the legacy behavior (driven by Rail or the collapsed layout drawer).
 - [`Flare.Components.NotificationPermission`](enums/flare-components-notificationpermission.md) — The user's answer to the browser's notification permission prompt.

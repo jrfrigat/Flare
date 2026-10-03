@@ -18,7 +18,6 @@ public partial class FlareDatePicker
     private CalendarMonth _view => CalendarMonth.Create(_gridCalendar, _viewYear, _viewMonth);
     private (int First, int Last) _years => CalendarMonth.Years(_gridCalendar);
     private int _decadeStart => (_viewYear / 12) * 12;
-    private int _monthsInView => _gridCalendar.GetMonthsInYear(Math.Clamp(_viewYear, _years.First, _years.Last));
 
     private void ShowMonthOf(DateOnly day)
     {
@@ -50,9 +49,6 @@ public partial class FlareDatePicker
     };
 
     private string MonthLabel => CalendarMath.FormatSafe(_view.Start, "MMMM yyyy", _culture);
-
-    // The short name of month m of the viewed year; a Hebrew leap year names Adar I and Adar II.
-    private string MonthName(int month) => CalendarMath.FormatSafe(CalendarMonth.Create(_gridCalendar, _viewYear, month).Start, "MMM", _culture);
 
     private void CycleCalendarView()
     {
@@ -104,20 +100,22 @@ public partial class FlareDatePicker
 
     // A month or a year wholly outside [Min;Max] - or outside the calendar's own range - cannot be picked from
     // the month and year views (TASK-176).
-    private bool MonthUnavailable(int month)
+    private bool MonthUnavailable(int month) => Disabled || CalendarMonth.MonthUnavailable(_gridCalendar, _viewYear, month, Min, Max);
+
+    private bool YearUnavailable(int year) => Disabled || CalendarMonth.YearUnavailable(_gridCalendar, year, Min, Max);
+
+    // A pick in the month or the year view: a month opens its days, a year its months.
+    private void PickInView(int value)
     {
-        if (Disabled) return true;
-        var m = CalendarMonth.Create(_gridCalendar, _viewYear, month);
-        if (m.Year != _viewYear || m.Month != month) return true;
-        return (Min is { } min && m.End < min) || (Max is { } max && m.Start > max);
+        if (_calView == CalendarView.Month) SelectMonth(value);
+        else SelectYear(value);
     }
 
-    private bool YearUnavailable(int year)
+    // PageUp/PageDown page the month view by a year and the year view by a decade.
+    private void HandleViewKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
     {
-        if (Disabled || year < _years.First || year > _years.Last) return true;
-        var first = CalendarMonth.Create(_gridCalendar, year, 1);
-        var last = CalendarMonth.Create(_gridCalendar, year, _gridCalendar.GetMonthsInYear(year));
-        return (Min is { } min && last.End < min) || (Max is { } max && first.Start > max);
+        if (e.Key == "PageUp") PrevView();
+        else if (e.Key == "PageDown") NextView();
     }
 
     private void SelectMonth(int m)

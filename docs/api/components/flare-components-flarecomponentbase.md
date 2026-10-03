@@ -123,6 +123,7 @@ This component exposes no documented public methods.
 - `FlareMenuGroup`
 - `FlareMenuItem`
 - `FlareMeter`
+- `FlareMonthPicker`
 - `FlareMultiSelect`
 - `FlareNavGroup`
 - `FlareNavLink`

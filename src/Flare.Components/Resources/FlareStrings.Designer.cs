@@ -1339,6 +1339,24 @@ namespace Flare.Components.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to This month.
+        /// </summary>
+        public static string Picker_ThisMonth {
+            get {
+                return ResourceManager.GetString("Picker_ThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a month.
+        /// </summary>
+        public static string MonthPicker_Open {
+            get {
+                return ResourceManager.GetString("MonthPicker_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Week {0}.
         /// </summary>
         public static string Picker_WeekNumber {

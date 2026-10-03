@@ -53,6 +53,18 @@ internal static class MaskedInput
     }
 
     /// <summary>
+    /// The all-digit month pattern a masked month field edits in: <c>MM.yyyy</c>, or <c>yyyy-MM</c> where the
+    /// culture's short date pattern puts the year first (ja-JP, sv-SE), joined by <paramref name="separator"/>.
+    /// </summary>
+    public static string NumericMonthPattern(CultureInfo culture, string separator)
+    {
+        var shortPattern = culture.DateTimeFormat.ShortDatePattern;
+        var year = shortPattern.IndexOf('y');
+        var month = shortPattern.IndexOf('M');
+        return year >= 0 && month >= 0 && year < month ? $"yyyy{separator}MM" : $"MM{separator}yyyy";
+    }
+
+    /// <summary>
     /// Lays the digits typed into a field out on <paramref name="pattern"/>: each letter of the pattern
     /// takes the next digit, and the separators between letters are inserted only once a digit follows
     /// them. Extra digits are dropped; nothing is clamped.

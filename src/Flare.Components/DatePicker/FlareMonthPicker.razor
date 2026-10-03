@@ -2,16 +2,13 @@
 @inherits FlareFieldBase
 @implements IFlareField<DateOnly?>
 @using System.Globalization
-@using System.Linq.Expressions
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.JSInterop
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject Flare.Components.Services.IElementJsService ElementJs
 
-@* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date field owns its
-   trigger well (input + calendar toggle) and the anchored calendar popup, rendered in the Field slot. *@
-<FlareFieldChrome ComponentClass="@Css.Classes.DatePicker.Root"
+@* A month field (TASK-184): the value is the first day of a month on the calendar the picker shows, typed on a
+   month mask or picked from the shared month and year views (FlareMonthYearGrid) in a popup or inline. *@
+<FlareFieldChrome ComponentClass="@Css.Classes.MonthPicker.Root"
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -44,7 +41,7 @@
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
-                        aria-label="@(FlareStrings.DatePicker_Open)" @ref="_toggleEl" @onclick="Toggle">
+                        aria-label="@FlareStrings.MonthPicker_Open" @ref="_toggleEl" @onclick="Toggle">
                     <FlareIconView Value="@FlareIcons.CalendarMonth" />
                 </button>
             }
@@ -61,55 +58,38 @@
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(Disabled || !CanPrev)">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevPage" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(Disabled || !CanPrev)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                     </FlareButton>
                 </span>
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
-                        type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="CycleCalendarView" @onclick:stopPropagation>
+                        type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="SwitchView" @onclick:stopPropagation>
                     @HeaderLabel
                 </button>
                 <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(Disabled || !CanNext)">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextPage" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(Disabled || !CanNext)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
                     </FlareButton>
                 </span>
             </div>
 
-            @if (_calView == CalendarView.Day)
-            {
-                <FlareMonthGrid @ref="_grid" ViewYear="_view.Year" ViewMonth="_view.Month" Culture="_culture" Today="Today"
-                                FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
-                                AriaLabel="@HeaderLabel"
-                                Selected="@(d => d == Value)"
-                                Disabled="IsDayUnavailable"
-                                FocusedDate="@FocusedCursor"
-                                FocusedDateChanged="@(d => _focusedDate = d)"
-                                DayClass="ComposeDayClass"
-                                DayContent="DayTemplate"
-                                OnDayClick="SelectDay"
-                                OnKeyDown="HandleGridKeyDown" />
-            }
-            else
-            {
-                <FlareMonthYearGrid View="@(_calView == CalendarView.Month ? MonthYearGridView.Months : MonthYearGridView.Years)"
-                                    Year="_viewYear" SelectedMonth="_viewMonth" SelectedYear="_viewYear"
-                                    Culture="_culture" Today="Today" Min="Min" Max="Max" Disabled="Disabled" AriaLabel="@HeaderLabel"
-                                    OnPick="PickInView" OnKeyDown="HandleViewKeyDown" />
-            }
+            <FlareMonthYearGrid @ref="_grid" View="_view" Year="_viewYear"
+                                SelectedMonth="@(_selected is { } s && s.Year == _viewYear ? s.Month : null)"
+                                SelectedYear="@(_view == MonthYearGridView.Years ? _viewYear : _selected?.Year)"
+                                Culture="_culture" Today="Today" Min="Min" Max="Max" Disabled="Disabled" AriaLabel="@HeaderLabel"
+                                OnPick="Pick" OnKeyDown="HandleGridKeyDown" />
 
             <div class="@Css.Classes.DatePicker.Footer">
                 @if (ShowClearButton)
                 {
                     <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
                 }
-                @if (ShowTodayButton)
+                @if (ShowThisMonthButton)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@Disabled" @onclick="GoToToday" @onclick:stopPropagation>@(TodayText ?? FlareStrings.DatePicker_Today)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@Disabled" @onclick="GoToThisMonth" @onclick:stopPropagation>@(ThisMonthText ?? FlareStrings.Picker_ThisMonth)</button>
                 }
             </div>
         </div>
         }
     </Field>
 </FlareFieldChrome>
-

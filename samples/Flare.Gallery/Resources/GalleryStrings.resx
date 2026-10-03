@@ -3765,4 +3765,34 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DpDemo_GregorianFaHelper" xml:space="preserve">
     <value>An explicit calendar among the ones the culture offers</value>
   </data>
+  <data name="MonthPicker_Title" xml:space="preserve">
+    <value>Month Picker</value>
+  </data>
+  <data name="MonthPicker_Subtitle" xml:space="preserve">
+    <value>FlareMonthPicker - a month as the value: the first day of the month on the culture's calendar, typed on a month mask or picked from the month and year views.</value>
+  </data>
+  <data name="MonthPicker_Basic" xml:space="preserve">
+    <value>Periods, limits and calendars</value>
+  </data>
+  <data name="MpDemo_PeriodLabel" xml:space="preserve">
+    <value>Reporting period</value>
+  </data>
+  <data name="MpDemo_PeriodHelper" xml:space="preserve">
+    <value>Type the digits or pick a month; arrows, Home/End and PageUp/PageDown work in the popup</value>
+  </data>
+  <data name="MpDemo_ExpiryLabel" xml:space="preserve">
+    <value>Card expiry</value>
+  </data>
+  <data name="MpDemo_ExpiryHelper" xml:space="preserve">
+    <value>Min and Max: from this month to ten years ahead</value>
+  </data>
+  <data name="MpDemo_PersianLabel" xml:space="preserve">
+    <value>Persian calendar (fa-IR, inline)</value>
+  </data>
+  <data name="MpDemo_PersianHelper" xml:space="preserve">
+    <value>Persian months; the value is the first day of the month</value>
+  </data>
+  <data name="MpDemo_Value" xml:space="preserve">
+    <value>Value: {0}</value>
+  </data>
 </root>

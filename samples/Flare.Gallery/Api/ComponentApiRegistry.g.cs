@@ -1647,6 +1647,7 @@ public static class ComponentApiRegistry
                 @"FlareMenuGroup",
                 @"FlareMenuItem",
                 @"FlareMeter",
+                @"FlareMonthPicker",
                 @"FlareMultiSelect",
                 @"FlareNavGroup",
                 @"FlareNavLink",
@@ -4145,6 +4146,110 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"FocusCursorAsync", @"FocusCursorAsync()", @"Task", null, @"Moves keyboard focus onto the day carrying the roving tabindex=""0"" (best-effort; does nothing before the grid is rendered or when no day of the month is available).",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareMonthPicker"] = new ApiComponentInfo(
+            @"FlareMonthPicker",
+            @"Flare.Components.FlareMonthPicker",
+            @"Flare.Components",
+            @"Month field bound to a DateOnly: the first day of the chosen month on the calendar the picker shows (1 Mehr 1405 for fa-IR). The month is typed on a mask in the culture's order or picked from a month and year view in a popup or inline.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AllowInput", @"bool", @"true", @"Allows typing the month directly into the field (with auto-separator). Default true.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"AllowPicker", @"bool", @"true", @"Allows opening the month popup (shows the calendar icon button). Default true.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"AutoClose", @"bool", @"true", @"Closes the popup when a month is picked. Default true. Ignored when Inline.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the input after the first render (best-effort).", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to number months on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (13 months in a leap year, written in letters - the field then takes free text). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the popup closes.", null, false, true, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the month mask and the calendar. Default = CurrentUICulture. The months follow the culture's calendar (Persian for fa-IR, Um al-Qura for ar-SA).", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"For", @"Expression<Func<DateOnly?>>?", null, @"Model field bound inside an EditForm: changes reach the edit context and its validation message is shown.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"HasError", @"bool", @"false", @"Forces the error visual state without an error message (e.g. driven by external validation).", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Inline", @"bool", @"false", @"Renders the month view inline (always visible under the field) rather than in a popup.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Max", @"DateOnly?", null, @"Latest day that can be picked: a month wholly after it is disabled and not committed when typed.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Min", @"DateOnly?", null, @"Earliest day that can be picked: a month wholly before it is disabled and not committed when typed.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"MonthFormat", @"string?", null, @"Display and parse format. Null (default) uses the culture's year-month pattern, e.g. ""MMMM yyyy"".", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"OpenTo", @"PickerOpenTo", @"PickerOpenTo.Month", @"The view the picker opens to: Year opens on the years, anything else on the months.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Opened", @"EventCallback", null, @"Raised when the popup opens.", null, false, true, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"ParseInput", @"Func<string, DateOnly?>?", null, @"Reads typed text instead of the built-in parser: return any day of the month, or null when the text is not one. With a parser the field takes free text - no digit mask - and judges it on change.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"ShowClearButton", @"bool", @"true", @"Shows the Clear button in the popup footer. Default true.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"ShowThisMonthButton", @"bool", @"true", @"Shows the This month button, which picks the current month. Default true.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"ThisMonthText", @"string?", null, @"Override text for the This month button. When null, falls back to the localizer key Picker_ThisMonth.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Value", @"DateOnly?", null, @"The first day of the selected month (supports @bind-Value). A value on another day of a month selects that month.", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<DateOnly?>", null, @"Raised with the first day of the month the user commits (typed, picked or cleared).", null, false, true, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"InputAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Attributes splatted onto the field's inner control - the <input>, <textarea> or combobox element the user interacts with - rather than onto the wrapper. This is where data-testid, name, form, autofocus, tabindex and extra aria-* belong: an unmatched attribute written directly on the component lands on the field's root element, following the same rule as every other Flare component, and a test that targets it would be pointing at the wrapper. A field built from several equal inputs - the OTP field - has no single control and ignores this.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field. Ignored when LabelContent is set.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Markup rendered as the field label instead of Label - a unit, a help affordance, a link in a consent line. Named rather than ChildContent because a field's content is its control, not its label.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected month.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the month popup.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the month input.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the month popup.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareFieldBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareMonthYearGrid"] = new ApiComponentInfo(
+            @"FlareMonthYearGrid",
+            @"Flare.Components.FlareMonthYearGrid",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label of the group (usually the year or the decade shown).", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to number months and years on instead of the culture's own; only one the culture offers among its optional calendars is used. Null (the default) uses the culture's calendar.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names and the year numbers, and for the calendar. Defaults to the current UI culture.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables every cell.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Max", @"DateOnly?", null, @"Latest day that can be picked: a month or a year wholly after it is disabled.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Min", @"DateOnly?", null, @"Earliest day that can be picked: a month or a year wholly before it is disabled.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Raised for a key the grid does not handle itself (PageUp, PageDown, Escape, ...), so the host can page the year or the decade.", null, false, true, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"OnPick", @"EventCallback<int>", null, @"Raised with the month (month view) or the year (year view) a cell picked.", null, false, true, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"SelectedMonth", @"int?", null, @"The month marked selected in the month view (pressed), or null for none.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"SelectedYear", @"int?", null, @"The year marked selected in the year view (pressed), or null for none.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Today", @"DateOnly?", null, @"The day that is today: its month and year are marked current (aria-current=""date"") and take keyboard focus when nothing is selected. Null marks none.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"View", @"MonthYearGridView", @"MonthYearGridView.Months", @"Whether the grid shows the months of Year or the years of its decade.", null, false, false, false, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"Year", @"int", @"0", @"The year shown, numbered on the grid's calendar (1405 on the Persian one). In the year view the grid shows the twelve years from the multiple of 12 at or below it.", null, false, false, true, @"FlareMonthYearGrid"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"Task", null, @"Moves keyboard focus onto the tabbable cell (best-effort; does nothing before the grid is rendered).",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -8253,6 +8358,7 @@ public static class ComponentApiRegistry
                 @"FlareField",
                 @"FlareFieldChrome",
                 @"FlareMaskedField",
+                @"FlareMonthPicker",
                 @"FlareMultiSelect",
                 @"FlareNumericField",
                 @"FlareOtpField",
@@ -8578,6 +8684,7 @@ public static class ComponentApiRegistry
                 @"FlareField",
                 @"FlareFieldChrome",
                 @"FlareMaskedField",
+                @"FlareMonthPicker",
                 @"FlareMultiSelect",
                 @"FlareNumericField",
                 @"FlareOtpField",
@@ -8765,6 +8872,22 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"MonthYearGridView"] = new ApiEnumInfo(
+            @"MonthYearGridView",
+            @"Flare.Components.MonthYearGridView",
+            @"Flare.Components",
+            @"What a FlareMonthYearGrid lays out: the months of one year or the years of one decade.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Months", @"0", @"The months of Year (12, or 13 in a Hebrew leap year)."),
+                new ApiEnumMember(@"Years", @"1", @"The twelve years of the decade that holds Year."),
+            },
+            new string[]
+            {
+                @"FlareMonthYearGrid",
+            });
+
         e[@"NavMatchMode"] = new ApiEnumInfo(
             @"NavMatchMode",
             @"Flare.Components.NavMatchMode",
@@ -8850,6 +8973,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareDatePicker",
+                @"FlareMonthPicker",
             });
 
         e[@"Placement"] = new ApiEnumInfo(
@@ -9528,6 +9652,7 @@ public static class ComponentApiRegistry
                 @"FlareFileUploadButton",
                 @"FlareLink",
                 @"FlareMaskedField",
+                @"FlareMonthPicker",
                 @"FlareMultiSelect",
                 @"FlareNumericField",
                 @"FlareOtpField",

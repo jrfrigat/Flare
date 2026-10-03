@@ -1,0 +1,179 @@
+@namespace Flare.Components
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+
+@* The month and year views shared by FlareDatePicker and FlareMonthPicker (TASK-184): three columns of
+   buttons on the calendar the picker's grid is drawn on (TASK-182). One button is tabbable (roving focus);
+   the arrows, Home and End move it over the cells that can be picked, and any other key goes to the host. *@
+<div class="@(View == MonthYearGridView.Months ? Css.Classes.DatePicker.MonthGrid : Css.Classes.DatePicker.YearGrid)"
+     role="group" aria-label="@AriaLabel" @onkeydown="HandleKeyDown">
+    @{
+        var target = TabTarget();
+        var index = 0;
+    }
+    @foreach (var value in Values())
+    {
+        var cell = value;
+        var position = index++;
+        var selected = View == MonthYearGridView.Months ? cell == SelectedMonth : cell == SelectedYear;
+        <button type="button"
+                class="@CellClass(selected)"
+                aria-pressed="@(selected ? "true" : "false")"
+                aria-current="@(IsCurrent(cell) ? "date" : null)"
+                disabled="@Unavailable(cell)"
+                tabindex="@(cell == target ? "0" : "-1")"
+                @ref="_cells[position]"
+                @onclick="@(() => Pick(cell))"
+                @onclick:stopPropagation>
+            @Label(cell)
+        </button>
+    }
+</div>
+
+@code {
+    /// <summary>Whether the grid shows the months of <see cref="Year"/> or the years of its decade.</summary>
+    [Parameter] public MonthYearGridView View { get; set; }
+    /// <summary>The year shown, numbered on the grid's calendar (1405 on the Persian one). In the year view the
+    /// grid shows the twelve years from the multiple of 12 at or below it.</summary>
+    [Parameter, EditorRequired] public int Year { get; set; }
+    /// <summary>The month marked selected in the month view (pressed), or null for none.</summary>
+    [Parameter] public int? SelectedMonth { get; set; }
+    /// <summary>The year marked selected in the year view (pressed), or null for none.</summary>
+    [Parameter] public int? SelectedYear { get; set; }
+    /// <summary>The day that is today: its month and year are marked current (<c>aria-current="date"</c>) and take
+    /// keyboard focus when nothing is selected. Null marks none.</summary>
+    [Parameter] public DateOnly? Today { get; set; }
+    /// <summary>Culture for the month names and the year numbers, and for the calendar. Defaults to the current UI
+    /// culture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>The calendar to number months and years on instead of the culture's own; only one the culture offers
+    /// among its optional calendars is used. Null (the default) uses the culture's calendar.</summary>
+    [Parameter] public Calendar? Calendar { get; set; }
+    /// <summary>Earliest day that can be picked: a month or a year wholly before it is disabled.</summary>
+    [Parameter] public DateOnly? Min { get; set; }
+    /// <summary>Latest day that can be picked: a month or a year wholly after it is disabled.</summary>
+    [Parameter] public DateOnly? Max { get; set; }
+    /// <summary>Disables every cell.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Accessible label of the group (usually the year or the decade shown).</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Raised with the month (month view) or the year (year view) a cell picked.</summary>
+    [Parameter] public EventCallback<int> OnPick { get; set; }
+    /// <summary>Raised for a key the grid does not handle itself (PageUp, PageDown, Escape, ...), so the host can
+    /// page the year or the decade.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private System.Globalization.Calendar _grid => CalendarMath.GridCalendar(_culture);
+    private readonly ElementReference[] _cells = new ElementReference[13];
+    // The cell the keyboard moved to. Paging keeps it: the same month in the next year, the same place in the next
+    // decade.
+    private int? _cursor;
+    private (MonthYearGridView, int)? _shown;
+    private bool _focusCursor;
+
+    protected override void OnParametersSet()
+    {
+        var shown = (View, View == MonthYearGridView.Months ? Year : Decade);
+        if (_shown is not { } old || old.Item1 != View) _cursor = null;
+        else if (View == MonthYearGridView.Years && _cursor is { } c) _cursor = c + shown.Item2 - old.Item2;
+        _shown = shown;
+    }
+
+    private int Decade => Year / 12 * 12;
+
+    private IEnumerable<int> Values()
+    {
+        if (View == MonthYearGridView.Years) return Enumerable.Range(Decade, 12);
+        var (first, last) = CalendarMonth.Years(_grid);
+        return Enumerable.Range(1, _grid.GetMonthsInYear(Math.Clamp(Year, first, last)));
+    }
+
+    private bool Unavailable(int value) => Disabled || (View == MonthYearGridView.Months
+        ? CalendarMonth.MonthUnavailable(_grid, Year, value, Min, Max)
+        : CalendarMonth.YearUnavailable(_grid, value, Min, Max));
+
+    private string Label(int value) => View == MonthYearGridView.Months
+        // The month's own name on the calendar: a Hebrew leap year names Adar I and Adar II.
+        ? CalendarMath.FormatSafe(CalendarMonth.Create(_grid, Year, value).Start, "MMM", _culture)
+        : CalendarMath.YearLabel(value, _culture);
+
+    private string CellClass(bool selected) => View == MonthYearGridView.Months
+        ? (selected ? $"{Css.Classes.DatePicker.MonthBtn} {Css.Classes.DatePicker.MonthSelected}" : Css.Classes.DatePicker.MonthBtn)
+        : (selected ? $"{Css.Classes.DatePicker.YearBtn} {Css.Classes.DatePicker.YearSelected}" : Css.Classes.DatePicker.YearBtn);
+
+    private CalendarMonth? _current => Today is { } t ? CalendarMonth.Of(t, _grid) : null;
+
+    private bool IsCurrent(int value) => _current is { } c &&
+        (View == MonthYearGridView.Months ? c.Year == Year && c.Month == value : c.Year == value);
+
+    // The single tabbable cell: the keyboard cursor, else the selected cell, else the current one, else the first
+    // that can be picked.
+    private int? TabTarget()
+    {
+        var values = Values().ToArray();
+        int? selected = View == MonthYearGridView.Months ? SelectedMonth : SelectedYear;
+        int? current = _current is { } now ? (View == MonthYearGridView.Months ? (now.Year == Year ? now.Month : null) : now.Year) : null;
+        foreach (var candidate in new[] { _cursor, selected, current })
+            if (candidate is { } c && values.Contains(c) && !Unavailable(c)) return c;
+        foreach (var v in values)
+            if (!Unavailable(v)) return v;
+        return null;
+    }
+
+    private async Task Pick(int value)
+    {
+        if (Unavailable(value)) return;
+        _cursor = value;
+        await OnPick.InvokeAsync(value);
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        var values = Values().ToArray();
+        var from = Array.IndexOf(values, TabTarget() ?? values[0]);
+        int? next = e.Key switch
+        {
+            "ArrowRight" => Step(values, from, 1),
+            "ArrowLeft" => Step(values, from, -1),
+            "ArrowDown" => Step(values, from, 3),
+            "ArrowUp" => Step(values, from, -3),
+            "Home" => Step(values, -1, 1),
+            "End" => Step(values, values.Length, -1),
+            _ => null,
+        };
+        if (e.Key is "ArrowRight" or "ArrowLeft" or "ArrowDown" or "ArrowUp" or "Home" or "End")
+        {
+            if (next is { } n) { _cursor = n; _focusCursor = true; }
+            return;
+        }
+        await OnKeyDown.InvokeAsync(e);
+    }
+
+    // The first cell that can be picked from position from, moving by step; none past the grid's edge.
+    private int? Step(int[] values, int from, int step)
+    {
+        for (var i = from + step; i >= 0 && i < values.Length; i += step)
+            if (!Unavailable(values[i])) return values[i];
+        return null;
+    }
+
+    /// <summary>Moves keyboard focus onto the tabbable cell (best-effort; does nothing before the grid is rendered).</summary>
+    public async Task FocusAsync()
+    {
+        if (TabTarget() is not { } target) return;
+        var index = Array.IndexOf(Values().ToArray(), target);
+        if (index < 0) return;
+        try { await _cells[index].FocusAsync(); }
+        catch (JSException) { }
+        catch (InvalidOperationException) { /* not attached yet */ }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_focusCursor) return;
+        _focusCursor = false;
+        await FocusAsync();
+    }
+}

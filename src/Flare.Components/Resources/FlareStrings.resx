@@ -90,6 +90,8 @@
   <data name="Picker_ChooseMonth" xml:space="preserve"><value>Choose month</value></data>
   <data name="Picker_ChooseYear" xml:space="preserve"><value>Choose year</value></data>
   <data name="Picker_ShowDays" xml:space="preserve"><value>Show days</value></data>
+  <data name="Picker_ThisMonth" xml:space="preserve"><value>This month</value></data>
+  <data name="MonthPicker_Open" xml:space="preserve"><value>Choose a month</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Previous</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Next</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Select time</value></data>

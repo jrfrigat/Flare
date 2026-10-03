@@ -90,6 +90,8 @@
   <data name="Picker_ChooseMonth" xml:space="preserve"><value>Выбрать месяц</value></data>
   <data name="Picker_ChooseYear" xml:space="preserve"><value>Выбрать год</value></data>
   <data name="Picker_ShowDays" xml:space="preserve"><value>Показать дни</value></data>
+  <data name="Picker_ThisMonth" xml:space="preserve"><value>Этот месяц</value></data>
+  <data name="MonthPicker_Open" xml:space="preserve"><value>Выбрать месяц</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Предыдущий</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Следующий</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Выберите время</value></data>

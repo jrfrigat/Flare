@@ -7,6 +7,7 @@
 .flare-select,
 .flare-multiselect,
 .flare-datepicker,
+.flare-monthpicker,
 .flare-datetimepicker,
 .flare-timepicker {
     display: flex;

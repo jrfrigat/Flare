@@ -32,6 +32,13 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- **`FlareMonthPicker` - a month as the value.** The value is a `DateOnly`, the first day of the chosen month on the
+  culture's calendar (or the one `Calendar` sets), so `For`, validation and Min/Max work as for a date. The month is
+  typed on a `MM.yyyy` mask in the culture's order (`yyyy/MM` for ja-JP) or picked from a month and year view in a
+  popup or inline; Min/Max turn off the months outside them, and ReadOnly still browses.
+- **`FlareMonthYearGrid` - the month and year views on their own, with a keyboard.** The date picker's month and
+  year views now use it: the arrows, Home and End move over the months or years that can be picked, and PageUp /
+  PageDown page the year or the decade.
 - **`FlareClockDial.MinuteSelected`** is raised once the minute is settled (released or typed), and
   `FlareTimePicker.AutoClose` now finishes the clock dial as well as the columns.
 - **`Css.Classes.TimePicker.PanelDropdown`** names the panel of the columns popup.

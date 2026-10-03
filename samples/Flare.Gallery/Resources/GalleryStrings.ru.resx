@@ -3765,4 +3765,34 @@
   <data name="DpDemo_GregorianFaHelper" xml:space="preserve">
     <value>Явный календарь из тех, что предлагает культура</value>
   </data>
+  <data name="MonthPicker_Title" xml:space="preserve">
+    <value>Выбор месяца</value>
+  </data>
+  <data name="MonthPicker_Subtitle" xml:space="preserve">
+    <value>FlareMonthPicker - месяц как значение: первый день месяца в календаре культуры, набранный по маске или выбранный в видах месяцев и лет.</value>
+  </data>
+  <data name="MonthPicker_Basic" xml:space="preserve">
+    <value>Периоды, ограничения и календари</value>
+  </data>
+  <data name="MpDemo_PeriodLabel" xml:space="preserve">
+    <value>Отчетный период</value>
+  </data>
+  <data name="MpDemo_PeriodHelper" xml:space="preserve">
+    <value>Наберите цифры или выберите месяц; во всплывающем окне работают стрелки, Home/End и PageUp/PageDown</value>
+  </data>
+  <data name="MpDemo_ExpiryLabel" xml:space="preserve">
+    <value>Срок действия карты</value>
+  </data>
+  <data name="MpDemo_ExpiryHelper" xml:space="preserve">
+    <value>Min и Max: от этого месяца на десять лет вперед</value>
+  </data>
+  <data name="MpDemo_PersianLabel" xml:space="preserve">
+    <value>Персидский календарь (fa-IR, inline)</value>
+  </data>
+  <data name="MpDemo_PersianHelper" xml:space="preserve">
+    <value>Персидские месяцы; значение - первый день месяца</value>
+  </data>
+  <data name="MpDemo_Value" xml:space="preserve">
+    <value>Значение: {0}</value>
+  </data>
 </root>

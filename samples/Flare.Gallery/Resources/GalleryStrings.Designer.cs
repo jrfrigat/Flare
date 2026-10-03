@@ -11833,5 +11833,35 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DpDemo_GregorianFaHelper string.</summary>
         public static string DpDemo_GregorianFaHelper => ResourceManager.GetString("DpDemo_GregorianFaHelper", resourceCulture);
 
+        /// <summary>Looks up the localized MonthPicker_Title string.</summary>
+        public static string MonthPicker_Title => ResourceManager.GetString("MonthPicker_Title", resourceCulture);
+
+        /// <summary>Looks up the localized MonthPicker_Subtitle string.</summary>
+        public static string MonthPicker_Subtitle => ResourceManager.GetString("MonthPicker_Subtitle", resourceCulture);
+
+        /// <summary>Looks up the localized MonthPicker_Basic string.</summary>
+        public static string MonthPicker_Basic => ResourceManager.GetString("MonthPicker_Basic", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_PeriodLabel string.</summary>
+        public static string MpDemo_PeriodLabel => ResourceManager.GetString("MpDemo_PeriodLabel", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_PeriodHelper string.</summary>
+        public static string MpDemo_PeriodHelper => ResourceManager.GetString("MpDemo_PeriodHelper", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_ExpiryLabel string.</summary>
+        public static string MpDemo_ExpiryLabel => ResourceManager.GetString("MpDemo_ExpiryLabel", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_ExpiryHelper string.</summary>
+        public static string MpDemo_ExpiryHelper => ResourceManager.GetString("MpDemo_ExpiryHelper", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_PersianLabel string.</summary>
+        public static string MpDemo_PersianLabel => ResourceManager.GetString("MpDemo_PersianLabel", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_PersianHelper string.</summary>
+        public static string MpDemo_PersianHelper => ResourceManager.GetString("MpDemo_PersianHelper", resourceCulture);
+
+        /// <summary>Looks up the localized MpDemo_Value string.</summary>
+        public static string MpDemo_Value => ResourceManager.GetString("MpDemo_Value", resourceCulture);
+
     }
 }

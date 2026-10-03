@@ -24,6 +24,7 @@ Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). D
 - `FlareField`
 - `FlareFieldChrome`
 - `FlareMaskedField`
+- `FlareMonthPicker`
 - `FlareMultiSelect`
 - `FlareNumericField`
 - `FlareOtpField`

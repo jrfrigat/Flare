@@ -37,6 +37,7 @@ Semantic type-scale roles mapped to semantic HTML elements and CSS utility class
 - `FlareFileUploadButton`
 - `FlareLink`
 - `FlareMaskedField`
+- `FlareMonthPicker`
 - `FlareMultiSelect`
 - `FlareNumericField`
 - `FlareOtpField`

@@ -1,0 +1,11 @@
+@page "/components/month-picker"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.MonthPicker_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMonthPicker">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.MonthPicker_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.MonthPicker_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.MonthPicker_Basic" DemoType="typeof(Examples.MonthPickerDemo)" />

@@ -75,6 +75,26 @@ internal readonly record struct CalendarMonth(Calendar Calendar, int Year, int M
     public static (int First, int Last) Years(Calendar calendar) =>
         (Of(FirstDay(calendar), calendar).Year, Of(LastDay(calendar), calendar).Year);
 
+    /// <summary>Whether month <paramref name="month"/> of <paramref name="year"/> cannot be picked: it is not a
+    /// month the calendar can name there, or it lies wholly outside [<paramref name="min"/>; <paramref name="max"/>].</summary>
+    public static bool MonthUnavailable(Calendar calendar, int year, int month, DateOnly? min, DateOnly? max)
+    {
+        var m = Create(calendar, year, month);
+        if (m.Year != year || m.Month != month) return true;
+        return (min is { } lo && m.End < lo) || (max is { } hi && m.Start > hi);
+    }
+
+    /// <summary>Whether <paramref name="year"/> cannot be picked: outside the calendar's years or wholly outside
+    /// [<paramref name="min"/>; <paramref name="max"/>].</summary>
+    public static bool YearUnavailable(Calendar calendar, int year, DateOnly? min, DateOnly? max)
+    {
+        var (first, last) = Years(calendar);
+        if (year < first || year > last) return true;
+        var start = Create(calendar, year, 1).Start;
+        var end = Create(calendar, year, calendar.GetMonthsInYear(year)).End;
+        return (min is { } lo && end < lo) || (max is { } hi && start > hi);
+    }
+
     private static DateOnly Max(DateOnly a, DateOnly b) => a > b ? a : b;
     private static DateOnly Min(DateOnly a, DateOnly b) => a < b ? a : b;
     private static DateOnly Clamp(DateOnly d, DateOnly lo, DateOnly hi) => d < lo ? lo : d > hi ? hi : d;
