@@ -80,7 +80,8 @@
     /// <summary>The 1-12 month displayed.</summary>
     [Parameter, EditorRequired] public int ViewMonth { get; set; }
     /// <summary>Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture.
-    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.</summary>
+    /// The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept.
+    /// To change the names, pass a new culture object: names edited on the object already passed are not picked up.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Overrides the culture's first day of week when set (null = use the culture's).</summary>
     [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
@@ -131,13 +132,17 @@
     // every render (TASK-115).
     private DateOnly?[][] _weeks = [];
     private readonly string?[] _labels = new string?[42];
-    private (int Year, int Month, DayOfWeek First, string Culture)? _gridKey;
+    private (int Year, int Month, DayOfWeek First)? _gridKey;
+    // The culture by reference: a clone with other day names keeps the Name (TASK-164).
+    private CultureInfo? _gridCulture;
 
     protected override void OnParametersSet()
     {
-        var key = (ViewYear, ViewMonth, _firstDayOfWeek, _culture.Name);
-        if (_gridKey == key) return;
+        var key = (ViewYear, ViewMonth, _firstDayOfWeek);
+        var culture = _culture;
+        if (_gridKey == key && ReferenceEquals(_gridCulture, culture)) return;
         _gridKey = key;
+        _gridCulture = culture;
         _weeks = CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
         var i = 0;
         foreach (var week in _weeks)

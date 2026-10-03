@@ -11,7 +11,7 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the grid (usually the displayed month and year). |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture. The calendar is Gregorian: a culture whose calendar has other months (Persian, Hijri, Hebrew) is shown on its Gregorian calendar, while Thai Buddhist and Japanese years are kept. To change the names, pass a new culture object: names edited on the object already passed are not picked up. |
 | `DayClass` | `Func<DateOnly, string>?` | `` | Parameter |  | Extra CSS class(es) per day for component-specific selection or range-highlight decoration. |
 | `DayContent` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content rendered inside a day button instead of the day number. The grid keeps the button, its full-date label, roving focus, disabled state and selection. |
 | `Disabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Predicate disabling a day (sets the disabled attribute and the disabled day class). |

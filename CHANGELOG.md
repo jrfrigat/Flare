@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The calendar relabels its days for a culture with the same name.** `FlareMonthGrid` cached the full-date labels of
+  its day cells by culture name, so a cloned culture with other day or month names kept the old labels while the
+  headers changed. It now rebuilds them for any new culture object.
 - **A typed date range obeys its blackout days however long it is.** With `AllowDisabledDatesInRange` off, the
   fields of `FlareDateRangePicker` accepted an end more than ten years from the start with a disabled day in between,
   because they only looked that far for one. A typed start or end is now checked like a calendar pick.
