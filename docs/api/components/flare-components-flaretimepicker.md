@@ -48,7 +48,7 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 
 ### `ClearAsync()`
 
-Clears the selected time.
+Clears the selected time and closes the popup. Does nothing while the field is disabled or read-only.
 Returns: `Task`.
 
 ### `CloseAsync()`

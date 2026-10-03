@@ -54,7 +54,7 @@ Date and time field: a masked text input with a popup holding a calendar and a t
 
 ### `ClearAsync()`
 
-Clears the selected value.
+Clears the selected value and closes the popup. Does nothing while the field is disabled or read-only.
 Returns: `Task`.
 
 ### `CloseAsync()`

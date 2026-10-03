@@ -83,7 +83,7 @@ public partial class FlareTimePicker
     {
         _open = false;
         await Closed.InvokeAsync();
-        if (ListSelected(t)) { StateHasChanged(); return; }
+        if (_locked || ListSelected(t)) { StateHasChanged(); return; }
         await Commit(t);
     }
 

@@ -2266,7 +2266,7 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected value.",
+                new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected value and closes the popup. Does nothing while the field is disabled or read-only.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the picker popup.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -6578,7 +6578,7 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected time.",
+                new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected time and closes the popup. Does nothing while the field is disabled or read-only.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the picker popup.",
                     System.Array.Empty<ApiMethodParameter>()),

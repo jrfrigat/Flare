@@ -118,7 +118,7 @@
 
     // Time pane (clock dial or number inputs) - reused by Tabs and Panels.
     private RenderFragment _footer => @<div class="@Css.Classes.DateTimePicker.Footer">
-        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
+        <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@_locked" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
         <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(!CanConfirm)" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
     </div>;
 

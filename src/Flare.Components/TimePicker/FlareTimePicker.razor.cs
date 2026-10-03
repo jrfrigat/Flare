@@ -94,8 +94,8 @@ public partial class FlareTimePicker
     public Task CloseAsync() => Close();
     /// <summary>Toggles the picker popup.</summary>
     public Task ToggleAsync() => Toggle();
-    /// <summary>Clears the selected time.</summary>
-    public async Task ClearAsync() { await Commit(null); await Close(); }
+    /// <summary>Clears the selected time and closes the popup. Does nothing while the field is disabled or read-only.</summary>
+    public async Task ClearAsync() { if (_locked) return; await Commit(null); await Close(); }
     /// <summary>Sets keyboard focus to the time input.</summary>
     public ValueTask FocusAsync() => _inputEl.FocusAsync();
 
@@ -350,7 +350,9 @@ public partial class FlareTimePicker
 
     // Min/Max bound the popup too, not only the disabled cells (TASK-102): OK is offered only for a time
     // inside the range, and a refused confirm (AutoClose included) keeps the popup open (TASK-125).
-    private bool CanConfirm => TimeInRange(TempTime) && !(_keyboardEntry && _entryInvalid);
+    // A field locked after the popup opened takes no value from it; the popup still closes (TASK-173).
+    private bool _locked => Disabled || ReadOnly;
+    private bool CanConfirm => !_locked && TimeInRange(TempTime) && !(_keyboardEntry && _entryInvalid);
 
     private async Task Confirm()
     {

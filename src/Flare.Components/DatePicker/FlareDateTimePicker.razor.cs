@@ -106,7 +106,7 @@ public partial class FlareDateTimePicker
     }
 
     private Task HandlePanelKeyDown(KeyboardEventArgs e) => e.Key == "Escape" ? CancelAsync() : Task.CompletedTask;
-    /// <summary>Clears the selected value.</summary>
+    /// <summary>Clears the selected value and closes the popup. Does nothing while the field is disabled or read-only.</summary>
     public Task ClearAsync() => Clear();
     /// <summary>Sets keyboard focus to the input.</summary>
     public ValueTask FocusAsync() => _inputEl.FocusAsync();
@@ -343,7 +343,7 @@ public partial class FlareDateTimePicker
 
     private void SelectDate(DateOnly d)
     {
-        if (IsDayDisabled(d)) return;
+        if (_locked || IsDayDisabled(d)) return;
         _selectedDate = d;
         _activeTab = 1;
     }
@@ -401,7 +401,9 @@ public partial class FlareDateTimePicker
     }
 
     // OK is offered only for a representable value inside [Min; Max], as for the text input (TASK-101, TASK-125).
-    private bool CanConfirm => TryComposeDraft(out var dt) && (dt is not { } v || IsAllowed(v));
+    // A field locked after the popup opened takes no value from it; the popup still closes (TASK-173).
+    private bool _locked => Disabled || ReadOnly;
+    private bool CanConfirm => !_locked && TryComposeDraft(out var dt) && (dt is not { } v || IsAllowed(v));
 
     private async Task Confirm()
     {
@@ -412,6 +414,7 @@ public partial class FlareDateTimePicker
 
     private async Task Clear()
     {
+        if (_locked) return;
         await CommitValue(null);
         await CloseAsync();
     }

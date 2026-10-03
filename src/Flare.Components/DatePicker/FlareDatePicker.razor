@@ -124,11 +124,11 @@
             <div class="@Css.Classes.DatePicker.Footer">
                 @if (ShowClearButton)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
                 }
                 @if (ShowTodayButton)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="GoToToday" @onclick:stopPropagation>@(TodayText ?? FlareStrings.DatePicker_Today)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly)" @onclick="GoToToday" @onclick:stopPropagation>@(TodayText ?? FlareStrings.DatePicker_Today)</button>
                 }
             </div>
         </div>
