@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The time picker keeps what it does not show.** Confirming the popup or editing the text dropped the fraction of a
+  second, and without `ShowSeconds` the seconds too, so OK without a change moved 14:30:45.123 to 14:30:00. Those
+  parts are kept now, as in the date-time picker, except where they alone would push a typed `Max` out of range.
 - **A value the parent sets while a date or date-time field has focus is no longer overwritten.** A keystroke
   still waiting for its caret position used to commit the old typed text over the new value; now the new value
   wins and the field shows it in its editing form, as the time picker already did.

@@ -78,10 +78,12 @@ public partial class FlareTimePicker
         StateHasChanged();
     }
 
+    // An option is an exact time; picking the one already selected leaves the value as it is, seconds included.
     private async Task SelectListAsync(TimeOnly t)
     {
         _open = false;
         await Closed.InvokeAsync();
+        if (ListSelected(t)) { StateHasChanged(); return; }
         await Commit(t);
     }
 

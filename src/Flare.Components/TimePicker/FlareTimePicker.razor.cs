@@ -174,8 +174,8 @@ public partial class FlareTimePicker
         if (generation != _editGeneration) return;
         _text = MaskTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
-        if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t)
-            && TimeInRange(t))
+        if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var shown)
+            && Compose(shown) is var t && TimeInRange(t))
             await Commit(t);
     }
 
@@ -187,8 +187,8 @@ public partial class FlareTimePicker
         // The text is already on the HH:mm[:ss] skeleton, so a complete time parses exactly; a lenient parse
         // would only ever accept a half-edit ("12:3" as 12:03, TASK-126). Incomplete, unparsable or
         // out-of-range text is not committed and the field snaps back to the current value (TASK-102).
-        if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t)
-            && TimeInRange(t))
+        if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var shown)
+            && Compose(shown) is var t && TimeInRange(t))
         {
             _text = t.ToString(_timeFormat);
             await Commit(t);
@@ -334,7 +334,19 @@ public partial class FlareTimePicker
         await Close();
     }
 
-    private TimeOnly TempTime => new(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0);
+    private TimeOnly TempTime => Compose(new(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0));
+
+    // The value's ticks below the smallest unit the field and popup show. Editing what is shown keeps them, so
+    // confirming without a change does not move the value (TASK-159, as TASK-136 for the date-time picker).
+    private long HiddenTicks => Value is { } v ? v.Ticks % (ShowSeconds ? TimeSpan.TicksPerSecond : TimeSpan.TicksPerMinute) : 0;
+
+    // The shown time plus the hidden ticks - unless those alone push it past Min/Max, so typing exactly Max
+    // stays possible when the value carries unseen seconds.
+    private TimeOnly Compose(TimeOnly shown)
+    {
+        var withHidden = shown.Add(TimeSpan.FromTicks(HiddenTicks));
+        return TimeInRange(withHidden) || !TimeInRange(shown) ? withHidden : shown;
+    }
 
     // Min/Max bound the popup too, not only the disabled cells (TASK-102): OK is offered only for a time
     // inside the range, and a refused confirm (AutoClose included) keeps the popup open (TASK-125).
