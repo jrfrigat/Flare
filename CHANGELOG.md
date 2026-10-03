@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The date-time popup closes on Escape from the calendar after the field is locked.** A `FlareDateTimePicker`
+  popup left open when the field became disabled or read-only ignored Escape pressed on a day. It closes now, as the
+  date picker's does.
 - **The time list closes on Escape after the field is locked.** A `FlareTimePicker` list left open when the field
   became read-only ignored Escape. Escape now always closes it; the arrows and Enter still do nothing in a locked
   field.

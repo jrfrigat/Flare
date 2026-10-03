@@ -353,9 +353,10 @@ public partial class FlareDateTimePicker
     // focused day button, which the grid keeps on the cursor (TASK-124).
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
-        if (Disabled || ReadOnly) return;
-
+        // Escape first: a popup left open when the field was locked must still close (TASK-169, as TASK-162).
         if (e.Key == "Escape") { await CancelAsync(); return; }
+
+        if (Disabled || ReadOnly) return;
 
         if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
                 FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayDisabled) is not { } day) return;
