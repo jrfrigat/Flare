@@ -86,11 +86,11 @@ public partial class FlareDatePicker
     protected override string ComponentCssClass => Css.Classes.DatePicker.Root;
 
     private ElementReference _inputEl;
-    private CalendarView _initialView => OpenTo switch
+    private PickerView _initialView => OpenTo switch
     {
-        PickerOpenTo.Month => CalendarView.Month,
-        PickerOpenTo.Year => CalendarView.Year,
-        _ => CalendarView.Day,
+        PickerOpenTo.Month => PickerView.Month,
+        PickerOpenTo.Year => PickerView.Year,
+        _ => PickerView.Day,
     };
 
     /// <summary>Opens the calendar popup.</summary>

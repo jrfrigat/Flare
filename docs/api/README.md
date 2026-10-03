@@ -120,6 +120,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareMonthGrid`](components/flare-components-flaremonthgrid.md) — The month calendar shared by the date, date-time and range pickers: the weekday header and the six-by-seven grid of day buttons. Each picker keeps its own selection and keyboard behaviour and supplies it through the decoration hooks, so the markup and the date arithmetic live here once.
 - [`FlareMonthPicker`](components/flare-components-flaremonthpicker.md) — Month field bound to a DateOnly: the first day of the chosen month on the calendar the picker shows (1 Mehr 1405 for fa-IR). The month is typed on a mask in the culture's order or picked from a month and year view in a popup or inline.
 - [`FlareMonthYearGrid`](components/flare-components-flaremonthyeargrid.md)
+- [`FlareMultiDatePicker`](components/flare-components-flaremultidatepicker.md) — Field for several dates, bound to a sorted list of DateOnly without repeats: days are toggled in a calendar popup (or an inline calendar) on the culture's calendar, or typed as a list with ; between the dates.
 - [`FlareMultiSelect`](components/flare-components-flaremultiselect.md)
 - [`FlareNavGroup`](components/flare-components-flarenavgroup.md)
 - [`FlareNavLink`](components/flare-components-flarenavlink.md)

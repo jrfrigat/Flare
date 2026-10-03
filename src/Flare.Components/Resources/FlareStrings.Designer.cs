@@ -1357,6 +1357,33 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose dates.
+        /// </summary>
+        public static string MultiDatePicker_Open {
+            get {
+                return ResourceManager.GetString("MultiDatePicker_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} dates selected.
+        /// </summary>
+        public static string MultiDatePicker_Count {
+            get {
+                return ResourceManager.GetString("MultiDatePicker_Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string Picker_Done {
+            get {
+                return ResourceManager.GetString("Picker_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Week {0}.
         /// </summary>
         public static string Picker_WeekNumber {

@@ -10,7 +10,8 @@
    The grid role wraps the weekday row too, so each day column has its header; the wrapper is a plain block and the
    header row and the day grid keep their own layout. *@
 
-<div role="grid" aria-label="@AriaLabel" @onkeydown="HandleKeyDown" @onkeydown:stopPropagation>
+<div role="grid" aria-label="@AriaLabel" aria-multiselectable="@(MultiSelectable ? "true" : null)"
+     @onkeydown="HandleKeyDown" @onkeydown:stopPropagation>
 <div class="@Css.Classes.Picker.DayHeaders @(ShowWeekNumbers ? Css.Classes.Picker.DayHeadersWeeks : null)" role="row">
     @if (ShowWeekNumbers)
     {
@@ -109,6 +110,9 @@
     /// <summary>Content rendered inside a day button instead of the day number. The grid keeps the button, its
     /// full-date label, roving focus, disabled state and selection.</summary>
     [Parameter] public RenderFragment<DateOnly>? DayContent { get; set; }
+    /// <summary>Tells assistive tech that several days can be selected at once (<c>aria-multiselectable</c>), for a
+    /// host that toggles days instead of picking one.</summary>
+    [Parameter] public bool MultiSelectable { get; set; }
     /// <summary>Accessible label for the grid (usually the displayed month and year).</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Raised when a day cell is clicked.</summary>

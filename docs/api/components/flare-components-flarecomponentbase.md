@@ -124,6 +124,7 @@ This component exposes no documented public methods.
 - `FlareMenuItem`
 - `FlareMeter`
 - `FlareMonthPicker`
+- `FlareMultiDatePicker`
 - `FlareMultiSelect`
 - `FlareNavGroup`
 - `FlareNavLink`

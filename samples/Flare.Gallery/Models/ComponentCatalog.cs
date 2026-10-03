@@ -183,6 +183,7 @@ public static class ComponentCatalog
         new ComponentEntry("components/date-range-picker", "Date Range Picker",       "DateRangePicker_Title", ComponentGroup.DateTime),
         new ComponentEntry("components/date-time-picker",  "Date Time Picker",        "DateTimePicker_Title",  ComponentGroup.DateTime),
         new ComponentEntry("components/month-picker",     "Month Picker",            "MonthPicker_Title",     ComponentGroup.DateTime),
+        new ComponentEntry("components/multi-date-picker", "Multi Date Picker",      "MultiDatePicker_Title", ComponentGroup.DateTime),
         new ComponentEntry("components/time-picker",       "Time Picker",             "TimePicker_Title",      ComponentGroup.DateTime),
 
         // -- Feedback & Overlays --------------------------------------------------

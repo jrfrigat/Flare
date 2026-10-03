@@ -30,6 +30,7 @@ Size of a form field control (input, select, multi-select). Medium is the defaul
 - `FlareFieldChrome`
 - `FlareMaskedField`
 - `FlareMonthPicker`
+- `FlareMultiDatePicker`
 - `FlareMultiSelect`
 - `FlareNumericField`
 - `FlareOtpField`

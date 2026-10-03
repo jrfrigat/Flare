@@ -11863,5 +11863,29 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized MpDemo_Value string.</summary>
         public static string MpDemo_Value => ResourceManager.GetString("MpDemo_Value", resourceCulture);
 
+        /// <summary>Looks up the localized MultiDatePicker_Title string.</summary>
+        public static string MultiDatePicker_Title => ResourceManager.GetString("MultiDatePicker_Title", resourceCulture);
+
+        /// <summary>Looks up the localized MultiDatePicker_Subtitle string.</summary>
+        public static string MultiDatePicker_Subtitle => ResourceManager.GetString("MultiDatePicker_Subtitle", resourceCulture);
+
+        /// <summary>Looks up the localized MultiDatePicker_Basic string.</summary>
+        public static string MultiDatePicker_Basic => ResourceManager.GetString("MultiDatePicker_Basic", resourceCulture);
+
+        /// <summary>Looks up the localized MdpDemo_VacationLabel string.</summary>
+        public static string MdpDemo_VacationLabel => ResourceManager.GetString("MdpDemo_VacationLabel", resourceCulture);
+
+        /// <summary>Looks up the localized MdpDemo_VacationHelper string.</summary>
+        public static string MdpDemo_VacationHelper => ResourceManager.GetString("MdpDemo_VacationHelper", resourceCulture);
+
+        /// <summary>Looks up the localized MdpDemo_ShiftsLabel string.</summary>
+        public static string MdpDemo_ShiftsLabel => ResourceManager.GetString("MdpDemo_ShiftsLabel", resourceCulture);
+
+        /// <summary>Looks up the localized MdpDemo_ShiftsHelper string.</summary>
+        public static string MdpDemo_ShiftsHelper => ResourceManager.GetString("MdpDemo_ShiftsHelper", resourceCulture);
+
+        /// <summary>Looks up the localized MdpDemo_Value string.</summary>
+        public static string MdpDemo_Value => ResourceManager.GetString("MdpDemo_Value", resourceCulture);
+
     }
 }

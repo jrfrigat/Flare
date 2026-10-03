@@ -18,3 +18,4 @@ The initial calendar view a date picker opens to. Year jumps straight to the yea
 
 - `FlareDatePicker`
 - `FlareMonthPicker`
+- `FlareMultiDatePicker`

@@ -3795,4 +3795,28 @@
   <data name="MpDemo_Value" xml:space="preserve">
     <value>Значение: {0}</value>
   </data>
+  <data name="MultiDatePicker_Title" xml:space="preserve">
+    <value>Выбор нескольких дат</value>
+  </data>
+  <data name="MultiDatePicker_Subtitle" xml:space="preserve">
+    <value>FlareMultiDatePicker - несколько дат как значение: дни переключаются в календаре или вводятся списком, сортируются и не повторяются.</value>
+  </data>
+  <data name="MultiDatePicker_Basic" xml:space="preserve">
+    <value>Дни отпуска и смены</value>
+  </data>
+  <data name="MdpDemo_VacationLabel" xml:space="preserve">
+    <value>Дни отпуска (до 5, будни)</value>
+  </data>
+  <data name="MdpDemo_VacationHelper" xml:space="preserve">
+    <value>MaxCount 5 и IsDateDisabled для выходных; даты можно ввести через ';'</value>
+  </data>
+  <data name="MdpDemo_ShiftsLabel" xml:space="preserve">
+    <value>Смены (inline, номера недель)</value>
+  </data>
+  <data name="MdpDemo_ShiftsHelper" xml:space="preserve">
+    <value>Клик или Enter по дню добавляет или убирает его</value>
+  </data>
+  <data name="MdpDemo_Value" xml:space="preserve">
+    <value>Значения: {0}</value>
+  </data>
 </root>

@@ -32,6 +32,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- **`FlareMultiDatePicker` - several dates as the value.** `Values` is a sorted list of `DateOnly` without repeats
+  (`@bind-Values`, like the other multi-value fields): days are toggled with a click, Enter or Space in the calendar,
+  on the culture's calendar, or typed as a list with `;` between the dates. `MaxCount` turns the other days off once
+  reached, the field lists up to three dates and counts more, and the grid tells assistive tech it is multi-select.
 - **`FlareMonthPicker` - a month as the value.** The value is a `DateOnly`, the first day of the chosen month on the
   culture's calendar (or the one `Calendar` sets), so `For`, validation and Min/Max work as for a date. The month is
   typed on a `MM.yyyy` mask in the culture's order (`yyyy/MM` for ja-JP) or picked from a month and year view in a

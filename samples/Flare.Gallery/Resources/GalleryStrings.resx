@@ -3795,4 +3795,28 @@ Read the card, check the tests, and report what is left.</value>
   <data name="MpDemo_Value" xml:space="preserve">
     <value>Value: {0}</value>
   </data>
+  <data name="MultiDatePicker_Title" xml:space="preserve">
+    <value>Multi Date Picker</value>
+  </data>
+  <data name="MultiDatePicker_Subtitle" xml:space="preserve">
+    <value>FlareMultiDatePicker - several dates as the value: days toggled in the calendar or typed as a list, sorted and without repeats.</value>
+  </data>
+  <data name="MultiDatePicker_Basic" xml:space="preserve">
+    <value>Vacation days and shifts</value>
+  </data>
+  <data name="MdpDemo_VacationLabel" xml:space="preserve">
+    <value>Vacation days (up to 5, weekdays)</value>
+  </data>
+  <data name="MdpDemo_VacationHelper" xml:space="preserve">
+    <value>MaxCount 5 and IsDateDisabled for weekends; type dates with ';' between them</value>
+  </data>
+  <data name="MdpDemo_ShiftsLabel" xml:space="preserve">
+    <value>Shifts (inline, week numbers)</value>
+  </data>
+  <data name="MdpDemo_ShiftsHelper" xml:space="preserve">
+    <value>Click or press Enter on a day to add or remove it</value>
+  </data>
+  <data name="MdpDemo_Value" xml:space="preserve">
+    <value>Values: {0}</value>
+  </data>
 </root>

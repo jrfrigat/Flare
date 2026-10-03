@@ -1,0 +1,20 @@
+@inherits LocalizedPage
+
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:48rem;">
+    <FlareStack Gap="FlareSpacing.Large" Style="flex:1;min-width:16rem;">
+        <FlareMultiDatePicker @bind-Values="_vacation" Label="@GalleryStrings.MdpDemo_VacationLabel"
+                              HelperText="@GalleryStrings.MdpDemo_VacationHelper" MaxCount="5"
+                              IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)" />
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+            @string.Format(GalleryStrings.MdpDemo_Value, _vacation.Count == 0 ? "-" : string.Join(", ", _vacation.Select(d => d.ToString("yyyy-MM-dd"))))
+        </FlareText>
+    </FlareStack>
+    <FlareMultiDatePicker @bind-Values="_shifts" Label="@GalleryStrings.MdpDemo_ShiftsLabel"
+                          HelperText="@GalleryStrings.MdpDemo_ShiftsHelper" Inline="true" ShowWeekNumbers="true"
+                          Style="flex:1;min-width:18rem;" />
+</FlareStack>
+
+@code {
+    private IReadOnlyList<DateOnly> _vacation = [];
+    private IReadOnlyList<DateOnly> _shifts = [new(2026, 10, 5), new(2026, 10, 6), new(2026, 10, 13), new(2026, 10, 20)];
+}
