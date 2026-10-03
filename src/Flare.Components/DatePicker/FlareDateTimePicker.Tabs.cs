@@ -25,7 +25,7 @@ public partial class FlareDateTimePicker
         if (target is not { } tab) return;
         _activeTab = tab;
         try { await _tabRefs[tab].FocusAsync(); }
-        catch (JSException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 }
