@@ -58,7 +58,8 @@ All notable changes to Flare are documented here. This project adheres to
 - **A time or date-time field locked while its popup is open takes no value from it.** When the field became disabled
   or read-only after the popup opened, OK, Clear and the time list of `FlareTimePicker` and `FlareDateTimePicker`
   still wrote a new value. They are now disabled and change nothing; the popup still closes. `ClearAsync` on a locked
-  field does nothing, as on `FlareDatePicker`, whose Clear and Today buttons are now disabled in a locked field too.
+  field does nothing, as on `FlareDatePicker`. A disabled `FlareDatePicker` now disables its Clear, Today and month arrows; a
+  read-only one disables Clear and keeps browsing.
 - **The date-time popup closes on Escape from the calendar after the field is locked.** A `FlareDateTimePicker`
   popup left open when the field became disabled or read-only ignored Escape pressed on a day. It closes now, as the
   date picker's does.

@@ -90,13 +90,28 @@ public class LockedPopupCommitTests : FlareTestContext
         Assert.Equal(Noon.AddDays(5), committed);
     }
 
-    [Theory]
-    [InlineData(true, false)]
-    [InlineData(false, true)]
-    public void Date_FooterButtons_AreDisabledInALockedField(bool disabled, bool readOnly)
+    // Disabled turns the whole calendar off; read-only keeps browsing (Today, the arrows) and only stops changes.
+    [Fact]
+    public void Date_DisabledField_DisablesClearTodayAndNavigation()
     {
         var cut = Render<FlareDatePicker>(p => p.Add(x => x.Inline, true).Add(x => x.Value, new DateOnly(2026, 1, 15))
-            .Add(x => x.Disabled, disabled).Add(x => x.ReadOnly, readOnly));
+            .Add(x => x.Disabled, true));
         Assert.All(cut.FindAll($".{Css.Classes.DatePicker.Footer} button"), b => Assert.True(b.HasAttribute("disabled")));
+        var nav = cut.FindAll($".{Css.Classes.DatePicker.Header} button[aria-label]");
+        Assert.Equal(2, nav.Count);
+        Assert.All(nav, b => Assert.True(b.HasAttribute("disabled")));
+    }
+
+    [Fact]
+    public void Date_ReadOnlyField_DisablesClear_ButKeepsBrowsing()
+    {
+        var cut = Render<FlareDatePicker>(p => p.Add(x => x.Inline, true).Add(x => x.Value, new DateOnly(2026, 1, 15))
+            .Add(x => x.ReadOnly, true));
+        var footer = cut.FindAll($".{Css.Classes.DatePicker.Footer} button");
+        Assert.True(footer[0].HasAttribute("disabled"));
+        Assert.False(footer[1].HasAttribute("disabled"));
+        var nav = cut.FindAll($".{Css.Classes.DatePicker.Header} button[aria-label]");
+        Assert.Equal(2, nav.Count);
+        Assert.All(nav, b => Assert.False(b.HasAttribute("disabled")));
     }
 }
