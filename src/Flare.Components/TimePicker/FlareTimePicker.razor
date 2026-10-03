@@ -52,7 +52,7 @@
                    @onblur="HandleBlur"
                    @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
-                    disabled="@(Disabled || ReadOnly)" aria-haspopup="@(_isList ? "listbox" : "dialog")" aria-expanded="@_open"
+                    disabled="@(Disabled || ReadOnly)" aria-haspopup="@(_isList ? "listbox" : "dialog")" aria-expanded="@(_open ? "true" : "false")"
                     aria-label="@FlareStrings.TimePicker_Open" @ref="_toggleEl" @onclick="Toggle">
                 <FlareIconView Value="@FlareIcons.Schedule" />
             </button>
@@ -103,7 +103,7 @@
                         <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 2 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempSecond.ToString("00")</span>
                     }
                 </div>
-                <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey"
+                <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey" @onkeyup="OnDropKeyUp"
                      role="group" aria-label="@_headline" aria-activedescendant="@_columnsActiveId">
                     <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours">
                         @for (var h = 0; h < 24; h += _hourStep)
@@ -111,7 +111,7 @@
                             var hour = h;
                             <button type="button"
                                     id="@CellId('h', hour)" class="@CellClass(hour == _tempHour, 0)"
-                                    role="option" aria-selected="@(hour == _tempHour)" disabled="@HourDisabled(hour)"
+                                    role="option" aria-selected="@(hour == _tempHour ? "true" : "false")" disabled="@HourDisabled(hour)"
                                     @onclick="@(() => _tempHour = hour)">@hour.ToString("00")</button>
                         }
                     </div>
@@ -122,7 +122,7 @@
                             var min = m;
                             <button type="button"
                                     id="@CellId('m', min)" class="@CellClass(min == _tempMinute, 1)"
-                                    role="option" aria-selected="@(min == _tempMinute)" disabled="@MinuteDisabled(min)"
+                                    role="option" aria-selected="@(min == _tempMinute ? "true" : "false")" disabled="@MinuteDisabled(min)"
                                     @onclick="@(() => SelectMinute(min))">@min.ToString("00")</button>
                         }
                     </div>
@@ -135,7 +135,7 @@
                                 var sec = s;
                                 <button type="button"
                                         id="@CellId('s', sec)" class="@CellClass(sec == _tempSecond, 2)"
-                                        role="option" aria-selected="@(sec == _tempSecond)" disabled="@SecondDisabled(sec)"
+                                        role="option" aria-selected="@(sec == _tempSecond ? "true" : "false")" disabled="@SecondDisabled(sec)"
                                         @onclick="@(() => SelectSecond(sec))">@sec.ToString("00")</button>
                             }
                         </div>

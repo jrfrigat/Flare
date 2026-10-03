@@ -36,7 +36,8 @@ public partial class FlareTimePicker
     [Parameter] public string? CancelText { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TimeOnly?>>? For { get; set; }
-    /// <summary>Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false.</summary>
+    /// <summary>Adds a seconds column (Dropdown variant) and the seconds to the field: HH:mm:ss, or hh:mm:ss AM on a
+    /// 12-hour clock. Default false.</summary>
     [Parameter] public bool ShowSeconds { get; set; }
     /// <summary>Hour increment shown in the Dropdown column. Default 1.</summary>
     [Parameter] public int HourStep { get; set; } = 1;
@@ -278,6 +279,7 @@ public partial class FlareTimePicker
             _focusDrop = false;
             try { await _dropRef.FocusAsync(); } catch { /* best-effort */ }
         }
+        await ScrollDropActiveAsync();
     }
 
     // The columns announce the selected cell of the active column through aria-activedescendant (TASK-131);
@@ -295,29 +297,6 @@ public partial class FlareTimePicker
         2 => CellId('s', _tempSecond),
         _ => null,
     };
-
-    private void OnDropKey(KeyboardEventArgs e)
-    {
-        var key = e.Key;
-        if (key.Length == 1 && key[0] >= '0' && key[0] <= '9')
-        {
-            if (_dropActive == 0)
-            {
-                var (v, buf, complete) = TimeKeyboardEntry.Feed(_dropBuf, key[0], 23);
-                _dropBuf = buf; _tempHour = v;
-                if (complete) { _dropActive = 1; _dropBuf = string.Empty; }
-            }
-            else
-            {
-                var (v, buf, complete) = TimeKeyboardEntry.Feed(_dropBuf, key[0], 59);
-                _dropBuf = buf; _tempMinute = v;
-                if (complete) _dropBuf = string.Empty;
-            }
-        }
-        else if (key == "ArrowLeft") { _dropActive = 0; _dropBuf = string.Empty; }
-        else if (key == "ArrowRight") { _dropActive = 1; _dropBuf = string.Empty; }
-        else if (key == "Backspace") { _dropBuf = string.Empty; }
-    }
 
     private async Task Close()
     {

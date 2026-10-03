@@ -55,6 +55,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+Time picker: the keyboard now drives every column of the dropdown - Up/Down step the hour, minute or second over the offered cells, Home/End jump to the ends, Enter confirms - and the clock dial is a focusable slider that Up/Down/PageUp/PageDown/Home/End move and screen readers read. The popup toggles of the date, time and date-time pickers report aria-expanded as true/false.
 - **`FlareTimePicker` shows and takes a 12-hour time on a 12-hour clock.** With `Use24Hour="false"` (or a 12-hour
   culture) the field still showed and took "14:30" while the dial showed 2:30 PM. The field now reads "02:30 PM"
   with the culture's designators, and typing a or p picks the period ("0230p"). The new `Culture` parameter of

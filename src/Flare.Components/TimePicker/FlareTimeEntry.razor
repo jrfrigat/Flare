@@ -26,9 +26,9 @@
     {
         <div class="@Css.Classes.ClockDial.Period">
             <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(!_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
-                    aria-pressed="@(!_isPm)" @onclick="@(() => SetPeriod(false))">@_amText</button>
+                    aria-pressed="@(_isPm ? "false" : "true")" @onclick="@(() => SetPeriod(false))">@_amText</button>
             <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
-                    aria-pressed="@_isPm" @onclick="@(() => SetPeriod(true))">@_pmText</button>
+                    aria-pressed="@(_isPm ? "true" : "false")" @onclick="@(() => SetPeriod(true))">@_pmText</button>
         </div>
     }
 </div>

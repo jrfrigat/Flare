@@ -43,7 +43,7 @@
             @if (AllowPicker && !Inline)
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
-                        disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
+                        disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
                         aria-label="@(FlareStrings.DatePicker_Open)" @ref="_toggleEl" @onclick="Toggle">
                     <FlareIconView Value="@FlareIcons.CalendarMonth" />
                 </button>

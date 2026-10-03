@@ -25,7 +25,7 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the picker popup opens. |
 | `PopupVariant` | `TimePickerVariant` | `TimePickerVariant.Dial` | Parameter |  | Popup style: an analog clock Dial (default) or Dropdown columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry mode inside the dial dialog, a single combobox list of times), the variant's description says so. |
 | `ShowKeyboardToggle` | `bool` | `true` | Parameter |  | Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch, as its columns already take typed digits. |
-| `ShowSeconds` | `bool` | `false` | Parameter |  | Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false. |
+| `ShowSeconds` | `bool` | `false` | Parameter |  | Adds a seconds column (Dropdown variant) and the seconds to the field: HH:mm:ss, or hh:mm:ss AM on a 12-hour clock. Default false. |
 | `Use24Hour` | `bool?` | `` | Parameter |  | Forces a 12-hour (AM/PM) or 24-hour clock, for the field as well as the popup: on a 12-hour clock the field shows and takes "hh:mm AM". Null (default) follows the Culture short time pattern. |
 | `Value` | `TimeOnly?` | `` | Parameter |  | Currently selected time. |
 | `ValueChanged` | `EventCallback<TimeOnly?>` | `` | Callback |  | Callback invoked when the selected time changes. |

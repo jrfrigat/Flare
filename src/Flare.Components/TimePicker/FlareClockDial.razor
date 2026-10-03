@@ -7,28 +7,31 @@
 @using Flare.Components.Services
 @inject IElementJsService ElementJs
 
-@* Reusable analog clock dial (tap + drag + keyboard). Used by FlareTimePicker and FlareDateTimePicker. *@
-<div class="@Css.Classes.ClockDial.Root" tabindex="0" @ref="_root" @onkeydown="OnKey">
+@* Reusable analog clock dial (tap + drag + keyboard). Used by FlareTimePicker and FlareDateTimePicker. The dial is a
+   slider (TASK-174): Up/Down step the hour or minute it shows, PageUp/PageDown by an hour or five minutes, Home/End jump
+   to the ends; Left/Right switch between the hour and the minute (the dial holds two values); digits type them. *@
+<div class="@Css.Classes.ClockDial.Root" @onkeydown="OnKey">
 <div class="@Css.Classes.ClockDial.DialTop">
     <div class="@Css.Classes.ClockDial.TimeFields">
         <button type="button" class="@Css.Classes.ClockDial.TimeField @(_mode == DialMode.Hour ? Css.Classes.ClockDial.TimeFieldActive : "")"
-                @onclick="@(() => _mode = DialMode.Hour)">@_hourFieldText</button>
+                aria-label="@FlareStrings.TimePicker_Hours" aria-pressed="@(_mode == DialMode.Hour ? "true" : "false")" @onclick="@(() => _mode = DialMode.Hour)">@_hourFieldText</button>
         <span class="@Css.Classes.ClockDial.TimeFieldsSep">:</span>
         <button type="button" class="@Css.Classes.ClockDial.TimeField @(_mode == DialMode.Minute ? Css.Classes.ClockDial.TimeFieldActive : "")"
-                @onclick="@(() => _mode = DialMode.Minute)">@Minute.ToString("00")</button>
+                aria-label="@FlareStrings.TimePicker_Minutes" aria-pressed="@(_mode == DialMode.Minute ? "true" : "false")" @onclick="@(() => _mode = DialMode.Minute)">@Minute.ToString("00")</button>
     </div>
     @if (!Is24Hour)
     {
         <div class="@Css.Classes.ClockDial.Period">
             <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(!_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
-                    @onclick="@(() => SetPeriod(false))">@_amText</button>
+                    aria-pressed="@(_isPm ? "false" : "true")" @onclick="@(() => SetPeriod(false))">@_amText</button>
             <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
-                    @onclick="@(() => SetPeriod(true))">@_pmText</button>
+                    aria-pressed="@(_isPm ? "true" : "false")" @onclick="@(() => SetPeriod(true))">@_pmText</button>
         </div>
     }
 </div>
 
-<div class="@Css.Classes.ClockDial.Dial" role="slider" @ref="_dial"
+<div class="@Css.Classes.ClockDial.Dial" role="slider" tabindex="0" @ref="_dial"
+     aria-valuetext="@_valueText"
      aria-label="@(_mode == DialMode.Hour ? FlareStrings.TimePicker_Hours : FlareStrings.TimePicker_Minutes)"
      aria-valuemin="@(_mode == DialMode.Hour && !Is24Hour ? 1 : 0)"
      aria-valuemax="@(_mode == DialMode.Hour ? (Is24Hour ? 23 : 12) : 59)"
@@ -72,7 +75,6 @@
 
     private DialMode _mode = DialMode.Hour;
     private bool _dragging;
-    private ElementReference _root;
     private ElementReference _dial;
     // Half the rendered dial width, read when a press starts: the diameter is a theme token, so the
     // centre cannot be a constant.
@@ -83,7 +85,7 @@
     {
         if (firstRender)
         {
-            try { await _root.FocusAsync(); } catch { /* focus is best-effort */ }
+            try { await _dial.FocusAsync(); } catch { /* focus is best-effort */ }
         }
     }
 
@@ -97,7 +99,41 @@
         else if (key == "ArrowLeft") { _mode = DialMode.Hour; _buf = string.Empty; }
         else if (key == "ArrowRight") { _mode = DialMode.Minute; _buf = string.Empty; }
         else if (key == "Backspace") { _buf = string.Empty; }
+        else if (key is "ArrowUp" or "ArrowDown" or "PageUp" or "PageDown" or "Home" or "End") await StepAsync(key);
     }
+
+    // Slider keys over the value the dial shows; the hour wraps through the day, so a 12-hour dial crosses the period.
+    private async Task StepAsync(string key)
+    {
+        _buf = string.Empty;
+        if (_mode == DialMode.Hour)
+        {
+            var hour = key switch
+            {
+                "ArrowUp" or "PageUp" => (Hour + 1) % 24,
+                "ArrowDown" or "PageDown" => (Hour + 23) % 24,
+                "Home" => Is24Hour || !_isPm ? 0 : 12,
+                _ => Is24Hour || _isPm ? 23 : 11,
+            };
+            await HourChanged.InvokeAsync(hour);
+        }
+        else
+        {
+            var minute = key switch
+            {
+                "ArrowUp" => (Minute + 1) % 60,
+                "ArrowDown" => (Minute + 59) % 60,
+                "PageUp" => (Minute + 5) % 60,
+                "PageDown" => (Minute + 55) % 60,
+                "Home" => 0,
+                _ => 59,
+            };
+            await MinuteChanged.InvokeAsync(minute);
+        }
+    }
+
+    private string _valueText => _mode == DialMode.Minute ? Minute.ToString("00")
+        : Is24Hour ? Hour.ToString("00") : $"{_displayHour} {(_isPm ? _pmText : _amText)}";
 
     private async Task FeedDigit(char c)
     {
