@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 
 namespace Flare.Components;
 
@@ -6,7 +7,29 @@ namespace Flare.Components;
 public partial class FlareDateTimePicker
 {
     // Strip to digits and lay them on the numeric pattern. "010620261233" -> "01.06.2026 12:33" (ru).
-    private string MaskDateTime(string? raw) => MaskedInput.MaskByPattern(raw, _numericPattern);
+    private string MaskDateTime(string? raw)
+    {
+        var masked = MaskedInput.MaskByPattern(raw, _numericPattern);
+        if (!_editsOffset || string.IsNullOrEmpty(raw)) return masked;
+        // The offset follows the date and time digits: its sign is the first + or - typed after them (before
+        // them a '-' can be a date separator), and up to four more digits fill "HH:mm" (TASK-165).
+        var need = _numericPattern.Count(char.IsLetter);
+        var seen = 0;
+        var sign = '\0';
+        var digits = new StringBuilder(4);
+        foreach (var c in raw)
+        {
+            if (char.IsDigit(c))
+            {
+                if (seen < need) seen++;
+                else if (digits.Length < 4) digits.Append(c);
+            }
+            else if (seen == need && sign == '\0' && (c is '+' or '-')) sign = c;
+        }
+        if (seen < need || (sign == '\0' && digits.Length == 0)) return masked;
+        var offset = digits.Length <= 2 ? digits.ToString() : $"{digits.ToString(0, 2)}:{digits.ToString(2, digits.Length - 2)}";
+        return $"{masked} {(sign == '\0' ? '+' : sign)}{offset}";
+    }
 
     // Text edits the wall date and time only: the offset and the ticks the pattern cannot show come from the
     // current value, so changing a minute moves the instant by that minute (TASK-135).
@@ -18,7 +41,7 @@ public partial class FlareDateTimePicker
             value = parsed ?? default;
             return parsed.HasValue;
         }
-        if (TryParseExact(s, _numericPattern, out value)) return true;
+        if (TryParseExact(s, _editPattern, out value)) return true;
         if (TryParseExact(s, _format, out value)) return true;
         // A half-edited mask ("15.10.2026 12:3") must never fall through to the lenient parser and be
         // committed as a different time (TASK-126, as TASK-119 for the date): only a complete one may use it.

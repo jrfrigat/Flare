@@ -30,7 +30,7 @@
                    readonly="@(!AllowInput || ReadOnly)"
                    required="@Required"
                    aria-required="@(Required ? "true" : null)"
-                   placeholder="@(Placeholder ?? _numericPattern)"
+                   placeholder="@(Placeholder ?? _editPattern)"
                    aria-label="@(Label ?? Placeholder)"
                    aria-invalid="@(_invalid ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"

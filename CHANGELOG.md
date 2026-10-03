@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The date-time picker lets you type the offset its format shows.** With a `DateTimeFormat` holding `zzz` or `K`
+  the field dropped a typed offset and kept the old one, so `+02:00` became `+05:00` again. The focused field now
+  edits the offset after the time (`15.10.2026 14:30 +05:00`) and commits the one typed.
 - **The time picker keeps what it does not show.** Confirming the popup or editing the text dropped the fraction of a
   second, and without `ShowSeconds` the seconds too, so OK without a change moved 14:30:45.123 to 14:30:00. Those
   parts are kept now, as in the date-time picker, except where they alone would push a typed `Max` out of range.

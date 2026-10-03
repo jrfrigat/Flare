@@ -162,6 +162,11 @@ public partial class FlareDateTimePicker
     private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Date segments in the culture's own order, so year-first cultures mask and parse too (TASK-110).
     private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + (ShowSeconds ? " HH:mm:ss" : " HH:mm");
+    // A format that shows the offset (z, K) edits it too, after the time: "15.10.2026 14:30 +05:00" (TASK-165).
+    private bool _editsOffset => _format.Contains('z') || _format.Contains('K');
+    private string _editPattern => _editsOffset ? _numericPattern + " zzz" : _numericPattern;
+    // Length of a complete edit: "zzz" renders as the 6 characters "+05:00".
+    private int _editLength => _numericPattern.Length + (_editsOffset ? 7 : 0);
 
     private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
 
@@ -203,7 +208,7 @@ public partial class FlareDateTimePicker
         {
             _syncedValue = Value;
             _syncedText = display;
-            _text = _focused && Value.HasValue && ParseInput is null ? Value.Value.ToString(_numericPattern, _culture) : display;
+            _text = _focused && Value.HasValue && ParseInput is null ? Value.Value.ToString(_editPattern, _culture) : display;
             _editGeneration++;
         }
     }
@@ -212,7 +217,7 @@ public partial class FlareDateTimePicker
     {
         _focused = true;
         // Edit in numeric form; a custom parser edits the text as it is shown.
-        if (Value.HasValue && ParseInput is null) _text = Value.Value.ToString(_numericPattern, _culture);
+        if (Value.HasValue && ParseInput is null) _text = Value.Value.ToString(_editPattern, _culture);
     }
 
     private async Task HandleInput(ChangeEventArgs e)
@@ -225,7 +230,7 @@ public partial class FlareDateTimePicker
         if (generation != _editGeneration) return;
         _text = MaskDateTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
-        if (_text.Length == _numericPattern.Length && TryParse(_text, out var dt) && IsAllowed(dt))
+        if (_text.Length == _editLength && TryParse(_text, out var dt) && IsAllowed(dt))
             await CommitValue(dt);
     }
 
