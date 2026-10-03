@@ -1725,6 +1725,7 @@ public static class ComponentApiRegistry
                 @"FlareValidationSummary",
                 @"FlareVideoPlayer",
                 @"FlareVirtualList",
+                @"FlareWeekPicker",
             }
             );
 
@@ -4135,6 +4136,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FirstDayOfWeek", @"DayOfWeek?", null, @"Overrides the culture's first day of week when set (null = use the culture's).", null, false, false, false, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"FocusedDate", @"DateOnly?", null, @"The keyboard cursor: the day that carries the single tabindex=""0"" (roving focus) and receives focus when a key press moves it. A cursor outside the displayed month or on a disabled day falls back to Today, then to the first available day of the month.", null, false, false, false, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"FocusedDateChanged", @"EventCallback<DateOnly>", null, @"Raised with the day the keyboard cursor actually sits on when it is not FocusedDate: a clicked day, or - before OnKeyDown - the fallback day the grid made tabbable because FocusedDate left the displayed month or became disabled. The host moves its cursor there so the key press starts from the day the user sees focused.", null, false, true, false, @"FlareMonthGrid"),
+                new ApiParameterInfo(@"IsoWeekNumbers", @"bool", @"false", @"Numbers the week column by ISO 8601 (weeks from Monday, week 1 holds the first Thursday) instead of the culture's week rule. Pair it with a Monday FirstDayOfWeek, so each row is one ISO week.", null, false, false, false, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"MultiSelectable", @"bool", @"false", @"Tells assistive tech that several days can be selected at once (aria-multiselectable), for a host that toggles days instead of picking one.", null, false, false, false, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"OnDayClick", @"EventCallback<DateOnly>", null, @"Raised when a day cell is clicked.", null, false, true, false, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"OnDayHover", @"EventCallback<DateOnly>", null, @"Raised when the pointer enters a day cell (for range hover preview).", null, false, true, false, @"FlareMonthGrid"),
@@ -7318,6 +7320,79 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareWeekPicker"] = new ApiComponentInfo(
+            @"FlareWeekPicker",
+            @"Flare.Components.FlareWeekPicker",
+            @"Flare.Components",
+            @"Week field bound to a DateOnly: the first day of the chosen week. A click or Enter on any day picks its week; the field writes the week by the culture's week rule (""Week 41, 2026"") or by ISO 8601 (""2026-W41"") and takes a week or a date typed in.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AllowInput", @"bool", @"true", @"Allows typing a week or a date directly into the field. Default true.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"AllowPicker", @"bool", @"true", @"Allows opening the calendar popup (shows the calendar icon button). Default true.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"AutoClose", @"bool", @"true", @"Closes the popup when a week is picked. Default true. Ignored when Inline.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the input after the first render (best-effort).", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to show dates on instead of the culture's own; only one the culture offers among its optional calendars is used. Null uses the culture's calendar.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the calendar popup closes.", null, false, true, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar, the week rule and the field. Default = CurrentUICulture. The calendar follows the culture's own (Persian for fa-IR); ISO weeks are always Gregorian.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays).", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"DayTemplate", @"RenderFragment<DateOnly>?", null, @"Content of a day cell; the picker keeps the cell itself. Null shows the day number.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"FirstDayOfWeek", @"DayOfWeek?", null, @"Overrides the culture's first day of week (null = use the culture's). Ignored with IsoWeeks, where weeks start on Monday.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"For", @"Expression<Func<DateOnly?>>?", null, @"Model field bound inside an EditForm: changes reach the edit context and its validation message is shown.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"HasError", @"bool", @"false", @"Forces the error visual state without an error message (e.g. driven by external validation).", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Inline", @"bool", @"false", @"Renders the calendar inline (always visible under the field) rather than in a popup.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"IsDateDisabled", @"Func<DateOnly, bool>?", null, @"Predicate that disables specific dates; a week whose every day is disabled cannot be picked.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"IsoWeeks", @"bool", @"false", @"Numbers weeks by ISO 8601 - weeks from Monday, week 1 holds the first Thursday, the ISO year - and writes them as 2026-W41. Default false: the culture's week rule and first day of week.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Max", @"DateOnly?", null, @"Latest date that can be picked: a week with no day on or before it cannot be picked.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Min", @"DateOnly?", null, @"Earliest date that can be picked: a week with no day on or after it cannot be picked.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"OpenTo", @"PickerOpenTo", @"PickerOpenTo.Day", @"The calendar view the picker opens to (Day/Month/Year).", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Opened", @"EventCallback", null, @"Raised when the calendar popup opens.", null, false, true, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"ShowClearButton", @"bool", @"true", @"Shows the Clear button in the calendar footer. Default true.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"ShowThisWeekButton", @"bool", @"true", @"Shows the This week button, which picks the current week. Default true.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"ShowWeekNumbers", @"bool", @"true", @"Shows the week-number column in the calendar. Default true.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"ThisWeekText", @"string?", null, @"Override text for the This week button. When null, falls back to the localizer key Picker_ThisWeek.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Value", @"DateOnly?", null, @"The first day of the selected week (supports @bind-Value). A value on another day selects its week.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<DateOnly?>", null, @"Raised with the first day of the week the user commits (picked, typed or cleared).", null, false, true, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"InputAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Attributes splatted onto the field's inner control - the <input>, <textarea> or combobox element the user interacts with - rather than onto the wrapper. This is where data-testid, name, form, autofocus, tabindex and extra aria-* belong: an unmatched attribute written directly on the component lands on the field's root element, following the same rule as every other Flare component, and a test that targets it would be pointing at the wrapper. A field built from several equal inputs - the OTP field - has no single control and ignores this.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field. Ignored when LabelContent is set.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Markup rendered as the field label instead of Label - a unit, a help affordance, a link in a consent line. Named rather than ChildContent because a field's content is its control, not its label.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected week.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the calendar popup.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the input.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the calendar popup.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareFieldBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareZone"] = new ApiComponentInfo(
             @"FlareZone",
             @"Flare.Components.FlareZone",
@@ -8447,6 +8522,7 @@ public static class ComponentApiRegistry
                 @"FlareTextField",
                 @"FlareTimePicker",
                 @"FlareTimeSpanPicker",
+                @"FlareWeekPicker",
             });
 
         e[@"FilterOperator"] = new ApiEnumInfo(
@@ -8772,6 +8848,7 @@ public static class ComponentApiRegistry
                 @"FlareTextField",
                 @"FlareTimePicker",
                 @"FlareTimeSpanPicker",
+                @"FlareWeekPicker",
             });
 
         e[@"LabelPlacement"] = new ApiEnumInfo(
@@ -9052,6 +9129,7 @@ public static class ComponentApiRegistry
                 @"FlareDatePicker",
                 @"FlareMonthPicker",
                 @"FlareMultiDatePicker",
+                @"FlareWeekPicker",
             });
 
         e[@"Placement"] = new ApiEnumInfo(
@@ -9745,6 +9823,7 @@ public static class ComponentApiRegistry
                 @"FlareTimePicker",
                 @"FlareTimeSpanPicker",
                 @"FlareToggleButton",
+                @"FlareWeekPicker",
             });
 
         e[@"WebPushSubscribeStatus"] = new ApiEnumInfo(

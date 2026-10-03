@@ -201,3 +201,4 @@ This component exposes no documented public methods.
 - `FlareValidationSummary`
 - `FlareVideoPlayer`
 - `FlareVirtualList`
+- `FlareWeekPicker`

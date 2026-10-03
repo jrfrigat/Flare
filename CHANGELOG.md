@@ -32,6 +32,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- **`FlareWeekPicker` - a week as the value.** The value is a `DateOnly`, the first day of the week; a click or
+  Enter on any day picks its week, painted whole. Weeks are numbered by the culture's rule ("Week 41, 2026") or, with
+  `IsoWeeks`, by ISO 8601 ("2026-W41", the ISO year); the field takes `2026-W41` or a date. `FlareMonthGrid` gains
+  `IsoWeekNumbers` for its week column.
 - **`FlareMultiDatePicker` - several dates as the value.** `Values` is a sorted list of `DateOnly` without repeats
   (`@bind-Values`, like the other multi-value fields): days are toggled with a click, Enter or Space in the calendar,
   on the culture's calendar, or typed as a list with `;` between the dates. `MaxCount` turns the other days off once

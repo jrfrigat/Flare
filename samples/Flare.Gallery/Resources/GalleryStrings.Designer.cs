@@ -11887,5 +11887,35 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized MdpDemo_Value string.</summary>
         public static string MdpDemo_Value => ResourceManager.GetString("MdpDemo_Value", resourceCulture);
 
+        /// <summary>Looks up the localized WeekPicker_Title string.</summary>
+        public static string WeekPicker_Title => ResourceManager.GetString("WeekPicker_Title", resourceCulture);
+
+        /// <summary>Looks up the localized WeekPicker_Subtitle string.</summary>
+        public static string WeekPicker_Subtitle => ResourceManager.GetString("WeekPicker_Subtitle", resourceCulture);
+
+        /// <summary>Looks up the localized WeekPicker_Basic string.</summary>
+        public static string WeekPicker_Basic => ResourceManager.GetString("WeekPicker_Basic", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_SprintLabel string.</summary>
+        public static string WpDemo_SprintLabel => ResourceManager.GetString("WpDemo_SprintLabel", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_SprintHelper string.</summary>
+        public static string WpDemo_SprintHelper => ResourceManager.GetString("WpDemo_SprintHelper", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_IsoLabel string.</summary>
+        public static string WpDemo_IsoLabel => ResourceManager.GetString("WpDemo_IsoLabel", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_IsoHelper string.</summary>
+        public static string WpDemo_IsoHelper => ResourceManager.GetString("WpDemo_IsoHelper", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_InlineLabel string.</summary>
+        public static string WpDemo_InlineLabel => ResourceManager.GetString("WpDemo_InlineLabel", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_InlineHelper string.</summary>
+        public static string WpDemo_InlineHelper => ResourceManager.GetString("WpDemo_InlineHelper", resourceCulture);
+
+        /// <summary>Looks up the localized WpDemo_Value string.</summary>
+        public static string WpDemo_Value => ResourceManager.GetString("WpDemo_Value", resourceCulture);
+
     }
 }

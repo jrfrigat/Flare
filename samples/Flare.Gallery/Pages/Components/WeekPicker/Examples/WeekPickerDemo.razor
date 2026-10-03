@@ -1,0 +1,21 @@
+@inherits LocalizedPage
+
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:48rem;">
+    <FlareStack Gap="FlareSpacing.Large" Style="flex:1;min-width:16rem;">
+        <FlareWeekPicker @bind-Value="_sprint" Label="@GalleryStrings.WpDemo_SprintLabel"
+                         HelperText="@GalleryStrings.WpDemo_SprintHelper" />
+        <FlareWeekPicker @bind-Value="_iso" Label="@GalleryStrings.WpDemo_IsoLabel"
+                         HelperText="@GalleryStrings.WpDemo_IsoHelper" IsoWeeks="true" />
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+            @string.Format(GalleryStrings.WpDemo_Value, _iso?.ToString("yyyy-MM-dd") ?? "-")
+        </FlareText>
+    </FlareStack>
+    <FlareWeekPicker @bind-Value="_inline" Label="@GalleryStrings.WpDemo_InlineLabel"
+                     HelperText="@GalleryStrings.WpDemo_InlineHelper" Inline="true" Style="flex:1;min-width:18rem;" />
+</FlareStack>
+
+@code {
+    private DateOnly? _sprint;
+    private DateOnly? _iso;
+    private DateOnly? _inline = new(2026, 10, 12);
+}

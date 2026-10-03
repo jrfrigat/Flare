@@ -37,7 +37,7 @@
                 var anchor = week.FirstOrDefault(d => d.HasValue);
                 if (anchor is { } a)
                 {
-                    var weekNo = CalendarMath.WeekOfYear(a, _culture, _firstDayOfWeek);
+                    var weekNo = IsoWeekNumbers ? ISOWeek.GetWeekOfYear(a.ToDateTime(TimeOnly.MinValue)) : CalendarMath.WeekOfYear(a, _culture, _firstDayOfWeek);
                     <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
                           aria-label="@string.Format(FlareStrings.Picker_WeekNumber, weekNo)">
                         @weekNo
@@ -110,6 +110,9 @@
     /// <summary>Content rendered inside a day button instead of the day number. The grid keeps the button, its
     /// full-date label, roving focus, disabled state and selection.</summary>
     [Parameter] public RenderFragment<DateOnly>? DayContent { get; set; }
+    /// <summary>Numbers the week column by ISO 8601 (weeks from Monday, week 1 holds the first Thursday) instead of the
+    /// culture's week rule. Pair it with a Monday <see cref="FirstDayOfWeek"/>, so each row is one ISO week.</summary>
+    [Parameter] public bool IsoWeekNumbers { get; set; }
     /// <summary>Tells assistive tech that several days can be selected at once (<c>aria-multiselectable</c>), for a
     /// host that toggles days instead of picking one.</summary>
     [Parameter] public bool MultiSelectable { get; set; }

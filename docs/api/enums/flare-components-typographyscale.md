@@ -52,3 +52,4 @@ Semantic type-scale roles mapped to semantic HTML elements and CSS utility class
 - `FlareTimePicker`
 - `FlareTimeSpanPicker`
 - `FlareToggleButton`
+- `FlareWeekPicker`

@@ -185,6 +185,7 @@ public static class ComponentCatalog
         new ComponentEntry("components/month-picker",     "Month Picker",            "MonthPicker_Title",     ComponentGroup.DateTime),
         new ComponentEntry("components/multi-date-picker", "Multi Date Picker",      "MultiDatePicker_Title", ComponentGroup.DateTime),
         new ComponentEntry("components/time-picker",       "Time Picker",             "TimePicker_Title",      ComponentGroup.DateTime),
+        new ComponentEntry("components/week-picker",       "Week Picker",             "WeekPicker_Title",      ComponentGroup.DateTime),
 
         // -- Feedback & Overlays --------------------------------------------------
         new ComponentEntry("components/alerts",            "Alert",                   "Alerts_Title",          ComponentGroup.Feedback),

@@ -1,0 +1,109 @@
+@namespace Flare.Components
+@inherits FlareFieldBase
+@implements IFlareField<DateOnly?>
+@using System.Globalization
+@inject TimeProvider TimeProvider
+@inject Flare.Components.Services.IOverlayJsService Overlay
+
+@* A week field (TASK-185): a click or Enter on any day picks its week, painted whole with the range classes; the
+   field writes the week by the culture rule or ISO 8601 and takes a week or a date typed in. *@
+<FlareFieldChrome ComponentClass="@Css.Classes.WeekPicker.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@_invalid"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
+                  Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
+            <input class="@Css.Classes.Input.Control"
+                   id="@ControlId"
+                   @ref="_inputEl"
+                   style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+                   type="text"
+                   value="@_text"
+                   readonly="@(!AllowInput || ReadOnly)"
+                   required="@Required"
+                   placeholder="@(Placeholder ?? _format)"
+                   disabled="@Disabled"
+                   aria-label="@(Label ?? Placeholder)"
+                   aria-required="@(Required ? "true" : null)"
+                   aria-invalid="@(_invalid ? "true" : null)"
+                   aria-describedby="@SupportDescribedBy"
+                   @onfocus="HandleFocus"
+                   @oninput="HandleInput"
+                   @onchange="HandleTextChange"
+                   @onblur="HandleBlur"
+                   @attributes="InputAttributes" />
+            @if (AllowPicker && !Inline)
+            {
+                <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
+                        disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
+                        aria-label="@FlareStrings.WeekPicker_Open" @ref="_toggleEl" @onclick="Toggle">
+                    <FlareIconView Value="@FlareIcons.CalendarMonth" />
+                </button>
+            }
+        </div>
+
+        @if (_open && !Inline)
+        {
+            <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+        }
+        @if (_open || Inline)
+        {
+        <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
+             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@_views.HeaderLabel" @ref="_panelEl"
+             @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
+            <div class="@Css.Classes.DatePicker.Header">
+                <span @onclick:stopPropagation @onclick="() => { }">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="_views.Prev" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(Disabled || !_views.CanPrev)">
+                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
+                    </FlareButton>
+                </span>
+                <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
+                        type="button" aria-live="polite" title="@_views.SwitchHint" @onclick="_views.Cycle" @onclick:stopPropagation>
+                    @_views.HeaderLabel
+                </button>
+                <span @onclick:stopPropagation @onclick="() => { }">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="_views.Next" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(Disabled || !_views.CanNext)">
+                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
+                    </FlareButton>
+                </span>
+            </div>
+
+            @if (_views.View == PickerView.Day)
+            {
+                <FlareMonthGrid @ref="_grid" ViewYear="_views.Shown.Year" ViewMonth="_views.Shown.Month" Culture="_culture" Today="Today"
+                                FirstDayOfWeek="_firstDay" ShowWeekNumbers="ShowWeekNumbers" IsoWeekNumbers="IsoWeeks"
+                                AriaLabel="@_views.HeaderLabel"
+                                Selected="IsSelected"
+                                Disabled="IsDayUnavailable"
+                                FocusedDate="@FocusedCursor"
+                                FocusedDateChanged="@(d => _focusedDate = d)"
+                                DayClass="ComposeDayClass"
+                                DayContent="DayTemplate"
+                                OnDayClick="PickWeek"
+                                OnKeyDown="HandleGridKeyDown" />
+            }
+            else
+            {
+                <FlareMonthYearGrid View="_views.GridView" Year="_views.Year" SelectedMonth="_views.Month" SelectedYear="_views.Year"
+                                    Culture="_culture" Today="Today" Min="Min" Max="Max" Disabled="Disabled" AriaLabel="@_views.HeaderLabel"
+                                    OnPick="_views.Pick" OnKeyDown="_views.PageKey" />
+            }
+
+            <div class="@Css.Classes.DatePicker.Footer">
+                @if (ShowClearButton)
+                {
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly || Value is null)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
+                }
+                @if (ShowThisWeekButton)
+                {
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@Disabled" @onclick="GoToThisWeek" @onclick:stopPropagation>@(ThisWeekText ?? FlareStrings.Picker_ThisWeek)</button>
+                }
+            </div>
+        </div>
+        }
+    </Field>
+</FlareFieldChrome>

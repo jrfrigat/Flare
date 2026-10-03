@@ -43,3 +43,4 @@ Size of a form field control (input, select, multi-select). Medium is the defaul
 - `FlareTextField`
 - `FlareTimePicker`
 - `FlareTimeSpanPicker`
+- `FlareWeekPicker`

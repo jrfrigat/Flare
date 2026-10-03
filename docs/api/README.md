@@ -204,6 +204,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareValidationSummary`](components/flare-components-flarevalidationsummary.md)
 - [`FlareVideoPlayer`](components/flare-components-flarevideoplayer.md)
 - [`FlareVirtualList`](components/flare-components-flarevirtuallist.md)
+- [`FlareWeekPicker`](components/flare-components-flareweekpicker.md) — Week field bound to a DateOnly: the first day of the chosen week. A click or Enter on any day picks its week; the field writes the week by the culture's week rule ("Week 41, 2026") or by ISO 8601 ("2026-W41") and takes a week or a date typed in.
 - [`FlareZone`](components/flare-components-flarezone.md) — A coloured band drawn across part of a slider's or progress bar's track, marking a region of the host's own scale - "danger starts at 90". The range is absolute, so each zone reads as a pair of boundaries and is independent of the others. It registers with the host and renders nothing itself.
 
 ## Enums

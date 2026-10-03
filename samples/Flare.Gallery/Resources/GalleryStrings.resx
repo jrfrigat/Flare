@@ -3819,4 +3819,34 @@ Read the card, check the tests, and report what is left.</value>
   <data name="MdpDemo_Value" xml:space="preserve">
     <value>Values: {0}</value>
   </data>
+  <data name="WeekPicker_Title" xml:space="preserve">
+    <value>Week Picker</value>
+  </data>
+  <data name="WeekPicker_Subtitle" xml:space="preserve">
+    <value>FlareWeekPicker - a week as the value: the first day of the week, numbered by the culture's rule or by ISO 8601.</value>
+  </data>
+  <data name="WeekPicker_Basic" xml:space="preserve">
+    <value>Culture weeks, ISO weeks and inline</value>
+  </data>
+  <data name="WpDemo_SprintLabel" xml:space="preserve">
+    <value>Sprint week</value>
+  </data>
+  <data name="WpDemo_SprintHelper" xml:space="preserve">
+    <value>The culture's week rule; click any day or press Enter on it</value>
+  </data>
+  <data name="WpDemo_IsoLabel" xml:space="preserve">
+    <value>ISO week</value>
+  </data>
+  <data name="WpDemo_IsoHelper" xml:space="preserve">
+    <value>IsoWeeks: weeks from Monday, written as 2026-W41; type 2026-W41 or a date</value>
+  </data>
+  <data name="WpDemo_InlineLabel" xml:space="preserve">
+    <value>Report week (inline)</value>
+  </data>
+  <data name="WpDemo_InlineHelper" xml:space="preserve">
+    <value>Up and Down move by a week, PageUp and PageDown by a month</value>
+  </data>
+  <data name="WpDemo_Value" xml:space="preserve">
+    <value>Value (first day): {0}</value>
+  </data>
 </root>

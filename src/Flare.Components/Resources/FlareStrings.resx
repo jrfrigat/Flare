@@ -95,6 +95,9 @@
   <data name="MultiDatePicker_Open" xml:space="preserve"><value>Choose dates</value></data>
   <data name="MultiDatePicker_Count" xml:space="preserve"><value>{0} dates selected</value></data>
   <data name="Picker_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="Picker_ThisWeek" xml:space="preserve"><value>This week</value></data>
+  <data name="WeekPicker_Open" xml:space="preserve"><value>Choose a week</value></data>
+  <data name="WeekPicker_Value" xml:space="preserve"><value>Week {0}, {1}</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Previous</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Next</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Select time</value></data>

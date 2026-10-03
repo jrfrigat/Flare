@@ -36,3 +36,4 @@ Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea). D
 - `FlareTextField`
 - `FlareTimePicker`
 - `FlareTimeSpanPicker`
+- `FlareWeekPicker`

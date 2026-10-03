@@ -95,6 +95,9 @@
   <data name="MultiDatePicker_Open" xml:space="preserve"><value>Выбрать даты</value></data>
   <data name="MultiDatePicker_Count" xml:space="preserve"><value>Выбрано дат: {0}</value></data>
   <data name="Picker_Done" xml:space="preserve"><value>Готово</value></data>
+  <data name="Picker_ThisWeek" xml:space="preserve"><value>Эта неделя</value></data>
+  <data name="WeekPicker_Open" xml:space="preserve"><value>Выбрать неделю</value></data>
+  <data name="WeekPicker_Value" xml:space="preserve"><value>Неделя {0}, {1}</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Предыдущий</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Следующий</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Выберите время</value></data>
