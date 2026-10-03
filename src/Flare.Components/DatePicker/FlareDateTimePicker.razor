@@ -96,7 +96,7 @@
                     <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                 </FlareButton>
             </span>
-            <span class="@Css.Classes.DateTimePicker.NavLabel">@_viewDate.ToString("MMMM yyyy", _culture)</span>
+            <span class="@Css.Classes.DateTimePicker.NavLabel" aria-live="polite">@_viewDate.ToString("MMMM yyyy", _culture)</span>
             <span @onclick:stopPropagation @onclick="() => { }">
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Picker_Next">
                     <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>

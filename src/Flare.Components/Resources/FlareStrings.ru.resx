@@ -86,6 +86,10 @@
   <data name="Picker_Cancel" xml:space="preserve"><value>Отмена</value></data>
   <data name="Picker_Clear" xml:space="preserve"><value>Очистить</value></data>
   <data name="Picker_WeekNumber" xml:space="preserve"><value>Неделя {0}</value></data>
+  <data name="Picker_Week" xml:space="preserve"><value>Неделя</value></data>
+  <data name="Picker_ChooseMonth" xml:space="preserve"><value>Выбрать месяц</value></data>
+  <data name="Picker_ChooseYear" xml:space="preserve"><value>Выбрать год</value></data>
+  <data name="Picker_ShowDays" xml:space="preserve"><value>Показать дни</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Предыдущий</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Следующий</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Выберите время</value></data>

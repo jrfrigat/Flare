@@ -86,6 +86,10 @@
   <data name="Picker_Cancel" xml:space="preserve"><value>Cancel</value></data>
   <data name="Picker_Clear" xml:space="preserve"><value>Clear</value></data>
   <data name="Picker_WeekNumber" xml:space="preserve"><value>Week {0}</value></data>
+  <data name="Picker_Week" xml:space="preserve"><value>Week</value></data>
+  <data name="Picker_ChooseMonth" xml:space="preserve"><value>Choose month</value></data>
+  <data name="Picker_ChooseYear" xml:space="preserve"><value>Choose year</value></data>
+  <data name="Picker_ShowDays" xml:space="preserve"><value>Show days</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Previous</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Next</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Select time</value></data>

@@ -76,7 +76,7 @@
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                     </FlareButton>
                 </span>
-                <span class="@Css.Classes.DatePicker.MonthLabel">@HeaderLabel</span>
+                <span class="@Css.Classes.DatePicker.MonthLabel" aria-live="polite">@HeaderLabel</span>
                 <span @onclick:stopPropagation>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Calendar_NextMonth" Disabled="@(Disabled || !CanNext)">
                         <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>

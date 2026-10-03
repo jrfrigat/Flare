@@ -66,7 +66,7 @@
                     </FlareButton>
                 </span>
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
-                        type="button" @onclick="CycleCalendarView" @onclick:stopPropagation>
+                        type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="CycleCalendarView" @onclick:stopPropagation>
                     @HeaderLabel
                 </button>
                 <span @onclick:stopPropagation @onclick="() => { }">
@@ -98,6 +98,7 @@
                         var month = m;
                         <button type="button"
                                 class="@Css.Classes.DatePicker.MonthBtn @(month == _viewMonth ? Css.Classes.DatePicker.MonthSelected : "")"
+                                aria-pressed="@(month == _viewMonth ? "true" : "false")"
                                 @onclick="@(() => SelectMonth(month))"
                                 @onclick:stopPropagation>
                             @(new DateTime(2000, month, 1).ToString("MMM", _culture))
@@ -113,6 +114,7 @@
                         var year = y;
                         <button type="button"
                                 class="@Css.Classes.DatePicker.YearBtn @(year == _viewYear ? Css.Classes.DatePicker.YearSelected : "")"
+                                aria-pressed="@(year == _viewYear ? "true" : "false")"
                                 @onclick="@(() => SelectYear(year))"
                                 @onclick:stopPropagation>
                             @CalendarMath.YearLabel(year, _culture)

@@ -1303,6 +1303,42 @@ namespace Flare.Components.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Week.
+        /// </summary>
+        public static string Picker_Week {
+            get {
+                return ResourceManager.GetString("Picker_Week", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Choose month.
+        /// </summary>
+        public static string Picker_ChooseMonth {
+            get {
+                return ResourceManager.GetString("Picker_ChooseMonth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Choose year.
+        /// </summary>
+        public static string Picker_ChooseYear {
+            get {
+                return ResourceManager.GetString("Picker_ChooseYear", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Show days.
+        /// </summary>
+        public static string Picker_ShowDays {
+            get {
+                return ResourceManager.GetString("Picker_ShowDays", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Week {0}.
         /// </summary>
         public static string Picker_WeekNumber {

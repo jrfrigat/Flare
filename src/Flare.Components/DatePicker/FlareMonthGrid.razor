@@ -6,20 +6,23 @@
 @* Shared month calendar grid used by FlareDatePicker, FlareDateTimePicker and FlareDateRangePicker:
    the weekday header row and the 6x7 day-button grid. Selection/range decoration is supplied by the
    host through DayClass; disabled/keyboard/hover are optional hooks so each picker keeps its own
-   behaviour while the markup + date generation (CalendarMath) live here once. *@
+   behaviour while the markup + date generation (CalendarMath) live here once.
+   The grid role wraps the weekday row too, so each day column has its header; the wrapper is a plain block and the
+   header row and the day grid keep their own layout. *@
 
-<div class="@Css.Classes.Picker.DayHeaders @(ShowWeekNumbers ? Css.Classes.Picker.DayHeadersWeeks : null)">
+<div role="grid" aria-label="@AriaLabel" @onkeydown="HandleKeyDown" @onkeydown:stopPropagation>
+<div class="@Css.Classes.Picker.DayHeaders @(ShowWeekNumbers ? Css.Classes.Picker.DayHeadersWeeks : null)" role="row">
     @if (ShowWeekNumbers)
     {
-        <span class="@Css.Classes.Picker.WeekNum" aria-hidden="true"></span>
+        <span class="@Css.Classes.Picker.WeekNum" role="columnheader" aria-label="@FlareStrings.Picker_Week"></span>
     }
+    @{ var dayNames = DayNames(); var dayIndex = 0; }
     @foreach (var h in CalendarMath.DayHeaders(_culture, _firstDayOfWeek))
     {
-        <span>@h</span>
+        <span role="columnheader" aria-label="@dayNames[dayIndex++]">@h</span>
     }
 </div>
-<div class="@Css.Classes.Picker.Grid @(ShowWeekNumbers ? Css.Classes.Picker.GridWeeks : null)" role="grid" aria-label="@AriaLabel"
-     @onkeydown="HandleKeyDown" @onkeydown:stopPropagation>
+<div class="@Css.Classes.Picker.Grid @(ShowWeekNumbers ? Css.Classes.Picker.GridWeeks : null)" role="rowgroup">
     @{
         var weeks = _weeks;
         _tabTarget = ResolveTabTarget(weeks);
@@ -73,6 +76,7 @@
         </div>
     }
 </div>
+</div>
 
 @code {
     /// <summary>The year of the displayed month.</summary>
@@ -119,6 +123,15 @@
     // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
     private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture);
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
+
+    // The full weekday names in header order, read by assistive tech in place of the short visible ones.
+    private string[] DayNames()
+    {
+        var first = (int)_firstDayOfWeek;
+        var names = new string[7];
+        for (var i = 0; i < 7; i++) names[i] = _culture.DateTimeFormat.GetDayName((DayOfWeek)((first + i) % 7));
+        return names;
+    }
     // Roving tabindex: exactly one available cell of the displayed month is reachable by Tab.
     private DateOnly? _tabTarget;
     // Day buttons by grid position. Blazor captures a reference only when the element is created and keeps

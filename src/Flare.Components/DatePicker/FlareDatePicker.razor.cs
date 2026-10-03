@@ -162,6 +162,14 @@ public partial class FlareDatePicker
     private string MaskDate(string? raw) => MaskedInput.MaskByPattern(raw, _numericPattern);
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
 
+    // What the header button does next: it cycles day -> month -> year -> day.
+    private string ViewSwitchHint => _calView switch
+    {
+        CalendarView.Day => FlareStrings.Picker_ChooseMonth,
+        CalendarView.Month => FlareStrings.Picker_ChooseYear,
+        _ => FlareStrings.Picker_ShowDays,
+    };
+
     private string HeaderLabel => _calView switch
     {
         CalendarView.Month => CalendarMath.YearLabel(_viewYear, _culture),
