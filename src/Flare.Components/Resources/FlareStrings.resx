@@ -232,6 +232,7 @@
   <data name="DatePicker_Open" xml:space="preserve"><value>Open date picker</value></data>
   <data name="DatePicker_Today" xml:space="preserve"><value>Today</value></data>
   <data name="DateTimePicker_DateTab" xml:space="preserve"><value>Date</value></data>
+  <data name="DateTimePicker_Tabs" xml:space="preserve"><value>Date and time</value></data>
   <data name="DateTimePicker_TimeTab" xml:space="preserve"><value>Time</value></data>
   <data name="DateRangePicker_StartLabel" xml:space="preserve"><value>Start date</value></data>
   <data name="DateRangePicker_EndLabel" xml:space="preserve"><value>End date</value></data>

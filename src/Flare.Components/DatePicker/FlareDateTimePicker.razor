@@ -66,13 +66,20 @@
             }
             else
             {
-                <div class="@Css.Classes.DateTimePicker.Tabs">
-                    <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == 0 ? Css.Classes.DateTimePicker.TabActive : "")"
-                            type="button" @onclick='() => _activeTab = 0'>@(FlareStrings.DateTimePicker_DateTab)</button>
-                    <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == 1 ? Css.Classes.DateTimePicker.TabActive : "")"
-                            type="button" @onclick='() => _activeTab = 1'>@(FlareStrings.DateTimePicker_TimeTab)</button>
+                <div class="@Css.Classes.DateTimePicker.Tabs" role="tablist" aria-label="@FlareStrings.DateTimePicker_Tabs"
+                     @onkeydown="HandleTabKeyDown">
+                    @for (var i = 0; i < 2; i++)
+                    {
+                        var tab = i;
+                        <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == tab ? Css.Classes.DateTimePicker.TabActive : "")"
+                                type="button" role="tab" id="@TabId(tab)" aria-selected="@(_activeTab == tab ? "true" : "false")"
+                                aria-controls="@TabPanelId" tabindex="@(_activeTab == tab ? 0 : -1)"
+                                @ref="_tabRefs[tab]" @onclick="() => _activeTab = tab">@(tab == 0 ? FlareStrings.DateTimePicker_DateTab : FlareStrings.DateTimePicker_TimeTab)</button>
+                    }
                 </div>
-                @if (_activeTab == 0) { @_calendar } else { @_time }
+                <div role="tabpanel" id="@TabPanelId" aria-labelledby="@TabId(_activeTab)">
+                    @if (_activeTab == 0) { @_calendar } else { @_time }
+                </div>
                 @_footer
             }
         </div>

@@ -916,6 +916,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Date and time.
+        /// </summary>
+        public static string DateTimePicker_Tabs {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Tabs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Time.
         /// </summary>
         public static string DateTimePicker_TimeTab {

@@ -232,6 +232,7 @@
   <data name="DatePicker_Open" xml:space="preserve"><value>Открыть выбор даты</value></data>
   <data name="DatePicker_Today" xml:space="preserve"><value>Сегодня</value></data>
   <data name="DateTimePicker_DateTab" xml:space="preserve"><value>Дата</value></data>
+  <data name="DateTimePicker_Tabs" xml:space="preserve"><value>Дата и время</value></data>
   <data name="DateTimePicker_TimeTab" xml:space="preserve"><value>Время</value></data>
   <data name="DateRangePicker_StartLabel" xml:space="preserve"><value>Начальная дата</value></data>
   <data name="DateRangePicker_EndLabel" xml:space="preserve"><value>Конечная дата</value></data>

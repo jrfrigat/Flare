@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The date and time tabs of `FlareDateTimePicker` are announced as tabs.** The Date / Time switch of the tabbed
+  popup was two plain buttons, so a screen reader did not say which one was picked. It is now a labelled tab list
+  with a tab panel; the arrow keys, Home and End switch tabs, and only the picked tab is in the Tab order.
 - **The calendar relabels its days for a culture with the same name.** `FlareMonthGrid` cached the full-date labels of
   its day cells by culture name, so a cloned culture with other day or month names kept the old labels while the
   headers changed. It now rebuilds them for any new culture object.
