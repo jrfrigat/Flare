@@ -55,6 +55,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+Date pickers: week numbers for a culture on the Persian or Hijri calendar are counted on the Gregorian calendar the grid shows, not on the culture's own calendar.
 Date picker: the month and year views turn off the months and years that lie wholly outside Min and Max, and an inline calendar moves to the month of a value its parent sets.
 Date pickers: the weekday headers are now column headers inside the calendar grid and give screen readers the full day name, the month label is announced when it changes, the date picker's header button says whether it switches to months, years or days, and the selected month and year are marked with aria-pressed.
 Time picker: the keyboard now drives every column of the dropdown - Up/Down step the hour, minute or second over the offered cells, Home/End jump to the ends, Enter confirms - and the clock dial is a focusable slider that Up/Down/PageUp/PageDown/Home/End move and screen readers read. The popup toggles of the date, time and date-time pickers report aria-expanded as true/false.
