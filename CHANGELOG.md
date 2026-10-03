@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The time list closes on Escape after the field is locked.** A `FlareTimePicker` list left open when the field
+  became read-only ignored Escape. Escape now always closes it; the arrows and Enter still do nothing in a locked
+  field.
 - **The date and time tabs of `FlareDateTimePicker` are announced as tabs.** The Date / Time switch of the tabbed
   popup was two plain buttons, so a screen reader did not say which one was picked. It is now a labelled tab list
   with a tab panel; the arrow keys, Home and End switch tabs, and only the picked tab is in the Tab order.

@@ -88,10 +88,13 @@ public partial class FlareTimePicker
     }
 
     // Combobox keys in the field: the arrows open the list and move the active time, Enter picks it and
-    // Escape closes the list. Digits still go into the field.
+    // Escape closes the list. Digits still go into the field. Escape closes a list left open when the field was
+    // locked after it opened; the other keys do nothing in a locked field (TASK-168, as TASK-162).
     private async Task HandleInputKeyDown(KeyboardEventArgs e)
     {
-        if (!_isList || Disabled || ReadOnly) return;
+        if (!_isList) return;
+        if (e.Key == "Escape" && _open) { await Close(); return; }
+        if (Disabled || ReadOnly) return;
         switch (e.Key)
         {
             case "ArrowDown" or "ArrowUp" when !_open:
@@ -105,9 +108,6 @@ public partial class FlareTimePicker
                 break;
             case "Enter" when _open && _listActive >= 0 && _listActive < ListRows.Count:
                 await SelectListAsync(ListRows[_listActive].Item);
-                break;
-            case "Escape" when _open:
-                await Close();
                 break;
         }
     }
