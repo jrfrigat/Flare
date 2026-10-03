@@ -97,10 +97,11 @@ public partial class FlareDatePicker
     public ValueTask FocusAsync() => _inputEl.FocusAsync();
 
     // Single entry point for open-state changes so Opened/Closed fire consistently. Inline pickers are
-    // always shown, so open/close is a no-op there.
+    // always shown, so open/close is a no-op there. A locked field cannot be opened, but a popup opened before
+    // the lock still closes - by the API, the scrim or Escape (TASK-162).
     private async Task SetOpenAsync(bool open)
     {
-        if (Inline || Disabled || ReadOnly || _open == open) return;
+        if (Inline || _open == open || (open && (Disabled || ReadOnly))) return;
         _open = open;
         if (open)
         {
@@ -435,9 +436,8 @@ public partial class FlareDatePicker
 
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
-        if (Disabled || ReadOnly) return;
-
         if (e.Key == "Escape") { await ClosePopupAsync(); return; }
+        if (Disabled || ReadOnly) return;
 
         // Movement is relative to the focused cell, not the value (TASK-106), which the grid has just synced
         // to the day the user sees focused (TASK-133). Disabled dates (Min/Max/IsDateDisabled) are skipped.

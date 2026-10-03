@@ -55,6 +55,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A date picker opened before its field was locked still closes.** If the parent made the field `Disabled` or
+  `ReadOnly` while the calendar was open, `CloseAsync`, the scrim and Escape all left it open with its focus
+  trap; now they close it, and the days stay unavailable.
 - **The date-time picker no longer throws on the first and last day of the date range.** With an offset that
   pushes the picked time past the earliest or latest representable instant (1 January 0001 at +05:00), rendering
   the popup threw; now OK waits until the picked time is representable.
