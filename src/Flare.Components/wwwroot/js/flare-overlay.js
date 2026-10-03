@@ -225,6 +225,9 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     };
 
     const place = () => {
+        // Kept across the uncap below: an engine that resets the scroll of a box that briefly stops
+        // overflowing would otherwise throw a scrolled panel back to its top on every page scroll.
+        const scrolled = panel.scrollTop;
         uncap(panel);
         const a = anchorBox();
         // The band the reader can actually SEE, not the window. An on-screen keyboard shrinks the
@@ -270,6 +273,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
                 panel.style.overflowY = 'auto';
             }
             p = panel.getBoundingClientRect();
+            if (scrolled) panel.scrollTop = scrolled;
         }
 
         let top, left;
@@ -300,7 +304,10 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     _anchoredPanels.keep(id, all(
         () => uncap(panel),
         observeSize(panel, place),
-        listen(window, 'scroll', place, { passive: true, capture: true }),
+        // Capture phase so nested scrollers count - except the panel's own scrolling, which moves nothing
+        // the placement depends on.
+        listen(window, 'scroll', (e) => { if (!(e.target instanceof Node && panel.contains(e.target))) place(); },
+            { passive: true, capture: true }),
         listen(window, 'resize', place, { passive: true }),
         // The keyboard opening and closing reaches the page only here; listen() ignores a null target,
         // so a browser without visualViewport keeps the two above and nothing else changes.
