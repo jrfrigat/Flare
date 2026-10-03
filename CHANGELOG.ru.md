@@ -8,6 +8,10 @@
 
 ### Изменено
 
+- **Ломающее для собственных тем: высота выпадающего списка задается токеном.** `InputTokens` теперь требует
+  `DropdownMaxHeight` - наибольшую высоту списка вариантов у select, combobox и поля тегов, после которой он
+  прокручивается; раньше таблица стилей задавала `16rem` жестко. Встроенные темы задают `16rem`, поэтому ничего не
+  сдвигается; собственная тема, собранная через `new InputTokens { }`, должна задать его тоже.
 - **Ломающее для собственных тем: размеры панелей pickers задаются токенами.** `DateTimePickerTokens` теперь
   требует `PanelMinWidth`, `DialPanelMinWidth`, `SplitPanelMinWidth`, `PaneBasis`, `DialPaneWidth` и
   `TimeInputWidth`; `TimePickerTokens` - `PanelMinWidth`, `DialPanelMinWidth`, `ColumnMaxHeight` и `CellMinWidth`;

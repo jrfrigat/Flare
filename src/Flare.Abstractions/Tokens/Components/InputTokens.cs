@@ -184,4 +184,8 @@ public sealed record InputTokens
     [CssVar(InputField.Outlined.ErrorBorderBottomColor)] public required string OutlinedVariantErrorBorderBottomColor { get; init; }
     /// <summary>Focus indicator (<c>box-shadow</c>) of a focused outlined field in the error state.</summary>
     [CssVar(InputField.Outlined.ErrorFocusRing)] public required string OutlinedVariantErrorFocusRing { get; init; }
+
+    /// <summary>Tallest the option list under a select, combobox or tag field grows before it scrolls, as a
+    /// CSS length. In a popup that has less room on screen the list shrinks below it.</summary>
+    [CssVar(InputField.DropdownMaxHeight)] public required string DropdownMaxHeight { get; init; }
 }

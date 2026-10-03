@@ -81,6 +81,9 @@ public static class InputField
     /// <summary>CSS custom-property name for the focus indicator box-shadow of an errored field.</summary>
     public const string ErrorFocusRing = "--flare-input-error-focus-ring";
 
+    /// <summary>CSS custom-property name for the tallest the field family's dropdown list grows before it scrolls.</summary>
+    public const string DropdownMaxHeight = "--flare-input-dropdown-max-height";
+
     /// <summary>CSS variable names of the explicit filled variant (<c>Variant="Filled"</c>). The variant
     /// class points the field's own variables at these.</summary>
     public static class Filled

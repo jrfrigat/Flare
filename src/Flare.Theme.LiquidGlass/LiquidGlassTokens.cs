@@ -509,6 +509,7 @@ internal class LiquidGlassTokens
         OutlinedVariantFocusBorderColor = "var(--flare-color-outline)",
         OutlinedVariantFocusBorderBottomColor = "var(--flare-color-outline)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        DropdownMaxHeight = "16rem",
     };
 
     // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).

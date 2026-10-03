@@ -7,6 +7,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Breaking for custom themes: the dropdown list's height is a token.** `InputTokens` now requires
+  `DropdownMaxHeight` - the tallest the option list of a select, combobox or tag field grows before it scrolls -
+  where the stylesheet used to hard-code `16rem`. The built-in themes set `16rem`, so nothing moves; a custom
+  theme built with `new InputTokens { }` has to set it too.
 - **Breaking for custom themes: the picker panels are sized by tokens.** `DateTimePickerTokens` now requires
   `PanelMinWidth`, `DialPanelMinWidth`, `SplitPanelMinWidth`, `PaneBasis`, `DialPaneWidth` and `TimeInputWidth`;
   `TimePickerTokens` requires `PanelMinWidth`, `DialPanelMinWidth`, `ColumnMaxHeight` and `CellMinWidth`; and

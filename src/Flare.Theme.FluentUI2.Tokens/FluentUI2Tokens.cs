@@ -801,6 +801,7 @@ public class FluentUI2Tokens
         OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
         OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        DropdownMaxHeight = "16rem",
     };
 
     // Chart - Fluent: flat marks, square legend swatches, hairline solid grid, no frame around the plot.

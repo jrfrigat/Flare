@@ -707,6 +707,7 @@ internal static class MaterialDesign2Tokens
         OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
         OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
+        DropdownMaxHeight = "16rem",
     };
 
     // Chart. The categorical palette is built from the theme's OWN hues rather than from fixed ink, so a

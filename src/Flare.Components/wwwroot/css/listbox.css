@@ -17,7 +17,7 @@
     box-shadow: var(--flare-elevation-2);
     /* The anchoring engine publishes the room the popup actually has; the list shrinks to it rather than
        the popup growing a second scrollbar around it. */
-    max-height: min(16rem, var(--flare-anchored-room, 16rem));
+    max-height: min(var(--flare-input-dropdown-max-height), var(--flare-anchored-room, var(--flare-input-dropdown-max-height)));
     overflow-y: auto;
     /* Keep wheel/touch scrolling inside the list -- don't chain to the page at the ends. */
     overscroll-behavior: contain;
