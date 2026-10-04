@@ -55,20 +55,12 @@
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@_views.HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
-                <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="_views.Prev" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(Disabled || !_views.CanPrev)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, _views.Prev, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !_views.CanPrev)
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
                         type="button" aria-live="polite" title="@_views.SwitchHint" @onclick="_views.Cycle" @onclick:stopPropagation>
                     @_views.HeaderLabel
                 </button>
-                <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="_views.Next" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(Disabled || !_views.CanNext)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, _views.Next, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !_views.CanNext)
             </div>
 
             @if (_views.View == PickerView.Day)

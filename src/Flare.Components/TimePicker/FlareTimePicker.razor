@@ -147,13 +147,13 @@
                 @if (_showKeyboardToggle)
                 {
                     <span class="@Css.Classes.TimePicker.ActionsLead">
-                        <FlareIconButton Icon="@(_keyboardEntry ? FlareIcons.Schedule : FlareIcons.Keyboard)"
-                                         AriaLabel="@(_keyboardEntry ? FlareStrings.TimePicker_SwitchToDial : FlareStrings.TimePicker_SwitchToKeyboard)"
-                                         Size="ButtonSize.Sm" OnClick="ToggleKeyboardEntry" />
+                        @PickerButtons.Icon(this, ToggleKeyboardEntry,
+                            _keyboardEntry ? FlareStrings.TimePicker_SwitchToDial : FlareStrings.TimePicker_SwitchToKeyboard,
+                            _keyboardEntry ? FlareIcons.Schedule : FlareIcons.Keyboard)
                     </span>
                 }
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Close">@(CancelText ?? FlareStrings.Picker_Cancel)</FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm" Disabled="@(!CanConfirm)">@(OkText ?? FlareStrings.Picker_Ok)</FlareButton>
+                @PickerButtons.Text(this, Close, CancelText ?? FlareStrings.Picker_Cancel)
+                @PickerButtons.Text(this, Confirm, OkText ?? FlareStrings.Picker_Ok, !CanConfirm)
             </div>
         </div>
         }

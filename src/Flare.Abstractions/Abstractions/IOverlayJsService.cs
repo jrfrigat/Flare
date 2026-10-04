@@ -11,6 +11,10 @@ namespace Flare.Components.Services;
 /// </summary>
 public interface IOverlayJsService : IAsyncDisposable
 {
+    /// <summary>Loads the overlay module ahead of the first popup, so opening one does not wait for it to be
+    /// fetched and evaluated. Safe to call any number of times; only the first call does any work.</summary>
+    ValueTask PrepareAsync();
+
     /// <summary>Registers a document Escape handler that invokes <c>CloseFromEsc</c> on the reference.</summary>
     /// <param name="id">A stable id identifying this overlay's handler.</param>
     /// <param name="dotNetRef">The component reference whose <c>CloseFromEsc</c> is invoked on Escape.</param>

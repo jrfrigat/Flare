@@ -71,17 +71,9 @@
     {
         <div class="@Css.Classes.Daterangepicker.Calendar" @onmouseleave="@(() => { _hover = null; })">
             <div class="@Css.Classes.DatePicker.Header">
-                <span @onclick:stopPropagation>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Calendar_PrevMonth" Disabled="@(Disabled || !CanPrev)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, PrevMonth, FlareStrings.Calendar_PrevMonth, FlareIcons.ChevronLeft, Disabled || !CanPrev)
                 <span class="@Css.Classes.DatePicker.MonthLabel" aria-live="polite">@HeaderLabel</span>
-                <span @onclick:stopPropagation>
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Calendar_NextMonth" Disabled="@(Disabled || !CanNext)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, NextMonth, FlareStrings.Calendar_NextMonth, FlareIcons.ChevronRight, Disabled || !CanNext)
             </div>
             <FlareMonthGrid ViewYear="_view.Year" ViewMonth="_view.Month" Culture="_culture" Today="Today"
                             FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"

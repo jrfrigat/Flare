@@ -51,10 +51,14 @@
     // The theme engine imports this module by a fixed, unfingerprinted path (see CssVariableInjector),
     // so the URL is known here and warming it costs one request that would otherwise happen only
     // after the whole .NET runtime has loaded.
-    var preload = document.createElement('link');
-    preload.rel = 'modulepreload';
-    preload.href = new URL('_content/Flare.Components/js/flare-theme.js', document.baseURI).href;
-    document.head.appendChild(preload);
+    // The overlay module is the same case: every popup, dialog, menu and picker places itself through it, and
+    // the app imports it as it starts (OverlayWarmup) - fetched by then, the import does not wait a round trip.
+    ['flare-theme.js', 'flare-overlay.js'].forEach(function (file) {
+        var preload = document.createElement('link');
+        preload.rel = 'modulepreload';
+        preload.href = new URL('_content/Flare.Components/js/' + file, document.baseURI).href;
+        document.head.appendChild(preload);
+    });
 
     var fired = false;
     // Signals "the app is styled and ready". Kept under the historical name so existing callers

@@ -60,20 +60,12 @@
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
-                <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(Disabled || !CanPrev)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, PrevView, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !CanPrev)
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
                         type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="CycleCalendarView" @onclick:stopPropagation>
                     @HeaderLabel
                 </button>
-                <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(Disabled || !CanNext)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, NextView, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !CanNext)
             </div>
 
             @if (_calView == PickerView.Day)

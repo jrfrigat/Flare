@@ -12,6 +12,9 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
         : base(js, "./_content/Flare.Components/js/flare-overlay.js") { }
 
     /// <inheritdoc />
+    public ValueTask PrepareAsync() => new(ModuleAsync());
+
+    /// <inheritdoc />
     public ValueTask RegisterDialogEscAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerDialogEscHandler", id, dotNetRef);
 
@@ -27,15 +30,18 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     /// <inheritdoc />
     public ValueTask FocusFirstAsync(ElementReference container) => InvokeVoidAsync("focusFirstInDialog", container);
 
+    // Null options go across as null: the script's defaults are the same as AnchoredPanelOptions', and an object would
+    // be serialized - building its JSON metadata by reflection is what the first popup to open waited for.
+
     /// <inheritdoc />
     public ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel,
         AnchoredPanelOptions? options = null)
-        => InvokeVoidAsync("positionAnchoredPanel", id, anchor, panel, options ?? new AnchoredPanelOptions());
+        => InvokeVoidAsync("positionAnchoredPanel", id, anchor, panel, options);
 
     /// <inheritdoc />
     public ValueTask PositionAnchoredPanelByIdAsync(string id, string anchorElementId, ElementReference panel,
         AnchoredPanelOptions? options = null)
-        => InvokeVoidAsync("positionAnchoredPanelById", id, anchorElementId, panel, options ?? new AnchoredPanelOptions());
+        => InvokeVoidAsync("positionAnchoredPanelById", id, anchorElementId, panel, options);
 
     /// <inheritdoc />
     public ValueTask RemoveAnchoredPanelAsync(string id) => InvokeVoidAsync("removeAnchoredPanel", id);

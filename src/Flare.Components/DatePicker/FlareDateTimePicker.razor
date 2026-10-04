@@ -91,17 +91,9 @@
     // Calendar pane (nav + headers + grid) - reused by Tabs and Panels.
     private RenderFragment _calendar => @<text>
         <div class="@Css.Classes.DateTimePicker.Nav">
-            <span @onclick:stopPropagation @onclick="() => { }">
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Picker_Previous">
-                    <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
-                </FlareButton>
-            </span>
+            @PickerButtons.Icon(this, PrevMonth, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft)
             <span class="@Css.Classes.DateTimePicker.NavLabel" aria-live="polite">@_viewLabel</span>
-            <span @onclick:stopPropagation @onclick="() => { }">
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Picker_Next">
-                    <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
-                </FlareButton>
-            </span>
+            @PickerButtons.Icon(this, NextMonth, FlareStrings.Picker_Next, FlareIcons.ChevronRight)
         </div>
         <FlareMonthGrid @ref="_grid" ViewYear="_viewMonth.Year" ViewMonth="_viewMonth.Month" Culture="_culture" Today="Today"
                         FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"

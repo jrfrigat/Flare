@@ -64,7 +64,7 @@ else
             class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass, _selectedClass)"
             style="@_buttonStyle"
             disabled="@(Disabled || Loading)"
-            type="@Type.ToString().ToLowerInvariant()"
+            type="@_type"
             aria-label="@AriaLabel"
             title="@Tooltip"
             aria-pressed="@(AriaPressed is { } p ? (p ? "true" : "false") : null)"
@@ -167,6 +167,14 @@ else
     private string _variantClass => ButtonCssClasses.Variant(_effectiveVariant);
 
     private string _sizeClass => ButtonCssClasses.Size(_effectiveSize);
+
+    // A switch rather than Enum.ToString, which builds its name table by reflection the first time it runs.
+    private string _type => Type switch
+    {
+        ButtonType.Submit => "submit",
+        ButtonType.Reset => "reset",
+        _ => "button",
+    };
 
     // Optional label type-scale override. Reuses the shared typography utility classes
     // (flare-text--*), which set font-* on the label span and so win over the inherited

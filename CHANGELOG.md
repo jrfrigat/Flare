@@ -29,6 +29,8 @@ All notable changes to Flare are documented here. This project adheres to
   shown without the value or today still has one day to Tab to.
 - **`IElementJsService` has two more members**, `GetSelectionAsync` and `SetValueAndCaretAsync`; an application
   that implements the interface itself has to add them.
+- **`IOverlayJsService` has a new member**, `PrepareAsync`, which loads the overlay script ahead of the first popup;
+  an application that implements the interface itself has to add it.
 
 ### Added
 
@@ -77,6 +79,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **The first popup to open no longer waits for its script, and a picker popup opens and pages faster.** The
+  overlay script is fetched with the page (`flare-bootstrap.js` preloads it) and loaded as the app starts, where the
+  first popup, dialog or menu used to fetch it on the click that opened it. The calendar headers and the time popup's
+  buttons are plain markup with the button classes rather than `FlareButton` components, and the clock dial no
+  longer formats its geometry on every render.
 - **A render of the theme provider's parent no longer redraws every Flare component on the page.** The provider
   told all of them that the theme had changed each time it rendered; they now render again only when the theme,
   palette or mode really changes.

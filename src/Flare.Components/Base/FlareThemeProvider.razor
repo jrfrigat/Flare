@@ -18,6 +18,7 @@
         {
             <FlareStyles />
         }
+        @_overlayWarmup
 
         <div class="@Css.Classes.Theme.Root @ThemeLineage.RootClasses(ThemeService.CurrentTheme) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : Css.Classes.Theme.ModeLight) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
              data-flare-theme="@ThemeService.CurrentTheme.Id"
@@ -242,6 +243,9 @@
     }
 
     private readonly ThemeState _state = new();
+
+    // The overlay module is imported as the app starts, by a component of its own (OverlayWarmup).
+    private static readonly RenderFragment _overlayWarmup = b => { b.OpenComponent<OverlayWarmup>(0); b.CloseComponent(); };
 
     private ThemeSnapshot CreateSnapshot()
     {

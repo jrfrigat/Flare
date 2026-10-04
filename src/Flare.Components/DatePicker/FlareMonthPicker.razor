@@ -57,20 +57,12 @@
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
-                <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevPage" AriaLabel="@FlareStrings.Picker_Previous" Disabled="@(Disabled || !CanPrev)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, PrevPage, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !CanPrev)
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
                         type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="SwitchView" @onclick:stopPropagation>
                     @HeaderLabel
                 </button>
-                <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextPage" AriaLabel="@FlareStrings.Picker_Next" Disabled="@(Disabled || !CanNext)">
-                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
-                    </FlareButton>
-                </span>
+                @PickerButtons.Icon(this, NextPage, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !CanNext)
             </div>
 
             <FlareMonthYearGrid @ref="_grid" View="_view" Year="_viewYear"
