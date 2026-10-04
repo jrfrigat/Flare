@@ -63,9 +63,17 @@
     [Parameter] public bool Is24Hour { get; set; }
     /// <summary>Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Moves keyboard focus onto the dial when it first renders. Default true; a host that keeps focus
+    /// elsewhere - a field the user goes on typing in - sets it false and calls <see cref="FocusAsync"/> later.</summary>
+    [Parameter] public bool FocusOnOpen { get; set; } = true;
 
     protected override string ComponentCssClass => Css.Classes.ClockDial.Root;
 
+    /// <summary>Moves keyboard focus onto the dial (best-effort).</summary>
+    public async Task FocusAsync()
+    {
+        try { await _dial.FocusAsync(preventScroll: true); } catch { /* focus is best-effort */ }
+    }
 
     private enum DialMode { Hour, Minute }
 
@@ -82,10 +90,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            try { await _dial.FocusAsync(preventScroll: true); } catch { /* focus is best-effort */ }
-        }
+        if (firstRender && FocusOnOpen) await FocusAsync();
     }
 
     private async Task OnKey(KeyboardEventArgs e)

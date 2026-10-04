@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture. |
+| `FocusOnOpen` | `bool` | `true` | Parameter |  | Moves keyboard focus onto the dial when it first renders. Default true; a host that keeps focus elsewhere - a field the user goes on typing in - sets it false and calls FocusAsync later. |
 | `Hour` | `int` | `0` | Parameter |  | Hour of day (0-23). |
 | `HourChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the hour changes. |
 | `Is24Hour` | `bool` | `false` | Parameter |  | 24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false. |
@@ -21,7 +22,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `FocusAsync()`
+
+Moves keyboard focus onto the dial (best-effort).
+Returns: `Task`.
+
 
 ## Inheritance
 

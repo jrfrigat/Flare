@@ -22,6 +22,29 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     public void ReturnToField() => _returnToField = true;
 
     /// <summary>
+    /// Whether the popup was opened by a click in the field: it is then not modal - no focus trap, the field keeps
+    /// focus and the user can go on typing - until <see cref="EnterAsync"/> moves focus into it.
+    /// </summary>
+    public bool FromField { get; private set; }
+
+    /// <summary>Marks the next open as coming from the field (see <see cref="FromField"/>).</summary>
+    public void OpenFromField() => FromField = true;
+
+    /// <summary>Makes a popup opened from the field modal and puts focus inside it, as a toggle-opened one has.</summary>
+    /// <param name="panel">The popup panel.</param>
+    /// <param name="focus">Moves focus to the popup's starting element.</param>
+    public async Task EnterAsync(ElementReference panel, Func<Task> focus)
+    {
+        if (!FromField) return;
+        FromField = false;
+        _trapped = true;
+        try { await overlay.TrapFocusAsync(TrapId, panel); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        await focus();
+    }
+
+    /// <summary>
     /// Brings placement and the focus trap in line with <paramref name="open"/>. Call from OnAfterRenderAsync.
     /// <paramref name="focusOnOpen"/> runs once the trap is set; on close focus goes to <paramref name="toggle"/>,
     /// or to <paramref name="field"/> after <see cref="ReturnToField"/> or when there is no toggle. Focus is put
@@ -32,6 +55,9 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     {
         await _layer.SyncAsync(overlay, open, anchor, panel, options);
 
+        // Opened from the field: placed, but focus stays where the user is typing. Closing it needs no focus move.
+        if (open && FromField) return;
+        if (!open) FromField = false;
         if (open == _trapped) return;
         _trapped = open;
         try

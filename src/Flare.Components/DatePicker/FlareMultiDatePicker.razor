@@ -31,6 +31,8 @@
                    aria-invalid="@(_invalid ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"
                    @onfocus="HandleFocus"
+                   @onclick="OpenFromField"
+                   @onkeydown="FieldKeyDown"
                    @oninput="HandleInput"
                    @onchange="HandleTextChange"
                    @onblur="HandleBlur"
@@ -52,7 +54,7 @@
         @if (_open || Inline)
         {
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
-             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : "true")" aria-label="@_views.HeaderLabel" @ref="_panelEl"
+             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@_views.HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
                 @PickerButtons.Icon(this, _views.Prev, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !_views.CanPrev)

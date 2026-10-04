@@ -214,6 +214,7 @@ public partial class FlareTimePicker
     // Out-of-range input simply fails to parse and is not committed.
 
     private ElementReference _dropRef;
+    private FlareClockDial? _dial;
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
     private string _dropBuf = string.Empty;
     private bool _focusDrop;
@@ -235,7 +236,7 @@ public partial class FlareTimePicker
             ClampTemp();
             _dropActive = 0;
             _dropBuf = string.Empty;
-            _focusDrop = PopupVariant == TimePickerVariant.Dropdown;
+            _focusDrop = PopupVariant == TimePickerVariant.Dropdown && !_popup.FromField;
             _keyboardEntry = false;
             _entryInvalid = false;
             _open = true;
@@ -247,6 +248,33 @@ public partial class FlareTimePicker
             await Closed.InvokeAsync();
         }
         StateHasChanged();
+    }
+
+    // A click in the field opens the popup as well. The list is a combobox and keeps focus in the field anyway;
+    // the dial and the columns open without taking focus (PickerPopup.FromField), so the user can go on typing.
+    // Arrow Down moves into the popup, Escape closes it.
+    private Task OpenFromField()
+    {
+        if (_open || Disabled || ReadOnly) return Task.CompletedTask;
+        if (!_isList) _popup.OpenFromField();
+        return Toggle();
+    }
+
+    private Task HandleFieldKeyDown(KeyboardEventArgs e)
+    {
+        if (!_open || !_popup.FromField) return Task.CompletedTask;
+        return e.Key switch
+        {
+            "ArrowDown" => _popup.EnterAsync(_panelEl, FocusPopupAsync),
+            "Escape" => Close(),
+            _ => Task.CompletedTask,
+        };
+    }
+
+    private async Task FocusPopupAsync()
+    {
+        if (PopupVariant == TimePickerVariant.Dial && !_keyboardEntry && _dial is not null) { await _dial.FocusAsync(); return; }
+        try { await _dropRef.FocusAsync(); } catch { /* best-effort */ }
     }
 
     private void ClampTemp()

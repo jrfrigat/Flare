@@ -45,6 +45,7 @@
                    aria-activedescendant="@_listActiveId"
                    aria-autocomplete="@(_isList ? "none" : null)"
                    autocomplete="@(_isList ? "off" : null)"
+                   @onclick="OpenFromField"
                    @onkeydown="HandleInputKeyDown"
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
@@ -73,7 +74,7 @@
         {
         <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
         <div class="@($"{Css.Classes.Picker.Panel} {Css.Classes.TimePicker.Panel} {(PopupVariant == TimePickerVariant.Dial ? Css.Classes.TimePicker.PanelDial : Css.Classes.TimePicker.PanelDropdown)}")"
-             @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@_headline"
+             @ref="_panelEl" role="dialog" aria-modal="@(_popup.FromField ? "false" : "true")" aria-label="@_headline"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>
             <div class="@Css.Classes.TimePicker.PanelHeadline">@_headline</div>
 
@@ -86,7 +87,7 @@
             }
             else if (PopupVariant == TimePickerVariant.Dial)
             {
-                <FlareClockDial Hour="_tempHour" HourChanged="h => _tempHour = h"
+                <FlareClockDial @ref="_dial" FocusOnOpen="@(!_popup.FromField)" Hour="_tempHour" HourChanged="h => _tempHour = h"
                                 Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
                                 MinuteSelected="OnDialMinuteSelected"
                                 Is24Hour="_is24Hour" Culture="_culture" />

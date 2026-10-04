@@ -1078,6 +1078,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture.", null, false, false, false, @"FlareClockDial"),
+                new ApiParameterInfo(@"FocusOnOpen", @"bool", @"true", @"Moves keyboard focus onto the dial when it first renders. Default true; a host that keeps focus elsewhere - a field the user goes on typing in - sets it false and calls FocusAsync later.", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Hour", @"int", @"0", @"Hour of day (0-23).", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when the hour changes.", null, false, true, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.", null, false, false, false, @"FlareClockDial"),
@@ -1088,7 +1089,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"Task", null, @"Moves keyboard focus onto the dial (best-effort).",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

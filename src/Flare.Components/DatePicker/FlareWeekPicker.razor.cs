@@ -195,6 +195,27 @@ public partial class FlareWeekPicker
     }
 
     private Task Toggle() => SetOpenAsync(!_open);
+
+    // A click in the field opens the popup as well; focus stays in the field (PickerPopup.FromField), so the user
+    // can go on typing. Arrow Down moves into the popup, Escape closes it.
+    private Task OpenFromField()
+    {
+        if (_open || Inline || !AllowPicker || Disabled || ReadOnly) return Task.CompletedTask;
+        _popup.OpenFromField();
+        return SetOpenAsync(true);
+    }
+
+    // Wired only while a field-opened popup is showing, so typing into a closed field raises no key events.
+    private EventCallback<KeyboardEventArgs> FieldKeyDown => _open && _popupState?.FromField == true
+        ? EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleFieldKeyDown)
+        : default;
+
+    private Task HandleFieldKeyDown(KeyboardEventArgs e) => e.Key switch
+    {
+        "ArrowDown" => _popup.EnterAsync(_panelEl, () => _grid?.FocusCursorAsync() ?? Task.CompletedTask),
+        "Escape" => SetOpenAsync(false),
+        _ => Task.CompletedTask,
+    };
     private Task Close() => SetOpenAsync(false);
 
     private async Task PickWeek(DateOnly day)

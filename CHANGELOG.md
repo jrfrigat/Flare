@@ -7,6 +7,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **A click in a picker's field opens its popup, not only the toggle.** The date, date-time, month, week,
+  multi-date and time pickers open on a click in the field and leave focus there, so typing goes on: Arrow Down
+  moves into the calendar or the dial, Escape closes it. Opened this way the popup is not modal until focus moves
+  into it; the toggle still opens it modal with focus inside. `FlareClockDial` gains `FocusOnOpen` and
+  `FocusAsync` for a host that keeps focus elsewhere.
 - **The date pickers follow the culture's own calendar.** `FlareDatePicker`, `FlareDateRangePicker`,
   `FlareDateTimePicker` and `FlareMonthGrid` draw, name and write dates on the culture's calendar - Persian
   months and years for fa-IR, Um al-Qura for ar-SA - where they used to swap it for the Gregorian one; the value

@@ -92,7 +92,7 @@ public partial class FlareTimePicker
     // locked after it opened; the other keys do nothing in a locked field (TASK-168, as TASK-162).
     private async Task HandleInputKeyDown(KeyboardEventArgs e)
     {
-        if (!_isList) return;
+        if (!_isList) { await HandleFieldKeyDown(e); return; }
         if (e.Key == "Escape" && _open) { await Close(); return; }
         if (Disabled || ReadOnly) return;
         switch (e.Key)

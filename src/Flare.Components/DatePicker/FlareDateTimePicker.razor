@@ -36,6 +36,8 @@
                    aria-describedby="@SupportDescribedBy"
                    value="@_text"
                    @onfocus="HandleFocus"
+                   @onclick="OpenFromField"
+                   @onkeydown="FieldKeyDown"
                    @oninput="HandleInput"
                    @onchange="HandleTextChange"
                    @onblur="HandleBlur"
@@ -53,7 +55,7 @@
         {
         <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)"
-             role="dialog" aria-modal="true" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
+             role="dialog" aria-modal="@(_popup.FromField ? "false" : "true")" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>
             @if (_panels)
             {
