@@ -7,6 +7,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Floating panels serialize placement options without reflection.** Selects, comboboxes, date-time
+  pickers, menus and other anchored panels avoid building JSON type metadata on their first opening.
 - **The core packages are trimmable.** `Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure` and
   `Flare.Components` are marked `IsTrimmable`, so a Release publish of a WebAssembly app drops the parts it does
   not use: about 600 KB less to download for an app with a few pickers. The grid, the form builder, dialogs and

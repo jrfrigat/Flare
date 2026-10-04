@@ -196,7 +196,8 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     const held = _topLayer.get(id);
     if (held && held !== panel) { _topLayer.delete(id); demote(held); }
     if (!panel) return;
-    const opts = options || {};
+    // .NET sends the options as a JSON string; an object is accepted too.
+    const opts = typeof options === 'string' ? JSON.parse(options) : (options || {});
     const fixedRect = opts.anchorRect;
     if (!anchor && !fixedRect) return;
     // A gap token lets the theme decide the distance; the number is the fallback when it is unset.

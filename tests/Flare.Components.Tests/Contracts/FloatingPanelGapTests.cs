@@ -14,8 +14,11 @@ public sealed class FloatingPanelGapTests : FlareTestContext
 
     private static RenderFragment Markup(string html) => b => b.AddMarkupContent(0, html);
 
+    // The options reach the script as the JSON string the overlay service writes.
     private AnchoredPanelOptions LastPlacement(BunitJSModuleInterop module) =>
-        (AnchoredPanelOptions)module.Invocations["positionAnchoredPanel"][^1].Arguments[3]!;
+        System.Text.Json.JsonSerializer.Deserialize<AnchoredPanelOptions>(
+            (string)module.Invocations["positionAnchoredPanel"][^1].Arguments[3]!,
+            new System.Text.Json.JsonSerializerOptions(System.Text.Json.JsonSerializerDefaults.Web))!;
 
     [Fact]
     public void Popover_WithoutOffset_AsksTheEngineForTheThemeToken()
