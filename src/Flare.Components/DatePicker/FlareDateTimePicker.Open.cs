@@ -7,7 +7,7 @@ namespace Flare.Components;
 public partial class FlareDateTimePicker
 {
     // A click in the field opens the panel as well; focus stays in the field (PickerPopup.FromField), so the user
-    // can go on typing. Arrow Down moves into the calendar, Escape closes the panel.
+    // can go on typing. Arrow Down moves into the calendar; Escape, or Tab out of the field, closes the panel.
     private Task OpenFromField()
     {
         if (_open || !AllowPicker || Disabled || ReadOnly) return Task.CompletedTask;
@@ -23,7 +23,7 @@ public partial class FlareDateTimePicker
     private Task HandleFieldKeyDown(KeyboardEventArgs e) => e.Key switch
     {
         "ArrowDown" => _popup.EnterAsync(_panelEl, () => _grid?.FocusCursorAsync() ?? Task.CompletedTask),
-        "Escape" => CloseAsync(),
+        "Escape" or "Tab" => CloseAsync(),
         _ => Task.CompletedTask,
     };
 }

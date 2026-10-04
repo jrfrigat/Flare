@@ -64,6 +64,17 @@ public class OpenFromFieldTests : FlareTestContext
 
     [Theory]
     [MemberData(nameof(Pickers))]
+    public void TabOutOfTheField_Closes(Type type)
+    {
+        var cut = RenderPicker(type);
+        cut.Find("input").Click();
+        cut.Find("input").KeyDown(new KeyboardEventArgs { Key = "Tab" });
+
+        Assert.Empty(cut.FindAll("[role=dialog]"));
+    }
+
+    [Theory]
+    [MemberData(nameof(Pickers))]
     public void TheToggle_StillOpensAModalPopup(Type type)
     {
         var cut = RenderPicker(type);

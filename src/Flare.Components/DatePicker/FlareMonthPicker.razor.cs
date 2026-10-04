@@ -167,7 +167,7 @@ public partial class FlareMonthPicker
     private Task Toggle() => SetOpenAsync(!_open);
 
     // A click in the field opens the popup as well; focus stays in the field (PickerPopup.FromField), so the user
-    // can go on typing. Arrow Down moves into the popup, Escape closes it.
+    // can go on typing. Arrow Down moves into the popup; Escape, or Tab out of the field, closes it.
     private Task OpenFromField()
     {
         if (_open || Inline || !AllowPicker || Disabled || ReadOnly) return Task.CompletedTask;
@@ -183,7 +183,7 @@ public partial class FlareMonthPicker
     private Task HandleFieldKeyDown(KeyboardEventArgs e) => e.Key switch
     {
         "ArrowDown" => _popup.EnterAsync(_panelEl, () => _grid?.FocusAsync() ?? Task.CompletedTask),
-        "Escape" => SetOpenAsync(false),
+        "Escape" or "Tab" => SetOpenAsync(false),
         _ => Task.CompletedTask,
     };
     private Task Close() => SetOpenAsync(false);

@@ -252,7 +252,7 @@ public partial class FlareTimePicker
 
     // A click in the field opens the popup as well. The list is a combobox and keeps focus in the field anyway;
     // the dial and the columns open without taking focus (PickerPopup.FromField), so the user can go on typing.
-    // Arrow Down moves into the popup, Escape closes it.
+    // Arrow Down moves into the popup; Escape, or Tab out of the field, closes it.
     private Task OpenFromField()
     {
         if (_open || Disabled || ReadOnly) return Task.CompletedTask;
@@ -266,7 +266,7 @@ public partial class FlareTimePicker
         return e.Key switch
         {
             "ArrowDown" => _popup.EnterAsync(_panelEl, FocusPopupAsync),
-            "Escape" => Close(),
+            "Escape" or "Tab" => Close(),
             _ => Task.CompletedTask,
         };
     }
