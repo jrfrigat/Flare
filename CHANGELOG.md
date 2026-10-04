@@ -77,6 +77,15 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- **A render of the theme provider's parent no longer redraws every Flare component on the page.** The provider
+  told all of them that the theme had changed each time it rendered; they now render again only when the theme,
+  palette or mode really changes.
+- **A date or time picker no longer redraws when its parent renders with the same values.** A page of pickers used
+  to redraw every one of them whenever one committed a value, because a callback lambda is new on every render.
+  This covers `FlareDatePicker`, `FlareTimePicker`, `FlareDateTimePicker`, `FlareMonthPicker`, `FlareWeekPicker`
+  and `FlareMultiDatePicker`.
+- **The components inside a `FlareThemeScope` see a new `Theme`, `Palette` or `Mode` set on it.** They kept the theme
+  the scope started with.
 Date pickers: week numbers for a culture on the Persian or Hijri calendar are counted on the Gregorian calendar the grid shows, not on the culture's own calendar.
 Date picker: the month and year views turn off the months and years that lie wholly outside Min and Max, and an inline calendar moves to the month of a value its parent sets.
 Date pickers: the weekday headers are now column headers inside the calendar grid and give screen readers the full day name, the month label is announced when it changes, the date picker's header button says whether it switches to months, years or days, and the selected month and year are marked with aria-pressed.

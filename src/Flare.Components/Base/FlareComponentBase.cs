@@ -19,11 +19,15 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
     protected IThemeService? ThemeService { get; set; }
 
     /// <summary>
-    /// Immutable snapshot of the current theme. Automatically triggers re-render when changed.
+    /// Immutable snapshot of the current theme; the component renders again when the theme changes.
     /// Use this for reading theme properties (IsDark, CurrentTheme, etc.).
     /// </summary>
-    [CascadingParameter]
-    protected ThemeSnapshot? Theme { get; set; }
+    protected ThemeSnapshot? Theme => ThemeHolder?.Snapshot;
+
+    // The provider cascades a fixed holder and the theme version beside it: only a new version - a real theme
+    // change - re-renders the component, not every render of the provider's parent (see ThemeState).
+    [CascadingParameter] private ThemeState? ThemeHolder { get; set; }
+    [CascadingParameter(Name = ThemeState.VersionName)] private int ThemeVersion { get; set; }
 
     /// <summary>Additional attributes.</summary>
     [Parameter(CaptureUnmatchedValues = true)]

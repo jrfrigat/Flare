@@ -129,6 +129,13 @@ public partial class FlareDateTimePicker
     private bool _invalid => !string.IsNullOrEmpty(DisplayedErrorText);
 
     private bool _open;
+
+    // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
+    // lambdas) leaves it as it is. Day predicates, templates and parsers are read while the calendar is shown.
+    /// <inheritdoc />
+    protected override bool SkipsUnchangedParameters => true;
+    /// <inheritdoc />
+    protected override bool DelegatesAffectRender => _open;
     private bool _autofocused;
     private int _activeTab;
     private DateOnly? _selectedDate;

@@ -94,6 +94,13 @@ public partial class FlareWeekPicker
     private PickerViews? _viewState;
     private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled);
     private bool _open;
+
+    // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
+    // lambdas) leaves it as it is. Day predicates, templates and parsers are read while the calendar is shown.
+    /// <inheritdoc />
+    protected override bool SkipsUnchangedParameters => true;
+    /// <inheritdoc />
+    protected override bool DelegatesAffectRender => _open || Inline;
     private bool _autofocused;
     private bool _focused;
     private string _text = string.Empty;

@@ -83,6 +83,13 @@ public partial class FlareMonthPicker
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-monthpicker-{Guid.NewGuid():N}");
     private bool _open;
+
+    // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
+    // lambdas) leaves it as it is. Day predicates, templates and parsers are read while the calendar is shown.
+    /// <inheritdoc />
+    protected override bool SkipsUnchangedParameters => true;
+    /// <inheritdoc />
+    protected override bool DelegatesAffectRender => _open || Inline;
     private bool _autofocused;
     private MonthYearGridView _view = MonthYearGridView.Months;
     private int _viewYear;

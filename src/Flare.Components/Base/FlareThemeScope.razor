@@ -13,12 +13,18 @@
    static token rules re-assert for the subtree, and a scoped IThemeService is cascaded so components
    that read the theme in C# (e.g. FlareProgressCircular) also see the scoped values.
 *@
-<CascadingValue Value="@_scoped" IsFixed="false">
+@* The scoped service is created once; the subtree follows the scoped theme through its own holder and version
+   (see ThemeState), so a render of the scope's parent does not re-render every component in it. *@
+<CascadingValue Value="@_state" IsFixed="true">
+<CascadingValue Value="@_snapshot.Version" Name="@ThemeState.VersionName" IsFixed="false">
+<CascadingValue Value="@_scoped" IsFixed="true">
     <CascadingValue Value="@_snapshot" IsFixed="false">
         <div class="@_cssClass" style="@Style" data-flare-theme="@_theme.Id">
             @ChildContent
         </div>
     </CascadingValue>
+</CascadingValue>
+</CascadingValue>
 </CascadingValue>
 
 @code {
@@ -59,7 +65,13 @@
         _subscribed = Outer;
     }
 
-    protected override void OnParametersSet() => Resolve();
+    protected override void OnParametersSet()
+    {
+        Resolve();
+        // A new Theme, Palette or Mode is a new snapshot, which is what tells the subtree to render again.
+        if (!ReferenceEquals(_snapshot.Theme, _theme) || !ReferenceEquals(_snapshot.Palette, _palette) || _snapshot.IsDark != _isDark)
+            _snapshot = CreateSnapshot();
+    }
 
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -122,10 +134,12 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    private readonly ThemeState _state = new();
+
     private ThemeSnapshot CreateSnapshot()
     {
         _version++;
-        return new ThemeSnapshot
+        return _state.Snapshot = new ThemeSnapshot
         {
             Theme = _theme,
             Palette = _palette,

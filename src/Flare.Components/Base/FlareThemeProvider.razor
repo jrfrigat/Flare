@@ -6,8 +6,13 @@
 @inject IJSRuntime JS
 @using Flare.Abstractions.Tokens
 
+@* Flare's own components follow the theme through the fixed holder and its version number (ThemeState), so a
+   render of this provider's parent does not re-render all of them; the snapshot cascade stays for application
+   components that read it. The theme service is injected and never changes. *@
+<CascadingValue Value="@_state" IsFixed="true">
+<CascadingValue Value="@_snapshot.Version" Name="@ThemeState.VersionName" IsFixed="false">
 <CascadingValue Value="@_snapshot" IsFixed="false">
-    <CascadingValue Value="@ThemeService" IsFixed="false">
+    <CascadingValue Value="@ThemeService" IsFixed="true">
         <CascadingValue Value="@IconMorph" TValue="FlareIconMorph?" IsFixed="false">
         @if (Stylesheets == ThemeStylesheets.Automatic)
         {
@@ -21,6 +26,8 @@
         </div>
         </CascadingValue>
     </CascadingValue>
+</CascadingValue>
+</CascadingValue>
 </CascadingValue>
 
 @code {
@@ -234,10 +241,12 @@
         await InvokeAsync(StateHasChanged);
     }
 
+    private readonly ThemeState _state = new();
+
     private ThemeSnapshot CreateSnapshot()
     {
         _version++;
-        return new ThemeSnapshot
+        return _state.Snapshot = new ThemeSnapshot
         {
             Theme = ThemeService.CurrentTheme,
             Palette = ThemeService.CurrentPalette,

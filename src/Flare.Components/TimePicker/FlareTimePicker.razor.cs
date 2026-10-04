@@ -65,6 +65,13 @@ public partial class FlareTimePicker
     protected override string ComponentCssClass => Css.Classes.TimePicker.Root;
 
     private bool _open;
+
+    // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
+    // lambdas) leaves it as it is. Day predicates, templates and parsers are read while the calendar is shown.
+    /// <inheritdoc />
+    protected override bool SkipsUnchangedParameters => true;
+    /// <inheritdoc />
+    protected override bool DelegatesAffectRender => _open;
     private int _tempHour;
     private int _tempMinute;
     private int _tempSecond;

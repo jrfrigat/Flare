@@ -75,6 +75,39 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 
     private bool _validationSubscribed;
     private bool _hasBoundField;
+    private UnchangedParameters? _parameters;
+    private bool _skipRender;
+
+    /// <summary>
+    /// When true, a render caused by the parent passing parameters that cannot change this field's markup is
+    /// skipped (see <see cref="UnchangedParameters"/>), so one field committing a value does not re-render every
+    /// other field on the page. Renders the field asks for itself - events, validation - are never skipped.
+    /// </summary>
+    protected virtual bool SkipsUnchangedParameters => false;
+
+    /// <summary>Whether the field's markup currently reads its delegate parameters (day predicates, templates,
+    /// parsers). A picker reads them only while its calendar is shown.</summary>
+    protected virtual bool DelegatesAffectRender => true;
+
+    /// <inheritdoc />
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (SkipsUnchangedParameters)
+            _skipRender = (_parameters ??= new UnchangedParameters()).Matches(parameters, DelegatesAffectRender);
+        var task = base.SetParametersAsync(parameters);
+        // The render the push asks for has been decided by now; a skip left unconsumed (a render was already
+        // queued, so ShouldRender was not asked) must not swallow the field's next render of its own.
+        _skipRender = false;
+        return task;
+    }
+
+    /// <inheritdoc />
+    protected override bool ShouldRender()
+    {
+        if (!_skipRender) return true;
+        _skipRender = false;
+        return false;
+    }
 
     /// <inheritdoc />
     protected override void OnInitialized()
