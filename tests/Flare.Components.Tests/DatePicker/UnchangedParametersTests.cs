@@ -196,6 +196,21 @@ public class UnchangedParametersTests : FlareTestContext
 
     private sealed class Model { public DateOnly? When { get; set; } }
 
+    private static Expression<Func<DateOnly?>> ForWhen(Model row) => () => row.When;
+
+    [Fact]
+    public void For_OverTheSameModel_IsNotRendered_AndOverAnotherModel_Is()
+    {
+        var first = new Model();
+        var cut = Picker(p => p.Add(x => x.For, ForWhen(first)));
+        Push(cut, more: p => p.Add(x => x.For, ForWhen(first)));
+        var count = cut.RenderCount;
+        Push(cut, more: p => p.Add(x => x.For, ForWhen(first)));
+        Assert.Equal(count, cut.RenderCount);
+        Push(cut, more: p => p.Add(x => x.For, ForWhen(new Model())));
+        Assert.True(cut.RenderCount > count);
+    }
+
     [Fact]
     public void Validation_StillRenders()
     {

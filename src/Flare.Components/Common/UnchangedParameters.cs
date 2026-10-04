@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components;
@@ -17,7 +18,7 @@ namespace Flare.Components;
 /// <item>both are event callbacks - they run on an event and never take part in rendering;</item>
 /// <item>both are delegates other than a plain <see cref="RenderFragment"/> and the component's markup does not
 /// currently read its delegates;</item>
-/// <item>both are expressions with the same text (a <c>For</c> accessor rebuilt by the parent);</item>
+/// <item>both are <c>For</c> accessors rebuilt by the parent that name the same field of the same model object;</item>
 /// <item>both are attribute dictionaries with the same keys and the same values;</item>
 /// <item>both are the same read-only culture or calendar;</item>
 /// <item>both are the same instance cascaded from above - a cascade announces its changes on its own.</item>
@@ -59,13 +60,39 @@ internal sealed class UnchangedParameters
         if (IsEventCallback(type)) return true;
         if (a is RenderFragment) return false;
         if (a is Delegate) return !delegatesRender;
-        if (a is LambdaExpression ea) return ea.ToString() == ((LambdaExpression)b).ToString();
+        if (a is LambdaExpression ea) return SameField(ea, (LambdaExpression)b);
         if (a is IReadOnlyDictionary<string, object> da) return SameAttributes(da, (IReadOnlyDictionary<string, object>)b);
         // A read-only culture or calendar (CultureInfo.GetCultureInfo, CultureInfo.ReadOnly) cannot change.
         if (a is CultureInfo ca) return ReferenceEquals(a, b) && ca.IsReadOnly;
         if (a is Calendar cal) return ReferenceEquals(a, b) && cal.IsReadOnly;
         return cascading && ReferenceEquals(a, b);
     }
+
+    // A For accessor is rebuilt on every render of the parent. The same text over the same model object names the
+    // same field; the text alone is not enough - "() => row.Date" reads a different row on every pass of a loop.
+    private static bool SameField(LambdaExpression a, LambdaExpression b)
+    {
+        if (a.Parameters.Count != 0 || a.ToString() != b.ToString()) return false;
+        return Owner(a.Body) is { } ma && Owner(b.Body) is { } mb && ReferenceEquals(ma, mb);
+    }
+
+    // The object whose member the accessor reads ("model" in "() => model.Date"), or null when the accessor has
+    // another shape - which then counts as changed.
+    private static object? Owner(Expression body)
+    {
+        if (body is UnaryExpression { NodeType: ExpressionType.Convert } convert) body = convert.Operand;
+        if (body is not MemberExpression member) return null;
+        try { return Evaluate(member.Expression); }
+        catch (Exception) { return null; }
+    }
+
+    private static object? Evaluate(Expression? x) => x switch
+    {
+        ConstantExpression c => c.Value,
+        MemberExpression { Member: FieldInfo f } m => f.GetValue(m.Expression is null ? null : Evaluate(m.Expression)),
+        MemberExpression { Member: PropertyInfo p } m => p.GetValue(m.Expression is null ? null : Evaluate(m.Expression)),
+        _ => throw new NotSupportedException(),
+    };
 
     private static bool SameAttributes(IReadOnlyDictionary<string, object> a, IReadOnlyDictionary<string, object> b)
     {
