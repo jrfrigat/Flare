@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -15,7 +16,7 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     public ValueTask PrepareAsync() => new(ModuleAsync());
 
     /// <inheritdoc />
-    public ValueTask RegisterDialogEscAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
+    public ValueTask RegisterDialogEscAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerDialogEscHandler", id, dotNetRef);
 
     /// <inheritdoc />
@@ -69,7 +70,7 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
         => InvokeVoidAsync("scrollOptionIntoView", optionId, block);
 
     /// <inheritdoc />
-    public ValueTask RegisterDismissAsync<T>(string id, ElementReference element,
+    public ValueTask RegisterDismissAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, ElementReference element,
         DotNetObjectReference<T> dotNetRef, string method) where T : class
         => InvokeVoidAsync("registerDismiss", id, element, dotNetRef, method);
 

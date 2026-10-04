@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -14,7 +15,7 @@ public interface IUiJsService : IAsyncDisposable
     /// <summary>Observes a tab bar and reports overflow state via <c>OnTabScrollState</c>.</summary>
     /// <param name="bar">The scrollable tab-bar element.</param>
     /// <param name="dotNetRef">The component reference whose <c>OnTabScrollState(bool,bool,bool)</c> is invoked.</param>
-    ValueTask RegisterTabScrollerAsync<T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class;
+    ValueTask RegisterTabScrollerAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Scrolls the tab bar by ~80% of its width in <paramref name="direction"/> (-1 left, +1 right).</summary>
     ValueTask ScrollTabsAsync(ElementReference bar, int direction);
@@ -30,18 +31,18 @@ public interface IUiJsService : IAsyncDisposable
     /// overflow menu, reporting how many were folded via <c>OnOverflowChanged</c>.</summary>
     /// <param name="root">The button-group element.</param>
     /// <param name="dotNetRef">The component reference whose <c>OnOverflowChanged(int)</c> is invoked.</param>
-    ValueTask RegisterButtonGroupCollapseAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class;
+    ValueTask RegisterButtonGroupCollapseAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Re-runs the fold for <paramref name="root"/>. Needed after every render of the group: the
     /// decision lives in an attribute on segments the component may have just replaced.</summary>
-    ValueTask ApplyButtonGroupOverflowAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class;
+    ValueTask ApplyButtonGroupOverflowAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Removes the collapse observer for <paramref name="root"/>.</summary>
     ValueTask RemoveButtonGroupCollapseAsync(ElementReference root);
 
     /// <summary>Registers a global keydown listener that invokes <c>HandleKeyDown</c> with the combo string.</summary>
     /// <param name="dotNetRef">The component reference whose <c>HandleKeyDown(string)</c> is invoked.</param>
-    ValueTask RegisterShortcutsAsync<T>(DotNetObjectReference<T> dotNetRef) where T : class;
+    ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Removes the global keyboard-shortcut listener.</summary>
     ValueTask RemoveShortcutsAsync();

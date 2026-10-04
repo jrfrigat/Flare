@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -6,4 +8,4 @@ namespace Flare.Components;
 /// leading empty entry clears it.
 /// </summary>
 /// <typeparam name="TItem">Row type of the grid being filtered.</typeparam>
-public partial class FlareDataGridFilterPresets<TItem>;
+public partial class FlareDataGridFilterPresets<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>;

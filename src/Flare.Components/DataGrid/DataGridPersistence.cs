@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -24,10 +26,14 @@ public sealed class DataGridPersistence<TItem>
     }
 
     /// <summary>Saves the current grid state to localStorage.</summary>
+    // The nested sort rows are read and written by System.Text.Json too, so a trimmed app keeps their members.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties, typeof(PersistedSort))]
     public Task SaveAsync(DataGridPersistedState state) =>
         _storage.SetAsync(_storageKey, state).AsTask();
 
     /// <summary>Loads the persisted state from localStorage. Returns null if not found.</summary>
+    // The nested sort rows are read and written by System.Text.Json too, so a trimmed app keeps their members.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties, typeof(PersistedSort))]
     public Task<DataGridPersistedState?> LoadAsync() =>
         _storage.GetAsync<DataGridPersistedState>(_storageKey).AsTask();
 

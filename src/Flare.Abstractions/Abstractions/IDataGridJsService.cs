@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -21,7 +22,7 @@ public interface IDataGridJsService
     /// <param name="root">The scroll container (grid wrapper) the sentinel scrolls within.</param>
     /// <param name="dotNetRef">Reference whose <c>TriggerLoad</c> is invoked.</param>
     /// <param name="rootMargin">IntersectionObserver root margin (e.g. "160px").</param>
-    ValueTask InitInfiniteAsync<T>(ElementReference sentinel, ElementReference root,
+    ValueTask InitInfiniteAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference sentinel, ElementReference root,
         DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class;
 
     /// <summary>Stops observing the infinite-scroll <paramref name="sentinel"/>.</summary>

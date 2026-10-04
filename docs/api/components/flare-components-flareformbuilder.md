@@ -4,6 +4,8 @@
 
 `Flare.Components.FlareFormBuilder`
 
+Builds an edit form from the public properties of TModel: one field per property, picked by its type and described by FlareFormFieldAttribute, validated with data annotations.
+
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |

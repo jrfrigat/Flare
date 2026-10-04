@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +13,7 @@ public sealed class ResizeJsService : FlareJsModule, IResizeJsService
         : base(js, "./_content/Flare.Components/js/flare-drag.js") { }
 
     /// <inheritdoc />
-    public ValueTask RegisterAsync<T>(ElementReference container, ElementReference handle, string edge,
+    public ValueTask RegisterAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference container, ElementReference handle, string edge,
         string? minSize, string? maxSize, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerResizeHandle", container, handle, edge, minSize, maxSize, dotNetRef);
 

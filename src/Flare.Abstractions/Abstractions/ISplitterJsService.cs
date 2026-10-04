@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -18,7 +19,7 @@ public interface ISplitterJsService : IAsyncDisposable
     /// <param name="minSize">Optional minimum neighbour size (e.g. "120px").</param>
     /// <param name="maxSize">Optional maximum size for the previous neighbour (e.g. "600px").</param>
     /// <param name="dotNetRef">Reference used to report the new size back to the component.</param>
-    ValueTask RegisterAsync<T>(ElementReference gutter, string axis, string? minSize, string? maxSize,
+    ValueTask RegisterAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference gutter, string axis, string? minSize, string? maxSize,
         DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Applies a keyboard nudge (px) along the resolved axis.</summary>
@@ -29,7 +30,7 @@ public interface ISplitterJsService : IAsyncDisposable
     /// <param name="minSize">Optional minimum neighbour size.</param>
     /// <param name="maxSize">Optional maximum size for the previous neighbour.</param>
     /// <param name="dotNetRef">Reference used to report the new size back to the component.</param>
-    ValueTask NudgeAsync<T>(ElementReference gutter, string axis, int deltaPx, string keyAxis,
+    ValueTask NudgeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference gutter, string axis, int deltaPx, string keyAxis,
         string? minSize, string? maxSize, DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Detaches the drag handler from the splitter handle.</summary>

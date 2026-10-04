@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -20,7 +21,7 @@ public sealed class DataGridJsService : FlareJsModule, IDataGridJsService
         InvokeVoidAsync("FlareDataGrid.updateFrozenOffsets", table);
 
     /// <inheritdoc />
-    public ValueTask InitInfiniteAsync<T>(ElementReference sentinel, ElementReference root,
+    public ValueTask InitInfiniteAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference sentinel, ElementReference root,
         DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class
         => InvokeVoidAsync("FlareDataGrid.initInfinite", sentinel, root, dotNetRef, rootMargin);
 

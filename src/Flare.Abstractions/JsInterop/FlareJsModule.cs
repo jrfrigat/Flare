@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
 namespace Flare.Components.Services;
@@ -14,6 +15,10 @@ public abstract class FlareJsModule : IAsyncDisposable
     private readonly string _modulePath;
     private Task<IJSObjectReference>? _module;
 
+    // What JS interop needs to keep of a result type to deserialize it - the same members IJSObjectReference asks for.
+    private const DynamicallyAccessedMemberTypes JsonSerialized =
+        DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties;
+
     /// <param name="js">The JS runtime (injected).</param>
     /// <param name="modulePath">Static-web-asset path to the ES module, e.g.
     /// <c>./_content/Flare.Components.Media/js/colorextractor.js</c>.</param>
@@ -28,7 +33,7 @@ public abstract class FlareJsModule : IAsyncDisposable
         _module ??= _js.InvokeAsync<IJSObjectReference>("import", _modulePath).AsTask();
 
     /// <summary>Invokes an exported function and returns its result.</summary>
-    protected async ValueTask<T> InvokeAsync<T>(string identifier, params object?[] args) =>
+    protected async ValueTask<T> InvokeAsync<[DynamicallyAccessedMembers(JsonSerialized)] T>(string identifier, params object?[] args) =>
         await (await ModuleAsync()).InvokeAsync<T>(identifier, args);
 
     /// <summary>Invokes an exported function with no return value.</summary>

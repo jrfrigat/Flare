@@ -1,6 +1,9 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject IDialogService DialogService
+@using System.Diagnostics.CodeAnalysis
+@* The dialog body type reaches DynamicComponent from FlareDialogInstance.ContentType, which keeps the whole type. *@
+@attribute [UnconditionalSuppressMessage("Trimming", "IL2111", Justification = "FlareDialogInstance.ContentType is annotated DynamicallyAccessedMemberTypes.All.")]
 
 @* Imperative confirm/alert request (the ConfirmAsync / AlertAsync path). *@
 @if (DialogService.Current is not null)

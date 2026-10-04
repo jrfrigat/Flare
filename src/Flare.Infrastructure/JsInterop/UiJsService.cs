@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +13,7 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
         : base(js, "./_content/Flare.Components/js/flare-ui.js") { }
 
     /// <inheritdoc />
-    public ValueTask RegisterTabScrollerAsync<T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class
+    public ValueTask RegisterTabScrollerAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerTabScroller", bar, dotNetRef);
 
     /// <inheritdoc />
@@ -25,18 +26,18 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask RemoveTabScrollerAsync(ElementReference bar) => InvokeVoidAsync("removeTabScroller", bar);
 
     /// <inheritdoc />
-    public ValueTask RegisterButtonGroupCollapseAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+    public ValueTask RegisterButtonGroupCollapseAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerButtonGroupCollapse", root, dotNetRef);
 
     /// <inheritdoc />
-    public ValueTask ApplyButtonGroupOverflowAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+    public ValueTask ApplyButtonGroupOverflowAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("applyButtonGroupOverflow", root, dotNetRef);
 
     /// <inheritdoc />
     public ValueTask RemoveButtonGroupCollapseAsync(ElementReference root) => InvokeVoidAsync("removeButtonGroupCollapse", root);
 
     /// <inheritdoc />
-    public ValueTask RegisterShortcutsAsync<T>(DotNetObjectReference<T> dotNetRef) where T : class
+    public ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerShortcutListener", dotNetRef);
 
     /// <inheritdoc />

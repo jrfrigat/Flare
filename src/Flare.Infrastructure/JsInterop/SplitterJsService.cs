@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -11,12 +12,12 @@ public sealed class SplitterJsService : FlareJsModule, ISplitterJsService
         : base(js, "./_content/Flare.Components/js/flare-drag.js") { }
 
     /// <inheritdoc />
-    public ValueTask RegisterAsync<T>(ElementReference gutter, string axis, string? minSize, string? maxSize,
+    public ValueTask RegisterAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference gutter, string axis, string? minSize, string? maxSize,
         DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerSiblingSplitter", gutter, axis, minSize, maxSize, dotNetRef);
 
     /// <inheritdoc />
-    public ValueTask NudgeAsync<T>(ElementReference gutter, string axis, int deltaPx, string keyAxis,
+    public ValueTask NudgeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference gutter, string axis, int deltaPx, string keyAxis,
         string? minSize, string? maxSize, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("nudgeSiblingSplitter", gutter, axis, deltaPx, keyAxis, minSize, maxSize, dotNetRef);
 

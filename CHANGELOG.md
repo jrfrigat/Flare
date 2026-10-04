@@ -7,6 +7,14 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **The core packages are trimmable.** `Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure` and
+  `Flare.Components` are marked `IsTrimmable`, so a Release publish of a WebAssembly app drops the parts it does
+  not use: about 600 KB less to download for an app with a few pickers. The grid, the form builder, dialogs and
+  browser storage keep the members of the types you pass them, and the JSON export of the grid no longer needs
+  reflection. `ThemeJsonSerializer` still reads the whole token graph by reflection and now says so with a trim
+  warning. Generic parameters of `IDialogService`, `IBrowserStorage` and the JS service interfaces carry
+  `DynamicallyAccessedMembers`; an application that implements one of them itself and trims should annotate its
+  own implementation the same way.
 - **A click in a picker's field opens its popup, not only the toggle.** The date, date-time, month, week,
   multi-date and time pickers open on a click in the field and leave focus there, so typing goes on: Arrow Down
   moves into the calendar or the dial, Escape closes it. Opened this way the popup is not modal until focus moves

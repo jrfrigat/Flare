@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Flare.Components;
 using Microsoft.JSInterop;
@@ -25,7 +26,8 @@ public sealed class BrowserStorage : IBrowserStorage
     public BrowserStorage(IJSRuntime js) => _js = js;
 
     /// <inheritdoc />
-    public async ValueTask<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "T keeps the members System.Text.Json reads, as IJSRuntime does for its results.")]
+    public async ValueTask<T?> GetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -39,7 +41,8 @@ public sealed class BrowserStorage : IBrowserStorage
     }
 
     /// <inheritdoc />
-    public async ValueTask SetAsync<T>(string key, T value, CancellationToken cancellationToken = default)
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "T keeps the members System.Text.Json reads, as IJSRuntime does for its results.")]
+    public async ValueTask SetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, T value, CancellationToken cancellationToken = default)
     {
         try
         {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -16,7 +17,7 @@ public interface IColorCanvasJsService : IAsyncDisposable
     /// <param name="hue">Initial hue (0-360).</param>
     /// <param name="saturation">Initial saturation (0-100).</param>
     /// <param name="lightness">Initial lightness (0-100).</param>
-    ValueTask InitAsync<T>(ElementReference canvas, DotNetObjectReference<T> dotNetRef,
+    ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference canvas, DotNetObjectReference<T> dotNetRef,
         double hue, double saturation, double lightness) where T : class;
 
     /// <summary>Redraws the canvas for a new hue, keeping the crosshair position.</summary>

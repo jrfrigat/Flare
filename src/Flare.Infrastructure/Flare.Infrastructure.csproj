@@ -7,6 +7,8 @@
     <Description>Flare browser/host adapters (outer ring): JS-interop services, theme storage, version check and the dialog/snackbar/message-box state services that implement the Flare.Abstractions ports.</Description>
     <PackageTags>blazor;js-interop;adapters;infrastructure;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
     <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
     <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>

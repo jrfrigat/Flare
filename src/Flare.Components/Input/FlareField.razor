@@ -289,7 +289,7 @@
             var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
             try
             {
-                var converter = TypeDescriptor.GetConverter(targetType);
+                var converter = InvariantConverter.For(targetType);
                 if (converter.CanConvertTo(typeof(string)))
                     return converter.ConvertToInvariantString(Value);
             }
@@ -308,7 +308,7 @@
             var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
             try
             {
-                var converter = TypeDescriptor.GetConverter(targetType);
+                var converter = InvariantConverter.For(targetType);
                 if (converter.CanConvertFrom(typeof(string)))
                     converted = (TValue?)converter.ConvertFromInvariantString(raw);
             }

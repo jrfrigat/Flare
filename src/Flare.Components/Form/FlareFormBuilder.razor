@@ -43,10 +43,11 @@
 
     protected override void OnInitialized()
     {
-        _fields = FormFieldMetaCache.GetOrBuild(typeof(TModel), BuildFields);
+        _fields = FormFieldMetaCache.GetOrBuild(typeof(TModel), static _ => BuildFields(typeof(TModel)));
     }
 
-    private static IReadOnlyList<FormFieldMeta> BuildFields(Type modelType)
+    private static IReadOnlyList<FormFieldMeta> BuildFields(
+        [System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembers(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes.PublicProperties)] Type modelType)
     {
         return modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
             .Select(p =>

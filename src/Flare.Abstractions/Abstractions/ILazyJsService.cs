@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -15,7 +16,7 @@ public interface ILazyJsService
     /// <param name="rootMargin">IntersectionObserver root margin (e.g. "200px").</param>
     /// <param name="keepRendered">When true, stop observing after the first reveal (render once and stay).</param>
     /// <param name="rootSelector">Optional scroll-ancestor selector to observe within; null watches the viewport.</param>
-    ValueTask InitAsync<T>(ElementReference element, DotNetObjectReference<T> dotNetRef,
+    ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference element, DotNetObjectReference<T> dotNetRef,
         string rootMargin, bool keepRendered, string? rootSelector) where T : class;
 
     /// <summary>Stops observing <paramref name="element"/>.</summary>

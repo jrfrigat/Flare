@@ -240,7 +240,7 @@
         TValue? converted = default;
         try
         {
-            var converter = TypeDescriptor.GetConverter(targetType);
+            var converter = InvariantConverter.For(targetType);
             var str = next.ToString(CultureInfo.InvariantCulture);
             if (converter.CanConvertFrom(typeof(string)))
                 converted = (TValue?)converter.ConvertFromInvariantString(str);
@@ -353,7 +353,7 @@
         var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
         try
         {
-            var converter = TypeDescriptor.GetConverter(targetType);
+            var converter = InvariantConverter.For(targetType);
             if (converter.CanConvertFrom(typeof(string)))
                 return (TValue?)converter.ConvertFromInvariantString(invariant);
         }

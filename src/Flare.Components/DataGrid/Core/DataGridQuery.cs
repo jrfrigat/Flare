@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -14,15 +15,19 @@ namespace Flare.Components;
 /// </summary>
 public static class DataGridQuery
 {
+    // A column key is a public property or field of the row type, read by name; the row type keeps them when trimmed.
+    private const DynamicallyAccessedMemberTypes Members =
+        DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields;
+
     private static readonly MethodInfo StringToLower = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!;
 
     /// <summary>Applies the request's filters then sorts to <paramref name="source"/> (no paging).</summary>
-    public static IQueryable<T> ApplyFiltersAndSorts<T>(IQueryable<T> source, DataGridRequest request)
+    public static IQueryable<T> ApplyFiltersAndSorts<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, DataGridRequest request)
         => ApplySorts(ApplyFilters(source, request.FilterModel), request.Sorts);
 
     /// <summary>Runs the full request against <paramref name="source"/>: filter, sort, count (before
     /// paging) and page, materialising the page synchronously. For EF Core this executes as SQL.</summary>
-    public static DataGridResult<T> Execute<T>(IQueryable<T> source, DataGridRequest request)
+    public static DataGridResult<T> Execute<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, DataGridRequest request)
     {
         var filteredSorted = ApplyFiltersAndSorts(source, request);
         var total = filteredSorted.Count();
@@ -35,7 +40,7 @@ public static class DataGridQuery
 
     /// <summary>Folds each filter into a <c>Where</c> (AND). Filters whose column or operator cannot be
     /// translated are skipped rather than throwing.</summary>
-    public static IQueryable<T> ApplyFilters<T>(IQueryable<T> source, IEnumerable<DataGridFilter>? filters)
+    public static IQueryable<T> ApplyFilters<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, IEnumerable<DataGridFilter>? filters)
     {
         if (filters is null) return source;
         foreach (var filter in filters)
@@ -47,7 +52,7 @@ public static class DataGridQuery
     }
 
     /// <summary>Applies multi-column ordering by property name (first sort is OrderBy, rest ThenBy).</summary>
-    public static IQueryable<T> ApplySorts<T>(IQueryable<T> source, IReadOnlyList<DataGridSort>? sorts)
+    public static IQueryable<T> ApplySorts<[DynamicallyAccessedMembers(Members)] T>(IQueryable<T> source, IReadOnlyList<DataGridSort>? sorts)
     {
         if (sorts is null || sorts.Count == 0) return source;
         IOrderedQueryable<T>? ordered = null;
@@ -69,7 +74,7 @@ public static class DataGridQuery
         return ordered ?? source;
     }
 
-    private static Expression<Func<T, bool>>? BuildPredicate<T>(DataGridFilter filter)
+    private static Expression<Func<T, bool>>? BuildPredicate<[DynamicallyAccessedMembers(Members)] T>(DataGridFilter filter)
     {
         if (string.IsNullOrEmpty(filter.Key)) return null;
         var param = Expression.Parameter(typeof(T), "x");
@@ -184,6 +189,8 @@ public static class DataGridQuery
     private static Expression? Negate(Expression? e) => e is null ? null : Expression.Not(e);
 
     // Resolves a column key to a public property or field on T; null when there is no such member.
+    [UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode",
+        Justification = "param is always a parameter of the row type T, whose public properties and fields are kept (Members).")]
     private static Expression? ResolveMember(Expression param, string key)
     {
         try { return Expression.PropertyOrField(param, key); }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.JSInterop;
 
@@ -11,7 +12,7 @@ public sealed class TocJsService : FlareJsModule, ITocJsService
         : base(js, "./_content/Flare.Components/js/flare-components.js") { }
 
     /// <inheritdoc />
-    public ValueTask InitAsync<T>(string handle, Microsoft.JSInterop.DotNetObjectReference<T> dotNetRef,
+    public ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string handle, Microsoft.JSInterop.DotNetObjectReference<T> dotNetRef,
         string? rootSelector, string? headingSelector, string? scrollRootSelector) where T : class
         => InvokeVoidAsync("FlareToc.init", handle, dotNetRef, rootSelector, headingSelector, scrollRootSelector);
 

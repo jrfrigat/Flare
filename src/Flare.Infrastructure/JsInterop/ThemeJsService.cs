@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Abstractions;
 using Microsoft.JSInterop;
 
@@ -49,7 +50,7 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
         => InvokeVoidAsync("revealApp");
 
     /// <summary>Subscribes to OS color-scheme (light/dark) change notifications.</summary>
-    public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
+    public ValueTask SubscribeColorSchemeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
         => InvokeVoidAsync("subscribeColorScheme", id, dotNetRef);
 
     /// <summary>Removes the OS color-scheme change subscription.</summary>
@@ -65,7 +66,7 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
         => InvokeAsync<string?>("getAccentColor");
 
     /// <summary>Subscribes to OS accent-color changes (re-read on window focus).</summary>
-    public ValueTask SubscribeAccentAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
+    public ValueTask SubscribeAccentAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
         => InvokeVoidAsync("subscribeAccent", id, dotNetRef);
 
     /// <summary>Removes the OS accent-color change subscription.</summary>

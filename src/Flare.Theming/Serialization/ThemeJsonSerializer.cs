@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 using System.Text.Json;
@@ -11,6 +12,9 @@ namespace Flare.Theming;
 /// </summary>
 public static class ThemeJsonSerializer
 {
+    private const string TrimMessage =
+        "Reads and writes the theme's design tokens with reflection-based System.Text.Json; a trimmed app may lose token members it does not use itself.";
+
     private static readonly JsonSerializerOptions s_options = new()
     {
         WriteIndented = true,
@@ -22,6 +26,7 @@ public static class ThemeJsonSerializer
     /// Serializes a theme to JSON. The theme's <see cref="ITheme.Base"/> is written as the parent's id
     /// (<c>baseId</c>); the asset lists are written complete, the inherited ones included.
     /// </summary>
+    [RequiresUnreferencedCode(TrimMessage)]
     public static string ExportTheme(ITheme theme)
     {
         var model = new ThemeExportModel
@@ -46,6 +51,7 @@ public static class ThemeJsonSerializer
     /// <param name="json">The exported theme.</param>
     /// <param name="knownThemes">Themes a parent id is looked up in; only needed when the export names a parent.</param>
     /// <exception cref="InvalidOperationException">The JSON is not a theme, or it names a parent that is not among <paramref name="knownThemes"/>.</exception>
+    [RequiresUnreferencedCode(TrimMessage)]
     public static ITheme ImportTheme(string json, IEnumerable<ITheme>? knownThemes = null)
     {
         var model = JsonSerializer.Deserialize<ThemeExportModel>(json, s_options)
@@ -72,12 +78,14 @@ public static class ThemeJsonSerializer
     }
 
     /// <summary>Serializes a palette to JSON.</summary>
+    [RequiresUnreferencedCode(TrimMessage)]
     public static string ExportPalette(Palette palette)
     {
         return JsonSerializer.Serialize(palette, s_options);
     }
 
     /// <summary>Deserializes a palette from JSON.</summary>
+    [RequiresUnreferencedCode(TrimMessage)]
     public static Palette ImportPalette(string json)
     {
         return JsonSerializer.Deserialize<Palette>(json, s_options)

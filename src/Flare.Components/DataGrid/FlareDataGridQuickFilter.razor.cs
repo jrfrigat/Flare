@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -6,4 +8,4 @@ namespace Flare.Components;
 /// the cascade; anywhere else it is pointed at one explicitly.
 /// </summary>
 /// <typeparam name="TItem">Row type of the grid being filtered.</typeparam>
-public partial class FlareDataGridQuickFilter<TItem>;
+public partial class FlareDataGridQuickFilter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>;

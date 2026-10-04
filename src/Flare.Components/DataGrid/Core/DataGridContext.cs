@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -23,7 +25,7 @@ namespace Flare.Components;
 /// </para>
 /// </remarks>
 /// <typeparam name="TItem">Row type of the grid this context drives.</typeparam>
-public sealed class DataGridContext<TItem>
+public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>
 {
     private FlareDataGrid<TItem>? _grid;
 

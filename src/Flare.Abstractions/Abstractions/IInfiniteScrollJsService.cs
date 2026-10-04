@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -13,7 +14,7 @@ public interface IInfiniteScrollJsService
     /// <param name="sentinel">The bottom sentinel element.</param>
     /// <param name="dotNetRef">Reference whose <c>TriggerLoad</c> is invoked.</param>
     /// <param name="rootMargin">IntersectionObserver root margin (e.g. "0px").</param>
-    ValueTask InitAsync<T>(ElementReference sentinel, DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class;
+    ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference sentinel, DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class;
 
     /// <summary>Stops observing <paramref name="sentinel"/>.</summary>
     ValueTask RemoveAsync(ElementReference sentinel);

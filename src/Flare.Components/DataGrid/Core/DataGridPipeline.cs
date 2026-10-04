@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Flare.Components;
@@ -6,7 +7,7 @@ namespace Flare.Components;
 /// Stateless, single-enumeration data pipeline for FlareDataGrid.
 /// Sort -> Filter -> Group -> Page in one pass. No intermediate ToList() calls.
 /// </summary>
-public static class DataGridPipeline<TItem>
+public static class DataGridPipeline<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TItem>
 {
     /// <summary>
     /// Executes the full pipeline: sort -> filter -> group -> page.

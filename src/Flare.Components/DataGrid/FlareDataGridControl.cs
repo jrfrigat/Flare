@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components;
@@ -21,7 +22,7 @@ namespace Flare.Components;
 /// </para>
 /// </remarks>
 /// <typeparam name="TItem">Row type of the grid this control drives.</typeparam>
-public abstract class FlareDataGridControl<TItem> : ComponentBase, IDisposable
+public abstract class FlareDataGridControl<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem> : ComponentBase, IDisposable
 {
     private DataGridContext<TItem>? _subscribed;
 

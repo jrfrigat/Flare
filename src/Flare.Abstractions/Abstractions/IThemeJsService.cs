@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
 namespace Flare.Abstractions;
@@ -68,7 +69,7 @@ public interface IThemeJsService : IAsyncDisposable
     /// Subscribe to OS color scheme changes. <typeparamref name="T"/> is the .NET object exposing the
     /// <c>[JSInvokable]</c> callback (kept generic so this contract does not depend on any UI component).
     /// </summary>
-    ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class;
+    ValueTask SubscribeColorSchemeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class;
 
     /// <summary>Unsubscribe from OS color scheme changes.</summary>
     ValueTask UnsubscribeColorSchemeAsync(string id, CancellationToken ct = default);
@@ -83,7 +84,7 @@ public interface IThemeJsService : IAsyncDisposable
     ValueTask<string?> GetAccentColorAsync(CancellationToken ct = default);
 
     /// <summary>Subscribe to OS accent-color changes (re-read on window focus).</summary>
-    ValueTask SubscribeAccentAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class;
+    ValueTask SubscribeAccentAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class;
 
     /// <summary>Unsubscribe from OS accent-color changes.</summary>
     ValueTask UnsubscribeAccentAsync(string id, CancellationToken ct = default);

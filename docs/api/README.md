@@ -84,7 +84,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareFloatingActionMenu`](components/flare-components-flarefloatingactionmenu.md)
 - [`FlareFloatingActionMenuItem`](components/flare-components-flarefloatingactionmenuitem.md)
 - [`FlareForm`](components/flare-components-flareform.md)
-- [`FlareFormBuilder`](components/flare-components-flareformbuilder.md)
+- [`FlareFormBuilder`](components/flare-components-flareformbuilder.md) — Builds an edit form from the public properties of TModel: one field per property, picked by its type and described by FlareFormFieldAttribute, validated with data annotations.
 - [`FlareFormField`](components/flare-components-flareformfield.md)
 - [`FlareFormulaBar`](components/flare-components-ide-flareformulabar.md)
 - [`FlareGauge`](components/flare-components-flaregauge.md) — One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgressLinear and FlareMeter are both bars and answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is the dashboard reading.

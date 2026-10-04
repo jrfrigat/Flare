@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -7,4 +9,4 @@ namespace Flare.Components;
 /// infinite-scroll grid, or a single page with no page-size choice.
 /// </summary>
 /// <typeparam name="TItem">Row type of the grid being paged.</typeparam>
-public partial class FlareDataGridPager<TItem>;
+public partial class FlareDataGridPager<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>;

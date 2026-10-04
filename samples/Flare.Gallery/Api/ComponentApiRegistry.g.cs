@@ -3064,7 +3064,7 @@ public static class ComponentApiRegistry
             @"FlareFormBuilder",
             @"Flare.Components.FlareFormBuilder",
             @"Flare.Components",
-            null,
+            @"Builds an edit form from the public properties of TModel: one field per property, picked by its type and described by FlareFormFieldAttribute, validated with data annotations.",
             null,
             new ApiParameterInfo[]
             {

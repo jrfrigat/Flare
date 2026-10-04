@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -17,7 +18,7 @@ public interface IResizeJsService : IAsyncDisposable
     /// <param name="minSize">Optional minimum size (e.g. "120px").</param>
     /// <param name="maxSize">Optional maximum size (e.g. "600px").</param>
     /// <param name="dotNetRef">Reference used to report the final size back (<c>OnResizedCallback</c>).</param>
-    ValueTask RegisterAsync<T>(ElementReference container, ElementReference handle, string edge,
+    ValueTask RegisterAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference container, ElementReference handle, string edge,
         string? minSize, string? maxSize, DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Detaches the drag handler from <paramref name="handle"/>.</summary>

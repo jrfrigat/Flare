@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 
 namespace Flare.Abstractions;
@@ -47,7 +48,7 @@ public interface IDialogService
     /// <param name="parameters">Values bound to the body component's parameters, or null for none.</param>
     /// <param name="options">Presentation options, or null for <see cref="DialogOptions.Default"/>.</param>
     /// <returns>The <see cref="DialogResult"/> produced when the dialog closes.</returns>
-    Task<DialogResult> ShowAsync<TComponent>(string? title = null,
+    Task<DialogResult> ShowAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(string? title = null,
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent;
 
@@ -63,7 +64,7 @@ public interface IDialogService
     /// <param name="parameters">Values bound to the body component's parameters, or null for none.</param>
     /// <param name="options">Presentation options, or null for <see cref="DialogOptions.Default"/>.</param>
     /// <returns>A handle to the opened dialog.</returns>
-    DialogReference Show<TComponent>(string? title = null,
+    DialogReference Show<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(string? title = null,
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent;
 
@@ -82,7 +83,7 @@ public interface IDialogService
     /// <param name="parameters">Values bound to the body component's parameters, or null for none.</param>
     /// <param name="options">Presentation options, or null for a default bottom sheet.</param>
     /// <returns>The <see cref="DialogResult"/> produced when the sheet closes.</returns>
-    Task<DialogResult> ShowSheetAsync<TComponent>(string? title = null,
+    Task<DialogResult> ShowSheetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(string? title = null,
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent;
 

@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -9,10 +11,10 @@ namespace Flare.Components;
 public interface IBrowserStorage
 {
     /// <summary>Reads and deserializes the value stored under <paramref name="key"/>; returns <c>default</c> when absent.</summary>
-    ValueTask<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default);
+    ValueTask<T?> GetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, CancellationToken cancellationToken = default);
 
     /// <summary>Serializes <paramref name="value"/> and stores it under <paramref name="key"/>.</summary>
-    ValueTask SetAsync<T>(string key, T value, CancellationToken cancellationToken = default);
+    ValueTask SetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] T>(string key, T value, CancellationToken cancellationToken = default);
 
     /// <summary>Removes the entry stored under <paramref name="key"/> (a no-op when it does not exist).</summary>
     ValueTask RemoveAsync(string key, CancellationToken cancellationToken = default);

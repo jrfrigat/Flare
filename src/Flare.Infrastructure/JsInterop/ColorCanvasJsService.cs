@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +13,7 @@ public sealed class ColorCanvasJsService : FlareJsModule, IColorCanvasJsService
         : base(js, "./_content/Flare.Components/js/flare-drag.js") { }
 
     /// <inheritdoc />
-    public ValueTask InitAsync<T>(ElementReference canvas, DotNetObjectReference<T> dotNetRef,
+    public ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference canvas, DotNetObjectReference<T> dotNetRef,
         double hue, double saturation, double lightness) where T : class
         => InvokeVoidAsync("flareColorPicker.init", canvas, dotNetRef, hue, saturation, lightness);
 

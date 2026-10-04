@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -17,7 +18,7 @@ public interface IDragDropJsService : IAsyncDisposable
     /// <param name="root">The context's root element.</param>
     /// <param name="dotNetRef">Reference the browser calls back on: once when a drag starts, to ask
     /// which targets accept the item, and once when it lands.</param>
-    ValueTask RegisterContextAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef)
+    ValueTask RegisterContextAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef)
         where T : class;
 
     /// <summary>Detaches the gesture from a context root.</summary>

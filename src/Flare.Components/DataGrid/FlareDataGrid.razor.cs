@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
@@ -9,7 +10,9 @@ namespace Flare.Components;
 // aggregate footer and selection helpers. Feature areas live in sibling partials
 // (.Filtering, .Grouping, .Editing, .Bands, .Composite, .Reorder, .Tree). Only the two
 // razor-template render helpers remain in FlareDataGrid.razor.
-public partial class FlareDataGrid<TItem>
+// Columns are bound to the row type by property name (sorting, filtering, the queryable provider), so a trimmed app
+// keeps its public properties and fields.
+public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>
 {
     // -- New state management API ---------------------------------------------
 

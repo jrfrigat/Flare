@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -18,7 +19,7 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <summary>Registers a document Escape handler that invokes <c>CloseFromEsc</c> on the reference.</summary>
     /// <param name="id">A stable id identifying this overlay's handler.</param>
     /// <param name="dotNetRef">The component reference whose <c>CloseFromEsc</c> is invoked on Escape.</param>
-    ValueTask RegisterDialogEscAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class;
+    ValueTask RegisterDialogEscAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef) where T : class;
 
     /// <summary>Removes the Escape handler registered under <paramref name="id"/>.</summary>
     ValueTask RemoveDialogEscAsync(string id);
@@ -101,7 +102,7 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <param name="element">The widget root; interactions inside it are ignored, outside it dismiss.</param>
     /// <param name="dotNetRef">The component reference whose <paramref name="method"/> is invoked.</param>
     /// <param name="method">The <c>[JSInvokable]</c> method name to invoke on dismissal.</param>
-    ValueTask RegisterDismissAsync<T>(string id, ElementReference element,
+    ValueTask RegisterDismissAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, ElementReference element,
         DotNetObjectReference<T> dotNetRef, string method) where T : class;
 
     /// <summary>Removes the dismissal handler registered under <paramref name="id"/>.</summary>

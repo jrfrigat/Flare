@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 namespace Flare.Abstractions;
 
 /// <summary>
@@ -20,7 +21,7 @@ public sealed class FlareDialogInstance
 
     internal FlareDialogInstance(
         Guid id,
-        Type contentType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type contentType,
         string? title,
         DialogParameters parameters,
         DialogOptions options,
@@ -38,6 +39,7 @@ public sealed class FlareDialogInstance
     public Guid Id { get; }
 
     /// <summary>The component type rendered as the dialog body.</summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     public Type ContentType { get; }
 
     /// <summary>The dialog title shown in the header, or null for a header-less dialog.</summary>

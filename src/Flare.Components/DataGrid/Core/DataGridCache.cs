@@ -1,10 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 namespace Flare.Components;
 
 /// <summary>
 /// Memoized cache for DataGrid pipeline results.
 /// Avoids re-computation when inputs haven't changed.
 /// </summary>
-public sealed class DataGridCache<TItem>
+public sealed class DataGridCache<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TItem>
 {
     private IReadOnlyList<TItem>? _lastSource;
     private IReadOnlyList<DataGridSort>? _lastSorts;

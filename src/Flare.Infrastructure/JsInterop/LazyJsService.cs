@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +13,7 @@ public sealed class LazyJsService : FlareJsModule, ILazyJsService
         : base(js, "./_content/Flare.Components/js/flare-components.js") { }
 
     /// <inheritdoc />
-    public ValueTask InitAsync<T>(ElementReference element, DotNetObjectReference<T> dotNetRef,
+    public ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference element, DotNetObjectReference<T> dotNetRef,
         string rootMargin, bool keepRendered, string? rootSelector) where T : class
         => InvokeVoidAsync("FlareLazy.init", element, dotNetRef, rootMargin, keepRendered, rootSelector);
 

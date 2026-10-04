@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +13,7 @@ public sealed class InfiniteScrollJsService : FlareJsModule, IInfiniteScrollJsSe
         : base(js, "./_content/Flare.Components/js/flare-components.js") { }
 
     /// <inheritdoc />
-    public ValueTask InitAsync<T>(ElementReference sentinel, DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class
+    public ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference sentinel, DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class
         => InvokeVoidAsync("FlareInfiniteScroll.init", sentinel, dotNetRef, rootMargin);
 
     /// <inheritdoc />

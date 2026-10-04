@@ -274,7 +274,7 @@ public static class DeclaredOptions
         var target = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
         try
         {
-            var converter = TypeDescriptor.GetConverter(target);
+            var converter = InvariantConverter.For(target);
             if (converter.CanConvertFrom(typeof(string)))
             {
                 value = (TValue?)converter.ConvertFromInvariantString(raw);

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -11,7 +12,7 @@ public sealed class DragDropJsService : FlareJsModule, IDragDropJsService
         : base(js, "./_content/Flare.Components/js/flare-dragdrop.js") { }
 
     /// <inheritdoc />
-    public ValueTask RegisterContextAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef)
+    public ValueTask RegisterContextAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference root, DotNetObjectReference<T> dotNetRef)
         where T : class
         => InvokeVoidAsync("registerDragContext", root, dotNetRef);
 

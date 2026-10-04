@@ -7,6 +7,8 @@
     <Description>130+ production-ready Blazor UI components for the Flare component library - inputs, layout, navigation, data display, and feedback</Description>
     <PackageTags>blazor;components;theming;material-design;fluent-ui;ui;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
     <!-- Built from flare-components.imports.css into wwwroot/css/flare-components.css; see Directory.Build.targets. -->
     <FlareCssBundle>flare-components</FlareCssBundle>
     <!-- Public API must stay fully XML-documented (drives the generated API docs). -->

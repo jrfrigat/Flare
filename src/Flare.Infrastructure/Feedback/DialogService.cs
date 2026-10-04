@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Flare.Abstractions;
 using Microsoft.AspNetCore.Components;
 
@@ -43,7 +44,7 @@ public sealed class DialogService : IDialogService
         => await Show(new(title, message, closeLabel, string.Empty, ShowCancel: false));
 
     /// <summary>Opens a component dialog and awaits its result.</summary>
-    public Task<DialogResult> ShowAsync<TComponent>(string? title = null,
+    public Task<DialogResult> ShowAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(string? title = null,
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent
     {
@@ -53,7 +54,7 @@ public sealed class DialogService : IDialogService
     }
 
     /// <summary>Opens a component dialog and returns a handle whose result can be awaited.</summary>
-    public DialogReference Show<TComponent>(string? title = null,
+    public DialogReference Show<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(string? title = null,
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent
     {
@@ -70,7 +71,7 @@ public sealed class DialogService : IDialogService
     }
 
     /// <summary>Opens a component dialog presented as a bottom sheet and awaits its result.</summary>
-    public Task<DialogResult> ShowSheetAsync<TComponent>(string? title = null,
+    public Task<DialogResult> ShowSheetAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TComponent>(string? title = null,
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent
     {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.JSInterop;
 
 namespace Flare.Components.Services;
@@ -18,7 +19,7 @@ public interface ITocJsService
     /// <param name="rootSelector">Selector of the content root to scan; null scans the document body.</param>
     /// <param name="headingSelector">Selector for headings within the root (e.g. "h2, h3").</param>
     /// <param name="scrollRootSelector">Optional scroll container to track; null auto-detects.</param>
-    ValueTask InitAsync<T>(string handle, DotNetObjectReference<T> dotNetRef,
+    ValueTask InitAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string handle, DotNetObjectReference<T> dotNetRef,
         string? rootSelector, string? headingSelector, string? scrollRootSelector) where T : class;
 
     /// <summary>Detaches the scroll listeners for the TOC registered under <paramref name="handle"/>.</summary>
