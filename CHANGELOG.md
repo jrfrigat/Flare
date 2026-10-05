@@ -8,6 +8,9 @@ All notable changes to Flare are documented here. This project adheres to
 ### Fixed
 
 - JSON grid export preserves unsigned enum values above `long.MaxValue`, including `ulong.MaxValue`.
+- JSON grid export preserves arrays, string-key dictionaries, binary data and JSON DOM values.
+  Complex models and custom converters use a source-generated `SerializerContext`, also accepted by
+  `DataGridExporters.Json<T>(context)`. Unsupported types throw before download instead of silently losing data.
 
 ### Changed
 

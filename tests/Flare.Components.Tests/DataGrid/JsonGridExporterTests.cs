@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Flare.Components.Tests;
 
@@ -6,9 +7,50 @@ namespace Flare.Components.Tests;
 /// TASK-191: the JSON export writes its cells without reflecting over their types, so it keeps working in a trimmed
 /// app - and writes the same JSON as System.Text.Json for every value type a grid cell commonly holds.
 /// </summary>
-public class JsonGridExporterTests
+public partial class JsonGridExporterTests
 {
-    private enum Tier { Low, High = 7 }
+    internal sealed record Payload(int Number, int[] Items, Payload? Child = null);
+
+    [JsonSerializable(typeof(Payload))]
+    [JsonSerializable(typeof(Dictionary<int, string>))]
+    [JsonSerializable(typeof(Tier))]
+    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase, UseStringEnumConverter = true)]
+    internal partial class ExportContext : JsonSerializerContext;
+
+    [Fact]
+    public async Task Export_UsesGeneratedMetadataForNestedModelsAndDictionaryKeys()
+    {
+        object[] rows = [new Payload(42, [1, 2], new Payload(-7, [])),
+            new Dictionary<int, string> { [7] = "seven" }, Tier.High];
+        var download = new Capture();
+        await DataGridExporters.Json<object>(ExportContext.Default).ExportAsync(new DataGridExportData<object>
+        { Columns = [new("Value", r => r)], Rows = rows, FileName = "models" }, download);
+        Assert.Equal("[{\"Value\":{\"number\":42,\"items\":[1,2],\"child\":{\"number\":-7,\"items\":[],\"child\":null}}},{\"Value\":{\"7\":\"seven\"}},{\"Value\":\"High\"}]",
+            download.Content);
+    }
+
+    [Fact]
+    public async Task Export_RejectsMissingMetadataBeforeDownload()
+    {
+        var download = new Capture();
+        var error = await Assert.ThrowsAsync<NotSupportedException>(() => new JsonGridExporter<object>()
+            .ExportAsync(new DataGridExportData<object>
+            { Columns = [new("Value", r => r)], Rows = [new object?[] { new Payload(42, []) }], FileName = "missing" }, download));
+        Assert.Contains("SerializerContext", error.Message);
+        Assert.Null(download.Content);
+    }
+
+    [Fact]
+    public async Task Export_RejectsCyclicCollectionsBeforeDownload()
+    {
+        var cycle = new List<object>();
+        cycle.Add(cycle);
+        var download = new Capture();
+        await Assert.ThrowsAnyAsync<Exception>(() => new JsonGridExporter<object>().ExportAsync(new DataGridExportData<object>
+        { Columns = [new("Value", r => r)], Rows = [cycle], FileName = "cycle" }, download));
+        Assert.Null(download.Content);
+    }
+    internal enum Tier { Low, High = 7 }
     private enum ByteEnum : byte { Max = byte.MaxValue }
     private enum SByteEnum : sbyte { Min = sbyte.MinValue }
     private enum ShortEnum : short { Min = short.MinValue }
@@ -17,6 +59,32 @@ public class JsonGridExporterTests
     private enum UIntEnum : uint { Max = uint.MaxValue }
     private enum LongEnum : long { Min = long.MinValue }
     private enum ULongEnum : ulong { Zero, AboveSigned = (ulong)long.MaxValue + 1, Max = ulong.MaxValue }
+
+    [Fact]
+    public async Task Export_PreservesNestedCollectionsAndBinaryData()
+    {
+        var value = new Dictionary<string, object?>
+        {
+            ["items"] = new object?[] { 1, null, new Dictionary<string, object?> { ["active"] = true } },
+            ["binary"] = new byte[] { 0, 127, 255 },
+        };
+        var download = new Capture();
+        await new JsonGridExporter<object>().ExportAsync(new DataGridExportData<object>
+        { Columns = [new("Value", r => r)], Rows = [value], FileName = "nested" }, download);
+        Assert.Equal(JsonSerializer.Serialize(new[] { new Dictionary<string, object?> { ["Value"] = value } }),
+            download.Content);
+    }
+
+    [Fact]
+    public async Task Export_PreservesJsonElementStructure()
+    {
+        using var document = JsonDocument.Parse("{\"Number\":42,\"items\":[1,null,true]}");
+        var value = document.RootElement;
+        var download = new Capture();
+        await new JsonGridExporter<JsonElement>().ExportAsync(new DataGridExportData<JsonElement>
+        { Columns = [new("Value", r => r)], Rows = [value], FileName = "dom" }, download);
+        Assert.Equal("[{\"Value\":{\"Number\":42,\"items\":[1,null,true]}}]", download.Content);
+    }
 
     [Fact]
     public async Task Export_PreservesEveryEnumUnderlyingTypeAndUnsignedBoundary()

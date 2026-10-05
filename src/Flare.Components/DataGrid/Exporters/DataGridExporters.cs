@@ -18,6 +18,12 @@ public static class DataGridExporters
     public static IDataGridExporter<TItem> Tsv<TItem>() => new TsvGridExporter<TItem>();
     /// <summary>JSON (array of objects keyed by column title) exporter.</summary>
     public static IDataGridExporter<TItem> Json<TItem>() => new JsonGridExporter<TItem>();
+    /// <summary>JSON exporter using source-generated metadata for complex cell values and custom converters.</summary>
+    /// <typeparam name="TItem">Row item type.</typeparam>
+    /// <param name="context">Metadata covering the runtime types of complex cell values.</param>
+    /// <returns>The JSON exporter configured with the supplied metadata.</returns>
+    public static IDataGridExporter<TItem> Json<TItem>(System.Text.Json.Serialization.JsonSerializerContext context) =>
+        new JsonGridExporter<TItem> { SerializerContext = context ?? throw new ArgumentNullException(nameof(context)) };
     /// <summary>Excel (.xlsx, OOXML) exporter.</summary>
     public static IDataGridExporter<TItem> Excel<TItem>() => new ExcelGridExporter<TItem>();
     /// <summary>Markdown exporter.</summary>
