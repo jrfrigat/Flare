@@ -5,6 +5,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- JSON grid export preserves unsigned enum values above `long.MaxValue`, including `ulong.MaxValue`.
+
 ### Changed
 
 - **Floating panels serialize placement options without reflection.** Selects, comboboxes, date-time

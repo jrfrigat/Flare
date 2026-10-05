@@ -9,6 +9,30 @@ namespace Flare.Components.Tests;
 public class JsonGridExporterTests
 {
     private enum Tier { Low, High = 7 }
+    private enum ByteEnum : byte { Max = byte.MaxValue }
+    private enum SByteEnum : sbyte { Min = sbyte.MinValue }
+    private enum ShortEnum : short { Min = short.MinValue }
+    private enum UShortEnum : ushort { Max = ushort.MaxValue }
+    private enum IntEnum : int { Min = int.MinValue }
+    private enum UIntEnum : uint { Max = uint.MaxValue }
+    private enum LongEnum : long { Min = long.MinValue }
+    private enum ULongEnum : ulong { Zero, AboveSigned = (ulong)long.MaxValue + 1, Max = ulong.MaxValue }
+
+    [Fact]
+    public async Task Export_PreservesEveryEnumUnderlyingTypeAndUnsignedBoundary()
+    {
+        object?[] row = [ByteEnum.Max, SByteEnum.Min, ShortEnum.Min, UShortEnum.Max,
+            IntEnum.Min, UIntEnum.Max, LongEnum.Min, ULongEnum.Zero,
+            (ULongEnum)long.MaxValue, ULongEnum.AboveSigned, ULongEnum.Max];
+        var columns = row.Select((_, i) => new FlareExportColumn<object?[]>($"c{i}", r => r[i])).ToList();
+        var download = new Capture();
+
+        await new JsonGridExporter<object?[]>().ExportAsync(
+            new DataGridExportData<object?[]> { Columns = columns, Rows = [row], FileName = "enums" }, download);
+
+        Assert.Equal(JsonSerializer.Serialize(new[] { columns.ToDictionary(c => c.Title, c => c.Value(row)) }),
+            download.Content);
+    }
 
     private sealed class Capture : IFlareDownload
     {

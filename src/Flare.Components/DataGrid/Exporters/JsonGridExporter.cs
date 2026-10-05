@@ -45,6 +45,8 @@ public sealed class JsonGridExporter<TItem> : IDataGridExporter<TItem>
             case null: json.WriteNullValue(); break;
             case string s: json.WriteStringValue(s); break;
             case bool b: json.WriteBooleanValue(b); break;
+            case Enum e when e.GetTypeCode() == TypeCode.UInt64:
+                json.WriteNumberValue(Convert.ToUInt64(e, System.Globalization.CultureInfo.InvariantCulture)); break;
             case Enum e: json.WriteNumberValue(Convert.ToInt64(e, System.Globalization.CultureInfo.InvariantCulture)); break;
             case byte or sbyte or short or ushort or int or uint or long:
                 json.WriteNumberValue(Convert.ToInt64(value, System.Globalization.CultureInfo.InvariantCulture)); break;
