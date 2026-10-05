@@ -51,7 +51,7 @@ var myTheme = new FlareThemeBuilder("my-theme", "My Custom Theme")
 
 To start from a built-in theme (MD3, Fluent UI 2, Aero, ...) and override only a few parameters, use
 `Derive` - composition, not subclassing (the theme classes are intentionally `sealed`, which keeps the
-theme auto-discovery and `with`-based override model clean):
+`with`-based override model predictable):
 
 ```csharp
 using Flare.Theming;
@@ -197,7 +197,6 @@ services.AddFlare(options =>
 {
     options.DefaultTheme = new MyTheme();
     options.DefaultPalette = myBrandPalette;
-    options.RegisterAllBuiltInThemes = false; // only register what you need
 });
 
 // Or register at runtime

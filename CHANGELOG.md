@@ -14,6 +14,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Theme registration is explicit.** Removed `FlareOptions.RegisterAllBuiltInThemes` and assembly scanning.
+  Set `DefaultTheme` or call `AddFlareTheme` for each theme; use `AddFlarePalette` for standalone palettes.
+  Referencing a theme package alone no longer registers it. The composition package and theme packages support trimming.
+
 - **Floating panels serialize placement options without reflection.** Selects, comboboxes, date-time
   pickers, menus and other anchored panels avoid building JSON type metadata on their first opening.
 - **The core packages are trimmable.** `Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure` and

@@ -51,7 +51,7 @@ var myTheme = new FlareThemeBuilder("my-theme", "My Custom Theme")
 
 Чтобы взять встроенную тему (MD3, Fluent UI 2, Aero, ...) и переопределить лишь несколько параметров,
 используйте `Derive` - это композиция, а не наследование (классы тем намеренно `sealed`, что сохраняет
-чистыми авто-дискавери тем и модель переопределения через `with`):
+предсказуемой модель переопределения через `with`):
 
 ```csharp
 using Flare.Theming;
@@ -196,7 +196,6 @@ services.AddFlare(options =>
 {
     options.DefaultTheme = new MyTheme();
     options.DefaultPalette = myBrandPalette;
-    options.RegisterAllBuiltInThemes = false; // регистрируем только нужное
 });
 
 // Или регистрация в рантайме

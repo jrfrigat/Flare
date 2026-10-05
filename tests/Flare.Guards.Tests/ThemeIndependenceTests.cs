@@ -8,9 +8,8 @@ namespace Flare.Guards.Tests;
 
 /// <summary>
 /// Architecture-boundary guard: Flare.Abstractions, Flare.Theming and Flare.Components must never
-/// reference a theme package (Flare.Theme.*). Themes are external, optional add-ons discovered at
-/// runtime via <c>ITheme</c>/<c>IPaletteProvider</c> reflection (see
-/// <c>ServiceCollectionExtensions.DiscoverThemes</c>) - any developer can ship their own, so the core
+/// reference a theme package (Flare.Theme.*). Themes are external, optional add-ons registered
+/// explicitly through <c>ITheme</c> - any developer can ship their own, so the core
 /// must build and run with zero theme packages installed. A direct reference here would silently
 /// couple the core to one theme's assembly, defeating that plugin model.
 /// </summary>

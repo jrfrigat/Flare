@@ -41,8 +41,8 @@ public interface ITheme
     IReadOnlyList<string> ScriptAssets => [];
 
     /// <summary>
-    /// The palettes this theme ships with. When a theme is registered (auto-discovered from a
-    /// referenced assembly or added via <c>AddFlareTheme</c>), these palettes are registered
+    /// The palettes this theme ships with. When a theme is registered through
+    /// <c>DefaultTheme</c> or <c>AddFlareTheme</c>, these palettes are registered
     /// alongside it so the theme travels with its colors. Defaults to empty -- palettes are
     /// structurally universal and may also be registered independently.
     /// </summary>

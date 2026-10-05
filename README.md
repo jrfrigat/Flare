@@ -81,10 +81,9 @@ builder.Services.AddFlare(opts =>
     opts.DefaultMode = ThemeMode.Auto;                         // Light / Dark / Auto
 });
 
-// Register every other theme you want selectable at runtime. AddFlareTheme also forces the
-// theme assembly to load, which a bare reference does not in a trimmed/WASM app -- so prefer
-// it over relying on FlareOptions.RegisterAllBuiltInThemes auto-discovery. Each theme brings
-// its own palettes via ITheme.Palettes.
+// Register every other theme you want selectable at runtime.
+// Referencing a package alone does not register its theme.
+// Each theme brings its own palettes via ITheme.Palettes.
 builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 

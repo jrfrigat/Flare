@@ -44,7 +44,7 @@
 		<ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Svg\Flare.Icons.MaterialDesign3.Svg.csproj" />
 		<!--
 			Flare no longer ships themes; reference the theme packages the Gallery showcases directly.
-			AddFlare auto-discovers them (RegisterAllBuiltInThemes) from the loaded assemblies.
+			Program.cs registers them explicitly through AddFlareTheme.
 		-->
 		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3\Flare.Theme.MaterialDesign3.csproj" />

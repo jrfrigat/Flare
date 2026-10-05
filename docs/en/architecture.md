@@ -343,14 +343,12 @@ Manages the three axes and applies their composition to the document.
 - **Implementation:** `ThemeService` (sealed). **DI lifetime:** Scoped.
 
 ### Registration model
-`AddFlare` builds the `ThemeService` in a DI factory: it auto-discovers themes/palettes from loaded
-assemblies (when `RegisterAllBuiltInThemes` is true), then adds those registered via `AddFlareTheme`
-/ `AddFlarePalette`, then the configured `DefaultTheme`. Themes/palettes are registered directly into
+`AddFlare` builds the `ThemeService` in a DI factory from themes and palettes explicitly registered
+via `AddFlareTheme` / `AddFlarePalette` and the configured `DefaultTheme`. Themes/palettes are registered directly into
 the `ThemeService` instance (not as separate DI services) so the correct selection is available from
 the first render.
 
-> Auto-discovery only sees assemblies the app has actually loaded; a referenced-but-unused theme
-> package may not be loaded in a trimmed/WASM app. Prefer explicit `AddFlareTheme`, which also forces
+> Referencing a theme package does not register it. Use `DefaultTheme` or `AddFlareTheme`, which also forces
 > the theme assembly to load.
 
 ### Other services registered by `AddFlare` (all Scoped)

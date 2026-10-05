@@ -7,6 +7,7 @@
     <Description>Fluent UI 2 baseline design-token values (the reference DesignTokens and light/dark ColorSchemes) for the Flare Blazor component library. Derive custom Fluent themes from these via `with`. Pure data - no CSS, JS or theme registration.</Description>
     <PackageTags>blazor;theming;design-tokens;fluent-ui;fluent;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

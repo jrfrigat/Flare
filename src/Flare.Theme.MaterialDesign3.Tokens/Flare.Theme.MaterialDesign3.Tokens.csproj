@@ -7,6 +7,7 @@
     <Description>Material Design 3 baseline design-token values (the reference DesignTokens and light/dark ColorSchemes), the Material 3 palettes and their tonal palette generator for the Flare Blazor component library. Derive custom Material themes from these via `with`. No CSS, JS or theme registration.</Description>
     <PackageTags>blazor;theming;design-tokens;material-design;md3;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

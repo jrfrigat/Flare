@@ -29,10 +29,6 @@ builder.Services.AddFlare(opts =>
     opts.UseDynamicPalette = true;
     opts.DynamicFallbackPalette = Md3Palettes.Violet;
     opts.DefaultPaletteId = Md3Palettes.Violet.Id; // default theme (MD3 Expressive) own palette
-    // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
-    // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced
-    // assembly) at startup and keeps the path trim/AOT-friendly.
-    opts.RegisterAllBuiltInThemes = false;
 });
 
 // Themes are independent packages now -- the Gallery showcases all of them, so each is registered

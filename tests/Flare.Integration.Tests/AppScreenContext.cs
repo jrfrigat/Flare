@@ -40,12 +40,10 @@ public class AppScreenContext : BunitContext
     protected AppScreenContext()
     {
         // A theme is not optional - Flare ships none and every component is unstyled without one, so a
-        // screen is rendered under a real theme rather than a stub. Auto-discovery is off because the
-        // reference is explicit here, and scanning the whole assembly graph would only be slower.
+        // screen is rendered under an explicitly registered real theme rather than a stub.
         Services.AddFlare(opts =>
         {
             opts.DefaultTheme = new MaterialDesign3Theme();
-            opts.RegisterAllBuiltInThemes = false;
         });
 
         // Screens reach for JS the way any browser-hosted component does; nothing here asserts on the
