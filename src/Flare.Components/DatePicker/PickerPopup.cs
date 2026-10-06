@@ -18,6 +18,9 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     private bool _dismissRegistered;
     private Func<Task>? _dismiss;
     private DotNetObjectReference<PickerPopup>? _selfRef;
+    private Task? _pendingSync;
+    private bool _requestedOpen;
+    private bool _disposed;
 
     private string TrapId => id + "-trap";
 
@@ -38,6 +41,8 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     /// <param name="focus">Moves focus to the popup's starting element.</param>
     public async Task EnterAsync(ElementReference panel, Func<Task> focus)
     {
+        if (_pendingSync is { IsCompleted: false } pending) await pending;
+        if (_disposed || !_requestedOpen) return;
         if (!FromField) return;
         FromField = false;
         await RemoveDismissAsync();
@@ -45,7 +50,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         try { await overlay.TrapFocusAsync(TrapId, panel); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
-        await focus();
+        if (!_disposed && _requestedOpen) await focus();
     }
 
     /// <summary>
@@ -54,11 +59,35 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     /// or to <paramref name="field"/> after <see cref="ReturnToField"/> or when there is no toggle. Focus is put
     /// back explicitly: the trap's own restore may point at an element inside the popup that is gone now.
     /// </summary>
-    public async Task SyncAsync(bool open, ElementReference anchor, ElementReference panel, AnchoredPanelOptions? options,
+    public Task SyncAsync(bool open, ElementReference anchor, ElementReference panel, AnchoredPanelOptions? options,
         ElementReference field, ElementReference? toggle, Func<Task>? focusOnOpen = null,
         ElementReference dismissRoot = default, Func<Task>? dismiss = null)
     {
+        if (_disposed) return Task.CompletedTask;
+        _requestedOpen = open;
+        if (!open) FromField = false;
+        // A render can arrive while placement is awaiting JS. Queue it behind the entire popup sync,
+        // so placement, dismissal and focus cannot be installed twice or finish after a newer close.
+        return _pendingSync = _pendingSync is { IsCompleted: false } pending
+            ? SyncAfterAsync(pending, open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss)
+            : SyncCoreAsync(open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss);
+    }
+
+    private async Task SyncAfterAsync(Task pending, bool open, ElementReference anchor, ElementReference panel,
+        AnchoredPanelOptions? options, ElementReference field, ElementReference? toggle,
+        Func<Task>? focusOnOpen, ElementReference dismissRoot, Func<Task>? dismiss)
+    {
+        await pending;
+        await SyncCoreAsync(open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss);
+    }
+
+    private async Task SyncCoreAsync(bool open, ElementReference anchor, ElementReference panel,
+        AnchoredPanelOptions? options, ElementReference field, ElementReference? toggle,
+        Func<Task>? focusOnOpen, ElementReference dismissRoot, Func<Task>? dismiss)
+    {
+        if (_disposed || open != _requestedOpen) return;
         await _layer.SyncAsync(overlay, open, anchor, panel, options);
+        if (_disposed || open != _requestedOpen) return;
 
         _dismiss = dismiss;
         if (open && FromField && !_dismissRegistered && dismiss is not null)
@@ -87,6 +116,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         catch (JSDisconnectedException) { }
         catch (JSException) { }
 
+        if (_disposed || open != _requestedOpen) return;
         if (open)
         {
             if (focusOnOpen is not null) await focusOnOpen();
@@ -113,6 +143,8 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     /// <summary>Releases the trap and the placement of a popup still open when its picker goes away.</summary>
     public async ValueTask DisposeAsync()
     {
+        _disposed = true;
+        if (_pendingSync is { IsCompleted: false } pending) await pending;
         await RemoveDismissAsync();
         if (_trapped)
         {
