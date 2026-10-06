@@ -118,7 +118,11 @@ public partial class FlareWeekPicker
     private string _format => IsoWeeks ? "yyyy-Www" : string.Format(_culture, FlareStrings.WeekPicker_Value, "N", _culture.DateTimeFormat.Calendar.GetYear(DateTime.Today));
     private string DisplayValue => _start is { } s ? WeekText(s) : string.Empty;
 
-    private DateOnly WeekStart(DateOnly day) => day.AddDays(-(((int)day.DayOfWeek - (int)_firstDay + 7) % 7));
+    private int Weekday(DateOnly day) => ((int)day.DayOfWeek - (int)_firstDay + 7) % 7;
+    private DateOnly WeekStart(DateOnly day) => DateOnly.FromDayNumber(Math.Max(0, day.DayNumber - Weekday(day)));
+    // At January 0001 a week may start before DateOnly.MinValue; keep only its representable days.
+    private DateOnly WeekEnd(DateOnly start) => DateOnly.FromDayNumber(
+        Math.Min(DateOnly.MaxValue.DayNumber, start.DayNumber + 6 - Weekday(start)));
 
     // "Week 41, 2026" by the culture's rule on its calendar, or "2026-W41" by ISO 8601.
     private string WeekText(DateOnly start)
@@ -126,25 +130,29 @@ public partial class FlareWeekPicker
         var at = start.ToDateTime(TimeOnly.MinValue);
         if (IsoWeeks) return $"{ISOWeek.GetYear(at):0000}-W{ISOWeek.GetWeekOfYear(at):00}";
         var calendar = _culture.DateTimeFormat.Calendar;
-        var year = at >= calendar.MinSupportedDateTime && at <= calendar.MaxSupportedDateTime ? calendar.GetYear(at) : start.Year;
-        return string.Format(_culture, FlareStrings.WeekPicker_Value, CalendarMath.WeekOfYear(start, _culture, _firstDay), year);
+        var supported = at >= calendar.MinSupportedDateTime && at <= calendar.MaxSupportedDateTime;
+        var year = supported ? calendar.GetYear(at) : start.Year;
+        var week = (supported ? calendar : CalendarMath.Gregorian).GetWeekOfYear(
+            at, _culture.DateTimeFormat.CalendarWeekRule, _firstDay);
+        return string.Format(_culture, FlareStrings.WeekPicker_Value, week, year);
     }
 
     private bool IsDisabled(DateOnly d) =>
         (Min is { } min && d < min) || (Max is { } max && d > max) || (IsDateDisabled?.Invoke(d) ?? false);
 
-    private bool WeekAvailable(DateOnly start) => Enumerable.Range(0, 7).Any(i => !IsDisabled(start.AddDays(i)));
+    private bool WeekAvailable(DateOnly start) => Enumerable.Range(start.DayNumber, WeekEnd(start).DayNumber - start.DayNumber + 1)
+        .Any(n => !IsDisabled(DateOnly.FromDayNumber(n)));
 
     private bool IsDayUnavailable(DateOnly d) => Disabled || ReadOnly || IsDisabled(d);
 
-    private bool IsSelected(DateOnly d) => _start is { } s && d >= s && d <= s.AddDays(6);
+    private bool IsSelected(DateOnly d) => _start is { } s && d >= s && d <= WeekEnd(s);
 
     // The chosen week painted whole with the range classes: its first day, its middle days and its last day.
     private string ComposeDayClass(DateOnly d)
     {
-        var week = _start is { } s && d >= s && d <= s.AddDays(6)
+        var week = _start is { } s && d >= s && d <= WeekEnd(s)
             ? d == s ? Css.Classes.Daterangepicker.DayStart
-              : d == s.AddDays(6) ? Css.Classes.Daterangepicker.DayEnd
+              : d == WeekEnd(s) ? Css.Classes.Daterangepicker.DayEnd
               : Css.Classes.Daterangepicker.DayInRange
             : null;
         var extra = DayClassFunc?.Invoke(d);
@@ -281,9 +289,14 @@ public partial class FlareWeekPicker
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitAsync(null); return; }
         DateOnly day;
-        if (IsoText.Match(raw) is { Success: true } m && int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture) is var week
-            && week >= 1 && week <= ISOWeek.GetWeeksInYear(int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture)))
-            day = DateOnly.FromDateTime(ISOWeek.ToDateTime(int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture), week, DayOfWeek.Monday));
+        if (IsoText.Match(raw) is { Success: true } m)
+        {
+            if (!int.TryParse(m.Groups[1].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var year)
+                || year is < 1 or > 9999
+                || !int.TryParse(m.Groups[2].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var week)
+                || week < 1 || week > ISOWeek.GetWeeksInYear(year)) { _text = DisplayValue; return; }
+            day = DateOnly.FromDateTime(ISOWeek.ToDateTime(year, week, DayOfWeek.Monday));
+        }
         else if (!DateOnly.TryParse(raw, _culture, DateTimeStyles.None, out day)) { _text = DisplayValue; return; }
         var start = WeekStart(day);
         if (!WeekAvailable(start)) { _text = DisplayValue; return; }

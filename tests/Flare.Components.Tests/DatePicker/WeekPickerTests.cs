@@ -157,4 +157,93 @@ public class WeekPickerTests : FlareTestContext
         var cut = RenderPicker(_ => { }, new DateOnly(2026, 10, 3), culture: fa, inline: false);
         Assert.Contains("1405", cut.Find("input").GetAttribute("value"));
     }
+
+    [Theory]
+    [InlineData(DayOfWeek.Sunday)]
+    [InlineData(DayOfWeek.Monday)]
+    [InlineData(DayOfWeek.Tuesday)]
+    [InlineData(DayOfWeek.Wednesday)]
+    [InlineData(DayOfWeek.Thursday)]
+    [InlineData(DayOfWeek.Friday)]
+    [InlineData(DayOfWeek.Saturday)]
+    public void BoundaryWeeks_SelectOnlyRepresentableDays(DayOfWeek first)
+    {
+        foreach (var value in new[] { DateOnly.MinValue, DateOnly.MaxValue })
+        {
+            DateOnly? committed = null;
+            var cut = Render<FlareWeekPicker>(p => p.Add(x => x.Inline, true).Add(x => x.Culture, Ru)
+                .Add(x => x.FirstDayOfWeek, first).Add(x => x.Value, value)
+                .Add(x => x.ValueChanged, (DateOnly? v) => committed = v));
+            var offset = ((int)value.DayOfWeek - (int)first + 7) % 7;
+            var start = Math.Max(0, value.DayNumber - offset);
+            var end = Math.Min(DateOnly.MaxValue.DayNumber, value.DayNumber + 6 - offset);
+            Assert.Equal(end - start + 1, cut.FindAll("button[role=gridcell][aria-selected=true]").Count);
+            Day(cut, value.Day).Click();
+            Assert.Equal(DateOnly.FromDayNumber(start), committed);
+        }
+    }
+
+    [Fact]
+    public void TruncatedFirstWeek_EndsBeforeTheNextSunday()
+    {
+        var cut = Render<FlareWeekPicker>(p => p.Add(x => x.Inline, true).Add(x => x.Culture, Ru)
+            .Add(x => x.FirstDayOfWeek, DayOfWeek.Sunday).Add(x => x.Value, DateOnly.MinValue));
+        Assert.Contains(Css.Classes.Daterangepicker.DayStart, Day(cut, 1).ClassName);
+        Assert.Contains(Css.Classes.Daterangepicker.DayEnd, Day(cut, 6).ClassName);
+        Assert.Equal("false", Day(cut, 7).GetAttribute("aria-selected"));
+    }
+
+    [Theory]
+    [InlineData("0000-W01")]
+    [InlineData("2026-W00")]
+    [InlineData("2026-W54")]
+    [InlineData("2025-W53")]
+    [InlineData("9999-W53")]
+    public void InvalidIsoWeek_PreservesValueWithoutThrowing(string text)
+    {
+        var published = false;
+        var cut = RenderPicker(_ => published = true, new DateOnly(2026, 10, 14), iso: true, inline: false);
+        var before = cut.Find("input").GetAttribute("value");
+        cut.Find("input").Change(text);
+        Assert.False(published);
+        Assert.Equal(before, cut.Find("input").GetAttribute("value"));
+    }
+
+    [Theory]
+    [InlineData("0001-W01", 1, 1, 1)]
+    [InlineData("2020-W53", 2020, 12, 28)]
+    [InlineData("2026-W01", 2025, 12, 29)]
+    [InlineData("9999-W52", 9999, 12, 27)]
+    public void ValidIsoWeek_IncludingYearRollover_IsCommitted(string text, int year, int month, int day)
+    {
+        DateOnly? committed = null;
+        var cut = RenderPicker(v => committed = v, iso: true, inline: false);
+        cut.Find("input").Change(text);
+        Assert.Equal(new DateOnly(year, month, day), committed);
+    }
+
+    [Fact]
+    public void LastWeek_AvailabilityHonorsTheOnlyAllowedDay()
+    {
+        DateOnly? committed = null;
+        var cut = Render<FlareWeekPicker>(p => p.Add(x => x.Inline, true).Add(x => x.IsoWeeks, true)
+            .Add(x => x.Value, DateOnly.MaxValue).Add(x => x.Min, DateOnly.MaxValue).Add(x => x.Max, DateOnly.MaxValue)
+            .Add(x => x.ValueChanged, (DateOnly? v) => committed = v));
+        cut.Find("input").Change("9999-W52");
+        Assert.Equal(new DateOnly(9999, 12, 27), committed);
+        committed = null;
+        cut.Render(p => p.Add(x => x.IsDateDisabled, (DateOnly d) => d == DateOnly.MaxValue));
+        cut.Find("input").Change("9999-W52");
+        Assert.Null(committed);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void UnsupportedCultureCalendarDate_StillHasAWeekLabel(bool last)
+    {
+        var cut = RenderPicker(_ => { }, last ? DateOnly.MaxValue : DateOnly.MinValue,
+            culture: CultureInfo.GetCultureInfo("ar-SA"), inline: false);
+        Assert.False(string.IsNullOrEmpty(cut.Find("input").GetAttribute("value")));
+    }
 }
