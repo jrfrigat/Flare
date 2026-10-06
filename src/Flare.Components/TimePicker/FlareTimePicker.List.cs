@@ -120,6 +120,33 @@ public partial class FlareTimePicker
         _scrollListActive = true;
     }
 
+    // A partial mask is a prefix, not a value: 14:3 points at 14:30 but is never committed here.
+    // Completing with zeros also lets the exact clock parser reject impossible hours and minutes.
+    private void HighlightTypedTime(string raw)
+    {
+        if (!_isList || !_open || _locked) return;
+        var digits = new string(_text.Where(char.IsAsciiDigit).ToArray());
+        if (digits.Length == 0)
+        {
+            _listActive = ListRows.Count == 0 ? -1 : 0;
+            _scrollListActive = true;
+            return;
+        }
+        var needed = ShowSeconds ? 6 : 4;
+        var padded = MaskedInput.MaskTime(digits.PadRight(needed, '0'), ShowSeconds);
+        var candidate = _is24Hour ? padded : MaskTime($"{padded} {raw}");
+        if (!TryParseTime(candidate, out var target)) return;
+        var rows = ListRows;
+        _listActive = -1;
+        for (var i = 0; i < rows.Count; i++)
+        {
+            if (rows[i].Item < target) continue;
+            _listActive = i;
+            break;
+        }
+        _scrollListActive = true;
+    }
+
     // Placement and dismissal belong to FlarePopup; this keeps the active time in view and focus in the field.
     private async Task SyncListAsync()
     {

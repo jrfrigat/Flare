@@ -157,4 +157,59 @@ public class TimePickerListTests : FlareTestContext
         Assert.Contains(Css.Classes.TimePicker.CellActive, active.ClassList);
         Assert.Single(cut.FindAll($".{Css.Classes.TimePicker.CellActive}"));
     }
+
+    [Theory]
+    [InlineData("1", "10:00")]
+    [InlineData("14", "14:00")]
+    [InlineData("14:3", "14:30")]
+    [InlineData("14:37", "15:00")]
+    public void TypedTime_MovesActiveOptionWithoutCommittingPartialText(string text, string expected)
+    {
+        var calls = 0;
+        var cut = RenderList(changed: _ => calls++);
+        Input(cut).KeyDown("ArrowDown");
+        Input(cut).Input(text);
+        var id = Input(cut).GetAttribute("aria-activedescendant");
+        Assert.Equal(expected, cut.Find($"#{id}").TextContent.Trim());
+        Assert.Equal(text.Length == 5 ? 1 : 0, calls);
+    }
+
+    [Fact]
+    public void TypedTime_RespectsBoundsAndHasNoActiveOptionPastLastRow()
+    {
+        var cut = RenderList(min: new TimeOnly(9, 10), max: new TimeOnly(11, 0));
+        Input(cut).KeyDown("ArrowDown");
+        Input(cut).Input("08:30");
+        Assert.Equal("09:30", cut.Find($"#{Input(cut).GetAttribute("aria-activedescendant")}").TextContent.Trim());
+        Input(cut).Input("11:01");
+        Assert.Null(Input(cut).GetAttribute("aria-activedescendant"));
+        Input(cut).Input("");
+        Assert.Equal(Options(cut)[0].Id, Input(cut).GetAttribute("aria-activedescendant"));
+    }
+
+    [Fact]
+    public void InvalidTime_KeepsHighlightAndEnterPicksHighlightedTime()
+    {
+        TimeOnly? committed = null;
+        var cut = RenderList(changed: v => committed = v);
+        Input(cut).KeyDown("ArrowDown");
+        Input(cut).Input("14:3");
+        var id = Input(cut).GetAttribute("aria-activedescendant");
+        Input(cut).Input("29:75");
+        Assert.Equal(id, Input(cut).GetAttribute("aria-activedescendant"));
+        Input(cut).KeyDown("Enter");
+        Assert.Equal(new TimeOnly(14, 30), committed);
+    }
+
+    [Fact]
+    public void TwelveHourInput_UsesTypedPeriodAndPartialInputUsesCurrentPeriod()
+    {
+        var cut = RenderList(use24Hour: false, value: new TimeOnly(14, 0));
+        cut.Render(p => p.Add(x => x.Culture, new System.Globalization.CultureInfo("en-US")));
+        Input(cut).KeyDown("ArrowDown");
+        Input(cut).Input("02:3");
+        Assert.Equal("2:30 PM", cut.Find($"#{Input(cut).GetAttribute("aria-activedescendant")}").TextContent.Trim());
+        Input(cut).Input("02:37 AM");
+        Assert.Equal("3:00 AM", cut.Find($"#{Input(cut).GetAttribute("aria-activedescendant")}").TextContent.Trim());
+    }
 }

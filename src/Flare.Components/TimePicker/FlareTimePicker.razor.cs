@@ -183,6 +183,7 @@ public partial class FlareTimePicker
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
         if (generation != _editGeneration) return;
         _text = MaskTime(raw);
+        HighlightTypedTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Count(char.IsAsciiDigit) == (ShowSeconds ? 6 : 4) && TryParseTime(_text, out var shown)
             && Compose(shown) is var t && TimeInRange(t))
