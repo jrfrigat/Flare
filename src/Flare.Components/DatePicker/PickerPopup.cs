@@ -20,6 +20,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     private DotNetObjectReference<PickerPopup>? _selfRef;
     private Task? _pendingSync;
     private bool _requestedOpen;
+    private long _syncGeneration;
     private bool _disposed;
 
     private string TrapId => id + "-trap";
@@ -39,10 +40,16 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     /// <summary>Makes a popup opened from the field modal and puts focus inside it, as a toggle-opened one has.</summary>
     /// <param name="panel">The popup panel.</param>
     /// <param name="focus">Moves focus to the popup's starting element.</param>
-    public async Task EnterAsync(ElementReference panel, Func<Task> focus)
+    public Task EnterAsync(ElementReference panel, Func<Task> focus)
     {
-        if (_pendingSync is { IsCompleted: false } pending) await pending;
-        if (_disposed || !_requestedOpen) return;
+        if (_disposed) return Task.CompletedTask;
+        return _pendingSync = EnterCoreAsync(_pendingSync, _syncGeneration, panel, focus);
+    }
+
+    private async Task EnterCoreAsync(Task? pending, long generation, ElementReference panel, Func<Task> focus)
+    {
+        if (pending is { IsCompleted: false }) await pending;
+        if (_disposed || !_requestedOpen || generation != _syncGeneration) return;
         if (!FromField) return;
         FromField = false;
         await RemoveDismissAsync();
@@ -50,7 +57,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         try { await overlay.TrapFocusAsync(TrapId, panel); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
-        if (!_disposed && _requestedOpen) await focus();
+        if (!_disposed && generation == _syncGeneration) await focus();
     }
 
     /// <summary>
@@ -64,30 +71,33 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         ElementReference dismissRoot = default, Func<Task>? dismiss = null)
     {
         if (_disposed) return Task.CompletedTask;
+        if (open != _requestedOpen) _syncGeneration++;
+        var generation = _syncGeneration;
         _requestedOpen = open;
         if (!open) FromField = false;
         // A render can arrive while placement is awaiting JS. Queue it behind the entire popup sync,
         // so placement, dismissal and focus cannot be installed twice or finish after a newer close.
         return _pendingSync = _pendingSync is { IsCompleted: false } pending
-            ? SyncAfterAsync(pending, open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss)
-            : SyncCoreAsync(open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss);
+            ? SyncAfterAsync(pending, generation, open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss)
+            : SyncCoreAsync(generation, open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss);
     }
 
-    private async Task SyncAfterAsync(Task pending, bool open, ElementReference anchor, ElementReference panel,
+    private async Task SyncAfterAsync(Task pending, long generation, bool open, ElementReference anchor, ElementReference panel,
         AnchoredPanelOptions? options, ElementReference field, ElementReference? toggle,
         Func<Task>? focusOnOpen, ElementReference dismissRoot, Func<Task>? dismiss)
     {
         await pending;
-        await SyncCoreAsync(open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss);
+        await SyncCoreAsync(generation, open, anchor, panel, options, field, toggle, focusOnOpen, dismissRoot, dismiss);
     }
 
-    private async Task SyncCoreAsync(bool open, ElementReference anchor, ElementReference panel,
+    private async Task SyncCoreAsync(long generation, bool open, ElementReference anchor, ElementReference panel,
         AnchoredPanelOptions? options, ElementReference field, ElementReference? toggle,
         Func<Task>? focusOnOpen, ElementReference dismissRoot, Func<Task>? dismiss)
     {
-        if (_disposed || open != _requestedOpen) return;
+        // A queued close must release the old element even if another open has already been requested.
+        if (_disposed || (open && generation != _syncGeneration)) return;
         await _layer.SyncAsync(overlay, open, anchor, panel, options);
-        if (_disposed || open != _requestedOpen) return;
+        if (_disposed || (open && generation != _syncGeneration)) return;
 
         _dismiss = dismiss;
         if (open && FromField && !_dismissRegistered && dismiss is not null)
@@ -105,7 +115,6 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
 
         // Opened from the field: placed, but focus stays where the user is typing. Closing it needs no focus move.
         if (open && FromField) return;
-        if (!open) FromField = false;
         if (open == _trapped) return;
         _trapped = open;
         try
@@ -116,7 +125,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         catch (JSDisconnectedException) { }
         catch (JSException) { }
 
-        if (_disposed || open != _requestedOpen) return;
+        if (_disposed || generation != _syncGeneration) return;
         if (open)
         {
             if (focusOnOpen is not null) await focusOnOpen();

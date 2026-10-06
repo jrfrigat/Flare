@@ -111,6 +111,48 @@ public class PickerPopupSyncTests : FlareTestContext
         Assert.Empty(module.Invocations["registerDismiss"]);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task DateReopenWhileSyncing_PlacesTheNewPanel(bool delayFocusTrap)
+    {
+        var module = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        module.Mode = JSRuntimeMode.Loose;
+        var pending = module.SetupVoid(delayFocusTrap ? "trapFocus" : "positionAnchoredPanel", _ => true);
+        var cut = Render<ObservedDatePicker>();
+        await cut.InvokeAsync(cut.Instance.OpenAsync);
+        await cut.InvokeAsync(cut.Instance.CloseAsync);
+        await cut.InvokeAsync(cut.Instance.OpenAsync);
+        pending.SetVoidResult();
+        await cut.Instance.LastSync.WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken);
+        Assert.Equal(2, module.Invocations["positionAnchoredPanel"].Count);
+        Assert.Single(module.Invocations["removeAnchoredPanel"]);
+        Assert.Equal(delayFocusTrap ? 2 : 1, module.Invocations["trapFocus"].Count);
+        var placements = module.Invocations["positionAnchoredPanel"];
+        Assert.NotEqual(placements[0].Arguments[2], placements[1].Arguments[2]);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task TimeReopenWhileSyncing_PlacesTheNewPanel(bool delayFocusTrap)
+    {
+        var module = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        module.Mode = JSRuntimeMode.Loose;
+        var pending = module.SetupVoid(delayFocusTrap ? "trapFocus" : "positionAnchoredPanel", _ => true);
+        var cut = Render<ObservedTimePicker>();
+        await cut.InvokeAsync(cut.Instance.OpenAsync);
+        await cut.InvokeAsync(cut.Instance.CloseAsync);
+        await cut.InvokeAsync(cut.Instance.OpenAsync);
+        pending.SetVoidResult();
+        await cut.Instance.LastSync.WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken);
+        Assert.Equal(2, module.Invocations["positionAnchoredPanel"].Count);
+        Assert.Single(module.Invocations["removeAnchoredPanel"]);
+        Assert.Equal(delayFocusTrap ? 2 : 1, module.Invocations["trapFocus"].Count);
+        var placements = module.Invocations["positionAnchoredPanel"];
+        Assert.NotEqual(placements[0].Arguments[2], placements[1].Arguments[2]);
+    }
+
     // bUnit's fragment RenderCount includes descendant batches. Count the owner's lifecycle instead.
     public class ObservedDatePicker : FlareDatePicker
     {
