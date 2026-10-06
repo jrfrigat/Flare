@@ -98,8 +98,22 @@
 }
 /* --today before --selected so a today-and-selected day reads as selected (on-primary). */
 .flare-picker__day--today {
-    font-weight: 700;
+    position: relative;
+    font-weight: var(--flare-picker-today-weight);
     color: var(--flare-color-primary);
+}
+.flare-picker__day--today:not(.flare-picker__day--selected)::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: min(100%, var(--flare-picker-day-layer-size));
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    border: var(--flare-picker-today-border);
+    border-radius: 50%;
+    pointer-events: none;
 }
 .flare-picker__day--selected {
     background: var(--flare-color-primary);

@@ -541,7 +541,14 @@ internal class AeroTokens
         Chart = MaterialDesign3Tokens.Design.Chart with { LabelSize = "9px" },
         Calendar = MaterialDesign3Tokens.Design.Calendar with { OtherMonthOpacity = "0.3" },
         // The date and time pickers keep their own fades and headline spacing; the Material record states the spec's.
-        Picker = MaterialDesign3Tokens.Design.Picker with { OutsideOpacity = "0.4", DisabledOpacity = "0.3" },
+        Picker = MaterialDesign3Tokens.Design.Picker with
+        {
+            OutsideOpacity = "0.4", DisabledOpacity = "0.3",
+            CalendarPanelPadding = "var(--flare-spacing-6)", HeaderGap = "var(--flare-spacing-4)",
+            ActionHeight = "var(--flare-btn-height-md)", ActionPadding = "var(--flare-spacing-4) 0 0",
+            ActionMargin = "var(--flare-spacing-4)", ActionBorder = "var(--flare-border-divider)",
+            TodayBorder = "none", TodayWeight = "700",
+        },
         TimePicker = MaterialDesign3Tokens.Design.TimePicker with { HeadlineTracking = "0.05em" },
         // A hairline above the bar, which the Material record leaves out.
         BottomNav = MaterialDesign3Tokens.Design.BottomNav with { BorderColor = "var(--flare-color-surface-variant)" },

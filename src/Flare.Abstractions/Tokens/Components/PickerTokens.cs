@@ -5,6 +5,22 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Design tokens for picker - component-specific geometry read by picker.css.</summary>
 public sealed record PickerTokens
 {
+    /// <summary>Padding of a floating calendar panel; inline calendars keep their own flow spacing.</summary>
+    [CssVar(PickerField.CalendarPanelPadding)] public required string CalendarPanelPadding { get; init; }
+    /// <summary>Gap below the month navigation header.</summary>
+    [CssVar(PickerField.HeaderGap)] public required string HeaderGap { get; init; }
+    /// <summary>Height of text actions in date and date-time picker footers.</summary>
+    [CssVar(PickerField.ActionHeight)] public required string ActionHeight { get; init; }
+    /// <summary>Padding inside the action footer.</summary>
+    [CssVar(PickerField.ActionPadding)] public required string ActionPadding { get; init; }
+    /// <summary>Gap above a date picker's action footer.</summary>
+    [CssVar(PickerField.ActionMargin)] public required string ActionMargin { get; init; }
+    /// <summary>Top border of the action footer, or none.</summary>
+    [CssVar(PickerField.ActionBorder)] public required string ActionBorder { get; init; }
+    /// <summary>Border of today's circular day layer, or none; selection takes precedence.</summary>
+    [CssVar(PickerField.TodayBorder)] public required string TodayBorder { get; init; }
+    /// <summary>Font weight of today's day number.</summary>
+    [CssVar(PickerField.TodayWeight)] public required string TodayWeight { get; init; }
     /// <summary>Outside Opacity.</summary>
     [CssVar(PickerField.OutsideOpacity)] public required string OutsideOpacity { get; init; }
 

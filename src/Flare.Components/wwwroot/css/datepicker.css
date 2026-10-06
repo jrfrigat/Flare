@@ -20,6 +20,7 @@
 /* min() against the containing block: a panel the theme sizes wider than a phone screen narrows its day
    columns rather than running off the edge. */
 .flare-datepicker__panel { min-width: min(var(--flare-picker-panel-min-width), 100%); }
+.flare-datepicker__panel:not(.flare-picker__panel--inline) { padding: var(--flare-picker-calendar-panel-padding); }
 
 /* Picker nav header (label + prev/next), shared with DateTimePicker's __nav (identical). */
 .flare-datepicker__header,
@@ -28,7 +29,7 @@
   align-items: center;
   justify-content: space-between;
   min-height: var(--flare-picker-header-height);
-  margin-bottom: var(--flare-spacing-4);
+  margin-bottom: var(--flare-picker-header-gap);
 }
 
 /* Two classes, so the picker's icon size outranks the size class of the button it sits in. */
@@ -86,10 +87,14 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--flare-spacing-4);
-  border-top: var(--flare-border-divider);
-  padding-top: var(--flare-spacing-4);
+  border-top: var(--flare-picker-action-border);
+  padding: var(--flare-picker-action-padding);
 }
-.flare-datepicker__footer { margin-top: var(--flare-spacing-4); }
+.flare-datepicker__footer { margin-top: var(--flare-picker-action-margin); }
+.flare-datepicker__footer .flare-btn,
+.flare-datetimepicker__footer .flare-btn:not(.flare-btn--icon-only) {
+  --_flare-btn-height: var(--flare-picker-action-height);
+}
 
 /* Date Range Picker */
 .flare-daterangepicker {

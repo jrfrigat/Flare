@@ -1507,6 +1507,14 @@ public class FluentUI2Tokens
 
     internal static readonly PickerTokens Picker = new()
     {
+        CalendarPanelPadding = "var(--flare-spacing-6)",
+        HeaderGap = "var(--flare-spacing-4)",
+        ActionHeight = "var(--flare-btn-height-md)",
+        ActionPadding = "var(--flare-spacing-4) 0 0",
+        ActionMargin = "var(--flare-spacing-4)",
+        ActionBorder = "var(--flare-border-divider)",
+        TodayBorder = "none",
+        TodayWeight = "700",
         WeekNumberWidth = "1.5rem",
         RangeFieldBasis = "12rem",
         RangeCalendarMaxWidth = "20rem",

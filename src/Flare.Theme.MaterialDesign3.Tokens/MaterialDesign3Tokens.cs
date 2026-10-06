@@ -1538,6 +1538,14 @@ public class MaterialDesign3Tokens
 
     internal static readonly PickerTokens Picker = new()
     {
+        CalendarPanelPadding = "0 var(--flare-spacing-6)",
+        HeaderGap = "0",
+        ActionHeight = "2.5rem",
+        ActionPadding = "0.5rem 0",
+        ActionMargin = "0",
+        ActionBorder = "none",
+        TodayBorder = "1px solid var(--flare-color-primary)",
+        TodayWeight = "400",
         WeekNumberWidth = "1.5rem",
         RangeFieldBasis = "12rem",
         RangeCalendarMaxWidth = "20rem",

@@ -3,6 +3,22 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for picker.</summary>
 public static class PickerField
 {
+    /// <summary>CSS custom-property name for floating calendar panel padding.</summary>
+    public const string CalendarPanelPadding = "--flare-picker-calendar-panel-padding";
+    /// <summary>CSS custom-property name for the gap below the month header.</summary>
+    public const string HeaderGap = "--flare-picker-header-gap";
+    /// <summary>CSS custom-property name for the calendar action button height.</summary>
+    public const string ActionHeight = "--flare-picker-action-height";
+    /// <summary>CSS custom-property name for action footer padding.</summary>
+    public const string ActionPadding = "--flare-picker-action-padding";
+    /// <summary>CSS custom-property name for the gap above the calendar action footer.</summary>
+    public const string ActionMargin = "--flare-picker-action-margin";
+    /// <summary>CSS custom-property name for the action footer divider.</summary>
+    public const string ActionBorder = "--flare-picker-action-border";
+    /// <summary>CSS custom-property name for the outline around today's day layer.</summary>
+    public const string TodayBorder = "--flare-picker-today-border";
+    /// <summary>CSS custom-property name for today's day number weight.</summary>
+    public const string TodayWeight = "--flare-picker-today-weight";
     /// <summary>CSS custom-property name for the outside opacity token.</summary>
     public const string OutsideOpacity = "--flare-picker-outside-opacity";
     /// <summary>CSS custom-property name for the disabled opacity token.</summary>
