@@ -80,6 +80,7 @@ public partial class FlareMonthPicker
     private ElementReference _panelEl;
     private ElementReference _toggleEl;
     private FlareMonthYearGrid? _grid;
+    private FlareFieldChrome _chrome = default!;
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-monthpicker-{Guid.NewGuid():N}");
     private bool _open;
@@ -274,7 +275,7 @@ public partial class FlareMonthPicker
         }
         if (Inline) return;
         await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, AllowPicker ? _toggleEl : null,
-            () => _grid?.FocusAsync() ?? Task.CompletedTask);
+            () => _grid?.FocusAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
     }
 
     /// <inheritdoc />

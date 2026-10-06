@@ -8,7 +8,7 @@
 
 @* A month field (TASK-184): the value is the first day of a month on the calendar the picker shows, typed on a
    month mask or picked from the shared month and year views (FlareMonthYearGrid) in a popup or inline. *@
-<FlareFieldChrome ComponentClass="@Css.Classes.MonthPicker.Root"
+<FlareFieldChrome @ref="_chrome" ComponentClass="@Css.Classes.MonthPicker.Root"
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -51,7 +51,10 @@
 
         @if (_open && !Inline)
         {
-            <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            @if (!_popup.FromField)
+            {
+                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            }
         }
         @if (_open || Inline)
         {

@@ -143,6 +143,7 @@ public partial class FlareDatePicker
 
     private ElementReference _fieldEl;
     private ElementReference _panelEl;
+    private FlareFieldChrome _chrome = default!;
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-datepicker-{Guid.NewGuid():N}");
 
@@ -222,7 +223,7 @@ public partial class FlareDatePicker
     private DateOnly FocusedCursor => _focusedDate ?? Value ?? Today;
 
     // Fixed-position the calendar under the field on open (and clean up on close) so it escapes a
-    // Card's overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
+    // Card's overflow:hidden. PickerPopup owns field-open dismissal and modal focus handling.
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -243,7 +244,7 @@ public partial class FlareDatePicker
         // The popup is a modal dialog under the field: Tab stays inside and the cursor day takes focus;
         // closing returns focus to the toggle, or to the field after Escape (TASK-134).
         await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, AllowPicker ? _toggleEl : null,
-            () => _grid?.FocusCursorAsync() ?? Task.CompletedTask);
+            () => _grid?.FocusCursorAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
     }
 
     /// <inheritdoc />

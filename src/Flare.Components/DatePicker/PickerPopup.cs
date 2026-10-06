@@ -15,6 +15,9 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     private readonly AnchoredLayer _layer = new();
     private bool _trapped;
     private bool _returnToField;
+    private bool _dismissRegistered;
+    private Func<Task>? _dismiss;
+    private DotNetObjectReference<PickerPopup>? _selfRef;
 
     private string TrapId => id + "-trap";
 
@@ -37,6 +40,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     {
         if (!FromField) return;
         FromField = false;
+        await RemoveDismissAsync();
         _trapped = true;
         try { await overlay.TrapFocusAsync(TrapId, panel); }
         catch (JSDisconnectedException) { }
@@ -51,9 +55,24 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     /// back explicitly: the trap's own restore may point at an element inside the popup that is gone now.
     /// </summary>
     public async Task SyncAsync(bool open, ElementReference anchor, ElementReference panel, AnchoredPanelOptions? options,
-        ElementReference field, ElementReference? toggle, Func<Task>? focusOnOpen = null)
+        ElementReference field, ElementReference? toggle, Func<Task>? focusOnOpen = null,
+        ElementReference dismissRoot = default, Func<Task>? dismiss = null)
     {
         await _layer.SyncAsync(overlay, open, anchor, panel, options);
+
+        _dismiss = dismiss;
+        if (open && FromField && !_dismissRegistered && dismiss is not null)
+        {
+            try
+            {
+                _selfRef ??= DotNetObjectReference.Create(this);
+                await overlay.RegisterDismissAsync(id + "-dismiss", dismissRoot, _selfRef, nameof(DismissFromJs));
+                _dismissRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!open || !FromField) await RemoveDismissAsync();
 
         // Opened from the field: placed, but focus stays where the user is typing. Closing it needs no focus move.
         if (open && FromField) return;
@@ -78,9 +97,23 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         try { await target.FocusAsync(); } catch { /* best-effort */ }
     }
 
+    /// <summary>Closes the field-open popup when a pointer or focus leaves its owning widget.</summary>
+    [JSInvokable]
+    public Task DismissFromJs() => FromField ? _dismiss?.Invoke() ?? Task.CompletedTask : Task.CompletedTask;
+
+    private async ValueTask RemoveDismissAsync()
+    {
+        if (!_dismissRegistered) return;
+        try { await overlay.RemoveDismissAsync(id + "-dismiss"); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        _dismissRegistered = false;
+    }
+
     /// <summary>Releases the trap and the placement of a popup still open when its picker goes away.</summary>
     public async ValueTask DisposeAsync()
     {
+        await RemoveDismissAsync();
         if (_trapped)
         {
             try { await overlay.ReleaseFocusTrapAsync(TrapId); }
@@ -88,5 +121,6 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
             catch (JSException) { }
         }
         await _layer.ReleaseAsync(overlay);
+        _selfRef?.Dispose();
     }
 }

@@ -6,7 +6,7 @@
 
 @* A field for several dates (TASK-183): the day grid toggles days on the calendar the picker shows; the field lists
    the dates (or counts them) and takes a list typed with ';' between the dates. *@
-<FlareFieldChrome ComponentClass="@Css.Classes.MultiDatePicker.Root"
+<FlareFieldChrome @ref="_chrome" ComponentClass="@Css.Classes.MultiDatePicker.Root"
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -49,7 +49,10 @@
 
         @if (_open && !Inline)
         {
-            <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            @if (!_popup.FromField)
+            {
+                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            }
         }
         @if (_open || Inline)
         {

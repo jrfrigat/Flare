@@ -158,6 +158,7 @@ public partial class FlareDateTimePicker
     private DateOnly _viewDate;
     private ElementReference _fieldRef;
     private ElementReference _panelEl;
+    private FlareFieldChrome _chrome = default!;
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-datetimepicker-{Guid.NewGuid():N}");
     private ElementReference _toggleEl;
@@ -481,7 +482,7 @@ public partial class FlareDateTimePicker
 
         // The popup is a modal dialog: the cursor day takes focus on open (TASK-134).
         await _popup.SyncAsync(_open, _fieldRef, _panelEl, new AnchoredPanelOptions { MatchWidth = true },
-            _inputEl, AllowPicker ? _toggleEl : null, () => _grid?.FocusCursorAsync() ?? Task.CompletedTask);
+            _inputEl, AllowPicker ? _toggleEl : null, () => _grid?.FocusCursorAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(CloseAsync));
     }
 
     private Task OnBreakpointAsync(Breakpoint breakpoint)

@@ -11,7 +11,7 @@
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date-time field owns its
    trigger well (input + calendar/clock toggle) and the anchored combined popup, rendered in the Field slot. *@
-<FlareFieldChrome ComponentClass="@Css.Classes.DateTimePicker.Root"
+<FlareFieldChrome @ref="_chrome" ComponentClass="@Css.Classes.DateTimePicker.Root"
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -53,7 +53,10 @@
         </div>
         @if (_open)
         {
-        <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
+        @if (!_popup.FromField)
+            {
+                <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
+            }
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)"
              role="dialog" aria-modal="@(_popup.FromField ? "false" : "true")" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>

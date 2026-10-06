@@ -89,6 +89,7 @@ public partial class FlareWeekPicker
     private ElementReference _panelEl;
     private ElementReference _toggleEl;
     private FlareMonthGrid? _grid;
+    private FlareFieldChrome _chrome = default!;
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-weekpicker-{Guid.NewGuid():N}");
     private PickerViews? _viewState;
@@ -307,7 +308,7 @@ public partial class FlareWeekPicker
         }
         if (Inline) return;
         await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, AllowPicker ? _toggleEl : null,
-            () => _grid?.FocusCursorAsync() ?? Task.CompletedTask);
+            () => _grid?.FocusCursorAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
     }
 
     /// <inheritdoc />

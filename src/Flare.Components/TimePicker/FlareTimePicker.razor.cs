@@ -306,9 +306,10 @@ public partial class FlareTimePicker
         }
 
         // The popup sits under the field in the top layer (escaping a Card's overflow:hidden) and holds Tab
-        // while open; the scrim handles dismissal (TASK-134).
+        // while open; PickerPopup also owns nonmodal field-open dismissal.
         if (_isList) await SyncListAsync();
-        else await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, _toggleEl);
+        else await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, _toggleEl,
+            dismissRoot: _chrome!.Root, dismiss: () => InvokeAsync(Close));
 
         if (_focusDrop)
         {

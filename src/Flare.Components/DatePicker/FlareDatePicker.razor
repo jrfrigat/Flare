@@ -11,7 +11,7 @@
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date field owns its
    trigger well (input + calendar toggle) and the anchored calendar popup, rendered in the Field slot. *@
-<FlareFieldChrome ComponentClass="@Css.Classes.DatePicker.Root"
+<FlareFieldChrome @ref="_chrome" ComponentClass="@Css.Classes.DatePicker.Root"
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -54,7 +54,10 @@
 
         @if (_open && !Inline)
         {
-            <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            @if (!_popup.FromField)
+            {
+                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            }
         }
         @if (_open || Inline)
         {

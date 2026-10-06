@@ -7,7 +7,7 @@
 
 @* A week field (TASK-185): a click or Enter on any day picks its week, painted whole with the range classes; the
    field writes the week by the culture rule or ISO 8601 and takes a week or a date typed in. *@
-<FlareFieldChrome ComponentClass="@Css.Classes.WeekPicker.Root"
+<FlareFieldChrome @ref="_chrome" ComponentClass="@Css.Classes.WeekPicker.Root"
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -50,7 +50,10 @@
 
         @if (_open && !Inline)
         {
-            <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            @if (!_popup.FromField)
+            {
+                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+            }
         }
         @if (_open || Inline)
         {
