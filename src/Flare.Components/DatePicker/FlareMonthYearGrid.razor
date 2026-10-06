@@ -23,6 +23,7 @@
                 aria-current="@(IsCurrent(cell) ? "date" : null)"
                 disabled="@Unavailable(cell)"
                 tabindex="@(cell == target ? "0" : "-1")"
+                data-flare-initial-focus="@(cell == target ? "true" : null)"
                 @ref="_cells[position]"
                 @onclick="@(() => Pick(cell))"
                 @onclick:stopPropagation>

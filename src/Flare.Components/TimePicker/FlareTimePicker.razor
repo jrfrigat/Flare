@@ -90,7 +90,7 @@
             }
             else if (PopupVariant == TimePickerVariant.Dial)
             {
-                <FlareClockDial @ref="_dial" FocusOnOpen="@(!_popup.FromField)" Hour="_tempHour" HourChanged="h => _tempHour = h"
+                <FlareClockDial @ref="_dial" FocusOnOpen="false" Hour="_tempHour" HourChanged="h => _tempHour = h"
                                 Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
                                 MinuteSelected="OnDialMinuteSelected"
                                 Is24Hour="_is24Hour" Culture="_culture" />
@@ -108,6 +108,7 @@
                     }
                 </div>
                 <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey" @onkeyup="OnDropKeyUp"
+                     data-flare-initial-focus="true"
                      role="group" aria-label="@_headline" aria-activedescendant="@_columnsActiveId">
                     <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours">
                         @for (var h = 0; h < 24; h += _hourStep)

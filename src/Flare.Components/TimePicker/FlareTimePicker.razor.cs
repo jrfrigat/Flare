@@ -221,7 +221,6 @@ public partial class FlareTimePicker
     private FlareClockDial? _dial;
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
     private string _dropBuf = string.Empty;
-    private bool _focusDrop;
     // The dial popup shows FlareTimeEntry instead of the dial (TASK-130).
     private bool _keyboardEntry;
     // A keyboard-entry field holds a number out of range: the draft is the last valid time, so OK waits.
@@ -240,7 +239,6 @@ public partial class FlareTimePicker
             ClampTemp();
             _dropActive = 0;
             _dropBuf = string.Empty;
-            _focusDrop = PopupVariant == TimePickerVariant.Dropdown && !_popup.FromField;
             _keyboardEntry = false;
             _entryInvalid = false;
             _open = true;
@@ -314,11 +312,6 @@ public partial class FlareTimePicker
         else await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, _toggleEl,
             dismissRoot: _chrome!.Root, dismiss: () => InvokeAsync(Close));
 
-        if (_focusDrop)
-        {
-            _focusDrop = false;
-            try { await _dropRef.FocusAsync(); } catch { /* best-effort */ }
-        }
         await ScrollDropActiveAsync();
     }
 

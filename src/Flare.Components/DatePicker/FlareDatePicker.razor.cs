@@ -245,7 +245,7 @@ public partial class FlareDatePicker
         // The popup is a modal dialog under the field: Tab stays inside and the cursor day takes focus;
         // closing returns focus to the toggle, or to the field after Escape (TASK-134).
         await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, AllowPicker ? _toggleEl : null,
-            () => _grid?.FocusCursorAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
+            dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
     }
 
     /// <inheritdoc />

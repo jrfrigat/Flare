@@ -62,6 +62,7 @@
                 <button type="button"
                         role="gridcell"
                         tabindex="@(day == _tabTarget ? "0" : "-1")"
+                        data-flare-initial-focus="@(day == _tabTarget ? "true" : null)"
                         aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
                         aria-current="@(day == Today ? "date" : null)"
                         aria-label="@_labels[index]"

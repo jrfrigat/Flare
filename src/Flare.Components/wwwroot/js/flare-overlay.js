@@ -54,8 +54,10 @@ export function removeDialogEscHandler(id) {
 
 // --- Focus trap for dialogs ---
 const FOCUSABLE_SELECTORS =
-    'a[href]:not([disabled]), button:not([disabled]), input:not([disabled]), ' +
-    'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    ':is(a[href], button, input, select, textarea, [tabindex])' +
+    ':not([disabled]):not([tabindex="-1"])';
+
+const visibleFocusTarget = el => !el.closest('[hidden], [inert]') && el.getClientRects().length > 0;
 
 const _focusTraps = registry();
 
@@ -63,7 +65,7 @@ export function trapFocus(id, dialogEl) {
     releaseFocusTrap(id);
 
     const focusable = () => Array.from(dialogEl.querySelectorAll(FOCUSABLE_SELECTORS))
-        .filter(el => !el.closest('[hidden]') && el.offsetParent !== null);
+        .filter(visibleFocusTarget);
 
     const previouslyFocused = document.activeElement;
 
@@ -87,9 +89,14 @@ export function trapFocus(id, dialogEl) {
         try { previouslyFocused?.focus(); } catch { }
     });
 
-    // Focus the first focusable element
-    const els = focusable();
-    if (els.length > 0) els[0].focus();
+    // A roving grid or composite widget owns its starting cursor. Do not focus navigation first.
+    const initial = dialogEl.querySelector('[data-flare-initial-focus="true"]:not([disabled])');
+    if (initial && visibleFocusTarget(initial)) initial.focus({ preventScroll: true });
+    else {
+        for (const el of dialogEl.querySelectorAll(FOCUSABLE_SELECTORS)) {
+            if (visibleFocusTarget(el)) { el.focus(); break; }
+        }
+    }
 }
 
 export function releaseFocusTrap(id) {
