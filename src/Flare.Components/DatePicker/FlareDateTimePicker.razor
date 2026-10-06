@@ -112,12 +112,25 @@
 
     // Time pane (clock dial or number inputs) - reused by Tabs and Panels.
     private RenderFragment _footer => @<div class="@Css.Classes.DateTimePicker.Footer">
+        @if (TimeVariant == TimePickerVariant.Dial && (_panels || _activeTab == 1))
+        {
+            @PickerButtons.Icon(this, ToggleKeyboardEntry,
+                _keyboardEntry ? FlareStrings.TimePicker_SwitchToDial : FlareStrings.TimePicker_SwitchToKeyboard,
+                _keyboardEntry ? FlareIcons.Schedule : FlareIcons.Keyboard, _locked)
+        }
         <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@_locked" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
         <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(!CanConfirm)" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
     </div>;
 
     private RenderFragment _time => @<text>
-        @if (TimeVariant == TimePickerVariant.Dial)
+        @if (TimeVariant == TimePickerVariant.Dial && _keyboardEntry)
+        {
+            <FlareTimeEntry Hour="_hour" HourChanged="h => _hour = h"
+                            Minute="_minute" MinuteChanged="m => _minute = m"
+                            Is24Hour="_is24Hour" Culture="_culture" Submitted="Confirm"
+                            ValidityChanged="v => _entryInvalid = !v" />
+        }
+        else if (TimeVariant == TimePickerVariant.Dial)
         {
             <FlareClockDial Hour="_hour" HourChanged="h => _hour = h"
                             Minute="_minute" MinuteChanged="m => _minute = m"

@@ -138,6 +138,15 @@ public partial class FlareDateTimePicker
     protected override bool DelegatesAffectRender => _open;
     private bool _autofocused;
     private int _activeTab;
+    private bool _keyboardEntry;
+    private bool _entryInvalid;
+
+    private void ToggleKeyboardEntry()
+    {
+        if (_locked) return;
+        _keyboardEntry = !_keyboardEntry;
+        _entryInvalid = false;
+    }
     private DateOnly? _selectedDate;
     // The keyboard cursor when it is not the picked day: the grid reports the day the user sees focused
     // after a month change or a click (TASK-133).
@@ -330,6 +339,8 @@ public partial class FlareDateTimePicker
     private void LoadDraft()
     {
         _activeTab = 0;
+        _keyboardEntry = false;
+        _entryInvalid = false;
         _focusedDate = null;
         if (Value is { } v)
         {
@@ -422,7 +433,8 @@ public partial class FlareDateTimePicker
     // OK is offered only for a representable value inside [Min; Max], as for the text input (TASK-101, TASK-125).
     // A field locked after the popup opened takes no value from it; the popup still closes (TASK-173).
     private bool _locked => Disabled || ReadOnly;
-    private bool CanConfirm => !_locked && TryComposeDraft(out var dt) && (dt is not { } v || IsAllowed(v));
+    private bool CanConfirm => !_locked && !(_keyboardEntry && _entryInvalid)
+        && TryComposeDraft(out var dt) && (dt is not { } v || IsAllowed(v));
 
     private async Task Confirm()
     {
