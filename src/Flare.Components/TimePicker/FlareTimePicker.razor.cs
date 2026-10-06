@@ -140,6 +140,7 @@ public partial class FlareTimePicker
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
+        if (Disabled || ReadOnly) _editGeneration++;
         if (MinuteStep < 1) MinuteStep = 1;
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         UpdateFieldIdentifier(For);
@@ -178,10 +179,11 @@ public partial class FlareTimePicker
 
     private async Task HandleInput(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly) return;
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
-        if (generation != _editGeneration) return;
+        if (generation != _editGeneration || Disabled || ReadOnly) return;
         _text = MaskTime(raw);
         HighlightTypedTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
@@ -192,6 +194,7 @@ public partial class FlareTimePicker
 
     private async Task HandleCommitText(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly) return;
         _editGeneration++;
         _text = MaskTime(e.Value?.ToString());
         if (string.IsNullOrEmpty(_text)) { await Commit(null); return; }
@@ -382,6 +385,7 @@ public partial class FlareTimePicker
 
     private async Task Commit(TimeOnly? value)
     {
+        if (Disabled || ReadOnly) return;
         _syncedValue = value;
         _text = value is { } v ? FormatTime(v) : string.Empty;
         await ValueChanged.InvokeAsync(value);

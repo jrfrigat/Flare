@@ -226,6 +226,7 @@ public partial class FlareDateTimePicker
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
+        if (Disabled || ReadOnly || !AllowInput) _editGeneration++;
         UpdateFieldIdentifier(For);
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         // The popup draft (day, hour, minute) is loaded from Value when the popup opens, not here: a parent
@@ -252,13 +253,14 @@ public partial class FlareDateTimePicker
 
     private async Task HandleInput(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
         // A custom parser or a calendar written in letters reads free text: no mask, and the text is judged on
         // change (blur or Enter).
         if (!_digitEditing) { _text = raw; return; }
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
-        if (generation != _editGeneration) return;
+        if (generation != _editGeneration || Disabled || ReadOnly || !AllowInput) return;
         _text = MaskDateTime(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _editLength && TryParse(_text, out var dt) && IsAllowed(dt))
@@ -267,6 +269,7 @@ public partial class FlareDateTimePicker
 
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         _editGeneration++;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         _text = raw;
@@ -303,6 +306,7 @@ public partial class FlareDateTimePicker
 
     private async Task CommitValue(DateTimeOffset? dt)
     {
+        if (Disabled || ReadOnly) return;
         if (dt.HasValue)
         {
             _selectedDate = DateOnly.FromDateTime(dt.Value.DateTime);

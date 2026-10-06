@@ -136,6 +136,7 @@ public partial class FlareMonthPicker
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
+        if (Disabled || ReadOnly || !AllowInput) _editGeneration++;
         UpdateFieldIdentifier(For);
         var display = DisplayValue;
         // A value set from outside shows its year; a new display alone keeps the year the user browsed to.
@@ -239,6 +240,7 @@ public partial class FlareMonthPicker
 
     private async Task CommitAsync(DateOnly? first)
     {
+        if (Disabled || ReadOnly) return;
         if (first is { } d) ShowYearOf(d);
         _syncedValue = first;
         await ValueChanged.InvokeAsync(first);
@@ -294,11 +296,12 @@ public partial class FlareMonthPicker
 
     private async Task HandleInput(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
         if (!_digitEditing) { _text = raw; return; }
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
-        if (generation != _editGeneration) return;
+        if (generation != _editGeneration || Disabled || ReadOnly || !AllowInput) return;
         _text = MaskedInput.MaskByPattern(raw, _numericPattern);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _numericPattern.Length && TryParseMonth(_text, out var first)) await CommitAsync(first);
@@ -306,6 +309,7 @@ public partial class FlareMonthPicker
 
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         _editGeneration++;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitAsync(null); return; }

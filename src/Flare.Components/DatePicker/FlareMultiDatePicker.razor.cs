@@ -227,6 +227,7 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
 
     private async Task CommitAsync(IEnumerable<DateOnly> dates)
     {
+        if (Disabled || ReadOnly) return;
         IReadOnlyList<DateOnly> next = dates.Distinct().Order().ToArray();
         _syncedValue = next;
         await ValuesChanged.InvokeAsync(next);
@@ -261,11 +262,16 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
         _text = EditText;
     }
 
-    private void HandleInput(ChangeEventArgs e) => _text = e.Value?.ToString() ?? string.Empty;
+    private void HandleInput(ChangeEventArgs e)
+    {
+        if (Disabled || ReadOnly || !AllowInput) return;
+        _text = e.Value?.ToString() ?? string.Empty;
+    }
 
     // The typed list is committed only whole: every date must parse and be available, within MaxCount.
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         var parts = raw.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var dates = new List<DateOnly>();

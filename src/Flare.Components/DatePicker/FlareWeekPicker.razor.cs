@@ -253,6 +253,7 @@ public partial class FlareWeekPicker
     // The view stays where the user picked; a typed week moves it to the typed day before the commit.
     private async Task CommitAsync(DateOnly? start)
     {
+        if (Disabled || ReadOnly) return;
         _syncedValue = start;
         await ValueChanged.InvokeAsync(start);
         NotifyFieldChanged();
@@ -281,11 +282,16 @@ public partial class FlareWeekPicker
 
     private void HandleFocus() => _focused = true;
 
-    private void HandleInput(ChangeEventArgs e) => _text = e.Value?.ToString() ?? string.Empty;
+    private void HandleInput(ChangeEventArgs e)
+    {
+        if (Disabled || ReadOnly || !AllowInput) return;
+        _text = e.Value?.ToString() ?? string.Empty;
+    }
 
     // An ISO week ("2026-W41", "2026w41") or any date the culture reads; its week must have a day that can be picked.
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitAsync(null); return; }
         DateOnly day;

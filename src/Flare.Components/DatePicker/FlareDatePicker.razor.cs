@@ -186,6 +186,7 @@ public partial class FlareDatePicker
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
+        if (Disabled || ReadOnly || !AllowInput) _editGeneration++;
         UpdateFieldIdentifier(For);
 
         // A new value always re-syncs the text and cancels any input still in flight - a parent's value wins over
@@ -306,13 +307,14 @@ public partial class FlareDatePicker
 
     private async Task HandleInput(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         var raw = e.Value?.ToString() ?? string.Empty;
         var generation = ++_editGeneration;
         // A custom parser or a calendar written in letters reads free text: no mask, and the text is judged on
         // change (blur or Enter).
         if (!_digitEditing) { _text = raw; return; }
         var caretDigits = await MaskedCaret.DigitsBeforeAsync(ElementJs, _inputEl, raw);
-        if (generation != _editGeneration) return;
+        if (generation != _editGeneration || Disabled || ReadOnly || !AllowInput) return;
         _text = MaskDate(raw);
         if (caretDigits >= 0) _pendingCaret = MaskedInput.CaretAfterDigit(_text, caretDigits);
         if (_text.Length == _numericPattern.Length && TryParseDate(_text, out var d) && !IsDisabled(d))
@@ -321,6 +323,7 @@ public partial class FlareDatePicker
 
     private async Task HandleTextChange(ChangeEventArgs e)
     {
+        if (Disabled || ReadOnly || !AllowInput) return;
         _editGeneration++;
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitDate(null); return; }
@@ -363,6 +366,7 @@ public partial class FlareDatePicker
 
     private async Task CommitDate(DateOnly? d)
     {
+        if (Disabled || ReadOnly) return;
         if (d.HasValue) ShowMonthOf(d.Value);
         _syncedValue = d;
         await ValueChanged.InvokeAsync(d);
