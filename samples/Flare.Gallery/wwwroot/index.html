@@ -7,6 +7,12 @@
     <title>Flare - Blazor Component Library</title>
     <base href="/" />
 
+    <!-- Apply saved theme classes before stylesheets and the first paint. Keep this synchronous:
+         placing it after CSS makes script execution wait for those stylesheets.
+         Defaults must match the theme and palette registered in Program.cs. -->
+    <script src="_content/Flare.Components/js/flare-bootstrap.js"
+            data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
+
     <!-- Icons render as inline SVG (FlareIcons / MaterialDesign3Icons), so there is no icon-font to wait
          for and no FOUT - the old Material Symbols font + reveal guard were removed. -->
 
@@ -38,14 +44,6 @@
     <link href="Flare.Gallery.styles.css" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/png" href="favicon.png" />
-
-    <!-- Flare boot: applies the saved theme/palette/mode classes to <html> before first paint and
-         fires window.hideFlareSplash()/"flare:ready" when the app is ready. It draws NO splash -
-         the app (below) owns its own loading background + animation. One line.
-         Flare knows no theme, so the first visit has none to restore: these two say which theme to
-         paint before .NET boots, and they must match what Program.cs registers as the default. -->
-    <script src="_content/Flare.Components/js/flare-bootstrap.js"
-            data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>
 
     <!-- App-owned loading splash (background + spinner). Tagged id="flare-splash" so Flare fades it
          out on ready. The theme classes on <html> (set above) make it dark-mode aware. -->

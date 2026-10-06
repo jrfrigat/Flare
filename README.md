@@ -90,6 +90,7 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 **`index.html` / `App.razor` `<head>`:**
 ```html
 <!-- One line: sets theme classes before first paint + fires "flare:ready" (your app draws its own splash).
+     Place after <base>, before all stylesheets; keep synchronous (no async/defer).
      data-default-* names the theme to paint before .NET boots - the same one you register in Program.cs. -->
 <script src="_content/Flare.Components/js/flare-bootstrap.js"
         data-default-theme="md3-expressive" data-default-palette="md3-violet"></script>

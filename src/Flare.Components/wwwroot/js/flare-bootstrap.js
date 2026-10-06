@@ -1,5 +1,7 @@
-// Flare boot script. Include synchronously in <head>, before the Blazor script:
+// Flare boot script. Include synchronously in <head>, after <base> and before stylesheets and Blazor:
 //   <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+// Earlier stylesheets can block synchronous script execution. Do not add async/defer: the theme
+// classes must be applied before the first paint.
 // Configured through data-* attributes:
 //   data-default-theme / data-default-palette - the theme to paint on a first visit, when nothing is
 //     saved yet. Set them to the theme you register in Program.cs; without them the first frame is

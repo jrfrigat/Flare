@@ -299,6 +299,10 @@ theme/palette/mode classes before first paint, so the page never flashes the wro
 boots. Flare draws no loading splash itself - each app owns its own (background + animation), so it
 matches the app's brand.
 
+Place this synchronous script after `<base>` and before all stylesheet links in `<head>`.
+Earlier stylesheets can block its execution and delay Blazor startup. Keep it free of `async` and
+`defer` so the saved theme classes are applied before the first paint.
+
 The script exposes a readiness signal instead: `window.hideFlareSplash()` dispatches a `flare:ready`
 event and fades out the app's own splash element if it is tagged `id="flare-splash"` /
 `[data-flare-splash]`. `FlareThemeProvider` fires it automatically (`ManageSplash`, default `true`): on
