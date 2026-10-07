@@ -44,7 +44,7 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
         AnchoredPanelOptions? options = null)
         => InvokeImmediateVoidAsync("positionAnchoredPanelById", id, anchorElementId, panel, AnchoredPanelOptionsJson.Write(options));
 
-    // These exports finish synchronously. WASM can place and focus without an asynchronous JS round trip;
+    // These exports finish synchronously. WASM avoids an asynchronous JS round trip;
     // other runtimes keep the asynchronous path, including pending module imports.
     private async ValueTask InvokeImmediateVoidAsync(string identifier, params object?[] args)
     {
@@ -76,12 +76,12 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
 
     /// <inheritdoc />
     public ValueTask ScrollIntoViewAsync(string optionId, string block = "nearest")
-        => InvokeVoidAsync("scrollOptionIntoView", optionId, block);
+        => InvokeImmediateVoidAsync("scrollOptionIntoView", optionId, block);
 
     /// <inheritdoc />
     public ValueTask RegisterDismissAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, ElementReference element,
         DotNetObjectReference<T> dotNetRef, string method) where T : class
-        => InvokeVoidAsync("registerDismiss", id, element, dotNetRef, method);
+        => InvokeImmediateVoidAsync("registerDismiss", id, element, dotNetRef, method);
 
     /// <inheritdoc />
     public ValueTask RemoveDismissAsync(string id) => InvokeVoidAsync("removeDismiss", id);

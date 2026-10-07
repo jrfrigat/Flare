@@ -7,6 +7,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Reopening or closing a picker during popup placement no longer duplicates dismissal handlers or loses placement.
+- Opening the time columns with Enter no longer confirms a value on the opening key's release.
 - JSON grid export preserves unsigned enum values above `long.MaxValue`, including `ulong.MaxValue`.
 - JSON grid export preserves arrays, string-key dictionaries, binary data and JSON DOM values.
   Complex models and custom converters use a source-generated `SerializerContext`, also accepted by
@@ -14,6 +16,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- Date and time pickers reuse calendar dates, labels and option rendering state between interactions.
+  Focusing a time input no longer rerenders its field and popup; ordinary calendar cells avoid allocating class strings.
+- Popup dismissal registration and option scrolling use in-process JS calls in WebAssembly while keeping asynchronous calls for server circuits.
 - **Theme registration is explicit.** Removed `FlareOptions.RegisterAllBuiltInThemes` and assembly scanning.
   Set `DefaultTheme` or call `AddFlareTheme` for each theme; use `AddFlarePalette` for standalone palettes.
   Referencing a theme package alone no longer registers it. The composition package and theme packages support trimming.

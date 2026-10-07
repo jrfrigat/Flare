@@ -11,6 +11,8 @@ public class PickerOverlayInteropTests
     [InlineData("positionAnchoredPanel")]
     [InlineData("positionAnchoredPanelById")]
     [InlineData("trapFocus")]
+    [InlineData("registerDismiss")]
+    [InlineData("scrollOptionIntoView")]
     public async Task InProcessModule_InvokesSynchronously(string operation)
     {
         var module = new ImmediateModule();
@@ -26,6 +28,8 @@ public class PickerOverlayInteropTests
     [InlineData("positionAnchoredPanel")]
     [InlineData("positionAnchoredPanelById")]
     [InlineData("trapFocus")]
+    [InlineData("registerDismiss")]
+    [InlineData("scrollOptionIntoView")]
     public async Task RemoteModule_AwaitsTheOperation(string operation)
     {
         var module = new RemoteModule();
@@ -69,9 +73,17 @@ public class PickerOverlayInteropTests
     private static ValueTask Invoke(OverlayJsService service, string operation) => operation switch
     {
         "trapFocus" => service.TrapFocusAsync("trap", default),
+        "registerDismiss" => RegisterDismiss(service),
+        "scrollOptionIntoView" => service.ScrollIntoViewAsync("option"),
         "positionAnchoredPanelById" => service.PositionAnchoredPanelByIdAsync("panel", "anchor", default),
         _ => service.PositionAnchoredPanelAsync("panel", default, default),
     };
+
+    private static async ValueTask RegisterDismiss(OverlayJsService service)
+    {
+        using var reference = DotNetObjectReference.Create(new object());
+        await service.RegisterDismissAsync("dismiss", default, reference, "Dismiss");
+    }
 
     private sealed class ImportRuntime(Task<IJSObjectReference> imported) : IJSRuntime
     {
