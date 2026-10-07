@@ -162,7 +162,7 @@
     // each cell's full-date label. Rebuilt only when the month, first weekday or culture changes, not on
     // every render (TASK-115).
     private DateOnly?[][] _weeks = [];
-    private readonly string?[] _labels = new string?[42];
+    private string?[] _labels = [];
     private (int Year, int Month, DayOfWeek First)? _gridKey;
     // The displayed month on the grid's calendar.
     private CalendarMonth _month;
@@ -176,12 +176,10 @@
         if (_gridKey == key && ReferenceEquals(_gridCulture, culture)) return;
         _gridKey = key;
         _gridCulture = culture;
-        _month = CalendarMonth.Create(CalendarMath.GridCalendar(culture), ViewYear, ViewMonth);
-        _weeks = CalendarMath.MonthGrid(_month, _firstDayOfWeek).Chunk(7).ToArray();
-        var i = 0;
-        foreach (var week in _weeks)
-            foreach (var d in week)
-                _labels[i++] = d is { } day ? CalendarMath.FormatSafe(day, "D", culture) : null;
+        var data = MonthGridData.Get(culture, ViewYear, ViewMonth, _firstDayOfWeek);
+        _month = data.Month;
+        _weeks = data.Weeks;
+        _labels = data.Labels;
     }
 
     // Hover is wired only for a host that listens (the range picker): the others render no handler.
