@@ -1,8 +1,17 @@
+using Flare.Components.Services;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Flare.Components.Tests;
 
 /// <summary>Picker placement is not repeated while a previous JS call is pending.</summary>
 public class PickerPopupSyncTests : FlareTestContext
 {
+    public PickerPopupSyncTests()
+    {
+        // Pending calls model Server interop; bUnit's in-process module cannot delay a synchronous call.
+        Services.AddScoped<IOverlayJsService>(_ => new OverlayJsService(new RemoteOverlayRuntime(JSInterop.JSRuntime)));
+    }
+
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
