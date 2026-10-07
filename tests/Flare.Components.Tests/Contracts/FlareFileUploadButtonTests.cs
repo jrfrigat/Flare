@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Flare.Components.Tests;
 
@@ -109,11 +110,94 @@ public class FlareFileUploadButtonTests : FlareTestContext
     }
 
     [Fact]
-    public void ShowFileList_False_HidesTheList()
+    public void PickerDefault_HidesSelectedFilesButRaisesTheCallback()
     {
-        var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.ShowFileList, false));
+        IReadOnlyList<IBrowserFile>? selected = null;
+        var cut = Render<FlareFileUploadButton>(p => p
+            .Add(x => x.OnFilesChanged, files => selected = files));
+        cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("{}", "import.json"));
 
+        Assert.Equal("import.json", Assert.Single(Assert.IsAssignableFrom<IReadOnlyList<IBrowserFile>>(selected)).Name);
+        Assert.False(cut.Instance.ShowFileList);
         Assert.Empty(cut.FindAll($"ul.{Css.Classes.FileUpload.List}"));
+    }
+
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public void ExplicitListSetting_WinsWithOrWithoutUploader(bool withUploader, bool show)
+    {
+        var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.ShowFileList, show)
+            .Add(x => x.Uploader, withUploader ? _ => Task.CompletedTask : null));
+        cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("{}", "import.json"));
+
+        Assert.Equal(show, cut.Instance.ShowFileList);
+        Assert.Equal(show ? 1 : 0, cut.FindAll($"ul.{Css.Classes.FileUpload.List}").Count);
+        if (show) Assert.Contains("import.json", cut.Find($"ul.{Css.Classes.FileUpload.List}").TextContent);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UploadRunsWithOrWithoutAVisibleList(bool show)
+    {
+        var sent = 0;
+        var completed = 0;
+        var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.ShowFileList, show)
+            .Add(x => x.OnUploadCompleted, _ => completed++)
+            .Add(x => x.Uploader, _ =>
+        {
+            sent++;
+            return Task.CompletedTask;
+        }));
+        cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("{}", "import.json"));
+        Assert.Equal(show ? 1 : 0, cut.FindAll($"ul.{Css.Classes.FileUpload.List}").Count);
+        await cut.InvokeAsync(cut.Instance.UploadAsync);
+        Assert.Equal(1, sent);
+        Assert.Equal(1, completed);
+        Assert.Equal(show ? 1 : 0, cut.FindAll($".{Css.Classes.FileUpload.FileCompleted}").Count);
+    }
+
+    [Fact]
+    public void DefaultListVisibility_RemainsHiddenWhenUploaderChangesAfterSelection()
+    {
+        var cut = Render<FlareFileUploadButton>();
+        cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("{}", "import.json"));
+        Assert.Empty(cut.FindAll($"ul.{Css.Classes.FileUpload.List}"));
+        cut.Render(p => p.Add(x => x.Uploader, _ => Task.CompletedTask));
+        Assert.False(cut.Instance.ShowFileList);
+        Assert.Empty(cut.FindAll($"ul.{Css.Classes.FileUpload.List}"));
+        cut.Render(p => p.Add(x => x.Uploader, null));
+        Assert.Empty(cut.FindAll($"ul.{Css.Classes.FileUpload.List}"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ExplicitListVisibility_RemainsWhenUploaderChanges(bool show)
+    {
+        var cut = Render<FlareFileUploadButton>(p => p.Add(x => x.ShowFileList, show));
+        cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("{}", "import.json"));
+        cut.Render(p => p.Add(x => x.Uploader, _ => Task.CompletedTask));
+        Assert.Equal(show ? 1 : 0, cut.FindAll($"ul.{Css.Classes.FileUpload.List}").Count);
+        cut.Render(p => p.Add(x => x.Uploader, null));
+        Assert.Equal(show ? 1 : 0, cut.FindAll($"ul.{Css.Classes.FileUpload.List}").Count);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ZoneDefault_HidesSelectedFilesWithOrWithoutUploader(bool withUploader)
+    {
+        var cut = Render<FlareFileUploadZone>(p => p
+            .Add(x => x.Uploader, withUploader ? _ => Task.CompletedTask : null));
+        cut.FindComponent<InputFile>().UploadFiles(InputFileContent.CreateFromText("{}", "import.json"));
+        Assert.False(cut.Instance.ShowFileList);
+        Assert.Empty(cut.FindAll($"ul.{Css.Classes.FileUpload.List}"));
+        cut.Render(p => p.Add(x => x.ShowFileList, true));
+        Assert.Contains("import.json", cut.Find($"ul.{Css.Classes.FileUpload.List}").TextContent);
     }
 
     [Fact]

@@ -21,6 +21,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- File upload buttons and zones hide the built-in file list by default, with or without an `Uploader`.
+  Set `ShowFileList="true"` to display selected files and upload progress. Selection callbacks and transfers are unchanged.
 - Date and time pickers reuse calendar dates, labels and option rendering state between interactions.
   Focusing a time input no longer rerenders its field and popup; ordinary calendar cells avoid allocating class strings.
 - Popup dismissal registration and option scrolling use in-process JS calls in WebAssembly while keeping asynchronous calls for server circuits.

@@ -6,18 +6,19 @@
         <FlareFileUploadButton Variant="ButtonVariant.Outlined"
                                Size="ButtonSize.Sm"
                                Accept=".json"
-                               ShowFileList="false"
-                               Text="Import"
+                               Text="@GalleryStrings.FuDemo_Import"
                                OnFilesChanged="HandleImport">
             <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Publish" /></LeadingIcon>
         </FlareFileUploadButton>
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm">Export</FlareButton>
-        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">New endpoint</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm">@GalleryStrings.FuDemo_Export</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">@GalleryStrings.FuDemo_NewEndpoint</FlareButton>
     </FlareStack>
     @if (_name is not null)
     {
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Selected: @_name</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">@GalleryStrings.Common_Selected @_name</FlareText>
     }
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.FuDemo_ListHelp</FlareText>
+    <FlareFileUploadButton Accept=".json" ShowFileList="true" Text="@GalleryStrings.FuDemo_WithList" />
 </FlareStack>
 
 @code {

@@ -3849,4 +3849,13 @@
   <data name="WpDemo_Value" xml:space="preserve">
     <value>Значение (первый день): {0}</value>
   </data>
+  <data name="FuDemo_Import" xml:space="preserve"><value>Импорт</value></data>
+  <data name="FuDemo_Export" xml:space="preserve"><value>Экспорт</value></data>
+  <data name="FuDemo_NewEndpoint" xml:space="preserve"><value>Новый эндпоинт</value></data>
+  <data name="FuDemo_WithList" xml:space="preserve"><value>Выбрать JSON со списком файлов</value></data>
+  <data name="FuDemo_ListHelp" xml:space="preserve"><value>Кнопка импорта по умолчанию скрывает встроенный список. Кнопка ниже явно включает ShowFileList.</value></data>
+  <data name="FuDemo_FailNext" xml:space="preserve"><value>Ошибка следующей загрузки</value></data>
+  <data name="FuDemo_Slow" xml:space="preserve"><value>Медленная загрузка</value></data>
+  <data name="FuDemo_Completed" xml:space="preserve"><value>Завершено: {0}</value></data>
+  <data name="FuDemo_Failed" xml:space="preserve"><value>Ошибка: {0} - {1}</value></data>
 </root>

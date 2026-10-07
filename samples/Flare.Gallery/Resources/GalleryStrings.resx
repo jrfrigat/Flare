@@ -3849,4 +3849,13 @@ Read the card, check the tests, and report what is left.</value>
   <data name="WpDemo_Value" xml:space="preserve">
     <value>Value (first day): {0}</value>
   </data>
+  <data name="FuDemo_Import" xml:space="preserve"><value>Import</value></data>
+  <data name="FuDemo_Export" xml:space="preserve"><value>Export</value></data>
+  <data name="FuDemo_NewEndpoint" xml:space="preserve"><value>New endpoint</value></data>
+  <data name="FuDemo_WithList" xml:space="preserve"><value>Choose JSON with file list</value></data>
+  <data name="FuDemo_ListHelp" xml:space="preserve"><value>The import button hides the built-in list by default. The button below explicitly enables ShowFileList.</value></data>
+  <data name="FuDemo_FailNext" xml:space="preserve"><value>Fail the next transfer</value></data>
+  <data name="FuDemo_Slow" xml:space="preserve"><value>Slow transfer</value></data>
+  <data name="FuDemo_Completed" xml:space="preserve"><value>Completed: {0}</value></data>
+  <data name="FuDemo_Failed" xml:space="preserve"><value>Failed: {0} - {1}</value></data>
 </root>

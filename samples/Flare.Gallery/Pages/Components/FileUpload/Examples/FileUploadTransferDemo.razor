@@ -3,15 +3,16 @@
    the wire so the page needs no server, and reports progress exactly as a real transfer would. *@
 <FlareStack Style="max-width:36rem;">
     <FlareFileUploadZone Uploader="FakeTransfer"
+                         ShowFileList="true"
                          Auto="true"
                          Multiple="true"
                          Concurrency="2"
-                         OnUploadCompleted="@(f => Log($"done: {f.File.Name}"))"
-                         OnUploadFailed="@(f => Log($"failed: {f.File.Name} - {f.Error}"))" />
+                         OnUploadCompleted="@(f => Log(string.Format(GalleryStrings.FuDemo_Completed, f.File.Name)))"
+                         OnUploadFailed="@(f => Log(string.Format(GalleryStrings.FuDemo_Failed, f.File.Name, f.Error)))" />
 
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-top:0.75rem;">
-        <FlareCheckbox @bind-Value="_failNext" Label="Fail the next transfer" />
-        <FlareCheckbox @bind-Value="_slow" Label="Slow transfer" />
+        <FlareCheckbox @bind-Value="_failNext" Label="@GalleryStrings.FuDemo_FailNext" />
+        <FlareCheckbox @bind-Value="_slow" Label="@GalleryStrings.FuDemo_Slow" />
     </FlareStack>
 
     @if (_log.Count > 0)

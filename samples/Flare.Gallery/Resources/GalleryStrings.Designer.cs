@@ -11917,5 +11917,24 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized WpDemo_Value string.</summary>
         public static string WpDemo_Value => ResourceManager.GetString("WpDemo_Value", resourceCulture);
 
+        /// <summary>Looks up the localized FuDemo_Import string.</summary>
+        public static string FuDemo_Import => ResourceManager.GetString("FuDemo_Import", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_Export string.</summary>
+        public static string FuDemo_Export => ResourceManager.GetString("FuDemo_Export", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_NewEndpoint string.</summary>
+        public static string FuDemo_NewEndpoint => ResourceManager.GetString("FuDemo_NewEndpoint", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_WithList string.</summary>
+        public static string FuDemo_WithList => ResourceManager.GetString("FuDemo_WithList", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_ListHelp string.</summary>
+        public static string FuDemo_ListHelp => ResourceManager.GetString("FuDemo_ListHelp", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_FailNext string.</summary>
+        public static string FuDemo_FailNext => ResourceManager.GetString("FuDemo_FailNext", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_Slow string.</summary>
+        public static string FuDemo_Slow => ResourceManager.GetString("FuDemo_Slow", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_Completed string.</summary>
+        public static string FuDemo_Completed => ResourceManager.GetString("FuDemo_Completed", resourceCulture);
+        /// <summary>Looks up the localized FuDemo_Failed string.</summary>
+        public static string FuDemo_Failed => ResourceManager.GetString("FuDemo_Failed", resourceCulture);
+
     }
 }

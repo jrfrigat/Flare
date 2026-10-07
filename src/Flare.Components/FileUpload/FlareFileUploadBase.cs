@@ -27,8 +27,10 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// Filtering here is UX only; always check the size again on the server.
     /// </summary>
     [Parameter] public long MaxFileSize { get; set; } = long.MaxValue;
-    /// <summary>Shows the list of selected files under the trigger. Default true.</summary>
-    [Parameter] public bool ShowFileList { get; set; } = true;
+    /// <summary>Shows the list of selected files under the trigger, including queue progress when an
+    /// uploader is supplied. Default false for both buttons and zones, with or without an uploader.
+    /// Set true to show the built-in list; file selection, callbacks and uploads work independently.</summary>
+    [Parameter] public bool ShowFileList { get; set; }
 
     /// <summary>
     /// The transfer itself. Given a <see cref="FlareUploadContext"/> - the file, a progress sink and a
