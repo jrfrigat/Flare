@@ -49,7 +49,7 @@
                    @onkeydown="HandleInputKeyDown"
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
-                   @onfocus="@(() => _focused = true)"
+                   @onfocus="FocusHandler"
                    @onblur="HandleBlur"
                    @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"

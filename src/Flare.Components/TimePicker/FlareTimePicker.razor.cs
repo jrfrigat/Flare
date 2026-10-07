@@ -83,6 +83,27 @@ public partial class FlareTimePicker
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
     private bool _focused;
+    private FocusReceiver? _focusReceiver;
+    private EventCallback<FocusEventArgs> FocusHandler =>
+        (_focusReceiver ??= new FocusReceiver(this)).Callback;
+
+    // Focus changes editing state without changing the field or popup markup.
+    private sealed class FocusReceiver : IHandleEvent
+    {
+        private readonly FlareTimePicker _owner;
+        internal EventCallback<FocusEventArgs> Callback { get; }
+
+        internal FocusReceiver(FlareTimePicker owner)
+        {
+            _owner = owner;
+            Callback = EventCallback.Factory.Create<FocusEventArgs>(this, Focus);
+        }
+
+        private void Focus(FocusEventArgs _) => _owner._focused = true;
+
+        Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object? arg) =>
+            callback.InvokeAsync(arg);
+    }
     // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
     // its awaited selection read in an older generation is stale and drops its result (TASK-138).
     private int _editGeneration;
