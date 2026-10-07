@@ -207,6 +207,11 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     const opts = typeof options === 'string' ? JSON.parse(options) : (options || {});
     const fixedRect = opts.anchorRect;
     if (!anchor && !fixedRect) return;
+    // Apply resting-state changes together before reading computed styles or geometry.
+    panel.style.position = 'fixed';
+    panel.style.margin = '0';
+    panel.dataset.flarePlaced = '';
+    if (opts.topLayer !== false) { promote(panel); _topLayer.set(id, panel); }
     // A gap token lets the theme decide the distance; the number is the fallback when it is unset.
     const gap = opts.gapToken ? cssLengthPx(panel, opts.gapToken, opts.gap ?? 4) : (opts.gap ?? 4);
     const margin = 4; // keep this far from the viewport edge
@@ -248,8 +253,6 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         const vTop = vv ? vv.offsetTop : 0, vLeft = vv ? vv.offsetLeft : 0;
         const vh = vv ? vv.height : window.innerHeight, vw = vv ? vv.width : window.innerWidth;
         const vBottom = vTop + vh, vRight = vLeft + vw;
-        panel.style.position = 'fixed';
-        panel.style.margin = '0';
         if (opts.matchWidth) {
             // At least as wide as the field, and wider when an option needs it. Pinning the panel to
             // the field's width made the list clip the very values it exists to show - a name only
@@ -298,15 +301,12 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         }
         panel.style.top = `${Math.max(vTop + margin, Math.min(top, vBottom - p.height - margin))}px`;
         panel.style.left = `${Math.max(vLeft + margin, Math.min(left, vRight - p.width - margin))}px`;
-        // Two facts the stylesheet needs back. `flarePlaced` switches a panel's resting CSS off - the
-        // edges and centring transforms that put it under its anchor without script, and that would
-        // otherwise fight these coordinates. `flareSide` is where it ACTUALLY landed, which is what an
-        // arrow has to point away from; the component's own placement parameter is only a preference.
-        panel.dataset.flarePlaced = '';
+        // `flarePlaced` already switched resting CSS off before measurement: fallback edges and
+        // centring transforms must not affect the box being measured. `flareSide` is where it landed,
+        // which is what an arrow points away from; the placement parameter is only a preference.
         panel.dataset.flareSide = side;
     };
 
-    if (opts.topLayer !== false) { promote(panel); _topLayer.set(id, panel); }
     place();
 
     _anchoredPanels.keep(id, all(
