@@ -143,6 +143,38 @@ public class FlareOptionListTests : FlareTestContext
     }
 
     [Fact]
+    public void Rerender_UsesCurrentClassesStateLabelsAndCallbacks()
+    {
+        var cut = Render<FlareOptionList<string>>(p => p
+            .Add(x => x.Rows, Rows(_items))
+            .Add(x => x.OptionClass, "old-option")
+            .Add(x => x.IsSelected, s => s == "Beta")
+            .Add(x => x.HighlightedIndex, 1));
+        string? selected = null;
+        cut.Render(p => p
+            .Add(x => x.OptionClass, "new-option")
+            .Add(x => x.IsSelected, s => s == "Gamma")
+            .Add(x => x.HighlightedIndex, 2)
+            .Add(x => x.Label, s => $"New {s}")
+            .Add(x => x.OnSelect, (string s) => selected = s));
+
+        Assert.Empty(cut.FindAll(".old-option"));
+        var options = cut.FindAll("[role=option]");
+        Assert.All(options, option => Assert.Contains("new-option", option.ClassList));
+        Assert.Equal("false", options[1].GetAttribute("aria-selected"));
+        Assert.DoesNotContain(Css.Classes.Listbox.OptionActive, options[1].ClassList);
+        Assert.Contains(Css.Classes.Listbox.OptionSelected, options[2].ClassList);
+        Assert.Contains(Css.Classes.Listbox.OptionActive, options[2].ClassList);
+        Assert.Equal("New Gamma", options[2].TextContent.Trim());
+        options[2].Click();
+        Assert.Equal("Gamma", selected);
+
+        cut.Render(p => p.Add(x => x.OptionClass, (string?)null));
+        Assert.Empty(cut.FindAll(".new-option"));
+        Assert.Equal(3, cut.FindAll($".{Css.Classes.Listbox.Option}").Count);
+    }
+
+    [Fact]
     public void Multiselectable_SetsAriaAttribute()
     {
         var cut = Render<FlareOptionList<string>>(p => p

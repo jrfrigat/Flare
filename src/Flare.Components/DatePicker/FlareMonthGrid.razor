@@ -68,7 +68,7 @@
                         aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
                         aria-current="@(day == Today ? "date" : null)"
                         aria-label="@_labels[index]"
-                        class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
+                        class="@DayCss(day, outside, disabled)"
                         disabled="@disabled"
                         @ref="_cells[index]"
                         @onclick="@(() => ClickDay(day))"
@@ -143,6 +143,16 @@
 
     // The day of month on the grid's calendar: 11 for 3 October 2026 on the Persian one.
     private int DayNumber(DateOnly day) => _month.Calendar.GetDayOfMonth(day.ToDateTime(TimeOnly.MinValue));
+
+    private string DayCss(DateOnly day, bool outside, bool disabled)
+    {
+        var css = Css.Classes.Picker.Day;
+        if (outside) css = string.Concat(css, " ", Css.Classes.Picker.DayOutside);
+        if (day == Today) css = string.Concat(css, " ", Css.Classes.Picker.DayToday);
+        if (disabled) css = string.Concat(css, " ", Css.Classes.Picker.DayDisabled);
+        var extra = DayClass?.Invoke(day);
+        return string.IsNullOrEmpty(extra) ? css : string.Concat(css, " ", extra);
+    }
 
     // The full weekday names in header order, read by assistive tech in place of the short visible ones.
     private string[] DayNames()

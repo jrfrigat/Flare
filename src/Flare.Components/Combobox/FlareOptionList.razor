@@ -128,16 +128,31 @@
 
     private string? OptionId(int optionIndex) => Id is not null ? $"{Id}-opt-{optionIndex}" : null;
 
+    private string? _classForCss;
+    private string? _baseOptionCss;
+    private string _selectedOptionCss = string.Empty;
+    private string _activeOptionCss = string.Empty;
+    private string _selectedActiveOptionCss = string.Empty;
+
     private string OptionCss(bool selected, bool highlighted)
     {
-        var parts = new List<string>(4) { Css.Classes.Listbox.Option };
-        if (!string.IsNullOrEmpty(OptionClass)) parts.Add(OptionClass!);
-        if (selected) parts.Add(Css.Classes.Listbox.OptionSelected);
-        if (highlighted) parts.Add(Css.Classes.Listbox.OptionActive);
-        return string.Join(' ', parts);
+        if (_baseOptionCss is null || _classForCss != OptionClass)
+        {
+            _classForCss = OptionClass;
+            _baseOptionCss = string.IsNullOrEmpty(OptionClass) ? Css.Classes.Listbox.Option
+                : string.Concat(Css.Classes.Listbox.Option, " ", OptionClass);
+            _selectedOptionCss = string.Concat(_baseOptionCss, " ", Css.Classes.Listbox.OptionSelected);
+            _activeOptionCss = string.Concat(_baseOptionCss, " ", Css.Classes.Listbox.OptionActive);
+            _selectedActiveOptionCss = string.Concat(_selectedOptionCss, " ", Css.Classes.Listbox.OptionActive);
+        }
+        return selected ? (highlighted ? _selectedActiveOptionCss : _selectedOptionCss)
+            : (highlighted ? _activeOptionCss : _baseOptionCss);
     }
 
-    private RenderFragment<ComboboxRow<TItem>> _renderRow => row =>
+    private RenderFragment<ComboboxRow<TItem>>? _rowTemplate;
+    private RenderFragment<ComboboxRow<TItem>> _renderRow => _rowTemplate ??= RenderRow;
+
+    private RenderFragment RenderRow(ComboboxRow<TItem> row) =>
     @<text>
         @if (row.IsHeader)
         {
