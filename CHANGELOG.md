@@ -5,6 +5,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `FlareDatePicker.PreRenderCalendar` optionally creates the calendar with its field and retains it while closed.
+  The default remains lazy. Pre-rendering shifts work to mounting and updating the field, including hidden day templates.
+
 ### Fixed
 
 - Reopening or closing a picker during popup placement no longer duplicates dismissal handlers or loses placement.

@@ -31,6 +31,7 @@ Date field with a masked text entry and a calendar popup (or an inline calendar)
 | `OpenTo` | `PickerOpenTo` | `PickerOpenTo.Day` | Parameter |  | The calendar view the picker opens to (Day/Month/Year). Year is handy for far-back dates like a date of birth. |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the calendar popup opens. |
 | `ParseInput` | `Func<string, DateOnly?>?` | `` | Parameter |  | Reads typed text instead of the built-in parser: return the date, or null when the text is not one (the value is kept and the field shows it again). With a parser the field takes free text - no digit mask - and judges it on change (blur or Enter). |
+| `PreRenderCalendar` | `bool` | `false` | Parameter |  | Creates the calendar with the field and keeps it mounted while closed to reduce opening work. Default false: the calendar is created on opening and removed on closing. Enabling this increases mount and update work, especially in large forms; hidden day templates and predicates are also evaluated. Inline calendars are always rendered regardless of this setting. |
 | `ShowClearButton` | `bool` | `true` | Parameter |  | Shows the Clear button in the calendar footer. Default true. |
 | `ShowTodayButton` | `bool` | `true` | Parameter |  | Shows the Today button in the calendar footer. Default true. |
 | `ShowWeekNumbers` | `bool` | `false` | Parameter |  | Shows a leading week-of-year number column in the calendar. |

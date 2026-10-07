@@ -59,6 +59,11 @@ public partial class FlareDatePicker
     [Parameter] public bool AutoClose { get; set; } = true;
     /// <summary>Renders the calendar inline (always visible under the field) rather than in a popup.</summary>
     [Parameter] public bool Inline { get; set; }
+    /// <summary>Creates the calendar with the field and keeps it mounted while closed to reduce opening work.
+    /// Default false: the calendar is created on opening and removed on closing. Enabling this increases mount
+    /// and update work, especially in large forms; hidden day templates and predicates are also evaluated.
+    /// Inline calendars are always rendered regardless of this setting.</summary>
+    [Parameter] public bool PreRenderCalendar { get; set; }
     /// <summary>Requests focus on the date input after the first render (best-effort). Only one field per
     /// page should set this.</summary>
     [Parameter] public bool Autofocus { get; set; }
@@ -134,12 +139,11 @@ public partial class FlareDatePicker
 
     private bool _open;
 
-    // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
-    // lambdas) leaves it as it is. Day predicates, templates and parsers are read while the calendar is shown.
+    // Closed lazy pickers only show the field. A pre-rendered calendar also reads templates and predicates.
     /// <inheritdoc />
     protected override bool SkipsUnchangedParameters => true;
     /// <inheritdoc />
-    protected override bool DelegatesAffectRender => _open || Inline;
+    protected override bool DelegatesAffectRender => _open || Inline || PreRenderCalendar;
 
     private ElementReference _fieldEl;
     private ElementReference _panelEl;

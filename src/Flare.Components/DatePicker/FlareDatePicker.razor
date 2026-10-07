@@ -59,9 +59,10 @@
                 <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
             }
         }
-        @if (_open || Inline)
+        @if (_open || Inline || PreRenderCalendar)
         {
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
+             style="@(!_open && !Inline ? "display:none" : null)"
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             <div class="@Css.Classes.DatePicker.Header">
@@ -109,4 +110,3 @@
         }
     </Field>
 </FlareFieldChrome>
-
