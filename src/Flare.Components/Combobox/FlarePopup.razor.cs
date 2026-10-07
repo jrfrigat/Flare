@@ -46,21 +46,52 @@ public partial class FlarePopup
     private readonly AnchoredLayer _layer = new();
     private DotNetObjectReference<FlarePopup>? _selfRef;
     private bool _registered;
+    private Task? _pendingSync;
+    private bool _requestedOpen;
+    private long _syncGeneration;
+    private bool _disposed;
 
     /// <summary>The panel element, for callers that need to measure or focus it.</summary>
     public ElementReference Panel => _panel;
 
     /// <inheritdoc />
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Open == _registered) return;
-        await _layer.SyncAsync(Overlay, Open, Anchor, _panel, new AnchoredPanelOptions { MatchWidth = MatchWidth });
+        if (_disposed) return Task.CompletedTask;
+        var open = Open;
+        if (_pendingSync is not { IsCompleted: false } && open == _requestedOpen && open == _registered)
+            return Task.CompletedTask;
+        if (open != _requestedOpen) _syncGeneration++;
+        _requestedOpen = open;
+        var generation = _syncGeneration;
+        // Focus and parameter changes can render again while placement or dismissal is awaiting JS.
+        // Queue the complete lifecycle, keeping the element belonging to each opening.
+        return _pendingSync = _pendingSync is { IsCompleted: false } pending
+            ? SyncAfterAsync(pending, generation, open, Anchor, _panel, DismissRoot, MatchWidth)
+            : SyncCoreAsync(generation, open, Anchor, _panel, DismissRoot, MatchWidth);
+    }
+
+    private async Task SyncAfterAsync(Task pending, long generation, bool open, ElementReference anchor,
+        ElementReference panel, ElementReference dismissRoot, bool matchWidth)
+    {
+        await pending;
+        await SyncCoreAsync(generation, open, anchor, panel, dismissRoot, matchWidth);
+    }
+
+    private async Task SyncCoreAsync(long generation, bool open, ElementReference anchor,
+        ElementReference panel, ElementReference dismissRoot, bool matchWidth)
+    {
+        // A queued close must release the old element even when a newer opening is already requested.
+        if (_disposed || (open && generation != _syncGeneration)) return;
+        if (open == _registered && open == _layer.Placed) return;
+        await _layer.SyncAsync(Overlay, open, anchor, panel, new AnchoredPanelOptions { MatchWidth = matchWidth });
+        if (_disposed || (open && generation != _syncGeneration) || open == _registered) return;
         try
         {
-            if (Open)
+            if (open)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await Overlay.RegisterDismissAsync(_id, DismissRoot, _selfRef, nameof(DismissFromJs));
+                await Overlay.RegisterDismissAsync(_id, dismissRoot, _selfRef, nameof(DismissFromJs));
                 _registered = true;
             }
             else
@@ -89,6 +120,9 @@ public partial class FlarePopup
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        if (_disposed) return;
+        _disposed = true;
+        if (_pendingSync is { IsCompleted: false } pending) await pending;
         if (_registered)
         {
             try { await Overlay.RemoveDismissAsync(_id); }
