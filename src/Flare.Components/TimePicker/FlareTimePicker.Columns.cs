@@ -9,11 +9,13 @@ namespace Flare.Components;
 public partial class FlareTimePicker
 {
     private bool _scrollDropActive;
+    private bool _dropEnterPressed;
     private int _lastColumn => ShowSeconds ? 2 : 1;
 
     private void OnDropKey(KeyboardEventArgs e)
     {
         var key = e.Key;
+        if (key == "Enter") { _dropEnterPressed = true; return; }
         if (key.Length == 1 && key[0] is >= '0' and <= '9') { FeedColumn(key[0]); return; }
         switch (key)
         {
@@ -27,7 +29,14 @@ public partial class FlareTimePicker
         }
     }
 
-    private Task OnDropKeyUp(KeyboardEventArgs e) => e.Key == "Enter" ? Confirm() : Task.CompletedTask;
+    private Task OnDropKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key != "Enter") return Task.CompletedTask;
+        var confirm = _dropEnterPressed;
+        _dropEnterPressed = false;
+        // Opening on the toggle can move focus here before that key is released.
+        return confirm ? Confirm() : Task.CompletedTask;
+    }
 
     private void FeedColumn(char c)
     {

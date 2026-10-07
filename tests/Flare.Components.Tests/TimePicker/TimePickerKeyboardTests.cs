@@ -89,6 +89,42 @@ public class TimePickerKeyboardTests : FlareTestContext
         TimeOnly? committed = null;
         var cut = OpenColumns(new TimeOnly(10, 0), v => committed = v);
         Keys(cut, "ArrowDown");
+        Keys(cut, "Enter");
+        Assert.Null(committed);
+        Assert.Single(cut.FindAll("[role=dialog]"));
+        cut.Find($".{Css.Classes.TimePicker.Columns}").KeyUp("Enter");
+        Assert.Equal(new TimeOnly(11, 0), committed);
+        Assert.Empty(cut.FindAll("[role=dialog]"));
+    }
+
+    [Fact]
+    public void OpeningEnterRelease_DoesNotConfirmColumns()
+    {
+        TimeOnly? committed = null;
+        var cut = OpenColumns(new TimeOnly(10, 0), v => committed = v);
+        cut.Find($".{Css.Classes.TimePicker.Columns}").KeyUp("Enter");
+        Assert.Null(committed);
+        Assert.Single(cut.FindAll("[role=dialog]"));
+    }
+
+    [Theory]
+    [InlineData("Escape")]
+    [InlineData("Toggle")]
+    [InlineData("Api")]
+    public async Task CancelledEnter_DoesNotConfirmTheNextOpening(string close)
+    {
+        TimeOnly? committed = null;
+        var cut = OpenColumns(new TimeOnly(10, 0), v => committed = v);
+        Keys(cut, "Enter");
+        if (close == "Api") await cut.InvokeAsync(() => cut.Instance.CloseAsync());
+        else if (close == "Toggle") cut.Find($".{Css.Classes.Input.Toggle}").Click();
+        else cut.Find("[role=dialog]").KeyDown("Escape");
+        Assert.Empty(cut.FindAll("[role=dialog]"));
+        cut.Find($".{Css.Classes.Input.Toggle}").Click();
+        cut.Find($".{Css.Classes.TimePicker.Columns}").KeyUp("Enter");
+        Assert.Null(committed);
+        Assert.Single(cut.FindAll("[role=dialog]"));
+        Keys(cut, "ArrowDown", "Enter");
         cut.Find($".{Css.Classes.TimePicker.Columns}").KeyUp("Enter");
         Assert.Equal(new TimeOnly(11, 0), committed);
         Assert.Empty(cut.FindAll("[role=dialog]"));

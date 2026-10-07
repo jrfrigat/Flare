@@ -230,6 +230,7 @@ public partial class FlareTimePicker
     private async Task Toggle()
     {
         if (Disabled || ReadOnly) return;
+        _dropEnterPressed = false;
         if (_isList) { await ToggleListAsync(); return; }
         if (!_open)
         {
@@ -333,6 +334,7 @@ public partial class FlareTimePicker
 
     private async Task Close()
     {
+        _dropEnterPressed = false;
         if (!_open) return;
         _open = false;
         await Closed.InvokeAsync();
@@ -369,6 +371,7 @@ public partial class FlareTimePicker
 
     private async Task Confirm()
     {
+        _dropEnterPressed = false;
         if (!CanConfirm) return;
         var t = TempTime;
         _open = false;
