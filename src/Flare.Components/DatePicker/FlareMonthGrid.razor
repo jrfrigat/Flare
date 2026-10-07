@@ -27,6 +27,8 @@
     @{
         var weeks = _weeks;
         _tabTarget = ResolveTabTarget(weeks);
+        var monthStart = _month.Start;
+        var monthEnd = _month.End;
         var position = 0;
     }
     @foreach (var week in weeks)
@@ -57,7 +59,7 @@
                     <span role="gridcell" aria-hidden="true"></span>
                     continue;
                 }
-                var outside = !_month.Contains(day);
+                var outside = day < monthStart || day > monthEnd;
                 var disabled = Disabled?.Invoke(day) ?? false;
                 <button type="button"
                         role="gridcell"
@@ -188,7 +190,9 @@
 
     private DateOnly? ResolveTabTarget(DateOnly?[][] weeks)
     {
-        bool Available(DateOnly d) => _month.Contains(d) && !(Disabled?.Invoke(d) ?? false);
+        var start = _month.Start;
+        var end = _month.End;
+        bool Available(DateOnly d) => d >= start && d <= end && !(Disabled?.Invoke(d) ?? false);
         if (FocusedDate is { } f && Available(f)) return f;
         if (Available(Today)) return Today;
         foreach (var week in weeks)
