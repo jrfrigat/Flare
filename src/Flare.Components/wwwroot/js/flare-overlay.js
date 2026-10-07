@@ -185,9 +185,9 @@ function uncap(panel) {
 // Re-places a panel whose own size changed after it was placed. The first report, which only states the
 // size the panel already had, and any report of an unchanged size are ignored, so capping inside place()
 // cannot feed back into itself.
-function observeSize(panel, place) {
+function observeSize(panel, place, width, height) {
     if (typeof ResizeObserver !== 'function') return () => { };
-    let w = panel.offsetWidth, h = panel.offsetHeight;
+    let w = width, h = height;
     const ro = new ResizeObserver(() => {
         const nw = panel.offsetWidth, nh = panel.offsetHeight;
         if (nw === w && nh === h) return;
@@ -237,6 +237,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         return { left: x, top: y, right: x, bottom: y, width: 0, height: 0 };
     };
 
+    let measuredWidth, measuredHeight;
     const place = () => {
         // Kept across the uncap below: an engine that resets the scroll of a box that briefly stops
         // overflowing would otherwise throw a scrolled panel back to its top on every page scroll.
@@ -299,6 +300,9 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
                 : align === 'center' ? a.top + a.height / 2 - p.height / 2
                     : a.top;
         }
+        // Reuse the clean layout for the observer before coordinate writes invalidate it.
+        measuredWidth = panel.offsetWidth;
+        measuredHeight = panel.offsetHeight;
         panel.style.top = `${Math.max(vTop + margin, Math.min(top, vBottom - p.height - margin))}px`;
         panel.style.left = `${Math.max(vLeft + margin, Math.min(left, vRight - p.width - margin))}px`;
         // `flarePlaced` already switched resting CSS off before measurement: fallback edges and
@@ -311,7 +315,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
 
     _anchoredPanels.keep(id, all(
         () => uncap(panel),
-        observeSize(panel, place),
+        observeSize(panel, place, measuredWidth, measuredHeight),
         // Capture phase so nested scrollers count - except the panel's own scrolling, which moves nothing
         // the placement depends on.
         listen(window, 'scroll', (e) => { if (!(e.target instanceof Node && panel.contains(e.target))) place(); },

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using Flare.Components.Services;
 using Microsoft.JSInterop;
@@ -87,13 +88,13 @@ public class PickerOverlayInteropTests
 
     private class RemoteModule : IJSObjectReference
     {
-        public List<string> AsyncCalls { get; } = [];
+        public ConcurrentQueue<string> AsyncCalls { get; } = new();
         public TaskCompletionSource Completion { get; } = new();
         public ValueTask<TValue> InvokeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] TValue>(string identifier, object?[]? args)
             => InvokeAsync<TValue>(identifier, default, args);
         public async ValueTask<TValue> InvokeAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
         {
-            AsyncCalls.Add(identifier);
+            AsyncCalls.Enqueue(identifier);
             await Completion.Task;
             return default!;
         }
@@ -102,11 +103,11 @@ public class PickerOverlayInteropTests
 
     private sealed class ImmediateModule : RemoteModule, IJSInProcessObjectReference
     {
-        public List<string> ImmediateCalls { get; } = [];
+        public ConcurrentQueue<string> ImmediateCalls { get; } = new();
         public JSException? Failure { get; init; }
         public TValue Invoke<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.PublicProperties)] TValue>(string identifier, params object?[]? args)
         {
-            ImmediateCalls.Add(identifier);
+            ImmediateCalls.Enqueue(identifier);
             if (Failure is not null) throw Failure;
             return default!;
         }
