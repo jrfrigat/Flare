@@ -10,6 +10,7 @@
    The grid role wraps the weekday row too, so each day column has its header; the wrapper is a plain block and the
    header row and the day grid keep their own layout. *@
 
+@{ EnsureDayStates(); }
 <div role="grid" aria-label="@AriaLabel" aria-multiselectable="@(MultiSelectable ? "true" : null)"
      @onkeydown="HandleKeyDown" @onkeydown:stopPropagation>
 <div class="@Css.Classes.Picker.DayHeaders @(ShowWeekNumbers ? Css.Classes.Picker.DayHeadersWeeks : null)" role="row">
@@ -26,9 +27,6 @@
 <div class="@Css.Classes.Picker.Grid @(ShowWeekNumbers ? Css.Classes.Picker.GridWeeks : null)" role="rowgroup">
     @{
         var weeks = _weeks;
-        _tabTarget = ResolveTabTarget(weeks);
-        var monthStart = _month.Start;
-        var monthEnd = _month.End;
         var position = 0;
     }
     @foreach (var week in weeks)
@@ -59,22 +57,21 @@
                     <span role="gridcell" aria-hidden="true"></span>
                     continue;
                 }
-                var outside = day < monthStart || day > monthEnd;
-                var disabled = Disabled?.Invoke(day) ?? false;
+                var state = _dayStates[index];
                 <button type="button"
                         role="gridcell"
                         tabindex="@(day == _tabTarget ? "0" : "-1")"
                         data-flare-initial-focus="@(day == _tabTarget ? "true" : null)"
-                        aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
+                        aria-selected="@(state.Selected ? "true" : "false")"
                         aria-current="@(day == Today ? "date" : null)"
                         aria-label="@_labels[index]"
-                        class="@DayCss(day, outside, disabled)"
-                        disabled="@disabled"
+                        class="@state.Css"
+                        disabled="@state.Disabled"
                         @ref="_cells[index]"
                         @onclick="@(() => ClickDay(day))"
                         @onclick:stopPropagation
                         @onmouseenter="HoverFor(day)">
-                    @if (DayContent is null) { @DayNumber(day) } else { @DayContent(day) }
+                    @if (DayContent is null) { @state.Number } else { @DayContent(day) }
                 </button>
             }
         </div>
@@ -185,13 +182,16 @@
     {
         var key = (ViewYear, ViewMonth, _firstDayOfWeek);
         var culture = _culture;
-        if (_gridKey == key && ReferenceEquals(_gridCulture, culture)) return;
-        _gridKey = key;
-        _gridCulture = culture;
-        var data = MonthGridData.Get(culture, ViewYear, ViewMonth, _firstDayOfWeek);
-        _month = data.Month;
-        _weeks = data.Weeks;
-        _labels = data.Labels;
+        if (_gridKey != key || !ReferenceEquals(_gridCulture, culture))
+        {
+            _gridKey = key;
+            _gridCulture = culture;
+            var data = MonthGridData.Get(culture, ViewYear, ViewMonth, _firstDayOfWeek);
+            _month = data.Month;
+            _weeks = data.Weeks;
+            _labels = data.Labels;
+        }
+        UpdateRenderState();
     }
 
     // Hover is wired only for a host that listens (the range picker): the others render no handler.
@@ -202,7 +202,8 @@
     {
         var start = _month.Start;
         var end = _month.End;
-        bool Available(DateOnly d) => d >= start && d <= end && !(Disabled?.Invoke(d) ?? false);
+        bool Available(DateOnly d) => d >= start && d <= end &&
+            Array.Exists(_dayStates, state => state.Day == d && !state.Disabled);
         if (FocusedDate is { } f && Available(f)) return f;
         if (Available(Today)) return Today;
         foreach (var week in weeks)

@@ -4,7 +4,7 @@ using static Microsoft.Playwright.Assertions;
 namespace Flare.Browser.Tests;
 
 /// <summary>Trusted browser input against real Blazor components, CSS and JS interop.</summary>
-public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
+public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : IClassFixture<BrowserFixture>
 {
     public static TheoryData<string> Themes => new()
     {
@@ -183,7 +183,7 @@ public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixtur
         finally { await cdp.DetachAsync(); }
     }
 
-    private async Task RunAsync(string theme, bool mobile, Func<IPage, Task> test)
+    private async Task RunAsync(string theme, bool mobile, Func<IPage, Task> test, string route = "/")
     {
         await using var context = await fixture.Browser.NewContextAsync(new()
         {
@@ -222,7 +222,7 @@ public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixtur
         page.PageError += (_, error) => errors.Add(error);
         try
         {
-            await page.GotoAsync(fixture.BaseUrl);
+            await page.GotoAsync(fixture.BaseUrl + route);
             await page.GetByLabel("Theme").SelectOptionAsync(theme);
             await Expect(page.Locator("[data-flare-theme]")).ToHaveAttributeAsync("data-flare-theme", theme);
             await test(page);

@@ -37,6 +37,14 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 Moves keyboard focus onto the day carrying the roving tabindex="0" (best-effort; does nothing before the grid is rendered or when no day of the month is available).
 Returns: `Task`.
 
+### `SetParametersAsync(ParameterView parameters)`
+
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `parameters` | `ParameterView` | — |
+
 
 ## Inheritance
 

@@ -1,0 +1,31 @@
+@page "/date"
+@inject IThemeService Theme
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding: 24px; max-width: 600px">
+        <select aria-label="Theme" @onchange="ChangeTheme">
+            @foreach (var theme in Theme.Themes)
+            {
+                <option value="@theme.Id">@theme.Id</option>
+            }
+        </select>
+        <button @onclick="() => _version++">Rerender</button>
+        <button @onclick="SetExternal">External value</button>
+        <button @onclick="() => _disabledDay = _value">Disable current</button>
+        <span data-testid="version">@_version</span>
+        <FlareDatePicker Label="Date" @bind-Value="_value" PreRenderCalendar="true"
+                         Culture="@(CultureInfo.GetCultureInfo("en-US"))"
+                         Min="@(new DateOnly(2026, 10, 1))" Max="@(new DateOnly(2026, 10, 31))"
+                         IsDateDisabled="@(day => day == _disabledDay)" DayClassFunc="@(_ => _extraClass)" />
+        <output data-testid="date-value">@_value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</output>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private DateOnly? _value = new(2026, 10, 15);
+    private DateOnly? _disabledDay;
+    private string _extraClass = "before-day";
+    private int _version;
+    private void SetExternal() { _value = new(2026, 10, 20); _extraClass = "after-day"; }
+    private Task ChangeTheme(ChangeEventArgs args) => Theme.SetThemeAsync((string)args.Value!);
+}

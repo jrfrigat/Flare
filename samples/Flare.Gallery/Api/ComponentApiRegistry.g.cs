@@ -4157,6 +4157,11 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"FocusCursorAsync", @"FocusCursorAsync()", @"Task", null, @"Moves keyboard focus onto the day carrying the roving tabindex=""0"" (best-effort; does nothing before the grid is rendered or when no day of the month is available).",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SetParametersAsync", @"SetParametersAsync(ParameterView parameters)", @"Task", null, null,
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"parameters", @"ParameterView", null),
+                    }),
             },
             new string[]
             {
