@@ -1,0 +1,30 @@
+@page "/date-ux"
+@inject IThemeService Theme
+@using Flare.Abstractions.Tokens
+
+<FlareThemeProvider RespectSystemColorScheme="false">
+    <main style="padding:16px;max-width:600px">
+        <select aria-label="Theme" @onchange="ChangeTheme">
+            @foreach (var theme in Theme.Themes) { <option value="@theme.Id">@theme.Id</option> }
+        </select>
+        <select aria-label="Mode" @onchange="ChangeMode"><option>Light</option><option>Dark</option></select>
+        <button id="before">Before</button>
+        <div data-testid="subject">
+            <FlareDatePicker Label="Date" @bind-Value="_value" Inline="Inline" PreRenderCalendar="PreRender"
+                             ReadOnly="ReadOnly" IsDateDisabled="@(Unavailable ? _ => true : null)"
+                             Culture="@(CultureInfo.GetCultureInfo("en-US"))" ShowClearButton="true" />
+        </div>
+        <output data-testid="value">@_value?.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)</output>
+        <button id="after">After</button>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public bool Inline { get; set; }
+    [Parameter, SupplyParameterFromQuery] public bool PreRender { get; set; } = true;
+    [Parameter, SupplyParameterFromQuery] public bool ReadOnly { get; set; }
+    [Parameter, SupplyParameterFromQuery] public bool Unavailable { get; set; }
+    private DateOnly? _value = new(2026,10,15);
+    private Task ChangeTheme(ChangeEventArgs e) => Theme.SetThemeAsync((string)e.Value!);
+    private Task ChangeMode(ChangeEventArgs e) => Theme.SetModeAsync(Enum.Parse<ThemeMode>((string)e.Value!));
+}

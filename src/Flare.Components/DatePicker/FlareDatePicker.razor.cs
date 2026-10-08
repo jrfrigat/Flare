@@ -245,11 +245,13 @@ public partial class FlareDatePicker
             // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
             if (_focused) await MaskedCaret.RestoreAsync(ElementJs, _inputEl, _text, caret);
         }
-        if (Inline) return; // inline panel sits in normal flow - no anchored positioning
-        // The popup is a modal dialog under the field: Tab stays inside and the cursor day takes focus;
-        // closing returns focus to the toggle, or to the field after Escape (TASK-134).
-        await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, AllowPicker ? _toggleEl : null,
-            dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
+        if (!Inline)
+        {
+            // The popup keeps Tab inside; closing returns focus to the toggle, or the field after Escape.
+            await _popup.SyncAsync(_open, _fieldEl, _panelEl, null, _inputEl, AllowPicker ? _toggleEl : null,
+                dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(Close));
+        }
+        await FocusPickedViewAsync();
     }
 
     /// <inheritdoc />

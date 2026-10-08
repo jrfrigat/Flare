@@ -161,6 +161,7 @@
     }
     // Roving tabindex: exactly one available cell of the displayed month is reachable by Tab.
     private DateOnly? _tabTarget;
+    internal bool HasFocusableDay => _tabTarget.HasValue;
     // Day buttons by grid position. Blazor captures a reference only when the element is created and keeps
     // the element across renders, so a position (not a date, which changes with the month) identifies it.
     private readonly ElementReference[] _cells = new ElementReference[42];

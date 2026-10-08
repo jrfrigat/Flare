@@ -1,4 +1,5 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components;
@@ -8,6 +9,9 @@ namespace Flare.Components;
 public partial class FlareDatePicker
 {
     private PickerViews? _viewState;
+    private FlareMonthYearGrid? _viewGrid;
+    private ElementReference _viewHeaderEl;
+    private bool _focusPickedView;
     private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled);
 
     private PickerView _calView { get => _views.View; set => _views.View = value; }
@@ -24,7 +28,25 @@ public partial class FlareDatePicker
     private bool CanNext => _views.CanNext;
     private void PrevView() => _views.Prev();
     private void NextView() => _views.Next();
-    private void PickInView(int value) => _views.Pick(value);
+    private void PickInView(int value)
+    {
+        var before = _calView;
+        _views.Pick(value);
+        _focusPickedView = _calView != before;
+    }
+
+    private async Task FocusPickedViewAsync()
+    {
+        if (!_focusPickedView) return;
+        _focusPickedView = false;
+        if (Disabled || (!Inline && !_open)) return;
+        if (_calView != PickerView.Day)
+        {
+            if (_viewGrid is not null) await _viewGrid.FocusAsync();
+        }
+        else if (_grid?.HasFocusableDay == true) await _grid.FocusCursorAsync();
+        else await _viewHeaderEl.FocusAsync();
+    }
     private void HandleViewKeyDown(KeyboardEventArgs e) => _views.PageKey(e);
     private void GoToToday() => _views.GoTo(Today);
 }

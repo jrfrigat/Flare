@@ -68,7 +68,7 @@
             <div class="@Css.Classes.DatePicker.Header">
                 @PickerButtons.Icon(this, PrevView, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !CanPrev)
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
-                        type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="CycleCalendarView" @onclick:stopPropagation>
+                        type="button" aria-live="polite" title="@ViewSwitchHint" @ref="_viewHeaderEl" @onclick="CycleCalendarView" @onclick:stopPropagation>
                     @HeaderLabel
                 </button>
                 @PickerButtons.Icon(this, NextView, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !CanNext)
@@ -90,7 +90,7 @@
             }
             else
             {
-                <FlareMonthYearGrid View="@(_calView == PickerView.Month ? MonthYearGridView.Months : MonthYearGridView.Years)"
+                <FlareMonthYearGrid @ref="_viewGrid" View="@(_calView == PickerView.Month ? MonthYearGridView.Months : MonthYearGridView.Years)"
                                     Year="_viewYear" SelectedMonth="_viewMonth" SelectedYear="_viewYear"
                                     Culture="_culture" Today="Today" Min="Min" Max="Max" Disabled="Disabled" AriaLabel="@HeaderLabel"
                                     OnPick="PickInView" OnKeyDown="HandleViewKeyDown" />
