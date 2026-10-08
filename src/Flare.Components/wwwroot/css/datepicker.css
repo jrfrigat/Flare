@@ -20,7 +20,11 @@
 /* min() against the containing block: a panel the theme sizes wider than a phone screen narrows its day
    columns rather than running off the edge. */
 .flare-datepicker__panel { min-width: min(var(--flare-picker-panel-min-width), 100%); }
-.flare-datepicker__panel:not(.flare-picker__panel--inline) { padding: var(--flare-picker-calendar-panel-padding); }
+.flare-datepicker__panel:not(.flare-picker__panel--inline) {
+  min-width: min(var(--flare-picker-panel-min-width), var(--flare-anchored-width, 100%));
+  max-width: var(--flare-anchored-width, 100%);
+  padding: var(--flare-picker-calendar-panel-padding);
+}
 
 /* Picker nav header (label + prev/next), shared with DateTimePicker's __nav (identical). */
 .flare-datepicker__header,

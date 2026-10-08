@@ -16,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Calendar popups keep their edges inside narrow screens, including the placement margins.
 - Reopening or closing a picker during popup placement no longer duplicates dismissal handlers or loses placement.
 - Opening the time columns with Enter no longer confirms a value on the opening key's release.
 - JSON grid export preserves unsigned enum values above `long.MaxValue`, including `ulong.MaxValue`.

@@ -172,6 +172,7 @@ const _topLayer = new Map();
 
 const SIDES = ['bottom', 'top', 'left', 'right'];
 const ROOM_VAR = '--flare-anchored-room';
+const WIDTH_VAR = '--flare-anchored-width';
 
 // Undoes the height cap a placement put on the panel; only the engine's own inline values are touched.
 function uncap(panel) {
@@ -254,6 +255,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         const vTop = vv ? vv.offsetTop : 0, vLeft = vv ? vv.offsetLeft : 0;
         const vh = vv ? vv.height : window.innerHeight, vw = vv ? vv.width : window.innerWidth;
         const vBottom = vTop + vh, vRight = vLeft + vw;
+        panel.style.setProperty(WIDTH_VAR, `${Math.max(0, vw - 2 * margin)}px`);
         if (opts.matchWidth) {
             // At least as wide as the field, and wider when an option needs it. Pinning the panel to
             // the field's width made the list clip the very values it exists to show - a name only
@@ -315,6 +317,7 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
 
     _anchoredPanels.keep(id, all(
         () => uncap(panel),
+        () => panel.style.removeProperty(WIDTH_VAR),
         observeSize(panel, place, measuredWidth, measuredHeight),
         // Capture phase so nested scrollers count - except the panel's own scrolling, which moves nothing
         // the placement depends on.

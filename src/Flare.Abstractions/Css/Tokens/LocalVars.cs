@@ -58,4 +58,7 @@ public static class LocalVars
     /// <summary>CSS custom-property name for the height an anchored panel has on the side it was placed on;
     /// written by the placement engine when the panel does not fit, read by lists nested inside it.</summary>
     public const string AnchoredRoom = "--flare-anchored-room";
+    /// <summary>CSS custom-property name for the visible viewport width available to an anchored panel,
+    /// excluding placement margins; written by the placement engine.</summary>
+    public const string AnchoredWidth = "--flare-anchored-width";
 }
