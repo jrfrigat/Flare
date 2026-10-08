@@ -549,7 +549,7 @@ internal class LiquidGlassTokens
     /// <summary>The complete Liquid Glass design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = MaterialDesign3Tokens.Design with
     {
-        FocusRing = "0 0 0 4px var(--flare-liquid-glow, rgba(0,122,255,0.35))",
+        FocusRing = "2px solid var(--flare-color-primary)",
         Typography = Typography,
         Shape = Shape,
         Spacing = Spacing,

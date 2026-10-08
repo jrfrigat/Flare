@@ -16,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Liquid Glass shows a visible keyboard focus outline on calendar days, months and years.
 - Floating panels remain scrollable inside short viewports when their field scrolls off screen.
 - Date fields with rich labels use their visible label as the accessible name.
 - Date-picker year and month selection keeps keyboard focus in the next calendar view, so arrows and Escape remain usable.
