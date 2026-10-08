@@ -3,7 +3,7 @@
 @using Flare.Abstractions.Tokens
 
 <FlareThemeProvider RespectSystemColorScheme="false">
-    <main style="padding:16px;max-width:600px">
+    <main style="padding:16px;max-width:600px" data-ready-theme="@_readyTheme" data-ready-mode="@_readyMode">
         <select aria-label="Theme" @onchange="ChangeTheme">
             @foreach (var theme in Theme.Themes) { <option value="@theme.Id">@theme.Id</option> }
         </select>
@@ -26,6 +26,13 @@
         <div data-testid="name-override">
             <FlareDatePicker Label="Date" InputAttributes="@(new Dictionary<string,object> { ["aria-label"] = "Custom date" })" />
         </div>
+        <div data-testid="outside-states" style="background:var(--flare-picker-panel-bg)">
+            <FlareMonthGrid ViewYear="2026" ViewMonth="9" Culture="@(CultureInfo.GetCultureInfo("en-US"))"
+                            Today="@(new DateOnly(2026, 10, 3))"
+                            Selected="@(day => day == new DateOnly(2026, 10, 1))"
+                            Disabled="@(day => day == new DateOnly(2026, 10, 2))"
+                            DayClass="@(day => day == new DateOnly(2026, 10, 1) ? Css.Classes.Picker.DaySelected : null)" />
+        </div>
     </main>
 </FlareThemeProvider>
 
@@ -35,6 +42,19 @@
     [Parameter, SupplyParameterFromQuery] public bool ReadOnly { get; set; }
     [Parameter, SupplyParameterFromQuery] public bool Unavailable { get; set; }
     private DateOnly? _value = new(2026,10,15);
-    private Task ChangeTheme(ChangeEventArgs e) => Theme.SetThemeAsync((string)e.Value!);
-    private Task ChangeMode(ChangeEventArgs e) => Theme.SetModeAsync(Enum.Parse<ThemeMode>((string)e.Value!));
+    private string _readyTheme = "";
+    private string _readyMode = "";
+    private async Task ChangeTheme(ChangeEventArgs e)
+    {
+        var id = (string)e.Value!;
+        await Theme.SetThemeAsync(id);
+        await Theme.SetPaletteAsync(Theme.Themes.First(theme => theme.Id == id).DefaultPaletteId);
+        _readyTheme = id;
+    }
+    private async Task ChangeMode(ChangeEventArgs e)
+    {
+        var mode = (string)e.Value!;
+        await Theme.SetModeAsync(Enum.Parse<ThemeMode>(mode));
+        _readyMode = mode;
+    }
 }

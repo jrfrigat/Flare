@@ -16,6 +16,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Available dates from adjacent months keep readable contrast and remain distinct from disabled dates.
+  Selected dates retain their full selection colors when shown outside the current month.
 - Liquid Glass shows a visible keyboard focus outline on calendar days, months and years.
 - Floating panels remain scrollable inside short viewports when their field scrolls off screen.
 - Date fields with rich labels use their visible label as the accessible name.

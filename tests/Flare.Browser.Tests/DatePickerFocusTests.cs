@@ -17,14 +17,14 @@ public sealed partial class DatePickerUxTests
             ForcedColors = forcedColors ? ForcedColors.Active : ForcedColors.None,
             ReducedMotion = ReducedMotion.Reduce
         });
-        await page.GetByLabel("Theme", new() { Exact = true }).SelectOptionAsync("liquid-glass");
-        await page.GetByLabel("Mode", new() { Exact = true }).SelectOptionAsync(dark ? "Dark" : "Light");
+        await ApplyThemeAsync(page, "liquid-glass", dark);
         var subject = page.GetByTestId("subject");
         var panel = subject.Locator($".{Css.Classes.DatePicker.Panel}");
         await subject.Locator("button[aria-haspopup]").PressAsync("Enter");
         var day = panel.Locator("[role=gridcell][tabindex='0']");
         await VisibleOutlineAsync(day);
         await page.Keyboard.PressAsync("ArrowRight");
+        await Expect(day).ToHaveAttributeAsync("aria-label", "Friday, October 16, 2026");
         await VisibleOutlineAsync(day);
         var header = panel.Locator($".{Css.Classes.DatePicker.MonthLabel}");
         await header.FocusAsync();
@@ -47,8 +47,8 @@ public sealed partial class DatePickerUxTests
     private static async Task VisibleOutlineAsync(ILocator element)
     {
         await Expect(element).ToBeFocusedAsync();
-        Assert.True(await element.EvaluateAsync<bool>("el => el.matches(':focus-visible')"));
         await Expect(element).ToHaveCSSAsync("outline-style", "solid");
+        Assert.True(await element.EvaluateAsync<bool>("el => el.matches(':focus-visible')"));
         Assert.True(await element.EvaluateAsync<bool>("el => parseFloat(getComputedStyle(el).outlineWidth) >= 2"));
     }
 }

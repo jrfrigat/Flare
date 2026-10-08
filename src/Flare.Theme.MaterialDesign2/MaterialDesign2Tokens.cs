@@ -1492,7 +1492,7 @@ internal static class MaterialDesign2Tokens
         RangeFieldBasis = "12rem",
         RangeCalendarMaxWidth = "20rem",
         RangeSeparatorSize = "1.25rem",
-        OutsideOpacity = "0.4",
+        OutsideOpacity = "0.8",
         DisabledOpacity = "0.3",
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "18rem",

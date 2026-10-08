@@ -1550,7 +1550,7 @@ public class MaterialDesign3Tokens
         RangeFieldBasis = "12rem",
         RangeCalendarMaxWidth = "20rem",
         RangeSeparatorSize = "1.25rem",
-        OutsideOpacity = "0.38",                           // date-unselected-outside-month-label-text-opacity
+        OutsideOpacity = "0.8", // Available adjacent-month dates must remain readable.
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "22.5rem",

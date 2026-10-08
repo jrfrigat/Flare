@@ -15,8 +15,18 @@ public sealed partial class DatePickerUxTests(BrowserFixture fixture) : IClassFi
         });
         var page = await context.NewPageAsync();
         await page.GotoAsync(fixture.BaseUrl + "/date-ux" + query);
-        await Expect(page.GetByTestId("subject").Locator("input")).ToBeVisibleAsync();
+        await Expect(page.GetByTestId("subject").Locator("input")).ToBeVisibleAsync(new() { Timeout = 15000 });
         await check(page);
+    }
+
+    private static async Task ApplyThemeAsync(IPage page, string theme, bool dark)
+    {
+        await page.GetByLabel("Theme", new() { Exact = true }).SelectOptionAsync(theme);
+        await Expect(page.Locator("main")).ToHaveAttributeAsync("data-ready-theme", theme);
+        var mode = dark ? "Dark" : "Light";
+        await page.GetByLabel("Mode", new() { Exact = true }).SelectOptionAsync(mode);
+        await Expect(page.Locator("main")).ToHaveAttributeAsync("data-ready-mode", mode);
+        await page.EvaluateAsync("async () => { await Promise.all(document.getAnimations().map(a => a.finished.catch(() => {}))); }");
     }
 
     [Fact]

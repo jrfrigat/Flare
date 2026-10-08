@@ -93,15 +93,16 @@
 .flare-picker__day:where(:hover):where(:not(:disabled)) {
     background: var(--flare-state-hover-layer);
 }
-.flare-picker__day--outside {
-    color: var(--flare-color-on-surface-variant);
-    opacity: var(--flare-picker-outside-opacity);
-}
 /* --today before --selected so a today-and-selected day reads as selected (on-primary). */
 .flare-picker__day--today {
     position: relative;
     font-weight: var(--flare-picker-today-weight);
     color: var(--flare-color-primary);
+}
+/* Adjacent dates keep readable text; today's border and weight still identify it. */
+.flare-picker__day--outside:where(:not(.flare-picker__day--selected)):where(:not([aria-selected="true"])) {
+    color: var(--flare-color-on-surface);
+    opacity: var(--flare-picker-outside-opacity);
 }
 .flare-picker__day--today:not(.flare-picker__day--selected)::after {
     content: '';

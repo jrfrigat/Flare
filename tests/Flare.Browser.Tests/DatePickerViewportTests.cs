@@ -12,8 +12,7 @@ public sealed partial class DatePickerUxTests
     public Task ShortViewport_KeepsCalendarAndClearReachable(string theme, bool dark) => RunAsync(async page =>
     {
         await page.SetViewportSizeAsync(320, 256);
-        await page.GetByLabel("Theme", new() { Exact = true }).SelectOptionAsync(theme);
-        await page.GetByLabel("Mode", new() { Exact = true }).SelectOptionAsync(dark ? "Dark" : "Light");
+        await ApplyThemeAsync(page, theme, dark);
         var subject = page.GetByTestId("subject");
         var panel = subject.Locator($".{Css.Classes.DatePicker.Panel}");
         await subject.Locator("button[aria-haspopup]").ClickAsync();
@@ -22,6 +21,13 @@ public sealed partial class DatePickerUxTests
         await page.WaitForFunctionAsync("() => window.scrollY > 100");
         await FitsViewportAsync(page);
         await page.SetViewportSizeAsync(320, 200);
+        await FitsViewportAsync(page);
+        var cdp = await page.Context.NewCDPSessionAsync(page);
+        await cdp.SendAsync("Emulation.setPageScaleFactor", new() { ["pageScaleFactor"] = 2 });
+        await page.WaitForFunctionAsync("visualViewport.scale > 1.9");
+        await FitsViewportAsync(page);
+        await cdp.SendAsync("Emulation.setPageScaleFactor", new() { ["pageScaleFactor"] = 1 });
+        await page.WaitForFunctionAsync("visualViewport.scale < 1.1");
         await FitsViewportAsync(page);
         var clear = panel.GetByRole(AriaRole.Button, new() { Name = "Clear", Exact = true });
         await clear.FocusAsync();
