@@ -278,7 +278,8 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         // The room the panel actually gets on that side. A panel that does not fit is capped to it and
         // scrolls inside; nested lists read the same number from the custom property and shrink first.
         const vertical = side === 'top' || side === 'bottom';
-        const avail = Math.floor(vertical ? room[side] - gap - margin : vh - 2 * margin);
+        // An off-screen anchor can offer more room than the visible viewport itself.
+        const avail = Math.floor(Math.min(vh - 2 * margin, vertical ? room[side] - gap - margin : vh - 2 * margin));
         if (p.height > avail && avail > 0) {
             panel.dataset.flareCapped = '';
             panel.style.setProperty(ROOM_VAR, `${avail}px`);
