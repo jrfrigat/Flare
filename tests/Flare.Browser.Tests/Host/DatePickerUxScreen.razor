@@ -16,6 +16,16 @@
         </div>
         <output data-testid="value">@_value?.ToString("yyyy-MM-dd",CultureInfo.InvariantCulture)</output>
         <button id="after">After</button>
+        <div data-testid="rich-placeholder">
+            <FlareDatePicker Placeholder="MM/DD/YYYY"><LabelContent><span>Arrival date</span></LabelContent></FlareDatePicker>
+        </div>
+        <div data-testid="rich-label">
+            <FlareDatePicker Label="Unused label" Placeholder="MM/DD/YYYY"><LabelContent><span>Departure date</span></LabelContent></FlareDatePicker>
+        </div>
+        <div data-testid="name-fallback"><FlareDatePicker Placeholder="Booking date" /></div>
+        <div data-testid="name-override">
+            <FlareDatePicker Label="Date" InputAttributes="@(new Dictionary<string,object> { ["aria-label"] = "Custom date" })" />
+        </div>
     </main>
 </FlareThemeProvider>
 

@@ -19,6 +19,16 @@ public sealed partial class DatePickerUxTests(BrowserFixture fixture) : IClassFi
         await check(page);
     }
 
+    [Fact]
+    public Task FieldName_UsesVisibleRichLabelBeforePlaceholderOrLabel() => RunAsync(async page =>
+    {
+        await Expect(page.GetByTestId("rich-placeholder").Locator("input")).ToHaveAccessibleNameAsync("Arrival date");
+        await Expect(page.GetByTestId("rich-label").Locator("input")).ToHaveAccessibleNameAsync("Departure date");
+        await Expect(page.GetByTestId("subject").Locator("input")).ToHaveAccessibleNameAsync("Date");
+        await Expect(page.GetByTestId("name-fallback").Locator("input")).ToHaveAccessibleNameAsync("Booking date");
+        await Expect(page.GetByTestId("name-override").Locator("input")).ToHaveAccessibleNameAsync("Custom date");
+    });
+
     [Theory]
     [InlineData(false, false)]
     [InlineData(true, false)]

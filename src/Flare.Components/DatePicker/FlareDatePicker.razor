@@ -31,7 +31,7 @@
                    required="@Required"
                    placeholder="@(Placeholder ?? (_digitEditing ? _numericPattern : _format))"
                    disabled="@Disabled"
-                   aria-label="@(Label ?? Placeholder)"
+                   aria-label="@(LabelContent is null ? Label ?? Placeholder : null)"
                    aria-required="@(Required ? "true" : null)"
                    aria-invalid="@(_invalid ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"
