@@ -89,7 +89,8 @@
     font-family: inherit;
     transition: background-color var(--flare-motion-duration-state-change);
 }
-.flare-picker__day:hover:not(:disabled) {
+/* Selection and range decorations keep their colors under the pointer. */
+.flare-picker__day:where(:hover):where(:not(:disabled)) {
     background: var(--flare-state-hover-layer);
 }
 .flare-picker__day--outside {

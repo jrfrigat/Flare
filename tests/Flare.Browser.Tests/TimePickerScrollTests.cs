@@ -194,6 +194,7 @@ public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : ICla
         });
         await context.Tracing.StartAsync(new() { Screenshots = true, Snapshots = true, Sources = true });
         await context.AddInitScriptAsync("""
+            window.hideFlareSplash = () => { window.flareTestReady = true; };
             window.inputProof = { wheel: 0, touch: 0, afterRelease: 0, afterReleaseDistance: 0, motions: [], released: null };
             document.addEventListener('wheel', e => { if (e.isTrusted) window.inputProof.wheel++; }, true);
             document.addEventListener('touchstart', e => {
@@ -223,6 +224,7 @@ public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : ICla
         try
         {
             await page.GotoAsync(fixture.BaseUrl + route);
+            if (route == "/date") await page.WaitForFunctionAsync("window.flareTestReady === true");
             await page.GetByLabel("Theme").SelectOptionAsync(theme);
             await Expect(page.Locator("[data-flare-theme]")).ToHaveAttributeAsync("data-flare-theme", theme);
             await test(page);

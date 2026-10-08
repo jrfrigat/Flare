@@ -45,7 +45,7 @@
 
     .flare-calendar__cell.flare-calendar__cell--selected:hover::before { opacity: 0; }
 
-    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled) {
+    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled):not([aria-selected="true"]):not(.flare-daterangepicker__day--in-range) {
         background-color: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
     }
 

@@ -1,13 +1,18 @@
 @page "/date"
 @inject IThemeService Theme
+@using Flare.Abstractions.Tokens
 
-<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+<FlareThemeProvider RespectSystemColorScheme="false">
     <main style="padding: 24px; max-width: 600px">
         <select aria-label="Theme" @onchange="ChangeTheme">
             @foreach (var theme in Theme.Themes)
             {
                 <option value="@theme.Id">@theme.Id</option>
             }
+        </select>
+        <select aria-label="Mode" @onchange="ChangeMode">
+            <option value="Light">Light</option>
+            <option value="Dark">Dark</option>
         </select>
         <button @onclick="() => _version++">Rerender</button>
         <button @onclick="SetExternal">External value</button>
@@ -18,6 +23,25 @@
                          Min="@(new DateOnly(2026, 10, 1))" Max="@(new DateOnly(2026, 10, 31))"
                          IsDateDisabled="@(day => day == _disabledDay)" DayClassFunc="@(_ => _extraClass)" />
         <output data-testid="date-value">@_value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)</output>
+        <div data-testid="multi">
+            <FlareMultiDatePicker Inline="true" Values="@(new[] { new DateOnly(2026, 10, 15) })"
+                                  Culture="@(CultureInfo.GetCultureInfo("en-US"))" />
+        </div>
+        <div data-testid="states">
+            <FlareMonthGrid ViewYear="2026" ViewMonth="10" Today="@(new DateOnly(2026, 10, 15))"
+                            Selected="@(day => day.Day is 15 or 16)" Disabled="@(day => day.Day == 16)"
+                            DayClass="@(day => day.Day is 15 or 16 ? Css.Classes.Picker.DaySelected : null)" />
+        </div>
+        <div data-testid="range">
+            <FlareDateRangePicker Mode="DateRangePickerMode.Calendar" StartDate="@(new DateOnly(2026, 10, 15))"
+                                  EndDate="@(new DateOnly(2026, 10, 20))" />
+        </div>
+        <div data-testid="months">
+            <FlareMonthYearGrid View="MonthYearGridView.Months" Year="2026" SelectedMonth="10" />
+        </div>
+        <div data-testid="years">
+            <FlareMonthYearGrid View="MonthYearGridView.Years" Year="2026" SelectedYear="2026" />
+        </div>
     </main>
 </FlareThemeProvider>
 
@@ -28,4 +52,5 @@
     private int _version;
     private void SetExternal() { _value = new(2026, 10, 20); _extraClass = "after-day"; }
     private Task ChangeTheme(ChangeEventArgs args) => Theme.SetThemeAsync((string)args.Value!);
+    private Task ChangeMode(ChangeEventArgs args) => Theme.SetModeAsync(Enum.Parse<ThemeMode>((string)args.Value!));
 }

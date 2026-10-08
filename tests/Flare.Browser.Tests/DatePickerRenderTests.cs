@@ -6,6 +6,40 @@ namespace Flare.Browser.Tests;
 
 public sealed partial class TimePickerScrollTests
 {
+    [Theory]
+    [MemberData(nameof(DateThemes))]
+    public Task SelectedCalendarDay_KeepsItsColorsOnHover(string theme, bool dark) =>
+        RunAsync(theme, false, async page =>
+        {
+            await page.GetByLabel("Mode", new() { Exact = true }).SelectOptionAsync(dark ? "Dark" : "Light");
+            await Expect(page.Locator("[data-flare-theme]")).ToHaveClassAsync(
+                new Regex(Regex.Escape(dark ? Css.Classes.Theme.ModeDark : Css.Classes.Theme.ModeLight)));
+            await page.Locator($".{Css.Classes.DatePicker.Root} button[aria-haspopup=dialog]").ClickAsync();
+            var panel = page.GetByRole(AriaRole.Dialog);
+            await AssertHoverColorsAsync(panel.Locator("button[aria-selected=true]"));
+            await page.Keyboard.PressAsync("Escape");
+            await AssertHoverColorsAsync(page.GetByTestId("multi").Locator("button[aria-selected=true]"));
+            await AssertHoverColorsAsync(page.GetByTestId("states").Locator("button[aria-current=date]"));
+            await AssertHoverColorsAsync(page.GetByTestId("states").Locator("button[aria-selected=true][disabled]"));
+            foreach (var id in new[] { "months", "years" })
+                await AssertHoverColorsAsync(page.GetByTestId(id).Locator("button[aria-pressed=true]"));
+            foreach (var day in await page.GetByTestId("range").Locator("button[aria-selected=true]").AllAsync())
+                await AssertHoverColorsAsync(day);
+        }, "/date");
+
+    private static async Task AssertHoverColorsAsync(ILocator day)
+    {
+        var page = day.Page;
+        await page.Mouse.MoveAsync(0, 0);
+        await day.EvaluateAsync("async el => { await Promise.all(el.getAnimations().map(a => a.finished.catch(() => {}))); }");
+        const string colors = "el => { const s = getComputedStyle(el); return [s.backgroundColor, s.color, s.backgroundImage]; }";
+        var before = await day.EvaluateAsync<string[]>(colors);
+        await day.HoverAsync();
+        await Expect(day).ToHaveCSSAsync("background-color", before[0]);
+        await Expect(day).ToHaveCSSAsync("color", before[1]);
+        await Expect(day).ToHaveCSSAsync("background-image", before[2]);
+    }
+
     public static IEnumerable<object[]> DateThemes =>
         new[] { "md3-expressive", "md3", "md2", "fluent2", "aero", "liquid-glass", "visualstudio" }
             .SelectMany(theme => new object[][] { [theme, false], [theme, true] });

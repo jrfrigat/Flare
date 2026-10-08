@@ -16,6 +16,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Selected calendar days, months and years keep readable selection colors on hover in light and dark modes.
+  Range highlights also remain intact in Aero and Liquid Glass.
 - Calendar popups keep their edges inside narrow screens, including the placement margins.
 - Reopening or closing a picker during popup placement no longer duplicates dismissal handlers or loses placement.
 - Opening the time columns with Enter no longer confirms a value on the opening key's release.
