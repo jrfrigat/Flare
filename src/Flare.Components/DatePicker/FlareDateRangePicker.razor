@@ -315,13 +315,15 @@
 
     // Day headers + the 6x7 grid are rendered by the shared FlareMonthGrid (CalendarMath); the
     // start/end/in-range highlight is supplied per day here.
-    private string RangeDayClass(DateOnly d) => string.Join(' ', new[]
+    private string RangeDayClass(DateOnly d)
     {
-        InRange(d)      ? Css.Classes.Daterangepicker.DayInRange : null,
-        IsRangeStart(d) ? Css.Classes.Daterangepicker.DayStart   : null,
-        IsRangeEnd(d)   ? Css.Classes.Daterangepicker.DayEnd     : null,
-        DayClassFunc?.Invoke(d),
-    }.Where(c => !string.IsNullOrEmpty(c)));
+        var css = InRange(d) ? Css.Classes.Daterangepicker.DayInRange
+            : IsRangeStart(d) ? Css.Classes.Daterangepicker.DayStart
+            : IsRangeEnd(d) ? Css.Classes.Daterangepicker.DayEnd : null;
+        var extra = DayClassFunc?.Invoke(d);
+        if (string.IsNullOrEmpty(css)) return extra ?? string.Empty;
+        return string.IsNullOrEmpty(extra) ? css : string.Concat(css, " ", extra);
+    }
 
     private bool IsDayDisabled(DateOnly d) =>
         (Min is { } min && d < min) || (Max is { } max && d > max) || (IsDateDisabled?.Invoke(d) ?? false);

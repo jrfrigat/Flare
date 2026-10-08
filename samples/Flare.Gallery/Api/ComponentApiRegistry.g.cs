@@ -2175,7 +2175,7 @@ public static class ComponentApiRegistry
             @"FlareDateRangePicker",
             @"Flare.Components.FlareDateRangePicker",
             @"Flare.Components",
-            null,
+            @"Selects a date range using two fields or an inline calendar.",
             null,
             new ApiParameterInfo[]
             {
@@ -2218,6 +2218,11 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SetParametersAsync", @"SetParametersAsync(ParameterView parameters)", @"Task", @"The component's parameter lifecycle task.", @"Applies parameters and skips rendering when their visible output cannot change.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"parameters", @"ParameterView", @"The parameters supplied by the parent."),
+                    }),
             },
             new string[]
             {

@@ -61,7 +61,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDataGridQuickFilter`](components/flare-components-flaredatagridquickfilter.md) — A debounced search box that narrows a FlareDataGrid to the rows where any visible column contains the typed text, case-insensitively. Placed in the grid's toolbar it finds the grid through the cascade; anywhere else it is pointed at one explicitly.
 - [`FlareDataTree`](components/flare-components-flaredatatree.md)
 - [`FlareDatePicker`](components/flare-components-flaredatepicker.md) — Date field with a masked text entry and a calendar popup (or an inline calendar), bound to a DateOnly.
-- [`FlareDateRangePicker`](components/flare-components-flaredaterangepicker.md)
+- [`FlareDateRangePicker`](components/flare-components-flaredaterangepicker.md) — Selects a date range using two fields or an inline calendar.
 - [`FlareDateTimePicker`](components/flare-components-flaredatetimepicker.md) — Date and time field: a masked text input with a popup holding a calendar and a time pane, either as tabs or side by side. The value is a DateTimeOffset; edits change its wall date and time and keep its offset.
 - [`FlareDescriptionItem`](components/flare-components-flaredescriptionitem.md)
 - [`FlareDescriptionList`](components/flare-components-flaredescriptionlist.md)
