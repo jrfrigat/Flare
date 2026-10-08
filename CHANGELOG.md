@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.43.0] - 2026-10-08
 
 ### Added
 
@@ -32,6 +32,8 @@ All notable changes to Flare are documented here. This project adheres to
   Set `ShowFileList="true"` to display selected files and upload progress. Selection callbacks and transfers are unchanged.
 - Date and time pickers reuse calendar dates, labels and option rendering state between interactions.
   Focusing a time input no longer rerenders its field and popup; ordinary calendar cells avoid allocating class strings.
+- Date range pickers skip unchanged parameter renders while keeping mutable day templates and predicates up to date.
+  Range highlighting reuses class strings when no custom day class needs to be appended.
 - Popup dismissal registration and option scrolling use in-process JS calls in WebAssembly while keeping asynchronous calls for server circuits.
 - **Theme registration is explicit.** Removed `FlareOptions.RegisterAllBuiltInThemes` and assembly scanning.
   Set `DefaultTheme` or call `AddFlareTheme` for each theme; use `AddFlarePalette` for standalone palettes.
