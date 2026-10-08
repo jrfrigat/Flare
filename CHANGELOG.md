@@ -7,6 +7,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- Time-picker columns select values with the mouse wheel or touch scrolling, including short lists.
+  Scrolling respects steps and bounds, stops at the ends, and leaves confirmation to OK or Enter even with AutoClose.
+  `FlareTimePicker.SecondStep` controls the seconds increment (default 1).
+
 - `FlareDatePicker.PreRenderCalendar` optionally creates the calendar with its field and retains it while closed.
   The default remains lazy. Pre-rendering shifts work to mounting and updating the field, including hidden day templates.
 

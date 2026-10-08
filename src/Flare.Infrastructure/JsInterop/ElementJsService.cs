@@ -38,4 +38,12 @@ public sealed class ElementJsService : FlareJsModule, IElementJsService
     /// <inheritdoc />
     public ValueTask<ElementBounds> GetBoundsAsync(ElementReference element) =>
         InvokeAsync<ElementBounds>("flareGetBounds", element);
+
+    /// <inheritdoc />
+    public ValueTask SyncTimeColumnsAsync(ElementReference element, object receiver, int generation) =>
+        InvokeVoidAsync("flareTimeColumns.sync", element, receiver, generation);
+
+    /// <inheritdoc />
+    public ValueTask ReleaseTimeColumnsAsync(ElementReference element) =>
+        InvokeVoidAsync("flareTimeColumns.release", element);
 }

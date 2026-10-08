@@ -18,7 +18,8 @@ public partial class FlareTimePicker
     // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
     // FlareFieldBase (IFlareField). ReadOnly keeps the trigger focusable but blocks typing and the popup.
     /// <summary>Popup style: an analog clock <see cref="TimePickerVariant.Dial"/> (default) or <see cref="TimePickerVariant.Dropdown"/>
-    /// columns. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry
+    /// columns. Wheel and touch scrolling select a column's draft value, including short lists. Scrolling stops at
+    /// the first/last enabled value and never auto-confirms; press OK or Enter to confirm. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry
     /// mode inside the dial dialog, a single combobox list of times), the variant's description says so.</summary>
     [Parameter] public TimePickerVariant PopupVariant { get; set; } = TimePickerVariant.Dial;
     /// <summary>Forces a 12-hour (AM/PM) or 24-hour clock, for the field as well as the popup: on a 12-hour clock the field
@@ -26,7 +27,7 @@ public partial class FlareTimePicker
     [Parameter] public bool? Use24Hour { get; set; }
     /// <summary>Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
-    /// <summary>Minute increment shown in the Dropdown column. Default 1.</summary>
+    /// <summary>Minute increment shown in the Dropdown column. Values are clamped to 1-60. Default 1.</summary>
     [Parameter] public int MinuteStep { get; set; } = 1;
     /// <summary>Headline shown at the top of the picker popup. When null, falls back to the localized default.</summary>
     [Parameter] public string? Headline { get; set; }
@@ -39,15 +40,18 @@ public partial class FlareTimePicker
     /// <summary>Adds a seconds column (Dropdown variant) and the seconds to the field: HH:mm:ss, or hh:mm:ss AM on a
     /// 12-hour clock. Default false.</summary>
     [Parameter] public bool ShowSeconds { get; set; }
-    /// <summary>Hour increment shown in the Dropdown column. Default 1.</summary>
+    /// <summary>Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1.</summary>
     [Parameter] public int HourStep { get; set; } = 1;
+    /// <summary>Second increment shown in the Dropdown column. Values are clamped to 1-60. Default 1.</summary>
+    [Parameter] public int SecondStep { get; set; } = 1;
     /// <summary>Earliest selectable time (inclusive); out-of-range cells are disabled.</summary>
     [Parameter] public TimeOnly? Min { get; set; }
     /// <summary>Latest selectable time (inclusive); out-of-range cells are disabled.</summary>
     [Parameter] public TimeOnly? Max { get; set; }
     /// <summary>Confirms and closes as soon as the last time unit is selected (no OK press): the minute on
     /// the dial (released or typed), the minute or second column in the dropdown. A time outside
-    /// Min/Max is not confirmed and the popup stays open. Default false.</summary>
+    /// Min/Max is not confirmed and the popup stays open. Wheel and touch scrolling edit the draft without
+    /// confirming; use OK or Enter after scrolling. Default false.</summary>
     [Parameter] public bool AutoClose { get; set; }
     /// <summary>Shows the button in the dial popup that switches between the clock dial and keyboard entry (an hour
     /// and a minute text field). Default true. Each opening starts on the dial; the dropdown popup has no switch,
@@ -117,7 +121,8 @@ public partial class FlareTimePicker
     private ElementReference _inputEl;
     private ElementReference _fieldEl;
 
-    private int _hourStep => HourStep < 1 ? 1 : HourStep;
+    private int _hourStep => Math.Clamp(HourStep, 1, 24);
+    private int _secondStep => Math.Clamp(SecondStep, 1, 60);
 
     /// <summary>Opens the picker popup.</summary>
     public Task OpenAsync() { if (!_open) return Toggle(); return Task.CompletedTask; }
@@ -162,7 +167,7 @@ public partial class FlareTimePicker
     protected override void OnParametersSet()
     {
         if (Disabled || ReadOnly) _editGeneration++;
-        if (MinuteStep < 1) MinuteStep = 1;
+        MinuteStep = Math.Clamp(MinuteStep, 1, 60);
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         UpdateFieldIdentifier(For);
 
@@ -181,6 +186,8 @@ public partial class FlareTimePicker
     public override async ValueTask DisposeAsync()
     {
         _editGeneration++;
+        await ReleaseColumnsAsync();
+        _columnReceiver?.Dispose();
         await _popup.DisposeAsync();
         await base.DisposeAsync();
     }
@@ -264,11 +271,13 @@ public partial class FlareTimePicker
             _keyboardEntry = false;
             _entryInvalid = false;
             _open = true;
+            _columnGeneration++;
             await Opened.InvokeAsync();
         }
         else
         {
             _open = false;
+            await ReleaseColumnsAsync();
             await Closed.InvokeAsync();
         }
         StateHasChanged();
@@ -335,6 +344,7 @@ public partial class FlareTimePicker
             dismissRoot: _chrome!.Root, dismiss: () => InvokeAsync(Close));
 
         await ScrollDropActiveAsync();
+        await SyncColumnsAsync();
     }
 
     // The columns announce the selected cell of the active column through aria-activedescendant (TASK-131);
@@ -349,7 +359,7 @@ public partial class FlareTimePicker
     {
         0 when _tempHour % _hourStep == 0 => CellId('h', _tempHour),
         1 when MinuteStep > 0 && _tempMinute % MinuteStep == 0 => CellId('m', _tempMinute),
-        2 => CellId('s', _tempSecond),
+        2 when _tempSecond % _secondStep == 0 => CellId('s', _tempSecond),
         _ => null,
     };
 
@@ -358,6 +368,7 @@ public partial class FlareTimePicker
         _dropEnterPressed = false;
         if (!_open) return;
         _open = false;
+        await ReleaseColumnsAsync();
         await Closed.InvokeAsync();
         StateHasChanged();
     }
@@ -396,6 +407,7 @@ public partial class FlareTimePicker
         if (!CanConfirm) return;
         var t = TempTime;
         _open = false;
+        await ReleaseColumnsAsync();
         await Closed.InvokeAsync();
         await Commit(t);
     }

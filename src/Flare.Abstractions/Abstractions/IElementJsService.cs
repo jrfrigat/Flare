@@ -44,4 +44,11 @@ public interface IElementJsService
 
     /// <summary>Returns the element's viewport rectangle and the current viewport size.</summary>
     ValueTask<ElementBounds> GetBoundsAsync(ElementReference element);
+
+    /// <summary>Synchronizes centered time columns and binds wheel/scroll selection to a .NET receiver.
+    /// The receiver implements SelectColumn(column, value, generation). Implementations without browser input may do nothing.</summary>
+    ValueTask SyncTimeColumnsAsync(ElementReference element, object receiver, int generation) => ValueTask.CompletedTask;
+
+    /// <summary>Removes time-column listeners, observers and pending selection callbacks.</summary>
+    ValueTask ReleaseTimeColumnsAsync(ElementReference element) => ValueTask.CompletedTask;
 }

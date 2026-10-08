@@ -3729,6 +3729,9 @@
   <data name="TpDemo_AdvancedLabel" xml:space="preserve">
     <value>Секунды, шаг 15 минут, только 09:00-17:00, закрывается после последнего выбора</value>
   </data>
+  <data name="TpDemo_ScrollHelper" xml:space="preserve">
+    <value>Выбирайте колесиком или свайпом по колонке. На первом и последнем допустимом значении прокрутка останавливается. Подтвердите кнопкой ОК или Enter; прокрутка сохраняет панель открытой даже при AutoClose.</value>
+  </data>
   <data name="TpDemo_DialAutoCloseLabel" xml:space="preserve">
     <value>Циферблат, который закрывается после выбора минуты</value>
   </data>

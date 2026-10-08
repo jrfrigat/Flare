@@ -35,14 +35,21 @@
   display: flex;
   flex-direction: column;
   gap: var(--flare-spacing-1);
-  max-height: var(--flare-timepicker-column-max-height);
+  height: var(--flare-timepicker-column-max-height);
+  box-sizing: border-box;
   overflow-y: auto;
   padding: var(--flare-spacing-2);
   scrollbar-width: none;          /* Firefox: hide scrollbar */
   -ms-overflow-style: none;       /* old Edge */
+  overscroll-behavior-y: contain;
+  touch-action: pan-y;
+  scroll-snap-type: y mandatory;
+  overflow-anchor: none;
 }
 .flare-timepicker__col::-webkit-scrollbar { width: 0; height: 0; display: none; }  /* WebKit */
 .flare-timepicker__cell {
+  flex-shrink: 0;
+  scroll-snap-align: center;
   position: relative;
   z-index: 0;
   min-width: var(--flare-timepicker-cell-min-width);
@@ -56,6 +63,7 @@
   text-align: center;
   transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
+.flare-timepicker__cell:disabled { scroll-snap-align: none; }
 /* State layer - the theme names the paint; core only says where it goes. Under the content at
    z-index -1, since a cell's content is a bare number. See tabs.css. */
 .flare-timepicker__cell::before {

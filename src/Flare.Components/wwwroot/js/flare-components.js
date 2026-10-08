@@ -11,6 +11,7 @@
 
 import { all, listen, registry, scrollParent } from './flare-dom.js';
 import { startDrag } from './flare-drag.js';
+export { flareTimeColumns } from './flare-time-columns.js';
 
 // -- OTP input ---------------------------------------------------------------
 export const flareOtp = {

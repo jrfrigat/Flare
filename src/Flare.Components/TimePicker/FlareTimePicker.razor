@@ -108,39 +108,40 @@
                     }
                 </div>
                 <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey" @onkeyup="OnDropKeyUp"
+                     data-time-locked="@(_locked ? "true" : "false")"
                      data-flare-initial-focus="true"
                      role="group" aria-label="@_headline" aria-activedescendant="@_columnsActiveId">
-                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours" data-time-column="0" data-time-current="@_tempHour">
                         @for (var h = 0; h < 24; h += _hourStep)
                         {
                             var hour = h;
                             <button type="button"
                                     id="@CellId('h', hour)" class="@CellClass(hour == _tempHour, 0)"
-                                    role="option" aria-selected="@(hour == _tempHour ? "true" : "false")" disabled="@HourDisabled(hour)"
+                                    role="option" data-time-value="@hour" aria-selected="@(hour == _tempHour ? "true" : "false")" disabled="@HourDisabled(hour)"
                                     @onclick="@(() => _tempHour = hour)">@hour.ToString("00")</button>
                         }
                     </div>
                     <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
-                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Minutes">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Minutes" data-time-column="1" data-time-current="@_tempMinute">
                         @for (var m = 0; m < 60; m += MinuteStep)
                         {
                             var min = m;
                             <button type="button"
                                     id="@CellId('m', min)" class="@CellClass(min == _tempMinute, 1)"
-                                    role="option" aria-selected="@(min == _tempMinute ? "true" : "false")" disabled="@MinuteDisabled(min)"
+                                    role="option" data-time-value="@min" aria-selected="@(min == _tempMinute ? "true" : "false")" disabled="@MinuteDisabled(min)"
                                     @onclick="@(() => SelectMinute(min))">@min.ToString("00")</button>
                         }
                     </div>
                     @if (ShowSeconds)
                     {
                         <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
-                        <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Seconds">
-                            @for (var s = 0; s < 60; s++)
+                        <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Seconds" data-time-column="2" data-time-current="@_tempSecond">
+                            @for (var s = 0; s < 60; s += _secondStep)
                             {
                                 var sec = s;
                                 <button type="button"
                                         id="@CellId('s', sec)" class="@CellClass(sec == _tempSecond, 2)"
-                                        role="option" aria-selected="@(sec == _tempSecond ? "true" : "false")" disabled="@SecondDisabled(sec)"
+                                        role="option" data-time-value="@sec" aria-selected="@(sec == _tempSecond ? "true" : "false")" disabled="@SecondDisabled(sec)"
                                         @onclick="@(() => SelectSecond(sec))">@sec.ToString("00")</button>
                             }
                         </div>

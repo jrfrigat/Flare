@@ -68,7 +68,7 @@ public partial class FlareTimePicker
         {
             0 => (24, _hourStep, (Func<int, bool>)HourDisabled),
             1 => (60, MinuteStep, MinuteDisabled),
-            _ => (60, 1, SecondDisabled),
+            _ => (60, _secondStep, SecondDisabled),
         };
         var cells = new List<int>();
         for (var i = 0; i < count; i += step)
@@ -97,6 +97,7 @@ public partial class FlareTimePicker
     {
         if (!_scrollDropActive) return;
         _scrollDropActive = false;
+        if (_columnsBound) return; // The scroll picker centers the selected cell after render.
         if (_columnsActiveId is not { } id) return;
         try { await Overlay.ScrollIntoViewAsync(id); }
         catch (JSDisconnectedException) { }

@@ -3729,6 +3729,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="TpDemo_AdvancedLabel" xml:space="preserve">
     <value>Seconds, 15-minute steps, 09:00-17:00 only, closes on the last pick</value>
   </data>
+  <data name="TpDemo_ScrollHelper" xml:space="preserve">
+    <value>Wheel or swipe a column to select. Stops at the first/last allowed value. Press OK or Enter to confirm; scrolling keeps the picker open even with AutoClose.</value>
+  </data>
   <data name="TpDemo_DialAutoCloseLabel" xml:space="preserve">
     <value>Clock dial that closes after the minute</value>
   </data>

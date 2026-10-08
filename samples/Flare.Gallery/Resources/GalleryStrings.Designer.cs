@@ -11803,6 +11803,9 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized TpDemo_DialAutoCloseHelper string.</summary>
         public static string TpDemo_DialAutoCloseHelper => ResourceManager.GetString("TpDemo_DialAutoCloseHelper", resourceCulture);
 
+        /// <summary>Looks up the localized TpDemo_ScrollHelper string.</summary>
+        public static string TpDemo_ScrollHelper => ResourceManager.GetString("TpDemo_ScrollHelper", resourceCulture);
+
         /// <summary>Looks up the localized TpDemo_Value string.</summary>
         public static string TpDemo_Value => ResourceManager.GetString("TpDemo_Value", resourceCulture);
 
