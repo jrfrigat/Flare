@@ -70,11 +70,14 @@ public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixtur
         await Swipe(page, 0, -60);
         await page.WaitForFunctionAsync("Number(document.querySelector('[data-time-column=\"0\"]').dataset.timeCurrent) > 10");
         await Centered(page, 0);
-        await Swipe(page, 2, -60);
+        await Swipe(page, 2, -160);
         await page.WaitForFunctionAsync("Number(document.querySelector('[data-time-column=\"2\"]').dataset.timeCurrent) > 20");
         await Centered(page, 2);
         Assert.True(await page.EvaluateAsync<bool>("window.inputProof.touch > 0"));
-        Assert.True(await page.EvaluateAsync<bool>("window.inputProof.afterRelease > 1"), "The browser must move after release, before .NET selection changes.");
+        Assert.True(await page.EvaluateAsync<bool>("window.inputProof.afterReleaseDistance > 1"), "The browser must move after release, before .NET selection changes.");
+        var proof = Path.Combine(AppContext.BaseDirectory, "TestResults", $"time-inertia-{theme}.json");
+        Directory.CreateDirectory(Path.GetDirectoryName(proof)!);
+        await File.WriteAllTextAsync(proof, await page.EvaluateAsync<string>("JSON.stringify({ ...window.inputProof, released: null })"));
         await Expect(page.GetByTestId("committed-long")).ToHaveTextAsync("10:30:20");
         if (theme == "md3-expressive")
         {
@@ -159,13 +162,23 @@ public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixtur
         var cdp = await page.Context.NewCDPSessionAsync(page);
         try
         {
-            await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchStart", ["touchPoints"] = new[] { new { x, y } } });
+            await cdp.SendAsync("Input.dispatchTouchEvent", new()
+            {
+                ["type"] = "touchStart", ["touchPoints"] = new[] { new { x, y } }
+            });
             for (var i = 1; i <= 5; i++)
             {
                 await Task.Delay(16, TestContext.Current.CancellationToken);
-                await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchMove", ["touchPoints"] = new[] { new { x, y = y + distance * i / 5 } } });
+                await cdp.SendAsync("Input.dispatchTouchEvent", new()
+                {
+                    ["type"] = "touchMove",
+                    ["touchPoints"] = new[] { new { x, y = y + distance * i / 5 } }
+                });
             }
-            await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchEnd", ["touchPoints"] = Array.Empty<object>() });
+            await cdp.SendAsync("Input.dispatchTouchEvent", new()
+            {
+                ["type"] = "touchEnd", ["touchPoints"] = Array.Empty<object>()
+            });
         }
         finally { await cdp.DetachAsync(); }
     }
@@ -181,19 +194,27 @@ public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixtur
         });
         await context.Tracing.StartAsync(new() { Screenshots = true, Snapshots = true, Sources = true });
         await context.AddInitScriptAsync("""
-            window.inputProof = { wheel: 0, touch: 0, afterRelease: 0, released: null };
+            window.inputProof = { wheel: 0, touch: 0, afterRelease: 0, afterReleaseDistance: 0, motions: [], released: null };
             document.addEventListener('wheel', e => { if (e.isTrusted) window.inputProof.wheel++; }, true);
             document.addEventListener('touchstart', e => {
                 if (e.isTrusted) { window.inputProof.touch++; window.inputProof.released = null; }
             }, true);
             document.addEventListener('touchend', e => {
                 const col = e.target.closest('[data-time-column]');
-                if (col) window.inputProof.released = { col, top: col.scrollTop, current: col.dataset.timeCurrent };
+                if (col) {
+                    window.inputProof.released = { col, top: col.scrollTop, current: col.dataset.timeCurrent, at: performance.now() };
+                    window.inputProof.motions.push({ type: 'release', column: col.dataset.timeColumn, top: col.scrollTop, current: col.dataset.timeCurrent });
+                }
             }, true);
             document.addEventListener('scroll', e => {
                 const r = window.inputProof.released;
-                if (r && e.target === r.col && r.current === r.col.dataset.timeCurrent && Math.abs(r.top - r.col.scrollTop) > 1)
+                if (e.target.matches?.('[data-time-column]')) window.inputProof.motions.push({ type: 'scroll', column: e.target.dataset.timeColumn, top: e.target.scrollTop, current: e.target.dataset.timeCurrent });
+                // The component settles after 160 ms idle; earlier movement excludes its programmatic centering.
+                if (r && e.target === r.col && performance.now() - r.at < 150 && r.current === r.col.dataset.timeCurrent && Math.abs(r.top - r.col.scrollTop) > 1) {
                     window.inputProof.afterRelease++;
+                    window.inputProof.afterReleaseDistance = Math.max(window.inputProof.afterReleaseDistance, Math.abs(r.top - r.col.scrollTop));
+                    window.inputProof.motions.push({ type: 'motion', column: r.col.dataset.timeColumn, top: r.col.scrollTop, current: r.col.dataset.timeCurrent, elapsed: performance.now() - r.at });
+                }
             }, true);
             """);
         var page = await context.NewPageAsync();
@@ -212,6 +233,7 @@ public sealed class TimePickerScrollTests(BrowserFixture fixture) : IClassFixtur
         {
             var path = Path.Combine(AppContext.BaseDirectory, "TestResults", $"time-{theme}-{mobile}-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            await File.WriteAllTextAsync(path + ".json", await page.EvaluateAsync<string>("JSON.stringify({ ...window.inputProof, released: null })"));
             await page.ScreenshotAsync(new() { Path = path + ".png", FullPage = true });
             await context.Tracing.StopAsync(new() { Path = path + ".zip" });
             throw;
