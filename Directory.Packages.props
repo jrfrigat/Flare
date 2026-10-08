@@ -54,6 +54,7 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
     <PackageVersion Include="Microsoft.Testing.Extensions.TrxReport" Version="2.3.3" />
     <PackageVersion Include="bunit" Version="2.9.0" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.63.0" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <!-- Build-time only: the FluentIconGen tool reads real Fluent UI System Icons SVG data from this package
          and generates a curated FluentUIIcons catalog. Not referenced by any shipped package. -->

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Flare/Flare.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.MaterialDesign3/Flare.Theme.MaterialDesign3.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.MaterialDesign2/Flare.Theme.MaterialDesign2.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.Aero/Flare.Theme.Aero.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.LiquidGlass/Flare.Theme.LiquidGlass.csproj" />
+    <ProjectReference Include="../../src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj" />
+  </ItemGroup>
+</Project>

@@ -39,8 +39,11 @@ jobs:
       - name: Build (Release)
         run: dotnet build Flare.slnx -c Release --no-restore
 
+      - name: Install browser for C# tests
+        run: pwsh tests/Flare.Browser.Tests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
+
       - name: Test
-        run: dotnet test Flare.slnx -c Release --no-build
+        run: dotnet test --solution Flare.slnx -c Release --no-build
 
       # The API reference is a generated file that is COMMITTED, so it can rot silently between
       # releases - a parameter added without re-running the generator leaves the published reference

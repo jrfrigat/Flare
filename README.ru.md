@@ -343,12 +343,19 @@ var design = MaterialDesign3Tokens.Design with
 ## Сборка и тестирование
 
 ```sh
-dotnet build        # 0 ошибок
-dotnet test         # 1600+ проходят (1500+ Components + 100+ Core)
+dotnet build
+# Один раз на машине и после обновления Microsoft.Playwright:
+pwsh tests/Flare.Browser.Tests/bin/Debug/net10.0/playwright.ps1 install chromium
+dotnet test         # Включает C# браузерные тесты Playwright
 docker run -p 8080:80 flare-gallery   # Gallery на http://localhost:8080
 ```
 
-CI запускается при каждом пуше в `main`/`master`: сборка -> тесты -> упаковка NuGet -> публикация артефакта Gallery.
+Браузерные тесты сами запускают и останавливают локальный Blazor-хост и Chromium без окна.
+На Linux используйте `install --with-deps chromium`, чтобы установить и системные зависимости.
+Отсутствие Chromium приводит к ошибке, а не пропуску тестов. При падении скриншоты и трассы
+Playwright сохраняются в `tests/Flare.Browser.Tests/bin/<configuration>/net10.0/TestResults`.
+
+CI запускается при пушах и pull request в `main`: сборка -> установка Chromium -> тесты -> упаковка NuGet.
 
 ---
 

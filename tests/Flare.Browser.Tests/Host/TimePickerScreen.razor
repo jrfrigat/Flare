@@ -1,0 +1,36 @@
+@page "/"
+@inject IThemeService Theme
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding: 24px; max-width: 600px">
+        <select aria-label="Theme" @onchange="ChangeTheme">
+            @foreach (var theme in Theme.Themes)
+            {
+                <option value="@theme.Id">@theme.Id</option>
+            }
+        </select>
+        <button @onclick="() => _readOnly = !_readOnly">Toggle read only</button>
+        <div data-testid="short">
+            <FlareTimePicker Label="Short steps" @bind-Value="_short" Culture="CultureInfo.InvariantCulture"
+                             PopupVariant="TimePickerVariant.Dropdown" ShowSeconds="true"
+                             HourStep="2" MinuteStep="15" SecondStep="10" AutoClose="true" ReadOnly="_readOnly"
+                             Min="@(new TimeOnly(8, 15, 10))" Max="@(new TimeOnly(16, 45, 40))" />
+            <output data-testid="committed-short">@_short?.ToString("HH:mm:ss", CultureInfo.InvariantCulture)</output>
+        </div>
+        <div data-testid="long">
+            <FlareTimePicker Label="Long steps" @bind-Value="_long" Culture="CultureInfo.InvariantCulture"
+                             PopupVariant="TimePickerVariant.Dropdown" ShowSeconds="true" />
+            <output data-testid="committed-long">@_long?.ToString("HH:mm:ss", CultureInfo.InvariantCulture)</output>
+        </div>
+        <FlareTimePicker Label="Disabled time" Disabled="true" />
+        <div style="height: 1400px"></div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private TimeOnly? _short = new(10, 30, 20);
+    private TimeOnly? _long = new(10, 30, 20);
+    private bool _readOnly;
+
+    private Task ChangeTheme(ChangeEventArgs args) => Theme.SetThemeAsync((string)args.Value!);
+}

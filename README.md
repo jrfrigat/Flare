@@ -343,12 +343,19 @@ See [docs/en/theme-creation-guide.md](docs/en/theme-creation-guide.md) for the t
 ## Building & Testing
 
 ```sh
-dotnet build        # 0 errors
-dotnet test         # 1600+ pass (1500+ Components + 100+ Core)
+dotnet build
+# Once per machine, and after updating Microsoft.Playwright:
+pwsh tests/Flare.Browser.Tests/bin/Debug/net10.0/playwright.ps1 install chromium
+dotnet test         # Includes C# Playwright browser tests
 docker run -p 8080:80 flare-gallery   # Gallery at http://localhost:8080
 ```
 
-CI runs on every push to `main`/`master`: build -> test -> pack NuGet -> publish Gallery artifact.
+Browser tests start and stop their own local Blazor host and headless Chromium. On Linux, use
+`install --with-deps chromium` to install browser system dependencies too. Missing Chromium fails
+the tests rather than skipping them. Failures save screenshots and Playwright traces under
+`tests/Flare.Browser.Tests/bin/<configuration>/net10.0/TestResults`.
+
+CI runs on pushes and pull requests to `main`: build -> install Chromium -> test -> pack NuGet.
 
 ---
 
