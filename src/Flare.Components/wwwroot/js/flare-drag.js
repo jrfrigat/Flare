@@ -14,7 +14,8 @@ import { registry } from './flare-dom.js';
 // when the cursor leaves the element and works for mouse/pen/touch alike) and reports the delta from
 // the press point. Returns an unsubscribe function.
 //   opts: { onStart(e)?, onMove(dx, dy, e)?, onEnd(e)?, cursor?: string, button?: number,
-//           filter?(e): boolean, threshold?: number, touchAction?: string | null }
+//           filter?(e): boolean, threshold?: number, touchAction?: string | null,
+//           trackWindow?: boolean, onCancel?(e) }
 // `cursor` (when set) is applied to <body> for the duration; `button` (default 0) filters mouse button.
 // `filter` decides whether a press starts a gesture at all - the drag-and-drop layer binds ONE gesture
 // to a container and uses it to accept only presses that landed on a draggable descendant.
@@ -28,6 +29,7 @@ export function startDrag(handle, opts) {
     const o = opts || {};
     const button = o.button ?? 0;
     const threshold = o.threshold ?? 0;
+    const track = o.trackWindow ? window : handle;
     let armed = false, active = false, startX = 0, startY = 0, pid = null, prevCursor = '', prevSelect = '';
     let downEvent = null;
 
@@ -83,15 +85,33 @@ export function startDrag(handle, opts) {
         o.onEnd && o.onEnd(e);
     }
 
+    function cancel(e) {
+        if (!o.onCancel) { end(e); return; }
+        if (!armed || e.pointerId !== pid) return;
+        armed = false;
+        downEvent = null;
+        try { handle.releasePointerCapture(pid); } catch (_) { }
+        if (!active) return;
+        active = false;
+        if (o.cursor) document.body.style.cursor = prevCursor;
+        document.body.style.userSelect = prevSelect;
+        o.onCancel(e);
+    }
+
     handle.addEventListener('pointerdown', down);
-    handle.addEventListener('pointermove', move);
-    handle.addEventListener('pointerup', end);
-    handle.addEventListener('pointercancel', end);
+    track.addEventListener('pointermove', move);
+    track.addEventListener('pointerup', end);
+    track.addEventListener('pointercancel', cancel);
+    if (o.onCancel) handle.addEventListener('lostpointercapture', cancel);
     return () => {
         handle.removeEventListener('pointerdown', down);
-        handle.removeEventListener('pointermove', move);
-        handle.removeEventListener('pointerup', end);
-        handle.removeEventListener('pointercancel', end);
+        track.removeEventListener('pointermove', move);
+        track.removeEventListener('pointerup', end);
+        track.removeEventListener('pointercancel', cancel);
+        if (o.onCancel) {
+            handle.removeEventListener('lostpointercapture', cancel);
+            cancel({ pointerId: pid });
+        }
     };
 }
 

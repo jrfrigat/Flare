@@ -273,10 +273,16 @@ public partial class FlareChart
         await SetZoomAsync(new ChartZoom(a, b).Clamp(_domainFrom, _domainTo, _minZoomSpan));
     });
 
-    private void OnPlotPointerMove(MouseEventArgs e)
+    /// <summary>Moves visible details without rebuilding chart geometry. The input adapter coalesces pointer events.</summary>
+    /// <param name="x">The pointer's horizontal viewport coordinate in CSS pixels.</param>
+    /// <param name="y">The pointer's vertical viewport coordinate in CSS pixels.</param>
+    [JSInvokable]
+    public Task ChartPointerMoved(double x, double y) => InvokeAsync(async () =>
     {
-        if (_tooltipVisible) SetHoverPosition(e);
-    }
+        if (!_tooltipVisible || !double.IsFinite(x) || !double.IsFinite(y)) return;
+        (_hoverX, _hoverY) = (x, y);
+        await SyncTooltipLayerAsync();
+    });
 
     private void OnPlotPointerLeave()
     {

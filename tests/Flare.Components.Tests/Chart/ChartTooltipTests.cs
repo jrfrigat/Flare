@@ -8,7 +8,7 @@ public class ChartTooltipTests : FlareTestContext
     [Theory]
     [InlineData(ChartType.Line, "rect[fill='transparent']")]
     [InlineData(ChartType.Donut, "path[fill='transparent']")]
-    public void TooltipFollowsViewportPointerAndReleasesOnLeave(ChartType type, string hitSelector)
+    public async Task TooltipFollowsViewportPointerAndReleasesOnLeave(ChartType type, string hitSelector)
     {
         var module = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
         var cut = Render<FlareChart>(p => p
@@ -17,11 +17,13 @@ public class ChartTooltipTests : FlareTestContext
 
         cut.Find(hitSelector).MouseEnter(new MouseEventArgs { ClientX = 321.5, ClientY = 456.25 });
         AssertAnchor(321.5, 456.25);
-        cut.Find(".flare-chart__plot").PointerMove(new PointerEventArgs { ClientX = 331, ClientY = 479 });
+        int renders = cut.RenderCount;
+        await cut.Instance.ChartPointerMoved(331, 479);
+        Assert.Equal(renders, cut.RenderCount);
         AssertAnchor(331, 479);
         Assert.Equal(2, module.Invocations["positionAnchoredPanel"].Count);
 
-        cut.Find(".flare-chart__plot").PointerMove(new PointerEventArgs { ClientX = 331, ClientY = 479 });
+        await cut.Instance.ChartPointerMoved(331, 479);
         Assert.Equal(2, module.Invocations["positionAnchoredPanel"].Count);
         cut.Find(".flare-chart__plot").PointerLeave();
         Assert.Empty(cut.FindAll(".flare-chart__tooltip"));

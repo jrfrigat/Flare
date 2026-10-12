@@ -75,6 +75,16 @@ Returns: `Task`.
 | `x` | `double` | The anchor's horizontal viewport coordinate in CSS pixels. |
 | `y` | `double` | The anchor's vertical viewport coordinate in CSS pixels. |
 
+### `ChartPointerMoved(double x, double y)`
+
+Moves visible details without rebuilding chart geometry. The input adapter coalesces pointer events.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `x` | `double` | The pointer's horizontal viewport coordinate in CSS pixels. |
+| `y` | `double` | The pointer's vertical viewport coordinate in CSS pixels. |
+
 ### `ChartZoomGesture(string phase, double x)`
 
 Updates a mouse or pen zoom gesture using SVG viewBox coordinates from the input adapter.

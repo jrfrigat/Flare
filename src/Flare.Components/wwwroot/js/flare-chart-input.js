@@ -1,5 +1,6 @@
 // Browser-only focus mechanics. Data, geometry and tooltip contents stay in the component.
 import { registry, listen, all } from './flare-dom.js';
+import { startDrag } from './flare-drag.js';
 
 const plots = registry();
 const selector = '[data-flare-chart-hit]';
@@ -49,6 +50,7 @@ export function observePlot(plot, receiver) {
     const observer = new MutationObserver(sync);
     observer.observe(plot, { childList: true, subtree: true });
     plots.keep(plot, all(
+        bindPointer(plot, send),
         bindZoom(plot, send),
         listen(plot, 'focusin', focus),
         listen(plot, 'focusout', event => { if (!plot.contains(event.relatedTarget)) send('ChartDetailDismissed'); }),
@@ -59,8 +61,39 @@ export function observePlot(plot, receiver) {
 
 export function unobservePlot(plot) { plots.drop(plot); }
 
+function bindPointer(plot, send) {
+    let latest = null, frame = 0, sending = false;
+    const queue = () => {
+        if (!frame && !sending && latest) frame = requestAnimationFrame(deliver);
+    };
+    const deliver = () => {
+        frame = 0;
+        if (!latest || !plot.querySelector('[role="tooltip"]')) { latest = null; return; }
+        const point = latest;
+        latest = null;
+        sending = true;
+        send('ChartPointerMoved', point.x, point.y).finally(() => {
+            sending = false;
+            queue();
+        });
+    };
+    const clear = () => {
+        latest = null;
+        if (frame) cancelAnimationFrame(frame);
+        frame = 0;
+    };
+    return all(
+        listen(plot, 'pointermove', event => {
+            if (event.pointerType === 'touch' || !plot.querySelector('[role="tooltip"]')) return;
+            latest = { x: event.clientX, y: event.clientY };
+            queue();
+        }),
+        listen(plot, 'pointerleave', clear),
+        clear);
+}
+
 function bindZoom(plot, send) {
-    let drag = null, suppressClick = false;
+    let suppressClick = false;
     const enabled = () => plot.dataset.flareChartZoom === 'true';
     const position = event => {
         const matrix = plot.querySelector('svg')?.getScreenCTM();
@@ -71,33 +104,9 @@ function bindZoom(plot, send) {
     const inside = point => point && point.x >= +plot.dataset.plotLeft
         && point.x <= +plot.dataset.plotLeft + +plot.dataset.plotWidth
         && point.y >= +plot.dataset.plotTop && point.y <= +plot.dataset.plotTop + +plot.dataset.plotHeight;
-    const down = event => {
-        if (!enabled() || drag || event.button !== 0 || !event.isPrimary || event.pointerType === 'touch') return;
-        suppressClick = false;
+    const gesture = (phase, event) => {
         const point = position(event);
-        if (!inside(point)) return;
-        drag = { id: event.pointerId, start: point.x, moved: false };
-        send('ChartZoomGesture', 'start', point.x);
-    };
-    const move = event => {
-        if (!drag || event.pointerId !== drag.id) return;
-        const point = position(event);
-        if (!point) return;
-        if (!drag.moved && Math.abs(point.x - drag.start) > 2) {
-            drag.moved = true;
-            // Delay capture until a drag, so an ordinary click still targets its SVG hit zone.
-            plot.setPointerCapture(drag.id);
-        }
-        if (drag.moved) send('ChartZoomGesture', 'move', point.x);
-    };
-    const finish = (event, cancel) => {
-        if (!drag || event.pointerId !== drag.id) return;
-        const current = drag;
-        drag = null;
-        const point = position(event);
-        suppressClick = !cancel && current.moved;
-        send('ChartZoomGesture', cancel || !point ? 'cancel' : 'end', point?.x ?? current.start);
-        if (plot.hasPointerCapture(current.id)) plot.releasePointerCapture(current.id);
+        send('ChartZoomGesture', point ? phase : 'cancel', point?.x ?? 0);
     };
     const wheel = event => {
         if (!enabled() || !event.ctrlKey || event.deltaY === 0) return;
@@ -107,17 +116,24 @@ function bindZoom(plot, send) {
         send('ChartZoomWheel', event.deltaY, point.x);
     };
     return all(
-        listen(plot, 'pointerdown', down),
-        listen(window, 'pointermove', move),
-        listen(window, 'pointerup', event => finish(event, false)),
-        listen(window, 'pointercancel', event => finish(event, true)),
-        listen(plot, 'lostpointercapture', event => finish(event, true)),
+        startDrag(plot, {
+            threshold: 2, touchAction: null, trackWindow: true,
+            filter: event => {
+                if (!enabled() || event.button !== 0 || !event.isPrimary || event.pointerType === 'touch'
+                    || !inside(position(event))) return false;
+                suppressClick = false;
+                return true;
+            },
+            onStart: event => gesture('start', event),
+            onMove: (_dx, _dy, event) => gesture('move', event),
+            onEnd: event => { suppressClick = true; gesture('end', event); },
+            onCancel: event => { suppressClick = false; gesture('cancel', event); }
+        }),
         listen(plot, 'click', event => {
             if (!suppressClick) return;
             suppressClick = false;
             event.preventDefault();
             event.stopImmediatePropagation();
         }, true),
-        listen(plot, 'wheel', wheel, { passive: false }),
-        () => { if (drag && plot.hasPointerCapture(drag.id)) plot.releasePointerCapture(drag.id); drag = null; });
+        listen(plot, 'wheel', wheel, { passive: false }));
 }

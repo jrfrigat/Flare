@@ -845,6 +845,12 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"x", @"double", @"The anchor's horizontal viewport coordinate in CSS pixels."),
                         new ApiMethodParameter(@"y", @"double", @"The anchor's vertical viewport coordinate in CSS pixels."),
                     }),
+                new ApiMethodInfo(@"ChartPointerMoved", @"ChartPointerMoved(double x, double y)", @"Task", null, @"Moves visible details without rebuilding chart geometry. The input adapter coalesces pointer events.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"x", @"double", @"The pointer's horizontal viewport coordinate in CSS pixels."),
+                        new ApiMethodParameter(@"y", @"double", @"The pointer's vertical viewport coordinate in CSS pixels."),
+                    }),
                 new ApiMethodInfo(@"ChartZoomGesture", @"ChartZoomGesture(string phase, double x)", @"Task", null, @"Updates a mouse or pen zoom gesture using SVG viewBox coordinates from the input adapter.",
                     new ApiMethodParameter[]
                     {

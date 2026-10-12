@@ -17,22 +17,24 @@ public partial class FlareChart
         for (int i = 0; i < series.Count; i++)
         {
             int idx = i;
-            builder.OpenElement(2, "button");
-            builder.AddAttribute(3, "class", IsHidden(idx)
+            builder.OpenComponent<FlareButton>(2);
+            builder.AddAttribute(3, nameof(FlareButton.Class), IsHidden(idx)
                 ? $"{Css.Classes.Chart.LegendItem} {Css.Classes.Chart.LegendItemOff}"
                 : Css.Classes.Chart.LegendItem);
-            builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => ToggleSeries(idx)));
-            builder.AddAttribute(5, "type", "button");
-            builder.AddAttribute(6, "aria-pressed", IsHidden(idx) ? "false" : "true");
-            builder.OpenElement(7, "span");
-            builder.AddAttribute(8, "class", Css.Classes.Chart.LegendDot);
-            builder.AddAttribute(9, "style", $"{Css.Tokens.LocalVars.ChartDot}:{GetColor(idx)}");
-            builder.AddAttribute(10, "aria-hidden", "true");
-            builder.CloseElement();
-            builder.OpenElement(11, "span");
-            builder.AddContent(12, series[idx].Label);
-            builder.CloseElement();
-            builder.CloseElement();
+            builder.AddAttribute(4, nameof(FlareButton.OnClick), EventCallback.Factory.Create<MouseEventArgs>(this, () => ToggleSeries(idx)));
+            builder.AddAttribute(5, nameof(FlareButton.Variant), ButtonVariant.Text);
+            builder.AddAttribute(6, nameof(FlareButton.AriaPressed), !IsHidden(idx));
+            builder.AddAttribute(7, nameof(FlareButton.Size), ButtonSize.Xs);
+            builder.AddAttribute(8, nameof(FlareButton.LeadingIcon), (RenderFragment)(icon =>
+            {
+                icon.OpenElement(0, "span");
+                icon.AddAttribute(1, "class", Css.Classes.Chart.LegendDot);
+                icon.AddAttribute(2, "style", $"{Css.Tokens.LocalVars.ChartDot}:{GetColor(idx)}");
+                icon.AddAttribute(3, "aria-hidden", "true");
+                icon.CloseElement();
+            }));
+            builder.AddAttribute(9, nameof(FlareButton.ChildContent), (RenderFragment)(label => label.AddContent(0, series[idx].Label)));
+            builder.CloseComponent();
         }
         builder.CloseElement();
     };

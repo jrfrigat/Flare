@@ -35,7 +35,6 @@
          data-flare-chart-zoom="@(_zoomActive ? "true" : null)"
          data-plot-left="@F(_padL)" data-plot-top="@F(_padT)"
          data-plot-width="@F(_plotW)" data-plot-height="@F(_plotH)"
-         @onpointermove="OnPlotPointerMove"
          @onpointerleave="OnPlotPointerLeave"
          @ondblclick="ResetZoomAsync">
         @{ var hits = RenderedHits(); }

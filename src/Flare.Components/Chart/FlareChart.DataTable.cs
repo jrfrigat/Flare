@@ -8,14 +8,22 @@ public partial class FlareChart
 {
     private RenderFragment RenderDataTable() => builder =>
     {
+        builder.OpenElement(0, "div");
+        builder.AddAttribute(1, "class", Css.Classes.Visually.Hidden);
+        builder.OpenComponent<FlareTable<object>>(2);
+        builder.AddAttribute(3, nameof(FlareTable<object>.Class), Css.Classes.Chart.Table);
+        builder.AddAttribute(4, nameof(FlareTable<object>.Caption),
+            string.IsNullOrWhiteSpace(Title) ? FlareStrings.Chart_TableCaption : Title);
+        builder.AddAttribute(5, nameof(FlareTable<object>.ChildContent), RenderTableContent());
+        builder.CloseComponent();
+        builder.CloseElement();
+    };
+
+    private RenderFragment RenderTableContent() => builder =>
+    {
         IReadOnlyList<ChartSeries> series = Data?.Series ?? [];
         bool points = Type is ChartType.Scatter or ChartType.Bubble;
         int seq = 0;
-        builder.OpenElement(seq++, "table");
-        builder.AddAttribute(seq++, "class", Css.Classes.Chart.Table);
-        builder.OpenElement(seq++, "caption");
-        builder.AddContent(seq++, string.IsNullOrWhiteSpace(Title) ? FlareStrings.Chart_TableCaption : Title);
-        builder.CloseElement();
         builder.OpenElement(seq++, "thead");
         builder.OpenElement(seq++, "tr");
         if (points)
@@ -44,7 +52,6 @@ public partial class FlareChart
             builder.CloseElement();
             builder.CloseElement();
         }
-        builder.CloseElement();
         builder.CloseElement();
     };
 

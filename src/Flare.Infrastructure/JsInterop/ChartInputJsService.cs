@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -10,7 +11,9 @@ public sealed class ChartInputJsService : FlareJsModule, IChartInputJsService
     public ChartInputJsService(IJSRuntime js) : base(js, "./_content/Flare.Components/js/flare-chart-input.js") { }
 
     /// <inheritdoc />
-    public ValueTask ObservePlotAsync(ElementReference plot, object receiver) => InvokeVoidAsync("observePlot", plot, receiver);
+    public ValueTask ObservePlotAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(
+        ElementReference plot, DotNetObjectReference<T> receiver) where T : class
+        => InvokeVoidAsync("observePlot", plot, receiver);
 
     /// <inheritdoc />
     public ValueTask UnobservePlotAsync(ElementReference plot) => InvokeVoidAsync("unobservePlot", plot);
