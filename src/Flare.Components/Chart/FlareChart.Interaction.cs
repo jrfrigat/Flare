@@ -20,14 +20,14 @@ public partial class FlareChart
     private bool _observing;
     private bool _motionObserving;
 
-    // Distance from the data point to the bubble. A number rather than a token because it is an input to
+    // Distance from the pointer to the bubble. A number rather than a token because it is an input to
     // the placement engine, which works in pixels - the same reason ICollisionService.Offset is one.
     private const int TooltipGap = 8;
 
-    // The bubble follows the hovered point: the shared anchored layer re-places it when the point moves.
+    // The shared anchored layer keeps the bubble beside the pointer and inside the viewport.
     private readonly AnchoredLayer _tooltipLayer = new();
-    private double _placedXPct = double.NaN;
-    private double _placedYPct = double.NaN;
+    private double _placedX = double.NaN;
+    private double _placedY = double.NaN;
 
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -65,35 +65,27 @@ public partial class FlareChart
         catch (JSException) { _motionObserving = false; }
     }
 
-    // The bubble is lifted clear of the plot box by design - centred on the point and sitting above it -
-    // so any ancestor that hides its overflow used to cut it in half, and a card does exactly that. The
-    // placement engine positions it against the point instead, escaping every clipping ancestor and
-    // flipping below the point when there is no room above.
-    //
-    // The anchor is the plot ELEMENT plus the point as a percentage of it, not a viewport rectangle:
-    // percentages are what the hover handlers already compute, and re-measuring the element on scroll
-    // then keeps the bubble on its point without the chart re-sending anything.
+    // Client coordinates and AnchorRect both use CSS pixels in the viewport, independent of the SVG
+    // viewBox, page scroll and transformed ancestors. The engine handles clipping and edge collisions.
     private async Task SyncTooltipLayerAsync()
     {
         if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {
-            // Moving to a neighbouring point re-renders the chart; re-placing on a point that did not
-            // move would be a JS call per repaint.
-            if (_tooltipLayer.Placed && _placedXPct == _hoverXPct && _placedYPct == _hoverYPct) return;
+            if (_tooltipLayer.Placed && _placedX == _hoverX && _placedY == _hoverY) return;
             await _tooltipLayer.ForceAsync(Overlay, _plotRef, _tooltipRef,
                 new AnchoredPanelOptions
                 {
                     Placement = PanelPlacement.Top,
                     Gap = TooltipGap,
-                    AnchorPoint = new PanelAnchorPoint(_hoverXPct, _hoverYPct),
+                    AnchorRect = new PanelAnchorRect(_hoverX, _hoverY),
                 });
-            _placedXPct = _hoverXPct;
-            _placedYPct = _hoverYPct;
+            _placedX = _hoverX;
+            _placedY = _hoverY;
         }
         else if (_tooltipLayer.Placed)
         {
             await _tooltipLayer.ReleaseAsync(Overlay);
-            _placedXPct = _placedYPct = double.NaN;
+            _placedX = _placedY = double.NaN;
         }
     }
 
@@ -255,6 +247,7 @@ public partial class FlareChart
 
     private void OnPlotPointerMove(MouseEventArgs e)
     {
+        if (_tooltipVisible) SetHoverPosition(e);
         if (!_zoomActive || _dragStartX is null) return;
         _dragCurrentX = ToPlotX(e);
         if (!_dragIsPan) { StateHasChanged(); return; }

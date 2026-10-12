@@ -410,11 +410,10 @@ public partial class FlareChart
     private bool _showLegend => !_spark && ShowLegend && LegendPosition != ChartLegendPosition.None
         && Type != ChartType.HeatMap && Data?.Series is { Count: > 0 };
 
-    // Tooltip state. Position is a percentage of the SVG box so it tracks the scaled
-    // viewBox without needing the rendered pixel size.
+    // Tooltip position uses the pointer's viewport coordinates in CSS pixels.
     private bool _tooltipVisible;
-    private double _hoverXPct;
-    private double _hoverYPct;
+    private double _hoverX;
+    private double _hoverY;
     private string _tooltipText = string.Empty;
 
     private string F(double d) => d.ToString("F1", _inv);

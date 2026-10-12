@@ -1,5 +1,4 @@
-/* Plot area - anchors the absolutely-positioned tooltip, and is the element the fluid width is
-   measured on and the zoom gestures are bound to. */
+/* Plot area - the element measured for fluid width and bound to zoom gestures. */
 .flare-chart__plot {
     position: relative;
     width: 100%;
@@ -193,12 +192,7 @@
 
 .flare-chart__tooltip {
     position: absolute;
-    /* left/top are a % of the plot box at the data point, and they hold the bubble for the single frame
-       before the placement engine positions it. The lift that used to live here - a translate of -50%
-       and -100% onto the point - is the engine's job now: the bubble sits outside the plot box by
-       design, so anything that hides its overflow (a card, most of all) cut it in half, and only a
-       panel in the top layer escapes that. Re-adding a transform here would fight the engine's
-       coordinates, which are for the bubble's own box. */
+    /* The shared placement engine owns top/left and lifts the panel into the top layer. */
     pointer-events: none;
     background: var(--flare-color-surface-container-highest);
     color: var(--flare-color-on-surface);
@@ -211,4 +205,9 @@
     box-shadow: var(--flare-elevation-2);
     z-index: 10;
     max-width: var(--flare-tooltip-max-width);
+}
+
+/* Keep the first render measurable without painting at the plot origin before placement. */
+.flare-chart__tooltip:not([data-flare-placed]) {
+    visibility: hidden;
 }

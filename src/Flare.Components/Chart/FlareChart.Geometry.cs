@@ -108,7 +108,7 @@ public partial class FlareChart
     private double _yOf(double v, double min, double max) =>
         _padT + _plotH - (SafeValue(v) - min) / (max - min) * _plotH;
 
-    private void SetHoverCategory(int index, double xCenter)
+    private void SetHoverCategory(int index, MouseEventArgs e)
     {
         if (Data?.Series is not { Count: > 0 } series) return;
         var label = (Data?.Labels is { } ls && index < ls.Count) ? ls[index] : index.ToString();
@@ -117,25 +117,24 @@ public partial class FlareChart
         var parts = present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}"));
         _tooltipText = $"{label}\n{string.Join("\n", parts)}";
 
-        var (min, max) = _scale();
-        double yTop = present
-            .Select(s => _yOf(s.Values[index], min, max))
-            .DefaultIfEmpty(_padT).Min();
-
-        _hoverXPct = xCenter / _svgW * 100;
-        _hoverYPct = yTop / _svgH * 100;
+        SetHoverPosition(e);
         _tooltipVisible = true;
     }
 
-    private void SetHoverSlice(int index, double cx, double cy)
+    private void SetHoverSlice(int index, MouseEventArgs e)
     {
         if (Data?.Series is not { Count: > 0 } series) return;
         double total = series.Sum(s => SafeValue(s.Values.FirstOrDefault()));
         double pct = total > 0 ? SafeValue(series[index].Values.FirstOrDefault()) / total * 100 : 0;
         _tooltipText = string.Create(_inv, $"{series[index].Label}: {pct:F1}%");
-        _hoverXPct = cx / _svgW * 100;
-        _hoverYPct = cy / _svgH * 100;
+        SetHoverPosition(e);
         _tooltipVisible = true;
+    }
+
+    private void SetHoverPosition(MouseEventArgs e)
+    {
+        _hoverX = e.ClientX;
+        _hoverY = e.ClientY;
     }
 
     private void ClearHover() => _tooltipVisible = false;

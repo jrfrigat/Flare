@@ -76,7 +76,7 @@
                     var c = cat;
                     <rect x="@F(c.XLeft)" y="@F(_padT)" width="@F(c.Width)" height="@F(_plotH)"
                           fill="transparent" style="@(OnPointClick.HasDelegate ? "cursor:pointer" : null)"
-                          @onmouseenter="() => SetHoverCategory(c.Index, c.XCenter)"
+                          @onmouseenter="e => SetHoverCategory(c.Index, e)"
                           @onmouseleave="ClearHover"
                           @onclick="() => HandlePointClick(c.Index)" />
                 }
@@ -87,7 +87,7 @@
                 {
                     var s = slice;
                     <path d="@s.Path" fill="transparent" class="@Css.Classes.Chart.Hit"
-                          @onmouseenter="() => SetHoverSlice(s.Index, s.Cx, s.Cy)"
+                          @onmouseenter="e => SetHoverSlice(s.Index, e)"
                           @onmouseleave="ClearHover"
                           @onclick="() => HandlePointClick(s.Index)" />
                 }
@@ -100,13 +100,10 @@
                       width="@F(_selectionRect.Width)" height="@F(_plotH)" />
             }
         </svg>
-        @* The inline percentages are the bubble's place for the one frame before the placement engine
-           takes over, so it never paints at the plot's origin first. From then on the engine owns
-           top/left - see SyncTooltipLayerAsync for why it has to. *@
+        @* The shared placement engine owns the tooltip's viewport coordinates. *@
         @if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {
-            <div class="@Css.Classes.Chart.Tooltip" @ref="_tooltipRef"
-                 style="@(string.Create(_inv, $"left:{_hoverXPct:F2}%;top:{_hoverYPct:F2}%"))">
+            <div class="@Css.Classes.Chart.Tooltip" @ref="_tooltipRef">
                 @_tooltipText
             </div>
         }
