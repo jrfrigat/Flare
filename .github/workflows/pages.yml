@@ -26,10 +26,13 @@ permissions:
   pages: write
   id-token: write
 
-# Never run two Pages deploys at once; let an in-progress run finish.
+# One Pages deploy at a time, and a newer push REPLACES an older run rather than queueing behind it.
+# A run whose deploy job waits for approval otherwise holds this group and freezes every later
+# publication behind it - which is exactly what happened between 06.10.2026 and 13.10.2026, when the
+# site served a build older than v0.43.0. A publish takes about a minute, so cancelling one is cheap.
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
