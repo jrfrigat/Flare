@@ -1,6 +1,8 @@
 @namespace Flare.Components
 @inject IMessageBoxService MessageBoxService
+@inject IOverlayJsService Overlay
 @implements IDisposable
+@implements IAsyncDisposable
 
 @if (MessageBoxService.Current is { } req)
 {
@@ -57,6 +59,10 @@
     private string _inputId  => $"flare-mb-input-{_instanceId}";
 
     private ElementReference _dialogEl;
+    private MessageBoxRequest? _focusedRequest;
+    private MessageBoxRequest? _valueRequest;
+    private readonly SemaphoreSlim _focusSync = new(1, 1);
+    private bool _disposed;
 
     protected override void OnInitialized()
     {
@@ -65,23 +71,39 @@
 
     protected override void OnParametersSet()
     {
-        if (MessageBoxService.Current is { } req)
+        if (MessageBoxService.Current is { } req && !ReferenceEquals(req, _valueRequest))
+        {
             _value = req.DefaultValue;
+            _valueRequest = req;
+        }
     }
 
     private void HandleStateChanged()
     {
-        if (MessageBoxService.Current is { } req)
-            _value = req.DefaultValue;
+        OnParametersSet();
         InvokeAsync(StateHasChanged);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (MessageBoxService.Current is not null)
+        await _focusSync.WaitAsync();
+        try
         {
-            try { await _dialogEl.FocusAsync(); } catch { }
+            if (_disposed) return;
+            var request = MessageBoxService.Current;
+            if (ReferenceEquals(request, _focusedRequest)) return;
+            if (request is null)
+                await Overlay.ReleaseFocusTrapAsync(_instanceId);
+            else if (_focusedRequest is null)
+                await Overlay.TrapFocusAsync(_instanceId, _dialogEl);
+            else
+                await Overlay.FocusFirstAsync(_dialogEl);
+            _focusedRequest = request;
         }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        finally { _focusSync.Release(); }
     }
 
     private void Confirm() => MessageBoxService.Respond(_value.Length > 0 ? _value : "confirmed");
@@ -108,5 +130,22 @@
     public void Dispose()
     {
         MessageBoxService.OnStateChanged -= HandleStateChanged;
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        _disposed = true;
+        Dispose();
+        await _focusSync.WaitAsync();
+        try
+        {
+            if (_focusedRequest is not null)
+                await Overlay.ReleaseFocusTrapAsync(_instanceId);
+            _focusedRequest = null;
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        finally { _focusSync.Release(); }
     }
 }

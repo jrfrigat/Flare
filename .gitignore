@@ -89,3 +89,11 @@ src/Flare.Components/wwwroot/css/flare-components.css
 
 # Generated: each theme's CSS bundle, concatenated from its components.imports.css
 src/Flare.Theme.*/wwwroot/css/components.css
+/.aiko/
+/.mcp.json
+/.cursor/mcp.json
+/.zcode/config.json
+/.cline/
+/.clinerules/
+/.codex/
+/.agents/

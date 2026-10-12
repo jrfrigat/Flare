@@ -3,6 +3,13 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Message boxes keep keyboard focus inside alerts, confirmations and prompts, preserve it through queued requests,
+  and restore it to the opener or a surviving container when closed. Nested dialogs retain their own focus.
+
 ## [0.43.0] - 2026-10-08
 
 ### Added

@@ -41,7 +41,7 @@ const _escHandlers = documentBus('keydown');
 
 export function registerDialogEscHandler(id, dotNetRef) {
     _escHandlers.set(id, (e) => {
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape' && (!_focusOrder.length || _focusOrder.at(-1) === id)) {
             e.preventDefault();
             dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });
         }
@@ -60,6 +60,7 @@ const FOCUSABLE_SELECTORS =
 const visibleFocusTarget = el => !el.closest('[hidden], [inert]') && el.getClientRects().length > 0;
 
 const _focusTraps = registry();
+const _focusOrder = [];
 
 export function trapFocus(id, dialogEl) {
     releaseFocusTrap(id);
@@ -68,35 +69,52 @@ export function trapFocus(id, dialogEl) {
         .filter(visibleFocusTarget);
 
     const previouslyFocused = document.activeElement;
+    const ancestors = [];
+    for (let el = previouslyFocused?.parentElement; el; el = el.parentElement) ancestors.push(el);
+    const isActive = () => _focusOrder.at(-1) === id;
 
     const handler = (e) => {
-        if (e.key !== 'Tab') return;
+        if (e.key !== 'Tab' || !isActive()) return;
         const els = focusable();
         if (els.length === 0) { e.preventDefault(); return; }
         const first = els[0];
         const last = els[els.length - 1];
         if (e.shiftKey) {
-            if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+            if (document.activeElement === first || !dialogEl.contains(document.activeElement)) { e.preventDefault(); last.focus(); }
         } else {
-            if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+            if (document.activeElement === last || !dialogEl.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
         }
     };
 
-    const off = listen(dialogEl, 'keydown', handler);
+    const off = all(
+        listen(document, 'keydown', handler, true),
+        listen(document, 'focusin', () => {
+            if (isActive() && !dialogEl.contains(document.activeElement)) focusFirstInDialog(dialogEl);
+        }),
+    );
+    _focusOrder.push(id);
     _focusTraps.keep(id, () => {
+        const wasActive = isActive();
+        _focusOrder.splice(_focusOrder.indexOf(id), 1);
         off();
-        // Restore focus to whatever was active before the dialog opened.
-        try { previouslyFocused?.focus(); } catch { }
+        // Removing an underlying dialog must not take focus from the one above it.
+        if (!wasActive) return;
+        if (previouslyFocused?.isConnected && !previouslyFocused.matches(':disabled') && visibleFocusTarget(previouslyFocused)) {
+            previouslyFocused.focus({ preventScroll: true });
+            if (document.activeElement === previouslyFocused) return;
+        }
+        const fallback = ancestors.find(el => el.isConnected && visibleFocusTarget(el)) || document.body;
+        const tabIndex = fallback.getAttribute('tabindex');
+        fallback.setAttribute('tabindex', '-1');
+        fallback.focus({ preventScroll: true });
+        if (tabIndex === null) fallback.removeAttribute('tabindex');
+        else fallback.setAttribute('tabindex', tabIndex);
     });
 
     // A roving grid or composite widget owns its starting cursor. Do not focus navigation first.
     const initial = dialogEl.querySelector('[data-flare-initial-focus="true"]:not([disabled])');
     if (initial && visibleFocusTarget(initial)) initial.focus({ preventScroll: true });
-    else {
-        for (const el of dialogEl.querySelectorAll(FOCUSABLE_SELECTORS)) {
-            if (visibleFocusTarget(el)) { el.focus(); break; }
-        }
-    }
+    else focusFirstInDialog(dialogEl);
 }
 
 export function releaseFocusTrap(id) {
@@ -104,8 +122,8 @@ export function releaseFocusTrap(id) {
 }
 
 export function focusFirstInDialog(dialogEl) {
-    const focusable = dialogEl?.querySelector(FOCUSABLE_SELECTORS);
-    focusable?.focus();
+    const focusable = Array.from(dialogEl?.querySelectorAll(FOCUSABLE_SELECTORS) || []).find(visibleFocusTarget);
+    (focusable || dialogEl)?.focus({ preventScroll: true });
 }
 
 // --- The browser's top layer ---
