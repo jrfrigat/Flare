@@ -104,7 +104,7 @@ public partial class FlareDateTimePicker
     public Task ToggleAsync() => TogglePanel();
 
     // Escape anywhere in the popup - calendar, navigation, tabs, time pane - drops the draft and puts focus
-    // back in the field once the panel is gone (TASK-134).
+    // back in the field once the panel is gone.
     private Task CancelAsync()
     {
         _popup.ReturnToField();
@@ -149,7 +149,7 @@ public partial class FlareDateTimePicker
     }
     private DateOnly? _selectedDate;
     // The keyboard cursor when it is not the picked day: the grid reports the day the user sees focused
-    // after a month change or a click (TASK-133).
+    // after a month change or a click.
     private DateOnly? _focusedDate;
     private DateOnly FocusedCursor => _focusedDate ?? _selectedDate ?? _viewDate;
     private int _hour;
@@ -171,14 +171,14 @@ public partial class FlareDateTimePicker
     private string? _syncedText;
     private bool _focused;
     // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
-    // its awaited selection read in an older generation is stale and drops its result (TASK-138).
+    // its awaited selection read in an older generation is stale and drops its result.
     private int _editGeneration;
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
 
-    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian (TASK-150).
-    // The culture on the calendar the picker shows and writes dates on (TASK-182).
+    // A calendar whose months are not the Gregorian grid's is swapped for Gregorian.
+    // The culture on the calendar the picker shows and writes dates on.
     private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
     private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
     // The month the date pane shows, on the grid's calendar.
@@ -190,9 +190,9 @@ public partial class FlareDateTimePicker
         ? $"{_culture.DateTimeFormat.ShortDatePattern} {(ShowSeconds ? _culture.DateTimeFormat.LongTimePattern : _culture.DateTimeFormat.ShortTimePattern)}"
         : DateTimeFormat;
     private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
-    // Date segments in the culture's own order, so year-first cultures mask and parse too (TASK-110).
+    // Date segments in the culture's own order, so year-first cultures mask and parse too.
     private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _dateSep) + (ShowSeconds ? " HH:mm:ss" : " HH:mm");
-    // A format that shows the offset (z, K) edits it too, after the time: "15.10.2026 14:30 +05:00" (TASK-165).
+    // A format that shows the offset (z, K) edits it too, after the time: "15.10.2026 14:30 +05:00".
     private bool _editsOffset => _format.Contains('z') || _format.Contains('K');
     private string _editPattern => _editsOffset ? _numericPattern + " zzz" : _numericPattern;
     // Length of a complete edit: "zzz" renders as the 6 characters "+05:00".
@@ -230,10 +230,10 @@ public partial class FlareDateTimePicker
         UpdateFieldIdentifier(For);
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         // The popup draft (day, hour, minute) is loaded from Value when the popup opens, not here: a parent
-        // re-render must not wipe a pick in progress (TASK-107).
+        // re-render must not wipe a pick in progress.
         // A new value always re-syncs the text and cancels any input still in flight - a parent's value wins over
-        // keystrokes typed against the old one (TASK-163); a new display (DateTimeFormat, Culture) only outside
-        // editing (TASK-113). A focused field takes the value in its editing form.
+        // keystrokes typed against the old one; a new display (DateTimeFormat, Culture) only outside
+        // editing. A focused field takes the value in its editing form.
         var display = FormattedValue;
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
@@ -293,8 +293,8 @@ public partial class FlareDateTimePicker
         InRange(dt) && !(IsDateDisabled?.Invoke(DateOnly.FromDateTime(dt.DateTime)) ?? false);
 
     // A day is unselectable only when every moment of it lies outside [Min; Max]; a boundary day stays
-    // selectable so the time part can decide (TASK-101). The day is taken in the offset the picked value will
-    // have, not in the bound's own one, and compared in UTC ticks so the 0001/9999 edges cannot throw (TASK-137).
+    // selectable so the time part can decide. The day is taken in the offset the picked value will
+    // have, not in the bound's own one, and compared in UTC ticks so the 0001/9999 edges cannot throw.
     private bool IsDayDisabled(DateOnly d)
     {
         if (IsDateDisabled?.Invoke(d) ?? false) return true;
@@ -330,17 +330,16 @@ public partial class FlareDateTimePicker
         if (_open) { await CloseAsync(); return; }
         LoadDraft();
         _open = true;
-        // Placement is the shared engine's job now (see OnAfterRenderAsync): it flips sides on its own
+        // Placement is the shared engine's job (see OnAfterRenderAsync): it flips sides on its own
         // measurement rather than on a guessed panel height, follows scroll, and puts the panel in the
-        // top layer. The hand-rolled version that used to live here assumed 380px of panel and left the
-        // popup a plain fixed box, so any ancestor with a transform dragged it off the screen.
+        // top layer, which keeps the popup on screen even under an ancestor with a transform.
         await Opened.InvokeAsync();
         // Called from OpenAsync/ToggleAsync as well as the toggle's click; only the click re-renders on its own.
         StateHasChanged();
     }
 
     // Every opening starts from the current Value: a pick dismissed by the scrim or Escape is dropped, and
-    // a value cleared from outside opens with nothing selected (TASK-107).
+    // a value cleared from outside opens with nothing selected.
     private void LoadDraft()
     {
         _activeTab = 0;
@@ -365,7 +364,7 @@ public partial class FlareDateTimePicker
         }
     }
 
-    // The neighbouring month on the grid's calendar; none past either end of its range (TASK-105, TASK-182).
+    // The neighbouring month on the grid's calendar; none past either end of its range.
     private void PrevMonth()
     {
         if (_viewMonth.Prev is { } prev) _viewDate = prev.Start;
@@ -384,11 +383,11 @@ public partial class FlareDateTimePicker
     }
 
     // Keyboard navigation inside the date pane: movement is relative to the selected/visible day and skips
-    // unavailable days; Escape closes the popup (TASK-106). Enter/Space are left to the native click of the
-    // focused day button, which the grid keeps on the cursor (TASK-124).
+    // unavailable days; Escape closes the popup. Enter/Space are left to the native click of the
+    // focused day button, which the grid keeps on the cursor.
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
-        // Escape first: a popup left open when the field was locked must still close (TASK-169, as TASK-162).
+        // Escape first: a popup left open when the field was locked must still close.
         if (e.Key == "Escape") { await CancelAsync(); return; }
 
         if (Disabled || ReadOnly) return;
@@ -419,9 +418,9 @@ public partial class FlareDateTimePicker
 
     // The value the popup would commit, or null when no day is picked. Keeps the value's offset and every tick
     // the popup cannot edit - below the minute, or below the second with ShowSeconds: re-confirming without
-    // editing must not move the instant (TASK-103, TASK-136). Returns false when that wall time with its offset is
+    // editing must not move the instant. Returns false when that wall time with its offset is
     // not a representable instant - the first or last day of the DateTimeOffset range at an offset that pushes UTC
-    // past it (TASK-160).
+    // past it.
     private bool TryComposeDraft(out DateTimeOffset? value)
     {
         value = null;
@@ -435,8 +434,8 @@ public partial class FlareDateTimePicker
         return true;
     }
 
-    // OK is offered only for a representable value inside [Min; Max], as for the text input (TASK-101, TASK-125).
-    // A field locked after the popup opened takes no value from it; the popup still closes (TASK-173).
+    // OK is offered only for a representable value inside [Min; Max], as for the text input.
+    // A field locked after the popup opened takes no value from it; the popup still closes.
     private bool _locked => Disabled || ReadOnly;
     private bool CanConfirm => !_locked && !(_keyboardEntry && _entryInvalid)
         && TryComposeDraft(out var dt) && (dt is not { } v || IsAllowed(v));
@@ -480,11 +479,11 @@ public partial class FlareDateTimePicker
             var caret = _pendingCaret;
             _pendingCaret = -1;
             // Only restore while the field still holds focus: the selection read is awaited, so the user may
-            // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
+            // have left the field meanwhile, and pulling focus back onto it would be wrong.
             if (_focused) await MaskedCaret.RestoreAsync(ElementJs, _inputEl, _text, caret);
         }
 
-        // The popup is a modal dialog: the cursor day takes focus on open (TASK-134).
+        // The popup is a modal dialog: the cursor day takes focus on open.
         await _popup.SyncAsync(_open, _fieldRef, _panelEl, new AnchoredPanelOptions { MatchWidth = true },
             _inputEl, AllowPicker ? _toggleEl : null, () => _grid?.FocusCursorAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(CloseAsync));
     }

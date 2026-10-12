@@ -36,7 +36,6 @@ public partial class FlareGauge
         return Math.Abs(span) < double.Epsilon ? 0 : Math.Clamp((value - Min) / span, 0, 1);
     }
 
-    // -- Radial and arc ------------------------------------------------------
 
     /// <summary>Start and end of the sweep in radians, in the frame <see cref="ArcGeometry"/> uses.</summary>
     private (double From, double To) Sweep =>
@@ -115,7 +114,6 @@ public partial class FlareGauge
         }
     }
 
-    // -- Linear --------------------------------------------------------------
 
     // A linear gauge is the same scale projected onto a straight line, and its cross axis needs the same
     // reach on both sides of the track that a dial reserves around its arc.
@@ -141,7 +139,6 @@ public partial class FlareGauge
         return (x1 + (x2 - x1) * t, y1 + (y2 - y1) * t);
     }
 
-    // -- Ticks ---------------------------------------------------------------
 
     /// <summary>
     /// The values a tick is drawn at, major and minor. Intervals are read off the scale rather than a

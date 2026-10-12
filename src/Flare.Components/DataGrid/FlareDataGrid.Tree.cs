@@ -1,10 +1,8 @@
 namespace Flare.Components;
 
 // Tree-grid: expand/collapse state, depth calculation and hierarchical flattening of rows.
-// Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    // -- Tree-grid helpers ---------------------------------------------------
 
     private void ToggleExpand(TItem item)
     {

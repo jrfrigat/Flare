@@ -6,7 +6,7 @@ namespace Flare.Components;
 
 /// <summary>
 /// The caret of a masked date or time field: where it stood before the mask rewrote the text, and putting it back
-/// afterwards, so an edit in the middle keeps the caret on the segment being typed (TASK-111).
+/// afterwards, so an edit in the middle keeps the caret on the segment being typed.
 /// </summary>
 internal static class MaskedCaret
 {

@@ -109,7 +109,7 @@ public partial class FlareTimePicker
             callback.InvokeAsync(arg);
     }
     // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
-    // its awaited selection read in an older generation is stale and drops its result (TASK-138).
+    // its awaited selection read in an older generation is stale and drops its result.
     private int _editGeneration;
 
     private void HandleBlur()
@@ -152,7 +152,7 @@ public partial class FlareTimePicker
         if (AutoClose) await Confirm();
     }
 
-    // The dial edits hours and minutes only, so the settled minute is its last unit (TASK-112).
+    // The dial edits hours and minutes only, so the settled minute is its last unit.
     private async Task OnDialMinuteSelected(int m)
     {
         _tempMinute = m;
@@ -171,7 +171,7 @@ public partial class FlareTimePicker
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         UpdateFieldIdentifier(For);
 
-        // A new value always re-syncs the text; a new display (ShowSeconds) only outside editing (TASK-113).
+        // A new value always re-syncs the text; a new display (ShowSeconds) only outside editing.
         var display = Value is { } v ? FormatTime(v) : string.Empty;
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
@@ -227,8 +227,8 @@ public partial class FlareTimePicker
         _text = MaskTime(e.Value?.ToString());
         if (string.IsNullOrEmpty(_text)) { await Commit(null); return; }
         // The text is already on the HH:mm[:ss] skeleton, so a complete time parses exactly; a lenient parse
-        // would only ever accept a half-edit ("12:3" as 12:03, TASK-126). Incomplete, unparsable or
-        // out-of-range text is not committed and the field snaps back to the current value (TASK-102).
+        // would only ever accept a half-edit. Incomplete, unparsable or
+        // out-of-range text is not committed and the field snaps back to the current value.
         if (TryParseTime(_text, out var shown)
             && Compose(shown) is var t && TimeInRange(t))
         {
@@ -241,7 +241,7 @@ public partial class FlareTimePicker
         }
     }
 
-    // The mask lives in the shared, unit-tested MaskedInput helper (TASK-118): it lays the digits out on
+    // The mask lives in the shared, unit-tested MaskedInput helper: it lays the digits out on
     // the HH:mm[:ss] skeleton without clamping, so an incomplete edit never rewrites a neighbour segment.
     // Out-of-range input simply fails to parse and is not committed.
 
@@ -249,7 +249,7 @@ public partial class FlareTimePicker
     private FlareClockDial? _dial;
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
     private string _dropBuf = string.Empty;
-    // The dial popup shows FlareTimeEntry instead of the dial (TASK-130).
+    // The dial popup shows FlareTimeEntry instead of the dial.
     private bool _keyboardEntry;
     // A keyboard-entry field holds a number out of range: the draft is the last valid time, so OK waits.
     private bool _entryInvalid;
@@ -333,7 +333,7 @@ public partial class FlareTimePicker
             var caret = _pendingCaret;
             _pendingCaret = -1;
             // Only restore while the field still holds focus: the selection read is awaited, so the user may
-            // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
+            // have left the field meanwhile, and pulling focus back onto it would be wrong.
             if (_focused) await MaskedCaret.RestoreAsync(ElementJs, _inputEl, _text, caret);
         }
 
@@ -347,7 +347,7 @@ public partial class FlareTimePicker
         await SyncColumnsAsync();
     }
 
-    // The columns announce the selected cell of the active column through aria-activedescendant (TASK-131);
+    // The columns announce the selected cell of the active column through aria-activedescendant;
     // a value off the step grid has no cell, so nothing is announced until a cell is picked.
     private readonly string _columnsId = $"flare-timepicker-cols-{Guid.NewGuid():N}";
     private string CellId(char unit, int n) => $"{_columnsId}-{unit}-{n}";
@@ -373,7 +373,7 @@ public partial class FlareTimePicker
         StateHasChanged();
     }
 
-    // Escape anywhere in the popup drops the pick and puts focus back in the field (TASK-134).
+    // Escape anywhere in the popup drops the pick and puts focus back in the field.
     private async Task HandlePanelKeyDown(KeyboardEventArgs e)
     {
         if (e.Key != "Escape") return;
@@ -384,7 +384,7 @@ public partial class FlareTimePicker
     private TimeOnly TempTime => Compose(new(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0));
 
     // The value's ticks below the smallest unit the field and popup show. Editing what is shown keeps them, so
-    // confirming without a change does not move the value (TASK-159, as TASK-136 for the date-time picker).
+    // confirming without a change does not move the value.
     private long HiddenTicks => Value is { } v ? v.Ticks % (ShowSeconds ? TimeSpan.TicksPerSecond : TimeSpan.TicksPerMinute) : 0;
 
     // The shown time plus the hidden ticks - unless those alone push it past Min/Max, so typing exactly Max
@@ -395,9 +395,9 @@ public partial class FlareTimePicker
         return TimeInRange(withHidden) || !TimeInRange(shown) ? withHidden : shown;
     }
 
-    // Min/Max bound the popup too, not only the disabled cells (TASK-102): OK is offered only for a time
-    // inside the range, and a refused confirm (AutoClose included) keeps the popup open (TASK-125).
-    // A field locked after the popup opened takes no value from it; the popup still closes (TASK-173).
+    // Min/Max bound the popup too, not only the disabled cells: OK is offered only for a time
+    // inside the range, and a refused confirm (AutoClose included) keeps the popup open.
+    // A field locked after the popup opened takes no value from it; the popup still closes.
     private bool _locked => Disabled || ReadOnly;
     private bool CanConfirm => !_locked && TimeInRange(TempTime) && !(_keyboardEntry && _entryInvalid);
 

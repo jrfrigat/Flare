@@ -177,7 +177,7 @@ public class FluentUI2Tokens
     {
         // Fluent UI 2: square-ish badge with extra-small radius (not full pill)
         Radius = "var(--flare-shape-extra-small)",
-        // The ramp core used to hardcode for xs/sm/lg/xl, now the theme's to name. Values unchanged.
+        // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
@@ -500,8 +500,7 @@ public class FluentUI2Tokens
         PanelPaddingInline = "0.25rem",
         ItemHeight = "0",
         ItemPaddingBlock = "0.625rem",
-        // Dense: carried over from the value core used to hardcode in menuitem.css - a theme could style a
-        // normal menu but never a dense one. Unchanged; a Fluent-native dense step is a separate decision.
+        // Dense: its own value, so a theme can style a dense menu as well as a normal one; a Fluent-native dense step is a separate decision.
         ItemPaddingBlockDense = "0.375rem",
         ItemGapDense = "0.5rem",
         ItemPaddingInline = "1rem",
@@ -533,8 +532,7 @@ public class FluentUI2Tokens
     // Checkbox - Fluent: 1px border, 4dp corner, no MD3 halo, double focus ring.
     internal static readonly CheckboxTokens Checkbox = new()
     {
-        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
-        // could move only the middle step; the medium value below is exactly what it was before.
+        // The size ramp, one token per size so a theme can move any of the five steps.
         SizeXs = "0.875rem",
         SizeSm = "1rem",
         SizeMd = "1.125rem",
@@ -555,8 +553,7 @@ public class FluentUI2Tokens
     // Radio - Fluent: no MD3 state-layer halo.
     internal static readonly RadioTokens Radio = new()
     {
-        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
-        // could move only the middle step; the medium value below is exactly what it was before.
+        // The size ramp, one token per size so a theme can move any of the five steps.
         SizeXs = "1rem",
         SizeSm = "1.125rem",
         SizeMd = "1.25rem",
@@ -758,9 +755,7 @@ public class FluentUI2Tokens
         PaddingMd = "0.75rem 1rem",
         PaddingLg = "0.875rem 1.125rem",
         PaddingXl = "1.125rem 1.25rem",
-        // Height ramp, measured off the padding ramp above: each step is the tallest control that step
-        // used to produce, so nothing shrinks. Under this theme the text field was the taller one, by 4px
-        // at every step, and a trigger with a leading icon was 4px taller than one without.
+        // Height ramp, measured off the padding ramp above: each step is the tallest control of that size, so`r`n        // nothing shrinks.
         HeightXs = "1.75rem",   // 28px
         HeightSm = "2.125rem", // 34px
         HeightMd = "2.875rem", // 46px
@@ -984,8 +979,7 @@ public class FluentUI2Tokens
         IndicatorRadius = "0",
         ActiveIndicator = "none",
         // Fluent marks the selected item with a left accent bar and no pill (ActiveIndicator is none),
-        // so the label is read against the panel surface. It was painted on-secondary-container, a
-        // container role with no container under it.
+        // so the label is read against the panel surface.
         ActiveColor = "var(--flare-color-on-surface)",
         ItemColor = "var(--flare-color-on-surface-variant)",
         ItemHoverColor = "var(--flare-color-on-surface)",
@@ -1457,8 +1451,7 @@ public class FluentUI2Tokens
     internal static readonly LayoutTokens Layout = new()
     {
         AppBarHeight = "64px",
-        // Carried over from the value core used to hardcode, so the dense bar is unchanged. Fluent's own
-        // spec has no compact app bar to read a number from; a Fluent-native height is a separate decision.
+        // The dense bar's own height; Fluent's spec has no compact app bar to read a number from, so a Fluent-native height is a separate decision.
         AppBarHeightDense = "3rem",
         AppBarBg = "var(--flare-color-surface)",
         ContentPadding = "1.5rem 2rem",
@@ -1687,7 +1680,7 @@ public class FluentUI2Tokens
             PaddingRight = "12px",
             PaddingBottom = "12px",
             PaddingLeft = "12px",
-            // Neutral baseline members (formerly the record defaults), carried explicitly.
+            // Neutral baseline members, carried explicitly.
             FilledBorder = "none",
             TextColor = "var(--flare-color-on-surface)",
             SelectedBorder = "2px solid var(--flare-color-primary)",

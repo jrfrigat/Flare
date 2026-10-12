@@ -8,9 +8,9 @@ namespace Flare.Components;
 internal enum PickerView { Day, Month, Year }
 
 /// <summary>
-/// The calendar views a date picker pages through (TASK-183, out of FlareDatePicker): the day grid's month, the
-/// month view's year and the year view's decade, numbered on the calendar the grid is drawn on (TASK-182), with
-/// the header label, the paging bounds and the month and year picks that respect Min/Max (TASK-176). Shared by
+/// The calendar views a date picker pages through: the day grid's month, the
+/// month view's year and the year view's decade, numbered on the calendar the grid is drawn on, with
+/// the header label, the paging bounds and the month and year picks that respect Min/Max. Shared by
 /// the date, multi-date and week pickers, so each keeps only its own value.
 /// </summary>
 internal sealed class PickerViews(Func<CultureInfo> culture, Func<DateOnly?> min, Func<DateOnly?> max, Func<bool> disabled)
@@ -70,7 +70,7 @@ internal sealed class PickerViews(Func<CultureInfo> culture, Func<DateOnly?> min
     };
 
     // Paging stays inside the days both the grid calendar and DateOnly can name: year 0 and 10000+ would throw
-    // when the header or the grid builds a date from them (TASK-105), Um al-Qura ends in 2077.
+    // when the header or the grid builds a date from them, Um al-Qura ends in 2077.
     /// <summary>Whether there is a month, year or decade before the shown one.</summary>
     public bool CanPrev => View switch
     {
@@ -112,7 +112,7 @@ internal sealed class PickerViews(Func<CultureInfo> culture, Func<DateOnly?> min
     }
 
     /// <summary>A pick in the month or the year view: a month opens its days, a year its months. A month or a year
-    /// wholly outside [Min;Max], or outside the calendar's range, is refused (TASK-176).</summary>
+    /// wholly outside [Min;Max], or outside the calendar's range, is refused.</summary>
     public void Pick(int value)
     {
         if (View == PickerView.Month)

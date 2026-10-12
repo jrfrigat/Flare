@@ -60,7 +60,6 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
         return parts.Count == 1 ? ComponentCssClass : string.Join(' ', parts);
     }
 
-    // ---- Theme-token reads -------------------------------------------------------------------------
     // Most tokens are consumed by CSS and never enter C#. A few components draw geometry themselves -
     // SVG attributes take numbers, not var() references - and those have to ask the theme for the value.
     // The read goes through the FLATTENED map, the same source the emitted stylesheet is built from, so

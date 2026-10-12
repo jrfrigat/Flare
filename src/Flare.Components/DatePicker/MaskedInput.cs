@@ -89,7 +89,7 @@ internal static class MaskedInput
     /// <summary>
     /// Lays a time typed into the field out on the <c>HH:mm</c> (or <c>HH:mm:ss</c>) skeleton: the digits
     /// fill the segments in order and the separators are inserted. The values are NOT clamped or corrected -
-    /// an incomplete edit must never rewrite the neighbouring segment (TASK-118); validation happens when
+    /// an incomplete edit must never rewrite the neighbouring segment; validation happens when
     /// the field is committed.
     /// </summary>
     public static string MaskTime(string? raw, bool showSeconds)

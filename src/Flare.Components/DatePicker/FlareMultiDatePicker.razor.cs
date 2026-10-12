@@ -238,7 +238,7 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
     {
         if (e.Key == "Escape") { await ClosePopupAsync(); return; }
         if (Disabled || ReadOnly) return;
-        // Enter/Space are left to the native click of the focused day button (TASK-124).
+        // Enter/Space are left to the native click of the focused day button.
         var next = CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
             FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDisabled, _views.Grid);
         if (next is not { } day) return;

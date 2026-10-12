@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 namespace Flare.Components;
 
 // The calendar views of the date picker - the day grid's month, the month view's year and the year view's decade -
-// kept by the shared PickerViews (TASK-183) on the calendar the grid is drawn on (TASK-182).
+// kept by the shared PickerViews on the calendar the grid is drawn on.
 public partial class FlareDatePicker
 {
     private PickerViews? _viewState;

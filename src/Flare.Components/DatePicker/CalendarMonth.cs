@@ -3,7 +3,7 @@ using System.Globalization;
 namespace Flare.Components;
 
 /// <summary>
-/// One month of the calendar a date picker's grid is drawn on (TASK-182): the year and month are that
+/// One month of the calendar a date picker's grid is drawn on: the year and month are that
 /// calendar's own numbers (1405/7 on the Persian calendar, 5787/6 for Adar I on the Hebrew one), and the
 /// month's days are <see cref="DateOnly"/> values. Navigation stays inside the days both the calendar and
 /// <see cref="DateOnly"/> can name (Um al-Qura covers 1900-2077, Hebrew 1583-2239).

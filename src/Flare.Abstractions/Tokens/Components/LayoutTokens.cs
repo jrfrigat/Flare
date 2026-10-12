@@ -40,10 +40,9 @@ public sealed record LayoutTokens
     [CssVar(LayoutField.ShellBg)] public required string ShellBg { get; init; }
 
     /// <summary>
-    /// The drawer's plane. Core used to pick this role itself, which left the shell's three planes -
-    /// page, chrome and canvas - decided in two different places: the app bar had a token and the
-    /// drawer and the content did not, so a language wanting its chrome on the darkest plane and its
-    /// canvas on the surface had to overwrite core rules by class name.
+    /// The drawer's plane, a token of its own so the shell's three planes - page, chrome and canvas -
+    /// are all the theme's to place: a language may put its chrome on the darkest plane and its canvas
+    /// on the surface without overwriting core rules by class name.
     /// </summary>
     [CssVar(LayoutField.DrawerBg)] public required string DrawerBg { get; init; }
 

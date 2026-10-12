@@ -4,7 +4,6 @@ namespace Flare.Components;
 // filters, the value-selector cache and distinct-value helpers. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    // -- Menu filter mode helpers --------------------------------------------
 
     private readonly List<string> _menuFilterOperators = ["contains", "equals", "not equals", "starts with", "ends with", "greater than", "less than"];
 
@@ -184,7 +183,6 @@ public partial class FlareDataGrid<TItem>
         }, null, debounceMs, Timeout.Infinite);
     }
 
-    // -- Typed column filters + advanced filter builder (Phase C) -------------
 
     // Per-column structured filters from non-text inline editors (select/number/date).
     private readonly Dictionary<string, DataGridFilter> _typedFilters = new();

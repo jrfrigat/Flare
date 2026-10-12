@@ -29,7 +29,6 @@ public static partial class CssVarMap
         // What follows by hand are only the compound tokens that expand to several variables.
         FlattenAttributed(v, t);
 
-        // Typography
         FlattenType(v, Css.Tokens.Typography.DisplayLarge.Font, Css.Tokens.Typography.DisplayLarge.Weight, Css.Tokens.Typography.DisplayLarge.Size, Css.Tokens.Typography.DisplayLarge.Height, Css.Tokens.Typography.DisplayLarge.Spacing, t.Typography.DisplayLarge);
         FlattenType(v, Css.Tokens.Typography.DisplayMedium.Font, Css.Tokens.Typography.DisplayMedium.Weight, Css.Tokens.Typography.DisplayMedium.Size, Css.Tokens.Typography.DisplayMedium.Height, Css.Tokens.Typography.DisplayMedium.Spacing, t.Typography.DisplayMedium);
         FlattenType(v, Css.Tokens.Typography.DisplaySmall.Font, Css.Tokens.Typography.DisplaySmall.Weight, Css.Tokens.Typography.DisplaySmall.Size, Css.Tokens.Typography.DisplaySmall.Height, Css.Tokens.Typography.DisplaySmall.Spacing, t.Typography.DisplaySmall);
@@ -46,43 +45,36 @@ public static partial class CssVarMap
         FlattenType(v, Css.Tokens.Typography.LabelMedium.Font, Css.Tokens.Typography.LabelMedium.Weight, Css.Tokens.Typography.LabelMedium.Size, Css.Tokens.Typography.LabelMedium.Height, Css.Tokens.Typography.LabelMedium.Spacing, t.Typography.LabelMedium);
         FlattenType(v, Css.Tokens.Typography.LabelSmall.Font, Css.Tokens.Typography.LabelSmall.Weight, Css.Tokens.Typography.LabelSmall.Size, Css.Tokens.Typography.LabelSmall.Height, Css.Tokens.Typography.LabelSmall.Spacing, t.Typography.LabelSmall);
 
-        // Motion
         FlattenMotion(v, t.Motion);
 
         #region BUTTON
 
         // Per-corner radii (Corner Radii) for all 5 sizes
-        // Extra Small (XS)
         v[Css.Tokens.Button.Radius.XsTopLeft] = t.Button.RadiusXs.TopLeft;
         v[Css.Tokens.Button.Radius.XsTopRight] = t.Button.RadiusXs.TopRight;
         v[Css.Tokens.Button.Radius.XsBottomRight] = t.Button.RadiusXs.BottomRight;
         v[Css.Tokens.Button.Radius.XsBottomLeft] = t.Button.RadiusXs.BottomLeft;
 
-        // Small (SM)
         v[Css.Tokens.Button.Radius.SmTopLeft] = t.Button.RadiusSm.TopLeft;
         v[Css.Tokens.Button.Radius.SmTopRight] = t.Button.RadiusSm.TopRight;
         v[Css.Tokens.Button.Radius.SmBottomRight] = t.Button.RadiusSm.BottomRight;
         v[Css.Tokens.Button.Radius.SmBottomLeft] = t.Button.RadiusSm.BottomLeft;
 
-        // Medium (MD)
         v[Css.Tokens.Button.Radius.MdTopLeft] = t.Button.RadiusMd.TopLeft;
         v[Css.Tokens.Button.Radius.MdTopRight] = t.Button.RadiusMd.TopRight;
         v[Css.Tokens.Button.Radius.MdBottomRight] = t.Button.RadiusMd.BottomRight;
         v[Css.Tokens.Button.Radius.MdBottomLeft] = t.Button.RadiusMd.BottomLeft;
 
-        // Large (LG)
         v[Css.Tokens.Button.Radius.LgTopLeft] = t.Button.RadiusLg.TopLeft;
         v[Css.Tokens.Button.Radius.LgTopRight] = t.Button.RadiusLg.TopRight;
         v[Css.Tokens.Button.Radius.LgBottomRight] = t.Button.RadiusLg.BottomRight;
         v[Css.Tokens.Button.Radius.LgBottomLeft] = t.Button.RadiusLg.BottomLeft;
 
-        // Extra Large (XL)
         v[Css.Tokens.Button.Radius.XlTopLeft] = t.Button.RadiusXl.TopLeft;
         v[Css.Tokens.Button.Radius.XlTopRight] = t.Button.RadiusXl.TopRight;
         v[Css.Tokens.Button.Radius.XlBottomRight] = t.Button.RadiusXl.BottomRight;
         v[Css.Tokens.Button.Radius.XlBottomLeft] = t.Button.RadiusXl.BottomLeft;
 
-        // Label typography (across 5 sizes)
         FlattenBtnLabel(v, Css.Tokens.Button.Label.Xs.Font, Css.Tokens.Button.Label.Xs.Weight, Css.Tokens.Button.Label.Xs.Size, Css.Tokens.Button.Label.Xs.Height, Css.Tokens.Button.Label.Xs.Spacing, t.Button.LabelXs);
         FlattenBtnLabel(v, Css.Tokens.Button.Label.Sm.Font, Css.Tokens.Button.Label.Sm.Weight, Css.Tokens.Button.Label.Sm.Size, Css.Tokens.Button.Label.Sm.Height, Css.Tokens.Button.Label.Sm.Spacing, t.Button.LabelSm);
         FlattenBtnLabel(v, Css.Tokens.Button.Label.Md.Font, Css.Tokens.Button.Label.Md.Weight, Css.Tokens.Button.Label.Md.Size, Css.Tokens.Button.Label.Md.Height, Css.Tokens.Button.Label.Md.Spacing, t.Button.LabelMd);
@@ -93,54 +85,44 @@ public static partial class CssVarMap
         #region SPLIT BUTTON
 
         // Per-corner radii of the Main button (Main Radius) for all 5 sizes
-        // XS
         v[Css.Tokens.SplitButton.MainRadius.XsTopLeft] = t.SplitButton.MainRadiusXs.TopLeft;
         v[Css.Tokens.SplitButton.MainRadius.XsTopRight] = t.SplitButton.MainRadiusXs.TopRight;
         v[Css.Tokens.SplitButton.MainRadius.XsBottomRight] = t.SplitButton.MainRadiusXs.BottomRight;
         v[Css.Tokens.SplitButton.MainRadius.XsBottomLeft] = t.SplitButton.MainRadiusXs.BottomLeft;
-        // SM
         v[Css.Tokens.SplitButton.MainRadius.SmTopLeft] = t.SplitButton.MainRadiusSm.TopLeft;
         v[Css.Tokens.SplitButton.MainRadius.SmTopRight] = t.SplitButton.MainRadiusSm.TopRight;
         v[Css.Tokens.SplitButton.MainRadius.SmBottomRight] = t.SplitButton.MainRadiusSm.BottomRight;
         v[Css.Tokens.SplitButton.MainRadius.SmBottomLeft] = t.SplitButton.MainRadiusSm.BottomLeft;
-        // MD
         v[Css.Tokens.SplitButton.MainRadius.MdTopLeft] = t.SplitButton.MainRadiusMd.TopLeft;
         v[Css.Tokens.SplitButton.MainRadius.MdTopRight] = t.SplitButton.MainRadiusMd.TopRight;
         v[Css.Tokens.SplitButton.MainRadius.MdBottomRight] = t.SplitButton.MainRadiusMd.BottomRight;
         v[Css.Tokens.SplitButton.MainRadius.MdBottomLeft] = t.SplitButton.MainRadiusMd.BottomLeft;
-        // LG
         v[Css.Tokens.SplitButton.MainRadius.LgTopLeft] = t.SplitButton.MainRadiusLg.TopLeft;
         v[Css.Tokens.SplitButton.MainRadius.LgTopRight] = t.SplitButton.MainRadiusLg.TopRight;
         v[Css.Tokens.SplitButton.MainRadius.LgBottomRight] = t.SplitButton.MainRadiusLg.BottomRight;
         v[Css.Tokens.SplitButton.MainRadius.LgBottomLeft] = t.SplitButton.MainRadiusLg.BottomLeft;
-        // XL
         v[Css.Tokens.SplitButton.MainRadius.XlTopLeft] = t.SplitButton.MainRadiusXl.TopLeft;
         v[Css.Tokens.SplitButton.MainRadius.XlTopRight] = t.SplitButton.MainRadiusXl.TopRight;
         v[Css.Tokens.SplitButton.MainRadius.XlBottomRight] = t.SplitButton.MainRadiusXl.BottomRight;
         v[Css.Tokens.SplitButton.MainRadius.XlBottomLeft] = t.SplitButton.MainRadiusXl.BottomLeft;
 
         // Per-corner radii of the Trigger button (Trigger Radius) for all 5 sizes
-        // XS
         v[Css.Tokens.SplitButton.TriggerRadius.XsTopLeft] = t.SplitButton.TriggerRadiusXs.TopLeft;
         v[Css.Tokens.SplitButton.TriggerRadius.XsTopRight] = t.SplitButton.TriggerRadiusXs.TopRight;
         v[Css.Tokens.SplitButton.TriggerRadius.XsBottomRight] = t.SplitButton.TriggerRadiusXs.BottomRight;
         v[Css.Tokens.SplitButton.TriggerRadius.XsBottomLeft] = t.SplitButton.TriggerRadiusXs.BottomLeft;
-        // SM
         v[Css.Tokens.SplitButton.TriggerRadius.SmTopLeft] = t.SplitButton.TriggerRadiusSm.TopLeft;
         v[Css.Tokens.SplitButton.TriggerRadius.SmTopRight] = t.SplitButton.TriggerRadiusSm.TopRight;
         v[Css.Tokens.SplitButton.TriggerRadius.SmBottomRight] = t.SplitButton.TriggerRadiusSm.BottomRight;
         v[Css.Tokens.SplitButton.TriggerRadius.SmBottomLeft] = t.SplitButton.TriggerRadiusSm.BottomLeft;
-        // MD
         v[Css.Tokens.SplitButton.TriggerRadius.MdTopLeft] = t.SplitButton.TriggerRadiusMd.TopLeft;
         v[Css.Tokens.SplitButton.TriggerRadius.MdTopRight] = t.SplitButton.TriggerRadiusMd.TopRight;
         v[Css.Tokens.SplitButton.TriggerRadius.MdBottomRight] = t.SplitButton.TriggerRadiusMd.BottomRight;
         v[Css.Tokens.SplitButton.TriggerRadius.MdBottomLeft] = t.SplitButton.TriggerRadiusMd.BottomLeft;
-        // LG
         v[Css.Tokens.SplitButton.TriggerRadius.LgTopLeft] = t.SplitButton.TriggerRadiusLg.TopLeft;
         v[Css.Tokens.SplitButton.TriggerRadius.LgTopRight] = t.SplitButton.TriggerRadiusLg.TopRight;
         v[Css.Tokens.SplitButton.TriggerRadius.LgBottomRight] = t.SplitButton.TriggerRadiusLg.BottomRight;
         v[Css.Tokens.SplitButton.TriggerRadius.LgBottomLeft] = t.SplitButton.TriggerRadiusLg.BottomLeft;
-        // XL
         v[Css.Tokens.SplitButton.TriggerRadius.XlTopLeft] = t.SplitButton.TriggerRadiusXl.TopLeft;
         v[Css.Tokens.SplitButton.TriggerRadius.XlTopRight] = t.SplitButton.TriggerRadiusXl.TopRight;
         v[Css.Tokens.SplitButton.TriggerRadius.XlBottomRight] = t.SplitButton.TriggerRadiusXl.BottomRight;

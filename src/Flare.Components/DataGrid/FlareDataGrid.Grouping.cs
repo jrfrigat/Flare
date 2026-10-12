@@ -4,7 +4,6 @@ namespace Flare.Components;
 // server group-by key contract. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    // -- Grouping (Phase B) ---------------------------------------------------
     // Separator used to build a stable, collision-resistant group path across nesting levels.
     private const string GroupPathSeparator = "";
 

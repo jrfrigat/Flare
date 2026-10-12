@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 namespace Flare.Components;
 
 // The Date / Time switch of the tabbed popup as an APG tab list: arrows and Home/End pick a tab and move focus to it,
-// and only the picked tab is in the Tab order (TASK-166).
+// and only the picked tab is in the Tab order.
 public partial class FlareDateTimePicker
 {
     private readonly ElementReference[] _tabRefs = new ElementReference[2];

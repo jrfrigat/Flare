@@ -23,12 +23,7 @@ public static class InputField
     public const string FocusBorderBottomColor = "--flare-input-focus-border-bottom-color";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
-    // Inset around the control's content. The block half no longer sets the field height - the Height
-    // ramp below does - so these five now only decide how the content sits inside that height. Every step
-    // carries its size in the name, medium included: an unsuffixed "the padding" with four suffixed
-    // siblings reads as a base the others modify, which is not what it is. They are per-size tokens rather
-    // than lengths in the stylesheet because a ramp half-owned by core cannot stay ordered around a middle
-    // step the theme sets.
+    // Inset around the control's content. The Height ramp below sets the field height, so these five only
     /// <summary>CSS custom-property name for the control padding at the extra-small size.</summary>
     public const string PaddingXs = "--flare-input-padding-xs";
     /// <summary>CSS custom-property name for the control padding at the small size.</summary>

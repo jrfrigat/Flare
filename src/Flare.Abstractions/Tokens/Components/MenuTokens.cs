@@ -7,7 +7,6 @@ public sealed record MenuTokens
 {
     /// <summary>Rule drawn between groups of items, as a CSS <c>border</c> shorthand.</summary>
     [CssVar(MenuPanel.GroupDivider)] public required string GroupDivider { get; init; }
-    // --- 1. PANEL ---
     /// <summary>Distance between the panel and the button (or item) it opens from, as a CSS length. A theme
     /// whose menus sit flush against their anchor gives a zero length with a unit - a bare zero is not a
     /// length inside <c>calc()</c>.</summary>
@@ -27,7 +26,6 @@ public sealed record MenuTokens
     /// <summary>Space between the panel's side edges and its items.</summary>
     [CssVar(MenuPanel.PaddingInline)] public required string PanelPaddingInline { get; init; }
 
-    // --- 2. ITEM (geometry) ---
     /// <summary>Floor on an item's height. A theme that wants the height to follow the padding and label
     /// alone parks this at <c>0</c>.</summary>
     [CssVar(MenuPanel.ItemHeight)] public required string ItemHeight { get; init; }
@@ -52,7 +50,6 @@ public sealed record MenuTokens
     /// mirror the panel's own shape instead of squaring off inside it.</summary>
     [CssVar(MenuPanel.ItemRadiusEnd)] public required string ItemRadiusEnd { get; init; }
 
-    // --- 2b. GROUP (section) ---
     /// <summary>Corner radius of a group container, when a theme renders groups as rounded islands.</summary>
     [CssVar(MenuPanel.GroupRadius)] public required string GroupRadius { get; init; }
     /// <summary>Space between a group's edges and its items, when a theme insets group islands.</summary>
@@ -70,7 +67,6 @@ public sealed record MenuTokens
     /// <summary>Shadow on the slab behind a grouped panel.</summary>
     [CssVar(MenuPanel.GroupedPanelShadow)] public required string GroupedPanelShadow { get; init; }
 
-    // --- 3. ITEM (label typography) ---
     /// <summary>Font family of an item's label. Each theme decides which step of its own type scale a
     /// menu item maps to.</summary>
     [CssVar(MenuPanel.ItemLabelFont)] public required string ItemLabelFont { get; init; }
@@ -83,7 +79,6 @@ public sealed record MenuTokens
     /// <summary>Letter spacing of an item's label.</summary>
     [CssVar(MenuPanel.ItemLabelSpacing)] public required string ItemLabelSpacing { get; init; }
 
-    // --- 4. FOCUS RING ---
     /// <summary>Colour of the ring drawn around an item on keyboard focus.</summary>
     [CssVar(MenuPanel.ItemFocusRingColor)] public required string ItemFocusRingColor { get; init; }
     /// <summary>Thickness of an item's keyboard-focus ring.</summary>

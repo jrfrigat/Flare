@@ -15,7 +15,6 @@ public sealed record ButtonTokens
     [CssVar(Button.LoadingOpacity)] public required string LoadingOpacity { get; init; }
     /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
     [CssVar(Button.ContainerRadius)] public required string ContainerRadius { get; init; }
-    // --- 0a. TEXT-VARIANT INLINE PADDING ---
     // A text button has no container to sit inside, so a language usually hugs its label more tightly
     // than the contained variants do. It is a ladder rather than one value for the same reason
     // PaddingInline is: the tightening that reads right beside a small label is cramped beside a
@@ -31,7 +30,6 @@ public sealed record ButtonTokens
     /// <summary>Side padding of a text button at the xl size.</summary>
     [CssVar(Button.TextPaddingInline.Xl)] public required string TextPaddingInlineXl { get; init; }
 
-    // --- 1. STRONGLY-TYPED GAPS (gaps between icon and text) ---
     /// <summary>Space between the icon and the label at the xs size.</summary>
     [CssVar(Button.Gap.Xs)] public required string GapXs { get; init; }
     /// <summary>Space between the icon and the label at the sm size.</summary>
@@ -43,7 +41,6 @@ public sealed record ButtonTokens
     /// <summary>Space between the icon and the label at the xl size.</summary>
     [CssVar(Button.Gap.Xl)] public required string GapXl { get; init; }
 
-    // --- 2. PER-CORNER RADII FOR EACH OF THE 5 SIZES ---
     // (compound: each expands to 4 per-corner --flare-btn-radius-* vars in CssVarMap.FlattenDesign)
     // A theme is free to give every size the same radius (e.g. by referencing the Shape.Full scale token
     // for a pill at every size) or to ramp the rounding per size; the core takes no position either way.
@@ -58,7 +55,6 @@ public sealed record ButtonTokens
     /// <summary>Container corner radii at the xl size, one value per corner.</summary>
     public required CornerRadiusTokens RadiusXl { get; init; }
 
-    // --- 3. CONTAINER HEIGHTS ---
     /// <summary>Container height at the xs size. The button is a fixed-height control, so this defines
     /// the size step rather than merely constraining it.</summary>
     [CssVar(Button.Height.Xs)] public required string HeightXs { get; init; }
@@ -71,7 +67,6 @@ public sealed record ButtonTokens
     /// <summary>Container height at the xl size.</summary>
     [CssVar(Button.Height.Xl)] public required string HeightXl { get; init; }
 
-    // --- 4. INLINE PADDING (side padding) ---
     /// <summary>Space between the container edge and the content at the xs size, on both sides.</summary>
     [CssVar(Button.PaddingInline.Xs)] public required string PaddingInlineXs { get; init; }
     /// <summary>Space between the container edge and the content at the sm size, on both sides.</summary>
@@ -83,7 +78,6 @@ public sealed record ButtonTokens
     /// <summary>Space between the container edge and the content at the xl size, on both sides.</summary>
     [CssVar(Button.PaddingInline.Xl)] public required string PaddingInlineXl { get; init; }
 
-    // --- 4a. OUTLINE WIDTH ---
     // Per size rather than one value, because a stroke that reads as a hairline beside a small label is
     // a thread beside a large one - Material thickens it as the button grows. It is reserved on every
     // variant, not just the outlined one, so that changing variant never moves anything.
@@ -98,7 +92,6 @@ public sealed record ButtonTokens
     /// <summary>Container border width at the xl size.</summary>
     [CssVar(Button.OutlineWidth.Xl)] public required string OutlineWidthXl { get; init; }
 
-    // --- 4b. SELECTED (a button whose toggle is on) ---
     // Selection is a shape change as much as a colour one, and Material states the shape half as a swap:
     // a round button becomes square when selected and a square one becomes round. The value below is the
     // first half of that swap - what a button with the theme's own (round) shape takes when selected -
@@ -161,7 +154,6 @@ public sealed record ButtonTokens
     /// <summary>Icon and label of an unselected Tonal toggle.</summary>
     [CssVar(Button.Toggle.TonalUnselectedColor)] public required string TonalUnselectedColor { get; init; }
 
-    // --- 5. FOCUS AND BEHAVIOR ---
     /// <summary>Shorthand <c>outline</c> drawn around the button on keyboard focus
     /// (<c>:focus-visible</c>), not on a pointer press.</summary>
     [CssVar(Button.FocusOutline)] public required string FocusOutline { get; init; }
@@ -192,7 +184,6 @@ public sealed record ButtonTokens
     /// <summary>Outline colour of a disabled outlined button.</summary>
     [CssVar(Button.DisabledStroke)] public required string DisabledStroke { get; init; }
 
-    // --- 6. ICON SIZE for the 5 sizes ---
     /// <summary>Leading/trailing icon glyph size at the xs size.</summary>
     [CssVar(Button.IconSize.Xs)] public required string IconSizeXs { get; init; }
     /// <summary>Leading/trailing icon glyph size at the sm size.</summary>
@@ -250,7 +241,6 @@ public sealed record ButtonTokens
     /// <summary>Outline colour of an Outlined button with no Color set.</summary>
     [CssVar(Button.OutlinedBorderColor)] public required string OutlinedBorderColor { get; init; }
 
-    // --- 7. LABEL TYPOGRAPHY for the 5 sizes ---
     // (compound: each TypeStyle expands to several --flare-btn-label-* vars in CssVarMap.FlattenDesign)
     /// <summary>Label typography at the xs size. Each theme decides which step of its own type scale a
     /// button size maps to.</summary>

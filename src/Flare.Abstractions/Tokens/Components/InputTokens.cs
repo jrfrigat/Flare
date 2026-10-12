@@ -68,8 +68,8 @@ public sealed record InputTokens
     /// <summary>Control padding at the large size.</summary>
     [CssVar(InputField.PaddingLg)] public required string PaddingLg { get; init; }
 
-    /// <summary>Control padding at the extra-large size. Padding no longer decides how tall a field is -
-    /// <see cref="HeightMd"/> and its siblings do - so these five only place the content inside that
+    /// <summary>Control padding at the extra-large size. The field height comes from <see cref="HeightMd"/>
+    /// and its siblings, not from padding, so the five paddings only place the content inside that
     /// height.</summary>
     [CssVar(InputField.PaddingXl)] public required string PaddingXl { get; init; }
 

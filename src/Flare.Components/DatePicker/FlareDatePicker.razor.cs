@@ -111,7 +111,7 @@ public partial class FlareDatePicker
 
     // Single entry point for open-state changes so Opened/Closed fire consistently. Inline pickers are
     // always shown, so open/close is a no-op there. A locked field cannot be opened, but a popup opened before
-    // the lock still closes - by the API, the scrim or Escape (TASK-162).
+    // the lock still closes - by the API, the scrim or Escape.
     private async Task SetOpenAsync(bool open)
     {
         if (Inline || _open == open || (open && (Disabled || ReadOnly))) return;
@@ -151,7 +151,7 @@ public partial class FlareDatePicker
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-datepicker-{Guid.NewGuid():N}");
 
-    // The culture on the calendar the picker shows and writes dates on (TASK-182).
+    // The culture on the calendar the picker shows and writes dates on.
     private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
 
     private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
@@ -162,7 +162,7 @@ public partial class FlareDatePicker
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
     private string _separator => Nz(_culture.DateTimeFormat.DateSeparator, ".");
     // Normalised numeric mask used for typing + placeholder, with the segments in the culture's own order so
-    // year-first cultures (ja-JP, sv-SE, ...) mask and parse too (TASK-110).
+    // year-first cultures (ja-JP, sv-SE, ...) mask and parse too.
     private string _numericPattern => MaskedInput.NumericDatePattern(_culture, _separator);
     // The field edits digits on a mask unless a custom parser reads the text or the calendar writes letters
     // (Hebrew): then it takes free text and judges it on change.
@@ -194,11 +194,11 @@ public partial class FlareDatePicker
         UpdateFieldIdentifier(For);
 
         // A new value always re-syncs the text and cancels any input still in flight - a parent's value wins over
-        // keystrokes typed against the old one (TASK-163); a new display (DateFormat, Culture) only outside
-        // editing (TASK-113). A focused field takes the value in its editing form.
+        // keystrokes typed against the old one; a new display (DateFormat, Culture) only outside
+        // editing. A focused field takes the value in its editing form.
         var display = DisplayValue;
         // A new value set from outside shows its month: an inline calendar is never reopened to re-anchor it, and a
-        // new display alone (Culture, DateFormat) keeps the month the user browsed to (TASK-176).
+        // new display alone (Culture, DateFormat) keeps the month the user browsed to.
         if (!Equals(Value, _syncedValue) && Value is { } shown) ShowMonthOf(shown);
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
@@ -216,14 +216,14 @@ public partial class FlareDatePicker
     private FlareMonthGrid? _grid;
     private ElementReference _toggleEl;
     // Bumped by every input, change, blur, external re-sync and dispose; an input handler that resumes from
-    // its awaited selection read in an older generation is stale and drops its result (TASK-138).
+    // its awaited selection read in an older generation is stale and drops its result.
     private int _editGeneration;
     private bool _autofocused;
     // Caret position to restore after the next render (an auto-separator rewrite moved it to the end);
     // -1 when there is nothing to restore.
     private int _pendingCaret = -1;
     // The cell the keyboard cursor sits on (roving focus); starts from the value (or today) and moves
-    // with the arrow keys, independently of Value (TASK-106).
+    // with the arrow keys, independently of Value.
     private DateOnly? _focusedDate;
     private DateOnly FocusedCursor => _focusedDate ?? Value ?? Today;
 
@@ -242,7 +242,7 @@ public partial class FlareDatePicker
             var caret = _pendingCaret;
             _pendingCaret = -1;
             // Only restore while the field still holds focus: the selection read is awaited, so the user may
-            // have left the field meanwhile, and pulling focus back onto it would be wrong (TASK-120).
+            // have left the field meanwhile, and pulling focus back onto it would be wrong.
             if (_focused) await MaskedCaret.RestoreAsync(ElementJs, _inputEl, _text, caret);
         }
         if (!Inline)
@@ -267,7 +267,7 @@ public partial class FlareDatePicker
         (Min.HasValue && d < Min.Value) || (Max.HasValue && d > Max.Value) ||
         (IsDateDisabled?.Invoke(d) ?? false);
 
-    // A disabled or read-only field makes every day unselectable, inline calendar included (TASK-104).
+    // A disabled or read-only field makes every day unselectable, inline calendar included.
     private bool IsDayUnavailable(DateOnly d) => Disabled || ReadOnly || IsDisabled(d);
 
     private Task Toggle() => SetOpenAsync(!_open);
@@ -340,7 +340,7 @@ public partial class FlareDatePicker
             return;
         }
         // Incomplete or unparsable text is not committed; put the field back to what it currently shows so a
-        // stale half-edit is not left behind (TASK-119).
+        // stale half-edit is not left behind.
         _text = DisplayValue;
     }
 
@@ -362,7 +362,7 @@ public partial class FlareDatePicker
         if (DateOnly.TryParseExact(s, _numericPattern, _culture, DateTimeStyles.None, out d)) return true;
         if (DateOnly.TryParseExact(s, _format, _culture, DateTimeStyles.None, out d)) return true;
         // A half-edited mask ("11.02.026") must never fall through to the lenient parser and be committed
-        // as a different month/year (TASK-119): only a complete date (8 digits) may use it. A calendar written in
+        // as a different month/year: only a complete date (8 digits) may use it. A calendar written in
         // letters has no digits to count, and its free text goes to the culture's parser as typed.
         if ((!CalendarMath.WritesDigits(_culture) || s.Count(char.IsDigit) == 8)
             && DateOnly.TryParse(s, _culture, DateTimeStyles.None, out d)) return true;
@@ -392,9 +392,9 @@ public partial class FlareDatePicker
         if (e.Key == "Escape") { await ClosePopupAsync(); return; }
         if (Disabled || ReadOnly) return;
 
-        // Movement is relative to the focused cell, not the value (TASK-106), which the grid has just synced
-        // to the day the user sees focused (TASK-133). Disabled dates (Min/Max/IsDateDisabled) are skipped.
-        // Enter/Space are left to the native click of the focused day button (TASK-124).
+        // Movement is relative to the focused cell, not the value, which the grid has just synced
+        // to the day the user sees focused. Disabled dates (Min/Max/IsDateDisabled) are skipped.
+        // Enter/Space are left to the native click of the focused day button.
         var next = CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
             FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDisabled, _gridCalendar);
         if (next is null) return;
@@ -405,7 +405,7 @@ public partial class FlareDatePicker
         if (!_view.Contains(next.Value)) ShowMonthOf(next.Value);
     }
 
-    // Escape closes the popup and puts focus back on the trigger field once the panel is gone (TASK-106).
+    // Escape closes the popup and puts focus back on the trigger field once the panel is gone.
     private async Task ClosePopupAsync()
     {
         if (!_open) return;
@@ -413,8 +413,7 @@ public partial class FlareDatePicker
         await SetOpenAsync(false);
     }
 
-    // Escape anywhere in the popup - header, month or year view - closes it, not only in the day grid
-    // (TASK-134).
+    // Escape anywhere in the popup - header, month or year view - closes it, not only in the day grid.
     private Task HandlePanelKeyDown(KeyboardEventArgs e) =>
         !Inline && e.Key == "Escape" ? ClosePopupAsync() : Task.CompletedTask;
 }

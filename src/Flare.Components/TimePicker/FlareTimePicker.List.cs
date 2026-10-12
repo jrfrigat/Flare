@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components;
 
-// The List popup (TASK-131): the field is a combobox over a list of times, the time picker of design systems built on a combobox.
+// The List popup: the field is a combobox over a list of times, the time picker of design systems built on a combobox.
 // The list is the select family's own popup and option list, so it looks like a FlareSelect dropdown in every
 // theme; focus stays in the field and the active option is announced through aria-activedescendant.
 public partial class FlareTimePicker
@@ -89,7 +89,7 @@ public partial class FlareTimePicker
 
     // Combobox keys in the field: the arrows open the list and move the active time, Enter picks it and
     // Escape closes the list. Digits still go into the field. Escape closes a list left open when the field was
-    // locked after it opened; the other keys do nothing in a locked field (TASK-168, as TASK-162).
+    // locked after it opened; the other keys do nothing in a locked field.
     private async Task HandleInputKeyDown(KeyboardEventArgs e)
     {
         if (!_isList) { await HandleFieldKeyDown(e); return; }

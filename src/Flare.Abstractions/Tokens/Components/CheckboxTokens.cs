@@ -24,8 +24,7 @@ public sealed record CheckboxTokens
     /// <summary>Extra-large box size.</summary>
     [CssVar(Checkbox.SizeXl)] public required string SizeXl { get; init; }
 
-    /// <summary>Diameter of the state-layer halo drawn around the box. Core used to fix it, so a theme
-    /// enlarging the control got a halo still sized for the medium step.</summary>
+    /// <summary>Diameter of the state-layer halo drawn around the box; a theme sizes it to the box it chose.</summary>
     [CssVar(Checkbox.StateLayerSize)] public required string StateLayerSize { get; init; }
     /// <summary>Border (outline) thickness of the box.</summary>
     [CssVar(Checkbox.BorderWidth)] public required string BorderWidth { get; init; }

@@ -81,7 +81,6 @@ public partial class FlareGauge
         }
     }
 
-    // -- Linear --------------------------------------------------------------
 
     // Ticks hang below a horizontal bar and to the right of a vertical one - the side the scale labels
     // read from in each orientation.
@@ -118,7 +117,6 @@ public partial class FlareGauge
         builder.CloseElement();
     };
 
-    // -- Class and style helpers --------------------------------------------
 
     // A zone's colour arrives either as a role class (which sets --fc-main) or, for a custom colour, as an
     // inline channel; both ends are read by one var() in the stylesheet.

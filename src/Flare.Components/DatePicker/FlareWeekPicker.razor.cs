@@ -263,7 +263,7 @@ public partial class FlareWeekPicker
     {
         if (e.Key == "Escape") { await ClosePopupAsync(); return; }
         if (Disabled || ReadOnly) return;
-        // Up/Down move by a week; Enter/Space are left to the native click of the focused day (TASK-124).
+        // Up/Down move by a week; Enter/Space are left to the native click of the focused day.
         var next = CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey, _firstDay, IsDisabled, _views.Grid);
         if (next is not { } day) return;
         _focusedDate = day;

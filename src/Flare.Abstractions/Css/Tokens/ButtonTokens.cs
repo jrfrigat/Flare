@@ -351,7 +351,6 @@ public static class Button
         }
     }
 
-    // Focus ring and shadow behavior
     /// <summary>CSS custom-property name for the focus outline token.</summary>
     public const string FocusOutline = "--flare-btn-focus-outline";
     /// <summary>CSS custom-property name for the focus outline offset token.</summary>

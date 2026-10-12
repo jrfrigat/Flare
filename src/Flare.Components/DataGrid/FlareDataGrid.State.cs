@@ -8,7 +8,6 @@ namespace Flare.Components;
 // footer and selection. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    // -- State snapshot + change notifications (Phase A) ----------------------
 
     internal List<DataGridSort> BuildSorts()
         => _sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)).ToList();
@@ -31,7 +30,6 @@ public partial class FlareDataGrid<TItem>
         foreach (var sub in g.Groups) FlattenConditions(sub, into);
     }
 
-    // -- Conditional formatting ------------------------------------------------
 
     private static string CombineStyle(string? baseStyle, string? extraStyle)
     {
@@ -294,9 +292,7 @@ public partial class FlareDataGrid<TItem>
 
     // One place to say "the data changed". There are two caches over the same source - the paged list
     // the provider path fills, and the sorted/filtered projection the client path works from - and they
-    // are cleared together or not at all. Twenty-two call sites cleared the first by hand; a second
-    // cache added next to it would have been correct in twenty-two places and stale in the twenty-third,
-    // which is the whole reason the projection used to be thrown away on every render instead.
+    // are cleared together or not at all: one call, so no site can clear one and leave the other stale.
     private void InvalidateData()
     {
         _sortedCache = null;
@@ -309,7 +305,6 @@ public partial class FlareDataGrid<TItem>
         EnsureColumnsBuilt();
         var src = Items ?? [];
 
-        // Tree mode: flatten hierarchical data
         if (_treeMode && Tree is not null)
         {
             var treeNodes = FlattenTree(src);
@@ -328,10 +323,8 @@ public partial class FlareDataGrid<TItem>
             filters.Add(typedFilter);
         }
 
-        // Convert _sortStack to DataGridSort list
         var sorts = _sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)).ToList();
 
-        // Use pipeline for single-enumeration execution
         var srcList = src is IList<TItem> iList ? iList.ToList() : src.ToList();
         var result = DataGridPipeline<TItem>.Execute(
             srcList,
@@ -350,10 +343,9 @@ public partial class FlareDataGrid<TItem>
     // virtual path, _pageItems, _totalPages, CurrentResultCount and BuildGroupedLines - 2-4 reads per
     // render, each otherwise re-running the full O(N log N) filter+sort.
     //
-    // Cached until the data changes, not until the render ends. It used to be thrown away at both
-    // render-cycle boundaries, which made every render - including one caused by a hover class or an
-    // expanded detail row - re-run the whole O(N log N) filter and sort over the entire set. On a
-    // hundred rows that is invisible; on the sets this grid is now expected to hold it is the render.
+    // Cached until the data changes, not until the render ends: a hover class or an expanded detail row
+    // re-renders without touching the data, and every such render would otherwise re-run the whole
+    // O(N log N) filter and sort over the entire set.
     //
     // Two things made the per-render memo necessary and neither is true any more. Virtualize was handed
     // this list directly and needed a new reference each render; it is now handed a fresh IndexedRows

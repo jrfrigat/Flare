@@ -12,7 +12,6 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record SliderTokens
 {
-    // ---- Size-dependent geometry (one token per size; the size class picks which one to read) ----
 
     /// <summary>Track thickness at the xs size.</summary>
     [CssVar(Slider.TrackHeight.Xs)] public required string TrackHeightXs { get; init; }
@@ -58,7 +57,6 @@ public sealed record SliderTokens
     /// <summary>Size of the icons flanking the track at the xl size.</summary>
     [CssVar(Slider.IconSize.Xl)] public required string IconSizeXl { get; init; }
 
-    // ---- Size-independent geometry ----
 
     /// <summary>
     /// Default length of a VERTICAL slider (a horizontal one fills its container, but a vertical one has no
@@ -96,7 +94,6 @@ public sealed record SliderTokens
     /// </summary>
     [CssVar(Slider.HandleFill)] public required string HandleFill { get; init; }
 
-    // ---- Colors / state (per-instance Color still overrides the accent) ----
 
     /// <summary>Active (filled) track color. Per-instance <c>Color</c> overrides this via <c>--fc-main</c>.</summary>
     [CssVar(Slider.ActiveColor)] public required string ActiveColor { get; init; }

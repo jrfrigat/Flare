@@ -3,8 +3,8 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 
-@* The month and year views shared by FlareDatePicker and FlareMonthPicker (TASK-184): three columns of
-   buttons on the calendar the picker's grid is drawn on (TASK-182). One button is tabbable (roving focus);
+@* The month and year views shared by FlareDatePicker and FlareMonthPicker: three columns of
+   buttons on the calendar the picker's grid is drawn on. One button is tabbable (roving focus);
    the arrows, Home and End move it over the cells that can be picked, and any other key goes to the host. *@
 <div class="@(View == MonthYearGridView.Months ? Css.Classes.DatePicker.MonthGrid : Css.Classes.DatePicker.YearGrid)"
      role="group" aria-label="@AriaLabel" @onkeydown="HandleKeyDown">

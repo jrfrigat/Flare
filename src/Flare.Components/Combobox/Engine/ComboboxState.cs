@@ -54,7 +54,6 @@ public sealed class ComboboxState<TItem>
     /// <summary>Raised with the highlighted option index when the shell should scroll it into view (keyboard nav).</summary>
     public event Action<int>? ScrollRequested;
 
-    // ---- Data feed (called by the shell in OnParametersSet; does not raise Changed) -----------------
 
     /// <summary>Replaces the source items (merged Items + declarative options). Re-applies the query and
     /// clamps the highlight.</summary>
@@ -70,7 +69,6 @@ public sealed class ComboboxState<TItem>
     /// <param name="items">The selected items, in order.</param>
     public void SetSelection(IEnumerable<TItem>? items) => Selection.Set(items);
 
-    // ---- Open / close -------------------------------------------------------------------------------
 
     /// <summary>Opens the dropdown and highlights an option per <paramref name="strategy"/>.</summary>
     /// <param name="strategy">Which option to highlight on open.</param>
@@ -117,7 +115,6 @@ public sealed class ComboboxState<TItem>
         return -1;
     }
 
-    // ---- Highlight ----------------------------------------------------------------------------------
 
     /// <summary>Moves the highlight one step (<paramref name="dir"/> = +1 down / -1 up); opens first if closed.</summary>
     /// <param name="dir">+1 to move down, -1 to move up.</param>
@@ -149,7 +146,6 @@ public sealed class ComboboxState<TItem>
         Raise();
     }
 
-    // ---- Input / filter -----------------------------------------------------------------------------
 
     /// <summary>
     /// Sets the input/query text. For searchable variants this re-filters and auto-highlights the first
@@ -176,7 +172,6 @@ public sealed class ComboboxState<TItem>
     /// <param name="text">The display text to show in the input.</param>
     public void SetInputSilent(string? text) => Input = text ?? string.Empty;
 
-    // ---- Type-ahead (select-only first-letter navigation) -------------------------------------------
 
     /// <summary>
     /// Appends a printable character to the type-ahead buffer and moves the highlight to the next matching
@@ -220,7 +215,6 @@ public sealed class ComboboxState<TItem>
         return true;
     }
 
-    // ---- Commit -------------------------------------------------------------------------------------
 
     /// <summary>Commits a specific option (a click or a resolved custom value).</summary>
     /// <param name="item">The item to commit.</param>

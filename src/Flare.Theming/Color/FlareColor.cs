@@ -269,7 +269,6 @@ public readonly record struct FlareColor
     /// <summary>True for a dynamic-color value (precomputed tonal set), a subset of <see cref="IsCustom"/>.</summary>
     public bool IsDynamic => _on is not null;
 
-    // ---- Centralized inline-token emission for the custom/dynamic path -------------------------
     // Components apply the subset of --fc-* tokens they consume. For a plain custom color the paired
     // tones are derived via FlareColorResolver; for a dynamic color they are the precomputed light-dark
     // pairs. Role/Default colors return null (they use the shared flare-color-* class instead).

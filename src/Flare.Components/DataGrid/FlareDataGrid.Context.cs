@@ -34,7 +34,6 @@ public partial class FlareDataGrid<TItem>
 
     internal void NotifyContext(DataGridChange change) => _attachedContext?.Raise(change);
 
-    // -- Read views -----------------------------------------------------------
     // Projections handed to DataGridContext. Those that map onto a live internal collection are handed
     // over directly rather than copied: a control reads them on every render, and the context's contract
     // is that only Snapshot() materializes.
@@ -62,7 +61,6 @@ public partial class FlareDataGrid<TItem>
 
     internal int FilteredRowCount => CurrentResultCount();
 
-    // -- Commands -------------------------------------------------------------
 
     /// <summary>Replaces the sort stack in one step. Keys that match no column are dropped; a
     /// <see cref="SortDirection.None"/> entry removes that column from the stack.</summary>

@@ -102,7 +102,6 @@ public static class ServiceCollectionExtensions
             new Flare.Components.Services.FlareHttpUpload(sp.GetRequiredService<HttpClient>()));
         services.AddScoped<Flare.Components.IFlareColorExtractor, Flare.Components.FlareColorExtractor>();
 
-        // Collision and Theme JS services.
         services.AddScoped<ICollisionService, Flare.Components.Services.CollisionService>();
         services.AddScoped<IThemeJsService, Flare.Components.Services.ThemeJsService>();
         services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();

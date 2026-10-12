@@ -184,7 +184,6 @@ public static class FlareIcons
     /// <summary>The built-in <c>speed</c> icon.</summary>
     public static FlareSvgIcon Speed { get; } = Reg("speed", "M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.27-10.44zm-9.79 6.84a2 2 0 0 0 2.83 0l5.66-8.49-8.49 5.66a2 2 0 0 0 0 2.83z");
 
-    // -- Component chrome (used by default component rendering) ----------------
     /// <summary>The built-in <c>drag_indicator</c> icon.</summary>
     public static FlareSvgIcon DragIndicator { get; } = Reg("drag_indicator", "M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z");
     /// <summary>The built-in <c>keyboard_arrow_up</c> icon.</summary>
@@ -212,7 +211,6 @@ public static class FlareIcons
     /// <summary>The built-in <c>check_box_outline_blank</c> (empty box) icon, used for read-only boolean cells.</summary>
     public static FlareSvgIcon CheckBoxOutlineBlank { get; } = Reg("check_box_outline_blank", "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z");
 
-    // -- Text formatting (rich-text editor toolbar) -----------------------------
     /// <summary>The built-in <c>format_bold</c> icon.</summary>
     public static FlareSvgIcon FormatBold { get; } = Reg("format_bold", "M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z");
     /// <summary>The built-in <c>format_italic</c> icon.</summary>

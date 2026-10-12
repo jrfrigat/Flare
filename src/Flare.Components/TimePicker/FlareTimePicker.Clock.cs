@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Flare.Components;
 
-// The clock the field writes and reads (TASK-172): 24-hour "HH:mm[:ss]", or on a 12-hour clock "hh:mm[:ss] AM" with the
+// The clock the field writes and reads: 24-hour "HH:mm[:ss]", or on a 12-hour clock "hh:mm[:ss] AM" with the
 // culture's designators. The separators are literal colons, as the digit mask writes them.
 public partial class FlareTimePicker
 {

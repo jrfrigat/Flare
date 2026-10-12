@@ -165,7 +165,7 @@ internal class LiquidGlassTokens
     internal static readonly BadgeTokens Badge = new()
     {
         Radius = "var(--flare-shape-full)",
-        // Per-size ramp; the four non-default steps used to be literals in badge.css. Values unchanged.
+        // Per-size ramp, one token per step.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1.125rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1.125rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.5rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
@@ -360,8 +360,7 @@ internal class LiquidGlassTokens
 
     internal static readonly RadioTokens Radio = new()
     {
-        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
-        // could move only the middle step; the medium value below is exactly what it was before.
+        // The size ramp, one token per size so a theme can move any of the five steps.
         SizeXs = "1rem",
         SizeSm = "1.125rem",
         SizeMd = "1.25rem",

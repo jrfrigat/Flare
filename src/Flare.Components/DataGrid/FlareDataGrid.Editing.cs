@@ -233,7 +233,6 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Returns the current edit values keyed by column title. Available during OnRowSaved.</summary>
     public IReadOnlyDictionary<string, string> GetEditValues() => _editValues;
 
-    // -- Batch editing -------------------------------------------------------
 
     private bool _batchMode => EditMode == DataGridEditMode.Batch;
 

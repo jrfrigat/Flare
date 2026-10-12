@@ -24,8 +24,8 @@ public sealed record RadioTokens
     /// <summary>Extra-large ring diameter.</summary>
     [CssVar(Radio.SizeXl)] public required string SizeXl { get; init; }
 
-    /// <summary>Diameter of the state-layer halo drawn around the ring. Core used to fix it, so a theme
-    /// enlarging the control got a halo still sized for the medium step.</summary>
+    /// <summary>Diameter of the state-layer halo drawn around the ring; a theme sets it to match the ring
+    /// size it chose.</summary>
     [CssVar(Radio.StateLayerSize)] public required string StateLayerSize { get; init; }
     /// <summary>Background of the state-layer halo on hover while unselected.</summary>
     [CssVar(Radio.StateLayerHover)] public required string StateLayerHover { get; init; }

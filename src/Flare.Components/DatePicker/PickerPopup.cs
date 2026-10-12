@@ -7,7 +7,7 @@ namespace Flare.Components;
 /// <summary>
 /// Keeps a picker's anchored popup in step with its open state: while open the popup is placed under the field
 /// and holds Tab inside (it is a modal dialog); on close both are undone and focus goes back to the toggle, or to
-/// the field after Escape (TASK-134). One instance per picker; the date, date-time and time pickers share it.
+/// the field after Escape. One instance per picker; the date, date-time and time pickers share it.
 /// </summary>
 internal sealed class PickerPopup(IOverlayJsService overlay, string id)
 {

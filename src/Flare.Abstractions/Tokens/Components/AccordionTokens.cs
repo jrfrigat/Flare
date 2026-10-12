@@ -6,17 +6,15 @@ namespace Flare.Abstractions.Tokens.Components;
 /// panel headers and their bodies).</summary>
 public sealed record AccordionTokens
 {
-    // --- 1. CONTAINER ---
     /// <summary>Border around the accordion container, as a CSS <c>border</c> shorthand. A theme with a
     /// borderless stack of sections parks this at <c>none</c>.</summary>
     [CssVar(AccordionField.Border)] public required string Border { get; init; }
-    /// <summary>Corner radius of the accordion container. This used to read the CARD's radius, which
-    /// meant a theme could not reshape one without reshaping the other.</summary>
+    /// <summary>Corner radius of the accordion container, its own rather than the card's, so a theme can
+    /// reshape one without reshaping the other.</summary>
     [CssVar(AccordionField.Radius)] public required string Radius { get; init; }
     /// <summary>Rule drawn between adjacent panels, as a CSS <c>border</c> shorthand.</summary>
     [CssVar(AccordionField.PanelDivider)] public required string PanelDivider { get; init; }
 
-    // --- 2. PANEL HEADER ---
     /// <summary>Background of a panel header.</summary>
     [CssVar(AccordionField.HeaderBg)] public required string HeaderBg { get; init; }
     /// <summary>Foreground of a panel header.</summary>
@@ -41,7 +39,6 @@ public sealed record AccordionTokens
     /// <summary>Size of the chevron that turns as a panel expands.</summary>
     [CssVar(AccordionField.IconSize)] public required string IconSize { get; init; }
 
-    // --- 3. PANEL BODY ---
     /// <summary>Space above and below a panel body's content.</summary>
     [CssVar(AccordionField.BodyPaddingBlock)] public required string BodyPaddingBlock { get; init; }
     /// <summary>Space between a panel body's side edges and its content.</summary>

@@ -220,7 +220,6 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Aggregate definitions rendered as a footer row (Sum/Count/Average/Min/Max per column).</summary>
     [Parameter] public IReadOnlyList<AggregateDefinition<TItem>>? Aggregates { get; set; }
 
-    // -- Appearance -----------------------------------------------------------
 
     /// <summary>Alternating row background ("zebra" striping).</summary>
     [Parameter] public bool Striped { get; set; }
@@ -237,7 +236,6 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Controls how column filters are displayed: Simple (text inputs), Menu (dropdowns), or Both.</summary>
     [Parameter] public DataGridFilterMode FilterMode { get; set; } = DataGridFilterMode.Simple;
 
-    // -- Column visibility ----------------------------------------------------
 
     /// <summary>Shows a built-in "Columns" button in the toolbar that opens a checklist to show/hide
     /// individual columns. Hidden columns are tracked by their key (<see cref="FlareColumn{TItem}.Id"/> /
@@ -255,7 +253,6 @@ public partial class FlareDataGrid<TItem>
     /// State is restored on component init and saved on every user change.</summary>
     [Parameter] public string? PersistStateKey { get; set; }
 
-    // -- Server-side change events (Phase A) ----------------------------------
     // Fire on every user change so a host can rebuild an API query or persist layout. When an
     // ItemsProvider is set the grid also re-requests automatically; these are an additional hook.
 

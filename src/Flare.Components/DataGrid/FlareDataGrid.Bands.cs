@@ -8,14 +8,12 @@ namespace Flare.Components;
 /// <summary>FlareDataGrid partial: column-band (grouped header) layout logic.</summary>
 public partial class FlareDataGrid<TItem>
 {
-    // -- Band header rendering -----------------------------------------------
 
     private int _totalColumnCount => _gridColumns.Count(c => !_hiddenColumns.Contains(c.Key))
         + (SelectionMode == SelectionMode.Multiple ? 1 : 0)
         + (RowDetailTemplate != null ? 1 : 0)
         + (_inlineEditEnabled ? 1 : 0);
 
-    // -- Banded header --------------------------------------------------------
 
     // One header cell in the banded layout: a band title (Band set) or a leaf column header (Column set).
     private sealed record HeaderCell(int Row, int RowSpan, int ColSpan, FlareColumnBand? Band, DataGridColumn<TItem>? Column);

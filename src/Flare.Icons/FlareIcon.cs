@@ -46,7 +46,6 @@ public abstract record FlareIcon
     // built-in set (e.g. an icon-browser page). There is likewise no implicit FlareIcon -> RenderFragment
     // conversion (it makes overload resolution ambiguous); fill a RenderFragment slot with @icon.Render().
 
-    // ---- Shared build helpers (for provider subclasses, including add-on packs) -----------------
 
     /// <summary>Joins the icon class list: root class, optional provider modifier, color role class, caller class.</summary>
     protected string BuildClass(string? modifier)

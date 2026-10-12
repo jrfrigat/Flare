@@ -44,7 +44,6 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     /// grid itself is exposed for the rare case that needs something the context does not carry.</summary>
     public FlareDataGrid<TItem>? Grid => _grid;
 
-    // -- Columns --------------------------------------------------------------
 
     /// <summary>Every registered column, in display order (user reordering included).</summary>
     public IReadOnlyList<DataGridColumn<TItem>> Columns => _grid?.ColumnsView ?? [];
@@ -66,12 +65,10 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     public IReadOnlyList<string> ColumnOrder =>
         _grid is { } g ? [.. g.ColumnsView.Select(c => c.Key)] : [];
 
-    // -- Sorting --------------------------------------------------------------
 
     /// <summary>Active sorts, outermost first. Allocates a small list per read.</summary>
     public IReadOnlyList<DataGridSort> Sorts => _grid?.SortsView ?? [];
 
-    // -- Filtering ------------------------------------------------------------
 
     /// <summary>Plain text filters from the filter row, keyed by column key.</summary>
     public IReadOnlyDictionary<string, string> Filters => _grid?.TextFiltersView ?? EmptyFilters;
@@ -85,7 +82,6 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     /// <summary>The global quick-search text, or null when no quick search is active.</summary>
     public string? QuickFilterText => _grid?.QuickFilterTextView;
 
-    // -- Paging ---------------------------------------------------------------
 
     /// <summary>Zero-based index of the current page.</summary>
     public int Page => _grid?.CurrentPageIndex ?? 0;
@@ -105,7 +101,6 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     /// <summary>The page-size choices the grid offers.</summary>
     public IReadOnlyList<int> RowsPerPageOptions => _grid?.RowsPerPageOptions ?? [];
 
-    // -- Selection and grouping ----------------------------------------------
 
     /// <summary>The selected rows.</summary>
     public IReadOnlySet<TItem> SelectedItems => _grid?.SelectionView ?? EmptySelection;
@@ -113,7 +108,6 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     /// <summary>Group-by keys, outermost first.</summary>
     public IReadOnlyList<string> GroupKeys => _grid?.GroupKeysView ?? [];
 
-    // -- Commands -------------------------------------------------------------
 
     /// <summary>Sorts by a column key. Ascending, then descending, then unsorted on repeat.</summary>
     /// <param name="columnKey">Key of the column to sort (<see cref="DataGridColumn{TItem}.Key"/>).</param>
@@ -220,7 +214,6 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     /// <summary>Re-runs the query: reloads from the items provider, or re-filters the local items.</summary>
     public Task RefreshAsync() => _grid?.RefreshAsync() ?? Task.CompletedTask;
 
-    // -- Materialization ------------------------------------------------------
 
     /// <summary>Copies the whole state into an immutable snapshot. Unlike the individual properties this
     /// allocates every collection, so take it when a consistent whole is needed - persistence, undo, a
@@ -239,7 +232,6 @@ public sealed class DataGridContext<[DynamicallyAccessedMembers(DynamicallyAcces
     /// attached.</returns>
     public DataGridExportData<TItem>? GetExportData(string fileName) => _grid?.GetExportData(fileName);
 
-    // -- Grid plumbing --------------------------------------------------------
 
     internal void Attach(FlareDataGrid<TItem> grid)
     {

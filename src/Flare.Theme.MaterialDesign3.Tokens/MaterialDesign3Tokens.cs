@@ -13,8 +13,7 @@ namespace Flare.Theme.MaterialDesign3.Tokens;
 /// It carries Material 3's opinions - the tonal color roles, the pill shapes, the surface-tint
 /// elevation - so it is a base only for themes that share them. Material 2 predates all three and
 /// ships its own complete set; a theme from another design language should do the same rather than
-/// inherit a language it does not speak. It was called <c>MaterialDesignTokens</c> until that name
-/// let Material 2 sit on it by accident.
+/// inherit a language it does not speak.
 /// </para>
 /// </summary>
 public class MaterialDesign3Tokens
@@ -201,7 +200,7 @@ public class MaterialDesign3Tokens
     {
         // MD3 Expressive: pill shape (full radius), compact sizing
         Radius = "var(--flare-shape-full)",
-        // The ramp core used to hardcode for xs/sm/lg/xl, now the theme's to name. Values unchanged.
+        // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
@@ -253,8 +252,7 @@ public class MaterialDesign3Tokens
         // Baseline M3 has ONE button, 40dp tall (md.comp.filled-button.container.height), and Md is the
         // size every button takes by default, so Md is that button. The other steps are Flare's ramp
         // around it - the Expressive theme states its own 32/40/56/96/136dp one - with Xl at the FAB's
-        // 56dp. Md used to be 48dp, which made every default button, icon button and segmented control
-        // 8dp taller than the spec.
+        // 56dp.
         HeightXs = "2rem",       // 32dp
         HeightSm = "2.25rem",    // 36dp
         HeightMd = "2.5rem",     // 40dp (spec)
@@ -474,8 +472,7 @@ public class MaterialDesign3Tokens
 
     internal static readonly CheckboxTokens Checkbox = new()
     {
-        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
-        // could move only the middle step; the medium value below is exactly what it was before.
+        // The size ramp, one token per size so a theme can move any of the five steps.
         SizeXs = "0.875rem",
         SizeSm = "1rem",
         SizeMd = "1.125rem",
@@ -494,8 +491,7 @@ public class MaterialDesign3Tokens
     };
     internal static readonly RadioTokens Radio = new()
     {
-        // The size ramp. Core used to hold xs/sm/lg/xl as literals in its own stylesheet, so a theme
-        // could move only the middle step; the medium value below is exactly what it was before.
+        // The size ramp, one token per size so a theme can move any of the five steps.
         SizeXs = "1rem",
         SizeSm = "1.125rem",
         SizeMd = "1.25rem",
@@ -666,8 +662,7 @@ public class MaterialDesign3Tokens
         PanelPaddingBlock = "0.5rem",                 // md-menu top/bottom space 8dp
         ItemHeight = "3rem",                          // item height 48dp (MD3 list-item)
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
-        // Dense: the value core used to hardcode in menuitem.css, so a theme could style a normal menu
-        // but never a dense one. Unchanged.
+        // Dense: its own value, so a theme can style a dense menu as well as a normal one.
         ItemPaddingBlockDense = "0.375rem",
         ItemGapDense = "0.5rem",
         ItemGapBetween = "0",
@@ -688,8 +683,7 @@ public class MaterialDesign3Tokens
         ItemLabelSize = "var(--flare-typescale-label-large-size)",
         ItemLabelHeight = "var(--flare-typescale-label-large-height)",
         ItemLabelSpacing = "var(--flare-typescale-label-large-spacing)",
-        // Neutral baseline members (formerly the record defaults) - carried explicitly now that
-        // the core record no longer ships defaults.
+        // Neutral baseline members, carried explicitly because the core record ships no defaults.
         EnterAnimation = "flare-menu-in",
         PanelBg = "var(--flare-color-surface-container)",
         ItemPaddingInline = "1rem",
@@ -722,15 +716,13 @@ public class MaterialDesign3Tokens
         PaddingXs = "0.1875rem 0.5rem",
         PaddingSm = "0.375rem 0.625rem",
         PaddingMd = "1rem 1rem",                      // the M3 56dp field
-        // Large and extra-large are measured up from the 56dp medium. They used to be 14px and 18px of
-        // block padding, authored in core against a shorter medium, which left Large SHORTER than Medium
+        // Large and extra-large are measured up from the 56dp medium, so neither is shorter than medium
         // under this theme.
         PaddingLg = "1.25rem 1.125rem",
         PaddingXl = "1.5rem 1.25rem",
         // Height ramp. M3 puts the text field AND the select at 56dp, so Md is the spec number and the
-        // rest are measured off the padding ramp above - each step is the tallest control that step used
-        // to produce, so the family converges upward and no control shrinks. Before these existed the
-        // steps disagreed by 2px (the trigger was taller) and by 5px at Xl (the text field was).
+        // rest are measured off the padding ramp above - each step is the tallest control of that size, so
+        // the family converges upward and no control shrinks.
         HeightXs = "1.875rem", // 30px
         HeightSm = "2.25rem",  // 36px
         HeightMd = "3.5rem",   // 56px - the M3 field height
@@ -1606,8 +1598,7 @@ public class MaterialDesign3Tokens
 
     internal static readonly StripeTokens Stripe = new()
     {
-        // A wash of the content colour, which is what a striped table has always been here. The data
-        // grid used to step to surface-container-low instead; one language, one answer.
+        // A wash of the content colour: the one stripe answer across the library.
         Background = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
     };
 
@@ -1714,7 +1705,7 @@ public class MaterialDesign3Tokens
             PaddingRight = "16px",
             PaddingBottom = "16px",
             PaddingLeft = "16px",
-            // Neutral baseline members (formerly the record defaults), carried explicitly.
+            // Neutral baseline members, carried explicitly.
             ElevatedBg = "var(--flare-color-surface-container-low)",
             FilledBg = "var(--flare-color-surface-container-highest)",
             FilledBorder = "none",

@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace Flare.Components;
 
-// Keyboard of the column popup (TASK-174): one listbox per unit. Left/Right pick the column, Up/Down step its value over
+// Keyboard of the column popup: one listbox per unit. Left/Right pick the column, Up/Down step its value over
 // the cells that are offered (the step and Min/Max), Home/End jump to the first and last, digits type it, and Enter
 // confirms on key-up - on key-down the closing popup hands focus to the toggle, which the browser then activates.
 public partial class FlareTimePicker

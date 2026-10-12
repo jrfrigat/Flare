@@ -14,7 +14,6 @@ namespace Flare.Components;
 // keeps its public properties and fields.
 public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem>
 {
-    // -- New state management API ---------------------------------------------
 
     /// <summary>Current grid state as an immutable snapshot. Updated on every state change.</summary>
     public DataGridState<TItem> CurrentState => BuildCurrentState();
@@ -22,7 +21,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     /// <summary>The grid's root CSS class.</summary>
     protected override string ComponentCssClass => Css.Classes.DataGrid.Root;
 
-    // -- Helper methods to resolve effective values --
 
     // Virtual is a three-state opt-in: true always recycles, false never does, null (the default) lets
     // the grid decide. Deciding is only safe because recycling no longer changes anything but the number
@@ -197,7 +195,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     // Last layout signature pushed to JS (resize handles / frozen offsets), to skip redundant interop.
     private string? _lastSyncedLayout;
 
-    // Infinite scroll state.
     private ElementReference _wrapperRef;
     private ElementReference _infiniteSentinel;
     private DotNetObjectReference<FlareDataGrid<TItem>>? _infiniteRef;
@@ -217,7 +214,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private IReadOnlyList<TItem> _pinnedTop => PinnedTopRows ?? [];
     private IReadOnlyList<TItem> _pinnedBottom => PinnedBottomRows ?? [];
 
-    // Menu filter mode state
     private string? _filterMenuOpen; // column key of the open filter menu
     private string _filterMenuOperator = "contains";
     private string _filterMenuValue = "";
@@ -254,14 +250,11 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private readonly List<DataGridGroup<TItem>> _groupComponents = [];
     private IReadOnlyList<DataGridGroup<TItem>> _effectiveGroups => _groupComponents;
 
-    // Tree-grid state
     private readonly HashSet<TItem> _expandedItems = new();
     private bool _treeMode => Tree is not null;
 
-    // Column picker state
     private readonly HashSet<string> _hiddenColumns = [];
 
-    // Inline edit state
     private TItem? _editingItem;
     private readonly Dictionary<string, string> _editValues = new();
 
@@ -272,7 +265,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private readonly Dictionary<TItem, Dictionary<string, string>> _batchEditValues = new();
 #pragma warning restore CS8714
 
-    // Rows-per-page
     private int _currentPageSize;
     private bool _pageSizeInitialized;
 
@@ -409,7 +401,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
             return;
         }
 
-        // Cancel any in-flight provider call
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _providerCts = new CancellationTokenSource();
@@ -452,7 +443,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         }
     }
 
-    // -- Infinite scroll ------------------------------------------------------
 
     private void ResetInfinite()
     {
@@ -468,7 +458,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     {
         if (_provider is null || _infiniteLoading || !_infiniteHasMore) return;
 
-        // Cancel any previous infinite load
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _providerCts = new CancellationTokenSource();
@@ -521,7 +510,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
             var saved = await _persistence.LoadAsync();
             if (saved is not null)
             {
-                // Restore sorts
                 if (saved.Sorts is { Count: > 0 })
                 {
                     foreach (var s in saved.Sorts)
@@ -534,19 +522,16 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
                         }
                     }
                 }
-                // Restore filters
                 if (saved.Filters is { Count: > 0 })
                 {
                     foreach (var (k, v) in saved.Filters)
                         _filters[k] = v;
                 }
-                // Restore column order
                 if (saved.ColumnOrder is { Count: > 0 })
                 {
                     _columnOrder.Clear();
                     _columnOrder.AddRange(saved.ColumnOrder);
                 }
-                // Restore hidden columns
                 if (saved.HiddenColumns is { Count: > 0 })
                 {
                     foreach (var k in saved.HiddenColumns)
@@ -559,7 +544,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
                     _currentPageSize = saved.PageSize;
                     _pageSizeInitialized = true;
                 }
-                // Restore page
                 if (saved.Page > 0)
                     _page = saved.Page;
             }

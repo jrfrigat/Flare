@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components;
 
-// Opening the panel from a click in the field rather than from the toggle (TASK-190).
+// Opening the panel from a click in the field rather than from the toggle.
 public partial class FlareDateTimePicker
 {
     // A click in the field opens the panel as well; focus stays in the field (PickerPopup.FromField), so the user

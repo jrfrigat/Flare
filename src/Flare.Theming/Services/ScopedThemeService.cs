@@ -36,7 +36,6 @@ public sealed class ScopedThemeService : IThemeService
         IsRtl = isRtl;
     }
 
-    // -- Overridden axes ----------------------------------------------------------------------
     /// <summary>The active design-system theme.</summary>
     public ITheme CurrentTheme { get; private set; }
     /// <summary>The active color palette.</summary>
@@ -50,7 +49,6 @@ public sealed class ScopedThemeService : IThemeService
     /// <summary>Whether right-to-left layout is enabled.</summary>
     public bool IsRtl { get; private set; }
 
-    // -- Delegated to the outer service -------------------------------------------------------
     /// <summary>Whether the active palette is the runtime-generated Dynamic Color palette.</summary>
     public bool IsDynamicPalette => CurrentPalette.Id == Palette.DynamicId;
     /// <summary>Seed color used for the Dynamic Color palette when the OS accent is unavailable.</summary>

@@ -35,7 +35,6 @@ public sealed class ThemeValidator : IThemeValidator
             return errors;
         }
 
-        // Typography
         if (theme.Design.Typography is null)
             errors.Add("Theme.Design.Typography is required.");
         else
@@ -57,30 +56,24 @@ public sealed class ThemeValidator : IThemeValidator
             if (theme.Design.Typography.DisplaySmall is null) errors.Add("Typography.DisplaySmall is required.");
         }
 
-        // Shape
         if (theme.Design.Shape is null)
             errors.Add("Theme.Design.Shape is required.");
 
-        // Elevation
         if (theme.Design.Elevation is null)
             errors.Add("Theme.Design.Elevation is required.");
 
-        // Motion
         if (theme.Design.Motion is null)
             errors.Add("Theme.Design.Motion is required.");
 
-        // State
         if (theme.Design.State is null)
             errors.Add("Theme.Design.State is required.");
 
-        // StyleAssets
         if (theme.StyleAssets is null || !theme.StyleAssets.Any())
             errors.Add("Theme.StyleAssets must contain at least one stylesheet.");
 
         if (theme.ScriptAssets is null)
             errors.Add("Theme.ScriptAssets must not be null.");
 
-        // DefaultPaletteId
         if (string.IsNullOrWhiteSpace(theme.DefaultPaletteId))
             errors.Add("Theme.DefaultPaletteId must not be null or empty.");
 

@@ -4,9 +4,7 @@ namespace Flare.Components;
 
 // Reordering of columns (by header) and rows, both through the shared pointer-based drag model.
 //
-// They used to be two independent HTML5 drag-and-drop implementations with a field each, and HTML5
-// drag-and-drop fires no event on a touch screen - so neither worked on a phone at all. Neither of them
-// is an implementation any more: the grid names its two zones, tags its rows and headers with an id,
+// Both work on a touch screen: the grid names its two zones, tags its rows and headers with an id,
 // and answers two questions. What is left here is the arithmetic of the move.
 public partial class FlareDataGrid<TItem>
 {
@@ -52,7 +50,6 @@ public partial class FlareDataGrid<TItem>
         _ => Task.CompletedTask,
     };
 
-    // -- Column reorder ------------------------------------------------------
     // Columns are identified by their stable Key (Id/SortKey/Title), so reorder survives duplicated or
     // localized titles.
     private async Task MoveColumnAsync(FlareDropEventArgs<object> e)
@@ -67,7 +64,6 @@ public partial class FlareDataGrid<TItem>
         await SetColumnOrderAsync(order);
     }
 
-    // -- Row reorder ---------------------------------------------------------
     private async Task MoveRowAsync(FlareDropEventArgs<object> e)
     {
         if (e.Payload is not TItem dragged) return;

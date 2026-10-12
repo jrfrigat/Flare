@@ -7,7 +7,6 @@ namespace Flare.Components;
 // table rows; composite fields align across the whole table. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    // -- Banded multi-row composite (DevExpress-style) ------------------------
 
     private IEnumerable<DataGridColumn<TItem>> _visibleSlots =>
         _gridColumns.Where(c => !_hiddenColumns.Contains(c.Key));

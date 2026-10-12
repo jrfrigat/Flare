@@ -185,7 +185,7 @@
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
-    // The culture on the calendar the picker shows and writes dates on (TASK-182).
+    // The culture on the calendar the picker shows and writes dates on.
     private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
     private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
     // The month the calendar shows, on the grid's calendar.
@@ -232,7 +232,7 @@
     private int _viewMonth;
     private DateOnly? _hover;
     private DateOnly? _pendingStart;
-    // The keyboard cursor (roving focus); starts from the range and moves with the arrow keys (TASK-128).
+    // The keyboard cursor (roving focus); starts from the range and moves with the arrow keys.
     private DateOnly? _focusedDate;
     private DateOnly FocusedCursor => _focusedDate ?? _pendingStart ?? StartDate ?? Today;
     // The range the visible month was last anchored to, so a re-render does not undo month navigation.
@@ -281,7 +281,7 @@
     /// </summary>
     public static IReadOnlyList<DateRangePreset> DefaultPresets => DefaultPresetsOn(CalendarMath.Gregorian);
 
-    // The default set with the month and the year of the grid calendar: "this month" is the Persian month for fa-IR (TASK-182).
+    // The default set with the month and the year of the grid calendar: "this month" is the Persian month for fa-IR.
     private static IReadOnlyList<DateRangePreset> DefaultPresetsOn(System.Globalization.Calendar c) =>
     [
         new(FlareStrings.DateRangePicker_Today,      t => (t, t)),
@@ -344,7 +344,7 @@
     private bool IsRangeStart(DateOnly d) => PaintedRange is { } r ? d == r.Lo : d == (_pendingStart ?? StartDate);
     private bool IsRangeEnd(DateOnly d) => PaintedRange is { } r && d == r.Hi && r.Hi != r.Lo;
 
-    // Month navigation stays inside the range the grid calendar and DateOnly can both name (TASK-129, TASK-182).
+    // Month navigation stays inside the range the grid calendar and DateOnly can both name.
     private bool CanPrev => _view.Prev is not null;
     private bool CanNext => _view.Next is not null;
 
@@ -373,7 +373,7 @@
         else
         {
             // Second click: complete it (swap if the end precedes the start) - unless the length or blackout
-            // rules refuse the range, which keeps the start waiting for another end (TASK-148).
+            // rules refuse the range, which keeps the start waiting for another end.
             if (!_rules.Allows(_pendingStart.Value, date)) return;
             var lo = Earliest(_pendingStart.Value, date);
             var hi = Latest(_pendingStart.Value, date);
@@ -386,11 +386,11 @@
 
     // Arrow keys move the cursor over available days, crossing months as needed; while the end is being
     // picked the preview follows the cursor as it follows the pointer. Enter/Space are left to the native
-    // click of the focused day button, which the grid keeps on the cursor (TASK-124, TASK-128).
+    // click of the focused day button, which the grid keeps on the cursor.
     private void HandleGridKeyDown(KeyboardEventArgs e)
     {
         if (Disabled) return;
-        // The grid has synced the cursor to the day the user sees focused before this runs (TASK-133).
+        // The grid has synced the cursor to the day the user sees focused before this runs.
         if (CalendarMath.KeyTarget(FocusedCursor, e.Key, e.ShiftKey,
                 FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek, IsDayUnavailable, _gridCalendar) is not { } day) return;
 
@@ -411,8 +411,8 @@
         if (Disabled || ReadOnly) return;
         var (s, e) = preset.Range(Today);
         if (s > e) (s, e) = (e, s);
-        // A preset obeys the same bounds as a manual pick: Min/Max and IsDateDisabled (TASK-114), and the
-        // length and blackout rules (TASK-148).
+        // A preset obeys the same bounds as a manual pick: Min/Max and IsDateDisabled, and the
+        // length and blackout rules.
         if (IsDayDisabled(s) || IsDayDisabled(e) || !_rules.Allows(s, e)) return;
         _pendingStart = null;
         _hover = null;
@@ -421,7 +421,7 @@
     }
 
     // A typed end must pass the same length and blackout rules as a pick: the fields' Min/Max come from Reach,
-    // which stops looking for a blocking day after SearchLimit days, so a far end needs Allows (TASK-161).
+    // which stops looking for a blocking day after SearchLimit days, so a far end needs Allows.
     private async Task HandleStartChanged(DateOnly? value)
     {
         // clamp: if start > end, clear end

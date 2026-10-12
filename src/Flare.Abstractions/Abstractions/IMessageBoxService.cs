@@ -19,7 +19,6 @@ public interface IMessageBoxService
     /// <summary>Shows an information alert dialog. Returns when the user dismisses it.</summary>
     Task AlertAsync(string title, string message = "", string confirmLabel = "OK");
 
-    // Provider communication
     /// <summary>Raised when the pending request changes, so the host component can re-render.</summary>
     event Action? OnStateChanged;
     /// <summary>

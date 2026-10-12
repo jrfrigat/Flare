@@ -12,7 +12,7 @@ public partial class FlareDateTimePicker
         var masked = MaskedInput.MaskByPattern(raw, _numericPattern);
         if (!_editsOffset || string.IsNullOrEmpty(raw)) return masked;
         // The offset follows the date and time digits: its sign is the first + or - typed after them (before
-        // them a '-' can be a date separator), and up to four more digits fill "HH:mm" (TASK-165).
+        // them a '-' can be a date separator), and up to four more digits fill "HH:mm".
         var need = _numericPattern.Count(char.IsLetter);
         var seen = 0;
         var sign = '\0';
@@ -32,7 +32,7 @@ public partial class FlareDateTimePicker
     }
 
     // Text edits the wall date and time only: the offset and the ticks the pattern cannot show come from the
-    // current value, so changing a minute moves the instant by that minute (TASK-135).
+    // current value, so changing a minute moves the instant by that minute.
     private bool TryParse(string s, out DateTimeOffset value)
     {
         if (ParseInput is { } parse)
@@ -44,7 +44,7 @@ public partial class FlareDateTimePicker
         if (TryParseExact(s, _editPattern, out value)) return true;
         if (TryParseExact(s, _format, out value)) return true;
         // A half-edited mask ("15.10.2026 12:3") must never fall through to the lenient parser and be
-        // committed as a different time (TASK-126, as TASK-119 for the date): only a complete one may use it.
+        // committed as a different time: only a complete one may use it.
         if ((!CalendarMath.WritesDigits(_culture) || s.Count(char.IsDigit) == _numericPattern.Count(char.IsLetter))
             && DateTime.TryParse(s, _culture, DateTimeStyles.None, out var wall)
             && TryCompose(wall, HiddenTicks(_numericPattern), out value)) return true;

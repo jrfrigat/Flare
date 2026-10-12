@@ -5,17 +5,15 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme tokens for <c>FlareList</c> / <c>FlareListItem</c> (the container and its rows).</summary>
 public sealed record ListTokens
 {
-    // --- 1. CONTAINER ---
     /// <summary>Background of the list container.</summary>
     [CssVar(ListField.Bg)] public required string Bg { get; init; }
-    /// <summary>Corner radius of the list container. This used to read the CARD's radius, which meant a
-    /// theme could not reshape one without reshaping the other.</summary>
+    /// <summary>Corner radius of the list container, its own rather than the card's, so a theme can
+    /// reshape one without reshaping the other.</summary>
     [CssVar(ListField.Radius)] public required string Radius { get; init; }
     /// <summary>Rule drawn between adjacent items, as a CSS <c>border</c> shorthand. A theme whose rows
     /// are separated by space rather than a line parks this at <c>none</c>.</summary>
     [CssVar(ListField.Divider)] public required string Divider { get; init; }
 
-    // --- 2. ITEM (geometry) ---
     /// <summary>Floor on the height of a one-line item.</summary>
     [CssVar(ListField.ItemHeight)] public required string ItemHeight { get; init; }
     /// <summary>Floor on the height of an item carrying supporting text.</summary>
@@ -38,7 +36,6 @@ public sealed record ListTokens
     /// renders rows as separated pills raises it.</summary>
     [CssVar(ListField.ItemRadius)] public required string ItemRadius { get; init; }
 
-    // --- 3. ITEM (paint) ---
     /// <summary>Font family of an item's label. Each theme decides which step of its own type scale a
     /// list row maps to.</summary>
     [CssVar(ListField.ItemLabelFont)] public required string ItemLabelFont { get; init; }

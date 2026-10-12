@@ -87,7 +87,6 @@ public interface IDialogService
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent;
 
-    // Provider communication
     /// <summary>Raised when the pending request changes, so the host component can re-render.</summary>
     event Action? OnStateChanged;
     /// <summary>

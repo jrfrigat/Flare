@@ -18,7 +18,7 @@ internal static class CalendarMath
     /// The culture a picker formats, parses and labels with: <paramref name="culture"/> on its own calendar
     /// (Persian for fa-IR, Um al-Qura for ar-SA), or on <paramref name="calendar"/> when one is given and the culture
     /// offers that kind of calendar among its optional ones (Gregorian or Hijri for ar-SA, Hebrew for he-IL). A
-    /// calendar the culture does not offer is ignored. Cached per culture object and calendar type (TASK-182).
+    /// calendar the culture does not offer is ignored. Cached per culture object and calendar type.
     /// </summary>
     public static CultureInfo PickerCulture(CultureInfo culture, Calendar? calendar = null)
     {
@@ -132,7 +132,7 @@ internal static class CalendarMath
     {
         var first = month.Start;
         int offset = ((int)first.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
-        // Day numbers, so the cells around the range bounds are never built as dates (TASK-105).
+        // Day numbers, so the cells around the range bounds are never built as dates.
         var start = first.DayNumber - offset;
         var lo = CalendarMonth.FirstDay(month.Calendar).DayNumber;
         var hi = CalendarMonth.LastDay(month.Calendar).DayNumber;

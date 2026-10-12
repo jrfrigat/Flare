@@ -33,7 +33,6 @@ public sealed record MotionTokens
     /// <summary>Constant-rate curve, for loops and for fades that must not ease.</summary>
     [CssVar(Motion.EasingLinear)] public required string EasingLinear { get; init; }
 
-    // Durations by role.
 
     /// <summary>Time of the feedback to hover, press and focus: a state layer, a color or an outline changing.</summary>
     [CssVar(Motion.DurationStateChange)] public required string DurationStateChange { get; init; }

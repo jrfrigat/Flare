@@ -205,7 +205,7 @@ public partial class FlareMonthPicker
         _viewYear = Math.Min(_years.Last, _viewYear + (_view == MonthYearGridView.Months ? 1 : 12));
     }
 
-    // A year opens its months; a month is the value. A locked field browses but commits nothing (TASK-173).
+    // A year opens its months; a month is the value. A locked field browses but commits nothing.
     private async Task Pick(int value)
     {
         if (_view == MonthYearGridView.Years)

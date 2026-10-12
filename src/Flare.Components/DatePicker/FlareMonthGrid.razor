@@ -134,7 +134,7 @@
     /// the key press starts from the day the user sees focused.</summary>
     [Parameter] public EventCallback<DateOnly> FocusedDateChanged { get; set; }
 
-    // The culture on the calendar the grid is drawn on (TASK-182).
+    // The culture on the calendar the grid is drawn on.
     private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
     private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
 
@@ -170,13 +170,13 @@
     private DateOnly? _focusBefore;
     // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row), and
     // each cell's full-date label. Rebuilt only when the month, first weekday or culture changes, not on
-    // every render (TASK-115).
+    // every render.
     private DateOnly?[][] _weeks = [];
     private string?[] _labels = [];
     private (int Year, int Month, DayOfWeek First)? _gridKey;
     // The displayed month on the grid's calendar.
     private CalendarMonth _month;
-    // The culture by reference: a clone with other day names keeps the Name (TASK-164).
+    // The culture by reference: a clone with other day names keeps the Name.
     private CultureInfo? _gridCulture;
 
     protected override void OnParametersSet()
@@ -244,7 +244,7 @@
         if (!_followFocus) return;
         _followFocus = false;
         // Move DOM focus onto the new cursor, so the native click of Enter/Space lands on the day the
-        // cursor shows rather than on the cell the focus was left on (TASK-124).
+        // cursor shows rather than on the cell the focus was left on.
         if (_tabTarget is not { } target || target == _focusBefore) return;
         var index = Array.IndexOf(_weeks.SelectMany(w => w).ToArray(), target);
         if (index >= 0)

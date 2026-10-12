@@ -8,7 +8,7 @@
 @inject IElementJsService ElementJs
 
 @* Reusable analog clock dial (tap + drag + keyboard). Used by FlareTimePicker and FlareDateTimePicker. The dial is a
-   slider (TASK-174): Up/Down step the hour or minute it shows, PageUp/PageDown by an hour or five minutes, Home/End jump
+   slider: Up/Down step the hour or minute it shows, PageUp/PageDown by an hour or five minutes, Home/End jump
    to the ends; Left/Right switch between the hour and the minute (the dial holds two values); digits type them. *@
 <div class="@Css.Classes.ClockDial.Root" @onkeydown="OnKey">
 <div class="@Css.Classes.ClockDial.DialTop">

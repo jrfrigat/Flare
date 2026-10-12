@@ -7,9 +7,8 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 /// <remarks>
 /// The box, the dot and the label ramp across the five sizes, one token per step - the same shape
-/// <c>ButtonTokens</c> uses. It used to be a single set: the theme named the default size and
-/// <c>badge.css</c> hardcoded the other four in literals, so four of five sizes were core's opinion and no
-/// theme could touch them. Radius and the two offsets stay single because they do not vary by size.
+/// <c>ButtonTokens</c> uses - so every size is the theme's to set, not core's. Radius and the two
+/// offsets stay single because they do not vary by size.
 /// </remarks>
 public sealed record BadgeTokens
 {

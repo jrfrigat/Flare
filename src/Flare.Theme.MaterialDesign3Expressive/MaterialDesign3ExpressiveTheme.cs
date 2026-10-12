@@ -36,8 +36,7 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // The numbers are `md.comp.button.<size>.*` read straight off the table, and the top of the
         // ramp is meant to look startling: an extra-large Expressive button is 136dp tall with a 32pt
         // label, a display-scale control for one hero action per screen rather than a slightly bigger
-        // button. Flare used to compress the whole ramp into 32-64dp, which made large and extra-large
-        // near-duplicates of medium and quietly threw away the size axis Expressive exists to offer.
+        // button. Large and extra-large are deliberately distinct steps, not near-duplicates of medium.
         Button = MaterialDesign3Tokens.Design.Button with
         {
             HeightXs = "2rem",     // 32dp
