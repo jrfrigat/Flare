@@ -63,8 +63,7 @@ public class ChartVisibilityTests : FlareTestContext
         Assert.DoesNotContain("Second", text);
         Toggle(cut, 0);
         Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Tooltip}"));
-        cut.Find("svg rect[fill='transparent']").MouseEnter(new MouseEventArgs());
-        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Tooltip}"));
+        Assert.Empty(cut.FindAll("svg rect[fill='transparent']"));
     }
 
     [Fact]

@@ -128,38 +128,12 @@ public partial class FlareChart
     private double _yOf(double v, double min, double max) =>
         _padT + _plotH - (SafeValue(v) - min) / (max - min) * _plotH;
 
-    private void SetHoverCategory(int index, MouseEventArgs e)
-    {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        var label = (Data?.Labels is { } ls && index < ls.Count) ? ls[index] : index.ToString();
-        // A series with no value here is left out of the tooltip entirely rather than reported as 0.
-        var present = series.Where((s, i) => !IsHidden(i) && index < s.Values.Count && !IsGap(s.Values[index])).ToList();
-        if (present.Count == 0) { ClearHover(); return; }
-        var parts = present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}"));
-        _tooltipText = $"{label}\n{string.Join("\n", parts)}";
-
-        SetHoverPosition(e);
-        _tooltipVisible = true;
-    }
-
-    private void SetHoverSlice(int index, MouseEventArgs e)
-    {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        if (IsHidden(index)) { ClearHover(); return; }
-        var slice = _slices.FirstOrDefault(s => s.Index == index);
-        if (string.IsNullOrEmpty(slice.Path)) { ClearHover(); return; }
-        _tooltipText = string.Create(_inv, $"{series[index].Label}: {slice.Percent:F1}%");
-        SetHoverPosition(e);
-        _tooltipVisible = true;
-    }
-
     private void SetHoverPosition(MouseEventArgs e)
     {
         _hoverX = e.ClientX;
         _hoverY = e.ClientY;
     }
 
-    private void ClearHover() => _tooltipVisible = false;
     /// <summary>Clamps NaN/Infinity data values to 0 to prevent SVG coordinate corruption. Gaps are
     /// recognized before this point; anything reaching it is a value the renderer decided to draw.</summary>
     private static double SafeValue(double v) =>

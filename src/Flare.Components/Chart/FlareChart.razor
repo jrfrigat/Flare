@@ -39,9 +39,10 @@
          @ondblclick="ResetZoomAsync"
          @onwheel="OnPlotWheel"
          @onwheel:preventDefault="_zoomActive">
+        @{ var hits = RenderedHits(); }
         <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="@(_spark ? "none" : null)" style="@_svgStyle"
-             aria-label="@AccessibleName" role="img"
+             aria-label="@AccessibleName" role="@(hits.Count > 0 ? "group" : "img")"
              aria-describedby="@(string.IsNullOrWhiteSpace(Description) ? null : DescriptionId)">
             <title>@AccessibleName</title>
             @if (!string.IsNullOrWhiteSpace(Description))
@@ -67,30 +68,34 @@
                 default: @RenderLine(); break; // Line + Area
             }
 
-            @* Transparent hit zones in viewBox units, so detection scales with the SVG
-               (mouse offsets in rendered px would not match the viewBox). Suppressed
-               for a sparkline (no tooltips in chromeless mode). *@
-            @if (!_spark && Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar or ChartType.Combo)
+            @* Hit geometry uses the same viewBox as the rendered data. *@
+            @foreach (var hit in hits)
             {
-                @foreach (var cat in _categories)
+                @if (hit.Shape == HitShape.Rectangle)
                 {
-                    var c = cat;
-                    <rect x="@F(c.XLeft)" y="@F(_padT)" width="@F(c.Width)" height="@F(_plotH)"
-                          fill="transparent" style="@(OnPointClick.HasDelegate ? "cursor:pointer" : null)"
-                          @onmouseenter="e => SetHoverCategory(c.Index, e)"
-                          @onmouseleave="ClearHover"
-                          @onclick="() => HandlePointClick(c.Index)" />
+                    <rect @key="hit.Key" x="@F(hit.X)" y="@F(hit.Y)" width="@F(hit.Width)" height="@F(hit.Height)"
+                          fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
+                          role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
+                          aria-describedby="@(_tooltipVisible && _activeHitKey == hit.Key ? TooltipId : null)"
+                          @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
+                          @onclick="e => ActivateHitAsync(hit, e)" />
                 }
-            }
-            else if (!_spark && Type is ChartType.Pie or ChartType.Donut)
-            {
-                @foreach (var slice in _slices)
+                else if (hit.Shape == HitShape.Path)
                 {
-                    var s = slice;
-                    <path d="@s.Path" fill="transparent" class="@Css.Classes.Chart.Hit"
-                          @onmouseenter="e => SetHoverSlice(s.Index, e)"
-                          @onmouseleave="ClearHover"
-                          @onclick="() => HandlePointClick(s.Index)" />
+                    <path @key="hit.Key" d="@hit.Path" fill="transparent" class="@Css.Classes.Chart.Hit"
+                          data-flare-chart-hit="@hit.Key" role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
+                          aria-describedby="@(_tooltipVisible && _activeHitKey == hit.Key ? TooltipId : null)"
+                          @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
+                          @onclick="e => ActivateHitAsync(hit, e)" />
+                }
+                else
+                {
+                    <circle @key="hit.Key" cx="@F(hit.X)" cy="@F(hit.Y)" r="@F(hit.Radius)"
+                            fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
+                            role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
+                            aria-describedby="@(_tooltipVisible && _activeHitKey == hit.Key ? TooltipId : null)"
+                            @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
+                            @onclick="e => ActivateHitAsync(hit, e)" />
                 }
             }
 

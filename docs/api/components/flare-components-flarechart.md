@@ -59,6 +59,22 @@ Draws a data set as SVG: line, area, bar, stacked bar, combo, scatter, bubble, p
 
 ## Methods
 
+### `ChartDetailDismissed()`
+
+Dismisses chart details when keyboard focus leaves or Escape is pressed.
+Returns: `Task`.
+
+### `ChartHitFocused(string key, double x, double y)`
+
+Receives a focused hit's viewport anchor from the chart input adapter.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | The rendered hit's stable identity. |
+| `x` | `double` | The anchor's horizontal viewport coordinate in CSS pixels. |
+| `y` | `double` | The anchor's vertical viewport coordinate in CSS pixels. |
+
 ### `DisposeAsync()`
 
 Disposes the component; override to release JS interop or subscriptions.

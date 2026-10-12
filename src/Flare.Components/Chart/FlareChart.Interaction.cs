@@ -32,6 +32,7 @@ public partial class FlareChart
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await SyncInputAsync();
         await SyncTooltipLayerAsync();
         await SyncMotionAsync();
         if (!(_fluidActive || Zoomable) || _observing) return;
@@ -102,6 +103,7 @@ public partial class FlareChart
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        await ReleaseInputAsync();
         await _tooltipLayer.ReleaseAsync(Overlay);
         if (_sizeSubscription is not null)
         {

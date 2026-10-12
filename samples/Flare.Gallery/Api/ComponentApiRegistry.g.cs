@@ -836,6 +836,15 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"ChartDetailDismissed", @"ChartDetailDismissed()", @"Task", null, @"Dismisses chart details when keyboard focus leaves or Escape is pressed.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"ChartHitFocused", @"ChartHitFocused(string key, double x, double y)", @"Task", null, @"Receives a focused hit's viewport anchor from the chart input adapter.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"The rendered hit's stable identity."),
+                        new ApiMethodParameter(@"x", @"double", @"The anchor's horizontal viewport coordinate in CSS pixels."),
+                        new ApiMethodParameter(@"y", @"double", @"The anchor's vertical viewport coordinate in CSS pixels."),
+                    }),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ResetDomain", @"ResetDomain()", @"void", null, @"Forgets the range StickyDomain is holding, so the next update sizes the value axis from the data alone. For when the caller knows the scale has changed for good.",

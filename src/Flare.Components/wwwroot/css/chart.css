@@ -190,9 +190,13 @@
     background: var(--flare-chart-dot);
 }
 
-/* Transparent hit zones over pie/donut slices. */
+/* Operable transparent hit zones share the theme's keyboard focus ring. */
 .flare-chart__hit {
     cursor: pointer;
+}
+.flare-chart__hit:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: var(--flare-spacing-1);
 }
 
 .flare-chart__tooltip {

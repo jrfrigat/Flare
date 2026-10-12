@@ -239,7 +239,7 @@ public partial class FlareChart
     // group closes over a hidden one; under FitAll every series keeps its slot and the gap stays.
     private List<int> SlotIndices(int count) =>
         [.. Enumerable.Range(0, count).Where(CountsTowardsScale)];
-    private void ToggleSeries(int si) { if (!_hidden.Remove(si)) _hidden.Add(si); ClearHover(); }
+    private void ToggleSeries(int si) { if (!_hidden.Remove(si)) _hidden.Add(si); DismissDetail(); }
     private bool _legendRow => _showLegend && LegendPosition is ChartLegendPosition.Left or ChartLegendPosition.Right;
     private Task HandlePointClick(int index) => OnPointClick.InvokeAsync(index);
 

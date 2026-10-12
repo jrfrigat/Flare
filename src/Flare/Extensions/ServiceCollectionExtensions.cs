@@ -112,6 +112,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<Flare.Components.Services.IDialogDragJsService, Flare.Components.Services.DialogDragJsService>();
         services.AddScoped<Flare.Components.Services.IDragDropJsService, Flare.Components.Services.DragDropJsService>();
         services.AddScoped<Flare.Components.Services.IChartMotionJsService, Flare.Components.Services.ChartMotionJsService>();
+        services.AddScoped<Flare.Components.Services.IChartInputJsService, Flare.Components.Services.ChartInputJsService>();
         services.AddScoped<Flare.Components.Services.IProgressGeometryJsService, Flare.Components.Services.ProgressGeometryJsService>();
         services.AddScoped<Flare.Components.IBrowserViewportService, Flare.Components.Services.BrowserViewportService>();
         services.AddScoped<Flare.Components.IScrollService, Flare.Components.Services.ScrollService>();
