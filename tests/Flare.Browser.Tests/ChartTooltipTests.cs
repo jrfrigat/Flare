@@ -31,8 +31,6 @@ public sealed class ChartTooltipTests(BrowserFixture fixture) : IClassFixture<Br
         var chart = page.GetByTestId("subject");
         await chart.EvaluateAsync("el => {el.style.transform='scale(.8)';el.style.transformOrigin='top left';}");
         await chart.ScrollIntoViewIfNeededAsync();
-        // The initial size observation replaces the SVG hit elements; it is waited for, not guessed at.
-        await WaitForSettledGeometryAsync(chart);
         var point = await InteriorAsync(chart);
         await page.Mouse.MoveAsync(point[0], point[1]);
         await FollowsAsync(chart, point[0], point[1]);
@@ -144,31 +142,44 @@ public sealed class ChartTooltipTests(BrowserFixture fixture) : IClassFixture<Br
         }
         """);
 
-    /// <summary>Waits for a hit the pointer can actually reach and returns that point in viewport
-    /// coordinates. A scroll, a dialog or a resize moves the chart's geometry a frame or more later, so
-    /// reading it once fails the test on a busy machine instead of waiting for the browser.</summary>
-    private static Task<float[]> InteriorAsync(ILocator chart) => chart.EvaluateAsync<float[]>("""
-        async chart => {
-            const probe = () => {
-                for (const el of chart.querySelectorAll('[data-flare-chart-hit]')) {
-                    const b=el.getBBox(), m=el.getScreenCTM();
-                    for(const iy of [5,4,6,3,7,2,8,1,9])for(const ix of [5,4,6,3,7,2,8,1,9]) {
-                        const p=new DOMPoint(b.x+b.width*ix/10,b.y+b.height*iy/10);
-                        if(!el.isPointInFill(p))continue;
-                        const q=p.matrixTransform(m);
-                        if([[0,0],[.6,.6],[-.6,-.6]].every(([x,y])=>document.elementFromPoint(q.x+x,q.y+y)===el))return [q.x,q.y];
+    /// <summary>Waits for the chart to stop drawing, then for a hit the pointer can actually reach, and
+    /// returns that point in viewport coordinates. The chart replaces its SVG - hit elements included -
+    /// when a size observation lands, so a point read before that is a point the pointer will miss; every
+    /// caller needs this wait, whether it scrolled, resized, opened a dialog or changed the data. The point
+    /// must also stay on top for several frames: one that is valid only in the frame it was found is
+    /// exactly the point a re-render takes away before the mouse arrives.</summary>
+    private static async Task<float[]> InteriorAsync(ILocator chart)
+    {
+        await WaitForSettledGeometryAsync(chart);
+        return await chart.EvaluateAsync<float[]>("""
+            async chart => {
+                const probe = () => {
+                    for (const el of chart.querySelectorAll('[data-flare-chart-hit]')) {
+                        const b=el.getBBox(), m=el.getScreenCTM();
+                        for(const iy of [5,4,6,3,7,2,8,1,9])for(const ix of [5,4,6,3,7,2,8,1,9]) {
+                            const p=new DOMPoint(b.x+b.width*ix/10,b.y+b.height*iy/10);
+                            if(!el.isPointInFill(p))continue;
+                            const q=p.matrixTransform(m);
+                            if([[0,0],[.6,.6],[-.6,-.6]].every(([x,y])=>document.elementFromPoint(q.x+x,q.y+y)===el))
+                                return { key: el.dataset.flareChartHit, point: [q.x, q.y] };
+                        }
                     }
+                    return null;
+                };
+                let candidate = null, confirmed = 0;
+                for (let i = 0; i < 600; i++) {
+                    const current = probe();
+                    confirmed = current && candidate && current.key === candidate.key
+                        && Math.abs(current.point[0] - candidate.point[0]) < .5
+                        && Math.abs(current.point[1] - candidate.point[1]) < .5 ? confirmed + 1 : 0;
+                    if (confirmed >= 2) return candidate.point;
+                    candidate = current;
+                    await new Promise(r => requestAnimationFrame(r));
                 }
-                return null;
-            };
-            for (let i = 0; i < 600; i++) {
-                const point = probe();
-                if (point) return point;
-                await new Promise(r => requestAnimationFrame(r));
+                throw Error('No visible interior SVG hit: ' + chart.querySelectorAll('[data-flare-chart-hit]').length + ' hit elements rendered');
             }
-            throw Error('No visible interior SVG hit: ' + chart.querySelectorAll('[data-flare-chart-hit]').length + ' hit elements rendered');
-        }
-        """);
+            """);
+    }
 
     private static Task FollowsAsync(ILocator chart, float x, float y) => chart.EvaluateAsync("""
         async (chart,p) => {
