@@ -88,7 +88,6 @@ public static class ComponentCatalog
     /// <summary>Every component demo page, grouped via <see cref="ComponentEntry.Group"/>.</summary>
     public static readonly IReadOnlyList<ComponentEntry> All = new[]
     {
-        // -- Field (typed value) --------------------------------------------------
         new ComponentEntry("components/autocomplete",      "Autocomplete",            "Autocomplete_Title",    ComponentGroup.Field),
         new ComponentEntry("components/masked-field",      "Masked Field",            "InputMask_Title",       ComponentGroup.Field),
         new ComponentEntry("components/numeric-field",     "Numeric Field",           "NumericField_Title",    ComponentGroup.Field),
@@ -99,7 +98,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/textarea",          "Text Area",               "TextArea_Title",        ComponentGroup.Field),
         new ComponentEntry("components/text-field",        "Text Field",              "Input_Title",           ComponentGroup.Field),
 
-        // -- Input (pointer-driven) ----------------------------------------------
         new ComponentEntry("components/choice",          "Choice Card",             "Choice_Title",          ComponentGroup.Input),
         new ComponentEntry("components/checkbox",          "Checkbox",                "Checkbox_Title",        ComponentGroup.Input),
         new ComponentEntry("components/colorpicker",       "Color Picker",            "ColorPicker_Title",     ComponentGroup.Input),
@@ -112,14 +110,11 @@ public static class ComponentCatalog
         new ComponentEntry("components/switch",            "Switch",                  "Switch_Title",          ComponentGroup.Input),
         new ComponentEntry("components/transfer",          "Transfer / Dual List",    "Transfer_Title",        ComponentGroup.Input),
 
-        // -- Files ----------------------------------------------------------------
         new ComponentEntry("components/fileupload",        "File Upload",             "FileUpload_Title",      ComponentGroup.Files),
 
-        // -- Forms ----------------------------------------------------------------
         new ComponentEntry("components/form-builder",      "Form Builder",            "FormBuilder_Title",     ComponentGroup.Forms),
         new ComponentEntry("components/forms",             "Form Validation",         "Forms_Title",           ComponentGroup.Forms),
 
-        // -- Buttons & Actions ----------------------------------------------------
         new ComponentEntry("components/buttons",           "Button",                  "Buttons_Title",         ComponentGroup.Buttons),
         new ComponentEntry("components/button-group",      "Button Group",            "ButtonGroup_Title",     ComponentGroup.Buttons),
         new ComponentEntry("components/fab-menu",          "FAB Menu",                "FabMenu_Title",         ComponentGroup.Buttons),
@@ -128,7 +123,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/split-button",      "Split Button",            "SplitButton_Title",     ComponentGroup.Buttons),
         new ComponentEntry("components/toggle-button",     "Toggle Button",           "ToggleButton_Title",    ComponentGroup.Buttons),
 
-        // -- Layout & Surfaces ----------------------------------------------------
         new ComponentEntry("components/accordion",         "Accordion",               "Accordion_Title",       ComponentGroup.Layout),
         new ComponentEntry("components/cards",             "Card",                    "Cards_Title",           ComponentGroup.Layout),
         new ComponentEntry("components/collapse",          "Collapse",                "Collapse_Title",        ComponentGroup.Layout),
@@ -142,7 +136,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/splitter",          "Splitter",                "Splitter_Title",        ComponentGroup.Layout),
         new ComponentEntry("components/stack",             "Stack",                   "Stack_Title",           ComponentGroup.Layout),
 
-        // -- Navigation -----------------------------------------------------------
         new ComponentEntry("components/bottomnav",         "Bottom Nav",              "BottomNav_Title",       ComponentGroup.Navigation),
         new ComponentEntry("components/breadcrumb",        "Breadcrumb",              "Breadcrumb_Title",      ComponentGroup.Navigation),
         new ComponentEntry("components/drawer",            "Drawer",                  "Drawer_Title",          ComponentGroup.Navigation),
@@ -155,7 +148,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/stepper",           "Stepper",                 "Stepper_Title",         ComponentGroup.Navigation),
         new ComponentEntry("components/tabs",              "Tabs",                    "Tabs_Title",            ComponentGroup.Navigation),
 
-        // -- Data Display ---------------------------------------------------------
         new ComponentEntry("components/avatar",            "Avatar",                  "Avatar_Title",          ComponentGroup.DataDisplay),
         new ComponentEntry("components/avatar-group",      "Avatar Group",            "AvatarGroup_Title",     ComponentGroup.DataDisplay),
         new ComponentEntry("components/badge",             "Badge",                   "Badge_Title",           ComponentGroup.DataDisplay),
@@ -173,11 +165,9 @@ public static class ComponentCatalog
         new ComponentEntry("components/tree",              "Tree View",               "Tree_Title",            ComponentGroup.DataDisplay),
         new ComponentEntry("components/virtual-list",      "Virtual List",            "VirtualList_Title",     ComponentGroup.DataDisplay),
 
-        // -- Data Grid ------------------------------------------------------------
         new ComponentEntry("components/datagrid",          "Data Grid",               "DataGrid_Title",        ComponentGroup.DataGrid),
         new ComponentEntry("components/table",             "Table",                   "Table_Title",           ComponentGroup.DataGrid),
 
-        // -- Date & Time ----------------------------------------------------------
         new ComponentEntry("components/calendar",          "Calendar",                "Calendar_Title",        ComponentGroup.DateTime),
         new ComponentEntry("components/date-picker",       "Date Picker",             "DatePicker_Title",      ComponentGroup.DateTime),
         new ComponentEntry("components/date-range-picker", "Date Range Picker",       "DateRangePicker_Title", ComponentGroup.DateTime),
@@ -187,7 +177,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/time-picker",       "Time Picker",             "TimePicker_Title",      ComponentGroup.DateTime),
         new ComponentEntry("components/week-picker",       "Week Picker",             "WeekPicker_Title",      ComponentGroup.DateTime),
 
-        // -- Feedback & Overlays --------------------------------------------------
         new ComponentEntry("components/alerts",            "Alert",                   "Alerts_Title",          ComponentGroup.Feedback),
         new ComponentEntry("components/confirm",           "Confirm Dialog",          "Confirm_Title",         ComponentGroup.Feedback),
         new ComponentEntry("components/dialog",            "Dialog",                  "Dialog_Title",          ComponentGroup.Feedback),
@@ -200,7 +189,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/snackbar",          "Snackbar",                "Snackbar_Title",        ComponentGroup.Feedback),
         new ComponentEntry("components/tooltip",           "Tooltip",                 "Tooltip_Title",         ComponentGroup.Feedback),
 
-        // -- Media ----------------------------------------------------------------
         new ComponentEntry("components/carousel",          "Carousel",                "Carousel_Title",        ComponentGroup.Media),
         new ComponentEntry("components/image",             "Image",                   "Image_Title",           ComponentGroup.Media),
         new ComponentEntry("components/barcode",           "Barcode",                 "Barcode_Title",         ComponentGroup.Media),
@@ -208,12 +196,10 @@ public static class ComponentCatalog
         new ComponentEntry("components/qrcode",            "QR Code",                 "QrCode_Title",          ComponentGroup.Media),
         new ComponentEntry("components/videoplayer",       "Video Player",            "VideoPlayer_Title",     ComponentGroup.Media),
 
-        // -- Foundations ----------------------------------------------------------
         new ComponentEntry("components/icon",              "Icon",                    "Icon_Title",            ComponentGroup.Foundations),
         new ComponentEntry("components/icons",             "Icons",                   "Icons_Title",           ComponentGroup.Foundations),
         new ComponentEntry("components/typography",        "Typography",              "Typography_Title",      ComponentGroup.Foundations),
 
-        // -- Utilities ------------------------------------------------------------
         new ComponentEntry("components/clipboard",         "Clipboard",               "Clipboard_Title",       ComponentGroup.Utilities),
         new ComponentEntry("components/color-mode-toggle", "Color Mode Toggle",       "ColorModeToggle_Title", ComponentGroup.Utilities),
         new ComponentEntry("components/drag-drop",         "Drag and Drop",           "DragDrop_Title",        ComponentGroup.Utilities),
@@ -222,7 +208,6 @@ public static class ComponentCatalog
         new ComponentEntry("components/lazy",              "Lazy Render",             "Lazy_Title",            ComponentGroup.Utilities),
         new ComponentEntry("components/shortcuts",         "Shortcuts",               "Shortcuts_Title",       ComponentGroup.Utilities),
 
-        // -- IDE ------------------------------------------------------------------
         new ComponentEntry("components/backstage",            "Backstage",            "Ide_Backstage_Title",    ComponentGroup.Ide),
         new ComponentEntry("components/document-tabs",        "Document Tabs",        "Ide_DocTabs_Title",      ComponentGroup.Ide),
         new ComponentEntry("components/formula-bar",          "Formula Bar",          "Ide_FormulaBar_Title",   ComponentGroup.Ide),

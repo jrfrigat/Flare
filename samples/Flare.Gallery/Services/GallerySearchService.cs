@@ -90,7 +90,7 @@ public sealed class GallerySearchService
     {
         var list = new List<Entry>();
 
-        // -- Top-level pages (English name = the resource key resolved for en). ----
+        // The nav resource key doubles as the English name (there is no separate literal).
         AddKeyed(list, "", "Nav_Overview", SearchKind.Page, "home");
         AddKeyed(list, "getting-started", "Nav_GettingStarted", SearchKind.Page, "rocket_launch");
         AddKeyed(list, "theming", "Nav_Theming", SearchKind.Page, "palette");
@@ -98,7 +98,7 @@ public sealed class GallerySearchService
         // Custom Theme has no localized nav label (English-only literal in the menu).
         AddLiteral(list, "custom-theme", "Custom Theme", SearchKind.Page, "tune");
 
-        // -- Components (English name from the catalog; RU/EN titles from resources). --
+        // Names come from the catalog, titles from the resource files.
         foreach (var c in ComponentCatalog.All)
         {
             var titleEn = c.TitleKey is not null ? Loc(c.TitleKey, _en) : null;
@@ -107,7 +107,7 @@ public sealed class GallerySearchService
             list.Add(new Entry(c.Href, c.TitleKey, c.Name, SearchKind.Component, "widgets", haystack));
         }
 
-        // -- API type pages (type names only; English). ---------------------------
+        // API pages are English-only: type names, no localized title resource.
         foreach (var name in ComponentApiRegistry.Components.Keys)
             list.Add(new Entry($"api/{name}", null, name, SearchKind.Api, "data_object", Hay(name, null, null, name)));
 

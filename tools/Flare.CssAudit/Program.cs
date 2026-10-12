@@ -158,7 +158,6 @@ internal static class Program
         }
     }
 
-    // ---- Comparison ----
 
     private static string[] ThemeClassDirs(string root) =>
         Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*")
@@ -346,7 +345,6 @@ internal static class Program
         return 0;
     }
 
-    // ---- In-place merge into CssClasses.cs ----
 
     private sealed class Block
     {
@@ -580,7 +578,6 @@ internal static class Program
         return name + n;
     }
 
-    // ---- Optional packages ----
 
     /// <summary>
     /// Every optional component package: <c>src/Flare.Components.&lt;Name&gt;</c>. The prefix is tested on
@@ -738,7 +735,6 @@ internal static class Program
         return 1;
     }
 
-    // ---- Parsing ----
 
     // Matches a class selector: a '.' followed by a flare-* identifier. No lookbehind, so compound
     // selectors (".a.b") are both captured; the "flare-" prefix rules out CSS decimals (.5rem).
@@ -803,7 +799,6 @@ internal static class Program
         return css;
     }
 
-    // ---- Token (--flare-*) collection & comparison ----
 
     // A --flare-* custom property. The literal "--flare" (dash-dash-f) rules out the private
     // --_flare-* internals (there the '--' is followed by '_'). Comments/strings are stripped first so
@@ -1081,7 +1076,6 @@ internal static class Program
         return files.FirstOrDefault(f => !string.Equals(f, "a11y.css", StringComparison.OrdinalIgnoreCase)) ?? files.First();
     }
 
-    // ---- Naming ----
 
     private static string FieldName(string cls, string filePrefix)
     {

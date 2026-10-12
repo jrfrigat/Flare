@@ -51,7 +51,6 @@ var parameters = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
     .Where(p => p.Name != "AdditionalAttributes")
     .ToList();
 
-// ---- plan each parameter ---------------------------------------------------------------------
 var controls = new List<string>();          // control markup lines (the FlareGrid children)
 var previewAttrs = new List<string>();       // attributes on the preview <tag>
 string? childContent = null;                 // inner content expression (from ChildContent param)
@@ -154,7 +153,6 @@ foreach (var p in parameters)
     controls.Add($"@* TODO control for {p.Name} ({t.Name}) *@");
 }
 
-// ---- assemble razor --------------------------------------------------------------------------
 var sb = new StringBuilder();
 sb.AppendLine($"@* AUTO-GENERATED interactive playground for {tag} (Flare.DemoGen). Review and edit. *@");
 if (needSnackbar) sb.AppendLine("@inject ISnackbarService Snackbar");
@@ -199,7 +197,6 @@ File.WriteAllText(outFile, sb.ToString());
 Console.WriteLine($"Generated playground ({controls.Count} controls) -> {outFile}");
 return 0;
 
-// ---- helpers ---------------------------------------------------------------------------------
 static string Camel(string s) => s.Length == 0 ? s : char.ToLowerInvariant(s[0]) + s[1..];
 
 static bool IsRenderFragment(Type t)

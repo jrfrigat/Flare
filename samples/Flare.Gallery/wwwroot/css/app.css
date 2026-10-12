@@ -46,7 +46,6 @@ html, body { height: 100%; }
 }
 .loading-progress-text:after { content: var(--blazor-load-percentage-text, "Loading"); }
 
-/* ── Icon Browser ── */
 .icon-browser-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
