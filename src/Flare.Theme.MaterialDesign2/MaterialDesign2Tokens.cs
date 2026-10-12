@@ -1569,7 +1569,7 @@ internal static class MaterialDesign2Tokens
     };
 
 
-    /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
+    /// <summary>The complete Material Design 2 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
         AppBar = AppBar,
