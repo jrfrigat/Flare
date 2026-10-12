@@ -27,7 +27,7 @@
 
 **[Живое демо / галерея компонентов ->](https://jrfrigat.github.io/Flare/)**
 
-**190+ компонентов - своя тема на семантических токенах - 7 необязательных preset-дизайн-систем x 30+ палитр (+ Dynamic Color) x светлая/темная/авто - нет зависимостей от сторонних CSS - Docker-готовая галерея**
+**190+ компонентов - своя тема на семантических токенах - 7 необязательных preset-дизайн-систем x 30+ палитр (+ Dynamic Color) x светлая/темная/авто - нет зависимостей от сторонних CSS**
 
 ---
 
@@ -49,7 +49,6 @@
 - **Расширенный DataGrid** - множественная сортировка, изменение размера столбцов, выбор строк, редактирование в ячейке, экспорт CSV, группировка, виртуализация
 - **Blazor Server - WASM - SSR** - JS-вызовы защищены от предварительного рендера
 - **Без Bootstrap / без сторонних CSS** - все стили используют только токены `var(--flare-*)`
-- **Docker-готово** - одна команда `docker compose up --build` запускает Gallery PWA через nginx
 
 ---
 
@@ -153,63 +152,13 @@ var isDark = ThemeService.IsDark;
 
 ## Иконки
 
-Иконки - это **полиморфный тип-значение**, а не один компонент. `FlareIcon` - абстрактный дескриптор, и любой
-провайдер подставляется в любой параметр типа `FlareIcon` (или рисуется отдельно через `<FlareIconView>`). Все
-по умолчанию - **inline-SVG**: без иконочного шрифта, без сетевого запроса, без FOUT.
-
-```razor
-<FlareIconView Value="@FlareIcons.Home" />                       @* встроенный, без зависимостей *@
-<FlareIconButton Icon="@MaterialDesign3Icons.Regular.Settings" />@* каталог провайдера *@
-```
-
-- **Встроенный набор (`FlareIcons`, пакет/namespace `Flare.Icons`).** ~90 готовых `FlareSvgIcon`, которыми рисуется
-  дефолтный хром - ноль зависимостей, работает из коробки. Перечисление - `FlareIcons.All`.
-- **Пакеты провайдеров (опционально).** Ядро не зависит ни от одного стороннего набора; подключайте только нужное:
-
-  | Пакет | Тип / каталог | Доставка |
-  |---|---|---|
-  | `Flare.Icons.MaterialDesign3.Svg` | `MaterialDesign3Icons.Regular/Filled.*` (3894) | inline-SVG |
-  | `Flare.Icons.MaterialDesign2.Svg` | `MaterialDesign2Icons.*` (2122) | inline-SVG |
-  | `Flare.Icons.FluentUI.Svg` | `FluentUIIcons.Regular/Filled.*` (~5000) | inline-SVG |
-  | `Flare.Icons.MaterialDesign3.Symbols` | `FlareMaterialDesign3Icon` | шрифт Material Symbols |
-  | `Flare.Icons.MaterialDesign2.Symbols` | `FlareMaterialDesign2Icon` | шрифт Material Icons |
-  | `Flare.Icons.FontAwesome.Symbols` | `FlareFontAwesomeIcon` | шрифт Font Awesome |
-
-- **Малый вес через тримминг.** Каждая иконка каталога - отдельный static-член, а SVG-пакеты помечены
-  `IsTrimmable`, поэтому trimmed-публикация Blazor WebAssembly приносит только те иконки, на которые вы
-  ссылаетесь, а не весь каталог (например, Gallery тянет ~160 из 3894 Material Symbols: 8.9 MB -> ~180 KB).
-  Ссылайтесь на иконки **типизированным членом** (не строкой), чтобы линкер мог их отследить.
+Иконки - это **inline-SVG по умолчанию**: без иконочного шрифта, без сетевого запроса, без FOUT.
+Встроенный набор `FlareIcons` (~90 иконок, пакет `Flare.Icons`) рисует дефолтный хром компонентов, а
+каталоги провайдеров (Material Design 3, Material Design 2, Fluent UI 2, Font Awesome - SVG или
+веб-шрифт) идут опциональными пакетами; SVG-пакеты помечены `IsTrimmable`, поэтому trimmed-публикация
+Blazor WebAssembly приносит только те иконки, на которые вы ссылаетесь.
 
 Полный гайд - [docs/ru/icons.md](docs/ru/icons.md).
-
----
-
-## Docker
-
-Запустите готовый образ Gallery из GitHub Container Registry (проще всего):
-
-```sh
-docker run -p 8080:80 ghcr.io/jrfrigat/flare-gallery:latest
-# -> http://localhost:8080
-```
-
-Образ версионируется независимо от NuGet-пакетов (теги `gallery-v*`, напр.
-`ghcr.io/jrfrigat/flare-gallery:0.0.1`).
-
-Или соберите из исходников:
-
-```sh
-docker build -f samples/Flare.Gallery/Dockerfile -t flare-gallery .
-docker run -p 8080:80 flare-gallery
-# -> http://localhost:8080
-```
-
-`docker compose up --build` использует тот же `samples/Flare.Gallery/Dockerfile`, но прилагаемый
-`docker-compose.yml` подключает контейнер к внешней сети `proxy_network` для развертывания за
-reverse-proxy (порт на хост не публикуется) - добавьте `ports:`, чтобы обращаться напрямую.
-
-Многоэтапный `Dockerfile` создает образ `nginx:alpine`, раздающий статический, предсжатый
-(brotli/gzip) вывод Blazor WASM.
 
 ---
 
@@ -230,39 +179,14 @@ reverse-proxy (порт на хост не публикуется) - добав�
 
 ## Архитектура
 
-```
-Flare.Abstractions      <- порты (ITheme, I*Service), модель дизайн-токенов, реестр имен CSS (без зависимостей)
-Flare.Theming           <- движок тем: ThemeService, генерация палитр, ColorMath, токены->CSS
-Flare.Infrastructure    <- адаптеры браузера/хоста: JS-interop, хранилище, dialog/snackbar/messagebox
-Flare.Components        <- основные UI-компоненты + wwwroot/css (общий бандл на токенах)
-Flare.Blazor (Flare)    <- корень композиции: AddFlare связывает порты -> адаптеры
-Flare.Components.Carousel        <- Carousel
-Flare.Components.Kanban          <- Kanban-доска
-Flare.Components.Transfer        <- Transfer (двойной список)
-Flare.Components.QrCode          <- QR-код
-Flare.Components.RichTextEditor  <- Редактор форматированного текста
-Flare.Components.Media           <- SignaturePad, VideoPlayer, FileUpload
-Flare.Components.IDE             <- IDE-макет: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
-Flare.Theme.MaterialDesign3Expressive <- дизайн-токены MD3 + палитры Material + тональный генератор
-Flare.Theme.MaterialDesign3 <- базовый MD3 (не Expressive); разделяет цветовую систему MD3
-Flare.Theme.MaterialDesign2 <- дизайн-токены Material Design 2 + палитры + рампа-генератор
-Flare.Theme.FluentUI2   <- дизайн-токены Fluent UI 2 + палитры Office + рампа-генератор
-Flare.Theme.Aero        <- дизайн-токены Aero + палитры + рампа-генератор
-Flare.Theme.LiquidGlass <- дизайн-токены Liquid Glass + палитры + рампа-генератор
-Flare.Theme.VisualStudio <- дизайн-токены Visual Studio 2026 + палитры + рампа-генератор
-Flare (umbrella)        <- DI-расширения AddFlare()/AddFlareTheme(), LocalStorageThemeStorage (зависит только от Flare.Components)
-```
+Onion-кольца, зависимости строго внутрь: `Flare.Abstractions` (порты, модель дизайн-токенов, реестр
+имен CSS) <- `Flare.Theming` + `Flare.Infrastructure` (адаптеры) <- `Flare.Components` (только UI)
+<- `Flare` (корень композиции, `AddFlare` связывает порты с адаптерами). Темы и опциональные семейства
+компонентов идут отдельными пакетами, поэтому приложение подключает только нужное. Все компоненты
+наследуют `FlareComponentBase`, который получает тему через каскадный `ThemeSnapshot` и прокидывает
+`Class`, `Style` и произвольные HTML-атрибуты.
 
-> Темы поставляются отдельными пакетами - umbrella-пакет `Flare.Blazor` не ссылается **ни на одну** тему,
-> поэтому приложение подключает только нужные дизайн-системы. Опциональные семейства компонентов
-> (`Carousel`, `Kanban`, `Transfer`, `QrCode`, `RichTextEditor`, `Media`, `IDE`) - тоже отдельные пакеты.
-
-Все компоненты наследуют `FlareComponentBase`, который:
-- Получает текущую тему через каскадный `ThemeSnapshot` и перерисовывается при ее смене
-- Предоставляет `BuildCssClass()` для построения BEM-классов
-- Прокидывает `Class`, `Style` и произвольные HTML-атрибуты
-
-Подробности архитектуры: [docs/ru/architecture.md](docs/ru/architecture.md)
+Карта модулей: [docs/ru/architecture.md](docs/ru/architecture.md)
 
 ---
 
@@ -282,61 +206,15 @@ dotnet run
 
 ## Пользовательские палитры и темы
 
-**Палитра** - это только цвета (light + dark). Переиспользуйте дизайн-систему и поменяйте
-лишь цвета, либо сгенерируйте палитру из одного бренд-цвета - не задавая 45 ролей вручную:
+**Палитра** - это только цвета (light + dark): переиспользуйте дизайн-систему и поменяйте лишь цвета,
+либо выведите полную палитру из одного бренд-цвета через `Palette.FromColors(id, name, seed)` вместо
+ручного заполнения 45 ролей. **Динамический цвет (Dynamic Color)** подключает палитру, выводимую во
+время выполнения из акцента ОС/браузера, а любой дизайн-токен переопределяется публичными
+reference-записями. Полноценная кастомная **тема** = `DesignTokens` + дефолтная палитра (реализуйте
+`ITheme`).
 
-```csharp
-using Flare.Abstractions.Tokens;
-using Flare.Theme.MaterialDesign3.Tokens;
-
-// Переопределить только нужное от reference-схемы:
-var ocean = new Palette
-{
-    Id = "ocean", Name = "Ocean", Source = "Custom",
-    Light = MaterialDesign3Tokens.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
-    Dark  = MaterialDesign3Tokens.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
-};
-
-// ...или вывести полную палитру light+dark из бренд-цвета:
-var brand = Palette.FromColors("brand", "Brand", "#7B1FA2");
-
-builder.Services.AddFlare(opts => opts.DefaultPalette = ocean);   // на старте
-themeService.RegisterPalette(brand);                              // ...или в рантайме
-await themeService.SetPaletteAsync("brand");
-```
-
-**Динамический цвет (Dynamic Color)** - следует за акцентом ОС/браузера (акцент Windows/macOS,
-Android Material You). Палитра строится генератором активной темы, поэтому подходит к любой теме:
-
-```csharp
-builder.Services.AddFlare(opts =>
-{
-    opts.UseDynamicPalette = true;                  // регистрирует палитру "dynamic" (и делает ее
-    opts.DynamicFallbackPalette = Md3Palettes.Violet; // палитрой по умолчанию, если другая не задана)
-});
-// переключайтесь как на обычную палитру или задайте свой seed:
-await themeService.SetPaletteAsync(Palette.DynamicId);
-await themeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
-```
-
-> **Chrome/Edge не отдают реальный акцент ОС** (возвращают фиксированный плейсхолдер ради защиты от
-> фингерпринтинга); подлинный акцент отражает только Firefox. В Chromium динамическая палитра
-> использует `DynamicFallbackPalette` - задайте готовую палитру, чтобы откат был на реальные цвета, а
-> не на произвольный синий.
-
-См. [Создание тем -> Динамический цвет](docs/ru/theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
-
-Переопределить **любой** дизайн-токен через публичные reference-записи:
-
-```csharp
-var design = MaterialDesign3Tokens.Design with
-{
-    Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "10px" },
-};
-```
-
-Полноценная кастомная **тема** = `DesignTokens` + дефолтная палитра (реализуйте `ITheme`).
-Модель системы тем и пошаговое руководство: [docs/ru/theme-creation-guide.md](docs/ru/theme-creation-guide.md).
+Руководство: [docs/ru/theme-creation-guide.md](docs/ru/theme-creation-guide.md) - модель системы тем,
+пошаговый разбор и [Динамический цвет](docs/ru/theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
 
 ---
 
@@ -347,7 +225,6 @@ dotnet build
 # Один раз на машине и после обновления Microsoft.Playwright:
 pwsh tests/Flare.Browser.Tests/bin/Debug/net10.0/playwright.ps1 install chromium
 dotnet test         # Включает C# браузерные тесты Playwright
-docker run -p 8080:80 flare-gallery   # Gallery на http://localhost:8080
 ```
 
 Браузерные тесты сами запускают и останавливают локальный Blazor-хост и Chromium без окна.
@@ -356,6 +233,8 @@ docker run -p 8080:80 flare-gallery   # Gallery на http://localhost:8080
 Playwright сохраняются в `tests/Flare.Browser.Tests/bin/<configuration>/net10.0/TestResults`.
 
 CI запускается при пушах и pull request в `main`: сборка -> установка Chromium -> тесты -> упаковка NuGet.
+
+Процесс для контрибьюторов - ветки, pull request, соглашения: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 

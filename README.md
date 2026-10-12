@@ -27,7 +27,7 @@ filed as one.
 
 **[Live demo / component gallery ->](https://jrfrigat.github.io/Flare/)**
 
-**190+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
+**190+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies**
 
 ---
 
@@ -49,7 +49,6 @@ filed as one.
 - **Advanced DataGrid** - multi-sort, column resize, row selection, inline editing, CSV export, grouping, virtualization
 - **Blazor Server - WASM - SSR** compatible - JS interop calls are guarded against prerender
 - **No Bootstrap / no third-party CSS** - all styles use `var(--flare-*)` tokens exclusively
-- **Docker-ready** - single `docker compose up --build` serves the Gallery PWA via nginx
 
 ---
 
@@ -153,63 +152,13 @@ subset they need, so MD3 and Fluent stay in sync automatically.
 
 ## Icons
 
-Icons are a **polymorphic value type**: `FlareIcon` is an abstract descriptor, and any provider drops into any
-parameter typed `FlareIcon` (or renders standalone via `<FlareIconView>`). Everything is **inline SVG by
-default** - no icon font, no network request, no FOUT.
+Icons are **inline SVG by default** - no icon font, no network request, no FOUT. The built-in
+`FlareIcons` set (~90 members, the `Flare.Icons` package) backs the default component chrome, and the
+provider catalogs (Material Design 3, Material Design 2, Fluent UI 2, Font Awesome - SVG or webfont)
+are optional packages; the SVG ones are `IsTrimmable`, so a trimmed Blazor WebAssembly publish ships
+only the icons you reference.
 
-```razor
-<FlareIconView Value="@FlareIcons.Home" />                       @* built-in, dependency-free *@
-<FlareIconButton Icon="@MaterialDesign3Icons.Regular.Settings" />@* provider catalog *@
-```
-
-- **Built-in set (`FlareIcons`, in the `Flare.Icons` package/namespace).** ~90 ready `FlareSvgIcon` members that back the default
-  component chrome - zero dependencies, works out of the box. Enumerate with `FlareIcons.All`.
-- **Provider packages (opt-in).** Core depends on no third-party icon set; add only what you use:
-
-  | Package | Type / catalog | Delivery |
-  |---|---|---|
-  | `Flare.Icons.MaterialDesign3.Svg` | `MaterialDesign3Icons.Regular/Filled.*` (3894) | inline SVG |
-  | `Flare.Icons.MaterialDesign2.Svg` | `MaterialDesign2Icons.*` (2122) | inline SVG |
-  | `Flare.Icons.FluentUI.Svg` | `FluentUIIcons.Regular/Filled.*` (~5000) | inline SVG |
-  | `Flare.Icons.MaterialDesign3.Symbols` | `FlareMaterialDesign3Icon` | Material Symbols webfont |
-  | `Flare.Icons.MaterialDesign2.Symbols` | `FlareMaterialDesign2Icon` | Material Icons webfont |
-  | `Flare.Icons.FontAwesome.Symbols` | `FlareFontAwesomeIcon` | Font Awesome webfont |
-
-- **Small payloads via trimming.** Each catalog icon is its own static member and the SVG packages are
-  `IsTrimmable`, so a trimmed Blazor WebAssembly publish ships only the icons you reference - not the whole
-  catalog (e.g. the Gallery pulls ~160 of 3894 Material Symbols: 8.9 MB -> ~180 KB). Reference icons by their
-  **typed member** (not a string) so the linker can trace them.
-
-See [docs/en/icons.md](docs/en/icons.md) for the full guide.
-
----
-
-## Docker
-
-Run the published Gallery image from GitHub Container Registry (easiest):
-
-```sh
-docker run -p 8080:80 ghcr.io/jrfrigat/flare-gallery:latest
-# -> http://localhost:8080
-```
-
-The image is versioned independently from the NuGet packages (tags `gallery-v*`, e.g.
-`ghcr.io/jrfrigat/flare-gallery:0.0.1`).
-
-Or build it from source:
-
-```sh
-docker build -f samples/Flare.Gallery/Dockerfile -t flare-gallery .
-docker run -p 8080:80 flare-gallery
-# -> http://localhost:8080
-```
-
-`docker compose up --build` uses the same `samples/Flare.Gallery/Dockerfile`, but the bundled
-`docker-compose.yml` attaches the container to an external `proxy_network` for a reverse-proxy
-deployment (no host port published) - add a `ports:` mapping to reach it directly.
-
-The multi-stage `Dockerfile` produces an `nginx:alpine` image serving the static, pre-compressed
-(brotli/gzip) Blazor WASM output.
+Full guide: [docs/en/icons.md](docs/en/icons.md).
 
 ---
 
@@ -230,39 +179,14 @@ The multi-stage `Dockerfile` produces an `nginx:alpine` image serving the static
 
 ## Architecture
 
-```
-Flare.Abstractions      <- ports (ITheme, I*Service), design-token model, CSS name registry (dependency-free)
-Flare.Theming           <- theme engine: ThemeService, palette generation, ColorMath, token->CSS
-Flare.Infrastructure    <- browser/host adapters: JS interop, storage, dialog/snackbar/messagebox
-Flare.Components        <- core UI components + wwwroot/css (global token-driven bundle)
-Flare.Blazor (Flare)    <- composition root: AddFlare binds ports -> adapters
-Flare.Components.Carousel        <- Carousel
-Flare.Components.Kanban          <- Kanban board
-Flare.Components.Transfer        <- Transfer (dual list)
-Flare.Components.QrCode          <- QR code
-Flare.Components.RichTextEditor  <- Rich text editor
-Flare.Components.Media           <- SignaturePad, VideoPlayer
-Flare.Components.IDE             <- IDE layout: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
-Flare.Theme.MaterialDesign3Expressive <- MD3 design tokens + Material palettes + tonal generator
-Flare.Theme.MaterialDesign3 <- baseline MD3 (non-Expressive); shares the MD3 color system
-Flare.Theme.MaterialDesign2 <- Material Design 2 design tokens + palettes + ramp generator
-Flare.Theme.FluentUI2   <- Fluent UI 2 design tokens + Office palettes + ramp generator
-Flare.Theme.Aero        <- Aero design tokens + palettes + ramp generator
-Flare.Theme.LiquidGlass <- Liquid Glass design tokens + palettes + ramp generator
-Flare.Theme.VisualStudio <- Visual Studio 2026 design tokens + palettes + ramp generator
-Flare (umbrella)        <- AddFlare()/AddFlareTheme() DI extensions, LocalStorageThemeStorage (depends only on Flare.Components)
-```
+Onion rings, dependencies pointing strictly inward: `Flare.Abstractions` (ports, design-token model,
+CSS name registry) <- `Flare.Theming` + `Flare.Infrastructure` (adapters) <- `Flare.Components` (UI
+only) <- `Flare` (composition root, `AddFlare` binds ports to adapters). Themes and the optional
+component families ship as separate packages, so an app references only what it uses. Every component
+inherits `FlareComponentBase`, which receives the current theme through a cascaded `ThemeSnapshot` and
+forwards `Class`, `Style` and arbitrary HTML attributes.
 
-> Themes ship as independent packages - the umbrella `Flare.Blazor` package references **no** theme,
-> so apps pull in only the design systems they use. The optional component families (`Carousel`,
-> `Kanban`, `Transfer`, `QrCode`, `RichTextEditor`, `Media`, `IDE`) are likewise separate packages.
-
-All components inherit `FlareComponentBase` which:
-- Receives the current theme via a cascaded `ThemeSnapshot` and re-renders when it changes
-- Provides `BuildCssClass()` for BEM class construction
-- Forwards `Class`, `Style`, and arbitrary HTML attributes
-
-Full architecture details: [docs/en/architecture.md](docs/en/architecture.md)
+Full module map: [docs/en/architecture.md](docs/en/architecture.md)
 
 ---
 
@@ -282,61 +206,14 @@ dotnet run
 
 ## Custom Palettes & Themes
 
-A **palette** is just colors (light + dark). Reuse a design system and only swap the colors,
-or generate a whole palette from one brand color - no need to fill 45 roles by hand:
+A **palette** is just colors (light + dark) - reuse a design system and only swap the colors, or derive a
+whole palette from one brand color with `Palette.FromColors(id, name, seed)` instead of filling 45 roles
+by hand. **Dynamic Color** opts into a palette generated at runtime from the OS/browser accent, and any
+design token can be overridden through the public reference records. A full custom **theme** is
+`DesignTokens` + a default palette (implement `ITheme`).
 
-```csharp
-using Flare.Abstractions.Tokens;
-using Flare.Theme.MaterialDesign3.Tokens;
-
-// Override only what you need from the reference scheme:
-var ocean = new Palette
-{
-    Id = "ocean", Name = "Ocean", Source = "Custom",
-    Light = MaterialDesign3Tokens.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
-    Dark  = MaterialDesign3Tokens.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
-};
-
-// ...or derive a full light+dark palette from a brand color:
-var brand = Palette.FromColors("brand", "Brand", "#7B1FA2");
-
-builder.Services.AddFlare(opts => opts.DefaultPalette = ocean);   // at startup
-themeService.RegisterPalette(brand);                              // ...or at runtime
-await themeService.SetPaletteAsync("brand");
-```
-
-**Dynamic Color** - follow the OS/browser accent (Windows/macOS accent, Android Material You). The
-palette is generated by the active theme's generator, so it adapts to every theme:
-
-```csharp
-builder.Services.AddFlare(opts =>
-{
-    opts.UseDynamicPalette = true;                  // registers the "dynamic" palette (and makes it
-    opts.DynamicFallbackPalette = Md3Palettes.Violet; // default if no other default palette is set)
-});
-// switch to it like any palette, or drive it from your own seed:
-await themeService.SetPaletteAsync(Palette.DynamicId);
-await themeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
-```
-
-> **Chrome/Edge do not expose the real OS accent** (they return a fixed placeholder to mitigate
-> fingerprinting); only Firefox reflects the genuine accent. On Chromium the Dynamic palette uses
-> `DynamicFallbackPalette` - set it to a curated palette so it degrades to real colors, not an
-> arbitrary blue.
-
-See [Theme creation -> Dynamic Color](docs/en/theme-creation-guide.md#dynamic-color-palette-from-the-os-accent).
-
-Override **any** design token via the public reference records:
-
-```csharp
-var design = MaterialDesign3Tokens.Design with
-{
-    Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "10px" },
-};
-```
-
-A full custom **theme** = `DesignTokens` + a default palette (implement `ITheme`).
-See [docs/en/theme-creation-guide.md](docs/en/theme-creation-guide.md) for the theme-system model and a step-by-step walkthrough.
+Guide: [docs/en/theme-creation-guide.md](docs/en/theme-creation-guide.md) - the theme-system model, a
+step-by-step walkthrough and [Dynamic Color](docs/en/theme-creation-guide.md#dynamic-color-palette-from-the-os-accent).
 
 ---
 
@@ -347,7 +224,6 @@ dotnet build
 # Once per machine, and after updating Microsoft.Playwright:
 pwsh tests/Flare.Browser.Tests/bin/Debug/net10.0/playwright.ps1 install chromium
 dotnet test         # Includes C# Playwright browser tests
-docker run -p 8080:80 flare-gallery   # Gallery at http://localhost:8080
 ```
 
 Browser tests start and stop their own local Blazor host and headless Chromium. On Linux, use
@@ -356,6 +232,8 @@ the tests rather than skipping them. Failures save screenshots and Playwright tr
 `tests/Flare.Browser.Tests/bin/<configuration>/net10.0/TestResults`.
 
 CI runs on pushes and pull requests to `main`: build -> install Chromium -> test -> pack NuGet.
+
+Contributor workflow - branches, pull requests, conventions: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 

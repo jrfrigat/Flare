@@ -420,16 +420,6 @@ every row must be in the DOM for the browser's own find or for printing.
 
 ---
 
-## 11. Docker
-
-```sh
-# Run the Gallery PWA
-docker compose up --build
-# Open http://localhost:8080
-```
-
----
-
 ## Next steps
 
 - [Architecture](architecture.md) - modules, tokens and services in detail
