@@ -162,7 +162,8 @@ public partial class FlareChart
     private bool _zoomed => _zoomActive
         && (_view.From > _domainFrom + 1e-9 || _view.To < _domainTo - 1e-9);
 
-    private bool _zoomActive => Zoomable && !_spark && _pts > 1
+    private bool _zoomActive => Zoomable && !_spark && !(Type == ChartType.Bar && Horizontal)
+        && (_valueDomain ? Data?.Series.SelectMany(s => s.Points ?? []).Count(IsValidPoint) > 1 : _pts > 1)
         && Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar
                 or ChartType.Combo or ChartType.Scatter or ChartType.Bubble;
 
@@ -212,6 +213,7 @@ public partial class FlareChart
     private double _dragCurrentX;
     private bool _dragIsPan;
     private ChartZoom _dragStartView;
+    private ChartZoom? _dragStartZoom;
 
     private bool _selecting => _dragStartX is not null && !_dragIsPan
         && Math.Abs(_dragCurrentX - _dragStartX.Value) > 2;
@@ -226,70 +228,68 @@ public partial class FlareChart
         }
     }
 
-    // Pointer coordinates arrive in CSS pixels relative to the plot element. In fluid mode one viewBox
-    // unit is one pixel, so they are already viewBox units; otherwise the drawing is scaled to the
-    // element and the offset has to be scaled back by the same ratio.
-    private double ToPlotX(MouseEventArgs e)
-    {
-        var scale = _fluidActive || _measuredWidth is not { } w || w <= 0 ? 1.0 : _svgW / (double)w;
-        return e.OffsetX * scale;
-    }
-
     private double IndexOfX(double x) =>
         _view.From + (x - _padL) / Math.Max(1, _plotW) * _view.Span;
 
-    private void OnPlotPointerDown(MouseEventArgs e)
+    /// <summary>Updates a mouse or pen zoom gesture using SVG viewBox coordinates from the input adapter.</summary>
+    /// <param name="phase">The gesture phase: start, move, end, or cancel.</param>
+    /// <param name="x">The horizontal position in SVG viewBox units.</param>
+    [JSInvokable]
+    public Task ChartZoomGesture(string phase, double x) => InvokeAsync(async () =>
     {
-        if (!_zoomActive) return;
-        _dragStartX = ToPlotX(e);
-        _dragCurrentX = _dragStartX.Value;
-        _dragIsPan = _zoomed;
-        _dragStartView = _view;
-    }
+        if (!_zoomActive || !double.IsFinite(x)) { _dragStartX = null; return; }
+        if (phase == "start")
+        {
+            _dragStartX = x;
+            _dragCurrentX = x;
+            _dragIsPan = _zoomed;
+            _dragStartView = _view;
+            _dragStartZoom = Zoom ?? _internalZoom;
+            return;
+        }
+        if (_dragStartX is not { } start) return;
+        if (phase == "cancel")
+        {
+            _dragStartX = null;
+            await SetZoomAsync(_dragStartZoom);
+            return;
+        }
+        if (phase is not ("move" or "end")) return;
+        _dragCurrentX = x;
+        if (Math.Abs(x - start) > 2) DismissDetail();
+        if (_dragIsPan)
+        {
+            var delta = (x - start) / Math.Max(1, _plotW) * _dragStartView.Span;
+            var from = _dragStartView.From - delta;
+            if (phase == "end") _dragStartX = null;
+            await SetZoomAsync(new ChartZoom(from, from + _dragStartView.Span).Clamp(_domainFrom, _domainTo, _minZoomSpan));
+            return;
+        }
+        if (phase == "move") { StateHasChanged(); return; }
+        _dragStartX = null;
+        if (Math.Abs(x - start) <= 2) { StateHasChanged(); return; }
+        var a = IndexOfX(Math.Min(start, x));
+        var b = IndexOfX(Math.Max(start, x));
+        await SetZoomAsync(new ChartZoom(a, b).Clamp(_domainFrom, _domainTo, _minZoomSpan));
+    });
 
     private void OnPlotPointerMove(MouseEventArgs e)
     {
         if (_tooltipVisible) SetHoverPosition(e);
-        if (!_zoomActive || _dragStartX is null) return;
-        _dragCurrentX = ToPlotX(e);
-        if (!_dragIsPan) { StateHasChanged(); return; }
-
-        var deltaIndex = (_dragCurrentX - _dragStartX.Value) / Math.Max(1, _plotW) * _dragStartView.Span;
-        var from = _dragStartView.From - deltaIndex;
-        _internalZoom = new ChartZoom(from, from + _dragStartView.Span).Clamp(_domainFrom, _domainTo, _minZoomSpan);
-        StateHasChanged();
-    }
-
-    private async Task OnPlotPointerUp(MouseEventArgs e)
-    {
-        if (!_zoomActive || _dragStartX is null) return;
-        var start = _dragStartX.Value;
-        var end = ToPlotX(e);
-        var wasPan = _dragIsPan;
-        _dragStartX = null;
-
-        if (wasPan) { await SetZoomAsync(_internalZoom); return; }
-        if (Math.Abs(end - start) <= 2) { StateHasChanged(); return; }
-
-        var a = IndexOfX(Math.Min(start, end));
-        var b = IndexOfX(Math.Max(start, end));
-        await SetZoomAsync(new ChartZoom(a, b).Clamp(_domainFrom, _domainTo, _minZoomSpan));
     }
 
     private void OnPlotPointerLeave()
     {
         ClearHover();
-        if (_dragStartX is null) return;
-        _dragStartX = null;
-        StateHasChanged();
     }
 
-    // Ctrl is required so an unmodified wheel still scrolls the page - a chart that swallows the scroll
-    // is the single most complained-about behaviour in every charting library that does not.
-    private Task OnPlotWheel(WheelEventArgs e)
+    /// <summary>Zooms around an SVG position after the input adapter accepts a Ctrl+wheel gesture.</summary>
+    /// <param name="delta">The wheel's vertical delta.</param>
+    /// <param name="x">The anchor's horizontal position in SVG viewBox units.</param>
+    [JSInvokable]
+    public Task ChartZoomWheel(double delta, double x) => InvokeAsync(async () =>
     {
-        if (!_zoomActive || !e.CtrlKey) return Task.CompletedTask;
-        var anchor = IndexOfX(ToPlotX(e));
-        return ZoomAroundAsync(e.DeltaY > 0 ? 1.25 : 0.8, anchor);
-    }
+        if (!_zoomActive || !double.IsFinite(delta) || !double.IsFinite(x) || delta == 0) return;
+        await ZoomAroundAsync(delta > 0 ? 1.25 : 0.8, IndexOfX(x));
+    });
 }

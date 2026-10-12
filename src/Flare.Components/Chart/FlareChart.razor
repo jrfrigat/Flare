@@ -32,13 +32,12 @@
     }
     <div class="@Css.Classes.Chart.Plot @(_zoomActive ? Css.Classes.Chart.PlotZoomable : null) @(_zoomed ? Css.Classes.Chart.PlotZoomed : null)"
          @ref="_plotRef"
-         @onpointerdown="OnPlotPointerDown"
+         data-flare-chart-zoom="@(_zoomActive ? "true" : null)"
+         data-plot-left="@F(_padL)" data-plot-top="@F(_padT)"
+         data-plot-width="@F(_plotW)" data-plot-height="@F(_plotH)"
          @onpointermove="OnPlotPointerMove"
-         @onpointerup="OnPlotPointerUp"
          @onpointerleave="OnPlotPointerLeave"
-         @ondblclick="ResetZoomAsync"
-         @onwheel="OnPlotWheel"
-         @onwheel:preventDefault="_zoomActive">
+         @ondblclick="ResetZoomAsync">
         @{ var hits = RenderedHits(); }
         <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="@(_spark ? "none" : null)" style="@_svgStyle"

@@ -4,11 +4,10 @@
     width: 100%;
 }
 
-/* touch-action: a zoomable plot owns horizontal drags, so the browser must not steal them for a
-   pan/zoom gesture; vertical page scrolling still works. */
+/* Mouse/pen zoom gestures leave native touch scrolling and browser zoom available. */
 .flare-chart__plot--zoomable {
     cursor: crosshair;
-    touch-action: pan-y;
+    touch-action: auto;
     user-select: none;
 }
 

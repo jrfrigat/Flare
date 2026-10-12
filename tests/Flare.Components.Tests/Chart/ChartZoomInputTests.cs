@@ -73,4 +73,56 @@ public class ChartZoomInputTests : FlareTestContext
         cut.Render(p => p.Add(x => x.Zoom, new ChartZoom(3, 6)));
         Assert.Empty(cut.FindAll("[role=tooltip]"));
     }
+
+    [Theory]
+    [InlineData(ChartType.Scatter)]
+    [InlineData(ChartType.Bubble)]
+    public void PointsOnlyDataEnablesZoom(ChartType type)
+    {
+        var data = new ChartData([new ChartSeries("Points", []) { Points = [new(0, 1), new(10, 2)] }]);
+        var cut = Render<FlareChart>(p => p.Add(x => x.Type, type).Add(x => x.Data, data).Add(x => x.Zoomable, true));
+        Assert.Single(cut.FindAll($".{Css.Classes.Chart.Toolbar}"));
+    }
+
+    [Fact]
+    public void HorizontalBarsDoNotAdvertiseUnsupportedZoom()
+    {
+        var cut = Render<FlareChart>(p => p.Add(x => x.Type, ChartType.Bar).Add(x => x.Horizontal, true)
+            .Add(x => x.Data, Data).Add(x => x.Zoomable, true));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Toolbar}"));
+    }
+
+    [Fact]
+    public async Task GestureUsesViewBoxCoordinatesAndCancelRestoresWindow()
+    {
+        ChartZoom? window = null;
+        var cut = Render<FlareChart>(p => p.Add(x => x.Data, Data).Add(x => x.Zoomable, true)
+            .Add(x => x.ZoomChanged, (ChartZoom? value) => window = value));
+        var plot = cut.Find($".{Css.Classes.Chart.Plot}");
+        double left = Number(plot, "data-plot-left"), width = Number(plot, "data-plot-width");
+        await cut.Instance.ChartZoomGesture("start", left + width / 3);
+        await cut.Instance.ChartZoomGesture("end", left + width * 2 / 3);
+        Assert.NotNull(window); Assert.Equal(3, window.Value.From, 6); Assert.Equal(6, window.Value.To, 6);
+        cut.Render(p => p.Add(x => x.Zoom, window));
+        await cut.Instance.ChartZoomGesture("start", left + width / 2);
+        await cut.Instance.ChartZoomGesture("move", left + width / 3);
+        Assert.Equal(3.5, window!.Value.From, 6);
+        await cut.Instance.ChartZoomGesture("cancel", left);
+        Assert.Equal(3, window!.Value.From, 6); Assert.Equal(6, window.Value.To, 6);
+    }
+
+    [Fact]
+    public async Task WheelKeepsItsSvgAnchorAndRejectsNonfiniteInput()
+    {
+        ChartZoom? window = null;
+        var cut = Render<FlareChart>(p => p.Add(x => x.Data, Data).Add(x => x.Zoomable, true)
+            .Add(x => x.ZoomChanged, (ChartZoom? value) => window = value));
+        var plot = cut.Find($".{Css.Classes.Chart.Plot}");
+        double left = Number(plot, "data-plot-left"), width = Number(plot, "data-plot-width");
+        await cut.Instance.ChartZoomWheel(double.NaN, left); Assert.Null(window);
+        await cut.Instance.ChartZoomWheel(-100, left + width / 4);
+        Assert.NotNull(window); Assert.Equal(0.45, window.Value.From, 6); Assert.Equal(7.65, window.Value.To, 6);
+        var before = window;
+        await cut.Instance.ChartZoomGesture("start", double.PositiveInfinity); Assert.Equal(before, window);
+    }
 }

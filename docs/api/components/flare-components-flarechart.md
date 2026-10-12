@@ -52,7 +52,7 @@ Draws a data set as SVG: line, area, bar, stacked bar, combo, scatter, bubble, p
 | `YMin` | `double?` | `` | Parameter |  | Overrides the automatic minimum of the value axis. Nonfinite values are ignored. When both bounds are finite but the minimum is not below the maximum, both are ignored. |
 | `Zoom` | `ChartZoom?` | `` | Parameter |  | The visible horizontal window, in category index (or scatter X) units. Null shows the full domain. Supports two-way binding (@bind-Zoom) for a chart whose window the host owns. |
 | `ZoomChanged` | `EventCallback<ChartZoom?>` | `` | Callback |  | Fired with the new window whenever the user zooms or pans. |
-| `Zoomable` | `bool` | `false` | Parameter |  | Enables zooming and panning of the horizontal axis: drag across the plot to zoom into that range, Ctrl+wheel to zoom around the pointer, drag to pan once zoomed, double-click to reset. The axis re-derives its ticks from the visible window, so zooming in shows more labels rather than the same labels stretched. |
+| `Zoomable` | `bool` | `false` | Parameter |  | Enables zooming and panning of the horizontal axis: drag across the plot to zoom into that range, Ctrl+wheel to zoom around the pointer, drag to pan once zoomed, double-click to reset. The axis re-derives its ticks from the visible window, so zooming in shows more labels rather than the same labels stretched. Applies to cartesian charts except horizontal bars. Mouse and pen drags select or pan; touch retains native page scrolling. Scatter and bubble use their point X coordinates. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
@@ -74,6 +74,26 @@ Returns: `Task`.
 | `key` | `string` | The rendered hit's stable identity. |
 | `x` | `double` | The anchor's horizontal viewport coordinate in CSS pixels. |
 | `y` | `double` | The anchor's vertical viewport coordinate in CSS pixels. |
+
+### `ChartZoomGesture(string phase, double x)`
+
+Updates a mouse or pen zoom gesture using SVG viewBox coordinates from the input adapter.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `phase` | `string` | The gesture phase: start, move, end, or cancel. |
+| `x` | `double` | The horizontal position in SVG viewBox units. |
+
+### `ChartZoomWheel(double delta, double x)`
+
+Zooms around an SVG position after the input adapter accepts a Ctrl+wheel gesture.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `delta` | `double` | The wheel's vertical delta. |
+| `x` | `double` | The anchor's horizontal position in SVG viewBox units. |
 
 ### `DisposeAsync()`
 

@@ -203,6 +203,8 @@ public partial class FlareChart
     /// <c>Ctrl</c>+wheel to zoom around the pointer, drag to pan once zoomed, double-click to reset. The
     /// axis re-derives its ticks from the visible window, so zooming in shows more labels rather than the
     /// same labels stretched.
+    /// Applies to cartesian charts except horizontal bars. Mouse and pen drags select or pan;
+    /// touch retains native page scrolling. Scatter and bubble use their point X coordinates.
     /// </summary>
     [Parameter] public bool Zoomable { get; set; }
 

@@ -829,7 +829,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"YMin", @"double?", null, @"Overrides the automatic minimum of the value axis. Nonfinite values are ignored. When both bounds are finite but the minimum is not below the maximum, both are ignored.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Zoom", @"ChartZoom?", null, @"The visible horizontal window, in category index (or scatter X) units. Null shows the full domain. Supports two-way binding (@bind-Zoom) for a chart whose window the host owns.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ZoomChanged", @"EventCallback<ChartZoom?>", null, @"Fired with the new window whenever the user zooms or pans.", null, false, true, false, @"FlareChart"),
-                new ApiParameterInfo(@"Zoomable", @"bool", @"false", @"Enables zooming and panning of the horizontal axis: drag across the plot to zoom into that range, Ctrl+wheel to zoom around the pointer, drag to pan once zoomed, double-click to reset. The axis re-derives its ticks from the visible window, so zooming in shows more labels rather than the same labels stretched.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Zoomable", @"bool", @"false", @"Enables zooming and panning of the horizontal axis: drag across the plot to zoom into that range, Ctrl+wheel to zoom around the pointer, drag to pan once zoomed, double-click to reset. The axis re-derives its ticks from the visible window, so zooming in shows more labels rather than the same labels stretched. Applies to cartesian charts except horizontal bars. Mouse and pen drags select or pan; touch retains native page scrolling. Scatter and bubble use their point X coordinates.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -844,6 +844,18 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"key", @"string", @"The rendered hit's stable identity."),
                         new ApiMethodParameter(@"x", @"double", @"The anchor's horizontal viewport coordinate in CSS pixels."),
                         new ApiMethodParameter(@"y", @"double", @"The anchor's vertical viewport coordinate in CSS pixels."),
+                    }),
+                new ApiMethodInfo(@"ChartZoomGesture", @"ChartZoomGesture(string phase, double x)", @"Task", null, @"Updates a mouse or pen zoom gesture using SVG viewBox coordinates from the input adapter.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"phase", @"string", @"The gesture phase: start, move, end, or cancel."),
+                        new ApiMethodParameter(@"x", @"double", @"The horizontal position in SVG viewBox units."),
+                    }),
+                new ApiMethodInfo(@"ChartZoomWheel", @"ChartZoomWheel(double delta, double x)", @"Task", null, @"Zooms around an SVG position after the input adapter accepts a Ctrl+wheel gesture.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"delta", @"double", @"The wheel's vertical delta."),
+                        new ApiMethodParameter(@"x", @"double", @"The anchor's horizontal position in SVG viewBox units."),
                     }),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
