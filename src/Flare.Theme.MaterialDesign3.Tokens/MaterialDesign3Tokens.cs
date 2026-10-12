@@ -198,7 +198,6 @@ public class MaterialDesign3Tokens
 
     internal static readonly BadgeTokens Badge = new()
     {
-        // MD3 Expressive: pill shape (full radius), compact sizing
         Radius = "var(--flare-shape-full)",
         // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
@@ -218,7 +217,6 @@ public class MaterialDesign3Tokens
     {
         BodyOpacity = "0.9",
         CloseOpacity = "0.7",
-        // MD3 Expressive: extra-small radius, no border on filled variant
         Radius = "var(--flare-shape-extra-small)",
         BorderWidth = "0",
         Padding = "0.875rem 1rem",
@@ -1629,7 +1627,6 @@ public class MaterialDesign3Tokens
         TimeSepSize = "3.5625rem",
     };
 
-    // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()

@@ -583,7 +583,6 @@ internal class VisualStudioTokens
         [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
     };
 
-    // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Visual Studio 2026 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = FluentUI2Tokens.Design with

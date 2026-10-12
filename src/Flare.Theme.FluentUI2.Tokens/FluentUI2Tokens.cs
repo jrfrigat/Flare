@@ -1596,7 +1596,6 @@ public class FluentUI2Tokens
         TimeSepSize = "2.5rem",
     };
 
-    // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Fluent UI 2 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()

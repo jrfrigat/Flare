@@ -184,7 +184,6 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly BadgeTokens Badge = new()
     {
-        // MD3 Expressive: pill shape (full radius), compact sizing
         Radius = "var(--flare-shape-full)",
         // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
@@ -204,7 +203,6 @@ internal static class MaterialDesign2Tokens
     {
         BodyOpacity = "0.9",
         CloseOpacity = "0.7",
-        // MD3 Expressive: extra-small radius, no border on filled variant
         Radius = "var(--flare-shape-extra-small)",
         BorderWidth = "0",
         Padding = "0.875rem 1rem",
@@ -406,7 +404,7 @@ internal static class MaterialDesign2Tokens
         TriggerRadiusXl = new() { TopLeft = "0.75rem", BottomLeft = "0.75rem", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    // MD3: round rest shape, morphs into a squircle on selection (values = record defaults).
+    // Material 2 has no shape morph: the toggle keeps its corners and the values are the record defaults.
     // Only the segmented container's own chrome: the buttons inside it are buttons and read the button
     // family for everything else.
     internal static readonly ToggleButtonTokens ToggleButton = new()
@@ -522,8 +520,6 @@ internal static class MaterialDesign2Tokens
         TabPaddingInline = "24px",
     };
 
-    // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,
-    // item 4dp (end items 12dp), label-large text, vertical 8dp, gap 2dp, focus-ring secondary.
     /// <summary>List container and row tokens.</summary>
     internal static readonly ListTokens List = new()
     {
@@ -1572,7 +1568,6 @@ internal static class MaterialDesign2Tokens
         TimeSepSize = "2.5rem",
     };
 
-    // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()

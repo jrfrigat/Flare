@@ -509,7 +509,6 @@ internal class AeroTokens
         [AeroCssVars.Glow] = "rgba(60,127,177,0.55)",
     };
 
-    // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Aero design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = MaterialDesign3Tokens.Design with
