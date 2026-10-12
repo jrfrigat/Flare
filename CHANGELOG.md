@@ -3,10 +3,33 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.44.0] - 2026-10-13
+
+### Added
+
+- All 13 chart types support keyboard navigation and touch details, with accessible point descriptions.
+  Scatter, bubble, heat map, radar, rose and polar charts now expose point details too.
+- Chart data tables include the complete data set, including scatter, bubble and heat map values.
+
+### Changed
+
+- Chart pointer movement updates the tooltip without rebuilding chart geometry. Legends use shared button
+  behavior, including keyboard activation and the pressed state for hidden series.
+- The chart Gallery provides localized English and Russian examples for every chart type, resizing,
+  dialogs, empty data, gaps and long labels. Chart API documentation reflects the supported parameters.
 
 ### Fixed
 
+- Dense charts no longer stall when moving between adjacent points: hovering preserves the SVG drawing
+  and accessible data table, and updates only the active point's details.
+- Chart tooltips follow the current pointer position and remain correctly placed when scrolling, resizing,
+  using transformed containers or opening charts in dialogs.
+- Hidden chart series no longer affect radial totals, sectors, point details or axis scaling.
+- Empty, non-finite and extreme chart values, degenerate axes and single full-circle slices are handled
+  consistently. Missing values produce gaps instead of misleading zero-valued points.
+- Chart labels render as literal text. Long legend and tooltip labels wrap within narrow containers.
+- Chart zoom gestures use chart coordinates and finish or cancel reliably. Ordinary wheel and touch
+  scrolling remain available; Ctrl+wheel zooms. Keyboard focus stays within the visible zoom window.
 - Message boxes keep keyboard focus inside alerts, confirmations and prompts, preserve it through queued requests,
   and restore it to the opener or a surviving container when closed. Nested dialogs retain their own focus.
 
