@@ -104,6 +104,33 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Chart_ZoomReset", resourceCulture);
             }
         }
+
+        /// <summary>Localized caption for an untitled chart data table.</summary>
+        public static string Chart_TableCaption => ResourceManager.GetString("Chart_TableCaption", resourceCulture);
+
+        /// <summary>Localized category column header.</summary>
+        public static string Chart_TableCategory => ResourceManager.GetString("Chart_TableCategory", resourceCulture);
+
+        /// <summary>Localized series column header.</summary>
+        public static string Chart_TableSeries => ResourceManager.GetString("Chart_TableSeries", resourceCulture);
+
+        /// <summary>Localized point column header.</summary>
+        public static string Chart_TablePoint => ResourceManager.GetString("Chart_TablePoint", resourceCulture);
+
+        /// <summary>Localized X coordinate column header.</summary>
+        public static string Chart_TableX => ResourceManager.GetString("Chart_TableX", resourceCulture);
+
+        /// <summary>Localized Y coordinate column header.</summary>
+        public static string Chart_TableY => ResourceManager.GetString("Chart_TableY", resourceCulture);
+
+        /// <summary>Localized bubble weight column header.</summary>
+        public static string Chart_TableWeight => ResourceManager.GetString("Chart_TableWeight", resourceCulture);
+
+        /// <summary>Localized missing value text.</summary>
+        public static string Chart_TableMissing => ResourceManager.GetString("Chart_TableMissing", resourceCulture);
+
+        /// <summary>Localized empty chart data text.</summary>
+        public static string Chart_TableEmpty => ResourceManager.GetString("Chart_TableEmpty", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Loading.

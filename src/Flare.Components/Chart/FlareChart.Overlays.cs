@@ -149,53 +149,6 @@ public partial class FlareChart
         sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"{anchor}\" style=\"{style}\">{SvgText(a.Label)}</text>"));
     }
 
-    // Visually-hidden data table (a11y fallback): categories x series.
-    private RenderFragment RenderDataTable() => builder =>
-    {
-        var series = Data!.Series;
-        var labels = Data!.Labels;
-        int seq = 0;
-        builder.OpenElement(seq++, "table");
-        builder.AddAttribute(seq++, "class", Css.Classes.Chart.Table);
-        if (Title is not null)
-        {
-            builder.OpenElement(seq++, "caption");
-            builder.AddContent(seq++, Title);
-            builder.CloseElement();
-        }
-        builder.OpenElement(seq++, "thead");
-        builder.OpenElement(seq++, "tr");
-        builder.OpenElement(seq++, "th");
-        builder.CloseElement();
-        foreach (var s in series)
-        {
-            builder.OpenElement(seq++, "th");
-            builder.AddContent(seq++, s.Label);
-            builder.CloseElement();
-        }
-        builder.CloseElement();
-        builder.CloseElement();
-
-        builder.OpenElement(seq++, "tbody");
-        int rows = labels is { Count: > 0 } ? labels.Count : (series.Count > 0 ? series.Max(s => s.Values.Count) : 0);
-        for (int r = 0; r < rows; r++)
-        {
-            builder.OpenElement(seq++, "tr");
-            builder.OpenElement(seq++, "th");
-            builder.AddContent(seq++, labels is { } l && r < l.Count ? l[r] : (r + 1).ToString());
-            builder.CloseElement();
-            foreach (var s in series)
-            {
-                builder.OpenElement(seq++, "td");
-                builder.AddContent(seq++, r < s.Values.Count ? s.Values[r].ToString(_inv) : string.Empty);
-                builder.CloseElement();
-            }
-            builder.CloseElement();
-        }
-        builder.CloseElement();
-        builder.CloseElement();
-    };
-
     // Horizontal grid and the Y labels that sit on it. Both come off the SAME resolved axis, so a label
     // can never name a value its line is not drawn at.
     private string GridLines(AxisScale axis)

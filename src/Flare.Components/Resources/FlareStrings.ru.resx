@@ -159,6 +159,15 @@
   <data name="Chart_ZoomIn" xml:space="preserve"><value>Приблизить</value></data>
   <data name="Chart_ZoomOut" xml:space="preserve"><value>Отдалить</value></data>
   <data name="Chart_ZoomReset" xml:space="preserve"><value>Сбросить масштаб</value></data>
+  <data name="Chart_TableCaption" xml:space="preserve"><value>Данные диаграммы</value></data>
+  <data name="Chart_TableCategory" xml:space="preserve"><value>Категория</value></data>
+  <data name="Chart_TableSeries" xml:space="preserve"><value>Серия</value></data>
+  <data name="Chart_TablePoint" xml:space="preserve"><value>Точка</value></data>
+  <data name="Chart_TableX" xml:space="preserve"><value>X</value></data>
+  <data name="Chart_TableY" xml:space="preserve"><value>Y</value></data>
+  <data name="Chart_TableWeight" xml:space="preserve"><value>Вес (R)</value></data>
+  <data name="Chart_TableMissing" xml:space="preserve"><value>Нет значения</value></data>
+  <data name="Chart_TableEmpty" xml:space="preserve"><value>Нет данных</value></data>
   <data name="Tabs_ScrollBack" xml:space="preserve"><value>Прокрутить вкладки назад</value></data>
   <data name="Tabs_ScrollForward" xml:space="preserve"><value>Прокрутить вкладки вперед</value></data>
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Переключить меню</value></data>

@@ -179,7 +179,9 @@ public partial class FlareChart
     /// </summary>
     [Parameter] public bool AnimateUpdates { get; set; }
     /// <summary>Also renders a visually-hidden data <c>&lt;table&gt;</c> after the chart, so screen readers
-    /// can read the underlying values (an accessibility fallback for the SVG).</summary>
+    /// can read all underlying values, including hidden series and points outside the zoom window.
+    /// Scatter and bubble tables include X/Y coordinates and bubble weights. Missing values are named
+    /// explicitly; an empty data set displays a message (an accessibility fallback for the SVG).</summary>
     [Parameter] public bool DataTable { get; set; }
     /// <summary>Overlays a linear-regression trend line on each line/area/scatter series.</summary>
     [Parameter] public bool TrendLine { get; set; }
@@ -489,33 +491,4 @@ public partial class FlareChart
     private const string _sliceStrokeStyle =
         $"stroke:var({Css.Tokens.Chart.SliceStrokeColor});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})";
 
-    /// <summary>Clamps NaN/Infinity data values to 0 to prevent SVG coordinate corruption. Gaps are
-    /// recognized before this point; anything reaching it is a value the renderer decided to draw.</summary>
-    private static double SafeValue(double v) =>
-        double.IsNaN(v) || double.IsInfinity(v) ? 0.0 : v;
-
-    /// <summary>A missing point: the series has no value in this category, which is not a value of zero.</summary>
-    private static bool IsGap(double v) => double.IsNaN(v);
-
-    // Values that take part in the axis range. Gaps are absent, so they must neither stretch the scale
-    // nor poison it - Enumerable.Min over doubles returns NaN as soon as one appears in the sequence.
-    private static List<double> Plotted(IEnumerable<double> values) =>
-        values.Where(v => !IsGap(v)).ToList();
-
-    // Splits a point list into the runs of consecutive present points. A gap ends the run it follows,
-    // so each run becomes its own subpath and the line breaks instead of crossing the hole.
-    private static List<List<(double X, double Y)>> Runs(IReadOnlyList<(double X, double Y)> pts)
-    {
-        var runs = new List<List<(double X, double Y)>>();
-        List<(double X, double Y)>? run = null;
-        foreach (var p in pts)
-        {
-            if (IsGap(p.Y)) { run = null; continue; }
-            if (run is null) runs.Add(run = []);
-            run.Add(p);
-        }
-        return runs;
-    }
-
-    private int _pts => Data?.Series is { Count: > 0 } s ? s.Max(x => x.Values.Count) : 0;
 }
