@@ -18,7 +18,7 @@ The kind of chart FlareChart renders from its data.
 | `StackedBar` | `5` | Bar chart with series stacked on top of each other within each category. |
 | `Scatter` | `6` | Scatter plot of independent X/Y points (uses Points). |
 | `Radar` | `7` | Radar (spider) chart: each category is an axis radiating from the center. |
-| `HeatMap` | `8` | Heat map: a colored grid where each series is a row and each label is a column. |
+| `HeatMap` | `8` | Heat map: a colored grid where each series is a row and each label is a column. Missing and nonfinite values leave empty cells; finite zero remains a value. |
 | `Bubble` | `9` | Bubble chart: X/Y points sized by R. |
 | `Rose` | `10` | Rose (Nightingale) chart: equal-angle sectors whose radius encodes the value. |
 | `PolarArea` | `11` | Polar-area chart: equal-angle wedges on a radial grid, radius encodes the value. |

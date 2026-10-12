@@ -122,7 +122,8 @@ public partial class FlareChart
             var vals = series[visible[r]].Values;
             for (int c = 0; c < cols; c++)
             {
-                double v = c < vals.Count ? SafeValue(vals[c]) : min;
+                if (c >= vals.Count || IsGap(vals[c])) continue;
+                double v = vals[c];
                 double t = (v - min) / (max - min);
                 double x = _padL + c * cellW, y = _padT + r * cellH;
                 builder.AddMarkupContent(seq++, string.Create(_inv,

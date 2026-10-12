@@ -8,6 +8,13 @@ namespace Flare.Components;
 // hover/tooltip state.
 public partial class FlareChart
 {
+    private static bool IsValidPoint(ChartPoint point) => double.IsFinite(point.X) && double.IsFinite(point.Y);
+
+    private static double BubbleWeight(double weight) => double.IsFinite(weight) && weight > 0 ? weight : 0;
+
+    private List<ChartPoint> ScalePoints() => Data?.Series.Where((_, i) => CountsTowardsScale(i))
+        .SelectMany(s => s.Points ?? []).Where(IsValidPoint).ToList() ?? [];
+
     private List<int> VisibleSeriesIndices(int count) =>
         [.. Enumerable.Range(0, count).Where(i => !IsHidden(i))];
 

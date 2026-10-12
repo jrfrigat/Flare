@@ -313,12 +313,9 @@ public partial class FlareChart
     private RenderFragment RenderScatter() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var allPts = series.Where(s => s.Points is { Count: > 0 }).SelectMany(s => s.Points!).ToList();
+        var allPts = ScalePoints();
         if (allPts.Count == 0) return;
-        double xMin = allPts.Min(p => p.X), xMax = allPts.Max(p => p.X);
         double yMin = allPts.Min(p => p.Y), yMax = allPts.Max(p => p.Y);
-        if (xMax == xMin) xMax = xMin + 1;
-        if (yMax == yMin) yMax = yMin + 1;
         var axis = ResolveAxis(yMin, yMax, _plotH);
         yMin = axis.Min; yMax = axis.Max;
         int seq = 0;
@@ -327,7 +324,7 @@ public partial class FlareChart
         // Bubble: map the largest R weight onto the theme's bubble-radius range, so the biggest bubble is
         // the size the theme calls big. sqrt keeps the AREA proportional to the weight - a bubble scaled by
         // radius over-reads by the square, which is the classic bubble-chart lie.
-        double rWeightMax = _bubble ? Math.Max(1e-9, allPts.Max(p => p.R)) : 0;
+        double rWeightMax = _bubble ? Math.Max(1e-9, allPts.Max(p => BubbleWeight(p.R))) : 0;
         double ptR = PointRadius();
         double bubbleMin = BubbleMinRadius();
         double bubbleSpan = Math.Max(0, BubbleMaxRadius() - bubbleMin);
@@ -342,10 +339,11 @@ public partial class FlareChart
             var sb = new System.Text.StringBuilder();
             foreach (var p in pointsList)
             {
+                if (!IsValidPoint(p)) continue;
                 double x = XOfIndex(p.X);
                 double y = _padT + _plotH - (p.Y - yMin) / (yMax - yMin) * _plotH;
                 pixels.Add((x, y));
-                double r = _bubble ? bubbleMin + bubbleSpan * Math.Sqrt(p.R / rWeightMax) : ptR;
+                double r = _bubble ? bubbleMin + bubbleSpan * Math.Sqrt(BubbleWeight(p.R) / rWeightMax) : ptR;
                 sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{r:F1}\" style=\"fill:{color};opacity:var({Css.Tokens.Chart.PointOpacity})\"/>"));
             }
             if (TrendLine) sb.Append(TrendLineMarkup(pixels, color));

@@ -140,7 +140,7 @@ public partial class FlareChart
     {
         get
         {
-            var xs = Data?.Series.SelectMany(s => s.Points ?? []).Select(p => p.X).ToList();
+            var xs = ScalePoints().Select(p => p.X).ToList();
             if (xs is not { Count: > 0 }) return (0, 1);
             double min = xs.Min(), max = xs.Max();
             return max > min ? (min, max) : (min, min + 1);

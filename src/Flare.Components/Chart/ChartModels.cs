@@ -19,7 +19,8 @@ public enum ChartType
     Scatter,
     /// <summary>Radar (spider) chart: each category is an axis radiating from the center.</summary>
     Radar,
-    /// <summary>Heat map: a colored grid where each series is a row and each label is a column.</summary>
+    /// <summary>Heat map: a colored grid where each series is a row and each label is a column.
+    /// Missing and nonfinite values leave empty cells; finite zero remains a value.</summary>
     HeatMap,
     /// <summary>Bubble chart: X/Y points sized by <see cref="ChartPoint.R"/>.</summary>
     Bubble,
@@ -227,9 +228,10 @@ public sealed record ChartAnnotation
 }
 
 /// <summary>A single X/Y point for a scatter or bubble series.</summary>
-/// <param name="X">The horizontal value.</param>
-/// <param name="Y">The vertical value.</param>
-/// <param name="R">The bubble radius weight (bubble charts only); ignored by scatter.</param>
+/// <param name="X">The horizontal value. Points with nonfinite X or Y are not plotted.</param>
+/// <param name="Y">The vertical value. Points with nonfinite X or Y are not plotted.</param>
+/// <param name="R">The bubble area weight (bubble charts only); ignored by scatter.
+/// Negative or nonfinite weights are treated as zero. Zero keeps the theme's minimum radius.</param>
 public readonly record struct ChartPoint(double X, double Y, double R = 0);
 
 /// <summary>Where the legend sits relative to the plot in <see cref="FlareChart"/>.</summary>
