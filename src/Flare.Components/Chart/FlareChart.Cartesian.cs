@@ -312,39 +312,22 @@ public partial class FlareChart
 
     private RenderFragment RenderScatter() => builder =>
     {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        var allPts = ScalePoints();
-        if (allPts.Count == 0) return;
-        double yMin = allPts.Min(p => p.Y), yMax = allPts.Max(p => p.Y);
-        var axis = ResolveAxis(yMin, yMax, _plotH);
-        yMin = axis.Min; yMax = axis.Max;
+        if (_pointLayout is not { } layout) return;
         int seq = 0;
-        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(axis));
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(layout.Axis));
 
         // Bubble: map the largest R weight onto the theme's bubble-radius range, so the biggest bubble is
         // the size the theme calls big. sqrt keeps the AREA proportional to the weight - a bubble scaled by
         // radius over-reads by the square, which is the classic bubble-chart lie.
-        double rWeightMax = _bubble ? Math.Max(1e-9, allPts.Max(p => BubbleWeight(p.R))) : 0;
-        double ptR = PointRadius();
-        double bubbleMin = BubbleMinRadius();
-        double bubbleSpan = Math.Max(0, BubbleMaxRadius() - bubbleMin);
-
-        for (int si = 0; si < series.Count; si++)
+        foreach (var group in layout.Marks.GroupBy(p => p.Series))
         {
-            if (IsHidden(si)) continue;
-            var pointsList = series[si].Points;
-            if (pointsList is null) continue;
-            var color = GetColor(si);
-            var pixels = new List<(double X, double Y)>(pointsList.Count);
+            var color = GetColor(group.Key);
+            var pixels = new List<(double X, double Y)>();
             var sb = new System.Text.StringBuilder();
-            foreach (var p in pointsList)
+            foreach (var point in group)
             {
-                if (!IsValidPoint(p)) continue;
-                double x = XOfIndex(p.X);
-                double y = _padT + _plotH - (p.Y - yMin) / (yMax - yMin) * _plotH;
-                pixels.Add((x, y));
-                double r = _bubble ? bubbleMin + bubbleSpan * Math.Sqrt(BubbleWeight(p.R) / rWeightMax) : ptR;
-                sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{r:F1}\" style=\"fill:{color};opacity:var({Css.Tokens.Chart.PointOpacity})\"/>"));
+                pixels.Add((point.X, point.Y));
+                sb.Append(string.Create(_inv, $"<circle cx=\"{point.X:F1}\" cy=\"{point.Y:F1}\" r=\"{point.Radius:F1}\" style=\"fill:{color};opacity:var({Css.Tokens.Chart.PointOpacity})\"/>"));
             }
             if (TrendLine) sb.Append(TrendLineMarkup(pixels, color));
             builder.AddMarkupContent(seq++, Clipped(sb.ToString()));

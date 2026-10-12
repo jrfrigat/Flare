@@ -11,9 +11,9 @@ public class ChartPointBoundaryTests : FlareTestContext
     {
         var valid = new[] { new ChartPoint(1, 2, 1), new ChartPoint(3, 4, 4) };
         var cut = Render<FlareChart>(p => p.Add(x => x.Type, type).Add(x => x.TrendLine, true).Add(x => x.Data, Points(valid)));
-        var marks = cut.Find("svg").InnerHtml;
+        var marks = cut.FindAll("svg circle:not([fill='transparent']),svg path").Select(x => x.OuterHtml).ToArray();
         cut.Render(p => p.Add(x => x.Data, Points([.. valid, new(double.NaN, 3), new(4, double.PositiveInfinity), new(double.NegativeInfinity, 2)])));
-        Assert.Equal(marks, cut.Find("svg").InnerHtml);
+        Assert.Equal(marks, cut.FindAll("svg circle:not([fill='transparent']),svg path").Select(x => x.OuterHtml).ToArray());
     }
 
     [Theory]
@@ -25,9 +25,9 @@ public class ChartPointBoundaryTests : FlareTestContext
     {
         var cut = Render<FlareChart>(p => p.Add(x => x.Type, ChartType.Bubble)
             .Add(x => x.Data, Points(new(1, 2, 0), new(3, 4, 4))));
-        var radii = cut.FindAll("svg circle").Select(x => x.GetAttribute("r")).ToArray();
+        var radii = cut.FindAll("svg circle:not([fill='transparent'])").Select(x => x.GetAttribute("r")).ToArray();
         cut.Render(p => p.Add(x => x.Data, Points(new(1, 2, weight), new(3, 4, 4))));
-        Assert.Equal(radii, cut.FindAll("svg circle").Select(x => x.GetAttribute("r")).ToArray());
+        Assert.Equal(radii, cut.FindAll("svg circle:not([fill='transparent'])").Select(x => x.GetAttribute("r")).ToArray());
     }
 
     [Theory]
@@ -52,15 +52,15 @@ public class ChartPointBoundaryTests : FlareTestContext
         var first = new ChartSeries("First", [], Points: [new(1, 2, 1), new(3, 4, 4)]);
         var cut = Render<FlareChart>(p => p.Add(x => x.Type, type).Add(x => x.ScaleMode, mode)
             .Add(x => x.Data, new ChartData([first, new("Extreme", [], Points: [new(100, 200, 400)])])));
-        var before = cut.FindAll("svg circle").Take(2).Select(x => x.OuterHtml).ToArray();
+        var before = cut.FindAll("svg circle:not([fill='transparent'])").Take(2).Select(x => x.OuterHtml).ToArray();
         cut.FindAll($".{Css.Classes.Chart.LegendItem}")[1].Click();
-        var hidden = cut.FindAll("svg circle").Select(x => x.OuterHtml).ToArray();
+        var hidden = cut.FindAll("svg circle:not([fill='transparent'])").Select(x => x.OuterHtml).ToArray();
         if (mode == ChartScaleMode.FitAll) Assert.Equal(before, hidden);
         else
         {
             Assert.NotEqual(string.Join("|", before), string.Join("|", hidden));
             cut.Render(p => p.Add(x => x.Data, new ChartData([first])));
-            Assert.Equal(hidden, cut.FindAll("svg circle").Select(x => x.OuterHtml).ToArray());
+            Assert.Equal(hidden, cut.FindAll("svg circle:not([fill='transparent'])").Select(x => x.OuterHtml).ToArray());
         }
     }
 
@@ -69,7 +69,7 @@ public class ChartPointBoundaryTests : FlareTestContext
     {
         var cut = Render<FlareChart>(p => p.Add(x => x.Type, ChartType.Bubble).Add(x => x.DataTable, true)
             .Add(x => x.Data, Points(new(1, 2, -4), new(double.NaN, 3, 5))));
-        Assert.Single(cut.FindAll("svg circle"));
+        Assert.Single(cut.FindAll("svg circle:not([fill='transparent'])"));
         Assert.Equal(2, cut.FindAll("tbody tr").Count);
         Assert.Equal("-4", cut.FindAll("tbody tr")[0].LastElementChild!.TextContent);
         Assert.Contains("No value", cut.FindAll("tbody tr")[1].TextContent);

@@ -228,7 +228,7 @@ public class FlareChartTests : FlareTestContext
                 ]),
             ])));
 
-        Assert.Equal(4, cut.FindAll("circle").Count);
+        Assert.Equal(4, cut.FindAll("circle:not([fill='transparent'])").Count);
     }
 
     [Fact]
@@ -392,7 +392,7 @@ public class FlareChartTests : FlareTestContext
                 ]),
             ])));
 
-        var circles = cut.FindAll("circle");
+        var circles = cut.FindAll("circle:not([fill='transparent'])");
         Assert.Equal(2, circles.Count);
         double r0 = double.Parse(circles[0].GetAttribute("r")!, System.Globalization.CultureInfo.InvariantCulture);
         double r1 = double.Parse(circles[1].GetAttribute("r")!, System.Globalization.CultureInfo.InvariantCulture);

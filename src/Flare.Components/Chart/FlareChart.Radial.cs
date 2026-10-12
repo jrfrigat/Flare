@@ -95,41 +95,29 @@ public partial class FlareChart
 
     private RenderFragment RenderHeatMap() => builder =>
     {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        var visible = VisibleSeriesIndices(series.Count);
+        if (_cellLayout is not { } layout) return;
+        var series = Data!.Series;
+        var visible = layout.Rows;
         int rows = visible.Count;
-        if (rows == 0) return;
-        int cols = series.Max(s => s.Values.Count);
-        if (cols == 0) return;
-        var allVals = ScaleValues(series);
-        if (allVals.Count == 0) return;
-        double min = allVals.Min(), max = allVals.Max();
-        if (max == min) max = min + 1;
+        int cols = layout.Columns;
+        double min = layout.Min, max = layout.Max;
         int seq = 0;
 
-        double cellW = _plotW / (double)cols;
-        double cellH = _plotH / (double)rows;
+        double cellW = layout.CellWidth, cellH = layout.CellHeight;
         // The ramp is the theme's, not the component's: base color, floor and ceiling all come from tokens,
         // so a theme can run the intensity over its own hue - or over a fixed range that never reaches full
         // opacity, which is what a light-on-dark heat map needs. The floor keeps a zero cell readable as a
         // cell rather than as a hole in the grid.
-        double gap = CellGap(), cellR = CellRadius();
+        double cellR = CellRadius();
         double opMin = RampMinOpacity(), opSpan = RampMaxOpacity() - opMin;
-        for (int r = 0; r < rows; r++)
+        foreach (var cell in layout.Marks)
         {
-            var vals = series[visible[r]].Values;
-            for (int c = 0; c < cols; c++)
-            {
-                if (c >= vals.Count || IsGap(vals[c])) continue;
-                double v = vals[c];
-                double t = (v - min) / (max - min);
-                double x = _padL + c * cellW, y = _padT + r * cellH;
+            double t = (cell.Value - min) / (max - min);
+            builder.AddMarkupContent(seq++, string.Create(_inv,
+                $"<rect class=\"{Css.Classes.Chart.Cell}\" x=\"{cell.X:F1}\" y=\"{cell.Y:F1}\" width=\"{cell.Width:F1}\" height=\"{cell.Height:F1}\" rx=\"{cellR:F2}\" style=\"fill:var({Css.Tokens.Chart.RampColor});fill-opacity:{(opMin + opSpan * t):F2}\"/>"));
+            if (ShowValues && cellH >= 14)
                 builder.AddMarkupContent(seq++, string.Create(_inv,
-                    $"<rect class=\"{Css.Classes.Chart.Cell}\" x=\"{x + gap / 2:F1}\" y=\"{y + gap / 2:F1}\" width=\"{Math.Max(0, cellW - gap):F1}\" height=\"{Math.Max(0, cellH - gap):F1}\" rx=\"{cellR:F2}\" style=\"fill:var({Css.Tokens.Chart.RampColor});fill-opacity:{(opMin + opSpan * t):F2}\"/>"));
-                if (ShowValues && cellH >= 14)
-                    builder.AddMarkupContent(seq++, string.Create(_inv,
-                        $"<text x=\"{x + cellW / 2:F1}\" y=\"{y + cellH / 2 + 3:F1}\" text-anchor=\"middle\" style=\"{_valueStyle}\">{v:G3}</text>"));
-            }
+                    $"<text x=\"{_padL + cell.Column * cellW + cellW / 2:F1}\" y=\"{_padT + cell.Row * cellH + cellH / 2 + 3:F1}\" text-anchor=\"middle\" style=\"{_valueStyle}\">{cell.Value:G3}</text>"));
         }
         // Row labels (series names) on the left.
         if (_showY)

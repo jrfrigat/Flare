@@ -1,4 +1,5 @@
 using Flare.Components.Services;
+using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -21,6 +22,8 @@ public partial class FlareChart
 
     private List<ChartHit> RenderedHits()
     {
+        _pointLayout = Type is ChartType.Scatter or ChartType.Bubble ? ProjectPoints() : null;
+        _cellLayout = Type == ChartType.HeatMap ? ProjectCells() : null;
         _renderedHits = BuildHitZones();
         if (_tooltipVisible)
         {
@@ -54,6 +57,30 @@ public partial class FlareChart
             foreach (var slice in _slices)
                 hits.Add(new($"slice:{slice.Index}", slice.Index,
                     string.Create(_inv, $"{Data.Series[slice.Index].Label}: {slice.Percent:F1}%"), HitShape.Path, Path: slice.Path));
+        }
+        else if (_pointLayout is { } points)
+        {
+            foreach (var point in points.Marks)
+            {
+                if (point.Value.X < _view.From || point.Value.X > _view.To
+                    || point.Y < _padT || point.Y > _padT + _plotH) continue;
+                var text = string.Create(_inv,
+                    $"{Data.Series[point.Series].Label}\n{FlareStrings.Chart_TablePoint}: {point.Index + 1}\n{FlareStrings.Chart_TableX}: {point.Value.X:G4}\n{FlareStrings.Chart_TableY}: {point.Value.Y:G4}");
+                if (_bubble) text += $"\n{FlareStrings.Chart_TableWeight}: {TableNumber(point.Value.R)}";
+                hits.Add(new($"point:{point.Series}:{point.Index}", point.Index, text, HitShape.Circle,
+                    point.X, point.Y, Radius: point.Radius));
+            }
+        }
+        else if (_cellLayout is { } cells)
+        {
+            foreach (var cell in cells.Marks)
+            {
+                if (cell.Width <= 0 || cell.Height <= 0) continue;
+                var label = Data.Labels is { } labels && cell.Column < labels.Count ? labels[cell.Column] : (cell.Column + 1).ToString(_inv);
+                var text = string.Create(_inv, $"{label}\n{Data.Series[cell.Series].Label}: {cell.Value:G4}");
+                hits.Add(new($"cell:{cell.Series}:{cell.Column}", cell.Column, text, HitShape.Rectangle,
+                    cell.X, cell.Y, cell.Width, cell.Height));
+            }
         }
         return hits;
     }

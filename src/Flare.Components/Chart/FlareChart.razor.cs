@@ -161,7 +161,10 @@ public partial class FlareChart
     [Parameter] public double DonutRingRatio { get; set; } = 0.55;
     /// <summary>Bar width as a fraction of its slot (0..1). Default 0.85.</summary>
     [Parameter] public double BarWidthRatio { get; set; } = 0.85;
-    /// <summary>Raised with the category (or slice) index when a data point is clicked.</summary>
+    /// <summary>Raised when a data mark is activated by pointer or keyboard. The zero-based index is
+    /// the category for category charts, radar and heat maps; the original point index within its
+    /// series for scatter/bubble; or the original series index for radial slices. Different series
+    /// can therefore report the same point index.</summary>
     [Parameter] public EventCallback<int> OnPointClick { get; set; }
     /// <summary>Plays a CSS enter animation (bars grow, lines draw in). Honors <c>prefers-reduced-motion</c>.</summary>
     [Parameter] public bool Animate { get; set; }
