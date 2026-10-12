@@ -69,12 +69,10 @@
 </div>
 
 @code {
-    // -- Simple (non-typed) API -----------------------------------------------
 
     /// <summary>Raw table content for simple (non-typed) usage.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    // -- Accessibility ---------------------------------------------------------
 
     /// <summary>
     /// Accessible caption rendered as a &lt;caption&gt; element inside the table.
@@ -82,7 +80,6 @@
     /// </summary>
     [Parameter] public string? Caption { get; set; }
 
-    // -- Typed API ------------------------------------------------------------
 
     /// <summary>The data items to display. When set, the component manages rendering.</summary>
     [Parameter] public IEnumerable<TItem>? Items { get; set; }
@@ -105,7 +102,6 @@
     /// <summary>When true, renders a &lt;tfoot&gt; using FooterContent.</summary>
     [Parameter] public bool ShowFooter { get; set; }
 
-    // -- Shared style parameters -----------------------------------------------
 
     /// <summary>Alternates row background colors for readability.</summary>
     [Parameter] public bool Striped { get; set; }
@@ -122,7 +118,6 @@
     /// <summary>Pins the table header while the body scrolls.</summary>
     [Parameter] public bool StickyHeader { get; set; }
 
-    // -- Internals ------------------------------------------------------------
 
     protected override string ComponentCssClass => Css.Classes.Table.Root;
 

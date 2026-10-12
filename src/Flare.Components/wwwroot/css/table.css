@@ -4,7 +4,6 @@
     border: var(--flare-border-divider);
 }
 
-/* -- Sticky header -------------------------------------------------------- */
 
 .flare-table-container--sticky .flare-table__thead {
     position: sticky;
@@ -20,7 +19,6 @@
     z-index: 1;
 }
 
-/* -- Base table ----------------------------------------------------------- */
 
 .flare-table {
     width: 100%;
@@ -77,7 +75,6 @@
 .flare-table--dense thead th,
 .flare-table--dense tbody td { padding: var(--flare-spacing-3) var(--flare-spacing-6); }
 
-/* -- Group rows ----------------------------------------------------------- */
 
 .flare-table__group-row td {
     font-weight: 600;
@@ -106,7 +103,6 @@
     transform: rotate(-90deg);
 }
 
-/* -- Totals footer -------------------------------------------------------- */
 
 .flare-table__tfoot {
     border-top: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline);

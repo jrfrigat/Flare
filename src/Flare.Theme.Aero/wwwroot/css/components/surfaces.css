@@ -5,7 +5,6 @@
    ========================================================================== */
 @scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
 
-    /* ---- Chips: glossy capsule; selected fills with a glossy accent ---- */
     .flare-chip {
         background-image: linear-gradient(
             to bottom,
@@ -23,13 +22,11 @@
             color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 86%, #000000) 100%) !important;
     }
 
-    /* ---- Alerts: a faint top gloss over the tinted panel ---- */
     .flare-alert {
         background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0) 55%);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* ---- Badges: glossy pill ---- */
     .flare-badge {
         background-image: linear-gradient(
             to bottom,
@@ -38,7 +35,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* ---- Table header: the classic glossy Office/Aero grid header ---- */
     .flare-table thead th {
         background-image: linear-gradient(
             to bottom,
@@ -49,7 +45,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* ---- Accordion header: glossy group-header bar ---- */
     .flare-accordion-panel__header {
         background-image: linear-gradient(
             to bottom,
@@ -64,7 +59,6 @@
             color-mix(in srgb, var(--flare-color-primary) 20%, var(--flare-color-surface-container)) 100%);
     }
 
-    /* ---- Pagination buttons: glossy like command buttons ---- */
     .flare-pagination__btn {
         background-image: linear-gradient(
             to bottom,
@@ -93,7 +87,6 @@
         border-color: color-mix(in srgb, var(--flare-color-primary) 55%, #000000) !important;
     }
 
-    /* ---- Stepper circle: glossy accent ---- */
     .flare-stepper__circle {
         background-image: linear-gradient(
             to bottom,
@@ -102,7 +95,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* ---- Tooltip: glossy dark capsule ---- */
     .flare-tooltip__content {
         background-image: linear-gradient(
             to bottom,

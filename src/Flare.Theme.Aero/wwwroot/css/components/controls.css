@@ -4,7 +4,6 @@
    ========================================================================== */
 @scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
 
-    /* ---- Switch: sunken track, glossy knob ---- */
     .flare-switch__thumb {
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
     }
@@ -13,7 +12,6 @@
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
     }
 
-    /* ---- Slider: sunken rail, glossy accent fill ---- */
     .flare-slider__rail {
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.14);
     }
@@ -25,7 +23,6 @@
             color-mix(in srgb, var(--flare-color-primary) 86%, #000000) 100%) !important;
     }
 
-    /* ---- Progress: the iconic glossy Aero bar ---- */
     .flare-progress__track {
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.14);
     }
@@ -40,7 +37,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
     }
 
-    /* ---- Tabs: raised Office/Aero tabs with a glossy gradient ---- */
     .flare-tabs__tab {
         background-image: linear-gradient(
             to bottom,

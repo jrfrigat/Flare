@@ -28,7 +28,6 @@
     height: var(--_height);
     padding: 0 var(--_padding-x);
     border-radius: var(--flare-badge-radius);
-    /* Role class sets --fc-main/--fc-on; custom inlines them; default falls back to error. */
     background-color: var(--fc-main, var(--flare-color-error));
     color: var(--fc-on, var(--flare-color-on-error));
     /* Only the size steps with the box; family/weight/height/spacing stay on the label-small scale. */

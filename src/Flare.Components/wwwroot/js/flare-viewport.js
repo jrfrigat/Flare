@@ -11,7 +11,6 @@
 
 import { listen } from './flare-dom.js';
 
-// -- viewport size / media query ------------------------------------------------
 
 // window.innerWidth/Height can read as 0 in an unsettled/very-early paint moment; fall back to the
 // document element, which is generally populated before window dimensions settle.
@@ -32,7 +31,6 @@ export function matchMedia(query) {
     catch { return false; }
 }
 
-// -- shared window-resize listener ---------------------------------------------
 
 let _winDotNet = null;
 let _winDebounce = 100;
@@ -70,7 +68,6 @@ export function stopViewportListener() {
     _winDotNet = null;
 }
 
-// -- per-element ResizeObserver ------------------------------------------------
 
 const _elMap = new Map();          // id -> { element, debounce, timer, dotNet, initialized }
 const _elByTarget = new WeakMap(); // element -> id

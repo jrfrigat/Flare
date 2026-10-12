@@ -1,7 +1,6 @@
 // Flare code support for FlareCodeBlock: a dependency-free syntax highlighter plus code-editor key
 // handling (Tab indent + bracket auto-close). Extracted from the former flare-theme.js god-module.
 
-// -- FlareCodeBlock syntax highlighter ---------------------------------------
 // A small, dependency-free tokenizer. It replaces the old window.hljs reliance
 // so FlareCodeBlock highlights autonomously (no host <script> needed). Output is
 // wrapped in <span class="flare-hl-*"> elements coloured by Flare theme tokens
@@ -113,7 +112,6 @@ export function getHighlightedHtml(code, lang) {
     catch { return null; } // null -> component keeps its own plain-text encoding
 }
 
-// -- Code editor key handling (Tab indent + bracket auto-close) ---------------
 
 const _editorKeyHandlers = new WeakMap();
 const _editorPairs = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'", '`': '`' };
@@ -167,7 +165,6 @@ export function disableCodeEditorKeys(textareaEl) {
     }
 }
 
-// -- Caret reporting, for a suggestion list anchored to the caret -------------
 
 /** Where the caret is, and where on screen it sits relative to the editor's own box. */
 export function getCaretInfo(textareaEl) {
@@ -231,7 +228,6 @@ export function setText(textareaEl, text) {
     textareaEl.selectionStart = textareaEl.selectionEnd = caret;
 }
 
-// -- Keeping the layers on top of one another --------------------------------
 
 const _editorSyncHandlers = new WeakMap();
 

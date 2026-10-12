@@ -55,7 +55,6 @@
     min-height: 0;
 }
 
-/* --- Drawer --- */
 .flare-layout-drawer {
     background: var(--flare-layout-drawer-bg);
     overflow: hidden;       /* clips the fixed-width inner while a push drawer slides open/closed */
@@ -170,7 +169,6 @@
     right: 0;
 }
 
-/* --- Content --- */
 .flare-layout-content {
     overflow: auto;
     min-width: 0;
@@ -208,7 +206,6 @@
 .flare-layout-content--align-center { margin-inline: auto; }
 .flare-layout-content--align-end    { margin-inline: auto 0; }
 
-/* --- AppBar drawer-toggle button --- */
 .flare-layout-appbar__toggle {
     display: flex;
     align-items: center;
@@ -257,7 +254,6 @@
 .flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(2) { opacity: 0; }
 .flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(3) { transform: rotate(-45deg); }
 
-/* --- Scrim behind a floating drawer --- */
 .flare-layout__scrim { display: none; }
 .flare-layout--scrim-open .flare-layout__scrim {
     display: block;

@@ -156,7 +156,6 @@ function _placeIndicator(node, hit) {
     node.hidden = false;
 }
 
-// -- Auto-scroll at a container's edge ---------------------------------------
 // A board that scrolls sideways keeps columns off-screen, and `elementFromPoint` outside the viewport
 // returns null - so without this a card cannot be moved to a column you cannot see, which on a phone is
 // most of them. It runs on a FRAME loop rather than on pointermove: a pointer held still at the edge
@@ -385,7 +384,6 @@ export function removeDragContext(root) {
     _contexts.drop(root);
 }
 
-// -- Keyboard reorder ---------------------------------------------------------
 // There is no pointer, so there is no gesture: .NET owns the whole interaction and asks for two things.
 // This draws the same insertion line the pointer path draws, at a position named as (zone, index)
 // rather than found under a cursor.

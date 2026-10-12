@@ -278,7 +278,6 @@
     private static int? ParseCount(string? raw)
         => int.TryParse(raw, System.Globalization.NumberStyles.Integer, Culture, out var value) ? value : null;
 
-    // ---- Source ---------------------------------------------------------------------------------
 
     private IReadOnlyList<string> EntityKeys => Schema?.Entities.Select(entity => entity.Key).ToList() ?? [];
 
@@ -365,7 +364,6 @@
 
     private string SuggestAlias(string key) => _choices?.SuggestAlias(key) ?? key;
 
-    // ---- Columns --------------------------------------------------------------------------------
 
     private IReadOnlyList<string> ValueTargets
     {

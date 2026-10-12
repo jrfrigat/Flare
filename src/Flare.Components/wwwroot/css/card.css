@@ -26,7 +26,6 @@
         var(--flare-card-padding-left);
 }
 
-/* ----- Variants (theme-independent; each theme reskins via CardTokens) ----- */
 .flare-card--elevated {
     background-color: var(--flare-card-elevated-bg);
     box-shadow: var(--flare-card-elevation);
@@ -59,7 +58,6 @@
     border: none;
 }
 
-/* ----- Size: corner radius + actions gap (from the theme shape scale) ----- */
 .flare-card--sm {
     --_card-radius: var(--flare-shape-small);
     --_card-actions-gap: var(--flare-spacing-2);
@@ -73,7 +71,6 @@
     --_card-actions-gap: var(--flare-spacing-6);
 }
 
-/* ----- Interactive (clickable / link / selectable): pointer, state layer, focus ring ----- */
 .flare-card--clickable {
     cursor: pointer;
     text-decoration: none;
@@ -111,14 +108,12 @@
     box-shadow: var(--flare-card-tonal-elevation-hover);
 }
 
-/* ----- Selectable: accent ring on selection (no explicit checkbox) ----- */
 .flare-card--selectable { cursor: pointer; }
 .flare-card--selected {
     border: var(--flare-card-selected-border);
     background-color: var(--flare-card-selected-bg);
 }
 
-/* ----- Compact: horizontal layout (media leading, content beside) ----- */
 .flare-card--compact:has(> .flare-card__media) {
     display: grid;
     grid-template-columns: minmax(0, 12rem) 1fr;
@@ -134,7 +129,6 @@
     grid-column: 2;
 }
 
-/* ----- Anatomy slots ----- */
 .flare-card__media {
     display: block;
     width: 100%;

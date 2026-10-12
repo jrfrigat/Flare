@@ -7,7 +7,6 @@
 // and each copy was a place to forget a removeEventListener. One dead code path did exactly that and
 // leaked two window listeners per call before it was noticed.
 
-// -- Teardown registries ------------------------------------------------------
 // A registry holds one teardown closure per id. `keep` replaces any previous entry by running its
 // teardown first, so registering twice cannot leak the first registration; `drop` runs and forgets.
 // Teardown is structural rather than remembered: the only way to put something in is to have already
@@ -47,7 +46,6 @@ export function all(...teardowns) {
     return () => { for (let i = teardowns.length - 1; i >= 0; i--) teardowns[i]?.(); };
 }
 
-// -- Element resolution -------------------------------------------------------
 
 // The page's scroll state lives on the scrolling element, not on window: window carries the offsets
 // but not the extents, and the two must come from the same object or a progress reading lands off by a

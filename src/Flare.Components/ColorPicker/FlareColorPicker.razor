@@ -42,7 +42,6 @@ else
 }
 
 @code {
-    // -- Parameters -------------------------------------------------------------
 
     /// <summary>Selected color as a hex string (#RRGGBB or #RRGGBBAA).</summary>
     [Parameter] public string? Value { get; set; }
@@ -84,7 +83,6 @@ else
     private static string _safePresetStyle(string preset) =>
         _hexColorRegex.IsMatch(preset ?? string.Empty) ? $"background:{preset}" : string.Empty;
 
-    // -- Internal state ----------------------------------------------------------
 
     private string _disabledClass => Disabled ? Css.Classes.Colorpicker.Disabled : string.Empty;
     private FieldIdentifier _fieldId;
@@ -133,7 +131,6 @@ else
     // or rgb()/rgba()/hsl()). The swatch always uses the hex form, which is valid CSS either way.
     private string _currentFormatted = "#ff0000";
 
-    // -- Lifecycle ---------------------------------------------------------------
 
     private string? _lastParsedValue;
     private string? _lastParamValue;
@@ -254,7 +251,6 @@ else
         await base.DisposeAsync();
     }
 
-    // -- JS callbacks ------------------------------------------------------------
 
     [JSInvokable]
     public async Task OnCanvasPick(double saturation, double lightness)
@@ -265,7 +261,6 @@ else
         await NotifyChange();
     }
 
-    // -- Popover helpers ---------------------------------------------------------
 
     private async Task TogglePanel()
     {
@@ -283,7 +278,6 @@ else
         _canvasInitialized = false;
     }
 
-    // -- Event handlers ----------------------------------------------------------
 
     private async Task HandleHueInput(ChangeEventArgs e)
     {
@@ -377,7 +371,6 @@ else
         catch { /* EyeDropper cancelled or not supported */ }
     }
 
-    // -- Color math helpers ------------------------------------------------------
 
     private void ParseColorToState(string value)
     {
@@ -591,7 +584,6 @@ else
         ParseColorToState(_lastParsedValue);
     }
 
-    // -- Render helpers ----------------------------------------------------------
 
     private RenderFragment RenderPanel() => __builder =>
     {

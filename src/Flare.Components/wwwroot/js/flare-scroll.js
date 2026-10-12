@@ -12,7 +12,6 @@
 
 import { listen, pageTarget, listenTarget, resolve } from './flare-dom.js';
 
-// -- reading -------------------------------------------------------------------
 
 function positionOf(el) {
     const t = el || pageTarget();
@@ -30,7 +29,6 @@ export function getPosition(element, selector) {
     return positionOf(resolve(element, selector));
 }
 
-// -- shared listeners ----------------------------------------------------------
 
 // id -> { element (null = page), throttle, timer, dotNet, off }
 const _subs = new Map();
@@ -70,7 +68,6 @@ export function unsubscribe(id) {
     _subs.delete(id);
 }
 
-// -- driving -------------------------------------------------------------------
 
 function behaviorOf(b) {
     return b === 'Smooth' ? 'smooth' : b === 'Instant' ? 'instant' : 'auto';
@@ -95,7 +92,6 @@ export function scrollIntoView(elementId, block, behavior) {
     catch { el.scrollIntoView(); }
 }
 
-// -- body lock -----------------------------------------------------------------
 
 // Counted, so nesting a dialog inside a drawer does not hand the page back when the inner one closes.
 // Padding replaces the scrollbar's width to stop the fixed chrome jumping sideways as it disappears.

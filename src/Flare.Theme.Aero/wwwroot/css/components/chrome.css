@@ -5,7 +5,6 @@
    ========================================================================== */
 @scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
 
-    /* ---- List / menu items: glossy blue selection + hover tint ---- */
     .flare-list-item--clickable:hover,
     .flare-menu-item:hover {
         background-image: linear-gradient(
@@ -21,7 +20,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
-    /* ---- Dialog header: glossy Aero window title bar ---- */
     .flare-dialog__header {
         background-image: linear-gradient(
             to bottom,
@@ -30,7 +28,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* ---- Drawer header: glossy bar ---- */
     .flare-drawer__header {
         background-image: linear-gradient(
             to bottom,
@@ -39,7 +36,6 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
-    /* ---- Snackbar: glossy dark capsule ---- */
     .flare-snackbar {
         background-image: linear-gradient(
             to bottom,
@@ -80,7 +76,6 @@
             var(--flare-color-surface-container-high) 100%) !important;
     }
 
-    /* ---- Breadcrumb link: blue hover ---- */
     .flare-breadcrumb__link:hover {
         color: var(--flare-color-primary);
     }

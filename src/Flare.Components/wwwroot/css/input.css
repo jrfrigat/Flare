@@ -179,7 +179,6 @@
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);
-    /* Caret follows the field's accent (--fc-main), default primary */
     caret-color: var(--fc-main, var(--flare-color-primary));
 }
 

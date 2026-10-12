@@ -225,7 +225,6 @@
         return item.PayloadValue is null && default(TPayload) is null;
     }
 
-    // -- Keyboard reorder ----------------------------------------------------
     // There is no pointer, so there is no gesture: this side owns the whole interaction. The browser is
     // asked twice - once for the DOM order, because registration order here is not render order after a
     // list has been reordered, and then for the insertion line, which is the only thing a sighted

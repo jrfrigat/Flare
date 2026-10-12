@@ -5,7 +5,6 @@
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
-    /* Role class sets --fc-main; custom inlines it; FlareColor.Default -> inherit. */
     color: var(--fc-main, inherit);
     transition: color var(--flare-motion-duration-state-change),
                 opacity var(--flare-motion-duration-state-change);

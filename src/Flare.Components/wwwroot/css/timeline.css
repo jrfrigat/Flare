@@ -7,7 +7,6 @@
     display: flex;
     gap: var(--flare-spacing-8);
     position: relative;
-    /* Drives the dot border (currentColor). Role class sets --fc-main; custom inlines it. */
     color: var(--fc-main, var(--flare-color-primary));
 }
 

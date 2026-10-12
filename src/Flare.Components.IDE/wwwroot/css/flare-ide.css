@@ -3,7 +3,6 @@
    All visual theming comes from the base Flare design tokens (--flare-color-*, --flare-shape-*,
    --flare-elevation-*, --flare-state-*); this package defines no theme tokens of its own. */
 
-/* === IDE Layout === */
 .flare-ide-layout {
     display: flex;
     flex-direction: column;
@@ -193,7 +192,6 @@
     flex-shrink: 0;
 }
 
-/* === Ribbon === */
 .flare-ribbon {
     display: flex;
     flex-direction: column;
@@ -355,7 +353,6 @@
     vertical-align: middle;
 }
 
-/* === Document Tabs === */
 .flare-doc-tabs {
     display: flex;
     flex-direction: column;
@@ -493,7 +490,6 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-/* === Tool Panel === */
 .flare-toolpanel {
     display: flex;
     flex-direction: column;
@@ -540,7 +536,6 @@
     display: none;
 }
 
-/* === Status Bar === */
 .flare-statusbar {
     display: flex;
     align-items: center;
@@ -570,7 +565,6 @@
     justify-content: flex-end;
 }
 
-/* === Menu Bar === */
 .flare-menubar {
     display: flex;
     align-items: center;
@@ -578,7 +572,6 @@
     min-height: 28px;
 }
 
-/* === Quick Access Toolbar === */
 .flare-qat {
     display: flex;
     align-items: center;
@@ -586,7 +579,6 @@
     padding: var(--flare-spacing-1, 2px) var(--flare-spacing-3, 6px);
 }
 
-/* === Toolbar (icon command bar) === */
 .flare-toolbar {
     display: flex;
     align-items: center;
@@ -603,7 +595,6 @@
     min-height: 28px;
 }
 
-/* === Backstage (File menu) === */
 .flare-backstage {
     position: absolute;
     inset: 0;
@@ -675,7 +666,6 @@
     overflow: auto;
 }
 
-/* === Property Grid === */
 .flare-propgrid {
     display: flex;
     flex-direction: column;
@@ -711,7 +701,6 @@
     min-width: 0;
 }
 
-/* === Formula Bar === */
 .flare-formula-bar {
     display: flex;
     align-items: center;
@@ -736,7 +725,6 @@
     min-width: 0;
 }
 
-/* === Sheet Tabs === */
 .flare-sheet-tabs {
     display: flex;
     align-items: center;

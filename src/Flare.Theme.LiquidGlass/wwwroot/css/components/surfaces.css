@@ -8,7 +8,6 @@
    ========================================================================== */
 @scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
 
-    /* ---- Chips: translucent capsule; selected fills with a glossy accent ---- */
     .flare-chip {
         background-color: var(--flare-liquid-tint);
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 55%);
@@ -24,26 +23,22 @@
             0 1px 4px color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 32%, transparent);
     }
 
-    /* ---- Alerts: a soft top sheen over the tinted panel ---- */
     .flare-alert {
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 50%);
         box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
     }
 
-    /* ---- Badges: glossy accent pill ---- */
     .flare-badge {
         background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 60%) !important;
         box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.45);
     }
 
-    /* ---- Table header: translucent header strip ---- */
     .flare-table thead th {
         background-color: color-mix(in srgb, var(--flare-color-surface-container) 82%, transparent) !important;
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 70%) !important;
         box-shadow: inset 0 -1px 0 var(--flare-liquid-edge);
     }
 
-    /* ---- Accordion header: translucent group-header bar ---- */
     .flare-accordion-panel__header {
         background-color: color-mix(in srgb, var(--flare-color-surface-container) 80%, transparent);
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 60%);
@@ -53,7 +48,6 @@
         background-color: color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-color-surface-container));
     }
 
-    /* ---- Pagination buttons: translucent glass; active = glossy accent ---- */
     .flare-pagination__btn {
         background-color: var(--flare-liquid-tint) !important;
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 55%) !important;
@@ -74,13 +68,11 @@
         box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.5);
     }
 
-    /* ---- Stepper circle: glossy accent bead ---- */
     .flare-stepper__circle {
         background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, transparent 60%) !important;
         box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.45);
     }
 
-    /* ---- Tooltip: dark translucent capsule ---- */
     .flare-tooltip__content {
         background-color: color-mix(in srgb, var(--flare-color-inverse-surface) 92%, transparent) !important;
         box-shadow:

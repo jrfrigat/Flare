@@ -1,4 +1,3 @@
-/* -- Provider position variants -- */
 .flare-snackbar-provider {
   position: fixed;
   display: flex;
@@ -63,7 +62,6 @@
   align-items: flex-end;
 }
 
-/* -- Snackbar item -- */
 .flare-snackbar {
   display: flex;
   align-items: center;
@@ -162,7 +160,6 @@
   background: var(--flare-state-hover-layer);
 }
 
-/* -- Severity variants -- */
 /* Severity surfaces use a colored/tonal background, so the action button must follow that surface's
    on-color (currentColor) instead of the theme's action color, which is chosen for the default surface
    (and barely visible on a light tonal surface). The dismiss button always inherits. */

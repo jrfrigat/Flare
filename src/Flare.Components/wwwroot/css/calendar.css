@@ -138,7 +138,6 @@
 }
 
 .flare-calendar__event {
-    /* Tonal: role class sets --fc-container/--fc-on-container; custom inlines them. */
     background: var(--fc-container, var(--flare-color-primary-container));
     color: var(--fc-on-container, var(--flare-color-on-primary-container));
     border-radius: var(--flare-shape-extra-small);

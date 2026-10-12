@@ -1,6 +1,5 @@
 /* Root column layout comes from the shared field-family root (input.css). */
 
-/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 /* The field-well box-model + focus ring come from the shared flare-input__field (input.css);
    only the pointer cursor + error/disabled state below are datepicker-specific. */

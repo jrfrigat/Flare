@@ -109,7 +109,6 @@
     /// <summary>True when a nested <c>FlareNavMenu</c> should render icon-only (collapsed rail, not hover-expanded).</summary>
     public bool IsCollapsedRail => RailCollapsedNow && !HoverExpandedNow;
 
-    // --- Track reservation (read by FlareLayoutContext to build the body grid) ---
 
     /// <summary>
     /// Whether the drawer occupies an in-flow grid track (not floating). A push drawer keeps its track
@@ -132,7 +131,6 @@
     /// <summary>True when the drawer is currently a floating overlay that is open (so the scrim shows).</summary>
     public bool IsOverlayOpen(bool isMobile) => _open && FloatingWhen(isMobile);
 
-    // --- Rendering state ---
 
     private bool _visible => Floating ? _open : TrackWidth(IsMobileNow) != "0";
 

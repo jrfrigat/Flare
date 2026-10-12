@@ -57,7 +57,6 @@
     border-radius: min(calc(var(--_lin-height) / 2), calc(var(--flare-progress-gap) * 1000));
 }
 
-/* ---- Optional legend ---- */
 .flare-meter__legend {
     display: flex;
     flex-wrap: wrap;

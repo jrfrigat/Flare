@@ -60,7 +60,6 @@
 
 .flare-pagination__btn:hover:not(:disabled) { border-color: var(--flare-color-outline); }
 
-/* Active page: role class sets --fc-main/--fc-on; custom inlines them; default = the active token. */
 .flare-pagination__btn--active {
   background: var(--fc-main, var(--flare-pagination-active-color));
   border-color: var(--fc-main, var(--flare-pagination-active-color));

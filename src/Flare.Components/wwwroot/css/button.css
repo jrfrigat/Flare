@@ -33,7 +33,6 @@
     border-top-right-radius: var(--flare-btn-radius-md-top-right);
     border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right);
     border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left);
-    /* Default fonts (Medium - set by the theme via --flare-btn-label-md-*) */
     font-family: var(--flare-btn-label-md-font);
     font-weight: var(--flare-btn-label-md-weight);
     font-size: var(--flare-btn-label-md-size);

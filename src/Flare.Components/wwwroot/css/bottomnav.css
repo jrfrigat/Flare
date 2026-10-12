@@ -68,7 +68,6 @@
   transition: background-color var(--flare-motion-duration-state-change);
 }
 
-/* Caller-supplied icon fragment - size travels as --_flare-icon-size (see .flare-dialog__icon). */
 .flare-bottom-nav-item__icon {
   display: inline-flex;
   --_flare-icon-size: var(--flare-bottom-nav-icon-size);

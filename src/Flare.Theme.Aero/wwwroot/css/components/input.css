@@ -20,7 +20,6 @@
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 2px var(--flare-aero-glow);
     }
 
-    /* ---- Checkbox / radio: sunken glossy box, glossy accent fill when checked ---- */
     .flare-checkbox__indicator,
     .flare-radio__indicator {
         background-image: linear-gradient(

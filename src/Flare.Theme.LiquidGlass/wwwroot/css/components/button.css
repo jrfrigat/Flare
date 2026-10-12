@@ -29,7 +29,6 @@
     /* The liquid squash on press. */
     .flare-btn:active { transform: scale(0.96); }
 
-    /* ---- Filled: lightly translucent accent capsule with sheen + lensing rim ---- */
     .flare-btn--filled {
         background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 88%, transparent);
         background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.10) 45%, transparent 60%);
@@ -45,7 +44,6 @@
     }
     .flare-btn--filled:active { filter: brightness(0.94); }
 
-    /* ---- Translucent glass secondary capsules (tonal / outlined / elevated) ---- */
     .flare-btn--tonal,
     .flare-btn--outlined,
     .flare-btn--elevated {

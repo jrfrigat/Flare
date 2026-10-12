@@ -14,7 +14,6 @@
     gap: var(--flare-spacing-2);
 }
 
-/* ---- Resolved presentation vars (the theme supplies every value; this file carries no defaults) ---- */
 .flare-slider {
     /* md is the default when no size class is present; the size classes below re-point these. */
     --_trk-height:  var(--flare-slider-track-height-md);
@@ -27,7 +26,6 @@
     --_hnd-radius:  var(--flare-slider-handle-radius);
     --_hnd-clip:    var(--flare-slider-handle-clip);
     --_hnd-border-w: var(--flare-slider-handle-border-width);
-    /* accent: per-instance Color (--fc-main) wins, then the theme token */
     --_active:      var(--fc-main, var(--flare-slider-active-color));
     --_hnd-color:   var(--flare-slider-handle-fill);
     --_inactive:    var(--flare-slider-inactive-color);
@@ -106,7 +104,6 @@
     color: var(--_active);
 }
 
-/* ---- Row: optional start/end icons flanking the track ---- */
 .flare-slider__row {
     display: flex;
     align-items: center;
@@ -146,7 +143,6 @@
     align-items: center;
 }
 
-/* ---- Track wrapper hosts the rail segments, input, ticks and value bubble ---- */
 .flare-slider__track-wrap {
     position: relative;
     width: 100%;
@@ -154,7 +150,6 @@
     align-items: center;
 }
 
-/* ---- Visual rail segments (decorative; input handles interaction) ---- */
 .flare-slider__rail {
     position: absolute;
     inset-inline: 0;
@@ -276,7 +271,6 @@
         color-mix(in srgb, var(--_active) calc(var(--_sl-pressed) * 100%), transparent);
 }
 
-/* ---- Stop indicators (Stepper) ---- */
 .flare-slider__ticks {
     position: absolute;
     inset-inline: 0;

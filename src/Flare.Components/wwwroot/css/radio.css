@@ -102,7 +102,6 @@
   pointer-events: none;
 }
 
-/* Size grid (Xs..Xl): scales the ring via --_rb-size; the label font tracks the size. */
 .flare-radio--xs { --_rb-size: var(--flare-radio-size-xs); gap: var(--flare-spacing-4); }
 .flare-radio--xs .flare-radio__label { font-size: var(--flare-typescale-body-small-size); }
 .flare-radio--sm { --_rb-size: var(--flare-radio-size-sm); gap: var(--flare-spacing-5); }

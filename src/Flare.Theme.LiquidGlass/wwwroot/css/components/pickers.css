@@ -8,14 +8,12 @@
    ========================================================================== */
 @scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
 
-    /* ---- App bar: translucent tinted toolbar (the iOS navigation bar) ---- */
     .flare-appbar {
         background-color: color-mix(in srgb, var(--flare-color-surface) 90%, transparent) !important;
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 70%);
         box-shadow: inset 0 -1px 0 var(--flare-liquid-edge), 0 1px 10px rgba(0, 0, 0, 0.06);
     }
 
-    /* ---- Calendar / date / time / nav group header: light sheen bar ---- */
     .flare-calendar__header,
     .flare-datepicker__header,
     .flare-timepicker__panel-headline,
@@ -24,7 +22,6 @@
         box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
     }
 
-    /* ---- Selected day / cell: glossy accent orb (text stays on-primary -> dark-safe) ---- */
     .flare-picker__day--selected,
     .flare-calendar__cell--selected,
     .flare-timepicker__cell--selected,
@@ -49,7 +46,6 @@
         background-color: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
     }
 
-    /* ---- File upload drop zone: translucent surface; accent tint while dragging ---- */
     .flare-file-upload__zone {
         background-color: var(--flare-liquid-tint);
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 60%);
@@ -62,14 +58,12 @@
             0 0 0 3px var(--flare-liquid-glow);
     }
 
-    /* ---- DataGrid header: translucent header strip ---- */
     .flare-datagrid__th {
         background-color: color-mix(in srgb, var(--flare-color-surface-container) 82%, transparent) !important;
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 70%) !important;
         box-shadow: inset 0 -1px 0 var(--flare-liquid-edge);
     }
 
-    /* ---- Nav: soft accent active item + hover tint ---- */
     .flare-nav-link--active {
         background-color: color-mix(in srgb, var(--flare-color-primary) 18%, transparent);
         box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);

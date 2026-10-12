@@ -42,27 +42,22 @@
    top layer. Every one of these is switched off by `data-flare-placed`, the engine's mark: half of them
    constrain the box from BOTH sides (`right: 0` with the engine's `left`, `bottom` with its `top`), and
    a fixed box constrained twice stretches between the two instead of sitting at one. */
-/* -- Bottom -- */
 .flare-popover__paper--bottom-start:not([data-flare-placed]) { top: calc(100% + 0.5rem); left: 0; }
 .flare-popover__paper--bottom:not([data-flare-placed])       { top: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
 .flare-popover__paper--bottom-end:not([data-flare-placed])   { top: calc(100% + 0.5rem); right: 0; }
 
-/* -- Top -- */
 .flare-popover__paper--top-start:not([data-flare-placed]) { bottom: calc(100% + 0.5rem); left: 0; }
 .flare-popover__paper--top:not([data-flare-placed])       { bottom: calc(100% + 0.5rem); left: 50%; transform: translateX(-50%); }
 .flare-popover__paper--top-end:not([data-flare-placed])   { bottom: calc(100% + 0.5rem); right: 0; }
 
-/* -- Right -- */
 .flare-popover__paper--right-start:not([data-flare-placed]) { left: calc(100% + 0.5rem); top: 0; }
 .flare-popover__paper--right:not([data-flare-placed])       { left: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); }
 .flare-popover__paper--right-end:not([data-flare-placed])   { left: calc(100% + 0.5rem); bottom: 0; }
 
-/* -- Left -- */
 .flare-popover__paper--left-start:not([data-flare-placed]) { right: calc(100% + 0.5rem); top: 0; }
 .flare-popover__paper--left:not([data-flare-placed])       { right: calc(100% + 0.5rem); top: 50%; transform: translateY(-50%); }
 .flare-popover__paper--left-end:not([data-flare-placed])   { right: calc(100% + 0.5rem); bottom: 0; }
 
-/* -- Arrow -- */
 .flare-popover__paper.flare-popover--arrow::before {
     content: '';
     position: absolute;

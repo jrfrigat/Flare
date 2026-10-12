@@ -1,6 +1,5 @@
 /* Root column layout comes from the shared field-family root (input.css). */
 
-/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 /* The field-well (box-model + border + hover + focus ring) comes entirely from the shared
    flare-input__field (input.css); the click-to-open cursor from the shared flare-picker__field
@@ -10,7 +9,6 @@
 /* The picker toggle button uses the shared flare-input__toggle reset (input.css). */
 
 
-/* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css). */
 
 /* Panel */
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);

@@ -403,7 +403,6 @@
    editor looked outlined but kept whatever focus treatment the theme's own variant brought - a filled
    theme's bottom bar under an outlined box. */
 
-/* -- Advanced filter builder -------------------------------------------- */
 .flare-datagrid__filter-builder {
   position: relative;
   display: inline-flex;

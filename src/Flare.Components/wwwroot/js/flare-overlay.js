@@ -7,7 +7,6 @@
 
 import { all, listen, registry } from './flare-dom.js';
 
-// --- One document listener per event type, not per widget ---
 // Every open dialog used to attach its own keydown, and every open popup its own capture-phase
 // pointerdown, so one keystroke or one click walked N independent handlers that each did the same test.
 // A bus keeps ONE listener alive while its registry is non-empty and hands the event to the entries, so
@@ -36,7 +35,6 @@ function documentBus(type, options) {
     };
 }
 
-// --- Dialog Esc handlers ---
 const _escHandlers = documentBus('keydown');
 
 export function registerDialogEscHandler(id, dotNetRef) {
@@ -52,7 +50,6 @@ export function removeDialogEscHandler(id) {
     _escHandlers.delete(id);
 }
 
-// --- Focus trap for dialogs ---
 const FOCUSABLE_SELECTORS =
     ':is(a[href], button, input, select, textarea, [tabindex])' +
     ':not([disabled]):not([tabindex="-1"])';
@@ -126,7 +123,6 @@ export function focusFirstInDialog(dialogEl) {
     (focusable || dialogEl)?.focus({ preventScroll: true });
 }
 
-// --- The browser's top layer ---
 // A floating panel has to be readable wherever its component was placed - in a Card, in a scrolling
 // grid, in a dialog. `position: fixed` is only half of that: it escapes an ancestor's `overflow`, and
 // it still loses to a later stacking context. The top layer is the other half - it paints above every
@@ -152,7 +148,6 @@ function demote(panel) {
     panel.removeAttribute('popover');
 }
 
-// -- Anchored fixed-position panel (every floating surface in the library) --
 // Positions a popup panel as position:fixed against its anchor so it escapes any ancestor clipping
 // context -- a Card's overflow:hidden, a grid's scroll container, a dialog -- and promotes it to the
 // top layer so nothing paints over it. Re-positions on scroll (capture phase, so nested scrollers
@@ -448,7 +443,6 @@ export function scrollOptionIntoView(optionId, block) {
     if (el) el.scrollIntoView({ block: block || 'nearest', inline: 'nearest' });
 }
 
-// -- Unified popup dismissal (every dismissible popup) --
 // One handler pair per open popup: a capture-phase pointerdown outside the widget, plus a focusout that
 // escapes the widget (Tab away). Replaces the per-component blur timer + separate outside-click, so there
 // is no SignalR blur race and no two mechanisms fighting.

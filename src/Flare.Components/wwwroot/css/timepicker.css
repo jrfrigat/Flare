@@ -91,7 +91,6 @@
 .flare-timepicker__actions { display: flex; justify-content: flex-end; gap: var(--flare-spacing-4); margin-top: var(--flare-spacing-6); }
 .flare-timepicker__actions-lead { margin-inline-end: auto; }
 
-/* ---- Dial variant (analog clock) ---- */
 .flare-timepicker__panel--dropdown { min-width: var(--flare-timepicker-panel-min-width); }
 .flare-timepicker__panel--dial { min-width: var(--flare-timepicker-dial-panel-min-width); }
 .flare-timepicker__dial-top {
@@ -137,7 +136,6 @@
   color: var(--flare-color-on-tertiary-container);
 }
 
-/* ---- Keyboard entry (FlareTimeEntry): the dial's time fields as text inputs, labelled below ---- */
 .flare-timepicker__entry {
   display: flex;
   align-items: flex-start;
@@ -225,7 +223,6 @@
   color: var(--flare-color-on-primary);
 }
 
-/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 /* The field-well box-model + focus ring come from the shared flare-input__field, the input is the
    pure shared flare-input__control, and error/disabled from flare-input--error/--disabled (all

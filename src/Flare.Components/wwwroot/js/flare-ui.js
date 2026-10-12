@@ -6,7 +6,6 @@ import { all, listen, registry } from './flare-dom.js';
 // Scroll watching and scroll-to-top moved to flare-scroll.js (Flare.Components.IScrollService).
 // Breakpoint / viewport detection moved to flare-viewport.js (Flare.Components.IBrowserViewportService).
 
-// -- FlareTabs overflow scroller --------------------------------------------
 const _tabScrollers = registry();
 
 // The bar reports three booleans, so the only scroll events worth crossing interop for are the ones
@@ -57,7 +56,6 @@ export function removeTabScroller(bar) {
     _tabScrollers.drop(bar);
 }
 
-// -- FlareButtonGroup collapse ----------------------------------------------
 // A button group that runs out of room folds its trailing segments into an overflow menu. Only the
 // browser knows whether they fit, so the decision is made here and the component is told the count.
 //
@@ -144,7 +142,6 @@ export function removeButtonGroupCollapse(root) {
     _groupCollapsers.drop(root);
 }
 
-// -- FlareShortcuts ----------------------------------------------------------
 let _shortcutDotNetRef = null;
 
 export function registerShortcutListener(dotNetRef) {
@@ -169,7 +166,6 @@ function _handleShortcutKeyDown(e) {
     _shortcutDotNetRef.invokeMethodAsync('HandleKeyDown', combo).catch(() => {});
 }
 
-// -- Unload prompt -----------------------------------------------------------
 // One listener, toggled, rather than add/remove per call: a page may have several guarded forms and the
 // browser only ever asks once, so what matters is whether ANY of them is dirty - which is the flag.
 let _unloadOff = null;
@@ -186,7 +182,6 @@ export function setUnloadPrompt(enabled) {
     }
 }
 
-// -- EyeDropper API ----------------------------------------------------------
 
 export function supportsEyeDropper() {
     return 'EyeDropper' in window;

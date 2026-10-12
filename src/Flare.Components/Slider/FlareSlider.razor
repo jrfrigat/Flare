@@ -271,7 +271,6 @@
     private double _initValue => Math.Clamp(Init ?? _safeMin, _safeMin, _safeMax);
     private double _initPercent => _pctOf(_initValue);
 
-    // ---- Declarative colored zones (child FlareZone components register here) ----
     // Shared registration; the collection pokes StateHasChanged when zones change.
     private readonly ZoneCollection _zones;
 

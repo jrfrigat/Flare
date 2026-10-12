@@ -13,7 +13,6 @@ import { all, listen, registry, scrollParent } from './flare-dom.js';
 import { startDrag } from './flare-drag.js';
 export { flareTimeColumns } from './flare-time-columns.js';
 
-// -- OTP input ---------------------------------------------------------------
 export const flareOtp = {
     focus: function (el) {
         if (el) { el.focus(); el.select(); }
@@ -23,7 +22,6 @@ export const flareOtp = {
     }
 };
 
-// -- Field imperative helpers (select/blur/caret-range) ----------------------
 // Focus is done natively from C# via ElementReference.FocusAsync; only the
 // operations with no built-in Blazor equivalent live here.
 export const flareField = {
@@ -60,7 +58,6 @@ export const flareField = {
     }
 };
 
-// -- Clipboard write fallback (no eval/innerHTML - GS-5 compliant) ------------
 export const FlareClipboardFallback = {
     copy: function (text) {
         var ta = document.createElement('textarea');
@@ -75,7 +72,6 @@ export const FlareClipboardFallback = {
     }
 };
 
-// -- Infinite scroll (IntersectionObserver) ----------------------------------
 export const FlareInfiniteScroll = (() => {
     const observers = registry();
     return {
@@ -95,7 +91,6 @@ export const FlareInfiniteScroll = (() => {
     };
 })();
 
-// -- Lazy render (defer a subtree until it scrolls near the viewport) --------
 export const FlareLazy = (() => {
     const observers = registry();
     return {
@@ -119,7 +114,6 @@ export const FlareLazy = (() => {
     };
 })();
 
-// -- DataGrid column resize --------------------------------------------------
 export const FlareDataGrid = {
     initResize(thEl) {
         const handle = thEl.querySelector('.flare-datagrid__resize-handle');
@@ -176,7 +170,6 @@ export const FlareDataGrid = {
     }
 };
 
-// -- On-this-page table of contents ------------------------------------------
 export const FlareToc = (() => {
     const instances = registry();
 
@@ -256,7 +249,6 @@ export const FlareToc = (() => {
     };
 })();
 
-// -- File download (CSV = same path with a UTF-8 BOM) -------------------------
 export const FlareDownload = {
     download(filename, content, mimeType, withBom) {
         const parts = withBom ? ['﻿' + content] : [content];

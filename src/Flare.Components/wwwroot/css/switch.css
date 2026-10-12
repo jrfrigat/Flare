@@ -94,7 +94,6 @@
     height: var(--_thumb-on-size);
 }
 
-/* Checked/ON state - track (accent = --fc-main, default primary; theme may override the token) */
 .flare-switch__input:checked + .flare-switch__thumb {
     background: var(--flare-switch-track-on-bg);
     border-color: var(--flare-switch-track-on-bg);

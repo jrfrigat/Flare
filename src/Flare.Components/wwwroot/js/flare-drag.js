@@ -9,7 +9,6 @@
 
 import { registry } from './flare-dom.js';
 
-// -- Gesture primitive --------------------------------------------------------
 // Attach a drag gesture to `handle`. On press it captures the pointer (so tracking continues even
 // when the cursor leaves the element and works for mouse/pen/touch alike) and reports the delta from
 // the press point. Returns an unsubscribe function.
@@ -115,7 +114,6 @@ export function startDrag(handle, opts) {
     };
 }
 
-// -- FlareResizable (drag one edge to resize a single container) --------------
 const _resizeHandles = registry();
 
 export function registerResizeHandle(container, handle, edge, minSize, maxSize, dotNetRef) {
@@ -147,7 +145,6 @@ export function removeResizeHandle(handle) {
     _resizeHandles.drop(handle);
 }
 
-// -- FlareDialog drag (move the panel by its header) + corner resize ----------
 // Both reuse the shared startDrag gesture so there is no bespoke pointer plumbing here. Drag applies a
 // CSS translate (preserving the centering transform's starting offset); resize grows width/height from
 // the bottom-right gripper down to the given minimums.
@@ -204,7 +201,6 @@ export function removeDialogResize(handle) {
     _dialogResizes.drop(handle);
 }
 
-// -- FlareSplitter (handle that resizes its two flex siblings) ----------------
 const _splitters = registry();
 
 function _flareParsePx(v) {
@@ -289,7 +285,6 @@ export function removeSiblingSplitter(gutter) {
     _splitters.drop(gutter);
 }
 
-// -- FlareColorPicker (drag the saturation/lightness canvas) ------------------
 export const flareColorPicker = (() => {
     const _state = new Map(); // canvas el -> { dotNetRef, hue, sat, l, _cleanup }
 

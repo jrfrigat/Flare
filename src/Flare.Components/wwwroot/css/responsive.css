@@ -13,7 +13,6 @@
     --flare-breakpoint-xxl: 2560px;
 }
 
-/* --- Visibility utilities --- */
 .flare-hidden         { display: none !important; }
 .flare-visible        { display: block !important; }
 
@@ -31,7 +30,6 @@
 @media (min-width: 600px) and (max-width: 959px)  { .flare-show-sm-only { display: block !important; } }
 @media (min-width: 960px) and (max-width: 1279px) { .flare-show-md-only { display: block !important; } }
 
-/* --- Flex utilities --- */
 .flare-flex       { display: flex; }
 .flare-flex-col   { display: flex; flex-direction: column; }
 .flare-flex-wrap  { flex-wrap: wrap; }
@@ -48,7 +46,6 @@
 .flare-gap-md   { gap: var(--flare-spacing-8); }
 .flare-gap-lg   { gap: var(--flare-spacing-12); }
 
-/* --- Simple 12-column grid --- */
 .flare-row {
     display: flex;
     flex-wrap: wrap;
@@ -121,7 +118,6 @@
     .flare-col-lg-12 { width: 100%; }
 }
 
-/* --- Spacing utilities --- */
 .flare-p-0  { padding: 0 !important; }
 .flare-p-sm { padding: var(--flare-spacing-4) !important; }
 .flare-p-md { padding: var(--flare-spacing-8) !important; }
@@ -140,7 +136,6 @@
    DataGrid -> datagrid.css, Dialog -> dialog.css. Container size modifiers
    live in grid.css. Keep this file limited to cross-cutting utilities. */
 
-/* --- Text alignment utilities --- */
 .flare-text-left    { text-align: left !important; }
 .flare-text-center  { text-align: center !important; }
 .flare-text-right   { text-align: right !important; }

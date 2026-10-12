@@ -93,7 +93,6 @@
 .flare-picker__day:where(:hover):where(:not(:disabled)) {
     background: var(--flare-state-hover-layer);
 }
-/* --today before --selected so a today-and-selected day reads as selected (on-primary). */
 .flare-picker__day--today {
     position: relative;
     font-weight: var(--flare-picker-today-weight);

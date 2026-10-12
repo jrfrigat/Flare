@@ -121,7 +121,6 @@
   transform: translateY(-50%);
 }
 
-/* -- Arrow: a rotated square painted with its bubble's background token (plain or rich). -- */
 .flare-tooltip--arrow .flare-tooltip__content::after {
   content: '';
   position: absolute;

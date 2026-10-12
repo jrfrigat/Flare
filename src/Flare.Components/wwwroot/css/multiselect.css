@@ -1,5 +1,4 @@
 /* Root column layout comes from the shared field-family root (input.css). */
-/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 /* The combobox trigger (__control) and its --open indicator are shared with FlareSelect - see the
    combined rules in select.css. Only __value differs: multiselect holds chips, so it does not ellipsis. */
 .flare-multiselect__value { flex: 0 1 auto; min-width: 0; }

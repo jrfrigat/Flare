@@ -33,7 +33,6 @@
 
 .flare-toc__item {
   margin: 0;
-  /* Depth is set inline (--flare-toc-depth) from the heading level. */
   padding-inline-start: calc(var(--flare-toc-indent) * var(--flare-toc-depth, 0));
 }
 

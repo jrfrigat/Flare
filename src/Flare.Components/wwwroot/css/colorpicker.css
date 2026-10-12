@@ -1,4 +1,3 @@
-/* -- FlareColorPicker ------------------------------------------------------- */
 
 .flare-colorpicker {
     position: relative;
@@ -7,14 +6,12 @@
     gap: var(--flare-spacing-2);
 }
 
-/* -- Label (popover mode) ------------------------------------------------- */
 
 .flare-colorpicker__label {
     font-size: var(--flare-typescale-label-medium-size);
     color: var(--flare-color-on-surface-variant);
 }
 
-/* -- Trigger (popover mode) ----------------------------------------------- */
 
 .flare-colorpicker__trigger {
     display: inline-flex;
@@ -71,7 +68,6 @@
     letter-spacing: 0.01em;
 }
 
-/* -- Panel (popover container) -------------------------------------------- */
 
 .flare-colorpicker__panel {
     /* Fixed + JS-positioned (positionAnchoredPanel) so the panel escapes a Card's overflow:hidden. */
@@ -89,7 +85,6 @@
     width: 260px;
 }
 
-/* -- Canvas --------------------------------------------------------------- */
 
 .flare-colorpicker__canvas-wrap {
     position: relative;
@@ -108,7 +103,6 @@
     touch-action: none;
 }
 
-/* -- Sliders -------------------------------------------------------------- */
 
 .flare-colorpicker__sliders {
     display: flex;
@@ -222,7 +216,6 @@
     box-shadow: 0 0 0 3px var(--flare-color-primary-container);
 }
 
-/* -- Text inputs ---------------------------------------------------------- */
 
 .flare-colorpicker__inputs {
     display: flex;
@@ -314,7 +307,6 @@
     text-align: left;
 }
 
-/* -- Presets -------------------------------------------------------------- */
 
 .flare-colorpicker__presets {
     display: flex;
@@ -345,7 +337,6 @@
     outline-offset: 2px;
 }
 
-/* -- Inline mode ---------------------------------------------------------- */
 
 .flare-colorpicker.flare-colorpicker--inline {
     display: flex;
@@ -358,14 +349,12 @@
     width: auto;
 }
 
-/* -- Disabled ------------------------------------------------------------- */
 
 .flare-colorpicker--disabled {
     opacity: var(--flare-state-disabled-opacity);
     pointer-events: none;
 }
 
-/* -- Eyedropper ----------------------------------------------------------- */
 
 .flare-colorpicker__eyedropper-row {
     display: flex;

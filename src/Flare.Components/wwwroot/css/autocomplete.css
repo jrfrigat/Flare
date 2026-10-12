@@ -4,7 +4,6 @@
   gap: var(--flare-spacing-2);
 }
 
-/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 /* The field-well box-model + focus ring (incl. :focus-within) come entirely from the shared
    flare-input__field (input.css); this base class is just the BEM anchor for the combobox field. */

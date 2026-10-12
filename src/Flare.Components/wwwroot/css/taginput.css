@@ -4,7 +4,6 @@
     cursor: text;
 }
 
-/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 /* The chip well carries the shared flare-input__field (input.css): the box-model, border, transition,
    :hover + :focus-within ring, and the shared flare-input--error/--disabled surface all come from
