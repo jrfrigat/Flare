@@ -17,17 +17,20 @@ public partial class FlareChart
         for (int i = 0; i < series.Count; i++)
         {
             int idx = i;
-            builder.OpenElement(2, "div");
+            builder.OpenElement(2, "button");
             builder.AddAttribute(3, "class", IsHidden(idx)
                 ? $"{Css.Classes.Chart.LegendItem} {Css.Classes.Chart.LegendItemOff}"
                 : Css.Classes.Chart.LegendItem);
             builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => ToggleSeries(idx)));
-            builder.OpenElement(5, "span");
-            builder.AddAttribute(6, "class", Css.Classes.Chart.LegendDot);
-            builder.AddAttribute(7, "style", $"{Css.Tokens.LocalVars.ChartDot}:{GetColor(idx)}");
+            builder.AddAttribute(5, "type", "button");
+            builder.AddAttribute(6, "aria-pressed", IsHidden(idx) ? "false" : "true");
+            builder.OpenElement(7, "span");
+            builder.AddAttribute(8, "class", Css.Classes.Chart.LegendDot);
+            builder.AddAttribute(9, "style", $"{Css.Tokens.LocalVars.ChartDot}:{GetColor(idx)}");
+            builder.AddAttribute(10, "aria-hidden", "true");
             builder.CloseElement();
-            builder.OpenElement(8, "span");
-            builder.AddContent(9, series[idx].Label);
+            builder.OpenElement(11, "span");
+            builder.AddContent(12, series[idx].Label);
             builder.CloseElement();
             builder.CloseElement();
         }

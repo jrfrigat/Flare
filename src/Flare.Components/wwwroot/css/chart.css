@@ -164,6 +164,11 @@
 .flare-chart__legend-item {
     cursor: pointer;
     user-select: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    text-align: inherit;
 }
 .flare-chart__legend-item--off {
     opacity: var(--flare-chart-legend-off-opacity);

@@ -1,3 +1,4 @@
+using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -217,6 +218,9 @@ public partial class FlareChart
     protected override string ComponentCssClass => Css.Classes.Chart.Root;
 
     private bool _bubble => Type == ChartType.Bubble;
+    private string AccessibleName => string.IsNullOrWhiteSpace(Title) ? FlareStrings.Chart_AccessibleName : Title;
+    private string DescriptionId => $"{_uid}-description";
+    private string TooltipId => $"{_uid}-tooltip";
 
     // Series toggled off via the interactive legend.
     private readonly HashSet<int> _hidden = new();

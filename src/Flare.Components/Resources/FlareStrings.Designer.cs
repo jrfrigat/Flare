@@ -105,6 +105,9 @@ namespace Flare.Components.Resources {
             }
         }
 
+        /// <summary>Localized accessible name for an untitled chart.</summary>
+        public static string Chart_AccessibleName => ResourceManager.GetString("Chart_AccessibleName", resourceCulture);
+
         /// <summary>Localized caption for an untitled chart data table.</summary>
         public static string Chart_TableCaption => ResourceManager.GetString("Chart_TableCaption", resourceCulture);
 

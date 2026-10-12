@@ -41,11 +41,12 @@
          @onwheel:preventDefault="_zoomActive">
         <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="@(_spark ? "none" : null)" style="@_svgStyle"
-             aria-label="@(Title ?? "Chart")" role="img">
-            <title>@(Title ?? "Chart")</title>
-            @if (!string.IsNullOrEmpty(Description))
+             aria-label="@AccessibleName" role="img"
+             aria-describedby="@(string.IsNullOrWhiteSpace(Description) ? null : DescriptionId)">
+            <title>@AccessibleName</title>
+            @if (!string.IsNullOrWhiteSpace(Description))
             {
-                <desc>@Description</desc>
+                <desc id="@DescriptionId">@Description</desc>
             }
             @* The plot-rectangle clip every cartesian renderer wraps its data marks in, so a zoomed
                window cannot paint over the axes and labels. *@
@@ -103,7 +104,7 @@
         @* The shared placement engine owns the tooltip's viewport coordinates. *@
         @if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {
-            <div class="@Css.Classes.Chart.Tooltip" @ref="_tooltipRef">
+            <div class="@Css.Classes.Chart.Tooltip" id="@TooltipId" role="tooltip" @ref="_tooltipRef">
                 @_tooltipText
             </div>
         }

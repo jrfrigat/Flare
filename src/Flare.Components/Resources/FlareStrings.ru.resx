@@ -156,6 +156,7 @@
   <!-- Misc accessibility -->
   <data name="Aria_Loading" xml:space="preserve"><value>Загрузка</value></data>
   <data name="Aria_CloseTab" xml:space="preserve"><value>Закрыть вкладку</value></data>
+  <data name="Chart_AccessibleName" xml:space="preserve"><value>Диаграмма</value></data>
   <data name="Chart_ZoomIn" xml:space="preserve"><value>Приблизить</value></data>
   <data name="Chart_ZoomOut" xml:space="preserve"><value>Отдалить</value></data>
   <data name="Chart_ZoomReset" xml:space="preserve"><value>Сбросить масштаб</value></data>
