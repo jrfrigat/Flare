@@ -13,13 +13,15 @@ namespace Flare.Components;
 /// <para>
 /// Sizing has two modes: <c>Fluid</c> (the default) measures the plot and fills it exactly, so the
 /// chart is <c>Height</c> px tall at any width; <c>Fluid="false"</c> fixes the <c>Width</c> x
-/// <c>Height</c> aspect ratio and scales the drawing into its container with no interop at all.
+/// <c>Height</c> aspect ratio and scales the drawing into its container without fluid size measurement.
+/// Browser adapters handle interactive details, focus, zoom gestures and optional update motion.
 /// </para>
 /// </summary>
 // Parameters, shared state and the geometry constants every renderer reads.
 public partial class FlareChart
 {
-    /// <summary>Chart rendering type: Line, Bar, Pie, or Donut.</summary>
+    /// <summary>Selects line, area, bar, stacked bar, combo, scatter, bubble, pie, donut, radar,
+    /// rose, polar area or heat map rendering.</summary>
     [Parameter] public ChartType Type { get; set; } = ChartType.Line;
     /// <summary>Data series and labels to visualize in the chart.
     /// <para>
@@ -55,7 +57,8 @@ public partial class FlareChart
     /// Measuring needs the browser, so before the first measurement (prerender, static SSR, JS
     /// unavailable) the chart falls back to the authored <see cref="Width"/> x <see cref="Height"/>
     /// aspect ratio and renders exactly as <c>Fluid="false"</c> would. Set it to false to keep a chart
-    /// completely free of JS interop, or when a fixed aspect ratio is the point.
+    /// at a fixed aspect ratio. When zoom is also disabled, no plot size observer is registered.
+    /// Interactive details, keyboard focus and optional update motion still use browser adapters.
     /// </para>
     /// Ignored in <see cref="Sparkline"/> mode, which already fills its box.
     /// </summary>
@@ -153,7 +156,7 @@ public partial class FlareChart
     [Parameter] public string? XAxisTitle { get; set; }
     /// <summary>Title drawn rotated beside the Y axis.</summary>
     [Parameter] public string? YAxisTitle { get; set; }
-    /// <summary>Renders bar / stacked-bar charts horizontally (categories down the Y axis).</summary>
+    /// <summary>Renders Bar charts horizontally, with categories down the Y axis. Ignored for other types.</summary>
     [Parameter] public bool Horizontal { get; set; }
     /// <summary>Shows the numeric value on each bar and the percentage on each pie/donut slice.</summary>
     [Parameter] public bool ShowValues { get; set; }
@@ -182,8 +185,8 @@ public partial class FlareChart
     /// </para>
     /// <para>
     /// Duration and easing come from the theme's motion scale, and a reader who asked for reduced motion
-    /// gets the jump. This is the one part of the chart that needs the browser: it costs one call when
-    /// the chart appears and nothing per update.
+    /// gets the jump. Its browser observer is registered once when enabled; updates require no
+    /// additional motion interop calls.
     /// </para>
     /// </summary>
     [Parameter] public bool AnimateUpdates { get; set; }
