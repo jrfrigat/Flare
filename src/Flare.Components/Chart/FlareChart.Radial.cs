@@ -16,16 +16,14 @@ public partial class FlareChart
             builder.AddMarkupContent(seq++,
                 $"<path d=\"{slice.Path}\" style=\"fill:{GetColor(slice.Index)};{_sliceStrokeStyle}\"/>");
         }
-        if (ShowValues && Data?.Series is { Count: > 0 } series)
+        if (ShowValues)
         {
-            double total = VisibleSliceTotal;
-            if (total > 0)
-                foreach (var slice in _slices)
-                {
-                    double pct = SafeValue(series[slice.Index].Values.FirstOrDefault()) / total * 100;
-                    if (pct < 4) continue; // skip labels on tiny slivers
-                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{slice.Cx:F1}\" y=\"{slice.Cy + 3:F1}\" text-anchor=\"middle\" style=\"{_valueOnFillStyle}\">{pct:F0}%</text>"));
-                }
+            foreach (var slice in _slices)
+            {
+                double pct = slice.Percent;
+                if (pct < 4) continue; // skip labels on tiny slivers
+                builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{slice.Cx:F1}\" y=\"{slice.Cy + 3:F1}\" text-anchor=\"middle\" style=\"{_valueOnFillStyle}\">{pct:F0}%</text>"));
+            }
         }
     };
 
@@ -38,7 +36,7 @@ public partial class FlareChart
         double max = ScaleValues(series).DefaultIfEmpty(0).Max();
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
-        double r = Math.Min(cx, cy) - 24;
+        double r = Math.Max(0, Math.Min(cx, cy) - 24);
         int seq = 0;
 
         if (_showGrid)
@@ -86,7 +84,7 @@ public partial class FlareChart
             var poly = new System.Text.StringBuilder();
             for (int k = 0; k < axes; k++)
             {
-                double v = k < vals.Count ? SafeValue(vals[k]) : 0;
+                double v = k < vals.Count ? RadialWeight(vals[k]) : 0;
                 double rr = v / max * r;
                 double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
                 poly.Append(string.Create(_inv, $"{cx + rr * Math.Cos(ang):F1},{cy + rr * Math.Sin(ang):F1} "));
@@ -154,13 +152,14 @@ public partial class FlareChart
     private RenderFragment RenderRose() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var visible = VisibleSeriesIndices(series.Count);
+        var visible = VisibleRadialIndices();
         if (visible.Count == 0) return;
         var vals = visible.Select(i => SafeValue(series[i].Values.FirstOrDefault())).ToList();
         double max = vals.Count > 0 ? vals.Max() : 1;
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
-        double rMax = Math.Min(cx, cy) - 16;
+        double rMax = Math.Max(0, Math.Min(cx, cy) - 16);
+        if (rMax == 0) return;
         int n = visible.Count;
         double step = 2 * Math.PI / n;
         int seq = 0;
@@ -168,10 +167,7 @@ public partial class FlareChart
         {
             double rr = Math.Sqrt(vals[i] / max) * rMax; // sqrt => area-proportional sectors
             double a0 = -Math.PI / 2 + i * step, a1 = a0 + step;
-            double x0 = cx + rr * Math.Cos(a0), y0 = cy + rr * Math.Sin(a0);
-            double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
-            int large = step > Math.PI ? 1 : 0;
-            string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
+            string path = ArcGeometry.Wedge(cx, cy, rr, 0, a0, a1);
             builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(visible[i])};{_sliceStrokeStyle}\"/>");
         }
     };
@@ -179,13 +175,14 @@ public partial class FlareChart
     private RenderFragment RenderPolarArea() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var visible = VisibleSeriesIndices(series.Count);
+        var visible = VisibleRadialIndices();
         if (visible.Count == 0) return;
         var vals = visible.Select(i => SafeValue(series[i].Values.FirstOrDefault())).ToList();
         double max = vals.Count > 0 ? vals.Max() : 1;
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
-        double rMax = Math.Min(cx, cy) - 16;
+        double rMax = Math.Max(0, Math.Min(cx, cy) - 16);
+        if (rMax == 0) return;
         int n = visible.Count;
         double step = 2 * Math.PI / n;
         int seq = 0;
@@ -200,10 +197,7 @@ public partial class FlareChart
         {
             double rr = vals[i] / max * rMax; // linear radius (Chart.js style)
             double a0 = -Math.PI / 2 + i * step, a1 = a0 + step;
-            double x0 = cx + rr * Math.Cos(a0), y0 = cy + rr * Math.Sin(a0);
-            double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
-            int large = step > Math.PI ? 1 : 0;
-            string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
+            string path = ArcGeometry.Wedge(cx, cy, rr, 0, a0, a1);
             builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(visible[i])};stroke:{GetColor(visible[i])};fill-opacity:var({Css.Tokens.Chart.WedgeOpacity});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})\"/>");
         }
     };

@@ -65,6 +65,11 @@ internal static class ArcGeometry
     public static string Wedge(double cx, double cy, double r, double inner, double startAngle, double endAngle)
     {
         var sweep = endAngle - startAngle;
+        if (Math.Abs(sweep) >= 2 * Math.PI - 1e-6)
+        {
+            string outer = Stroke(cx, cy, r, startAngle, endAngle) + " Z";
+            return inner <= 0 ? outer : outer + " " + Stroke(cx, cy, inner, endAngle, startAngle) + " Z";
+        }
         var (x1, y1) = Point(cx, cy, r, startAngle);
         var (x2, y2) = Point(cx, cy, r, endAngle);
         var large = Math.Abs(sweep) > Math.PI ? 1 : 0;

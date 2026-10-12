@@ -7,9 +7,9 @@ public enum ChartType
     Line,
     /// <summary>Vertical bar chart (grouped when multiple series).</summary>
     Bar,
-    /// <summary>Pie chart (full circle of proportional slices).</summary>
+    /// <summary>Pie chart (full circle of proportional slices). Only finite positive weights create slices.</summary>
     Pie,
-    /// <summary>Donut chart (pie with a hollow center).</summary>
+    /// <summary>Donut chart (pie with a hollow center). Only finite positive weights create slices.</summary>
     Donut,
     /// <summary>Line chart with the area under each line filled (shorthand for a line with <c>Area</c>).</summary>
     Area,
@@ -17,16 +17,19 @@ public enum ChartType
     StackedBar,
     /// <summary>Scatter plot of independent X/Y points (uses <see cref="ChartSeries.Points"/>).</summary>
     Scatter,
-    /// <summary>Radar (spider) chart: each category is an axis radiating from the center.</summary>
+    /// <summary>Radar (spider) chart: each category is an axis radiating from the center.
+    /// Negative and nonfinite weights are treated as zero.</summary>
     Radar,
     /// <summary>Heat map: a colored grid where each series is a row and each label is a column.
     /// Missing and nonfinite values leave empty cells; finite zero remains a value.</summary>
     HeatMap,
     /// <summary>Bubble chart: X/Y points sized by <see cref="ChartPoint.R"/>.</summary>
     Bubble,
-    /// <summary>Rose (Nightingale) chart: equal-angle sectors whose radius encodes the value.</summary>
+    /// <summary>Rose (Nightingale) chart: equal-angle sectors whose radius encodes the value.
+    /// Only finite positive weights create sectors.</summary>
     Rose,
-    /// <summary>Polar-area chart: equal-angle wedges on a radial grid, radius encodes the value.</summary>
+    /// <summary>Polar-area chart: equal-angle wedges on a radial grid, radius encodes the value.
+    /// Only finite positive weights create wedges.</summary>
     PolarArea,
     /// <summary>Combo chart: each series draws as its own <see cref="ChartSeries.Kind"/> (bar / line / area).</summary>
     Combo,
@@ -281,7 +284,9 @@ public readonly record struct ChartZoom(double From, double To)
 /// of the tooltip. That is what lets a series live on part of a shared category axis - a seasonal
 /// product against twelve months - without a run of zeros reading as "sold none". Build the list from
 /// nullable data with <see cref="ChartSeries.Gaps"/>. Gaps apply to the cartesian types (line, area,
-/// bar, stacked bar, combo); the radial types treat a gap as zero.</param>
+/// bar, stacked bar, combo). Pie, donut, rose and polar-area sectors use only finite positive weights;
+/// zero and invalid weights create no sector. Radar treats negative and nonfinite weights as zero.
+/// Original values remain available in the accessible table.</param>
 /// <param name="Color">Explicit series color - a semantic role (<c>FlareColor.Error</c>) or any CSS color
 /// string, which converts implicitly. Left at <see cref="FlareColor.Default"/> the series takes the next
 /// color from the theme's categorical palette.</param>

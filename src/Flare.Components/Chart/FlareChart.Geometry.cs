@@ -18,8 +18,10 @@ public partial class FlareChart
     private List<int> VisibleSeriesIndices(int count) =>
         [.. Enumerable.Range(0, count).Where(i => !IsHidden(i))];
 
-    private double VisibleSliceTotal => Data?.Series.Where((_, i) => !IsHidden(i))
-        .Sum(s => SafeValue(s.Values.FirstOrDefault())) ?? 0;
+    private static double RadialWeight(double value) => double.IsFinite(value) && value > 0 ? value : 0;
+
+    private List<int> VisibleRadialIndices() => Data is null ? [] :
+        [.. VisibleSeriesIndices(Data.Series.Count).Where(i => RadialWeight(Data.Series[i].Values.FirstOrDefault()) > 0)];
 
     // THE horizontal projection: category index -> viewBox x. Every cartesian renderer goes through it,
     // which is what makes zooming a change of one window rather than a change in each renderer. Without a
@@ -81,30 +83,34 @@ public partial class FlareChart
     }
 
     // Slice geometry (pie/donut) shared by the visual paths and the hit zones.
-    private IEnumerable<(int Index, string Path, double Cx, double Cy)> _slices
+    private IEnumerable<(int Index, string Path, double Cx, double Cy, double Percent)> _slices
     {
         get
         {
             if (Data?.Series is not { Count: > 0 } series) yield break;
             bool donut = Type == ChartType.Donut;
             double cx = _svgW / 2.0, cy = _svgH / 2.0;
-            double r = Math.Min(cx, cy) - 16;
+            double r = Math.Max(0, Math.Min(cx, cy) - 16);
+            if (r == 0) yield break;
             double inner = donut ? r * Math.Clamp(DonutRingRatio, 0, 0.95) : 0;
-            double total = VisibleSliceTotal;
-            if (total == 0) yield break;
+            var visible = VisibleRadialIndices();
+            if (visible.Count == 0) yield break;
+            double largest = visible.Max(i => series[i].Values[0]);
+            var weights = visible.Select(i => series[i].Values[0] / largest).ToArray();
+            double total = weights.Sum();
 
             double startAngle = ArcGeometry.Top;
-            for (int i = 0; i < series.Count; i++)
+            for (int slot = 0; slot < visible.Count; slot++)
             {
-                if (IsHidden(i)) continue;
-                double val = SafeValue(series[i].Values.FirstOrDefault());
-                double sweep = val / total * 2 * Math.PI;
+                int i = visible[slot];
+                double fraction = weights[slot] / total;
+                double sweep = fraction * 2 * Math.PI;
                 double endAngle = startAngle + sweep;
                 string path = ArcGeometry.Wedge(cx, cy, r, inner, startAngle, endAngle);
                 double mid = startAngle + sweep / 2;
                 double rMid = donut ? (r + inner) / 2 : r * 0.6;
                 var (lx, ly) = ArcGeometry.Point(cx, cy, rMid, mid);
-                yield return (i, path, lx, ly);
+                yield return (i, path, lx, ly, fraction * 100);
                 startAngle = endAngle;
             }
         }
@@ -140,9 +146,9 @@ public partial class FlareChart
     {
         if (Data?.Series is not { Count: > 0 } series) return;
         if (IsHidden(index)) { ClearHover(); return; }
-        double total = VisibleSliceTotal;
-        double pct = total > 0 ? SafeValue(series[index].Values.FirstOrDefault()) / total * 100 : 0;
-        _tooltipText = string.Create(_inv, $"{series[index].Label}: {pct:F1}%");
+        var slice = _slices.FirstOrDefault(s => s.Index == index);
+        if (string.IsNullOrEmpty(slice.Path)) { ClearHover(); return; }
+        _tooltipText = string.Create(_inv, $"{series[index].Label}: {slice.Percent:F1}%");
         SetHoverPosition(e);
         _tooltipVisible = true;
     }
