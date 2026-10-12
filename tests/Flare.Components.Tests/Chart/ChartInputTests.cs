@@ -36,7 +36,9 @@ public class ChartInputTests : FlareTestContext
         cut.Find(selector).Click(new MouseEventArgs { ClientX = 120, ClientY = 150 });
         Assert.Equal(0, index);
         Assert.Contains("First", cut.Find("[role=tooltip]").TextContent);
-        Assert.Equal(cut.Find("[role=tooltip]").Id, cut.Find(selector).GetAttribute("aria-describedby"));
+        Assert.Equal(cut.Find("[role=tooltip]").Id, cut.Find("[data-flare-chart-tooltip]").GetAttribute("data-flare-chart-tooltip"));
+        Assert.Equal(type == ChartType.Line ? "category:0" : "slice:0",
+            cut.Find("[data-flare-chart-active]").GetAttribute("data-flare-chart-active"));
     }
 
     [Fact]

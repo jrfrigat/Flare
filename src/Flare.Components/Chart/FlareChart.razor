@@ -35,9 +35,11 @@
          data-flare-chart-zoom="@(_zoomActive ? "true" : null)"
          data-plot-left="@F(_padL)" data-plot-top="@F(_padT)"
          data-plot-width="@F(_plotW)" data-plot-height="@F(_plotH)"
+         data-flare-chart-active="@(_tooltipVisible ? _activeHitKey : null)" data-flare-chart-tooltip="@TooltipId"
          @onpointerleave="OnPlotPointerLeave"
          @ondblclick="ResetZoomAsync">
         @{ var hits = RenderedHits(); }
+        @RenderRegion(@<text>
         <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="@(_spark ? "none" : null)" style="@_svgStyle"
              aria-label="@AccessibleName" role="@(hits.Count > 0 ? "group" : "img")"
@@ -75,7 +77,6 @@
                     <rect @key="hit.Key" x="@F(hit.X)" y="@F(hit.Y)" width="@F(hit.Width)" height="@F(hit.Height)"
                           fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
                           role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
-                          aria-describedby="@(_tooltipVisible && _activeHitKey == hit.Key ? TooltipId : null)"
                           @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
                           @onclick="e => ActivateHitAsync(hit, e)" />
                 }
@@ -83,7 +84,6 @@
                 {
                     <path @key="hit.Key" d="@hit.Path" fill="transparent" class="@Css.Classes.Chart.Hit"
                           data-flare-chart-hit="@hit.Key" role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
-                          aria-describedby="@(_tooltipVisible && _activeHitKey == hit.Key ? TooltipId : null)"
                           @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
                           @onclick="e => ActivateHitAsync(hit, e)" />
                 }
@@ -92,7 +92,6 @@
                     <circle @key="hit.Key" cx="@F(hit.X)" cy="@F(hit.Y)" r="@F(hit.Radius)"
                             fill="transparent" class="@Css.Classes.Chart.Hit" data-flare-chart-hit="@hit.Key"
                             role="button" aria-label="@hit.Text" tabindex="@(hit == hits[0] ? 0 : -1)"
-                            aria-describedby="@(_tooltipVisible && _activeHitKey == hit.Key ? TooltipId : null)"
                             @onmouseenter="e => ShowHit(hit, e)" @onmouseleave="ClearHover"
                             @onclick="e => ActivateHitAsync(hit, e)" />
                 }
@@ -106,6 +105,7 @@
                       width="@F(_selectionRect.Width)" height="@F(_plotH)" />
             }
         </svg>
+        </text>)
         @* The shared placement engine owns the tooltip's viewport coordinates. *@
         @if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {
@@ -121,6 +121,8 @@
     </div>
     @if (DataTable)
     {
+        @RenderRegion(@<text>
         @RenderDataTable()
+        </text>)
     }
 </div>

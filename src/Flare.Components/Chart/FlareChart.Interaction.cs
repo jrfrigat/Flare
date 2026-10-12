@@ -19,6 +19,7 @@ public partial class FlareChart
     private int? _measuredWidth;
     private bool _observing;
     private bool _motionObserving;
+    private long _drawingRevision;
 
     // Distance from the pointer to the bubble. A number rather than a token because it is an input to
     // the placement engine, which works in pixels - the same reason ICollisionService.Offset is one.
@@ -97,6 +98,7 @@ public partial class FlareChart
         var width = (int)Math.Round(rect.Width);
         if (width <= 0 || width == _measuredWidth) return;
         _measuredWidth = width;
+        _drawingRevision++;
         StateHasChanged();
     }
 
@@ -138,14 +140,18 @@ public partial class FlareChart
         : _barDomain ? Math.Max(1, _pts) - 0.5 : Math.Max(1, _pts) - 1;
 
     // X extent of the scatter/bubble points, widened when every point shares one X so the span is never 0.
+    private long _pointRangeRevision = -1;
+    private (double Min, double Max) _cachedPointRange;
     private (double Min, double Max) _pointXRange
     {
         get
         {
+            if (_pointRangeRevision == _drawingRevision) return _cachedPointRange;
+            _pointRangeRevision = _drawingRevision;
             var xs = ScalePoints().Select(p => p.X).ToList();
-            if (xs is not { Count: > 0 }) return (0, 1);
+            if (xs is not { Count: > 0 }) return _cachedPointRange = (0, 1);
             double min = xs.Min(), max = xs.Max();
-            return max > min ? (min, max) : (min, min + 1);
+            return _cachedPointRange = max > min ? (min, max) : (min, min + 1);
         }
     }
 
@@ -163,7 +169,7 @@ public partial class FlareChart
         && (_view.From > _domainFrom + 1e-9 || _view.To < _domainTo - 1e-9);
 
     private bool _zoomActive => Zoomable && !_spark && !(Type == ChartType.Bar && Horizontal)
-        && (_valueDomain ? Data?.Series.SelectMany(s => s.Points ?? []).Count(IsValidPoint) > 1 : _pts > 1)
+        && (_valueDomain ? Data?.Series.SelectMany(s => s.Points ?? []).Where(IsValidPoint).Take(2).Count() > 1 : _pts > 1)
         && Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar
                 or ChartType.Combo or ChartType.Scatter or ChartType.Bubble;
 
@@ -172,6 +178,7 @@ public partial class FlareChart
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
+        _drawingRevision++;
         // Zoom follows the two-way state contract: controlled tracks the parameter, uncontrolled keeps
         // the user's window until the parameter itself moves.
         if (ZoomChanged.HasDelegate)
@@ -184,6 +191,7 @@ public partial class FlareChart
     private async Task SetZoomAsync(ChartZoom? window)
     {
         _internalZoom = window;
+        _drawingRevision++;
         if (ZoomChanged.HasDelegate) await ZoomChanged.InvokeAsync(window);
         StateHasChanged();
     }
@@ -265,9 +273,9 @@ public partial class FlareChart
             await SetZoomAsync(new ChartZoom(from, from + _dragStartView.Span).Clamp(_domainFrom, _domainTo, _minZoomSpan));
             return;
         }
-        if (phase == "move") { StateHasChanged(); return; }
+        if (phase == "move") { _drawingRevision++; StateHasChanged(); return; }
         _dragStartX = null;
-        if (Math.Abs(x - start) <= 2) { StateHasChanged(); return; }
+        if (Math.Abs(x - start) <= 2) { _drawingRevision++; StateHasChanged(); return; }
         var a = IndexOfX(Math.Min(start, x));
         var b = IndexOfX(Math.Max(start, x));
         await SetZoomAsync(new ChartZoom(a, b).Clamp(_domainFrom, _domainTo, _minZoomSpan));

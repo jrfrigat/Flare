@@ -15,6 +15,15 @@ public partial class FlareChart
     private string? _focusedHitKey;
     private double _focusX, _focusY;
     private List<ChartHit> _renderedHits = [];
+    private long _hitsRevision = -1;
+
+    private RenderFragment RenderRegion(RenderFragment content) => builder =>
+    {
+        builder.OpenComponent<ChartRenderRegion>(0);
+        builder.AddAttribute(1, nameof(ChartRenderRegion.Revision), _drawingRevision);
+        builder.AddAttribute(2, nameof(ChartRenderRegion.ChildContent), content);
+        builder.CloseComponent();
+    };
 
     private enum HitShape { Rectangle, Path, Circle }
     private sealed record ChartHit(string Key, int Index, string Text, HitShape Shape,
@@ -22,6 +31,8 @@ public partial class FlareChart
 
     private List<ChartHit> RenderedHits()
     {
+        if (_hitsRevision == _drawingRevision) return _renderedHits;
+        _hitsRevision = _drawingRevision;
         _pointLayout = Type is ChartType.Scatter or ChartType.Bubble ? ProjectPoints() : null;
         _cellLayout = Type == ChartType.HeatMap ? ProjectCells() : null;
         _radarLayout = Type == ChartType.Radar ? ProjectRadar() : null;

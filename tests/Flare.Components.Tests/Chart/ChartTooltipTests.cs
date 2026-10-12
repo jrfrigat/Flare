@@ -25,8 +25,8 @@ public class ChartTooltipTests : FlareTestContext
 
         await cut.Instance.ChartPointerMoved(331, 479);
         Assert.Equal(2, module.Invocations["positionAnchoredPanel"].Count);
-        cut.Find(".flare-chart__plot").PointerLeave();
-        Assert.Empty(cut.FindAll(".flare-chart__tooltip"));
+        cut.Find($".{Css.Classes.Chart.Plot}").PointerLeave();
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Tooltip}"));
         Assert.Single(module.Invocations["removeAnchoredPanel"]);
 
         void AssertAnchor(double x, double y)

@@ -7,20 +7,36 @@ const selector = '[data-flare-chart-hit]';
 
 export function observePlot(plot, receiver) {
     if (!plot) return;
-    let active = null;
-    const hits = () => [...plot.querySelectorAll(selector)];
+    let active = null, marks = [], byKey = new Map(), chosen = null, described = null;
+    const hits = () => marks;
     const send = (method, ...args) => receiver.invokeMethodAsync(method, ...args).catch(() => { });
     const sync = () => {
-        const marks = hits();
-        const chosen = marks.find(el => el.dataset.flareChartHit === active) || marks[0];
+        marks = [...plot.querySelectorAll(selector)];
+        byKey = new Map(marks.map(el => [el.dataset.flareChartHit, el]));
+        chosen = byKey.get(active) || marks[0];
         active = chosen?.dataset.flareChartHit || null;
-        for (const mark of marks) mark.tabIndex = mark === chosen ? 0 : -1;
+        for (const mark of marks) {
+            const index = mark === chosen ? 0 : -1;
+            if (mark.tabIndex !== index) mark.tabIndex = index;
+        }
+    };
+    const detail = () => {
+        const key = plot.dataset.flareChartActive;
+        const next = byKey.get(key) || null;
+        if (next === described) return;
+        described?.removeAttribute('aria-describedby');
+        described = next;
+        if (described) described.setAttribute('aria-describedby', plot.dataset.flareChartTooltip);
     };
     const focus = event => {
         const mark = event.target.closest?.(selector);
         if (!mark || !plot.contains(mark)) return;
         active = mark.dataset.flareChartHit;
-        sync();
+        if (chosen !== mark) {
+            if (chosen) chosen.tabIndex = -1;
+            chosen = mark;
+            chosen.tabIndex = 0;
+        }
         const rect = mark.getBoundingClientRect();
         send('ChartHitFocused', active, rect.left + rect.width / 2, rect.top + rect.height / 2);
     };
@@ -47,8 +63,12 @@ export function observePlot(plot, receiver) {
         event.preventDefault();
         marks[Math.max(0, Math.min(marks.length - 1, index))]?.focus({ preventScroll: true });
     };
-    const observer = new MutationObserver(sync);
-    observer.observe(plot, { childList: true, subtree: true });
+    const observer = new MutationObserver(records => {
+        if (records.some(r => r.type === 'childList' &&
+            (r.target.closest?.('svg') || [...r.addedNodes, ...r.removedNodes].some(n => n.nodeName === 'svg')))) sync();
+        detail();
+    });
+    observer.observe(plot, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-flare-chart-active'] });
     plots.keep(plot, all(
         bindPointer(plot, send),
         bindZoom(plot, send),
@@ -57,6 +77,7 @@ export function observePlot(plot, receiver) {
         listen(plot, 'keydown', key),
         () => observer.disconnect()));
     sync();
+    detail();
 }
 
 export function unobservePlot(plot) { plots.drop(plot); }

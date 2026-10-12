@@ -82,7 +82,7 @@ public sealed class ChartTooltipTests(BrowserFixture fixture) : IClassFixture<Br
         await page.SetViewportSizeAsync(375, 900);
         await page.GetByTestId("long").GetByRole(AriaRole.Switch).CheckAsync();
         var chart = page.GetByTestId("subject");
-        var labels = chart.Locator(".flare-chart__legend-item .flare-btn__label");
+        var labels = chart.Locator($".{Css.Classes.Chart.LegendItem} .{Css.Classes.Button.Label}");
         await Expect(labels).ToHaveCountAsync(3);
         Assert.True(await labels.EvaluateAllAsync<bool>("els => els.every(e => e.scrollWidth <= e.clientWidth + 1 && e.scrollHeight <= e.clientHeight + 1)"));
         point = await InteriorAsync(chart);
@@ -133,7 +133,7 @@ public sealed class ChartTooltipTests(BrowserFixture fixture) : IClassFixture<Br
 
     private static Task FollowsAsync(ILocator chart, float x, float y) => chart.EvaluateAsync("""
         async (chart,p) => {
-            const matches=()=>{const el=chart.querySelector('[role=tooltip]');if(!el)return false;const r=el.getBoundingClientRect();return el.hasAttribute('data-flare-placed')&&Math.abs(r.x+r.width/2-p[0])<2&&Math.abs(r.bottom+8-p[1])<2;};
+            const matches=()=>{const el=chart.querySelector('[role=tooltip]');if(!el)return false;const r=el.getBoundingClientRect(),hit=chart.querySelector('[data-flare-chart-hit][aria-describedby]');return hit?.getAttribute('aria-describedby')===el.id&&el.hasAttribute('data-flare-placed')&&Math.abs(r.x+r.width/2-p[0])<2&&Math.abs(r.bottom+8-p[1])<2;};
             for(let i=0;i<100;i++){if(matches())return;await new Promise(r=>setTimeout(r,20));}
             throw Error('Tooltip did not follow current viewport coordinates: '+JSON.stringify({pointer:p,box:chart.querySelector('[role=tooltip]')?.getBoundingClientRect(),target:document.elementFromPoint(...p)?.outerHTML.slice(0,300)}));
         }
