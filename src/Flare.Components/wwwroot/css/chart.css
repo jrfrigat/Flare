@@ -160,7 +160,7 @@
     margin-top: var(--flare-spacing-2);
 }
 /* Interactive legend: click to toggle a series. */
-.flare-chart__legend-item {
+.flare-chart__legend-item.flare-btn {
     cursor: pointer;
     user-select: none;
     background: none;
@@ -173,12 +173,23 @@
     opacity: var(--flare-chart-legend-off-opacity);
 }
 
-.flare-chart__legend-item {
+.flare-chart__legend-item.flare-btn {
     display: flex;
     align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    min-height: var(--_flare-btn-height, var(--flare-btn-height-xs));
     gap: var(--flare-chart-legend-item-gap);
     font-size: var(--flare-chart-legend-size);
     color: var(--flare-chart-legend-color);
+}
+
+/* A series name may exceed the chart width; retain the shared button's focus and state layer. */
+.flare-chart__legend-item .flare-btn__label {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .flare-chart__legend-dot {
@@ -209,7 +220,8 @@
     padding: var(--flare-spacing-3) var(--flare-spacing-5);
     font-size: var(--flare-typescale-body-small-size);
     line-height: 1.5;
-    white-space: pre;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
     box-shadow: var(--flare-elevation-2);
     z-index: 10;
     max-width: var(--flare-tooltip-max-width);

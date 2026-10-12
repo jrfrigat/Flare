@@ -1,0 +1,50 @@
+@page "/chart"
+@inject IThemeService Theme
+@using Flare.Abstractions.Tokens
+
+<FlareThemeProvider RespectSystemColorScheme="false">
+    <main style="padding: 24px; max-width: 900px">
+        <select aria-label="Theme" @onchange="ChangeTheme">
+            @foreach (var theme in Theme.Themes)
+            {
+                <option value="@theme.Id">@theme.Id</option>
+            }
+        </select>
+        <select aria-label="Mode" @onchange="ChangeMode">
+            <option value="Light">Light</option>
+            <option value="Dark">Dark</option>
+        </select>
+        <select aria-label="Chart type" @bind="_type">
+            @foreach (var type in Enum.GetValues<ChartType>())
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <FlareSwitch @bind-Value="_long" Label="Long labels" data-testid="long" />
+        <FlareButton OnClick="@(() => _dialog = true)" data-testid="open">Open dialog</FlareButton>
+        <FlareChart Type="_type" Data="Data" Height="280" Title="Readings" DataTable="true"
+                    ShowMarkers="true" OnPointClick="@(i => _selected = i)" data-testid="subject" />
+        <output data-testid="selected">@_selected</output>
+        <div data-testid="scroll" style="height: 360px; overflow: auto">
+            <div style="height: 80px"></div>
+            <FlareChart Type="ChartType.Line" Data="Data" Height="280" Title="Nested readings" data-testid="nested" />
+            <div style="height: 400px"></div>
+        </div>
+        <div style="height: 900px"></div>
+    </main>
+    <FlareDialog @bind-Visible="_dialog" Title="Readings" Size="DialogSize.Lg">
+        <ChildContent><FlareChart Type="_type" Data="Data" Height="280" Title="Dialog readings" data-testid="dialog-chart" /></ChildContent>
+    </FlareDialog>
+</FlareThemeProvider>
+
+@code {
+    private ChartType _type;
+    private bool _long, _dialog;
+    private int? _selected;
+    private ChartData Data => new(Enumerable.Range(0, 3).Select(i => new ChartSeries(
+        _long ? $"Series {i + 1}: a very long observation label that must remain readable within a narrow chart" : $"Series {i + 1}",
+        [2 + i, 5 + i, 3 + i, 7 + i], Points: [new(1, 2 + i, 2), new(2, 5 + i, 3), new(3, 3 + i, 4)],
+        Kind: i == 0 ? ChartSeriesKind.Bar : ChartSeriesKind.Line)).ToArray(), ["A", "B", "C", "D"]);
+    private Task ChangeTheme(ChangeEventArgs args) => Theme.SetThemeAsync((string)args.Value!);
+    private Task ChangeMode(ChangeEventArgs args) => Theme.SetModeAsync(Enum.Parse<ThemeMode>((string)args.Value!));
+}
