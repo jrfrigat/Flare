@@ -69,6 +69,7 @@
             }
 
             @* Hit geometry uses the same viewBox as the rendered data. *@
+            <g clip-path="@(_clipping ? $"url(#{_uid}-clip)" : null)">
             @foreach (var hit in hits)
             {
                 @if (hit.Shape == HitShape.Rectangle)
@@ -98,6 +99,7 @@
                             @onclick="e => ActivateHitAsync(hit, e)" />
                 }
             }
+            </g>
 
             @if (_selecting)
             {

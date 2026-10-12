@@ -42,16 +42,22 @@ public partial class FlareChart
         if (_spark || Data is null) return hits;
         if (Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar or ChartType.Combo)
         {
-            foreach (var category in _categories)
+            bool horizontal = Horizontal && Type == ChartType.Bar;
+            var categories = horizontal
+                ? Enumerable.Range(0, _pts).Select(i => (Index: i, XLeft: (double)_padL, Width: (double)_plotW, XCenter: 0d))
+                : _categories;
+            foreach (var category in categories)
             {
                 var text = CategoryDescription(category.Index);
                 if (text is null) continue;
-                bool horizontal = Horizontal && Type == ChartType.Bar;
+                double left = Math.Max(_padL, category.XLeft);
+                double right = Math.Min(_padL + _plotW, category.XLeft + category.Width);
+                if (right <= left) continue;
                 double rowHeight = _plotH / (double)Math.Max(1, _pts);
                 hits.Add(new($"category:{category.Index}", category.Index, text, HitShape.Rectangle,
-                    horizontal ? _padL : category.XLeft,
+                    left,
                     horizontal ? _padT + category.Index * rowHeight : _padT,
-                    horizontal ? _plotW : category.Width, horizontal ? rowHeight : _plotH));
+                    right - left, horizontal ? rowHeight : _plotH));
             }
         }
         else if (Type is ChartType.Pie or ChartType.Donut)
