@@ -8,6 +8,12 @@ namespace Flare.Components;
 // hover/tooltip state.
 public partial class FlareChart
 {
+    private List<int> VisibleSeriesIndices(int count) =>
+        [.. Enumerable.Range(0, count).Where(i => !IsHidden(i))];
+
+    private double VisibleSliceTotal => Data?.Series.Where((_, i) => !IsHidden(i))
+        .Sum(s => SafeValue(s.Values.FirstOrDefault())) ?? 0;
+
     // THE horizontal projection: category index -> viewBox x. Every cartesian renderer goes through it,
     // which is what makes zooming a change of one window rather than a change in each renderer. Without a
     // zoom the visible window is the whole domain, so this reduces to the plain even spacing.
@@ -77,12 +83,13 @@ public partial class FlareChart
             double cx = _svgW / 2.0, cy = _svgH / 2.0;
             double r = Math.Min(cx, cy) - 16;
             double inner = donut ? r * Math.Clamp(DonutRingRatio, 0, 0.95) : 0;
-            double total = series.Sum(s => SafeValue(s.Values.FirstOrDefault()));
+            double total = VisibleSliceTotal;
             if (total == 0) yield break;
 
             double startAngle = ArcGeometry.Top;
             for (int i = 0; i < series.Count; i++)
             {
+                if (IsHidden(i)) continue;
                 double val = SafeValue(series[i].Values.FirstOrDefault());
                 double sweep = val / total * 2 * Math.PI;
                 double endAngle = startAngle + sweep;
@@ -113,7 +120,8 @@ public partial class FlareChart
         if (Data?.Series is not { Count: > 0 } series) return;
         var label = (Data?.Labels is { } ls && index < ls.Count) ? ls[index] : index.ToString();
         // A series with no value here is left out of the tooltip entirely rather than reported as 0.
-        var present = series.Where(s => index < s.Values.Count && !IsGap(s.Values[index])).ToList();
+        var present = series.Where((s, i) => !IsHidden(i) && index < s.Values.Count && !IsGap(s.Values[index])).ToList();
+        if (present.Count == 0) { ClearHover(); return; }
         var parts = present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}"));
         _tooltipText = $"{label}\n{string.Join("\n", parts)}";
 
@@ -124,7 +132,8 @@ public partial class FlareChart
     private void SetHoverSlice(int index, MouseEventArgs e)
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        double total = series.Sum(s => SafeValue(s.Values.FirstOrDefault()));
+        if (IsHidden(index)) { ClearHover(); return; }
+        double total = VisibleSliceTotal;
         double pct = total > 0 ? SafeValue(series[index].Values.FirstOrDefault()) / total * 100 : 0;
         _tooltipText = string.Create(_inv, $"{series[index].Label}: {pct:F1}%");
         SetHoverPosition(e);

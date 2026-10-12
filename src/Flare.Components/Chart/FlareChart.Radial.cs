@@ -18,11 +18,11 @@ public partial class FlareChart
         }
         if (ShowValues && Data?.Series is { Count: > 0 } series)
         {
-            double total = series.Sum(s => s.Values.FirstOrDefault());
+            double total = VisibleSliceTotal;
             if (total > 0)
                 foreach (var slice in _slices)
                 {
-                    double pct = series[slice.Index].Values.FirstOrDefault() / total * 100;
+                    double pct = SafeValue(series[slice.Index].Values.FirstOrDefault()) / total * 100;
                     if (pct < 4) continue; // skip labels on tiny slivers
                     builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{slice.Cx:F1}\" y=\"{slice.Cy + 3:F1}\" text-anchor=\"middle\" style=\"{_valueOnFillStyle}\">{pct:F0}%</text>"));
                 }
@@ -98,10 +98,13 @@ public partial class FlareChart
     private RenderFragment RenderHeatMap() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        int rows = series.Count;
+        var visible = VisibleSeriesIndices(series.Count);
+        int rows = visible.Count;
+        if (rows == 0) return;
         int cols = series.Max(s => s.Values.Count);
         if (cols == 0) return;
-        var allVals = series.SelectMany(s => s.Values).ToList();
+        var allVals = ScaleValues(series);
+        if (allVals.Count == 0) return;
         double min = allVals.Min(), max = allVals.Max();
         if (max == min) max = min + 1;
         int seq = 0;
@@ -116,7 +119,7 @@ public partial class FlareChart
         double opMin = RampMinOpacity(), opSpan = RampMaxOpacity() - opMin;
         for (int r = 0; r < rows; r++)
         {
-            var vals = series[r].Values;
+            var vals = series[visible[r]].Values;
             for (int c = 0; c < cols; c++)
             {
                 double v = c < vals.Count ? SafeValue(vals[c]) : min;
@@ -134,7 +137,7 @@ public partial class FlareChart
         {
             var t = new System.Text.StringBuilder();
             for (int r = 0; r < rows; r++)
-                t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{_padT + r * cellH + cellH / 2 + 3:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{SvgText(series[r].Label)}</text>"));
+                t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{_padT + r * cellH + cellH / 2 + 3:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{SvgText(series[visible[r]].Label)}</text>"));
             builder.AddMarkupContent(seq++, t.ToString());
         }
         // Column labels along the bottom.
@@ -150,12 +153,14 @@ public partial class FlareChart
     private RenderFragment RenderRose() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var vals = series.Select(s => SafeValue(s.Values.FirstOrDefault())).ToList();
+        var visible = VisibleSeriesIndices(series.Count);
+        if (visible.Count == 0) return;
+        var vals = visible.Select(i => SafeValue(series[i].Values.FirstOrDefault())).ToList();
         double max = vals.Count > 0 ? vals.Max() : 1;
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
         double rMax = Math.Min(cx, cy) - 16;
-        int n = series.Count;
+        int n = visible.Count;
         double step = 2 * Math.PI / n;
         int seq = 0;
         for (int i = 0; i < n; i++)
@@ -166,19 +171,21 @@ public partial class FlareChart
             double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
             int large = step > Math.PI ? 1 : 0;
             string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
-            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(i)};{_sliceStrokeStyle}\"/>");
+            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(visible[i])};{_sliceStrokeStyle}\"/>");
         }
     };
 
     private RenderFragment RenderPolarArea() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var vals = series.Select(s => SafeValue(s.Values.FirstOrDefault())).ToList();
+        var visible = VisibleSeriesIndices(series.Count);
+        if (visible.Count == 0) return;
+        var vals = visible.Select(i => SafeValue(series[i].Values.FirstOrDefault())).ToList();
         double max = vals.Count > 0 ? vals.Max() : 1;
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
         double rMax = Math.Min(cx, cy) - 16;
-        int n = series.Count;
+        int n = visible.Count;
         double step = 2 * Math.PI / n;
         int seq = 0;
         if (_showGrid)
@@ -196,7 +203,7 @@ public partial class FlareChart
             double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
             int large = step > Math.PI ? 1 : 0;
             string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
-            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(i)};stroke:{GetColor(i)};fill-opacity:var({Css.Tokens.Chart.WedgeOpacity});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})\"/>");
+            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(visible[i])};stroke:{GetColor(visible[i])};fill-opacity:var({Css.Tokens.Chart.WedgeOpacity});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})\"/>");
         }
     };
 
