@@ -33,14 +33,15 @@ public partial class FlareChart
     /// <summary>Optional description for the SVG &lt;desc&gt; element, improving screen-reader context.</summary>
     [Parameter] public string? Description { get; set; }
     /// <summary>Plot height in pixels. In fluid mode this is the rendered height exactly; otherwise it is
-    /// the height half of the authored aspect ratio.</summary>
+    /// the height half of the authored aspect ratio. Values below 1 are rendered as 1.</summary>
     [Parameter] public int Height { get; set; } = 220;
 
     /// <summary>
     /// Authored drawing width, in viewBox units. With <see cref="Fluid"/> off this and
     /// <see cref="Height"/> fix the chart's ASPECT RATIO: the drawing then scales like an image into
     /// whatever width its container gives it, so a 1200 x 220 chart stays wide and short at any size.
-    /// In fluid mode it is only the width used until the first measurement arrives.
+    /// In fluid mode it is only the width used until the first measurement arrives. Values below 1
+    /// are rendered as 1.
     /// </summary>
     [Parameter] public int Width { get; set; } = 400;
 
@@ -93,7 +94,8 @@ public partial class FlareChart
     /// <see cref="YMax"/> still win where they are set.
     /// </summary>
     [Parameter] public ChartScaleMode ScaleMode { get; set; }
-    /// <summary>Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.</summary>
+    /// <summary>Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.
+    /// Each side is clamped to leave at least one viewBox unit for the plot; negative values become zero.</summary>
     [Parameter] public int? Padding { get; set; }
     /// <summary>Sparkline preset: a compact, chromeless line (no grid, axes, legend or title) that stretches
     /// edge-to-edge with a crisp stroke - for inline metric cards. Combine with <see cref="Area"/> for a fill.</summary>
@@ -115,9 +117,12 @@ public partial class FlareChart
     /// </summary>
     [Parameter] public bool StickyDomain { get; set; }
 
-    /// <summary>Overrides the automatic minimum of the value axis.</summary>
+    /// <summary>Overrides the automatic minimum of the value axis. Nonfinite values are ignored.
+    /// When both bounds are finite but the minimum is not below the maximum, both are ignored.</summary>
     [Parameter] public double? YMin { get; set; }
-    /// <summary>Overrides the automatic maximum of the value axis.</summary>
+    /// <summary>Overrides the automatic maximum of the value axis. Nonfinite values are ignored.
+    /// When both bounds are finite but the minimum is not below the maximum, both are ignored.
+    /// Stacked bars ignore nonpositive upper bounds because their stacks start at zero.</summary>
     [Parameter] public double? YMax { get; set; }
     /// <summary>.NET numeric format for the Y-axis labels (e.g. "N0", "C0", "P0"); null uses a general format.</summary>
     [Parameter] public string? YAxisFormat { get; set; }
@@ -234,146 +239,6 @@ public partial class FlareChart
     private bool _legendRow => _showLegend && LegendPosition is ChartLegendPosition.Left or ChartLegendPosition.Right;
     private Task HandlePointClick(int index) => OnPointClick.InvokeAsync(index);
 
-    // Applies the YMin/YMax overrides to an auto-computed (min,max) pair.
-    /// <summary>A resolved value axis: the window the data is projected into and how many grid lines span it.</summary>
-    /// <param name="Min">Lower bound of the axis, after any rounding and any <see cref="YMin"/> override.</param>
-    /// <param name="Max">Upper bound of the axis, after any rounding and any <see cref="YMax"/> override.</param>
-    /// <param name="Lines">Number of major grid lines to draw, counting both ends.</param>
-    private readonly record struct AxisScale(double Min, double Max, int Lines);
-
-    // One grid line per _tickSlot units of plot, the same budget rule the X axis uses for its labels: the
-    // count is then a consequence of the chart's size rather than a constant, so a 120px chart draws three
-    // lines where a 600px one draws nine. A default 220px chart still lands on five - what it drew before.
-    private const double _tickSlot = 44;
-
-    private int TickLines(double extent) => YAxisTickCount is { } n
-        ? Math.Clamp(n, 2, 24)
-        : Math.Clamp((int)Math.Round(extent / _tickSlot) + 1, 3, 9);
-
-    // The 1/2/2.5/5/10 progression every spreadsheet axis is built from, snapped to the NEAREST member
-    // rather than up. Always rounding up coarsens the axis badly at the boundaries - a 0..470 range asking
-    // for five lines lands on a step of 200 and an axis running to 600, when 100 and 0..500 is both rounder
-    // and tighter. Rounding down costs at most one extra line, which the caller is told to expect.
-    private static double NiceStep(double rough)
-    {
-        if (rough <= 0 || double.IsNaN(rough) || double.IsInfinity(rough)) return 1;
-        double pow = Math.Pow(10, Math.Floor(Math.Log10(rough)));
-        double f = rough / pow;
-        return (f < 1.5 ? 1 : f < 2.25 ? 2 : f < 3.75 ? 2.5 : f < 7.5 ? 5 : 10) * pow;
-    }
-
-    // The next member of the progression above a step already on it.
-    private static double NextNiceStep(double step)
-    {
-        double pow = Math.Pow(10, Math.Floor(Math.Log10(step)));
-        double f = step / pow;
-        return (f < 1.5 ? 2 : f < 2.25 ? 2.5 : f < 3.75 ? 5 : 10) * pow;
-    }
-
-    // Decimals the axis actually carries - enough to write its origin and its step without lying about
-    // either, capped so a floating-point artefact cannot ask for twenty digits.
-    private static int AxisDecimals(double origin, double step)
-    {
-        int d = 0;
-        while (d < 6 && !(Exact(origin, d) && Exact(step, d))) d++;
-        return d;
-
-        static bool Exact(double v, int digits) =>
-            Math.Abs(v - Math.Round(v, digits)) <= 1e-9 * Math.Max(1, Math.Abs(v));
-    }
-
-    // Bounds, rounding and line count are one calculation, not three: the nice step depends on how many
-    // lines were asked for, and the count that is finally drawn depends on where the rounding landed. Split
-    // them across the projection and the grid writer and the two drift out of alignment - which is the
-    // defect that made a tick-count parameter useless on its own.
-    // The widest value range seen while StickyDomain has been on. It outlives the render, which is the
-    // whole point: a chart handed a new dataset every three seconds re-derives its domain from that
-    // dataset alone, so one new point among twenty moves the other nineteen.
-    private double _stickyMin = double.NaN;
-    private double _stickyMax = double.NaN;
-
-    /// <summary>Forgets the range <see cref="StickyDomain"/> is holding, so the next update sizes the
-    /// value axis from the data alone. For when the caller knows the scale has changed for good.</summary>
-    public void ResetDomain()
-    {
-        _stickyMin = double.NaN;
-        _stickyMax = double.NaN;
-        StateHasChanged();
-    }
-
-    private (double Min, double Max) ApplySticky(double min, double max)
-    {
-        if (!StickyDomain)
-        {
-            _stickyMin = _stickyMax = double.NaN;
-            return (min, max);
-        }
-
-        if (double.IsNaN(_stickyMin))
-        {
-            (_stickyMin, _stickyMax) = (min, max);
-            return (min, max);
-        }
-
-        // Half, and not "any decrease": a domain that never shrinks is ruined for good by one spike,
-        // and one that follows every dip back down is the jitter this exists to remove. Half is the
-        // point at which the reader would rather have the resolution back than the stillness.
-        double held = _stickyMax - _stickyMin;
-        if (held > 0 && max - min < held / 2)
-        {
-            (_stickyMin, _stickyMax) = (min, max);
-            return (min, max);
-        }
-
-        _stickyMin = Math.Min(_stickyMin, min);
-        _stickyMax = Math.Max(_stickyMax, max);
-        return (_stickyMin, _stickyMax);
-    }
-
-    private AxisScale ResolveAxis(double min, double max, double extent, bool honorMin = true)
-    {
-        // Before the pins and the rounding: the held range is a range of DATA, and comparing it with a
-        // rounded one would let the rounding creep outward a step at a time.
-        if (!(YMin.HasValue && YMax.HasValue)) (min, max) = ApplySticky(min, max);
-
-        bool pinLo = honorMin && YMin.HasValue;
-        if (pinLo) min = YMin!.Value;
-        if (YMax.HasValue) max = YMax.Value;
-        if (max <= min) max = min + 1;
-        int lines = TickLines(extent);
-        // An axis pinned at both ends is the caller's window verbatim; rounding it would move a bound
-        // they set on purpose.
-        if (!NiceScale || (pinLo && YMax.HasValue)) return new AxisScale(min, max, lines);
-
-        // Two effects push the count up: snapping the step DOWN to a rounder value, and then extending
-        // both bounds outward to whole multiples of it. Together they can overshoot badly - a 94..470 range
-        // asking for seven lines lands on a step of 50 and draws ten. So the step climbs the progression
-        // until the overshoot is at most the one extra line the parameter documents.
-        double step = NiceStep((max - min) / Math.Max(1, lines - 1));
-        double lo, hi;
-        int drawn;
-        for (int guard = 0; ; guard++)
-        {
-            lo = pinLo ? min : Math.Floor(min / step) * step;
-            hi = YMax.HasValue ? max : Math.Ceiling(max / step) * step;
-            if (hi <= lo) hi = lo + step;
-            drawn = (int)Math.Round((hi - lo) / step) + 1;
-            if (drawn <= lines + 1 || guard >= 3) break;
-            step = NextNiceStep(step);
-        }
-        return new AxisScale(lo, hi, Math.Clamp(drawn, 2, 40));
-    }
-
-    // The plot dimension the VALUE axis runs along - width on a horizontal bar chart, height everywhere
-    // else - so the derived line count is budgeted against the axis it actually belongs to.
-    private double _valueExtent => Horizontal && Type is ChartType.Bar ? _plotW : _plotH;
-
-    private (double Min, double Max) ApplyBounds(double min, double max)
-    {
-        var axis = ResolveAxis(min, max, _valueExtent);
-        return (axis.Min, axis.Max);
-    }
-
     // SVG numeric attributes require '.' as the decimal separator; never use the current
     // culture (e.g. ru-RU formats 192.0 as "192,0", which is invalid in SVG).
     private static readonly System.Globalization.CultureInfo _inv = System.Globalization.CultureInfo.InvariantCulture;
@@ -384,24 +249,26 @@ public partial class FlareChart
     // The drawing width in viewBox units. Fluid mode swaps the authored Width for the element's measured
     // CSS width, which is what makes one viewBox unit one pixel - so the SVG can be pinned to Height px
     // and still fill the container without stretching anything.
-    private int _svgW => _fluidActive && _measuredWidth is { } w ? w : Math.Max(1, Width);
-    private int _svgH => Height;
+    private int _svgW => Math.Max(1, _fluidActive && _measuredWidth is { } w ? w : Width);
+    private int _svgH => Math.Max(1, Height);
 
     // Both fluid and sparkline pin the CSS height, for different reasons: the sparkline distorts on
     // purpose (preserveAspectRatio="none"), fluid never distorts because the viewBox already matches the
     // box. Unmeasured fluid falls back to the authored aspect ratio (CSS height:auto), so a prerendered
     // or JS-less page draws a correct chart rather than a letterboxed one.
-    private string? _svgStyle => _spark || (_fluidActive && _measuredWidth is not null) ? $"height:{Height}px" : null;
+    private string? _svgStyle => _spark || (_fluidActive && _measuredWidth is not null) ? $"height:{_svgH}px" : null;
 
     private bool _spark => Sparkline;
     private bool _fluidActive => Fluid && !_spark;
     // Area fill is on for the explicit Area flag or the Area chart type.
     private bool _area => Area || Type == ChartType.Area;
     // Sparkline zeroes the chrome; otherwise a Padding override applies to all sides, else the axis defaults.
-    private int _padL => _spark ? 2 : (Padding ?? 36);
-    private int _padR => _spark ? 2 : (Padding ?? 12);
-    private int _padT => _spark ? 2 : (Padding ?? 12);
-    private int _padB => _spark ? 2 : (Padding ?? 28);
+    private int PlotPadding(int fallback, int dimension) =>
+        Math.Clamp(_spark ? 2 : (Padding ?? fallback), 0, (dimension - 1) / 2);
+    private int _padL => PlotPadding(36, _svgW);
+    private int _padR => PlotPadding(12, _svgW);
+    private int _padT => PlotPadding(12, _svgH);
+    private int _padB => PlotPadding(28, _svgH);
     private int _plotW => _svgW - _padL - _padR;
     private int _plotH => _svgH - _padT - _padB;
 

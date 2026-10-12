@@ -153,7 +153,7 @@ public partial class FlareChart
         double.IsNaN(v) || double.IsInfinity(v) ? 0.0 : v;
 
     /// <summary>A missing point: the series has no value in this category, which is not a value of zero.</summary>
-    private static bool IsGap(double v) => double.IsNaN(v);
+    private static bool IsGap(double v) => !double.IsFinite(v);
 
     // Values that take part in the axis range. Gaps are absent, so they must neither stretch the scale
     // nor poison it - Enumerable.Min over doubles returns NaN as soon as one appears in the sequence.

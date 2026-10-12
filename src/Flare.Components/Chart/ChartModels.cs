@@ -274,7 +274,7 @@ public readonly record struct ChartZoom(double From, double To)
 /// <summary>A single named data series plotted on a chart.</summary>
 /// <param name="Label">Series name shown in the legend and tooltips.</param>
 /// <param name="Values">The numeric values, one per category (line/bar/pie/radar).
-/// <see cref="double.NaN"/> marks a MISSING value, which is not the same as zero: the line breaks
+/// A nonfinite value (NaN or infinity) marks a MISSING value, which is not the same as zero: the line breaks
 /// rather than dropping to the axis, no bar is drawn, the point is left out of the axis range and out
 /// of the tooltip. That is what lets a series live on part of a shared category axis - a seasonal
 /// product against twelve months - without a run of zeros reading as "sold none". Build the list from
