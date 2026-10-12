@@ -89,8 +89,7 @@ public partial class FlareChart
         {
             if (Data?.Series is not { Count: > 0 } series) yield break;
             bool donut = Type == ChartType.Donut;
-            double cx = _svgW / 2.0, cy = _svgH / 2.0;
-            double r = Math.Max(0, Math.Min(cx, cy) - 16);
+            var (cx, cy, r) = RadialBounds(16);
             if (r == 0) yield break;
             double inner = donut ? r * Math.Clamp(DonutRingRatio, 0, 0.95) : 0;
             var visible = VisibleRadialIndices();

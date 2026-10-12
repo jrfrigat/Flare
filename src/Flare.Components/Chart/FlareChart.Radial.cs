@@ -30,13 +30,10 @@ public partial class FlareChart
 
     private RenderFragment RenderRadar() => builder =>
     {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        int axes = series.Max(s => s.Values.Count);
-        if (axes < 3) return; // a radar needs at least 3 axes
-        double max = ScaleValues(series).DefaultIfEmpty(0).Max();
-        if (max <= 0) max = 1;
-        double cx = _svgW / 2.0, cy = _svgH / 2.0;
-        double r = Math.Max(0, Math.Min(cx, cy) - 24);
+        if (_radarLayout is not { } layout) return;
+        var series = Data!.Series;
+        int axes = layout.Axes;
+        double max = layout.Max, cx = layout.Cx, cy = layout.Cy, r = layout.Radius;
         int seq = 0;
 
         if (_showGrid)
@@ -49,14 +46,14 @@ public partial class FlareChart
                 var poly = new System.Text.StringBuilder();
                 for (int k = 0; k < axes; k++)
                 {
-                    double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                    double ang = RadarAngle(k, axes);
                     poly.Append(string.Create(_inv, $"{cx + rr * Math.Cos(ang):F1},{cy + rr * Math.Sin(ang):F1} "));
                 }
                 g.Append($"<polygon points=\"{poly.ToString().Trim()}\" fill=\"none\" style=\"{_gridStyle}\"/>");
             }
             for (int k = 0; k < axes; k++)
             {
-                double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                double ang = RadarAngle(k, axes);
                 g.Append(string.Create(_inv, $"<line x1=\"{cx:F1}\" y1=\"{cy:F1}\" x2=\"{cx + r * Math.Cos(ang):F1}\" y2=\"{cy + r * Math.Sin(ang):F1}\" style=\"{_gridStyle}\"/>"));
             }
             builder.AddMarkupContent(seq++, g.ToString());
@@ -67,7 +64,7 @@ public partial class FlareChart
             var t = new System.Text.StringBuilder();
             for (int k = 0; k < axes && k < labels.Count; k++)
             {
-                double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                double ang = RadarAngle(k, axes);
                 double lx = cx + (r + 10) * Math.Cos(ang), ly = cy + (r + 10) * Math.Sin(ang);
                 string anchor = Math.Abs(Math.Cos(ang)) < 0.3 ? "middle" : (Math.Cos(ang) > 0 ? "start" : "end");
                 t.Append(string.Create(_inv, $"<text x=\"{lx:F1}\" y=\"{ly + 3:F1}\" text-anchor=\"{anchor}\" style=\"{_labelStyle}\">{SvgText(labels[k])}</text>"));
@@ -86,7 +83,7 @@ public partial class FlareChart
             {
                 double v = k < vals.Count ? RadialWeight(vals[k]) : 0;
                 double rr = v / max * r;
-                double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                double ang = RadarAngle(k, axes);
                 poly.Append(string.Create(_inv, $"{cx + rr * Math.Cos(ang):F1},{cy + rr * Math.Sin(ang):F1} "));
             }
             builder.AddMarkupContent(seq++, $"<polygon points=\"{poly.ToString().Trim()}\" style=\"fill:{color};stroke:{color};fill-opacity:var({Css.Tokens.Chart.RadarFillOpacity});stroke-width:var({Css.Tokens.Chart.LineWidth});stroke-linejoin:round\"/>");
@@ -139,40 +136,18 @@ public partial class FlareChart
 
     private RenderFragment RenderRose() => builder =>
     {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        var visible = VisibleRadialIndices();
-        if (visible.Count == 0) return;
-        var vals = visible.Select(i => SafeValue(series[i].Values.FirstOrDefault())).ToList();
-        double max = vals.Count > 0 ? vals.Max() : 1;
-        if (max <= 0) max = 1;
-        double cx = _svgW / 2.0, cy = _svgH / 2.0;
-        double rMax = Math.Max(0, Math.Min(cx, cy) - 16);
-        if (rMax == 0) return;
-        int n = visible.Count;
-        double step = 2 * Math.PI / n;
+        if (_sectorLayout is not { } layout) return;
         int seq = 0;
-        for (int i = 0; i < n; i++)
+        foreach (var sector in layout.Marks)
         {
-            double rr = Math.Sqrt(vals[i] / max) * rMax; // sqrt => area-proportional sectors
-            double a0 = -Math.PI / 2 + i * step, a1 = a0 + step;
-            string path = ArcGeometry.Wedge(cx, cy, rr, 0, a0, a1);
-            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(visible[i])};{_sliceStrokeStyle}\"/>");
+            builder.AddMarkupContent(seq++, $"<path d=\"{sector.Path}\" style=\"fill:{GetColor(sector.Index)};{_sliceStrokeStyle}\"/>");
         }
     };
 
     private RenderFragment RenderPolarArea() => builder =>
     {
-        if (Data?.Series is not { Count: > 0 } series) return;
-        var visible = VisibleRadialIndices();
-        if (visible.Count == 0) return;
-        var vals = visible.Select(i => SafeValue(series[i].Values.FirstOrDefault())).ToList();
-        double max = vals.Count > 0 ? vals.Max() : 1;
-        if (max <= 0) max = 1;
-        double cx = _svgW / 2.0, cy = _svgH / 2.0;
-        double rMax = Math.Max(0, Math.Min(cx, cy) - 16);
-        if (rMax == 0) return;
-        int n = visible.Count;
-        double step = 2 * Math.PI / n;
+        if (_sectorLayout is not { } layout) return;
+        double cx = layout.Cx, cy = layout.Cy, rMax = layout.Radius;
         int seq = 0;
         if (_showGrid)
         {
@@ -181,12 +156,9 @@ public partial class FlareChart
                 g.Append(string.Create(_inv, $"<circle cx=\"{cx:F1}\" cy=\"{cy:F1}\" r=\"{rMax * lv / 4:F1}\" fill=\"none\" style=\"{_gridStyle}\"/>"));
             builder.AddMarkupContent(seq++, g.ToString());
         }
-        for (int i = 0; i < n; i++)
+        foreach (var sector in layout.Marks)
         {
-            double rr = vals[i] / max * rMax; // linear radius (Chart.js style)
-            double a0 = -Math.PI / 2 + i * step, a1 = a0 + step;
-            string path = ArcGeometry.Wedge(cx, cy, rr, 0, a0, a1);
-            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" style=\"fill:{GetColor(visible[i])};stroke:{GetColor(visible[i])};fill-opacity:var({Css.Tokens.Chart.WedgeOpacity});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})\"/>");
+            builder.AddMarkupContent(seq++, $"<path d=\"{sector.Path}\" style=\"fill:{GetColor(sector.Index)};stroke:{GetColor(sector.Index)};fill-opacity:var({Css.Tokens.Chart.WedgeOpacity});stroke-width:var({Css.Tokens.Chart.SliceStrokeWidth})\"/>");
         }
     };
 

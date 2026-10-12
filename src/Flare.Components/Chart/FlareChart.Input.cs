@@ -24,6 +24,8 @@ public partial class FlareChart
     {
         _pointLayout = Type is ChartType.Scatter or ChartType.Bubble ? ProjectPoints() : null;
         _cellLayout = Type == ChartType.HeatMap ? ProjectCells() : null;
+        _radarLayout = Type == ChartType.Radar ? ProjectRadar() : null;
+        _sectorLayout = Type is ChartType.Rose or ChartType.PolarArea ? ProjectSectors() : null;
         _renderedHits = BuildHitZones();
         if (_tooltipVisible)
         {
@@ -58,6 +60,24 @@ public partial class FlareChart
                 hits.Add(new($"slice:{slice.Index}", slice.Index,
                     string.Create(_inv, $"{Data.Series[slice.Index].Label}: {slice.Percent:F1}%"), HitShape.Path, Path: slice.Path));
         }
+        else if (_sectorLayout is { } sectors)
+        {
+            foreach (var sector in sectors.Marks)
+                hits.Add(new($"sector:{sector.Index}", sector.Index,
+                    string.Create(_inv, $"{Data.Series[sector.Index].Label}: {sector.Value:G4}"), HitShape.Path, Path: sector.Path));
+        }
+        else if (_radarLayout is { Radius: > 0 } radar)
+        {
+            double half = Math.PI / radar.Axes;
+            for (int index = 0; index < radar.Axes; index++)
+            {
+                var text = CategoryDescription(index);
+                if (text is null) continue;
+                double angle = RadarAngle(index, radar.Axes);
+                hits.Add(new($"radar:{index}", index, text, HitShape.Path,
+                    Path: ArcGeometry.Wedge(radar.Cx, radar.Cy, radar.Radius, 0, angle - half, angle + half)));
+            }
+        }
         else if (_pointLayout is { } points)
         {
             foreach (var point in points.Marks)
@@ -88,7 +108,8 @@ public partial class FlareChart
     private string? CategoryDescription(int index)
     {
         if (Data is null) return null;
-        var present = Data.Series.Where((s, i) => !IsHidden(i) && index < s.Values.Count && !IsGap(s.Values[index])).ToList();
+        var present = Data.Series.Where((s, i) => !IsHidden(i) && (Type != ChartType.Radar || s.Values.Count >= 3)
+            && index < s.Values.Count && !IsGap(s.Values[index])).ToList();
         if (present.Count == 0) return null;
         var label = Data.Labels is { } labels && index < labels.Count ? labels[index] : index.ToString(_inv);
         return $"{label}\n{string.Join("\n", present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}")))}";
