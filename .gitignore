@@ -91,7 +91,7 @@ src/Flare.Components/wwwroot/css/flare-components.css
 src/Flare.Theme.*/wwwroot/css/components.css
 /.aiko/
 /.mcp.json
-/.cursor/mcp.json
+/.cursor/
 /.zcode/config.json
 /.cline/
 /.clinerules/
