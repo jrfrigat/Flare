@@ -175,7 +175,7 @@ public partial class FlareChart
                     double v = min + (max - min) * t / steps;
                     double gx = _padL + (v - min) / (max - min) * _plotW;
                     if (_showGrid) g.Append(string.Create(_inv, $"<line x1=\"{gx:F1}\" y1=\"{_padT}\" x2=\"{gx:F1}\" y2=\"{_padT + _plotH}\" style=\"{_gridStyle}\"/>"));
-                    if (_showY) g.Append(string.Create(_inv, $"<text x=\"{gx:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{FmtY(v, decimals)}</text>"));
+                    if (_showY) g.Append(string.Create(_inv, $"<text x=\"{gx:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{SvgText(FmtY(v, decimals))}</text>"));
                 }
                 builder.AddMarkupContent(seq++, g.ToString());
             }
@@ -211,7 +211,7 @@ public partial class FlareChart
                 for (int i = 0; i < pts && i < labels.Count; i++)
                 {
                     double y = _padT + i * groupH + groupH / 2 + 3;
-                    t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{y:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{labels[i]}</text>"));
+                    t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{y:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{SvgText(labels[i])}</text>"));
                 }
                 builder.AddMarkupContent(seq++, t.ToString());
             }

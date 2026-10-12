@@ -7,6 +7,8 @@ namespace Flare.Components;
 // Chrome drawn over or beside the plot: legend, trend line, annotations, grid, axes and the a11y data table.
 public partial class FlareChart
 {
+    private static string SvgText(string? text) => System.Net.WebUtility.HtmlEncode(text) ?? string.Empty;
+
     private RenderFragment RenderLegend() => builder =>
     {
         var series = Data!.Series;
@@ -144,7 +146,7 @@ public partial class FlareChart
         System.Text.StringBuilder sb, ChartAnnotation a, double x, double y, string anchor, string style)
     {
         if (string.IsNullOrEmpty(a.Label)) return;
-        sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"{anchor}\" style=\"{style}\">{a.Label}</text>"));
+        sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"{anchor}\" style=\"{style}\">{SvgText(a.Label)}</text>"));
     }
 
     // Visually-hidden data table (a11y fallback): categories x series.
@@ -213,7 +215,7 @@ public partial class FlareChart
             if (_showGrid)
                 sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{right}\" y2=\"{y:F1}\" style=\"{_gridStyle}\"/>"));
             if (_showY)
-                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{FmtY(v, decimals)}</text>"));
+                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{SvgText(FmtY(v, decimals))}</text>"));
             if (_showGrid && minor > 0 && i < steps)
                 for (int m = 1; m <= minor; m++)
                 {
@@ -261,11 +263,11 @@ public partial class FlareChart
         if (_spark) return "";
         var sb = new System.Text.StringBuilder();
         if (!string.IsNullOrEmpty(XAxisTitle))
-            sb.Append(string.Create(_inv, $"<text x=\"{_padL + _plotW / 2.0:F1}\" y=\"{_svgH - 2:F1}\" text-anchor=\"middle\" style=\"{_axisTitleStyle}\">{XAxisTitle}</text>"));
+            sb.Append(string.Create(_inv, $"<text x=\"{_padL + _plotW / 2.0:F1}\" y=\"{_svgH - 2:F1}\" text-anchor=\"middle\" style=\"{_axisTitleStyle}\">{SvgText(XAxisTitle)}</text>"));
         if (!string.IsNullOrEmpty(YAxisTitle))
         {
             double cy = _padT + _plotH / 2.0;
-            sb.Append(string.Create(_inv, $"<text x=\"10\" y=\"{cy:F1}\" text-anchor=\"middle\" transform=\"rotate(-90 10 {cy:F1})\" style=\"{_axisTitleStyle}\">{YAxisTitle}</text>"));
+            sb.Append(string.Create(_inv, $"<text x=\"10\" y=\"{cy:F1}\" text-anchor=\"middle\" transform=\"rotate(-90 10 {cy:F1})\" style=\"{_axisTitleStyle}\">{SvgText(YAxisTitle)}</text>"));
         }
         return sb.ToString();
     }
@@ -297,7 +299,7 @@ public partial class FlareChart
             if (i >= labels.Count) break;
             double x = XOfIndex(i);
             if (x < _padL - 1 || x > _padL + _plotW + 1) continue;
-            sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{labels[i]}</text>"));
+            sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{SvgText(labels[i])}</text>"));
         }
         return sb.ToString();
     }

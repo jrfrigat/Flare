@@ -72,7 +72,7 @@ public partial class FlareChart
                 double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
                 double lx = cx + (r + 10) * Math.Cos(ang), ly = cy + (r + 10) * Math.Sin(ang);
                 string anchor = Math.Abs(Math.Cos(ang)) < 0.3 ? "middle" : (Math.Cos(ang) > 0 ? "start" : "end");
-                t.Append(string.Create(_inv, $"<text x=\"{lx:F1}\" y=\"{ly + 3:F1}\" text-anchor=\"{anchor}\" style=\"{_labelStyle}\">{labels[k]}</text>"));
+                t.Append(string.Create(_inv, $"<text x=\"{lx:F1}\" y=\"{ly + 3:F1}\" text-anchor=\"{anchor}\" style=\"{_labelStyle}\">{SvgText(labels[k])}</text>"));
             }
             builder.AddMarkupContent(seq++, t.ToString());
         }
@@ -134,7 +134,7 @@ public partial class FlareChart
         {
             var t = new System.Text.StringBuilder();
             for (int r = 0; r < rows; r++)
-                t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{_padT + r * cellH + cellH / 2 + 3:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{series[r].Label}</text>"));
+                t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{_padT + r * cellH + cellH / 2 + 3:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{SvgText(series[r].Label)}</text>"));
             builder.AddMarkupContent(seq++, t.ToString());
         }
         // Column labels along the bottom.
@@ -142,7 +142,7 @@ public partial class FlareChart
         {
             var t = new System.Text.StringBuilder();
             for (int c = 0; c < cols && c < labels.Count; c++)
-                t.Append(string.Create(_inv, $"<text x=\"{_padL + c * cellW + cellW / 2:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{labels[c]}</text>"));
+                t.Append(string.Create(_inv, $"<text x=\"{_padL + c * cellW + cellW / 2:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{SvgText(labels[c])}</text>"));
             builder.AddMarkupContent(seq++, t.ToString());
         }
     };
