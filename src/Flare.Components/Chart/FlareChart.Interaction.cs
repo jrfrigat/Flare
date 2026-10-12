@@ -126,8 +126,6 @@ public partial class FlareChart
         await base.DisposeAsync();
     }
 
-    // ---- Zoom window -------------------------------------------------------------------------------
-
     // The zoom domain is in the chart's own horizontal units. Point-style charts (line/area) put data ON
     // the category indices, so their full domain is 0..pts-1; bar-style charts put data in SLOTS around
     // them, so theirs is -0.5..pts-0.5 and a bar still sits centered on its index. Scatter and bubble
@@ -212,8 +210,6 @@ public partial class FlareChart
         var from = anchor - t * span;
         return SetZoomAsync(new ChartZoom(from, from + span).Clamp(_domainFrom, _domainTo, _minZoomSpan));
     }
-
-    // ---- Pointer gestures --------------------------------------------------------------------------
 
     // Drag state. A drag that starts on the plot either selects a range (zoomed out) or pans (zoomed in),
     // decided once at pointer-down so the gesture cannot change meaning halfway through.
