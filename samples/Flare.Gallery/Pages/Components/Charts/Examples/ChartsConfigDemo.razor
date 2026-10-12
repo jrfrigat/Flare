@@ -1,19 +1,20 @@
+@inherits LocalizedPage
 <FlareStack Gap="FlareSpacing.Large">
     <FlareChart Type="ChartType.Bar" Horizontal="true" ShowValues="true"
-                Title="Horizontal bar + values + N0 axis" Data="_bars" YAxisFormat="N0" />
+                Title="@GalleryStrings.ChartsDemo_Horizontal" Data="_bars" YAxisFormat="N0" />
 
-    <FlareStack Row Wrap Gap="FlareSpacing.Large">
-        <div style="flex:1;min-width:16rem;">
+    <FlareGrid Gap="FlareSpacing.Large">
+        <FlareCol Xs="12" Md="6">
             <FlareChart Type="ChartType.Donut" ShowValues="true" DonutRingRatio="0.6"
-                        Title="Donut + %, legend right" Data="_pie"
+                        Title="@GalleryStrings.ChartsDemo_DonutLegend" Data="_pie"
                         LegendPosition="ChartLegendPosition.Right" />
-        </div>
-        <div style="flex:1;min-width:16rem;">
+        </FlareCol>
+        <FlareCol Xs="12" Md="6">
             <FlareChart Type="ChartType.Line" Data="_line" ShowMarkers="true"
                         OnPointClick="OnPoint" Title="@_lineTitle" />
-        </div>
-    </FlareStack>
+        </FlareCol>
+    </FlareGrid>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
-        Click a point above, or click a legend label to toggle a series.
+        @GalleryStrings.ChartsDemo_ClickHint
     </FlareText>
 </FlareStack>

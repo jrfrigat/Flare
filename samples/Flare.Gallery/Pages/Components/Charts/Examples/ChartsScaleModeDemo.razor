@@ -1,24 +1,33 @@
+@inherits LocalizedPage
 @* Click "Ice cream" in the legend under either chart. On the left the plot refits to what is left -
    the axis window, the grid values and every remaining point move. On the right the axis spans the
    whole dataset, so the series disappears and nothing else does. The same rule governs the bar
    group: refit closes the gap, hold keeps each series in its slot. *@
 <FlareStack Gap="FlareSpacing.Large">
-    <FlareGrid Columns="2" Gap="FlareSpacing.Large">
-        <FlareChart Type="ChartType.Line" Data="_data" Height="260" ShowMarkers="true"
+    <FlareGrid Gap="FlareSpacing.Large">
+        <FlareCol Xs="12" Md="6">
+            <FlareChart Type="ChartType.Line" Data="_data" Height="260" ShowMarkers="true"
                     ScaleMode="ChartScaleMode.FitVisible"
-                    Title="FitVisible (default) - the plot refits" />
-        <FlareChart Type="ChartType.Line" Data="_data" Height="260" ShowMarkers="true"
+                    Title="@GalleryStrings.ChartsDemo_ScaleVisible" />
+        </FlareCol>
+        <FlareCol Xs="12" Md="6">
+            <FlareChart Type="ChartType.Line" Data="_data" Height="260" ShowMarkers="true"
                     ScaleMode="ChartScaleMode.FitAll"
-                    Title="FitAll - only the series disappears" />
+                    Title="@GalleryStrings.ChartsDemo_ScaleAll" />
+        </FlareCol>
     </FlareGrid>
 
-    <FlareGrid Columns="2" Gap="FlareSpacing.Large">
-        <FlareChart Type="ChartType.Bar" Data="_data" Height="240"
+    <FlareGrid Gap="FlareSpacing.Large">
+        <FlareCol Xs="12" Md="6">
+            <FlareChart Type="ChartType.Bar" Data="_data" Height="240"
                     ScaleMode="ChartScaleMode.FitVisible"
-                    Title="FitVisible - the group closes the gap" />
-        <FlareChart Type="ChartType.Bar" Data="_data" Height="240"
+                    Title="@GalleryStrings.ChartsDemo_GroupVisible" />
+        </FlareCol>
+        <FlareCol Xs="12" Md="6">
+            <FlareChart Type="ChartType.Bar" Data="_data" Height="240"
                     ScaleMode="ChartScaleMode.FitAll"
-                    Title="FitAll - each series keeps its slot" />
+                    Title="@GalleryStrings.ChartsDemo_GroupAll" />
+        </FlareCol>
     </FlareGrid>
 </FlareStack>
 

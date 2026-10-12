@@ -1,8 +1,9 @@
+@inherits LocalizedPage
 <FlareGrid Columns="2" Gap="FlareSpacing.Medium">
     <FlareCol Span="1">
-        <FlareChart Type="ChartType.Pie" Title="Market Share" Data="_pieData" Height="260" />
+        <FlareChart Type="ChartType.Pie" Title="@GalleryStrings.ChartsDemo_Pie" Data="_pieData" Height="260" />
     </FlareCol>
     <FlareCol Span="1">
-        <FlareChart Type="ChartType.Donut" Title="Traffic Sources" Data="_pieData" Height="260" />
+        <FlareChart Type="ChartType.Donut" Title="@GalleryStrings.ChartsDemo_Donut" Data="_pieData" Height="260" />
     </FlareCol>
 </FlareGrid>

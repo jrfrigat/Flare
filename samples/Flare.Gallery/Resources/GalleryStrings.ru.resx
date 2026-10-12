@@ -3861,4 +3861,68 @@
   <data name="FuDemo_Slow" xml:space="preserve"><value>Медленная загрузка</value></data>
   <data name="FuDemo_Completed" xml:space="preserve"><value>Завершено: {0}</value></data>
   <data name="FuDemo_Failed" xml:space="preserve"><value>Ошибка: {0} - {1}</value></data>
+  <data name="ChartsDemo_Bars" xml:space="preserve"><value>Продажи по кварталам</value></data>
+  <data name="ChartsDemo_Stacked" xml:space="preserve"><value>Столбцы с накоплением</value></data>
+  <data name="ChartsDemo_Scatter" xml:space="preserve"><value>Точечная диаграмма</value></data>
+  <data name="ChartsDemo_Radar" xml:space="preserve"><value>Лепестковая диаграмма</value></data>
+  <data name="ChartsDemo_Combo" xml:space="preserve"><value>Столбцы и линия с целевым значением</value></data>
+  <data name="ChartsDemo_Rose" xml:space="preserve"><value>Роза</value></data>
+  <data name="ChartsDemo_Polar" xml:space="preserve"><value>Полярная диаграмма</value></data>
+  <data name="ChartsDemo_Bubble" xml:space="preserve"><value>Пузырьковая диаграмма</value></data>
+  <data name="ChartsDemo_Trend" xml:space="preserve"><value>График с линией тренда</value></data>
+  <data name="ChartsDemo_Annotations" xml:space="preserve"><value>Пороги, полосы, стрелка тренда и выноска</value></data>
+  <data name="ChartsDemo_Band" xml:space="preserve"><value>Вертикальная полоса выделяет диапазон категорий</value></data>
+  <data name="ChartsDemo_Over" xml:space="preserve"><value>Layer = Over: полоса окрашивает столбцы</value></data>
+  <data name="ChartsDemo_Under" xml:space="preserve"><value>Layer = Under: столбцы сохраняют свой цвет</value></data>
+  <data name="ChartsDemo_Horizontal" xml:space="preserve"><value>Горизонтальные столбцы, значения и формат N0</value></data>
+  <data name="ChartsDemo_DonutLegend" xml:space="preserve"><value>Кольцо с процентами и легендой справа</value></data>
+  <data name="ChartsDemo_Advanced" xml:space="preserve"><value>Анимация столбцов и таблица для программ чтения с экрана</value></data>
+  <data name="ChartsDemo_HeatMap" xml:space="preserve"><value>Тепловая карта активности</value></data>
+  <data name="ChartsDemo_MultiLine" xml:space="preserve"><value>Пользователи и сеансы</value></data>
+  <data name="ChartsDemo_PadZeros" xml:space="preserve"><value>Заменять пропуски сезонной серии нулями</value></data>
+  <data name="ChartsDemo_GapsLine" xml:space="preserve"><value>Продажи по месяцам</value></data>
+  <data name="ChartsDemo_GapsBar" xml:space="preserve"><value>Те же данные: в месте пропуска столбца нет</value></data>
+  <data name="ChartsDemo_Pie" xml:space="preserve"><value>Доли рынка</value></data>
+  <data name="ChartsDemo_Donut" xml:space="preserve"><value>Источники трафика</value></data>
+  <data name="ChartsDemo_LineStyles" xml:space="preserve"><value>Четыре стиля линий на одном графике</value></data>
+  <data name="ChartsDemo_Dashes" xml:space="preserve"><value>Solid / Dashed / Dotted / DashDot: стили задает тема</value></data>
+  <data name="ChartsDemo_Live" xml:space="preserve"><value>Новые данные каждую секунду</value></data>
+  <data name="ChartsDemo_Refit" xml:space="preserve"><value>Перестроение при каждом обновлении</value></data>
+  <data name="ChartsDemo_Sticky" xml:space="preserve"><value>Сохранение диапазона (StickyDomain)</value></data>
+  <data name="ChartsDemo_ScaleVisible" xml:space="preserve"><value>FitVisible: диапазон по видимым сериям</value></data>
+  <data name="ChartsDemo_ScaleAll" xml:space="preserve"><value>FitAll: скрывается только серия</value></data>
+  <data name="ChartsDemo_GroupVisible" xml:space="preserve"><value>FitVisible: группа закрывает пропуск</value></data>
+  <data name="ChartsDemo_GroupAll" xml:space="preserve"><value>FitAll: каждая серия сохраняет место</value></data>
+  <data name="ChartsDemo_Zoom" xml:space="preserve"><value>Два года ежедневных данных: выделите диапазон мышью</value></data>
+  <data name="ChartsDemo_ZoomBound" xml:space="preserve"><value>Тот же диапазон с двусторонней привязкой</value></data>
+  <data name="ChartsDemo_SizingFluid" xml:space="preserve"><value>Fluid: перетащите правый край</value></data>
+  <data name="ChartsDemo_SizingWide" xml:space="preserve"><value>Пропорции 1200 x 220: широкий график при любой ширине</value></data>
+  <data name="ChartsDemo_SizingSquare" xml:space="preserve"><value>Пропорции 400 x 400: те же данные в квадрате</value></data>
+  <data name="ChartsDemo_Sparkline" xml:space="preserve"><value>Выручка: заливка, сглаживание и маркеры</value></data>
+  <data name="ChartsDemo_Spike" xml:space="preserve"><value>Добавить скачок</value></data>
+  <data name="ChartsDemo_ClickHint" xml:space="preserve"><value>Нажмите точку для деталировки или элемент легенды для переключения серии.</value></data>
+  <data name="ChartsDemo_PointClicked" xml:space="preserve"><value>Выбрана точка №{0}</value></data>
+  <data name="ChartsDemo_InteractiveLine" xml:space="preserve"><value>Интерактивный график: нажмите точку</value></data>
+  <data name="ChartsDemo_Window" xml:space="preserve"><value>Видимый диапазон: от {0:F0} до {1:F0} из {2} точек</value></data>
+  <data name="ChartsDemo_FullRange" xml:space="preserve"><value>Весь диапазон</value></data>
+  <data name="ChartsDemo_Review" xml:space="preserve"><value>Проверка взаимодействий с диаграммами</value></data>
+  <data name="ChartsDemo_ReviewHint" xml:space="preserve"><value>Наведите курсор или нажмите точку для деталировки. Используйте Tab, стрелки, Home/End и Enter/Space; Escape закрывает подсказку. Скрытая таблица содержит все значения. Измените ширину карточки за правый край.</value></data>
+  <data name="ChartsDemo_Type" xml:space="preserve"><value>Тип диаграммы</value></data>
+  <data name="ChartsDemo_Empty" xml:space="preserve"><value>Пустые данные</value></data>
+  <data name="ChartsDemo_Gaps" xml:space="preserve"><value>Пропуски значений</value></data>
+  <data name="ChartsDemo_Long" xml:space="preserve"><value>Длинная деталировка</value></data>
+  <data name="ChartsDemo_OpenDialog" xml:space="preserve"><value>Открыть диаграмму в диалоге</value></data>
+  <data name="ChartsDemo_Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="ChartsDemo_ReviewTitle" xml:space="preserve"><value>Интерактивные данные</value></data>
+  <data name="ChartsDemo_Category" xml:space="preserve"><value>Категория {0}</value></data>
+  <data name="ChartsDemo_Series" xml:space="preserve"><value>Серия {0}</value></data>
+  <data name="ChartsDemo_LongSeries" xml:space="preserve"><value>Серия {0}: подробные измерения за выбранный отчетный период</value></data>
+  <data name="ChartsDemo_Selected" xml:space="preserve"><value>Выбрана точка: {0}</value></data>
+  <data name="ChartsDemo_NoneSelected" xml:space="preserve"><value>Точка не выбрана</value></data>
+  <data name="ChartsDemo_Line" xml:space="preserve"><value>Линия</value></data>
+  <data name="ChartsDemo_Area" xml:space="preserve"><value>Область</value></data>
+  <data name="ChartsDemo_Bar" xml:space="preserve"><value>Столбцы</value></data>
+  <data name="ChartsDemo_PieType" xml:space="preserve"><value>Круговая</value></data>
+  <data name="ChartsDemo_DonutType" xml:space="preserve"><value>Кольцевая</value></data>
+  <data name="ChartsDemo_ComboType" xml:space="preserve"><value>Комбинированная</value></data>
 </root>

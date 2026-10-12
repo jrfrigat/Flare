@@ -1,3 +1,4 @@
+@inherits LocalizedPage
 @implements IDisposable
 
 <FlareStack Gap="FlareSpacing.Large">
@@ -44,6 +45,7 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         for (var i = 0; i < Window; i++) _values.Add(Next());
         Rebuild();
         _timer = new Timer(_ => Tick(), null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
@@ -68,5 +70,9 @@
             [new ChartSeries("req/s", [.. _values])],
             [.. Enumerable.Range(1, _values.Count).Select(i => i.ToString())]);
 
-    public void Dispose() => _timer?.Dispose();
+    public override void Dispose()
+    {
+        _timer?.Dispose();
+        base.Dispose();
+    }
 }

@@ -1,3 +1,4 @@
+@inherits LocalizedPage
 @implements IDisposable
 
 @* A chart handed a fresh dataset on a timer re-derives its value axis from that dataset alone, so the
@@ -9,16 +10,16 @@
    flatten the chart for good. Watch the left chart reshape wholesale and the right one stand still. *@
 <FlareStack Gap="FlareSpacing.Large">
     <FlareStack Row="true" Gap="FlareSpacing.Large" Wrap="true" Align="FlareAlignItems.Center">
-        <FlareSwitch @bind-Value="_running" Label="Live (a new reading every second)" />
-        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Spike">Send a spike</FlareButton>
+        <FlareSwitch @bind-Value="_running" Label="@GalleryStrings.ChartsDemo_Live" />
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Spike">@GalleryStrings.ChartsDemo_Spike</FlareButton>
     </FlareStack>
 
     <FlareGrid Gap="FlareSpacing.Large">
         <FlareCol Xs="12" Md="6">
-            <FlareChart Type="ChartType.Line" Height="220" Title="Refits every update" Data="@_data" />
+            <FlareChart Type="ChartType.Line" Height="220" Title="@GalleryStrings.ChartsDemo_Refit" Data="@_data" />
         </FlareCol>
         <FlareCol Xs="12" Md="6">
-            <FlareChart Type="ChartType.Line" Height="220" Title="StickyDomain" StickyDomain="true" Data="@_data" />
+            <FlareChart Type="ChartType.Line" Height="220" Title="@GalleryStrings.ChartsDemo_Sticky" StickyDomain="true" Data="@_data" />
         </FlareCol>
     </FlareGrid>
 </FlareStack>
@@ -34,6 +35,7 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         for (var i = 0; i < Window; i++) _values.Add(Next());
         Rebuild();
         _timer = new Timer(_ => Tick(), null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
@@ -63,5 +65,9 @@
             [new ChartSeries("req/s", [.. _values])],
             [.. Enumerable.Range(0, _values.Count).Select(i => i.ToString())]);
 
-    public void Dispose() => _timer?.Dispose();
+    public override void Dispose()
+    {
+        _timer?.Dispose();
+        base.Dispose();
+    }
 }

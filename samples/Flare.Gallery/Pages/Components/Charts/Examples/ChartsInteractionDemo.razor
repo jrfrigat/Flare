@@ -1,0 +1,76 @@
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Large" data-testid="chart-review-demo">
+    <FlareText>@GalleryStrings.ChartsDemo_ReviewHint</FlareText>
+    <FlareSelect TValue="ChartType" @bind-Value="_type" Label="@GalleryStrings.ChartsDemo_Type" data-testid="chart-review-type">
+        @foreach (var type in Enum.GetValues<ChartType>())
+        {
+            <option value="@type">@TypeLabel(type)</option>
+        }
+    </FlareSelect>
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium">
+        <FlareSwitch @bind-Value="_empty" Label="@GalleryStrings.ChartsDemo_Empty" data-testid="chart-review-empty" />
+        <FlareSwitch @bind-Value="_gaps" Label="@GalleryStrings.ChartsDemo_Gaps" data-testid="chart-review-gaps" />
+        <FlareSwitch @bind-Value="_long" Label="@GalleryStrings.ChartsDemo_Long" data-testid="chart-review-long" />
+    </FlareStack>
+    <FlareResizable Edge="ResizableEdge.Right" InitialSize="100%" MinSize="240px">
+        <FlareCard>
+            <FlareCardContent>@ReviewChart</FlareCardContent>
+        </FlareCard>
+    </FlareResizable>
+    <FlareText data-testid="chart-review-selection">@(_selected is { } i
+        ? string.Format(GalleryStrings.ChartsDemo_Selected, i + 1)
+        : GalleryStrings.ChartsDemo_NoneSelected)</FlareText>
+    <FlareButton OnClick="@(() => _dialog = true)" data-testid="chart-review-open">@GalleryStrings.ChartsDemo_OpenDialog</FlareButton>
+</FlareStack>
+
+<FlareDialog @bind-Visible="_dialog" Title="@GalleryStrings.ChartsDemo_Review" Size="DialogSize.Lg">
+    <ChildContent>@ReviewChart</ChildContent>
+    <ActionsContent>
+        <FlareButton OnClick="@(() => _dialog = false)" data-testid="chart-review-close">@GalleryStrings.ChartsDemo_Close</FlareButton>
+    </ActionsContent>
+</FlareDialog>
+
+@code {
+    private ChartType _type;
+    private bool _empty, _gaps, _long, _dialog;
+    private int? _selected;
+
+    private RenderFragment ReviewChart => @<FlareChart Type="_type" Data="ReviewData()" Height="280"
+        Title="@GalleryStrings.ChartsDemo_ReviewTitle" Description="@GalleryStrings.ChartsDemo_ReviewHint"
+        DataTable="true" ShowMarkers="true" Zoomable="true" OnPointClick="@(i => _selected = i)"
+        data-testid="chart-review" />;
+
+    private ChartData ReviewData()
+    {
+        if (_empty) return new([]);
+        int count = _long ? 12 : 3;
+        string Name(int i) => string.Format(_long ? GalleryStrings.ChartsDemo_LongSeries : GalleryStrings.ChartsDemo_Series, i + 1);
+        if (_type is ChartType.Pie or ChartType.Donut or ChartType.Rose or ChartType.PolarArea)
+            return new(Enumerable.Range(0, count).Select(i => new ChartSeries(Name(i), [i + 2d])).ToArray());
+        if (_type is ChartType.Scatter or ChartType.Bubble)
+            return new(Enumerable.Range(0, count).Select(i => new ChartSeries(Name(i), [], Points:
+                [new(1, 2 + i, 2), new(2, _gaps ? double.NaN : 5 + i, 3), new(3, 3 + i, 4), new(4, 7 + i, 5)])).ToArray());
+        return new(Enumerable.Range(0, count).Select(i => new ChartSeries(Name(i),
+            [2 + i, _gaps ? double.NaN : 5 + i, 3 + i, 7 + i],
+            Kind: i == 0 ? ChartSeriesKind.Bar : ChartSeriesKind.Line)).ToArray(),
+            Enumerable.Range(1, 4).Select(i => string.Format(GalleryStrings.ChartsDemo_Category, i)).ToArray());
+    }
+
+    private static string TypeLabel(ChartType type) => type switch
+    {
+        ChartType.Line => GalleryStrings.ChartsDemo_Line,
+        ChartType.Area => GalleryStrings.ChartsDemo_Area,
+        ChartType.Bar => GalleryStrings.ChartsDemo_Bar,
+        ChartType.StackedBar => GalleryStrings.ChartsDemo_Stacked,
+        ChartType.Scatter => GalleryStrings.ChartsDemo_Scatter,
+        ChartType.Radar => GalleryStrings.ChartsDemo_Radar,
+        ChartType.HeatMap => GalleryStrings.ChartsDemo_HeatMap,
+        ChartType.Bubble => GalleryStrings.ChartsDemo_Bubble,
+        ChartType.Rose => GalleryStrings.ChartsDemo_Rose,
+        ChartType.PolarArea => GalleryStrings.ChartsDemo_Polar,
+        ChartType.Pie => GalleryStrings.ChartsDemo_PieType,
+        ChartType.Donut => GalleryStrings.ChartsDemo_DonutType,
+        _ => GalleryStrings.ChartsDemo_ComboType
+    };
+}

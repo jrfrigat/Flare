@@ -3861,4 +3861,68 @@ Read the card, check the tests, and report what is left.</value>
   <data name="FuDemo_Slow" xml:space="preserve"><value>Slow transfer</value></data>
   <data name="FuDemo_Completed" xml:space="preserve"><value>Completed: {0}</value></data>
   <data name="FuDemo_Failed" xml:space="preserve"><value>Failed: {0} - {1}</value></data>
+  <data name="ChartsDemo_Bars" xml:space="preserve"><value>Quarterly Sales</value></data>
+  <data name="ChartsDemo_Stacked" xml:space="preserve"><value>Stacked bar</value></data>
+  <data name="ChartsDemo_Scatter" xml:space="preserve"><value>Scatter</value></data>
+  <data name="ChartsDemo_Radar" xml:space="preserve"><value>Radar</value></data>
+  <data name="ChartsDemo_Combo" xml:space="preserve"><value>Combo (bars + line) with a target line</value></data>
+  <data name="ChartsDemo_Rose" xml:space="preserve"><value>Rose</value></data>
+  <data name="ChartsDemo_Polar" xml:space="preserve"><value>Polar area</value></data>
+  <data name="ChartsDemo_Bubble" xml:space="preserve"><value>Bubble</value></data>
+  <data name="ChartsDemo_Trend" xml:space="preserve"><value>Line + trend line</value></data>
+  <data name="ChartsDemo_Annotations" xml:space="preserve"><value>Thresholds, bands, a trend arrow and a callout</value></data>
+  <data name="ChartsDemo_Band" xml:space="preserve"><value>A vertical band marks a range of categories</value></data>
+  <data name="ChartsDemo_Over" xml:space="preserve"><value>Layer = Over (default) - the band tints the bars it covers</value></data>
+  <data name="ChartsDemo_Under" xml:space="preserve"><value>Layer = Under - the bars keep their own colour</value></data>
+  <data name="ChartsDemo_Horizontal" xml:space="preserve"><value>Horizontal bar + values + N0 axis</value></data>
+  <data name="ChartsDemo_DonutLegend" xml:space="preserve"><value>Donut + %, legend right</value></data>
+  <data name="ChartsDemo_Advanced" xml:space="preserve"><value>Animated bars (reload to replay) + hidden a11y data table</value></data>
+  <data name="ChartsDemo_HeatMap" xml:space="preserve"><value>Activity heat map</value></data>
+  <data name="ChartsDemo_MultiLine" xml:space="preserve"><value>Users vs Sessions</value></data>
+  <data name="ChartsDemo_PadZeros" xml:space="preserve"><value>Pad the seasonal series with zeros instead</value></data>
+  <data name="ChartsDemo_GapsLine" xml:space="preserve"><value>Sales by month</value></data>
+  <data name="ChartsDemo_GapsBar" xml:space="preserve"><value>The same data as bars: a gap draws no bar at all</value></data>
+  <data name="ChartsDemo_Pie" xml:space="preserve"><value>Market Share</value></data>
+  <data name="ChartsDemo_Donut" xml:space="preserve"><value>Traffic Sources</value></data>
+  <data name="ChartsDemo_LineStyles" xml:space="preserve"><value>One chart, four line treatments</value></data>
+  <data name="ChartsDemo_Dashes" xml:space="preserve"><value>Solid / Dashed / Dotted / DashDot - dash arrays come from the theme</value></data>
+  <data name="ChartsDemo_Live" xml:space="preserve"><value>Live (a new reading every second)</value></data>
+  <data name="ChartsDemo_Refit" xml:space="preserve"><value>Refits every update</value></data>
+  <data name="ChartsDemo_Sticky" xml:space="preserve"><value>StickyDomain</value></data>
+  <data name="ChartsDemo_ScaleVisible" xml:space="preserve"><value>FitVisible (default) - the plot refits</value></data>
+  <data name="ChartsDemo_ScaleAll" xml:space="preserve"><value>FitAll - only the series disappears</value></data>
+  <data name="ChartsDemo_GroupVisible" xml:space="preserve"><value>FitVisible - the group closes the gap</value></data>
+  <data name="ChartsDemo_GroupAll" xml:space="preserve"><value>FitAll - each series keeps its slot</value></data>
+  <data name="ChartsDemo_Zoom" xml:space="preserve"><value>Two years of daily readings - drag to zoom</value></data>
+  <data name="ChartsDemo_ZoomBound" xml:space="preserve"><value>The same window, bound</value></data>
+  <data name="ChartsDemo_SizingFluid" xml:space="preserve"><value>Fluid - drag the right edge</value></data>
+  <data name="ChartsDemo_SizingWide" xml:space="preserve"><value>Fixed 1200 x 220 ratio - wide and short at every container size</value></data>
+  <data name="ChartsDemo_SizingSquare" xml:space="preserve"><value>Fixed 400 x 400 ratio - the same data, square</value></data>
+  <data name="ChartsDemo_Sparkline" xml:space="preserve"><value>Revenue (area + smooth + markers)</value></data>
+  <data name="ChartsDemo_Spike" xml:space="preserve"><value>Send a spike</value></data>
+  <data name="ChartsDemo_ClickHint" xml:space="preserve"><value>Click a point above, or click a legend label to toggle a series.</value></data>
+  <data name="ChartsDemo_PointClicked" xml:space="preserve"><value>Clicked point #{0}</value></data>
+  <data name="ChartsDemo_InteractiveLine" xml:space="preserve"><value>Interactive line (click a point)</value></data>
+  <data name="ChartsDemo_Window" xml:space="preserve"><value>Visible window: {0:F0} to {1:F0} of {2} points</value></data>
+  <data name="ChartsDemo_FullRange" xml:space="preserve"><value>Full range</value></data>
+  <data name="ChartsDemo_Review" xml:space="preserve"><value>Chart interaction checks</value></data>
+  <data name="ChartsDemo_ReviewHint" xml:space="preserve"><value>Hover or tap a mark for details. Use Tab, arrows, Home/End and Enter/Space; Escape closes details. The hidden data table includes every value. Drag the card edge to check a narrow layout.</value></data>
+  <data name="ChartsDemo_Type" xml:space="preserve"><value>Chart type</value></data>
+  <data name="ChartsDemo_Empty" xml:space="preserve"><value>Empty data</value></data>
+  <data name="ChartsDemo_Gaps" xml:space="preserve"><value>Missing values</value></data>
+  <data name="ChartsDemo_Long" xml:space="preserve"><value>Long details</value></data>
+  <data name="ChartsDemo_OpenDialog" xml:space="preserve"><value>Open chart in a dialog</value></data>
+  <data name="ChartsDemo_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="ChartsDemo_ReviewTitle" xml:space="preserve"><value>Interactive data</value></data>
+  <data name="ChartsDemo_Category" xml:space="preserve"><value>Category {0}</value></data>
+  <data name="ChartsDemo_Series" xml:space="preserve"><value>Series {0}</value></data>
+  <data name="ChartsDemo_LongSeries" xml:space="preserve"><value>Series {0}: detailed measurements for the selected reporting period</value></data>
+  <data name="ChartsDemo_Selected" xml:space="preserve"><value>Selected point: {0}</value></data>
+  <data name="ChartsDemo_NoneSelected" xml:space="preserve"><value>No point selected</value></data>
+  <data name="ChartsDemo_Line" xml:space="preserve"><value>Line</value></data>
+  <data name="ChartsDemo_Area" xml:space="preserve"><value>Area</value></data>
+  <data name="ChartsDemo_Bar" xml:space="preserve"><value>Bar</value></data>
+  <data name="ChartsDemo_PieType" xml:space="preserve"><value>Pie</value></data>
+  <data name="ChartsDemo_DonutType" xml:space="preserve"><value>Donut</value></data>
+  <data name="ChartsDemo_ComboType" xml:space="preserve"><value>Combo</value></data>
 </root>

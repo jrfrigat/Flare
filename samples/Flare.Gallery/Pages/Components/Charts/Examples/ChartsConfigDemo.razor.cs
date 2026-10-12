@@ -1,4 +1,5 @@
 using Flare.Components;
+using Flare.Gallery.Resources;
 
 namespace Flare.Gallery.Pages.Components.Charts.Examples;
 
@@ -20,7 +21,7 @@ public partial class ChartsConfigDemo
         ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
 
     private int? _last;
-    private string _lineTitle => _last is { } i ? $"Clicked point #{i + 1}" : "Interactive line (click a point)";
+    private string _lineTitle => _last is { } i ? string.Format(GalleryStrings.ChartsDemo_PointClicked, i + 1) : GalleryStrings.ChartsDemo_InteractiveLine;
 
     private void OnPoint(int index) => _last = index;
 }
