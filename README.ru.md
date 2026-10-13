@@ -206,15 +206,61 @@ dotnet run
 
 ## Пользовательские палитры и темы
 
-**Палитра** - это только цвета (light + dark): переиспользуйте дизайн-систему и поменяйте лишь цвета,
-либо выведите полную палитру из одного бренд-цвета через `Palette.FromColors(id, name, seed)` вместо
-ручного заполнения 45 ролей. **Динамический цвет (Dynamic Color)** подключает палитру, выводимую во
-время выполнения из акцента ОС/браузера, а любой дизайн-токен переопределяется публичными
-reference-записями. Полноценная кастомная **тема** = `DesignTokens` + дефолтная палитра (реализуйте
-`ITheme`).
+**Палитра** - это только цвета (light + dark). Переиспользуйте дизайн-систему и поменяйте
+лишь цвета, либо сгенерируйте палитру из одного бренд-цвета - не задавая 45 ролей вручную:
 
-Руководство: [docs/ru/theme-creation-guide.md](docs/ru/theme-creation-guide.md) - модель системы тем,
-пошаговый разбор и [Динамический цвет](docs/ru/theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
+```csharp
+using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
+
+// Переопределить только нужное от reference-схемы:
+var ocean = new Palette
+{
+    Id = "ocean", Name = "Ocean", Source = "Custom",
+    Light = MaterialDesign3Tokens.LightColors with { Primary = "#006782", PrimaryContainer = "#BCE9FF" },
+    Dark  = MaterialDesign3Tokens.DarkColors  with { Primary = "#5DD5FC", PrimaryContainer = "#004E63" },
+};
+
+// ...или вывести полную палитру light+dark из бренд-цвета:
+var brand = Palette.FromColors("brand", "Brand", "#7B1FA2");
+
+builder.Services.AddFlare(opts => opts.DefaultPalette = ocean);   // на старте
+themeService.RegisterPalette(brand);                              // ...или в рантайме
+await themeService.SetPaletteAsync("brand");
+```
+
+**Динамический цвет (Dynamic Color)** - следует за акцентом ОС/браузера (акцент Windows/macOS,
+Android Material You). Палитра строится генератором активной темы, поэтому подходит к любой теме:
+
+```csharp
+builder.Services.AddFlare(opts =>
+{
+    opts.UseDynamicPalette = true;                  // регистрирует палитру "dynamic" (и делает ее
+    opts.DynamicFallbackPalette = Md3Palettes.Violet; // палитрой по умолчанию, если другая не задана)
+});
+// переключайтесь как на обычную палитру или задайте свой seed:
+await themeService.SetPaletteAsync(Palette.DynamicId);
+await themeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
+```
+
+> **Chrome/Edge не отдают реальный акцент ОС** (возвращают фиксированный плейсхолдер ради защиты от
+> фингерпринтинга); подлинный акцент отражает только Firefox. В Chromium динамическая палитра
+> использует `DynamicFallbackPalette` - задайте готовую палитру, чтобы откат был на реальные цвета, а
+> не на произвольный синий.
+
+См. [Создание тем -> Динамический цвет](docs/ru/theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
+
+Переопределить **любой** дизайн-токен через публичные reference-записи:
+
+```csharp
+var design = MaterialDesign3Tokens.Design with
+{
+    Shape = MaterialDesign3Tokens.Design.Shape with { Medium = "10px" },
+};
+```
+
+Полноценная кастомная **тема** = `DesignTokens` + дефолтная палитра (реализуйте `ITheme`).
+Модель системы тем и пошаговое руководство: [docs/ru/theme-creation-guide.md](docs/ru/theme-creation-guide.md).
 
 ---
 
