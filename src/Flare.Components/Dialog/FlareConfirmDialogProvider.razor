@@ -1,27 +1,29 @@
 @namespace Flare.Components
 @implements IConfirmDialogService
+@implements IAsyncDisposable
+@inject IOverlayJsService Overlay
+@inject IScrollService Scroll
 
 <CascadingValue Value="this" IsFixed="true">
     @ChildContent
-    @if (_visible)
+    @if (_current is { } request)
     {
-        <div class="@Css.Classes.Confirmdialog.Backdrop" @onclick="Cancel">
+        <div class="@Css.Classes.Confirmdialog.Backdrop" @onclick="@(() => Respond(request, false))">
             <div class="@Css.Classes.Confirmdialog.Root" @onclick:stopPropagation="true"
-                 @onkeydown="OnKeyDown"
                  role="alertdialog" aria-modal="true"
                  aria-labelledby="@_titleId"
                  aria-describedby="@_bodyId"
                  tabindex="-1"
                  @ref="_dialogEl">
                 <div class="@Css.Classes.Confirmdialog.Header">
-                    <h2 class="@Css.Classes.Confirmdialog.Title" id="@_titleId">@_title</h2>
+                    <h2 class="@Css.Classes.Confirmdialog.Title" id="@_titleId">@request.Title</h2>
                 </div>
-                <div class="@Css.Classes.Confirmdialog.Body" id="@_bodyId">@_message</div>
+                <div class="@Css.Classes.Confirmdialog.Body" id="@_bodyId">@request.Message</div>
                 <div class="@Css.Classes.Confirmdialog.Footer">
                     <button type="button" class="@Css.Classes.Confirmdialog.Btn @Css.Classes.Confirmdialog.BtnCancel"
-                            @onclick="Cancel">@_cancelLabel</button>
+                            @onclick="@(() => Respond(request, false))">@request.CancelLabel</button>
                     <button type="button" class="@Css.Classes.Confirmdialog.Btn @Css.Classes.Confirmdialog.BtnConfirm"
-                            @onclick="Confirm">@_confirmLabel</button>
+                            @onclick="@(() => Respond(request, true))">@request.ConfirmLabel</button>
                 </div>
             </div>
         </div>
@@ -32,12 +34,11 @@
     /// <summary>Application content that can access the confirm dialog via cascading value.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    private bool _visible;
-    private string _title = "";
-    private string _message = "";
-    private string _confirmLabel = "";
-    private string _cancelLabel = "";
-    private TaskCompletionSource<bool?>? _tcs;
+    private sealed record ConfirmRequest(string Title, string Message, string ConfirmLabel,
+        string CancelLabel, TaskCompletionSource<bool?> Completion);
+    private readonly Queue<ConfirmRequest> _pending = new();
+    private ConfirmRequest? _current => _pending.TryPeek(out var request) ? request : null;
+    private ConfirmRequest? _focusedRequest;
 
     // Unique IDs per instance - prevents aria-labelledby clashes when multiple providers exist.
     private readonly string _instanceId = Guid.NewGuid().ToString("N")[..8];
@@ -45,37 +46,111 @@
     private string _bodyId  => $"flare-cd-body-{_instanceId}";
 
     private ElementReference _dialogEl;
+    private readonly SemaphoreSlim _modalSync = new(1, 1);
+    private DotNetObjectReference<FlareConfirmDialogProvider>? _selfRef;
+    private IAsyncDisposable? _scrollLock;
+    private bool _wasVisible;
+    private bool _disposed;
 
     public Task<bool?> ConfirmAsync(string title, string message,
         string? confirmLabel = null, string? cancelLabel = null)
     {
-        _title = title;
-        _message = message;
-        _confirmLabel = confirmLabel ?? FlareStrings.Dialog_Confirm;
-        _cancelLabel = cancelLabel ?? FlareStrings.Dialog_Cancel;
-        _visible = true;
-        _tcs = new TaskCompletionSource<bool?>();
-        InvokeAsync(StateHasChanged);
-        return _tcs.Task;
+        if (_disposed) return Task.FromResult<bool?>(null);
+        var completion = new TaskCompletionSource<bool?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var request = new ConfirmRequest(title, message, confirmLabel ?? FlareStrings.Dialog_Confirm,
+            cancelLabel ?? FlareStrings.Dialog_Cancel, completion);
+        _ = InvokeAsync(() =>
+        {
+            if (_disposed) { completion.TrySetResult(null); return; }
+            _pending.Enqueue(request);
+            if (_pending.Count == 1) StateHasChanged();
+        });
+        return completion.Task;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // Move focus into the dialog when it opens so keyboard users can interact immediately.
-        if (_visible)
+        await _modalSync.WaitAsync();
+        try
         {
-            try { await _dialogEl.FocusAsync(); } catch { }
+            if (_disposed) return;
+            var request = _current;
+            if (ReferenceEquals(request, _focusedRequest) && (request is not null || !_wasVisible)) return;
+            if (request is null)
+            {
+                await ReleaseModalAsync();
+                _wasVisible = false;
+            }
+            else if (_focusedRequest is null)
+            {
+                _wasVisible = true;
+                _selfRef ??= DotNetObjectReference.Create(this);
+                _scrollLock ??= await Scroll.LockAsync();
+                await Overlay.RegisterDialogEscAsync(_instanceId, _selfRef);
+                await Overlay.TrapFocusAsync(_instanceId, _dialogEl);
+            }
+            else
+                await Overlay.FocusFirstAsync(_dialogEl);
+            _focusedRequest = request;
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        finally { _modalSync.Release(); }
+    }
+
+    private void Respond(ConfirmRequest request, bool? result)
+    {
+        if (_disposed || !ReferenceEquals(_current, request)) return;
+        _pending.Dequeue();
+        request.Completion.TrySetResult(result);
+    }
+
+    /// <summary>Dismisses the active confirmation when the shared overlay stack receives Escape.</summary>
+    [JSInvokable]
+    public Task CloseFromEsc()
+    {
+        var request = _current;
+        return request is null || _disposed ? Task.CompletedTask
+            : InvokeAsync(() => { Respond(request, null); StateHasChanged(); });
+    }
+
+    private async ValueTask ReleaseModalAsync()
+    {
+        try { await Overlay.RemoveDialogEscAsync(_instanceId); }
+        finally
+        {
+            try { await Overlay.ReleaseFocusTrapAsync(_instanceId); }
+            finally
+            {
+                var held = _scrollLock;
+                _scrollLock = null;
+                if (held is not null) await held.DisposeAsync();
+            }
         }
     }
 
-    private void Confirm() { _visible = false; _tcs?.TrySetResult(true); }
-    private void Cancel()  { _visible = false; _tcs?.TrySetResult(false); }
-
-    /// <summary>Dismisses the dialog without a result (Escape key), resolving with null.</summary>
-    private void Dismiss()  { _visible = false; _tcs?.TrySetResult(null); }
-
-    private void OnKeyDown(KeyboardEventArgs e)
+    /// <summary>Releases modal resources and resolves an unanswered confirmation as dismissed.</summary>
+    public async ValueTask DisposeAsync()
     {
-        if (e.Key == "Escape") Dismiss();
+        if (_disposed) return;
+        _disposed = true;
+        while (_pending.TryDequeue(out var request)) request.Completion.TrySetResult(null);
+        await _modalSync.WaitAsync();
+        try
+        {
+            if (_wasVisible)
+                await ReleaseModalAsync();
+            _wasVisible = false;
+            _focusedRequest = null;
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        finally
+        {
+            _selfRef?.Dispose();
+            _modalSync.Release();
+        }
     }
 }

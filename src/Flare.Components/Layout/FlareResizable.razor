@@ -10,7 +10,15 @@
      @attributes="AdditionalAttributes"
      @ref="_container">
     @ChildContent
-    <div class="@Css.Classes.Resizable.Handle" @ref="_handle"></div>
+    <div class="@Css.Classes.Resizable.Handle" @ref="_handle" role="separator" tabindex="0"
+         aria-label="@FlareStrings.Splitter_Resize"
+         aria-orientation="@(Edge is ResizableEdge.Left or ResizableEdge.Right ? "vertical" : "horizontal")"></div>
+    <div class="@Css.Classes.Resizable.Controls" data-flare-resize-controls>
+        <button type="button" class="@Css.Classes.Resizable.Control" data-flare-resize-step="-1"
+                aria-label="@FlareStrings.Resize_Decrease">-</button>
+        <button type="button" class="@Css.Classes.Resizable.Control" data-flare-resize-step="1"
+                aria-label="@FlareStrings.Resize_Increase">+</button>
+    </div>
 </div>
 
 @code {

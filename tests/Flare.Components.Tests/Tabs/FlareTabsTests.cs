@@ -218,19 +218,17 @@ public class FlareTabsTests : FlareTestContext
     {
         var cut = Render(TwoTabLayout());
 
-        // Blazor renders bool true as aria-selected="" (attribute present)
         var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
-        Assert.True(tabs[0].HasAttribute("aria-selected"));
+        Assert.Equal("true", tabs[0].GetAttribute("aria-selected"));
     }
 
     [Fact]
-    public void InactiveTabButton_HasNoAriaSelectedAttribute()
+    public void InactiveTabButton_DeclaresAriaSelectedFalse()
     {
         var cut = Render(TwoTabLayout());
 
-        // Blazor removes the attribute when the bool value is false
         var tabs = cut.FindAll($".{Css.Classes.Tabs.TabButton}");
-        Assert.False(tabs[1].HasAttribute("aria-selected"));
+        Assert.Equal("false", tabs[1].GetAttribute("aria-selected"));
     }
 
     [Fact]

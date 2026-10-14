@@ -314,4 +314,6 @@
   <data name="TimeSpan_HoursShort" xml:space="preserve"><value>h</value></data>
   <data name="TimeSpan_MinutesShort" xml:space="preserve"><value>m</value></data>
   <data name="TimeSpan_SecondsShort" xml:space="preserve"><value>s</value></data>
+  <data name="Resize_Decrease" xml:space="preserve"><value>Decrease size</value></data>
+  <data name="Resize_Increase" xml:space="preserve"><value>Increase size</value></data>
 </root>

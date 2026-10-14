@@ -13,21 +13,30 @@
 .flare-confirmdialog__backdrop { z-index: var(--flare-z-modal); }
 
 .flare-confirmdialog {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
     background: var(--flare-color-surface-container-high);
     border-radius: var(--flare-dialog-radius);
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-12);
-    min-width: 280px;
-    max-width: 420px;
+    min-width: min(280px, calc(100vw - var(--flare-overlay-viewport-inset)));
+    max-width: min(420px, calc(100vw - var(--flare-overlay-viewport-inset)));
+    max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
     width: 90%;
+    overflow: auto;
+    overflow-wrap: anywhere;
     outline: none; /* dialog element receives focus; remove default outline */
 }
 
-.flare-confirmdialog__header { margin-bottom: var(--flare-spacing-6); }
+.flare-confirmdialog__header { flex: 0 0 auto; margin-bottom: var(--flare-spacing-6); }
 
 /* __title style comes from the shared overlay-title rule (dialog.css). */
 
 .flare-confirmdialog__body {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow: auto;
     color: var(--flare-color-on-surface-variant);
     font-family: var(--flare-typescale-body-medium-font);
     font-size: var(--flare-typescale-body-medium-size);
@@ -35,9 +44,18 @@
     line-height: 1.5;
 }
 
-.flare-confirmdialog__footer { display: flex; justify-content: flex-end; gap: var(--flare-spacing-6); }
+.flare-confirmdialog__footer {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--flare-spacing-6);
+}
 
 .flare-confirmdialog__btn {
+    max-inline-size: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
     position: relative;
     z-index: 0;
     border: none;

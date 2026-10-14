@@ -7,6 +7,38 @@ import { all, listen, registry } from './flare-dom.js';
 // Breakpoint / viewport detection moved to flare-viewport.js (Flare.Components.IBrowserViewportService).
 
 const _tabScrollers = registry();
+const _tabKeyboards = registry();
+const tabScrollBehavior = () => globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+export function registerTabKeyboard(bar, dotNetRef) {
+    if (!bar) return;
+    const keydown = e => {
+        if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing) return;
+        const tab = e.target.closest('[role="tab"]');
+        if (!tab || tab.closest('[role="tablist"]') !== bar || tab.disabled) return;
+        const vertical = bar.getAttribute('aria-orientation') === 'vertical';
+        const handled = e.key === 'Home' || e.key === 'End' || (e.key === 'Delete' && tab.dataset.closeable === 'true')
+            || (vertical ? e.key === 'ArrowUp' || e.key === 'ArrowDown'
+                : e.key === 'ArrowLeft' || e.key === 'ArrowRight');
+        if (!handled) return;
+        e.preventDefault();
+        dotNetRef.invokeMethodAsync('OnTabNavigation', e.key, getComputedStyle(bar).direction === 'rtl').catch(() => {});
+    };
+    _tabKeyboards.keep(bar, listen(bar, 'keydown', keydown));
+}
+
+export function removeTabKeyboard(bar) {
+    _tabKeyboards.drop(bar);
+}
+
+export function revealFocusedTab(bar) {
+    const tab = document.activeElement;
+    if (!bar || !tab?.matches('[role="tab"]') || tab.closest('[role="tablist"]') !== bar) return;
+    const box = bar.getBoundingClientRect(), item = tab.getBoundingClientRect();
+    const horizontal = item.left < box.left ? item.left - box.left : item.right > box.right ? item.right - box.right : 0;
+    const vertical = item.top < box.top ? item.top - box.top : item.bottom > box.bottom ? item.bottom - box.bottom : 0;
+    if (horizontal || vertical) bar.scrollBy({ left: horizontal, top: vertical, behavior: 'auto' });
+}
 
 // The bar reports three booleans, so the only scroll events worth crossing interop for are the ones
 // that flip one of them - a drag from one end to the other has two interesting frames out of a
@@ -18,8 +50,10 @@ export function registerTabScroller(bar, dotNetRef) {
     function update() {
         ticking = false;
         const overflowing = bar.scrollWidth > bar.clientWidth + 1;
-        const atStart = bar.scrollLeft <= 1;
-        const atEnd = bar.scrollLeft + bar.clientWidth >= bar.scrollWidth - 1;
+        const extent = Math.max(0, bar.scrollWidth - bar.clientWidth);
+        const offset = Math.min(extent, Math.max(0, getComputedStyle(bar).direction === 'rtl' ? -bar.scrollLeft : bar.scrollLeft));
+        const atStart = offset <= 1;
+        const atEnd = offset >= extent - 1;
         if (last && last[0] === overflowing && last[1] === atStart && last[2] === atEnd) return;
         last = [overflowing, atStart, atEnd];
         if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabScrollState', overflowing, atStart, atEnd).catch(() => { });
@@ -33,7 +67,8 @@ export function registerTabScroller(bar, dotNetRef) {
 
 export function scrollTabs(bar, dir) {
     if (!bar) return;
-    bar.scrollBy({ left: dir * bar.clientWidth * 0.8, behavior: 'smooth' });
+    const sign = getComputedStyle(bar).direction === 'rtl' ? -1 : 1;
+    bar.scrollBy({ left: sign * dir * bar.clientWidth * 0.8, behavior: tabScrollBehavior() });
 }
 
 export function revealActiveLinkTab(bar) {
@@ -49,7 +84,7 @@ export function revealActiveLinkTab(bar) {
     const delta = link.width > right - left || link.left < left - 1
         ? link.left - left
         : link.right > right + 1 ? link.right - right : 0;
-    if (Math.abs(delta) > 1) bar.scrollBy({ left: delta, behavior: 'smooth' });
+    if (Math.abs(delta) > 1) bar.scrollBy({ left: delta, behavior: tabScrollBehavior() });
 }
 
 export function removeTabScroller(bar) {

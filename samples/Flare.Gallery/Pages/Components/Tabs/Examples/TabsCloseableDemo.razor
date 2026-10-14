@@ -1,7 +1,7 @@
 <FlareTabs OnTabClose="HandleTabClose">
     @foreach (var tab in _closeableTabs)
     {
-        <FlareTab Label="@tab" Closeable="true">
+        <FlareTab @key="tab" Label="@tab" Closeable="true">
             <FlareText Typo="TypographyScale.BodyMedium">Content for <strong>@tab</strong>.</FlareText>
         </FlareTab>
     }

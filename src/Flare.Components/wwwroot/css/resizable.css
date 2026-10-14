@@ -1,7 +1,14 @@
 .flare-resizable { position: relative; overflow: hidden; }
-.flare-resizable__handle { position: absolute; z-index: 10; background: transparent; transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard); }
+.flare-resizable__handle { position: absolute; z-index: var(--flare-z-chrome); background: transparent; transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard); }
 .flare-resizable__handle:hover { background: var(--flare-color-primary-container); }
-.flare-resizable--right .flare-resizable__handle { top: 0; right: 0; width: 4px; height: 100%; cursor: col-resize; }
-.flare-resizable--left .flare-resizable__handle { top: 0; left: 0; width: 4px; height: 100%; cursor: col-resize; }
-.flare-resizable--bottom .flare-resizable__handle { bottom: 0; left: 0; height: 4px; width: 100%; cursor: row-resize; }
-.flare-resizable--top .flare-resizable__handle { top: 0; left: 0; height: 4px; width: 100%; cursor: row-resize; }
+.flare-resizable--right .flare-resizable__handle { top: 0; right: 0; width: var(--flare-splitter-gutter-size); height: 100%; cursor: col-resize; }
+.flare-resizable--left .flare-resizable__handle { top: 0; left: 0; width: var(--flare-splitter-gutter-size); height: 100%; cursor: col-resize; }
+.flare-resizable--bottom .flare-resizable__handle { bottom: 0; left: 0; height: var(--flare-splitter-gutter-size); width: 100%; cursor: row-resize; }
+.flare-resizable--top .flare-resizable__handle { top: 0; left: 0; height: var(--flare-splitter-gutter-size); width: 100%; cursor: row-resize; }
+.flare-resizable__handle:focus-visible { outline: var(--flare-focus-ring); outline-offset: calc(-1 * var(--flare-border-width-emphasis)); }
+.flare-resizable__controls { position: absolute; inset-inline-end: var(--flare-spacing-2); inset-block-end: var(--flare-spacing-2); display: flex; gap: var(--flare-spacing-1); z-index: calc(var(--flare-z-chrome) + 1); }
+.flare-resizable__control { display: inline-flex; align-items: center; justify-content: center; inline-size: var(--flare-btn-height-sm); block-size: var(--flare-btn-height-sm); padding: 0; border: var(--flare-border-divider); border-radius: var(--flare-shape-small); background: var(--flare-color-surface); color: var(--flare-color-on-surface); font: inherit; cursor: pointer; }
+.flare-resizable__control:disabled { opacity: var(--flare-state-disabled-opacity); cursor: not-allowed; }
+@media (pointer: coarse) {
+    .flare-resizable__control { min-inline-size: var(--flare-touch-target-min); min-block-size: var(--flare-touch-target-min); }
+}

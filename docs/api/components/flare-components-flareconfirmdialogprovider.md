@@ -14,6 +14,11 @@ Host for the confirmation dialogs raised through IConfirmDialogService. It casca
 
 ## Methods
 
+### `CloseFromEsc()`
+
+Dismisses the active confirmation when the shared overlay stack receives Escape.
+Returns: `Task`.
+
 ### `ConfirmAsync(string title, string message, string confirmLabel, string cancelLabel)`
 
 Returns: `Task<bool?>`.
@@ -24,6 +29,11 @@ Returns: `Task<bool?>`.
 | `message` | `string` | — |
 | `confirmLabel` | `string` | — |
 | `cancelLabel` | `string` | — |
+
+### `DisposeAsync()`
+
+Releases modal resources and resolves an unanswered confirmation as dismissed.
+Returns: `ValueTask`.
 
 
 ## Inheritance

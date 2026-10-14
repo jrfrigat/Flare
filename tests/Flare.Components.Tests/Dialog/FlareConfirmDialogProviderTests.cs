@@ -2,11 +2,123 @@ using Flare.Infrastructure;
 using Flare.Abstractions;
 using Flare.Theming;
 using Microsoft.Extensions.DependencyInjection;
+using Flare.Components.Services;
 
 namespace Flare.Components.Tests;
 
 public class FlareConfirmDialogProviderTests : FlareTestContext
 {
+    public FlareConfirmDialogProviderTests()
+    {
+        Services.AddScoped<IOverlayJsService>(_ =>
+            new OverlayJsService(new RemoteOverlayRuntime(JSInterop.JSRuntime)));
+    }
+
+    [Fact]
+    public async Task ModalResources_AreRegisteredOnceAndReleasedOnCancel()
+    {
+        var overlay = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        overlay.Mode = JSRuntimeMode.Loose;
+        var scroll = JSInterop.SetupModule("./_content/Flare.Components/js/flare-scroll.js");
+        scroll.Mode = JSRuntimeMode.Loose;
+        var cut = Render<FlareConfirmDialogProvider>();
+        var pending = cut.Instance.ConfirmAsync("Delete?", "Keep the draft?");
+        cut.WaitForAssertion(() => Assert.Single(overlay.Invocations["trapFocus"]));
+
+        cut.Render();
+        Assert.Single(overlay.Invocations["trapFocus"]);
+        Assert.Single(overlay.Invocations["registerDialogEscHandler"]);
+        Assert.Single(scroll.Invocations["lock"]);
+        cut.Find($".{Css.Classes.Confirmdialog.BtnCancel}").Click();
+
+        Assert.False(await pending);
+        cut.WaitForAssertion(() => Assert.Single(overlay.Invocations["releaseFocusTrap"]));
+        Assert.Single(overlay.Invocations["removeDialogEscHandler"]);
+        Assert.Single(scroll.Invocations["unlock"]);
+    }
+
+    [Fact]
+    public async Task EscapeDismissal_ReturnsNullAndRemovesDialog()
+    {
+        var cut = Render<FlareConfirmDialogProvider>();
+        var pending = cut.Instance.ConfirmAsync("Delete?", "Keep the draft?");
+        cut.WaitForState(() => cut.FindAll("[role='alertdialog']").Count == 1);
+
+        await cut.Instance.CloseFromEsc();
+
+        Assert.Null(await pending);
+        cut.WaitForState(() => cut.FindAll("[role='alertdialog']").Count == 0);
+    }
+
+    [Fact]
+    public async Task DisposalDuringTrap_WaitsThenReleasesResourcesAndDismissesRequest()
+    {
+        var overlay = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        overlay.Mode = JSRuntimeMode.Loose;
+        var scroll = JSInterop.SetupModule("./_content/Flare.Components/js/flare-scroll.js");
+        scroll.Mode = JSRuntimeMode.Loose;
+        var trap = overlay.SetupVoid("trapFocus", _ => true);
+        var cut = Render<FlareConfirmDialogProvider>();
+        var pending = cut.Instance.ConfirmAsync("Delete?", "Keep the draft?");
+        var queued = cut.Instance.ConfirmAsync("Next?", "Another confirmation");
+        cut.WaitForAssertion(() => Assert.Single(overlay.Invocations["trapFocus"]));
+
+        var dispose = cut.Instance.DisposeAsync().AsTask();
+        Assert.False(dispose.IsCompleted);
+        trap.SetVoidResult();
+        await dispose.WaitAsync(TimeSpan.FromSeconds(5), Xunit.TestContext.Current.CancellationToken);
+
+        Assert.Null(await pending);
+        Assert.Null(await queued);
+        Assert.Single(overlay.Invocations["releaseFocusTrap"]);
+        Assert.Single(scroll.Invocations["unlock"]);
+        await cut.Instance.DisposeAsync();
+        Assert.Single(scroll.Invocations["unlock"]);
+    }
+
+    [Fact]
+    public async Task ConcurrentRequests_KeepCallOrderAndOwnAnswersWithOneModalLifetime()
+    {
+        var overlay = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        overlay.Mode = JSRuntimeMode.Loose;
+        var scroll = JSInterop.SetupModule("./_content/Flare.Components/js/flare-scroll.js");
+        scroll.Mode = JSRuntimeMode.Loose;
+        var cut = Render<FlareConfirmDialogProvider>();
+        var first = cut.Instance.ConfirmAsync("First", "First message", "Accept first", "Keep first");
+        var second = cut.Instance.ConfirmAsync("Second", "Second message", "Accept second", "Keep second");
+        cut.WaitForAssertion(() => Assert.Single(overlay.Invocations["trapFocus"]));
+
+        Assert.Equal("First", cut.Find($".{Css.Classes.Confirmdialog.Title}").TextContent);
+        Assert.False(second.IsCompleted);
+        cut.Find($".{Css.Classes.Confirmdialog.BtnConfirm}").Click();
+        Assert.True(await first);
+        cut.WaitForAssertion(() => Assert.Equal("Second", cut.Find($".{Css.Classes.Confirmdialog.Title}").TextContent));
+        cut.WaitForAssertion(() => Assert.Single(overlay.Invocations["focusFirstInDialog"]));
+        Assert.Equal("Keep second", cut.Find($".{Css.Classes.Confirmdialog.BtnCancel}").TextContent);
+        Assert.Single(overlay.Invocations["trapFocus"]);
+        Assert.Single(scroll.Invocations["lock"]);
+        Assert.Empty(scroll.Invocations["unlock"]);
+        cut.Find($".{Css.Classes.Confirmdialog.BtnCancel}").Click();
+        Assert.False(await second);
+        cut.WaitForAssertion(() => Assert.Single(scroll.Invocations["unlock"]));
+    }
+
+    [Fact]
+    public async Task EqualRequests_AreIndependentAndEscapeDoesNotAnswerTheNextOne()
+    {
+        var cut = Render<FlareConfirmDialogProvider>();
+        var first = cut.Instance.ConfirmAsync("Same", "Same message");
+        var second = cut.Instance.ConfirmAsync("Same", "Same message");
+        cut.WaitForState(() => cut.FindAll("[role='alertdialog']").Count == 1);
+
+        await cut.Instance.CloseFromEsc();
+        Assert.Null(await first);
+        Assert.False(second.IsCompleted);
+        cut.Find($".{Css.Classes.Confirmdialog.BtnConfirm}").Click();
+        Assert.True(await second);
+        cut.WaitForState(() => cut.FindAll("[role='alertdialog']").Count == 0);
+    }
+
     [Fact]
     public void RendersChildContent()
     {

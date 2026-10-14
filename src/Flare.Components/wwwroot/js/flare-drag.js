@@ -120,25 +120,83 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
     if (!handle || !container) return;
     const horiz = edge === 'right' || edge === 'left';
     const dim = horiz ? 'width' : 'height';
+    const buttons = Array.from(container.querySelectorAll(':scope > [data-flare-resize-controls] > button'));
+    const controls = buttons[0]?.parentElement;
+    const footprint = () => {
+        const grip = handle.getBoundingClientRect();
+        const actions = controls?.getBoundingClientRect();
+        const inset = controls ? parseFloat(getComputedStyle(controls)[horiz ? 'insetInlineEnd' : 'insetBlockEnd']) || 0 : 0;
+        return Math.max(horiz ? grip.width : grip.height,
+            actions ? (horiz ? actions.width : actions.height) + 2 * inset : 0);
+    };
     let startSize = 0;
+    const size = () => {
+        const rect = container.getBoundingClientRect();
+        return horiz ? rect.width : rect.height;
+    };
+    const bounds = () => {
+        const parent = container.parentElement?.getBoundingClientRect();
+        const available = parent ? (horiz ? parent.width : parent.height) : size();
+        const min = Math.max(0, footprint(), parseFloat(minSize) || 0);
+        const max = maxSize ? Math.max(min, parseFloat(maxSize) || min) : Math.max(min, size(), available);
+        return { min, max };
+    };
+    const reflect = value => {
+        const { min, max } = bounds();
+        handle.setAttribute('aria-orientation', horiz ? 'vertical' : 'horizontal');
+        handle.setAttribute('aria-valuemin', String(Math.round(min)));
+        handle.setAttribute('aria-valuemax', String(Math.round(max)));
+        handle.setAttribute('aria-valuenow', String(Math.round(value)));
+        handle.setAttribute('aria-valuetext', Math.round(value) + 'px');
+        for (const button of buttons) button.disabled = Number(button.dataset.flareResizeStep) < 0 ? value <= min : value >= max;
+    };
+    const apply = value => {
+        const { min, max } = bounds();
+        const clamped = Math.max(min, Math.min(value, max));
+        container.style[dim] = clamped + 'px';
+        reflect(clamped);
+    };
+    const notify = () => {
+        if (dotNetRef) dotNetRef.invokeMethodAsync('OnResizedCallback', container.style[dim]).catch(() => { });
+    };
+    const keyboard = e => {
+        if (e.target !== handle) return;
+        const positive = horiz ? 'ArrowRight' : 'ArrowDown';
+        const negative = horiz ? 'ArrowLeft' : 'ArrowUp';
+        const sign = edge === 'left' || edge === 'top' ? -1 : 1;
+        if (e.key === 'Home') apply(bounds().min);
+        else if (e.key === 'End') apply(bounds().max);
+        else if (e.key === positive) apply(size() + sign * 16);
+        else if (e.key === negative) apply(size() - sign * 16);
+        else return;
+        e.preventDefault();
+        notify();
+    };
+    const click = e => {
+        const button = e.currentTarget;
+        apply(size() + Number(button.dataset.flareResizeStep) * 16);
+        e.preventDefault();
+        notify();
+    };
+    handle.addEventListener('keydown', keyboard);
+    for (const button of buttons) button.addEventListener('click', click);
+    reflect(size());
     const off = startDrag(handle, {
         onStart() {
-            const rect = container.getBoundingClientRect();
-            startSize = horiz ? rect.width : rect.height;
+            startSize = size();
         },
         onMove(dx, dy) {
             const along = horiz ? dx : dy;
             const delta = edge === 'right' || edge === 'bottom' ? along : -along;
-            let newSize = Math.max(0, startSize + delta);
-            if (minSize) newSize = Math.max(parseFloat(minSize), newSize);
-            if (maxSize) newSize = Math.min(parseFloat(maxSize), newSize);
-            container.style[dim] = newSize + 'px';
+            apply(startSize + delta);
         },
-        onEnd() {
-            if (dotNetRef) dotNetRef.invokeMethodAsync('OnResizedCallback', container.style[dim]).catch(() => { });
-        },
+        onEnd: notify,
     });
-    _resizeHandles.keep(handle, off);
+    _resizeHandles.keep(handle, () => {
+        off();
+        handle.removeEventListener('keydown', keyboard);
+        for (const button of buttons) button.removeEventListener('click', click);
+    });
 }
 
 export function removeResizeHandle(handle) {
@@ -225,26 +283,65 @@ function _flareSplitterReflect(gutter, horiz) {
 }
 
 // Apply new sizes to the previous/next siblings, keeping their combined size constant.
-function _flareApplySiblingSize(prev, next, horiz, newPrev, total, minPx, maxPx, dotNetRef) {
-    const min = minPx || 0;
-    let p = Math.max(min, Math.min(newPrev, total - min));
-    if (maxPx) p = Math.min(p, maxPx);
+function _flareSplitterRange(gutter, value, total, minPx, maxPx) {
+    const min = Math.min(Math.max(0, minPx || 0), total / 2);
+    const max = Math.max(min, Math.min(maxPx || total, total - min));
+    gutter.setAttribute('aria-valuemin', String(Math.round(min)));
+    gutter.setAttribute('aria-valuemax', String(Math.round(max)));
+    gutter.setAttribute('aria-valuenow', String(Math.round(value)));
+    gutter.setAttribute('aria-valuetext', Math.round(value) + 'px');
+    return { min, max };
+}
+function _flareApplySiblingSize(gutter, prev, next, horiz, newPrev, total, minPx, maxPx, dotNetRef) {
+    const { min, max } = _flareSplitterRange(gutter, newPrev, total, minPx, maxPx);
+    const p = Math.max(min, Math.min(newPrev, max));
     const n = total - p;
     const dim = horiz ? 'width' : 'height';
     prev.style.flex = '0 0 ' + p + 'px';
     prev.style[dim] = p + 'px';
     next.style.flex = '0 0 ' + n + 'px';
     next.style[dim] = n + 'px';
+    _flareSplitterRange(gutter, p, total, minPx, maxPx);
     if (dotNetRef) dotNetRef.invokeMethodAsync('OnSplitChanged', Math.round(p) + 'px').catch(() => { });
 }
 
 export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, dotNetRef) {
     if (!gutter) return;
     // Reflect the (possibly auto-detected) axis on the element so the handle renders correctly.
-    if (orientation === 'auto') _flareSplitterReflect(gutter, _flareSplitterHoriz(gutter, 'auto'));
+    _flareSplitterReflect(gutter, _flareSplitterHoriz(gutter, orientation));
 
     let horiz = true, prev = null, next = null, prevSize = 0, total = 0;
+    const measure = () => {
+        prev = gutter.previousElementSibling; next = gutter.nextElementSibling;
+        if (!prev || !next) return false;
+        horiz = _flareSplitterHoriz(gutter, orientation);
+        _flareSplitterReflect(gutter, horiz);
+        prevSize = horiz ? prev.getBoundingClientRect().width : prev.getBoundingClientRect().height;
+        total = prevSize + (horiz ? next.getBoundingClientRect().width : next.getBoundingClientRect().height);
+        return true;
+    };
+    const apply = value => _flareApplySiblingSize(gutter, prev, next, horiz, value, total,
+        _flareParsePx(minSize), _flareParsePx(maxSize), dotNetRef);
+    const step = () => Math.max(1, Number(gutter.dataset.flareSplitterKeyboardStep) || 16);
+    const keyboard = e => {
+        if (e.target !== gutter || !measure()) return;
+        if (e.key === 'Home') apply(0);
+        else if (e.key === 'End') apply(total);
+        else if (e.key === (horiz ? 'ArrowRight' : 'ArrowDown')) apply(prevSize + step());
+        else if (e.key === (horiz ? 'ArrowLeft' : 'ArrowUp')) apply(prevSize - step());
+        else return;
+        e.preventDefault();
+    };
+    const click = e => {
+        const target = e.target.closest('[data-flare-splitter-step]');
+        if (!target || target.parentElement !== gutter || !measure()) return;
+        apply(prevSize + Number(target.dataset.flareSplitterStep) * step());
+        e.preventDefault();
+    };
+    gutter.addEventListener('keydown', keyboard); gutter.addEventListener('click', click);
+    if (measure()) _flareSplitterRange(gutter, prevSize, total, _flareParsePx(minSize), _flareParsePx(maxSize));
     const off = startDrag(gutter, {
+        filter: e => !e.target.closest('[data-flare-splitter-step]'),
         onStart() {
             prev = gutter.previousElementSibling;
             next = gutter.nextElementSibling;
@@ -258,12 +355,14 @@ export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, d
         onMove(dx, dy) {
             if (!prev || !next) return;
             const along = horiz ? dx : dy;
-            _flareApplySiblingSize(prev, next, horiz, prevSize + along, total,
+            _flareApplySiblingSize(gutter, prev, next, horiz, prevSize + along, total,
                 _flareParsePx(minSize), _flareParsePx(maxSize), dotNetRef);
         },
         onEnd() { document.body.style.cursor = ''; },
     });
-    _splitters.keep(gutter, off);
+    _splitters.keep(gutter, () => {
+        off(); gutter.removeEventListener('keydown', keyboard); gutter.removeEventListener('click', click);
+    });
 }
 
 export function nudgeSiblingSplitter(gutter, orientation, deltaPx, keyAxis, minSize, maxSize, dotNetRef) {
@@ -277,7 +376,7 @@ export function nudgeSiblingSplitter(gutter, orientation, deltaPx, keyAxis, minS
     const prevSize = horiz ? prev.getBoundingClientRect().width : prev.getBoundingClientRect().height;
     const nextSize = horiz ? next.getBoundingClientRect().width : next.getBoundingClientRect().height;
     const total = prevSize + nextSize;
-    _flareApplySiblingSize(prev, next, horiz, prevSize + deltaPx, total,
+    _flareApplySiblingSize(gutter, prev, next, horiz, prevSize + deltaPx, total,
         _flareParsePx(minSize), _flareParsePx(maxSize), dotNetRef);
 }
 

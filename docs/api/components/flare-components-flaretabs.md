@@ -32,6 +32,16 @@
 Disposes the component; override to release JS interop or subscriptions.
 Returns: `ValueTask`.
 
+### `OnTabNavigation(string key, bool rtl)`
+
+Activates and focuses the available tab addressed by an orientation-aware navigation key.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | The navigation key whose native scroll behavior was prevented. |
+| `rtl` | `bool` | Whether the tablist resolves to right-to-left in the browser. |
+
 ### `OnTabScrollState(bool overflowing, bool atStart, bool atEnd)`
 
 Returns: `void`.

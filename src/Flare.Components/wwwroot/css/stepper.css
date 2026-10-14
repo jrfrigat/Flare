@@ -1,4 +1,5 @@
 .flare-stepper {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--flare-spacing-12);
@@ -11,20 +12,25 @@
 
 /* Header row */
 .flare-stepper__header {
+  min-width: 0;
   display: flex;
   align-items: center;
 }
 
-/* Horizontal stepper scrolls instead of overflowing on small screens */
-@media (max-width: 599px) {
-  .flare-stepper:not(.flare-stepper--vertical) .flare-stepper__header {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
+/* Keep overflow inside the component even in a narrow desktop container. */
+.flare-stepper:not(.flare-stepper--vertical) .flare-stepper__header {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .flare-stepper__step {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,7 +99,7 @@
   font-size: var(--flare-typescale-label-large-size);
   font-weight: var(--flare-typescale-label-large-weight);
   color: var(--flare-color-on-surface);
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .flare-stepper__step--upcoming .flare-stepper__label {
@@ -196,13 +202,26 @@
 
 .flare-stepper--vertical .flare-stepper__step {
   flex-direction: row;
-  text-align: left;
+  text-align: start;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.flare-stepper--vertical .flare-stepper__labels {
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.flare-stepper__circle {
+  flex-shrink: 0;
 }
 
 .flare-stepper--vertical .flare-stepper__connector {
   width: var(--flare-stepper-connector-thickness);
+  min-width: 0;
   height: var(--flare-stepper-connector-min-length);
   flex: none;
-  margin: 0 0 0 calc(1rem - 1px);
+  margin: 0;
+  margin-inline-start: calc((var(--flare-stepper-circle-size) - var(--flare-stepper-connector-thickness)) / 2);
   align-self: auto;
 }

@@ -1,29 +1,29 @@
 <FlareStepper>
-    <FlareStep Label="Account" Description="Basic info">
+    <FlareStep Label="@GalleryStrings.StepDemo_Account" Description="@GalleryStrings.StepDemo_BasicInfo">
         <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Person" /></IconContent>
         <ChildContent>
-            <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">Enter your account details.</FlareText>
-            <FlareStack Gap="FlareSpacing.Small" Style="max-width:20rem;">
-                <FlareField TValue="string" Label="Name" Placeholder="John Doe" />
-                <FlareField TValue="string" Label="Email" Placeholder="john@example.com" Type="email" />
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_AccountNote</FlareText>
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareField TValue="string" Label="@GalleryStrings.StepDemo_Name" Placeholder="@GalleryStrings.StepDemo_NameHint" />
+                <FlareField TValue="string" Label="@GalleryStrings.StepDemo_Email" Placeholder="john@example.com" Type="email" />
             </FlareStack>
         </ChildContent>
     </FlareStep>
-    <FlareStep Label="Profile" Description="Customize" Optional="true">
-        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">Configure your profile.</FlareText>
-        <FlareStack Gap="FlareSpacing.Small" Style="max-width:20rem;">
-            <FlareSelect TValue="string" Label="Role">
-                <option value="">Select role…</option>
-                <option value="dev">Developer</option>
-                <option value="design">Designer</option>
-                <option value="pm">Product Manager</option>
+    <FlareStep Label="@GalleryStrings.StepDemo_Profile" Description="@GalleryStrings.StepDemo_Customize" Optional="true">
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_ProfileNote</FlareText>
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareSelect TValue="string" Label="@GalleryStrings.StepDemo_Role">
+                <option value="">@GalleryStrings.StepDemo_ChooseRole</option>
+                <option value="dev">@GalleryStrings.StepDemo_Developer</option>
+                <option value="design">@GalleryStrings.StepDemo_Designer</option>
+                <option value="pm">@GalleryStrings.StepDemo_Manager</option>
             </FlareSelect>
-            <FlareSwitch Label="Public profile" />
+            <FlareSwitch Label="@GalleryStrings.StepDemo_PublicProfile" />
         </FlareStack>
     </FlareStep>
-    <FlareStep Label="Review" Description="Confirm">
-        <FlareAlert Severity="AlertSeverity.Success" Title="Ready to submit">
-            All steps complete. Click Submit to finish.
+    <FlareStep Label="@GalleryStrings.StepDemo_Review" Description="@GalleryStrings.StepDemo_Confirm">
+        <FlareAlert Severity="AlertSeverity.Success" Title="@GalleryStrings.StepDemo_Ready">
+            @GalleryStrings.StepDemo_ReadyNote
         </FlareAlert>
     </FlareStep>
 </FlareStepper>

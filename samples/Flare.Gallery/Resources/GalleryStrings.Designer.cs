@@ -8752,7 +8752,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Custom navigation &amp; wheel scroll.
+        ///   Custom navigation.
         /// </summary>
         public static string Stepper_CustomNav {
             get {
@@ -12068,5 +12068,117 @@ namespace Flare.Gallery.Resources {
         public static string ChartsDemo_DonutType { get { return ResourceManager.GetString("ChartsDemo_DonutType", resourceCulture); } }
         /// <summary>Combo</summary>
         public static string ChartsDemo_ComboType { get { return ResourceManager.GetString("ChartsDemo_ComboType", resourceCulture); } }
+        /// <summary>Keyboard navigation and activation of available steps.</summary>
+        public static string Stepper_KeyboardHint { get { return ResourceManager.GetString("Stepper_KeyboardHint", resourceCulture); } }
+        /// <summary>Open a long confirmation</summary>
+        public static string ReviewDialog_Long { get { return ResourceManager.GetString("ReviewDialog_Long", resourceCulture); } }
+        /// <summary>Long content and action labels</summary>
+        public static string ReviewDialog_LongTitle { get { return ResourceManager.GetString("ReviewDialog_LongTitle", resourceCulture); } }
+        /// <summary>This paragraph checks scrolling while the title and actions remain reachable. https://example.com/a-very-long-unbroken-address-for-narrow-dialogs</summary>
+        public static string ReviewDialog_LongBody { get { return ResourceManager.GetString("ReviewDialog_LongBody", resourceCulture); } }
+        /// <summary>Confirm this action and continue to the next step</summary>
+        public static string ReviewDialog_LongYes { get { return ResourceManager.GetString("ReviewDialog_LongYes", resourceCulture); } }
+        /// <summary>Keep the data and return to the previous screen</summary>
+        public static string ReviewDialog_LongNo { get { return ResourceManager.GetString("ReviewDialog_LongNo", resourceCulture); } }
+        /// <summary>Right-to-left confirmation</summary>
+        public static string ReviewDialog_Rtl { get { return ResourceManager.GetString("ReviewDialog_Rtl", resourceCulture); } }
+        /// <summary>Account</summary>
+        public static string StepDemo_Account { get { return ResourceManager.GetString("StepDemo_Account", resourceCulture); } }
+        /// <summary>Basic information</summary>
+        public static string StepDemo_BasicInfo { get { return ResourceManager.GetString("StepDemo_BasicInfo", resourceCulture); } }
+        /// <summary>Enter your account details.</summary>
+        public static string StepDemo_AccountNote { get { return ResourceManager.GetString("StepDemo_AccountNote", resourceCulture); } }
+        /// <summary>Name</summary>
+        public static string StepDemo_Name { get { return ResourceManager.GetString("StepDemo_Name", resourceCulture); } }
+        /// <summary>Alex</summary>
+        public static string StepDemo_NameHint { get { return ResourceManager.GetString("StepDemo_NameHint", resourceCulture); } }
+        /// <summary>Email</summary>
+        public static string StepDemo_Email { get { return ResourceManager.GetString("StepDemo_Email", resourceCulture); } }
+        /// <summary>Profile</summary>
+        public static string StepDemo_Profile { get { return ResourceManager.GetString("StepDemo_Profile", resourceCulture); } }
+        /// <summary>Customize</summary>
+        public static string StepDemo_Customize { get { return ResourceManager.GetString("StepDemo_Customize", resourceCulture); } }
+        /// <summary>Configure your profile.</summary>
+        public static string StepDemo_ProfileNote { get { return ResourceManager.GetString("StepDemo_ProfileNote", resourceCulture); } }
+        /// <summary>Role</summary>
+        public static string StepDemo_Role { get { return ResourceManager.GetString("StepDemo_Role", resourceCulture); } }
+        /// <summary>Select a role</summary>
+        public static string StepDemo_ChooseRole { get { return ResourceManager.GetString("StepDemo_ChooseRole", resourceCulture); } }
+        /// <summary>Developer</summary>
+        public static string StepDemo_Developer { get { return ResourceManager.GetString("StepDemo_Developer", resourceCulture); } }
+        /// <summary>Designer</summary>
+        public static string StepDemo_Designer { get { return ResourceManager.GetString("StepDemo_Designer", resourceCulture); } }
+        /// <summary>Project manager</summary>
+        public static string StepDemo_Manager { get { return ResourceManager.GetString("StepDemo_Manager", resourceCulture); } }
+        /// <summary>Public profile</summary>
+        public static string StepDemo_PublicProfile { get { return ResourceManager.GetString("StepDemo_PublicProfile", resourceCulture); } }
+        /// <summary>Review</summary>
+        public static string StepDemo_Review { get { return ResourceManager.GetString("StepDemo_Review", resourceCulture); } }
+        /// <summary>Confirm</summary>
+        public static string StepDemo_Confirm { get { return ResourceManager.GetString("StepDemo_Confirm", resourceCulture); } }
+        /// <summary>Ready to submit</summary>
+        public static string StepDemo_Ready { get { return ResourceManager.GetString("StepDemo_Ready", resourceCulture); } }
+        /// <summary>All steps complete.</summary>
+        public static string StepDemo_ReadyNote { get { return ResourceManager.GetString("StepDemo_ReadyNote", resourceCulture); } }
+        /// <summary>Setup steps</summary>
+        public static string StepDemo_Setup { get { return ResourceManager.GetString("StepDemo_Setup", resourceCulture); } }
+        /// <summary>Details</summary>
+        public static string StepDemo_Details { get { return ResourceManager.GetString("StepDemo_Details", resourceCulture); } }
+        /// <summary>Editable in any order</summary>
+        public static string StepDemo_AnyOrder { get { return ResourceManager.GetString("StepDemo_AnyOrder", resourceCulture); } }
+        /// <summary>Non-linear: move between available steps freely.</summary>
+        public static string StepDemo_NonLinear { get { return ResourceManager.GetString("StepDemo_NonLinear", resourceCulture); } }
+        /// <summary>Payment</summary>
+        public static string StepDemo_Payment { get { return ResourceManager.GetString("StepDemo_Payment", resourceCulture); } }
+        /// <summary>Card declined</summary>
+        public static string StepDemo_Declined { get { return ResourceManager.GetString("StepDemo_Declined", resourceCulture); } }
+        /// <summary>This step shows an error state.</summary>
+        public static string StepDemo_ErrorNote { get { return ResourceManager.GetString("StepDemo_ErrorNote", resourceCulture); } }
+        /// <summary>Done</summary>
+        public static string StepDemo_Done { get { return ResourceManager.GetString("StepDemo_Done", resourceCulture); } }
+        /// <summary>Finish</summary>
+        public static string StepDemo_Finish { get { return ResourceManager.GetString("StepDemo_Finish", resourceCulture); } }
+        /// <summary>Current step index: {0}</summary>
+        public static string StepDemo_Index { get { return ResourceManager.GetString("StepDemo_Index", resourceCulture); } }
+        /// <summary>Terms</summary>
+        public static string StepDemo_Terms { get { return ResourceManager.GetString("StepDemo_Terms", resourceCulture); } }
+        /// <summary>Required</summary>
+        public static string StepDemo_Required { get { return ResourceManager.GetString("StepDemo_Required", resourceCulture); } }
+        /// <summary>Accept the terms before continuing. The async guard blocks forward navigation until you do.</summary>
+        public static string StepDemo_TermsNote { get { return ResourceManager.GetString("StepDemo_TermsNote", resourceCulture); } }
+        /// <summary>I accept the terms</summary>
+        public static string StepDemo_Accept { get { return ResourceManager.GetString("StepDemo_Accept", resourceCulture); } }
+        /// <summary>Accept the terms to continue.</summary>
+        public static string StepDemo_Blocked { get { return ResourceManager.GetString("StepDemo_Blocked", resourceCulture); } }
+        /// <summary>You passed the validation.</summary>
+        public static string StepDemo_Passed { get { return ResourceManager.GetString("StepDemo_Passed", resourceCulture); } }
+        /// <summary>Scope</summary>
+        public static string StepDemo_Scope { get { return ResourceManager.GetString("StepDemo_Scope", resourceCulture); } }
+        /// <summary>Choose the permissions to grant.</summary>
+        public static string StepDemo_Permissions { get { return ResourceManager.GetString("StepDemo_Permissions", resourceCulture); } }
+        /// <summary>Review the permissions and confirm. Use the navigation buttons or the step indicators.</summary>
+        public static string StepDemo_Generate { get { return ResourceManager.GetString("StepDemo_Generate", resourceCulture); } }
+        /// <summary>Previous step</summary>
+        public static string StepDemo_Previous { get { return ResourceManager.GetString("StepDemo_Previous", resourceCulture); } }
+        /// <summary>Next step</summary>
+        public static string StepDemo_Next { get { return ResourceManager.GetString("StepDemo_Next", resourceCulture); } }
+        /// <summary>Plan</summary>
+        public static string StepDemo_Plan { get { return ResourceManager.GetString("StepDemo_Plan", resourceCulture); } }
+        /// <summary>Choose the plan that fits your team.</summary>
+        public static string StepDemo_PlanNote { get { return ResourceManager.GetString("StepDemo_PlanNote", resourceCulture); } }
+        /// <summary>Add-ons</summary>
+        public static string StepDemo_Addons { get { return ResourceManager.GetString("StepDemo_Addons", resourceCulture); } }
+        /// <summary>This optional step can be skipped using the Review indicator.</summary>
+        public static string StepDemo_SkipNote { get { return ResourceManager.GetString("StepDemo_SkipNote", resourceCulture); } }
+        /// <summary>Skip to review</summary>
+        public static string StepDemo_Skip { get { return ResourceManager.GetString("StepDemo_Skip", resourceCulture); } }
+        /// <summary>Bound index: {0}</summary>
+        public static string StepDemo_BoundIndex { get { return ResourceManager.GetString("StepDemo_BoundIndex", resourceCulture); } }
+        /// <summary>Narrow containers and RTL</summary>
+        public static string StepDemo_EdgeCases { get { return ResourceManager.GetString("StepDemo_EdgeCases", resourceCulture); } }
+        /// <summary>An exceptionally long label to check wrapping and scrolling</summary>
+        public static string StepDemo_LongLabel { get { return ResourceManager.GetString("StepDemo_LongLabel", resourceCulture); } }
+        /// <summary>LongUnbrokenStepLabelForNarrowContainers</summary>
+        public static string StepDemo_LongWord { get { return ResourceManager.GetString("StepDemo_LongWord", resourceCulture); } }
     }
 }

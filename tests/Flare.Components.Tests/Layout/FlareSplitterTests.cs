@@ -9,6 +9,17 @@ namespace Flare.Components.Tests;
 public class FlareSplitterTests : FlareTestContext
 {
     [Fact]
+    public void OffersPointerStepsWithoutAddingPaneSiblings()
+    {
+        var cut = Render<FlareSplitter>(p => p.Add(x => x.KeyboardStep, 24));
+        var handle = cut.Find("[role=separator]");
+        Assert.Equal("24", handle.GetAttribute("data-flare-splitter-keyboard-step"));
+        Assert.Equal(2, handle.QuerySelectorAll("[data-flare-splitter-step]").Length);
+        Assert.Single(cut.FindAll($".{Css.Classes.Splitter.Root}"));
+        Assert.All(cut.FindAll("[data-flare-splitter-step]"), step => Assert.Equal("true", step.GetAttribute("aria-hidden")));
+    }
+
+    [Fact]
     public void RendersAsAStandaloneHandle()
     {
         var cut = Render<FlareSplitter>();

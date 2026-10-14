@@ -1,0 +1,25 @@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText Typo="TypographyScale.BodySmall">@GalleryStrings.Stepper_KeyboardHint</FlareText>
+    <FlareGrid Columns="12">
+        @for (var i = 0; i < 2; i++)
+        {
+            var vertical = i == 1;
+            <FlareCol Span="12" Md="6">
+                <FlarePaper Outlined Padding="FlareSpacing.Small" dir="@(vertical ? "rtl" : "ltr")">
+                    <FlareStepper NonLinear Orientation="@(vertical ? StepperOrientation.Vertical : StepperOrientation.Horizontal)"
+                                  AriaLabel="@GalleryStrings.Stepper_Title">
+                        <FlareStep Label="@GalleryStrings.StepDemo_LongLabel">
+                            <FlareText>@GalleryStrings.StepDemo_NonLinear</FlareText>
+                        </FlareStep>
+                        <FlareStep Label="@GalleryStrings.StepDemo_LongWord" Optional>
+                            <FlareText>@GalleryStrings.StepDemo_ProfileNote</FlareText>
+                        </FlareStep>
+                        <FlareStep Label="@GalleryStrings.StepDemo_Review">
+                            <FlareText>@GalleryStrings.StepDemo_ReadyNote</FlareText>
+                        </FlareStep>
+                    </FlareStepper>
+                </FlarePaper>
+            </FlareCol>
+        }
+    </FlareGrid>
+</FlareStack>

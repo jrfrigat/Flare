@@ -8,6 +8,16 @@ namespace Flare.Components.Services;
 /// <inheritdoc cref="IUiJsService" />
 public sealed class UiJsService : FlareJsModule, IUiJsService
 {
+    /// <inheritdoc />
+    public ValueTask RegisterTabKeyboardAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("registerTabKeyboard", bar, dotNetRef);
+
+    /// <inheritdoc />
+    public ValueTask RemoveTabKeyboardAsync(ElementReference bar) => InvokeVoidAsync("removeTabKeyboard", bar);
+
+    /// <inheritdoc />
+    public ValueTask RevealFocusedTabAsync(ElementReference bar) => InvokeVoidAsync("revealFocusedTab", bar);
+
     /// <param name="js">The JS runtime (injected).</param>
     public UiJsService(IJSRuntime js)
         : base(js, "./_content/Flare.Components/js/flare-ui.js") { }

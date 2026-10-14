@@ -17,15 +17,19 @@
             <FlareIconView Value="FlareIcons.ChevronLeft" />
         </button>
     }
-    <div class="@Css.Classes.Tabs.Bar" role="tablist" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef" @onkeydown="HandleKeyDown">
+    <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _context?.ActiveTab;
+            <div class="@Css.Classes.Tabs.Item" role="presentation" @key="tab">
             <button type="button" class="@Css.Classes.Tabs.TabButton @(isActive ? Css.Classes.Tabs.TabActive : "")"
                     id="@tab.TabId"
+                    @ref="_tabElements[tab]"
                     role="tab"
-                    aria-selected="@isActive"
+                    aria-selected="@(isActive ? "true" : "false")"
                     aria-controls="@tab.PanelId"
+                    aria-label="@tab.Label"
+                    data-closeable="@(tab.Closeable ? "true" : null)"
                     title="@tab.Tooltip"
                     tabindex="@(isActive ? 0 : -1)"
                     disabled="@tab.Disabled"
@@ -43,13 +47,15 @@
                 {
                     <span class="@Css.Classes.Tabs.Badge @tab.BadgeColor.CssClass" style="@tab.BadgeColor.StyleMainOn()">@tab.Badge</span>
                 }
+            </button>
                 @if (tab.Closeable)
                 {
-                    <button type="button" class="@Css.Classes.Tabs.TabClose" @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Aria_CloseTab)">
+                    <button type="button" class="@Css.Classes.Tabs.TabClose" tabindex="-1" disabled="@tab.Disabled"
+                            @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@($"{FlareStrings.Aria_CloseTab}: {tab.Label}")">
                         <FlareIconView Value="FlareIcons.Close" />
                     </button>
                 }
-            </button>
+            </div>
         }
     </div>
     @if (_showArrows)
@@ -170,6 +176,11 @@
 
     // Overflow scrolling (horizontal only): JS reports overflow + edge state.
     private ElementReference _barRef;
+    private readonly Dictionary<FlareTab, ElementReference> _tabElements = new();
+    private FlareTab? _focusPending;
+    private FlareTab? _closingTab;
+    private bool _focusBarPending;
+    private int _lastReportedIndex = -2;
     private DotNetObjectReference<FlareTabs>? _dotNetRef;
     private bool _overflowing;
     private bool _atStart = true;
@@ -179,15 +190,35 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _headerRefreshPending = false;
-        if (firstRender && !_vertical)
+        if (firstRender)
         {
             _dotNetRef = DotNetObjectReference.Create(this);
             try
             {
-                await Ui.RegisterTabScrollerAsync(_barRef, _dotNetRef);
+                await Ui.RegisterTabKeyboardAsync(_barRef, _dotNetRef);
+                if (!_vertical) await Ui.RegisterTabScrollerAsync(_barRef, _dotNetRef);
             }
             catch (InvalidOperationException) { }
             catch (JSException) { }
+        }
+        if (_focusPending is { } target)
+        {
+            _focusPending = null;
+            if (_tabElements.TryGetValue(target, out var element))
+            {
+                await element.FocusAsync(preventScroll: true);
+                await Ui.RevealFocusedTabAsync(_barRef);
+            }
+        }
+        else if (_focusBarPending)
+        {
+            _focusBarPending = false;
+            await _barRef.FocusAsync(preventScroll: true);
+        }
+        if (ActiveIndexChanged.HasDelegate && _currentIndex != ActiveIndex && _lastReportedIndex != _currentIndex)
+        {
+            _lastReportedIndex = _currentIndex;
+            await ActiveIndexChanged.InvokeAsync(_currentIndex);
         }
     }
 
@@ -206,6 +237,9 @@
 
     public override async ValueTask DisposeAsync()
     {
+        try { await Ui.RemoveTabKeyboardAsync(_barRef); }
+        catch (JSException) { }
+        catch (InvalidOperationException) { }
         try { await Ui.RemoveTabScrollerAsync(_barRef); }
         catch { }
         _dotNetRef?.Dispose();
@@ -224,14 +258,12 @@
     protected override void OnParametersSet()
     {
         _rootStyle = BuildRootStyle();
-        if (ActiveIndex == _lastBoundIndex) return;
-        _lastBoundIndex = ActiveIndex;
-        if (ActiveIndex >= 0 && ActiveIndex < _tabs.Count)
+        if (ActiveIndex != _lastBoundIndex || _active is null || _active.Disabled)
         {
-            _active = _tabs[ActiveIndex];
-            _currentIndex = ActiveIndex;
-            RebuildContext();
+            _lastBoundIndex = ActiveIndex;
+            SetActiveByIndex();
         }
+        if (_context?.ActiveTab != _active || _context?.Lazy != Lazy) RebuildContext();
     }
 
     private void RebuildContext()
@@ -252,6 +284,11 @@
 
     private void OnHeaderChanged()
     {
+        if (_active?.Disabled == true || (_active is null && _tabs.Any(t => !t.Disabled)))
+        {
+            SetActiveByIndex();
+            RebuildContext();
+        }
         if (_headerRefreshPending) return;
         _headerRefreshPending = true;
         StateHasChanged();
@@ -271,6 +308,9 @@
 
     private void UnregisterTab(FlareTab tab)
     {
+        _tabElements.Remove(tab);
+        var oldIndex = _tabs.IndexOf(tab);
+        var wasActive = _active == tab;
         _tabs.Remove(tab);
         if (_active == tab)
         {
@@ -282,6 +322,18 @@
             _currentIndex = _active is null ? -1 : _tabs.IndexOf(_active);
         }
         RebuildContext();
+        if (_closingTab == tab)
+        {
+            _closingTab = null;
+            var next = _tabs.Skip(Math.Max(0, oldIndex)).FirstOrDefault(t => !t.Disabled)
+                ?? _tabs.Take(Math.Max(0, oldIndex)).LastOrDefault(t => !t.Disabled);
+            if (wasActive || _active is null || _active.Disabled || !_tabs.Contains(_active))
+                _active = next;
+            if (_active is { Disabled: false }) _focusPending = _active;
+            else _focusBarPending = true;
+            _currentIndex = _active is null ? -1 : _tabs.IndexOf(_active);
+            RebuildContext();
+        }
         StateHasChanged();
     }
 
@@ -295,8 +347,9 @@
             return;
         }
         var idx = ActiveIndex >= 0 && ActiveIndex < _tabs.Count ? ActiveIndex : 0;
-        _active = _tabs[idx];
-        _currentIndex = idx;
+        _active = _tabs.Skip(idx).FirstOrDefault(t => !t.Disabled)
+            ?? _tabs.Take(idx).FirstOrDefault(t => !t.Disabled);
+        _currentIndex = _active is null ? -1 : _tabs.IndexOf(_active);
     }
 
     // Single funnel for selection: runs the preview guard, updates state, and notifies the binding.
@@ -310,6 +363,7 @@
         _active = tab;
         _currentIndex = index;
         RebuildContext();
+        _lastReportedIndex = index;
         if (ActiveIndexChanged.HasDelegate) await ActiveIndexChanged.InvokeAsync(index);
         StateHasChanged();
     }
@@ -322,8 +376,11 @@
 
     private async Task CloseTab(FlareTab tab)
     {
+        if (tab.Disabled) return;
         var index = _tabs.IndexOf(tab);
+        if (index < 0) return;
         if (!await AllowInteraction(index, tab.Label, TabInteractionType.Close)) return;
+        _closingTab = tab;
         await OnTabClose.InvokeAsync(tab.Label);
     }
 
@@ -335,20 +392,37 @@
         return !args.Cancel;
     }
 
-    private async Task HandleKeyDown(KeyboardEventArgs e)
+    /// <summary>Activates and focuses the available tab addressed by an orientation-aware navigation key.</summary>
+    /// <param name="key">The navigation key whose native scroll behavior was prevented.</param>
+    /// <param name="rtl">Whether the tablist resolves to right-to-left in the browser.</param>
+    [JSInvokable]
+    public async Task OnTabNavigation(string key, bool rtl)
     {
+        if (key == "Delete")
+        {
+            if (_active is { Closeable: true, Disabled: false } tab) await CloseTab(tab);
+            return;
+        }
         var enabled = _tabs.Where(t => !t.Disabled).ToList();
         if (enabled.Count == 0) return;
         var current = _active is not null ? enabled.IndexOf(_active) : -1;
 
-        FlareTab? target = e.Key switch
+        var forward = _vertical ? "ArrowDown" : rtl ? "ArrowLeft" : "ArrowRight";
+        var backward = _vertical ? "ArrowUp" : rtl ? "ArrowRight" : "ArrowLeft";
+        FlareTab? target = key switch
         {
-            "ArrowRight" or "ArrowDown" => enabled[(current + 1) % enabled.Count],
-            "ArrowLeft" or "ArrowUp" => enabled[((current - 1) + enabled.Count) % enabled.Count],
+            var k when k == forward => enabled[(current + 1) % enabled.Count],
+            var k when k == backward => enabled[current <= 0 ? enabled.Count - 1 : current - 1],
             "Home" => enabled[0],
             "End" => enabled[^1],
             _ => null,
         };
-        if (target is not null) await SelectTab(target);
+        if (target is null) return;
+        await SelectTab(target);
+        if (_active == target)
+        {
+            _focusPending = target;
+            StateHasChanged();
+        }
     }
 }

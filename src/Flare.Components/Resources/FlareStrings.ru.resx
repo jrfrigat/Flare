@@ -314,4 +314,6 @@
   <data name="TimeSpan_HoursShort" xml:space="preserve"><value>ч</value></data>
   <data name="TimeSpan_MinutesShort" xml:space="preserve"><value>м</value></data>
   <data name="TimeSpan_SecondsShort" xml:space="preserve"><value>с</value></data>
+  <data name="Resize_Decrease" xml:space="preserve"><value>Уменьшить размер</value></data>
+  <data name="Resize_Increase" xml:space="preserve"><value>Увеличить размер</value></data>
 </root>

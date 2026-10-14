@@ -1,6 +1,10 @@
+<FlareStack Gap="FlareSpacing.Small" dir="@(_rtl ? "rtl" : "ltr")">
+<FlareSwitch @bind-Value="_rtl" Label="@GalleryStrings.ReviewDialog_Rtl" />
 <FlareConfirmDialogProvider @ref="_provider">
     <FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowConfirm">Delete item</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowLongConfirm">@GalleryStrings.ReviewDialog_Long</FlareButton>
 </FlareConfirmDialogProvider>
+</FlareStack>
 
 @if (_result.HasValue)
 {
@@ -12,6 +16,15 @@
 @code {
     private FlareConfirmDialogProvider? _provider;
     private bool? _result;
+    private bool _rtl;
+
+    private async Task ShowLongConfirm()
+    {
+        if (_provider is null) return;
+        _result = await _provider.ConfirmAsync(GalleryStrings.ReviewDialog_LongTitle,
+            string.Join("\n\n", Enumerable.Repeat(GalleryStrings.ReviewDialog_LongBody, 80)),
+            GalleryStrings.ReviewDialog_LongYes, GalleryStrings.ReviewDialog_LongNo);
+    }
 
     private async Task ShowConfirm()
     {

@@ -2,23 +2,32 @@
 .flare-msgbox-scrim { z-index: var(--flare-z-modal); }
 
 .flare-msgbox {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
     background: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
     border-radius: var(--flare-dialog-radius);
-    min-width: 17.5rem;
-    max-width: 30rem;
+    min-width: min(17.5rem, calc(100vw - var(--flare-overlay-viewport-inset)));
+    max-width: min(30rem, calc(100vw - var(--flare-overlay-viewport-inset)));
+    max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
     width: 100%;
     box-shadow: var(--flare-elevation-3);
-    overflow: hidden;
+    overflow: auto;
+    overflow-wrap: anywhere;
 }
 
 .flare-msgbox__header {
+    flex: 0 0 auto;
     padding: var(--flare-spacing-12) var(--flare-spacing-12) var(--flare-spacing-6);
 }
 
 /* __title style comes from the shared overlay-title rule (dialog.css). */
 
 .flare-msgbox__content {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow: auto;
     padding: 0 var(--flare-spacing-12) var(--flare-spacing-8);
     display: flex;
     flex-direction: column;
@@ -57,13 +66,18 @@
 }
 
 .flare-msgbox__actions {
+    flex: 0 0 auto;
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--flare-spacing-4);
     padding: 0 var(--flare-spacing-12) var(--flare-spacing-12);
 }
 
 .flare-msgbox__btn {
+    max-inline-size: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
     position: relative;
     z-index: 0;
     padding: var(--flare-spacing-4) var(--flare-spacing-10);

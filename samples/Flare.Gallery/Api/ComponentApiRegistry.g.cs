@@ -1773,6 +1773,8 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, @"Dismisses the active confirmation when the shared overlay stack receives Escape.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ConfirmAsync", @"ConfirmAsync(string title, string message, string confirmLabel, string cancelLabel)", @"Task<bool?>", null, null,
                     new ApiMethodParameter[]
                     {
@@ -1781,6 +1783,8 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"confirmLabel", @"string", null),
                         new ApiMethodParameter(@"cancelLabel", @"string", null),
                     }),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Releases modal resources and resolves an unanswered confirmation as dismissed.",
+                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -6134,6 +6138,8 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"Back", @"Back()", @"Task", null, @"Returns to the previous step. No-op on the first step. Runs the OnStepChanging guard.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"GoTo", @"GoTo(int index)", @"Task", null, @"Navigates to index (clamped to range) when allowed by the linear/skippable rules. Runs the OnStepChanging guard.",
                     new ApiMethodParameter[]
                     {
@@ -6141,6 +6147,12 @@ public static class ComponentApiRegistry
                     }),
                 new ApiMethodInfo(@"Next", @"Next()", @"Task", null, @"Advances to the next step. No-op on the last step. Runs the OnStepChanging guard.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Moves focus between available step indicators without activating a step.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"A navigation key handled by the tablist keyboard listener."),
+                        new ApiMethodParameter(@"rtl", @"bool", @"Whether the tablist uses right-to-left layout."),
+                    }),
             },
             new string[]
             {
@@ -6364,6 +6376,12 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Activates and focuses the available tab addressed by an orientation-aware navigation key.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"The navigation key whose native scroll behavior was prevented."),
+                        new ApiMethodParameter(@"rtl", @"bool", @"Whether the tablist resolves to right-to-left in the browser."),
+                    }),
                 new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"void", null, null,
                     new ApiMethodParameter[]
                     {

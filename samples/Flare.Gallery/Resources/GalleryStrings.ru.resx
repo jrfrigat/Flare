@@ -2078,7 +2078,7 @@
     <value>Асинхронная проверка перед переходом</value>
   </data>
   <data name="Stepper_CustomNav" xml:space="preserve">
-    <value>Своя навигация и прокрутка колесом</value>
+    <value>Своя навигация</value>
   </data>
   <data name="Stepper_Skippable" xml:space="preserve">
     <value>Привязка индекса и пропускаемый шаг</value>
@@ -3925,4 +3925,60 @@
   <data name="ChartsDemo_PieType" xml:space="preserve"><value>Круговая</value></data>
   <data name="ChartsDemo_DonutType" xml:space="preserve"><value>Кольцевая</value></data>
   <data name="ChartsDemo_ComboType" xml:space="preserve"><value>Комбинированная</value></data>
+  <data name="Stepper_KeyboardHint" xml:space="preserve"><value>Перейдите к индикаторам шагов клавишей Tab. Стрелки в направлении ориентации и Home/End перемещают фокус на доступный шаг, Enter или пробел активируют его. Заблокированные шаги нельзя активировать.</value></data>
+  <data name="StepDemo_Account" xml:space="preserve"><value>Учетная запись</value></data>
+  <data name="StepDemo_BasicInfo" xml:space="preserve"><value>Основные сведения</value></data>
+  <data name="StepDemo_AccountNote" xml:space="preserve"><value>Введите данные учетной записи.</value></data>
+  <data name="StepDemo_Name" xml:space="preserve"><value>Имя</value></data>
+  <data name="StepDemo_NameHint" xml:space="preserve"><value>Алексей</value></data>
+  <data name="StepDemo_Email" xml:space="preserve"><value>Почта</value></data>
+  <data name="StepDemo_Profile" xml:space="preserve"><value>Профиль</value></data>
+  <data name="StepDemo_Customize" xml:space="preserve"><value>Настройка</value></data>
+  <data name="StepDemo_ProfileNote" xml:space="preserve"><value>Настройте профиль.</value></data>
+  <data name="StepDemo_Role" xml:space="preserve"><value>Роль</value></data>
+  <data name="StepDemo_ChooseRole" xml:space="preserve"><value>Выберите роль</value></data>
+  <data name="StepDemo_Developer" xml:space="preserve"><value>Разработчик</value></data>
+  <data name="StepDemo_Designer" xml:space="preserve"><value>Дизайнер</value></data>
+  <data name="StepDemo_Manager" xml:space="preserve"><value>Менеджер проекта</value></data>
+  <data name="StepDemo_PublicProfile" xml:space="preserve"><value>Открытый профиль</value></data>
+  <data name="StepDemo_Review" xml:space="preserve"><value>Проверка</value></data>
+  <data name="StepDemo_Confirm" xml:space="preserve"><value>Подтверждение</value></data>
+  <data name="StepDemo_Ready" xml:space="preserve"><value>Все готово</value></data>
+  <data name="StepDemo_ReadyNote" xml:space="preserve"><value>Все шаги завершены.</value></data>
+  <data name="StepDemo_Setup" xml:space="preserve"><value>Шаги настройки</value></data>
+  <data name="StepDemo_Details" xml:space="preserve"><value>Сведения</value></data>
+  <data name="StepDemo_AnyOrder" xml:space="preserve"><value>Можно менять в любом порядке</value></data>
+  <data name="StepDemo_NonLinear" xml:space="preserve"><value>Нелинейный режим: свободно переходите между доступными шагами.</value></data>
+  <data name="StepDemo_Payment" xml:space="preserve"><value>Оплата</value></data>
+  <data name="StepDemo_Declined" xml:space="preserve"><value>Карта отклонена</value></data>
+  <data name="StepDemo_ErrorNote" xml:space="preserve"><value>На этом шаге показана ошибка.</value></data>
+  <data name="StepDemo_Done" xml:space="preserve"><value>Готово</value></data>
+  <data name="StepDemo_Finish" xml:space="preserve"><value>Завершение</value></data>
+  <data name="StepDemo_Index" xml:space="preserve"><value>Индекс текущего шага: {0}</value></data>
+  <data name="StepDemo_Terms" xml:space="preserve"><value>Условия</value></data>
+  <data name="StepDemo_Required" xml:space="preserve"><value>Обязательный шаг</value></data>
+  <data name="StepDemo_TermsNote" xml:space="preserve"><value>Примите условия, чтобы продолжить. Асинхронная проверка блокирует переход вперед до согласия.</value></data>
+  <data name="StepDemo_Accept" xml:space="preserve"><value>Я принимаю условия</value></data>
+  <data name="StepDemo_Blocked" xml:space="preserve"><value>Примите условия, чтобы продолжить.</value></data>
+  <data name="StepDemo_Passed" xml:space="preserve"><value>Проверка пройдена.</value></data>
+  <data name="StepDemo_Scope" xml:space="preserve"><value>Область доступа</value></data>
+  <data name="StepDemo_Permissions" xml:space="preserve"><value>Выберите разрешения.</value></data>
+  <data name="StepDemo_Generate" xml:space="preserve"><value>Проверьте разрешения и подтвердите выбор. Используйте кнопки перехода или индикаторы шагов.</value></data>
+  <data name="StepDemo_Previous" xml:space="preserve"><value>Предыдущий шаг</value></data>
+  <data name="StepDemo_Next" xml:space="preserve"><value>Следующий шаг</value></data>
+  <data name="StepDemo_Plan" xml:space="preserve"><value>Тариф</value></data>
+  <data name="StepDemo_PlanNote" xml:space="preserve"><value>Выберите тариф для вашей команды.</value></data>
+  <data name="StepDemo_Addons" xml:space="preserve"><value>Дополнения</value></data>
+  <data name="StepDemo_SkipNote" xml:space="preserve"><value>Этот необязательный шаг можно пропустить через индикатор проверки.</value></data>
+  <data name="StepDemo_Skip" xml:space="preserve"><value>Перейти к проверке</value></data>
+  <data name="StepDemo_BoundIndex" xml:space="preserve"><value>Связанный индекс: {0}</value></data>
+  <data name="StepDemo_EdgeCases" xml:space="preserve"><value>Узкие контейнеры и RTL</value></data>
+  <data name="StepDemo_LongLabel" xml:space="preserve"><value>Очень длинная подпись для проверки переноса и прокрутки</value></data>
+  <data name="StepDemo_LongWord" xml:space="preserve"><value>ДлиннаяНеразрывнаяПодписьШагаВУзкомКонтейнере</value></data>
+  <data name="ReviewDialog_Long" xml:space="preserve"><value>Открыть длинное подтверждение</value></data>
+  <data name="ReviewDialog_LongTitle" xml:space="preserve"><value>Длинный текст и названия действий</value></data>
+  <data name="ReviewDialog_LongBody" xml:space="preserve"><value>Этот абзац проверяет прокрутку: заголовок и действия должны оставаться доступными. https://example.com/a-very-long-unbroken-address-for-narrow-dialogs</value></data>
+  <data name="ReviewDialog_LongYes" xml:space="preserve"><value>Подтвердить действие и перейти к следующему шагу</value></data>
+  <data name="ReviewDialog_LongNo" xml:space="preserve"><value>Сохранить данные и вернуться на предыдущий экран</value></data>
+  <data name="ReviewDialog_Rtl" xml:space="preserve"><value>Подтверждение справа налево</value></data>
 </root>

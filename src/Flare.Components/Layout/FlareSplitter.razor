@@ -13,7 +13,7 @@
      aria-label="@(AriaLabel ?? FlareStrings.Splitter_Resize)"
      style="@_rootStyle"
      @ref="_gutter"
-     @onkeydown="HandleKeyDown"
+     data-flare-splitter-keyboard-step="@KeyboardStep"
      @attributes="AdditionalAttributes">
     @if (ChildContent is not null)
     {
@@ -31,6 +31,10 @@
     {
         <span class="@Css.Classes.Splitter.GutterBar" aria-hidden="true"></span>
     }
+    <span class="@Css.Classes.Splitter.StepDecrease" data-flare-splitter-step="-1" aria-hidden="true"
+          title="@FlareStrings.Resize_Decrease">-</span>
+    <span class="@Css.Classes.Splitter.StepIncrease" data-flare-splitter-step="1" aria-hidden="true"
+          title="@FlareStrings.Resize_Increase">+</span>
 </div>
 
 @code {
@@ -144,22 +148,6 @@
     {
         if (!string.IsNullOrEmpty(newSize))
             await OnSizeChanged.InvokeAsync(newSize);
-    }
-
-    // Keyboard resize: arrow keys nudge the previous neighbour. The resolved axis lives in JS (for
-    // Auto it depends on the parent), so the key's own axis is passed and JS ignores perpendicular keys.
-    private async Task HandleKeyDown(KeyboardEventArgs e)
-    {
-        var dir = e.Key switch
-        {
-            "ArrowRight" or "ArrowDown" => 1,
-            "ArrowLeft" or "ArrowUp" => -1,
-            _ => 0,
-        };
-        if (dir == 0) return;
-        var keyAxis = e.Key is "ArrowLeft" or "ArrowRight" ? "x" : "y";
-        if (_dotNetRef is null) return;
-        await SplitterJs.NudgeAsync(_gutter, _axis, dir * KeyboardStep, keyAxis, MinSize, MaxSize, _dotNetRef);
     }
 
     public override async ValueTask DisposeAsync()

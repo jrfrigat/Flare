@@ -1,14 +1,15 @@
 @namespace Flare.Components
 @inject IMessageBoxService MessageBoxService
 @inject IOverlayJsService Overlay
+@inject IScrollService Scroll
 @implements IDisposable
 @implements IAsyncDisposable
 
 @if (MessageBoxService.Current is { } req)
 {
-    <div class="@Css.Classes.Msgbox.Scrim" @onclick="@(req.Kind == MessageBoxKind.Alert ? Confirm : Cancel)">
+    <div class="@Css.Classes.Msgbox.Scrim" @onclick="@(() => Respond(req, req.Kind == MessageBoxKind.Alert))">
         <div class="@Css.Classes.Msgbox.Root" @onclick:stopPropagation="true"
-             @onkeydown="OnKeyDown"
+             @onkeydown="@(e => OnKeyDown(req, e))"
              role="@(req.Kind == MessageBoxKind.Alert ? "alertdialog" : "dialog")"
              aria-modal="true"
              aria-labelledby="@_titleId"
@@ -28,9 +29,9 @@
                     <input id="@_inputId"
                            class="@Css.Classes.Msgbox.Input"
                            type="text"
-                           @bind="_value"
-                           @bind:event="oninput"
-                           @onkeydown="OnInputKeyDown"
+                           value="@_value"
+                           @oninput="@(e => SetValue(req, e))"
+                           @onkeyup="@(e => OnInputKeyUp(req, e))"
                            placeholder="@req.DefaultValue" />
                 }
                 else if (!string.IsNullOrEmpty(req.Label))
@@ -41,9 +42,9 @@
             <div class="@Css.Classes.Msgbox.Actions">
                 @if (req.Kind != MessageBoxKind.Alert)
                 {
-                    <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="Cancel">@req.CancelLabel</button>
+                    <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="@(() => Respond(req, false))">@req.CancelLabel</button>
                 }
-                <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="Confirm">@req.ConfirmLabel</button>
+                <button type="button" class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="@(() => Respond(req, true))">@req.ConfirmLabel</button>
             </div>
         </div>
     </div>
@@ -63,6 +64,7 @@
     private MessageBoxRequest? _valueRequest;
     private readonly SemaphoreSlim _focusSync = new(1, 1);
     private bool _disposed;
+    private IAsyncDisposable? _scrollLock;
 
     protected override void OnInitialized()
     {
@@ -91,11 +93,14 @@
         {
             if (_disposed) return;
             var request = MessageBoxService.Current;
-            if (ReferenceEquals(request, _focusedRequest)) return;
+            if (ReferenceEquals(request, _focusedRequest) && (request is not null || _scrollLock is null)) return;
             if (request is null)
-                await Overlay.ReleaseFocusTrapAsync(_instanceId);
+                await ReleaseModalAsync();
             else if (_focusedRequest is null)
+            {
+                _scrollLock ??= await Scroll.LockAsync();
                 await Overlay.TrapFocusAsync(_instanceId, _dialogEl);
+            }
             else
                 await Overlay.FocusFirstAsync(_dialogEl);
             _focusedRequest = request;
@@ -106,30 +111,49 @@
         finally { _focusSync.Release(); }
     }
 
-    private void Confirm() => MessageBoxService.Respond(_value.Length > 0 ? _value : "confirmed");
-    private void Cancel()  => MessageBoxService.Respond(null);
+    private void Respond(MessageBoxRequest request, bool confirm)
+    {
+        if (_disposed || !ReferenceEquals(MessageBoxService.Current, request)) return;
+        MessageBoxService.Respond(confirm
+            ? request.Kind == MessageBoxKind.Prompt ? _value : "confirmed"
+            : null);
+    }
+
+    private void SetValue(MessageBoxRequest request, ChangeEventArgs e)
+    {
+        if (!_disposed && ReferenceEquals(MessageBoxService.Current, request))
+            _value = e.Value?.ToString() ?? string.Empty;
+    }
 
     // Keyboard handler on the dialog container (catches Escape for close).
-    private void OnKeyDown(KeyboardEventArgs e)
+    private void OnKeyDown(MessageBoxRequest request, KeyboardEventArgs e)
     {
         if (e.Key == "Escape")
         {
-            if (MessageBoxService.Current?.Kind == MessageBoxKind.Alert)
-                Confirm(); // Alert has no Cancel - Escape dismisses it via Confirm.
-            else
-                Cancel();
+            Respond(request, request.Kind == MessageBoxKind.Alert);
         }
     }
 
-    // Keyboard handler on the prompt input (Enter to confirm).
-    private void OnInputKeyDown(KeyboardEventArgs e)
+    // Commit on release so returning focus cannot activate the launcher with the same Enter press.
+    private void OnInputKeyUp(MessageBoxRequest request, KeyboardEventArgs e)
     {
-        if (e.Key == "Enter") Confirm();
+        if (e.Key == "Enter") Respond(request, true);
     }
 
     public void Dispose()
     {
         MessageBoxService.OnStateChanged -= HandleStateChanged;
+    }
+
+    private async ValueTask ReleaseModalAsync()
+    {
+        try { await Overlay.ReleaseFocusTrapAsync(_instanceId); }
+        finally
+        {
+            var held = _scrollLock;
+            _scrollLock = null;
+            if (held is not null) await held.DisposeAsync();
+        }
     }
 
     async ValueTask IAsyncDisposable.DisposeAsync()
@@ -139,8 +163,8 @@
         await _focusSync.WaitAsync();
         try
         {
-            if (_focusedRequest is not null)
-                await Overlay.ReleaseFocusTrapAsync(_instanceId);
+            if (_focusedRequest is not null || _scrollLock is not null)
+                await ReleaseModalAsync();
             _focusedRequest = null;
         }
         catch (InvalidOperationException) { }

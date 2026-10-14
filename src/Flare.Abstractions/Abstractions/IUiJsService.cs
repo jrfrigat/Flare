@@ -12,6 +12,19 @@ namespace Flare.Components.Services;
 /// </summary>
 public interface IUiJsService : IAsyncDisposable
 {
+    /// <summary>Handles tab-strip navigation keys without suppressing ordinary button or Tab behavior.</summary>
+    /// <param name="bar">The tablist whose orientation and computed direction determine the handled keys.</param>
+    /// <param name="dotNetRef">Receives OnTabNavigation(string key, bool rtl) after native scrolling is prevented.</param>
+    ValueTask RegisterTabKeyboardAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class;
+
+    /// <summary>Removes the keyboard listener from a tablist.</summary>
+    /// <param name="bar">The registered tablist.</param>
+    ValueTask RemoveTabKeyboardAsync(ElementReference bar);
+
+    /// <summary>Reveals the keyboard-focused tab by scrolling only its tablist, preserving the page position.</summary>
+    /// <param name="bar">The focused tab's owning tablist.</param>
+    ValueTask RevealFocusedTabAsync(ElementReference bar);
+
     /// <summary>Observes a tab bar and reports overflow state via <c>OnTabScrollState</c>.</summary>
     /// <param name="bar">The scrollable tab-bar element.</param>
     /// <param name="dotNetRef">The component reference whose <c>OnTabScrollState(bool,bool,bool)</c> is invoked.</param>

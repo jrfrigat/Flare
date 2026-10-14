@@ -101,6 +101,10 @@
   cursor: default;
 }
 
+.flare-tabs:dir(rtl) .flare-tabs__scroll > .flare-icon {
+  transform: rotate(180deg);
+}
+
 .flare-tabs__scroll > .flare-icon {
   font-size: 1.25rem;
 }
@@ -305,13 +309,22 @@
   padding: 0;
 }
 
+.flare-tabs__item { position: relative; display: inline-flex; flex-shrink: 0; }
+.flare-tabs__item > .flare-tabs__tab { width: 100%; }
+.flare-tabs__item:has(> .flare-tabs__tab-close) > .flare-tabs__tab {
+  padding-inline-end: calc(var(--flare-spacing-6) + 1.25rem);
+}
 .flare-tabs__tab-close {
+  position: absolute;
+  inset-inline-end: var(--flare-spacing-2);
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 1.25rem;
   height: 1.25rem;
-  margin-left: var(--flare-spacing-2);
+  margin: 0;
   padding: 0;
   border: none;
   border-radius: 50%;

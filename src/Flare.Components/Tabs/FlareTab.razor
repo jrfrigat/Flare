@@ -1,7 +1,9 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@Css.Classes.Tabs.Panel @(_isActive ? "" : Css.Classes.Tabs.PanelHidden)"
+<div class="@BuildCssClass(Css.Classes.Tabs.Panel, _isActive ? null : Css.Classes.Tabs.PanelHidden)"
+     style="@Style"
+     @attributes="AdditionalAttributes"
      role="tabpanel"
      id="@PanelId"
      aria-labelledby="@TabId">

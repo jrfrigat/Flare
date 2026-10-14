@@ -2,24 +2,24 @@
    the optional middle step is marked Skippable, so the "Review" indicator can be clicked to jump
    straight past it. *@
 <FlareStepper @bind-ActiveIndex="_index">
-    <FlareStep Label="Plan" Description="Choose a plan">
-        <FlareText Typo="TypographyScale.BodyMedium">Select the plan that fits your team.</FlareText>
+    <FlareStep Label="@GalleryStrings.StepDemo_Plan" Description="@GalleryStrings.StepDemo_PlanNote">
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_PlanNote</FlareText>
     </FlareStep>
-    <FlareStep Label="Add-ons" Optional="true" Skippable="true">
+    <FlareStep Label="@GalleryStrings.StepDemo_Addons" Optional="true" Skippable="true">
         <FlareText Typo="TypographyScale.BodyMedium">
-            Optional and skippable - click the "Review" indicator to jump past this step.
+            @GalleryStrings.StepDemo_SkipNote
         </FlareText>
     </FlareStep>
-    <FlareStep Label="Review" Description="Confirm">
-        <FlareAlert Severity="AlertSeverity.Success" Title="Ready to submit">All steps complete.</FlareAlert>
+    <FlareStep Label="@GalleryStrings.StepDemo_Review" Description="@GalleryStrings.StepDemo_Confirm">
+        <FlareAlert Severity="AlertSeverity.Success" Title="@GalleryStrings.StepDemo_Ready">@GalleryStrings.StepDemo_ReadyNote</FlareAlert>
     </FlareStep>
 </FlareStepper>
 
-<FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Wrap="true" Style="margin-top:1rem;">
-    <FlareButton Variant="ButtonVariant.Outlined" Disabled="@(_index == 0)" OnClick="@(() => _index--)">Prev</FlareButton>
-    <FlareButton Variant="ButtonVariant.Outlined" Disabled="@(_index >= 2)" OnClick="@(() => _index++)">Next</FlareButton>
-    <FlareButton Variant="ButtonVariant.Tonal" Disabled="@(_index == 2)" OnClick="@(() => _index = 2)">Skip to review</FlareButton>
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Bound index: @_index</FlareText>
+<FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Wrap="true">
+    <FlareButton Variant="ButtonVariant.Outlined" Disabled="@(_index == 0)" OnClick="@(() => _index--)">@GalleryStrings.StepDemo_Previous</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" Disabled="@(_index >= 2)" OnClick="@(() => _index++)">@GalleryStrings.StepDemo_Next</FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" Disabled="@(_index == 2)" OnClick="@(() => _index = 2)">@GalleryStrings.StepDemo_Skip</FlareButton>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@string.Format(GalleryStrings.StepDemo_BoundIndex, _index)</FlareText>
 </FlareStack>
 
 @code {

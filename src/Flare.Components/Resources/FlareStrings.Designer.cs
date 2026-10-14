@@ -1583,6 +1583,12 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Splitter_Resize", resourceCulture);
             }
         }
+
+        /// <summary>Localized label for decreasing a resizable dimension.</summary>
+        public static string Resize_Decrease => ResourceManager.GetString("Resize_Decrease", resourceCulture);
+
+        /// <summary>Localized label for increasing a resizable dimension.</summary>
+        public static string Resize_Increase => ResourceManager.GetString("Resize_Increase", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Next.

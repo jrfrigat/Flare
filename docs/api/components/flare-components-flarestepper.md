@@ -29,6 +29,11 @@
 Returns to the previous step. No-op on the first step. Runs the OnStepChanging guard.
 Returns: `Task`.
 
+### `DisposeAsync()`
+
+Disposes the component; override to release JS interop or subscriptions.
+Returns: `ValueTask`.
+
 ### `GoTo(int index)`
 
 Navigates to index (clamped to range) when allowed by the linear/skippable rules. Runs the OnStepChanging guard.
@@ -42,6 +47,16 @@ Returns: `Task`.
 
 Advances to the next step. No-op on the last step. Runs the OnStepChanging guard.
 Returns: `Task`.
+
+### `OnTabNavigation(string key, bool rtl)`
+
+Moves focus between available step indicators without activating a step.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | A navigation key handled by the tablist keyboard listener. |
+| `rtl` | `bool` | Whether the tablist uses right-to-left layout. |
 
 
 ## Inheritance

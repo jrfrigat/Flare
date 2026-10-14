@@ -7,6 +7,7 @@ public interface IConfirmDialogService
     /// Shows a confirm dialog. Returns <see langword="true"/> when confirmed,
     /// <see langword="false"/> when the cancel button is clicked,
     /// or <see langword="null"/> when dismissed (e.g. Escape key).
+    /// Concurrent requests wait their turn in call order; each caller receives its own answer.
     /// </summary>
     Task<bool?> ConfirmAsync(string title, string message,
         string? confirmLabel = null, string? cancelLabel = null);

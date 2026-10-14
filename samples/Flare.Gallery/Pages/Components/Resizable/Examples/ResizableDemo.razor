@@ -1,8 +1,14 @@
 @using static Flare.Components.FlareResizable
 
-<FlareCard Variant="CardVariant.Outlined">
-    <FlareResizable Edge="ResizableEdge.Right" InitialSize="240px" MinSize="120px" MaxSize="480px"
-                    Style="background:var(--flare-color-surface-container);border-radius:var(--flare-shape-medium);height:120px;display:flex;align-items:center;justify-content:center;">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">← drag right edge -></FlareText>
+<FlareStack Gap="FlareSpacing.Medium">
+@foreach (var edge in Enum.GetValues<ResizableEdge>())
+{
+    var horizontal = edge is ResizableEdge.Left or ResizableEdge.Right;
+    <FlareCard Variant="CardVariant.Outlined">
+    <FlareResizable Edge="edge" InitialSize="240px" MinSize="120px" MaxSize="480px"
+                    Style="@(horizontal ? "height:120px;" : "width:240px;")">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@Flare.Components.Resources.FlareStrings.Splitter_Resize: @edge</FlareText>
     </FlareResizable>
-</FlareCard>
+    </FlareCard>
+}
+</FlareStack>

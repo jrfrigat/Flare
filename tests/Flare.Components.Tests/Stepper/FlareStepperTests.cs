@@ -6,6 +6,80 @@ namespace Flare.Components.Tests;
 public class FlareStepperTests : FlareTestContext
 {
     [Fact]
+    public void MultipleSteppers_HaveUniqueIdsAndOwnPanelLabels()
+    {
+        var cut = Render<FlareStack>(p => p.AddChildContent(builder =>
+        {
+            for (var i = 0; i < 2; i++)
+            {
+                builder.OpenComponent<FlareStepper>(0);
+                builder.AddAttribute(1, "ChildContent", ThreeSteps("One", "Two", "Three"));
+                builder.CloseComponent();
+            }
+        }));
+        var nodes = cut.FindAll("[role=tab], [role=tabpanel]");
+        Assert.Equal(nodes.Count, nodes.Select(n => n.Id).Distinct().Count());
+        foreach (var panel in cut.FindAll("[role=tabpanel]"))
+        {
+            var tab = cut.Find("#" + panel.GetAttribute("aria-labelledby"));
+            Assert.Equal(panel.Id, tab.GetAttribute("aria-controls"));
+            Assert.Equal(panel.ParentElement, tab.Closest($".{Css.Classes.Stepper.Root}"));
+        }
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    [InlineData(100)]
+    public async Task GoTo_EmptyStepper_IsNoOp(int index)
+    {
+        var cut = Render<FlareStepper>();
+        await cut.InvokeAsync(() => cut.Instance.GoTo(index));
+        Assert.Empty(cut.FindAll("[role=tab]"));
+        cut.Render(p => p.AddChildContent(ThreeSteps("One", "Two", "Three")));
+        await cut.InvokeAsync(() => cut.Instance.GoTo(1));
+        Assert.Equal("Two", ActiveLabel(cut));
+        cut.Render(p => p.AddChildContent((RenderFragment)(_ => { })));
+        await cut.InvokeAsync(() => cut.Instance.GoTo(index));
+        Assert.Empty(cut.FindAll("[role=tab]"));
+    }
+
+    [Theory]
+    [InlineData(StepperOrientation.Horizontal, "ArrowRight", "1")]
+    [InlineData(StepperOrientation.Vertical, "ArrowDown", "1")]
+    [InlineData(StepperOrientation.Horizontal, "End", "2")]
+    public void KeyboardNavigation_MovesTabStopWithoutActivating(StepperOrientation orientation, string key, string index)
+    {
+        var cut = Render<FlareStepper>(p => p
+            .Add(x => x.Orientation, orientation)
+            .Add(x => x.NonLinear, true)
+            .AddChildContent(ThreeSteps("One", "Two", "Three")));
+
+        cut.InvokeAsync(() => cut.Instance.OnTabNavigation(key, false));
+
+        var tabs = cut.FindAll("[role=tab]");
+        Assert.Equal("0", tabs[int.Parse(index)].GetAttribute("tabindex"));
+        Assert.Single(tabs, t => t.GetAttribute("tabindex") == "0");
+        Assert.Equal("One", ActiveLabel(cut));
+        Assert.All(tabs, tab => Assert.Equal("BUTTON", tab.TagName));
+    }
+
+    [Fact]
+    public void KeyboardNavigation_SkipsBlockedStepsAndActivationHonorsGuard()
+    {
+        var cut = Render<FlareStepper>(p => p
+            .Add(x => x.OnStepChanging, _ => Task.FromResult(false))
+            .AddChildContent(ThreeSteps("One", "Two", "Three")));
+
+        cut.InvokeAsync(() => cut.Instance.OnTabNavigation("End", false));
+        Assert.Equal("0", cut.FindAll("[role=tab]")[1].GetAttribute("tabindex"));
+        cut.FindAll("[role=tab]")[1].Click();
+        Assert.Equal("One", ActiveLabel(cut));
+        cut.FindAll("[role=tab]")[2].Click();
+        Assert.Equal("One", ActiveLabel(cut));
+    }
+
+    [Fact]
     public void RendersRootDiv()
     {
         var cut = Render<FlareStepper>();

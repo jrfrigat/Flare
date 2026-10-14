@@ -15,6 +15,7 @@
             <FlareButton OnClick="ConfirmAsync">@GalleryStrings.Services_Confirm</FlareButton>
             <FlareButton Variant="ButtonVariant.Tonal" OnClick="AlertAsync">@GalleryStrings.Services_Alert</FlareButton>
             <FlareButton Variant="ButtonVariant.Outlined" OnClick="PromptAsync">@GalleryStrings.Services_Prompt</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" OnClick="LongConfirmAsync">@GalleryStrings.ReviewDialog_Long</FlareButton>
         </FlareStack>
         @if (_result is not null)
         {
@@ -28,6 +29,14 @@
 
 @code {
     private string? _result;
+
+    private async Task LongConfirmAsync()
+    {
+        var result = await MessageBox.ConfirmAsync(GalleryStrings.ReviewDialog_LongTitle,
+            string.Join("\n\n", Enumerable.Repeat(GalleryStrings.ReviewDialog_LongBody, 80)),
+            GalleryStrings.ReviewDialog_LongYes, GalleryStrings.ReviewDialog_LongNo);
+        _result = result.ToString();
+    }
 
     private const string _usage = """
         @inject IMessageBoxService MessageBox

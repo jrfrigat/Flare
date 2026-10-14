@@ -1,26 +1,26 @@
 <FlareStepper OnStepChanging="GuardAsync">
-    <FlareStep Label="Terms" Description="Required">
+    <FlareStep Label="@GalleryStrings.StepDemo_Terms" Description="@GalleryStrings.StepDemo_Required">
         <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Gavel" /></IconContent>
         <ChildContent>
-            <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
-                You must accept the terms before continuing. The async guard blocks "Next" until you do.
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.StepDemo_TermsNote
             </FlareText>
-            <FlareCheckbox @bind-Value="_agreed" Label="I accept the terms" />
+            <FlareCheckbox @bind-Value="_agreed" Label="@GalleryStrings.StepDemo_Accept" />
             @if (_blocked)
             {
-                <FlareText Color="FlareColor.Error" Typo="TypographyScale.BodySmall" Style="display:block;margin-top:0.5rem;">
-                    Please accept the terms to continue.
+                <FlareText Color="FlareColor.Error" Typo="TypographyScale.BodySmall">
+                    @GalleryStrings.StepDemo_Blocked
                 </FlareText>
             }
         </ChildContent>
     </FlareStep>
-    <FlareStep Label="Details">
-        <FlareStack Gap="FlareSpacing.Small" Style="max-width:20rem;">
-            <FlareField TValue="string" Label="Name" Placeholder="John Doe" />
+    <FlareStep Label="@GalleryStrings.StepDemo_Details">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareField TValue="string" Label="@GalleryStrings.StepDemo_Name" Placeholder="@GalleryStrings.StepDemo_NameHint" />
         </FlareStack>
     </FlareStep>
-    <FlareStep Label="Done" Description="Confirm">
-        <FlareAlert Severity="AlertSeverity.Success" Title="All set">You got past the guard.</FlareAlert>
+    <FlareStep Label="@GalleryStrings.StepDemo_Done" Description="@GalleryStrings.StepDemo_Confirm">
+        <FlareAlert Severity="AlertSeverity.Success" Title="@GalleryStrings.StepDemo_Ready">@GalleryStrings.StepDemo_Passed</FlareAlert>
     </FlareStep>
 </FlareStepper>
 

@@ -17,4 +17,8 @@ public static class Splitter
     public const string IconBase = "flare-splitter__icon--base";
     /// <summary>The <c>flare-splitter__icon--hover</c> CSS class.</summary>
     public const string IconHover = "flare-splitter__icon--hover";
+    /// <summary>Pointer-only target that decreases the preceding pane.</summary>
+    public const string StepDecrease = "flare-splitter__step-decrease";
+    /// <summary>Pointer-only target that increases the preceding pane.</summary>
+    public const string StepIncrease = "flare-splitter__step-increase";
 }

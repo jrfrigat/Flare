@@ -1,17 +1,17 @@
 <FlareStepper Orientation="StepperOrientation.Vertical" Linear="false" NonLinear="true"
-              OnStepChanged="@(i => _step = i)" AriaLabel="Setup steps">
-    <FlareStep Label="Details" Description="Editable in any order">
-        <FlareText Typo="TypographyScale.BodyMedium">Non-linear: jump between steps freely.</FlareText>
+              OnStepChanged="@(i => _step = i)" AriaLabel="@GalleryStrings.StepDemo_Setup">
+    <FlareStep Label="@GalleryStrings.StepDemo_Details" Description="@GalleryStrings.StepDemo_AnyOrder">
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_NonLinear</FlareText>
     </FlareStep>
-    <FlareStep Label="Payment" HasError="true" ErrorText="Card declined">
-        <FlareText Typo="TypographyScale.BodyMedium">This step shows an error state.</FlareText>
+    <FlareStep Label="@GalleryStrings.StepDemo_Payment" HasError="true" ErrorText="@GalleryStrings.StepDemo_Declined">
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_ErrorNote</FlareText>
     </FlareStep>
-    <FlareStep Label="Done" Description="Finish">
-        <FlareText Typo="TypographyScale.BodyMedium">All set.</FlareText>
+    <FlareStep Label="@GalleryStrings.StepDemo_Done" Description="@GalleryStrings.StepDemo_Finish">
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_ReadyNote</FlareText>
     </FlareStep>
 </FlareStepper>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
-    Current step index: @_step
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+    @string.Format(GalleryStrings.StepDemo_Index, _step)
 </FlareText>
 
 @code {

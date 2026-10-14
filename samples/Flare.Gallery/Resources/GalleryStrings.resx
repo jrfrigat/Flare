@@ -2078,7 +2078,7 @@ Read the card, check the tests, and report what is left.</value>
     <value>Async validation guard</value>
   </data>
   <data name="Stepper_CustomNav" xml:space="preserve">
-    <value>Custom navigation &amp; wheel scroll</value>
+    <value>Custom navigation</value>
   </data>
   <data name="Stepper_Skippable" xml:space="preserve">
     <value>Bound index &amp; skippable step</value>
@@ -3925,4 +3925,60 @@ Read the card, check the tests, and report what is left.</value>
   <data name="ChartsDemo_PieType" xml:space="preserve"><value>Pie</value></data>
   <data name="ChartsDemo_DonutType" xml:space="preserve"><value>Donut</value></data>
   <data name="ChartsDemo_ComboType" xml:space="preserve"><value>Combo</value></data>
+  <data name="Stepper_KeyboardHint" xml:space="preserve"><value>Tab to the step indicators. Use the orientation's arrow keys or Home/End to focus an available step, then Enter or Space to activate it. Blocked steps cannot be activated.</value></data>
+  <data name="StepDemo_Account" xml:space="preserve"><value>Account</value></data>
+  <data name="StepDemo_BasicInfo" xml:space="preserve"><value>Basic information</value></data>
+  <data name="StepDemo_AccountNote" xml:space="preserve"><value>Enter your account details.</value></data>
+  <data name="StepDemo_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="StepDemo_NameHint" xml:space="preserve"><value>Alex</value></data>
+  <data name="StepDemo_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="StepDemo_Profile" xml:space="preserve"><value>Profile</value></data>
+  <data name="StepDemo_Customize" xml:space="preserve"><value>Customize</value></data>
+  <data name="StepDemo_ProfileNote" xml:space="preserve"><value>Configure your profile.</value></data>
+  <data name="StepDemo_Role" xml:space="preserve"><value>Role</value></data>
+  <data name="StepDemo_ChooseRole" xml:space="preserve"><value>Select a role</value></data>
+  <data name="StepDemo_Developer" xml:space="preserve"><value>Developer</value></data>
+  <data name="StepDemo_Designer" xml:space="preserve"><value>Designer</value></data>
+  <data name="StepDemo_Manager" xml:space="preserve"><value>Project manager</value></data>
+  <data name="StepDemo_PublicProfile" xml:space="preserve"><value>Public profile</value></data>
+  <data name="StepDemo_Review" xml:space="preserve"><value>Review</value></data>
+  <data name="StepDemo_Confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="StepDemo_Ready" xml:space="preserve"><value>Ready to submit</value></data>
+  <data name="StepDemo_ReadyNote" xml:space="preserve"><value>All steps complete.</value></data>
+  <data name="StepDemo_Setup" xml:space="preserve"><value>Setup steps</value></data>
+  <data name="StepDemo_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="StepDemo_AnyOrder" xml:space="preserve"><value>Editable in any order</value></data>
+  <data name="StepDemo_NonLinear" xml:space="preserve"><value>Non-linear: move between available steps freely.</value></data>
+  <data name="StepDemo_Payment" xml:space="preserve"><value>Payment</value></data>
+  <data name="StepDemo_Declined" xml:space="preserve"><value>Card declined</value></data>
+  <data name="StepDemo_ErrorNote" xml:space="preserve"><value>This step shows an error state.</value></data>
+  <data name="StepDemo_Done" xml:space="preserve"><value>Done</value></data>
+  <data name="StepDemo_Finish" xml:space="preserve"><value>Finish</value></data>
+  <data name="StepDemo_Index" xml:space="preserve"><value>Current step index: {0}</value></data>
+  <data name="StepDemo_Terms" xml:space="preserve"><value>Terms</value></data>
+  <data name="StepDemo_Required" xml:space="preserve"><value>Required</value></data>
+  <data name="StepDemo_TermsNote" xml:space="preserve"><value>Accept the terms before continuing. The async guard blocks forward navigation until you do.</value></data>
+  <data name="StepDemo_Accept" xml:space="preserve"><value>I accept the terms</value></data>
+  <data name="StepDemo_Blocked" xml:space="preserve"><value>Accept the terms to continue.</value></data>
+  <data name="StepDemo_Passed" xml:space="preserve"><value>You passed the validation.</value></data>
+  <data name="StepDemo_Scope" xml:space="preserve"><value>Scope</value></data>
+  <data name="StepDemo_Permissions" xml:space="preserve"><value>Choose the permissions to grant.</value></data>
+  <data name="StepDemo_Generate" xml:space="preserve"><value>Review the permissions and confirm. Use the navigation buttons or the step indicators.</value></data>
+  <data name="StepDemo_Previous" xml:space="preserve"><value>Previous step</value></data>
+  <data name="StepDemo_Next" xml:space="preserve"><value>Next step</value></data>
+  <data name="StepDemo_Plan" xml:space="preserve"><value>Plan</value></data>
+  <data name="StepDemo_PlanNote" xml:space="preserve"><value>Choose the plan that fits your team.</value></data>
+  <data name="StepDemo_Addons" xml:space="preserve"><value>Add-ons</value></data>
+  <data name="StepDemo_SkipNote" xml:space="preserve"><value>This optional step can be skipped using the Review indicator.</value></data>
+  <data name="StepDemo_Skip" xml:space="preserve"><value>Skip to review</value></data>
+  <data name="StepDemo_BoundIndex" xml:space="preserve"><value>Bound index: {0}</value></data>
+  <data name="StepDemo_EdgeCases" xml:space="preserve"><value>Narrow containers and RTL</value></data>
+  <data name="StepDemo_LongLabel" xml:space="preserve"><value>An exceptionally long label to check wrapping and scrolling</value></data>
+  <data name="StepDemo_LongWord" xml:space="preserve"><value>LongUnbrokenStepLabelForNarrowContainers</value></data>
+  <data name="ReviewDialog_Long" xml:space="preserve"><value>Open a long confirmation</value></data>
+  <data name="ReviewDialog_LongTitle" xml:space="preserve"><value>Long content and action labels</value></data>
+  <data name="ReviewDialog_LongBody" xml:space="preserve"><value>This paragraph checks scrolling while the title and actions remain reachable. https://example.com/a-very-long-unbroken-address-for-narrow-dialogs</value></data>
+  <data name="ReviewDialog_LongYes" xml:space="preserve"><value>Confirm this action and continue to the next step</value></data>
+  <data name="ReviewDialog_LongNo" xml:space="preserve"><value>Keep the data and return to the previous screen</value></data>
+  <data name="ReviewDialog_Rtl" xml:space="preserve"><value>Right-to-left confirmation</value></data>
 </root>

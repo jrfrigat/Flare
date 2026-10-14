@@ -59,6 +59,34 @@
     cursor: row-resize;
 }
 
+.flare-splitter__step-decrease,
+.flare-splitter__step-increase {
+    position: absolute;
+    inset-inline: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--flare-touch-target-min);
+    background: var(--flare-color-surface-container);
+    color: var(--flare-color-on-surface);
+    cursor: pointer;
+    user-select: none;
+}
+.flare-splitter__step-decrease { inset-block-start: 0; }
+.flare-splitter__step-increase { inset-block-end: 0; }
+.flare-splitter--vertical .flare-splitter__step-decrease,
+.flare-splitter--vertical .flare-splitter__step-increase {
+    inset-block: 0;
+    inline-size: var(--flare-touch-target-min);
+    block-size: auto;
+}
+.flare-splitter--vertical .flare-splitter__step-decrease { inset-inline-start: 0; inset-inline-end: auto; }
+.flare-splitter--vertical .flare-splitter__step-increase { inset-inline-start: auto; inset-inline-end: 0; }
+@media (pointer: coarse) {
+    .flare-splitter:not(.flare-splitter--vertical) { min-inline-size: var(--flare-touch-target-min); }
+    .flare-splitter--vertical { min-block-size: var(--flare-touch-target-min); }
+}
+
 /* Grip bar: short rounded line centered in the handle (horizontal default). */
 .flare-splitter__gutter-bar {
     background: var(--flare-splitter-grip-color);

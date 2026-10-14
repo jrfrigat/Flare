@@ -2,6 +2,28 @@ namespace Flare.Components.Tests;
 
 public class FlareResizableTests : FlareTestContext
 {
+    [Theory]
+    [InlineData(ResizableEdge.Right, "vertical")]
+    [InlineData(ResizableEdge.Left, "vertical")]
+    [InlineData(ResizableEdge.Top, "horizontal")]
+    [InlineData(ResizableEdge.Bottom, "horizontal")]
+    public void ProvidesNamedSeparatorAndIndependentStepButtons(ResizableEdge edge, string orientation)
+    {
+        var cut = Render<FlareResizable>(p => p.Add(x => x.Edge, edge));
+        var handle = cut.Find("[role=separator]");
+        Assert.Equal("0", handle.GetAttribute("tabindex"));
+        Assert.Equal(orientation, handle.GetAttribute("aria-orientation"));
+        Assert.False(string.IsNullOrWhiteSpace(handle.GetAttribute("aria-label")));
+        Assert.Empty(handle.QuerySelectorAll("button"));
+        var buttons = cut.FindAll("button[data-flare-resize-step]");
+        Assert.Equal(2, buttons.Count);
+        Assert.All(buttons, button =>
+        {
+            Assert.Equal("button", button.GetAttribute("type"));
+            Assert.False(string.IsNullOrWhiteSpace(button.GetAttribute("aria-label")));
+        });
+    }
+
     [Fact]
     public void RendersRootDiv()
     {
