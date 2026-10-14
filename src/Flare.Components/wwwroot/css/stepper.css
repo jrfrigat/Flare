@@ -14,7 +14,7 @@
 .flare-stepper__header {
   min-width: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 /* Keep overflow inside the component even in a narrow desktop container. */
@@ -43,6 +43,7 @@
 .flare-stepper__step:focus-visible { outline: var(--flare-stepper-focus-ring-thickness) solid var(--flare-stepper-focus-ring-color); border-radius: var(--flare-shape-extra-small); }
 
 .flare-stepper__circle {
+  box-sizing: border-box;
   width: var(--flare-stepper-circle-size);
   height: var(--flare-stepper-circle-size);
   border-radius: 50%;
@@ -128,7 +129,7 @@
   height: var(--flare-stepper-connector-thickness);
   background: var(--flare-stepper-connector-color);
   align-self: flex-start;
-  margin-top: var(--flare-spacing-8);
+  margin-block-start: calc((var(--flare-stepper-circle-size) - var(--flare-stepper-connector-thickness)) / 2);
   min-width: var(--flare-stepper-connector-min-length);
   transition: background var(--flare-motion-duration-state-change);
 }
