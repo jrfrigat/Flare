@@ -11,7 +11,7 @@
     <div class="@_scrimClass" @onclick="HandleScrimClick">
         <div class="@BuildCssClass(_sizeClass, _positionClass, _draggableClass, _fillClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
              @attributes="AdditionalAttributes"
-             role="dialog" aria-modal="true"
+             role="dialog" aria-modal="true" tabindex="-1"
              aria-labelledby="@(string.IsNullOrEmpty(Title) ? null : _titleId)"
              aria-label="@(string.IsNullOrEmpty(Title) ? AriaLabel : null)"
              aria-describedby="@_contentId"

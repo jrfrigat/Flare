@@ -73,7 +73,7 @@ export function trapFocus(id, dialogEl) {
     const handler = (e) => {
         if (e.key !== 'Tab' || !isActive()) return;
         const els = focusable();
-        if (els.length === 0) { e.preventDefault(); return; }
+        if (els.length === 0) { e.preventDefault(); focusFirstInDialog(dialogEl); return; }
         const first = els[0];
         const last = els[els.length - 1];
         if (e.shiftKey) {

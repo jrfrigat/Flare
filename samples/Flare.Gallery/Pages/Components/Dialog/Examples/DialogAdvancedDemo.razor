@@ -1,7 +1,17 @@
 @inject ISnackbarService Snackbar
 @inherits LocalizedPage
 
-<FlareButton OnClick="@(() => _visible = true)">@GalleryStrings.Dialog_AdvancedOpen</FlareButton>
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="@(() => _visible = true)">@GalleryStrings.Dialog_AdvancedOpen</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _textVisible = true)">@GalleryStrings.Dialog_OpenTextOnly</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _emptyVisible = true)">@GalleryStrings.Dialog_OpenEmpty</FlareButton>
+</FlareStack>
+<FlareText Typo="TypographyScale.BodySmall">@GalleryStrings.Dialog_EmptyFocusHint</FlareText>
+
+<FlareDialog @bind-Visible="_textVisible" AriaLabel="@GalleryStrings.Dialog_OpenTextOnly">
+    <FlareText>@GalleryStrings.Dialog_EmptyFocusHint</FlareText>
+</FlareDialog>
+<FlareDialog @bind-Visible="_emptyVisible" Title="@GalleryStrings.Dialog_OpenEmpty" />
 
 <FlareDialog @bind-Visible="_visible" Title="@GalleryStrings.Dialog_Title"
              ShowCloseButton="true" Draggable="true" Resizable="true" BeforeClose="GuardCloseAsync">
@@ -20,6 +30,8 @@
 
 @code {
     private bool _visible;
+    private bool _textVisible;
+    private bool _emptyVisible;
     private bool _unsaved;
 
     // BeforeClose guard: veto scrim / Escape / X dismissal while there are unsaved changes.

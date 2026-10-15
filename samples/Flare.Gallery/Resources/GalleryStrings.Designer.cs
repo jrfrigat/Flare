@@ -12082,6 +12082,12 @@ namespace Flare.Gallery.Resources {
         public static string ReviewDialog_LongNo { get { return ResourceManager.GetString("ReviewDialog_LongNo", resourceCulture); } }
         /// <summary>Right-to-left confirmation</summary>
         public static string ReviewDialog_Rtl { get { return ResourceManager.GetString("ReviewDialog_Rtl", resourceCulture); } }
+        /// <summary>Open a text-only dialog</summary>
+        public static string Dialog_OpenTextOnly { get { return ResourceManager.GetString("Dialog_OpenTextOnly", resourceCulture); } }
+        /// <summary>Open an empty dialog</summary>
+        public static string Dialog_OpenEmpty { get { return ResourceManager.GetString("Dialog_OpenEmpty", resourceCulture); } }
+        /// <summary>Keyboard focus instructions for a panel without controls.</summary>
+        public static string Dialog_EmptyFocusHint { get { return ResourceManager.GetString("Dialog_EmptyFocusHint", resourceCulture); } }
         /// <summary>Account</summary>
         public static string StepDemo_Account { get { return ResourceManager.GetString("StepDemo_Account", resourceCulture); } }
         /// <summary>Basic information</summary>

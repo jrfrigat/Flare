@@ -3981,4 +3981,7 @@ Read the card, check the tests, and report what is left.</value>
   <data name="ReviewDialog_LongYes" xml:space="preserve"><value>Confirm this action and continue to the next step</value></data>
   <data name="ReviewDialog_LongNo" xml:space="preserve"><value>Keep the data and return to the previous screen</value></data>
   <data name="ReviewDialog_Rtl" xml:space="preserve"><value>Right-to-left confirmation</value></data>
+  <data name="Dialog_OpenTextOnly" xml:space="preserve"><value>Open a text-only dialog</value></data>
+  <data name="Dialog_OpenEmpty" xml:space="preserve"><value>Open an empty dialog</value></data>
+  <data name="Dialog_EmptyFocusHint" xml:space="preserve"><value>Open with Enter. Tab and Shift+Tab keep focus inside the panel, even without buttons. Escape closes it and returns focus to the opener.</value></data>
 </root>

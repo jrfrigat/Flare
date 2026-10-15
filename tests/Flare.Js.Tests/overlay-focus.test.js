@@ -39,6 +39,26 @@ it('cycles both Tab boundaries and restores the initiator', () => {
     trigger.focus(); expect(document.activeElement).toBe(trigger);
 });
 
+it('focuses an empty panel and keeps both Tab directions inside it', () => {
+    const trigger = visible(document.createElement('button'));
+    document.body.append(trigger); trigger.focus();
+    const d = dialog('empty'); d.first.remove(); d.last.remove();
+    trapFocus('empty', d.el);
+    expect(document.activeElement).toBe(d.el);
+    expect(key('Tab').defaultPrevented).toBe(true);
+    expect(key('Tab', true).defaultPrevented).toBe(true);
+    trigger.focus(); expect(document.activeElement).toBe(d.el);
+    releaseFocusTrap('empty'); expect(document.activeElement).toBe(trigger);
+});
+
+it('recovers panel focus on Tab after every focused control is removed', () => {
+    const d = dialog('removed-controls'); trapFocus('removed-controls', d.el);
+    d.first.remove(); d.last.remove();
+    expect(document.activeElement).toBe(document.body);
+    expect(key('Tab').defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(d.el);
+});
+
 it('returns escaped focus to the dialog and handles an alert with one button', () => {
     const trigger = visible(document.createElement('button'));
     document.body.append(trigger);

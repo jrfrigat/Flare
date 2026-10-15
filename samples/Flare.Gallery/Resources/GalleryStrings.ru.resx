@@ -3981,4 +3981,7 @@
   <data name="ReviewDialog_LongYes" xml:space="preserve"><value>Подтвердить действие и перейти к следующему шагу</value></data>
   <data name="ReviewDialog_LongNo" xml:space="preserve"><value>Сохранить данные и вернуться на предыдущий экран</value></data>
   <data name="ReviewDialog_Rtl" xml:space="preserve"><value>Подтверждение справа налево</value></data>
+  <data name="Dialog_OpenTextOnly" xml:space="preserve"><value>Открыть текстовый диалог</value></data>
+  <data name="Dialog_OpenEmpty" xml:space="preserve"><value>Открыть пустой диалог</value></data>
+  <data name="Dialog_EmptyFocusHint" xml:space="preserve"><value>Откройте клавишей Enter. Tab и Shift+Tab удерживают фокус внутри панели, даже без кнопок. Escape закрывает ее и возвращает фокус к кнопке открытия.</value></data>
 </root>

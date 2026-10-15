@@ -14,6 +14,7 @@
 <div class="@BuildCssClass(_anchorClass, _openClass, _variantClass, _autoCloseClass, _contentPadClass)"
      style="@_sizeStyle @_contentPadStyle @Style"
      role="@_role"
+     tabindex="@(Variant == DrawerVariant.Temporary ? "-1" : null)"
      aria-modal="@(Variant == DrawerVariant.Temporary ? "true" : null)"
      aria-label="@(AriaLabel ?? FlareStrings.Drawer_Label)"
      inert="@_closedOverlay"

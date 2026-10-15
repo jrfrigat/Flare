@@ -1,0 +1,51 @@
+@page "/modal-focus"
+@inject IThemeService Theme
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main data-ready-theme="@_readyTheme">
+        <select aria-label="Theme" @onchange="ChangeTheme">
+            @foreach (var theme in Theme.Themes) { <option value="@theme.Id">@theme.Id</option> }
+        </select>
+        <button id="opener" @onclick="() => _open = true">Open</button>
+        <button id="background">Background</button>
+        @if (Drawer)
+        {
+            <FlareDrawer @bind-Open="_open" AriaLabel="Subject" Anchor="DrawerAnchor.Top" Height="180px"
+                         HeaderContent="@(Content == "headed" ? Header : null)">
+                <ChildContent>@Body</ChildContent>
+            </FlareDrawer>
+        }
+        else
+        {
+            <FlareDialog @bind-Visible="_open" Title="@(Content == "headed" ? "Subject" : null)" AriaLabel="Subject">
+                <ChildContent>@Body</ChildContent>
+            </FlareDialog>
+        }
+        <FlareDialog @bind-Visible="_innerOpen" AriaLabel="Inner" />
+    </main>
+</FlareThemeProvider>
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public bool Drawer { get; set; }
+    [Parameter, SupplyParameterFromQuery] public string Content { get; set; } = "text";
+    [Parameter, SupplyParameterFromQuery] public bool Interactive { get; set; }
+    private bool _open;
+    private bool _innerOpen;
+    private bool _removed;
+    private string _readyTheme = "";
+    private RenderFragment Header => @<h2>Subject</h2>;
+    private RenderFragment Body => @<div>
+        @if (Content != "empty") { <p>Read this message, then press Escape to close.</p> }
+        @if (Interactive && !_removed)
+        {
+            <button id="remove" @onclick="() => _removed = true">Remove control</button>
+            <button id="nested" @onclick="() => _innerOpen = true">Open inner</button>
+        }
+    </div>;
+    private async Task ChangeTheme(ChangeEventArgs e)
+    {
+        var id = (string)e.Value!;
+        await Theme.SetThemeAsync(id);
+        _readyTheme = id;
+    }
+}
