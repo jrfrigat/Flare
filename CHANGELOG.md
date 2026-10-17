@@ -43,6 +43,12 @@ All notable changes to Flare are documented here. This project adheres to
   and opens an address in the app without reloading it. A missing permission, a browser without notifications
   or a page that is not interactive yet is reported in `NotificationShowResult` instead of thrown. `AddFlare`
   registers it.
+- `FlareSplitter.Value` turns the splitter into the control of one length, such as a sticky header column that
+  many elements read, instead of the split between its two neighbours. The browser writes the size to
+  `ValueVariable` on the `ValueScope` ancestor while the pointer moves, and `OnSizeChanged` reports it once when
+  the drag, key or step ends. Home and a double click restore `DefaultValue`.
+- `TreeFlattener.Flatten` turns a hierarchy into the visible rows of a tree view, with depth and expansion; the
+  tree data grid uses it.
 
 ### Fixed
 

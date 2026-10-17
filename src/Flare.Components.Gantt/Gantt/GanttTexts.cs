@@ -19,7 +19,7 @@ public sealed record GanttTexts(string SelfLink, string Cycle, string Duplicate,
         "This link already exists.",
         "Expand", "Collapse",
         "Linking from {0}. Choose the successor and press Enter.",
-        "{0} moved to {1}.") { ResizeSide = "Resize the column: drag, arrow keys, Home to reset", Narrower = "Narrower column", Wider = "Wider column", ResetSide = "Reset column width" };
+        "{0} moved to {1}.") { ResizeSide = "Resize the column: drag, arrow keys, Home to reset" };
 
     /// <summary>Russian texts.</summary>
     public static GanttTexts Russian { get; } = new(
@@ -28,19 +28,13 @@ public sealed record GanttTexts(string SelfLink, string Cycle, string Duplicate,
         "\u0422\u0430\u043A\u0430\u044F \u0441\u0432\u044F\u0437\u044C \u0443\u0436\u0435 \u0435\u0441\u0442\u044C.",
         "\u0420\u0430\u0437\u0432\u0435\u0440\u043D\u0443\u0442\u044C", "\u0421\u0432\u0435\u0440\u043D\u0443\u0442\u044C",
         "\u0421\u0432\u044F\u0437\u044C \u043E\u0442 {0}. \u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u043E\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u0438 \u043D\u0430\u0436\u043C\u0438\u0442\u0435 Enter.",
-        "{0} \u043F\u0435\u0440\u0435\u043D\u0435\u0441\u0435\u043D: {1}.") { ResizeSide = "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u0435 \u0448\u0438\u0440\u0438\u043D\u0443 \u043A\u043E\u043B\u043E\u043D\u043A\u0438: \u0442\u044F\u043D\u0438\u0442\u0435 \u043C\u044B\u0448\u044C\u044E, \u0441\u0442\u0440\u0435\u043B\u043A\u0438, Home \u2014 \u0441\u0431\u0440\u043E\u0441", Narrower = "\u0423\u0436\u0435 \u043A\u043E\u043B\u043E\u043D\u043A\u0430", Wider = "\u0428\u0438\u0440\u0435 \u043A\u043E\u043B\u043E\u043D\u043A\u0430", ResetSide = "\u0421\u0431\u0440\u043E\u0441\u0438\u0442\u044C \u0448\u0438\u0440\u0438\u043D\u0443 \u043A\u043E\u043B\u043E\u043D\u043A\u0438" };
+        "{0} \u043F\u0435\u0440\u0435\u043D\u0435\u0441\u0435\u043D: {1}.") { ResizeSide = "\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u0435 \u0448\u0438\u0440\u0438\u043D\u0443 \u043A\u043E\u043B\u043E\u043D\u043A\u0438: \u0442\u044F\u043D\u0438\u0442\u0435 \u043C\u044B\u0448\u044C\u044E, \u0441\u0442\u0440\u0435\u043B\u043A\u0438, Home \u2014 \u0441\u0431\u0440\u043E\u0441" };
 
     /// <summary>Label of the handle that resizes the row-header column.</summary>
     public string ResizeSide { get; init; } = "Drag to resize the column";
 
-    /// <summary>Label of the button that narrows the row-header column.</summary>
-    public string Narrower { get; init; } = "Narrower column";
 
-    /// <summary>Label of the button that widens the row-header column.</summary>
-    public string Wider { get; init; } = "Wider column";
 
-    /// <summary>Label of the button that resets the row-header column width.</summary>
-    public string ResetSide { get; init; } = "Reset column width";
 
     /// <summary>The built-in texts for <paramref name="culture"/>: Russian for <c>ru</c>, English otherwise.</summary>
     public static GanttTexts For(CultureInfo culture) => culture.TwoLetterISOLanguageName == "ru" ? Russian : English;

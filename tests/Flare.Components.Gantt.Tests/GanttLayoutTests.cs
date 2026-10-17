@@ -119,8 +119,9 @@ public sealed class GanttLayoutTests : GanttTestBase
             .Add(x => x.SideWidth, "12rem")
             .Add(x => x.SideWidthChanged, (string w) => reported = w));
 
-        Assert.NotNull(cut.Find(".flare-gantt__side-handle[role=separator]"));
-        cut.InvokeAsync(() => cut.Instance.SideResized(287.6));
+        Assert.NotNull(cut.Find(".flare-gantt__side-splitter[role=separator]"));
+        // What the shared separator reports once a drag on it has ended.
+        cut.InvokeAsync(() => cut.FindComponent<FlareSplitter>().Instance.OnSplitChanged("288px"));
 
         Assert.Equal("288px", reported);
         Assert.Contains("--_gantt-side:288px", cut.Find(".flare-gantt").GetAttribute("style"));
@@ -131,7 +132,7 @@ public sealed class GanttLayoutTests : GanttTestBase
     {
         var cut = Chart(p => p.Add(x => x.Rows, OneRow));
 
-        Assert.Empty(cut.FindAll(".flare-gantt__side-handle"));
+        Assert.Empty(cut.FindAll(".flare-gantt__side-splitter"));
     }
 
     [Fact]

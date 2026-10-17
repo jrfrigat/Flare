@@ -13,12 +13,8 @@ public static class Gantt
     public const string Header = "flare-gantt__header";
     /// <summary>The <c>flare-gantt__corner</c> CSS class.</summary>
     public const string Corner = "flare-gantt__corner";
-    /// <summary>The <c>flare-gantt__side-handle</c> CSS class.</summary>
-    public const string SideHandle = "flare-gantt__side-handle";
-    /// <summary>The <c>flare-gantt__side-controls</c> CSS class: keyboard/click alternative to dragging the column edge.</summary>
-    public const string SideControls = "flare-gantt__side-controls";
-    /// <summary>The <c>flare-gantt__side-button</c> CSS class: one click/keyboard step of the row-header column width.</summary>
-    public const string SideButton = "flare-gantt__side-button";
+    /// <summary>The <c>flare-gantt__side-splitter</c> CSS class: the separator on the row-header column's edge.</summary>
+    public const string SideSplitter = "flare-gantt__side-splitter";
     /// <summary>The <c>flare-gantt__scale</c> CSS class.</summary>
     public const string Scale = "flare-gantt__scale";
     /// <summary>The <c>flare-gantt__scale-row</c> CSS class.</summary>

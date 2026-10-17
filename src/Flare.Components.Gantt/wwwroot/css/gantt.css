@@ -51,58 +51,26 @@
     font-weight: 600;
 }
 
-/* The draggable right edge of the row-header column. */
-.flare-gantt__side-handle {
+/* The row-header column's edge: a FlareSplitter laid over the chart along the column's right border, the full
+   height of the chart. It stays clear until it is pointed at or focused, so the border alone shows at rest. */
+.flare-gantt__side-splitter {
     position: absolute;
     top: 0;
-    right: -4px;
     bottom: 0;
-    width: 8px;
-    cursor: col-resize;
-    touch-action: none;
-    z-index: 2;
+    left: calc(var(--_gantt-side) - var(--flare-splitter-gutter-size) / 2);
+    z-index: 5;
 }
 
-.flare-gantt__side-handle:hover,
-.flare-gantt__side-handle:active {
-    background: linear-gradient(to right, transparent 3px, var(--flare-color-primary) 3px, var(--flare-color-primary) 5px, transparent 5px);
+.flare-gantt__side-splitter:not(:hover):not(:focus-visible):not(:active) {
+    background: transparent;
 }
 
-/* Keyboard/click alternative to dragging the column edge: a small group of step buttons in the corner. */
-.flare-gantt__side-controls {
-    position: absolute;
-    top: var(--flare-spacing-2, 0.25rem);
-    right: var(--flare-spacing-3, 0.375rem);
-    z-index: 3;
-    display: flex;
-    gap: var(--flare-spacing-1, 0.125rem);
-}
-
-.flare-gantt__side-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    padding: 0;
-    font: inherit;
-    line-height: 1;
-    color: var(--flare-gantt-side-button-fg, var(--flare-color-on-surface-variant));
-    background: var(--flare-gantt-side-button-bg, transparent);
-    border: var(--_line-width) solid var(--flare-gantt-side-button-border, var(--flare-color-outline-variant));
-    border-radius: var(--flare-shape-small, 0.25rem);
-    cursor: pointer;
-}
-
-.flare-gantt__side-button:hover {
-    color: var(--flare-color-primary);
-    border-color: var(--flare-color-primary);
-}
-
-.flare-gantt__side-handle:focus-visible,
-.flare-gantt__side-button:focus-visible {
-    outline: 2px solid var(--flare-color-primary);
-    outline-offset: 2px;
+/* With a mouse the -/+ steps show on hover and focus; on a touch screen, where nothing hovers, they stay. */
+@media (hover: hover) {
+    .flare-gantt__side-splitter:not(:hover):not(:focus-visible) > .flare-splitter__step-decrease,
+    .flare-gantt__side-splitter:not(:hover):not(:focus-visible) > .flare-splitter__step-increase {
+        opacity: 0;
+    }
 }
 
 .flare-gantt__scale {

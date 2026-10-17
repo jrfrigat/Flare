@@ -11,15 +11,19 @@
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the resize handle. Null uses the localized default. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Fully custom centre content, overriding Icon and the default grip bar. |
 | `Color` | `string?` | `` | Parameter |  | Handle color (CSS color) shown when idle. Null uses the theme's handle color (the --flare-splitter-color token). |
+| `DefaultValue` | `double?` | `` | Parameter |  | The size, in pixels, that Home and a double click restore when Value is set; the minimum when null. |
 | `HoverColor` | `string?` | `` | Parameter |  | Handle color (CSS color) shown on hover/focus. Null uses the theme's hover color (the --flare-splitter-hover-color token). |
 | `HoverIcon` | `FlareIcon?` | `` | Parameter |  | Icon swapped in on hover/focus (only when Icon is set) - any provider. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in the centre of the handle, replacing the default grip bar - any provider. |
 | `KeyboardStep` | `int` | `16` | Parameter |  | Keyboard step (px) applied when the handle is focused and arrowed. Default 16. |
 | `MaxSize` | `string?` | `` | Parameter |  | Maximum size in pixels (e.g. "600px") for the previous (left/top) neighbour. Optional. |
 | `MinSize` | `string?` | `` | Parameter |  | Minimum size in pixels (e.g. "120px") that either neighbour may be dragged to. Optional. |
-| `OnSizeChanged` | `EventCallback<string>` | `` | Callback |  | Invoked with the previous neighbour's new pixel size (e.g. "240px") after a resize. |
+| `OnSizeChanged` | `EventCallback<string>` | `` | Callback |  | Invoked with the previous neighbour's new pixel size (e.g. "240px") after a resize; with Value set, with the new value once a drag, a key or a step has ended. |
 | `Orientation` | `SplitterOrientation` | `SplitterOrientation.Auto` | Parameter |  | Resize axis. Default Auto: the splitter reads the parent flex container's direction, so you usually do not need to set this. Provide an explicit value only to override (e.g. a non-flex parent). |
 | `Size` | `string?` | `` | Parameter |  | Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Null uses the theme's gutter size (the --flare-splitter-gutter-size token). |
+| `Value` | `double?` | `` | Parameter |  | Turns the separator into the control of ONE length instead of the split between its two neighbours: the current size in pixels. A drag, the arrow keys and the steps change it between MinSize and MaxSize, the browser writes it to ValueVariable while the pointer moves, and OnSizeChanged reports it once at the end. Use it for a column whose width many elements read, such as a sticky header column. Null (the default) resizes the neighbours. |
+| `ValueScope` | `string?` | `` | Parameter |  | Selector of the ancestor that carries ValueVariable; the separator's parent when null. |
+| `ValueVariable` | `string?` | `` | Parameter |  | CSS custom property (for example --side-width) the browser sets to the size while a Value separator is dragged, so the layout follows the pointer without a round trip. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

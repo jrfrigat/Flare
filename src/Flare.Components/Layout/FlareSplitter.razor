@@ -14,6 +14,11 @@
      style="@_rootStyle"
      @ref="_gutter"
      data-flare-splitter-keyboard-step="@KeyboardStep"
+     data-flare-splitter-min="@MinSize" data-flare-splitter-max="@MaxSize"
+     data-flare-splitter-variable="@(Value is null ? null : ValueVariable)" data-flare-splitter-scope="@(Value is null ? null : ValueScope)"
+     data-flare-splitter-value="@Number(Value)" data-flare-splitter-default="@(Value is null ? null : Number(DefaultValue))"
+     aria-valuenow="@Number(Value)" aria-valuemin="@(Value is null ? null : Number(Px(MinSize) ?? 0))"
+     aria-valuemax="@(Value is null ? null : Number(Px(MaxSize)))"
      @attributes="AdditionalAttributes">
     @if (ChildContent is not null)
     {
@@ -88,8 +93,29 @@
     /// <summary>Fully custom centre content, overriding <see cref="Icon"/> and the default grip bar.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Invoked with the previous neighbour's new pixel size (e.g. "240px") after a resize.</summary>
+    /// <summary>Invoked with the previous neighbour's new pixel size (e.g. "240px") after a resize; with
+    /// <see cref="Value"/> set, with the new value once a drag, a key or a step has ended.</summary>
     [Parameter] public EventCallback<string> OnSizeChanged { get; set; }
+
+    /// <summary>
+    /// Turns the separator into the control of ONE length instead of the split between its two neighbours: the
+    /// current size in pixels. A drag, the arrow keys and the steps change it between <see cref="MinSize"/> and
+    /// <see cref="MaxSize"/>, the browser writes it to <see cref="ValueVariable"/> while the pointer moves, and
+    /// <see cref="OnSizeChanged"/> reports it once at the end. Use it for a column whose width many elements read,
+    /// such as a sticky header column. Null (the default) resizes the neighbours.
+    /// </summary>
+    [Parameter] public double? Value { get; set; }
+
+    /// <summary>The size, in pixels, that Home and a double click restore when <see cref="Value"/> is set; the
+    /// minimum when null.</summary>
+    [Parameter] public double? DefaultValue { get; set; }
+
+    /// <summary>CSS custom property (for example <c>--side-width</c>) the browser sets to the size while a
+    /// <see cref="Value"/> separator is dragged, so the layout follows the pointer without a round trip.</summary>
+    [Parameter] public string? ValueVariable { get; set; }
+
+    /// <summary>Selector of the ancestor that carries <see cref="ValueVariable"/>; the separator's parent when null.</summary>
+    [Parameter] public string? ValueScope { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Splitter.Root;
 
@@ -106,6 +132,13 @@
             return string.Join(";", parts);
         }
     }
+
+    private static string? Number(double? value) =>
+        value is { } v ? Math.Round(v).ToString(System.Globalization.CultureInfo.InvariantCulture) : null;
+
+    private static double? Px(string? length) =>
+        length is not null && double.TryParse(length.Trim().Replace("px", "", StringComparison.OrdinalIgnoreCase),
+            System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var px) ? px : null;
 
     private static string Sanitize(string value) => Flare.Components.Security.CssValidator.StripDangerous(value) ?? string.Empty;
 

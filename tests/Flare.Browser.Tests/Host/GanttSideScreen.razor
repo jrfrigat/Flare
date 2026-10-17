@@ -1,0 +1,18 @@
+@page "/gantt-side"
+@using Flare.Components.Gantt
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="width:900px;">
+        <FlareGantt id="chart" Range="_range" Scale="GanttScale.Day" UnitWidth="40" RowHeight="30"
+                    ResizableSide="true" SideWidth="200px" SideWidthChanged="w => _reported.Add(w)">
+            <FlareGanttPanel TRow="string" TItem="string" Rows="_rows" RowKey="r => r" />
+        </FlareGantt>
+        <p id="result">@string.Join(",", _reported)</p>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private readonly GanttSpan _range = GanttSpan.FromDays(new DateOnly(2026, 10, 12), new DateOnly(2026, 10, 25));
+    private readonly string[] _rows = ["r1", "r2", "r3"];
+    private readonly List<string> _reported = [];
+}

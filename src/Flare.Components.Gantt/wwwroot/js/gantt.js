@@ -1,14 +1,11 @@
-// Flare Gantt: what the timeline cannot know from .NET alone - how wide it is on screen, the drag of the
-// row-header column's edge, and the horizontal scroll position.
+// Flare Gantt: what the timeline cannot know from .NET alone - how wide it is on screen, which part of it is in
+// view, where the pointer is, and the gestures on its bars. The row-header column is resized by a FlareSplitter.
 
 import { startDrag } from '../../Flare.Components/js/flare-drag.js';
-
-const MinSide = 120;
 
 export function attach(root, dotnet, virtualize, endless) {
     const scroll = root.querySelector('.flare-gantt__scroll');
     const corner = root.querySelector('.flare-gantt__corner');
-    let resizing = null;
 
     const side = () => corner ? corner.getBoundingClientRect().width : 0;
     let sent = [-1, -1];
@@ -16,7 +13,6 @@ export function attach(root, dotnet, virtualize, endless) {
     // .NET hears only a settled width: a menu or window animation changes it every frame, and redrawing the axis is costly.
     const send = () => {
         pending = 0;
-        if (resizing) return;
         const width = scroll.clientWidth, column = side();
         if (Math.abs(width - sent[0]) < 1 && Math.abs(column - sent[1]) < 1) return;
         sent = [width, column];
@@ -33,28 +29,6 @@ export function attach(root, dotnet, virtualize, endless) {
     const settle = setTimeout(send, 300);
     window.addEventListener('resize', report);
 
-    // The column follows the pointer through the CSS variable alone; .NET hears only the final width.
-    const down = e => {
-        const handle = e.target.closest('.flare-gantt__side-handle');
-        if (!handle || e.button !== 0) return;
-        e.preventDefault();
-        // Capture keeps the drag even when the pointer leaves the narrow handle; without it the root listeners suffice.
-        try { handle.setPointerCapture(e.pointerId); } catch { }
-        resizing = { handle, x: e.clientX, width: side(), current: side() };
-    };
-    const move = e => {
-        if (!resizing) return;
-        const max = Math.max(MinSide, scroll.clientWidth * 0.7);
-        resizing.current = Math.round(Math.min(max, Math.max(MinSide, resizing.width + e.clientX - resizing.x)));
-        root.style.setProperty('--_gantt-side', resizing.current + 'px');
-    };
-    const up = () => {
-        if (!resizing) return;
-        const width = resizing.current;
-        resizing = null;
-        dotnet.invokeMethodAsync('SideResized', width).catch(() => { });
-        report();
-    };
     // A row drop zone covers the whole row; the unit under the pointer is lit here and resolved by .NET from the
     // last pointer position, so a chart of hundreds of rows needs one zone per row, not one per row and unit.
     const scale = root.querySelector('.flare-gantt__scale');
@@ -229,10 +203,6 @@ export function attach(root, dotnet, virtualize, endless) {
     };
     root.addEventListener('keydown', onKey);
 
-    root.addEventListener('pointerdown', down);
-    root.addEventListener('pointermove', move);
-    root.addEventListener('pointerup', up);
-    root.addEventListener('pointercancel', up);
 
     return {
         // While the panels are still drawing, the axis is narrow and the browser clamps the scroll; it is repeated once the width is ready.
@@ -276,10 +246,6 @@ export function attach(root, dotnet, virtualize, endless) {
             clearTimeout(settle);
             clearTimeout(pending);
             window.removeEventListener('resize', report);
-            root.removeEventListener('pointerdown', down);
-            root.removeEventListener('pointermove', move);
-            root.removeEventListener('pointerup', up);
-            root.removeEventListener('pointercancel', up);
         }
     };
 }

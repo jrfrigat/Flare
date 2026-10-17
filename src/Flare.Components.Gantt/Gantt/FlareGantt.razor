@@ -14,22 +14,6 @@
             {
                 <div class="@Css.Classes.Gantt.Corner">
                     @Corner
-                    @if (ResizableSide)
-                    {
-                        @* Keyboard and single-pointer users change the width with the arrows on the separator and with the buttons, not only by dragging. *@
-                        <div class="@Css.Classes.Gantt.SideControls">
-                            <button type="button" class="@Css.Classes.Gantt.SideButton" aria-label="@EffectiveTexts.Narrower" title="@EffectiveTexts.Narrower"
-                                    @onclick="() => StepSide(-SideStep)">-</button>
-                            <button type="button" class="@Css.Classes.Gantt.SideButton" aria-label="@EffectiveTexts.Wider" title="@EffectiveTexts.Wider"
-                                    @onclick="() => StepSide(SideStep)">+</button>
-                            <button type="button" class="@Css.Classes.Gantt.SideButton" aria-label="@EffectiveTexts.ResetSide" title="@EffectiveTexts.ResetSide"
-                                    @onclick="ResetSide">@ResetGlyph</button>
-                        </div>
-                        <div class="@Css.Classes.Gantt.SideHandle" role="separator" aria-orientation="vertical" tabindex="0"
-                             aria-label="@EffectiveTexts.ResizeSide" title="@EffectiveTexts.ResizeSide"
-                             aria-valuenow="@SideValueText(SidePixels)" aria-valuemin="@SideValueText(MinSidePixels)" aria-valuemax="@SideValueText(MaxSidePixels)"
-                             @onkeydown="SideKeyDown"></div>
-                    }
                 </div>
             }
             <div class="@Css.Classes.Gantt.Scale" style="width:@GanttFormat.Px(Width)" aria-hidden="true">
@@ -60,6 +44,16 @@
             @ChildContent
         </CascadingValue>
     </div>
+    @if (ResizableSide && !Compact)
+    {
+        @* The column's edge, the full height of the chart: the shared separator writes the width into the
+           variable every part of the column reads, and reports it once the drag, key or step is over. *@
+        <FlareSplitter Class="@Css.Classes.Gantt.SideSplitter" Orientation="FlareSplitter.SplitterOrientation.Horizontal"
+                       Value="@SideEffectivePixels" DefaultValue="@(ParseLength(_sideDefault ?? DefaultSideWidth ?? SideWidth))"
+                       ValueVariable="--_gantt-side" ValueScope="@($".{Css.Classes.Gantt.Root}")"
+                       MinSize="@Pixels(MinSidePixels)" MaxSize="@Pixels(MaxSidePixels)"
+                       AriaLabel="@EffectiveTexts.ResizeSide" OnSizeChanged="SideChanged" />
+    }
 </div>
 
 @code {
@@ -117,18 +111,12 @@
     [Parameter] public bool ResizableSide { get; set; }
 
     /// <summary>
-    /// Width the row-header column returns to on reset (keyboard Home or the reset button); <see cref="SideWidth"/> when null.
+    /// Width the row-header column returns to on reset (Home on the separator, or a double click on it); <see cref="SideWidth"/> when null.
     /// </summary>
     [Parameter] public string? DefaultSideWidth { get; set; }
 
-    /// <summary>Raised with the new row-header width as a CSS length in pixels when the user has dragged the edge.</summary>
+    /// <summary>Raised with the new row-header width as a CSS length in pixels when the user has dragged the edge, used a key on it or a step.</summary>
     [Parameter] public EventCallback<string> SideWidthChanged { get; set; }
-
-    /// <summary>Step of one keyboard or button change of the row-header width, in pixels. The drag in gantt.js uses the same floor.</summary>
-    private const double SideStep = 16;
-
-    /// <summary>Glyph of the reset button: an anticlockwise open circle arrow.</summary>
-    private const string ResetGlyph = "\u27F2";
 
     /// <summary>Narrowest the row-header column may get, in pixels.</summary>
     private const double MinSidePixels = 120;
@@ -136,7 +124,7 @@
     /// <summary>Widest fallback while the browser has not reported a viewport yet.</summary>
     private const double DefaultMaxSidePixels = 1200;
 
-    /// <summary>Largest share of the chart the row-header column may take; the drag in gantt.js uses the same share.</summary>
+    /// <summary>Largest share of the chart the row-header column may take.</summary>
     private const double SideShareOfChart = 0.7;
 
     /// <summary>Culture for axis captions and the first day of week; the current culture when null.</summary>
@@ -361,22 +349,21 @@
     /// <summary>The visible part of panel <paramref name="id"/>'s body, or null before the browser has told.</summary>
     internal (double From, double To)? VisibleOf(string id) => _visible.TryGetValue(id, out var window) ? window : null;
 
-    /// <summary>The row-header column after the user dragged its edge.</summary>
-    [JSInvokable]
-    public async Task SideResized(double width)
+    // The row-header width the separator settled on, as a CSS length in pixels.
+    private async Task SideChanged(string width)
     {
-        _side = $"{Math.Round(width)}px";
+        _side = width;
         await SideWidthChanged.InvokeAsync(_side);
         StateHasChanged();
     }
 
+    private static string Pixels(double value) => Math.Round(value).ToString(CultureInfo.InvariantCulture) + "px";
+
     /// <summary>Current row-header width in pixels: the value the user set, or <see cref="SideWidth"/>.</summary>
     private double SidePixels => ParseLength(_side) ?? ParseLength(SideWidth) ?? 256;
 
-    /// <summary>Widest the row-header column may get: the drag caps at 70% of the scroll width, the keyboard follows it.</summary>
-    private double MaxSidePixels => _available > 0 ? Math.Max(MinSidePixels, Math.Round(0.7 * (SidePixels + _available))) : DefaultMaxSidePixels;
-
-    private static string SideValueText(double value) => ((int)Math.Round(value)).ToString(CultureInfo.InvariantCulture);
+    /// <summary>Widest the row-header column may get: 70% of the chart, so the axis stays on screen beside it.</summary>
+    private double MaxSidePixels => double.IsInfinity(SideCap) ? DefaultMaxSidePixels : Math.Round(SideCap);
 
     // px and rem are what a device setting delivers; aria values and the step need the width in pixels.
     private static double? ParseLength(string? length)
@@ -388,37 +375,6 @@
         if (value.EndsWith("px", StringComparison.OrdinalIgnoreCase))
             return double.TryParse(value[..^2], NumberStyles.Float, CultureInfo.InvariantCulture, out var px) ? px : null;
         return double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var plain) ? plain : null;
-    }
-
-    /// <summary>Changes the row-header width by <paramref name="delta"/> pixels, keeping it between the floor and the cap.</summary>
-    private Task StepSide(double delta) => ApplySide(SidePixels + delta);
-
-    // The separator is a focusable separator: the arrows change the width, Home restores the default.
-    private async Task SideKeyDown(KeyboardEventArgs e)
-    {
-        switch (e.Key)
-        {
-            case "ArrowLeft": await StepSide(-SideStep); break;
-            case "ArrowRight": await StepSide(SideStep); break;
-            case "Home": await ResetSide(); break;
-        }
-    }
-
-    // The same path as the drag: the width is reported through SideWidthChanged, so the setting is kept.
-    private async Task ApplySide(double width)
-    {
-        var clamped = Math.Min(MaxSidePixels, Math.Max(MinSidePixels, Math.Round(width)));
-        _side = $"{clamped.ToString(CultureInfo.InvariantCulture)}px";
-        await SideWidthChanged.InvokeAsync(_side);
-        StateHasChanged();
-    }
-
-    /// <summary>Returns the row-header width to <see cref="DefaultSideWidth"/> (or the first width the chart received).</summary>
-    private async Task ResetSide()
-    {
-        _side = _sideDefault ?? DefaultSideWidth ?? SideWidth;
-        await SideWidthChanged.InvokeAsync(_side);
-        StateHasChanged();
     }
 
     /// <inheritdoc />
