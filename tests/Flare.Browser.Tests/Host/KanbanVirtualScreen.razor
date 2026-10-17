@@ -1,0 +1,31 @@
+@page "/kanban-virtual"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <FlareKanban id="board" Virtual="true" Style="height:400px;"
+                     Columns="_columns" Cards="_cards" CardsChanged="OnChanged" />
+        <p id="result">@_result</p>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private readonly KanbanColumn[] _columns = [new("todo", "To do"), new("done", "Done")];
+    private IReadOnlyList<KanbanCard> _cards = Build();
+    private string _result = "";
+
+    private static List<KanbanCard> Build()
+    {
+        var cards = new List<KanbanCard>();
+        for (var i = 0; i < 500; i++) cards.Add(new($"t{i}", "todo", $"Todo {i}"));
+        cards.Add(new("d0", "done", "Done 0"));
+        cards.Add(new("d1", "done", "Done 1"));
+        return cards;
+    }
+
+    private void OnChanged(IReadOnlyList<KanbanCard> cards)
+    {
+        _cards = cards;
+        var todo = cards.Where(c => c.ColumnId == "todo").ToList();
+        _result = $"d0@{todo.FindIndex(c => c.Id == "d0")}";
+    }
+}

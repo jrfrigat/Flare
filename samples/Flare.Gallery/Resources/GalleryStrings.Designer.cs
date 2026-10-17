@@ -11706,6 +11706,15 @@ namespace Flare.Gallery.Resources {
 
         /// <summary>Looks up the localized Kanban read-only status.</summary>
         public static string Kanban_ReadOnly_Status => ResourceManager.GetString("Kanban_ReadOnly_Status", resourceCulture);
+
+        /// <summary>Looks up the localized Kanban virtualized-columns demo title.</summary>
+        public static string Kanban_Virtual => ResourceManager.GetString("Kanban_Virtual", resourceCulture);
+
+        /// <summary>Looks up the localized Kanban virtualized-columns demo hint.</summary>
+        public static string Kanban_Virtual_Hint => ResourceManager.GetString("Kanban_Virtual_Hint", resourceCulture);
+
+        /// <summary>Looks up the localized Kanban virtualized-columns card title.</summary>
+        public static string Kanban_Virtual_Card => ResourceManager.GetString("Kanban_Virtual_Card", resourceCulture);
         
         /// <summary>Looks up the localized DateTimePicker_States string.</summary>
         public static string DateTimePicker_States => ResourceManager.GetString("DateTimePicker_States", resourceCulture);

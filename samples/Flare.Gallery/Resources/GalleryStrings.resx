@@ -3591,6 +3591,15 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Kanban_ReadOnly_Status" xml:space="preserve">
     <value>Read only</value>
   </data>
+  <data name="Kanban_Virtual" xml:space="preserve">
+    <value>Virtualized columns</value>
+  </data>
+  <data name="Kanban_Virtual_Hint" xml:space="preserve">
+    <value>{0} cards: each column renders only the cards in view and scrolls on its own. Dragging works the same, including onto a column scrolled to its middle.</value>
+  </data>
+  <data name="Kanban_Virtual_Card" xml:space="preserve">
+    <value>Task {0}</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>States, bounds and forms</value>
   </data>

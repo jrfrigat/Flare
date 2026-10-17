@@ -3591,6 +3591,15 @@
   <data name="Kanban_ReadOnly_Status" xml:space="preserve">
     <value>Только чтение</value>
   </data>
+  <data name="Kanban_Virtual" xml:space="preserve">
+    <value>Виртуализированные колонки</value>
+  </data>
+  <data name="Kanban_Virtual_Hint" xml:space="preserve">
+    <value>{0} карточек: каждая колонка рисует только видимые карточки и прокручивается сама. Перетаскивание работает как прежде, в том числе в колонку, прокрученную до середины.</value>
+  </data>
+  <data name="Kanban_Virtual_Card" xml:space="preserve">
+    <value>Задача {0}</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>Состояния, границы и формы</value>
   </data>

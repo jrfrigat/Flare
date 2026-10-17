@@ -21,6 +21,12 @@ All notable changes to Flare are documented here. This project adheres to
   between the enabled tabs and open them. A disabled tab is announced as unavailable, looks dimmed and is
   skipped; the first enabled tab starts active.
 
+- `FlareKanban.Virtual` renders only the cards in view in each column, for columns of hundreds of cards. The
+  columns stretch to the board's height and scroll on their own, so the board needs a bounded height (for example
+  `Style="height:70vh"`). Dragging, the drop highlight and auto-scroll work as before, and a card lands beside the
+  one it was dropped on even in a column scrolled to its middle. Keyboard moves reach the cards currently
+  rendered. `VirtualItemSize` and `OverscanCount` tune the window.
+
 ### Fixed
 
 - The `FlareIdeLayout` panel divider has a localized name, announces the region size, can be dragged with a

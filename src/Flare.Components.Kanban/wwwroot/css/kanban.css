@@ -47,6 +47,23 @@
     min-height: 3rem;
 }
 
+/* Virtual: the board's height bounds the columns, and each card list is the scroll container the
+   virtualizer measures against. Without a bounded board height there is nothing to virtualize. */
+.flare-kanban--virtual {
+    align-items: stretch;
+}
+
+.flare-kanban--virtual .flare-kanban__column {
+    min-height: 0;
+}
+
+.flare-kanban--virtual .flare-kanban__cards {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
 .flare-kanban__card {
     background: var(--flare-color-surface);
     border: 1px solid var(--flare-color-outline-variant);

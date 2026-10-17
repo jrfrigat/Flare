@@ -1,11 +1,13 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 
 @* The board no longer owns a drag. It declares one - a context, a zone per column, a draggable per
    card - and the shared model does the rest. What went with it: an HTML5 dragstart/drop pair that fired
    on nothing but a mouse, a hand-written ontouchstart/ontouchend pair to make up for that, a JS
    hit-test helper only this component used, a module import, and a `_dragging` field. *@
-<FlareDragContext TPayload="KanbanCard" Group="kanban" OnDrop="MoveCard" KeyboardReorder="@(!ReadOnly)">
+<FlareDragContext TPayload="KanbanCard" Group="kanban" OnDrop="MoveCard" KeyboardReorder="@(!ReadOnly)"
+                  ResolveItem="ResolveCard">
     <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="group">
         @if (Columns != null)
         {
@@ -30,42 +32,18 @@
                         }
                     </div>
                     <div class="@Css.Classes.Kanban.Cards" role="list">
-                        @foreach (var card in colCards)
+                        @if (Virtual)
                         {
-                            var c = card;
-                            RenderFragment content = @<text>
-                                @if (CardTemplate is not null)
-                                {
-                                    @CardTemplate(c)
-                                }
-                                else
-                                {
-                                    @if (c.Tag is not null)
-                                    {
-                                        <span class="@Css.Classes.Kanban.Tag"
-                                              style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
-                                    }
-                                    <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
-                                    @if (c.Description is not null)
-                                    {
-                                        <FlareText Typo="TypographyScale.BodySmall"
-                                                   Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
-                                    }
-                                }
-                            </text>;
-
-                            @if (ReadOnly)
+                            <Virtualize Items="colCards" Context="card" ItemSize="VirtualItemSize"
+                                        OverscanCount="OverscanCount">
+                                @RenderCard(card)
+                            </Virtualize>
+                        }
+                        else
+                        {
+                            @foreach (var card in colCards)
                             {
-                                <div @key="c.Id" class="@Css.Classes.Kanban.Card" role="listitem" tabindex="0">
-                                    @content
-                                </div>
-                            }
-                            else
-                            {
-                                <FlareDraggable @key="c.Id" Id="@c.Id" Payload="c"
-                                                Class="@Css.Classes.Kanban.Card" role="listitem">
-                                    @content
-                                </FlareDraggable>
+                                @RenderCard(card)
                             }
                         }
                     </div>
@@ -89,7 +67,25 @@
     /// <summary>Disables pointer and keyboard card movement while preserving readable, focusable card content.</summary>
     [Parameter] public bool ReadOnly { get; set; }
 
-    protected override string ComponentCssClass => Css.Classes.Kanban.Root;
+    /// <summary>
+    /// Renders only the cards visible in each column, for columns of hundreds of cards. Each column's
+    /// card list becomes its own scroll container and the columns stretch to the board's height, so the
+    /// board needs a bounded height (for example <c>Style="height:70vh"</c>); without one every card is
+    /// visible and nothing is saved. Dragging with a pointer, the drop highlight and auto-scroll work as
+    /// without it. Keyboard reordering reaches the cards currently rendered in each column - the visible
+    /// ones plus <see cref="OverscanCount"/> on each side - and the end of a column.
+    /// </summary>
+    [Parameter] public bool Virtual { get; set; }
+
+    /// <summary>Estimated height of one card in pixels, gap included, used by <see cref="Virtual"/> to size
+    /// the scroll area before the cards have been measured.</summary>
+    [Parameter] public float VirtualItemSize { get; set; } = 72f;
+
+    /// <summary>Number of cards rendered above and below the visible ones when <see cref="Virtual"/> is on.</summary>
+    [Parameter] public int OverscanCount { get; set; } = 3;
+
+    protected override string ComponentCssClass =>
+        Virtual ? Css.Classes.Kanban.Root + " " + Css.Classes.Kanban.Virtual : Css.Classes.Kanban.Root;
 
     private List<KanbanCard> _cards = [];
 
@@ -98,10 +94,57 @@
     private List<KanbanCard> CardsForColumn(string colId) =>
         _cards.Where(c => c.ColumnId == colId).ToList();
 
+    private RenderFragment RenderCard(KanbanCard c) => @<text>
+        @if (ReadOnly)
+        {
+            <div @key="c.Id" class="@Css.Classes.Kanban.Card" role="listitem" tabindex="0">
+                @RenderCardContent(c)
+            </div>
+        }
+        else
+        {
+            <FlareDraggable @key="c.Id" Id="@c.Id" Payload="c"
+                            Class="@Css.Classes.Kanban.Card" role="listitem">
+                @RenderCardContent(c)
+            </FlareDraggable>
+        }
+    </text>;
+
+    private RenderFragment RenderCardContent(KanbanCard c) => @<text>
+        @if (CardTemplate is not null)
+        {
+            @CardTemplate(c)
+        }
+        else
+        {
+            @if (c.Tag is not null)
+            {
+                <span class="@Css.Classes.Kanban.Tag"
+                      style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
+            }
+            <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
+            @if (c.Description is not null)
+            {
+                <FlareText Typo="TypographyScale.BodySmall"
+                           Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
+            }
+        }
+    </text>;
+
+    // A virtualized column disposes the components of cards scrolled out of view, so a card dragged out
+    // of the window - or dropped next to one - is no longer a registered draggable. The flat list still
+    // has it.
+    private bool ResolveCard(string id, out KanbanCard card)
+    {
+        card = _cards.Find(c => c.Id == id)!;
+        return card is not null;
+    }
+
     // Cards live in one flat list and a column is a filter over it, so a move is a remove and an
-    // insert at the position the target column's Nth card occupies in that list. The drop reports the
-    // index the card ends up at, which is what makes the second half of that a lookup rather than
-    // arithmetic over what was just removed.
+    // insert at the position the target column's Nth card occupies in that list. The position comes
+    // from the card the drop landed beside: the browser's index counts the cards it has rendered, which
+    // in a virtualized column start somewhere in the middle. Without a card to land beside, a virtualized
+    // column takes the card at its end.
     private async Task MoveCard(FlareDropEventArgs<KanbanCard> e)
     {
         if (ReadOnly)
@@ -113,7 +156,11 @@
         var moved = e.Payload with { ColumnId = e.TargetId };
 
         var inColumn = CardsForColumn(e.TargetId);
-        var index = e.Index < 0 || e.Index > inColumn.Count ? inColumn.Count : e.Index;
+        var over = e.HasOverPayload && e.Edge != DropEdge.Into ? inColumn.IndexOf(e.OverPayload!) : -1;
+        var index = over >= 0
+            ? over + (e.Edge == DropEdge.After ? 1 : 0)
+            : Virtual ? inColumn.Count : e.Index;
+        if (index < 0 || index > inColumn.Count) index = inColumn.Count;
         var insertAt = index < inColumn.Count ? _cards.IndexOf(inColumn[index]) : _cards.Count;
 
         _cards.Insert(insertAt, moved);

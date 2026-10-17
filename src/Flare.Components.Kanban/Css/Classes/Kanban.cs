@@ -15,6 +15,9 @@ public static class Kanban
     public const string Column = "flare-kanban__column";
     /// <summary>The <c>flare-kanban__count</c> CSS class.</summary>
     public const string Count = "flare-kanban__count";
+    /// <summary>The <c>flare-kanban--virtual</c> modifier: columns stretch to the board's height and each
+    /// card list scrolls on its own, which is what lets it render only the visible cards.</summary>
+    public const string Virtual = "flare-kanban--virtual";
     /// <summary>The <c>flare-kanban__tag</c> CSS class.</summary>
     public const string Tag = "flare-kanban__tag";
 }

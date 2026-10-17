@@ -13,7 +13,10 @@
 | `CardsChanged` | `EventCallback<IReadOnlyList<KanbanCard>>` | `` | Callback |  | Callback raised when cards are moved between columns. |
 | `ColumnTemplate` | `RenderFragment<KanbanColumnTemplateContext>?` | `` | Parameter |  | Custom content rendered inside each column header while Flare retains the column structure. |
 | `Columns` | `IReadOnlyList<KanbanColumn>?` | `` | Parameter |  | Column definitions that structure the Kanban board. |
+| `OverscanCount` | `int` | `3` | Parameter |  | Number of cards rendered above and below the visible ones when Virtual is on. |
 | `ReadOnly` | `bool` | `false` | Parameter |  | Disables pointer and keyboard card movement while preserving readable, focusable card content. |
+| `Virtual` | `bool` | `false` | Parameter |  | Renders only the cards visible in each column, for columns of hundreds of cards. Each column's card list becomes its own scroll container and the columns stretch to the board's height, so the board needs a bounded height (for example Style="height:70vh"); without one every card is visible and nothing is saved. Dragging with a pointer, the drop highlight and auto-scroll work as without it. Keyboard reordering reaches the cards currently rendered in each column - the visible ones plus OverscanCount on each side - and the end of a column. |
+| `VirtualItemSize` | `float` | `72` | Parameter |  | Estimated height of one card in pixels, gap included, used by Virtual to size the scroll area before the cards have been measured. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
