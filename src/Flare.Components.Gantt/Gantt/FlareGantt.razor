@@ -91,6 +91,12 @@
     /// Renders only the rows near the visible part of each panel (plus a margin): a chart of hundreds of rows then
     /// costs as much as one screen of them. Needs the browser to report what is visible; until it does, the first
     /// screen is drawn.
+    /// <para>
+    /// The window is cut from the chart's own layout rather than by Blazor's <c>Virtualize</c>: rows have different
+    /// heights (one lane per overlapping bar) and the connectors are drawn at the rows' exact positions, while
+    /// <c>Virtualize</c> places rows by an estimated size. The browser reports the vertical and horizontal view in one
+    /// call per scroll, so a scroll costs one round trip on Blazor Server.
+    /// </para>
     /// </summary>
     [Parameter] public bool Virtualize { get; set; }
 

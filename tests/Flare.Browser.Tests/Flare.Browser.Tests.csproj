@@ -22,5 +22,6 @@
     <ProjectReference Include="../../src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj" />
     <ProjectReference Include="../../src/Flare.Components.IDE/Flare.Components.IDE.csproj" />
     <ProjectReference Include="../../src/Flare.Components.Kanban/Flare.Components.Kanban.csproj" />
+    <ProjectReference Include="../../src/Flare.Components.Gantt/Flare.Components.Gantt.csproj" />
   </ItemGroup>
 </Project>

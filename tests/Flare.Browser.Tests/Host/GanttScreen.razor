@@ -1,0 +1,35 @@
+@page "/gantt"
+@using Flare.Components.Gantt
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <FlareGantt id="chart" Range="_range" Scale="GanttScale.Day" UnitWidth="40" RowHeight="30" Virtualize="true"
+                    Style="--flare-gantt-max-height:400px;" AriaLabel="Plan">
+            <FlareGanttPanel TRow="string" TItem="Work" Rows="_rows" RowKey="r => r" Items="_items"
+                             ItemKey="w => w.Key" ItemRow="w => w.Row" ItemSpan="w => w.Span" Links="_links"
+                             Editable="true" OnChange="OnChange" />
+        </FlareGantt>
+        <p id="result">@_result</p>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    public sealed record Work(string Key, string Row, GanttSpan Span);
+
+    private static readonly DateOnly Start = new(2026, 10, 12);
+    private readonly GanttSpan _range = GanttSpan.FromDays(Start, Start.AddDays(27));
+    private readonly string[] _rows = Enumerable.Range(0, 500).Select(i => $"r{i}").ToArray();
+    private List<Work> _items = [];
+    private readonly List<GanttLink> _links = [];
+    private string _result = "";
+
+    protected override void OnInitialized()
+    {
+        // Every row has one bar; each bar links to the one two rows below it.
+        _items = _rows.Select((r, i) => new Work($"w{i}", r, GanttSpan.FromDays(Start.AddDays(i % 10), Start.AddDays(i % 10 + 2)))).ToList();
+        for (var i = 0; i + 2 < _rows.Length; i += 2) _links.Add(new GanttLink($"w{i}", $"w{i + 2}"));
+    }
+
+    private void OnChange(GanttChangeEventArgs e) =>
+        _result = string.Join(";", e.Changes.Select(c => $"{c.ItemKey}@{DateOnly.FromDateTime(c.Span.Start):MM-dd}{(c.RowKey is null ? "" : ">" + c.RowKey)}"));
+}
