@@ -127,8 +127,19 @@ public static class CssAudit
             .Where(Directory.Exists)
             .ToArray();
 
+        // The optional component packages (Flare.Components.Gantt and the rest) read core tokens from their own
+        // stylesheets and code, so they count as uses. The pattern also matches Flare.Components itself; a
+        // folder that is already in the list is not added twice.
+        var packageDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Components.*")
+            .Where(d => !string.Equals(Path.GetFileName(d), "Flare.Components", StringComparison.Ordinal))
+            .ToArray();
+        var packageCssDirs = packageDirs.Select(d => Path.Combine(d, "wwwroot", "css")).Where(Directory.Exists);
         var css = Program.CollectCssTokens(cssDir);
         Program.AddComponentCodeTokens(css, Path.Combine(root, "src", "Flare.Components"));
+        // Uses only: the packages' own private variables are theirs to register, so [T+] stays about the core.
+        var used = Program.CollectCssTokens(new[] { cssDir }.Concat(packageCssDirs).ToArray());
+        Program.AddComponentCodeTokens(used, Path.Combine(root, "src", "Flare.Components"));
+        foreach (var pd in packageDirs) Program.AddComponentCodeTokens(used, pd);
         // Core token constants + each theme's OWN private token constants (theme tokens live in the theme
         // project, not the core - so a theme-private token declared there is not reported as undeclared).
         var themeProjectDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*");
@@ -138,12 +149,16 @@ public static class CssAudit
         // the constant references too, plus the ones a token class consumes through its own accessor.
         Program.AddConstantReferenceTokens(css, constants, Path.Combine(root, "src", "Flare.Components"));
         Program.AddIntraClassTokenReferences(css, tokensDir);
+        Program.AddConstantReferenceTokens(used, constants, Path.Combine(root, "src", "Flare.Components"));
+        foreach (var pd in packageDirs) Program.AddConstantReferenceTokens(used, constants, pd);
+        Program.AddIntraClassTokenReferences(used, tokensDir);
         var themeCss = Program.CollectCssTokens(themeDirs);
         // Theme-private tokens are often defined + read entirely in the theme's C# (its extra-var dict and
         // DesignTokens value strings), never in a .css file - count those references so they are not [T-].
         foreach (var td in themeProjectDirs) Program.AddComponentCodeTokens(themeCss, td);
 
-        var (plus, minus, tilde) = Program.CompareTokens(css, constants, themeCss, KnownTokenPrefixes);
+        var (plus, _, tilde) = Program.CompareTokens(css, constants, themeCss, KnownTokenPrefixes);
+        var (_, minus, _) = Program.CompareTokens(used, constants, themeCss, KnownTokenPrefixes);
 
         return new TokenAuditReport
         {

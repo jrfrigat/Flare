@@ -1,26 +1,26 @@
 /*
- * FlareGantt. Every look is a --flare-gantt-* variable that falls back to a shared Flare token, so a theme or
- * an application restyles the timeline by setting variables - on the root for the whole chart, or on a
+ * FlareGantt. Every look is a --flare-gantt-* token (GanttTokens) that each theme sets; an application restyles the
+ * timeline by setting the same variables - on the root for the whole chart, or on a
  * .flare-gantt--kind-<key> class for one kind of bar, segment, region, marker, cell or link.
  * Geometry (positions, lane height, unit width) is computed by the component and set inline.
  */
 
 .flare-gantt {
-    --_line: var(--flare-gantt-line, var(--flare-color-outline-variant));
-    --_line-width: var(--flare-gantt-line-width, 1px);
+    --_line: var(--flare-gantt-line);
+    --_line-width: var(--flare-gantt-line-width);
     position: relative;
     min-width: 0;
-    background: var(--flare-gantt-surface, var(--flare-color-surface));
-    color: var(--flare-gantt-on-surface, var(--flare-color-on-surface));
+    background: var(--flare-gantt-surface);
+    color: var(--flare-gantt-on-surface);
     border: var(--_line-width) solid var(--_line);
-    border-radius: var(--flare-gantt-radius, var(--flare-shape-medium));
-    font-size: var(--flare-gantt-font-size, 0.75rem);
+    border-radius: var(--flare-gantt-radius);
+    font-size: var(--flare-gantt-font-size);
     overflow: hidden;
 }
 
 .flare-gantt__scroll {
     overflow: auto;
-    max-height: var(--flare-gantt-max-height, none);
+    max-height: var(--flare-gantt-max-height);
 }
 
 /* Header: the corner above the row headers and the two-line scale. */
@@ -31,8 +31,8 @@
     display: flex;
     width: max-content;
     min-width: 100%;
-    background: var(--flare-gantt-header-bg, var(--flare-color-surface-container-low));
-    color: var(--flare-gantt-header-fg, var(--flare-color-on-surface-variant));
+    background: var(--flare-gantt-header-bg);
+    color: var(--flare-gantt-header-fg);
     border-bottom: var(--_line-width) solid var(--_line);
 }
 
@@ -80,11 +80,11 @@
 
 .flare-gantt__scale-row {
     position: relative;
-    height: var(--flare-gantt-scale-height, 2.25rem);
+    height: var(--flare-gantt-scale-height);
 }
 
 .flare-gantt__scale-row--major {
-    height: var(--flare-gantt-scale-major-height, 1.5rem);
+    height: var(--flare-gantt-scale-major-height);
     border-bottom: var(--_line-width) solid var(--_line);
     font-weight: 600;
 }
@@ -109,11 +109,11 @@
 }
 
 .flare-gantt__tick--nonworking {
-    background: var(--flare-gantt-nonworking-bg, var(--flare-color-surface-container));
+    background: var(--flare-gantt-nonworking-bg);
 }
 
 .flare-gantt__tick-caption {
-    opacity: var(--flare-gantt-caption-opacity, 0.75);
+    opacity: var(--flare-gantt-caption-opacity);
 }
 
 /* Panel: as wide as the axis, so its sticky header stays in view however far the axis scrolls. */
@@ -123,7 +123,7 @@
 }
 
 .flare-gantt__panel + .flare-gantt__panel {
-    border-top: var(--flare-gantt-panel-gap, var(--flare-spacing-2, 0.25rem)) solid var(--flare-gantt-panel-gap-color, var(--flare-color-surface-container));
+    border-top: var(--flare-gantt-panel-gap) solid var(--flare-gantt-panel-gap-color);
 }
 
 .flare-gantt__panel-header {
@@ -160,23 +160,23 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    border-left: var(--_line-width) solid var(--flare-gantt-grid-line, var(--_line));
-    opacity: var(--flare-gantt-grid-opacity, 0.6);
+    border-left: var(--_line-width) solid var(--flare-gantt-grid-line);
+    opacity: var(--flare-gantt-grid-opacity);
 }
 
 .flare-gantt__nonworking {
     position: absolute;
     top: 0;
     bottom: 0;
-    background: var(--flare-gantt-nonworking-bg, var(--flare-color-surface-container));
+    background: var(--flare-gantt-nonworking-bg);
 }
 
 .flare-gantt__region {
     position: absolute;
     top: 0;
     bottom: 0;
-    background: var(--flare-gantt-region-bg, color-mix(in srgb, var(--flare-color-primary) 8%, transparent));
-    border-inline: var(--_line-width) dashed var(--flare-gantt-region-border, var(--flare-color-primary));
+    background: var(--flare-gantt-region-bg);
+    border-inline: var(--_line-width) dashed var(--flare-gantt-region-border);
     box-sizing: border-box;
 }
 
@@ -184,7 +184,7 @@
     position: absolute;
     top: var(--flare-spacing-1, 0.125rem);
     left: var(--flare-spacing-2, 0.25rem);
-    color: var(--flare-gantt-region-fg, var(--flare-color-primary));
+    color: var(--flare-gantt-region-fg);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -203,7 +203,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    border-bottom: var(--_line-width) solid var(--flare-gantt-row-line, var(--_line));
+    border-bottom: var(--_line-width) solid var(--flare-gantt-row-line);
     pointer-events: none;
 }
 
@@ -218,7 +218,7 @@
     gap: var(--flare-spacing-2, 0.25rem);
     padding-block: var(--flare-spacing-1, 0.125rem);
     padding-inline-end: var(--flare-spacing-4, 0.5rem);
-    background: var(--flare-gantt-side-bg, var(--flare-color-surface));
+    background: var(--flare-gantt-side-bg);
     border-right: var(--_line-width) solid var(--_line);
     box-sizing: border-box;
     overflow: hidden;
@@ -237,8 +237,8 @@
 .flare-gantt__toggle,
 .flare-gantt__toggle-space {
     flex: none;
-    width: var(--flare-gantt-toggle-size, 1.25rem);
-    height: var(--flare-gantt-toggle-size, 1.25rem);
+    width: var(--flare-gantt-toggle-size);
+    height: var(--flare-gantt-toggle-size);
 }
 
 .flare-gantt__toggle {
@@ -259,7 +259,7 @@
     border-right: 0.12em solid currentColor;
     border-bottom: 0.12em solid currentColor;
     transform: rotate(-45deg);
-    transition: transform var(--flare-motion-duration-short, 120ms);
+    transition: transform var(--flare-motion-duration-small-move);
 }
 
 .flare-gantt__toggle--expanded::before {
@@ -267,13 +267,13 @@
 }
 
 .flare-gantt__toggle:hover {
-    background: var(--flare-gantt-hover-bg, var(--flare-color-surface-container));
+    background: var(--flare-gantt-hover-bg);
 }
 
 .flare-gantt__toggle:focus-visible,
 .flare-gantt__bar:focus-visible {
-    outline: var(--flare-gantt-focus-width, 2px) solid var(--flare-gantt-focus, var(--flare-color-primary));
-    outline-offset: var(--flare-gantt-focus-offset, 2px);
+    outline: var(--flare-gantt-focus-width) solid var(--flare-gantt-focus);
+    outline-offset: var(--flare-gantt-focus-offset);
 }
 
 .flare-gantt__track {
@@ -291,9 +291,9 @@
     justify-content: center;
     padding: var(--flare-spacing-1, 0.125rem);
     box-sizing: border-box;
-    background: var(--flare-gantt-cell-bg, var(--flare-color-surface-container-low));
-    color: var(--flare-gantt-cell-fg, var(--flare-color-on-surface));
-    border-right: var(--_line-width) solid var(--flare-gantt-surface, var(--flare-color-surface));
+    background: var(--flare-gantt-cell-bg);
+    color: var(--flare-gantt-cell-fg);
+    border-right: var(--_line-width) solid var(--flare-gantt-surface);
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -313,44 +313,44 @@
     height: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    background: var(--flare-gantt-bar-bg, var(--flare-color-primary));
-    color: var(--flare-gantt-bar-fg, var(--flare-color-on-primary));
-    border: var(--_line-width) solid var(--flare-gantt-bar-border, transparent);
-    border-radius: var(--flare-gantt-bar-radius, var(--flare-shape-small));
+    background: var(--flare-gantt-bar-bg);
+    color: var(--flare-gantt-bar-fg);
+    border: var(--_line-width) solid var(--flare-gantt-bar-border);
+    border-radius: var(--flare-gantt-bar-radius);
     cursor: pointer;
     user-select: none;
 }
 
 .flare-gantt__bar--summary {
-    --flare-gantt-bar-bg: var(--flare-gantt-summary-bg, var(--flare-color-on-surface-variant));
-    --flare-gantt-bar-fg: var(--flare-gantt-summary-fg, var(--flare-color-surface));
-    border-radius: var(--flare-gantt-summary-radius, var(--flare-shape-extra-small));
+    --flare-gantt-bar-bg: var(--flare-gantt-summary-bg);
+    --flare-gantt-bar-fg: var(--flare-gantt-summary-fg);
+    border-radius: var(--flare-gantt-summary-radius);
 }
 
 .flare-gantt__bar--selected {
-    box-shadow: 0 0 0 var(--flare-gantt-selected-width, 2px) var(--flare-gantt-selected, var(--flare-color-tertiary, var(--flare-color-primary)));
+    box-shadow: 0 0 0 var(--flare-gantt-selected-width) var(--flare-gantt-selected);
 }
 
 .flare-gantt__bar--critical {
-    --flare-gantt-bar-border: var(--flare-gantt-critical, var(--flare-color-error));
-    border-width: var(--flare-gantt-critical-width, 2px);
+    --flare-gantt-bar-border: var(--flare-gantt-critical);
+    border-width: var(--flare-gantt-critical-width);
 }
 
 .flare-gantt__bar--suggested {
     background: transparent;
-    color: var(--flare-gantt-suggested-fg, var(--flare-color-primary));
-    border: var(--flare-gantt-suggested-width, 2px) dashed var(--flare-gantt-suggested, var(--flare-color-primary));
+    color: var(--flare-gantt-suggested-fg);
+    border: var(--flare-gantt-suggested-width) dashed var(--flare-gantt-suggested);
     cursor: default;
     pointer-events: none;
 }
 
 .flare-gantt__bar--preview {
-    opacity: var(--flare-gantt-preview-opacity, 0.7);
+    opacity: var(--flare-gantt-preview-opacity);
     box-shadow: var(--flare-elevation-2, none);
 }
 
 .flare-gantt__bar--link-source {
-    outline: var(--flare-gantt-focus-width, 2px) dashed var(--flare-gantt-focus, var(--flare-color-primary));
+    outline: var(--flare-gantt-focus-width) dashed var(--flare-gantt-focus);
 }
 
 .flare-gantt__segment {
@@ -361,9 +361,9 @@
     align-items: center;
     overflow: hidden;
     box-sizing: border-box;
-    background: var(--flare-gantt-segment-bg, transparent);
-    color: var(--flare-gantt-segment-fg, inherit);
-    border: var(--_line-width) var(--flare-gantt-segment-border-style, solid) var(--flare-gantt-segment-border, transparent);
+    background: var(--flare-gantt-segment-bg);
+    color: var(--flare-gantt-segment-fg);
+    border: var(--_line-width) var(--flare-gantt-segment-border-style) var(--flare-gantt-segment-border);
     border-radius: inherit;
     white-space: nowrap;
     padding-inline: var(--flare-spacing-2, 0.25rem);
@@ -374,7 +374,7 @@
     top: 0;
     bottom: 0;
     left: 0;
-    background: var(--flare-gantt-progress-bg, color-mix(in srgb, var(--flare-color-on-primary) 22%, transparent));
+    background: var(--flare-gantt-progress-bg);
     pointer-events: none;
 }
 
@@ -393,7 +393,7 @@
     top: 0;
     bottom: 0;
     z-index: 1;
-    width: var(--flare-gantt-handle-width, 0.375rem);
+    width: var(--flare-gantt-handle-width);
     cursor: ew-resize;
 }
 
@@ -410,13 +410,13 @@
 .flare-gantt__link-handle {
     position: absolute;
     top: 50%;
-    right: var(--flare-gantt-handle-width, 0.375rem);
+    right: var(--flare-gantt-handle-width);
     z-index: 1;
-    width: var(--flare-gantt-link-handle-size, 0.625rem);
-    height: var(--flare-gantt-link-handle-size, 0.625rem);
+    width: var(--flare-gantt-link-handle-size);
+    height: var(--flare-gantt-link-handle-size);
     border-radius: 50%;
     transform: translateY(-50%);
-    background: var(--flare-gantt-bar-fg, var(--flare-color-on-primary));
+    background: var(--flare-gantt-bar-fg);
     opacity: 0;
     cursor: crosshair;
 }
@@ -437,7 +437,7 @@
     top: 0;
     bottom: 0;
     z-index: 2;
-    border-left: var(--flare-gantt-marker-width, 2px) var(--flare-gantt-marker-style, solid) var(--flare-gantt-marker, var(--flare-color-error));
+    border-left: var(--flare-gantt-marker-width) var(--flare-gantt-marker-style) var(--flare-gantt-marker);
     pointer-events: none;
 }
 
@@ -447,8 +447,8 @@
     left: var(--flare-spacing-1, 0.125rem);
     padding: 0 var(--flare-spacing-2, 0.25rem);
     border-radius: var(--flare-shape-extra-small);
-    background: var(--flare-gantt-marker, var(--flare-color-error));
-    color: var(--flare-gantt-marker-fg, var(--flare-color-on-error));
+    background: var(--flare-gantt-marker);
+    color: var(--flare-gantt-marker-fg);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -465,17 +465,17 @@
 
 .flare-gantt__link {
     fill: none;
-    stroke: var(--flare-gantt-link, var(--flare-color-outline));
-    stroke-width: var(--flare-gantt-link-width, 1.5px);
-    stroke-dasharray: var(--flare-gantt-link-dash, none);
+    stroke: var(--flare-gantt-link);
+    stroke-width: var(--flare-gantt-link-width);
+    stroke-dasharray: var(--flare-gantt-link-dash);
 }
 
 .flare-gantt__link--critical {
-    stroke: var(--flare-gantt-critical, var(--flare-color-error));
+    stroke: var(--flare-gantt-critical);
 }
 
 .flare-gantt__arrow {
-    fill: var(--flare-gantt-link, var(--flare-color-outline));
+    fill: var(--flare-gantt-link);
 }
 
 /* Drop targets for an outside drag: one per row, the unit under the pointer lit by the axis script. */
@@ -505,7 +505,7 @@
 }
 
 .flare-gantt__drop.flare-drop-zone--candidate {
-    background: var(--flare-gantt-drop-candidate, color-mix(in srgb, var(--flare-color-primary) 6%, transparent));
+    background: var(--flare-gantt-drop-candidate);
 }
 
 .flare-gantt__drop.flare-drop-zone--over,
@@ -514,21 +514,21 @@
 }
 
 .flare-gantt__drop.flare-drop-zone--over {
-    background: var(--flare-gantt-drop-row, color-mix(in srgb, var(--flare-color-primary) 10%, transparent));
+    background: var(--flare-gantt-drop-row);
 }
 
 .flare-gantt__drop.flare-drop-zone--over > .flare-gantt__drop-unit {
     display: block;
-    background: var(--flare-gantt-drop-over, color-mix(in srgb, var(--flare-color-primary) 22%, transparent));
-    box-shadow: inset 0 0 0 2px var(--flare-gantt-drop-outline, var(--flare-color-primary));
+    background: var(--flare-gantt-drop-over);
+    box-shadow: inset 0 0 0 2px var(--flare-gantt-drop-outline);
 }
 
 .flare-gantt__item-drop.flare-drop-zone--candidate .flare-gantt__bar {
-    box-shadow: 0 0 0 1px var(--flare-gantt-drop-outline, var(--flare-color-primary));
+    box-shadow: 0 0 0 1px var(--flare-gantt-drop-outline);
 }
 
 .flare-gantt__item-drop.flare-drop-zone--over .flare-gantt__bar {
-    box-shadow: 0 0 0 3px var(--flare-gantt-drop-outline, var(--flare-color-primary));
+    box-shadow: 0 0 0 3px var(--flare-gantt-drop-outline);
 }
 
 /* Legend: each sample is the chart's own element for its kind, sized down, so it takes the same look. */
@@ -536,9 +536,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--flare-gantt-legend-gap, var(--flare-spacing-5, 0.625rem));
-    font-size: var(--flare-gantt-legend-font-size, 0.75rem);
-    color: var(--flare-gantt-legend-fg, var(--flare-color-on-surface-variant));
+    gap: var(--flare-gantt-legend-gap);
+    font-size: var(--flare-gantt-legend-font-size);
+    color: var(--flare-gantt-legend-fg);
 }
 
 .flare-gantt-legend__item {
@@ -552,8 +552,8 @@
     inset: auto;
     display: inline-block;
     flex: none;
-    width: var(--flare-gantt-legend-sample-width, 1.25rem);
-    height: var(--flare-gantt-legend-sample-height, 0.625rem);
+    width: var(--flare-gantt-legend-sample-width);
+    height: var(--flare-gantt-legend-sample-height);
     padding: 0;
     overflow: hidden;
     box-sizing: border-box;
@@ -563,12 +563,12 @@
 
 /* A cell sample can be the colour of the page (free time); a hairline keeps it visible. */
 .flare-gantt-legend .flare-gantt-legend__sample.flare-gantt__cell {
-    border: 1px solid var(--flare-gantt-legend-sample-border, var(--flare-color-outline-variant));
+    border: 1px solid var(--flare-gantt-legend-sample-border);
 }
 
 /* A region is drawn edge to edge on the chart; in the key its own dashed border goes all the way round. */
 .flare-gantt-legend .flare-gantt-legend__sample.flare-gantt__region {
-    border: 1px dashed var(--flare-gantt-region-border, var(--flare-color-primary));
+    border: 1px dashed var(--flare-gantt-region-border);
 }
 
 .flare-gantt-legend .flare-gantt-legend__sample > .flare-gantt__segment {

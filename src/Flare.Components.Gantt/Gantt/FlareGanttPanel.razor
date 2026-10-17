@@ -44,7 +44,7 @@
                  aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)">
                 @if (!gantt.Compact)
                 {
-                    <div class="@Css.Classes.Gantt.Side" role="rowheader" style="padding-inline-start:calc(var(--flare-gantt-indent, var(--flare-spacing-6, 0.75rem)) * @row.Depth)">
+                    <div class="@Css.Classes.Gantt.Side" role="rowheader" style="@($"padding-inline-start:calc(var({Css.Tokens.GanttField.Indent}) * {row.Depth})")">
                         @if (row.HasChildren)
                         {
                             var key = row.Key;
