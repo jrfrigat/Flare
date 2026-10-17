@@ -179,12 +179,15 @@
             {
                 _dotNetRef ??= DotNetObjectReference.Create(this);
 
+                // Escape and the trap go out together and first: a field in the body can take autofocus as soon
+                // as the dialog renders, and the dialog has to own the keyboard by then. Awaiting one before
+                // sending the other would leave a round trip in which Escape does nothing.
+                var esc = CloseOnEsc ? Overlay.RegisterDialogEscAsync(_id, _dotNetRef) : ValueTask.CompletedTask;
+                var trap = Overlay.TrapFocusAsync(_id, _dialogEl);
+                await esc;
+                await trap;
+
                 _scrollLock = await Scroll.LockAsync();
-
-                if (CloseOnEsc)
-                    await Overlay.RegisterDialogEscAsync(_id, _dotNetRef);
-
-                await Overlay.TrapFocusAsync(_id, _dialogEl);
 
                 if (Draggable)
                     await DialogDrag.RegisterDragAsync(_headerEl, _dialogEl);

@@ -75,6 +75,9 @@ it('restores a surviving ancestor when the initiator is removed', () => {
     const d = dialog('removed'); trapFocus('removed', d.el); trigger.remove();
     releaseFocusTrap('removed');
     expect(document.activeElement).toBe(region);
+    // The temporary tabindex stays while the fallback holds focus: a browser would otherwise move focus to the body.
+    expect(region.getAttribute('tabindex')).toBe('-1');
+    region.blur();
     expect(region.hasAttribute('tabindex')).toBe(false);
 });
 
@@ -85,7 +88,18 @@ it('uses the fallback when the initiator becomes disabled', () => {
     region.append(trigger); document.body.append(region); trigger.focus();
     const d = dialog('disabled'); trapFocus('disabled', d.el); trigger.disabled = true;
     releaseFocusTrap('disabled');
-    expect(document.activeElement).toBe(region); expect(region.tabIndex).toBe(0);
+    expect(document.activeElement).toBe(region);
+    region.blur();
+    expect(region.tabIndex).toBe(0);
+});
+
+it('returns focus to the opener when a field in the dialog took autofocus first', () => {
+    const opener = visible(document.createElement('button'));
+    document.body.append(opener); opener.focus();
+    const d = dialog('autofocus'); d.first.focus();
+    trapFocus('autofocus', d.el);
+    releaseFocusTrap('autofocus'); d.el.remove();
+    expect(document.activeElement).toBe(opener);
 });
 
 it('keeps a nested trap active and resumes the underlying trap on close', () => {
@@ -112,4 +126,16 @@ it('does not send Escape to a dialog underneath a MessageBox', () => {
     key('Escape'); expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
     releaseFocusTrap('messagebox'); inner.el.remove();
     key('Escape'); expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});
+
+it('leaves Escape to an open select inside the dialog, but not to an expanded disclosure', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const d = dialog('select'); registerDialogEscHandler('select', receiver); trapFocus('select', d.el);
+    const select = visible(document.createElement('div'));
+    select.tabIndex = 0; select.setAttribute('role', 'combobox'); select.setAttribute('aria-expanded', 'true');
+    const disclosure = visible(document.createElement('button'));
+    disclosure.setAttribute('aria-expanded', 'true');
+    d.el.append(select, disclosure);
+    select.focus(); key('Escape'); expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
+    disclosure.focus(); key('Escape'); expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });

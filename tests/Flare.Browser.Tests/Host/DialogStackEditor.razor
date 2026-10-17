@@ -1,0 +1,22 @@
+@inject IDialogService Dialogs
+
+<FlareTextField Label="Violation" Autofocus="true" @bind-Value="_text" />
+<FlareSelect TValue="string" @bind-Value="_kind" Label="Kind">
+    <option value="minor">Minor</option>
+    <option value="major">Major</option>
+</FlareSelect>
+<button id="delete" @onclick="Delete">Delete</button>
+<button id="save" @onclick="() => Dialog.Close(_text)">Save</button>
+<button id="cancel" @onclick="() => Dialog.Cancel()">Cancel</button>
+
+@code {
+    [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
+    private string? _text;
+    private string _kind = "minor";
+
+    private async Task Delete()
+    {
+        if (await Dialogs.ConfirmAsync("Delete?", "Delete this fine?", "Delete", "Keep") == true)
+            Dialog.Close("deleted");
+    }
+}

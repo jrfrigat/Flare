@@ -37,9 +37,14 @@ function documentBus(type, options) {
 
 const _escHandlers = documentBus('keydown');
 
+// A control whose popup is open (a select, combobox or menu button) owns Escape: it closes that popup, and the
+// dialog around it stays open. aria-haspopup tells it apart from a disclosure, whose Escape is the dialog's.
+const OPEN_POPUP_OWNER = '[aria-expanded="true"]:is([role="combobox"], [aria-haspopup]:not([aria-haspopup="false"]))';
+
 export function registerDialogEscHandler(id, dotNetRef) {
     _escHandlers.set(id, (e) => {
-        if (e.key === 'Escape' && (!_focusOrder.length || _focusOrder.at(-1) === id)) {
+        if (e.key === 'Escape' && (!_focusOrder.length || _focusOrder.at(-1) === id)
+            && !(e.target instanceof Element && e.target.closest(OPEN_POPUP_OWNER))) {
             e.preventDefault();
             dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });
         }
@@ -59,13 +64,33 @@ const visibleFocusTarget = el => !el.closest('[hidden], [inert]') && el.getClien
 const _focusTraps = registry();
 const _focusOrder = [];
 
+// The last few elements that received focus. A field inside a dialog can take autofocus before the trap is
+// set up, and the trap still has to return focus to the element that opened the dialog, not to that field.
+// The module is imported as the app starts, so the history covers the first dialog too.
+// It starts with whatever already had focus when the module loaded.
+const _focusHistory = document.activeElement && document.activeElement !== document.body ? [document.activeElement] : [];
+document.addEventListener('focusin', (e) => {
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    const index = _focusHistory.indexOf(target);
+    if (index >= 0) _focusHistory.splice(index, 1);
+    _focusHistory.push(target);
+    if (_focusHistory.length > 8) _focusHistory.shift();
+}, true);
+
+function focusOutside(dialogEl) {
+    const active = document.activeElement;
+    if (active && active !== document.body && !dialogEl.contains(active)) return active;
+    return _focusHistory.findLast(el => el.isConnected && !dialogEl.contains(el)) ?? active;
+}
+
 export function trapFocus(id, dialogEl) {
     releaseFocusTrap(id);
 
     const focusable = () => Array.from(dialogEl.querySelectorAll(FOCUSABLE_SELECTORS))
         .filter(visibleFocusTarget);
 
-    const previouslyFocused = document.activeElement;
+    const previouslyFocused = focusOutside(dialogEl);
     const ancestors = [];
     for (let el = previouslyFocused?.parentElement; el; el = el.parentElement) ancestors.push(el);
     const isActive = () => _focusOrder.at(-1) === id;
@@ -104,8 +129,14 @@ export function trapFocus(id, dialogEl) {
         const tabIndex = fallback.getAttribute('tabindex');
         fallback.setAttribute('tabindex', '-1');
         fallback.focus({ preventScroll: true });
-        if (tabIndex === null) fallback.removeAttribute('tabindex');
-        else fallback.setAttribute('tabindex', tabIndex);
+        // Restoring the attribute while the element holds focus makes it unfocusable, and the browser then
+        // moves focus to the body; restore it once focus leaves instead.
+        const restore = () => {
+            if (tabIndex === null) fallback.removeAttribute('tabindex');
+            else fallback.setAttribute('tabindex', tabIndex);
+        };
+        if (document.activeElement === fallback) fallback.addEventListener('blur', restore, { once: true });
+        else restore();
     });
 
     // A roving grid or composite widget owns its starting cursor. Do not focus navigation first.

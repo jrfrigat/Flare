@@ -1,0 +1,39 @@
+@page "/dialog-stack"
+@inject IDialogService Dialogs
+@inject IMessageBoxService MessageBox
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <button id="background">Background</button>
+        <button id="new" @onclick="OpenEditor">New fine</button>
+        <button id="alert" @onclick="@(() => MessageBox.AlertAsync("Notice", "Saved."))">Alert</button>
+        <button id="confirm" @onclick="@(async () => _result = (await MessageBox.ConfirmAsync("Leave?", "Unsaved changes.")).ToString())">Confirm</button>
+        <button id="prompt" @onclick="@(async () => _result = await MessageBox.PromptAsync("Rename", "Name", "Old") ?? "cancelled")">Prompt</button>
+        <ul id="rows">
+            @foreach (var row in _rows)
+            {
+                <li @key="row"><button id="remove-@row" @onclick="() => RemoveRow(row)">Remove @row</button></li>
+            }
+        </ul>
+        <p id="result">@_result</p>
+    </main>
+    <FlareDialogProvider />
+    <FlareMessageBoxProvider />
+</FlareThemeProvider>
+
+@code {
+    private readonly List<string> _rows = ["a", "b"];
+    private string? _result;
+
+    private async Task OpenEditor()
+    {
+        var result = await Dialogs.ShowAsync<DialogStackEditor>("Fine", options: new DialogOptions { AriaLabel = "Fine" });
+        _result = result.Cancelled ? "cancelled" : result.Data?.ToString();
+    }
+
+    private async Task RemoveRow(string row)
+    {
+        if (await MessageBox.ConfirmAsync("Remove?", $"Remove {row}?"))
+            _rows.Remove(row);
+    }
+}

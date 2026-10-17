@@ -3,6 +3,17 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The
+  collapsed rail lists every panel of the region, and the region floats only when all of its panels use auto-hide.
+- Closing a dialog returns focus to the element that opened it, also when a field inside the dialog took autofocus.
+  When that element is gone, focus moves to its nearest remaining container instead of the page body.
+- Escape in an open select, combobox or menu button inside a dialog closes only that popup and keeps the dialog
+  open.
+
 ## [0.44.0] - 2026-10-13
 
 ### Added
