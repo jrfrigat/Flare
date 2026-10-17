@@ -1,0 +1,21 @@
+@* A name typed without spaces breaks inside itself instead of running past the card; text with spaces wraps
+   between words. The avatar and the action keep their place either way. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-inline-size:22rem;">
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareCardHeader Title="@LongToken" Subtitle="@LongToken">
+            <AvatarContent><FlareAvatar Text="Reward" /></AvatarContent>
+            <ActionContent>
+                <FlareIconButton Icon="@FlareIcons.MoreVert" AriaLabel="@GalleryStrings.Cards_LongNames" />
+            </ActionContent>
+        </FlareCardHeader>
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareCardHeader Title="@GalleryStrings.Cards_LongNamesProse">
+            <AvatarContent><FlareAvatar Text="Reward" /></AvatarContent>
+        </FlareCardHeader>
+    </FlareCard>
+</FlareStack>
+
+@code {
+    private static readonly string LongToken = string.Concat(Enumerable.Repeat("RewardForCheckingALongName", 3));
+}

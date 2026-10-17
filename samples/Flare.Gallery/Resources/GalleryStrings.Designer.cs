@@ -1373,6 +1373,24 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Cards_RichContent", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long Names.
+        /// </summary>
+        public static string Cards_LongNames {
+            get {
+                return ResourceManager.GetString("Cards_LongNames", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A weekly reward for keeping the room tidy without being reminded.
+        /// </summary>
+        public static string Cards_LongNamesProse {
+            get {
+                return ResourceManager.GetString("Cards_LongNamesProse", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Selectable.

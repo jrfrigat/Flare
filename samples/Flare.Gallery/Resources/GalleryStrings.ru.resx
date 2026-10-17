@@ -468,6 +468,12 @@
   <data name="Cards_RichContent" xml:space="preserve">
     <value>Карточки с расширенным содержимым</value>
   </data>
+  <data name="Cards_LongNames" xml:space="preserve">
+    <value>Длинные названия</value>
+  </data>
+  <data name="Cards_LongNamesProse" xml:space="preserve">
+    <value>Награда за неделю порядка в комнате без напоминаний</value>
+  </data>
   <data name="Cards_Variants" xml:space="preserve">
     <value>Варианты</value>
   </data>

@@ -468,6 +468,12 @@
   <data name="Cards_RichContent" xml:space="preserve">
     <value>Rich Content Cards</value>
   </data>
+  <data name="Cards_LongNames" xml:space="preserve">
+    <value>Long Names</value>
+  </data>
+  <data name="Cards_LongNamesProse" xml:space="preserve">
+    <value>A weekly reward for keeping the room tidy without being reminded</value>
+  </data>
   <data name="Cards_Variants" xml:space="preserve">
     <value>Variants</value>
   </data>

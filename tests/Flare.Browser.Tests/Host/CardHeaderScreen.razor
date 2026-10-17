@@ -1,0 +1,19 @@
+@page "/card-header"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:8px;">
+        <FlareCard id="long-card">
+            <FlareCardHeader Title="@LongToken" Subtitle="@LongToken">
+                <AvatarContent><span id="avatar" style="display:inline-block;inline-size:40px;block-size:40px;">A</span></AvatarContent>
+                <ActionContent><button id="action">More</button></ActionContent>
+            </FlareCardHeader>
+        </FlareCard>
+        <FlareCard id="prose-card">
+            <FlareCardHeader Title="A weekly reward for keeping the room tidy without being reminded" />
+        </FlareCard>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly string LongToken = string.Concat(Enumerable.Repeat("RewardForCheckingALongNameWithoutSpaces", 3));
+}

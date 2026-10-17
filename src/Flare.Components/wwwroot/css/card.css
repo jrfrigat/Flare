@@ -144,6 +144,12 @@
 .flare-card__header-avatar { display: inline-flex; flex-shrink: 0; }
 .flare-card__header-text { flex: 1; min-width: 0; }
 .flare-card__header-action { display: inline-flex; flex-shrink: 0; }
+/* A word longer than the header (a name typed without spaces) breaks inside itself rather than running past
+   the card; text with spaces still wraps between words. */
+.flare-card__title,
+.flare-card__subtitle {
+    overflow-wrap: anywhere;
+}
 .flare-card__title {
     font-family: var(--flare-card-title-font-family);
     font-size: var(--flare-card-title-font-size);
