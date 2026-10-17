@@ -12,6 +12,12 @@ All notable changes to Flare are documented here. This project adheres to
   `var(--flare-spacing-6)`. A theme sets one only to differ; the in-box themes stopped repeating them and look
   exactly as before. A theme that still sets them keeps working. Tokens with a literal value of their own
   (sizes, opacities) stay `required`.
+- `FlareGantt` takes its text size, line widths and line style from the base tokens
+  (`--flare-typescale-body-small-size`, `--flare-border-width`, `--flare-border-width-emphasis`,
+  `--flare-border-style`), so its text follows the theme: smaller in Aero and Visual Studio, larger in Liquid
+  Glass. A focused bar or expand button wears the theme's focus ring, and the bar a link starts from wears it
+  dashed. `--flare-gantt-focus`, `--flare-gantt-focus-width` and `--flare-gantt-focus-offset` are gone; restyle
+  the focus through `--flare-focus-ring`.
 
 ## [0.45.0] - 2026-10-17
 

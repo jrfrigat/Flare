@@ -11,9 +11,9 @@
     --flare-gantt-surface: var(--flare-color-surface);
     --flare-gantt-on-surface: var(--flare-color-on-surface);
     --flare-gantt-radius: var(--flare-shape-medium);
-    --flare-gantt-font-size: 0.75rem;
+    --flare-gantt-font-size: var(--flare-typescale-body-small-size);
     --flare-gantt-line: var(--flare-color-outline-variant);
-    --flare-gantt-line-width: 1px;
+    --flare-gantt-line-width: var(--flare-border-width);
     --flare-gantt-max-height: none;
     --flare-gantt-header-bg: var(--flare-color-surface-container-low);
     --flare-gantt-header-fg: var(--flare-color-on-surface-variant);
@@ -39,29 +39,26 @@
     --flare-gantt-summary-fg: var(--flare-color-surface);
     --flare-gantt-summary-radius: var(--flare-shape-extra-small);
     --flare-gantt-selected: var(--flare-color-tertiary);
-    --flare-gantt-selected-width: 2px;
+    --flare-gantt-selected-width: var(--flare-border-width-emphasis);
     --flare-gantt-critical: var(--flare-color-error);
-    --flare-gantt-critical-width: 2px;
+    --flare-gantt-critical-width: var(--flare-border-width-emphasis);
     --flare-gantt-suggested: var(--flare-color-primary);
     --flare-gantt-suggested-fg: var(--flare-color-primary);
-    --flare-gantt-suggested-width: 2px;
+    --flare-gantt-suggested-width: var(--flare-border-width-emphasis);
     --flare-gantt-preview-opacity: 0.7;
     --flare-gantt-handle-width: 0.375rem;
     --flare-gantt-link-handle-size: 0.625rem;
-    --flare-gantt-focus: var(--flare-color-primary);
-    --flare-gantt-focus-width: 2px;
-    --flare-gantt-focus-offset: 2px;
     --flare-gantt-segment-bg: transparent;
     --flare-gantt-segment-fg: inherit;
     --flare-gantt-segment-border: transparent;
-    --flare-gantt-segment-border-style: solid;
+    --flare-gantt-segment-border-style: var(--flare-border-style);
     --flare-gantt-region-bg: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
     --flare-gantt-region-border: var(--flare-color-primary);
     --flare-gantt-region-fg: var(--flare-color-primary);
     --flare-gantt-marker: var(--flare-color-error);
     --flare-gantt-marker-fg: var(--flare-color-on-error);
-    --flare-gantt-marker-width: 2px;
-    --flare-gantt-marker-style: solid;
+    --flare-gantt-marker-width: var(--flare-border-width-emphasis);
+    --flare-gantt-marker-style: var(--flare-border-style);
     --flare-gantt-cell-bg: var(--flare-color-surface-container-low);
     --flare-gantt-cell-fg: var(--flare-color-on-surface);
     --flare-gantt-link: var(--flare-color-outline);
@@ -72,7 +69,7 @@
     --flare-gantt-drop-over: color-mix(in srgb, var(--flare-color-primary) 22%, transparent);
     --flare-gantt-drop-outline: var(--flare-color-primary);
     --flare-gantt-legend-fg: var(--flare-color-on-surface-variant);
-    --flare-gantt-legend-font-size: 0.75rem;
+    --flare-gantt-legend-font-size: var(--flare-typescale-body-small-size);
     --flare-gantt-legend-gap: var(--flare-spacing-5);
     --flare-gantt-legend-sample-width: 1.25rem;
     --flare-gantt-legend-sample-height: 0.625rem;
@@ -345,12 +342,6 @@
     background: var(--flare-gantt-hover-bg);
 }
 
-.flare-gantt__toggle:focus-visible,
-.flare-gantt__bar:focus-visible {
-    outline: var(--flare-gantt-focus-width) solid var(--flare-gantt-focus);
-    outline-offset: var(--flare-gantt-focus-offset);
-}
-
 .flare-gantt__track {
     position: relative;
     flex: none;
@@ -424,8 +415,11 @@
     box-shadow: var(--flare-elevation-2, none);
 }
 
-.flare-gantt__bar--link-source {
-    outline: var(--flare-gantt-focus-width) dashed var(--flare-gantt-focus);
+/* The bar a link starts from wears the theme's focus ring, dashed; a focused bar takes the solid one from a11y.css. */
+.flare-gantt__bar--link-source,
+.flare-gantt__bar--link-source:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-style: dashed;
 }
 
 .flare-gantt__segment {
