@@ -18,7 +18,8 @@ builder.Services.AddFlareGantt();
 <link rel="stylesheet" href="_content/Flare.Components.Gantt/css/gantt.css" />
 ```
 
-Requires a `Flare.Theme.*` package: the timeline's look is the theme's `GanttTokens`.
+Requires a `Flare.Theme.*` package. The timeline takes its look from the theme's semantic `--flare-*` tokens; the
+theme itself needs nothing for the Gantt.
 
 ## What it does and does not do
 
@@ -71,8 +72,9 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 
 ## Look and texts
 
-- Every look is a `--flare-gantt-*` token (`GanttTokens`) the theme sets. Restyle one kind by setting the same
-  variables on its class:
+- Every look is a `--flare-gantt-*` variable that `gantt.css` declares with a default built from the semantic
+  `--flare-*` tokens (for example `--flare-gantt-radius: var(--flare-shape-medium)`). Set the same variables on
+  `.flare-gantt` to restyle the whole chart, or on a kind's class to restyle one kind:
 
 ```css
 .flare-gantt--kind-waiting {
@@ -90,6 +92,7 @@ The package grew in the Alva repository. Differences from that copy:
 `AddFlareGantt()` is required; `GanttTexts` holds optional overrides instead of whole `English`/`Russian` sets;
 the row-header column is resized with `FlareSplitter` (the narrower/wider/reset buttons are gone, Home or a double
 click resets, and `SideWidthChanged` reports pixels); leaving the chart no longer cancels a drag (Escape does);
-the look is the theme's `GanttTokens` instead of CSS fallbacks.
+every `--flare-gantt-*` variable is declared once on the chart with a default from the semantic tokens instead of a
+fallback at each use.
 
 Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

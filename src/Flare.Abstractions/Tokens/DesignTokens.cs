@@ -192,9 +192,6 @@ public sealed record DesignTokens
     /// <summary>page header spacing, surface and eyebrow tokens.</summary>
     public required PageHeaderTokens PageHeader { get; init; }
 
-    /// <summary>Gantt timeline tokens (the Flare.Components.Gantt package).</summary>
-    public required GanttTokens Gantt { get; init; }
-
     /// <summary>skeleton geometry tokens.</summary>
     public required SkeletonTokens Skeleton { get; init; }
 

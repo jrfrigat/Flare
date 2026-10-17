@@ -54,8 +54,8 @@ All notable changes to Flare are documented here. This project adheres to
   cascading and the critical path, summary bars, cells, regions, markers, an endless axis and virtualization.
   Bars move, resize and link with the pointer or the keyboard; the chart proposes changes and the application
   applies them. Register it with `AddFlareGantt()` and link `_content/Flare.Components.Gantt/css/gantt.css`.
-  Its look is the theme's `GanttTokens`; the record is required on `DesignTokens`, so a custom theme built with
-  `new DesignTokens { ... }` has to set `Gantt`.
+  Its look is a set of `--flare-gantt-*` variables with defaults from the theme's semantic tokens, so a theme sets
+  nothing for it; set them on `.flare-gantt` to restyle the chart.
 
 ### Fixed
 
