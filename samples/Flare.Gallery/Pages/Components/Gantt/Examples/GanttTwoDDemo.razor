@@ -1,0 +1,56 @@
+@using Flare.Components.Gantt
+@* Two projections of one plan on one axis: the work breakdown and the people who do it. Both panels share the
+   scale, the scroll and the selection; a bar moved in either one moves in both. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+        <FlareSwitch @bind-Value="_critical" Label="@GalleryStrings.Gantt_CriticalPath" />
+        <FlareGanttLegend Items="_legend" AriaLabel="@GalleryStrings.Gantt_Legend" />
+    </FlareStack>
+
+    <FlareGantt Range="_plan.Range" Scale="GanttScale.Day" UnitWidth="36" RowHeight="34" SideWidth="15rem" ResizableSide="true"
+                NonWorking="GanttSample.IsWeekend" Markers="_plan.Today" Regions="_plan.Sprint" @bind-SelectedKey="_selected"
+                AriaLabel="@GalleryStrings.Gantt_TwoD">
+        <Corner><span>@GalleryStrings.Gantt_Corner</span></Corner>
+        <ChildContent>
+            <FlareGanttPanel TRow="GanttNode" TItem="GanttWork" Rows="_plan.Tree" RowKey="n => n.Key" RowChildren="n => n.Children"
+                             RowHeader="Title" Items="_plan.Work" ItemKey="w => w.Key" ItemRow="w => w.Node" ItemSpan="w => w.Span"
+                             ItemLabel="w => w.Title" ItemProgress="w => w.Progress" ItemSegments="GanttSample.Segments"
+                             Links="_plan.Links" ShowCriticalPath="_critical" RollupParents="true"
+                             Editable="true" AllowRowChange="false" OnChange="Change" OnLinkCreate="Link"
+                             AriaLabel="@GalleryStrings.Gantt_TasksPanel">
+                <Header>@GalleryStrings.Gantt_TasksPanel</Header>
+            </FlareGanttPanel>
+            <FlareGanttPanel TRow="GanttPerson" TItem="GanttWork" Rows="_plan.People" RowKey="p => p.Key"
+                             RowHeader="Person" Items="_plan.Work" ItemKey="w => w.Key" ItemRow="w => w.Person" ItemSpan="w => w.Span"
+                             ItemLabel="w => w.Title" Cells="_plan.Load()"
+                             Editable="true" OnChange="Change" AriaLabel="@GalleryStrings.Gantt_PeoplePanel">
+                <Header>@GalleryStrings.Gantt_PeoplePanel</Header>
+            </FlareGanttPanel>
+        </ChildContent>
+    </FlareGantt>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Gantt_TwoDHint</FlareText>
+</FlareStack>
+
+@code {
+    private readonly GanttSample _plan = new();
+    private bool _critical;
+    private string? _selected;
+
+    private readonly GanttLegendItem[] _legend =
+    [
+        new("work", GalleryStrings.Gantt_LegendWork),
+        new("summary", GalleryStrings.Gantt_LegendSummary),
+        new("sprint", GalleryStrings.Gantt_Sprint, GanttLegendShape.Region),
+        new("overload", GalleryStrings.Gantt_LegendLoad, GanttLegendShape.Cell),
+    ];
+
+    private static readonly RenderFragment<GanttNode> Title = node => @<span>@node.Title</span>;
+
+    private static readonly RenderFragment<GanttPerson> Person = person => @<span>@person.Name</span>;
+
+    // The chart only proposes; the page applies what it accepts, and both panels redraw from the same data.
+    private void Change(GanttChangeEventArgs change) => _plan.Apply(change);
+
+    private void Link(GanttLinkEventArgs link) => _plan.Add(link.Link);
+}

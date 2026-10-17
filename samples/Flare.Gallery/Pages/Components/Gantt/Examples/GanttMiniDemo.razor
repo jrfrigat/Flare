@@ -1,0 +1,18 @@
+@using Flare.Components.Gantt
+@* Compact: a read-only overview without the row-header column, for a dashboard card or a sprint summary. *@
+<FlareCard Variant="CardVariant.Outlined">
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Gantt_Sprint</FlareText>
+        <FlareGantt Range="_plan.Range" Scale="GanttScale.Day" UnitWidth="18" RowHeight="22" BarInset="4" Compact="true" FillWidth="true"
+                    NonWorking="GanttSample.IsWeekend" Markers="_plan.Today" Regions="_plan.Sprint" AriaLabel="@GalleryStrings.Gantt_Mini">
+            <FlareGanttPanel TRow="GanttPerson" TItem="GanttWork" Rows="_plan.People" RowKey="p => p.Key"
+                             Items="_plan.Work" ItemKey="w => w.Key" ItemRow="w => w.Person" ItemSpan="w => w.Span"
+                             ItemLabel="w => w.Title" ItemProgress="w => w.Progress" />
+        </FlareGantt>
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Gantt_MiniHint</FlareText>
+    </FlareStack>
+</FlareCard>
+
+@code {
+    private readonly GanttSample _plan = new();
+}

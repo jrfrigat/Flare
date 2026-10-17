@@ -95,6 +95,9 @@ This component exposes no documented public methods.
 - `FlareFormBuilder`
 - `FlareFormField`
 - `FlareFormulaBar`
+- `FlareGantt`
+- `FlareGanttLegend`
+- `FlareGanttPanel`
 - `FlareGauge`
 - `FlareGrid`
 - `FlareHidden`

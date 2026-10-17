@@ -36,6 +36,7 @@
          generated registry silently drops their components (Carousel/IDE/Kanban/etc.). -->
     <ProjectReference Include="..\..\src\Flare.Components.Barcode\Flare.Components.Barcode.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components.Carousel\Flare.Components.Carousel.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.Gantt\Flare.Components.Gantt.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components.Kanban\Flare.Components.Kanban.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components.Media\Flare.Components.Media.csproj" />

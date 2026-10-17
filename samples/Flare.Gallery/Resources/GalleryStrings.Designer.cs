@@ -11799,6 +11799,93 @@ namespace Flare.Gallery.Resources {
 
         /// <summary>Looks up the localized Notifications note.</summary>
         public static string Services_NotificationsNote => ResourceManager.GetString("Services_NotificationsNote", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt page title.</summary>
+        public static string Gantt_Title => ResourceManager.GetString("Gantt_Title", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt page subtitle.</summary>
+        public static string Gantt_Subtitle => ResourceManager.GetString("Gantt_Subtitle", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt two-dimensional demo title.</summary>
+        public static string Gantt_TwoD => ResourceManager.GetString("Gantt_TwoD", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt two-dimensional demo hint.</summary>
+        public static string Gantt_TwoDHint => ResourceManager.GetString("Gantt_TwoDHint", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt compact demo title.</summary>
+        public static string Gantt_Mini => ResourceManager.GetString("Gantt_Mini", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt compact demo hint.</summary>
+        public static string Gantt_MiniHint => ResourceManager.GetString("Gantt_MiniHint", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt tasks panel header.</summary>
+        public static string Gantt_TasksPanel => ResourceManager.GetString("Gantt_TasksPanel", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt people panel header.</summary>
+        public static string Gantt_PeoplePanel => ResourceManager.GetString("Gantt_PeoplePanel", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt corner caption.</summary>
+        public static string Gantt_Corner => ResourceManager.GetString("Gantt_Corner", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt critical path switch.</summary>
+        public static string Gantt_CriticalPath => ResourceManager.GetString("Gantt_CriticalPath", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt legend name.</summary>
+        public static string Gantt_Legend => ResourceManager.GetString("Gantt_Legend", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt legend work.</summary>
+        public static string Gantt_LegendWork => ResourceManager.GetString("Gantt_LegendWork", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt legend summary.</summary>
+        public static string Gantt_LegendSummary => ResourceManager.GetString("Gantt_LegendSummary", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt legend load cell.</summary>
+        public static string Gantt_LegendLoad => ResourceManager.GetString("Gantt_LegendLoad", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt sprint region.</summary>
+        public static string Gantt_Sprint => ResourceManager.GetString("Gantt_Sprint", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt today marker.</summary>
+        public static string Gantt_Today => ResourceManager.GetString("Gantt_Today", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt waiting segment.</summary>
+        public static string Gantt_Waiting => ResourceManager.GetString("Gantt_Waiting", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt load cell title.</summary>
+        public static string Gantt_HoursTitle => ResourceManager.GetString("Gantt_HoursTitle", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt release row.</summary>
+        public static string Gantt_Release => ResourceManager.GetString("Gantt_Release", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt backend row.</summary>
+        public static string Gantt_Backend => ResourceManager.GetString("Gantt_Backend", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt frontend row.</summary>
+        public static string Gantt_Frontend => ResourceManager.GetString("Gantt_Frontend", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt design task.</summary>
+        public static string Gantt_TaskDesign => ResourceManager.GetString("Gantt_TaskDesign", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt API task.</summary>
+        public static string Gantt_TaskApi => ResourceManager.GetString("Gantt_TaskApi", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt screens task.</summary>
+        public static string Gantt_TaskUi => ResourceManager.GetString("Gantt_TaskUi", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt testing task.</summary>
+        public static string Gantt_TaskTests => ResourceManager.GetString("Gantt_TaskTests", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt release task.</summary>
+        public static string Gantt_TaskShip => ResourceManager.GetString("Gantt_TaskShip", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt person Anna.</summary>
+        public static string Gantt_PersonAnna => ResourceManager.GetString("Gantt_PersonAnna", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt person Boris.</summary>
+        public static string Gantt_PersonBoris => ResourceManager.GetString("Gantt_PersonBoris", resourceCulture);
+
+        /// <summary>Looks up the localized Gantt person Vera.</summary>
+        public static string Gantt_PersonVera => ResourceManager.GetString("Gantt_PersonVera", resourceCulture);
         
         /// <summary>Looks up the localized DateTimePicker_States string.</summary>
         public static string DateTimePicker_States => ResourceManager.GetString("DateTimePicker_States", resourceCulture);

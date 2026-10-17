@@ -1651,6 +1651,9 @@ public static class ComponentApiRegistry
                 @"FlareFormBuilder",
                 @"FlareFormField",
                 @"FlareFormulaBar",
+                @"FlareGantt",
+                @"FlareGanttLegend",
+                @"FlareGanttPanel",
                 @"FlareGauge",
                 @"FlareGrid",
                 @"FlareHidden",
@@ -3179,6 +3182,221 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareGantt"] = new ApiComponentInfo(
+            @"FlareGantt",
+            @"Flare.Components.FlareGantt",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the whole timeline.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"BarInset", @"double", @"6", @"Space above and below a bar inside its lane, in pixels.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The panels.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Compact", @"bool", @"false", @"Read-only overview without the row-header column, for dashboards and cards.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Corner", @"RenderFragment?", null, @"Content of the top-left corner above the row headers.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for axis captions and the first day of week; the current culture when null.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"DefaultSideWidth", @"string?", null, @"Width the row-header column returns to on reset (Home on the separator, or a double click on it); SideWidth when null.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Endless", @"bool", @"false", @"An axis without ends: when the visible part comes within a screen of an edge, the chart asks for a longer Range through RangeChanged (use @bind-Range) and keeps the same moment in view when it grows on the left. The unit is not stretched to fill the width - the axis grows instead.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"FillWidth", @"bool", @"false", @"Stretches the axis to the visible width: UnitWidth becomes the narrowest a unit gets, and a short range no longer leaves an empty strip on the right.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"LinkGap", @"double", @"8", @"How far a connector steps out of a bar before turning, in pixels.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Markers", @"IEnumerable<GanttMarker>?", null, @"Markers drawn across every panel, such as ""today"".", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"NonWorking", @"Func<DateOnly, bool>?", null, @"Days to shade as non-working. Used on hour and day scales.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Range", @"GanttSpan", null, @"Visible time.", null, false, false, true, @"FlareGantt"),
+                new ApiParameterInfo(@"RangeChanged", @"EventCallback<GanttSpan>", null, @"Raised with a longer range when an Endless axis needs more time; the consumer loads data for it and sets Range.", null, false, true, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Regions", @"IEnumerable<GanttRegion>?", null, @"Regions drawn across every panel, such as a sprint window.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"ResizableSide", @"bool", @"false", @"Lets the user drag the right edge of the row-header column.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"RowHeight", @"double", @"36", @"Height of one lane in pixels; a row is as tall as its lanes.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Scale", @"GanttScale", @"GanttScale.Day", @"Step of one axis unit.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"SelectedKey", @"string?", null, @"Key of the selected item; every panel highlights items with this key.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"SelectedKeyChanged", @"EventCallback<string?>", null, @"Raised when the selection changes.", null, false, true, false, @"FlareGantt"),
+                new ApiParameterInfo(@"SideWidth", @"string", @"""16rem""", @"Width of the row-header column as a CSS length.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"SideWidthChanged", @"EventCallback<string>", null, @"Raised with the new row-header width as a CSS length in pixels when the user has dragged the edge, used a key on it or a step.", null, false, true, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Texts", @"GanttTexts?", null, @"Texts to replace in announcements, refusals and labels; every text not set here comes from the package resources in Culture.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"UnitWidth", @"double", @"40", @"Width of one axis unit in pixels.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"Virtualize", @"bool", @"false", @"Renders only the rows near the visible part of each panel (plus a margin): a chart of hundreds of rows then costs as much as one screen of them. Needs the browser to report what is visible; until it does, the first screen is drawn. The window is cut from the chart's own layout rather than by Blazor's Virtualize: rows have different heights (one lane per overlapping bar) and the connectors are drawn at the rows' exact positions, while Virtualize places rows by an estimated size. The browser reports the vertical and horizontal view in one call per scroll, so a scroll costs one round trip on Blazor Server.", null, false, false, false, @"FlareGantt"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"At", @"At(double x)", @"DateTime", null, @"The moment at x pixels.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"x", @"double", null),
+                    }),
+                new ApiMethodInfo(@"BarDragged", @"BarDragged(string panel, string key, string action, int units, string rowKey)", @"Task", null, @"A bar the user moved or resized with the pointer, reported by the browser once the gesture ends.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"panel", @"string", @"Id of the panel the bar belongs to."),
+                        new ApiMethodParameter(@"key", @"string", @"Key of the item."),
+                        new ApiMethodParameter(@"action", @"string", @"What the gesture did: Move, ResizeStart or ResizeEnd."),
+                        new ApiMethodParameter(@"units", @"int", @"Whole axis units the start, the end or both moved by."),
+                        new ApiMethodParameter(@"rowKey", @"string", @"Row the pointer was over at the end of a move, or null."),
+                    }),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"Horizontal", @"Horizontal(double left, double width)", @"Task", null, @"The visible part of the time area, in pixels from its start, reported while the axis scrolls. A virtualized chart draws columns one screen either side of it and redraws only when the view leaves the inner half of that margin; an endless axis grows when the view comes within a screen of an edge.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"left", @"double", null),
+                        new ApiMethodParameter(@"width", @"double", null),
+                    }),
+                new ApiMethodInfo(@"IsNonWorking", @"IsNonWorking(DateOnly day)", @"bool", null, @"True when day is shaded as non-working.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"day", @"DateOnly", null),
+                    }),
+                new ApiMethodInfo(@"LinkDragged", @"LinkDragged(string panel, string fromKey, string toKey)", @"Task", null, @"A link the user drew with the pointer from one bar to another, reported by the browser.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"panel", @"string", @"Id of the panel the bars belong to."),
+                        new ApiMethodParameter(@"fromKey", @"string", @"Key of the predecessor."),
+                        new ApiMethodParameter(@"toKey", @"string", @"Key of the successor."),
+                    }),
+                new ApiMethodInfo(@"ResolveDrop", @"ResolveDrop(string targetId)", @"Task<GanttDropTarget>", null, @"The row and axis unit of a drop on a panel's DropGroup: the row comes from the zone, the unit from where the pointer was released. Also reads a target already written as GanttDropTarget. Null for any other target, or when the pointer position is unknown.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"targetId", @"string", null),
+                    }),
+                new ApiMethodInfo(@"ScrollTo", @"ScrollTo(DateTime moment)", @"Task", null, @"Scrolls the axis so that moment sits at the left edge of the time area.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"moment", @"DateTime", null),
+                    }),
+                new ApiMethodInfo(@"Select", @"Select(string key)", @"Task", null, @"Selects key (or clears with null) and refreshes every panel.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", null),
+                    }),
+                new ApiMethodInfo(@"Viewport", @"Viewport(double width, double side)", @"void", null, @"Visible width of the time area reported by the browser.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"width", @"double", null),
+                        new ApiMethodParameter(@"side", @"double", null),
+                    }),
+                new ApiMethodInfo(@"Visible", @"Visible(string[] panels, double[] from, double[] to)", @"void", null, @"What part of each panel's body is on screen, in pixels from the body's top, reported by the browser while it scrolls; only panels whose drawn rows no longer cover it are redrawn.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"panels", @"string[]", null),
+                        new ApiMethodParameter(@"from", @"double[]", null),
+                        new ApiMethodParameter(@"to", @"double[]", null),
+                    }),
+                new ApiMethodInfo(@"X", @"X(DateTime moment)", @"double", null, @"Horizontal position of moment in pixels.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"moment", @"DateTime", null),
+                    }),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareGanttLegend"] = new ApiComponentInfo(
+            @"FlareGanttLegend",
+            @"Flare.Components.FlareGanttLegend",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the key.", null, false, false, false, @"FlareGanttLegend"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content after the entries, such as a link or a notice.", null, false, false, false, @"FlareGanttLegend"),
+                new ApiParameterInfo(@"Items", @"IEnumerable<GanttLegendItem>", null, @"The entries, in order.", null, false, false, false, @"FlareGanttLegend"),
+                new ApiParameterInfo(@"Leading", @"RenderFragment?", null, @"Content before the entries.", null, false, false, false, @"FlareGanttLegend"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareGanttPanel"] = new ApiComponentInfo(
+            @"FlareGanttPanel",
+            @"Flare.Components.FlareGanttPanel",
+            @"Flare.Components",
+            @"One projection on the shared axis of a FlareGantt: rows (a list or a tree) and the items, cells, regions, markers and links drawn on them. The panel knows nothing about what a row or an item is - the consumer supplies its own objects and selectors, and decides what the projection means.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AllowRowChange", @"bool", @"true", @"Whether an item may be moved to another row.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the panel's grid.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"CellTemplate", @"RenderFragment<GanttCell>?", null, @"Content of a cell; its text when null.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Cells", @"IEnumerable<GanttCell>?", null, @"Per-row values along the axis, such as hours per day with a status; drawn in a strip above the lanes.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"DropAccepts", @"Func<object?, bool>?", null, @"Which payloads the row and unit zones of DropGroup take; null takes every payload of the group.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"DropGroup", @"string?", null, @"Drag group of an outside FlareDragContext. When set, every row and axis unit becomes a drop zone whose target is Format.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Editable", @"bool", @"false", @"Lets the user move, resize and re-row items and create links. Off by default and in a compact chart.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ExpandedByDefault", @"bool", @"true", @"Whether tree rows start expanded.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Gantt", @"FlareGantt?", null, @"The axis container; a panel must sit inside FlareGantt.", null, true, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Header", @"RenderFragment?", null, @"Title row of the panel.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemCover", @"Func<TItem?, GanttSpan?>?", null, @"The span an item must keep covering, such as the work of a parent's children: resizing stops at its edges. Null, or a null result, leaves the item free.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemDropAccepts", @"Func<object?, bool>?", null, @"Which payloads the bar zones of ItemDropGroup take; null takes every payload of the group.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemDropGroup", @"string?", null, @"Drag group of an outside FlareDragContext whose payloads can be dropped onto an item itself. When set, every bar that is neither a summary nor a suggestion becomes a drop zone whose target is Format. While a drag is on, whatever in a track does not take the payload lets the pointer through to the zones beneath it, so a payload only the units take still lands on a unit covered by a bar.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemKey", @"Func<TItem?, string>?", null, @"Unique key of an item; shared across panels so that selection links projections.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemKind", @"Func<TItem?, string?>?", null, @"Kind key of an item, rendered as a CSS modifier and data-kind.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemLabel", @"Func<TItem?, string?>?", null, @"Accessible name and default text of an item; the key when null.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemProgress", @"Func<TItem?, double?>?", null, @"Completion of an item from 0 to 1, drawn as a fill; null for none.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemRow", @"Func<TItem?, string>?", null, @"Key of the row an item is drawn on.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemSegments", @"Func<TItem?, IEnumerable<GanttSegment>?>?", null, @"Parts of an item's bar, such as work and waiting.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemSpan", @"Func<TItem?, GanttSpan?>?", null, @"Span of an item; items without a span are not drawn.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Content inside a bar; the label when null.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemTitle", @"Func<TItem?, string?>?", null, @"Plain hover text of an item, such as its dates and why it is at risk: the bar's title, so it costs nothing on a chart of hundreds of bars. The label when null; ignored when ItemTooltip is set.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemTooltip", @"RenderFragment<TItem?>?", null, @"Rich tooltip of a bar, shown in a popover on hover and focus.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Items", @"IEnumerable<TItem?>?", null, @"Items drawn as bars.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"LinkTypes", @"IReadOnlyCollection<GanttLinkType>?", null, @"Link types to draw; all when null.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Links", @"IEnumerable<GanttLink>?", null, @"Dependencies between items.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Markers", @"IEnumerable<GanttMarker>?", null, @"Markers of this panel; those without a row key span the whole panel.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"NewLinkType", @"GanttLinkType", @"GanttLinkType.FinishToStart", @"Type of links the user creates.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"OnChange", @"EventCallback<GanttChangeEventArgs>", null, @"Raised with the proposed positions when the user moves or resizes an item.", null, false, true, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"OnItemClick", @"EventCallback<TItem?>", null, @"Raised when a bar is clicked.", null, false, true, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"OnLinkCreate", @"EventCallback<GanttLinkEventArgs>", null, @"Raised when the user creates a link that passed the cycle check.", null, false, true, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"OnLinkRejected", @"EventCallback<GanttLinkRejectedEventArgs>", null, @"Raised when a link the user asked for was refused.", null, false, true, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Regions", @"IEnumerable<GanttRegion>?", null, @"Regions of this panel; those without a row key span the whole panel.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"RollupParents", @"bool", @"false", @"Draws a summary bar over the descendants' items on tree rows that have no items of their own.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"RowChildren", @"Func<TRow?, IEnumerable<TRow?>?>?", null, @"Child rows; null or empty for a leaf. Turns the panel into a tree.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"RowClass", @"Func<TRow?, string?>?", null, @"Extra CSS class for a row.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"RowHeader", @"RenderFragment<TRow?>?", null, @"Content of the row-header cell; the row key when null.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"RowKey", @"Func<TRow?, string>", null, @"Unique key of a row.", null, false, false, true, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Rows", @"IEnumerable<TRow?>?", null, @"Top-level rows.", null, false, false, true, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ScheduleMode", @"GanttScheduleMode", @"GanttScheduleMode.Push", @"Whether moving an item pushes its successors.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ShowCriticalPath", @"bool", @"false", @"Highlights the items and links with no slack in the current schedule.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"Suggested", @"IEnumerable<GanttChange>?", null, @"Proposed changes drawn as ghosts, without being applied.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"SummaryKind", @"string", @"""summary""", @"Kind key of summary bars.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CollapseAll", @"CollapseAll()", @"void", null, @"Collapses every tree row.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"ExpandAll", @"ExpandAll()", @"void", null, @"Expands every tree row.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -8916,6 +9134,105 @@ public static class ComponentApiRegistry
             {
                 @"FlareForm",
             });
+
+        e[@"GanttEditAction"] = new ApiEnumInfo(
+            @"GanttEditAction",
+            @"Flare.Components.Gantt.GanttEditAction",
+            @"Flare.Components.Gantt",
+            @"What the user did to an item.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Move", @"0", @"Moved in time, between rows, or both."),
+                new ApiEnumMember(@"ResizeStart", @"1", @"Changed the start."),
+                new ApiEnumMember(@"ResizeEnd", @"2", @"Changed the end."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"GanttLegendShape"] = new ApiEnumInfo(
+            @"GanttLegendShape",
+            @"Flare.Components.Gantt.GanttLegendShape",
+            @"Flare.Components.Gantt",
+            @"What a legend sample is drawn as: the same element the chart draws, so it takes the same look.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Bar", @"0", @"An item bar of the kind."),
+                new ApiEnumMember(@"Segment", @"1", @"A segment of the kind over a bar of BarKind."),
+                new ApiEnumMember(@"Suggested", @"2", @"A suggested (ghost) bar."),
+                new ApiEnumMember(@"Region", @"3", @"A region of the kind."),
+                new ApiEnumMember(@"Cell", @"4", @"A value cell of the kind."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"GanttLinkType"] = new ApiEnumInfo(
+            @"GanttLinkType",
+            @"Flare.Components.Gantt.GanttLinkType",
+            @"Flare.Components.Gantt",
+            @"Dependency type between two items.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"FinishToStart", @"0", @"The successor starts after the predecessor finishes."),
+                new ApiEnumMember(@"StartToStart", @"1", @"The successor starts after the predecessor starts."),
+                new ApiEnumMember(@"FinishToFinish", @"2", @"The successor finishes after the predecessor finishes."),
+                new ApiEnumMember(@"StartToFinish", @"3", @"The successor finishes after the predecessor starts."),
+            },
+            new string[]
+            {
+                @"FlareGanttPanel",
+            });
+
+        e[@"GanttScale"] = new ApiEnumInfo(
+            @"GanttScale",
+            @"Flare.Components.Gantt.GanttScale",
+            @"Flare.Components.Gantt",
+            @"Step of the time axis.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Hour", @"0", @"One hour per unit."),
+                new ApiEnumMember(@"Day", @"1", @"One day per unit."),
+                new ApiEnumMember(@"Week", @"2", @"One week per unit, starting on the culture's first day of week."),
+                new ApiEnumMember(@"Month", @"3", @"One calendar month per unit."),
+                new ApiEnumMember(@"Quarter", @"4", @"One calendar quarter per unit."),
+                new ApiEnumMember(@"Year", @"5", @"One calendar year per unit."),
+            },
+            new string[]
+            {
+                @"FlareGantt",
+            });
+
+        e[@"GanttScheduleMode"] = new ApiEnumInfo(
+            @"GanttScheduleMode",
+            @"Flare.Components.Gantt.GanttScheduleMode",
+            @"Flare.Components.Gantt",
+            @"How a change to one item moves the items that depend on it.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"Only the changed item moves."),
+                new ApiEnumMember(@"Push", @"1", @"Successors whose constraint is broken are pushed later, keeping their duration."),
+            },
+            new string[]
+            {
+                @"FlareGanttPanel",
+            });
+
+        e[@"GanttValidationCode"] = new ApiEnumInfo(
+            @"GanttValidationCode",
+            @"Flare.Components.Gantt.GanttValidationCode",
+            @"Flare.Components.Gantt",
+            @"Why a proposed link was refused.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Valid", @"0", @"The link is allowed."),
+                new ApiEnumMember(@"SelfLink", @"1", @"The link points from an item to itself."),
+                new ApiEnumMember(@"Cycle", @"2", @"The link closes a cycle."),
+                new ApiEnumMember(@"Duplicate", @"3", @"The same link already exists."),
+            },
+            System.Array.Empty<string>());
 
         e[@"GaugeShape"] = new ApiEnumInfo(
             @"GaugeShape",

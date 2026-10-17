@@ -49,8 +49,18 @@ All notable changes to Flare are documented here. This project adheres to
   the drag, key or step ends. Home and a double click restore `DefaultValue`.
 - `TreeFlattener.Flatten` turns a hierarchy into the visible rows of a tree view, with depth and expansion; the
   tree data grid uses it.
+- New package `Flare.Components.Gantt`: `FlareGantt` lays out a task tree, people, rooms or machines in time on one
+  axis, with several panels sharing the scale, the scroll and the selection (`FlareGanttPanel`), dependencies with
+  cascading and the critical path, summary bars, cells, regions, markers, an endless axis and virtualization.
+  Bars move, resize and link with the pointer or the keyboard; the chart proposes changes and the application
+  applies them. Register it with `AddFlareGantt()` and link `_content/Flare.Components.Gantt/css/gantt.css`.
+  Its look is the theme's `GanttTokens`; the record is required on `DesignTokens`, so a custom theme built with
+  `new DesignTokens { ... }` has to set `Gantt`.
 
 ### Fixed
+
+- `FlareSplitter` applies `MinSize` and `MaxSize` changed after the first render; before, the limits it was
+  registered with stayed in force.
 
 - The `FlareIdeLayout` panel divider has a localized name, announces the region size, can be dragged with a
   finger or a pen as well as a mouse, offers a 24px grab area around its 5px line and shows a focus ring.

@@ -3684,6 +3684,93 @@
   <data name="Services_NotificationsNote" xml:space="preserve">
     <value>Уведомлениям нужен https или localhost. Браузер, который разрешает их только через service worker (Chrome на Android), показывает их через воркер страницы, и клик уходит в обработчик notificationclick этого воркера.</value>
   </data>
+  <data name="Gantt_Title" xml:space="preserve">
+    <value>Диаграмма Ганта</value>
+  </data>
+  <data name="Gantt_Subtitle" xml:space="preserve">
+    <value>Лента времени из строк и полос на одной оси: дерево задач, люди, переговорные или станки. Несколько панелей делят ось, прокрутку и выбор. Полосы двигаются, растягиваются и связываются указателем или с клавиатуры; график только предлагает изменения, а применяет их страница.</value>
+  </data>
+  <data name="Gantt_TwoD" xml:space="preserve">
+    <value>Двухмерный Гантт: задачи и люди на одной оси</value>
+  </data>
+  <data name="Gantt_TwoDHint" xml:space="preserve">
+    <value>Перетащите полосу, чтобы сдвинуть ее, край - чтобы растянуть, точку на конце - на другую полосу, чтобы связать; Ctrl+стрелки делают то же с клавиатуры. На панели людей полоса, перенесенная на другую дорожку, переходит к этому человеку. Ячейки показывают назначенные часы за день.</value>
+  </data>
+  <data name="Gantt_Mini" xml:space="preserve">
+    <value>Мини-Гантт</value>
+  </data>
+  <data name="Gantt_MiniHint" xml:space="preserve">
+    <value>Компактный вид: без шапок строк и редактирования, ось растянута по карточке.</value>
+  </data>
+  <data name="Gantt_TasksPanel" xml:space="preserve">
+    <value>Проекция 1: иерархия работ и фазы</value>
+  </data>
+  <data name="Gantt_PeoplePanel" xml:space="preserve">
+    <value>Проекция 2: люди и их загрузка</value>
+  </data>
+  <data name="Gantt_Corner" xml:space="preserve">
+    <value>Работы и люди</value>
+  </data>
+  <data name="Gantt_CriticalPath" xml:space="preserve">
+    <value>Критический путь</value>
+  </data>
+  <data name="Gantt_Legend" xml:space="preserve">
+    <value>Легенда</value>
+  </data>
+  <data name="Gantt_LegendWork" xml:space="preserve">
+    <value>Работа</value>
+  </data>
+  <data name="Gantt_LegendSummary" xml:space="preserve">
+    <value>Сводка по направлению</value>
+  </data>
+  <data name="Gantt_LegendLoad" xml:space="preserve">
+    <value>Часы за день</value>
+  </data>
+  <data name="Gantt_Sprint" xml:space="preserve">
+    <value>Спринт 14</value>
+  </data>
+  <data name="Gantt_Today" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="Gantt_Waiting" xml:space="preserve">
+    <value>Ожидание</value>
+  </data>
+  <data name="Gantt_HoursTitle" xml:space="preserve">
+    <value>Назначено {0} ч, доступно {1} ч</value>
+  </data>
+  <data name="Gantt_Release" xml:space="preserve">
+    <value>Релиз 2.0</value>
+  </data>
+  <data name="Gantt_Backend" xml:space="preserve">
+    <value>Сервер</value>
+  </data>
+  <data name="Gantt_Frontend" xml:space="preserve">
+    <value>Интерфейс</value>
+  </data>
+  <data name="Gantt_TaskDesign" xml:space="preserve">
+    <value>Проектирование</value>
+  </data>
+  <data name="Gantt_TaskApi" xml:space="preserve">
+    <value>API</value>
+  </data>
+  <data name="Gantt_TaskUi" xml:space="preserve">
+    <value>Экраны</value>
+  </data>
+  <data name="Gantt_TaskTests" xml:space="preserve">
+    <value>Тестирование</value>
+  </data>
+  <data name="Gantt_TaskShip" xml:space="preserve">
+    <value>Выпуск</value>
+  </data>
+  <data name="Gantt_PersonAnna" xml:space="preserve">
+    <value>Анна</value>
+  </data>
+  <data name="Gantt_PersonBoris" xml:space="preserve">
+    <value>Борис</value>
+  </data>
+  <data name="Gantt_PersonVera" xml:space="preserve">
+    <value>Вера</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>Состояния, границы и формы</value>
   </data>

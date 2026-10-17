@@ -3684,6 +3684,93 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Services_NotificationsNote" xml:space="preserve">
     <value>Notifications need https or localhost. A browser that only allows them through a service worker (Chrome on Android) shows them through the page's worker, and the click goes to that worker's notificationclick handler.</value>
   </data>
+  <data name="Gantt_Title" xml:space="preserve">
+    <value>Gantt</value>
+  </data>
+  <data name="Gantt_Subtitle" xml:space="preserve">
+    <value>A timeline of rows and bars on one time axis: a task tree, people, rooms or machines. Several panels share the axis, the scroll and the selection. Bars move, resize and link with the pointer or the keyboard; the chart only proposes changes, the page applies them.</value>
+  </data>
+  <data name="Gantt_TwoD" xml:space="preserve">
+    <value>Two-dimensional Gantt: tasks and people on one axis</value>
+  </data>
+  <data name="Gantt_TwoDHint" xml:space="preserve">
+    <value>Drag a bar to move it, drag its edge to resize it, drag the dot at its end onto another bar to link them; Ctrl+arrows do the same from the keyboard. In the people panel a bar dragged to another lane goes to that person. Cells show the hours assigned per day.</value>
+  </data>
+  <data name="Gantt_Mini" xml:space="preserve">
+    <value>Mini Gantt</value>
+  </data>
+  <data name="Gantt_MiniHint" xml:space="preserve">
+    <value>Compact: no row headers and no editing, the axis stretched to the card.</value>
+  </data>
+  <data name="Gantt_TasksPanel" xml:space="preserve">
+    <value>Projection 1: work breakdown and phases</value>
+  </data>
+  <data name="Gantt_PeoplePanel" xml:space="preserve">
+    <value>Projection 2: people and their load</value>
+  </data>
+  <data name="Gantt_Corner" xml:space="preserve">
+    <value>Work and people</value>
+  </data>
+  <data name="Gantt_CriticalPath" xml:space="preserve">
+    <value>Critical path</value>
+  </data>
+  <data name="Gantt_Legend" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="Gantt_LegendWork" xml:space="preserve">
+    <value>Work</value>
+  </data>
+  <data name="Gantt_LegendSummary" xml:space="preserve">
+    <value>Summary of a stream</value>
+  </data>
+  <data name="Gantt_LegendLoad" xml:space="preserve">
+    <value>Hours per day</value>
+  </data>
+  <data name="Gantt_Sprint" xml:space="preserve">
+    <value>Sprint 14</value>
+  </data>
+  <data name="Gantt_Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="Gantt_Waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="Gantt_HoursTitle" xml:space="preserve">
+    <value>{0} h assigned, {1} h available</value>
+  </data>
+  <data name="Gantt_Release" xml:space="preserve">
+    <value>Release 2.0</value>
+  </data>
+  <data name="Gantt_Backend" xml:space="preserve">
+    <value>Backend</value>
+  </data>
+  <data name="Gantt_Frontend" xml:space="preserve">
+    <value>Frontend</value>
+  </data>
+  <data name="Gantt_TaskDesign" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="Gantt_TaskApi" xml:space="preserve">
+    <value>API</value>
+  </data>
+  <data name="Gantt_TaskUi" xml:space="preserve">
+    <value>Screens</value>
+  </data>
+  <data name="Gantt_TaskTests" xml:space="preserve">
+    <value>Testing</value>
+  </data>
+  <data name="Gantt_TaskShip" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="Gantt_PersonAnna" xml:space="preserve">
+    <value>Anna</value>
+  </data>
+  <data name="Gantt_PersonBoris" xml:space="preserve">
+    <value>Boris</value>
+  </data>
+  <data name="Gantt_PersonVera" xml:space="preserve">
+    <value>Vera</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>States, bounds and forms</value>
   </data>

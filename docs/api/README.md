@@ -87,6 +87,9 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareFormBuilder`](components/flare-components-flareformbuilder.md) — Builds an edit form from the public properties of TModel: one field per property, picked by its type and described by FlareFormFieldAttribute, validated with data annotations.
 - [`FlareFormField`](components/flare-components-flareformfield.md)
 - [`FlareFormulaBar`](components/flare-components-ide-flareformulabar.md)
+- [`FlareGantt`](components/flare-components-flaregantt.md)
+- [`FlareGanttLegend`](components/flare-components-flareganttlegend.md)
+- [`FlareGanttPanel`](components/flare-components-flareganttpanel.md) — One projection on the shared axis of a FlareGantt: rows (a list or a tree) and the items, cells, regions, markers and links drawn on them. The panel knows nothing about what a row or an item is - the consumer supplies its own objects and selectors, and decides what the projection means.
 - [`FlareGauge`](components/flare-components-flaregauge.md) — One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgressLinear and FlareMeter are both bars and answer "how far along"; a gauge answers "where does this sit on the scale, and is that good", which is the dashboard reading.
 - [`FlareGrid`](components/flare-components-flaregrid.md)
 - [`FlareHidden`](components/flare-components-flarehidden.md)
@@ -283,6 +286,12 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.Combobox.FocusStrategy`](enums/flare-components-combobox-focusstrategy.md) — Which option to highlight when the dropdown opens.
 - [`Flare.Components.FontWeight`](enums/flare-components-fontweight.md) — Font weight override for FlareText. Default keeps the weight defined by the active type scale; the other values map to the standard CSS numeric weights via shared flare-text--weight-* classes (no inline style needed).
 - [`Flare.Components.FormLayout`](enums/flare-components-formlayout.md) — Controls the visual layout of form fields inside a FlareForm.
+- [`Flare.Components.Gantt.GanttEditAction`](enums/flare-components-gantt-gantteditaction.md) — What the user did to an item.
+- [`Flare.Components.Gantt.GanttLegendShape`](enums/flare-components-gantt-ganttlegendshape.md) — What a legend sample is drawn as: the same element the chart draws, so it takes the same look.
+- [`Flare.Components.Gantt.GanttLinkType`](enums/flare-components-gantt-ganttlinktype.md) — Dependency type between two items.
+- [`Flare.Components.Gantt.GanttScale`](enums/flare-components-gantt-ganttscale.md) — Step of the time axis.
+- [`Flare.Components.Gantt.GanttScheduleMode`](enums/flare-components-gantt-ganttschedulemode.md) — How a change to one item moves the items that depend on it.
+- [`Flare.Components.Gantt.GanttValidationCode`](enums/flare-components-gantt-ganttvalidationcode.md) — Why a proposed link was refused.
 - [`Flare.Components.GaugeShape`](enums/flare-components-gaugeshape.md) — How a FlareGauge lays its scale out. One component with three shapes rather than three components: the scale, bands, ticks, target marker and readout are the same in all three, and only the projection from value to screen differs.
 - [`Flare.Components.IDE.IdePanelMode`](enums/flare-components-ide-idepanelmode.md) — Controls how a docked tool panel in FlareIdeLayout behaves when expanded.
 - [`Flare.Components.ImageObjectFit`](enums/flare-components-imageobjectfit.md) — How a FlareImage is fitted into its box (maps to CSS object-fit).

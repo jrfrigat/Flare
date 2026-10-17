@@ -1,0 +1,12 @@
+@page "/components/gantt"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Gantt_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareGantt">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Gantt_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Gantt_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Gantt_TwoD" DemoType="typeof(Examples.GanttTwoDDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Gantt_Mini" DemoType="typeof(Examples.GanttMiniDemo)" />
