@@ -13,6 +13,8 @@ All notable changes to Flare are documented here. This project adheres to
   When that element is gone, focus moves to its nearest remaining container instead of the page body.
 - Escape in an open select, combobox or menu button inside a dialog closes only that popup and keeps the dialog
   open.
+- A button in the `Leading` or `Trailing` slot of a clickable `FlareListItem` no longer activates the item as
+  well, whether it is clicked or pressed with Enter or Space.
 
 ## [0.44.0] - 2026-10-13
 

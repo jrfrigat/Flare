@@ -1,0 +1,20 @@
+@page "/list-item"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <ul>
+            <FlareListItem Primary="Fine" OnClick="() => _rowClicks++">
+                <Trailing>
+                    <button id="slot-action" @onclick="() => _buttonClicks++">Delete</button>
+                </Trailing>
+            </FlareListItem>
+        </ul>
+        <p id="row-clicks">@_rowClicks</p>
+        <p id="button-clicks">@_buttonClicks</p>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private int _rowClicks;
+    private int _buttonClicks;
+}

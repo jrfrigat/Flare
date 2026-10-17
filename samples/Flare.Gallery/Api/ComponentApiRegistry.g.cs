@@ -3846,12 +3846,12 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Additional content rendered inside the item body.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents the item from being interacted with.", null, false, false, false, @"FlareListItem"),
-                new ApiParameterInfo(@"Leading", @"RenderFragment?", null, @"Content rendered at the start of the item.", null, false, false, false, @"FlareListItem"),
+                new ApiParameterInfo(@"Leading", @"RenderFragment?", null, @"Content rendered at the start of the item. On a clickable item, clicks and key presses inside it do not activate the item, so the slot can hold the item's own controls.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the item is clicked.", null, false, true, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Primary", @"string?", null, @"Primary text label displayed in the item.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Secondary", @"string?", null, @"Secondary text displayed below the primary label.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Selected", @"bool", @"false", @"Whether the item is in a selected state.", null, false, false, false, @"FlareListItem"),
-                new ApiParameterInfo(@"Trailing", @"RenderFragment?", null, @"Content rendered at the end of the item.", null, false, false, false, @"FlareListItem"),
+                new ApiParameterInfo(@"Trailing", @"RenderFragment?", null, @"Content rendered at the end of the item. On a clickable item, clicks and key presses inside it do not activate the item, so the slot can hold the item's own actions.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -7086,7 +7086,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

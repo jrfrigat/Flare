@@ -10,12 +10,12 @@
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Additional content rendered inside the item body. |
 | `Disabled` | `bool` | `false` | Parameter |  | Prevents the item from being interacted with. |
-| `Leading` | `RenderFragment?` | `` | Parameter |  | Content rendered at the start of the item. |
+| `Leading` | `RenderFragment?` | `` | Parameter |  | Content rendered at the start of the item. On a clickable item, clicks and key presses inside it do not activate the item, so the slot can hold the item's own controls. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the item is clicked. |
 | `Primary` | `string?` | `` | Parameter |  | Primary text label displayed in the item. |
 | `Secondary` | `string?` | `` | Parameter |  | Secondary text displayed below the primary label. |
 | `Selected` | `bool` | `false` | Parameter |  | Whether the item is in a selected state. |
-| `Trailing` | `RenderFragment?` | `` | Parameter |  | Content rendered at the end of the item. |
+| `Trailing` | `RenderFragment?` | `` | Parameter |  | Content rendered at the end of the item. On a clickable item, clicks and key presses inside it do not activate the item, so the slot can hold the item's own actions. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

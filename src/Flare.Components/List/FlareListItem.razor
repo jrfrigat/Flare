@@ -10,9 +10,11 @@
     @onclick="HandleClick"
     @onkeydown="HandleKeyDown"
     @attributes="AdditionalAttributes">
+    @* The slots hold the row's own actions: on a clickable row their clicks and keys stay in the slot. *@
     @if (Leading is not null)
     {
-        <div class="@Css.Classes.List.Leading">@Leading</div>
+        <div class="@Css.Classes.List.Leading"
+             @onclick:stopPropagation="OnClick.HasDelegate" @onkeydown:stopPropagation="OnClick.HasDelegate">@Leading</div>
     }
     <div class="@Css.Classes.List.Content">
         @if (!string.IsNullOrEmpty(Primary))
@@ -27,16 +29,19 @@
     </div>
     @if (Trailing is not null)
     {
-        <div class="@Css.Classes.List.Trailing">@Trailing</div>
+        <div class="@Css.Classes.List.Trailing"
+             @onclick:stopPropagation="OnClick.HasDelegate" @onkeydown:stopPropagation="OnClick.HasDelegate">@Trailing</div>
     }
 </li>
 
 @code {
     /// <summary>Additional content rendered inside the item body.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Content rendered at the start of the item.</summary>
+    /// <summary>Content rendered at the start of the item. On a clickable item, clicks and key presses inside
+    /// it do not activate the item, so the slot can hold the item's own controls.</summary>
     [Parameter] public RenderFragment? Leading { get; set; }
-    /// <summary>Content rendered at the end of the item.</summary>
+    /// <summary>Content rendered at the end of the item. On a clickable item, clicks and key presses inside it
+    /// do not activate the item, so the slot can hold the item's own actions.</summary>
     [Parameter] public RenderFragment? Trailing { get; set; }
     /// <summary>Primary text label displayed in the item.</summary>
     [Parameter] public string? Primary { get; set; }
