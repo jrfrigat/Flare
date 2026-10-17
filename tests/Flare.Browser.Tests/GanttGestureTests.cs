@@ -22,6 +22,12 @@ public sealed class GanttGestureTests(BrowserFixture fixture) : IClassFixture<Br
         return page;
     }
 
+    // The slot's left and width once the page has applied the change, and whether a preview transform is left over.
+    private static Task<double[]> SlotAsync(IPage page, string key) => page.EvaluateAsync<double[]>($@"() => {{
+        const slot = document.querySelector('{Bar(key)}').closest('.{Css.Classes.Gantt.BarSlot}');
+        return [parseFloat(slot.style.left), parseFloat(slot.style.width), slot.style.transform ? 1 : 0];
+    }}");
+
     private static async Task DragAsync(IPage page, float x, float y, float dx, float dy)
     {
         await page.Mouse.MoveAsync(x, y);
@@ -38,9 +44,16 @@ public sealed class GanttGestureTests(BrowserFixture fixture) : IClassFixture<Br
         var page = await OpenAsync(context);
         var box = (await page.Locator(Bar("w1")).BoundingBoxAsync())!;
 
+        var before = await SlotAsync(page, "w1");
+
         await DragAsync(page, box.X + box.Width / 2, box.Y + box.Height / 2, 85, 0);
 
         await Expect(page.Locator("#result")).ToHaveTextAsync("w1@10-15..10-18");
+        // The bar stays where the page put it: the preview's own geometry does not come back over it.
+        await page.WaitForTimeoutAsync(300);
+        var after = await SlotAsync(page, "w1");
+        Assert.Equal(before[0] + 80, after[0], 0.5);
+        Assert.Equal(0, after[2]);
     }
 
     [Fact]
@@ -50,9 +63,13 @@ public sealed class GanttGestureTests(BrowserFixture fixture) : IClassFixture<Br
         var page = await OpenAsync(context);
         var handle = (await page.Locator($"{Bar("w1")} .{Css.Classes.Gantt.HandleEnd}").BoundingBoxAsync())!;
 
+        var before = await SlotAsync(page, "w1");
+
         await DragAsync(page, handle.X + handle.Width / 2, handle.Y + handle.Height / 2, 40, 0);
 
         await Expect(page.Locator("#result")).ToHaveTextAsync("w1@10-13..10-17");
+        await page.WaitForTimeoutAsync(300);
+        Assert.Equal(before[1] + 40, (await SlotAsync(page, "w1"))[1], 0.5);
     }
 
     [Fact]

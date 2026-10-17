@@ -99,9 +99,13 @@ export function attach(root, dotnet, virtualize, endless) {
     const unitWidth = () => parseFloat(root.dataset.unit) || 1;
     const resetGesture = g => {
         g.bar.classList.remove('flare-gantt__bar--preview');
-        g.slot.style.transform = '';
-        g.slot.style.left = g.left;
-        g.slot.style.width = g.width;
+        // Only when nothing has redrawn the slot since the last preview frame: by the time .NET answers, Blazor may
+        // already have written the bar's new place, and writing the old geometry back would move it home again.
+        if (g.slot.getAttribute('style') === g.shown) {
+            g.slot.style.transform = '';
+            g.slot.style.left = g.left;
+            g.slot.style.width = g.width;
+        }
         g.draft?.remove();
     };
     const svgPoint = (svg, x, y) => {
@@ -129,6 +133,7 @@ export function attach(root, dotnet, virtualize, endless) {
                 key: bar.dataset.key, rowEl: bar.closest('.flare-gantt__row'),
                 left: slot.style.left, width: slot.style.width,
                 x: parseFloat(slot.style.left) || 0, w: parseFloat(slot.style.width) || 0,
+                shown: slot.getAttribute('style'),
             };
             bar.classList.add('flare-gantt__bar--preview');
             if (action === 'Link') {
@@ -171,6 +176,7 @@ export function attach(root, dotnet, virtualize, endless) {
             } else {
                 g.slot.style.width = Math.max(2, g.w + shift) + 'px';
             }
+            g.shown = g.slot.getAttribute('style');
         },
         onEnd(e) {
             const g = gesture;
