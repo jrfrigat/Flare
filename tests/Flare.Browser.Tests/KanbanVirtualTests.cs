@@ -39,27 +39,27 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
             list.scrollTop = list.scrollHeight / 2;
         }");
         // Which card ends up in the middle depends on when Virtualize replaced its size estimate with measured
-        // heights, so the test takes whichever card is there. The window re-renders over the circuit after a
-        // scroll; under load that lands late, so wait until the middle card stays the same before measuring it.
-        await page.WaitForFunctionAsync(@"async () => {
-            const list = document.querySelector('[data-flare-drop=""todo""] .flare-kanban__cards');
-            const mid = () => {
-                const r = list.getBoundingClientRect();
-                return document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)?.closest('[data-flare-drag]')?.dataset.flareDrag;
-            };
-            const first = mid();
-            await new Promise(r => setTimeout(r, 250));
-            return first !== undefined && first === mid();
-        }");
-
-        // The card in the middle of the column's visible area and a point in its upper half: "before" it.
-        var target = await page.EvaluateAsync<double[]>(@"() => {
+        // heights, and the window re-renders over the circuit after a scroll, late under load. So the rendered
+        // window has to stay the same for a moment, and the card in the middle and a point in its upper half
+        // ("before" it) are read in that same check - a separate read could land after one more re-render.
+        // The check is synchronous and keeps what it saw between polls: an async predicate returns a promise,
+        // which counts as true at once, so it would not wait at all.
+        var stable = await page.WaitForFunctionAsync(@"() => {
             const list = document.querySelector('[data-flare-drop=""todo""] .flare-kanban__cards');
             const r = list.getBoundingClientRect();
-            const card = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2).closest('[data-flare-drag]');
-            const c = card.getBoundingClientRect();
+            const middle = r.top + r.height / 2;
+            // The middle of the column may fall into the gap between two cards: take the whole card nearest to it.
+            const card = [...list.querySelectorAll('[data-flare-drag]')]
+                .filter(e => { const b = e.getBoundingClientRect(); return b.top >= r.top && b.bottom <= r.bottom; })
+                .sort((a, b) => Math.abs(a.getBoundingClientRect().top - middle) - Math.abs(b.getBoundingClientRect().top - middle))[0];
+            const c = card?.getBoundingClientRect();
+            const seen = card ? [card.dataset.flareDrag, c.top, [...list.querySelectorAll('[data-flare-drag]')].map(e => e.dataset.flareDrag).join()].join('|') : '';
+            const last = window.__kanbanWindow;
+            if (!last || last.seen !== seen) { window.__kanbanWindow = { seen, at: performance.now() }; return null; }
+            if (!card || performance.now() - last.at < 250) return null;
             return [Number(card.dataset.flareDrag.slice(1)), c.left + c.width / 2, c.top + c.height / 4];
-        }");
+        }", null, new() { PollingInterval = 50 });
+        var target = (await stable.JsonValueAsync<double[]>())!;
         Assert.True(target[0] > 100, $"the column should have scrolled into its middle, at t{target[0]}");
 
         var source = await page.Locator("[data-flare-drag=\"d0\"]").BoundingBoxAsync();
@@ -67,8 +67,13 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
         await page.Mouse.DownAsync();
         await page.Mouse.MoveAsync(source.X + source.Width / 2 + 10, source.Y + source.Height / 2, new() { Steps = 2 });
         await page.Mouse.MoveAsync((float)target[1], (float)target[2], new() { Steps = 8 });
+        // The card the board places the drop beside is the one under the pointer when it is released.
+        var under = await page.EvaluateAsync<string?>(
+            "([x, y]) => document.elementFromPoint(x, y)?.closest('[data-flare-drag]')?.dataset.flareDrag",
+            new[] { target[1], target[2] });
         await page.Mouse.UpAsync();
 
-        await Expect(page.Locator("#result")).ToHaveTextAsync($"d0@{(int)target[0]}");
+        Assert.NotNull(under);
+        await Expect(page.Locator("#result")).ToHaveTextAsync($"d0@{int.Parse(under![1..])}");
     }
 }
