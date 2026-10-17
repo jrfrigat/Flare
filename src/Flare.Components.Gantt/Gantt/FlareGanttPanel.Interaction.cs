@@ -115,7 +115,7 @@ public partial class FlareGanttPanel<TRow, TItem>
                 return;
             case "l" or "L" or "\u0434" or "\u0414" when CanEdit && !e.CtrlKey && !bar.IsSummary:
                 _linkFrom = bar.Key;
-                _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkStarted, bar.Label ?? bar.Key);
+                _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkStarted!, bar.Label ?? bar.Key);
                 return;
         }
 
@@ -156,7 +156,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         var validation = GanttGraph.Validate(Links ?? [], link);
         if (!validation.IsValid)
         {
-            var message = Gantt!.EffectiveTexts.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key) ?? "";
+            var message = Gantt!.EffectiveTexts.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key, Gantt.Axis.Culture) ?? "";
             _announcement = message;
             await OnLinkRejected.InvokeAsync(new GanttLinkRejectedEventArgs(link, validation, message));
             return;
@@ -211,7 +211,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         if (!args.Cancel)
         {
             var label = _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key;
-            _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.Moved, label, Describe(span));
+            _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.Moved!, label, Describe(span));
         }
     }
 

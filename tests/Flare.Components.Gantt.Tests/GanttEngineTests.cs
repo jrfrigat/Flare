@@ -223,7 +223,7 @@ public sealed class GanttGraphTests
         var cycle = GanttGraph.Validate(links, new GanttLink("c", "a"));
         Assert.Equal(GanttValidationCode.Cycle, cycle.Code);
         Assert.Equal(["c", "a", "b", "c"], cycle.Path);
-        Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: c \u2192 a \u2192 b \u2192 c.", GanttTexts.Russian.Describe(cycle));
+        Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: c \u2192 a \u2192 b \u2192 c.", new GanttTexts().Describe(cycle, culture: new System.Globalization.CultureInfo("ru-RU")));
 
         Assert.Equal(GanttValidationCode.SelfLink, GanttGraph.Validate(links, new GanttLink("a", "a")).Code);
         Assert.Equal(GanttValidationCode.Duplicate, GanttGraph.Validate(links, new GanttLink("a", "b")).Code);

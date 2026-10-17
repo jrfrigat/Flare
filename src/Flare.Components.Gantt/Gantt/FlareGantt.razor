@@ -154,7 +154,7 @@
     /// <summary>The panels.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Texts for announcements and refusals; the built-in ones for <see cref="Culture"/> when null.</summary>
+    /// <summary>Texts to replace in announcements, refusals and labels; every text not set here comes from the package resources in <see cref="Culture"/>.</summary>
     [Parameter] public GanttTexts? Texts { get; set; }
 
     /// <summary>Accessible name of the whole timeline.</summary>
@@ -198,7 +198,10 @@
     public double Width => Axis.Units * EffectiveUnitWidth;
 
     /// <summary>The texts in use.</summary>
-    public GanttTexts EffectiveTexts => Texts ?? GanttTexts.For(Axis.Culture);
+    public GanttTexts EffectiveTexts => _texts ??= (Texts ?? new GanttTexts()).Over(Axis.Culture);
+
+    // Resolved once per parameter change: a tree row reads its toggle label on every render.
+    private GanttTexts? _texts;
 
     /// <summary>The selected item key.</summary>
     public string? Selected => _selected;
@@ -426,6 +429,7 @@
         // The width a reset returns to: the page default, otherwise the first width received.
         _sideDefault ??= DefaultSideWidth ?? SideWidth;
         var before = Axis;
+        _texts = null;
         Axis = new GanttAxis(Range, Scale, Culture);
         if (_lastRange is { } last && last != Range)
         {

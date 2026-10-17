@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Gantt_SelfLink" xml:space="preserve"><value>Элемент не может зависеть от самого себя.</value></data>
+  <data name="Gantt_Cycle" xml:space="preserve"><value>Связь создает цикл: {0}.</value></data>
+  <data name="Gantt_Duplicate" xml:space="preserve"><value>Такая связь уже есть.</value></data>
+  <data name="Gantt_Expand" xml:space="preserve"><value>Развернуть</value></data>
+  <data name="Gantt_Collapse" xml:space="preserve"><value>Свернуть</value></data>
+  <data name="Gantt_LinkStarted" xml:space="preserve"><value>Связь от {0}. Выберите последователя и нажмите Enter.</value></data>
+  <data name="Gantt_Moved" xml:space="preserve"><value>{0} перенесен: {1}.</value></data>
+  <data name="Gantt_ResizeSide" xml:space="preserve"><value>Ширина колонки: тяните мышью, стрелки, Home - сброс</value></data>
+</root>

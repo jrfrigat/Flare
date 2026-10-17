@@ -166,7 +166,7 @@ public sealed class GanttInteractionTests : GanttTestBase
         var refusal = Assert.Single(rejected);
         Assert.Equal(GanttValidationCode.Cycle, refusal.Validation.Code);
         Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: c \u2192 a \u2192 b \u2192 c.", refusal.Message);
-        Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: C \u2192 A \u2192 B \u2192 C.", GanttTexts.Russian.Describe(refusal.Validation, key => key.ToUpperInvariant()));
+        Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: C \u2192 A \u2192 B \u2192 C.", new GanttTexts().Describe(refusal.Validation, key => key.ToUpperInvariant(), new System.Globalization.CultureInfo("ru-RU")));
         Assert.Equal(refusal.Message, cut.Find("[role=status]").TextContent);
 
         Bar(cut, "a").KeyDown(new KeyboardEventArgs { Key = "L" });
