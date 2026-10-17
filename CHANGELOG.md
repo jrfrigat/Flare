@@ -17,6 +17,10 @@ All notable changes to Flare are documented here. This project adheres to
   the arrow keys, Home and End move between visible rows (scrolling a virtualized row into view), Right and Left
   open, close and walk the hierarchy, and Enter or Space act like a click. The expand button left the Tab order.
 
+- `FlareRibbon` tabs work from the keyboard: Left and Right (mirrored in right-to-left text) and Home and End move
+  between the enabled tabs and open them. A disabled tab is announced as unavailable, looks dimmed and is
+  skipped; the first enabled tab starts active.
+
 ### Fixed
 
 - Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The

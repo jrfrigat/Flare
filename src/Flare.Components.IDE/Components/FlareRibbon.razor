@@ -1,8 +1,9 @@
 @namespace Flare.Components.IDE
+@inject Flare.Components.Services.IUiJsService Ui
 @inherits FlareComponentBase
 
 <div class="@Css.Classes.Ide.Ribbon.Root @BuildCssClass(_collapsedClass)" style="@Style" @attributes="AdditionalAttributes">
-    <div class="@Css.Classes.Ide.Ribbon.Tabs" role="tablist">
+    <div class="@Css.Classes.Ide.Ribbon.Tabs" role="tablist" @ref="_tablistRef">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _activeTab;
@@ -11,6 +12,8 @@
                     role="tab"
                     aria-selected="@(isActive ? "true" : "false")"
                     aria-controls="@tab.PanelId"
+                    aria-disabled="@(tab.Disabled ? "true" : null)"
+                    @ref="tab.ButtonRef"
                     tabindex="@(isActive ? 0 : -1)"
                     @onclick="@(() => ActivateTab(tab))">
                 @tab.Title

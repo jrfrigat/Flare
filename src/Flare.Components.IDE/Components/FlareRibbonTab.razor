@@ -33,6 +33,9 @@
     // id no element carried, which reads to a screen reader as a tab panel with no name.
     internal string TabButtonId => $"flare-ribbon-tab-{TabId}";
 
+    // The tab button, focused by the ribbon when the arrow keys move to this tab.
+    internal ElementReference ButtonRef { get; set; }
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

@@ -223,6 +223,16 @@
     font-weight: 500;
 }
 
+/* A disabled tab stays focusable (it is announced as unavailable) but looks and reacts like nothing. */
+.flare-ribbon__tab[aria-disabled="true"] {
+    opacity: var(--flare-state-disabled-opacity);
+    cursor: default;
+}
+
+.flare-ribbon__tab[aria-disabled="true"]:hover {
+    background: none;
+}
+
 .flare-ribbon__commands {
     display: flex;
     padding: var(--flare-spacing-2, 4px);

@@ -5416,7 +5416,17 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Moves to the next or previous enabled tab (Left/Right, mirrored in right-to-left text), or the first or last one (Home/End), opens it and focuses its tab. Called by the shared tab-keyboard script, which has already kept the browser from scrolling.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"The navigation key."),
+                        new ApiMethodParameter(@"rtl", @"bool", @"Whether the tab strip is laid out right to left."),
+                    }),
+            },
             new string[]
             {
                 @"FlareComponentBase",
