@@ -17,7 +17,7 @@ A heading that spans several columns, turning a flat header into a banded one. I
 | `FrozenRight` | `bool` | `false` | Parameter |  | Sticks this column to the right edge when the table scrolls horizontally. Inherited from `FlareColumnBase`. |
 | `Title` | `string` | `""` | Parameter |  | Header text displayed in the column/band heading, and the name the column is known by everywhere else - the export, the filter menu, the column picker, aggregates. Still required when TitleContent is set, because those places need text. Inherited from `FlareColumnBase`. |
 | `TitleContent` | `RenderFragment?` | `` | Parameter |  | Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name. Inherited from `FlareColumnBase`. |
-| `Width` | `string?` | `` | Parameter |  | Fixed CSS width applied to the column/band. Inherited from `FlareColumnBase`. |
+| `Width` | `string?` | `` | Parameter |  | Fixed CSS width applied to the column/band. Without it a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width. Inherited from `FlareColumnBase`. |
 
 ## Methods
 

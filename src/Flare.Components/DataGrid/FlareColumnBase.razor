@@ -22,7 +22,13 @@
     /// overrides it with its Id/SortKey so columns stay identifiable when titles are duplicated or localized.</summary>
     internal virtual string ColumnKey => Title;
 
-    /// <summary>Fixed CSS width applied to the column/band.</summary>
+    /// <summary>
+    /// Fixed CSS width applied to the column/band. Without it a column is never narrower than the narrowest its
+    /// content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap.
+    /// When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting
+    /// content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a
+    /// row of action buttons) or give such columns a Width.
+    /// </summary>
     [Parameter] public string? Width { get; set; }
 
     /// <summary>Sticks this column to the left edge when the table scrolls horizontally.</summary>

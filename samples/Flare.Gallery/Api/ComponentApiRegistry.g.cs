@@ -1390,7 +1390,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FrozenRight", @"bool", @"false", @"Sticks this column to the right edge when the table scrolls horizontally.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Header text displayed in the column/band heading, and the name the column is known by everywhere else - the export, the filter menu, the column picker, aggregates. Still required when TitleContent is set, because those places need text.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
-                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band.", null, false, false, false, @"FlareColumnBase"),
+                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band. Without it a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
             new ApiMethodInfo[]
             {
@@ -1421,7 +1421,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FrozenRight", @"bool", @"false", @"Sticks this column to the right edge when the table scrolls horizontally.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Header text displayed in the column/band heading, and the name the column is known by everywhere else - the export, the filter menu, the column picker, aggregates. Still required when TitleContent is set, because those places need text.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
-                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band.", null, false, false, false, @"FlareColumnBase"),
+                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band. Without it a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
             new ApiMethodInfo[]
             {
@@ -1451,7 +1451,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FrozenRight", @"bool", @"false", @"Sticks this column to the right edge when the table scrolls horizontally.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Header text displayed in the column/band heading, and the name the column is known by everywhere else - the export, the filter menu, the column picker, aggregates. Still required when TitleContent is set, because those places need text.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
-                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band.", null, false, false, false, @"FlareColumnBase"),
+                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band. Without it a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1482,7 +1482,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FrozenRight", @"bool", @"false", @"Sticks this column to the right edge when the table scrolls horizontally.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Header text displayed in the column/band heading, and the name the column is known by everywhere else - the export, the filter menu, the column picker, aggregates. Still required when TitleContent is set, because those places need text.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
-                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band.", null, false, false, false, @"FlareColumnBase"),
+                new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width applied to the column/band. Without it a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
             new ApiMethodInfo[]
             {
