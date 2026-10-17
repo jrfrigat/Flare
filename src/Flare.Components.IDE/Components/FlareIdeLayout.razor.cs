@@ -144,6 +144,22 @@ public partial class FlareIdeLayout : FlareComponentBase
         }
     }
 
+    // The region's size in pixels for the divider's aria-valuenow: the dragged size, else a "...px" parameter.
+    // A size in other units (rem, %) has no pixel value here, and the divider then announces no value.
+    private int? SizePx(ToolPanelPosition position)
+    {
+        var (dragged, param) = position switch
+        {
+            ToolPanelPosition.Right => (_rightPx, RightPanelWidth),
+            ToolPanelPosition.Bottom => (_bottomPx, BottomPanelHeight),
+            _ => (_leftPx, LeftPanelWidth),
+        };
+        if (dragged is { } px) return px;
+        var s = param?.Trim();
+        return s is not null && s.EndsWith("px", StringComparison.Ordinal)
+            && int.TryParse(s[..^2], System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var v) ? v : null;
+    }
+
     private static int ParsePx(string value, int fallback)
     {
         var s = value?.Replace("px", "").Trim();

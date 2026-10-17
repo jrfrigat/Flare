@@ -92,9 +92,12 @@
         role="separator"
         tabindex="0"
         aria-orientation="@(position == ToolPanelPosition.Bottom ? "horizontal" : "vertical")"
-        aria-label="Resize panel"
-        @onmousedown="@(() => StartResize(position))"
-        @onmousedown:preventDefault="true"
+        aria-label="@Flare.Components.Resources.FlareStrings.Splitter_Resize"
+        aria-valuenow="@SizePx(position)"
+        aria-valuemin="@(SizePx(position) is null ? null : MinPanelSize)"
+        aria-valuetext="@(SizePx(position) is { } px ? $"{px} px" : null)"
+        @onpointerdown="@(() => StartResize(position))"
+        @onpointerdown:preventDefault="true"
         @onkeydown="@(e => ResizeStep(position, e))"></div>;
 
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@Css.Classes.Ide.Layout.Rail"

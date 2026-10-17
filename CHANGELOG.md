@@ -23,6 +23,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- The `FlareIdeLayout` panel divider has a localized name, announces the region size, can be dragged with a
+  finger or a pen as well as a mouse, offers a 24px grab area around its 5px line and shows a focus ring.
 - Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The
   collapsed rail lists every panel of the region, and the region floats only when all of its panels use auto-hide.
 - Closing a dialog returns focus to the element that opened it, also when a field inside the dialog took autofocus.

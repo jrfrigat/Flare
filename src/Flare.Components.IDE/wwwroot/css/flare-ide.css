@@ -166,6 +166,8 @@
 .flare-ide-layout__resizer {
     flex-shrink: 0;
     z-index: 5;
+    position: relative;
+    touch-action: none;
     background: transparent;
     transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
 }
@@ -182,10 +184,28 @@
     cursor: row-resize;
 }
 
+/* The visible line stays 5px; the area a pointer or finger can grab is 24px across it. */
+.flare-ide-layout__resizer::before {
+    content: "";
+    position: absolute;
+}
+
+.flare-ide-layout__resizer--col::before {
+    inset: 0 calc((5px - 24px) / 2);
+}
+
+.flare-ide-layout__resizer--row::before {
+    inset: calc((5px - 24px) / 2) 0;
+}
+
 .flare-ide-layout__resizer:hover,
 .flare-ide-layout__resizer:focus-visible {
     background: var(--flare-color-primary);
-    outline: none;
+}
+
+.flare-ide-layout__resizer:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: 2px;
 }
 
 .flare-ide-layout__statusbar {

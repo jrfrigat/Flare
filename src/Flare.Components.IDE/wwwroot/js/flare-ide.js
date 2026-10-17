@@ -23,15 +23,19 @@ export function startPanelResize(dotNetRef, layoutEl, position, minPx) {
     };
 
     const onUp = () => {
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onUp);
+        document.removeEventListener('pointercancel', onUp);
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
     };
 
     document.body.style.cursor = position === 'Bottom' ? 'row-resize' : 'col-resize';
     document.body.style.userSelect = 'none';
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
+    // Pointer events cover the mouse, a pen and a finger; the divider sets touch-action: none so a touch drag
+    // resizes instead of scrolling the page.
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', onUp);
+    document.addEventListener('pointercancel', onUp);
 }
 
