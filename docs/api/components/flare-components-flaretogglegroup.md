@@ -12,6 +12,7 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Child FlareToggleButton components. |
 | `Color` | `FlareColor?` | `` | Parameter |  | Color cascaded to every child FlareToggleButton (tints the selected state). When null (default) each button keeps its own Color. |
 | `Disabled` | `bool` | `false` | Parameter |  | When true, disables every child FlareToggleButton in the group. |
+| `FullWidth` | `bool` | `false` | Parameter |  | Stretches the group across its container and gives every button an equal share of the width. A label longer than its share is shortened with an ellipsis instead of making the group scroll. Default false: the group is as wide as its buttons and scrolls when the container is narrower. |
 | `Mandatory` | `bool` | `false` | Parameter |  | Single-select only: when true the active button cannot be deselected by clicking it (one selection is always kept). Default false - single-select is deselectable (a "toggle" selection). |
 | `MultiSelect` | `bool` | `false` | Parameter |  | Allows multiple buttons to be active simultaneously. |
 | `Orientation` | `string` | `"horizontal"` | Parameter |  | "horizontal" (default) or "vertical". |

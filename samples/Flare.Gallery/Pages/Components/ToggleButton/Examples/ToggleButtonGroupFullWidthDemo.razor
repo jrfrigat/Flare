@@ -1,0 +1,21 @@
+@* FullWidth stretches the group across its container and splits it into equal segments; in a narrow
+   container a long label is shortened instead of the group scrolling. The second group is a phone-wide
+   dialog column. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareToggleGroup TValue="string" @bind-Value="_period" Mandatory FullWidth>
+        <FlareToggleButton Value="@("today")">@GalleryStrings.ToggleButton_FullWidthToday</FlareToggleButton>
+        <FlareToggleButton Value="@("week")">@GalleryStrings.ToggleButton_FullWidthThisWeek</FlareToggleButton>
+        <FlareToggleButton Value="@("month")">@GalleryStrings.ToggleButton_FullWidthThisMonth</FlareToggleButton>
+    </FlareToggleGroup>
+    <FlareStack Style="max-inline-size:295px;">
+        <FlareToggleGroup TValue="string" @bind-Value="_period" Mandatory FullWidth>
+            <FlareToggleButton Value="@("today")">@GalleryStrings.ToggleButton_FullWidthToday</FlareToggleButton>
+            <FlareToggleButton Value="@("week")">@GalleryStrings.ToggleButton_FullWidthThisWeek</FlareToggleButton>
+            <FlareToggleButton Value="@("month")">@GalleryStrings.ToggleButton_FullWidthThisMonth</FlareToggleButton>
+        </FlareToggleGroup>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private string? _period = "week";
+}

@@ -9741,6 +9741,42 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle Group - Full width.
+        /// </summary>
+        public static string ToggleButton_GroupFullWidth {
+            get {
+                return ResourceManager.GetString("ToggleButton_GroupFullWidth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Today.
+        /// </summary>
+        public static string ToggleButton_FullWidthToday {
+            get {
+                return ResourceManager.GetString("ToggleButton_FullWidthToday", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This week.
+        /// </summary>
+        public static string ToggleButton_FullWidthThisWeek {
+            get {
+                return ResourceManager.GetString("ToggleButton_FullWidthThisWeek", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This month and everything before it.
+        /// </summary>
+        public static string ToggleButton_FullWidthThisMonth {
+            get {
+                return ResourceManager.GetString("ToggleButton_FullWidthThisMonth", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Icon Only.
         /// </summary>
         public static string ToggleButton_IconOnly {

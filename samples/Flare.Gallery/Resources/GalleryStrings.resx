@@ -2827,6 +2827,18 @@ Read the card, check the tests, and report what is left.</value>
   <data name="ToggleButton_GroupCheckMark" xml:space="preserve">
     <value>Toggle Group - Mandatory &amp; CheckMark</value>
   </data>
+  <data name="ToggleButton_GroupFullWidth" xml:space="preserve">
+    <value>Toggle Group - Full width</value>
+  </data>
+  <data name="ToggleButton_FullWidthToday" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="ToggleButton_FullWidthThisWeek" xml:space="preserve">
+    <value>This week</value>
+  </data>
+  <data name="ToggleButton_FullWidthThisMonth" xml:space="preserve">
+    <value>This month and everything before it</value>
+  </data>
   <data name="GettingStarted_Installation" xml:space="preserve">
     <value>Installation</value>
   </data>

@@ -5,6 +5,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `FlareToggleGroup.FullWidth` stretches the group across its container with equal segments. A label longer than
+  its segment is shortened with an ellipsis; without `FullWidth` the group keeps scrolling as before.
+
 ### Fixed
 
 - Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The

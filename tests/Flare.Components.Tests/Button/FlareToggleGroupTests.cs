@@ -75,4 +75,14 @@ public class FlareToggleGroupTests : FlareTestContext
 
         Assert.Equal("toggle-group", cut.Find($".{Css.Classes.ToggleGroup.Root}").GetAttribute("data-testid"));
     }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void FullWidth_SetsTheFullClassOnlyWhenRequested(bool fullWidth)
+    {
+        var cut = Render<FlareToggleGroup<string>>(p => p.Add(x => x.FullWidth, fullWidth));
+
+        Assert.Equal(fullWidth, cut.Find($".{Css.Classes.ToggleGroup.Root}").ClassList.Contains(Css.Classes.ToggleGroup.Full));
+    }
 }

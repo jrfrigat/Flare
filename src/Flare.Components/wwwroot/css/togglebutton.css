@@ -27,6 +27,24 @@
     flex-direction: column;
 }
 
+/* FullWidth: the group spans its container and the segments split it evenly. A segment may then be narrower
+   than its label, which is shortened rather than scrolled - the one mode where the label gives way. */
+.flare-togglegroup--full {
+    display: flex;
+    inline-size: 100%;
+}
+
+.flare-togglegroup--full:not(.flare-togglegroup--vertical) > .flare-btn {
+    flex: 1 1 0;
+    min-inline-size: 0;
+}
+
+.flare-togglegroup--full > .flare-btn .flare-btn__label {
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Every segment carries its share of the frame - the long edges on each, the ends on the first and last -
    in place of the transparent border every button reserves, so a segment keeps the button's size. Each
    is separated from the next by a rule rather than by a gap. The fill stops at the padding box so a

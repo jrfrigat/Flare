@@ -2827,6 +2827,18 @@
   <data name="ToggleButton_GroupCheckMark" xml:space="preserve">
     <value>Группа переключателей - обязательный выбор и галочка</value>
   </data>
+  <data name="ToggleButton_GroupFullWidth" xml:space="preserve">
+    <value>Группа переключателей - на всю ширину</value>
+  </data>
+  <data name="ToggleButton_FullWidthToday" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="ToggleButton_FullWidthThisWeek" xml:space="preserve">
+    <value>Эта неделя</value>
+  </data>
+  <data name="ToggleButton_FullWidthThisMonth" xml:space="preserve">
+    <value>Этот месяц и все, что раньше</value>
+  </data>
   <data name="GettingStarted_Installation" xml:space="preserve">
     <value>Установка</value>
   </data>
