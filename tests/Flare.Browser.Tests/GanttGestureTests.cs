@@ -17,8 +17,7 @@ public sealed class GanttGestureTests(BrowserFixture fixture) : IClassFixture<Br
         await page.GotoAsync($"{fixture.BaseUrl}/gantt");
         await Expect(page.Locator(Bar("w1"))).ToBeVisibleAsync();
         // The module attaches after the first render; until then a press is the browser's own.
-        await page.WaitForFunctionAsync($"!!document.querySelector('#chart').dataset.unit");
-        await page.WaitForTimeoutAsync(300);
+        await ListenerWait.ForAsync(page, "#chart", "pointerdown");
         return page;
     }
 

@@ -16,7 +16,9 @@ public sealed class GanttSideColumnTests(BrowserFixture fixture) : IClassFixture
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/gantt-side");
         await Expect(page.Locator(Edge)).ToBeAttachedAsync();
-        await page.WaitForTimeoutAsync(300);
+        // The splitter's keys, steps and drag come from its module, which attaches after the first render.
+        await ListenerWait.ForAsync(page, Edge, "keydown");
+        await ListenerWait.ForAsync(page, Edge, "pointerdown");
         return page;
     }
 

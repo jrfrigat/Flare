@@ -173,6 +173,7 @@
     private IGanttView? _browser;
     private DotNetObjectReference<FlareGantt>? _self;
     private DateTime? _pendingScroll;
+    private string? _pendingFocus;
     private double _available;
     private string? _side;
     private string? _sideParameter;
@@ -410,6 +411,11 @@
             _requested = null;
             await _browser.ShiftAsync(shift);
         }
+        if (_pendingFocus is { } key)
+        {
+            _pendingFocus = null;
+            await _browser.FocusItemAsync(key);
+        }
     }
 
     /// <inheritdoc />
@@ -496,7 +502,13 @@
         _panels.FirstOrDefault(p => p.Id == panel) is { } owner ? owner.LinkedAsync(fromKey, toKey) : Task.CompletedTask;
 
     /// <summary>Moves the keyboard focus to the bar of <paramref name="key"/>, if it is drawn.</summary>
-    internal ValueTask FocusItemAsync(string key) => _browser?.FocusItemAsync(key) ?? ValueTask.CompletedTask;
+    // A request made before the module is attached waits for it, so a bar moved from the keyboard keeps the focus.
+    internal ValueTask FocusItemAsync(string key)
+    {
+        if (_browser is not null) return _browser.FocusItemAsync(key);
+        _pendingFocus = key;
+        return ValueTask.CompletedTask;
+    }
 
     internal void Register(IGanttPanel panel) => _panels.Add(panel);
 

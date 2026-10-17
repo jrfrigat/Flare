@@ -1,8 +1,11 @@
 using AngleSharp.Dom;
 using Bunit;
 using Flare.Components.Gantt;
+using Flare.Components.Gantt.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 using Xunit;
 
 namespace Flare.Components.Gantt.Tests;
@@ -271,5 +274,48 @@ public sealed class GanttInteractionTests : GanttTestBase
         Assert.Equal(2, bars.Length);
         Assert.All(units, z => { Assert.True(z.Instance.Accepts!("task")); Assert.False(z.Instance.Accepts!(7)); });
         Assert.All(bars, z => { Assert.True(z.Instance.Accepts!(7)); Assert.False(z.Instance.Accepts!("task")); });
+    }
+
+    [Fact]
+    public async Task A_bar_moved_to_another_row_before_the_module_attached_gets_the_focus_once_it_has()
+    {
+        var attached = new TaskCompletionSource<IGanttView?>();
+        var view = new RecordingView();
+        Services.AddSingleton<IGanttJsService>(new SlowJs(attached.Task));
+        var cut = Editable([]);
+
+        Bar(cut, "a").KeyDown(new KeyboardEventArgs { Key = "ArrowDown", CtrlKey = true });
+        Assert.Empty(view.Focused);
+
+        await cut.InvokeAsync(() => attached.SetResult(view));
+
+        cut.WaitForAssertion(() => Assert.Equal(["a"], view.Focused));
+    }
+
+    private sealed class SlowJs(Task<IGanttView?> attached) : IGanttJsService
+    {
+        public async ValueTask<IGanttView?> AttachAsync(ElementReference root, DotNetObjectReference<FlareGantt> dotNetRef, bool virtualize, bool endless) =>
+            await attached;
+
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    }
+
+    private sealed class RecordingView : IGanttView
+    {
+        public List<string> Focused { get; } = [];
+
+        public ValueTask ScrollToAsync(double x) => ValueTask.CompletedTask;
+
+        public ValueTask ShiftAsync(double pixels) => ValueTask.CompletedTask;
+
+        public ValueTask<double?> PointerXAsync() => ValueTask.FromResult<double?>(null);
+
+        public ValueTask FocusItemAsync(string key)
+        {
+            Focused.Add(key);
+            return ValueTask.CompletedTask;
+        }
+
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 }
