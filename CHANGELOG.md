@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.45.0] - 2026-10-17
 
 ### Added
 
@@ -12,21 +12,17 @@ All notable changes to Flare are documented here. This project adheres to
 - `ProgressTokens.TrackColor` (`--flare-progress-track-color`) sets the color of the unfilled track of linear and
   circular progress, so a theme can change it without changing a palette role. It is required: a custom theme
   built with `new ProgressTokens { ... }` has to set it (the in-box themes keep the secondary-container color).
-
 - `FlareDataTree` works from the keyboard as a WAI-ARIA tree: `AriaLabel` names it, one row is in the Tab order,
   the arrow keys, Home and End move between visible rows (scrolling a virtualized row into view), Right and Left
   open, close and walk the hierarchy, and Enter or Space act like a click. The expand button left the Tab order.
-
 - `FlareRibbon` tabs work from the keyboard: Left and Right (mirrored in right-to-left text) and Home and End move
   between the enabled tabs and open them. A disabled tab is announced as unavailable, looks dimmed and is
   skipped; the first enabled tab starts active.
-
 - `FlareKanban.Virtual` renders only the cards in view in each column, for columns of hundreds of cards. The
   columns stretch to the board's height and scroll on their own, so the board needs a bounded height (for example
   `Style="height:70vh"`). Dragging, the drop highlight and auto-scroll work as before, and a card lands beside the
   one it was dropped on even in a column scrolled to its middle. Keyboard moves reach the cards currently
   rendered. `VirtualItemSize` and `OverscanCount` tune the window.
-
 - `FlareStat` shows one labelled metric: `Label`, `Value`, `Unit`, `Icon`, a `Delta` colored by `DeltaColor`
   (Success, Warning, Error, Info or a custom color) and a `Caption`, in three `Size` steps; `LabelContent` and
   `CaptionContent` take markup instead of text. Screen readers name it "label: value unit". It is the content,
@@ -47,6 +43,9 @@ All notable changes to Flare are documented here. This project adheres to
   many elements read, instead of the split between its two neighbours. The browser writes the size to
   `ValueVariable` on the `ValueScope` ancestor while the pointer moves, and `OnSizeChanged` reports it once when
   the drag, key or step ends. Home and a double click restore `DefaultValue`.
+- `FlareResizable` and `FlareSplitter` resize without dragging. The resizable handle is a focusable separator
+  with decrease and increase buttons; the splitter takes the arrow keys with its `KeyboardStep`, reports its size
+  to screen readers and offers -/+ step targets for the pointer.
 - `TreeFlattener.Flatten` turns a hierarchy into the visible rows of a tree view, with depth and expansion; the
   tree data grid uses it.
 - New package `Flare.Components.Gantt`: `FlareGantt` lays out a task tree, people, rooms or machines in time on one
@@ -61,7 +60,6 @@ All notable changes to Flare are documented here. This project adheres to
 
 - `FlareSplitter` applies `MinSize` and `MaxSize` changed after the first render; before, the limits it was
   registered with stayed in force.
-
 - The `FlareIdeLayout` panel divider has a localized name, announces the region size, can be dragged with a
   finger or a pen as well as a mouse, offers a 24px grab area around its 5px line and shows a focus ring.
 - Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The
@@ -84,6 +82,20 @@ All notable changes to Flare are documented here. This project adheres to
   card; the avatar and the action keep their place.
 - A button in the `Leading` or `Trailing` slot of a clickable `FlareListItem` no longer activates the item as
   well, whether it is clicked or pressed with Enter or Space.
+- `FlareStepper` step indicators work from the keyboard: the arrow keys (mirrored in right-to-left text), Home and
+  End move the focus between available steps without activating them. Several steppers on one page no longer share
+  element ids, `GoTo` on an empty stepper no longer throws, long labels fit a narrow container, the vertical
+  connector follows right-to-left text and the indicator size, and indicators stay in line with their connectors
+  when labels differ in height.
+- `FlareTabs`: the arrow keys activate and focus the next available tab by orientation and text direction, and the
+  strip scrolls only itself to show it. The close button is no longer nested inside the tab button, and the focus
+  moves to a neighbour after closing. The strip scrolls correctly in right-to-left text, `FlareTab` passes
+  `Class`, `Style` and other attributes to its panel, and changed parameters such as `Lazy` take effect.
+- `FlareConfirmDialogProvider` uses the shared modal: the focus stays inside and returns to the opener, Escape
+  dismisses it, and a second `ConfirmAsync` waits for the first instead of losing its answer.
+  `FlareMessageBoxProvider` returns an empty prompt as entered and gives every request its own answer. Long content
+  scrolls while the buttons stay reachable in both.
+- A dialog or drawer without focusable content takes the focus on its panel, so Tab and Escape stay inside it.
 
 ## [0.44.0] - 2026-10-13
 
