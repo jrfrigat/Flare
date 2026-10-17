@@ -42,7 +42,7 @@
 /* Linear */
 .flare-progress--linear {
   height: var(--_lin-height);
-  background: var(--flare-color-secondary-container);
+  background: var(--flare-progress-track-color);
   border-radius: var(--flare-progress-track-radius);
   overflow: hidden;
   position: relative;
@@ -79,7 +79,7 @@
   flex: 1 1 0;
   min-width: 0;
   height: 100%;
-  background: var(--flare-color-secondary-container);
+  background: var(--flare-progress-track-color);
   border-radius: var(--flare-progress-track-radius);
   /* Leave a gap before the trailing stop indicator so the track does not run under the dot.
      Reserves gap + dot-size at the inline end (0 when the dot is off), which is where the bar
@@ -93,7 +93,7 @@
    Zones need an uninterrupted track, so --with-zones opts out of the split gap + stop dot below. */
 .flare-progress--with-zones {
   display: block;
-  background: var(--flare-color-secondary-container);
+  background: var(--flare-progress-track-color);
 }
 .flare-progress__zone {
   position: absolute;
@@ -154,7 +154,7 @@
 .flare-progress__measure rect { width: var(--_measure); height: 1px; }
 .flare-progress__measure rect + rect { width: calc(var(--_measure) * 1px); }
 .flare-progress__track {
-  stroke: var(--flare-color-secondary-container);
+  stroke: var(--flare-progress-track-color);
   stroke-width: var(--_circ-width);
 }
 .flare-progress__indicator {

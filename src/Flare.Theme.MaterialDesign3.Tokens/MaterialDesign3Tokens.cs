@@ -908,6 +908,7 @@ public class MaterialDesign3Tokens
     // Expressive theme package, so this baseline token bundle stays reusable by flat themes.
     internal static readonly ProgressTokens Progress = new()
     {
+        TrackColor = "var(--flare-color-secondary-container)",
         // Size ramp. The spec names two steps of each - linear 4dp with an 8dp "thick", circular 40dp with a
         // 52dp "thick" - and they anchor Md (the default) and the step above it. The ramp runs BOTH ways
         // from Md because a progress indicator's natural default sits mid-scale, not at the bottom: the

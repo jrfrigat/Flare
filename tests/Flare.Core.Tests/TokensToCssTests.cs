@@ -173,6 +173,16 @@ public class TokensToCssTests
         Assert.True(dark >= 0 && hc > dark, "the high-contrast rule must follow the dark rule it overrides");
     }
 
+    // The progress track used to be painted with the secondary-container role directly, so a theme could only
+    // recolor it by changing that role for everything else too.
+    [Fact]
+    public void ThemeCss_CarriesTheProgressTrackColor()
+    {
+        var css = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3.MaterialDesign3Theme());
+
+        Assert.Contains($"{Css.Tokens.ProgressField.TrackColor}:var({Css.Tokens.Color.SecondaryContainer});", css);
+    }
+
     [Theory]
     [InlineData(false, false, Css.Classes.Theme.ModeLight)]
     [InlineData(true, false, Css.Classes.Theme.ModeDark)]

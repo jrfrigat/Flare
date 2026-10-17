@@ -924,6 +924,7 @@ public class FluentUI2Tokens
     // Progress - Fluent: thin 2px rail, squared corners, no stop dot and a 3px butt-cap ring.
     internal static readonly ProgressTokens Progress = new()
     {
+        TrackColor = "var(--flare-color-secondary-container)",
         // Size ramp, anchored at Md (the default) and running both ways. Fluent names two bar thicknesses -
         // 2px (medium, the default) and 4px (large) - which pin Md and Xl.
         LinearHeightXs = "1px",

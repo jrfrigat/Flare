@@ -241,6 +241,8 @@ public static class ProgressField
 
     /// <summary>CSS custom-property name for the colour of content centred on an indicator.</summary>
     public const string ContentColor = "--flare-progress-content-color";
+    /// <summary>CSS custom-property name for the color of the remaining (unfilled) track, linear and circular.</summary>
+    public const string TrackColor = "--flare-progress-track-color";
     /// <summary>CSS custom-property name for the linear track corner radius.</summary>
     public const string TrackRadius = "--flare-progress-track-radius";
     /// <summary>CSS custom-property name for the gap between indicator and remaining track.</summary>

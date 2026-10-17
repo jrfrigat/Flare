@@ -9,6 +9,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 - `FlareToggleGroup.FullWidth` stretches the group across its container with equal segments. A label longer than
   its segment is shortened with an ellipsis; without `FullWidth` the group keeps scrolling as before.
+- `ProgressTokens.TrackColor` (`--flare-progress-track-color`) sets the color of the unfilled track of linear and
+  circular progress, so a theme can change it without changing a palette role. It is required: a custom theme
+  built with `new ProgressTokens { ... }` has to set it (the in-box themes keep the secondary-container color).
 
 ### Fixed
 

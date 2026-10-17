@@ -58,6 +58,10 @@ public sealed record ProgressTokens
     /// <summary>Trailing stop-indicator inset from the end.</summary>
     [CssVar(ProgressField.StopInset)] public required string StopInset { get; init; }
 
+    /// <summary>Color of the remaining (unfilled) track of the linear and circular indicators, buffer and zone bands
+    /// included. The theme sets it, so a palette role does not have to change for the track to.</summary>
+    [CssVar(ProgressField.TrackColor)] public required string TrackColor { get; init; }
+
     /// <summary>Color of the trailing stop indicator.</summary>
     [CssVar(ProgressField.StopColor)] public required string StopColor { get; init; }
 
