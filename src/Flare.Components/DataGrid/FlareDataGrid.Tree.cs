@@ -29,40 +29,19 @@ public partial class FlareDataGrid<TItem>
     }
 
     /// <summary>Flattens hierarchical data into a list with depth information.</summary>
-    private List<TreeNode<TItem>> FlattenTree(IEnumerable<TItem> items, int depth = 0)
+    private List<TreeNode<TItem>> FlattenTree(IEnumerable<TItem> items)
     {
-        if (depth == 0) _treeDepths.Clear();
-        var result = new List<TreeNode<TItem>>();
+        _treeDepths.Clear();
         if (Tree is null)
-        {
-            foreach (var item in items)
-                result.Add(new TreeNode<TItem> { Item = item, Depth = 0, HasChildren = false, IsExpanded = false });
-            return result;
-        }
+            return items.Select(item => new TreeNode<TItem> { Item = item, Depth = 0, HasChildren = false, IsExpanded = false }).ToList();
 
-        foreach (var item in items)
+        var rows = TreeFlattener.Flatten(items, Tree.ChildrenSelector, item =>
         {
-            _treeDepths[item] = depth;
-            var children = Tree.ChildrenSelector(item);
-            var hasChildren = children?.Any() == true;
-            var expanded = IsExpanded(item) || (Tree.InitiallyExpanded?.Invoke(item) == true);
-
-            if (expanded && !_expandedItems.Contains(item) && Tree.InitiallyExpanded?.Invoke(item) == true)
+            if (!_expandedItems.Contains(item) && Tree.InitiallyExpanded?.Invoke(item) == true)
                 _expandedItems.Add(item);
-
-            result.Add(new TreeNode<TItem>
-            {
-                Item = item,
-                Depth = depth,
-                HasChildren = hasChildren,
-                IsExpanded = hasChildren && IsExpanded(item),
-            });
-
-            if (hasChildren && IsExpanded(item))
-            {
-                result.AddRange(FlattenTree(children!, depth + 1));
-            }
-        }
-        return result;
+            return IsExpanded(item);
+        });
+        foreach (var row in rows) _treeDepths[row.Item] = row.Depth;
+        return rows;
     }
 }

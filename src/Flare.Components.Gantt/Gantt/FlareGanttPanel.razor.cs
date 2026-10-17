@@ -172,26 +172,21 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     private void Layout()
     {
         var gantt = Gantt!;
-        var rows = new List<GanttRowLayout<TRow, TItem>>();
+        // Every row's descendants, hidden ones included, for the summary bars; the visible rows come from the
+        // tree walk every tree-shaped Flare view shares.
         var descendants = new Dictionary<string, List<string>>();
         _isTree = false;
-
-        void Walk(IEnumerable<TRow> level, int depth, bool visible, List<List<string>> ancestors)
+        var visible = TreeFlattener.Flatten(Rows ?? [], row => RowChildren?.Invoke(row), row => IsExpanded(RowKey(row)), (row, ancestors) =>
         {
-            foreach (var row in level)
-            {
-                var key = RowKey(row);
-                var children = RowChildren?.Invoke(row)?.ToList() ?? [];
-                foreach (var list in ancestors) list.Add(key);
-                var own = new List<string>();
-                descendants[key] = own;
-                if (children.Count > 0) _isTree = true;
-                var expanded = IsExpanded(key);
-                if (visible) rows.Add(new GanttRowLayout<TRow, TItem> { Key = key, Row = row, Depth = depth, HasChildren = children.Count > 0, Expanded = expanded });
-                if (children.Count > 0) Walk(children, depth + 1, visible && expanded, [.. ancestors, own]);
-            }
-        }
-        Walk(Rows ?? [], 0, true, []);
+            var key = RowKey(row);
+            descendants[key] = [];
+            if (ancestors.Count > 0) _isTree = true;
+            foreach (var ancestor in ancestors) descendants[RowKey(ancestor)].Add(key);
+        });
+        var rows = visible.Select(n => new GanttRowLayout<TRow, TItem>
+        {
+            Key = RowKey(n.Item), Row = n.Item, Depth = n.Depth, HasChildren = n.HasChildren, Expanded = n.HasChildren && n.IsExpanded,
+        }).ToList();
 
         var byKey = rows.ToDictionary(r => r.Key);
         var items = (Items ?? []).Where(i => ItemKey is not null && ItemRow is not null && ItemSpan?.Invoke(i) is not null).ToList();
