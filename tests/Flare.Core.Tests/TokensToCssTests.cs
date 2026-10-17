@@ -144,10 +144,41 @@ public class TokensToCssTests
         });
 
         Assert.Contains(".flare-palette-ocean{", css);
-        Assert.Contains($".flare-palette-ocean.{Css.Classes.Theme.ModeDark}{{", css);
+        Assert.Contains($".flare-palette-ocean.{Css.Classes.Theme.ModeDark}", css);
         Assert.Contains($"{Css.Tokens.Color.Primary}:#0000FF;", css);
         Assert.Contains($"{Css.Tokens.Color.Primary}:#88AAFF;", css);
     }
+
+    // Palette.ForMode falls back to Dark for high contrast; the CSS has to do the same, or an app root in
+    // high-contrast mode matches no palette rule but the light one.
+    [Fact]
+    public void PaletteCss_WithoutHighContrast_DarkRuleAlsoCoversHighContrast()
+    {
+        var css = TokensToCss.PaletteCss(new Palette { Id = "ocean", Name = "Ocean", Light = Colors("#0000FF"), Dark = Colors("#88AAFF") });
+
+        Assert.Contains($".flare-palette-ocean.{Css.Classes.Theme.ModeDark}, .flare-palette-ocean.{Css.Classes.Theme.ModeHighContrast}{{", css);
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(css, "#88AAFF"));
+    }
+
+    [Fact]
+    public void PaletteCss_WithHighContrast_KeepsItsOwnRuleAfterDark()
+    {
+        var css = TokensToCss.PaletteCss(new Palette
+        {
+            Id = "ocean", Name = "Ocean", Light = Colors("#0000FF"), Dark = Colors("#88AAFF"), HighContrast = Colors("#FFFF00"),
+        });
+
+        var dark = css.IndexOf($".flare-palette-ocean.{Css.Classes.Theme.ModeDark}{{", StringComparison.Ordinal);
+        var hc = css.IndexOf($".flare-palette-ocean.{Css.Classes.Theme.ModeHighContrast}{{", StringComparison.Ordinal);
+        Assert.True(dark >= 0 && hc > dark, "the high-contrast rule must follow the dark rule it overrides");
+    }
+
+    [Theory]
+    [InlineData(false, false, Css.Classes.Theme.ModeLight)]
+    [InlineData(true, false, Css.Classes.Theme.ModeDark)]
+    [InlineData(true, true, Css.Classes.Theme.ModeHighContrast + " " + Css.Classes.Theme.ModeDark)]
+    public void ModeClasses_HighContrastIsDarkToo(bool dark, bool highContrast, string expected) =>
+        Assert.Equal(expected, Css.Classes.Theme.ModeClasses(dark, highContrast));
 
     [Fact]
     public void ThemeCss_EmitsDesignRule_AndDarkOverrideDiffOnly()

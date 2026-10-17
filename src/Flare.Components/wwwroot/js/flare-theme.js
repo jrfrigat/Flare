@@ -9,24 +9,29 @@ export function setCssVariables(vars) {
         root.style.setProperty(name, value);
 }
 
+export function modeClasses(dark, highContrast) {
+    return highContrast ? ['flare-mode-high-contrast', 'flare-mode-dark'] : [dark ? 'flare-mode-dark' : 'flare-mode-light'];
+}
+
 // ClassToggle strategy: put the active theme/palette/mode classes on <html> so the
 // generated CSS applies to everything, including overlays portaled to <body>.
 // themeIds is the active theme's lineage: its own id first, then each ancestor's. A new name rather than
 // the old setThemeClasses(themeId, familyId, ...), so a stale cached copy of this module fails loudly
 // (a caught JSException) instead of binding the id list to the old parameters.
-export function setThemeLineageClasses(themeIds, paletteId, dark) {
+export function setThemeLineageClasses(themeIds, paletteId, dark, highContrast) {
     const r = document.documentElement;
     r.className = r.className
         .replace(/\bflare-theme-\S+/g, '')
         .replace(/\bflare-palette-\S+/g, '')
-        .replace(/\bflare-mode-dark\b/g, '')
+        .replace(/\bflare-mode-\S+/g, '')
         .replace(/\s+/g, ' ')
         .trim();
     // One class per generation, because every theme stylesheet is scoped to its own theme's class:
     // a derived theme is selectable by its own id and still styled by every theme it is built on.
     for (const id of themeIds) r.classList.add('flare-theme-' + id);
     r.classList.add('flare-palette-' + paletteId);
-    if (dark) r.classList.add('flare-mode-dark');
+    // The same mode classes as the theme root (Css.Classes.Theme.ModeClasses): high contrast is dark too.
+    for (const mode of modeClasses(dark, highContrast)) r.classList.add(mode);
     // flare-bootstrap.js paints the saved theme before .NET starts and cannot know its ancestors by
     // itself. Stored as "id ancestor ..." so it is only ever applied to the theme it was recorded for.
     try {

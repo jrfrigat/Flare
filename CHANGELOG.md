@@ -18,6 +18,10 @@ All notable changes to Flare are documented here. This project adheres to
   When that element is gone, focus moves to its nearest remaining container instead of the page body.
 - Escape in an open select, combobox or menu button inside a dialog closes only that popup and keeps the dialog
   open.
+- In high-contrast mode the page and the app root carry the same mode classes (`flare-mode-high-contrast` and
+  `flare-mode-dark`), so menus, dialogs and toasts portaled to the body match the app. A palette without its own
+  high-contrast scheme falls back to its dark colors instead of light ones, and the first frame painted before
+  .NET starts honours a saved high-contrast mode.
 - Selection, checked and pressed states are announced as "true" or "false" in `FlareSwitch`, `FlareCalendar`,
   `FlareCarousel`, `FlareTransfer` and the IDE tab strips (`FlareDocumentTabs`, `FlareRibbon`, `FlareSheetTabs`);
   they used to render an empty value or nothing. A collapsed `FlareNavGroup` hides its items from assistive

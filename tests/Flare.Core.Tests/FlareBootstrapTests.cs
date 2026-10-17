@@ -57,6 +57,18 @@ public class FlareBootstrapTests
         Assert.Contains("||'dark'", js);
     }
 
+    // The saved mode is "highcontrast" (ThemeMode, lower-cased); the first frame has to carry the same classes
+    // the theme root will: high contrast and dark.
+    [Fact]
+    public void GenerateScript_PaintsHighContrastAsHighContrastAndDark()
+    {
+        var js = FlareBootstrap.GenerateScript(["t"], ["p"], "t", "p", ThemeMode.HighContrast);
+
+        Assert.Contains("||'highcontrast'", js);
+        Assert.Contains($"var hc=m==='highcontrast';if(hc)d.classList.add('{Css.Classes.Theme.ModeHighContrast}');", js);
+        Assert.Contains("var dk=(hc||", js);
+    }
+
     [Fact]
     public void GenerateScript_EscapesQuotesInIds()
     {

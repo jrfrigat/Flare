@@ -38,4 +38,16 @@ public static class Theme
     /// <returns>The mode class string.</returns>
     public static string Mode(bool isDark, bool isHighContrast = false) =>
         isHighContrast ? ModeHighContrast : isDark ? ModeDark : ModeLight;
+
+    /// <summary>
+    /// Returns every color-mode class an element carries for the given state, separated by spaces. High contrast
+    /// is a dark scheme with its own colors, so it carries <see cref="ModeDark"/> as well: dark color-scheme and
+    /// a theme's dark overrides keep applying, and the high-contrast palette rule, written after the dark one,
+    /// wins where it exists. The document element and the theme root use the same set.
+    /// </summary>
+    /// <param name="isDark">Whether the dark scheme is active.</param>
+    /// <param name="isHighContrast">Whether high-contrast mode is active.</param>
+    /// <returns>The mode classes, space separated.</returns>
+    public static string ModeClasses(bool isDark, bool isHighContrast) =>
+        isHighContrast ? ModeHighContrast + " " + ModeDark : isDark ? ModeDark : ModeLight;
 }

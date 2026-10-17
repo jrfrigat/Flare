@@ -34,6 +34,19 @@ public interface IThemeJsService : IAsyncDisposable
         => SetThemeClassesAsync(themeLineage[0], paletteId, isDark, ct);
 
     /// <summary>
+    /// Sets the root element's theme classes like the lineage overload, and its color-mode classes from the
+    /// same map as the theme root (<c>Css.Classes.Theme.ModeClasses</c>): high contrast carries the high-contrast
+    /// class and the dark one. Defaults to the lineage overload, which knows dark only.
+    /// </summary>
+    /// <param name="themeLineage">Ids of the active theme and its ancestors, the theme itself first.</param>
+    /// <param name="paletteId">The active palette's id.</param>
+    /// <param name="isDark">Whether the dark scheme is active.</param>
+    /// <param name="isHighContrast">Whether high-contrast mode is active.</param>
+    /// <param name="ct">A cancellation token.</param>
+    ValueTask SetThemeClassesAsync(IReadOnlyList<string> themeLineage, string paletteId, bool isDark, bool isHighContrast, CancellationToken ct = default)
+        => SetThemeClassesAsync(themeLineage, paletteId, isDark, ct);
+
+    /// <summary>
     /// Ensures a stylesheet link is present and completes only once it has finished loading (or a
     /// safety timeout elapses), so callers can reveal styled UI without flashing unstyled content.
     /// </summary>

@@ -31,7 +31,11 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
 
     /// <summary>Applies the classes of the active theme and each of its ancestors to the document root.</summary>
     public ValueTask SetThemeClassesAsync(IReadOnlyList<string> themeLineage, string paletteId, bool isDark, CancellationToken ct = default)
-        => InvokeVoidAsync("setThemeLineageClasses", themeLineage, paletteId, isDark);
+        => SetThemeClassesAsync(themeLineage, paletteId, isDark, false, ct);
+
+    /// <summary>Applies the theme lineage, palette and color-mode classes (high contrast included) to the document root.</summary>
+    public ValueTask SetThemeClassesAsync(IReadOnlyList<string> themeLineage, string paletteId, bool isDark, bool isHighContrast, CancellationToken ct = default)
+        => InvokeVoidAsync("setThemeLineageClasses", themeLineage, paletteId, isDark, isHighContrast);
 
     /// <summary>Ensures the theme stylesheet link is present and has finished loading.</summary>
     public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default)

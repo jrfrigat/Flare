@@ -40,7 +40,8 @@
     var t = s.getItem('flare-theme') || defTheme;
     var p = s.getItem('flare-palette') || defPalette;
     var m = s.getItem('flare-mode') || defMode;
-    var dark = m === 'dark' || (m === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+    var hc = m === 'highcontrast';
+    var dark = hc || m === 'dark' || (m === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
 
     if (t) d.classList.add('flare-theme-' + t);
     // A theme built on others is styled by each ancestor's stylesheets, scoped to that ancestor's
@@ -48,7 +49,9 @@
     var line = (s.getItem('flare-theme-lineage') || '').split(' ');
     if (t && line[0] === t) for (var i = 1; i < line.length; i++) if (line[i]) d.classList.add('flare-theme-' + line[i]);
     if (p) d.classList.add('flare-palette-' + p);
-    if (dark) d.classList.add('flare-mode-dark');
+    // The same mode classes as the theme root: high contrast is dark too, light declares color-scheme:light.
+    if (hc) d.classList.add('flare-mode-high-contrast');
+    d.classList.add(dark ? 'flare-mode-dark' : 'flare-mode-light');
 
     // The theme engine imports this module by a fixed, unfingerprinted path (see CssVariableInjector),
     // so the URL is known here and warming it costs one request that would otherwise happen only

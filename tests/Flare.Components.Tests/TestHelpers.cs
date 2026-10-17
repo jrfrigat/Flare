@@ -48,9 +48,9 @@ public sealed class StubThemeService : IThemeService
     public bool IsDynamicPalette => false;
     public string DynamicFallbackSeed => "#6750A4";
     public Palette? DynamicFallbackPalette => null;
-    public ThemeMode Mode => ThemeMode.Light;
-    public bool IsDark => false;
-    public bool IsHighContrast => false;
+    public ThemeMode Mode { get; private set; } = ThemeMode.Light;
+    public bool IsDark => Mode is ThemeMode.Dark or ThemeMode.HighContrast;
+    public bool IsHighContrast => Mode == ThemeMode.HighContrast;
     public bool IsRtl => false;
     public ThemeDelivery Delivery => ThemeDelivery.ClassToggle;
     public IReadOnlyList<ITheme> Themes => [_theme];
@@ -62,7 +62,11 @@ public sealed class StubThemeService : IThemeService
     public void RegisterPalette(Palette palette) { }
     public Task SetThemeAsync(string themeId) => Task.CompletedTask;
     public Task SetPaletteAsync(string paletteId) => Task.CompletedTask;
-    public Task SetModeAsync(ThemeMode mode) => Task.CompletedTask;
+    public Task SetModeAsync(ThemeMode mode)
+    {
+        Mode = mode;
+        return OnThemeChanged();
+    }
     public Task SetRtlAsync(bool isRtl) => Task.CompletedTask;
     public Task SetSystemDarkAsync(bool isDark) => Task.CompletedTask;
     public Task EnsureStaticCssAsync() => Task.CompletedTask;

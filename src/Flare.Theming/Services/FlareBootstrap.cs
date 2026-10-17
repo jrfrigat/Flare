@@ -64,7 +64,9 @@ public static class FlareBootstrap
         }
         // Both classes, not just the dark one: flare-mode-light declares color-scheme:light, which is
         // what stops native controls rendering dark inside a light Flare page.
-        sb.Append("var dk=(m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches));");
+        // High contrast is dark too and adds its own class, the same set as the theme root.
+        sb.Append("var hc=m==='highcontrast';if(hc)d.classList.add('flare-mode-high-contrast');");
+        sb.Append("var dk=(hc||m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches));");
         sb.Append("d.classList.add(dk?'flare-mode-dark':'flare-mode-light');");
         sb.Append("})();");
         return sb.ToString();

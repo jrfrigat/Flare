@@ -40,9 +40,13 @@ public static class TokensToCss
     {
         var sb = new StringBuilder();
         Rule(sb, $".flare-palette-{palette.Id}", palette.Light.FlattenColors());
-        Rule(sb, $".flare-palette-{palette.Id}.flare-mode-dark", palette.Dark.FlattenColors());
+        // Without its own high-contrast scheme a palette falls back to dark (Palette.ForMode); the dark rule
+        // then names the high-contrast class as well, so the fallback costs a selector, not a copy of the tokens.
+        var dark = $".flare-palette-{palette.Id}.flare-mode-dark";
+        var highContrast = $".flare-palette-{palette.Id}.flare-mode-high-contrast";
+        Rule(sb, palette.HighContrast is null ? $"{dark}, {highContrast}" : dark, palette.Dark.FlattenColors());
         if (palette.HighContrast is { } hc)
-            Rule(sb, $".flare-palette-{palette.Id}.flare-mode-high-contrast", hc.FlattenColors());
+            Rule(sb, highContrast, hc.FlattenColors());
         return sb.ToString();
     }
 
