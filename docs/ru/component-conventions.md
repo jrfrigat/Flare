@@ -80,7 +80,7 @@ select внутри нее рисовался на 896px правее окна �
 | Эмиссия переменных | `src/Flare.Theming/Services/CssVarMap.cs` |
 | Значения для MD3 | `src/Flare.Theme.MaterialDesign3.Tokens/MaterialDesign3Tokens.cs` (+ dark theme) |
 | Значения для Fluent | `src/Flare.Theme.FluentUI2.Tokens/FluentUI2Tokens.cs` (+ dark theme) |
-| Все остальные темы | Новое свойство токена `required`, поэтому его обязана задать каждая поставляемая тема: `.MaterialDesign2` (самодостаточная), `.Aero`, `.LiquidGlass`, `.VisualStudio` |
+| Все остальные темы | Свойство, выражаемое через базовые токены, получает значение по умолчанию в записи (`= "var(--flare-...)"`), и темы его не задают. Литеральное свойство - `required`, и его обязана задать каждая поставляемая тема: `.MaterialDesign2` (самодостаточная), `.Aero`, `.LiquidGlass`, `.VisualStudio` |
 | CSS-классы | `src/Flare.Abstractions/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder-классы `Css.Classes.<Comp>.*`) |
 
 > **Две системы токенов, связанные через `[CssVar]`.** `Css/Tokens/*` хранит константы ИМЕН переменных;
@@ -96,6 +96,11 @@ select внутри нее рисовался на 896px правее окна �
 - Один набор CSS-правил работает и в MD3, и в Fluent - различия задает тема через значения токенов.
 - Компонент-специфичные токены (геометрия, типографика, состояния) выносятся в отдельный
   `XxxTokens.cs` (см. `ButtonTokens`, `MenuTokens` как образцы).
+- Базовые токены задает тема. Компонентный токен, выражаемый через базовые, не `required`: значение по
+  умолчанию - ссылка `var(--flare-...)` или выражение только из ссылок на токены Flare, процентов и
+  ключевых слов. Тема задает его, только если нужно другое значение. Литерал длины, времени или цвета в
+  значении по умолчанию запрещен - такой токен остается `required`. Сторож -
+  `ThemeIndependenceTests.AbstractionsTokenRecords_DefaultOnlyToFlareTokens`.
 - При добавлении нового компонента - обязательно создай `XxxTokens.cs` и holder `Css.Tokens.Xxx`.
 
 ### Два правила про state-слой и фолбэки

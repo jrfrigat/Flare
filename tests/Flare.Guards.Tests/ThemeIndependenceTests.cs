@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 using Flare.Components;
@@ -69,38 +70,57 @@ public sealed class ThemeIndependenceTests
         name.Name is not null && name.Name.StartsWith("Flare.Theme.", StringComparison.Ordinal);
 
     /// <summary>
-    /// Token-default guard: no token record in Flare.Abstractions may ship a literal default value.
-    /// Flare is theme-agnostic - it works ONLY with a loaded theme and must not bake any theme's
-    /// concrete CSS literal into the core. Every <c>string</c>-typed token member (the leaf that would
-    /// otherwise carry a "16px"/"var(--...)"/"#RRGGBB" literal) must therefore be <c>required</c>, so
-    /// a theme (or reference package) is forced to supply every value. A newly-added token that forgets
-    /// <c>required</c> and ships a default fails here, keeping the "no core defaults" mandate enforced.
+    /// Token-default guard: a token record in Flare.Abstractions may give a member a default only when
+    /// that default is built from other Flare tokens. Flare is theme-agnostic, so the core never bakes a
+    /// theme's concrete literal: a component token that a base token expresses defaults to it
+    /// (<c>var(--flare-color-surface)</c>, or a <c>color-mix</c> of such references), and every other
+    /// <c>string</c> member stays <c>required</c> so each theme supplies it. A default carrying a length,
+    /// time or colour literal ("16px", "200ms", "#fff") or a reference outside <c>--flare-*</c> fails here.
     /// </summary>
     [Fact]
-    public void AbstractionsTokenRecords_ShipNoLiteralDefaults()
+    public void AbstractionsTokenRecords_DefaultOnlyToFlareTokens()
     {
         var nullability = new NullabilityInfoContext();
         var offenders = typeof(DesignTokens).Assembly.GetTypes()
-            .Where(t => t is { IsClass: true, IsPublic: true, Namespace: not null }
+            .Where(t => t is { IsClass: true, IsPublic: true, IsAbstract: false, Namespace: not null }
                         && t.Namespace.StartsWith("Flare.Abstractions.Tokens", StringComparison.Ordinal))
-            .SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                // Only the leaf, NON-NULLABLE string members can carry a baked CSS literal: a
-                // non-required, non-nullable string must have a non-null initializer to compile clean,
-                // which is exactly the theme literal the mandate forbids in the core. Nullable metadata
-                // (string? Source/StyleAsset) defaults to null (absent, not a literal) and is allowed;
-                // nested records are covered by their own members; non-string members (the Extended
-                // extras map) are not theme literals.
-                .Where(p => p.PropertyType == typeof(string) && p.CanWrite)
-                .Where(p => nullability.Create(p).WriteState != NullabilityState.Nullable)
-                .Where(p => p.GetCustomAttribute<RequiredMemberAttribute>() is null)
-                .Select(p => $"{t.Name}.{p.Name}"))
+            .SelectMany(t =>
+            {
+                // Only the leaf, NON-NULLABLE string members can carry a default: nullable metadata
+                // (string? Source/StyleAsset) defaults to null, nested records are covered by their own
+                // members, and non-string members (the Extended extras map) are not values.
+                var optional = t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(p => p.PropertyType == typeof(string) && p.CanWrite)
+                    .Where(p => nullability.Create(p).WriteState != NullabilityState.Nullable)
+                    .Where(p => p.GetCustomAttribute<RequiredMemberAttribute>() is null)
+                    .ToArray();
+                if (optional.Length == 0) return [];
+                // Reflection does not enforce 'required', and the initializers run: the defaults are real.
+                var instance = Activator.CreateInstance(t)!;
+                return optional
+                    .Where(p => !IsFlareTokenDefault((string?)p.GetValue(instance)))
+                    .Select(p => $"{t.Name}.{p.Name} = \"{p.GetValue(instance)}\"");
+            })
             .OrderBy(n => n, StringComparer.Ordinal)
             .ToArray();
 
         Assert.True(offenders.Length == 0,
-            "Flare.Abstractions token member(s) ship a default instead of being 'required' - the core " +
-            "must not bake theme literals; make them 'required' and move the value to the theme/reference " +
-            "package: " + string.Join(", ", offenders));
+            "Flare.Abstractions token member(s) default to something other than Flare tokens - a default " +
+            "may only reference --flare-* variables (with percentages and keywords); make the member " +
+            "'required' and move the value to the theme: " + string.Join(", ", offenders));
+    }
+
+    // A default is made of Flare tokens when it references at least one --flare-* variable, references
+    // nothing else, and outside those references carries no length, time or colour literal.
+    private static bool IsFlareTokenDefault(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        var references = Regex.Matches(value, @"var\(\s*(--[a-zA-Z0-9_-]+)");
+        if (references.Count == 0 || references.Any(m => !m.Groups[1].Value.StartsWith("--flare-", StringComparison.Ordinal)))
+            return false;
+        var rest = Regex.Replace(value, @"var\(\s*--flare-[a-z0-9-]+\s*\)", " ");
+        return !Regex.IsMatch(rest,
+            @"\d(px|rem|em|vh|vw|ms|s)\b|#[0-9a-fA-F]{3,8}\b|\b(rgb|rgba|hsl|hsla)\(", RegexOptions.IgnoreCase);
     }
 
     // Concrete theme identifiers (design-system product + font names) that must never appear in the

@@ -79,7 +79,7 @@ base style when it finishes and holds nothing. Held by `SettledTransformTests`.
 | Variable emission | `src/Flare.Theming/Services/CssVarMap.cs` |
 | MD3 values | `src/Flare.Theme.MaterialDesign3.Tokens/MaterialDesign3Tokens.cs` (+ dark theme) |
 | Fluent values | `src/Flare.Theme.FluentUI2.Tokens/FluentUI2Tokens.cs` (+ dark theme) |
-| Every other theme | A new token property is `required`, so each shipped theme must state it: `.MaterialDesign2` (self-contained), `.Aero`, `.LiquidGlass`, `.VisualStudio` |
+| Every other theme | A property that base tokens express gets a default in the record (`= "var(--flare-...)"`), and the themes do not set it. A literal property is `required`, so each shipped theme must state it: `.MaterialDesign2` (self-contained), `.Aero`, `.LiquidGlass`, `.VisualStudio` |
 | CSS classes | `src/Flare.Abstractions/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder classes `Css.Classes.<Comp>.*`) |
 
 > **Two token systems, linked by `[CssVar]`.** `Css/Tokens/*` holds the variable NAME constants; the
@@ -96,6 +96,11 @@ base style when it finishes and holds nothing. Held by `SettledTransformTests`.
 - One set of CSS rules works in both MD3 and Fluent - the theme supplies the differences via token values.
 - Component-specific tokens (geometry, typography, states) go in a separate `XxxTokens.cs`
   (see `ButtonTokens`, `MenuTokens` as references).
+- The theme sets the base tokens. A component token that base tokens express is not `required`: its
+  default is a `var(--flare-...)` reference or an expression made only of Flare token references,
+  percentages and keywords. A theme sets it only to differ. A length, time or colour literal in a default
+  is not allowed - such a token stays `required`. Guard:
+  `ThemeIndependenceTests.AbstractionsTokenRecords_DefaultOnlyToFlareTokens`.
 - When adding a new component, always create `XxxTokens.cs` and the `Css.Tokens.Xxx` holder.
 
 ### Two rules about the state layer and fallbacks

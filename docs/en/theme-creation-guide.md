@@ -82,9 +82,11 @@ public DesignTokens Design => FluentUI2Tokens.Design with { /* overrides */ };
 
 ### Implementing ITheme Directly
 
-Flare's core (`Flare.Abstractions`) ships **no default token values** - every group on `DesignTokens`
-and every member of every `*Tokens` record is `required`, so the core carries no baked-in design
-opinion (guarded by `ThemeIndependenceTests`). A bare `new DesignTokens { ... }` therefore has to set
+Flare's core (`Flare.Abstractions`) ships **no literal token values** - every group on `DesignTokens`
+and every literal member of a `*Tokens` record is `required`, so the core carries no baked-in design
+opinion (guarded by `ThemeIndependenceTests`). A component token that base tokens express defaults to a
+base token reference (for example `var(--flare-color-surface)`): a theme does not set it, but may
+override it. A bare `new DesignTokens { ... }` therefore has to set
 *every* token, which is impractical. Instead, **derive from a published reference package** and
 `with`-override only what differs - this is exactly what the built-in themes do:
 
@@ -334,8 +336,9 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 | `CalendarTokens` | Calendar month/day grid |
 
 This is a representative subset; the full set of component token records lives in
-`Flare.Abstractions/Tokens/Components/`. Every record's members are `required`, so the compiler
-lists any you miss when you build a `DesignTokens` from scratch.
+`Flare.Abstractions/Tokens/Components/`. The literal members are `required`, so the compiler lists
+any you miss when you build a `DesignTokens` from scratch. Members that default to base tokens need not
+be set.
 
 ### The button family: what your theme has to answer (0.16.0)
 
