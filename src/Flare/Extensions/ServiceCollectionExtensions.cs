@@ -94,6 +94,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<Flare.Components.IFlareClipboard, Flare.Components.FlareClipboardService>();
         services.AddScoped<Flare.Components.IFlareDownload, Flare.Components.FlareDownloadService>();
         services.AddScoped<Flare.Components.IFlareWebPush, Flare.Components.FlareWebPushService>();
+        services.AddScoped<Flare.Components.IFlareNotifications, Flare.Components.FlareNotificationsService>();
         // The upload convenience needs an HttpClient, and a component library must not invent one. The
         // registration resolves whatever the host registered, so an application with no HttpClient only
         // finds out if it actually injects IFlareUpload - which it only does to use the convenience.

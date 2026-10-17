@@ -1,0 +1,90 @@
+@page "/services/notifications"
+@inherits LocalizedPage
+@inject IFlareNotifications Notifications
+
+<PageTitle>@GalleryStrings.Services_NotificationsTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_NotificationsTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_NotificationsSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:40rem;">
+    <FlareStack Gap="FlareSpacing.Medium">
+        <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_WebPushPermission <code>@_permission</code></FlareText>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="RequestAsync"
+                         Disabled="@(_permission != NotificationPermission.Default)">
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.NotificationsActive" /></LeadingIcon>
+                <ChildContent>@GalleryStrings.Services_WebPushRequest</ChildContent>
+            </FlareButton>
+        </FlareStack>
+
+        <FlareField TValue="string" @bind-Value="_title" Label="@GalleryStrings.Services_NotificationsTitleField" />
+        <FlareField TValue="string" @bind-Value="_body" Label="@GalleryStrings.Services_NotificationsBodyField" />
+
+        <FlareButton OnClick="ShowAsync" Disabled="@(_permission != NotificationPermission.Granted)">
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.NotificationAdd" /></LeadingIcon>
+            <ChildContent>@GalleryStrings.Services_NotificationsShow</ChildContent>
+        </FlareButton>
+
+        @if (_result is { } result)
+        {
+            <FlareAlert Severity="@(result == NotificationShowResult.Shown ? AlertSeverity.Success : AlertSeverity.Warning)"
+                        Variant="AlertVariant.Outlined">@result</FlareAlert>
+        }
+
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Services_NotificationsNote</FlareText>
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    private NotificationPermission _permission = NotificationPermission.Unsupported;
+    private NotificationShowResult? _result;
+    private string _title = "Flare";
+    private string _body = "";
+
+    private const string _usage = """
+        @inject IFlareNotifications Notifications
+
+        <FlareButton OnClick="EnableAsync">Turn on notifications</FlareButton>
+
+        @code {
+            // Ask from the click - browsers ignore a permission request made without one.
+            async Task EnableAsync() => await Notifications.RequestPermissionAsync();
+
+            // Later, when something the user waits for has happened:
+            async Task BuildFinishedAsync(int id) =>
+                await Notifications.ShowAsync(new BrowserNotification
+                {
+                    Title = "Build finished",
+                    Body = "All checks passed",
+                    Tag = "build",               // replaces the previous build notification
+                    Icon = "icon-192.png",
+                    Url = $"builds/{id}",        // a click brings the tab forward and opens it
+                });
+        }
+        """;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        _body = GalleryStrings.Services_NotificationsSampleBody;
+        _permission = await Notifications.GetPermissionAsync();
+        StateHasChanged();
+    }
+
+    private async Task RequestAsync() => _permission = await Notifications.RequestPermissionAsync();
+
+    private async Task ShowAsync() =>
+        _result = await Notifications.ShowAsync(new BrowserNotification
+        {
+            Title = string.IsNullOrWhiteSpace(_title) ? "Flare" : _title,
+            Body = _body,
+            Tag = "flare-gallery",
+            Url = "services/notifications",
+        });
+}

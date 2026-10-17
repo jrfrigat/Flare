@@ -11778,6 +11778,27 @@ namespace Flare.Gallery.Resources {
 
         /// <summary>Looks up the localized Page Header demo home breadcrumb.</summary>
         public static string PageHeader_Home => ResourceManager.GetString("PageHeader_Home", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications service page title.</summary>
+        public static string Services_NotificationsTitle => ResourceManager.GetString("Services_NotificationsTitle", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications service page subtitle.</summary>
+        public static string Services_NotificationsSubtitle => ResourceManager.GetString("Services_NotificationsSubtitle", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications title field label.</summary>
+        public static string Services_NotificationsTitleField => ResourceManager.GetString("Services_NotificationsTitleField", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications text field label.</summary>
+        public static string Services_NotificationsBodyField => ResourceManager.GetString("Services_NotificationsBodyField", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications show button.</summary>
+        public static string Services_NotificationsShow => ResourceManager.GetString("Services_NotificationsShow", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications sample text.</summary>
+        public static string Services_NotificationsSampleBody => ResourceManager.GetString("Services_NotificationsSampleBody", resourceCulture);
+
+        /// <summary>Looks up the localized Notifications note.</summary>
+        public static string Services_NotificationsNote => ResourceManager.GetString("Services_NotificationsNote", resourceCulture);
         
         /// <summary>Looks up the localized DateTimePicker_States string.</summary>
         public static string DateTimePicker_States => ResourceManager.GetString("DateTimePicker_States", resourceCulture);

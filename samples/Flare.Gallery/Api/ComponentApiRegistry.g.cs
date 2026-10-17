@@ -9243,6 +9243,21 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"NotificationShowResult"] = new ApiEnumInfo(
+            @"NotificationShowResult",
+            @"Flare.Components.NotificationShowResult",
+            @"Flare.Components",
+            @"What happened to a notification passed to ShowAsync.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Shown", @"0", @"The notification was handed to the system."),
+                new ApiEnumMember(@"PermissionNotGranted", @"1", @"Not shown: the user has not allowed notifications (or has blocked them)."),
+                new ApiEnumMember(@"Unsupported", @"2", @"Not shown: the browser has no notifications here, or the page is not interactive yet."),
+                new ApiEnumMember(@"Failed", @"3", @"Not shown: the browser refused it for another reason."),
+            },
+            System.Array.Empty<string>());
+
         e[@"PaginationSize"] = new ApiEnumInfo(
             @"PaginationSize",
             @"Flare.Components.PaginationSize",

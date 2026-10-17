@@ -3663,6 +3663,27 @@
   <data name="PageHeader_Home" xml:space="preserve">
     <value>Главная</value>
   </data>
+  <data name="Services_NotificationsTitle" xml:space="preserve">
+    <value>Уведомления</value>
+  </data>
+  <data name="Services_NotificationsSubtitle" xml:space="preserve">
+    <value>IFlareNotifications показывает системное уведомление из открытой страницы; клик выводит вкладку вперед и открывает адрес в приложении. Своего JS-модуля не нужно.</value>
+  </data>
+  <data name="Services_NotificationsTitleField" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="Services_NotificationsBodyField" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="Services_NotificationsShow" xml:space="preserve">
+    <value>Показать уведомление</value>
+  </data>
+  <data name="Services_NotificationsSampleBody" xml:space="preserve">
+    <value>Нажмите, чтобы вернуться на эту страницу.</value>
+  </data>
+  <data name="Services_NotificationsNote" xml:space="preserve">
+    <value>Уведомлениям нужен https или localhost. Браузер, который разрешает их только через service worker (Chrome на Android), показывает их через воркер страницы, и клик уходит в обработчик notificationclick этого воркера.</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>Состояния, границы и формы</value>
   </data>

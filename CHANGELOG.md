@@ -37,6 +37,12 @@ All notable changes to Flare are documented here. This project adheres to
   so it works in a narrow column too. `PageHeaderTokens` set its padding, gaps, background, bottom border and
   the eyebrow's casing (capitals in Material Design 2). The record is required on `DesignTokens`: a custom
   theme built with `new DesignTokens { ... }` has to set `PageHeader`.
+- `IFlareNotifications` shows a system notification from the open page, without a JS module of the
+  application's own: `GetPermissionAsync`, `RequestPermissionAsync` and `ShowAsync` with a
+  `BrowserNotification` (title, text, tag, icon and the address a click opens). A click brings the tab forward
+  and opens an address in the app without reloading it. A missing permission, a browser without notifications
+  or a page that is not interactive yet is reported in `NotificationShowResult` instead of thrown. `AddFlare`
+  registers it.
 
 ### Fixed
 

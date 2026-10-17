@@ -64,6 +64,12 @@ public sealed class AddFlareServiceCompletenessTests
     }
 
     [Fact]
+    public void AddFlare_RegistersNotifications()
+    {
+        Assert.Contains(typeof(IFlareNotifications), RegisteredServiceTypes());
+    }
+
+    [Fact]
     public void AddFlare_DoesNotReplaceAnApplicationsOwnTimeProvider()
     {
         var custom = new FakeTimeProvider();

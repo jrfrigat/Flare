@@ -3663,6 +3663,27 @@ Read the card, check the tests, and report what is left.</value>
   <data name="PageHeader_Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Services_NotificationsTitle" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Services_NotificationsSubtitle" xml:space="preserve">
+    <value>IFlareNotifications shows a system notification from the open page; a click brings the tab forward and opens an address in the app. No JS module of your own.</value>
+  </data>
+  <data name="Services_NotificationsTitleField" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Services_NotificationsBodyField" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="Services_NotificationsShow" xml:space="preserve">
+    <value>Show notification</value>
+  </data>
+  <data name="Services_NotificationsSampleBody" xml:space="preserve">
+    <value>Click to come back to this page.</value>
+  </data>
+  <data name="Services_NotificationsNote" xml:space="preserve">
+    <value>Notifications need https or localhost. A browser that only allows them through a service worker (Chrome on Android) shows them through the page's worker, and the click goes to that worker's notificationclick handler.</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>States, bounds and forms</value>
   </data>
