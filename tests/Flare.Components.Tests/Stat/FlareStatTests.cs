@@ -90,6 +90,30 @@ public class FlareStatTests : FlareTestContext
     }
 
     [Fact]
+    public void ALabelGivenAsMarkupNamesTheStatByReference()
+    {
+        var cut = RenderStat(p => p.Add(x => x.LabelContent,
+            (Microsoft.AspNetCore.Components.RenderFragment)(b => b.AddMarkupContent(0, "Revenue <a href=\"#\">?</a>"))));
+
+        var root = cut.Find($".{Css.Classes.Stat.Root}");
+        Assert.Null(root.GetAttribute("aria-label"));
+        var ids = root.GetAttribute("aria-labelledby")!.Split(' ');
+        Assert.Equal(3, ids.Length);
+        Assert.Contains("<a href=\"#\">?</a>", cut.Find($"#{ids[0]}").InnerHtml);
+        Assert.Equal("1,200", cut.Find($"#{ids[1]}").TextContent);
+        Assert.Equal("USD", cut.Find($"#{ids[2]}").TextContent);
+    }
+
+    [Fact]
+    public void ACaptionGivenAsMarkupIsRendered()
+    {
+        var cut = RenderStat(p => p.Add(x => x.CaptionContent,
+            (Microsoft.AspNetCore.Components.RenderFragment)(b => b.AddMarkupContent(0, "<a id=\"src\">Source</a>"))));
+
+        Assert.NotNull(cut.Find($".{Css.Classes.Stat.Caption} #src"));
+    }
+
+    [Fact]
     public void TheCaptionIsRendered()
     {
         var cut = RenderStat(p => p.Add(x => x.Caption, "Last 30 days"));

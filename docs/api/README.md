@@ -131,6 +131,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareOptionList`](components/flare-components-flareoptionlist.md)
 - [`FlareOtpField`](components/flare-components-flareotpfield.md)
 - [`FlareOverlay`](components/flare-components-flareoverlay.md)
+- [`FlarePageHeader`](components/flare-components-flarepageheader.md)
 - [`FlarePagination`](components/flare-components-flarepagination.md)
 - [`FlarePaper`](components/flare-components-flarepaper.md)
 - [`FlarePasswordField`](components/flare-components-flarepasswordfield.md)

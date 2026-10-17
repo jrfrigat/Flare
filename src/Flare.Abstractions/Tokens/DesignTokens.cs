@@ -189,6 +189,9 @@ public sealed record DesignTokens
     /// <summary>scroll geometry tokens.</summary>
     public required ScrollTopTokens ScrollTop { get; init; }
 
+    /// <summary>page header spacing, surface and eyebrow tokens.</summary>
+    public required PageHeaderTokens PageHeader { get; init; }
+
     /// <summary>skeleton geometry tokens.</summary>
     public required SkeletonTokens Skeleton { get; init; }
 

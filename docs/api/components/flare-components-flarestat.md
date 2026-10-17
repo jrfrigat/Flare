@@ -9,10 +9,12 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Caption` | `string?` | `` | Parameter |  | Supporting line below the value, such as the period or the source of the figure. |
+| `CaptionContent` | `RenderFragment?` | `` | Parameter |  | Markup shown in place of Caption, such as a caption with a link to the source. |
 | `Delta` | `string?` | `` | Parameter |  | Change since the previous period, shown after the value, with its sign as the caller writes it (for example +12% or -3). |
 | `DeltaColor` | `FlareColor` | `` | Parameter |  | Color of Delta: a role such as FlareColor.Success, Warning, Error or Info says whether the change is good or bad; a custom color is also accepted. By default the change uses the muted text color. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon shown in a tonal square before the label and value. Decorative: hidden from assistive technology. |
 | `Label` | `string?` | `` | Parameter |  | What the metric measures, shown above the value and used as the start of the accessible name. |
+| `LabelContent` | `RenderFragment?` | `` | Parameter |  | Markup shown in place of Label, such as a label with a help link. The stat is then named by this content followed by the value and unit. |
 | `Size` | `FlareSize` | `FlareSize.Md` | Parameter |  | Size of the value's type: Sm, Md (default) or Lg. Extra sizes map to the nearest of the three. |
 | `Unit` | `string?` | `` | Parameter |  | Unit shown after the value in a smaller type, such as USD, % or ms. |
 | `Value` | `string?` | `` | Parameter |  | The metric's value, already formatted: number format, culture and rounding are the caller's. |

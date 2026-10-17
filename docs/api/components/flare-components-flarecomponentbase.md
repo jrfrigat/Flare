@@ -135,6 +135,7 @@ This component exposes no documented public methods.
 - `FlareOptionList`
 - `FlareOtpField`
 - `FlareOverlay`
+- `FlarePageHeader`
 - `FlarePagination`
 - `FlarePaper`
 - `FlarePasswordField`

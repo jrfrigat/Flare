@@ -3633,6 +3633,36 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Stat_P95" xml:space="preserve">
     <value>95th percentile, last hour</value>
   </data>
+  <data name="PageHeader_Title" xml:space="preserve">
+    <value>Page Header</value>
+  </data>
+  <data name="PageHeader_Subtitle" xml:space="preserve">
+    <value>The top of a page: the section above the title, the title, what the page is for and its main actions. A narrow header shrinks the title and moves the actions under the text.</value>
+  </data>
+  <data name="PageHeader_Basic" xml:space="preserve">
+    <value>Eyebrow, title, description and actions</value>
+  </data>
+  <data name="PageHeader_Breadcrumb" xml:space="preserve">
+    <value>Breadcrumbs above the title</value>
+  </data>
+  <data name="PageHeader_Eyebrow" xml:space="preserve">
+    <value>Workspace</value>
+  </data>
+  <data name="PageHeader_DemoTitle" xml:space="preserve">
+    <value>Projects</value>
+  </data>
+  <data name="PageHeader_DemoDescription" xml:space="preserve">
+    <value>Everything the team is working on, with owners, deadlines and status.</value>
+  </data>
+  <data name="PageHeader_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="PageHeader_NewProject" xml:space="preserve">
+    <value>New project</value>
+  </data>
+  <data name="PageHeader_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>States, bounds and forms</value>
   </data>

@@ -28,9 +28,15 @@ All notable changes to Flare are documented here. This project adheres to
   rendered. `VirtualItemSize` and `OverscanCount` tune the window.
 
 - `FlareStat` shows one labelled metric: `Label`, `Value`, `Unit`, `Icon`, a `Delta` colored by `DeltaColor`
-  (Success, Warning, Error, Info or a custom color) and a `Caption`, in three `Size` steps. Screen readers name
-  it "label: value unit". It is the content, not the surface: put it in a `FlareCard` for a tile and lay tiles
-  out with `FlareGrid`.
+  (Success, Warning, Error, Info or a custom color) and a `Caption`, in three `Size` steps; `LabelContent` and
+  `CaptionContent` take markup instead of text. Screen readers name it "label: value unit". It is the content,
+  not the surface: put it in a `FlareCard` for a tile and lay tiles out with `FlareGrid`.
+- `FlarePageHeader` is the top of a page: an `Eyebrow` (or `EyebrowContent`, such as a `FlareBreadcrumb`), a
+  `Title` rendered as a real heading (`HeadingLevel`, h1 by default), a `Description` and `ActionsContent`. A
+  header narrower than 600px shrinks the title and moves the actions under the text - measured on the header,
+  so it works in a narrow column too. `PageHeaderTokens` set its padding, gaps, background, bottom border and
+  the eyebrow's casing (capitals in Material Design 2). The record is required on `DesignTokens`: a custom
+  theme built with `new DesignTokens { ... }` has to set `PageHeader`.
 
 ### Fixed
 

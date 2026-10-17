@@ -232,7 +232,7 @@ All real component names (consult the [API Reference](../api/README.md) for each
 `FlareCardContent`, `FlareCardActions`, `FlareCardFooter`, `FlareCardMedia`), `FlarePaper`, `FlareBadge`,
 `FlareChip`, `FlareChipGroup`, `FlareAvatar`, `FlareAvatarGroup`, `FlareSkeleton`, `FlareEmptyState`,
 `FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`,
-`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`, `FlareStat`.
+`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`, `FlareStat`, `FlarePageHeader`.
 
 **Navigation:** `FlareAppBar`, `FlareNavMenu`, `FlareNavLink`, `FlareNavGroup`, `FlareTabs`, `FlareTab`,
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,

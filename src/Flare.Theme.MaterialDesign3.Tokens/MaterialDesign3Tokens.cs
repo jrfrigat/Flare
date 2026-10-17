@@ -1578,6 +1578,16 @@ public class MaterialDesign3Tokens
         TopSize = "2.75rem",
     };
 
+    internal static readonly PageHeaderTokens PageHeader = new()
+    {
+        Padding = "var(--flare-spacing-16) 0",
+        Gap = "var(--flare-spacing-4)",
+        ActionsGap = "var(--flare-spacing-16)",
+        Background = "transparent",
+        BorderBottom = "none",
+        EyebrowTextTransform = "none",
+    };
+
     internal static readonly SkeletonTokens Skeleton = new()
     {
         PulseMinOpacity = "0.4",
@@ -1644,6 +1654,7 @@ public class MaterialDesign3Tokens
         Scrim = Scrim,
         Touch = Touch,
         ScrollTop = ScrollTop,
+        PageHeader = PageHeader,
         Skeleton = Skeleton,
         Icon = Icon,
         Stripe = Stripe,

@@ -1691,6 +1691,7 @@ public static class ComponentApiRegistry
                 @"FlareOptionList",
                 @"FlareOtpField",
                 @"FlareOverlay",
+                @"FlarePageHeader",
                 @"FlarePagination",
                 @"FlarePaper",
                 @"FlarePasswordField",
@@ -4817,6 +4818,35 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlarePageHeader"] = new ApiComponentInfo(
+            @"FlarePageHeader",
+            @"Flare.Components.FlarePageHeader",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ActionsContent", @"RenderFragment?", null, @"Buttons for the page's main actions, placed after the text and moved below it when the header is narrow.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"Description", @"string?", null, @"One or two sentences below the title saying what the page is for.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"DescriptionContent", @"RenderFragment?", null, @"Content below the title in place of Description, for text with links or formatting.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"Eyebrow", @"string?", null, @"Short line above the title naming the section the page belongs to.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"EyebrowContent", @"RenderFragment?", null, @"Content above the title in place of Eyebrow, such as a FlareBreadcrumb.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"HeadingLevel", @"int", @"1", @"Level of the title's heading element, 1 to 6; 1 by default, since a page header names the page. The level changes the document outline only - the title keeps its size.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"Title", @"string?", null, @"The page's title, rendered as a heading of HeadingLevel.", null, false, false, false, @"FlarePageHeader"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlarePagination"] = new ApiComponentInfo(
             @"FlarePagination",
             @"Flare.Components.FlarePagination",
@@ -6084,10 +6114,12 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Caption", @"string?", null, @"Supporting line below the value, such as the period or the source of the figure.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"CaptionContent", @"RenderFragment?", null, @"Markup shown in place of Caption, such as a caption with a link to the source.", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"Delta", @"string?", null, @"Change since the previous period, shown after the value, with its sign as the caller writes it (for example +12% or -3).", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"DeltaColor", @"FlareColor", null, @"Color of Delta: a role such as FlareColor.Success, Warning, Error or Info says whether the change is good or bad; a custom color is also accepted. By default the change uses the muted text color.", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in a tonal square before the label and value. Decorative: hidden from assistive technology.", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"What the metric measures, shown above the value and used as the start of the accessible name.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Markup shown in place of Label, such as a label with a help link. The stat is then named by this content followed by the value and unit.", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"Size", @"FlareSize", @"FlareSize.Md", @"Size of the value's type: Sm, Md (default) or Lg. Extra sizes map to the nearest of the three.", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"Unit", @"string?", null, @"Unit shown after the value in a smaller type, such as USD, % or ms.", null, false, false, false, @"FlareStat"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The metric's value, already formatted: number format, culture and rounding are the caller's.", null, false, false, false, @"FlareStat"),

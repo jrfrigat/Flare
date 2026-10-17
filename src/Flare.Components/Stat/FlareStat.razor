@@ -3,7 +3,8 @@
 
 @* One metric, not its surface: a tile is this inside a FlareCard, a row of tiles is a FlareGrid of those.
    The group's name reads the metric the way a sighted reader takes it in - "Revenue: 1,200 USD". *@
-<div class="@BuildCssClass(_sizeClass)" style="@Style" role="group" aria-label="@AccessibleName"
+<div class="@BuildCssClass(_sizeClass)" style="@Style" role="group" aria-label="@(LabelContent is null ? AccessibleName : null)"
+     aria-labelledby="@(LabelContent is null ? null : LabelledBy)"
      @attributes="AdditionalAttributes">
     @if (Icon is not null)
     {
@@ -12,15 +13,19 @@
         </div>
     }
     <div class="@Css.Classes.Stat.Body">
-        @if (!string.IsNullOrEmpty(Label))
+        @if (LabelContent is not null)
+        {
+            <span id="@_labelId" class="@Css.Classes.Stat.Label">@LabelContent</span>
+        }
+        else if (!string.IsNullOrEmpty(Label))
         {
             <span class="@Css.Classes.Stat.Label">@Label</span>
         }
         <div class="@Css.Classes.Stat.ValueRow">
-            <span class="@Css.Classes.Stat.Value">@Value</span>
+            <span id="@(LabelContent is null ? null : _valueId)" class="@Css.Classes.Stat.Value">@Value</span>
             @if (!string.IsNullOrEmpty(Unit))
             {
-                <span class="@Css.Classes.Stat.Unit">@Unit</span>
+                <span id="@(LabelContent is null ? null : _unitId)" class="@Css.Classes.Stat.Unit">@Unit</span>
             }
             @if (!string.IsNullOrEmpty(Delta))
             {
@@ -28,7 +33,11 @@
                       style="@(DeltaColor.CssValue is { } color ? $"color:{color}" : null)">@Delta</span>
             }
         </div>
-        @if (!string.IsNullOrEmpty(Caption))
+        @if (CaptionContent is not null)
+        {
+            <span class="@Css.Classes.Stat.Caption">@CaptionContent</span>
+        }
+        else if (!string.IsNullOrEmpty(Caption))
         {
             <span class="@Css.Classes.Stat.Caption">@Caption</span>
         }
@@ -38,6 +47,10 @@
 @code {
     /// <summary>What the metric measures, shown above the value and used as the start of the accessible name.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>Markup shown in place of <see cref="Label"/>, such as a label with a help link. The stat is then
+    /// named by this content followed by the value and unit.</summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
 
     /// <summary>The metric's value, already formatted: number format, culture and rounding are the caller's.</summary>
     [Parameter] public string? Value { get; set; }
@@ -60,6 +73,9 @@
     /// <summary>Supporting line below the value, such as the period or the source of the figure.</summary>
     [Parameter] public string? Caption { get; set; }
 
+    /// <summary>Markup shown in place of <see cref="Caption"/>, such as a caption with a link to the source.</summary>
+    [Parameter] public RenderFragment? CaptionContent { get; set; }
+
     /// <summary>Size of the value's type: <see cref="FlareSize.Sm"/>, <see cref="FlareSize.Md"/> (default) or
     /// <see cref="FlareSize.Lg"/>. Extra sizes map to the nearest of the three.</summary>
     [Parameter] public FlareSize Size { get; set; } = FlareSize.Md;
@@ -72,6 +88,15 @@
         FlareSize.Lg or FlareSize.Xl => Css.Classes.Stat.SizeLg,
         _ => Css.Classes.Stat.SizeMd,
     };
+
+    private readonly string _id = Guid.NewGuid().ToString("N")[..8];
+    private string _labelId => $"flare-stat-label-{_id}";
+    private string _valueId => $"flare-stat-value-{_id}";
+    private string _unitId => $"flare-stat-unit-{_id}";
+
+    // Markup cannot be put in an aria-label, so a label given as content names the stat by reference.
+    private string LabelledBy =>
+        string.IsNullOrEmpty(Unit) ? $"{_labelId} {_valueId}" : $"{_labelId} {_valueId} {_unitId}";
 
     private string AccessibleName
     {

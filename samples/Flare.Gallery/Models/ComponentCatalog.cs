@@ -130,6 +130,7 @@ public static class ComponentCatalog
         new ComponentEntry("components/divider",           "Divider",                 "Divider_Title",         ComponentGroup.Layout),
         new ComponentEntry("components/grid",              "Grid",                    "Grid_Title",            ComponentGroup.Layout),
         new ComponentEntry("components/layout-shell",      "Layout Shell",            "LayoutShell_Title",     ComponentGroup.Layout),
+        new ComponentEntry("components/page-header",       "Page Header",             "PageHeader_Title",      ComponentGroup.Layout),
         new ComponentEntry("components/paper",             "Paper",                   "Paper_Title",           ComponentGroup.Layout),
         new ComponentEntry("components/resizable",         "Resizable",               "Resizable_Title",       ComponentGroup.Layout),
         new ComponentEntry("components/responsive",        "Responsive & Adaptivity", "Responsive_Title",      ComponentGroup.Layout),

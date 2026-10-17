@@ -1,0 +1,18 @@
+@* Breadcrumbs are composition, not a parameter: a FlareBreadcrumb goes where the eyebrow would be. *@
+<FlarePageHeader Title="@GalleryStrings.PageHeader_DemoTitle" HeadingLevel="2">
+    <EyebrowContent>
+        <FlareBreadcrumb Items="@_trail" />
+    </EyebrowContent>
+    <ActionsContent>
+        <FlareButton Variant="ButtonVariant.Filled">@GalleryStrings.PageHeader_NewProject</FlareButton>
+    </ActionsContent>
+</FlarePageHeader>
+
+@code {
+    private readonly BreadcrumbItem[] _trail =
+    [
+        new(GalleryStrings.PageHeader_Home, "/"),
+        new(GalleryStrings.PageHeader_Eyebrow, "/components/page-header"),
+        new(GalleryStrings.PageHeader_DemoTitle),
+    ];
+}

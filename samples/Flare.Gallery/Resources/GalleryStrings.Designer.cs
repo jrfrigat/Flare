@@ -11748,6 +11748,36 @@ namespace Flare.Gallery.Resources {
 
         /// <summary>Looks up the localized Stat demo percentile caption.</summary>
         public static string Stat_P95 => ResourceManager.GetString("Stat_P95", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header page title.</summary>
+        public static string PageHeader_Title => ResourceManager.GetString("PageHeader_Title", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header page subtitle.</summary>
+        public static string PageHeader_Subtitle => ResourceManager.GetString("PageHeader_Subtitle", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header basic demo title.</summary>
+        public static string PageHeader_Basic => ResourceManager.GetString("PageHeader_Basic", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header breadcrumb demo title.</summary>
+        public static string PageHeader_Breadcrumb => ResourceManager.GetString("PageHeader_Breadcrumb", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header demo eyebrow.</summary>
+        public static string PageHeader_Eyebrow => ResourceManager.GetString("PageHeader_Eyebrow", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header demo title text.</summary>
+        public static string PageHeader_DemoTitle => ResourceManager.GetString("PageHeader_DemoTitle", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header demo description.</summary>
+        public static string PageHeader_DemoDescription => ResourceManager.GetString("PageHeader_DemoDescription", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header demo export action.</summary>
+        public static string PageHeader_Export => ResourceManager.GetString("PageHeader_Export", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header demo new-project action.</summary>
+        public static string PageHeader_NewProject => ResourceManager.GetString("PageHeader_NewProject", resourceCulture);
+
+        /// <summary>Looks up the localized Page Header demo home breadcrumb.</summary>
+        public static string PageHeader_Home => ResourceManager.GetString("PageHeader_Home", resourceCulture);
         
         /// <summary>Looks up the localized DateTimePicker_States string.</summary>
         public static string DateTimePicker_States => ResourceManager.GetString("DateTimePicker_States", resourceCulture);

@@ -1519,6 +1519,17 @@ internal static class MaterialDesign2Tokens
         TopSize = "2.75rem",
     };
 
+    // MD2's overline type style is set in capitals, so its eyebrow is too.
+    internal static readonly PageHeaderTokens PageHeader = new()
+    {
+        Padding = "var(--flare-spacing-16) 0",
+        Gap = "var(--flare-spacing-4)",
+        ActionsGap = "var(--flare-spacing-16)",
+        Background = "transparent",
+        BorderBottom = "none",
+        EyebrowTextTransform = "uppercase",
+    };
+
     internal static readonly SkeletonTokens Skeleton = new()
     {
         PulseMinOpacity = "0.4",
@@ -1585,6 +1596,7 @@ internal static class MaterialDesign2Tokens
         Scrim = Scrim,
         Touch = Touch,
         ScrollTop = ScrollTop,
+        PageHeader = PageHeader,
         Skeleton = Skeleton,
         Icon = Icon,
         Stripe = Stripe,

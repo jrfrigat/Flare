@@ -1,0 +1,71 @@
+/* The top of a page. Spacing, surface and the eyebrow's casing are PageHeaderTokens; type is the theme's
+   typescale. The header is its own size container, so a header in a narrow column wraps the way a header
+   on a narrow screen does. */
+.flare-page-header {
+    container-type: inline-size;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--flare-page-header-actions-gap);
+    padding: var(--flare-page-header-padding);
+    background: var(--flare-page-header-background);
+    border-bottom: var(--flare-page-header-border-bottom);
+}
+
+.flare-page-header__text {
+    display: flex;
+    flex: 1 1 20rem;
+    flex-direction: column;
+    gap: var(--flare-page-header-gap);
+    min-width: 0;
+}
+
+.flare-page-header__eyebrow {
+    margin: 0;
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size);
+    font-weight: var(--flare-typescale-label-medium-weight);
+    line-height: var(--flare-typescale-label-medium-height);
+    text-transform: var(--flare-page-header-eyebrow-text-transform);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-page-header__title {
+    margin: 0;
+    font-family: var(--flare-typescale-headline-large-font);
+    font-size: var(--flare-typescale-headline-large-size);
+    font-weight: var(--flare-typescale-headline-large-weight);
+    line-height: var(--flare-typescale-headline-large-height);
+    color: var(--flare-color-on-surface);
+    overflow-wrap: anywhere;
+}
+
+.flare-page-header__description {
+    margin: 0;
+    font-family: var(--flare-typescale-body-large-font);
+    font-size: var(--flare-typescale-body-large-size);
+    line-height: var(--flare-typescale-body-large-height);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-page-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--flare-spacing-4);
+}
+
+/* Narrow header: a smaller title, and the actions on their own line under the text. */
+@container (max-width: 37.5rem) {
+    .flare-page-header__title {
+        font-family: var(--flare-typescale-headline-small-font);
+        font-size: var(--flare-typescale-headline-small-size);
+        font-weight: var(--flare-typescale-headline-small-weight);
+        line-height: var(--flare-typescale-headline-small-height);
+    }
+
+    .flare-page-header__text {
+        flex-basis: 100%;
+    }
+}

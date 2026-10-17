@@ -1,0 +1,12 @@
+@page "/components/page-header"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.PageHeader_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlarePageHeader">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.PageHeader_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.PageHeader_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.PageHeader_Basic" DemoType="typeof(Examples.PageHeaderDemo)" />
+<AutoDemoSection Title="@GalleryStrings.PageHeader_Breadcrumb" DemoType="typeof(Examples.PageHeaderBreadcrumbDemo)" />

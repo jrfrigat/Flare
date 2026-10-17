@@ -1,0 +1,67 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* The top of a page: what section it is in, what it is called, what it is for, and what can be done from
+   it. Breadcrumbs are not a parameter - a FlareBreadcrumb goes in EyebrowContent. *@
+<header class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.PageHeader.Text">
+        @if (EyebrowContent is not null)
+        {
+            <div class="@Css.Classes.PageHeader.Eyebrow">@EyebrowContent</div>
+        }
+        else if (!string.IsNullOrEmpty(Eyebrow))
+        {
+            <p class="@Css.Classes.PageHeader.Eyebrow">@Eyebrow</p>
+        }
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            @RenderHeading()
+        }
+        @if (DescriptionContent is not null)
+        {
+            <div class="@Css.Classes.PageHeader.Description">@DescriptionContent</div>
+        }
+        else if (!string.IsNullOrEmpty(Description))
+        {
+            <p class="@Css.Classes.PageHeader.Description">@Description</p>
+        }
+    </div>
+    @if (ActionsContent is not null)
+    {
+        <div class="@Css.Classes.PageHeader.Actions">@ActionsContent</div>
+    }
+</header>
+
+@code {
+    /// <summary>Short line above the title naming the section the page belongs to.</summary>
+    [Parameter] public string? Eyebrow { get; set; }
+
+    /// <summary>Content above the title in place of <see cref="Eyebrow"/>, such as a <c>FlareBreadcrumb</c>.</summary>
+    [Parameter] public RenderFragment? EyebrowContent { get; set; }
+
+    /// <summary>The page's title, rendered as a heading of <see cref="HeadingLevel"/>.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Level of the title's heading element, 1 to 6; 1 by default, since a page header names the page.
+    /// The level changes the document outline only - the title keeps its size.</summary>
+    [Parameter] public int HeadingLevel { get; set; } = 1;
+
+    /// <summary>One or two sentences below the title saying what the page is for.</summary>
+    [Parameter] public string? Description { get; set; }
+
+    /// <summary>Content below the title in place of <see cref="Description"/>, for text with links or formatting.</summary>
+    [Parameter] public RenderFragment? DescriptionContent { get; set; }
+
+    /// <summary>Buttons for the page's main actions, placed after the text and moved below it when the header is narrow.</summary>
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.PageHeader.Root;
+
+    private RenderFragment RenderHeading() => builder =>
+    {
+        builder.OpenElement(0, $"h{Math.Clamp(HeadingLevel, 1, 6)}");
+        builder.AddAttribute(1, "class", Css.Classes.PageHeader.Title);
+        builder.AddContent(2, Title);
+        builder.CloseElement();
+    };
+}

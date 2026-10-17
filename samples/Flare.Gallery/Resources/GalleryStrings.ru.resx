@@ -3633,6 +3633,36 @@
   <data name="Stat_P95" xml:space="preserve">
     <value>95-й процентиль за последний час</value>
   </data>
+  <data name="PageHeader_Title" xml:space="preserve">
+    <value>Заголовок страницы</value>
+  </data>
+  <data name="PageHeader_Subtitle" xml:space="preserve">
+    <value>Верх страницы: раздел над заголовком, заголовок, назначение страницы и ее главные действия. В узкой шапке заголовок уменьшается, а действия уходят под текст.</value>
+  </data>
+  <data name="PageHeader_Basic" xml:space="preserve">
+    <value>Надпись, заголовок, описание и действия</value>
+  </data>
+  <data name="PageHeader_Breadcrumb" xml:space="preserve">
+    <value>Хлебные крошки над заголовком</value>
+  </data>
+  <data name="PageHeader_Eyebrow" xml:space="preserve">
+    <value>Рабочее пространство</value>
+  </data>
+  <data name="PageHeader_DemoTitle" xml:space="preserve">
+    <value>Проекты</value>
+  </data>
+  <data name="PageHeader_DemoDescription" xml:space="preserve">
+    <value>Все, над чем работает команда: ответственные, сроки и состояние.</value>
+  </data>
+  <data name="PageHeader_Export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="PageHeader_NewProject" xml:space="preserve">
+    <value>Новый проект</value>
+  </data>
+  <data name="PageHeader_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>Состояния, границы и формы</value>
   </data>
