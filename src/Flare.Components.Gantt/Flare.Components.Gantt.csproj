@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Components.Gantt</PackageId>
+    <!-- Components live in Flare.Components, like the Kanban satellite; the engine lives in Flare.Components.Gantt. -->
+    <RootNamespace>Flare.Components</RootNamespace>
+    <Description>Flare Gantt timeline for the Flare Blazor component library: task trees, resource lanes and roadmaps on one time axis.</Description>
+    <PackageTags>blazor;components;gantt;timeline;scheduler</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Flare.Components.Gantt.Tests" />
+  </ItemGroup>
+</Project>

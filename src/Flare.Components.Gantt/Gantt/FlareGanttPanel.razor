@@ -1,0 +1,229 @@
+@namespace Flare.Components
+@typeparam TRow
+@typeparam TItem
+@inherits FlareComponentBase
+@{ Layout(); var gantt = Gantt!; var width = GanttFormat.Px(gantt.Width); }
+
+<section class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @if (Header is not null)
+    {
+        <div class="@Css.Classes.Gantt.PanelHeader">@Header</div>
+    }
+    <div class="@Css.Classes.Gantt.Body" role="@(_isTree ? "treegrid" : "grid")" aria-label="@AriaLabel" data-panel="@_id" style="height:@GanttFormat.Px(_height)"
+         @onpointermove="PointerMove" @onpointerup="PointerUp" @onpointerleave="PointerCancel" @onpointercancel="PointerCancel">
+        @* Behind the rows: unit grid, non-working time and panel-wide regions. *@
+        <div class="@Css.Classes.Gantt.Overlay" style="width:@width" aria-hidden="true">
+            @foreach (var span in gantt.NonWorkingSpans.Where(gantt.InView))
+            {
+                <div class="@Css.Classes.Gantt.NonWorking" style="@SpanStyle(span)"></div>
+            }
+            @foreach (var tick in gantt.Ticks.Where(gantt.InView))
+            {
+                <div class="@Css.Classes.Gantt.GridLine" style="left:@GanttFormat.Px(tick.Offset * gantt.EffectiveUnitWidth)"></div>
+            }
+            @foreach (var region in _panelRegions.Where(r => gantt.InView(r.Span)))
+            {
+                <div class="@($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}")" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
+                    @if (region.Label is not null)
+                    {
+                        <span class="@Css.Classes.Gantt.RegionLabel">@region.Label</span>
+                    }
+                </div>
+            }
+        </div>
+
+        @{ var drawn = DrawnRows(); }
+        @if (_spacer > 0)
+        {
+            <div class="@Css.Classes.Gantt.Spacer" style="height:@GanttFormat.Px(_spacer)" aria-hidden="true"></div>
+        }
+        @foreach (var row in drawn)
+        {
+            var rowClass = string.Join(' ', new[] { Css.Classes.Gantt.Row, row.HasChildren ? Css.Classes.Gantt.RowParent : "", RowClass?.Invoke(row.Row) ?? "" }.Where(c => c.Length > 0));
+            <div @key="row.Key" class="@rowClass" role="row" data-row="@row.Key" aria-level="@(_isTree ? (int?)(row.Depth + 1) : null)"
+                 aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)">
+                @if (!gantt.Compact)
+                {
+                    <div class="@Css.Classes.Gantt.Side" role="rowheader" style="padding-inline-start:calc(var(--flare-gantt-indent, var(--flare-spacing-6, 0.75rem)) * @row.Depth)">
+                        @if (row.HasChildren)
+                        {
+                            var key = row.Key;
+                            <button type="button" class="@(row.Expanded ? $"{Css.Classes.Gantt.Toggle} {Css.Classes.Gantt.ToggleExpanded}" : Css.Classes.Gantt.Toggle)"
+                                    aria-label="@(row.Expanded ? gantt.EffectiveTexts.Collapse : gantt.EffectiveTexts.Expand)" @onclick="() => Toggle(key)"></button>
+                        }
+                        else if (_isTree)
+                        {
+                            <span class="@Css.Classes.Gantt.ToggleSpace" aria-hidden="true"></span>
+                        }
+                        <div class="@Css.Classes.Gantt.SideContent">
+                            @if (RowHeader is null)
+                            {
+                                @row.Key
+                            }
+                            else
+                            {
+                                @RowHeader(row.Row)
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="@Css.Classes.Gantt.Track" role="gridcell" style="width:@width;height:@GanttFormat.Px(row.Height)">
+                    @foreach (var region in row.Regions.Where(r => gantt.InView(r.Span)))
+                    {
+                        <div class="@($"{Css.Classes.Gantt.Region} {Css.Classes.Gantt.Kind(region.Kind)}")" data-kind="@region.Kind" style="@SpanStyle(region.Span)" title="@region.Label">
+                            @if (region.Label is not null)
+                            {
+                                <span class="@Css.Classes.Gantt.RegionLabel">@region.Label</span>
+                            }
+                        </div>
+                    }
+                    @if (DropGroup is not null)
+                    {
+                        @* One zone per row, not per unit: the unit under the pointer is lit and resolved by the axis. *@
+                        <FlareDropZone Group="@DropGroup" Target="@GanttRowDropTarget.Format(row.Key)" Placement="DropPlacement.Into" Accepts="DropAccepts" Class="@Css.Classes.Gantt.Drop">
+                            <span class="@Css.Classes.Gantt.DropUnit" aria-hidden="true"></span>
+                        </FlareDropZone>
+                    }
+                    @foreach (var cell in row.Cells.Where(c => gantt.InView(c.Span)))
+                    {
+                        <div class="@($"{Css.Classes.Gantt.Cell} {Css.Classes.Gantt.Kind(cell.Kind)}")" data-kind="@cell.Kind" style="@CellStyle(cell)" title="@cell.Title">
+                            @if (CellTemplate is null)
+                            {
+                                @cell.Text
+                            }
+                            else
+                            {
+                                @CellTemplate(cell)
+                            }
+                        </div>
+                    }
+                    @foreach (var bar in row.Bars.Where(Drawn))
+                    {
+                        @if (ItemDropGroup is not null && !bar.IsSummary && !bar.IsSuggested)
+                        {
+                            <FlareDropZone @key="@SlotKey(bar)" Group="@ItemDropGroup" Target="@GanttItemDropTarget.Format(bar.Key)" Placement="DropPlacement.Into"
+                                           Accepts="ItemDropAccepts" Class="@($"{Css.Classes.Gantt.BarSlot} {Css.Classes.Gantt.ItemDrop}")" Style="@BarStyle(bar)">
+                                @RenderSlot(bar)
+                            </FlareDropZone>
+                        }
+                        else
+                        {
+                            <div @key="@SlotKey(bar)" class="@Css.Classes.Gantt.BarSlot" style="@BarStyle(bar)">
+                                @RenderSlot(bar)
+                            </div>
+                        }
+                    }
+                    @foreach (var marker in row.Markers.Where(m => gantt.InView(gantt.X(m.At), gantt.X(m.At))))
+                    {
+                        <div class="@($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}")" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
+                            @if (marker.Label is not null)
+                            {
+                                <span class="@Css.Classes.Gantt.MarkerLabel">@marker.Label</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <svg class="@Css.Classes.Gantt.Links" width="@GanttFormat.Number(gantt.Width)" height="@GanttFormat.Number(_height)" aria-hidden="true">
+            <defs>
+                <marker id="@($"{_id}-arrow")" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+                    <path d="M 0 0 L 8 4 L 0 8 z" class="@Css.Classes.Gantt.Arrow" />
+                </marker>
+            </defs>
+            @foreach (var link in _links)
+            {
+                <path class="@LinkClass(link)" d="@link.Path" marker-end="@($"url(#{_id}-arrow)")" data-from="@link.Link.FromKey" data-to="@link.Link.ToKey" />
+            }
+        </svg>
+
+        @* In front of the rows: panel-wide markers such as "today". *@
+        <div class="@($"{Css.Classes.Gantt.Overlay} {Css.Classes.Gantt.OverlayFront}")" style="width:@width" aria-hidden="true">
+            @foreach (var marker in _panelMarkers.Where(m => gantt.InView(gantt.X(m.At), gantt.X(m.At))))
+            {
+                <div class="@($"{Css.Classes.Gantt.Marker} {Css.Classes.Gantt.Kind(marker.Kind)}")" data-kind="@marker.Kind" style="left:@GanttFormat.Px(gantt.X(marker.At))" title="@marker.Label">
+                    @if (marker.Label is not null)
+                    {
+                        <span class="@Css.Classes.Gantt.MarkerLabel">@marker.Label</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    <div class="@Css.Classes.Gantt.Announce" role="status" aria-live="polite">@_announcement</div>
+</section>
+
+@code {
+    // A bar with its tooltip when the consumer gave one.
+    private RenderFragment RenderSlot(GanttBarLayout<TItem> bar) => __builder =>
+    {
+        if (ItemTooltip is not null && bar.Item is { } tipItem && !bar.IsSummary)
+        {
+            <FlarePopover Trigger="PopoverTrigger.Hover" Style="display:block;width:100%;height:100%">
+                <AnchorContent>@RenderBar(bar)</AnchorContent>
+                <ChildContent>@ItemTooltip(tipItem)</ChildContent>
+            </FlarePopover>
+        }
+        else
+        {
+            @RenderBar(bar)
+        }
+    };
+
+    private RenderFragment RenderBar(GanttBarLayout<TItem> bar) => __builder =>
+    {
+        var progress = bar.Progress is { } p ? Math.Clamp(p, 0, 1) : (double?)null;
+        <div class="@BarClass(bar)" data-kind="@bar.Kind" data-key="@bar.Key"
+             role="@(bar.IsSuggested ? null : "button")" tabindex="@(bar.IsSuggested ? null : "0")"
+             aria-label="@AriaFor(bar)" aria-pressed="@(bar.IsSuggested ? null : (Gantt!.Selected == bar.Key ? "true" : "false"))"
+             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="() => Activate(bar)"
+             @onpointerdown="e => PointerDown(e, bar, GanttEditAction.Move)" @onkeydown="e => KeyDown(e, bar)">
+            @if (CanEdit && !bar.IsSummary && !bar.IsSuggested)
+            {
+                <div class="@($"{Css.Classes.Gantt.Handle} {Css.Classes.Gantt.HandleStart}")" aria-hidden="true"
+                     @onpointerdown="e => PointerDown(e, bar, GanttEditAction.ResizeStart)" @onpointerdown:stopPropagation="true"></div>
+                <div class="@($"{Css.Classes.Gantt.Handle} {Css.Classes.Gantt.HandleEnd}")" aria-hidden="true"
+                     @onpointerdown="e => PointerDown(e, bar, GanttEditAction.ResizeEnd)" @onpointerdown:stopPropagation="true"></div>
+            }
+            @foreach (var segment in bar.Segments)
+            {
+                <div class="@($"{Css.Classes.Gantt.Segment} {Css.Classes.Gantt.Kind(segment.Kind)}")" data-kind="@segment.Kind" style="@SegmentStyle(bar, segment)">
+                    @if (segment.Label is not null)
+                    {
+                        <span>@segment.Label</span>
+                    }
+                </div>
+            }
+            @if (progress is { } fill)
+            {
+                <div class="@Css.Classes.Gantt.Progress" style="width:@(GanttFormat.Number(fill * 100))%"></div>
+            }
+            <div class="@Css.Classes.Gantt.BarContent">
+                @if (ItemTemplate is not null && bar.Item is { } item && !bar.IsSummary)
+                {
+                    @ItemTemplate(item)
+                }
+                else
+                {
+                    @bar.Label
+                }
+            </div>
+        </div>
+    };
+
+    private string? TitleOf(GanttBarLayout<TItem> bar) =>
+        ItemTitle is not null && bar.Item is { } item && !bar.IsSummary ? ItemTitle(item) ?? bar.Label : bar.Label;
+
+    private static string SlotKey(GanttBarLayout<TItem> bar) => (bar.IsSuggested ? "s:" : "b:") + bar.Key;
+
+    private string AriaFor(GanttBarLayout<TItem> bar)
+    {
+        var culture = Gantt!.Axis.Culture;
+        var end = bar.Span.End.TimeOfDay == TimeSpan.Zero && bar.Span.End > bar.Span.Start ? bar.Span.End.AddDays(-1) : bar.Span.End;
+        var dates = Gantt.Scale is GanttScale.Hour
+            ? $"{bar.Span.Start.ToString("g", culture)} \u2013 {bar.Span.End.ToString("t", culture)}"
+            : $"{bar.Span.Start.ToString("d", culture)} \u2013 {end.ToString("d", culture)}";
+        return $"{bar.Label ?? bar.Key}, {dates}";
+    }
+}

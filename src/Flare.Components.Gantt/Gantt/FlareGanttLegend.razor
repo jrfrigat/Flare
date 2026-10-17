@@ -1,0 +1,55 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Flare.Components.Gantt
+
+@* A key to the chart's colours. Each sample is the element the chart itself draws for that kind - a bar, a segment
+   over a bar, a ghost bar, a region or a cell - so it takes whatever look the theme or the consumer gave that kind,
+   and the key cannot drift from the chart. Place it inside the same styling scope as the chart. *@
+<div class="@BuildCssClass()" style="@Style" role="list" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    @Leading
+    @foreach (var item in Items)
+    {
+        <span class="@Css.Classes.Gantt.LegendItem" role="listitem" title="@item.Title" data-kind="@item.Kind">
+            @switch (item.Shape)
+            {
+                case GanttLegendShape.Segment:
+                    <span class="@($"{Css.Classes.Gantt.LegendSample} {Css.Classes.Gantt.Bar} {Css.Classes.Gantt.Kind(item.BarKind)}")" aria-hidden="true">
+                        <span class="@($"{Css.Classes.Gantt.Segment} {Css.Classes.Gantt.Kind(item.Kind)}")"></span>
+                    </span>
+                    break;
+                case GanttLegendShape.Suggested:
+                    <span class="@($"{Css.Classes.Gantt.LegendSample} {Css.Classes.Gantt.Bar} {Css.Classes.Gantt.BarSuggested} {Css.Classes.Gantt.Kind(item.Kind)}")" aria-hidden="true"></span>
+                    break;
+                default:
+                    <span class="@($"{Css.Classes.Gantt.LegendSample} {Sample(item.Shape)} {Css.Classes.Gantt.Kind(item.Kind)}")" aria-hidden="true"></span>
+                    break;
+            }
+            @item.Label
+        </span>
+    }
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>The entries, in order.</summary>
+    [Parameter] public IEnumerable<GanttLegendItem> Items { get; set; } = [];
+
+    /// <summary>Content before the entries.</summary>
+    [Parameter] public RenderFragment? Leading { get; set; }
+
+    /// <summary>Content after the entries, such as a link or a notice.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Accessible name of the key.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Gantt.Legend;
+
+    private static string Sample(GanttLegendShape shape) => shape switch
+    {
+        GanttLegendShape.Region => Css.Classes.Gantt.Region,
+        GanttLegendShape.Cell => Css.Classes.Gantt.Cell,
+        _ => Css.Classes.Gantt.Bar
+    };
+}

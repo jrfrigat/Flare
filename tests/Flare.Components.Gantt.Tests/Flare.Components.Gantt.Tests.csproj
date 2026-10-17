@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!-- Tests for the optional Flare.Components.Gantt package. It ships separately, so it is tested
+       separately: the core suite does not reference it, and this suite does not carry the core's. -->
+
+  <PropertyGroup>
+    <!-- The same three runtimes the package itself targets. Clearing the inherited singular
+         TargetFramework is required - when both are set the singular one wins. -->
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bunit" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Bunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The bUnit context and its stub services, shared as SOURCE rather than through a library: the
+         culture pin is a [ModuleInitializer], which runs per assembly, so every suite needs its own. -->
+    <Compile Include="..\Flare.Components.Tests\TestHelpers.cs" Link="TestHelpers.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.Gantt\Flare.Components.Gantt.csproj" />
+  </ItemGroup>
+
+</Project>
