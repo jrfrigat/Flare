@@ -23,4 +23,11 @@ internal interface IGanttPanel
 
     /// <summary>True when the drawn rows no longer cover the visible part <paramref name="from"/>-<paramref name="to"/> of the body.</summary>
     bool Uncovered(double from, double to);
+
+    /// <summary>Applies a gesture the browser tracked: <paramref name="key"/> moved or was resized by whole axis units,
+    /// and for a move possibly into <paramref name="rowKey"/>.</summary>
+    Task DraggedAsync(string key, GanttEditAction action, int units, string? rowKey);
+
+    /// <summary>Creates the link the user drew in the browser from <paramref name="fromKey"/> to <paramref name="toKey"/>.</summary>
+    Task LinkedAsync(string fromKey, string toKey);
 }

@@ -21,6 +21,14 @@ public abstract class GanttTestBase : FlareTestContext
 
     protected static DateOnly Day(int offset) => Monday.AddDays(offset);
 
+    // What the browser reports when a pointer gesture on a bar ends (gantt.js): the panel, the bar, what was done and
+    // by how many whole axis units, and the row a move ended over.
+    protected static void Drag(IRenderedComponent<FlareGantt> cut, string key, GanttEditAction action, int units, string? row = null)
+    {
+        var panel = cut.Find(".flare-gantt__body").GetAttribute("data-panel")!;
+        cut.InvokeAsync(() => cut.Instance.BarDragged(panel, key, action.ToString(), units, row)).GetAwaiter().GetResult();
+    }
+
     protected IRenderedComponent<FlareGantt> Chart(Action<ComponentParameterCollectionBuilder<FlareGanttPanel<Node, Work>>> panel,
         Action<ComponentParameterCollectionBuilder<FlareGantt>>? gantt = null) =>
         Render<FlareGantt>(p =>

@@ -7,7 +7,7 @@
                     Style="--flare-gantt-max-height:400px;" AriaLabel="Plan">
             <FlareGanttPanel TRow="string" TItem="Work" Rows="_rows" RowKey="r => r" Items="_items"
                              ItemKey="w => w.Key" ItemRow="w => w.Row" ItemSpan="w => w.Span" Links="_links"
-                             Editable="true" OnChange="OnChange" />
+                             Editable="true" ScheduleMode="GanttScheduleMode.None" OnChange="OnChange" OnLinkCreate="OnLink" />
         </FlareGantt>
         <p id="result">@_result</p>
     </main>
@@ -20,7 +20,7 @@
     private readonly GanttSpan _range = GanttSpan.FromDays(Start, Start.AddDays(27));
     private readonly string[] _rows = Enumerable.Range(0, 500).Select(i => $"r{i}").ToArray();
     private List<Work> _items = [];
-    private readonly List<GanttLink> _links = [];
+    private List<GanttLink> _links = [];
     private string _result = "";
 
     protected override void OnInitialized()
@@ -30,6 +30,19 @@
         for (var i = 0; i + 2 < _rows.Length; i += 2) _links.Add(new GanttLink($"w{i}", $"w{i + 2}"));
     }
 
-    private void OnChange(GanttChangeEventArgs e) =>
-        _result = string.Join(";", e.Changes.Select(c => $"{c.ItemKey}@{DateOnly.FromDateTime(c.Span.Start):MM-dd}{(c.RowKey is null ? "" : ">" + c.RowKey)}"));
+    // The chart never changes the data itself: the page applies what it was offered, as an application would.
+    private void OnChange(GanttChangeEventArgs e)
+    {
+        _result = string.Join(";", e.Changes.Select(c =>
+            $"{c.ItemKey}@{DateOnly.FromDateTime(c.Span.Start):MM-dd}..{DateOnly.FromDateTime(c.Span.End):MM-dd}{(c.RowKey is null ? "" : ">" + c.RowKey)}"));
+        _items = _items.Select(w => e.Changes.FirstOrDefault(c => c.ItemKey == w.Key) is { } c
+            ? w with { Span = c.Span, Row = c.RowKey ?? w.Row }
+            : w).ToList();
+    }
+
+    private void OnLink(GanttLinkEventArgs e)
+    {
+        _result = $"link {e.Link.FromKey}>{e.Link.ToKey}";
+        _links = [.. _links, e.Link];
+    }
 }

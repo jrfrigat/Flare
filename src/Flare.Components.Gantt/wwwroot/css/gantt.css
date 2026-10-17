@@ -432,6 +432,37 @@
 .flare-gantt__handle--start { left: 0; }
 .flare-gantt__handle--end { right: 0; }
 
+/* An editable bar is moved by a pointer drag, so a touch on it must not scroll the chart instead. */
+.flare-gantt__body[data-editable] .flare-gantt__bar:not(.flare-gantt__bar--summary):not(.flare-gantt__bar--suggested) {
+    cursor: grab;
+    touch-action: none;
+}
+
+/* The grip a link is drawn from: inside the bar, just before the end handle, shown on hover and focus. */
+.flare-gantt__link-handle {
+    position: absolute;
+    top: 50%;
+    right: var(--flare-gantt-handle-width, 0.375rem);
+    z-index: 1;
+    width: var(--flare-gantt-link-handle-size, 0.625rem);
+    height: var(--flare-gantt-link-handle-size, 0.625rem);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    background: var(--flare-gantt-bar-fg, var(--flare-color-on-primary));
+    opacity: 0;
+    cursor: crosshair;
+}
+
+.flare-gantt__bar:hover .flare-gantt__link-handle,
+.flare-gantt__bar:focus-visible .flare-gantt__link-handle {
+    opacity: 1;
+}
+
+/* The connector that follows the pointer while a link is drawn. */
+.flare-gantt__link--draft {
+    stroke-dasharray: 4 3;
+}
+
 /* Markers: a vertical line with an optional caption. */
 .flare-gantt__marker {
     position: absolute;

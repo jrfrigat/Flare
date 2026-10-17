@@ -53,21 +53,8 @@ public partial class FlareGanttPanel<TRow, TItem>
     /// <summary>Which payloads the bar zones of <see cref="ItemDropGroup"/> take; null takes every payload of the group.</summary>
     [Parameter] public Func<object?, bool>? ItemDropAccepts { get; set; }
 
-    private sealed class DragState
-    {
-        public required string Key { get; init; }
-        public required GanttEditAction Action { get; init; }
-        public required double StartX { get; init; }
-        public required double StartY { get; init; }
-        public required GanttSpan Original { get; init; }
-        public required string RowKey { get; init; }
-        public required double CenterY { get; init; }
-        public bool Moved { get; set; }
-    }
-
-    private DragState? _drag;
-    private GanttChange? _preview;
     private bool _suppressClick;
+    private string? _refocus;
     private bool _skipRender;
     private string? _linkFrom;
     private string? _announcement;
@@ -82,47 +69,36 @@ public partial class FlareGanttPanel<TRow, TItem>
         return false;
     }
 
-    private void PointerDown(PointerEventArgs e, GanttBarLayout<TItem> bar, GanttEditAction action)
+    // A gesture the browser tracked (gantt.js): the bar moved or was resized by whole axis units, possibly into
+    // another row. One call per gesture; the same rules as the keyboard apply.
+    async Task IGanttPanel.DraggedAsync(string key, GanttEditAction action, int units, string? rowKey)
     {
-        if (!CanEdit || bar.IsSummary || bar.IsSuggested || e.Button != 0) return;
-        _drag = new DragState
-        {
-            Key = bar.Key, Action = action, StartX = e.ClientX, StartY = e.ClientY,
-            Original = bar.Span, RowKey = bar.RowKey, CenterY = bar.Box.Y + bar.Box.Height / 2
-        };
-        _skipRender = true;
-    }
-
-    private void PointerMove(PointerEventArgs e)
-    {
-        if (_drag is null) { _skipRender = true; return; }
-        var gantt = Gantt!;
-        var units = (int)Math.Round((e.ClientX - _drag.StartX) / gantt.EffectiveUnitWidth);
-        var span = Apply(_drag.Original, _drag.Action, units, CoverOf(_drag.Key));
-        var row = _drag.Action == GanttEditAction.Move && AllowRowChange ? RowAt(_drag.CenterY + e.ClientY - _drag.StartY) ?? _drag.RowKey : _drag.RowKey;
-        var preview = new GanttChange(_drag.Key, span, row);
-        if (preview == _preview) { _skipRender = true; return; }
-        _drag.Moved = span != _drag.Original || row != _drag.RowKey;
-        _preview = _drag.Moved ? preview : null;
-    }
-
-    private async Task PointerUp(PointerEventArgs e)
-    {
-        if (_drag is null) { _skipRender = true; return; }
-        var drag = _drag;
-        var preview = _preview;
-        _drag = null;
-        _preview = null;
-        if (!drag.Moved || preview is null) return;
+        if (!CanEdit || !_bars.TryGetValue(key, out var bar) || bar.IsSummary) return;
+        var toRow = action == GanttEditAction.Move && AllowRowChange && rowKey is not null && _rows.Any(r => r.Key == rowKey) ? rowKey : bar.RowKey;
         _suppressClick = true;
-        await Commit(drag.Key, drag.Action, preview.Span, drag.RowKey, preview.RowKey);
+        await Commit(key, action, Apply(bar.Span, action, units, CoverOf(key)), bar.RowKey, toRow);
+        StateHasChanged();
     }
 
-    private void PointerCancel()
+    // A link the user drew from one bar to another in the browser.
+    async Task IGanttPanel.LinkedAsync(string fromKey, string toKey)
     {
-        if (_drag is null) { _skipRender = true; return; }
-        _drag = null;
-        _preview = null;
+        if (!CanEdit || !_bars.TryGetValue(fromKey, out var from) || from.IsSummary) return;
+        if (!_bars.TryGetValue(toKey, out var to) || to.IsSummary) return;
+        _suppressClick = true;
+        await CreateLink(new GanttLink(fromKey, toKey, NewLinkType));
+        StateHasChanged();
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // A bar moved to another row from the keyboard is a new element there: give it the focus back.
+        if (_refocus is { } key)
+        {
+            _refocus = null;
+            await Gantt!.FocusItemAsync(key);
+        }
     }
 
     private async Task KeyDown(KeyboardEventArgs e, GanttBarLayout<TItem> bar)
@@ -154,6 +130,7 @@ public partial class FlareGanttPanel<TRow, TItem>
             case "ArrowUp" or "ArrowDown" when AllowRowChange:
                 var index = _rows.FindIndex(r => r.Key == bar.RowKey) + (e.Key == "ArrowDown" ? 1 : -1);
                 if (index < 0 || index >= _rows.Count) { _skipRender = true; return; }
+                _refocus = bar.Key;
                 await Commit(bar.Key, GanttEditAction.Move, bar.Span, bar.RowKey, _rows[index].Key);
                 return;
             default:
@@ -213,7 +190,6 @@ public partial class FlareGanttPanel<TRow, TItem>
 
     private static DateTime Max(DateTime a, DateTime b) => a > b ? a : b;
 
-    private string? RowAt(double y) => _rows.FirstOrDefault(r => y >= r.Top && y < r.Top + r.Height)?.Key;
 
     private async Task Commit(string key, GanttEditAction action, GanttSpan span, string fromRow, string? toRow)
     {

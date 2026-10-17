@@ -10,7 +10,7 @@
         <div class="@Css.Classes.Gantt.PanelHeader">@Header</div>
     }
     <div class="@Css.Classes.Gantt.Body" role="@(_isTree ? "treegrid" : "grid")" aria-label="@AriaLabel" data-panel="@_id" style="height:@GanttFormat.Px(_height)"
-         @onpointermove="PointerMove" @onpointerup="PointerUp" @onpointerleave="PointerCancel" @onpointercancel="PointerCancel">
+         data-editable="@(CanEdit ? "true" : null)" data-row-change="@(CanEdit && AllowRowChange ? "true" : null)">
         @* Behind the rows: unit grid, non-working time and panel-wide regions. *@
         <div class="@Css.Classes.Gantt.Overlay" style="width:@width" aria-hidden="true">
             @foreach (var span in gantt.NonWorkingSpans.Where(gantt.InView))
@@ -177,14 +177,13 @@
         <div class="@BarClass(bar)" data-kind="@bar.Kind" data-key="@bar.Key"
              role="@(bar.IsSuggested ? null : "button")" tabindex="@(bar.IsSuggested ? null : "0")"
              aria-label="@AriaFor(bar)" aria-pressed="@(bar.IsSuggested ? null : (Gantt!.Selected == bar.Key ? "true" : "false"))"
-             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="() => Activate(bar)"
-             @onpointerdown="e => PointerDown(e, bar, GanttEditAction.Move)" @onkeydown="e => KeyDown(e, bar)">
+             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="() => Activate(bar)" @onkeydown="e => KeyDown(e, bar)">
             @if (CanEdit && !bar.IsSummary && !bar.IsSuggested)
             {
-                <div class="@($"{Css.Classes.Gantt.Handle} {Css.Classes.Gantt.HandleStart}")" aria-hidden="true"
-                     @onpointerdown="e => PointerDown(e, bar, GanttEditAction.ResizeStart)" @onpointerdown:stopPropagation="true"></div>
-                <div class="@($"{Css.Classes.Gantt.Handle} {Css.Classes.Gantt.HandleEnd}")" aria-hidden="true"
-                     @onpointerdown="e => PointerDown(e, bar, GanttEditAction.ResizeEnd)" @onpointerdown:stopPropagation="true"></div>
+                @* The gesture itself is the browser's (gantt.js): these only mark where a press starts it. *@
+                <div class="@($"{Css.Classes.Gantt.Handle} {Css.Classes.Gantt.HandleStart}")" aria-hidden="true"></div>
+                <div class="@($"{Css.Classes.Gantt.Handle} {Css.Classes.Gantt.HandleEnd}")" aria-hidden="true"></div>
+                <div class="@Css.Classes.Gantt.LinkHandle" aria-hidden="true"></div>
             }
             @foreach (var segment in bar.Segments)
             {

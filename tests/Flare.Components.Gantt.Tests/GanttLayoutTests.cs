@@ -145,9 +145,7 @@ public sealed class GanttLayoutTests : GanttTestBase
 
         var bar = cut.Find(".flare-gantt__bar[data-key='p']");
         bar.KeyDown(new KeyboardEventArgs { Key = "ArrowLeft", CtrlKey = true, ShiftKey = true }); // end 5 -> 4: allowed
-        cut.Find(".flare-gantt__bar[data-key='p'] .flare-gantt__handle--start").PointerDown(new PointerEventArgs { ClientX = 0, Button = 0 });
-        cut.Find(".flare-gantt__body").PointerMove(new PointerEventArgs { ClientX = 120 });
-        cut.Find(".flare-gantt__body").PointerUp(new PointerEventArgs { ClientX = 120 });
+        Drag(cut, "p", GanttEditAction.ResizeStart, 3);
 
         Assert.Equal(GanttSpan.FromDays(Day(2), Day(4)), seen[0].Changes[0].Span);
         // The start 2 is already later than the children's start (1): it cannot be pulled right, the bar snaps to the cover's start.

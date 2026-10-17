@@ -7,7 +7,7 @@
 
 @* The shared time axis. Panels inside it are projections the consumer builds; they all use this axis, this
    scroll and this selection, which is what makes several panels one synchronised view. *@
-<div @ref="_root" class="@RootClass" style="@RootStyle" role="group" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+<div @ref="_root" class="@RootClass" style="@RootStyle" data-unit="@GanttFormat.Number(EffectiveUnitWidth)" role="group" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Gantt.Scroll">
         <div class="@Css.Classes.Gantt.Header">
             @if (!Compact)
@@ -514,6 +514,29 @@
         await SelectedKeyChanged.InvokeAsync(key);
         Refresh();
     }
+
+    /// <summary>A bar the user moved or resized with the pointer, reported by the browser once the gesture ends.</summary>
+    /// <param name="panel">Id of the panel the bar belongs to.</param>
+    /// <param name="key">Key of the item.</param>
+    /// <param name="action">What the gesture did: Move, ResizeStart or ResizeEnd.</param>
+    /// <param name="units">Whole axis units the start, the end or both moved by.</param>
+    /// <param name="rowKey">Row the pointer was over at the end of a move, or null.</param>
+    [JSInvokable]
+    public Task BarDragged(string panel, string key, string action, int units, string? rowKey) =>
+        Enum.TryParse<GanttEditAction>(action, out var edit) && _panels.FirstOrDefault(p => p.Id == panel) is { } owner
+            ? owner.DraggedAsync(key, edit, units, rowKey)
+            : Task.CompletedTask;
+
+    /// <summary>A link the user drew with the pointer from one bar to another, reported by the browser.</summary>
+    /// <param name="panel">Id of the panel the bars belong to.</param>
+    /// <param name="fromKey">Key of the predecessor.</param>
+    /// <param name="toKey">Key of the successor.</param>
+    [JSInvokable]
+    public Task LinkDragged(string panel, string fromKey, string toKey) =>
+        _panels.FirstOrDefault(p => p.Id == panel) is { } owner ? owner.LinkedAsync(fromKey, toKey) : Task.CompletedTask;
+
+    /// <summary>Moves the keyboard focus to the bar of <paramref name="key"/>, if it is drawn.</summary>
+    internal ValueTask FocusItemAsync(string key) => _browser?.FocusItemAsync(key) ?? ValueTask.CompletedTask;
 
     internal void Register(IGanttPanel panel) => _panels.Add(panel);
 

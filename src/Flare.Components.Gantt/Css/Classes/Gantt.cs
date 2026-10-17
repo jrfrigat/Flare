@@ -105,6 +105,10 @@ public static class Gantt
     public const string Link = "flare-gantt__link";
     /// <summary>The <c>flare-gantt__link--critical</c> CSS class.</summary>
     public const string LinkCritical = "flare-gantt__link--critical";
+    /// <summary>The <c>flare-gantt__link-handle</c> CSS class: the grip at a bar's end a link is drawn from.</summary>
+    public const string LinkHandle = "flare-gantt__link-handle";
+    /// <summary>The <c>flare-gantt__link--draft</c> CSS class: the connector that follows the pointer while a link is drawn.</summary>
+    public const string LinkDraft = "flare-gantt__link--draft";
     /// <summary>The <c>flare-gantt__arrow</c> CSS class: the arrowhead at the end of a connector.</summary>
     public const string Arrow = "flare-gantt__arrow";
     /// <summary>The <c>flare-gantt__drop</c> CSS class.</summary>

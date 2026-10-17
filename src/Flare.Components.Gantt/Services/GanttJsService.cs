@@ -34,6 +34,9 @@ public interface IGanttView : IAsyncDisposable
 
     /// <summary>Where the pointer was last seen, in pixels from the start of the time area; null before any movement.</summary>
     ValueTask<double?> PointerXAsync();
+
+    /// <summary>Moves the keyboard focus to the bar of <paramref name="key"/>, if it is drawn.</summary>
+    ValueTask FocusItemAsync(string key);
 }
 
 /// <inheritdoc cref="IGanttJsService" />
@@ -62,6 +65,8 @@ public sealed class GanttJsService : FlareJsModule, IGanttJsService
         public ValueTask ScrollToAsync(double x) => TryAsync(() => handle.InvokeVoidAsync("scrollTo", x));
 
         public ValueTask ShiftAsync(double pixels) => TryAsync(() => handle.InvokeVoidAsync("shift", pixels));
+
+        public ValueTask FocusItemAsync(string key) => TryAsync(() => handle.InvokeVoidAsync("focusItem", key));
 
         public async ValueTask<double?> PointerXAsync()
         {

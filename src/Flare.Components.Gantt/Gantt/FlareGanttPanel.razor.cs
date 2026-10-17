@@ -190,8 +190,8 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
 
         var byKey = rows.ToDictionary(r => r.Key);
         var items = (Items ?? []).Where(i => ItemKey is not null && ItemRow is not null && ItemSpan?.Invoke(i) is not null).ToList();
-        string RowOf(TItem i) => _preview is { RowKey: { } moved } p && p.ItemKey == ItemKey!(i) ? moved : ItemRow!(i);
-        GanttSpan SpanOf(TItem i) => _preview is { } p && p.ItemKey == ItemKey!(i) ? p.Span : ItemSpan!(i)!.Value;
+        string RowOf(TItem i) => ItemRow!(i);
+        GanttSpan SpanOf(TItem i) => ItemSpan!(i)!.Value;
         var itemsByRow = items.GroupBy(RowOf).ToDictionary(g => g.Key, g => g.ToList());
 
         foreach (var row in rows)
@@ -200,7 +200,7 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
                 foreach (var item in own)
                     row.Bars.Add(new GanttBarLayout<TItem>
                     {
-                        Key = ItemKey!(item), RowKey = row.Key, Item = item, Span = SpanOf(item), IsPreview = _preview?.ItemKey == ItemKey!(item),
+                        Key = ItemKey!(item), RowKey = row.Key, Item = item, Span = SpanOf(item),
                         Kind = ItemKind?.Invoke(item), Label = ItemLabel?.Invoke(item) ?? ItemKey!(item),
                         Segments = ItemSegments?.Invoke(item)?.ToList() ?? [], Progress = ItemProgress?.Invoke(item)
                     });
@@ -276,7 +276,6 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         var classes = new List<string> { Css.Classes.Gantt.Bar, Css.Classes.Gantt.Kind(bar.Kind) };
         if (bar.IsSummary) classes.Add(Css.Classes.Gantt.BarSummary);
         if (bar.IsSuggested) classes.Add(Css.Classes.Gantt.BarSuggested);
-        if (bar.IsPreview) classes.Add(Css.Classes.Gantt.BarPreview);
         if (_linkFrom == bar.Key) classes.Add(Css.Classes.Gantt.BarLinkSource);
         if (!bar.IsSuggested && Gantt!.Selected == bar.Key) classes.Add(Css.Classes.Gantt.BarSelected);
         if (_critical.Contains(bar.Key)) classes.Add(Css.Classes.Gantt.BarCritical);
@@ -297,7 +296,7 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
 
     // A bar far off the drawn columns is skipped - unless it is the one selected or being dragged.
     private bool Drawn(GanttBarLayout<TItem> bar) =>
-        Gantt!.InView(bar.Local.X, bar.Local.X + bar.Local.Width) || bar.IsPreview || bar.Key == Gantt.Selected || bar.Key == _drag?.Key;
+        Gantt!.InView(bar.Local.X, bar.Local.X + bar.Local.Width) || bar.Key == Gantt.Selected;
 
     private string BarStyle(GanttBarLayout<TItem> bar) =>
         $"left:{GanttFormat.Px(bar.Local.X)};top:{GanttFormat.Px(bar.Local.Y)};width:{GanttFormat.Px(bar.Local.Width)};height:{GanttFormat.Px(bar.Local.Height)}";

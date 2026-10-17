@@ -13,7 +13,6 @@ internal sealed class GanttBarLayout<TItem>
     public double? Progress { get; init; }
     public bool IsSummary { get; init; }
     public bool IsSuggested { get; init; }
-    public bool IsPreview { get; init; }
     public int Lane { get; set; }
 
     /// <summary>Box relative to the panel body's time area.</summary>

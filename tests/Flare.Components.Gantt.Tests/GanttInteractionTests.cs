@@ -46,9 +46,7 @@ public sealed class GanttInteractionTests : GanttTestBase
 
         Bar(cut, "a").KeyDown(new KeyboardEventArgs { Key = "ArrowRight", CtrlKey = true, ShiftKey = true });
         Bar(cut, "b").KeyDown(new KeyboardEventArgs { Key = "ArrowLeft", CtrlKey = true, ShiftKey = true });
-        cut.Find(".flare-gantt__bar[data-key='a'] .flare-gantt__handle--start").PointerDown(new PointerEventArgs { ClientX = 0, Button = 0 });
-        cut.Find(".flare-gantt__body").PointerMove(new PointerEventArgs { ClientX = 200 });
-        cut.Find(".flare-gantt__body").PointerUp(new PointerEventArgs { ClientX = 200 });
+        Drag(cut, "a", GanttEditAction.ResizeStart, 5);
 
         Assert.Equal(GanttEditAction.ResizeEnd, seen[0].Action);
         Assert.Equal(GanttSpan.FromDays(Day(0), Day(2)), seen[0].Changes[0].Span);
@@ -87,19 +85,12 @@ public sealed class GanttInteractionTests : GanttTestBase
     }
 
     [Fact]
-    public void Pointer_drag_previews_and_commits_whole_units()
+    public void A_pointer_drag_commits_whole_units()
     {
         var seen = new List<GanttChangeEventArgs>();
         var cut = Editable(seen, links: []);
-        var body = cut.Find(".flare-gantt__body");
 
-        Bar(cut, "a").PointerDown(new PointerEventArgs { ClientX = 100, ClientY = 10, Button = 0 });
-        body.PointerMove(new PointerEventArgs { ClientX = 185, ClientY = 12 });
-
-        Assert.Contains("flare-gantt__bar--preview", Bar(cut, "a").ClassList);
-        Assert.Contains("left:80px", Bar(cut, "a").ParentElement!.GetAttribute("style"));
-
-        cut.Find(".flare-gantt__body").PointerUp(new PointerEventArgs { ClientX = 185, ClientY = 12 });
+        Drag(cut, "a", GanttEditAction.Move, 2);
         Bar(cut, "a").Click(); // the click that follows a drag does not select
 
         var change = Assert.Single(seen);
@@ -114,31 +105,47 @@ public sealed class GanttInteractionTests : GanttTestBase
         var seen = new List<GanttChangeEventArgs>();
         var cut = Editable(seen, links: []);
 
-        Bar(cut, "a").PointerDown(new PointerEventArgs { ClientX = 10, ClientY = 15, Button = 0 });
-        cut.Find(".flare-gantt__body").PointerMove(new PointerEventArgs { ClientX = 10, ClientY = 45 });
-        cut.Find(".flare-gantt__body").PointerUp(new PointerEventArgs { ClientX = 10, ClientY = 45 });
+        Drag(cut, "a", GanttEditAction.Move, 0, "r2");
         Assert.Equal("r2", seen[0].Changes[0].RowKey);
 
-        cut.Find(".flare-gantt__bar[data-key='b'] .flare-gantt__handle--end").PointerDown(new PointerEventArgs { ClientX = 0, Button = 0 });
-        cut.Find(".flare-gantt__body").PointerMove(new PointerEventArgs { ClientX = 80 });
-        cut.Find(".flare-gantt__body").PointerUp(new PointerEventArgs { ClientX = 80 });
+        Drag(cut, "b", GanttEditAction.ResizeEnd, 2);
         Assert.Equal(GanttEditAction.ResizeEnd, seen[1].Action);
         Assert.Equal(GanttSpan.FromDays(Day(2), Day(5)), seen[1].Changes[0].Span);
     }
 
     [Fact]
-    public void Leaving_the_surface_cancels_the_gesture()
+    public void A_gesture_for_another_panel_an_unknown_action_or_a_row_change_that_is_not_allowed_moves_nothing_across_rows()
     {
         var seen = new List<GanttChangeEventArgs>();
-        var cut = Editable(seen);
+        var cut = Editable(seen, more: p => p.Add(x => x.AllowRowChange, false));
 
-        Bar(cut, "a").PointerDown(new PointerEventArgs { ClientX = 0, Button = 0 });
-        cut.Find(".flare-gantt__body").PointerMove(new PointerEventArgs { ClientX = 120 });
-        cut.Find(".flare-gantt__body").PointerLeave(new PointerEventArgs());
-        cut.Find(".flare-gantt__body").PointerUp(new PointerEventArgs { ClientX = 120 });
-
+        cut.InvokeAsync(() => cut.Instance.BarDragged("elsewhere", "a", "Move", 1, null)).GetAwaiter().GetResult();
+        cut.InvokeAsync(() => cut.Instance.BarDragged(cut.Find(".flare-gantt__body").GetAttribute("data-panel")!, "a", "Spin", 1, null)).GetAwaiter().GetResult();
         Assert.Empty(seen);
-        Assert.Empty(cut.FindAll(".flare-gantt__bar--preview"));
+
+        Drag(cut, "a", GanttEditAction.Move, 1, "r2");
+        Assert.Null(Assert.Single(seen).Changes[0].RowKey);
+    }
+
+    // The same rules as the keyboard: a link drawn with the pointer is checked for cycles before it is offered.
+    [Fact]
+    public void A_link_drawn_with_the_pointer_is_created_or_refused()
+    {
+        var created = new List<GanttLink>();
+        var rejected = new List<GanttLinkRejectedEventArgs>();
+        var cut = Chart(p => p.Add(x => x.Rows, TwoRows).Add(x => x.Items, Plan).Add(x => x.Editable, true)
+            .Add(x => x.Links, new[] { new GanttLink("a", "b") })
+            .Add(x => x.OnLinkCreate, (GanttLinkEventArgs e) => created.Add(e.Link))
+            .Add(x => x.OnLinkRejected, (GanttLinkRejectedEventArgs e) => rejected.Add(e)));
+        var panel = cut.Find(".flare-gantt__body").GetAttribute("data-panel")!;
+
+        cut.InvokeAsync(() => cut.Instance.LinkDragged(panel, "b", "a")).GetAwaiter().GetResult();
+        Assert.Equal(GanttValidationCode.Cycle, Assert.Single(rejected).Validation.Code);
+
+        cut.InvokeAsync(() => cut.Instance.LinkDragged(panel, "a", "b")).GetAwaiter().GetResult();
+        Assert.Equal(GanttValidationCode.Duplicate, rejected[1].Validation.Code);
+        Assert.Empty(created);
+        Assert.Equal(2, cut.FindAll(".flare-gantt__link-handle").Count);
     }
 
     [Fact]
@@ -175,7 +182,10 @@ public sealed class GanttInteractionTests : GanttTestBase
         var readOnly = Chart(p => p.Add(x => x.Rows, TwoRows).Add(x => x.Items, Plan)
             .Add(x => x.OnChange, (GanttChangeEventArgs e) => seen.Add(e)));
         Bar(readOnly, "a").KeyDown(new KeyboardEventArgs { Key = "ArrowRight", CtrlKey = true });
+        Drag(readOnly, "a", GanttEditAction.Move, 1);
         Assert.Empty(readOnly.FindAll(".flare-gantt__handle"));
+        Assert.Empty(readOnly.FindAll(".flare-gantt__link-handle"));
+        Assert.Null(readOnly.Find(".flare-gantt__body").GetAttribute("data-editable"));
 
         var compact = Chart(p => p.Add(x => x.Rows, TwoRows).Add(x => x.Items, Plan).Add(x => x.Editable, true)
             .Add(x => x.OnChange, (GanttChangeEventArgs e) => seen.Add(e)), g => g.Add(x => x.Compact, true));
