@@ -1,0 +1,24 @@
+@page "/ide-region"
+@using Flare.Components.IDE
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <FlareIdeLayout id="two" Style="height:400px;">
+            <ChildContent><p>Document</p></ChildContent>
+            <RightToolPanel>
+                <FlareToolPanel Title="Properties" Position="ToolPanelPosition.Right"><p id="props">Name</p></FlareToolPanel>
+                <FlareToolPanel Title="Screens" Position="ToolPanelPosition.Right">
+                    <ul id="screens">
+                        @for (var i = 1; i <= 30; i++) { <li>Screen @i</li> }
+                    </ul>
+                </FlareToolPanel>
+            </RightToolPanel>
+        </FlareIdeLayout>
+        <FlareIdeLayout id="one" Style="height:300px;">
+            <ChildContent><p>Document</p></ChildContent>
+            <RightToolPanel>
+                <FlareToolPanel Title="Properties" Position="ToolPanelPosition.Right"><p>Name</p></FlareToolPanel>
+            </RightToolPanel>
+        </FlareIdeLayout>
+    </main>
+</FlareThemeProvider>

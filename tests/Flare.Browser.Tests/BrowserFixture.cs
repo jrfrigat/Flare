@@ -1,3 +1,4 @@
+using Flare.Components.IDE;
 using System.Globalization;
 using Flare.Browser.Tests.Host;
 using Flare.Extensions;
@@ -48,6 +49,7 @@ public sealed class BrowserFixture : IAsyncLifetime
         builder.Services.AddFlareTheme(new AeroTheme());
         builder.Services.AddFlareTheme(new LiquidGlassTheme());
         builder.Services.AddFlareTheme(new VisualStudioTheme());
+        builder.Services.AddFlareIde();
         _app = builder.Build();
         // Use the same build manifest and RCL assets as a consuming Blazor application.
         _app.MapStaticAssets();

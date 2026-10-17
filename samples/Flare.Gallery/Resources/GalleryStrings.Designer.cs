@@ -4987,6 +4987,24 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Ide_ToolPanel_Desc", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Screens.
+        /// </summary>
+        public static string Ide_ScreensPanel {
+            get {
+                return ResourceManager.GetString("Ide_ScreensPanel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Screen {0}.
+        /// </summary>
+        public static string Ide_ScreenItem {
+            get {
+                return ResourceManager.GetString("Ide_ScreenItem", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Tool Panel.

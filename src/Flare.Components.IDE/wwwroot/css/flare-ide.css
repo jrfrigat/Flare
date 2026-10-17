@@ -48,10 +48,20 @@
     position: relative;
 }
 
+/* The region body stacks its tool panels. Each takes an equal share of the height and scrolls its own content, so
+   a long list in one panel neither stretches the region nor carries the others away; a single panel fills it. */
 .flare-ide-layout__panel-body {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     overflow: auto;
+}
+
+.flare-ide-layout__panel-body > .flare-toolpanel {
+    flex: 1 1 0;
+    min-height: 0;
+    height: auto;
 }
 
 .flare-ide-layout__panel--left {

@@ -79,6 +79,15 @@ app.Run();</pre>
                 </FlarePropertyGridItem>
             </FlarePropertyGrid>
         </FlareToolPanel>
+        @* A second panel in the same region: the two share its height and each scrolls its own content. *@
+        <FlareToolPanel Title="@GalleryStrings.Ide_ScreensPanel" Position="ToolPanelPosition.Right">
+            <FlareList TItem="object" Dense="true">
+                @for (var i = 1; i <= 30; i++)
+                {
+                    <FlareListItem Primary="@string.Format(GalleryStrings.Ide_ScreenItem, i)" />
+                }
+            </FlareList>
+        </FlareToolPanel>
     </RightToolPanel>
 
     <BottomPanel>

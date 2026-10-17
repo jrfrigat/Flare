@@ -753,6 +753,12 @@
   <data name="Ide_ToolPanel_Desc" xml:space="preserve">
     <value>FlareToolPanel - a titled, collapsible dockable panel with an optional header toolbar.</value>
   </data>
+  <data name="Ide_ScreensPanel" xml:space="preserve">
+    <value>Screens</value>
+  </data>
+  <data name="Ide_ScreenItem" xml:space="preserve">
+    <value>Screen {0}</value>
+  </data>
   <data name="Ide_MenuBar_Title" xml:space="preserve">
     <value>Menu Bar</value>
   </data>

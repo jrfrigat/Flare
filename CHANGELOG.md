@@ -27,6 +27,8 @@ All notable changes to Flare are documented here. This project adheres to
   finger or a pen as well as a mouse, offers a 24px grab area around its 5px line and shows a focus ring.
 - Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The
   collapsed rail lists every panel of the region, and the region floats only when all of its panels use auto-hide.
+  The panels share the region's height and each scrolls its own content, so a long list in one of them no longer
+  scrolls the whole region.
 - Closing a dialog returns focus to the element that opened it, also when a field inside the dialog took autofocus.
   When that element is gone, focus moves to its nearest remaining container instead of the page body.
 - Escape in an open select, combobox or menu button inside a dialog closes only that popup and keeps the dialog
