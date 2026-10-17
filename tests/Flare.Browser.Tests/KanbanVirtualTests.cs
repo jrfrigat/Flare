@@ -38,8 +38,19 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
             const list = document.querySelector('[data-flare-drop=""todo""] .flare-kanban__cards');
             list.scrollTop = list.scrollHeight / 2;
         }");
-        await Expect(page.Locator("[data-flare-drag=\"t250\"]")).ToBeAttachedAsync();
-        await page.WaitForTimeoutAsync(300);
+        // Which card ends up in the middle depends on when Virtualize replaced its size estimate with measured
+        // heights, so the test takes whichever card is there. The window re-renders over the circuit after a
+        // scroll; under load that lands late, so wait until the middle card stays the same before measuring it.
+        await page.WaitForFunctionAsync(@"async () => {
+            const list = document.querySelector('[data-flare-drop=""todo""] .flare-kanban__cards');
+            const mid = () => {
+                const r = list.getBoundingClientRect();
+                return document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)?.closest('[data-flare-drag]')?.dataset.flareDrag;
+            };
+            const first = mid();
+            await new Promise(r => setTimeout(r, 250));
+            return first !== undefined && first === mid();
+        }");
 
         // The card in the middle of the column's visible area and a point in its upper half: "before" it.
         var target = await page.EvaluateAsync<double[]>(@"() => {
