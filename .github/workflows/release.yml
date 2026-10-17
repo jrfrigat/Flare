@@ -39,11 +39,15 @@ jobs:
       - name: Build (Release)
         run: dotnet build Flare.slnx -c Release --no-restore
 
-      - name: Install browser for C# tests
-        run: pwsh tests/Flare.Browser.Tests/bin/Release/net10.0/playwright.ps1 install --with-deps chromium
-
-      - name: Test
-        run: dotnet test --solution Flare.slnx -c Release --no-build
+      # The browser suite drives a real Chromium against a live server, so a slow runner can fail it. CI runs it
+      # on every push and pull request; a release publishes a commit CI has already checked, so it runs only the
+      # tests that do not depend on timing: every test project except Flare.Browser.Tests.
+      - name: Test (without the browser suite)
+        run: |
+          for project in tests/*/*.Tests.csproj; do
+            case "$project" in */Flare.Browser.Tests/*) continue ;; esac
+            dotnet test --project "$project" -c Release --no-build
+          done
 
       # The API reference is a generated file that is COMMITTED, so it can rot silently between
       # releases - a parameter added without re-running the generator leaves the published reference
