@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -14,11 +15,11 @@ public sealed record ColorPickerTokens
 {
     /// <summary>Color of the squares in the transparency checkerboard (preview swatch and alpha track).
     /// A subtle neutral that adapts to light/dark mode.</summary>
-    [CssVar(ColorPickerField.CheckerColor)] public string CheckerColor { get; init; } = "var(--flare-color-outline-variant)";
+    [CssVar(ColorPickerField.CheckerColor)] public string CheckerColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
 
     /// <summary>Background of the hue/alpha slider's native thumb - a surface-toned floating knob.</summary>
-    [CssVar(ColorPickerField.ThumbBg)] public string ThumbBg { get; init; } = "var(--flare-color-surface)";
+    [CssVar(ColorPickerField.ThumbBg)] public string ThumbBg { get; init; } = Var(Css.Tokens.Color.Surface);
 
     /// <summary>Border color of the hue/alpha slider's native thumb.</summary>
-    [CssVar(ColorPickerField.ThumbBorderColor)] public string ThumbBorderColor { get; init; } = "var(--flare-color-outline)";
+    [CssVar(ColorPickerField.ThumbBorderColor)] public string ThumbBorderColor { get; init; } = Var(Css.Tokens.Color.Outline);
 }

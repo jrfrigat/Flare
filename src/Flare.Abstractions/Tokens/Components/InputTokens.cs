@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -10,7 +11,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record InputTokens
 {
     /// <summary>Background color of the filled variant control.</summary>
-    [CssVar(InputField.FilledBg)] public string FilledBg { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(InputField.FilledBg)] public string FilledBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHighest);
 
     /// <summary>
     /// Colour of the control-well border on all four sides. The border width is reserved on every variant
@@ -20,11 +21,11 @@ public sealed record InputTokens
     [CssVar(InputField.BorderColor)] public required string BorderColor { get; init; }
 
     /// <summary>Border radius of the control well (rounded-top for the filled variant).</summary>
-    [CssVar(InputField.OutlinedRadius)] public string OutlinedRadius { get; init; } = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0";
+    [CssVar(InputField.OutlinedRadius)] public string OutlinedRadius { get; init; } = $"{Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.ExtraSmall)} 0 0";
 
     /// <summary>Resting bottom-border colour (the filled variant's active indicator). Overrides
     /// <see cref="BorderColor"/> on the bottom edge only.</summary>
-    [CssVar(InputField.BorderBottomColor)] public string BorderBottomColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(InputField.BorderBottomColor)] public string BorderBottomColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
     /// <summary>
     /// Focus indicator drawn as a <c>box-shadow</c> on the field well when focused (mouse or keyboard).
@@ -46,14 +47,14 @@ public sealed record InputTokens
     [CssVar(InputField.FocusOutlineOffset)] public required string FocusOutlineOffset { get; init; }
 
     /// <summary>Hover bottom-border colour.</summary>
-    [CssVar(InputField.HoverBorderBottomColor)] public string HoverBorderBottomColor { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(InputField.HoverBorderBottomColor)] public string HoverBorderBottomColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
 
     /// <summary>Bottom-border colour while the field has focus. It outranks the hover colour, so a
     /// focused field keeps its focus indicator under the pointer.</summary>
     [CssVar(InputField.FocusBorderBottomColor)] public required string FocusBorderBottomColor { get; init; }
 
     /// <summary>Hover state-layer overlay for the filled variant.</summary>
-    [CssVar(InputField.HoverStateLayer)] public string HoverStateLayer { get; init; } = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))";
+    [CssVar(InputField.HoverStateLayer)] public string HoverStateLayer { get; init; } = $"linear-gradient(color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 8%, transparent), color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 8%, transparent))";
 
     /// <summary>Control padding at the extra-small size.</summary>
     [CssVar(InputField.PaddingXs)] public required string PaddingXs { get; init; }
@@ -106,22 +107,22 @@ public sealed record InputTokens
     [CssVar(InputField.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Color of the placeholder text.</summary>
-    [CssVar(InputField.PlaceholderColor)] public string PlaceholderColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(InputField.PlaceholderColor)] public string PlaceholderColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
     /// <summary>Disabled background color.</summary>
-    [CssVar(InputField.DisabledBg)] public string DisabledBg { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)";
+    [CssVar(InputField.DisabledBg)] public string DisabledBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 4%, transparent)";
 
     /// <summary>Disabled border/indicator color.</summary>
-    [CssVar(InputField.DisabledIndicator)] public string DisabledIndicator { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)";
+    [CssVar(InputField.DisabledIndicator)] public string DisabledIndicator { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 38%, transparent)";
 
     /// <summary>Bottom-border color of an errored field on hover.</summary>
-    [CssVar(InputField.ErrorHoverIndicator)] public string ErrorHoverIndicator { get; init; } = "var(--flare-color-on-error-container)";
+    [CssVar(InputField.ErrorHoverIndicator)] public string ErrorHoverIndicator { get; init; } = Var(Css.Tokens.Color.OnErrorContainer);
 
     /// <summary>How far a disabled field's content fades - label, helper, adornments, icons and the
     /// placeholder, plus the numeric stepper. A language that repaints them in a flat palette leaves this
     /// opaque and carries the change in its own stylesheet, since a foreground colour has no value
     /// meaning "leave this as painted".</summary>
-    [CssVar(InputField.DisabledOpacity)] public string DisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(InputField.DisabledOpacity)] public string DisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 
     /// <summary>Border colour on all four sides while the field has focus; the bottom edge follows
     /// <see cref="FocusBorderBottomColor"/>. The resting colour for a theme whose focus leaves the border alone.</summary>
@@ -133,7 +134,7 @@ public sealed record InputTokens
     [CssVar(InputField.ErrorBorderColor)] public required string ErrorBorderColor { get; init; }
 
     /// <summary>Bottom-border colour of a field in the error state.</summary>
-    [CssVar(InputField.ErrorBorderBottomColor)] public string ErrorBorderBottomColor { get; init; } = "var(--flare-color-error)";
+    [CssVar(InputField.ErrorBorderBottomColor)] public string ErrorBorderBottomColor { get; init; } = Var(Css.Tokens.Color.Error);
 
     /// <summary>Focus indicator (<c>box-shadow</c>) of a focused field in the error state, in place of
     /// <see cref="FocusRing"/>.</summary>
@@ -144,13 +145,13 @@ public sealed record InputTokens
     // must not refer to the field's own --flare-input-* variables: the variant class rebinds those.
 
     /// <summary>Well background of a filled field.</summary>
-    [CssVar(InputField.Filled.Bg)] public string FilledVariantBg { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(InputField.Filled.Bg)] public string FilledVariantBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHighest);
     /// <summary>Border colour (all four sides) of a filled field.</summary>
     [CssVar(InputField.Filled.BorderColor)] public required string FilledVariantBorderColor { get; init; }
     /// <summary>Bottom-border colour (the active indicator) of a filled field.</summary>
-    [CssVar(InputField.Filled.BorderBottomColor)] public string FilledVariantBorderBottomColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(InputField.Filled.BorderBottomColor)] public string FilledVariantBorderBottomColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
     /// <summary>Corner radius of a filled field.</summary>
-    [CssVar(InputField.Filled.Radius)] public string FilledVariantRadius { get; init; } = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0";
+    [CssVar(InputField.Filled.Radius)] public string FilledVariantRadius { get; init; } = $"{Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.ExtraSmall)} 0 0";
     /// <summary>Focus indicator (<c>box-shadow</c>) of a filled field.</summary>
     [CssVar(InputField.Filled.FocusRing)] public required string FilledVariantFocusRing { get; init; }
     /// <summary>Border colour (all four sides) of a focused filled field.</summary>
@@ -160,18 +161,18 @@ public sealed record InputTokens
     /// <summary>Border colour (all four sides) of a filled field in the error state.</summary>
     [CssVar(InputField.Filled.ErrorBorderColor)] public required string FilledVariantErrorBorderColor { get; init; }
     /// <summary>Bottom-border colour of a filled field in the error state.</summary>
-    [CssVar(InputField.Filled.ErrorBorderBottomColor)] public string FilledVariantErrorBorderBottomColor { get; init; } = "var(--flare-color-error)";
+    [CssVar(InputField.Filled.ErrorBorderBottomColor)] public string FilledVariantErrorBorderBottomColor { get; init; } = Var(Css.Tokens.Color.Error);
     /// <summary>Focus indicator (<c>box-shadow</c>) of a focused filled field in the error state.</summary>
     [CssVar(InputField.Filled.ErrorFocusRing)] public required string FilledVariantErrorFocusRing { get; init; }
 
     /// <summary>Well background of an outlined field.</summary>
     [CssVar(InputField.Outlined.Bg)] public required string OutlinedVariantBg { get; init; }
     /// <summary>Border colour (all four sides) of an outlined field.</summary>
-    [CssVar(InputField.Outlined.BorderColor)] public string OutlinedVariantBorderColor { get; init; } = "var(--flare-color-outline)";
+    [CssVar(InputField.Outlined.BorderColor)] public string OutlinedVariantBorderColor { get; init; } = Var(Css.Tokens.Color.Outline);
     /// <summary>Bottom-border colour of an outlined field.</summary>
-    [CssVar(InputField.Outlined.BorderBottomColor)] public string OutlinedVariantBorderBottomColor { get; init; } = "var(--flare-color-outline)";
+    [CssVar(InputField.Outlined.BorderBottomColor)] public string OutlinedVariantBorderBottomColor { get; init; } = Var(Css.Tokens.Color.Outline);
     /// <summary>Corner radius of an outlined field.</summary>
-    [CssVar(InputField.Outlined.Radius)] public string OutlinedVariantRadius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(InputField.Outlined.Radius)] public string OutlinedVariantRadius { get; init; } = Var(Css.Tokens.Shape.ExtraSmall);
     /// <summary>Focus indicator (<c>box-shadow</c>) of an outlined field.</summary>
     [CssVar(InputField.Outlined.FocusRing)] public required string OutlinedVariantFocusRing { get; init; }
     /// <summary>Border colour (all four sides) of a focused outlined field.</summary>
@@ -179,9 +180,9 @@ public sealed record InputTokens
     /// <summary>Bottom-border colour of a focused outlined field.</summary>
     [CssVar(InputField.Outlined.FocusBorderBottomColor)] public required string OutlinedVariantFocusBorderBottomColor { get; init; }
     /// <summary>Border colour (all four sides) of an outlined field in the error state.</summary>
-    [CssVar(InputField.Outlined.ErrorBorderColor)] public string OutlinedVariantErrorBorderColor { get; init; } = "var(--flare-color-error)";
+    [CssVar(InputField.Outlined.ErrorBorderColor)] public string OutlinedVariantErrorBorderColor { get; init; } = Var(Css.Tokens.Color.Error);
     /// <summary>Bottom-border colour of an outlined field in the error state.</summary>
-    [CssVar(InputField.Outlined.ErrorBorderBottomColor)] public string OutlinedVariantErrorBorderBottomColor { get; init; } = "var(--flare-color-error)";
+    [CssVar(InputField.Outlined.ErrorBorderBottomColor)] public string OutlinedVariantErrorBorderBottomColor { get; init; } = Var(Css.Tokens.Color.Error);
     /// <summary>Focus indicator (<c>box-shadow</c>) of a focused outlined field in the error state.</summary>
     [CssVar(InputField.Outlined.ErrorFocusRing)] public required string OutlinedVariantErrorFocusRing { get; init; }
 

@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareCollapse</c> (a standalone expandable region).
@@ -14,27 +15,27 @@ public sealed record CollapseTokens
     /// at <c>transparent</c>.</summary>
     [CssVar(CollapseField.HeaderBg)] public required string HeaderBg { get; init; }
     /// <summary>Foreground of the header.</summary>
-    [CssVar(CollapseField.HeaderColor)] public string HeaderColor { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(CollapseField.HeaderColor)] public string HeaderColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
     /// <summary>Corner radius of the header, which carries the hover shape since the control has no
     /// container of its own.</summary>
-    [CssVar(CollapseField.HeaderRadius)] public string HeaderRadius { get; init; } = "var(--flare-shape-small)";
+    [CssVar(CollapseField.HeaderRadius)] public string HeaderRadius { get; init; } = Var(Css.Tokens.Shape.Small);
     /// <summary>Space above and below the header's content.</summary>
-    [CssVar(CollapseField.HeaderPaddingBlock)] public string HeaderPaddingBlock { get; init; } = "var(--flare-spacing-6)";
+    [CssVar(CollapseField.HeaderPaddingBlock)] public string HeaderPaddingBlock { get; init; } = Var(Css.Tokens.Spacing.S6);
     /// <summary>Space between the header's side edges and its content.</summary>
-    [CssVar(CollapseField.HeaderPaddingInline)] public string HeaderPaddingInline { get; init; } = "var(--flare-spacing-8)";
+    [CssVar(CollapseField.HeaderPaddingInline)] public string HeaderPaddingInline { get; init; } = Var(Css.Tokens.Spacing.S8);
     /// <summary>Space between the parts of the header's inline content (icons, badges, the title).</summary>
-    [CssVar(CollapseField.HeaderGap)] public string HeaderGap { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(CollapseField.HeaderGap)] public string HeaderGap { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Font family of the header. Each theme decides which step of its own type scale a
     /// standalone expander maps to.</summary>
-    [CssVar(CollapseField.HeaderLabelFont)] public string HeaderLabelFont { get; init; } = "var(--flare-typescale-title-small-font)";
+    [CssVar(CollapseField.HeaderLabelFont)] public string HeaderLabelFont { get; init; } = Var(Css.Tokens.Typography.TitleSmall.Font);
     /// <summary>Font size of the header.</summary>
-    [CssVar(CollapseField.HeaderLabelSize)] public string HeaderLabelSize { get; init; } = "var(--flare-typescale-title-small-size)";
+    [CssVar(CollapseField.HeaderLabelSize)] public string HeaderLabelSize { get; init; } = Var(Css.Tokens.Typography.TitleSmall.Size);
     /// <summary>Font weight of the header.</summary>
-    [CssVar(CollapseField.HeaderLabelWeight)] public string HeaderLabelWeight { get; init; } = "var(--flare-typescale-title-small-weight)";
+    [CssVar(CollapseField.HeaderLabelWeight)] public string HeaderLabelWeight { get; init; } = Var(Css.Tokens.Typography.TitleSmall.Weight);
     /// <summary>How far a disabled header fades. A language that repaints disabled headers in a flat
     /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
     /// colour has no value meaning "leave this as painted".</summary>
-    [CssVar(CollapseField.HeaderDisabledOpacity)] public string HeaderDisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(CollapseField.HeaderDisabledOpacity)] public string HeaderDisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
     /// <summary>Foreground of the chevron that turns as the region expands.</summary>
-    [CssVar(CollapseField.IconColor)] public string IconColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(CollapseField.IconColor)] public string IconColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 }

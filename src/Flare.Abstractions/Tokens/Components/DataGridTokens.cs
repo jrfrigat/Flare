@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -37,22 +38,22 @@ public sealed record DataGridTokens
     [CssVar(DataGridField.TreeToggleSize)] public required string TreeToggleSize { get; init; }
 
     /// <summary>Font size of a composite-column secondary label.</summary>
-    [CssVar(DataGridField.CompositeLabelSize)] public string CompositeLabelSize { get; init; } = "var(--flare-typescale-label-small-size)";
+    [CssVar(DataGridField.CompositeLabelSize)] public string CompositeLabelSize { get; init; } = Var(Css.Tokens.Typography.LabelSmall.Size);
 
     /// <summary>Width of the column resize handle.</summary>
     [CssVar(DataGridField.ResizeHandleWidth)] public required string ResizeHandleWidth { get; init; }
 
     /// <summary>Width of the divider between records in card mode.</summary>
-    [CssVar(DataGridField.RecordDividerWidth)] public string RecordDividerWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(DataGridField.RecordDividerWidth)] public string RecordDividerWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Width of the aggregate-row divider.</summary>
-    [CssVar(DataGridField.AggregateDividerWidth)] public string AggregateDividerWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(DataGridField.AggregateDividerWidth)] public string AggregateDividerWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Width of the filter-group accent rail.</summary>
     [CssVar(DataGridField.FilterGroupRail)] public required string FilterGroupRail { get; init; }
 
     /// <summary>Focus outline of the active (keyboard) cell.</summary>
-    [CssVar(DataGridField.ActiveCellOutline)] public string ActiveCellOutline { get; init; } = "var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-primary)";
+    [CssVar(DataGridField.ActiveCellOutline)] public string ActiveCellOutline { get; init; } = $"{Var(Css.Tokens.Border.WidthEmphasis)} {Var(Css.Tokens.Border.Style)} {Var(Css.Tokens.Color.Primary)}";
 
     /// <summary>Minimum width of the column-picker dropdown.</summary>
     [CssVar(DataGridField.ColumnPickerMinWidth)] public required string ColumnPickerMinWidth { get; init; }
@@ -65,7 +66,7 @@ public sealed record DataGridTokens
     /// it marks an extent being worked on rather than a chosen record - and one token for both would
     /// assert they are the same thing, leaving no way to tell them apart in a grid that does both.
     /// </remarks>
-    [CssVar(DataGridField.RangeLayer)] public string RangeLayer { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)";
+    [CssVar(DataGridField.RangeLayer)] public string RangeLayer { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 14%, transparent)";
 
     /// <summary>Tint percentage for the row currently being edited.</summary>
     [CssVar(DataGridField.RowEditingPct)] public required string RowEditingPct { get; init; }

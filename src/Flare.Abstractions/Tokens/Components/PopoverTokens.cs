@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -11,13 +12,13 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record PopoverTokens
 {
     /// <summary>Corner radius shared by all popover-like surfaces.</summary>
-    [CssVar(PopoverPopup.Radius)] public string Radius { get; init; } = "var(--flare-shape-medium)";
+    [CssVar(PopoverPopup.Radius)] public string Radius { get; init; } = Var(Css.Tokens.Shape.Medium);
     /// <summary>Distance between a popover and its anchor (a CSS length).</summary>
-    [CssVar(PopoverPopup.Offset)] public string Offset { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(PopoverPopup.Offset)] public string Offset { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Background of the popover panel and its arrow.</summary>
-    [CssVar(PopoverPopup.Bg)] public string Bg { get; init; } = "var(--flare-color-surface-container)";
+    [CssVar(PopoverPopup.Bg)] public string Bg { get; init; } = Var(Css.Tokens.Color.SurfaceContainer);
     /// <summary>Text color of the popover panel.</summary>
-    [CssVar(PopoverPopup.Color)] public string Color { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(PopoverPopup.Color)] public string Color { get; init; } = Var(Css.Tokens.Color.OnSurface);
     /// <summary>Shadow (<c>box-shadow</c>) of the popover panel; <c>none</c> for a flat one.</summary>
-    [CssVar(PopoverPopup.Shadow)] public string Shadow { get; init; } = "var(--flare-elevation-2)";
+    [CssVar(PopoverPopup.Shadow)] public string Shadow { get; init; } = Var(Css.Tokens.Elevation.Level2);
 }

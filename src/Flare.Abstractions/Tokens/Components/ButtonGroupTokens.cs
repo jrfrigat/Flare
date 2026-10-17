@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -24,15 +25,15 @@ public sealed record ButtonGroupTokens
 {
     /// <summary>Space between the separate buttons of a STANDARD group at the xs size. This is the only
     /// geometry the group contributes to that model - the corners belong to the buttons.</summary>
-    [CssVar(ButtonGroup.StandardGap.Xs)] public string StandardGapXs { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(ButtonGroup.StandardGap.Xs)] public string StandardGapXs { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Space between the separate buttons of a STANDARD group at the sm size.</summary>
-    [CssVar(ButtonGroup.StandardGap.Sm)] public string StandardGapSm { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(ButtonGroup.StandardGap.Sm)] public string StandardGapSm { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Space between the separate buttons of a STANDARD group at the md size.</summary>
-    [CssVar(ButtonGroup.StandardGap.Md)] public string StandardGapMd { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(ButtonGroup.StandardGap.Md)] public string StandardGapMd { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Space between the separate buttons of a STANDARD group at the lg size.</summary>
-    [CssVar(ButtonGroup.StandardGap.Lg)] public string StandardGapLg { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(ButtonGroup.StandardGap.Lg)] public string StandardGapLg { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Space between the separate buttons of a STANDARD group at the xl size.</summary>
-    [CssVar(ButtonGroup.StandardGap.Xl)] public string StandardGapXl { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(ButtonGroup.StandardGap.Xl)] public string StandardGapXl { get; init; } = Var(Css.Tokens.Spacing.S4);
 
     /// <summary>Space between the segments of a CONNECTED group. <c>0</c> makes them touch; a small
     /// positive value leaves a visible seam without breaking the control into separate buttons.</summary>
@@ -46,12 +47,12 @@ public sealed record ButtonGroupTokens
     /// <summary>CONNECTED outer (leading/trailing group-end) corner radius - the shape of the control as
     /// a whole. May be a size-adaptive capsule (<c>calc(var(--_flare-btn-height) / 2)</c>), since the
     /// button's size class supplies that height.</summary>
-    [CssVar(ButtonGroup.ConnectedOuterRadius)] public string ConnectedOuterRadius { get; init; } = "var(--flare-shape-small)";
+    [CssVar(ButtonGroup.ConnectedOuterRadius)] public string ConnectedOuterRadius { get; init; } = Var(Css.Tokens.Shape.Small);
 
     /// <summary>Corner radius a SELECTED segment of a CONNECTED group takes. Material makes it fully
     /// round, which is the same capsule arithmetic the outer radius uses; a theme that signals selection
     /// with colour alone points this at its inner radius instead.</summary>
-    [CssVar(ButtonGroup.ConnectedSelectedRadius)] public string ConnectedSelectedRadius { get; init; } = "var(--flare-shape-small)";
+    [CssVar(ButtonGroup.ConnectedSelectedRadius)] public string ConnectedSelectedRadius { get; init; } = Var(Css.Tokens.Shape.Small);
 
     /// <summary>CONNECTED inner (interior seam) corner radius at the xs size. <c>0</c> = flat/segmented;
     /// a shape token = softened seams.</summary>

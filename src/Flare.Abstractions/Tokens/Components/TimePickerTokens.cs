@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Design tokens for timepicker - component-specific geometry read by timepicker.css.</summary>
@@ -36,10 +37,10 @@ public sealed record TimePickerTokens
     [CssVar(TimePickerField.DisplaySize)] public required string DisplaySize { get; init; }
 
     /// <summary>Headline Tracking.</summary>
-    [CssVar(TimePickerField.HeadlineTracking)] public string HeadlineTracking { get; init; } = "var(--flare-typescale-label-medium-spacing)";
+    [CssVar(TimePickerField.HeadlineTracking)] public string HeadlineTracking { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Spacing);
 
     /// <summary>Panel Radius.</summary>
-    [CssVar(TimePickerField.PanelRadius)] public string PanelRadius { get; init; } = "var(--flare-shape-extra-large)";
+    [CssVar(TimePickerField.PanelRadius)] public string PanelRadius { get; init; } = Var(Css.Tokens.Shape.ExtraLarge);
 
     /// <summary>Time Sep Size.</summary>
     [CssVar(TimePickerField.TimeSepSize)] public required string TimeSepSize { get; init; }

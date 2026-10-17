@@ -21,6 +21,11 @@ public class FluentUI2Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
+        WeightMedium = "500",
+        WeightBold = "700",
+        TrackingWide = "0.05em",
+        Size2Xs = "0.5625rem",
+        SizeXs = "0.625rem",
         DisplayLarge = T("Segoe UI", "600", "2.5rem", "3.25rem", "0em"),     // largeTitle 40/52
         DisplayMedium = T("Segoe UI", "600", "2rem", "2.5rem", "0em"),       // title1 32/40
         DisplaySmall = T("Segoe UI", "600", "1.75rem", "2.25rem", "0em"),    // title2 28/36
@@ -181,9 +186,6 @@ public class FluentUI2Tokens
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
-        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
-        LabelSizeXs = "0.5625rem",
-        LabelSizeSm = "0.625rem",
         Offset = "0.375rem",
     };
 
@@ -201,9 +203,6 @@ public class FluentUI2Tokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
-        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthLg = "1px",
-        OutlineWidthXl = "1px",
         // Fluent does not tighten a subtle button: the ladder matches the contained one.
         TextPaddingInlineXs = "0.375rem",
         TextPaddingInlineSm = "0.5rem",
@@ -544,8 +543,6 @@ public class FluentUI2Tokens
         ActiveWeight = "600",
         HoverBgOpacity = "40%",
         LineHeight = "1.4",
-        TitleTracking = "0.05em",
-        TitleWeight = "600",
         ActiveColor = "var(--flare-color-primary)",
         TitleColor = "var(--flare-color-on-surface)",
         RailColor = "var(--flare-color-outline-variant)",
@@ -1112,8 +1109,6 @@ public class FluentUI2Tokens
         BorderColor = "var(--flare-color-surface-variant)",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
         IconSize = "1.5rem",
-        LabelFontWeight = "500",
-        LabelFontWeightActive = "700",
         IndicatorSize = "2rem",
         IndicatorWidth = "0",
         ItemGap = "var(--flare-spacing-1)",
@@ -1278,7 +1273,6 @@ public class FluentUI2Tokens
         CellWidth = "2.75rem",
         FocusRingWidth = "2px",
         FontSize = "1.25rem",
-        FontWeight = "600",
     };
 
     internal static readonly PickerTokens Picker = new()

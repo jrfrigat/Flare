@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -28,13 +29,13 @@ public sealed record CalendarTokens
     [CssVar(Calendar.DayNumSize)] public required string DayNumSize { get; init; }
 
     /// <summary>Background of the "today" day marker.</summary>
-    [CssVar(Calendar.TodayBg)] public string TodayBg { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Calendar.TodayBg)] public string TodayBg { get; init; } = Var(Css.Tokens.Color.Primary);
 
     /// <summary>Foreground of the "today" day marker.</summary>
-    [CssVar(Calendar.TodayColor)] public string TodayColor { get; init; } = "var(--flare-color-on-primary)";
+    [CssVar(Calendar.TodayColor)] public string TodayColor { get; init; } = Var(Css.Tokens.Color.OnPrimary);
 
     /// <summary>Background of a selected day cell.</summary>
-    [CssVar(Calendar.SelectedBg)] public string SelectedBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))";
+    [CssVar(Calendar.SelectedBg)] public string SelectedBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 16%, {Var(Css.Tokens.Color.Surface)})";
 
     /// <summary>Opacity applied to days belonging to an adjacent month.</summary>
     [CssVar(Calendar.OtherMonthOpacity)] public required string OtherMonthOpacity { get; init; }

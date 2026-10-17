@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -33,7 +34,7 @@ public sealed record SwitchTokens
     [CssVar(SwitchField.TrackHeight.Xl)] public required string TrackHeightXl { get; init; }
 
     /// <summary>Track background when off.</summary>
-    [CssVar(SwitchField.TrackOffBg)] public string TrackOffBg { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(SwitchField.TrackOffBg)] public string TrackOffBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHighest);
 
     /// <summary>Track background when on.</summary>
     [CssVar(SwitchField.TrackOnBg)] public required string TrackOnBg { get; init; }
@@ -42,7 +43,7 @@ public sealed record SwitchTokens
     [CssVar(SwitchField.TrackBorder)] public required string TrackBorder { get; init; }
 
     /// <summary>Track border color on hover.</summary>
-    [CssVar(SwitchField.TrackHoverBorderColor)] public string TrackHoverBorderColor { get; init; } = "var(--flare-color-outline)";
+    [CssVar(SwitchField.TrackHoverBorderColor)] public string TrackHoverBorderColor { get; init; } = Var(Css.Tokens.Color.Outline);
 
     /// <summary>Thumb diameter when off, at the xs size.</summary>
     [CssVar(SwitchField.ThumbOffSize.Xs)] public required string ThumbOffSizeXs { get; init; }
@@ -111,25 +112,25 @@ public sealed record SwitchTokens
     [CssVar(SwitchField.ThumbOnLeft.Xl)] public required string ThumbOnLeftXl { get; init; }
 
     /// <summary>Thumb color when off.</summary>
-    [CssVar(SwitchField.ThumbOffColor)] public string ThumbOffColor { get; init; } = "var(--flare-color-outline)";
+    [CssVar(SwitchField.ThumbOffColor)] public string ThumbOffColor { get; init; } = Var(Css.Tokens.Color.Outline);
 
     /// <summary>Thumb color when on.</summary>
-    [CssVar(SwitchField.ThumbOnColor)] public string ThumbOnColor { get; init; } = "var(--flare-color-on-primary)";
+    [CssVar(SwitchField.ThumbOnColor)] public string ThumbOnColor { get; init; } = Var(Css.Tokens.Color.OnPrimary);
 
     /// <summary>Thumb color in the off hover/pressed state layer.</summary>
-    [CssVar(SwitchField.ThumbStateOffColor)] public string ThumbStateOffColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(SwitchField.ThumbStateOffColor)] public string ThumbStateOffColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
     /// <summary>Thumb color in the on hover/pressed state layer.</summary>
-    [CssVar(SwitchField.ThumbStateOnColor)] public string ThumbStateOnColor { get; init; } = "var(--flare-color-primary-container)";
+    [CssVar(SwitchField.ThumbStateOnColor)] public string ThumbStateOnColor { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
 
     /// <summary>Thumb icon size.</summary>
     [CssVar(SwitchField.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Thumb icon color when off.</summary>
-    [CssVar(SwitchField.IconOffColor)] public string IconOffColor { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(SwitchField.IconOffColor)] public string IconOffColor { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHighest);
 
     /// <summary>Thumb icon color when on.</summary>
-    [CssVar(SwitchField.IconOnColor)] public string IconOnColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(SwitchField.IconOnColor)] public string IconOnColor { get; init; } = Var(Css.Tokens.Color.Primary);
 
     /// <summary>Focus outline (shorthand).</summary>
     [CssVar(SwitchField.FocusOutline)] public required string FocusOutline { get; init; }
@@ -159,11 +160,11 @@ public sealed record SwitchTokens
     [CssVar(SwitchField.HoverShadowOn)] public required string HoverShadowOn { get; init; }
 
     /// <summary>Disabled track background.</summary>
-    [CssVar(SwitchField.DisabledTrackBg)] public string DisabledTrackBg { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)";
+    [CssVar(SwitchField.DisabledTrackBg)] public string DisabledTrackBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 12%, transparent)";
 
     /// <summary>Disabled track border color.</summary>
-    [CssVar(SwitchField.DisabledTrackBorder)] public string DisabledTrackBorder { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)";
+    [CssVar(SwitchField.DisabledTrackBorder)] public string DisabledTrackBorder { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 12%, transparent)";
 
     /// <summary>Disabled thumb (handle) background.</summary>
-    [CssVar(SwitchField.DisabledHandleBg)] public string DisabledHandleBg { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)";
+    [CssVar(SwitchField.DisabledHandleBg)] public string DisabledHandleBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 38%, transparent)";
 }

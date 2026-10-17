@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -13,12 +14,12 @@ public sealed record StepperTokens
     /// <summary>Focus ring thickness.</summary>
     [CssVar(Stepper.FocusRingThickness)] public required string FocusRingThickness { get; init; }
     /// <summary>Focus ring color.</summary>
-    [CssVar(Stepper.FocusRingColor)] public string FocusRingColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Stepper.FocusRingColor)] public string FocusRingColor { get; init; } = Var(Css.Tokens.Color.Primary);
     /// <summary>Diameter of the step indicator circle.</summary>
     [CssVar(Stepper.CircleSize)] public required string CircleSize { get; init; }
 
     /// <summary>Border width of the step circle (upcoming / error states).</summary>
-    [CssVar(Stepper.CircleBorderWidth)] public string CircleBorderWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(Stepper.CircleBorderWidth)] public string CircleBorderWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Glyph size of an icon rendered inside the step circle.</summary>
     [CssVar(Stepper.CircleIconSize)] public required string CircleIconSize { get; init; }
@@ -30,10 +31,10 @@ public sealed record StepperTokens
     [CssVar(Stepper.ConnectorMinLength)] public required string ConnectorMinLength { get; init; }
 
     /// <summary>Color of an incomplete connector.</summary>
-    [CssVar(Stepper.ConnectorColor)] public string ConnectorColor { get; init; } = "var(--flare-color-outline-variant)";
+    [CssVar(Stepper.ConnectorColor)] public string ConnectorColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
 
     /// <summary>Color of a completed connector.</summary>
-    [CssVar(Stepper.ConnectorActiveColor)] public string ConnectorActiveColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Stepper.ConnectorActiveColor)] public string ConnectorActiveColor { get; init; } = Var(Css.Tokens.Color.Primary);
 
     /// <summary>Minimum width reserved for each step (keeps labels from crowding).</summary>
     [CssVar(Stepper.StepMinWidth)] public required string StepMinWidth { get; init; }

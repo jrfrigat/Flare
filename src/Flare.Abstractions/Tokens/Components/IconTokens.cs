@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Design tokens for icon - the motion of a glyph swap, read by icon.css.</summary>
@@ -10,7 +11,7 @@ public sealed record IconTokens
     /// icon change as a repaint rather than a transition parks this at an instant, which makes every swap
     /// immediate without any call site opting out.
     /// </summary>
-    [CssVar(Icon.MorphDuration)] public string MorphDuration { get; init; } = "var(--flare-motion-duration-spring-fast)";
+    [CssVar(Icon.MorphDuration)] public string MorphDuration { get; init; } = Var(Css.Tokens.Motion.DurationSpringFast);
 
     /// <summary>
     /// Curve of the glyph's MOVEMENT over the span of <see cref="MorphDuration"/> - the scale or rotation
@@ -21,7 +22,7 @@ public sealed record IconTokens
     /// The split is what makes a spring usable here: a spring overshoots, and an opacity driven past its
     /// endpoint finishes early, which turns the hand-off between the two glyphs into a pop.
     /// </remarks>
-    [CssVar(Icon.MorphEasing)] public string MorphEasing { get; init; } = "var(--flare-motion-easing-spring-fast)";
+    [CssVar(Icon.MorphEasing)] public string MorphEasing { get; init; } = Var(Css.Tokens.Motion.EasingSpringFast);
 
     /// <summary>
     /// Scale factor the glyph travels from and to in the scale morph mode: the incoming glyph grows from it,

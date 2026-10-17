@@ -20,6 +20,11 @@ internal class VisualStudioTokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
+        WeightMedium = "500",
+        WeightBold = "700",
+        TrackingWide = "0.05em",
+        Size2Xs = "0.5625rem",
+        SizeXs = "0.625rem",
         DisplayLarge = T("600", "2.125rem", "2.75rem"),
         DisplayMedium = T("600", "1.625rem", "2.125rem"),
         DisplaySmall = T("600", "1.3125rem", "1.75rem"),
@@ -167,14 +172,7 @@ internal class VisualStudioTokens
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
-        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
-        LabelSizeXs = "0.5625rem",
-        LabelSizeSm = "0.625rem",
-        LabelSizeMd = "var(--flare-typescale-label-small-size)",
-        LabelSizeLg = "var(--flare-typescale-label-medium-size)",
-        LabelSizeXl = "var(--flare-typescale-label-large-size)",
         Offset = "0.375rem",
-        DotOffset = "0",
     };
 
     internal static readonly AlertTokens Alert = new()
@@ -190,13 +188,6 @@ internal class VisualStudioTokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
-        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthXs = "1px",
-        OutlineWidthSm = "1px",
-        OutlineWidthMd = "1px",
-        OutlineWidthLg = "1px",
-        OutlineWidthXl = "1px",
-        ContainerRadius = "var(--flare-shape-full)",
         // Tighter than the contained ladder at every size - a toolbar button hugs its label.
         TextPaddingInlineXs = "0.375rem",
         TextPaddingInlineSm = "0.5rem",
@@ -236,19 +227,12 @@ internal class VisualStudioTokens
         SelectedRadiusMd = "var(--flare-shape-small)",
         SelectedRadiusLg = "var(--flare-shape-medium)",
         SelectedRadiusXl = "var(--flare-shape-large)",
-        SelectedRadiusSquare = "var(--flare-shape-none)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         // Selection is the accent here, whatever the variant: this language does not send each variant
         // somewhere different the way Material does, it just says "on" in the accent colour. The one
         // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
         // secondary-container would be indistinguishable from an unselected one, which is exactly what
         // happened when these four pairs were first filled in - so every variant travels to the accent,
         // and the filled toggle starts from a neutral container rather than from the accent it ends on.
-        ElevatedSelectedBg = "var(--flare-color-primary)",
-        ElevatedSelectedColor = "var(--flare-color-on-primary)",
-        FilledSelectedBg = "var(--flare-color-primary)",
-        FilledSelectedColor = "var(--flare-color-on-primary)",
         TonalSelectedBg = "var(--flare-color-primary)",
         TonalSelectedColor = "var(--flare-color-on-primary)",
         OutlinedSelectedBg = "var(--flare-color-primary)",
@@ -370,7 +354,7 @@ internal class VisualStudioTokens
         DisabledOpacity = "1",
     };
 
-    internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelColor = "var(--flare-color-on-surface-variant)", LabelFont = "var(--flare-typescale-label-large-font)", LabelWeight = "inherit", LabelSpacing = "normal", LabelSizeXs = "var(--flare-typescale-label-small-size)", LabelSizeSm = "var(--flare-typescale-label-small-size)", LabelSizeMd = "var(--flare-typescale-label-large-size)", LabelSizeLg = "var(--flare-typescale-title-small-size)", LabelSizeXl = "var(--flare-typescale-title-medium-size)", Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-4)", PaddingInlineSm = "var(--flare-spacing-5)", PaddingInlineMd = "var(--flare-spacing-8)", PaddingInlineLg = "var(--flare-spacing-10)", PaddingInlineXl = "var(--flare-spacing-12)" };
+    internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelWeight = "inherit", LabelSpacing = "normal", Height = "2rem", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
 
     // VS 2026 document tabs: thin top accent line, neutral strip, the active tab fills with the
     // editor surface. The full document-tab look (gap, top accent, hover) is finished in the
@@ -381,23 +365,14 @@ internal class VisualStudioTokens
         IconSize = "1.25rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
-        LabelFont = "var(--flare-typescale-label-large-font)",
-        LabelSize = "var(--flare-typescale-label-large-size)",
-        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
-        LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
-        ActiveColor = "var(--flare-color-primary)",
         // The IDE's own tab rail is already 2dp, so a subordinate strip separates itself by dropping
         // the accent label rather than by getting thinner still.
         SecondaryIndicatorThickness = "2px",
-        SecondaryActiveColor = "var(--flare-color-on-surface)",
-        InactiveColor = "var(--flare-color-on-surface-variant)",
         DividerColor = "var(--flare-color-outline-variant)",
         SelectedBg = "var(--flare-color-surface)",
         SelectedFg = "var(--flare-color-on-surface)",
-        FilledBg = "var(--flare-color-primary)",
-        FilledFg = "var(--flare-color-on-primary)",
         TrackBg = "var(--flare-color-surface-container)",
         PillRadius = "var(--flare-shape-small)",
         TabDisabledOpacity = "1",
@@ -424,7 +399,6 @@ internal class VisualStudioTokens
         HandleRadius = "var(--flare-shape-full, 9999px)",
         HandleBorderWidth = "1px",
         HandleFill = "var(--flare-color-surface)",
-        ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-outline-variant)",
         StateLayerSize = "24px",
         StateHoverOpacity = "0.06",
@@ -432,7 +406,6 @@ internal class VisualStudioTokens
         FocusOutline = "none",
         FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-outline)",
-        StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
     };
 
@@ -470,7 +443,6 @@ internal class VisualStudioTokens
     {
         ElevatedBg = "var(--flare-color-surface)",
         FilledBg = "var(--flare-color-surface)",
-        OutlinedBg = "var(--flare-color-surface)",
         OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
         TonalBg = "var(--flare-color-surface-container-high)",
         Radius = "var(--flare-shape-small)",
@@ -518,7 +490,6 @@ internal class VisualStudioTokens
     {
         // Centred content: the ramp follows the indicator sizes, so a label dropped into the
         // smallest ring still fits it.
-        ContentColor = "var(--flare-color-on-surface)",
         ContentSizeXs = "0.5rem",
         ContentSizeSm = "0.625rem",
         ContentSizeMd = "0.75rem",
@@ -546,16 +517,11 @@ internal class VisualStudioTokens
         ActiveWeight = "600",
         BadgeWeight = "600",
         RailLabelLineHeight = "1.15",
-        ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
         // The selected item is marked with a left accent bar and no pill (ActiveIndicator is none), so
         // the label is read against the panel surface.
         ActiveColor = "var(--flare-color-on-surface)",
-        ItemColor = "var(--flare-color-on-surface-variant)",
-        ItemHoverColor = "var(--flare-color-on-surface)",
-        GroupColor = "var(--flare-color-on-surface-variant)",
-        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "2px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
         IconSize = "1.25rem",

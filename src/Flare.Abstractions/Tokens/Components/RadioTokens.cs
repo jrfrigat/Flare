@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareRadio</c> (ring + state-layer).</summary>
@@ -28,10 +29,10 @@ public sealed record RadioTokens
     /// size it chose.</summary>
     [CssVar(Radio.StateLayerSize)] public required string StateLayerSize { get; init; }
     /// <summary>Background of the state-layer halo on hover while unselected.</summary>
-    [CssVar(Radio.StateLayerHover)] public string StateLayerHover { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)";
+    [CssVar(Radio.StateLayerHover)] public string StateLayerHover { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 8%, transparent)";
 
     /// <summary>State-layer background on hover when selected (accent tint).</summary>
-    [CssVar(Radio.StateLayerHoverChecked)] public string StateLayerHoverChecked { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)";
+    [CssVar(Radio.StateLayerHoverChecked)] public string StateLayerHoverChecked { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 8%, transparent)";
 
     /// <summary>Focus-visible outline shorthand drawn around the ring.</summary>
     /// <remarks>
@@ -50,5 +51,5 @@ public sealed record RadioTokens
     /// a fraction; one that repaints it in a flat palette leaves it opaque and carries the change in its own
     /// stylesheet - the indicator has no spare layer to take a fill, and neither `color` nor `border-color`
     /// has a value meaning "leave this alone".</summary>
-    [CssVar(Radio.DisabledOpacity)] public string DisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(Radio.DisabledOpacity)] public string DisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 }

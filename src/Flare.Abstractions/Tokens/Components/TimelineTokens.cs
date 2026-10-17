@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -14,19 +15,19 @@ public sealed record TimelineTokens
     [CssVar(Timeline.DotSize)] public required string DotSize { get; init; }
 
     /// <summary>Background fill of the node dot.</summary>
-    [CssVar(Timeline.DotBg)] public string DotBg { get; init; } = "var(--flare-color-surface)";
+    [CssVar(Timeline.DotBg)] public string DotBg { get; init; } = Var(Css.Tokens.Color.Surface);
 
     /// <summary>Border width of the node dot.</summary>
-    [CssVar(Timeline.DotBorderWidth)] public string DotBorderWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(Timeline.DotBorderWidth)] public string DotBorderWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Glyph size of an icon rendered inside the node dot.</summary>
     [CssVar(Timeline.DotIconSize)] public required string DotIconSize { get; init; }
 
     /// <summary>Thickness of the connector line between nodes.</summary>
-    [CssVar(Timeline.LineWidth)] public string LineWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(Timeline.LineWidth)] public string LineWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Color of the connector line between nodes.</summary>
-    [CssVar(Timeline.LineColor)] public string LineColor { get; init; } = "var(--flare-color-outline-variant)";
+    [CssVar(Timeline.LineColor)] public string LineColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
 
     /// <summary>Width of the connector column (dot + line).</summary>
     [CssVar(Timeline.ConnectorWidth)] public required string ConnectorWidth { get; init; }

@@ -1,12 +1,13 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Design tokens for picker - component-specific geometry read by picker.css.</summary>
 public sealed record PickerTokens
 {
     /// <summary>Padding of a floating calendar panel; inline calendars keep their own flow spacing.</summary>
-    [CssVar(PickerField.CalendarPanelPadding)] public string CalendarPanelPadding { get; init; } = "0 var(--flare-spacing-6)";
+    [CssVar(PickerField.CalendarPanelPadding)] public string CalendarPanelPadding { get; init; } = $"0 {Var(Css.Tokens.Spacing.S6)}";
     /// <summary>Gap below the month navigation header.</summary>
     [CssVar(PickerField.HeaderGap)] public required string HeaderGap { get; init; }
     /// <summary>Height of text actions in date and date-time picker footers.</summary>
@@ -25,7 +26,7 @@ public sealed record PickerTokens
     [CssVar(PickerField.OutsideOpacity)] public required string OutsideOpacity { get; init; }
 
     /// <summary>Disabled Opacity.</summary>
-    [CssVar(PickerField.DisabledOpacity)] public string DisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(PickerField.DisabledOpacity)] public string DisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 
     /// <summary>Week-number column opacity (the leading week-of-year cells in the calendar grid).</summary>
     [CssVar(PickerField.WeekNumberOpacity)] public required string WeekNumberOpacity { get; init; }
@@ -37,18 +38,18 @@ public sealed record PickerTokens
     [CssVar(PickerField.PanelMinWidth)] public required string PanelMinWidth { get; init; }
 
     /// <summary>Corner radius of the date and date-time picker panels.</summary>
-    [CssVar(PickerField.PanelRadius)] public string PanelRadius { get; init; } = "var(--flare-shape-large)";
+    [CssVar(PickerField.PanelRadius)] public string PanelRadius { get; init; } = Var(Css.Tokens.Shape.Large);
 
     /// <summary>Background of the date, time and date-time picker panels, including each pane of a
     /// split date-time picker. Its own surface rather than the popover's: a design language may raise a
     /// picker above the menus and popovers beside it.</summary>
-    [CssVar(PickerField.PanelBg)] public string PanelBg { get; init; } = "var(--flare-color-surface-container-high)";
+    [CssVar(PickerField.PanelBg)] public string PanelBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHigh);
 
     /// <summary>Text colour inside the picker panels.</summary>
-    [CssVar(PickerField.PanelColor)] public string PanelColor { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(PickerField.PanelColor)] public string PanelColor { get; init; } = Var(Css.Tokens.Color.OnSurface);
 
     /// <summary>Shadow (<c>box-shadow</c>) under a floating picker panel; an inline picker has none.</summary>
-    [CssVar(PickerField.PanelShadow)] public string PanelShadow { get; init; } = "var(--flare-elevation-3)";
+    [CssVar(PickerField.PanelShadow)] public string PanelShadow { get; init; } = Var(Css.Tokens.Elevation.Level3);
 
     /// <summary>Minimum height of the month header that holds the previous/next buttons and the month label.</summary>
     [CssVar(PickerField.HeaderHeight)] public required string HeaderHeight { get; init; }
@@ -60,7 +61,7 @@ public sealed record PickerTokens
     [CssVar(PickerField.WeekdayHeight)] public required string WeekdayHeight { get; init; }
 
     /// <summary>Font size of the weekday names.</summary>
-    [CssVar(PickerField.WeekdayFontSize)] public string WeekdayFontSize { get; init; } = "var(--flare-typescale-body-large-size)";
+    [CssVar(PickerField.WeekdayFontSize)] public string WeekdayFontSize { get; init; } = Var(Css.Tokens.Typography.BodyLarge.Size);
 
     /// <summary>
     /// Height of one row of the day grid - the touch target a day sits in. Columns share the panel width
@@ -75,7 +76,7 @@ public sealed record PickerTokens
     [CssVar(PickerField.DayLayerSize)] public required string DayLayerSize { get; init; }
 
     /// <summary>Font size of the day numbers.</summary>
-    [CssVar(PickerField.DayFontSize)] public string DayFontSize { get; init; } = "var(--flare-typescale-body-large-size)";
+    [CssVar(PickerField.DayFontSize)] public string DayFontSize { get; init; } = Var(Css.Tokens.Typography.BodyLarge.Size);
 
     /// <summary>Narrowest width of the leading week-number column of the calendar grid.</summary>
     [CssVar(PickerField.WeekNumberWidth)] public required string WeekNumberWidth { get; init; }

@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -11,17 +12,17 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DialogTokens
 {
     /// <summary>Corner radius of the dialog panel.</summary>
-    [CssVar(DialogPanel.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-large)";
+    [CssVar(DialogPanel.Radius)] public string Radius { get; init; } = Var(Css.Tokens.Shape.ExtraLarge);
 
     /// <summary>Size of the dialog header/close icon.</summary>
     [CssVar(DialogPanel.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Background of the dialog panel.</summary>
-    [CssVar(DialogPanel.Bg)] public string Bg { get; init; } = "var(--flare-color-surface-container-high)";
+    [CssVar(DialogPanel.Bg)] public string Bg { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHigh);
 
     /// <summary>Text color of the dialog panel, inherited by the title and body unless they set their own.</summary>
-    [CssVar(DialogPanel.Color)] public string Color { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(DialogPanel.Color)] public string Color { get; init; } = Var(Css.Tokens.Color.OnSurface);
 
     /// <summary>Shadow (<c>box-shadow</c>) lifting the dialog panel off the page; <c>none</c> for a flat panel.</summary>
-    [CssVar(DialogPanel.Shadow)] public string Shadow { get; init; } = "var(--flare-elevation-3)";
+    [CssVar(DialogPanel.Shadow)] public string Shadow { get; init; } = Var(Css.Tokens.Elevation.Level3);
 }

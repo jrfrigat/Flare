@@ -60,9 +60,6 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             GapXl = "1rem",    // 16dp
 
             // `md.comp.button.<size>.outlined.outline.width` - the stroke thickens with the container.
-            OutlineWidthXs = "1px",
-            OutlineWidthSm = "1px",
-            OutlineWidthMd = "1px",
             OutlineWidthLg = "2px",
             OutlineWidthXl = "3px",
 

@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareMenu</c> / <c>FlareMenuItem</c> (dropdown panel + items).</summary>
@@ -16,11 +17,11 @@ public sealed record MenuTokens
     /// <summary>Name of the panel entrance @keyframes animation (e.g. scale+fade, or fade/slide without scale).</summary>
     [CssVar(MenuPanel.EnterAnimation)] public required string EnterAnimation { get; init; }
     /// <summary>Corner radius of the dropdown panel.</summary>
-    [CssVar(MenuPanel.Radius)] public string PanelRadius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(MenuPanel.Radius)] public string PanelRadius { get; init; } = Var(Css.Tokens.Shape.ExtraSmall);
     /// <summary>Background of the dropdown panel.</summary>
-    [CssVar(MenuPanel.Bg)] public string PanelBg { get; init; } = "var(--flare-color-surface-container)";
+    [CssVar(MenuPanel.Bg)] public string PanelBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainer);
     /// <summary>Shadow that lifts the panel off the content behind it.</summary>
-    [CssVar(MenuPanel.Shadow)] public string PanelShadow { get; init; } = "var(--flare-elevation-2)";
+    [CssVar(MenuPanel.Shadow)] public string PanelShadow { get; init; } = Var(Css.Tokens.Elevation.Level2);
     /// <summary>Space between the panel's top/bottom edge and its first/last item.</summary>
     [CssVar(MenuPanel.PaddingBlock)] public required string PanelPaddingBlock { get; init; }
     /// <summary>Space between the panel's side edges and its items.</summary>
@@ -32,13 +33,13 @@ public sealed record MenuTokens
     /// <summary>Space above and below an item's content.</summary>
     [CssVar(MenuPanel.ItemPaddingBlock)] public required string ItemPaddingBlock { get; init; }
     /// <summary>Space between an item's side edges and its content.</summary>
-    [CssVar(MenuPanel.ItemPaddingInline)] public string ItemPaddingInline { get; init; } = "var(--flare-spacing-8)";
+    [CssVar(MenuPanel.ItemPaddingInline)] public string ItemPaddingInline { get; init; } = Var(Css.Tokens.Spacing.S8);
     /// <summary>Space above and below an item's content when the menu is marked dense.</summary>
-    [CssVar(MenuPanel.ItemPaddingBlockDense)] public string ItemPaddingBlockDense { get; init; } = "var(--flare-spacing-3)";
+    [CssVar(MenuPanel.ItemPaddingBlockDense)] public string ItemPaddingBlockDense { get; init; } = Var(Css.Tokens.Spacing.S3);
     /// <summary>Space between an item's icon and its label.</summary>
-    [CssVar(MenuPanel.ItemGap)] public string ItemGap { get; init; } = "var(--flare-spacing-6)";
+    [CssVar(MenuPanel.ItemGap)] public string ItemGap { get; init; } = Var(Css.Tokens.Spacing.S6);
     /// <summary>Space between an item's icon and its label when the menu is marked dense.</summary>
-    [CssVar(MenuPanel.ItemGapDense)] public string ItemGapDense { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(MenuPanel.ItemGapDense)] public string ItemGapDense { get; init; } = Var(Css.Tokens.Spacing.S4);
     /// <summary>Space between adjacent items. A theme with a continuous list parks this at <c>0</c>;
     /// a theme with separated item pills raises it.</summary>
     [CssVar(MenuPanel.ItemGapBetween)] public required string ItemGapBetween { get; init; }
@@ -63,24 +64,24 @@ public sealed record MenuTokens
     [CssVar(MenuPanel.GroupShadow)] public required string GroupShadow { get; init; }
     /// <summary>Background of the slab behind a grouped panel, which a theme may want to differ from the
     /// plain panel background once the groups carry their own surfaces.</summary>
-    [CssVar(MenuPanel.GroupedPanelBg)] public string GroupedPanelBg { get; init; } = "var(--flare-color-surface-container)";
+    [CssVar(MenuPanel.GroupedPanelBg)] public string GroupedPanelBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainer);
     /// <summary>Shadow on the slab behind a grouped panel.</summary>
-    [CssVar(MenuPanel.GroupedPanelShadow)] public string GroupedPanelShadow { get; init; } = "var(--flare-elevation-2)";
+    [CssVar(MenuPanel.GroupedPanelShadow)] public string GroupedPanelShadow { get; init; } = Var(Css.Tokens.Elevation.Level2);
 
     /// <summary>Font family of an item's label. Each theme decides which step of its own type scale a
     /// menu item maps to.</summary>
-    [CssVar(MenuPanel.ItemLabelFont)] public string ItemLabelFont { get; init; } = "var(--flare-typescale-label-large-font)";
+    [CssVar(MenuPanel.ItemLabelFont)] public string ItemLabelFont { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Font);
     /// <summary>Font weight of an item's label.</summary>
-    [CssVar(MenuPanel.ItemLabelWeight)] public string ItemLabelWeight { get; init; } = "var(--flare-typescale-label-large-weight)";
+    [CssVar(MenuPanel.ItemLabelWeight)] public string ItemLabelWeight { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Weight);
     /// <summary>Font size of an item's label.</summary>
-    [CssVar(MenuPanel.ItemLabelSize)] public string ItemLabelSize { get; init; } = "var(--flare-typescale-label-large-size)";
+    [CssVar(MenuPanel.ItemLabelSize)] public string ItemLabelSize { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Size);
     /// <summary>Line height of an item's label.</summary>
-    [CssVar(MenuPanel.ItemLabelHeight)] public string ItemLabelHeight { get; init; } = "var(--flare-typescale-label-large-height)";
+    [CssVar(MenuPanel.ItemLabelHeight)] public string ItemLabelHeight { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Height);
     /// <summary>Letter spacing of an item's label.</summary>
-    [CssVar(MenuPanel.ItemLabelSpacing)] public string ItemLabelSpacing { get; init; } = "var(--flare-typescale-label-large-spacing)";
+    [CssVar(MenuPanel.ItemLabelSpacing)] public string ItemLabelSpacing { get; init; } = Var(Css.Tokens.Typography.LabelLarge.Spacing);
 
     /// <summary>Colour of the ring drawn around an item on keyboard focus.</summary>
-    [CssVar(MenuPanel.ItemFocusRingColor)] public string ItemFocusRingColor { get; init; } = "var(--flare-color-secondary)";
+    [CssVar(MenuPanel.ItemFocusRingColor)] public string ItemFocusRingColor { get; init; } = Var(Css.Tokens.Color.Secondary);
     /// <summary>Thickness of an item's keyboard-focus ring.</summary>
     [CssVar(MenuPanel.ItemFocusRingThickness)] public required string ItemFocusRingThickness { get; init; }
     /// <summary>Offset of an item's keyboard-focus ring. A negative value pulls the ring inside the item,
@@ -89,5 +90,5 @@ public sealed record MenuTokens
     /// <summary>How far a disabled item fades. A language that repaints disabled items in a flat palette
     /// leaves this opaque and carries the change in its own stylesheet, since a foreground colour has no
     /// value meaning "leave this as painted".</summary>
-    [CssVar(MenuPanel.ItemDisabledOpacity)] public string ItemDisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(MenuPanel.ItemDisabledOpacity)] public string ItemDisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 }

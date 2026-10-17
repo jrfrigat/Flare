@@ -1,18 +1,19 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Design tokens for the page header - its spacing, surface and eyebrow casing, read by pageheader.css.</summary>
 public sealed record PageHeaderTokens
 {
     /// <summary>Padding around the header, as a CSS <c>padding</c> value.</summary>
-    [CssVar(PageHeaderField.Padding)] public string Padding { get; init; } = "var(--flare-spacing-16) 0";
+    [CssVar(PageHeaderField.Padding)] public string Padding { get; init; } = $"{Var(Css.Tokens.Spacing.S16)} 0";
 
     /// <summary>Space between the eyebrow, the title and the description.</summary>
-    [CssVar(PageHeaderField.Gap)] public string Gap { get; init; } = "var(--flare-spacing-4)";
+    [CssVar(PageHeaderField.Gap)] public string Gap { get; init; } = Var(Css.Tokens.Spacing.S4);
 
     /// <summary>Space between the text block and the actions, across and, on a narrow header, down.</summary>
-    [CssVar(PageHeaderField.ActionsGap)] public string ActionsGap { get; init; } = "var(--flare-spacing-16)";
+    [CssVar(PageHeaderField.ActionsGap)] public string ActionsGap { get; init; } = Var(Css.Tokens.Spacing.S16);
 
     /// <summary>Header background, as a CSS <c>background</c> value.</summary>
     [CssVar(PageHeaderField.Background)] public required string Background { get; init; }

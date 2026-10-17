@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -24,16 +25,16 @@ public sealed record PaginationTokens
     [CssVar(Pagination.Size.Xl)] public required string SizeXl { get; init; }
 
     /// <summary>Page-button / rows-select corner radius.</summary>
-    [CssVar(Pagination.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(Pagination.Radius)] public string Radius { get; init; } = Var(Css.Tokens.Shape.ExtraSmall);
 
     /// <summary>Page-button / rows-select border color.</summary>
-    [CssVar(Pagination.BorderColor)] public string BorderColor { get; init; } = "var(--flare-color-outline-variant)";
+    [CssVar(Pagination.BorderColor)] public string BorderColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
 
     /// <summary>Default active-page fill (the per-instance <c>Color</c> parameter overrides it).</summary>
-    [CssVar(Pagination.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Pagination.ActiveColor)] public string ActiveColor { get; init; } = Var(Css.Tokens.Color.Primary);
 
     /// <summary>How far a disabled page button fades. A language that repaints disabled controls in a flat
     /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
     /// colour has no value meaning "leave this as painted".</summary>
-    [CssVar(Pagination.BtnDisabledOpacity)] public string BtnDisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(Pagination.BtnDisabledOpacity)] public string BtnDisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 }

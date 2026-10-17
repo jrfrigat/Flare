@@ -152,6 +152,8 @@ public static class CssAudit
         Program.AddConstantReferenceTokens(used, constants, Path.Combine(root, "src", "Flare.Components"));
         foreach (var pd in packageDirs) Program.AddConstantReferenceTokens(used, constants, pd);
         Program.AddIntraClassTokenReferences(used, tokensDir);
+        // A component token record defaults to base tokens, so those defaults use the tokens they name.
+        Program.AddDefaultReferenceTokens(used, constants, Path.Combine(root, "src", "Flare.Abstractions", "Tokens", "Components"));
         var themeCss = Program.CollectCssTokens(themeDirs);
         // Theme-private tokens are often defined + read entirely in the theme's C# (its extra-var dict and
         // DesignTokens value strings), never in a .css file - count those references so they are not [T-].

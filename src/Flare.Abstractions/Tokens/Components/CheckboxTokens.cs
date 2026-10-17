@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareCheckbox</c> (box, state-layer, focus ring).</summary>
@@ -33,10 +34,10 @@ public sealed record CheckboxTokens
     [CssVar(Checkbox.Radius)] public required string Radius { get; init; }
 
     /// <summary>State-layer background on hover (unchecked). Set transparent to suppress the halo.</summary>
-    [CssVar(Checkbox.StateLayerHover)] public string StateLayerHover { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)";
+    [CssVar(Checkbox.StateLayerHover)] public string StateLayerHover { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 8%, transparent)";
 
     /// <summary>State-layer background on hover when checked (accent tint). Set transparent to suppress the halo.</summary>
-    [CssVar(Checkbox.StateLayerHoverChecked)] public string StateLayerHoverChecked { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)";
+    [CssVar(Checkbox.StateLayerHoverChecked)] public string StateLayerHoverChecked { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 8%, transparent)";
 
     /// <summary>Focus-visible outline shorthand.</summary>
     [CssVar(Checkbox.FocusOutline)] public required string FocusOutline { get; init; }
@@ -50,5 +51,5 @@ public sealed record CheckboxTokens
     /// a fraction; one that repaints it in a flat palette leaves it opaque and carries the change in its own
     /// stylesheet - the indicator has no spare layer to take a fill, and neither `color` nor `border-color`
     /// has a value meaning "leave this alone".</summary>
-    [CssVar(Checkbox.DisabledOpacity)] public string DisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(Checkbox.DisabledOpacity)] public string DisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 }

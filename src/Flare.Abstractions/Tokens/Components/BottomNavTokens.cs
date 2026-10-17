@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -13,7 +14,7 @@ public sealed record BottomNavTokens
     [CssVar(BottomNavField.BarHeight)] public required string BarHeight { get; init; }
 
     /// <summary>Bar background.</summary>
-    [CssVar(BottomNavField.BarBg)] public string BarBg { get; init; } = "var(--flare-color-surface-container)";
+    [CssVar(BottomNavField.BarBg)] public string BarBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainer);
 
     /// <summary>Top border color separating the bar from page content.</summary>
     [CssVar(BottomNavField.BorderColor)] public required string BorderColor { get; init; }
@@ -25,31 +26,31 @@ public sealed record BottomNavTokens
     [CssVar(BottomNavField.SafeAreaPadding)] public required string SafeAreaPadding { get; init; }
 
     /// <summary>Icon and label color for an inactive item.</summary>
-    [CssVar(BottomNavField.InactiveColor)] public string InactiveColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(BottomNavField.InactiveColor)] public string InactiveColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
     /// <summary>Icon and label color for the active item (drawn atop the active-indicator pill).</summary>
-    [CssVar(BottomNavField.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-on-secondary-container)";
+    [CssVar(BottomNavField.ActiveColor)] public string ActiveColor { get; init; } = Var(Css.Tokens.Color.OnSecondaryContainer);
 
     /// <summary>Icon glyph size.</summary>
     [CssVar(BottomNavField.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Label font size.</summary>
-    [CssVar(BottomNavField.LabelFontSize)] public string LabelFontSize { get; init; } = "var(--flare-typescale-label-medium-size)";
+    [CssVar(BottomNavField.LabelFontSize)] public string LabelFontSize { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Size);
 
     /// <summary>Inactive label font weight.</summary>
-    [CssVar(BottomNavField.LabelFontWeight)] public required string LabelFontWeight { get; init; }
+    [CssVar(BottomNavField.LabelFontWeight)] public string LabelFontWeight { get; init; } = Var(Css.Tokens.Typography.WeightMedium);
 
     /// <summary>Active label font weight (slightly heavier to reinforce the selected state).</summary>
-    [CssVar(BottomNavField.LabelFontWeightActive)] public required string LabelFontWeightActive { get; init; }
+    [CssVar(BottomNavField.LabelFontWeightActive)] public string LabelFontWeightActive { get; init; } = Var(Css.Tokens.Typography.WeightBold);
 
     /// <summary>Background of the pill drawn behind the active item's icon. Defaults to the shared nav
     /// active-indicator token so a theme that flattens the drawer indicator (by setting it to
     /// <c>none</c>) flattens the bottom bar too; override this token to restyle only the bottom bar.</summary>
-    [CssVar(BottomNavField.IndicatorBg)] public string IndicatorBg { get; init; } = "var(--flare-nav-active-indicator)";
+    [CssVar(BottomNavField.IndicatorBg)] public string IndicatorBg { get; init; } = Var(Css.Tokens.NavField.ActiveIndicator);
 
     /// <summary>Corner radius of the active-item indicator pill. Defaults to the shared nav
     /// indicator-radius token; override to restyle only the bottom bar.</summary>
-    [CssVar(BottomNavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = "var(--flare-nav-indicator-radius)";
+    [CssVar(BottomNavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = Var(Css.Tokens.NavField.IndicatorRadius);
 
     /// <summary>Fixed height of the active-item indicator pill.</summary>
     [CssVar(BottomNavField.IndicatorSize)] public required string IndicatorSize { get; init; }
@@ -59,10 +60,10 @@ public sealed record BottomNavTokens
     [CssVar(BottomNavField.IndicatorWidth)] public required string IndicatorWidth { get; init; }
 
     /// <summary>Space between an item's indicator and its label.</summary>
-    [CssVar(BottomNavField.ItemGap)] public string ItemGap { get; init; } = "var(--flare-spacing-2)";
+    [CssVar(BottomNavField.ItemGap)] public string ItemGap { get; init; } = Var(Css.Tokens.Spacing.S2);
 
     /// <summary>How far a disabled item fades. A language that repaints disabled controls in a flat
     /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
     /// colour has no value meaning "leave this as painted".</summary>
-    [CssVar(BottomNavField.ItemDisabledOpacity)] public string ItemDisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
+    [CssVar(BottomNavField.ItemDisabledOpacity)] public string ItemDisabledOpacity { get; init; } = Var(Css.Tokens.State.DisabledOpacity);
 }

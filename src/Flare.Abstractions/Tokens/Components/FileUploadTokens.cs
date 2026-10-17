@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -9,13 +10,13 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record FileUploadTokens
 {
     /// <summary>Width of the drop zone's dashed border.</summary>
-    [CssVar(FileUploadField.BorderWidth)] public string BorderWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(FileUploadField.BorderWidth)] public string BorderWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Background of the drop zone on hover.</summary>
-    [CssVar(FileUploadField.HoverBg)] public string HoverBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface))";
+    [CssVar(FileUploadField.HoverBg)] public string HoverBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 5%, {Var(Css.Tokens.Color.Surface)})";
 
     /// <summary>Background of the drop zone while a file is dragged over it.</summary>
-    [CssVar(FileUploadField.DraggingBg)] public string DraggingBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface))";
+    [CssVar(FileUploadField.DraggingBg)] public string DraggingBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 10%, {Var(Css.Tokens.Color.Surface)})";
 
     /// <summary>Width of the inset ring drawn while a file is dragged over the drop zone.</summary>
     [CssVar(FileUploadField.DraggingRingWidth)] public required string DraggingRingWidth { get; init; }
@@ -27,27 +28,27 @@ public sealed record FileUploadTokens
     [CssVar(FileUploadField.ZoneMinHeight)] public required string ZoneMinHeight { get; init; }
 
     /// <summary>Corner radius of the drop zone.</summary>
-    [CssVar(FileUploadField.ZoneRadius)] public string ZoneRadius { get; init; } = "var(--flare-card-radius)";
+    [CssVar(FileUploadField.ZoneRadius)] public string ZoneRadius { get; init; } = Var(Css.Tokens.CardField.Radius);
 
     /// <summary>Size of the per-file glyph in the selected-files list.</summary>
     [CssVar(FileUploadField.FileIconSize)] public required string FileIconSize { get; init; }
 
     /// <summary>Gap between the file rows.</summary>
-    [CssVar(FileUploadField.RowGap)] public string RowGap { get; init; } = "var(--flare-spacing-2)";
+    [CssVar(FileUploadField.RowGap)] public string RowGap { get; init; } = Var(Css.Tokens.Spacing.S2);
 
     /// <summary>Corner radius of one file row.</summary>
-    [CssVar(FileUploadField.RowRadius)] public string RowRadius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(FileUploadField.RowRadius)] public string RowRadius { get; init; } = Var(Css.Tokens.Shape.ExtraSmall);
 
     /// <summary>Background of a row whose transfer is running.</summary>
-    [CssVar(FileUploadField.RowActiveBg)] public string RowActiveBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)";
+    [CssVar(FileUploadField.RowActiveBg)] public string RowActiveBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 8%, transparent)";
 
     /// <summary>Background of a completed row.</summary>
-    [CssVar(FileUploadField.RowSuccessBg)] public string RowSuccessBg { get; init; } = "color-mix(in srgb, var(--flare-color-tertiary) 8%, transparent)";
+    [CssVar(FileUploadField.RowSuccessBg)] public string RowSuccessBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Tertiary)} 8%, transparent)";
 
     /// <summary>Background of a failed or cancelled row.</summary>
-    [CssVar(FileUploadField.RowErrorBg)] public string RowErrorBg { get; init; } = "color-mix(in srgb, var(--flare-color-error) 8%, transparent)";
+    [CssVar(FileUploadField.RowErrorBg)] public string RowErrorBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Error)} 8%, transparent)";
 
     /// <summary>Foreground of the message on a failed row - the one place a component would otherwise
     /// hardcode red.</summary>
-    [CssVar(FileUploadField.RowErrorColor)] public string RowErrorColor { get; init; } = "var(--flare-color-error)";
+    [CssVar(FileUploadField.RowErrorColor)] public string RowErrorColor { get; init; } = Var(Css.Tokens.Color.Error);
 }

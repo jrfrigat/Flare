@@ -1,12 +1,13 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Design tokens for otp - component-specific geometry read by otp.css.</summary>
 public sealed record OtpTokens
 {
     /// <summary>Border Width.</summary>
-    [CssVar(OtpField.BorderWidth)] public string BorderWidth { get; init; } = "var(--flare-border-width-emphasis)";
+    [CssVar(OtpField.BorderWidth)] public string BorderWidth { get; init; } = Var(Css.Tokens.Border.WidthEmphasis);
 
     /// <summary>Cell Height.</summary>
     [CssVar(OtpField.CellHeight)] public required string CellHeight { get; init; }
@@ -21,5 +22,5 @@ public sealed record OtpTokens
     [CssVar(OtpField.FontSize)] public required string FontSize { get; init; }
 
     /// <summary>Font Weight.</summary>
-    [CssVar(OtpField.FontWeight)] public string FontWeight { get; init; } = "var(--flare-typescale-title-medium-weight)";
+    [CssVar(OtpField.FontWeight)] public string FontWeight { get; init; } = Var(Css.Tokens.Typography.TitleMedium.Weight);
 }

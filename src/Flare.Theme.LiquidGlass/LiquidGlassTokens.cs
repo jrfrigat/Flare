@@ -20,6 +20,11 @@ internal class LiquidGlassTokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
+        WeightMedium = "500",
+        WeightBold = "700",
+        TrackingWide = "0.05em",
+        Size2Xs = "0.5625rem",
+        SizeXs = "0.625rem",
         DisplayLarge = T("700", "2.5rem", "3rem"),
         DisplayMedium = T("700", "2.125rem", "2.5rem"),
         DisplaySmall = T("700", "1.75rem", "2.125rem"),
@@ -164,19 +169,12 @@ internal class LiquidGlassTokens
 
     internal static readonly BadgeTokens Badge = new()
     {
-        Radius = "var(--flare-shape-full)",
         // Per-size ramp, one token per step.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1.125rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1.125rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.5rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
-        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.3125rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
-        LabelSizeXs = "0.5625rem",
-        LabelSizeSm = "0.625rem",
-        LabelSizeMd = "var(--flare-typescale-label-small-size)",
-        LabelSizeLg = "var(--flare-typescale-label-medium-size)",
-        LabelSizeXl = "var(--flare-typescale-label-large-size)",
+        PaddingXMd = "0.3125rem",
         Offset = "0.25rem",
-        DotOffset = "0",
     };
 
     internal static readonly AlertTokens Alert = new()
@@ -192,13 +190,6 @@ internal class LiquidGlassTokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
-        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthXs = "1px",
-        OutlineWidthSm = "1px",
-        OutlineWidthMd = "1px",
-        OutlineWidthLg = "1px",
-        OutlineWidthXl = "1px",
-        ContainerRadius = "var(--flare-shape-full)",
         // Tighter than the contained ladder at every size - the text button has no pane to balance.
         TextPaddingInlineXs = "0.375rem",
         TextPaddingInlineSm = "0.5rem",
@@ -239,18 +230,12 @@ internal class LiquidGlassTokens
         SelectedRadiusLg = "var(--flare-shape-full)",
         SelectedRadiusXl = "var(--flare-shape-full)",
         SelectedRadiusSquare = "var(--flare-shape-full)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         // Selection is the accent here, whatever the variant: this language does not send each variant
         // somewhere different the way Material does, it just says "on" in the accent colour. The one
         // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
         // secondary-container would be indistinguishable from an unselected one, which is exactly what
         // happened when these four pairs were first filled in - so every variant travels to the accent,
         // and the filled toggle starts from a neutral container rather than from the accent it ends on.
-        ElevatedSelectedBg = "var(--flare-color-primary)",
-        ElevatedSelectedColor = "var(--flare-color-on-primary)",
-        FilledSelectedBg = "var(--flare-color-primary)",
-        FilledSelectedColor = "var(--flare-color-on-primary)",
         TonalSelectedBg = "var(--flare-color-primary)",
         TonalSelectedColor = "var(--flare-color-on-primary)",
         OutlinedSelectedBg = "var(--flare-color-primary)",
@@ -338,8 +323,6 @@ internal class LiquidGlassTokens
     internal static readonly FabTokens Fab = MaterialDesign3Tokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-large)",
-        RadiusMd = "var(--flare-shape-large)",
-        RadiusLg = "var(--flare-shape-extra-large)",
     };
 
     internal static readonly MenuTokens Menu = MaterialDesign3Tokens.Design.Menu with
@@ -373,11 +356,9 @@ internal class LiquidGlassTokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
-        // Dims, like its Material lineage.
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
-    internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelColor = "var(--flare-color-on-surface-variant)", LabelFont = "var(--flare-typescale-label-large-font)", LabelWeight = "inherit", LabelSpacing = "normal", LabelSizeXs = "var(--flare-typescale-label-small-size)", LabelSizeSm = "var(--flare-typescale-label-small-size)", LabelSizeMd = "var(--flare-typescale-label-large-size)", LabelSizeLg = "var(--flare-typescale-title-small-size)", LabelSizeXl = "var(--flare-typescale-title-medium-size)", Radius = "var(--flare-shape-small)", Height = "2rem", FilledBg = "var(--flare-color-surface-container-high)", ElevatedBg = "var(--flare-color-surface-container-low)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-4)", PaddingInlineSm = "var(--flare-spacing-5)", PaddingInlineMd = "var(--flare-spacing-8)", PaddingInlineLg = "var(--flare-spacing-10)", PaddingInlineXl = "var(--flare-spacing-12)" };
+    internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelWeight = "inherit", LabelSpacing = "normal", Height = "2rem", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.125rem", IconSizeLg = "1.25rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem" };
     internal static readonly TabsTokens Tabs = MaterialDesign3Tokens.Design.Tabs with
     {
         // Sized by their content, as these tabs always were; the Material record states its 48dp tab.
@@ -391,7 +372,6 @@ internal class LiquidGlassTokens
         // md step only (iOS pill); xs/sm/lg/xl inherited from the Material ramp.
         TrackWidthMd = "51px",
         TrackHeightMd = "31px",
-        TrackOffBg = "var(--flare-color-surface-container-highest)",
         TrackOnBg = "var(--flare-color-success)",
         TrackBorder = "0 solid transparent",
         ThumbOffSizeMd = "27px",
@@ -423,13 +403,11 @@ internal class LiquidGlassTokens
         HandleRadius = "var(--flare-shape-full, 9999px)",
         HandleBorderWidth = "0px",
         HandleFill = "#FFFFFF",
-        ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-outline-variant)",
         StateLayerSize = "36px",
         StateHoverOpacity = "0.05",
         StatePressedOpacity = "0.07",
         StopColor = "var(--flare-color-outline)",
-        StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
     };
 
@@ -498,7 +476,6 @@ internal class LiquidGlassTokens
         // outlines the whole well with a 1px error ring on focus. The Material record states its own spec.
         FocusBorderColor = "transparent",
         ErrorBorderColor = "var(--flare-color-error)",
-        ErrorBorderBottomColor = "var(--flare-color-error)",
         ErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         // Explicit variants keep the fields this theme drew before they became theme tokens.
         FilledVariantFocusBorderBottomColor = "var(--flare-color-on-surface-variant)",
@@ -518,13 +495,11 @@ internal class LiquidGlassTokens
         CircularWidthLg = "4px",
         // Centred content: the ramp follows the indicator sizes, so a label dropped into the
         // smallest ring still fits it.
-        ContentColor = "var(--flare-color-on-surface)",
         ContentSizeXs = "0.5rem",
         ContentSizeSm = "0.625rem",
         ContentSizeMd = "0.75rem",
         ContentSizeLg = "1rem",
         ContentSizeXl = "1.25rem",
-        TrackRadius = "var(--flare-shape-full)",
         // Md is the thickness Liquid Glass has always drawn; the ramp runs both ways from it.
         LinearHeightXs = "0.25rem",
         LinearHeightSm = "0.3125rem",
@@ -542,7 +517,6 @@ internal class LiquidGlassTokens
     {
         BadgeWeight = "600",
         ItemRadius = "var(--flare-shape-medium)",
-        IndicatorRadius = "var(--flare-shape-full)",
     };
 
     /// <summary>The complete Liquid Glass design tokens. Use this as the base for custom themes.</summary>
@@ -568,7 +542,7 @@ internal class LiquidGlassTokens
         Chip = Chip,
         Tabs = Tabs,
         // Weights, label sizes and fades this theme set before the Material record moved onto its type scale.
-        TableOfContents = MaterialDesign3Tokens.Design.TableOfContents with { ActiveWeight = "600", TitleWeight = "600" },
+        TableOfContents = MaterialDesign3Tokens.Design.TableOfContents with { ActiveWeight = "600" },
         Otp = MaterialDesign3Tokens.Design.Otp with { FontWeight = "600" },
         Chart = MaterialDesign3Tokens.Design.Chart with { LabelSize = "9px" },
         Calendar = MaterialDesign3Tokens.Design.Calendar with { OtherMonthOpacity = "0.3" },
@@ -587,7 +561,7 @@ internal class LiquidGlassTokens
         Switch = Switch,
         Slider = Slider,
         // Card geometry is typed; the translucent variant fills stay mode-specific in Extended.
-        Card = MaterialDesign3Tokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", ElevationHover = "var(--flare-elevation-2)", OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
+        Card = MaterialDesign3Tokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
             // Only the elevated card lifts on hover, whatever the Material card steps the others to.
             FilledElevationHover = "none", OutlinedElevationHover = "none" },
         // The rich tooltip keeps its on-surface text and level 3 shadow; the Material record states the spec's.

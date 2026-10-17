@@ -21,6 +21,17 @@ public static class Typography
     /// </summary>
     public const string MonoFont = "--flare-font-mono";
 
+    /// <summary>CSS custom-property name for the medium font weight: emphasis lighter than bold.</summary>
+    public const string WeightMedium = "--flare-font-weight-medium";
+    /// <summary>CSS custom-property name for the bold font weight.</summary>
+    public const string WeightBold = "--flare-font-weight-bold";
+    /// <summary>CSS custom-property name for the widened letter spacing of short, often capitalised labels.</summary>
+    public const string TrackingWide = "--flare-font-tracking-wide";
+    /// <summary>CSS custom-property name for the smallest text size, below the type scale's smallest label.</summary>
+    public const string Size2Xs = "--flare-font-size-2xs";
+    /// <summary>CSS custom-property name for the extra small text size, below the type scale's smallest label.</summary>
+    public const string SizeXs = "--flare-font-size-xs";
+
     /// <summary>Type-scale tokens for the display large step.</summary>
     public static class DisplayLarge
     {

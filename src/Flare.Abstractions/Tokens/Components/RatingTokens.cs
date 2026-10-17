@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -24,10 +25,10 @@ public sealed record RatingTokens
     [CssVar(Rating.Size.Xl)] public required string SizeXl { get; init; }
 
     /// <summary>Color of an unfilled (empty) star.</summary>
-    [CssVar(Rating.EmptyColor)] public string EmptyColor { get; init; } = "var(--flare-color-outline-variant)";
+    [CssVar(Rating.EmptyColor)] public string EmptyColor { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
 
     /// <summary>Default color of a filled star (the per-instance <c>Color</c> parameter overrides it).</summary>
-    [CssVar(Rating.FilledColor)] public string FilledColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Rating.FilledColor)] public string FilledColor { get; init; } = Var(Css.Tokens.Color.Primary);
 
     /// <summary>Scale applied to a star on hover (interactive feedback).</summary>
     [CssVar(Rating.HoverScale)] public required string HoverScale { get; init; }

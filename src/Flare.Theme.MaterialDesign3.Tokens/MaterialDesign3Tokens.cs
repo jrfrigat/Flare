@@ -23,6 +23,11 @@ public class MaterialDesign3Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
+        WeightMedium = "500",
+        WeightBold = "700",
+        TrackingWide = "0.05em",
+        Size2Xs = "0.5625rem",
+        SizeXs = "0.625rem",
         // md.sys.typescale tracking is absolute, in rem: -0.25px on Display Large whatever its size. Material 2
         // states tracking relative to the font size (em); written in em here it grew 3.5x on the display steps.
         DisplayLarge = T("Roboto", "400", "3.5625rem", "4rem", "-0.015625rem"),
@@ -202,9 +207,6 @@ public class MaterialDesign3Tokens
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
-        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
-        LabelSizeXs = "0.5625rem",
-        LabelSizeSm = "0.625rem",
         Offset = "0.375rem",
     };
 
@@ -220,9 +222,6 @@ public class MaterialDesign3Tokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
-        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthLg = "1px",
-        OutlineWidthXl = "1px",
         // A text button takes half the contained padding: 12dp against 24dp at M (md.comp.text-button),
         // and the same halving across the rest of the ladder.
         TextPaddingInlineXs = "0.375rem",
@@ -253,14 +252,6 @@ public class MaterialDesign3Tokens
         PaddingInlineMd = "1.5rem",  // 24dp (spec)
         PaddingInlineLg = "1.75rem",
         PaddingInlineXl = "2rem",
-
-        // Baseline M3 does not reshape a selected button - swapping round and square on selection is an
-        // Expressive behaviour, stated in that theme - so a selected button keeps the corners it stands in.
-        SelectedRadiusXs = "calc(var(--flare-btn-height-xs) / 2)",
-        SelectedRadiusSm = "calc(var(--flare-btn-height-sm) / 2)",
-        SelectedRadiusMd = "calc(var(--flare-btn-height-md) / 2)",
-        SelectedRadiusLg = "calc(var(--flare-btn-height-lg) / 2)",
-        SelectedRadiusXl = "calc(var(--flare-btn-height-xl) / 2)",
 
         // Per-corner radii: a fully rounded capsule at all 5 sizes, expressed as half the size's own
         // height rather than through the Shape.Full scale.
@@ -405,7 +396,6 @@ public class MaterialDesign3Tokens
         IconSizeSm = "1.5rem",    // 24dp -> 40dp container
         IconSizeMd = "1.5rem",    // 24dp -> 56dp container
         IconSizeLg = "2.25rem",   // 36dp -> 96dp container
-        PaddingLg = "1.875rem",   // 30dp
     };
 
     internal static readonly CheckboxTokens Checkbox = new()
@@ -605,7 +595,6 @@ public class MaterialDesign3Tokens
         TickGap = "5",
 
         LabelSize = "9",
-        ValueWeight = "500",
 
         BandOpacity = "0.55",
         TargetWidth = "2.5",
@@ -760,8 +749,6 @@ public class MaterialDesign3Tokens
         BorderColor = "transparent",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
         IconSize = "1.5rem",
-        LabelFontWeight = "500",
-        LabelFontWeightActive = "700",
         IndicatorSize = "2rem",
         IndicatorWidth = "4rem",           // md.comp.navigation-bar.active-indicator.width 64dp
     };
@@ -771,7 +758,6 @@ public class MaterialDesign3Tokens
         ActiveWeight = "700", // weight-prominent, as the active navigation item
         HoverBgOpacity = "40%",
         LineHeight = "1.4",
-        TitleTracking = "0.05em",
         RailColor = "transparent",
         RailWidth = "0",
         // "0px", not "0": the marker is also pulled over the rail with calc(-1 * var(--flare-toc-marker-width)),

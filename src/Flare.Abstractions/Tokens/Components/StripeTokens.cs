@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -13,5 +14,5 @@ public sealed record StripeTokens
     /// over the surface behind it, so a translucent wash and a solid container step are both
     /// expressible; the value is the whole paint rather than an opacity, because the two in-box
     /// answers to "what is a stripe" differ in more than strength.</summary>
-    [CssVar(StripeField.Background)] public string Background { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)";
+    [CssVar(StripeField.Background)] public string Background { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 4%, transparent)";
 }

@@ -908,6 +908,31 @@ internal static class Program
         }
     }
 
+    /// <summary>
+    /// Adds tokens that a token record's member defaults to (<c>= Var(Css.Tokens.Spacing.S3)</c>). A default is
+    /// a real consumer of the token it names, but the <c>[CssVar]</c> attributes on the same lines name the
+    /// member's own variable, not a use - so only the initializer after <c>{ get; init; } =</c> is read.
+    /// </summary>
+    internal static void AddDefaultReferenceTokens(
+        SortedDictionary<string, SortedSet<string>> map, ConstSet constants, string recordsRoot)
+    {
+        if (!Directory.Exists(recordsRoot)) return;
+        var byRef = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var (owner, field, value) in constants.Declarations())
+            byRef[$"{owner}.{field}"] = value;
+        foreach (var path in Directory.EnumerateFiles(recordsRoot, "*.cs", SearchOption.AllDirectories))
+        {
+            var file = Path.GetFileName(path);
+            foreach (Match init in DefaultInitializerRx.Matches(File.ReadAllText(path)))
+                foreach (Match m in QualifiedRefRx.Matches(init.Groups[1].Value))
+                    if (byRef.TryGetValue(m.Value, out var tok))
+                        (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+        }
+    }
+
+    private static readonly Regex DefaultInitializerRx =
+        new(@"\{\s*get;\s*init;\s*\}\s*=\s*([^;]+);", RegexOptions.Compiled);
+
     private static readonly Regex TokenConstDeclRx =
         new(@"^\s*public\s+const\s+string\s+([A-Za-z0-9_]+)\s*=", RegexOptions.Compiled);
 

@@ -5,13 +5,22 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.46.0] - 2026-10-18
 
+### Added
+
+- Base typography tokens for the steps the type scale does not cover: `TypographyTokens.WeightMedium` and
+  `WeightBold` (`--flare-font-weight-medium`, `--flare-font-weight-bold`), `TrackingWide`
+  (`--flare-font-tracking-wide`) and two text sizes below the smallest label, `Size2Xs` and `SizeXs`
+  (`--flare-font-size-2xs`, `--flare-font-size-xs`). They are `required`: a theme that builds
+  `TypographyTokens` from scratch has to set them.
+
 ### Changed
 
-- A component token that base tokens express is no longer `required`: 405 of them now default to their base
+- A component token that base tokens express is no longer `required`: 422 of them now default to their base
   token, for example `AccordionTokens.HeaderBg` to `var(--flare-color-surface)` and `MenuTokens.ItemGap` to
-  `var(--flare-spacing-6)`. A theme sets one only to differ; the in-box themes stopped repeating them and look
-  exactly as before. A theme that still sets them keeps working. Tokens with a literal value of their own
-  (sizes, opacities) stay `required`.
+  `var(--flare-spacing-6)`. A size or type grid is optional as a whole - every step of `BadgeTokens.LabelSize`,
+  for example, defaults to a base token. A theme sets one only to differ; the in-box themes stopped repeating
+  them and look exactly as before. A theme that still sets them keeps working. Tokens with a literal value of
+  their own (sizes, opacities) stay `required`.
 - `FlareGantt` takes its text size, line widths and line style from the base tokens
   (`--flare-typescale-body-small-size`, `--flare-border-width`, `--flare-border-width-emphasis`,
   `--flare-border-style`), so its text follows the theme: smaller in Aero and Visual Studio, larger in Liquid

@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -16,17 +17,17 @@ public sealed record TableOfContentsTokens
     /// <summary>Line height.</summary>
     [CssVar(TableOfContents.LineHeight)] public required string LineHeight { get; init; }
     /// <summary>Title tracking.</summary>
-    [CssVar(TableOfContents.TitleTracking)] public required string TitleTracking { get; init; }
+    [CssVar(TableOfContents.TitleTracking)] public string TitleTracking { get; init; } = Var(Css.Tokens.Typography.TrackingWide);
     /// <summary>Title weight.</summary>
-    [CssVar(TableOfContents.TitleWeight)] public string TitleWeight { get; init; } = "var(--flare-typescale-title-small-weight)";
+    [CssVar(TableOfContents.TitleWeight)] public string TitleWeight { get; init; } = Var(Css.Tokens.Typography.TitleSmall.Weight);
     /// <summary>Active (current section) link text color.</summary>
-    [CssVar(TableOfContents.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-on-secondary-container)";
+    [CssVar(TableOfContents.ActiveColor)] public string ActiveColor { get; init; } = Var(Css.Tokens.Color.OnSecondaryContainer);
 
     /// <summary>Color of inactive links.</summary>
-    [CssVar(TableOfContents.InactiveColor)] public string InactiveColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(TableOfContents.InactiveColor)] public string InactiveColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
     /// <summary>Color of the title (e.g. "On this page").</summary>
-    [CssVar(TableOfContents.TitleColor)] public string TitleColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(TableOfContents.TitleColor)] public string TitleColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
     /// <summary>Color of the vertical rail beside the links; transparent for no rail.</summary>
     [CssVar(TableOfContents.RailColor)] public required string RailColor { get; init; }
@@ -35,10 +36,10 @@ public sealed record TableOfContentsTokens
     [CssVar(TableOfContents.RailWidth)] public required string RailWidth { get; init; }
 
     /// <summary>Background behind the active link (the pill fill); transparent for the rail look.</summary>
-    [CssVar(TableOfContents.ActiveBg)] public string ActiveBg { get; init; } = "var(--flare-color-secondary-container)";
+    [CssVar(TableOfContents.ActiveBg)] public string ActiveBg { get; init; } = Var(Css.Tokens.Color.SecondaryContainer);
 
     /// <summary>Corner radius of the active-link surface (full for a pill, 0 for the rail look).</summary>
-    [CssVar(TableOfContents.ActiveRadius)] public string ActiveRadius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(TableOfContents.ActiveRadius)] public string ActiveRadius { get; init; } = Var(Css.Tokens.Shape.Full);
 
     /// <summary>Width of the active-link left marker bar; 0 for no bar (the pill look).</summary>
     [CssVar(TableOfContents.MarkerWidth)] public required string MarkerWidth { get; init; }
@@ -47,5 +48,5 @@ public sealed record TableOfContentsTokens
     [CssVar(TableOfContents.LinkPadX)] public required string LinkPadX { get; init; }
 
     /// <summary>Indent applied per heading-depth level.</summary>
-    [CssVar(TableOfContents.Indent)] public string Indent { get; init; } = "var(--flare-spacing-6)";
+    [CssVar(TableOfContents.Indent)] public string Indent { get; init; } = Var(Css.Tokens.Spacing.S6);
 }

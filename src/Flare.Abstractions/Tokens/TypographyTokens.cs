@@ -18,6 +18,17 @@ public sealed record TypographyTokens
     /// </summary>
     [CssVar(Flare.Css.Tokens.Typography.MonoFont)] public required string MonoFont { get; init; }
 
+    /// <summary>Medium weight: emphasis lighter than bold, such as a navigation label at rest.</summary>
+    [CssVar(Flare.Css.Tokens.Typography.WeightMedium)] public required string WeightMedium { get; init; }
+    /// <summary>Bold weight: the strongest emphasis, such as an active navigation label.</summary>
+    [CssVar(Flare.Css.Tokens.Typography.WeightBold)] public required string WeightBold { get; init; }
+    /// <summary>Widened letter spacing for short labels, typically capitalised section titles.</summary>
+    [CssVar(Flare.Css.Tokens.Typography.TrackingWide)] public required string TrackingWide { get; init; }
+    /// <summary>Smallest text size, below the scale's smallest label: the count in a small badge.</summary>
+    [CssVar(Flare.Css.Tokens.Typography.Size2Xs)] public required string Size2Xs { get; init; }
+    /// <summary>Extra small text size, below the scale's smallest label.</summary>
+    [CssVar(Flare.Css.Tokens.Typography.SizeXs)] public required string SizeXs { get; init; }
+
     /// <summary>Display large token.</summary>
     public required TypeStyle DisplayLarge { get; init; }
     /// <summary>Display medium token.</summary>

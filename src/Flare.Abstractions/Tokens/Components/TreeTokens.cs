@@ -1,5 +1,6 @@
 using Flare.Css;
 using Flare.Css.Tokens;
+using static Flare.Css.Tokens.Vars;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -11,9 +12,9 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record TreeTokens
 {
     /// <summary>Toggle hover bg.</summary>
-    [CssVar(Tree.ToggleHoverBg)] public string ToggleHoverBg { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)";
+    [CssVar(Tree.ToggleHoverBg)] public string ToggleHoverBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.OnSurface)} 12%, transparent)";
     /// <summary>Horizontal indent applied per nesting level.</summary>
-    [CssVar(Tree.Indent)] public string Indent { get; init; } = "var(--flare-spacing-12)";
+    [CssVar(Tree.Indent)] public string Indent { get; init; } = Var(Css.Tokens.Spacing.S12);
 
     /// <summary>Square size of the expander toggle, its placeholder and the drag handle.</summary>
     [CssVar(Tree.ToggleSize)] public required string ToggleSize { get; init; }
@@ -22,8 +23,8 @@ public sealed record TreeTokens
     [CssVar(Tree.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Background of a selected row.</summary>
-    [CssVar(Tree.SelectedBg)] public string SelectedBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)";
+    [CssVar(Tree.SelectedBg)] public string SelectedBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} 16%, transparent)";
 
     /// <summary>Foreground (text/icon) color of a selected row.</summary>
-    [CssVar(Tree.SelectedColor)] public string SelectedColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Tree.SelectedColor)] public string SelectedColor { get; init; } = Var(Css.Tokens.Color.Primary);
 }

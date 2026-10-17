@@ -21,6 +21,11 @@ internal static class MaterialDesign2Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
+        WeightMedium = "500",
+        WeightBold = "700",
+        TrackingWide = "0.05em",
+        Size2Xs = "0.5625rem",
+        SizeXs = "0.625rem",
         // Display = H1..H3
         DisplayLarge = T("Roboto", "300", "6rem", "7rem", "-0.015625em"),       // H1 96/112 -1.5px
         DisplayMedium = T("Roboto", "300", "3.75rem", "4.5rem", "-0.008333em"), // H2 60/72 -0.5px
@@ -188,9 +193,6 @@ internal static class MaterialDesign2Tokens
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
         DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
-        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
-        LabelSizeXs = "0.5625rem",
-        LabelSizeSm = "0.625rem",
         Offset = "0.375rem",
     };
 
@@ -207,9 +209,6 @@ internal static class MaterialDesign2Tokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
-        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthLg = "1px",
-        OutlineWidthXl = "1px",
         // The fallback radius for the buttons that do not take a per-size one (the confirm dialog's
         // and the message box's). A pill here made those two the only capsule buttons in a theme
         // whose every other button is a 4dp rectangle.
@@ -596,7 +595,6 @@ internal static class MaterialDesign2Tokens
         TickGap = "5",
 
         LabelSize = "9",
-        ValueWeight = "500",
 
         BandOpacity = "0.55",
         TargetWidth = "2.5",
@@ -752,8 +750,6 @@ internal static class MaterialDesign2Tokens
         BorderColor = "var(--flare-color-surface-variant)",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
         IconSize = "1.5rem",
-        LabelFontWeight = "500",
-        LabelFontWeightActive = "700",
         IndicatorSize = "2rem",
         IndicatorWidth = "0",
         ItemGap = "var(--flare-spacing-1)",
@@ -764,7 +760,6 @@ internal static class MaterialDesign2Tokens
         ActiveWeight = "600",
         HoverBgOpacity = "40%",
         LineHeight = "1.4",
-        TitleTracking = "0.05em",
         TitleWeight = "600",
         RailColor = "transparent",
         RailWidth = "0",
@@ -875,7 +870,6 @@ internal static class MaterialDesign2Tokens
         Gap = "0px",
         HandleWidth = "20px",
         HandlePressedWidth = "20px",
-        HandleRadius = "9999px",
         HandleClipPath = "none",
         HandleBorderWidth = "0",
         // Follow the per-instance Color: --fc-main is the local accent, falling back to the role.
@@ -883,7 +877,6 @@ internal static class MaterialDesign2Tokens
         InactiveColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         StateLayerSize = "40px",
         StateHoverOpacity = "0.08",
-        StatePressedOpacity = "0.10",
         FocusOutline = "none",
         FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-primary)",
