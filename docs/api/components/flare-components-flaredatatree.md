@@ -8,6 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the tree, announced when keyboard focus enters it. For a visible heading that names the tree, pass aria-labelledby as an attribute instead. |
 | `ChildrenProvider` | `Func<TItem?, Task<IEnumerable<TItem?>>>?` | `` | Parameter |  | Async function that loads children for a given item. |
 | `HasChildren` | `Func<TItem?, bool>?` | `` | Parameter |  | Optional predicate that reports whether an item has children without pre-loading them. When set, a node shows an expand chevron if this returns true even before children are fetched. |
 | `Height` | `string` | `"400px"` | Parameter |  | CSS height of the virtualized scrollable container. |
@@ -22,7 +23,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `DisposeAsync()`
+
+Disposes the component; override to release JS interop or subscriptions.
+Returns: `ValueTask`.
+
 
 ## Inheritance
 

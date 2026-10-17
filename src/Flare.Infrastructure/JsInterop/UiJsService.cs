@@ -61,4 +61,13 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
 
     /// <inheritdoc />
     public ValueTask SetUnloadPromptAsync(bool enabled) => InvokeVoidAsync("setUnloadPrompt", enabled);
+
+    /// <inheritdoc />
+    public ValueTask RegisterTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("registerTreeKeyboard", root);
+
+    /// <inheritdoc />
+    public ValueTask RemoveTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("removeTreeKeyboard", root);
+
+    /// <inheritdoc />
+    public ValueTask FocusTreeItemAsync(ElementReference root, int index) => InvokeVoidAsync("focusTreeItem", root, index);
 }

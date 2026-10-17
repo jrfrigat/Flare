@@ -13,6 +13,10 @@ All notable changes to Flare are documented here. This project adheres to
   circular progress, so a theme can change it without changing a palette role. It is required: a custom theme
   built with `new ProgressTokens { ... }` has to set it (the in-box themes keep the secondary-container color).
 
+- `FlareDataTree` works from the keyboard as a WAI-ARIA tree: `AriaLabel` names it, one row is in the Tab order,
+  the arrow keys, Home and End move between visible rows (scrolling a virtualized row into view), Right and Left
+  open, close and walk the hierarchy, and Enter or Space act like a click. The expand button left the Tab order.
+
 ### Fixed
 
 - Several `FlareToolPanel` components in one `FlareIdeLayout` region no longer re-render the layout endlessly. The

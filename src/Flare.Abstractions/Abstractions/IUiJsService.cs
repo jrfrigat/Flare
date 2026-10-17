@@ -72,4 +72,23 @@ public interface IUiJsService : IAsyncDisposable
     /// one - it exists for the in-app half, which CAN say what it likes.
     /// </summary>
     ValueTask SetUnloadPromptAsync(bool enabled);
+
+    /// <summary>
+    /// Keeps the browser from scrolling a virtual tree's container with the keys the tree handles itself (arrows,
+    /// Home, End, Space on a row). Defaults to doing nothing, which leaves the browser's scrolling in place.
+    /// </summary>
+    /// <param name="root">The tree's root element (its scroll container).</param>
+    ValueTask RegisterTreeKeyboardAsync(ElementReference root) => ValueTask.CompletedTask;
+
+    /// <summary>Removes the listener added by <see cref="RegisterTreeKeyboardAsync"/>.</summary>
+    /// <param name="root">The tree's root element.</param>
+    ValueTask RemoveTreeKeyboardAsync(ElementReference root) => ValueTask.CompletedTask;
+
+    /// <summary>
+    /// Focuses the tree row at a flat index, scrolling a virtualized row that is not rendered yet into view first.
+    /// Defaults to doing nothing.
+    /// </summary>
+    /// <param name="root">The tree's root element (its scroll container).</param>
+    /// <param name="index">The row's index in the flattened list of visible rows.</param>
+    ValueTask FocusTreeItemAsync(ElementReference root, int index) => ValueTask.CompletedTask;
 }

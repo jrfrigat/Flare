@@ -1,6 +1,7 @@
 <FlareDataTree TItem="TreeNode"
                   Items="@_slowRoots"
                   KeySelector="@(n => n.Id)"
+                  AriaLabel="@GalleryStrings.DataTree_SimulatedAsync"
                   ChildrenProvider="@LoadChildrenSlow"
                   HasChildren="@(n => n.HasKids)"
                   Height="280px">

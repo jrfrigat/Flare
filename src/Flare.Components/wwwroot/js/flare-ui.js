@@ -31,6 +31,47 @@ export function removeTabKeyboard(bar) {
     _tabKeyboards.drop(bar);
 }
 
+// A virtual tree (FlareDataTree) moves focus in .NET; the browser's own handling of the same keys would scroll
+// the tree's container under it. Only the keys the tree uses, and only from a tree row, are kept from the
+// browser - Tab and anything typed into a row's own controls still reach their usual targets.
+const _treeKeyboards = registry();
+const TREE_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', ' ']);
+
+export function registerTreeKeyboard(root) {
+    if (!root) return;
+    const keydown = e => {
+        if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || !TREE_KEYS.has(e.key)) return;
+        if (e.target.matches?.('[role="treeitem"]') && root.contains(e.target)) e.preventDefault();
+    };
+    _treeKeyboards.keep(root, listen(root, 'keydown', keydown));
+}
+
+export function removeTreeKeyboard(root) {
+    _treeKeyboards.drop(root);
+}
+
+// Focuses the row at a flat index. A virtualized row far from the viewport is not in the DOM yet: the container
+// is scrolled to where it would be, and the row is focused once the virtualizer renders it.
+export function focusTreeItem(root, index, timeoutMs = 1000) {
+    if (!root) return Promise.resolve(false);
+    const find = () => root.querySelector(`[data-flare-tree-index="${index}"]`);
+    const focus = el => { el.focus({ preventScroll: false }); el.scrollIntoView?.({ block: 'nearest' }); return true; };
+    const found = find();
+    if (found) return Promise.resolve(focus(found));
+    const row = root.querySelector('[data-flare-tree-index]');
+    const height = row?.getBoundingClientRect().height || 0;
+    if (height > 0) root.scrollTop = Math.max(0, index * height - root.clientHeight / 2);
+    return new Promise(resolve => {
+        const observer = new MutationObserver(() => {
+            const el = find();
+            if (!el) return;
+            observer.disconnect(); clearTimeout(timer); resolve(focus(el));
+        });
+        const timer = setTimeout(() => { observer.disconnect(); resolve(false); }, timeoutMs);
+        observer.observe(root, { childList: true, subtree: true });
+    });
+}
+
 export function revealFocusedTab(bar) {
     const tab = document.activeElement;
     if (!bar || !tab?.matches('[role="tab"]') || tab.closest('[role="tablist"]') !== bar) return;

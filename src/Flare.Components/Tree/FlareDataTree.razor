@@ -1,9 +1,13 @@
 @namespace Flare.Components
 @typeparam TItem
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IUiJsService Ui
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 
-<div class="@BuildCssClass()" style="@($"{Style};height:{Height}")" @attributes="AdditionalAttributes">
+@* WAI-ARIA tree: one row is in the Tab order (the active one), the arrow keys move between visible rows and
+   Enter or Space acts like a click. The expand button stays out of the Tab order - the arrows open and close. *@
+<div class="@BuildCssClass()" style="@($"{Style};height:{Height}")" role="tree" aria-label="@AriaLabel"
+     @ref="_rootRef" @attributes="AdditionalAttributes">
     <Virtualize Items="@_flat" Context="node" OverscanCount="5">
         <div class="@Css.Classes.TreeView.VNode"
              style="@($"{Css.Tokens.LocalVars.TreeIndent}:{(node.Level * 1.25).ToString(System.Globalization.CultureInfo.InvariantCulture)}rem")"
@@ -12,12 +16,15 @@
              aria-selected="@node.IsSelected.ToString().ToLower()"
              aria-level="@(node.Level + 1)"
              aria-busy="@(node.IsLoading ? "true" : null)"
+             data-flare-tree-index="@node.Index"
              @key="KeySelector(node.Item)"
              @onclick="@(() => SelectAsync(node))"
-             tabindex="@(node.IsSelected ? 0 : -1)">
+             @onkeydown="@(e => HandleKeyDownAsync(node, e))"
+             tabindex="@(ReferenceEquals(node, ActiveNode) ? 0 : -1)">
             @if (node.HasChildren || node.IsLoading)
             {
                 <button type="button" class="@Css.Classes.TreeView.VExpandBtn"
+                        tabindex="-1"
                         @onclick="@(() => ToggleAsync(node))"
                         @onclick:stopPropagation="true"
                         disabled="@node.IsLoading"
@@ -59,11 +66,102 @@
     [Parameter] public EventCallback<TItem> ItemClick { get; set; }
     /// <summary>Callback raised when a tree node becomes selected.</summary>
     [Parameter] public EventCallback<TItem> ItemSelected { get; set; }
+    /// <summary>Accessible name of the tree, announced when keyboard focus enters it. For a visible heading
+    /// that names the tree, pass <c>aria-labelledby</c> as an attribute instead.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.TreeView.VTree;
 
     private List<VirtualTreeNode<TItem>> _flat = [];
     private IEnumerable<TItem>? _lastItems;
+    private ElementReference _rootRef;
+    private VirtualTreeNode<TItem>? _active;
+    private VirtualTreeNode<TItem>? _selected;
+    private int? _focusIndex;
+    private bool _keyboardRegistered;
+
+    // The row in the Tab order: the one the keyboard last moved to, else the selected one, else the first. A row
+    // that collapsed away no longer sits at its index, so the check is O(1) per row rendered.
+    private VirtualTreeNode<TItem>? ActiveNode =>
+        IsShown(_active) ? _active : IsShown(_selected) ? _selected : _flat.Count > 0 ? _flat[0] : null;
+
+    private bool IsShown(VirtualTreeNode<TItem>? node) =>
+        node is not null && node.Index < _flat.Count && ReferenceEquals(_flat[node.Index], node);
+
+    private void Reindex(int from = 0)
+    {
+        for (var i = from; i < _flat.Count; i++) _flat[i].Index = i;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (!_keyboardRegistered)
+            {
+                _keyboardRegistered = true;
+                await Ui.RegisterTreeKeyboardAsync(_rootRef);
+            }
+            if (_focusIndex is { } index)
+            {
+                _focusIndex = null;
+                await Ui.FocusTreeItemAsync(_rootRef, index);
+            }
+        }
+        catch (InvalidOperationException) { }
+        catch (Microsoft.JSInterop.JSDisconnectedException) { }
+        catch (Microsoft.JSInterop.JSException) { }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (_keyboardRegistered)
+        {
+            try { await Ui.RemoveTreeKeyboardAsync(_rootRef); }
+            catch (InvalidOperationException) { }
+            catch (Microsoft.JSInterop.JSDisconnectedException) { }
+            catch (Microsoft.JSInterop.JSException) { }
+        }
+        await base.DisposeAsync();
+    }
+
+    private async Task HandleKeyDownAsync(VirtualTreeNode<TItem> node, Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+    {
+        if (e.AltKey || e.CtrlKey || e.MetaKey) return;
+        if (!IsShown(node)) return;
+        var index = node.Index;
+        switch (e.Key)
+        {
+            case "ArrowDown": MoveTo(index + 1); break;
+            case "ArrowUp": MoveTo(index - 1); break;
+            case "Home": MoveTo(0); break;
+            case "End": MoveTo(_flat.Count - 1); break;
+            case "ArrowRight":
+                if (node.HasChildren && !node.IsExpanded) { await ToggleAsync(node); _active = node; }
+                else if (node.IsExpanded && index + 1 < _flat.Count && _flat[index + 1].Level > node.Level) MoveTo(index + 1);
+                break;
+            case "ArrowLeft":
+                if (node.IsExpanded) { await ToggleAsync(node); _active = node; }
+                else
+                {
+                    var parent = _flat.FindLastIndex(index, n => n.Level < node.Level);
+                    if (parent >= 0) MoveTo(parent);
+                }
+                break;
+            case "Enter":
+            case " ":
+                await SelectAsync(node);
+                break;
+        }
+    }
+
+    // Moves the Tab stop to a row and asks for focus there once it has rendered with tabindex 0.
+    private void MoveTo(int index)
+    {
+        if (index < 0 || index >= _flat.Count) return;
+        _active = _flat[index];
+        _focusIndex = index;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -85,6 +183,7 @@
             bool hasKids = HasChildren is not null ? HasChildren(item) : ChildrenProvider is not null;
             _flat.Add(new VirtualTreeNode<TItem> { Item = item, Level = 0, HasChildren = hasKids });
         }
+        Reindex();
         await Task.CompletedTask;
     }
 
@@ -123,25 +222,25 @@
     // Re-inserts a node's (cached) children into the flat list just below it.
     private void InsertChildren(VirtualTreeNode<TItem> node)
     {
-        if (node.Children is null) return;
-        var idx = _flat.IndexOf(node) + 1;
-        foreach (var child in node.Children)
+        if (node.Children is null || !IsShown(node)) return;
+        var idx = node.Index + 1;
+        _flat.InsertRange(idx, node.Children.Select(child => new VirtualTreeNode<TItem>
         {
-            bool hasKids = HasChildren is not null ? HasChildren(child) : ChildrenProvider is not null;
-            _flat.Insert(idx++, new VirtualTreeNode<TItem>
-            {
-                Item = child,
-                Level = node.Level + 1,
-                HasChildren = hasKids
-            });
-        }
+            Item = child,
+            Level = node.Level + 1,
+            HasChildren = HasChildren is not null ? HasChildren(child) : ChildrenProvider is not null
+        }));
+        Reindex(idx);
     }
 
     private void RemoveDescendants(VirtualTreeNode<TItem> parent)
     {
-        var idx = _flat.IndexOf(parent) + 1;
-        while (idx < _flat.Count && _flat[idx].Level > parent.Level)
-            _flat.RemoveAt(idx);
+        if (!IsShown(parent)) return;
+        var idx = parent.Index + 1;
+        var end = idx;
+        while (end < _flat.Count && _flat[end].Level > parent.Level) end++;
+        _flat.RemoveRange(idx, end - idx);
+        Reindex(idx);
     }
 
     private async Task SelectAsync(VirtualTreeNode<TItem> node)
@@ -149,6 +248,8 @@
         foreach (var n in _flat)
             n.IsSelected = false;
         node.IsSelected = true;
+        _selected = node;
+        _active = node;
         if (ItemClick.HasDelegate) await ItemClick.InvokeAsync(node.Item);
         if (ItemSelected.HasDelegate) await ItemSelected.InvokeAsync(node.Item);
     }

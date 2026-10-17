@@ -4,6 +4,8 @@ internal sealed class VirtualTreeNode<TItem>
 {
     public TItem Item { get; init; } = default!;
     public int Level { get; init; }
+    /// <summary>Position in the flattened list of visible rows; renumbered whenever rows are inserted or removed.</summary>
+    public int Index { get; set; }
     /// <summary>Whether this node is currently in an expanded state.</summary>
     public bool IsExpanded { get; set; }
     /// <summary>Whether this node is currently selected.</summary>

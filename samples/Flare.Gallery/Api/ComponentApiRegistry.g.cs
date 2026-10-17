@@ -2103,6 +2103,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the tree, announced when keyboard focus enters it. For a visible heading that names the tree, pass aria-labelledby as an attribute instead.", null, false, false, false, @"FlareDataTree"),
                 new ApiParameterInfo(@"ChildrenProvider", @"Func<TItem?, Task<IEnumerable<TItem?>>>?", null, @"Async function that loads children for a given item.", null, false, false, false, @"FlareDataTree"),
                 new ApiParameterInfo(@"HasChildren", @"Func<TItem?, bool>?", null, @"Optional predicate that reports whether an item has children without pre-loading them. When set, a node shows an expand chevron if this returns true even before children are fetched.", null, false, false, false, @"FlareDataTree"),
                 new ApiParameterInfo(@"Height", @"string", @"""400px""", @"CSS height of the virtualized scrollable container.", null, false, false, false, @"FlareDataTree"),
@@ -2115,7 +2116,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
