@@ -17,6 +17,8 @@ public abstract class GanttTestBase : FlareTestContext
     protected static readonly DateOnly Monday = new(2026, 10, 12);
     protected static readonly CultureInfo Ru = new("ru-RU");
 
+    protected GanttTestBase() => Services.AddFlareGantt();
+
     protected static DateOnly Day(int offset) => Monday.AddDays(offset);
 
     protected IRenderedComponent<FlareGantt> Chart(Action<ComponentParameterCollectionBuilder<FlareGanttPanel<Node, Work>>> panel,
