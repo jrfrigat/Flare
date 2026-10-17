@@ -49,7 +49,14 @@ public partial class FlareToolPanel : FlareComponentBase
     {
         // Inside a layout the panel only renders while expanded; report its title/mode so the layout
         // can label the collapsed rail and decide docked-vs-flyout sizing.
-        Layout?.RegisterPanel(Position, Title, Mode);
+        Layout?.RegisterPanel(this, Position, Title, Mode);
+    }
+
+    /// <inheritdoc />
+    public override ValueTask DisposeAsync()
+    {
+        Layout?.UnregisterPanel(this);
+        return base.DisposeAsync();
     }
 
     private string? _positionClass => Position switch

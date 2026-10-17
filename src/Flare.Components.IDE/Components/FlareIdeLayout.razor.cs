@@ -154,21 +154,85 @@ public partial class FlareIdeLayout : FlareComponentBase
     public override ValueTask DisposeAsync()
     {
         // The JS service is shared (DI-owned); only release this layout's callback reference.
+        _disposed = true;
         _selfRef?.Dispose();
         return ValueTask.CompletedTask;
     }
 
-    // Title/mode reported by the panel currently mounted in each region (cached so the rail keeps its
-    // label after the panel unmounts on collapse).
-    private readonly Dictionary<ToolPanelPosition, (string? Title, IdePanelMode Mode)> _panelInfo = new();
+    // Panels mounted in the layout, in first-registration (markup) order. A region may host several.
+    private readonly List<(FlareToolPanel Panel, ToolPanelPosition Position, string? Title, IdePanelMode Mode)> _panels = new();
 
-    /// <summary>Called by a hosted <see cref="FlareToolPanel"/> to report its title and mode.</summary>
-    internal void RegisterPanel(ToolPanelPosition position, string? title, IdePanelMode mode)
+    // Rail titles and mode of each region, derived from all of its mounted panels. Kept while a collapsed
+    // region has no panel mounted, so the rail keeps its labels after the panels unmount.
+    private readonly Dictionary<ToolPanelPosition, (string[] Titles, IdePanelMode Mode)> _regions = new();
+
+    private bool _disposed;
+
+    /// <summary>Called by a hosted <see cref="FlareToolPanel"/> to report its region, title and mode.</summary>
+    internal void RegisterPanel(FlareToolPanel panel, ToolPanelPosition position, string? title, IdePanelMode mode)
     {
-        if (_panelInfo.TryGetValue(position, out var existing) && existing.Title == title && existing.Mode == mode)
+        var index = _panels.FindIndex(p => ReferenceEquals(p.Panel, panel));
+        ToolPanelPosition? previous = null;
+        if (index >= 0)
+        {
+            var entry = _panels[index];
+            if (entry.Position == position && entry.Title == title && entry.Mode == mode)
+                return;
+            previous = entry.Position;
+            _panels[index] = (panel, position, title, mode);
+        }
+        else
+        {
+            _panels.Add((panel, position, title, mode));
+        }
+
+        var changed = UpdateRegion(position);
+        if (previous is { } old && old != position)
+            changed |= UpdateRegion(old);
+        if (changed)
+            StateHasChanged();
+    }
+
+    /// <summary>Called by a hosted <see cref="FlareToolPanel"/> when it is removed from the layout.</summary>
+    internal void UnregisterPanel(FlareToolPanel panel)
+    {
+        var index = _panels.FindIndex(p => ReferenceEquals(p.Panel, panel));
+        if (index < 0)
             return;
-        _panelInfo[position] = (title, mode);
-        StateHasChanged();
+        var position = _panels[index].Position;
+        _panels.RemoveAt(index);
+        // A collapsing region unmounts its panels one by one; its rail keeps what they reported while expanded.
+        if (!IsCollapsed(position) && UpdateRegion(position) && !_disposed)
+            StateHasChanged();
+    }
+
+    // Recomputes a region from its mounted panels; returns true when its titles or mode changed. The result
+    // depends only on the set of panels, not on the order their parameters were set within a render, so
+    // re-rendering settles instead of alternating between panels.
+    private bool UpdateRegion(ToolPanelPosition position)
+    {
+        var titles = new List<string>();
+        var mounted = false;
+        var allAutoHide = true;
+        foreach (var p in _panels)
+        {
+            if (p.Position != position)
+                continue;
+            mounted = true;
+            if (!string.IsNullOrEmpty(p.Title))
+                titles.Add(p.Title);
+            if (p.Mode != IdePanelMode.AutoHide)
+                allAutoHide = false;
+        }
+
+        if (!mounted)
+            return _regions.Remove(position);
+
+        var mode = allAutoHide ? IdePanelMode.AutoHide : IdePanelMode.Docked;
+        if (_regions.TryGetValue(position, out var current) && current.Mode == mode && current.Titles.SequenceEqual(titles))
+            return false;
+        _regions[position] = (titles.ToArray(), mode);
+        return true;
     }
 
     /// <summary>Collapses the region at <paramref name="position"/> to its rail.</summary>
@@ -201,11 +265,12 @@ public partial class FlareIdeLayout : FlareComponentBase
         _ => LeftCollapsed,
     };
 
+    // A region floats only when every panel in it asks for auto-hide; a mixed region stays docked.
     private IdePanelMode ModeOf(ToolPanelPosition position) =>
-        _panelInfo.TryGetValue(position, out var i) ? i.Mode : IdePanelMode.Docked;
+        _regions.TryGetValue(position, out var i) ? i.Mode : IdePanelMode.Docked;
 
-    private string? TitleOf(ToolPanelPosition position) =>
-        _panelInfo.TryGetValue(position, out var i) ? i.Title : null;
+    private string[] TitlesOf(ToolPanelPosition position) =>
+        _regions.TryGetValue(position, out var i) ? i.Titles : [];
 
     // A region floats (overlay) when expanded in auto-hide mode.
     private bool IsFloating(ToolPanelPosition position) =>
