@@ -26,4 +26,16 @@ public class FlareTransferSmokeTests : FlareTestContext
         Assert.Equal(2, cut.FindAll(".flare-transfer__panel").Count);
         Assert.Empty(cut.FindAll($".{Css.Classes.Transfer.Item}"));
     }
+
+    // A bool bound straight to aria-selected renders "" for true and drops the attribute for false.
+    [Fact]
+    public void Options_AnnounceSelectionAsText()
+    {
+        var cut = Render<FlareTransfer<string>>(p => p.Add(x => x.SourceItems, Items));
+
+        cut.FindAll("[role=option]")[1].Click();
+
+        var values = cut.FindAll("[role=option]").Select(o => o.GetAttribute("aria-selected")).ToList();
+        Assert.Equal(["false", "true", "false"], values);
+    }
 }

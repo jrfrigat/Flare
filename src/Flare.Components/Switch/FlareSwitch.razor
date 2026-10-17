@@ -8,7 +8,7 @@
         <input class="@Css.Classes.Switch.Input"
                type="checkbox"
                role="switch"
-               aria-checked="@Value"
+               aria-checked="@(Value ? "true" : "false")"
                checked="@Value"
                disabled="@Disabled"
                @onchange="HandleChange" />

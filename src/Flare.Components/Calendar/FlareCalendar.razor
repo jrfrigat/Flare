@@ -36,7 +36,7 @@
                              role="button"
                              tabindex="0"
                              aria-label="@c.Date.ToString("D", _culture)"
-                             aria-pressed="@(SelectedDate == c.Date)"
+                             aria-pressed="@(SelectedDate == c.Date ? "true" : "false")"
                              aria-current="@(c.Date == Today ? "date" : null)">
                             <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span>
                             @foreach (var ev in c.Events.Take(MaxVisibleEvents))

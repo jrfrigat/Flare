@@ -15,7 +15,7 @@
                 <div class="@Css.Classes.Transfer.Item @(_srcSelected.Contains(it) ? Css.Classes.Transfer.ItemSelected : "")"
                      @onclick="@(() => ToggleSrcSelect(it))"
                      role="option"
-                     aria-selected="@(_srcSelected.Contains(it))"
+                     aria-selected="@(_srcSelected.Contains(it) ? "true" : "false")"
                      tabindex="0">
                     @ItemText(it)
                 </div>
@@ -55,7 +55,7 @@
                 <div class="@Css.Classes.Transfer.Item @(_tgtSelected.Contains(it) ? Css.Classes.Transfer.ItemSelected : "")"
                      @onclick="@(() => ToggleTgtSelect(it))"
                      role="option"
-                     aria-selected="@(_tgtSelected.Contains(it))"
+                     aria-selected="@(_tgtSelected.Contains(it) ? "true" : "false")"
                      tabindex="0">
                     @ItemText(it)
                 </div>

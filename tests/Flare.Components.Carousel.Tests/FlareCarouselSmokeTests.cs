@@ -29,4 +29,17 @@ public class FlareCarouselSmokeTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll(".flare-carousel"));
         Assert.Empty(cut.FindAll(".flare-carousel__slide"));
     }
+
+    // A bool bound straight to aria-selected renders "" for true and drops the attribute for false.
+    [Fact]
+    public void Dots_AnnounceSelectionAsText()
+    {
+        var cut = Render<FlareCarousel<string>>(p => p
+            .Add(x => x.Items, Slides)
+            .Add(x => x.ItemTemplate, (RenderFragment<string>)(s => b => b.AddContent(0, s))));
+
+        var values = cut.FindAll("[aria-selected]").Select(d => d.GetAttribute("aria-selected")).ToList();
+
+        Assert.Equal(["true", "false", "false"], values);
+    }
 }

@@ -10,7 +10,7 @@
         <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
         <FlareIconView Value="FlareIcons.ExpandMore" Class="@($"{Css.Classes.Navigation.GroupChevron} {(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")}")" />
     </button>
-    <div class="@Css.Classes.Navigation.GroupItems @(_expanded ? Css.Classes.Navigation.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
+    <div class="@Css.Classes.Navigation.GroupItems @(_expanded ? Css.Classes.Navigation.GroupItemsOpen : "")" role="group" aria-hidden="@(_expanded ? null : "true")">
         <div class="@Css.Classes.Navigation.GroupItemsInner">
             @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
             <CascadingValue Value="this" IsFixed="true">

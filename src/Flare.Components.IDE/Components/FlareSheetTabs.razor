@@ -12,7 +12,7 @@
             var active = index == ActiveIndex;
             <button type="button"
                     class="@Css.Classes.Ide.SheetTabs.Tab @(active ? Css.Classes.Ide.SheetTabs.TabActive : "")"
-                    role="tab" aria-selected="@active"
+                    role="tab" aria-selected="@(active ? "true" : "false")"
                     @onclick="@(() => SelectAsync(index))">
                 @Sheets[index]
             </button>

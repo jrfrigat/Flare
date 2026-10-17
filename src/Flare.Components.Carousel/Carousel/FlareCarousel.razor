@@ -49,7 +49,7 @@
                 <button type="button" class="@Css.Classes.Carousel.Dot @(_current == idx ? Css.Classes.Carousel.DotActive : "")"
                         @onclick="@(() => GoTo(idx))"
                         role="tab"
-                        aria-selected="@(_current == idx)"
+                        aria-selected="@(_current == idx ? "true" : "false")"
                         aria-label="@(string.Format(FlareStrings.Carousel_GoToSlide, idx + 1))">
                 </button>
             }

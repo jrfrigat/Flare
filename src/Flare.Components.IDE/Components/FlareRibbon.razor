@@ -9,7 +9,7 @@
             <button type="button" class="@Css.Classes.Ide.Ribbon.Tab @(isActive ? Css.Classes.Ide.Ribbon.TabActive : "")"
                     id="@tab.TabButtonId"
                     role="tab"
-                    aria-selected="@isActive"
+                    aria-selected="@(isActive ? "true" : "false")"
                     aria-controls="@tab.PanelId"
                     tabindex="@(isActive ? 0 : -1)"
                     @onclick="@(() => ActivateTab(tab))">
