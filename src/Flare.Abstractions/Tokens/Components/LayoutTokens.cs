@@ -12,13 +12,13 @@ public sealed record LayoutTokens
     [CssVar(LayoutField.AppBarHeightDense)] public required string AppBarHeightDense { get; init; }
 
     /// <summary>Background of the app bar. Usually a reference to a surface colour role.</summary>
-    [CssVar(LayoutField.AppBarBg)] public required string AppBarBg { get; init; }
+    [CssVar(LayoutField.AppBarBg)] public string AppBarBg { get; init; } = "var(--flare-color-surface)";
 
     /// <summary>Content Padding.</summary>
     [CssVar(LayoutField.ContentPadding)] public required string ContentPadding { get; init; }
 
     /// <summary>Content Padding Mobile.</summary>
-    [CssVar(LayoutField.ContentPaddingMobile)] public required string ContentPaddingMobile { get; init; }
+    [CssVar(LayoutField.ContentPaddingMobile)] public string ContentPaddingMobile { get; init; } = "var(--flare-spacing-8)";
 
     /// <summary>Drawer Rail Width.</summary>
     [CssVar(LayoutField.DrawerRailWidth)] public required string DrawerRailWidth { get; init; }
@@ -37,19 +37,19 @@ public sealed record LayoutTokens
     [CssVar(LayoutField.AppBarShadow)] public required string AppBarShadow { get; init; }
 
     /// <summary>The shell's own plane, behind every other one.</summary>
-    [CssVar(LayoutField.ShellBg)] public required string ShellBg { get; init; }
+    [CssVar(LayoutField.ShellBg)] public string ShellBg { get; init; } = "var(--flare-color-background)";
 
     /// <summary>
     /// The drawer's plane, a token of its own so the shell's three planes - page, chrome and canvas -
     /// are all the theme's to place: a language may put its chrome on the darkest plane and its canvas
     /// on the surface without overwriting core rules by class name.
     /// </summary>
-    [CssVar(LayoutField.DrawerBg)] public required string DrawerBg { get; init; }
+    [CssVar(LayoutField.DrawerBg)] public string DrawerBg { get; init; } = "var(--flare-color-surface-container-low)";
 
     /// <summary>The collapsed rail's plane, named apart from the drawer so a language can set an
     /// icon rail against the panel it expands into. Point it at <see cref="DrawerBg"/> to keep them the
     /// same, which is what the in-box themes do.</summary>
-    [CssVar(LayoutField.RailBg)] public required string RailBg { get; init; }
+    [CssVar(LayoutField.RailBg)] public string RailBg { get; init; } = "var(--flare-layout-drawer-bg)";
 
     /// <summary>The content plane. It had no background at all, so the canvas was whatever the shell
     /// happened to be painted.</summary>
@@ -92,5 +92,5 @@ public sealed record LayoutTokens
 
     /// <summary>Corner radius of the drawer-toggle button - a circle for a language whose icon buttons are
     /// round, a small radius for one whose icon buttons are squares. Usually a reference to a shape step.</summary>
-    [CssVar(LayoutField.AppBarToggleRadius)] public required string AppBarToggleRadius { get; init; }
+    [CssVar(LayoutField.AppBarToggleRadius)] public string AppBarToggleRadius { get; init; } = "var(--flare-shape-full)";
 }

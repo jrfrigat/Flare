@@ -23,26 +23,26 @@ public sealed record SplitterTokens
     [CssVar(Splitter.Color)] public required string Color { get; init; }
 
     /// <summary>Gutter background while hovered or keyboard-focused.</summary>
-    [CssVar(Splitter.HoverColor)] public required string HoverColor { get; init; }
+    [CssVar(Splitter.HoverColor)] public string HoverColor { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)";
 
     /// <summary>Size of the optional collapse/expand icon centred in the gutter.</summary>
     [CssVar(Splitter.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Colour of the centre icon, which must stay legible on <see cref="Color"/> and
     /// <see cref="HoverColor"/> alike.</summary>
-    [CssVar(Splitter.IconColor)] public required string IconColor { get; init; }
+    [CssVar(Splitter.IconColor)] public string IconColor { get; init; } = "var(--flare-color-on-surface-variant)";
 
     /// <summary>Colour of the grip bar. It sits on <see cref="Color"/> at rest and on
     /// <see cref="HoverColor"/> while hovered, so it has to read against both.</summary>
-    [CssVar(Splitter.GripColor)] public required string GripColor { get; init; }
+    [CssVar(Splitter.GripColor)] public string GripColor { get; init; } = "var(--flare-color-outline)";
 
     /// <summary>Corner radius of the grip bar - a pill for a rounded language, a small radius or zero for
     /// a square one. Usually a reference to a shape step.</summary>
-    [CssVar(Splitter.GripRadius)] public required string GripRadius { get; init; }
+    [CssVar(Splitter.GripRadius)] public string GripRadius { get; init; } = "var(--flare-shape-full)";
 
     /// <summary>Grip colour while the handle is pressed and for the whole drag that follows. Set it to
     /// <see cref="GripColor"/> for a language whose grip does not react to a press.</summary>
-    [CssVar(Splitter.GripPressedColor)] public required string GripPressedColor { get; init; }
+    [CssVar(Splitter.GripPressedColor)] public string GripPressedColor { get; init; } = "var(--flare-color-on-surface)";
 
     /// <summary>Grip thickness while pressed or dragged. It has to fit inside <see cref="GutterSize"/>,
     /// or the grip spills onto the panes on either side.</summary>
@@ -52,5 +52,5 @@ public sealed record SplitterTokens
     [CssVar(Splitter.GripPressedLength)] public required string GripPressedLength { get; init; }
 
     /// <summary>Grip corner radius while pressed or dragged.</summary>
-    [CssVar(Splitter.GripPressedRadius)] public required string GripPressedRadius { get; init; }
+    [CssVar(Splitter.GripPressedRadius)] public string GripPressedRadius { get; init; } = "var(--flare-shape-medium)";
 }

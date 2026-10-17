@@ -27,7 +27,7 @@ public sealed record ProgressTokens
     [CssVar(ProgressField.LinearHeight.Xl)] public required string LinearHeightXl { get; init; }
 
     /// <summary>Colour of content the indicator centres on itself.</summary>
-    [CssVar(ProgressField.ContentColor)] public required string ContentColor { get; init; }
+    [CssVar(ProgressField.ContentColor)] public string ContentColor { get; init; } = "var(--flare-color-on-surface)";
     /// <summary>Type size of centred content at the xs size.</summary>
     [CssVar(ProgressField.ContentSize.Xs)] public required string ContentSizeXs { get; init; }
     /// <summary>Type size of centred content at the sm size.</summary>
@@ -41,7 +41,7 @@ public sealed record ProgressTokens
 
     /// <summary>Corner radius of the linear track. One value serves every size: a theme that wants a pill
     /// references a shape token that resolves against the height, rather than a per-size literal.</summary>
-    [CssVar(ProgressField.TrackRadius)] public required string TrackRadius { get; init; }
+    [CssVar(ProgressField.TrackRadius)] public string TrackRadius { get; init; } = "var(--flare-shape-full)";
 
     /// <summary>Gap between the active indicator and the remaining track.</summary>
     [CssVar(ProgressField.Gap)] public required string Gap { get; init; }
@@ -50,7 +50,7 @@ public sealed record ProgressTokens
     [CssVar(ProgressField.LinearIndeterminateDuration)] public required string LinearIndeterminateDuration { get; init; }
 
     /// <summary>Easing used by the moving ends of a linear indeterminate indicator.</summary>
-    [CssVar(ProgressField.LinearIndeterminateEasing)] public required string LinearIndeterminateEasing { get; init; }
+    [CssVar(ProgressField.LinearIndeterminateEasing)] public string LinearIndeterminateEasing { get; init; } = "var(--flare-motion-easing-standard)";
 
     /// <summary>Trailing stop-indicator dot size (0 = off).</summary>
     [CssVar(ProgressField.StopSize)] public required string StopSize { get; init; }
@@ -60,7 +60,7 @@ public sealed record ProgressTokens
 
     /// <summary>Color of the remaining (unfilled) track of the linear and circular indicators, buffer and zone bands
     /// included. The theme sets it, so a palette role does not have to change for the track to.</summary>
-    [CssVar(ProgressField.TrackColor)] public required string TrackColor { get; init; }
+    [CssVar(ProgressField.TrackColor)] public string TrackColor { get; init; } = "var(--flare-color-secondary-container)";
 
     /// <summary>Color of the trailing stop indicator.</summary>
     [CssVar(ProgressField.StopColor)] public required string StopColor { get; init; }

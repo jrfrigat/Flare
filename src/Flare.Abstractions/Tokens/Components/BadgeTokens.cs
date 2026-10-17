@@ -13,7 +13,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record BadgeTokens
 {
     /// <summary>Border radius of the badge indicator pill (typically the theme's full/pill shape).</summary>
-    [CssVar(Badge.Radius)] public required string Radius { get; init; }
+    [CssVar(Badge.Radius)] public string Radius { get; init; } = "var(--flare-shape-full)";
 
     /// <summary>Minimum width of a count / text indicator at the xs size.</summary>
     [CssVar(Badge.MinWidth.Xs)] public required string MinWidthXs { get; init; }
@@ -55,24 +55,24 @@ public sealed record BadgeTokens
     /// <summary>Horizontal padding inside a count / text indicator at the md (default) size.</summary>
     [CssVar(Badge.PaddingX.Md)] public required string PaddingXMd { get; init; }
     /// <summary>Horizontal padding inside a count / text indicator at the lg size.</summary>
-    [CssVar(Badge.PaddingX.Lg)] public required string PaddingXLg { get; init; }
+    [CssVar(Badge.PaddingX.Lg)] public string PaddingXLg { get; init; } = "var(--flare-spacing-3)";
     /// <summary>Horizontal padding inside a count / text indicator at the xl size.</summary>
-    [CssVar(Badge.PaddingX.Xl)] public required string PaddingXXl { get; init; }
+    [CssVar(Badge.PaddingX.Xl)] public string PaddingXXl { get; init; } = "var(--flare-spacing-4)";
 
     /// <summary>Font size of the count / text at the xs size.</summary>
     [CssVar(Badge.LabelSize.Xs)] public required string LabelSizeXs { get; init; }
     /// <summary>Font size of the count / text at the sm size.</summary>
     [CssVar(Badge.LabelSize.Sm)] public required string LabelSizeSm { get; init; }
     /// <summary>Font size of the count / text at the md (default) size.</summary>
-    [CssVar(Badge.LabelSize.Md)] public required string LabelSizeMd { get; init; }
+    [CssVar(Badge.LabelSize.Md)] public string LabelSizeMd { get; init; } = "var(--flare-typescale-label-small-size)";
     /// <summary>Font size of the count / text at the lg size.</summary>
-    [CssVar(Badge.LabelSize.Lg)] public required string LabelSizeLg { get; init; }
+    [CssVar(Badge.LabelSize.Lg)] public string LabelSizeLg { get; init; } = "var(--flare-typescale-label-medium-size)";
     /// <summary>Font size of the count / text at the xl size.</summary>
-    [CssVar(Badge.LabelSize.Xl)] public required string LabelSizeXl { get; init; }
+    [CssVar(Badge.LabelSize.Xl)] public string LabelSizeXl { get; init; } = "var(--flare-typescale-label-large-size)";
 
     /// <summary>Offset of the indicator from the anchor edge (count/text variant).</summary>
     [CssVar(Badge.Offset)] public required string Offset { get; init; }
 
     /// <summary>Offset of the indicator from the anchor edge (dot variant - tighter).</summary>
-    [CssVar(Badge.DotOffset)] public required string DotOffset { get; init; }
+    [CssVar(Badge.DotOffset)] public string DotOffset { get; init; } = "var(--flare-spacing-0)";
 }

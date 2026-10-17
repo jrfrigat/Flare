@@ -10,7 +10,7 @@ public sealed record IconTokens
     /// icon change as a repaint rather than a transition parks this at an instant, which makes every swap
     /// immediate without any call site opting out.
     /// </summary>
-    [CssVar(Icon.MorphDuration)] public required string MorphDuration { get; init; }
+    [CssVar(Icon.MorphDuration)] public string MorphDuration { get; init; } = "var(--flare-motion-duration-spring-fast)";
 
     /// <summary>
     /// Curve of the glyph's MOVEMENT over the span of <see cref="MorphDuration"/> - the scale or rotation
@@ -21,7 +21,7 @@ public sealed record IconTokens
     /// The split is what makes a spring usable here: a spring overshoots, and an opacity driven past its
     /// endpoint finishes early, which turns the hand-off between the two glyphs into a pop.
     /// </remarks>
-    [CssVar(Icon.MorphEasing)] public required string MorphEasing { get; init; }
+    [CssVar(Icon.MorphEasing)] public string MorphEasing { get; init; } = "var(--flare-motion-easing-spring-fast)";
 
     /// <summary>
     /// Scale factor the glyph travels from and to in the scale morph mode: the incoming glyph grows from it,

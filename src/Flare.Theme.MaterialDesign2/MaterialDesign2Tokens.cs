@@ -184,7 +184,6 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly BadgeTokens Badge = new()
     {
-        Radius = "var(--flare-shape-full)",
         // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
@@ -192,18 +191,13 @@ internal static class MaterialDesign2Tokens
         PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
         LabelSizeXs = "0.5625rem",
         LabelSizeSm = "0.625rem",
-        LabelSizeMd = "var(--flare-typescale-label-small-size)",
-        LabelSizeLg = "var(--flare-typescale-label-medium-size)",
-        LabelSizeXl = "var(--flare-typescale-label-large-size)",
         Offset = "0.375rem",
-        DotOffset = "0",
     };
 
     internal static readonly AlertTokens Alert = new()
     {
         BodyOpacity = "0.9",
         CloseOpacity = "0.7",
-        Radius = "var(--flare-shape-extra-small)",
         BorderWidth = "0",
         Padding = "0.875rem 1rem",
         Gap = "0.75rem",
@@ -214,9 +208,6 @@ internal static class MaterialDesign2Tokens
     {
         LoadingOpacity = "0.8",
         // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthXs = "1px",
-        OutlineWidthSm = "1px",
-        OutlineWidthMd = "1px",
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
         // The fallback radius for the buttons that do not take a per-size one (the confirm dialog's
@@ -255,19 +246,12 @@ internal static class MaterialDesign2Tokens
         SelectedRadiusMd = "4px",
         SelectedRadiusLg = "4px",
         SelectedRadiusXl = "4px",
-        SelectedRadiusSquare = "var(--flare-shape-none)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         // Selection is the accent here, whatever the variant: this language does not send each variant
         // somewhere different the way Material does, it just says "on" in the accent colour. The one
         // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
         // secondary-container would be indistinguishable from an unselected one, which is exactly what
         // happened when these four pairs were first filled in - so every variant travels to the accent,
         // and the filled toggle starts from a neutral container rather than from the accent it ends on.
-        ElevatedSelectedBg = "var(--flare-color-primary)",
-        ElevatedSelectedColor = "var(--flare-color-on-primary)",
-        FilledSelectedBg = "var(--flare-color-primary)",
-        FilledSelectedColor = "var(--flare-color-on-primary)",
         TonalSelectedBg = "var(--flare-color-primary)",
         TonalSelectedColor = "var(--flare-color-on-primary)",
         OutlinedSelectedBg = "var(--flare-color-primary)",
@@ -346,15 +330,8 @@ internal static class MaterialDesign2Tokens
     // with the spec's per-size ramps.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        StandardGapXs = "var(--flare-spacing-4)",
-        StandardGapSm = "var(--flare-spacing-4)",
-        StandardGapMd = "var(--flare-spacing-4)",
-        StandardGapLg = "var(--flare-spacing-4)",
-        StandardGapXl = "var(--flare-spacing-4)",
         ConnectedGap = "0",
         ConnectedOverlap = "-1px",
-        ConnectedOuterRadius = "var(--flare-shape-small)",
-        ConnectedSelectedRadius = "var(--flare-shape-small)",
         ConnectedInnerRadiusXs = "0",
         ConnectedInnerRadiusSm = "0",
         ConnectedInnerRadiusMd = "0",
@@ -409,10 +386,6 @@ internal static class MaterialDesign2Tokens
     // family for everything else.
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
-        GroupBorder = "1px solid var(--flare-color-outline)",
-        GroupRadius = "var(--flare-shape-full)",
-        GroupRadiusVertical = "var(--flare-shape-medium)",
-        GroupDivider = "var(--flare-color-outline)",
     };
 
     // MD2 FABs are circular; resting 6dp, pressed 12dp. 6dp has no level in the shared six-step
@@ -425,16 +398,12 @@ internal static class MaterialDesign2Tokens
         IconSizeSm = "1.5rem",
         IconSizeMd = "1.5rem",
         IconSizeLg = "1.5rem",
-        PaddingSm = "0.5rem",
-        PaddingMd = "1rem",
         PaddingLg = "1.75rem",
         RadiusSm = "9999px",
         RadiusMd = "9999px",
         RadiusLg = "9999px",
-        Gap = "0.75rem",
         Shadow = Dp6,
         HoverShadow = "var(--flare-elevation-5)",
-        AnchorOffset = "1.5rem",
     };
 
     // The guideline redline "Checkboxes" measures 24dp, but that is the icon's bounds: the box drawn
@@ -450,13 +419,9 @@ internal static class MaterialDesign2Tokens
         StateLayerSize = "2.5rem",
         BorderWidth = "2px",
         Radius = "2px",
-        StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
-        StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
-        // Material dims the whole control; the shared state value is the one it means.
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     internal static readonly RadioTokens Radio = new()
     {
@@ -467,18 +432,14 @@ internal static class MaterialDesign2Tokens
         SizeLg = "1.5rem",
         SizeXl = "1.75rem",
         StateLayerSize = "2.5rem",
-        StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
-        StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
         // The focus this theme already states for the checkbox and the switch - the selection
         // controls answer as one family rather than each drawing its own ring.
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
-        // Material dims the whole control; the shared state value is the one it means.
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     // MD2 chips are fully rounded ("stadium") at 32dp.
-    internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelColor = "var(--flare-color-on-surface-variant)", LabelFont = "var(--flare-typescale-label-large-font)", LabelWeight = "inherit", LabelSpacing = "normal", LabelSizeXs = "var(--flare-typescale-label-small-size)", LabelSizeSm = "var(--flare-typescale-label-small-size)", LabelSizeMd = "var(--flare-typescale-label-large-size)", LabelSizeLg = "var(--flare-typescale-title-small-size)", LabelSizeXl = "var(--flare-typescale-title-medium-size)", Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.25rem", IconSizeLg = "1.375rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-3)", PaddingInlineSm = "var(--flare-spacing-4)", PaddingInlineMd = "var(--flare-spacing-6)", PaddingInlineLg = "var(--flare-spacing-8)", PaddingInlineXl = "var(--flare-spacing-10)" }; // md: @material/chips $leading-padding 12px
+    internal static readonly ChipTokens Chip = new() { BorderColor = "var(--flare-color-outline)", LabelWeight = "inherit", LabelSpacing = "normal", Radius = "9999px", Height = "2rem", FilledBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)", ElevatedBg = "var(--flare-color-surface)", IconSizeXs = "0.875rem", IconSizeSm = "1rem", IconSizeMd = "1.25rem", IconSizeLg = "1.375rem", IconSizeXl = "1.5rem", AvatarSizeXs = "1rem", AvatarSizeSm = "1.125rem", AvatarSizeMd = "1.5rem", AvatarSizeLg = "1.875rem", AvatarSizeXl = "2.25rem", PaddingInlineXs = "var(--flare-spacing-3)", PaddingInlineSm = "var(--flare-spacing-4)", PaddingInlineMd = "var(--flare-spacing-6)", PaddingInlineLg = "var(--flare-spacing-8)", PaddingInlineXl = "var(--flare-spacing-10)" }; // md: @material/chips $leading-padding 12px
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
     internal static readonly TabsTokens Tabs = new()
     {
@@ -486,32 +447,12 @@ internal static class MaterialDesign2Tokens
         IconSize = "1.5rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
-        LabelFont = "var(--flare-typescale-label-large-font)",
-        LabelSize = "var(--flare-typescale-label-large-size)",
-        LabelSpacing = "var(--flare-typescale-label-large-spacing)", // @material/tab uses the button type: 1.25px
-        LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
-        ActiveColor = "var(--flare-color-primary)",
         // Secondary navigation tab: 2dp indicator, active label on-surface (spec md.comp
         // .secondary-navigation-tab.active-indicator.height / .label-text.color).
         SecondaryIndicatorThickness = "2px",
-        SecondaryActiveColor = "var(--flare-color-on-surface)",
-        // Spec is on-surface-VARIANT at rest (#49454F) for both tab levels, and on-surface only once
-        // the tab is hovered or focused. This was on-surface, so an inactive tab read as dark as the
-        // active one - invisible on a primary strip, where the accent carries the distinction, but
-        // plainly wrong on a secondary strip, where the label colour is all there is besides a 2dp
-        // rail. The hover darkening is not modelled yet; the state layer signals hover meanwhile.
-        InactiveColor = "var(--flare-color-on-surface-variant)",
-        DividerColor = "var(--flare-color-surface-variant)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedFg = "var(--flare-color-on-secondary-container)",
-        FilledBg = "var(--flare-color-primary)",
-        FilledFg = "var(--flare-color-on-primary)",
         TrackBg = "transparent",
-        PillRadius = "var(--flare-shape-full)",
-        TabDisabledOpacity = "var(--flare-state-disabled-opacity)",
-        ScrollDisabledOpacity = "var(--flare-state-disabled-opacity)",
         // 48dp tall with a 90dp minimum and 24dp either side. The guidelines publish no tab
         // measurement, so these come from the implementation: @material/tab $height, $min-width
         // and $horizontal-padding.
@@ -523,9 +464,6 @@ internal static class MaterialDesign2Tokens
     /// <summary>List container and row tokens.</summary>
     internal static readonly ListTokens List = new()
     {
-        Bg = "var(--flare-color-surface)",
-        Radius = "var(--flare-shape-medium)",
-        Divider = "1px solid var(--flare-color-outline-variant)",
         // A one-line row is 48dp and a two-line row 64dp; Material 3 is the one that grew them to 56
         // and 72 (@material/list $deprecated-single-line-height, $deprecated-two-line-height).
         ItemHeight = "48px",
@@ -533,56 +471,20 @@ internal static class MaterialDesign2Tokens
         ItemHeightDense = "2.5rem",        // @material/list dense single line 40px
         ItemHeightTwoLineDense = "3.75rem", // dense two-line 60px
         ItemPaddingBlock = "var(--flare-spacing-4)", // 8px, so a two-line row stays at 64px
-        ItemPaddingBlockDense = "var(--flare-spacing-3)",
-        ItemPaddingInline = "var(--flare-spacing-8)",
-        ItemGap = "var(--flare-spacing-8)",
-        ItemContentGap = "var(--flare-spacing-1)",
         ItemRadius = "0",
-        ItemLabelFont = "var(--flare-typescale-body-large-font)",
-        ItemLabelSize = "var(--flare-typescale-body-large-size)",
-        ItemColor = "var(--flare-color-on-surface)",
-        ItemTrailingColor = "var(--flare-color-on-surface-variant)",
-        ItemSelectedBg = "var(--flare-color-secondary-container)",
-        ItemSelectedColor = "var(--flare-color-on-secondary-container)",
-        ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
         ItemIconSize = "1.5rem", // graphic-size 24px
     };
 
     /// <summary>Accordion container, header and body tokens.</summary>
     internal static readonly AccordionTokens Accordion = new()
     {
-        Border = "1px solid var(--flare-color-outline-variant)",
-        Radius = "var(--flare-shape-medium)",
-        PanelDivider = "1px solid var(--flare-color-outline-variant)",
-        HeaderBg = "var(--flare-color-surface)",
-        HeaderColor = "var(--flare-color-on-surface)",
-        HeaderPaddingBlock = "var(--flare-spacing-8)",
-        HeaderPaddingInline = "var(--flare-spacing-12)",
-        HeaderGap = "var(--flare-spacing-4)",
-        HeaderLabelFont = "var(--flare-typescale-title-small-font)",
-        HeaderLabelSize = "var(--flare-typescale-title-small-size)",
-        HeaderLabelWeight = "var(--flare-typescale-title-small-weight)",
-        HeaderDisabledOpacity = "var(--flare-state-disabled-opacity)",
         IconSize = "0.875rem",
-        BodyPaddingBlock = "var(--flare-spacing-8)",
-        BodyPaddingInline = "var(--flare-spacing-12)",
-        BodyColor = "var(--flare-color-on-surface-variant)",
     };
 
     /// <summary>Standalone collapse header tokens.</summary>
     internal static readonly CollapseTokens Collapse = new()
     {
         HeaderBg = "transparent",
-        HeaderColor = "var(--flare-color-on-surface)",
-        HeaderRadius = "var(--flare-shape-small)",
-        HeaderPaddingBlock = "var(--flare-spacing-6)",
-        HeaderPaddingInline = "var(--flare-spacing-8)",
-        HeaderGap = "var(--flare-spacing-4)",
-        HeaderLabelFont = "var(--flare-typescale-title-small-font)",
-        HeaderLabelSize = "var(--flare-typescale-title-small-size)",
-        HeaderLabelWeight = "var(--flare-typescale-title-small-weight)",
-        HeaderDisabledOpacity = "var(--flare-state-disabled-opacity)",
-        IconColor = "var(--flare-color-on-surface-variant)",
     };
 
     // Classic flat 4dp menu (no MD3 Expressive 16dp panel or island grouping). The default MenuTokens
@@ -593,16 +495,12 @@ internal static class MaterialDesign2Tokens
         GroupDivider = "none",
         // Flush against the anchor, as MDC menu-surface places it (anchorMargin 0).
         PanelOffset = "0px",
-        PanelRadius = "var(--flare-shape-extra-small)", // 4px
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-4)", // elevation 3,
         PanelPaddingInline = "0",
         PanelPaddingBlock = "0.5rem",                 // mdc-deprecated-list padding 8px 0
         ItemHeight = "3rem",                          // single-line list item 48px
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
-        // Dense: its own value, so a theme can style a dense menu as well as a normal one.
-        ItemPaddingBlockDense = "0.375rem",
-        ItemGapDense = "0.5rem",
         ItemGapBetween = "0",
         ItemRadius = "0",
         ItemRadiusEnd = "0",
@@ -615,22 +513,11 @@ internal static class MaterialDesign2Tokens
         GroupShadow = "var(--flare-elevation-3)",
         GroupedPanelBg = "transparent",
         GroupedPanelShadow = "none",
-        ItemLabelFont = "var(--flare-typescale-label-large-font)",
-        ItemLabelWeight = "var(--flare-typescale-label-large-weight)",
-        ItemLabelSize = "var(--flare-typescale-label-large-size)",
-        ItemLabelHeight = "var(--flare-typescale-label-large-height)",
-        ItemLabelSpacing = "var(--flare-typescale-label-large-spacing)",
         // Neutral baseline members, carried explicitly because the core record ships no defaults.
         EnterAnimation = "flare-menu-in",
-        PanelBg = "var(--flare-color-surface-container)",
-        ItemPaddingInline = "1rem",
-        ItemGap = "0.75rem",
         ItemIconSize = "1.25rem",
-        ItemFocusRingColor = "var(--flare-color-secondary)",
         ItemFocusRingThickness = "3px",
         ItemFocusRingOffset = "-3px",
-        // Material dims a disabled item.
-        ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // Input - filled style (md.comp.filled-text-field): surface-container-highest container, 56dp
@@ -638,17 +525,12 @@ internal static class MaterialDesign2Tokens
     // on-surface indicator + 8% state layer, focus -> 3dp primary (Expressive).
     internal static readonly InputTokens Input = new()
     {
-        FilledBg = "var(--flare-color-surface-container-highest)",
         BorderColor = "transparent",                  // filled default: no side border, colour only
-        OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        BorderBottomColor = "var(--flare-color-on-surface-variant)",
         // Focus = a 2px primary active indicator drawn as a layout-neutral inset shadow (no jump).
         FocusRing = "inset 0 -3px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
-        HoverBorderBottomColor = "var(--flare-color-on-surface)",
         FocusBorderBottomColor = "var(--flare-input-border-bottom-color)",
-        HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
         PaddingXs = "0.1875rem 0.5rem",
         PaddingSm = "0.375rem 0.625rem",
         PaddingMd = "1rem 1rem",                      // the M3 56dp field
@@ -665,37 +547,23 @@ internal static class MaterialDesign2Tokens
         HeightLg = "4rem",     // 64px
         HeightXl = "4.75rem",  // 76px
         IconSize = "1.5rem",                          // leading/trailing icon 24dp
-        PlaceholderColor = "var(--flare-color-on-surface-variant)",
-        DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
-        DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
         FocusBorderColor = "transparent",
         // The default field is filled: an error turns the activation indicator red and 2dp, with no side border.
         ErrorBorderColor = "transparent",
-        ErrorBorderBottomColor = "var(--flare-color-error)",
         ErrorFocusRing = "inset 0 -1px 0 0 var(--flare-color-error)",
         // Filled text field: a 1dp indicator that becomes a 2dp primary one on focus.
-        FilledVariantBg = "var(--flare-color-surface-container-highest)",
         FilledVariantBorderColor = "transparent",
-        FilledVariantBorderBottomColor = "var(--flare-color-on-surface-variant)",
-        FilledVariantRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
         FilledVariantFocusRing = "inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary))",
         FilledVariantFocusBorderColor = "transparent",
         FilledVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
         FilledVariantErrorBorderColor = "transparent",
-        FilledVariantErrorBorderBottomColor = "var(--flare-color-error)",
         FilledVariantErrorFocusRing = "inset 0 -1px 0 0 var(--flare-color-error)",
         // Outlined text field: a 1dp outline that becomes a 2dp primary one on focus.
         OutlinedVariantBg = "transparent",
-        OutlinedVariantBorderColor = "var(--flare-color-outline)",
-        OutlinedVariantBorderBottomColor = "var(--flare-color-outline)",
-        OutlinedVariantRadius = "var(--flare-shape-extra-small)",
         OutlinedVariantFocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
         OutlinedVariantFocusBorderColor = "var(--fc-main, var(--flare-color-primary))",
         OutlinedVariantFocusBorderBottomColor = "var(--fc-main, var(--flare-color-primary))",
-        OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
-        OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         DropdownMaxHeight = "16rem",
     };
@@ -712,52 +580,30 @@ internal static class MaterialDesign2Tokens
     // statement about its data, not the theme's.
     internal static readonly GaugeTokens Gauge = new()
     {
-        TrackColor = "var(--flare-color-surface-container-highest)",
         TrackWidth = "14",
         TrackCap = "round",
 
-        FillColor = "var(--flare-color-primary)",
         FillWidth = "14",
 
-        NeedleColor = "var(--flare-color-on-surface)",
         NeedleWidth = "3",
         NeedleLength = "0.78",
-        PivotColor = "var(--flare-color-on-surface)",
         PivotRadius = "5",
 
-        TickColor = "var(--flare-color-outline)",
         TickWidth = "1.5",
         TickLength = "7",
-        TickMinorColor = "var(--flare-color-outline-variant)",
         TickMinorWidth = "1",
         TickMinorLength = "4",
         TickGap = "5",
 
-        LabelColor = "var(--flare-color-on-surface-variant)",
         LabelSize = "9",
-        ValueColor = "var(--flare-color-on-surface)",
-        ValueSize = "var(--flare-typescale-headline-small-size)",
         ValueWeight = "500",
 
         BandOpacity = "0.55",
-        TargetColor = "var(--flare-color-on-surface)",
         TargetWidth = "2.5",
     };
 
     internal static readonly ChartTokens Chart = new()
     {
-        Series1 = "var(--flare-color-primary)",
-        Series2 = "var(--flare-color-tertiary)",
-        Series3 = "var(--flare-color-secondary)",
-        Series4 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-tertiary))",
-        Series5 = "color-mix(in srgb, var(--flare-color-secondary) 50%, var(--flare-color-tertiary))",
-        Series6 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-secondary))",
-        Series7 = "color-mix(in srgb, var(--flare-color-primary) 65%, var(--flare-color-on-surface))",
-        Series8 = "color-mix(in srgb, var(--flare-color-tertiary) 65%, var(--flare-color-on-surface))",
-        Series9 = "color-mix(in srgb, var(--flare-color-secondary) 65%, var(--flare-color-on-surface))",
-        Series10 = "color-mix(in srgb, var(--flare-color-primary) 55%, var(--flare-color-surface))",
-        Series11 = "color-mix(in srgb, var(--flare-color-tertiary) 55%, var(--flare-color-surface))",
-        Series12 = "color-mix(in srgb, var(--flare-color-secondary) 55%, var(--flare-color-surface))",
 
         // Marks. Sizes without a unit are viewBox units: the plot is 400 wide and scales to its container,
         // so these are proportions of the chart, not pixels.
@@ -771,45 +617,27 @@ internal static class MaterialDesign2Tokens
         AreaOpacity = "0.35",
         RadarFillOpacity = "0.2",
         WedgeOpacity = "0.7",
-        SliceStrokeColor = "var(--flare-color-surface)",
         SliceStrokeWidth = "1.5",
 
         // Sequential ramp: one hue, intensity carries the value. The floor keeps a zero cell visible as a
         // cell rather than as a hole in the grid.
-        RampColor = "var(--flare-color-primary)",
         RampMinOpacity = "0.12",
         RampMaxOpacity = "1",
         CellRadius = "2",
         CellGap = "2",
         CellHoverOpacity = "0.85",
 
-        // Axes. A grid line is lighter than an outline: it sits behind the data and must not compete.
-        GridColor = "var(--flare-color-outline-variant)",
+        // Axes. A grid line is thinner than an outline: it sits behind the data and must not compete.
         GridWidth = "0.5",
         GridDash = "none",
-        GridMinorColor = "color-mix(in srgb, var(--flare-color-outline-variant) 45%, transparent)",
         GridMinorWidth = "0.5",
-        LabelColor = "var(--flare-color-on-surface-variant)",
         LabelSize = "9px",
-        ValueColor = "var(--flare-color-on-surface-variant)",
-        ValueOnFillColor = "var(--flare-color-surface)",
         ValueSize = "8px",
-        AxisTitleColor = "var(--flare-color-on-surface-variant)",
         AxisTitleSize = "10px",
 
-        Surface = "var(--flare-color-surface)",
-        Radius = "var(--flare-shape-medium)",
         BorderWidth = "1px",
-        BorderColor = "var(--flare-color-outline-variant)",
-        Padding = "var(--flare-spacing-8)",
-        Gap = "var(--flare-spacing-4)",
 
-        LegendGap = "var(--flare-spacing-6)",
-        LegendItemGap = "var(--flare-spacing-3)",
         LegendDotSize = "0.625rem",
-        LegendDotRadius = "var(--flare-shape-full)",
-        LegendSize = "var(--flare-typescale-label-small-size)",
-        LegendColor = "var(--flare-color-on-surface-variant)",
         LegendOffOpacity = "0.4",
 
         // Overlays. The annotation default IS the error role - a threshold line means what red means,
@@ -817,7 +645,6 @@ internal static class MaterialDesign2Tokens
         TrendWidth = "1.5",
         TrendDash = "5 4",
         TrendOpacity = "0.7",
-        AnnotationColor = "var(--flare-color-error)",
         AnnotationWidth = "1.5",
         AnnotationDash = "4 3",
         AnnotationBandOpacity = "0.12",
@@ -835,15 +662,12 @@ internal static class MaterialDesign2Tokens
         LineDashDashDot = "calc(var(--flare-chart-line-width) * 2) calc(var(--flare-chart-line-width) * 3)" +
                           " 0.1 calc(var(--flare-chart-line-width) * 3)",
 
-        ZoomSelectionFill = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
-        ZoomSelectionStroke = "var(--flare-color-primary)",
     };
 
     // Progress - shared Material geometry. Optional Expressive wave behavior is supplied by the
     // Expressive theme package, so this baseline token bundle stays reusable by flat themes.
     internal static readonly ProgressTokens Progress = new()
     {
-        TrackColor = "var(--flare-color-secondary-container)",
         // Size ramp. The spec names two steps of each - linear 4dp with an 8dp "thick", circular 40dp with a
         // 52dp "thick" - and they anchor Md (the default) and the step above it. The ramp runs BOTH ways
         // from Md because a progress indicator's natural default sits mid-scale, not at the bottom: the
@@ -855,16 +679,13 @@ internal static class MaterialDesign2Tokens
         LinearHeightXl = "8px",   // spec: linear thick height
         // Centred content: the ramp follows the indicator sizes, so a label dropped into the
         // smallest ring still fits it.
-        ContentColor = "var(--flare-color-on-surface)",
         ContentSizeXs = "0.5rem",
         ContentSizeSm = "0.625rem",
         ContentSizeMd = "0.75rem",
         ContentSizeLg = "1rem",
         ContentSizeXl = "1.25rem",
-        TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
         LinearIndeterminateDuration = "1500ms",
-        LinearIndeterminateEasing = "var(--flare-motion-easing-standard)",
         StopSize = "4px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
@@ -904,17 +725,7 @@ internal static class MaterialDesign2Tokens
         ActiveWeight = "700",
         BadgeWeight = "600",
         RailLabelLineHeight = "1.15",
-        ItemRadius = "var(--flare-shape-extra-small)",
-        IndicatorRadius = "var(--flare-shape-full)",
-        ActiveIndicator = "var(--flare-color-secondary-container)",
-        // The indicator is a tinted pill, so the label is read against that container.
-        ActiveColor = "var(--flare-color-on-secondary-container)",
-        ItemColor = "var(--flare-color-on-surface-variant)",
-        ItemHoverColor = "var(--flare-color-on-surface)",
-        GroupColor = "var(--flare-color-on-surface-variant)",
-        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "none",
-        LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
         // Material 2 icons are 24dp; the drawer spec gives no row height, so the existing 40dp row stays.
         IconSize = "1.5rem",
         ItemHeight = "2.5rem",
@@ -938,21 +749,14 @@ internal static class MaterialDesign2Tokens
     internal static readonly BottomNavTokens BottomNav = new()
     {
         BarHeight = "5rem",
-        BarBg = "var(--flare-color-surface-container)",
         BorderColor = "var(--flare-color-surface-variant)",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
-        InactiveColor = "var(--flare-color-on-surface-variant)",
-        ActiveColor = "var(--flare-color-on-secondary-container)",
         IconSize = "1.5rem",
-        LabelFontSize = "var(--flare-typescale-label-medium-size)",
         LabelFontWeight = "500",
         LabelFontWeightActive = "700",
-        IndicatorBg = "var(--flare-nav-active-indicator)",
-        IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
         IndicatorWidth = "0",
         ItemGap = "var(--flare-spacing-1)",
-        ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
@@ -962,61 +766,41 @@ internal static class MaterialDesign2Tokens
         LineHeight = "1.4",
         TitleTracking = "0.05em",
         TitleWeight = "600",
-        ActiveColor = "var(--flare-color-on-secondary-container)",
-        InactiveColor = "var(--flare-color-on-surface-variant)",
-        TitleColor = "var(--flare-color-on-surface-variant)",
         RailColor = "transparent",
         RailWidth = "0",
-        ActiveBg = "var(--flare-color-secondary-container)",
-        ActiveRadius = "var(--flare-shape-full)",
         // "0px", not "0": the marker is also pulled over the rail with calc(-1 * var(--flare-toc-marker-width)),
         // and a unitless value there yields a <number>, which margin rejects. At zero the dropped declaration
         // happens to compute the same margin, so nothing shows - but the trap is real the moment it is read
         // as anything other than a length, and the sibling themes already write the unit.
         MarkerWidth = "0px",
         LinkPadX = "0.75rem",
-        Indent = "0.75rem",
     };
 
     internal static readonly ColorPickerTokens ColorPicker = new()
     {
-        CheckerColor = "var(--flare-color-outline-variant)",
-        ThumbBg = "var(--flare-color-surface)",
-        ThumbBorderColor = "var(--flare-color-outline)",
     };
 
     internal static readonly TooltipTokens Tooltip = new()
     {
         MaxWidth = "18rem",
-        Offset = "0.5rem",
         // MDC tooltip: black at medium emphasis with white text and no elevation; the rich one is surface with medium-emphasis text.
         Bg = "rgba(0,0,0,0.6)",
         Color = "#FFFFFF",
-        Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
         RichBg = "var(--flare-color-surface)",
-        RichColor = "var(--flare-color-on-surface-variant)",
         RichShadow = "var(--flare-elevation-3)",
-        RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
         Shadow = "none",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
-        Radius = "var(--flare-shape-medium)",
-        Offset = "0.5rem",
         // Menu surface: surface at 8dp.
         Bg = "var(--flare-color-surface)",
-        Color = "var(--flare-color-on-surface)",
         Shadow = "var(--flare-elevation-4)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
     {
         GroupSpacing = "-0.75rem",
-        GroupBorderWidth = "2px",
-        GroupBorderColor = "var(--flare-color-surface)",
-        OverflowBg = "var(--flare-color-surface-container-highest)",
-        OverflowColor = "var(--flare-color-on-surface-variant)",
     };
 
     // The navigation drawer is 256dp wide here (spec redline "Standard navigation drawer"), against
@@ -1033,30 +817,16 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly SnackbarTokens Snackbar = new()
     {
-        Radius = "var(--flare-shape-extra-small)",
         MinHeight = "3rem",
         PaddingBlock = "0.625rem",
-        ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
         MinWidth = "21.5rem", // @material/snackbar $min-width 344px
         MaxWidth = "42rem",   // $max-width 672px
-        PaddingInline = "var(--flare-spacing-10)",
         // MDC snackbar: on-surface mixed 80% into surface, label in surface at high emphasis.
         Bg = "color-mix(in srgb, var(--flare-color-on-surface) 80%, var(--flare-color-surface))",
         Color = "color-mix(in srgb, var(--flare-color-surface) 87%, transparent)",
-        ActionColor = "var(--flare-color-inverse-primary)",
         // 6dp: the shared scale has no step for it (spec "Default elevation values").
         Shadow = "0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12)",
-        // Severity surfaces, as the snackbar has always drawn them: error on the error role, the others on
-        // the secondary, tertiary and primary containers.
-        ErrorBg = "var(--flare-color-error)",
-        ErrorColor = "var(--flare-color-on-error)",
-        SuccessBg = "var(--flare-color-secondary-container)",
-        SuccessColor = "var(--flare-color-on-secondary-container)",
-        WarningBg = "var(--flare-color-tertiary-container)",
-        WarningColor = "var(--flare-color-on-tertiary-container)",
-        InfoBg = "var(--flare-color-primary-container)",
-        InfoColor = "var(--flare-color-on-primary-container)",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
@@ -1067,11 +837,7 @@ internal static class MaterialDesign2Tokens
         GripThickness = "2px",
         GripLength = "1.75rem",
         Color = "var(--flare-color-surface-variant)",
-        HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         IconSize = "1.125rem",
-        IconColor = "var(--flare-color-on-surface-variant)",
-        GripColor = "var(--flare-color-outline)",
-        GripRadius = "var(--flare-shape-full)",
         // Material 2 specifies no pane divider handle; the grip does not react to a press.
         GripPressedColor = "var(--flare-splitter-grip-color)",
         GripPressedThickness = "var(--flare-splitter-grip-thickness)",
@@ -1114,7 +880,6 @@ internal static class MaterialDesign2Tokens
         HandleBorderWidth = "0",
         // Follow the per-instance Color: --fc-main is the local accent, falling back to the role.
         HandleFill = "var(--flare-color-primary)",
-        ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         StateLayerSize = "40px",
         StateHoverOpacity = "0.08",
@@ -1122,15 +887,7 @@ internal static class MaterialDesign2Tokens
         FocusOutline = "none",
         FocusOutlineOffset = "0px",
         StopColor = "var(--flare-color-primary)",
-        StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "4px",
-        ValueBg = "var(--flare-color-inverse-surface)",
-        ValueColor = "var(--flare-color-inverse-on-surface)",
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
-        // Disabled is a fade of the content colour, and the two halves fade by different amounts so
-        // the filled portion is still readable against the rest.
-        DisabledActiveColor = "color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-disabled-opacity) * 100%), transparent)",
-        DisabledInactiveColor = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
     };
 
     // MD2 dialogs use a 4dp corner.
@@ -1140,7 +897,6 @@ internal static class MaterialDesign2Tokens
         IconSize = "1.5rem",
         // Dialog: surface at 24dp.
         Bg = "var(--flare-color-surface)",
-        Color = "var(--flare-color-on-surface)",
         // 24dp: the shared scale has no step for it (spec "Default elevation values").
         Shadow = "0 11px 15px -7px rgba(0,0,0,0.2), 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12)",
     };
@@ -1160,12 +916,8 @@ internal static class MaterialDesign2Tokens
         TreeToggleSize = "1.25rem",
         CompositeLabelSize = "0.6875rem",
         ResizeHandleWidth = "4px",
-        RecordDividerWidth = "2px",
-        AggregateDividerWidth = "2px",
         FilterGroupRail = "3px",
-        ActiveCellOutline = "2px solid var(--flare-color-primary)",
         ColumnPickerMinWidth = "160px",
-        RangeLayer = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)",
         RowEditingPct = "6%",
         LoadingVeilPct = "55%",
         LoadingDim = "0.6",
@@ -1186,12 +938,7 @@ internal static class MaterialDesign2Tokens
     internal static readonly DragTokens Drag = new()
     {
         SourceOpacity = "0.4",
-        PreviewElevation = "var(--flare-elevation-4)",
         PreviewOpacity = "1",
-        ZoneActiveBackground =
-            "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
-        ZoneActiveOutline = "var(--flare-color-primary)",
-        IndicatorColor = "var(--flare-color-primary)",
     };
 
     // Rating: Size = initial defers to the component size classes; empty star = outline-variant,
@@ -1204,8 +951,6 @@ internal static class MaterialDesign2Tokens
         SizeMd = "1.5rem",
         SizeLg = "2rem",
         SizeXl = "2.5rem",
-        EmptyColor = "var(--flare-color-outline-variant)",
-        FilledColor = "var(--flare-color-primary)",
         HoverScale = "1.15",
     };
 
@@ -1219,21 +964,14 @@ internal static class MaterialDesign2Tokens
         NavBtnSize = "2rem",
         CellMinHeight = "3rem",
         DayNumSize = "1.5rem",
-        TodayBg = "var(--flare-color-primary)",
-        TodayColor = "var(--flare-color-on-primary)",
-        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))",
         OtherMonthOpacity = "0.3",
     };
 
     // Tree: 24dp indent per level, 24dp expander/handle, 20dp icons, primary-tinted selection.
     internal static readonly TreeTokens Tree = new()
     {
-        ToggleHoverBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        Indent = "var(--flare-spacing-12)",
         ToggleSize = "1.5rem",
         IconSize = "1.25rem",
-        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
-        SelectedColor = "var(--flare-color-primary)",
     };
 
     // Stepper: 32dp indicator circle (2px border, 18dp icon), 2px connector (outline-variant, primary
@@ -1241,14 +979,10 @@ internal static class MaterialDesign2Tokens
     internal static readonly StepperTokens Stepper = new()
     {
         FocusRingThickness = "2px",
-        FocusRingColor = "var(--flare-color-primary)",
         CircleSize = "2rem",
-        CircleBorderWidth = "2px",
         CircleIconSize = "1.125rem",
         ConnectorThickness = "2px",
         ConnectorMinLength = "1.5rem",
-        ConnectorColor = "var(--flare-color-outline-variant)",
-        ConnectorActiveColor = "var(--flare-color-primary)",
         StepMinWidth = "5rem",
     };
 
@@ -1256,11 +990,7 @@ internal static class MaterialDesign2Tokens
     internal static readonly TimelineTokens Timeline = new()
     {
         DotSize = "1.25rem",
-        DotBg = "var(--flare-color-surface)",
-        DotBorderWidth = "2px",
         DotIconSize = "0.75rem",
-        LineWidth = "2px",
-        LineColor = "var(--flare-color-outline-variant)",
         ConnectorWidth = "2rem",
     };
 
@@ -1274,10 +1004,6 @@ internal static class MaterialDesign2Tokens
         SizeMd = "2.25rem",
         SizeLg = "2.75rem",
         SizeXl = "3.25rem",
-        Radius = "var(--flare-shape-extra-small)",
-        BorderColor = "var(--flare-color-outline-variant)",
-        ActiveColor = "var(--flare-color-primary)",
-        BtnDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // The Material 2 switch is a thin track with a thumb RIDING OVER it, not a thumb tucked inside a
@@ -1295,20 +1021,13 @@ internal static class MaterialDesign2Tokens
         TrackOffBg = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
         TrackOnBg = "color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 54%, transparent)",
         TrackBorder = "none",
-        TrackHoverBorderColor = "var(--flare-color-outline)",
         ThumbOffSizeXs = "1rem", ThumbOffSizeSm = "1.125rem", ThumbOffSizeMd = "20px", ThumbOffSizeLg = "1.5rem", ThumbOffSizeXl = "1.75rem",
         ThumbOnSizeXs = "1rem", ThumbOnSizeSm = "1.125rem", ThumbOnSizeMd = "20px", ThumbOnSizeLg = "1.5rem", ThumbOnSizeXl = "1.75rem",
         ThumbPressedOffSizeXs = "1rem", ThumbPressedOffSizeSm = "1.125rem", ThumbPressedOffSizeMd = "20px", ThumbPressedOffSizeLg = "1.5rem", ThumbPressedOffSizeXl = "1.75rem",
         ThumbPressedOnSizeXs = "1rem", ThumbPressedOnSizeSm = "1.125rem", ThumbPressedOnSizeMd = "20px", ThumbPressedOnSizeLg = "1.5rem", ThumbPressedOnSizeXl = "1.75rem",
         ThumbOffLeftXs = "-1px", ThumbOffLeftSm = "-1px", ThumbOffLeftMd = "-1px", ThumbOffLeftLg = "-1px", ThumbOffLeftXl = "-1px",
         ThumbOnLeftXs = "calc(100% - 15px)", ThumbOnLeftSm = "calc(100% - 17px)", ThumbOnLeftMd = "calc(100% - 19px)", ThumbOnLeftLg = "calc(100% - 23px)", ThumbOnLeftXl = "calc(100% - 27px)",
-        ThumbOffColor = "var(--flare-color-outline)",
-        ThumbOnColor = "var(--flare-color-on-primary)",
-        ThumbStateOffColor = "var(--flare-color-on-surface-variant)",
-        ThumbStateOnColor = "var(--flare-color-primary-container)",
         IconSize = "1rem",
-        IconOffColor = "var(--flare-color-surface-container-highest)",
-        IconOnColor = "var(--flare-color-primary)",
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
@@ -1318,9 +1037,6 @@ internal static class MaterialDesign2Tokens
         TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
         HoverShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
-        DisabledTrackBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DisabledTrackBorder = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DisabledHandleBg = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
     };
 
     // Spacing scale: the 2px-base ramp (0/2/4/6/8/10/12/16/20/24/32/48/64px). Superset of the MD3 4dp
@@ -1368,11 +1084,8 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly AppBarTokens AppBar = new()
     {
-        Gap = "0.25rem",
         Height = "4rem",
         HeightDense = "3rem",
-        PaddingX = "0.25rem",
-        TitlePaddingX = "0.75rem",
         // M3 separates the top app bar from the content by raising its container tone on scroll, and the
         // spec draws no rule under it. Elevation carries the separation here too.
         Border = "none",
@@ -1397,20 +1110,10 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly FileUploadTokens FileUpload = new()
     {
-        BorderWidth = "2px",
-        HoverBg = "color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface))",
-        DraggingBg = "color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface))",
         DraggingRingWidth = "2px",
         IconSize = "2.5rem",
         ZoneMinHeight = "10rem",
-        ZoneRadius = "var(--flare-card-radius)",
         FileIconSize = "1.125rem",
-        RowGap = "var(--flare-spacing-2)",
-        RowRadius = "var(--flare-shape-extra-small)",
-        RowActiveBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
-        RowSuccessBg = "color-mix(in srgb, var(--flare-color-tertiary) 8%, transparent)",
-        RowErrorBg = "color-mix(in srgb, var(--flare-color-error) 8%, transparent)",
-        RowErrorColor = "var(--flare-color-error)",
     };
 
     internal static readonly FormTokens Form = new()
@@ -1422,9 +1125,7 @@ internal static class MaterialDesign2Tokens
     {
         AppBarHeight = "64px",
         AppBarHeightDense = "3rem",              // dense top app bar 48px
-        AppBarBg = "var(--flare-color-surface)",
         ContentPadding = "1.5rem 2rem",
-        ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",
         DrawerWidth = "256px",
         AppBarBorder = "none",
@@ -1434,9 +1135,6 @@ internal static class MaterialDesign2Tokens
         AppBarShadow = "var(--flare-elevation-3)",
         // The shell's three planes, named by the theme rather than picked in core CSS. These values
         // reproduce what core chose before, so nothing moves until a theme says otherwise.
-        ShellBg = "var(--flare-color-background)",
-        DrawerBg = "var(--flare-color-surface-container-low)",
-        RailBg = "var(--flare-layout-drawer-bg)",
         ContentBg = "transparent",
         // No in-box language separates the drawer from the canvas by depth; they use DrawerBorder.
         DrawerShadowOffset = "0px",
@@ -1448,20 +1146,16 @@ internal static class MaterialDesign2Tokens
         AppBarToggleGlyphWidth = "18px",
         AppBarToggleGlyphHeight = "12px",
         AppBarToggleBarThickness = "2px",
-        // An icon button's state area is a circle, unlike the 4px container of a labelled button.
-        AppBarToggleRadius = "var(--flare-shape-full)",
     };
 
     internal static readonly LinkTokens Link = new()
     {
         FocusRingWidth = "2px",
         HoverOpacity = "0.8",
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly OtpTokens Otp = new()
     {
-        BorderWidth = "2px",
         CellHeight = "3rem",
         CellWidth = "2.75rem",
         FocusRingWidth = "2px",
@@ -1488,10 +1182,6 @@ internal static class MaterialDesign2Tokens
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "18rem",
         PanelRadius = "var(--flare-popover-radius)",
-        // The picker panel surface this theme has always drawn: a high container at level 3.
-        PanelBg = "var(--flare-color-surface-container-high)",
-        PanelColor = "var(--flare-color-on-surface)",
-        PanelShadow = "var(--flare-elevation-3)",
         HeaderHeight = "2rem",
         NavIconSize = "var(--flare-btn-icon-size-sm)",
         WeekdayHeight = "1.25rem",
@@ -1515,16 +1205,12 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly ScrollTopTokens ScrollTop = new()
     {
-        TopInset = "1.5rem",
         TopSize = "2.75rem",
     };
 
     // MD2's overline type style is set in capitals, so its eyebrow is too.
     internal static readonly PageHeaderTokens PageHeader = new()
     {
-        Padding = "var(--flare-spacing-16) 0",
-        Gap = "var(--flare-spacing-4)",
-        ActionsGap = "var(--flare-spacing-16)",
         Background = "transparent",
         BorderBottom = "none",
         EyebrowTextTransform = "uppercase",
@@ -1541,22 +1227,16 @@ internal static class MaterialDesign2Tokens
     // spatial and the element is small - the same pairing the switch thumb and the checkbox tick use.
     internal static readonly IconTokens Icon = new()
     {
-        MorphDuration = "var(--flare-motion-duration-spring-fast)",
-        MorphEasing = "var(--flare-motion-easing-spring-fast)",
         MorphScale = "0.6",
         MorphRotate = "90deg",
     };
 
     internal static readonly StripeTokens Stripe = new()
     {
-        // A wash of the content colour: the one stripe answer across the library.
-        Background = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
     };
 
     internal static readonly TableTokens Table = new()
     {
-        CellPaddingH = "1rem",
-        CellPaddingV = "0.75rem",
     };
 
     internal static readonly TimePickerTokens TimePicker = new()
@@ -1576,7 +1256,6 @@ internal static class MaterialDesign2Tokens
         TimeFieldWidth = "5rem",
         DisplaySize = "2.75rem",
         HeadlineTracking = "0.05em",
-        PanelRadius = "var(--flare-shape-extra-large)",
         TimeSepSize = "2.5rem",
     };
 
@@ -1660,43 +1339,21 @@ internal static class MaterialDesign2Tokens
             PaddingBottom = "16px",
             PaddingLeft = "16px",
             // Neutral baseline members, carried explicitly.
-            ElevatedBg = "var(--flare-color-surface-container-low)",
-            FilledBg = "var(--flare-color-surface-container-highest)",
             FilledBorder = "none",
-            OutlinedBg = "var(--flare-color-surface)",
-            TonalBg = "var(--flare-color-secondary-container)",
-            TonalColor = "var(--flare-color-on-secondary-container)",
-            TextColor = "var(--flare-color-on-surface)",
-            Radius = "var(--flare-shape-medium)",
-            Elevation = "var(--flare-elevation-1)",
             // Material 2 has an elevated card and an outlined one, and the outlined card rests at 0dp
             // (spec "Outlined cards"). A text card has no container, so no shadow either.
             FilledElevation = "var(--flare-elevation-1)",
-            OutlinedElevation = "none",
             TonalElevation = "var(--flare-elevation-1)",
-            TextElevation = "none",
             // Only the elevated card lifts on hover; the others keep their resting shadow.
-            FilledElevationHover = "var(--flare-elevation-1)",
             OutlinedElevationHover = "none",
             TonalElevationHover = "var(--flare-elevation-1)",
             FocusRing = "var(--flare-focus-ring)",
-            SelectedBorder = "2px solid var(--flare-color-primary)",
-            SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
-            StateLayer = "var(--flare-state-hover-layer)",
             ContentPadding = "16px",
             HeaderPadding = "16px 16px 0 16px",
             FooterPadding = "8px 16px 16px 16px",
             ActionsPadding = "8px 16px 16px 16px",
             ActionsGap = "8px",
             MediaRadius = "0",
-            TitleColor = "var(--flare-color-on-surface)",
-            TitleFontFamily = "var(--flare-typescale-title-medium-font)",
-            TitleFontSize = "var(--flare-typescale-title-medium-size)",
-            SubtitleColor = "var(--flare-color-on-surface-variant)",
-            SubtitleFontFamily = "var(--flare-typescale-body-medium-font)",
-            SubtitleFontSize = "var(--flare-typescale-body-medium-size)",
-            TransitionDuration = "var(--flare-motion-duration-state-change)",
-            TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,
         Chart = Chart,

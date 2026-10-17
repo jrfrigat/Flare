@@ -11,17 +11,17 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DialogTokens
 {
     /// <summary>Corner radius of the dialog panel.</summary>
-    [CssVar(DialogPanel.Radius)] public required string Radius { get; init; }
+    [CssVar(DialogPanel.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-large)";
 
     /// <summary>Size of the dialog header/close icon.</summary>
     [CssVar(DialogPanel.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Background of the dialog panel.</summary>
-    [CssVar(DialogPanel.Bg)] public required string Bg { get; init; }
+    [CssVar(DialogPanel.Bg)] public string Bg { get; init; } = "var(--flare-color-surface-container-high)";
 
     /// <summary>Text color of the dialog panel, inherited by the title and body unless they set their own.</summary>
-    [CssVar(DialogPanel.Color)] public required string Color { get; init; }
+    [CssVar(DialogPanel.Color)] public string Color { get; init; } = "var(--flare-color-on-surface)";
 
     /// <summary>Shadow (<c>box-shadow</c>) lifting the dialog panel off the page; <c>none</c> for a flat panel.</summary>
-    [CssVar(DialogPanel.Shadow)] public required string Shadow { get; init; }
+    [CssVar(DialogPanel.Shadow)] public string Shadow { get; init; } = "var(--flare-elevation-3)";
 }

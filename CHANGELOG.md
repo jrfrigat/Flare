@@ -3,6 +3,16 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- A component token that base tokens express is no longer `required`: 405 of them now default to their base
+  token, for example `AccordionTokens.HeaderBg` to `var(--flare-color-surface)` and `MenuTokens.ItemGap` to
+  `var(--flare-spacing-6)`. A theme sets one only to differ; the in-box themes stopped repeating them and look
+  exactly as before. A theme that still sets them keeps working. Tokens with a literal value of their own
+  (sizes, opacities) stay `required`.
+
 ## [0.45.0] - 2026-10-17
 
 ### Added

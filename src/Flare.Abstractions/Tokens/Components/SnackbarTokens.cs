@@ -10,7 +10,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record SnackbarTokens
 {
     /// <summary>Corner radius of the snackbar.</summary>
-    [CssVar(SnackbarPanel.Radius)] public required string Radius { get; init; }
+    [CssVar(SnackbarPanel.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-small)";
 
     /// <summary>Minimum height of a single-line snackbar.</summary>
     [CssVar(SnackbarPanel.MinHeight)] public required string MinHeight { get; init; }
@@ -19,7 +19,7 @@ public sealed record SnackbarTokens
     [CssVar(SnackbarPanel.PaddingBlock)] public required string PaddingBlock { get; init; }
 
     /// <summary>Inset of the snackbar stack from the viewport edge.</summary>
-    [CssVar(SnackbarPanel.ProviderInset)] public required string ProviderInset { get; init; }
+    [CssVar(SnackbarPanel.ProviderInset)] public string ProviderInset { get; init; } = "var(--flare-spacing-12)";
 
     /// <summary>Opacity of the dismiss button.</summary>
     [CssVar(SnackbarPanel.CloseOpacity)] public required string CloseOpacity { get; init; }
@@ -31,37 +31,37 @@ public sealed record SnackbarTokens
     [CssVar(SnackbarPanel.MaxWidth)] public required string MaxWidth { get; init; }
 
     /// <summary>Horizontal (inline) padding inside the snackbar.</summary>
-    [CssVar(SnackbarPanel.PaddingInline)] public required string PaddingInline { get; init; }
+    [CssVar(SnackbarPanel.PaddingInline)] public string PaddingInline { get; init; } = "var(--flare-spacing-10)";
 
     /// <summary>Background of a snackbar without a severity.</summary>
-    [CssVar(SnackbarPanel.Bg)] public required string Bg { get; init; }
+    [CssVar(SnackbarPanel.Bg)] public string Bg { get; init; } = "var(--flare-color-inverse-surface)";
 
     /// <summary>Text color of a snackbar without a severity; the dismiss button follows it.</summary>
-    [CssVar(SnackbarPanel.Color)] public required string Color { get; init; }
+    [CssVar(SnackbarPanel.Color)] public string Color { get; init; } = "var(--flare-color-inverse-on-surface)";
 
     /// <summary>Label color of the action button on a snackbar without a severity. Severity snackbars
     /// color the action with their own text color instead.</summary>
-    [CssVar(SnackbarPanel.ActionColor)] public required string ActionColor { get; init; }
+    [CssVar(SnackbarPanel.ActionColor)] public string ActionColor { get; init; } = "var(--flare-color-inverse-primary)";
 
     /// <summary>Shadow (<c>box-shadow</c>) under every snackbar; <c>none</c> for a flat one.</summary>
-    [CssVar(SnackbarPanel.Shadow)] public required string Shadow { get; init; }
+    [CssVar(SnackbarPanel.Shadow)] public string Shadow { get; init; } = "var(--flare-elevation-3)";
 
     // Severity surfaces. The action button and the dismiss button follow each surface's text color.
 
     /// <summary>Background of an error snackbar.</summary>
-    [CssVar(SnackbarPanel.ErrorBg)] public required string ErrorBg { get; init; }
+    [CssVar(SnackbarPanel.ErrorBg)] public string ErrorBg { get; init; } = "var(--flare-color-error)";
     /// <summary>Text color of an error snackbar.</summary>
-    [CssVar(SnackbarPanel.ErrorColor)] public required string ErrorColor { get; init; }
+    [CssVar(SnackbarPanel.ErrorColor)] public string ErrorColor { get; init; } = "var(--flare-color-on-error)";
     /// <summary>Background of a success snackbar.</summary>
-    [CssVar(SnackbarPanel.SuccessBg)] public required string SuccessBg { get; init; }
+    [CssVar(SnackbarPanel.SuccessBg)] public string SuccessBg { get; init; } = "var(--flare-color-secondary-container)";
     /// <summary>Text color of a success snackbar.</summary>
-    [CssVar(SnackbarPanel.SuccessColor)] public required string SuccessColor { get; init; }
+    [CssVar(SnackbarPanel.SuccessColor)] public string SuccessColor { get; init; } = "var(--flare-color-on-secondary-container)";
     /// <summary>Background of a warning snackbar.</summary>
-    [CssVar(SnackbarPanel.WarningBg)] public required string WarningBg { get; init; }
+    [CssVar(SnackbarPanel.WarningBg)] public string WarningBg { get; init; } = "var(--flare-color-tertiary-container)";
     /// <summary>Text color of a warning snackbar.</summary>
-    [CssVar(SnackbarPanel.WarningColor)] public required string WarningColor { get; init; }
+    [CssVar(SnackbarPanel.WarningColor)] public string WarningColor { get; init; } = "var(--flare-color-on-tertiary-container)";
     /// <summary>Background of an info snackbar.</summary>
-    [CssVar(SnackbarPanel.InfoBg)] public required string InfoBg { get; init; }
+    [CssVar(SnackbarPanel.InfoBg)] public string InfoBg { get; init; } = "var(--flare-color-primary-container)";
     /// <summary>Text color of an info snackbar.</summary>
-    [CssVar(SnackbarPanel.InfoColor)] public required string InfoColor { get; init; }
+    [CssVar(SnackbarPanel.InfoColor)] public string InfoColor { get; init; } = "var(--flare-color-on-primary-container)";
 }

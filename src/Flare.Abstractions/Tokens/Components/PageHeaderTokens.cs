@@ -6,13 +6,13 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record PageHeaderTokens
 {
     /// <summary>Padding around the header, as a CSS <c>padding</c> value.</summary>
-    [CssVar(PageHeaderField.Padding)] public required string Padding { get; init; }
+    [CssVar(PageHeaderField.Padding)] public string Padding { get; init; } = "var(--flare-spacing-16) 0";
 
     /// <summary>Space between the eyebrow, the title and the description.</summary>
-    [CssVar(PageHeaderField.Gap)] public required string Gap { get; init; }
+    [CssVar(PageHeaderField.Gap)] public string Gap { get; init; } = "var(--flare-spacing-4)";
 
     /// <summary>Space between the text block and the actions, across and, on a narrow header, down.</summary>
-    [CssVar(PageHeaderField.ActionsGap)] public required string ActionsGap { get; init; }
+    [CssVar(PageHeaderField.ActionsGap)] public string ActionsGap { get; init; } = "var(--flare-spacing-16)";
 
     /// <summary>Header background, as a CSS <c>background</c> value.</summary>
     [CssVar(PageHeaderField.Background)] public required string Background { get; init; }

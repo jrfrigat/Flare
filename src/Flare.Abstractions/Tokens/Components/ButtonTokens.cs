@@ -14,7 +14,7 @@ public sealed record ButtonTokens
     /// <summary>Opacity of the whole button while it is loading, dimming it behind the spinner.</summary>
     [CssVar(Button.LoadingOpacity)] public required string LoadingOpacity { get; init; }
     /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
-    [CssVar(Button.ContainerRadius)] public required string ContainerRadius { get; init; }
+    [CssVar(Button.ContainerRadius)] public string ContainerRadius { get; init; } = "var(--flare-shape-full)";
     // A text button has no container to sit inside, so a language usually hugs its label more tightly
     // than the contained variants do. It is a ladder rather than one value for the same reason
     // PaddingInline is: the tightening that reads right beside a small label is cramped beside a
@@ -82,11 +82,11 @@ public sealed record ButtonTokens
     // a thread beside a large one - Material thickens it as the button grows. It is reserved on every
     // variant, not just the outlined one, so that changing variant never moves anything.
     /// <summary>Container border width at the xs size.</summary>
-    [CssVar(Button.OutlineWidth.Xs)] public required string OutlineWidthXs { get; init; }
+    [CssVar(Button.OutlineWidth.Xs)] public string OutlineWidthXs { get; init; } = "var(--flare-border-width)";
     /// <summary>Container border width at the sm size.</summary>
-    [CssVar(Button.OutlineWidth.Sm)] public required string OutlineWidthSm { get; init; }
+    [CssVar(Button.OutlineWidth.Sm)] public string OutlineWidthSm { get; init; } = "var(--flare-border-width)";
     /// <summary>Container border width at the md size.</summary>
-    [CssVar(Button.OutlineWidth.Md)] public required string OutlineWidthMd { get; init; }
+    [CssVar(Button.OutlineWidth.Md)] public string OutlineWidthMd { get; init; } = "var(--flare-border-width)";
     /// <summary>Container border width at the lg size.</summary>
     [CssVar(Button.OutlineWidth.Lg)] public required string OutlineWidthLg { get; init; }
     /// <summary>Container border width at the xl size.</summary>
@@ -112,47 +112,47 @@ public sealed record ButtonTokens
     /// other half of the swap, and the direction that travels outward. A language that does not reshape
     /// on selection points this back at its own square radius, which is the difference between the two
     /// kinds of theme rather than something the core is entitled to decide.</summary>
-    [CssVar(Button.SelectedRadiusSquare)] public required string SelectedRadiusSquare { get; init; }
+    [CssVar(Button.SelectedRadiusSquare)] public string SelectedRadiusSquare { get; init; } = "var(--flare-shape-none)";
     /// <summary>Container background of a selected button, shared by every variant. A theme that wants a
     /// variant to answer selection differently says so in its own stylesheet; this is the one answer the
     /// core paints from.</summary>
-    [CssVar(Button.SelectedBg)] public required string SelectedBg { get; init; }
+    [CssVar(Button.SelectedBg)] public string SelectedBg { get; init; } = "var(--flare-color-secondary-container)";
     /// <summary>Icon and label colour of a selected button, which must stay legible on
     /// <see cref="SelectedBg"/>.</summary>
-    [CssVar(Button.SelectedColor)] public required string SelectedColor { get; init; }
+    [CssVar(Button.SelectedColor)] public string SelectedColor { get; init; } = "var(--flare-color-on-secondary-container)";
 
     // Per-variant toggle paint. Material keeps a separate colour table for toggle buttons - "the default
     // and toggle buttons use different colors" - and every variant lands somewhere its default never
     // goes when selected. Filled is the one that also differs while UNselected, which is why it is the
     // only variant with an unselected pair: a filled toggle at rest is not a filled button.
     /// <summary>Container of a selected Elevated button.</summary>
-    [CssVar(Button.Toggle.ElevatedSelectedBg)] public required string ElevatedSelectedBg { get; init; }
+    [CssVar(Button.Toggle.ElevatedSelectedBg)] public string ElevatedSelectedBg { get; init; } = "var(--flare-color-primary)";
     /// <summary>Icon and label of a selected Elevated button.</summary>
-    [CssVar(Button.Toggle.ElevatedSelectedColor)] public required string ElevatedSelectedColor { get; init; }
+    [CssVar(Button.Toggle.ElevatedSelectedColor)] public string ElevatedSelectedColor { get; init; } = "var(--flare-color-on-primary)";
     /// <summary>Container of a selected Filled button.</summary>
-    [CssVar(Button.Toggle.FilledSelectedBg)] public required string FilledSelectedBg { get; init; }
+    [CssVar(Button.Toggle.FilledSelectedBg)] public string FilledSelectedBg { get; init; } = "var(--flare-color-primary)";
     /// <summary>Icon and label of a selected Filled button.</summary>
-    [CssVar(Button.Toggle.FilledSelectedColor)] public required string FilledSelectedColor { get; init; }
+    [CssVar(Button.Toggle.FilledSelectedColor)] public string FilledSelectedColor { get; init; } = "var(--flare-color-on-primary)";
     /// <summary>Container of a selected Tonal button.</summary>
-    [CssVar(Button.Toggle.TonalSelectedBg)] public required string TonalSelectedBg { get; init; }
+    [CssVar(Button.Toggle.TonalSelectedBg)] public string TonalSelectedBg { get; init; } = "var(--flare-color-secondary-container)";
     /// <summary>Icon and label of a selected Tonal button.</summary>
-    [CssVar(Button.Toggle.TonalSelectedColor)] public required string TonalSelectedColor { get; init; }
+    [CssVar(Button.Toggle.TonalSelectedColor)] public string TonalSelectedColor { get; init; } = "var(--flare-color-on-secondary-container)";
     /// <summary>Container of a selected Outlined button.</summary>
-    [CssVar(Button.Toggle.OutlinedSelectedBg)] public required string OutlinedSelectedBg { get; init; }
+    [CssVar(Button.Toggle.OutlinedSelectedBg)] public string OutlinedSelectedBg { get; init; } = "var(--flare-color-inverse-surface)";
     /// <summary>Icon and label of a selected Outlined button.</summary>
-    [CssVar(Button.Toggle.OutlinedSelectedColor)] public required string OutlinedSelectedColor { get; init; }
+    [CssVar(Button.Toggle.OutlinedSelectedColor)] public string OutlinedSelectedColor { get; init; } = "var(--flare-color-inverse-on-surface)";
     /// <summary>Container of a Filled button that is a toggle and currently unselected - the one state
     /// where being a toggle changes a button before anything has been selected. A theme that draws no
     /// such distinction points this at its own filled container.</summary>
-    [CssVar(Button.Toggle.FilledUnselectedBg)] public required string FilledUnselectedBg { get; init; }
+    [CssVar(Button.Toggle.FilledUnselectedBg)] public string FilledUnselectedBg { get; init; } = "var(--flare-color-surface-container-highest)";
     /// <summary>Icon and label of an unselected Filled toggle.</summary>
-    [CssVar(Button.Toggle.FilledUnselectedColor)] public required string FilledUnselectedColor { get; init; }
+    [CssVar(Button.Toggle.FilledUnselectedColor)] public string FilledUnselectedColor { get; init; } = "var(--flare-color-primary)";
     /// <summary>Container of a Tonal button that is a toggle and currently unselected. A theme whose
     /// selected tonal toggle moves off the tonal container points this at that container; one whose
     /// selected toggle keeps it moves the unselected toggle to a neutral surface here instead.</summary>
-    [CssVar(Button.Toggle.TonalUnselectedBg)] public required string TonalUnselectedBg { get; init; }
+    [CssVar(Button.Toggle.TonalUnselectedBg)] public string TonalUnselectedBg { get; init; } = "var(--flare-color-surface-container-highest)";
     /// <summary>Icon and label of an unselected Tonal toggle.</summary>
-    [CssVar(Button.Toggle.TonalUnselectedColor)] public required string TonalUnselectedColor { get; init; }
+    [CssVar(Button.Toggle.TonalUnselectedColor)] public string TonalUnselectedColor { get; init; } = "var(--flare-color-on-surface-variant)";
 
     /// <summary>Shorthand <c>outline</c> drawn around the button on keyboard focus
     /// (<c>:focus-visible</c>), not on a pointer press.</summary>
@@ -164,7 +164,7 @@ public sealed record ButtonTokens
     [CssVar(Button.FocusShadow)] public required string FocusShadow { get; init; }
     /// <summary>Shadow the Filled variant lifts to on hover. A theme with flat filled buttons parks this
     /// at <c>none</c>.</summary>
-    [CssVar(Button.FilledHoverShadow)] public required string FilledHoverShadow { get; init; }
+    [CssVar(Button.FilledHoverShadow)] public string FilledHoverShadow { get; init; } = "var(--flare-elevation-1)";
 
     /// <summary>How far a disabled button fades. A language that signals disabled by dimming the whole
     /// control sets a fraction here; one that repaints it in a flat palette leaves it fully opaque and
@@ -178,11 +178,11 @@ public sealed record ButtonTokens
     [CssVar(Button.DisabledRepaint)] public required string DisabledRepaint { get; init; }
     /// <summary>Container of a disabled filled, tonal or elevated button (and a FAB). Text and outlined
     /// buttons have no container and keep none.</summary>
-    [CssVar(Button.DisabledContainer)] public required string DisabledContainer { get; init; }
+    [CssVar(Button.DisabledContainer)] public string DisabledContainer { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)";
     /// <summary>Label and icon colour of a disabled button.</summary>
-    [CssVar(Button.DisabledContent)] public required string DisabledContent { get; init; }
+    [CssVar(Button.DisabledContent)] public string DisabledContent { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)";
     /// <summary>Outline colour of a disabled outlined button.</summary>
-    [CssVar(Button.DisabledStroke)] public required string DisabledStroke { get; init; }
+    [CssVar(Button.DisabledStroke)] public string DisabledStroke { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)";
 
     /// <summary>Leading/trailing icon glyph size at the xs size.</summary>
     [CssVar(Button.IconSize.Xs)] public required string IconSizeXs { get; init; }
@@ -237,9 +237,9 @@ public sealed record ButtonTokens
     [CssVar(Button.TextIconInset)] public required string TextIconInset { get; init; }
     /// <summary>Icon and label colour of an Outlined button with no Color set. A language may draw its
     /// outlined button in the accent or keep it neutral; a Color on the button still wins.</summary>
-    [CssVar(Button.OutlinedColor)] public required string OutlinedColor { get; init; }
+    [CssVar(Button.OutlinedColor)] public string OutlinedColor { get; init; } = "var(--flare-color-primary)";
     /// <summary>Outline colour of an Outlined button with no Color set.</summary>
-    [CssVar(Button.OutlinedBorderColor)] public required string OutlinedBorderColor { get; init; }
+    [CssVar(Button.OutlinedBorderColor)] public string OutlinedBorderColor { get; init; } = "var(--flare-color-outline)";
 
     // (compound: each TypeStyle expands to several --flare-btn-label-* vars in CssVarMap.FlattenDesign)
     /// <summary>Label typography at the xs size. Each theme decides which step of its own type scale a

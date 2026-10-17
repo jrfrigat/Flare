@@ -6,7 +6,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record ScrollTopTokens
 {
     /// <summary>Top Inset.</summary>
-    [CssVar(ScrollTopField.TopInset)] public required string TopInset { get; init; }
+    [CssVar(ScrollTopField.TopInset)] public string TopInset { get; init; } = "var(--flare-spacing-12)";
 
     /// <summary>Top Size.</summary>
     [CssVar(ScrollTopField.TopSize)] public required string TopSize { get; init; }

@@ -21,17 +21,17 @@ public sealed record DragTokens
     [CssVar(Drag.SourceOpacity)] public required string SourceOpacity { get; init; }
 
     /// <summary>Shadow cast by the preview that follows the pointer.</summary>
-    [CssVar(Drag.PreviewElevation)] public required string PreviewElevation { get; init; }
+    [CssVar(Drag.PreviewElevation)] public string PreviewElevation { get; init; } = "var(--flare-elevation-4)";
 
     /// <summary>Opacity of the preview that follows the pointer.</summary>
     [CssVar(Drag.PreviewOpacity)] public required string PreviewOpacity { get; init; }
 
     /// <summary>Background of the drop zone the pointer is currently over.</summary>
-    [CssVar(Drag.ZoneActiveBackground)] public required string ZoneActiveBackground { get; init; }
+    [CssVar(Drag.ZoneActiveBackground)] public string ZoneActiveBackground { get; init; } = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-dragged-opacity) * 100%), transparent)";
 
     /// <summary>Outline color of the drop zone the pointer is currently over.</summary>
-    [CssVar(Drag.ZoneActiveOutline)] public required string ZoneActiveOutline { get; init; }
+    [CssVar(Drag.ZoneActiveOutline)] public string ZoneActiveOutline { get; init; } = "var(--flare-color-primary)";
 
     /// <summary>Color of the insertion line drawn where an ordered drop would land.</summary>
-    [CssVar(Drag.IndicatorColor)] public required string IndicatorColor { get; init; }
+    [CssVar(Drag.IndicatorColor)] public string IndicatorColor { get; init; } = "var(--flare-color-primary)";
 }

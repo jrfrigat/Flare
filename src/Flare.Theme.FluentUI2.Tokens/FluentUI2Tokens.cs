@@ -184,11 +184,7 @@ public class FluentUI2Tokens
         PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
         LabelSizeXs = "0.5625rem",
         LabelSizeSm = "0.625rem",
-        LabelSizeMd = "var(--flare-typescale-label-small-size)",
-        LabelSizeLg = "var(--flare-typescale-label-medium-size)",
-        LabelSizeXl = "var(--flare-typescale-label-large-size)",
         Offset = "0.375rem",
-        DotOffset = "0",
     };
 
     internal static readonly AlertTokens Alert = new()
@@ -206,12 +202,8 @@ public class FluentUI2Tokens
     {
         LoadingOpacity = "0.8",
         // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
-        OutlineWidthXs = "1px",
-        OutlineWidthSm = "1px",
-        OutlineWidthMd = "1px",
         OutlineWidthLg = "1px",
         OutlineWidthXl = "1px",
-        ContainerRadius = "var(--flare-shape-full)",
         // Fluent does not tighten a subtle button: the ladder matches the contained one.
         TextPaddingInlineXs = "0.375rem",
         TextPaddingInlineSm = "0.5rem",
@@ -254,19 +246,12 @@ public class FluentUI2Tokens
         SelectedRadiusMd = "var(--flare-shape-small)",
         SelectedRadiusLg = "var(--flare-shape-medium)",
         SelectedRadiusXl = "var(--flare-shape-large)",
-        SelectedRadiusSquare = "var(--flare-shape-none)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         // Selection is the accent here, whatever the variant: this language does not send each variant
         // somewhere different the way Material does, it just says "on" in the accent colour. The one
         // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
         // secondary-container would be indistinguishable from an unselected one, which is exactly what
         // happened when these four pairs were first filled in - so every variant travels to the accent,
         // and the filled toggle starts from a neutral container rather than from the accent it ends on.
-        ElevatedSelectedBg = "var(--flare-color-primary)",
-        ElevatedSelectedColor = "var(--flare-color-on-primary)",
-        FilledSelectedBg = "var(--flare-color-primary)",
-        FilledSelectedColor = "var(--flare-color-on-primary)",
         TonalSelectedBg = "var(--flare-color-primary)",
         TonalSelectedColor = "var(--flare-color-on-primary)",
         OutlinedSelectedBg = "var(--flare-color-primary)",
@@ -337,14 +322,8 @@ public class FluentUI2Tokens
     // the pressed and selected corners are pointed back at the shape the segment already has.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        StandardGapXs = "var(--flare-spacing-4)",
-        StandardGapSm = "var(--flare-spacing-4)",
-        StandardGapMd = "var(--flare-spacing-4)",
-        StandardGapLg = "var(--flare-spacing-4)",
-        StandardGapXl = "var(--flare-spacing-4)",
         ConnectedGap = "0",
         ConnectedOverlap = "-1px",
-        ConnectedOuterRadius = "var(--flare-shape-small)",
         ConnectedSelectedRadius = "0",
         ConnectedInnerRadiusXs = "0",
         ConnectedInnerRadiusSm = "0",
@@ -396,10 +375,8 @@ public class FluentUI2Tokens
     // Fluent's segmented control: a subtle rounded rectangle around segments that are ordinary buttons.
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
-        GroupBorder = "1px solid var(--flare-color-outline)",
         GroupRadius = "var(--flare-shape-small)",
         GroupRadiusVertical = "var(--flare-shape-small)",
-        GroupDivider = "var(--flare-color-outline)",
     };
 
     // FAB: flatter Fluent rounding (4-8dp).
@@ -412,13 +389,7 @@ public class FluentUI2Tokens
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
         RadiusLg = "var(--flare-shape-large)",
-        PaddingSm = "0.5rem",
-        PaddingMd = "1rem",
         PaddingLg = "1.75rem",
-        Gap = "0.75rem",
-        Shadow = "var(--flare-elevation-3)",
-        HoverShadow = "var(--flare-elevation-4)",
-        AnchorOffset = "1.5rem",
     };
 
     // Menu: neutral baseline geometry, but the panel appears via fade/slide without scale (Fluent motion).
@@ -426,25 +397,11 @@ public class FluentUI2Tokens
     /// <summary>List container and row tokens.</summary>
     internal static readonly ListTokens List = new()
     {
-        Bg = "var(--flare-color-surface)",
-        Radius = "var(--flare-shape-medium)",
-        Divider = "1px solid var(--flare-color-outline-variant)",
         ItemHeight = "3.5rem",
         ItemHeightTwoLine = "4.5rem",
         ItemHeightDense = "3rem",
         ItemHeightTwoLineDense = "3.5rem",
-        ItemPaddingBlock = "var(--flare-spacing-6)",
-        ItemPaddingBlockDense = "var(--flare-spacing-3)",
-        ItemPaddingInline = "var(--flare-spacing-8)",
-        ItemGap = "var(--flare-spacing-8)",
-        ItemContentGap = "var(--flare-spacing-1)",
         ItemRadius = "0",
-        ItemLabelFont = "var(--flare-typescale-body-large-font)",
-        ItemLabelSize = "var(--flare-typescale-body-large-size)",
-        ItemColor = "var(--flare-color-on-surface)",
-        ItemTrailingColor = "var(--flare-color-on-surface-variant)",
-        ItemSelectedBg = "var(--flare-color-secondary-container)",
-        ItemSelectedColor = "var(--flare-color-on-secondary-container)",
         ItemDisabledOpacity = "1",
         ItemIconSize = "1.25rem", // Fluent's regular icon size; the List spec names none
     };
@@ -452,38 +409,15 @@ public class FluentUI2Tokens
     /// <summary>Accordion container, header and body tokens.</summary>
     internal static readonly AccordionTokens Accordion = new()
     {
-        Border = "1px solid var(--flare-color-outline-variant)",
-        Radius = "var(--flare-shape-medium)",
-        PanelDivider = "1px solid var(--flare-color-outline-variant)",
-        HeaderBg = "var(--flare-color-surface)",
-        HeaderColor = "var(--flare-color-on-surface)",
-        HeaderPaddingBlock = "var(--flare-spacing-8)",
-        HeaderPaddingInline = "var(--flare-spacing-12)",
-        HeaderGap = "var(--flare-spacing-4)",
-        HeaderLabelFont = "var(--flare-typescale-title-small-font)",
-        HeaderLabelSize = "var(--flare-typescale-title-small-size)",
-        HeaderLabelWeight = "var(--flare-typescale-title-small-weight)",
         HeaderDisabledOpacity = "1",
         IconSize = "0.875rem",
-        BodyPaddingBlock = "var(--flare-spacing-8)",
-        BodyPaddingInline = "var(--flare-spacing-12)",
-        BodyColor = "var(--flare-color-on-surface-variant)",
     };
 
     /// <summary>Standalone collapse header tokens.</summary>
     internal static readonly CollapseTokens Collapse = new()
     {
         HeaderBg = "transparent",
-        HeaderColor = "var(--flare-color-on-surface)",
-        HeaderRadius = "var(--flare-shape-small)",
-        HeaderPaddingBlock = "var(--flare-spacing-6)",
-        HeaderPaddingInline = "var(--flare-spacing-8)",
-        HeaderGap = "var(--flare-spacing-4)",
-        HeaderLabelFont = "var(--flare-typescale-title-small-font)",
-        HeaderLabelSize = "var(--flare-typescale-title-small-size)",
-        HeaderLabelWeight = "var(--flare-typescale-title-small-weight)",
         HeaderDisabledOpacity = "1",
-        IconColor = "var(--flare-color-on-surface-variant)",
     };
 
     internal static readonly MenuTokens Menu = new()
@@ -494,17 +428,10 @@ public class FluentUI2Tokens
         PanelMinWidth = "10rem",
         EnterAnimation = "flare-menu-in-fade",
         PanelRadius = "var(--flare-popover-radius, var(--flare-shape-small))",
-        PanelBg = "var(--flare-color-surface-container)",
-        PanelShadow = "var(--flare-elevation-2)",
         PanelPaddingBlock = "0.25rem",
         PanelPaddingInline = "0.25rem",
         ItemHeight = "0",
         ItemPaddingBlock = "0.625rem",
-        // Dense: its own value, so a theme can style a dense menu as well as a normal one; a Fluent-native dense step is a separate decision.
-        ItemPaddingBlockDense = "0.375rem",
-        ItemGapDense = "0.5rem",
-        ItemPaddingInline = "1rem",
-        ItemGap = "0.75rem",
         ItemGapBetween = "0rem",
         ItemIconSize = "1.25rem",
         ItemRadius = "0",
@@ -574,16 +501,9 @@ public class FluentUI2Tokens
     internal static readonly ChipTokens Chip = new()
     {
         BorderColor = "var(--flare-color-outline)",
-        LabelColor = "var(--flare-color-on-surface-variant)",
-        // The label typography core held in its own stylesheet. Font and sizes are the steps it used; weight and spacing are `inherit`/`normal` because the chip declared neither and took them from around it.
-        LabelFont = "var(--flare-typescale-label-large-font)",
+        // Weight and spacing are `inherit`/`normal`: the chip declared neither and took them from around it.
         LabelWeight = "inherit",
         LabelSpacing = "normal",
-        LabelSizeXs = "var(--flare-typescale-label-small-size)",
-        LabelSizeSm = "var(--flare-typescale-label-small-size)",
-        LabelSizeMd = "var(--flare-typescale-label-large-size)",
-        LabelSizeLg = "var(--flare-typescale-title-small-size)",
-        LabelSizeXl = "var(--flare-typescale-title-medium-size)",
         // a chip glyph sizes with its label, same ramp.
         IconSizeXs = "0.875rem",
         IconSizeSm = "1rem",
@@ -595,14 +515,6 @@ public class FluentUI2Tokens
         AvatarSizeMd = "1.5rem",
         AvatarSizeLg = "1.875rem",
         AvatarSizeXl = "2.25rem",
-        PaddingInlineXs = "var(--flare-spacing-4)",
-        PaddingInlineSm = "var(--flare-spacing-5)",
-        PaddingInlineMd = "var(--flare-spacing-8)",
-        PaddingInlineLg = "var(--flare-spacing-10)",
-        PaddingInlineXl = "var(--flare-spacing-12)",
-        FilledBg = "var(--flare-color-surface-container-high)",
-        ElevatedBg = "var(--flare-color-surface-container-low)",
-        Radius = "var(--flare-shape-small)",
         Height = "2rem",
     };
     internal static readonly TabsTokens Tabs = new()
@@ -611,25 +523,13 @@ public class FluentUI2Tokens
         IconSize = "1.25rem",
         ActiveWeight = "700",
         CloseOpacity = "0.6",
-        LabelFont = "var(--flare-typescale-label-large-font)",
-        LabelSize = "var(--flare-typescale-label-large-size)",
-        LabelSpacing = "var(--flare-typescale-label-large-spacing)",
-        LabelWeight = "var(--flare-typescale-label-large-weight)",
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
-        ActiveColor = "var(--flare-color-primary)",
         // Fluent has no nested-tab level of its own, so the subordinate strip is expressed the way
         // this language expresses subordination anyway: a thinner rail and a neutral active label.
         SecondaryIndicatorThickness = "2px",
-        SecondaryActiveColor = "var(--flare-color-on-surface)",
         InactiveColor = "var(--flare-color-on-surface)",
-        DividerColor = "var(--flare-color-surface-variant)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedFg = "var(--flare-color-on-secondary-container)",
-        FilledBg = "var(--flare-color-primary)",
-        FilledFg = "var(--flare-color-on-primary)",
         TrackBg = "transparent",
-        PillRadius = "var(--flare-shape-full)",
         TabDisabledOpacity = "1",
         ScrollDisabledOpacity = "1",
         TabHeight = "auto",
@@ -647,7 +547,6 @@ public class FluentUI2Tokens
         TitleTracking = "0.05em",
         TitleWeight = "600",
         ActiveColor = "var(--flare-color-primary)",
-        InactiveColor = "var(--flare-color-on-surface-variant)",
         TitleColor = "var(--flare-color-on-surface)",
         RailColor = "var(--flare-color-outline-variant)",
         RailWidth = "1px",
@@ -656,7 +555,6 @@ public class FluentUI2Tokens
         MarkerWidth = "3px",
         // Gap between the rail/marker and the link text.
         LinkPadX = "0.625rem",
-        Indent = "0.75rem",
     };
 
     // Splitter: an 8dp gutter with a 2dp centred grip. The colours are semantic roles, so they already
@@ -668,11 +566,7 @@ public class FluentUI2Tokens
         GripThickness = "2px",
         GripLength = "1.75rem",
         Color = "var(--flare-color-surface-variant)",
-        HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
         IconSize = "1.125rem",
-        IconColor = "var(--flare-color-on-surface-variant)",
-        GripColor = "var(--flare-color-outline)",
-        GripRadius = "var(--flare-shape-full)",
         // colorNeutralStroke1 at rest (the outline role), colorNeutralStroke1Pressed while held.
         GripPressedColor = "var(--flare-fluent-stroke-pressed)",
         GripPressedThickness = "var(--flare-splitter-grip-thickness)",
@@ -715,7 +609,6 @@ public class FluentUI2Tokens
         HandleRadius = "var(--flare-shape-full, 9999px)",
         HandleBorderWidth = "2px",                   // brand ring (color = --_active)
         HandleFill = "var(--flare-color-surface)",   // white thumb
-        ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-outline-variant)",
         // Fluent's thumb has no halo: it shows focus with the neutral stroke round the control instead.
         StateLayerSize = "0px",
@@ -724,11 +617,8 @@ public class FluentUI2Tokens
         FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
         FocusOutlineOffset = "2px",
         StopColor = "var(--flare-color-outline)",
-        StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
         HandleClipPath = "none",
-        ValueBg = "var(--flare-color-inverse-surface)",
-        ValueColor = "var(--flare-color-inverse-on-surface)",
         DisabledOpacity = "1",
         // Flat disabled palette rather than a fade - the same two values the theme's own slider.css
         // used to force onto the track with !important.
@@ -762,7 +652,6 @@ public class FluentUI2Tokens
         HeightLg = "3.125rem", // 50px
         HeightXl = "3.625rem", // 58px
         IconSize = "1.25rem",                         // medium input icon 20px
-        PlaceholderColor = "var(--flare-color-on-surface-variant)",
         // Fluent flat disabled: grey field + disabled stroke (was MD3 on-surface opacity mixes).
         DisabledBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
         DisabledIndicator = "var(--flare-fluent-disabled-border, #E0E0E0)",
@@ -772,7 +661,6 @@ public class FluentUI2Tokens
         // stroked in the error colour.
         FocusBorderColor = "var(--flare-color-outline)",
         ErrorBorderColor = "var(--flare-color-error)",
-        ErrorBorderBottomColor = "var(--flare-color-error)",
         ErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         // Filled = Fluent's filled-darker appearance: a neutral fill with no stroke, the same brand bar on focus.
         FilledVariantBg = "var(--flare-color-surface-container-low)",
@@ -783,18 +671,13 @@ public class FluentUI2Tokens
         FilledVariantFocusBorderColor = "transparent",
         FilledVariantFocusBorderBottomColor = "transparent",
         FilledVariantErrorBorderColor = "var(--flare-color-error)",
-        FilledVariantErrorBorderBottomColor = "var(--flare-color-error)",
         FilledVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         // Outlined = Fluent's own outline appearance, the field this theme draws by default.
         OutlinedVariantBg = "var(--flare-color-surface)",
-        OutlinedVariantBorderColor = "var(--flare-color-outline)",
-        OutlinedVariantBorderBottomColor = "var(--flare-color-outline)",
         OutlinedVariantRadius = "var(--flare-shape-small)",
         OutlinedVariantFocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
         OutlinedVariantFocusBorderColor = "var(--flare-color-outline)",
         OutlinedVariantFocusBorderBottomColor = "var(--flare-color-outline)",
-        OutlinedVariantErrorBorderColor = "var(--flare-color-error)",
-        OutlinedVariantErrorBorderBottomColor = "var(--flare-color-error)",
         OutlinedVariantErrorFocusRing = "inset 0 0 0 1px var(--flare-color-error)",
         DropdownMaxHeight = "16rem",
     };
@@ -809,42 +692,27 @@ public class FluentUI2Tokens
         TrackWidth = "10",
         TrackCap = "butt",
 
-        FillColor = "var(--flare-color-primary)",
         FillWidth = "10",
 
-        NeedleColor = "var(--flare-color-on-surface)",
         NeedleWidth = "2",
         NeedleLength = "0.82",
-        PivotColor = "var(--flare-color-on-surface)",
         PivotRadius = "3",
 
-        TickColor = "var(--flare-color-outline)",
         TickWidth = "1",
         TickLength = "6",
-        TickMinorColor = "var(--flare-color-outline-variant)",
         TickMinorWidth = "1",
         TickMinorLength = "3",
         TickGap = "4",
 
-        LabelColor = "var(--flare-color-on-surface-variant)",
         LabelSize = "8.5",
-        ValueColor = "var(--flare-color-on-surface)",
-        ValueSize = "var(--flare-typescale-headline-small-size)",
         ValueWeight = "600",
 
         BandOpacity = "0.45",
-        TargetColor = "var(--flare-color-on-surface)",
         TargetWidth = "2",
     };
 
     internal static readonly ChartTokens Chart = new()
     {
-        Series1 = "var(--flare-color-primary)",
-        Series2 = "var(--flare-color-tertiary)",
-        Series3 = "var(--flare-color-secondary)",
-        Series4 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-tertiary))",
-        Series5 = "color-mix(in srgb, var(--flare-color-secondary) 50%, var(--flare-color-tertiary))",
-        Series6 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-secondary))",
         Series7 = "color-mix(in srgb, var(--flare-color-primary) 70%, var(--flare-color-on-surface))",
         Series8 = "color-mix(in srgb, var(--flare-color-tertiary) 70%, var(--flare-color-on-surface))",
         Series9 = "color-mix(in srgb, var(--flare-color-secondary) 70%, var(--flare-color-on-surface))",
@@ -863,27 +731,19 @@ public class FluentUI2Tokens
         AreaOpacity = "0.25",
         RadarFillOpacity = "0.15",
         WedgeOpacity = "0.75",
-        SliceStrokeColor = "var(--flare-color-surface)",
         SliceStrokeWidth = "1",
 
-        RampColor = "var(--flare-color-primary)",
         RampMinOpacity = "0.1",
         RampMaxOpacity = "1",
         CellRadius = "0",
         CellGap = "2",
         CellHoverOpacity = "0.85",
 
-        GridColor = "var(--flare-color-outline-variant)",
         GridWidth = "0.5",
         GridDash = "none",
-        GridMinorColor = "color-mix(in srgb, var(--flare-color-outline-variant) 45%, transparent)",
         GridMinorWidth = "0.5",
-        LabelColor = "var(--flare-color-on-surface-variant)",
         LabelSize = "9px",
-        ValueColor = "var(--flare-color-on-surface-variant)",
-        ValueOnFillColor = "var(--flare-color-surface)",
         ValueSize = "8px",
-        AxisTitleColor = "var(--flare-color-on-surface-variant)",
         AxisTitleSize = "10px",
 
         // Fluent charts sit in the page, not in a card: no border, tighter padding.
@@ -898,14 +758,11 @@ public class FluentUI2Tokens
         LegendItemGap = "var(--flare-spacing-2)",
         LegendDotSize = "0.625rem",
         LegendDotRadius = "0",
-        LegendSize = "var(--flare-typescale-label-small-size)",
-        LegendColor = "var(--flare-color-on-surface-variant)",
         LegendOffOpacity = "0.4",
 
         TrendWidth = "1",
         TrendDash = "4 3",
         TrendOpacity = "0.8",
-        AnnotationColor = "var(--flare-color-error)",
         AnnotationWidth = "1",
         AnnotationDash = "3 3",
         AnnotationBandOpacity = "0.1",
@@ -918,13 +775,11 @@ public class FluentUI2Tokens
         LineDashDashDot = "6 3 1 3",
 
         ZoomSelectionFill = "color-mix(in srgb, var(--flare-color-primary) 12%, transparent)",
-        ZoomSelectionStroke = "var(--flare-color-primary)",
     };
 
     // Progress - Fluent: thin 2px rail, squared corners, no stop dot and a 3px butt-cap ring.
     internal static readonly ProgressTokens Progress = new()
     {
-        TrackColor = "var(--flare-color-secondary-container)",
         // Size ramp, anchored at Md (the default) and running both ways. Fluent names two bar thicknesses -
         // 2px (medium, the default) and 4px (large) - which pin Md and Xl.
         LinearHeightXs = "1px",
@@ -934,7 +789,6 @@ public class FluentUI2Tokens
         LinearHeightXl = "4px",   // spec: bar thickness (large)
         // Centred content: the ramp follows the indicator sizes, so a label dropped into the
         // smallest ring still fits it.
-        ContentColor = "var(--flare-color-on-surface)",
         ContentSizeXs = "0.5rem",
         ContentSizeSm = "0.625rem",
         ContentSizeMd = "0.75rem",
@@ -943,7 +797,6 @@ public class FluentUI2Tokens
         TrackRadius = "var(--flare-shape-extra-small)",
         Gap = "0px",
         LinearIndeterminateDuration = "1500ms",
-        LinearIndeterminateEasing = "var(--flare-motion-easing-standard)",
         StopSize = "0px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
@@ -976,16 +829,11 @@ public class FluentUI2Tokens
         ActiveWeight = "600",
         BadgeWeight = "600",
         RailLabelLineHeight = "1.15",
-        ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
         // Fluent marks the selected item with a left accent bar and no pill (ActiveIndicator is none),
         // so the label is read against the panel surface.
         ActiveColor = "var(--flare-color-on-surface)",
-        ItemColor = "var(--flare-color-on-surface-variant)",
-        ItemHoverColor = "var(--flare-color-on-surface)",
-        GroupColor = "var(--flare-color-on-surface-variant)",
-        MetaColor = "var(--flare-color-on-surface-variant)",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
         LinkDisabledOpacity = "1",
         // NavItem: 20px icon, 10px block padding around a 20px line.
@@ -1017,12 +865,9 @@ public class FluentUI2Tokens
         ThumbOffLeftXs = "0.1875rem", ThumbOffLeftSm = "0.1875rem", ThumbOffLeftMd = "0.1875rem", ThumbOffLeftLg = "0.1875rem", ThumbOffLeftXl = "0.1875rem",
         ThumbOnLeftXs = "calc(100% - 0.8125rem)", ThumbOnLeftSm = "calc(100% - 0.9375rem)", ThumbOnLeftMd = "calc(100% - 1.0625rem)", ThumbOnLeftLg = "calc(100% - 1.25rem)", ThumbOnLeftXl = "calc(100% - 1.4375rem)",
         ThumbOffColor = "var(--flare-color-outline)",
-        ThumbOnColor = "var(--flare-color-on-primary)",
         ThumbStateOffColor = "var(--flare-color-on-surface-variant)",
         ThumbStateOnColor = "var(--flare-color-primary-container)",
         IconSize = "1rem",
-        IconOffColor = "var(--flare-color-surface-container-highest)",
-        IconOnColor = "var(--flare-color-primary)",
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "1px",
         FocusShadow = "none",
@@ -1113,12 +958,9 @@ public class FluentUI2Tokens
     internal static readonly DragTokens Drag = new()
     {
         SourceOpacity = "0.5",
-        PreviewElevation = "var(--flare-elevation-4)",
         PreviewOpacity = "0.85",
         ZoneActiveBackground =
             "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
-        ZoneActiveOutline = "var(--flare-color-primary)",
-        IndicatorColor = "var(--flare-color-primary)",
     };
 
     // Rating: same neutral baseline (Size defers to the size classes; filled = primary via --fc-main).
@@ -1130,8 +972,6 @@ public class FluentUI2Tokens
         SizeMd = "1.5rem",
         SizeLg = "2rem",
         SizeXl = "2.5rem",
-        EmptyColor = "var(--flare-color-outline-variant)",
-        FilledColor = "var(--flare-color-primary)",
         HoverScale = "1.15",
     };
 
@@ -1144,35 +984,24 @@ public class FluentUI2Tokens
         NavBtnSize = "2rem",
         CellMinHeight = "3rem",
         DayNumSize = "1.5rem",
-        TodayBg = "var(--flare-color-primary)",
-        TodayColor = "var(--flare-color-on-primary)",
-        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))",
         OtherMonthOpacity = "0.3",
     };
 
     // Tree: same neutral baseline (24dp indent/handle, 20dp icons, primary-tinted selection).
     internal static readonly TreeTokens Tree = new()
     {
-        ToggleHoverBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        Indent = "var(--flare-spacing-12)",
         ToggleSize = "1.5rem",
         IconSize = "1.25rem",
-        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
-        SelectedColor = "var(--flare-color-primary)",
     };
 
     // Stepper: same neutral baseline (32dp circle, 2px connector, primary when complete).
     internal static readonly StepperTokens Stepper = new()
     {
         FocusRingThickness = "2px",
-        FocusRingColor = "var(--flare-color-primary)",
         CircleSize = "2rem",
-        CircleBorderWidth = "2px",
         CircleIconSize = "1.125rem",
         ConnectorThickness = "2px",
         ConnectorMinLength = "1.5rem",
-        ConnectorColor = "var(--flare-color-outline-variant)",
-        ConnectorActiveColor = "var(--flare-color-primary)",
         StepMinWidth = "5rem",
     };
 
@@ -1180,11 +1009,7 @@ public class FluentUI2Tokens
     internal static readonly TimelineTokens Timeline = new()
     {
         DotSize = "1.25rem",
-        DotBg = "var(--flare-color-surface)",
-        DotBorderWidth = "2px",
         DotIconSize = "0.75rem",
-        LineWidth = "2px",
-        LineColor = "var(--flare-color-outline-variant)",
         ConnectorWidth = "2rem",
     };
 
@@ -1197,9 +1022,6 @@ public class FluentUI2Tokens
         SizeMd = "2.25rem",
         SizeLg = "2.75rem",
         SizeXl = "3.25rem",
-        Radius = "var(--flare-shape-extra-small)",
-        BorderColor = "var(--flare-color-outline-variant)",
-        ActiveColor = "var(--flare-color-primary)",
         BtnDisabledOpacity = "1",
     };
 
@@ -1218,12 +1040,8 @@ public class FluentUI2Tokens
         TreeToggleSize = "1.25rem",
         CompositeLabelSize = "0.6875rem",
         ResizeHandleWidth = "4px",
-        RecordDividerWidth = "2px",
-        AggregateDividerWidth = "2px",
         FilterGroupRail = "3px",
-        ActiveCellOutline = "2px solid var(--flare-color-primary)",
         ColumnPickerMinWidth = "160px",
-        RangeLayer = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)",
         RowEditingPct = "6%",
         LoadingVeilPct = "55%",
         LoadingDim = "0.6",
@@ -1291,17 +1109,11 @@ public class FluentUI2Tokens
     internal static readonly BottomNavTokens BottomNav = new()
     {
         BarHeight = "5rem",
-        BarBg = "var(--flare-color-surface-container)",
         BorderColor = "var(--flare-color-surface-variant)",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
-        InactiveColor = "var(--flare-color-on-surface-variant)",
-        ActiveColor = "var(--flare-color-on-secondary-container)",
         IconSize = "1.5rem",
-        LabelFontSize = "var(--flare-typescale-label-medium-size)",
         LabelFontWeight = "500",
         LabelFontWeightActive = "700",
-        IndicatorBg = "var(--flare-nav-active-indicator)",
-        IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
         IndicatorWidth = "0",
         ItemGap = "var(--flare-spacing-1)",
@@ -1310,44 +1122,32 @@ public class FluentUI2Tokens
 
     internal static readonly ColorPickerTokens ColorPicker = new()
     {
-        CheckerColor = "var(--flare-color-outline-variant)",
-        ThumbBg = "var(--flare-color-surface)",
-        ThumbBorderColor = "var(--flare-color-outline)",
     };
 
     // Tooltip / Avatar - Fluent uses the same neutral baseline as Material.
     internal static readonly TooltipTokens Tooltip = new()
     {
         MaxWidth = "18rem",
-        Offset = "0.5rem",
         // Fluent tooltip (normal appearance): colorNeutralBackground1 / colorNeutralForeground1 with its drop-shadow (shadow8 geometry). No rich tooltip in Fluent: the rich one is a popover surface at shadow16.
         Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",
-        Padding = "var(--flare-spacing-3) var(--flare-spacing-6)",
         RichBg = "var(--flare-color-surface)",
         RichColor = "var(--flare-color-on-surface)",
         RichShadow = "0 0 2px var(--flare-shadow-penumbra), 0 8px 16px var(--flare-shadow-umbra)",
-        RichPadding = "var(--flare-spacing-6) var(--flare-spacing-8)",
         Shadow = "0 0 2px var(--flare-shadow-penumbra), 0 4px 8px var(--flare-shadow-umbra)",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
         Radius = "var(--flare-shape-small)",
-        Offset = "0.5rem",
         // Fluent popover surface: colorNeutralBackground1 / colorNeutralForeground1 at shadow16.
         Bg = "var(--flare-color-surface)",
-        Color = "var(--flare-color-on-surface)",
         Shadow = "0 0 2px var(--flare-shadow-penumbra), 0 8px 16px var(--flare-shadow-umbra)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
     {
         GroupSpacing = "-0.75rem",
-        GroupBorderWidth = "2px",
-        GroupBorderColor = "var(--flare-color-surface)",
-        OverflowBg = "var(--flare-color-surface-container-highest)",
-        OverflowColor = "var(--flare-color-on-surface-variant)",
     };
 
     // Drawer / Snackbar - Fluent uses the Material baseline geometry (only the Snackbar radius differs).
@@ -1364,11 +1164,9 @@ public class FluentUI2Tokens
         Radius = "var(--flare-shape-small)",
         MinHeight = "3rem",
         PaddingBlock = "0.875rem",
-        ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
         MinWidth = "20rem",
         MaxWidth = "36rem",
-        PaddingInline = "var(--flare-spacing-10)",
         // Fluent toast: colorNeutralBackground1 / colorNeutralForeground1, the action in colorBrandForeground1, shadow8. Intents use the theme's status containers rather than Material's accent containers.
         Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",
@@ -1393,17 +1191,13 @@ public class FluentUI2Tokens
         IconSize = "1.5rem",
         // Fluent dialog surface: colorNeutralBackground1 / colorNeutralForeground1 at shadow64.
         Bg = "var(--flare-color-surface)",
-        Color = "var(--flare-color-on-surface)",
         Shadow = "0 0 8px var(--flare-shadow-penumbra), 0 32px 64px var(--flare-shadow-umbra)",
     };
 
     internal static readonly AppBarTokens AppBar = new()
     {
-        Gap = "0.25rem",
         Height = "4rem",
         HeightDense = "3rem",
-        PaddingX = "0.25rem",
-        TitlePaddingX = "0.75rem",
         // Fluent separates chrome surfaces with a thin stroke rather than with elevation, so the bar keeps
         // its rule where M3 drops it.
         Border = "1px solid var(--flare-color-outline-variant)",
@@ -1428,20 +1222,14 @@ public class FluentUI2Tokens
 
     internal static readonly FileUploadTokens FileUpload = new()
     {
-        BorderWidth = "2px",
-        HoverBg = "color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface))",
-        DraggingBg = "color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface))",
         DraggingRingWidth = "2px",
         IconSize = "2.5rem",
         ZoneMinHeight = "10rem",
-        ZoneRadius = "var(--flare-card-radius)",
         FileIconSize = "1.125rem",
-        RowGap = "var(--flare-spacing-2)",
         RowRadius = "var(--flare-shape-small)",
         RowActiveBg = "color-mix(in srgb, var(--flare-color-primary) 6%, transparent)",
         RowSuccessBg = "color-mix(in srgb, var(--flare-color-tertiary) 6%, transparent)",
         RowErrorBg = "color-mix(in srgb, var(--flare-color-error) 6%, transparent)",
-        RowErrorColor = "var(--flare-color-error)",
     };
 
     internal static readonly FormTokens Form = new()
@@ -1454,9 +1242,7 @@ public class FluentUI2Tokens
         AppBarHeight = "64px",
         // The dense bar's own height; Fluent's spec has no compact app bar to read a number from, so a Fluent-native height is a separate decision.
         AppBarHeightDense = "3rem",
-        AppBarBg = "var(--flare-color-surface)",
         ContentPadding = "1.5rem 2rem",
-        ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",
         DrawerWidth = "260px",
         AppBarBorder = "1px solid var(--flare-color-outline-variant)",
@@ -1464,9 +1250,6 @@ public class FluentUI2Tokens
         AppBarShadow = "none",
         // The shell's three planes, named by the theme rather than picked in core CSS. These values
         // reproduce what core chose before, so nothing moves until a theme says otherwise.
-        ShellBg = "var(--flare-color-background)",
-        DrawerBg = "var(--flare-color-surface-container-low)",
-        RailBg = "var(--flare-layout-drawer-bg)",
         ContentBg = "transparent",
         // No in-box language separates the drawer from the canvas by depth; they use DrawerBorder.
         DrawerShadowOffset = "0px",
@@ -1491,7 +1274,6 @@ public class FluentUI2Tokens
 
     internal static readonly OtpTokens Otp = new()
     {
-        BorderWidth = "2px",
         CellHeight = "3rem",
         CellWidth = "2.75rem",
         FocusRingWidth = "2px",
@@ -1518,10 +1300,6 @@ public class FluentUI2Tokens
         WeekNumberOpacity = "0.7",
         PanelMinWidth = "18rem",
         PanelRadius = "var(--flare-popover-radius)",
-        // The picker panel surface this theme has always drawn: a high container at level 3.
-        PanelBg = "var(--flare-color-surface-container-high)",
-        PanelColor = "var(--flare-color-on-surface)",
-        PanelShadow = "var(--flare-elevation-3)",
         HeaderHeight = "1.75rem",
         NavIconSize = "var(--flare-btn-icon-size-sm)",
         WeekdayHeight = "1.25rem",
@@ -1545,15 +1323,11 @@ public class FluentUI2Tokens
 
     internal static readonly ScrollTopTokens ScrollTop = new()
     {
-        TopInset = "1.5rem",
         TopSize = "2.75rem",
     };
 
     internal static readonly PageHeaderTokens PageHeader = new()
     {
-        Padding = "var(--flare-spacing-16) 0",
-        Gap = "var(--flare-spacing-4)",
-        ActionsGap = "var(--flare-spacing-16)",
         Background = "transparent",
         BorderBottom = "none",
         EyebrowTextTransform = "none",
@@ -1577,13 +1351,10 @@ public class FluentUI2Tokens
 
     internal static readonly StripeTokens Stripe = new()
     {
-        Background = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
     };
 
     internal static readonly TableTokens Table = new()
     {
-        CellPaddingH = "1rem",
-        CellPaddingV = "0.75rem",
     };
 
     internal static readonly TimePickerTokens TimePicker = new()
@@ -1603,7 +1374,6 @@ public class FluentUI2Tokens
         TimeFieldWidth = "5rem",
         DisplaySize = "2.75rem",
         HeadlineTracking = "0.05em",
-        PanelRadius = "var(--flare-shape-extra-large)",
         TimeSepSize = "2.5rem",
     };
 
@@ -1673,44 +1443,28 @@ public class FluentUI2Tokens
             ElevationHover = "var(--flare-elevation-3)",
             // Filled cards cast the shadow; the outline and subtle appearances do not.
             FilledElevation = "var(--flare-elevation-2)",
-            OutlinedElevation = "none",
             TonalElevation = "var(--flare-elevation-2)",
-            TextElevation = "none",
             // Only the elevated card lifts on hover; the others keep their resting shadow.
             FilledElevationHover = "var(--flare-elevation-2)",
             OutlinedElevationHover = "none",
             TonalElevationHover = "var(--flare-elevation-2)",
             FocusRing = "var(--flare-focus-ring)",
             FilledBg = "var(--flare-color-surface)",
-            OutlinedBg = "var(--flare-color-surface)",
             OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
             TonalBg = "var(--flare-color-surface-container-high)",
             TonalColor = "var(--flare-color-on-surface)",
-            Radius = "var(--flare-shape-medium)",
             PaddingTop = "12px",
             PaddingRight = "12px",
             PaddingBottom = "12px",
             PaddingLeft = "12px",
             // Neutral baseline members, carried explicitly.
             FilledBorder = "none",
-            TextColor = "var(--flare-color-on-surface)",
-            SelectedBorder = "2px solid var(--flare-color-primary)",
-            SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
-            StateLayer = "var(--flare-state-hover-layer)",
             ContentPadding = "16px",
             HeaderPadding = "16px 16px 0 16px",
             FooterPadding = "8px 16px 16px 16px",
             ActionsPadding = "8px 16px 16px 16px",
             ActionsGap = "8px",
             MediaRadius = "0",
-            TitleColor = "var(--flare-color-on-surface)",
-            TitleFontFamily = "var(--flare-typescale-title-medium-font)",
-            TitleFontSize = "var(--flare-typescale-title-medium-size)",
-            SubtitleColor = "var(--flare-color-on-surface-variant)",
-            SubtitleFontFamily = "var(--flare-typescale-body-medium-font)",
-            SubtitleFontSize = "var(--flare-typescale-body-medium-size)",
-            TransitionDuration = "var(--flare-motion-duration-state-change)",
-            TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,
         Chart = Chart,

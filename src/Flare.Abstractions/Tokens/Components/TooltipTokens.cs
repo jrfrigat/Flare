@@ -13,30 +13,30 @@ public sealed record TooltipTokens
     [CssVar(TooltipPopup.MaxWidth)] public required string MaxWidth { get; init; }
 
     /// <summary>Distance between the tooltip and its anchor element.</summary>
-    [CssVar(TooltipPopup.Offset)] public required string Offset { get; init; }
+    [CssVar(TooltipPopup.Offset)] public string Offset { get; init; } = "var(--flare-spacing-4)";
 
     /// <summary>Background of the plain (single-line) tooltip and its arrow.</summary>
-    [CssVar(TooltipPopup.Bg)] public required string Bg { get; init; }
+    [CssVar(TooltipPopup.Bg)] public string Bg { get; init; } = "var(--flare-color-inverse-surface)";
 
     /// <summary>Text color of the plain tooltip.</summary>
-    [CssVar(TooltipPopup.Color)] public required string Color { get; init; }
+    [CssVar(TooltipPopup.Color)] public string Color { get; init; } = "var(--flare-color-inverse-on-surface)";
 
     /// <summary>Padding of the plain tooltip, as a <c>padding</c> shorthand.</summary>
-    [CssVar(TooltipPopup.Padding)] public required string Padding { get; init; }
+    [CssVar(TooltipPopup.Padding)] public string Padding { get; init; } = "var(--flare-spacing-3) var(--flare-spacing-6)";
 
     /// <summary>Shadow (<c>box-shadow</c>) under the plain tooltip; <c>none</c> for a language whose tooltip
     /// is a dark chip that stands out on its own, a real shadow for one whose tooltip is a light surface.</summary>
     [CssVar(TooltipPopup.Shadow)] public required string Shadow { get; init; }
 
     /// <summary>Background of the rich tooltip and its arrow.</summary>
-    [CssVar(TooltipPopup.RichBg)] public required string RichBg { get; init; }
+    [CssVar(TooltipPopup.RichBg)] public string RichBg { get; init; } = "var(--flare-color-surface-container)";
 
     /// <summary>Text color of the rich tooltip.</summary>
-    [CssVar(TooltipPopup.RichColor)] public required string RichColor { get; init; }
+    [CssVar(TooltipPopup.RichColor)] public string RichColor { get; init; } = "var(--flare-color-on-surface-variant)";
 
     /// <summary>Shadow (<c>box-shadow</c>) of the rich tooltip; <c>none</c> for a flat one.</summary>
-    [CssVar(TooltipPopup.RichShadow)] public required string RichShadow { get; init; }
+    [CssVar(TooltipPopup.RichShadow)] public string RichShadow { get; init; } = "var(--flare-elevation-2)";
 
     /// <summary>Padding of the rich tooltip, as a <c>padding</c> shorthand.</summary>
-    [CssVar(TooltipPopup.RichPadding)] public required string RichPadding { get; init; }
+    [CssVar(TooltipPopup.RichPadding)] public string RichPadding { get; init; } = "var(--flare-spacing-6) var(--flare-spacing-8)";
 }

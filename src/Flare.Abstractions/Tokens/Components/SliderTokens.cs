@@ -79,7 +79,7 @@ public sealed record SliderTokens
     [CssVar(Slider.HandlePressedWidth)] public required string HandlePressedWidth { get; init; }
 
     /// <summary>Handle corner radius (full = circular/pill; 0 for a square or clipped handle).</summary>
-    [CssVar(Slider.HandleRadius)] public required string HandleRadius { get; init; }
+    [CssVar(Slider.HandleRadius)] public string HandleRadius { get; init; } = "var(--flare-shape-full)";
 
     /// <summary>Handle <c>clip-path</c> for arbitrary shapes (e.g. a triangle); <c>none</c> for no clipping.</summary>
     [CssVar(Slider.HandleClipPath)] public required string HandleClipPath { get; init; }
@@ -96,19 +96,19 @@ public sealed record SliderTokens
 
 
     /// <summary>Active (filled) track color. Per-instance <c>Color</c> overrides this via <c>--fc-main</c>.</summary>
-    [CssVar(Slider.ActiveColor)] public required string ActiveColor { get; init; }
+    [CssVar(Slider.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-primary)";
 
     /// <summary>Inactive (remaining) track color.</summary>
-    [CssVar(Slider.InactiveColor)] public required string InactiveColor { get; init; }
+    [CssVar(Slider.InactiveColor)] public string InactiveColor { get; init; } = "var(--flare-color-secondary-container)";
 
     /// <summary>State-layer diameter around the handle.</summary>
     [CssVar(Slider.StateLayerSize)] public required string StateLayerSize { get; init; }
 
     /// <summary>State-layer opacity on hover/focus.</summary>
-    [CssVar(Slider.StateHoverOpacity)] public required string StateHoverOpacity { get; init; }
+    [CssVar(Slider.StateHoverOpacity)] public string StateHoverOpacity { get; init; } = "var(--flare-state-hover-opacity)";
 
     /// <summary>State-layer opacity while pressed.</summary>
-    [CssVar(Slider.StatePressedOpacity)] public required string StatePressedOpacity { get; init; }
+    [CssVar(Slider.StatePressedOpacity)] public string StatePressedOpacity { get; init; } = "var(--flare-state-pressed-opacity)";
 
     /// <summary>
     /// Outline (shorthand) drawn round the track area while the handle has keyboard focus. <c>none</c>
@@ -120,31 +120,31 @@ public sealed record SliderTokens
     [CssVar(Slider.FocusOutlineOffset)] public required string FocusOutlineOffset { get; init; }
 
     /// <summary>Stop-indicator color on the inactive track.</summary>
-    [CssVar(Slider.StopColor)] public required string StopColor { get; init; }
+    [CssVar(Slider.StopColor)] public string StopColor { get; init; } = "var(--flare-color-on-secondary-container)";
 
     /// <summary>Stop-indicator color on the active (filled) track.</summary>
-    [CssVar(Slider.StopColorSelected)] public required string StopColorSelected { get; init; }
+    [CssVar(Slider.StopColorSelected)] public string StopColorSelected { get; init; } = "var(--flare-color-on-primary)";
 
     /// <summary>Stop-indicator diameter.</summary>
     [CssVar(Slider.StopSize)] public required string StopSize { get; init; }
 
     /// <summary>Value-indicator bubble background.</summary>
-    [CssVar(Slider.ValueBg)] public required string ValueBg { get; init; }
+    [CssVar(Slider.ValueBg)] public string ValueBg { get; init; } = "var(--flare-color-inverse-surface)";
 
     /// <summary>Value-indicator bubble text color.</summary>
-    [CssVar(Slider.ValueColor)] public required string ValueColor { get; init; }
+    [CssVar(Slider.ValueColor)] public string ValueColor { get; init; } = "var(--flare-color-inverse-on-surface)";
 
     /// <summary>How far a disabled slider's label, value bubble and icons fade. The track and handle
     /// are repainted rather than faded, so this covers only the text around them.</summary>
-    [CssVar(Slider.DisabledOpacity)] public required string DisabledOpacity { get; init; }
+    [CssVar(Slider.DisabledOpacity)] public string DisabledOpacity { get; init; } = "var(--flare-state-disabled-opacity)";
 
     /// <summary>Filled track and handle color while the slider is disabled. A design language that
     /// signals disabled with a flat palette names its grey here; one that fades names a translucent
     /// mix of its content color.</summary>
-    [CssVar(Slider.DisabledActiveColor)] public required string DisabledActiveColor { get; init; }
+    [CssVar(Slider.DisabledActiveColor)] public string DisabledActiveColor { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-disabled-opacity) * 100%), transparent)";
 
     /// <summary>Remaining-track color while the slider is disabled. Separate from
     /// <see cref="DisabledActiveColor"/> because the filled and unfilled halves stay distinguishable
     /// in both models - one fades further than the other rather than matching it.</summary>
-    [CssVar(Slider.DisabledInactiveColor)] public required string DisabledInactiveColor { get; init; }
+    [CssVar(Slider.DisabledInactiveColor)] public string DisabledInactiveColor { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)";
 }

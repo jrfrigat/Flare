@@ -36,10 +36,10 @@ public sealed record TimePickerTokens
     [CssVar(TimePickerField.DisplaySize)] public required string DisplaySize { get; init; }
 
     /// <summary>Headline Tracking.</summary>
-    [CssVar(TimePickerField.HeadlineTracking)] public required string HeadlineTracking { get; init; }
+    [CssVar(TimePickerField.HeadlineTracking)] public string HeadlineTracking { get; init; } = "var(--flare-typescale-label-medium-spacing)";
 
     /// <summary>Panel Radius.</summary>
-    [CssVar(TimePickerField.PanelRadius)] public required string PanelRadius { get; init; }
+    [CssVar(TimePickerField.PanelRadius)] public string PanelRadius { get; init; } = "var(--flare-shape-extra-large)";
 
     /// <summary>Time Sep Size.</summary>
     [CssVar(TimePickerField.TimeSepSize)] public required string TimeSepSize { get; init; }

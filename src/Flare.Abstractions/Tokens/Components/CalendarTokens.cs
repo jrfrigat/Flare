@@ -28,13 +28,13 @@ public sealed record CalendarTokens
     [CssVar(Calendar.DayNumSize)] public required string DayNumSize { get; init; }
 
     /// <summary>Background of the "today" day marker.</summary>
-    [CssVar(Calendar.TodayBg)] public required string TodayBg { get; init; }
+    [CssVar(Calendar.TodayBg)] public string TodayBg { get; init; } = "var(--flare-color-primary)";
 
     /// <summary>Foreground of the "today" day marker.</summary>
-    [CssVar(Calendar.TodayColor)] public required string TodayColor { get; init; }
+    [CssVar(Calendar.TodayColor)] public string TodayColor { get; init; } = "var(--flare-color-on-primary)";
 
     /// <summary>Background of a selected day cell.</summary>
-    [CssVar(Calendar.SelectedBg)] public required string SelectedBg { get; init; }
+    [CssVar(Calendar.SelectedBg)] public string SelectedBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))";
 
     /// <summary>Opacity applied to days belonging to an adjacent month.</summary>
     [CssVar(Calendar.OtherMonthOpacity)] public required string OtherMonthOpacity { get; init; }

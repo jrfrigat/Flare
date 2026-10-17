@@ -6,8 +6,8 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record TableTokens
 {
     /// <summary>Cell Padding H.</summary>
-    [CssVar(TableField.CellPaddingH)] public required string CellPaddingH { get; init; }
+    [CssVar(TableField.CellPaddingH)] public string CellPaddingH { get; init; } = "var(--flare-spacing-8)";
 
     /// <summary>Cell Padding V.</summary>
-    [CssVar(TableField.CellPaddingV)] public required string CellPaddingV { get; init; }
+    [CssVar(TableField.CellPaddingV)] public string CellPaddingV { get; init; } = "var(--flare-spacing-6)";
 }

@@ -10,7 +10,7 @@ public sealed record AlertTokens
     /// <summary>Close opacity.</summary>
     [CssVar(Alert.CloseOpacity)] public required string CloseOpacity { get; init; }
     /// <summary>Border radius of the alert container (a theme typically maps this to its shape scale).</summary>
-    [CssVar(Alert.Radius)] public required string Radius { get; init; }
+    [CssVar(Alert.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-small)";
 
     /// <summary>Border width for outlined and text variants (filled uses 0).</summary>
     [CssVar(Alert.BorderWidth)] public required string BorderWidth { get; init; }

@@ -13,14 +13,14 @@ public sealed record AvatarTokens
     [CssVar(AvatarField.GroupSpacing)] public required string GroupSpacing { get; init; }
 
     /// <summary>Width of the ring drawn around each stacked avatar to separate it from its neighbour.</summary>
-    [CssVar(AvatarField.GroupBorderWidth)] public required string GroupBorderWidth { get; init; }
+    [CssVar(AvatarField.GroupBorderWidth)] public string GroupBorderWidth { get; init; } = "var(--flare-border-width-emphasis)";
 
     /// <summary>Color of the ring drawn around each stacked avatar.</summary>
-    [CssVar(AvatarField.GroupBorderColor)] public required string GroupBorderColor { get; init; }
+    [CssVar(AvatarField.GroupBorderColor)] public string GroupBorderColor { get; init; } = "var(--flare-color-surface)";
 
     /// <summary>Background color of the "+N" overflow badge.</summary>
-    [CssVar(AvatarField.OverflowBg)] public required string OverflowBg { get; init; }
+    [CssVar(AvatarField.OverflowBg)] public string OverflowBg { get; init; } = "var(--flare-color-surface-container-highest)";
 
     /// <summary>Text color of the "+N" overflow badge.</summary>
-    [CssVar(AvatarField.OverflowColor)] public required string OverflowColor { get; init; }
+    [CssVar(AvatarField.OverflowColor)] public string OverflowColor { get; init; } = "var(--flare-color-on-surface-variant)";
 }

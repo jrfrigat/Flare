@@ -9,46 +9,46 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record CardTokens
 {
     /// <summary>Background color of the elevated card variant.</summary>
-    [CssVar(CardField.ElevatedBg)] public required string ElevatedBg { get; init; }
+    [CssVar(CardField.ElevatedBg)] public string ElevatedBg { get; init; } = "var(--flare-color-surface-container-low)";
 
     /// <summary>Background color of the filled card variant.</summary>
-    [CssVar(CardField.FilledBg)] public required string FilledBg { get; init; }
+    [CssVar(CardField.FilledBg)] public string FilledBg { get; init; } = "var(--flare-color-surface-container-highest)";
 
     /// <summary>Border of the filled card variant. Defaults to <c>none</c> (a borderless filled panel);
     /// set it to draw a delineating border around filled cards (e.g. the dense gray "1C" look).</summary>
     [CssVar(CardField.FilledBorder)] public required string FilledBorder { get; init; }
 
     /// <summary>Background color of the outlined card variant.</summary>
-    [CssVar(CardField.OutlinedBg)] public required string OutlinedBg { get; init; }
+    [CssVar(CardField.OutlinedBg)] public string OutlinedBg { get; init; } = "var(--flare-color-surface)";
 
     /// <summary>Border of the outlined card variant.</summary>
     [CssVar(CardField.OutlinedBorder)] public required string OutlinedBorder { get; init; }
 
     /// <summary>Background color of the tonal card variant.</summary>
-    [CssVar(CardField.TonalBg)] public required string TonalBg { get; init; }
+    [CssVar(CardField.TonalBg)] public string TonalBg { get; init; } = "var(--flare-color-secondary-container)";
 
     /// <summary>Text color of the tonal card variant.</summary>
-    [CssVar(CardField.TonalColor)] public required string TonalColor { get; init; }
+    [CssVar(CardField.TonalColor)] public string TonalColor { get; init; } = "var(--flare-color-on-secondary-container)";
 
     /// <summary>Text color of the text (transparent) card variant.</summary>
-    [CssVar(CardField.TextColor)] public required string TextColor { get; init; }
+    [CssVar(CardField.TextColor)] public string TextColor { get; init; } = "var(--flare-color-on-surface)";
 
     /// <summary>Border radius of the card (medium size). Small/large sizes scale from the shape scale.</summary>
-    [CssVar(CardField.Radius)] public required string Radius { get; init; }
+    [CssVar(CardField.Radius)] public string Radius { get; init; } = "var(--flare-shape-medium)";
 
     /// <summary>Elevation (box-shadow) of the elevated variant.</summary>
-    [CssVar(CardField.Elevation)] public required string Elevation { get; init; }
+    [CssVar(CardField.Elevation)] public string Elevation { get; init; } = "var(--flare-elevation-1)";
 
     /// <summary>Elevation of a clickable elevated card on hover.</summary>
-    [CssVar(CardField.ElevationHover)] public required string ElevationHover { get; init; }
+    [CssVar(CardField.ElevationHover)] public string ElevationHover { get; init; } = "var(--flare-elevation-2)";
 
     /// <summary>Elevation of a clickable filled card on hover; set it to the resting value for a card that
     /// does not lift.</summary>
-    [CssVar(CardField.FilledElevationHover)] public required string FilledElevationHover { get; init; }
+    [CssVar(CardField.FilledElevationHover)] public string FilledElevationHover { get; init; } = "var(--flare-elevation-1)";
 
     /// <summary>Elevation of a clickable outlined card on hover; set it to the resting value for a card that
     /// does not lift.</summary>
-    [CssVar(CardField.OutlinedElevationHover)] public required string OutlinedElevationHover { get; init; }
+    [CssVar(CardField.OutlinedElevationHover)] public string OutlinedElevationHover { get; init; } = "var(--flare-elevation-1)";
 
     /// <summary>Elevation of a clickable tonal card on hover; set it to the resting value for a card that
     /// does not lift.</summary>
@@ -63,24 +63,24 @@ public sealed record CardTokens
 
     /// <summary>Elevation (box-shadow) of the outlined variant at rest; a language whose outline replaces
     /// the shadow sets <c>none</c>.</summary>
-    [CssVar(CardField.OutlinedElevation)] public required string OutlinedElevation { get; init; }
+    [CssVar(CardField.OutlinedElevation)] public string OutlinedElevation { get; init; } = "var(--flare-elevation-0)";
 
     /// <summary>Elevation (box-shadow) of the tonal variant at rest.</summary>
     [CssVar(CardField.TonalElevation)] public required string TonalElevation { get; init; }
 
     /// <summary>Elevation (box-shadow) of the text variant, which has no container of its own.</summary>
-    [CssVar(CardField.TextElevation)] public required string TextElevation { get; init; }
+    [CssVar(CardField.TextElevation)] public string TextElevation { get; init; } = "var(--flare-elevation-0)";
 
     /// <summary>Border applied to a selected card (accent ring). Used when Selectable + Selected.</summary>
-    [CssVar(CardField.SelectedBorder)] public required string SelectedBorder { get; init; }
+    [CssVar(CardField.SelectedBorder)] public string SelectedBorder { get; init; } = "var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-primary)";
 
     /// <summary>Background tint applied to a selected card.</summary>
-    [CssVar(CardField.SelectedBg)] public required string SelectedBg { get; init; }
+    [CssVar(CardField.SelectedBg)] public string SelectedBg { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)";
 
     /// <summary>Whole hover state layer for interactive cards - colour including alpha, or an image.
     /// Point it at the shared hover layer to make a card hover like every other surface, or give it
     /// its own value to make a card the exception.</summary>
-    [CssVar(CardField.StateLayer)] public required string StateLayer { get; init; }
+    [CssVar(CardField.StateLayer)] public string StateLayer { get; init; } = "var(--flare-state-hover-layer)";
 
     /// <summary>Inner padding at the top of the card root (raw-content cards). Default 0.</summary>
     [CssVar(CardField.PaddingTop)] public required string PaddingTop { get; init; }
@@ -113,26 +113,26 @@ public sealed record CardTokens
     [CssVar(CardField.MediaRadius)] public required string MediaRadius { get; init; }
 
     /// <summary>Color of the card title text.</summary>
-    [CssVar(CardField.TitleColor)] public required string TitleColor { get; init; }
+    [CssVar(CardField.TitleColor)] public string TitleColor { get; init; } = "var(--flare-color-on-surface)";
 
     /// <summary>Font family of the card title.</summary>
-    [CssVar(CardField.TitleFontFamily)] public required string TitleFontFamily { get; init; }
+    [CssVar(CardField.TitleFontFamily)] public string TitleFontFamily { get; init; } = "var(--flare-typescale-title-medium-font)";
 
     /// <summary>Font size of the card title.</summary>
-    [CssVar(CardField.TitleFontSize)] public required string TitleFontSize { get; init; }
+    [CssVar(CardField.TitleFontSize)] public string TitleFontSize { get; init; } = "var(--flare-typescale-title-medium-size)";
 
     /// <summary>Color of the card subtitle text.</summary>
-    [CssVar(CardField.SubtitleColor)] public required string SubtitleColor { get; init; }
+    [CssVar(CardField.SubtitleColor)] public string SubtitleColor { get; init; } = "var(--flare-color-on-surface-variant)";
 
     /// <summary>Font family of the card subtitle.</summary>
-    [CssVar(CardField.SubtitleFontFamily)] public required string SubtitleFontFamily { get; init; }
+    [CssVar(CardField.SubtitleFontFamily)] public string SubtitleFontFamily { get; init; } = "var(--flare-typescale-body-medium-font)";
 
     /// <summary>Font size of the card subtitle.</summary>
-    [CssVar(CardField.SubtitleFontSize)] public required string SubtitleFontSize { get; init; }
+    [CssVar(CardField.SubtitleFontSize)] public string SubtitleFontSize { get; init; } = "var(--flare-typescale-body-medium-size)";
 
     /// <summary>Transition duration for hover effects.</summary>
-    [CssVar(CardField.TransitionDuration)] public required string TransitionDuration { get; init; }
+    [CssVar(CardField.TransitionDuration)] public string TransitionDuration { get; init; } = "var(--flare-motion-duration-state-change)";
 
     /// <summary>Transition easing for hover effects.</summary>
-    [CssVar(CardField.TransitionEasing)] public required string TransitionEasing { get; init; }
+    [CssVar(CardField.TransitionEasing)] public string TransitionEasing { get; init; } = "var(--flare-motion-easing-standard)";
 }

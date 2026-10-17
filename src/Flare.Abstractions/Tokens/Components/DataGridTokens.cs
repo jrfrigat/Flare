@@ -37,22 +37,22 @@ public sealed record DataGridTokens
     [CssVar(DataGridField.TreeToggleSize)] public required string TreeToggleSize { get; init; }
 
     /// <summary>Font size of a composite-column secondary label.</summary>
-    [CssVar(DataGridField.CompositeLabelSize)] public required string CompositeLabelSize { get; init; }
+    [CssVar(DataGridField.CompositeLabelSize)] public string CompositeLabelSize { get; init; } = "var(--flare-typescale-label-small-size)";
 
     /// <summary>Width of the column resize handle.</summary>
     [CssVar(DataGridField.ResizeHandleWidth)] public required string ResizeHandleWidth { get; init; }
 
     /// <summary>Width of the divider between records in card mode.</summary>
-    [CssVar(DataGridField.RecordDividerWidth)] public required string RecordDividerWidth { get; init; }
+    [CssVar(DataGridField.RecordDividerWidth)] public string RecordDividerWidth { get; init; } = "var(--flare-border-width-emphasis)";
 
     /// <summary>Width of the aggregate-row divider.</summary>
-    [CssVar(DataGridField.AggregateDividerWidth)] public required string AggregateDividerWidth { get; init; }
+    [CssVar(DataGridField.AggregateDividerWidth)] public string AggregateDividerWidth { get; init; } = "var(--flare-border-width-emphasis)";
 
     /// <summary>Width of the filter-group accent rail.</summary>
     [CssVar(DataGridField.FilterGroupRail)] public required string FilterGroupRail { get; init; }
 
     /// <summary>Focus outline of the active (keyboard) cell.</summary>
-    [CssVar(DataGridField.ActiveCellOutline)] public required string ActiveCellOutline { get; init; }
+    [CssVar(DataGridField.ActiveCellOutline)] public string ActiveCellOutline { get; init; } = "var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-primary)";
 
     /// <summary>Minimum width of the column-picker dropdown.</summary>
     [CssVar(DataGridField.ColumnPickerMinWidth)] public required string ColumnPickerMinWidth { get; init; }
@@ -65,7 +65,7 @@ public sealed record DataGridTokens
     /// it marks an extent being worked on rather than a chosen record - and one token for both would
     /// assert they are the same thing, leaving no way to tell them apart in a grid that does both.
     /// </remarks>
-    [CssVar(DataGridField.RangeLayer)] public required string RangeLayer { get; init; }
+    [CssVar(DataGridField.RangeLayer)] public string RangeLayer { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)";
 
     /// <summary>Tint percentage for the row currently being edited.</summary>
     [CssVar(DataGridField.RowEditingPct)] public required string RowEditingPct { get; init; }

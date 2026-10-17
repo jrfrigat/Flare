@@ -14,19 +14,19 @@ public sealed record TimelineTokens
     [CssVar(Timeline.DotSize)] public required string DotSize { get; init; }
 
     /// <summary>Background fill of the node dot.</summary>
-    [CssVar(Timeline.DotBg)] public required string DotBg { get; init; }
+    [CssVar(Timeline.DotBg)] public string DotBg { get; init; } = "var(--flare-color-surface)";
 
     /// <summary>Border width of the node dot.</summary>
-    [CssVar(Timeline.DotBorderWidth)] public required string DotBorderWidth { get; init; }
+    [CssVar(Timeline.DotBorderWidth)] public string DotBorderWidth { get; init; } = "var(--flare-border-width-emphasis)";
 
     /// <summary>Glyph size of an icon rendered inside the node dot.</summary>
     [CssVar(Timeline.DotIconSize)] public required string DotIconSize { get; init; }
 
     /// <summary>Thickness of the connector line between nodes.</summary>
-    [CssVar(Timeline.LineWidth)] public required string LineWidth { get; init; }
+    [CssVar(Timeline.LineWidth)] public string LineWidth { get; init; } = "var(--flare-border-width-emphasis)";
 
     /// <summary>Color of the connector line between nodes.</summary>
-    [CssVar(Timeline.LineColor)] public required string LineColor { get; init; }
+    [CssVar(Timeline.LineColor)] public string LineColor { get; init; } = "var(--flare-color-outline-variant)";
 
     /// <summary>Width of the connector column (dot + line).</summary>
     [CssVar(Timeline.ConnectorWidth)] public required string ConnectorWidth { get; init; }

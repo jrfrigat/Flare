@@ -24,10 +24,10 @@ public sealed record RatingTokens
     [CssVar(Rating.Size.Xl)] public required string SizeXl { get; init; }
 
     /// <summary>Color of an unfilled (empty) star.</summary>
-    [CssVar(Rating.EmptyColor)] public required string EmptyColor { get; init; }
+    [CssVar(Rating.EmptyColor)] public string EmptyColor { get; init; } = "var(--flare-color-outline-variant)";
 
     /// <summary>Default color of a filled star (the per-instance <c>Color</c> parameter overrides it).</summary>
-    [CssVar(Rating.FilledColor)] public required string FilledColor { get; init; }
+    [CssVar(Rating.FilledColor)] public string FilledColor { get; init; } = "var(--flare-color-primary)";
 
     /// <summary>Scale applied to a star on hover (interactive feedback).</summary>
     [CssVar(Rating.HoverScale)] public required string HoverScale { get; init; }
