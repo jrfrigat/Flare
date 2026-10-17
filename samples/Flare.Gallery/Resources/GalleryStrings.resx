@@ -3600,6 +3600,39 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Kanban_Virtual_Card" xml:space="preserve">
     <value>Task {0}</value>
   </data>
+  <data name="Stat_Title" xml:space="preserve">
+    <value>Stat</value>
+  </data>
+  <data name="Stat_Subtitle" xml:space="preserve">
+    <value>One labelled metric: value, unit, icon, change and caption. Put it in a card for a tile and in a grid for a row of tiles.</value>
+  </data>
+  <data name="Stat_Tiles" xml:space="preserve">
+    <value>Metric tiles</value>
+  </data>
+  <data name="Stat_Sizes" xml:space="preserve">
+    <value>Sizes</value>
+  </data>
+  <data name="Stat_Revenue" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="Stat_ActiveUsers" xml:space="preserve">
+    <value>Active users</value>
+  </data>
+  <data name="Stat_Latency" xml:space="preserve">
+    <value>Response time</value>
+  </data>
+  <data name="Stat_Errors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="Stat_Last30Days" xml:space="preserve">
+    <value>Last 30 days</value>
+  </data>
+  <data name="Stat_Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="Stat_P95" xml:space="preserve">
+    <value>95th percentile, last hour</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>States, bounds and forms</value>
   </data>

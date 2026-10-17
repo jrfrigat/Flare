@@ -11715,6 +11715,39 @@ namespace Flare.Gallery.Resources {
 
         /// <summary>Looks up the localized Kanban virtualized-columns card title.</summary>
         public static string Kanban_Virtual_Card => ResourceManager.GetString("Kanban_Virtual_Card", resourceCulture);
+
+        /// <summary>Looks up the localized Stat page title.</summary>
+        public static string Stat_Title => ResourceManager.GetString("Stat_Title", resourceCulture);
+
+        /// <summary>Looks up the localized Stat page subtitle.</summary>
+        public static string Stat_Subtitle => ResourceManager.GetString("Stat_Subtitle", resourceCulture);
+
+        /// <summary>Looks up the localized Stat tiles demo title.</summary>
+        public static string Stat_Tiles => ResourceManager.GetString("Stat_Tiles", resourceCulture);
+
+        /// <summary>Looks up the localized Stat sizes demo title.</summary>
+        public static string Stat_Sizes => ResourceManager.GetString("Stat_Sizes", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo revenue label.</summary>
+        public static string Stat_Revenue => ResourceManager.GetString("Stat_Revenue", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo active-users label.</summary>
+        public static string Stat_ActiveUsers => ResourceManager.GetString("Stat_ActiveUsers", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo response-time label.</summary>
+        public static string Stat_Latency => ResourceManager.GetString("Stat_Latency", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo errors label.</summary>
+        public static string Stat_Errors => ResourceManager.GetString("Stat_Errors", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo last-30-days caption.</summary>
+        public static string Stat_Last30Days => ResourceManager.GetString("Stat_Last30Days", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo today caption.</summary>
+        public static string Stat_Today => ResourceManager.GetString("Stat_Today", resourceCulture);
+
+        /// <summary>Looks up the localized Stat demo percentile caption.</summary>
+        public static string Stat_P95 => ResourceManager.GetString("Stat_P95", resourceCulture);
         
         /// <summary>Looks up the localized DateTimePicker_States string.</summary>
         public static string DateTimePicker_States => ResourceManager.GetString("DateTimePicker_States", resourceCulture);

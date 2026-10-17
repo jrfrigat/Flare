@@ -3600,6 +3600,39 @@
   <data name="Kanban_Virtual_Card" xml:space="preserve">
     <value>Задача {0}</value>
   </data>
+  <data name="Stat_Title" xml:space="preserve">
+    <value>Показатель</value>
+  </data>
+  <data name="Stat_Subtitle" xml:space="preserve">
+    <value>Один подписанный показатель: значение, единица, иконка, изменение и пояснение. В карточке это плитка, в сетке - ряд плиток.</value>
+  </data>
+  <data name="Stat_Tiles" xml:space="preserve">
+    <value>Плитки показателей</value>
+  </data>
+  <data name="Stat_Sizes" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="Stat_Revenue" xml:space="preserve">
+    <value>Выручка</value>
+  </data>
+  <data name="Stat_ActiveUsers" xml:space="preserve">
+    <value>Активные пользователи</value>
+  </data>
+  <data name="Stat_Latency" xml:space="preserve">
+    <value>Время ответа</value>
+  </data>
+  <data name="Stat_Errors" xml:space="preserve">
+    <value>Ошибки</value>
+  </data>
+  <data name="Stat_Last30Days" xml:space="preserve">
+    <value>За 30 дней</value>
+  </data>
+  <data name="Stat_Today" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="Stat_P95" xml:space="preserve">
+    <value>95-й процентиль за последний час</value>
+  </data>
   <data name="DateTimePicker_States" xml:space="preserve">
     <value>Состояния, границы и формы</value>
   </data>

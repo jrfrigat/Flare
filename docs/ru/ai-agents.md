@@ -234,7 +234,7 @@ inline/batch-редактирование, выделение, переупор�
 `FlareCardContent`, `FlareCardActions`, `FlareCardFooter`, `FlareCardMedia`), `FlarePaper`, `FlareBadge`,
 `FlareChip`, `FlareChipGroup`, `FlareAvatar`, `FlareAvatarGroup`, `FlareSkeleton`, `FlareEmptyState`,
 `FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`,
-`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`.
+`FlareDescriptionList`, `FlareDescriptionItem`, `FlareGauge`, `FlareMeter`, `FlareMeterSegment`, `FlareStat`.
 
 **Навигация:** `FlareAppBar`, `FlareNavMenu`, `FlareNavLink`, `FlareNavGroup`, `FlareTabs`, `FlareTab`,
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,

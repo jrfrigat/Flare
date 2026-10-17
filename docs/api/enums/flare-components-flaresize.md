@@ -15,3 +15,7 @@ Unified size scale for Flare components. Use this for new components. Existing c
 | `Md` | `2` | Medium - default size. |
 | `Lg` | `3` | Large. |
 | `Xl` | `4` | Extra large - prominent. |
+
+## Used by components
+
+- `FlareStat`

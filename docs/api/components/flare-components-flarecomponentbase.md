@@ -170,6 +170,7 @@ This component exposes no documented public methods.
 - `FlareSplitButton`
 - `FlareSplitter`
 - `FlareStack`
+- `FlareStat`
 - `FlareStatusBar`
 - `FlareStepper`
 - `FlareSubMenu`

@@ -1726,6 +1726,7 @@ public static class ComponentApiRegistry
                 @"FlareSplitButton",
                 @"FlareSplitter",
                 @"FlareStack",
+                @"FlareStat",
                 @"FlareStatusBar",
                 @"FlareStepper",
                 @"FlareSubMenu",
@@ -6074,6 +6075,36 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareStat"] = new ApiComponentInfo(
+            @"FlareStat",
+            @"Flare.Components.FlareStat",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Caption", @"string?", null, @"Supporting line below the value, such as the period or the source of the figure.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"Delta", @"string?", null, @"Change since the previous period, shown after the value, with its sign as the caller writes it (for example +12% or -3).", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"DeltaColor", @"FlareColor", null, @"Color of Delta: a role such as FlareColor.Success, Warning, Error or Info says whether the change is good or bad; a custom color is also accepted. By default the change uses the muted text color.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in a tonal square before the label and value. Decorative: hidden from assistive technology.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"What the metric measures, shown above the value and used as the start of the accessible name.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"Size", @"FlareSize", @"FlareSize.Md", @"Size of the value's type: Sm, Md (default) or Lg. Extra sizes map to the nearest of the three.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"Unit", @"string?", null, @"Unit shown after the value in a smaller type, such as USD, % or ms.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"Value", @"string?", null, @"The metric's value, already formatted: number format, culture and rounding are the caller's.", null, false, false, false, @"FlareStat"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareStatusBar"] = new ApiComponentInfo(
             @"FlareStatusBar",
             @"Flare.Components.IDE.FlareStatusBar",
@@ -8747,7 +8778,10 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Lg", @"3", @"Large."),
                 new ApiEnumMember(@"Xl", @"4", @"Extra large - prominent."),
             },
-            System.Array.Empty<string>());
+            new string[]
+            {
+                @"FlareStat",
+            });
 
         e[@"FlareSpacing"] = new ApiEnumInfo(
             @"FlareSpacing",

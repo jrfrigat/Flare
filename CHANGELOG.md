@@ -27,6 +27,11 @@ All notable changes to Flare are documented here. This project adheres to
   one it was dropped on even in a column scrolled to its middle. Keyboard moves reach the cards currently
   rendered. `VirtualItemSize` and `OverscanCount` tune the window.
 
+- `FlareStat` shows one labelled metric: `Label`, `Value`, `Unit`, `Icon`, a `Delta` colored by `DeltaColor`
+  (Success, Warning, Error, Info or a custom color) and a `Caption`, in three `Size` steps. Screen readers name
+  it "label: value unit". It is the content, not the surface: put it in a `FlareCard` for a tile and lay tiles
+  out with `FlareGrid`.
+
 ### Fixed
 
 - The `FlareIdeLayout` panel divider has a localized name, announces the region size, can be dragged with a

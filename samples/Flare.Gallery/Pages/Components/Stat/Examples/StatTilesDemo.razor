@@ -1,0 +1,23 @@
+@* A tile is a FlareStat inside a FlareCard; FlareGrid lays the tiles out and wraps them on a narrow screen. *@
+<FlareGrid MinColumnWidth="14rem" AutoFit="true" Gap="FlareSpacing.Medium">
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareStat Label="@GalleryStrings.Stat_Revenue" Value="48,210" Unit="USD"
+                   Icon="@MaterialDesign3Icons.Regular.AttachMoney"
+                   Delta="+12.4%" DeltaColor="FlareColor.Success" Caption="@GalleryStrings.Stat_Last30Days" />
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareStat Label="@GalleryStrings.Stat_ActiveUsers" Value="1,893"
+                   Icon="@FlareIcons.Group"
+                   Delta="+38" DeltaColor="FlareColor.Info" Caption="@GalleryStrings.Stat_Today" />
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareStat Label="@GalleryStrings.Stat_Latency" Value="212" Unit="ms"
+                   Icon="@MaterialDesign3Icons.Regular.Bolt"
+                   Delta="+40 ms" DeltaColor="FlareColor.Warning" Caption="@GalleryStrings.Stat_P95" />
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareStat Label="@GalleryStrings.Stat_Errors" Value="27"
+                   Icon="@MaterialDesign3Icons.Regular.BugReport"
+                   Delta="+9" DeltaColor="FlareColor.Error" Caption="@GalleryStrings.Stat_Today" />
+    </FlareCard>
+</FlareGrid>

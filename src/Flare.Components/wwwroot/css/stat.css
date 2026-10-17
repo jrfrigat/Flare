@@ -1,0 +1,89 @@
+/* One labelled metric. Content only: a tile is a FlareStat inside a FlareCard, so the surface keeps the
+   card's own tokens. Every value below is a semantic token, so a theme restyles a stat through its roles. */
+.flare-stat {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--flare-spacing-6);
+    min-width: 0;
+}
+
+.flare-stat__icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: var(--flare-spacing-4);
+    border-radius: var(--flare-shape-medium);
+    background: var(--flare-color-secondary-container);
+    color: var(--flare-color-on-secondary-container);
+}
+
+.flare-stat__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2);
+    min-width: 0;
+}
+
+.flare-stat__label {
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size);
+    font-weight: var(--flare-typescale-label-large-weight);
+    line-height: var(--flare-typescale-label-large-height);
+    color: var(--flare-color-on-surface-variant);
+    overflow-wrap: anywhere;
+}
+
+.flare-stat__value-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--flare-spacing-3);
+}
+
+.flare-stat__value {
+    font-family: var(--flare-typescale-headline-medium-font);
+    font-size: var(--flare-typescale-headline-medium-size);
+    font-weight: var(--flare-typescale-headline-medium-weight);
+    line-height: var(--flare-typescale-headline-medium-height);
+    color: var(--flare-color-on-surface);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+/* The medium step is the base rule above; flare-stat--md names it so a theme or app can target it. */
+.flare-stat--md { /* marker hook - no own styling */ }
+
+.flare-stat--sm .flare-stat__value {
+    font-family: var(--flare-typescale-title-large-font);
+    font-size: var(--flare-typescale-title-large-size);
+    font-weight: var(--flare-typescale-title-large-weight);
+    line-height: var(--flare-typescale-title-large-height);
+}
+
+.flare-stat--lg .flare-stat__value {
+    font-family: var(--flare-typescale-display-small-font);
+    font-size: var(--flare-typescale-display-small-size);
+    font-weight: var(--flare-typescale-display-small-weight);
+    line-height: var(--flare-typescale-display-small-height);
+}
+
+.flare-stat__unit,
+.flare-stat__delta {
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+    line-height: var(--flare-typescale-body-medium-height);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-stat__delta {
+    font-weight: var(--flare-typescale-label-large-weight);
+    font-variant-numeric: tabular-nums;
+}
+
+.flare-stat__caption {
+    font-family: var(--flare-typescale-body-small-font);
+    font-size: var(--flare-typescale-body-small-size);
+    line-height: var(--flare-typescale-body-small-height);
+    color: var(--flare-color-on-surface-variant);
+}

@@ -169,6 +169,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareSplitButton`](components/flare-components-flaresplitbutton.md)
 - [`FlareSplitter`](components/flare-components-flaresplitter.md)
 - [`FlareStack`](components/flare-components-flarestack.md)
+- [`FlareStat`](components/flare-components-flarestat.md)
 - [`FlareStatusBar`](components/flare-components-ide-flarestatusbar.md)
 - [`FlareStep`](components/flare-components-flarestep.md) — One stage of a FlareStepper: its label, its optional description, and the content shown while it is the active stage. It registers with the stepper and draws nothing on its own - the stepper renders both the indicator and the panel.
 - [`FlareStepper`](components/flare-components-flarestepper.md)

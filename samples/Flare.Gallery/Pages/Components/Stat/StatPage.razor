@@ -1,0 +1,12 @@
+@page "/components/stat"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Stat_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareStat">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Stat_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Stat_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Stat_Tiles" DemoType="typeof(Examples.StatTilesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Stat_Sizes" DemoType="typeof(Examples.StatSizesDemo)" />
