@@ -1,8 +1,11 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
+@* The cascade is NOT fixed: OnParametersSet builds a new context from the current selection, and a fixed
+   cascade never tells the existing chips about it - they keep the snapshot they first received, so the
+   selected classes stop following the selection. *@
 <div class="@BuildCssClass()" role="group" aria-label="@AriaLabel" style="@Style" @attributes="AdditionalAttributes">
-    <CascadingValue Value="_context" IsFixed="true">
+    <CascadingValue Value="_context">
         @ChildContent
     </CascadingValue>
 </div>
