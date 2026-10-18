@@ -54,4 +54,56 @@ public class FlareCollapseTests : FlareTestContext
 
         Assert.Empty(cut.FindAll($"button.{Css.Classes.Collapse.Header}"));
     }
+
+    [Fact]
+    public void CollapsedRegion_IsInert()
+    {
+        var cut = Render<FlareCollapse>(p => p
+            .AddChildContent("<input id=\"inner\" />"));
+
+        Assert.True(cut.Find($".{Css.Classes.Collapse.Region}").HasAttribute("inert"));
+    }
+
+    [Fact]
+    public void ExpandedRegion_IsNotInert()
+    {
+        var cut = Render<FlareCollapse>(p => p
+            .Add(x => x.Expanded, true)
+            .AddChildContent("<input id=\"inner\" />"));
+
+        Assert.False(cut.Find($".{Css.Classes.Collapse.Region}").HasAttribute("inert"));
+    }
+
+    [Fact]
+    public void ExternalCollapseWithFocusInside_ReturnsFocusToHeader()
+    {
+        var cut = Render<FlareCollapse>(p => p
+            .Add(x => x.Header, "More")
+            .Add(x => x.Expanded, true)
+            .AddChildContent("<input id=\"inner\" />"));
+        cut.Find($".{Css.Classes.Collapse.Region}").FocusIn();
+
+        cut.Render(p => p
+            .Add(x => x.Header, "More")
+            .Add(x => x.Expanded, false)
+            .AddChildContent("<input id=\"inner\" />"));
+
+        JSInterop.VerifyFocusAsyncInvoke();
+    }
+
+    [Fact]
+    public void HeaderlessExternalCollapseWithFocusInside_ReturnsFocusToRoot()
+    {
+        var cut = Render<FlareCollapse>(p => p
+            .Add(x => x.Expanded, true)
+            .AddChildContent("<input id=\"inner\" />"));
+        cut.Find($".{Css.Classes.Collapse.Region}").FocusIn();
+
+        cut.Render(p => p
+            .Add(x => x.Expanded, false)
+            .AddChildContent("<input id=\"inner\" />"));
+
+        JSInterop.VerifyFocusAsyncInvoke();
+        Assert.Equal("-1", cut.Find($".{Css.Classes.Collapse.Root}").GetAttribute("tabindex"));
+    }
 }

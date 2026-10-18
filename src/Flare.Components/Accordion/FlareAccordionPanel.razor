@@ -11,6 +11,7 @@
     <div class="@Css.Classes.Accordion.Heading" role="@(_headingLevel > 0 ? "heading" : null)"
          aria-level="@(_headingLevel > 0 ? _headingLevel.ToString(System.Globalization.CultureInfo.InvariantCulture) : null)">
         <button class="@Css.Classes.Accordion.Header" type="button" @onclick="Toggle"
+                @ref="_headerRef"
                 id="@_headerId"
                 disabled="@Disabled"
                 aria-expanded="@_expanded.ToString().ToLowerInvariant()"
@@ -31,7 +32,10 @@
     <div class="@Css.Classes.Accordion.Content"
          id="@_contentId"
          role="region"
-         aria-labelledby="@_headerId">
+         aria-labelledby="@_headerId"
+         inert="@_contentInert"
+         @onfocusin="HandleContentFocusIn"
+         @onfocusout="HandleContentFocusOut">
         <div class="@Css.Classes.Accordion.Body">
             @ChildContent
         </div>
@@ -64,6 +68,9 @@
     private bool _expanded;
     private bool _lastExpanded;
     private bool _initialised;
+    private bool _wasExpanded;
+    private bool _contentFocused;
+    private ElementReference _headerRef;
     private readonly string _panelId = Guid.NewGuid().ToString("N")[..8];
     // The panel's own level wins over the accordion's; a standalone panel falls back to the same
     // default the accordion carries.
@@ -91,6 +98,29 @@
             // toggle of another panel finds no panel to close and leaves both open.
             if (_expanded) Accordion?.PanelInitiallyExpanded(this);
         }
+    }
+
+    // A collapsed panel is removed from the accessibility tree and the tab order by inert, which leaves
+    // the height animation intact. The focus handlers notice a user inside before that happens; the
+    // focusout guard ignores the blur that inert itself causes while the panel is closing, so the header
+    // can take the focus back instead of leaving it on body.
+    private string? _contentInert => _expanded ? null : "inert";
+
+    private void HandleContentFocusIn() => _contentFocused = true;
+
+    private void HandleContentFocusOut()
+    {
+        if (_expanded) _contentFocused = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender && _wasExpanded && !_expanded && _contentFocused)
+        {
+            _contentFocused = false;
+            try { await _headerRef.FocusAsync(); } catch { }
+        }
+        _wasExpanded = _expanded;
     }
 
     private async Task Toggle()

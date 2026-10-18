@@ -6,11 +6,14 @@
    or any toggle) or via the optional built-in header. The region animates its height open/closed. *@
 <div class="@BuildCssClass(_expanded ? Css.Classes.Collapse.Expanded : null, Disabled ? Css.Classes.Collapse.Disabled : null)"
      style="@Style"
+     @ref="_rootRef"
+     tabindex="@(!_hasHeader ? "-1" : null)"
      @attributes="AdditionalAttributes">
     @if (_hasHeader)
     {
         <button class="@Css.Classes.Collapse.Header"
                 type="button"
+                @ref="_headerRef"
                 id="@_headerId"
                 disabled="@Disabled"
                 aria-expanded="@_expanded.ToString().ToLowerInvariant()"
@@ -36,7 +39,10 @@
          id="@_regionId"
          role="@_regionRole"
          aria-label="@RegionLabel"
-         aria-labelledby="@(_hasHeader && RegionLabel is null ? _headerId : null)">
+         aria-labelledby="@(_hasHeader && RegionLabel is null ? _headerId : null)"
+         inert="@_contentInert"
+         @onfocusin="HandleContentFocusIn"
+         @onfocusout="HandleContentFocusOut">
         <div class="@Css.Classes.Collapse.Inner">
             @ChildContent
         </div>
@@ -73,6 +79,10 @@
 
     private bool _expanded;
     private bool _lastExpanded;
+    private bool _wasExpanded;
+    private bool _contentFocused;
+    private ElementReference _rootRef;
+    private ElementReference _headerRef;
     private readonly string _id = Guid.NewGuid().ToString("N")[..8];
     private string _headerId => $"flare-collapse-hdr-{_id}";
     private string _regionId => $"flare-collapse-rgn-{_id}";
@@ -89,6 +99,33 @@
         else if (Expanded != _lastExpanded)
             _expanded = Expanded;
         _lastExpanded = Expanded;
+    }
+
+    // inert removes the collapsed region from the tab order and the accessibility tree without
+    // stopping the height animation. If focus was inside, it returns to the header - or to the root
+    // when there is no header to return to.
+    private string? _contentInert => _expanded ? null : "inert";
+
+    private void HandleContentFocusIn() => _contentFocused = true;
+
+    private void HandleContentFocusOut()
+    {
+        if (_expanded) _contentFocused = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender && _wasExpanded && !_expanded && _contentFocused)
+        {
+            _contentFocused = false;
+            try
+            {
+                if (_hasHeader) await _headerRef.FocusAsync();
+                else await _rootRef.FocusAsync();
+            }
+            catch { }
+        }
+        _wasExpanded = _expanded;
     }
 
     private async Task Toggle()
