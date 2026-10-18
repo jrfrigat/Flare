@@ -111,6 +111,21 @@ public sealed class FlareDataGridEscapeLayerTests : FlareTestContext
         cut.WaitForAssertion(() => Assert.Contains("removePopupLayer", Names()));
     }
 
+    [Fact]
+    public async Task FilterMenu_DisposingTheGridWhileOpenRemovesTheLayer()
+    {
+        var cut = RenderGrid(filterMenu: true);
+
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
+        cut.WaitForAssertion(() => Assert.Contains("pushPopupLayer", Names()));
+
+        await cut.Instance.DisposeAsync();
+
+        Assert.Contains("removePopupLayer", Names());
+        Assert.True(Names().IndexOf("removePopupLayer") > Names().IndexOf("pushPopupLayer"),
+            "The grid went away without removing its filter menu layer: " + string.Join(", ", Names()));
+    }
+
     // The two components are generic, so the layer's DotNetObjectReference<T> is read through its public Value.
     private async Task InvokeEscapeAsync(string methodName)
     {
