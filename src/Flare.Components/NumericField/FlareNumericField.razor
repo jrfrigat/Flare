@@ -226,30 +226,60 @@
         if (ReadOnly || Disabled) return;
 
         var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
-        double current = 0;
+
+        // decimal and the integral types must not go through double: a long above 2^53 or a decimal
+        // with more than ~15 significant digits is changed by the conversion, not by the step.
+        if (targetType == typeof(decimal) || _integralTypes.Contains(targetType))
+        {
+            decimal current = 0m;
+            if (Value is not null)
+            {
+                try { current = Convert.ToDecimal(Value, CultureInfo.InvariantCulture); }
+                catch { }
+            }
+
+            decimal next;
+            try { next = current + (decimal)delta; }
+            catch { return; }
+
+            if (Min.HasValue) { try { next = Math.Max(next, (decimal)Min.Value); } catch { } }
+            if (Max.HasValue) { try { next = Math.Min(next, (decimal)Max.Value); } catch { } }
+            if (!TryConvertDecimal(next, targetType, out var convertedValue)) return;
+
+            // Keep the editable buffer in sync so a focused text-mode field reflects the step.
+            if (_useTextMode && _focused)
+                _text = convertedValue is IFormattable formattable
+                    ? formattable.ToString(null, _fmtCulture)
+                    : next.ToString(_fmtCulture);
+
+            await ValueChanged.InvokeAsync((TValue?)convertedValue);
+            NotifyFieldChanged();
+            return;
+        }
+
+        double currentDouble = 0;
         if (Value is not null)
         {
-            try { current = Convert.ToDouble(Value, CultureInfo.InvariantCulture); }
+            try { currentDouble = Convert.ToDouble(Value, CultureInfo.InvariantCulture); }
             catch { }
         }
 
-        double next = current + delta;
-        if (Min.HasValue && next < Min.Value) next = Min.Value;
-        if (Max.HasValue && next > Max.Value) next = Max.Value;
+        double nextDouble = currentDouble + delta;
+        if (Min.HasValue && nextDouble < Min.Value) nextDouble = Min.Value;
+        if (Max.HasValue && nextDouble > Max.Value) nextDouble = Max.Value;
 
         TValue? converted = default;
         try
         {
             var converter = InvariantConverter.For(targetType);
-            var str = next.ToString(CultureInfo.InvariantCulture);
+            var str = nextDouble.ToString(CultureInfo.InvariantCulture);
             if (converter.CanConvertFrom(typeof(string)))
                 converted = (TValue?)converter.ConvertFromInvariantString(str);
         }
         catch { }
 
-        // Keep the editable buffer in sync so a focused text-mode field reflects the step.
         if (_useTextMode && _focused)
-            _text = next.ToString(_fmtCulture);
+            _text = nextDouble.ToString(_fmtCulture);
 
         await ValueChanged.InvokeAsync(converted);
 
@@ -307,25 +337,41 @@
     }
 
     // Parse + (optionally) clamp + convert to TValue + emit. In text mode the raw string may
-    // carry culture separators/currency/percent symbols; parse tolerantly.
+    // carry culture separators/currency/percent symbols; parse tolerantly. decimal and the integral
+    // types are parsed and clamped in decimal so their precision is not narrowed by double.
     private async Task Commit(string? raw, bool clamp)
     {
-        TValue? converted = default;
-        if (!string.IsNullOrWhiteSpace(raw))
+        if (string.IsNullOrWhiteSpace(raw))
         {
-            if (TryParseNumber(raw, out var d))
-            {
-                if (clamp)
-                {
-                    if (Min.HasValue && d < Min.Value) d = Min.Value;
-                    if (Max.HasValue && d > Max.Value) d = Max.Value;
-                }
-                // Number mode without clamp change keeps the original invariant token (full
-                // precision for decimal/long); otherwise convert from the parsed double.
-                var token = (!_useTextMode && !clamp) ? raw! : d.ToString(CultureInfo.InvariantCulture);
-                converted = ConvertFromInvariant(token);
-            }
+            await ValueChanged.InvokeAsync(default);
+            NotifyFieldChanged();
+            return;
         }
+
+        var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+        if (targetType == typeof(decimal) || _integralTypes.Contains(targetType))
+        {
+            if (!TryParseDecimalNumber(raw, out var dec)) return;
+            if (clamp)
+            {
+                if (Min.HasValue) { try { dec = Math.Max(dec, (decimal)Min.Value); } catch { } }
+                if (Max.HasValue) { try { dec = Math.Min(dec, (decimal)Max.Value); } catch { } }
+            }
+            if (!TryConvertDecimal(dec, targetType, out var convertedDecimal)) return;
+
+            await ValueChanged.InvokeAsync((TValue?)convertedDecimal);
+            NotifyFieldChanged();
+            return;
+        }
+
+        if (!TryParseNumber(raw, out var d)) return;
+        if (clamp)
+        {
+            if (Min.HasValue && d < Min.Value) d = Min.Value;
+            if (Max.HasValue && d > Max.Value) d = Max.Value;
+        }
+        var token = (!_useTextMode && !clamp) ? raw : d.ToString(CultureInfo.InvariantCulture);
+        var converted = ConvertFromInvariant(token);
 
         await ValueChanged.InvokeAsync(converted);
 
@@ -346,6 +392,41 @@
             else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
         }
         return double.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+    }
+
+    private bool TryParseDecimalNumber(string raw, out decimal value)
+    {
+        var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
+        if (decimal.TryParse(raw, NumberStyles.Any, c, out value)) return true;
+
+        var dec = c.NumberFormat.NumberDecimalSeparator;
+        var sb = new System.Text.StringBuilder(raw.Length);
+        foreach (var ch in raw)
+        {
+            if (char.IsDigit(ch) || ch == '-' || ch == '+') sb.Append(ch);
+            else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
+        }
+        return decimal.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+    }
+
+    // Range-checked conversion. An out-of-range or fractional value returns false, so the component
+    // keeps the previous value instead of emitting a silent zero.
+    private static bool TryConvertDecimal(decimal value, Type targetType, out object? converted)
+    {
+        converted = null;
+        if (targetType == typeof(decimal))
+        {
+            converted = value;
+            return true;
+        }
+        if (value != decimal.Truncate(value)) return false;
+        try
+        {
+            converted = Convert.ChangeType(value, targetType, CultureInfo.InvariantCulture);
+            return true;
+        }
+        catch (OverflowException) { return false; }
+        catch (InvalidCastException) { return false; }
     }
 
     private static TValue? ConvertFromInvariant(string invariant)
