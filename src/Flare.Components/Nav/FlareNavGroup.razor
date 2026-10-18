@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
-    <button type="button" class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
+    <button type="button" class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @ref="_headerEl" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
         @if (Icon is not null)
         {
             <FlareIconView Value="Icon" Class="@Css.Classes.Navigation.GroupIcon" />
@@ -13,7 +13,8 @@
     @* inert takes the collapsed items out of the tab order and hit-testing as well as out of the accessibility
        tree; aria-hidden alone left the links focusable inside a subtree the reader was told to ignore. *@
     <div class="@Css.Classes.Navigation.GroupItems @(_expanded ? Css.Classes.Navigation.GroupItemsOpen : "")" role="group"
-         inert="@(_expanded ? null : "")" aria-hidden="@(_expanded ? null : "true")">
+         inert="@(_expanded ? null : "")" aria-hidden="@(_expanded ? null : "true")"
+         @onfocusin="HandleItemsFocusIn" @onfocusout="HandleItemsFocusOut">
         <div class="@Css.Classes.Navigation.GroupItemsInner">
             @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
             <CascadingValue Value="this" IsFixed="true">
@@ -46,6 +47,9 @@
     // original Expanded value. The parameter only re-seeds this when it actually changes.
     private bool _expanded;
     private bool _lastParamExpanded;
+    private bool _wasExpanded;
+    private bool _itemsFocused;
+    private ElementReference _headerEl;
 
     private string _expandedClass => _expanded ? Css.Classes.Navigation.NavGroupExpanded : string.Empty;
 
@@ -62,6 +66,28 @@
     {
         _expanded = !_expanded;
         await ExpandedChanged.InvokeAsync(_expanded);
+    }
+
+    private void HandleItemsFocusIn() => _itemsFocused = true;
+
+    // The blur that `inert` itself causes when the group closes must not clear the flag: it is what
+    // tells the render below where the focus has to go back to.
+    private void HandleItemsFocusOut()
+    {
+        if (_expanded) _itemsFocused = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender && _wasExpanded && !_expanded && _itemsFocused)
+        {
+            _itemsFocused = false;
+            try { await _headerEl.FocusAsync(); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _wasExpanded = _expanded;
     }
 
     /// <summary>

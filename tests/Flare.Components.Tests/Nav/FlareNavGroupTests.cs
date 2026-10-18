@@ -106,4 +106,21 @@ public class FlareNavGroupTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll("#group-content"));
     }
+
+    // Collapsing makes the items inert, and the blur that causes would otherwise leave the keyboard on
+    // the page body. The header that opened the group is where the user resumes.
+    [Fact]
+    public void CollapsingWithFocusInside_ReturnsFocusToTheHeader()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(x => x.Expanded, true)
+            .AddChildContent("<a id=\"nav-child\" href=\"#\">Link</a>"));
+        cut.Find($".{Css.Classes.Navigation.GroupItems}").FocusIn();
+
+        cut.Render(p => p
+            .Add(x => x.Expanded, false)
+            .AddChildContent("<a id=\"nav-child\" href=\"#\">Link</a>"));
+
+        JSInterop.VerifyFocusAsyncInvoke();
+    }
 }
