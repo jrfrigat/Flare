@@ -66,6 +66,15 @@
     cursor: pointer;
 }
 
+/* Keyboard focus lands on the hidden input, and an element with opacity: 0 paints none of its own
+   outline either - the zone would take Tab focus with no indicator at all. Paint the ring on the zone
+   the user sees, using the same base token the global a11y rule uses; :has() keeps it to keyboard
+   focus rather than every click. */
+.flare-file-upload__drop-wrap:has(.flare-file-upload__input:focus-visible) .flare-file-upload__zone {
+    outline: var(--flare-focus-ring);
+    outline-offset: 2px;
+}
+
 .flare-file-upload__list {
     list-style: none;
     margin: 0;

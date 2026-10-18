@@ -13,6 +13,20 @@ public class FlareFileUploadZoneTests : FlareTestContext
     }
 
     [Fact]
+    public void HiddenInput_StaysInsideTheDropWrapWithTheZone()
+    {
+        // fileupload.css paints the visible keyboard focus ring with
+        // .flare-file-upload__drop-wrap:has(.flare-file-upload__input:focus-visible) .flare-file-upload__zone.
+        // Both elements have to stay descendants of the wrap or the selector stops matching and Tab
+        // focus goes invisible again.
+        var cut = Render<FlareFileUploadZone>();
+
+        var wrap = cut.Find($".{Css.Classes.FileUpload.DropWrap}");
+        Assert.Single(wrap.QuerySelectorAll($"label.{Css.Classes.FileUpload.Zone}"));
+        Assert.Single(wrap.QuerySelectorAll($"input.{Css.Classes.FileUpload.Input}"));
+    }
+
+    [Fact]
     public void TakesNoButtonVocabulary()
     {
         // A zone owns its footprint, so it must not carry the button classes the row-level button does.
