@@ -25,6 +25,8 @@ public class FlareMenuKeyboardTests : FlareTestContext
     // rather than relying on what a bare Click() happens to send.
     private static Microsoft.AspNetCore.Components.Web.MouseEventArgs FromKeyboard() => new() { Detail = 0 };
     private static Microsoft.AspNetCore.Components.Web.MouseEventArgs FromPointer() => new() { Detail = 1 };
+    private static Microsoft.AspNetCore.Components.Web.KeyboardEventArgs Key(string key, bool shift = false, bool repeat = false)
+        => new() { Key = key, ShiftKey = shift, Repeat = repeat };
 
     // A real button wearing the ARIA the menu hands to its activator slot - which is also what these
     // tests then look for, so they open the menu the way a user does: through the focusable element.
@@ -77,5 +79,111 @@ public class FlareMenuKeyboardTests : FlareTestContext
         var items = cut.FindAll("." + Flare.Css.Classes.Menu.Item);
         Assert.Equal(3, items.Count);                                             // not a vacuous comparison
         Assert.Equal(items[0].TextContent.Trim(), focused[0].TextContent.Trim());  // the first, not the second
+    }
+
+    private RenderFragment TwoItems(Action first, Action second, bool firstDisabled = false) => b =>
+    {
+        b.OpenComponent<FlareMenuItem>(0);
+        b.AddAttribute(1, nameof(FlareMenuItem.ChildContent), (RenderFragment)(cb => cb.AddContent(0, "First")));
+        b.AddAttribute(2, nameof(FlareMenuItem.Disabled), firstDisabled);
+        b.AddAttribute(3, nameof(FlareMenuItem.OnClick), EventCallback.Factory.Create(this, first));
+        b.CloseComponent();
+        b.OpenComponent<FlareMenuItem>(4);
+        b.AddAttribute(5, nameof(FlareMenuItem.ChildContent), (RenderFragment)(cb => cb.AddContent(0, "Second")));
+        b.AddAttribute(6, nameof(FlareMenuItem.OnClick), EventCallback.Factory.Create(this, second));
+        b.CloseComponent();
+    };
+
+    [Fact]
+    public async Task Enter_ActivatesTheHighlightedItemOnceAndCloses()
+    {
+        var first = 0;
+        var second = 0;
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, ActivatorButton())
+            .Add(m => m.ChildContent, TwoItems(() => first++, () => second++)));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key("ArrowDown")));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key("Enter")));
+
+        Assert.Equal(0, first);
+        Assert.Equal(1, second);
+        Assert.Empty(cut.FindAll("[role=menu]"));
+    }
+
+    [Fact]
+    public async Task Space_ActivatesTheHighlightedItemOnceAndCloses()
+    {
+        var first = 0;
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, ActivatorButton())
+            .Add(m => m.ChildContent, TwoItems(() => first++, () => { })));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key(" ")));
+
+        Assert.Equal(1, first);
+        Assert.Empty(cut.FindAll("[role=menu]"));
+    }
+
+    [Fact]
+    public async Task RepeatEnter_DoesNotActivateAgain()
+    {
+        var first = 0;
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, ActivatorButton())
+            .Add(m => m.ChildContent, TwoItems(() => first++, () => { })));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key("Enter", repeat: true)));
+
+        Assert.Equal(0, first);
+        Assert.NotEmpty(cut.FindAll("[role=menu]"));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Tab_ClosesTheMenu(bool shift)
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, ActivatorButton())
+            .Add(m => m.ChildContent, TwoItems(() => { }, () => { })));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key("Tab", shift: shift)));
+
+        Assert.Empty(cut.FindAll("[role=menu]"));
+    }
+
+    [Fact]
+    public async Task DisabledItem_IsSkippedAndNeverActivated()
+    {
+        var first = 0;
+        var second = 0;
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, ActivatorButton())
+            .Add(m => m.ChildContent, TwoItems(() => first++, () => second++, firstDisabled: true)));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key("Enter")));
+
+        Assert.Equal(0, first);
+        Assert.Equal(1, second);
+    }
+
+    [Fact]
+    public async Task End_MovesToTheLastItemAndScrollsItIntoView()
+    {
+        var module = JSInterop.SetupModule("./_content/Flare.Components/js/flare-overlay.js");
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, ActivatorButton())
+            .Add(m => m.ChildContent, ThreeItems()));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(Key("End")));
+
+        module.VerifyInvoke("scrollOptionIntoView");
     }
 }

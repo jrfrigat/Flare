@@ -307,26 +307,45 @@
         // menu items, which are not focusable and would be unreachable without it.
         if (FreeContent) return;
 
+        // Tab releases the keyboard instead of cycling the highlight. CloseAsync returns focus to the
+        // activator, so the next Tab continues in the page rather than in the menu.
+        if (e.Key == "Tab")
+        {
+            await CloseAsync();
+            return;
+        }
+
         var enabled = _items.Where(i => !i.Disabled).ToList();
         if (enabled.Count == 0) return;
+
+        if (e.Key is "Enter" or " " or "Spacebar")
+        {
+            // Repeat would run the action again while the key is held; a menu item activates once.
+            if (e.Repeat || _focusedItem is null) return;
+            await _focusedItem.ActivateAsync();
+            return;
+        }
 
         var currentIdx = _focusedItem is not null ? enabled.IndexOf(_focusedItem) : -1;
 
         if (e.Key == "ArrowDown")
             _focusedItem = enabled[(currentIdx + 1) % enabled.Count];
         else if (e.Key == "ArrowUp")
-            _focusedItem = enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
+            _focusedItem = currentIdx < 0 ? enabled[^1] : enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
         else if (e.Key == "Home")
             _focusedItem = enabled[0];
         else if (e.Key == "End")
             _focusedItem = enabled[^1];
-        else if (e.Key == "Tab")
+        else
+            return;
+
+        // A long menu scrolls inside MaxHeight; the active item has to be brought into view or the
+        // keyboard user moves an invisible highlight.
+        if (_focusedItem is not null)
         {
-            // Tab cycles through menu items
-            if (e.ShiftKey)
-                _focusedItem = enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
-            else
-                _focusedItem = enabled[(currentIdx + 1) % enabled.Count];
+            try { await Overlay.ScrollIntoViewAsync(_focusedItem.ItemId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
     }
 }
