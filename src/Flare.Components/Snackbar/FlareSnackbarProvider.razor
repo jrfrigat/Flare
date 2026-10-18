@@ -13,7 +13,11 @@
         var m = msg;
         <div class="@BuildCssClass(Css.Classes.Snackbar.Root, SeverityClass(m.Severity), m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null, m.CssClass)"
              role="@(m.Severity == SnackbarSeverity.Error ? "alert" : "status")"
-             aria-atomic="true">
+             aria-atomic="true"
+             @onmouseenter="@(() => Pause(m.Id, PauseReason.Hover))"
+             @onmouseleave="@(() => Resume(m.Id, PauseReason.Hover))"
+             @onfocusin="@(() => Pause(m.Id, PauseReason.Focus))"
+             @onfocusout="@(() => Resume(m.Id, PauseReason.Focus))">
             <span class="@Css.Classes.Snackbar.Text">
                 @if (m.Content is not null)
                 {
@@ -28,7 +32,7 @@
                 @if (!string.IsNullOrEmpty(m.ActionText) && m.OnAction is not null)
                 {
                     <button class="@Css.Classes.Snackbar.ActionBtn" type="button"
-                            @onclick="@(async () => await m.OnAction())">
+                            @onclick="@(() => RunActionAsync(m))">
                         @m.ActionText
                     </button>
                 }
@@ -97,32 +101,31 @@
     private void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         => InvokeAsync(() =>
         {
-            if (_messages.RemoveAll(m => m.CloseAfterNavigation) > 0)
-                StateHasChanged();
-        });
-
-    private void HandleShow(SnackbarMessage msg)
-    {
-        InvokeAsync(async () =>
-        {
-            // Opt-in de-duplication: drop a repeated text/severity notice instead of stacking copies.
-            if (msg.PreventDuplicate && msg.Content is null &&
-                _messages.Any(m => m.Text == msg.Text && m.Severity == msg.Severity))
-                return;
-
-            while (_messages.Count >= MaxVisible && _messages.Count > 0)
-                _messages.RemoveAt(0);
-            _messages.Add(msg);
+            var closing = _messages.Where(m => m.CloseAfterNavigation).ToList();
+            if (closing.Count == 0) return;
+            foreach (var m in closing) StopTimer(m.Id);
+            _messages.RemoveAll(m => m.CloseAfterNavigation);
             StateHasChanged();
-            // DurationMs <= 0 keeps the snackbar until the user dismisses it (close/action) - useful
-            // for actionable notices like "a new version is available".
-            if (msg.DurationMs > 0)
-            {
-                await Task.Delay(msg.DurationMs);
-                Dismiss(msg.Id);
-            }
         });
-    }
+
+    private void HandleShow(SnackbarMessage msg) => InvokeAsync(() =>
+    {
+        // Opt-in de-duplication: drop a repeated text/severity notice instead of stacking copies.
+        if (msg.PreventDuplicate && msg.Content is null &&
+            _messages.Any(m => m.Text == msg.Text && m.Severity == msg.Severity))
+            return;
+
+        while (_messages.Count >= MaxVisible && _messages.Count > 0)
+        {
+            StopTimer(_messages[0].Id);
+            _messages.RemoveAt(0);
+        }
+        _messages.Add(msg);
+        StateHasChanged();
+        // DurationMs <= 0 keeps the snackbar until the user dismisses it (close/action) - useful
+        // for actionable notices like "a new version is available".
+        StartTimer(msg);
+    });
 
     // Replace a shown message in place (same list slot), so e.g. a "new version" notice can morph into
     // an "updating..." one without the dismiss-and-re-add flicker. No-op if it is no longer shown.
@@ -141,12 +144,14 @@
     private void HandleClear() => InvokeAsync(() =>
     {
         if (_messages.Count == 0) return;
+        StopAllTimers();
         _messages.Clear();
         StateHasChanged();
     });
 
     private void Dismiss(Guid id)
     {
+        StopTimer(id);
         var msg = _messages.FirstOrDefault(m => m.Id == id);
         if (msg is not null)
         {
@@ -155,8 +160,110 @@
         }
     }
 
+    // Auto-hide is a per-message remaining-time timer, not one Task.Delay per show: a toast the reader
+    // hovers, focuses or acts on is paused and resumes with the time it had left. The reasons are bits
+    // because hover and focus overlap - resuming on mouseleave while the action still has focus would
+    // hide the toast under the user's fingers.
+    private enum PauseReason { Hover = 1, Focus = 2, Action = 4 }
+
+    private sealed class TimerState
+    {
+        public int RemainingMs;
+        public int PauseMask;
+        public bool Stopped;
+        public long StartedAt;
+        public CancellationTokenSource? Cts;
+    }
+
+    private readonly Dictionary<Guid, TimerState> _timers = [];
+
+    private async Task RunActionAsync(SnackbarMessage m)
+    {
+        if (m.OnAction is null) return;
+        Pause(m.Id, PauseReason.Action);
+        try { await m.OnAction(); }
+        finally { Resume(m.Id, PauseReason.Action); }
+    }
+
+    private void StartTimer(SnackbarMessage msg)
+    {
+        if (msg.DurationMs <= 0) return;
+        StopTimer(msg.Id);
+        var state = new TimerState { RemainingMs = msg.DurationMs };
+        _timers[msg.Id] = state;
+        RestartTimer(msg.Id, state);
+    }
+
+    private void RestartTimer(Guid id, TimerState state)
+    {
+        if (state.Stopped) return;
+        state.Cts?.Dispose();
+        state.Cts = new CancellationTokenSource();
+        state.StartedAt = Environment.TickCount64;
+        _ = WaitForTimerAsync(id, state, state.Cts.Token);
+    }
+
+    private async Task WaitForTimerAsync(Guid id, TimerState state, CancellationToken token)
+    {
+        try { await Task.Delay(state.RemainingMs, token); }
+        catch (OperationCanceledException) { return; }
+        // A pause can land after the delay already completed: the mask decides, not the wake-up.
+        if (state.Stopped || state.PauseMask != 0) return;
+        if (!_timers.TryGetValue(id, out var current) || !ReferenceEquals(current, state)) return;
+        _timers.Remove(id);
+        state.Stopped = true;
+        state.Cts?.Dispose();
+        state.Cts = null;
+        Dismiss(id);
+    }
+
+    private void Pause(Guid id, PauseReason reason)
+    {
+        if (!_timers.TryGetValue(id, out var state) || state.Stopped) return;
+        var bit = (int)reason;
+        if ((state.PauseMask & bit) != 0) return;
+        if (state.PauseMask == 0)
+        {
+            var elapsed = (int)(Environment.TickCount64 - state.StartedAt);
+            state.RemainingMs = Math.Max(0, state.RemainingMs - elapsed);
+            state.Cts?.Cancel();
+        }
+        state.PauseMask |= bit;
+    }
+
+    private void Resume(Guid id, PauseReason reason)
+    {
+        if (!_timers.TryGetValue(id, out var state) || state.Stopped) return;
+        var bit = (int)reason;
+        if ((state.PauseMask & bit) == 0) return;
+        state.PauseMask &= ~bit;
+        if (state.PauseMask == 0) RestartTimer(id, state);
+    }
+
+    private void StopTimer(Guid id)
+    {
+        if (!_timers.Remove(id, out var state)) return;
+        state.Stopped = true;
+        state.Cts?.Cancel();
+        state.Cts?.Dispose();
+        state.Cts = null;
+    }
+
+    private void StopAllTimers()
+    {
+        foreach (var state in _timers.Values)
+        {
+            state.Stopped = true;
+            state.Cts?.Cancel();
+            state.Cts?.Dispose();
+            state.Cts = null;
+        }
+        _timers.Clear();
+    }
+
     public override async ValueTask DisposeAsync()
     {
+        StopAllTimers();
         SnackbarService.OnShow -= HandleShow;
         SnackbarService.OnUpdate -= HandleUpdate;
         SnackbarService.OnRemove -= HandleRemove;
