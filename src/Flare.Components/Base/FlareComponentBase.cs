@@ -119,5 +119,15 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
     }
 
     /// <summary>Disposes the component; override to release JS interop or subscriptions.</summary>
-    public virtual ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    /// <remarks>
+    /// Blazor calls this contract alone when a component implements both <see cref="IDisposable"/> and
+    /// <see cref="IAsyncDisposable"/>, so the default forwards to <see cref="IDisposable.Dispose"/>: a component
+    /// releases its state in one of the two, never in both, and a component that only implements the shorter
+    /// contract is still cleaned up.
+    /// </remarks>
+    public virtual ValueTask DisposeAsync()
+    {
+        (this as IDisposable)?.Dispose();
+        return ValueTask.CompletedTask;
+    }
 }
