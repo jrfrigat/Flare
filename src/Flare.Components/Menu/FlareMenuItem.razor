@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@implements IMenuEntry
 
 @if (Href is not null)
 {
@@ -68,9 +69,9 @@ else
     // Stable close/register callbacks travel as one context; the focused item stays separate (it changes).
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [CascadingParameter] private FlareMenuContext? MenuContext { get; set; }
-    [CascadingParameter(Name = "MenuFocusedItem")] private FlareMenuItem? MenuFocusedItem { get; set; }
+    [CascadingParameter(Name = "MenuFocusedItem")] private IMenuEntry? MenuFocusedItem { get; set; }
     private Func<Task>? CloseMenu => MenuContext?.Close;
-    private Action<FlareMenuItem>? RegisterMenuItem => MenuContext?.Register;
+    private Action<IMenuEntry>? RegisterMenuItem => MenuContext?.Register;
 
     protected override string ComponentCssClass => Css.Classes.Menu.Item;
 
@@ -121,4 +122,12 @@ else
         if (AutoClose && CloseMenu is not null) await CloseMenu();
         if (Href is not null) Navigation.NavigateTo(_safeHref);
     }
+
+    bool IMenuEntry.Disabled => Disabled;
+    string IMenuEntry.ItemId => ItemId;
+    Task IMenuEntry.ActivateAsync() => ActivateAsync();
+    bool IMenuEntry.HasSubmenu => false;
+    bool IMenuEntry.IsSubmenuOpen => false;
+    Task IMenuEntry.OpenSubmenuAsync() => Task.CompletedTask;
+    Task IMenuEntry.CloseSubmenuAsync() => Task.CompletedTask;
 }

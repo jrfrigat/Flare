@@ -1,15 +1,18 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@implements IMenuEntry
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" aria-expanded="@_open.ToString().ToLowerInvariant()">
-    <div class="@Css.Classes.Menu.Item @Css.Classes.Menu.SubmenuActivator" @ref="_activatorEl"
+    <div class="@_activatorClass" id="@ItemId" tabindex="-1" @ref="_activatorEl"
          @onmouseenter="ShowSubmenu"
          @onmouseleave="ScheduleHide"
-         @onclick:preventDefault="true"
+         @onclick="OpenFromPointerAsync"
+         @onclick:stopPropagation="true"
          aria-haspopup="menu"
          aria-expanded="@_open.ToString().ToLowerInvariant()"
          aria-controls="@_panelId"
+         aria-disabled="@Disabled.ToString().ToLowerInvariant()"
          role="menuitem">
         @if (Icon is not null)
         {
@@ -24,10 +27,15 @@
              class="@Css.Classes.Menu.SubmenuPanel @_placementClass"
              role="menu"
              tabindex="-1"
+             aria-activedescendant="@_focusedItem?.ItemId"
              @ref="_panelEl"
-             @onmouseenter="ShowSubmenu" 
+             @onmouseenter="ShowSubmenu"
              @onmouseleave="ScheduleHide"
-             @onkeydown="HandleSubmenuKeyDown">
+             @onfocusin="HandlePanelFocusIn"
+             @onfocusout="HandlePanelFocusOut"
+             @onkeydown="HandleSubmenuKeyDown"
+             @onkeydown:stopPropagation="true"
+             @onkeydown:preventDefault="true">
             <CascadingValue Value="_menuContext" IsFixed="true">
                 <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
                     @ChildContent
@@ -48,11 +56,18 @@
     [Parameter] public SubmenuPlacement Placement { get; set; } = SubmenuPlacement.End;
     /// <summary>Delay in milliseconds before hiding the submenu when mouse leaves.</summary>
     [Parameter] public int HideDelay { get; set; } = 150;
+    /// <summary>Disables the submenu trigger; it is skipped by keyboard navigation and does not open.</summary>
+    [Parameter] public bool Disabled { get; set; }
 
-    [CascadingParameter(Name = "CloseMenu")] private Func<Task>? CloseParentMenu { get; set; }
-    [CascadingParameter(Name = "RegisterMenuItem")] private Action<FlareMenuItem>? RegisterMenuItem { get; set; }
+    // The parent menu's context: this submenu registers itself there so arrows and Home/End can land
+    // on the trigger. The submenu then cascades its OWN context to its children.
+    [CascadingParameter] private FlareMenuContext? ParentMenuContext { get; set; }
+    [CascadingParameter(Name = "MenuFocusedItem")] private IMenuEntry? ParentFocusedItem { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Menu.Submenu;
+
+    /// <summary>Stable element id, referenced by the parent menu's <c>aria-activedescendant</c>.</summary>
+    internal string ItemId { get; } = "flare-sm-" + Guid.NewGuid().ToString("N")[..8];
 
     // Maps Placement to the directional panel class that positions the flyout.
     private string _placementClass => Placement switch
@@ -74,32 +89,96 @@
         _ => PanelPlacement.RightStart,
     };
 
+    private string _activatorClass => string.Join(' ', new[]
+    {
+        Css.Classes.Menu.Item,
+        Css.Classes.Menu.SubmenuActivator,
+        Disabled ? Css.Classes.Menu.ItemDisabled : null,
+        ReferenceEquals(ParentFocusedItem, this) ? Css.Classes.Menu.ItemFocused : null,
+    }.Where(c => !string.IsNullOrEmpty(c)));
+
     private bool _open;
-    private FlareMenuItem? _focusedItem;
+    private bool _wasOpen;
+    internal bool IsSubmenuOpen => _open;
+    private bool _focusPanelOnOpen;
+    private bool _panelFocused;
+    private IMenuEntry? _focusedItem;
     private ElementReference _activatorEl;
     private ElementReference _panelEl;
     private readonly AnchoredLayer _layer = new();
-    private readonly List<FlareMenuItem> _items = [];
+    private readonly List<IMenuEntry> _items = [];
     private readonly string _panelId = "flare-submenu-" + Guid.NewGuid().ToString("N")[..8];
 
-    /// <inheritdoc />
-    protected override Task OnAfterRenderAsync(bool firstRender) =>
-        _layer.SyncAsync(Overlay, _open, _activatorEl, _panelEl,
-            new AnchoredPanelOptions { Placement = _placement, GapToken = Css.Tokens.MenuPanel.Offset }).AsTask();
-    // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
+    private readonly CancelScope _hideCts = new();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         _menuContext = new FlareMenuContext(CloseAllAsync, RegisterItem);
+        ParentMenuContext?.Register(this);
     }
-    private readonly CancelScope _hideCts = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await _layer.SyncAsync(Overlay, _open, _activatorEl, _panelEl,
+            new AnchoredPanelOptions { Placement = _placement, GapToken = Css.Tokens.MenuPanel.Offset });
+
+        if (_open && !_wasOpen)
+        {
+            _wasOpen = true;
+            if (_focusPanelOnOpen)
+            {
+                _focusPanelOnOpen = false;
+                _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
+                try { await _panelEl.FocusAsync(); } catch { }
+                StateHasChanged();
+            }
+        }
+        else if (!_open && _wasOpen)
+        {
+            _wasOpen = false;
+            try { await _activatorEl.FocusAsync(); } catch { }
+        }
+    }
 
     private void ShowSubmenu()
     {
+        if (Disabled) return;
         _hideCts.Cancel();
         _open = true;
+    }
+
+    private async Task OpenFromPointerAsync()
+    {
+        if (Disabled) return;
+        await OpenSubmenuAsync();
+    }
+
+    internal async Task OpenSubmenuAsync()
+    {
+        if (Disabled) return;
+        _hideCts.Cancel();
+        if (_open)
+        {
+            _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
+            try { await _panelEl.FocusAsync(); } catch { }
+            StateHasChanged();
+            return;
+        }
+        _focusPanelOnOpen = true;
+        _open = true;
+        StateHasChanged();
+    }
+
+    internal async Task CloseSubmenuAsync()
+    {
+        if (!_open) return;
+        _hideCts.Cancel();
+        _open = false;
+        _focusedItem = null;
+        _items.Clear();
+        StateHasChanged();
     }
 
     private void ScheduleHide()
@@ -107,54 +186,96 @@
         var ct = _hideCts.Next();
         _ = Task.Delay(HideDelay, ct).ContinueWith(_ =>
         {
-            if (!ct.IsCancellationRequested)
+            if (ct.IsCancellationRequested) return;
+            InvokeAsync(() =>
             {
+                // Focus is a stronger signal than the pointer: a keyboard user stays in the submenu
+                // even when the mouse has moved away.
+                if (ct.IsCancellationRequested || _panelFocused) return;
                 _open = false;
-                InvokeAsync(StateHasChanged);
-            }
+                StateHasChanged();
+            });
         }, TaskScheduler.Default);
     }
 
     private async Task CloseAllAsync()
     {
+        _hideCts.Cancel();
         _open = false;
         _items.Clear();
         _focusedItem = null;
-        if (CloseParentMenu is not null)
-            await CloseParentMenu();
+        if (ParentMenuContext is not null)
+            await ParentMenuContext.Close();
     }
 
-    internal void RegisterItem(FlareMenuItem item)
+    internal void RegisterItem(IMenuEntry item)
     {
         if (!_items.Contains(item))
             _items.Add(item);
     }
 
+    private void HandlePanelFocusIn() => _panelFocused = true;
+    private void HandlePanelFocusOut() => _panelFocused = false;
+
     private async Task HandleSubmenuKeyDown(KeyboardEventArgs e)
     {
         if (!_open) return;
 
-        if (e.Key == "Escape")
+        if (e.Key is "Escape" or "Tab")
         {
-            _open = false;
-            StateHasChanged();
+            await CloseSubmenuAsync();
             return;
         }
 
         var enabled = _items.Where(i => !i.Disabled).ToList();
         if (enabled.Count == 0) return;
 
+        if (e.Key is "Enter" or " " or "Spacebar")
+        {
+            if (e.Repeat || _focusedItem is null) return;
+            await _focusedItem.ActivateAsync();
+            return;
+        }
+
+        var rtl = Theme?.IsRtl == true;
+        var closeKey = rtl ? "ArrowRight" : "ArrowLeft";
+        var openKey = rtl ? "ArrowLeft" : "ArrowRight";
+        if (e.Key is "ArrowRight" or "ArrowLeft")
+        {
+            if (e.Key == closeKey) { await CloseSubmenuAsync(); return; }
+            if (e.Key == openKey && _focusedItem is FlareSubMenu nested)
+                await nested.OpenSubmenuAsync();
+            return;
+        }
+
         var currentIdx = _focusedItem is not null ? enabled.IndexOf(_focusedItem) : -1;
 
         if (e.Key == "ArrowDown")
             _focusedItem = enabled[(currentIdx + 1) % enabled.Count];
         else if (e.Key == "ArrowUp")
-            _focusedItem = enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
+            _focusedItem = currentIdx < 0 ? enabled[^1] : enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
         else if (e.Key == "Home")
             _focusedItem = enabled[0];
         else if (e.Key == "End")
             _focusedItem = enabled[^1];
+        else
+            return;
+
+        if (_focusedItem is not null)
+        {
+            try { await Overlay.ScrollIntoViewAsync(_focusedItem.ItemId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
     }
+
+    bool IMenuEntry.Disabled => Disabled;
+    string IMenuEntry.ItemId => ItemId;
+    Task IMenuEntry.ActivateAsync() => OpenSubmenuAsync();
+    bool IMenuEntry.HasSubmenu => true;
+    bool IMenuEntry.IsSubmenuOpen => IsSubmenuOpen;
+    Task IMenuEntry.OpenSubmenuAsync() => OpenSubmenuAsync();
+    Task IMenuEntry.CloseSubmenuAsync() => CloseSubmenuAsync();
 
     public override async ValueTask DisposeAsync()
     {

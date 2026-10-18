@@ -9,4 +9,4 @@ namespace Flare.Components;
 /// </summary>
 /// <param name="Close">Closes the (sub)menu.</param>
 /// <param name="Register">Registers a menu item so the parent can drive roving-tabindex focus.</param>
-internal sealed record FlareMenuContext(Func<Task> Close, Action<FlareMenuItem> Register);
+internal sealed record FlareMenuContext(Func<Task> Close, Action<IMenuEntry> Register);

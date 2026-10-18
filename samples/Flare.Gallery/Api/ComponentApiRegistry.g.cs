@@ -6506,6 +6506,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the submenu panel.", null, false, false, false, @"FlareSubMenu"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the submenu trigger; it is skipped by keyboard navigation and does not open.", null, false, false, false, @"FlareSubMenu"),
                 new ApiParameterInfo(@"HideDelay", @"int", @"150", @"Delay in milliseconds before hiding the submenu when mouse leaves.", null, false, false, false, @"FlareSubMenu"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon displayed before the label - any provider (a bare string is a Material Symbols name).", null, false, false, false, @"FlareSubMenu"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text for the submenu trigger item.", null, false, false, false, @"FlareSubMenu"),

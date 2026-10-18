@@ -85,13 +85,13 @@
     private readonly AnchoredLayer _layer = new();
     private DotNetObjectReference<FlareMenu>? _selfRef;
     private bool _escapeLayerRegistered;
-    private FlareMenuItem? _focusedItem;
+    private IMenuEntry? _focusedItem;
     // Whether this opening came from the keyboard, which decides if an item starts out active. A pointer
     // user is looking at where they clicked and has no use for a highlight on the first item; a keyboard
     // user has nowhere to look without one. A click raised by Enter/Space on the activator carries
     // detail 0, which is how the two are told apart.
     private bool _openedByKeyboard;
-    private readonly List<FlareMenuItem> _items = [];
+    private readonly List<IMenuEntry> _items = [];
     private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
     private FlareMenuContext? _menuContext;
@@ -289,7 +289,7 @@
 
     /// <summary>Registers a child <see cref="FlareMenuItem"/> for keyboard navigation. Called by items on init.</summary>
     /// <param name="item">The menu item to track.</param>
-    internal void RegisterItem(FlareMenuItem item)
+    internal void RegisterItem(IMenuEntry item)
     {
         if (!_items.Contains(item))
             _items.Add(item);
@@ -323,6 +323,18 @@
             // Repeat would run the action again while the key is held; a menu item activates once.
             if (e.Repeat || _focusedItem is null) return;
             await _focusedItem.ActivateAsync();
+            return;
+        }
+
+        // A submenu trigger opens in the direction its placement asks for, which is a physical
+        // direction: End is right in LTR and left in RTL.
+        if (e.Key is "ArrowRight" or "ArrowLeft" && _focusedItem is FlareSubMenu submenu)
+        {
+            var opensRight = (submenu.Placement == SubmenuPlacement.End) ^ (Theme?.IsRtl == true);
+            if (e.Key == (opensRight ? "ArrowRight" : "ArrowLeft"))
+                await submenu.OpenSubmenuAsync();
+            else if (submenu.IsSubmenuOpen)
+                await submenu.CloseSubmenuAsync();
             return;
         }
 

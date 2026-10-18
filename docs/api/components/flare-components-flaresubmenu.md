@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Menu items rendered inside the submenu panel. |
+| `Disabled` | `bool` | `false` | Parameter |  | Disables the submenu trigger; it is skipped by keyboard navigation and does not open. |
 | `HideDelay` | `int` | `150` | Parameter |  | Delay in milliseconds before hiding the submenu when mouse leaves. |
 | `Icon` | `FlareIcon?` | `` | Parameter |  | Icon displayed before the label - any provider (a bare string is a Material Symbols name). |
 | `Label` | `string?` | `` | Parameter |  | Label text for the submenu trigger item. |
