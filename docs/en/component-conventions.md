@@ -103,6 +103,9 @@ base style when it finishes and holds nothing. Held by `SettledTransformTests`.
   `ThemeIndependenceTests.AbstractionsTokenRecords_DefaultOnlyToFlareTokens`.
   A grid (steps Xs-Xl, the Size/Weight/Tracking facets) is optional as a whole or required as a whole. A
   default is written through the constants: `= Var(Css.Tokens.Spacing.S3)`, not the string `"var(--flare-spacing-3)"`.
+  A component's text reads from one type role as a whole (`LabelMedium.Size` and `LabelMedium.Weight`), a grid step
+  from the scale step that means the same (`Spacing.S2`), with no `calc` and no unnamed sizes. A theme whose
+  specification differs states its own value.
 - When adding a new component, always create `XxxTokens.cs` and the `Css.Tokens.Xxx` holder.
 
 ### Two rules about the state layer and fallbacks

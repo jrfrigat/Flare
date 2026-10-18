@@ -17,7 +17,7 @@ public sealed record TableOfContentsTokens
     /// <summary>Line height.</summary>
     [CssVar(TableOfContents.LineHeight)] public required string LineHeight { get; init; }
     /// <summary>Title tracking.</summary>
-    [CssVar(TableOfContents.TitleTracking)] public string TitleTracking { get; init; } = Var(Css.Tokens.Typography.TrackingWide);
+    [CssVar(TableOfContents.TitleTracking)] public string TitleTracking { get; init; } = Var(Css.Tokens.Typography.TitleSmall.Spacing);
     /// <summary>Title weight.</summary>
     [CssVar(TableOfContents.TitleWeight)] public string TitleWeight { get; init; } = Var(Css.Tokens.Typography.TitleSmall.Weight);
     /// <summary>Active (current section) link text color.</summary>

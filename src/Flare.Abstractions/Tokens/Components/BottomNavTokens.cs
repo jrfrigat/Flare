@@ -38,7 +38,7 @@ public sealed record BottomNavTokens
     [CssVar(BottomNavField.LabelFontSize)] public string LabelFontSize { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Size);
 
     /// <summary>Inactive label font weight.</summary>
-    [CssVar(BottomNavField.LabelFontWeight)] public string LabelFontWeight { get; init; } = Var(Css.Tokens.Typography.WeightMedium);
+    [CssVar(BottomNavField.LabelFontWeight)] public string LabelFontWeight { get; init; } = Var(Css.Tokens.Typography.LabelMedium.Weight);
 
     /// <summary>Active label font weight (slightly heavier to reinforce the selected state).</summary>
     [CssVar(BottomNavField.LabelFontWeightActive)] public string LabelFontWeightActive { get; init; } = Var(Css.Tokens.Typography.WeightBold);

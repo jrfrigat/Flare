@@ -8,17 +8,17 @@
 
 ### Добавлено
 
-- Базовые токены типографики для шагов, которых нет в шкале: `TypographyTokens.WeightMedium` и `WeightBold`
-  (`--flare-font-weight-medium`, `--flare-font-weight-bold`), `TrackingWide` (`--flare-font-tracking-wide`)
-  и два размера текста меньше самой мелкой подписи, `Size2Xs` и `SizeXs` (`--flare-font-size-2xs`,
-  `--flare-font-size-xs`). Они `required`: тема, которая собирает `TypographyTokens` с нуля, должна их задать.
+- `TypographyTokens.WeightBold` (`--flare-font-weight-bold`) - вес для акцента, например активной подписи
+  навигации. Он `required`: тема, которая собирает `TypographyTokens` с нуля, должна его задать.
 
 ### Изменено
 
 - Токен компонента, выражаемый через базовые токены, больше не `required`. 422 таких токена по умолчанию
   берут свой базовый токен: например, `AccordionTokens.HeaderBg` - `var(--flare-color-surface)`,
-  `MenuTokens.ItemGap` - `var(--flare-spacing-6)`. Сетка размеров или типографики необязательна целиком:
-  например, каждый шаг `BadgeTokens.LabelSize` по умолчанию берет базовый токен. Тема задает такой токен,
+  `MenuTokens.ItemGap` - `var(--flare-spacing-6)`. Сетка размеров или типографики необязательна целиком, и
+  каждый шаг берется из одной роли шкалы или одного шага базовой шкалы: `BadgeTokens.LabelSizeXs` -
+  `Typography.LabelSmall.Size`, `BottomNavTokens.LabelFontWeight` - `Typography.LabelMedium.Weight`. Тема,
+  чья спецификация отличается, задает свое значение. Тема задает такой токен,
   только если хочет другое значение. Встроенные темы перестали их повторять и выглядят как прежде. Тема, которая
   по-прежнему их задает, работает без изменений. Токены с собственным литеральным значением (размеры,
   прозрачности) остаются `required`.

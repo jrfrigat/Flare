@@ -13,7 +13,7 @@ public sealed record FabTokens
     /// <summary>Space around the glyph at the md size.</summary>
     [CssVar(Fab.Padding.Md)] public string PaddingMd { get; init; } = Var(Css.Tokens.Spacing.S8);
     /// <summary>Space around the glyph at the lg size.</summary>
-    [CssVar(Fab.Padding.Lg)] public string PaddingLg { get; init; } = $"calc({Var(Css.Tokens.Spacing.S16)} - {Var(Css.Tokens.Spacing.S1)})";
+    [CssVar(Fab.Padding.Lg)] public string PaddingLg { get; init; } = Var(Css.Tokens.Spacing.S16);
 
     /// <summary>Corner radius at the sm size.</summary>
     [CssVar(Fab.Radius.Sm)] public string RadiusSm { get; init; } = Var(Css.Tokens.Shape.Medium);

@@ -20,11 +20,7 @@ internal class VisualStudioTokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        WeightMedium = "500",
         WeightBold = "700",
-        TrackingWide = "0.05em",
-        Size2Xs = "0.5625rem",
-        SizeXs = "0.625rem",
         DisplayLarge = T("600", "2.125rem", "2.75rem"),
         DisplayMedium = T("600", "1.625rem", "2.125rem"),
         DisplaySmall = T("600", "1.3125rem", "1.75rem"),
@@ -167,6 +163,10 @@ internal class VisualStudioTokens
 
     internal static readonly BadgeTokens Badge = new()
     {
+        PaddingXXs = "0.1875rem",
+        PaddingXSm = "0.1875rem",
+        LabelSizeXs = "0.5625rem",
+        LabelSizeSm = "0.625rem",
         Radius = "var(--flare-shape-extra-small)",
         // Per-size ramp, one token per step.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",

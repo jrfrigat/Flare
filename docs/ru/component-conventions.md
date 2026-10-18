@@ -103,6 +103,9 @@ select внутри нее рисовался на 896px правее окна �
   `ThemeIndependenceTests.AbstractionsTokenRecords_DefaultOnlyToFlareTokens`.
   Сетка (шаги Xs-Xl, грани Size/Weight/Tracking) необязательна целиком или обязательна целиком. Значение
   по умолчанию пишется через константы: `= Var(Css.Tokens.Spacing.S3)`, а не строкой `"var(--flare-spacing-3)"`.
+  Текст компонента берется из одной роли шкалы целиком (`LabelMedium.Size` и `LabelMedium.Weight`), шаг сетки -
+  из шага шкалы с тем же смыслом (`Spacing.S2`), без `calc` и без безымянных размеров. Тема, чья спецификация
+  расходится, задает свое значение явно.
 - При добавлении нового компонента - обязательно создай `XxxTokens.cs` и holder `Css.Tokens.Xxx`.
 
 ### Два правила про state-слой и фолбэки

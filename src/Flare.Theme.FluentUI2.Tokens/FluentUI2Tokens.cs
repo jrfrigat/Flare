@@ -21,11 +21,7 @@ public class FluentUI2Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        WeightMedium = "500",
         WeightBold = "700",
-        TrackingWide = "0.05em",
-        Size2Xs = "0.5625rem",
-        SizeXs = "0.625rem",
         DisplayLarge = T("Segoe UI", "600", "2.5rem", "3.25rem", "0em"),     // largeTitle 40/52
         DisplayMedium = T("Segoe UI", "600", "2rem", "2.5rem", "0em"),       // title1 32/40
         DisplaySmall = T("Segoe UI", "600", "1.75rem", "2.25rem", "0em"),    // title2 28/36
@@ -180,6 +176,9 @@ public class FluentUI2Tokens
 
     internal static readonly BadgeTokens Badge = new()
     {
+        PaddingXXs = "0.1875rem",
+        PaddingXSm = "0.1875rem",
+        LabelSizeXs = "0.5625rem",
         // Fluent UI 2: square-ish badge with extra-small radius (not full pill)
         Radius = "var(--flare-shape-extra-small)",
         // The ramp, one token per size so every size is the theme's to name.
@@ -540,6 +539,7 @@ public class FluentUI2Tokens
     // without the MD3 pill.
     internal static readonly Flare.Abstractions.Tokens.Components.TableOfContentsTokens TableOfContents = new()
     {
+        TitleTracking = "0.05em",
         ActiveWeight = "600",
         HoverBgOpacity = "40%",
         LineHeight = "1.4",
@@ -1105,6 +1105,7 @@ public class FluentUI2Tokens
     // BottomNav / ColorPicker - Fluent uses the same neutral baseline as Material for these.
     internal static readonly BottomNavTokens BottomNav = new()
     {
+        LabelFontWeight = "500",
         BarHeight = "5rem",
         BorderColor = "var(--flare-color-surface-variant)",
         SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",

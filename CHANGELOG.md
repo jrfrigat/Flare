@@ -7,18 +7,17 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
-- Base typography tokens for the steps the type scale does not cover: `TypographyTokens.WeightMedium` and
-  `WeightBold` (`--flare-font-weight-medium`, `--flare-font-weight-bold`), `TrackingWide`
-  (`--flare-font-tracking-wide`) and two text sizes below the smallest label, `Size2Xs` and `SizeXs`
-  (`--flare-font-size-2xs`, `--flare-font-size-xs`). They are `required`: a theme that builds
-  `TypographyTokens` from scratch has to set them.
+- `TypographyTokens.WeightBold` (`--flare-font-weight-bold`), the weight for emphasis such as an active navigation
+  label. It is `required`: a theme that builds `TypographyTokens` from scratch has to set it.
 
 ### Changed
 
 - A component token that base tokens express is no longer `required`: 422 of them now default to their base
   token, for example `AccordionTokens.HeaderBg` to `var(--flare-color-surface)` and `MenuTokens.ItemGap` to
-  `var(--flare-spacing-6)`. A size or type grid is optional as a whole - every step of `BadgeTokens.LabelSize`,
-  for example, defaults to a base token. A theme sets one only to differ; the in-box themes stopped repeating
+  `var(--flare-spacing-6)`. A size or type grid is optional as a whole, and every step reads from one type role
+  or one step of a base scale - `BadgeTokens.LabelSizeXs` defaults to `Typography.LabelSmall.Size`,
+  `BottomNavTokens.LabelFontWeight` to `Typography.LabelMedium.Weight`. A theme whose specification differs
+  states its own value. A theme sets one only to differ; the in-box themes stopped repeating
   them and look exactly as before. A theme that still sets them keeps working. Tokens with a literal value of
   their own (sizes, opacities) stay `required`.
 - `FlareGantt` takes its text size, line widths and line style from the base tokens

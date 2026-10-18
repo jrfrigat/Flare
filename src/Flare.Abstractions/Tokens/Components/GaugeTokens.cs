@@ -63,7 +63,7 @@ public sealed record GaugeTokens
     /// rather than inside it, so it scales with the page and not with the viewBox.</summary>
     [CssVar(Gauge.ValueSize)] public string ValueSize { get; init; } = Var(Css.Tokens.Typography.HeadlineSmall.Size);
     /// <summary>Font weight of the value readout.</summary>
-    [CssVar(Gauge.ValueWeight)] public string ValueWeight { get; init; } = Var(Css.Tokens.Typography.WeightMedium);
+    [CssVar(Gauge.ValueWeight)] public string ValueWeight { get; init; } = Var(Css.Tokens.Typography.HeadlineSmall.Weight);
 
     /// <summary>Opacity a band is painted at, so the fill drawn over it stays legible.</summary>
     [CssVar(Gauge.BandOpacity)] public required string BandOpacity { get; init; }

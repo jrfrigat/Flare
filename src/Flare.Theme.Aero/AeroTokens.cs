@@ -19,11 +19,7 @@ internal class AeroTokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        WeightMedium = "500",
         WeightBold = "700",
-        TrackingWide = "0.05em",
-        Size2Xs = "0.5625rem",
-        SizeXs = "0.625rem",
         DisplayLarge = T("700", "2.25rem", "2.875rem"),
         DisplayMedium = T("700", "1.75rem", "2.25rem"),
         DisplaySmall = T("700", "1.375rem", "1.75rem"),
@@ -169,6 +165,10 @@ internal class AeroTokens
 
     internal static readonly BadgeTokens Badge = new()
     {
+        PaddingXXs = "0.1875rem",
+        PaddingXSm = "0.1875rem",
+        LabelSizeXs = "0.5625rem",
+        LabelSizeSm = "0.625rem",
         Radius = "var(--flare-shape-extra-small)",
         // Per-size ramp, one token per step.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
@@ -520,7 +520,7 @@ internal class AeroTokens
         },
         TimePicker = MaterialDesign3Tokens.Design.TimePicker with { HeadlineTracking = "0.05em" },
         // A hairline above the bar, which the Material record leaves out.
-        BottomNav = MaterialDesign3Tokens.Design.BottomNav with { BorderColor = "var(--flare-color-surface-variant)" },
+        BottomNav = MaterialDesign3Tokens.Design.BottomNav with { LabelFontWeight = "500", BorderColor = "var(--flare-color-surface-variant)" },
         Slider = Slider,
         // Aero cards: flat glass panels with a 1px border, small radius, no drop shadow.
         Card = MaterialDesign3Tokens.Design.Card with

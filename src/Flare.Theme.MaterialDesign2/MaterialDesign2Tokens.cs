@@ -21,11 +21,7 @@ internal static class MaterialDesign2Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        WeightMedium = "500",
         WeightBold = "700",
-        TrackingWide = "0.05em",
-        Size2Xs = "0.5625rem",
-        SizeXs = "0.625rem",
         // Display = H1..H3
         DisplayLarge = T("Roboto", "300", "6rem", "7rem", "-0.015625em"),       // H1 96/112 -1.5px
         DisplayMedium = T("Roboto", "300", "3.75rem", "4.5rem", "-0.008333em"), // H2 60/72 -0.5px
@@ -189,6 +185,9 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly BadgeTokens Badge = new()
     {
+        PaddingXXs = "0.1875rem",
+        PaddingXSm = "0.1875rem",
+        LabelSizeXs = "0.5625rem",
         // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
@@ -757,6 +756,7 @@ internal static class MaterialDesign2Tokens
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
     {
+        TitleTracking = "0.05em",
         ActiveWeight = "600",
         HoverBgOpacity = "40%",
         LineHeight = "1.4",

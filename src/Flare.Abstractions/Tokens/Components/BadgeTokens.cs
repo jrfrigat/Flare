@@ -50,9 +50,9 @@ public sealed record BadgeTokens
     [CssVar(Badge.DotSize.Xl)] public required string DotSizeXl { get; init; }
 
     /// <summary>Horizontal padding inside a count / text indicator at the xs size.</summary>
-    [CssVar(Badge.PaddingX.Xs)] public string PaddingXXs { get; init; } = $"calc({Var(Css.Tokens.Spacing.S3)} / 2)";
+    [CssVar(Badge.PaddingX.Xs)] public string PaddingXXs { get; init; } = Var(Css.Tokens.Spacing.S1);
     /// <summary>Horizontal padding inside a count / text indicator at the sm size.</summary>
-    [CssVar(Badge.PaddingX.Sm)] public string PaddingXSm { get; init; } = $"calc({Var(Css.Tokens.Spacing.S3)} / 2)";
+    [CssVar(Badge.PaddingX.Sm)] public string PaddingXSm { get; init; } = Var(Css.Tokens.Spacing.S2);
     /// <summary>Horizontal padding inside a count / text indicator at the md (default) size.</summary>
     [CssVar(Badge.PaddingX.Md)] public string PaddingXMd { get; init; } = Var(Css.Tokens.Spacing.S2);
     /// <summary>Horizontal padding inside a count / text indicator at the lg size.</summary>
@@ -61,9 +61,9 @@ public sealed record BadgeTokens
     [CssVar(Badge.PaddingX.Xl)] public string PaddingXXl { get; init; } = Var(Css.Tokens.Spacing.S4);
 
     /// <summary>Font size of the count / text at the xs size.</summary>
-    [CssVar(Badge.LabelSize.Xs)] public string LabelSizeXs { get; init; } = Var(Css.Tokens.Typography.Size2Xs);
+    [CssVar(Badge.LabelSize.Xs)] public string LabelSizeXs { get; init; } = Var(Css.Tokens.Typography.LabelSmall.Size);
     /// <summary>Font size of the count / text at the sm size.</summary>
-    [CssVar(Badge.LabelSize.Sm)] public string LabelSizeSm { get; init; } = Var(Css.Tokens.Typography.SizeXs);
+    [CssVar(Badge.LabelSize.Sm)] public string LabelSizeSm { get; init; } = Var(Css.Tokens.Typography.LabelSmall.Size);
     /// <summary>Font size of the count / text at the md (default) size.</summary>
     [CssVar(Badge.LabelSize.Md)] public string LabelSizeMd { get; init; } = Var(Css.Tokens.Typography.LabelSmall.Size);
     /// <summary>Font size of the count / text at the lg size.</summary>

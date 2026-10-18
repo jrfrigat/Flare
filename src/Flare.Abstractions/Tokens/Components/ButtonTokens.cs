@@ -100,15 +100,15 @@ public sealed record ButtonTokens
     // the height rather than a value a theme could usefully name. Per size because the two shapes are a
     // per-size pair in the spec, not one radius applied five times.
     /// <summary>Corner radius of a selected button at the xs size.</summary>
-    [CssVar(Button.SelectedRadius.Xs)] public string SelectedRadiusXs { get; init; } = $"calc({Var(Css.Tokens.Button.Height.Xs)} / 2)";
+    [CssVar(Button.SelectedRadius.Xs)] public string SelectedRadiusXs { get; init; } = Var(Css.Tokens.Shape.Full);
     /// <summary>Corner radius of a selected button at the sm size.</summary>
-    [CssVar(Button.SelectedRadius.Sm)] public string SelectedRadiusSm { get; init; } = $"calc({Var(Css.Tokens.Button.Height.Sm)} / 2)";
+    [CssVar(Button.SelectedRadius.Sm)] public string SelectedRadiusSm { get; init; } = Var(Css.Tokens.Shape.Full);
     /// <summary>Corner radius of a selected button at the md size.</summary>
-    [CssVar(Button.SelectedRadius.Md)] public string SelectedRadiusMd { get; init; } = $"calc({Var(Css.Tokens.Button.Height.Md)} / 2)";
+    [CssVar(Button.SelectedRadius.Md)] public string SelectedRadiusMd { get; init; } = Var(Css.Tokens.Shape.Full);
     /// <summary>Corner radius of a selected button at the lg size.</summary>
-    [CssVar(Button.SelectedRadius.Lg)] public string SelectedRadiusLg { get; init; } = $"calc({Var(Css.Tokens.Button.Height.Lg)} / 2)";
+    [CssVar(Button.SelectedRadius.Lg)] public string SelectedRadiusLg { get; init; } = Var(Css.Tokens.Shape.Full);
     /// <summary>Corner radius of a selected button at the xl size.</summary>
-    [CssVar(Button.SelectedRadius.Xl)] public string SelectedRadiusXl { get; init; } = $"calc({Var(Css.Tokens.Button.Height.Xl)} / 2)";
+    [CssVar(Button.SelectedRadius.Xl)] public string SelectedRadiusXl { get; init; } = Var(Css.Tokens.Shape.Full);
     /// <summary>Corner radius a selected button takes when its rest shape is the explicit square - the
     /// other half of the swap, and the direction that travels outward. A language that does not reshape
     /// on selection points this back at its own square radius, which is the difference between the two

@@ -23,11 +23,7 @@ public class MaterialDesign3Tokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        WeightMedium = "500",
         WeightBold = "700",
-        TrackingWide = "0.05em",
-        Size2Xs = "0.5625rem",
-        SizeXs = "0.625rem",
         // md.sys.typescale tracking is absolute, in rem: -0.25px on Display Large whatever its size. Material 2
         // states tracking relative to the font size (em); written in em here it grew 3.5x on the display steps.
         DisplayLarge = T("Roboto", "400", "3.5625rem", "4rem", "-0.015625rem"),
@@ -203,6 +199,10 @@ public class MaterialDesign3Tokens
 
     internal static readonly BadgeTokens Badge = new()
     {
+        PaddingXXs = "0.1875rem",
+        PaddingXSm = "0.1875rem",
+        LabelSizeXs = "0.5625rem",
+        LabelSizeSm = "0.625rem",
         // The ramp, one token per size so every size is the theme's to name.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
@@ -221,6 +221,13 @@ public class MaterialDesign3Tokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        // Baseline M3 does not reshape a selected button - swapping round and square on selection is an
+        // Expressive behaviour, stated in that theme - so a selected button keeps the corners it stands in.
+        SelectedRadiusXs = "calc(var(--flare-btn-height-xs) / 2)",
+        SelectedRadiusSm = "calc(var(--flare-btn-height-sm) / 2)",
+        SelectedRadiusMd = "calc(var(--flare-btn-height-md) / 2)",
+        SelectedRadiusLg = "calc(var(--flare-btn-height-lg) / 2)",
+        SelectedRadiusXl = "calc(var(--flare-btn-height-xl) / 2)",
         LoadingOpacity = "0.8",
         // A text button takes half the contained padding: 12dp against 24dp at M (md.comp.text-button),
         // and the same halving across the rest of the ladder.
@@ -389,6 +396,7 @@ public class MaterialDesign3Tokens
     // FAB: padding-based sizing, large/medium/extra-large rounding.
     internal static readonly FabTokens Fab = new()
     {
+        PaddingLg = "1.875rem",
         // A FAB sizes itself as glyph plus padding on both sides, so the icon and the padding together
         // make the container. Lg is the large FAB - its 28dp corner says so - which is
         // md.comp.fab.large.*: a 36dp glyph in a 96dp container, hence 30dp of padding. Md is the
@@ -579,6 +587,7 @@ public class MaterialDesign3Tokens
     // statement about its data, not the theme's.
     internal static readonly GaugeTokens Gauge = new()
     {
+        ValueWeight = "500",
         TrackWidth = "14",
         TrackCap = "round",
 
@@ -755,6 +764,7 @@ public class MaterialDesign3Tokens
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
     {
+        TitleTracking = "0.05em",
         ActiveWeight = "700", // weight-prominent, as the active navigation item
         HoverBgOpacity = "40%",
         LineHeight = "1.4",

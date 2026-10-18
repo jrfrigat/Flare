@@ -20,11 +20,7 @@ internal class LiquidGlassTokens
         // No design language names a code face, so this is the generic - twice, because a generic
         // family standing alone makes several engines use their own "monospace default size".
         MonoFont = "monospace, monospace",
-        WeightMedium = "500",
         WeightBold = "700",
-        TrackingWide = "0.05em",
-        Size2Xs = "0.5625rem",
-        SizeXs = "0.625rem",
         DisplayLarge = T("700", "2.5rem", "3rem"),
         DisplayMedium = T("700", "2.125rem", "2.5rem"),
         DisplaySmall = T("700", "1.75rem", "2.125rem"),
@@ -169,6 +165,10 @@ internal class LiquidGlassTokens
 
     internal static readonly BadgeTokens Badge = new()
     {
+        PaddingXXs = "0.1875rem",
+        PaddingXSm = "0.1875rem",
+        LabelSizeXs = "0.5625rem",
+        LabelSizeSm = "0.625rem",
         // Per-size ramp, one token per step.
         MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1.125rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
         HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1.125rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
@@ -557,7 +557,7 @@ internal class LiquidGlassTokens
         },
         TimePicker = MaterialDesign3Tokens.Design.TimePicker with { HeadlineTracking = "0.05em" },
         // A hairline above the bar, which the Material record leaves out.
-        BottomNav = MaterialDesign3Tokens.Design.BottomNav with { BorderColor = "var(--flare-color-surface-variant)" },
+        BottomNav = MaterialDesign3Tokens.Design.BottomNav with { LabelFontWeight = "500", BorderColor = "var(--flare-color-surface-variant)" },
         Switch = Switch,
         Slider = Slider,
         // Card geometry is typed; the translucent variant fills stay mode-specific in Extended.

@@ -136,8 +136,7 @@ public class TokenParityTests
             Typography = new TypographyTokens
             {
                 MonoFont = "monospace, monospace",
-                WeightMedium = "500", WeightBold = "700",
-                TrackingWide = "0.05em", Size2Xs = "0.5625rem", SizeXs = "0.625rem",
+                WeightBold = "700",
                 DisplayLarge = typeStyle,
                 DisplayMedium = typeStyle,
                 DisplaySmall = typeStyle,
