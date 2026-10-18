@@ -12,8 +12,12 @@
         </FlareCard>
     </FlareCol>
     <FlareCol Span="1">
-        @* Anatomy: header (avatar + action) / content / actions *@
-        <FlareCard Variant="CardVariant.Outlined">
+        @* Anatomy: header (avatar + action) / content / actions. The card is selectable, so the action
+           buttons and the card toggle are independent: click a button and the card stays put. *@
+        <FlareCard Variant="CardVariant.Outlined"
+                   Selectable="true"
+                   Selected="_anatomySelected"
+                   OnSelectionChange="@(v => _anatomySelected = v)">
             <FlareCardHeader Title="Alice Johnson" Subtitle="Senior Engineer · Berlin">
                 <AvatarContent><FlareAvatar Text="Alice Johnson" Size="AvatarSize.Md" /></AvatarContent>
                 <ActionContent><FlareButton LeadingIcon="@_more" Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="More" /></ActionContent>
@@ -33,4 +37,5 @@
 
 @code {
     private readonly RenderFragment _more = @<FlareIconView Value="@MaterialDesign3Icons.Regular.MoreVert" />;
+    private bool _anatomySelected;
 }

@@ -2,22 +2,26 @@
 @inherits FlareContainerBase
 @using Microsoft.AspNetCore.Components.Web
 
-@if (Href is not null)
-{
-    <a class="@CssClass" style="@_cardStyle"
-       href="@Href" target="@Target" @attributes="AdditionalAttributes">
-        @ChildContent
-    </a>
-}
-else
-{
-    <div class="@CssClass" style="@_cardStyle"
-         role="@Role" tabindex="@(_interactive ? "0" : null)"
-         aria-checked="@AriaChecked"
-         @onclick="HandleClick" @onkeydown="HandleKeyDown" @attributes="AdditionalAttributes">
-        @ChildContent
-    </div>
-}
+@* The content is never wrapped in the card's own control. The root is a plain box; an EMPTY native
+   control - a button, or an anchor when Href is set - is stretched over it as the last child. A nested
+   button or field is therefore not a descendant of the card's handler: its click and its Enter/Space
+   answer the nested control alone, and the card never sees them. The native element also supplies
+   Enter/Space activation and Space-without-page-scroll, which a div with a key handler cannot. *@
+<div class="@CssClass" style="@_cardStyle" id="@(_hasActivationControl ? _rootId : null)" @attributes="AdditionalAttributes">
+    @ChildContent
+    @if (Href is not null)
+    {
+        <a class="@Css.Classes.Card.Hit" href="@Href" target="@Target"
+           aria-label="@_activationAriaLabel" aria-labelledby="@_activationLabelledBy"></a>
+    }
+    else if (_interactive)
+    {
+        <button class="@Css.Classes.Card.Hit" type="button" role="@Role"
+                aria-checked="@AriaChecked"
+                aria-label="@_activationAriaLabel" aria-labelledby="@_activationLabelledBy"
+                @onclick="HandleClick"></button>
+    }
+</div>
 
 @code {
     /// <summary>Child content rendered inside the card. Compose with FlareCardMedia / FlareCardHeader / FlareCardContent / FlareCardFooter / FlareCardActions.</summary>
@@ -42,16 +46,21 @@ else
     /// <summary>When true, lays the card out horizontally (media on the leading side, content beside it). Default false (vertical).</summary>
     [Parameter] public bool Compact { get; set; }
 
-    /// <summary>Click handler. When set (or Href), the card becomes interactive (hover state layer, role=button, keyboard focus).</summary>
+    /// <summary>Click handler. When set (or <see cref="Href"/>), the whole surface becomes clickable
+    /// through a native activation control, so nested buttons, links and fields keep their own clicks and
+    /// keys, and keyboard focus shows on the card.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
-    /// <summary>When set, the card renders as a link (&lt;a&gt;) to this URL.</summary>
+    /// <summary>When set, the card activates as a link to this URL. An empty anchor is stretched over the
+    /// surface rather than wrapped around the content, so nested interactive elements stay valid and
+    /// independent.</summary>
     [Parameter] public string? Href { get; set; }
 
     /// <summary>Target for the link card (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
     [Parameter] public string? Target { get; set; }
 
-    /// <summary>When true, the card can be toggled selected (role=checkbox). Selection shows an accent ring.</summary>
+    /// <summary>When true, the card can be toggled selected; its activation control carries
+    /// <c>role=checkbox</c> and the checked state. Selection shows an accent ring.</summary>
     [Parameter] public bool Selectable { get; set; }
 
     /// <summary>Whether a selectable card is currently selected. Supports two-way binding (@bind-Selected).</summary>
@@ -99,8 +108,12 @@ else
         Selectable ? Css.Classes.Card.Selectable : string.Empty,
         Selectable && Selected ? Css.Classes.Card.Selected : string.Empty);
 
-    private string? Role => Selectable ? "checkbox" : (_clickable ? "button" : null);
+    // A native button already carries role=button; only a selectable card needs its role stated.
+    private string? Role => Selectable ? "checkbox" : null;
     private string? AriaChecked => Selectable ? (Selected ? "true" : "false") : null;
+
+    // Whether the card renders its activation control at all.
+    private bool _hasActivationControl => Href is not null || _interactive;
 
     private async Task HandleClick(MouseEventArgs e)
     {
@@ -108,15 +121,29 @@ else
         if (OnClick.HasDelegate) await OnClick.InvokeAsync(e);
     }
 
-    // role=button/checkbox needs explicit keyboard activation (Enter/Space) - the browser does not
-    // synthesize a click for a non-native interactive element.
-    private async Task HandleKeyDown(KeyboardEventArgs e)
+    // The control is empty, so its name comes from the card it covers. A consumer's own naming wins;
+    // otherwise aria-labelledby points at the root, whose text is what a screen reader should read for
+    // "the whole card".
+    private string? _activationAriaLabel => AttributeText("aria-label");
+
+    private string? _activationLabelledBy
     {
-        if (!_interactive) return;
-        if (e.Key is not ("Enter" or " " or "Spacebar")) return;
-        if (Selectable) await ToggleSelected();
-        if (OnClick.HasDelegate) await OnClick.InvokeAsync(new MouseEventArgs());
+        get
+        {
+            if (AttributeText("aria-labelledby") is { Length: > 0 } given) return given;
+            return string.IsNullOrEmpty(_activationAriaLabel) ? _rootId : null;
+        }
     }
+
+    private string? AttributeText(string name) =>
+        AdditionalAttributes?.TryGetValue(name, out var value) == true ? value as string : null;
+
+    // The id is generated only when the activation control needs something to point at; a card with no
+    // control renders exactly the markup it did before.
+    private string? _generatedId;
+    private string _rootId => AttributeText("id") is { Length: > 0 } given
+        ? given
+        : _generatedId ??= "flare-card-" + Guid.NewGuid().ToString("N")[..8];
 
     private async Task ToggleSelected()
     {

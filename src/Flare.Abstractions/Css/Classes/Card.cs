@@ -66,6 +66,9 @@ public static class Card
     public const string HeaderAvatar = "flare-card__header-avatar";
     /// <summary>The <c>flare-card__header-text</c> CSS class.</summary>
     public const string HeaderText = "flare-card__header-text";
+    /// <summary>The <c>flare-card__hit</c> CSS class: the empty native control stretched over an
+    /// interactive card, so the content never sits inside the card's own click and key handler.</summary>
+    public const string Hit = "flare-card__hit";
     /// <summary>The <c>flare-card__media</c> CSS class.</summary>
     public const string Media = "flare-card__media";
     /// <summary>The <c>flare-card__subtitle</c> CSS class.</summary>

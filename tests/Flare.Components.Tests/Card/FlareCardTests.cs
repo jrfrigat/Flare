@@ -141,9 +141,12 @@ public class FlareCardTests : FlareTestContext
         var cut = Render<FlareCard>(p => p.Add(c => c.Selectable, true));
 
         var div = cut.Find($".{Css.Classes.Card.Root}");
-        Assert.Equal("checkbox", div.GetAttribute("role"));
-        Assert.Equal("false", div.GetAttribute("aria-checked"));
         Assert.Contains(Css.Classes.Card.Selectable, div.ClassName);
+        // The card's own control carries the role and state; the root stays a plain box.
+        var hit = cut.Find($"button.{Css.Classes.Card.Hit}");
+        Assert.Equal("checkbox", hit.GetAttribute("role"));
+        Assert.Equal("false", hit.GetAttribute("aria-checked"));
+        Assert.Null(div.GetAttribute("role"));
     }
 
     [Fact]
@@ -154,8 +157,8 @@ public class FlareCardTests : FlareTestContext
             .Add(c => c.Selected, true));
 
         var div = cut.Find($".{Css.Classes.Card.Root}");
-        Assert.Equal("true", div.GetAttribute("aria-checked"));
         Assert.Contains(Css.Classes.Card.Selected, div.ClassName);
+        Assert.Equal("true", cut.Find($"button.{Css.Classes.Card.Hit}").GetAttribute("aria-checked"));
     }
 
     [Fact]
@@ -168,7 +171,7 @@ public class FlareCardTests : FlareTestContext
             .Add(c => c.SelectedChanged, Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, v => bound = v))
             .Add(c => c.OnSelectionChange, Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, v => changed = v)));
 
-        cut.Find($".{Css.Classes.Card.Root}").Click();
+        cut.Find($"button.{Css.Classes.Card.Hit}").Click();
 
         Assert.True(bound);
         Assert.True(changed);

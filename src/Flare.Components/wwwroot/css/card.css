@@ -88,7 +88,49 @@
        like everything else points it at the shared layer, which is what all six themes do. */
     background: var(--flare-card-state-layer);
 }
-.flare-card--clickable:focus-visible {
+/* Whole-surface activation. The card's own control is EMPTY and stretched over the surface, so a
+   nested control is never its descendant: a button inside the card answers its own click, and
+   Enter/Space inside an input never reaches the card's handler. Being native, it also makes
+   Enter/Space activation and Space-without-page-scroll the browser's job rather than a key handler's. */
+.flare-card__hit {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: transparent;
+    text-decoration: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Interactive content rises above the control layer, so it stays reachable and answers its own
+   clicks and keys. The rule is :where() all the way down: a component's own position and z-index must
+   win, and a static control only has to leave the layer's shadow. */
+:where(.flare-card--clickable, .flare-card--selectable) :where(
+    a[href]:not(.flare-card__hit),
+    button:not(.flare-card__hit),
+    input,
+    select,
+    textarea,
+    summary,
+    [role="button"]:not(.flare-card__hit),
+    [role="link"]:not(.flare-card__hit),
+    [tabindex]:not([tabindex="-1"]):not(.flare-card__hit),
+    [data-flare-drag-handle]) {
+    position: relative;
+    z-index: 1;
+}
+
+/* The focused element is the layer; the ring belongs to the card around it. */
+.flare-card__hit:focus-visible {
+    outline: none;
+}
+:where(.flare-card--clickable, .flare-card--selectable):has(> .flare-card__hit:focus-visible) {
     outline: var(--flare-card-focus-ring);
     outline-offset: 2px;
 }
@@ -125,7 +167,9 @@
     width: 100%;
     height: 100%;
 }
-.flare-card--compact:has(> .flare-card__media) > :not(.flare-card__media) {
+/* The activation layer is absolutely positioned against the card's padding box; a grid column would
+   shrink its containing block to that column. */
+.flare-card--compact:has(> .flare-card__media) > :not(.flare-card__media, .flare-card__hit) {
     grid-column: 2;
 }
 
