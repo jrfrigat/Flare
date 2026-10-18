@@ -109,6 +109,17 @@ public interface IOverlayJsService : IAsyncDisposable
     ValueTask RemoveDismissAsync(string id);
 
     /// <summary>
+    /// Associates a tooltip description id with the first focusable element inside <paramref name="root"/>,
+    /// preserving the ids that element already carries. <c>aria-describedby</c> is not inherited, so the
+    /// relation has to sit on the element the user focuses. Passing <paramref name="enabled"/> false removes
+    /// only this tooltip's id. A root with no focusable element is left unchanged.
+    /// </summary>
+    /// <param name="root">The tooltip wrapper element.</param>
+    /// <param name="tooltipId">The id of the tooltip bubble.</param>
+    /// <param name="enabled">Whether the tooltip has content and is not disabled.</param>
+    ValueTask SyncTooltipDescriptionAsync(ElementReference root, string tooltipId, bool enabled);
+
+    /// <summary>
     /// Declares an open popup as the topmost layer that owns Escape: while it is registered, Escape invokes
     /// <paramref name="method"/> on <paramref name="dotNetRef"/> and no dialog underneath receives it. The newest
     /// layer wins, so a menu above a dialog closes alone. Registering the same id again moves it to the top.

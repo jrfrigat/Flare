@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@using Microsoft.JSInterop
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
@@ -6,7 +7,7 @@
 <div class="@BuildCssClass(_placementClass, _triggerClasses)" style="@_rootStyle" @attributes="AdditionalAttributes"
      @ref="_rootRef"
      data-flare-placement="@_panelPlacement"
-     aria-describedby="@(_hasTooltip ? _tooltipId : null)"
+     aria-describedby="@(_hasTooltip && !Disabled ? _tooltipId : null)"
      @onclick="HandleRootClick"
      @onkeydown="HandleKeyDown">
     @ChildContent
@@ -78,6 +79,7 @@
     private ElementReference _rootRef;
     private readonly AnchoredLayer _layer = new();
     private bool _clickOpen;
+    private bool _descriptionLinked;
 
     // The side class places the bubble at rest (pure CSS); the engine then aligns it with the full
     // placement, which travels on data-flare-placement for the page-wide hover/focus listener.
@@ -145,6 +147,21 @@
                 GapToken = Css.Tokens.TooltipPopup.Offset,
                 Gap = 8,
             });
+
+        // aria-describedby on this wrapper is not inherited by the button or link inside it. Link the
+        // bubble id to the first focusable element instead, and take it away when the tooltip is
+        // disabled or has no content. Only a state change costs an interop call, not every render.
+        var describe = _hasTooltip && !Disabled;
+        if (describe != _descriptionLinked)
+        {
+            try
+            {
+                await Overlay.SyncTooltipDescriptionAsync(_rootRef, _tooltipId, describe);
+                _descriptionLinked = describe;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
     }
 
     private async Task HandleRootClick()

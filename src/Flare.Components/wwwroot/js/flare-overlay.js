@@ -501,6 +501,42 @@ export function initFloatingTooltips() {
     document.addEventListener('focusin', placeTooltip, true);
 }
 
+// aria-describedby is not inherited, so an id on the .flare-tooltip wrapper never reaches the button
+// or link the user actually focuses. Link it to the first focusable element of the trigger instead -
+// skipping the bubble, whose rich actions are not the trigger - and keep the ids that element already
+// carries. A root with no focusable element is left alone: the component keeps the wrapper relation as
+// a fallback. Passing enabled=false removes only this tooltip's id.
+const _tooltipDescriptions = new WeakMap();
+
+function tooltipTrigger(root) {
+    return Array.from(root.querySelectorAll(FOCUSABLE_SELECTORS))
+        .find(el => !el.closest('.flare-tooltip__content')) || null;
+}
+
+function removeTooltipDescription(entry) {
+    const ids = (entry.target.getAttribute('aria-describedby') || '')
+        .split(/\s+/).filter(id => id && id !== entry.tooltipId);
+    if (ids.length) entry.target.setAttribute('aria-describedby', ids.join(' '));
+    else entry.target.removeAttribute('aria-describedby');
+}
+
+export function syncTooltipDescription(root, tooltipId, enabled) {
+    if (!root || !tooltipId) return;
+    const previous = _tooltipDescriptions.get(root);
+    if (previous) {
+        removeTooltipDescription(previous);
+        _tooltipDescriptions.delete(root);
+    }
+    if (!enabled) return;
+    const target = tooltipTrigger(root);
+    if (!target) return;
+    const ids = (target.getAttribute('aria-describedby') || '')
+        .split(/\s+/).filter(id => id && id !== tooltipId);
+    ids.push(tooltipId);
+    target.setAttribute('aria-describedby', ids.join(' '));
+    _tooltipDescriptions.set(root, { target, tooltipId });
+}
+
 // -- Scroll the keyboard-highlighted option into view within its listbox scroll container. --
 export function scrollOptionIntoView(optionId, block) {
     const el = document.getElementById(optionId);
