@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `Anchor` | `DrawerAnchor` | `DrawerAnchor.Left` | Parameter |  | Edge from which the drawer slides in. |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the drawer element. Null uses the localized default. |
-| `AutoCloseBelow` | `Breakpoint?` | `` | Parameter |  | Breakpoint below which the drawer is automatically hidden. |
+| `AutoCloseBelow` | `Breakpoint?` | `` | Parameter |  | Breakpoint below which the drawer is automatically hidden. A drawer the stylesheet has hidden holds no focus trap, so the page behind it stays reachable by keyboard. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main content rendered inside the drawer body. |
 | `CloseOnEsc` | `bool` | `true` | Parameter |  | Closes the drawer when the Escape key is pressed. |
 | `CloseOnScrimClick` | `bool` | `true` | Parameter |  | Closes the drawer when the scrim backdrop is clicked. |
@@ -20,7 +20,7 @@
 | `Height` | `string` | `"320px"` | Parameter |  | Height applied to top/bottom anchored drawers. |
 | `Open` | `bool` | `false` | Parameter |  | Controls whether the drawer is visible. |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback fired when the drawer open state changes. |
-| `Variant` | `DrawerVariant` | `DrawerVariant.Temporary` | Parameter |  | Drawer variant - temporary (slides in/out, default), permanent (always visible), or mini (icon-only, expands on hover). |
+| `Variant` | `DrawerVariant` | `DrawerVariant.Temporary` | Parameter |  | Drawer variant: Temporary (slides in as a modal dialog, default), Persistent (in the layout flow, collapsing to zero width when closed), Permanent (always visible), Mini (icon-only, expands on hover), or Responsive (Persistent at 960px and wider, Temporary below that - the stylesheet decides, and the keyboard modal state follows the same breakpoint). |
 | `Width` | `string?` | `` | Parameter |  | Width applied to left/right anchored drawers. null (the default) takes the theme's own width; set it to override that for one drawer. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

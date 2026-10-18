@@ -2676,7 +2676,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Anchor", @"DrawerAnchor", @"DrawerAnchor.Left", @"Edge from which the drawer slides in.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the drawer element. Null uses the localized default.", null, false, false, false, @"FlareDrawer"),
-                new ApiParameterInfo(@"AutoCloseBelow", @"Breakpoint?", null, @"Breakpoint below which the drawer is automatically hidden.", null, false, false, false, @"FlareDrawer"),
+                new ApiParameterInfo(@"AutoCloseBelow", @"Breakpoint?", null, @"Breakpoint below which the drawer is automatically hidden. A drawer the stylesheet has hidden holds no focus trap, so the page behind it stays reachable by keyboard.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main content rendered inside the drawer body.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"CloseOnEsc", @"bool", @"true", @"Closes the drawer when the Escape key is pressed.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"CloseOnScrimClick", @"bool", @"true", @"Closes the drawer when the scrim backdrop is clicked.", null, false, false, false, @"FlareDrawer"),
@@ -2686,7 +2686,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Height", @"string", @"""320px""", @"Height applied to top/bottom anchored drawers.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the drawer is visible.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback fired when the drawer open state changes.", null, false, true, false, @"FlareDrawer"),
-                new ApiParameterInfo(@"Variant", @"DrawerVariant", @"DrawerVariant.Temporary", @"Drawer variant - temporary (slides in/out, default), permanent (always visible), or mini (icon-only, expands on hover).", null, false, false, false, @"FlareDrawer"),
+                new ApiParameterInfo(@"Variant", @"DrawerVariant", @"DrawerVariant.Temporary", @"Drawer variant: Temporary (slides in as a modal dialog, default), Persistent (in the layout flow, collapsing to zero width when closed), Permanent (always visible), Mini (icon-only, expands on hover), or Responsive (Persistent at 960px and wider, Temporary below that - the stylesheet decides, and the keyboard modal state follows the same breakpoint).", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"Width applied to left/right anchored drawers. null (the default) takes the theme's own width; set it to override that for one drawer.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

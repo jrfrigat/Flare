@@ -23,7 +23,8 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     public ValueTask RemoveDialogEscAsync(string id) => InvokeVoidAsync("removeDialogEscHandler", id);
 
     /// <inheritdoc />
-    public ValueTask TrapFocusAsync(string id, ElementReference container) => InvokeImmediateVoidAsync("trapFocus", id, container);
+    public ValueTask TrapFocusAsync(string id, ElementReference container, bool background = false)
+        => InvokeImmediateVoidAsync("trapFocus", id, container, background);
 
     /// <inheritdoc />
     public ValueTask ReleaseFocusTrapAsync(string id) => InvokeVoidAsync("releaseFocusTrap", id);

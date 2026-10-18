@@ -27,7 +27,10 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <summary>Traps Tab focus within <paramref name="container"/> and focuses its first focusable element.</summary>
     /// <param name="id">A stable id identifying this focus trap.</param>
     /// <param name="container">The element to trap focus within.</param>
-    ValueTask TrapFocusAsync(string id, ElementReference container);
+    /// <param name="background">When <see langword="true"/> and another trap is already active, the trap
+    /// is stacked under it and does not take focus: the element above (a modal layer) keeps the keyboard
+    /// until it closes. Used when a surface that is already open turns into a modal underneath a dialog.</param>
+    ValueTask TrapFocusAsync(string id, ElementReference container, bool background = false);
 
     /// <summary>Releases the focus trap registered under <paramref name="id"/> and restores prior focus.</summary>
     ValueTask ReleaseFocusTrapAsync(string id);

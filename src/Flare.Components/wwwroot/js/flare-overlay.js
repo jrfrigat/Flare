@@ -117,7 +117,12 @@ function focusOutside(dialogEl) {
     return _focusHistory.findLast(el => el.isConnected && !dialogEl.contains(el)) ?? active;
 }
 
-export function trapFocus(id, dialogEl) {
+// `background` registers the trap UNDER the traps already open instead of on top of them. A drawer that
+// turns into a modal because the viewport narrowed is underneath a dialog opened after it - in the layer
+// ladder (modal above drawer) and therefore in the keyboard stack too: it must not take focus or Escape
+// from that dialog. Once the dialog closes the drawer becomes the topmost trap and its focusin handler
+// takes over.
+export function trapFocus(id, dialogEl, background = false) {
     releaseFocusTrap(id);
 
     const focusable = () => Array.from(dialogEl.querySelectorAll(FOCUSABLE_SELECTORS))
@@ -147,7 +152,9 @@ export function trapFocus(id, dialogEl) {
             if (isActive() && !dialogEl.contains(document.activeElement)) focusFirstInDialog(dialogEl);
         }),
     );
-    _focusOrder.push(id);
+    const stacked = background && _focusOrder.length > 0;
+    if (stacked) _focusOrder.unshift(id);
+    else _focusOrder.push(id);
     _focusTraps.keep(id, () => {
         const wasActive = isActive();
         _focusOrder.splice(_focusOrder.indexOf(id), 1);
@@ -171,6 +178,9 @@ export function trapFocus(id, dialogEl) {
         if (document.activeElement === fallback) fallback.addEventListener('blur', restore, { once: true });
         else restore();
     });
+
+    // The modal above owns the focus until it closes; taking it now would move the user out from under it.
+    if (stacked) return;
 
     // A roving grid or composite widget owns its starting cursor. Do not focus navigation first.
     const initial = dialogEl.querySelector('[data-flare-initial-focus="true"]:not([disabled])');

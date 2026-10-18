@@ -3756,6 +3756,42 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Close.
+        /// </summary>
+        public static string Drawer_Close {
+            get {
+                return ResourceManager.GetString("Drawer_Close", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Open Responsive.
+        /// </summary>
+        public static string Drawer_OpenResponsive {
+            get {
+                return ResourceManager.GetString("Drawer_OpenResponsive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Responsive: sidebar above 960px, modal below.
+        /// </summary>
+        public static string Drawer_Responsive {
+            get {
+                return ResourceManager.GetString("Drawer_Responsive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Persistent at 960px and wider, a modal overlay below it. Resize across the breakpoint while it is open: Escape, Tab and the focus trap follow the viewport..
+        /// </summary>
+        public static string Drawer_ResponsiveDesc {
+            get {
+                return ResourceManager.GetString("Drawer_ResponsiveDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareDrawer - slides in from any edge with Header and ChildContent slots..
         /// </summary>
         public static string Drawer_Subtitle {

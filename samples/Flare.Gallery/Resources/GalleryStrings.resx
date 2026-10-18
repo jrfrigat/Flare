@@ -1128,6 +1128,18 @@
   <data name="Drawer_Subtitle" xml:space="preserve">
     <value>FlareDrawer - slides in from any edge with Header and ChildContent slots.</value>
   </data>
+  <data name="Drawer_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Drawer_OpenResponsive" xml:space="preserve">
+    <value>Open Responsive</value>
+  </data>
+  <data name="Drawer_Responsive" xml:space="preserve">
+    <value>Responsive: sidebar above 960px, modal below</value>
+  </data>
+  <data name="Drawer_ResponsiveDesc" xml:space="preserve">
+    <value>Persistent at 960px and wider, a modal overlay below it. Resize across the breakpoint while it is open: Escape, Tab and the focus trap follow the viewport.</value>
+  </data>
   <data name="EmptyState_Title" xml:space="preserve">
     <value>Empty State</value>
   </data>

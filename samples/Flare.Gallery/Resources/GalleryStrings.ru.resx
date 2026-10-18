@@ -1128,6 +1128,18 @@
   <data name="Drawer_Subtitle" xml:space="preserve">
     <value>FlareDrawer - выдвигается с любой стороны экрана со слотами Header и ChildContent.</value>
   </data>
+  <data name="Drawer_Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Drawer_OpenResponsive" xml:space="preserve">
+    <value>Открыть адаптивную</value>
+  </data>
+  <data name="Drawer_Responsive" xml:space="preserve">
+    <value>Адаптивная: панель от 960px, модальная ниже</value>
+  </data>
+  <data name="Drawer_ResponsiveDesc" xml:space="preserve">
+    <value>Постоянная панель от 960px и модальный оверлей ниже. Меняйте ширину окна через брейкпоинт при открытой панели: Escape, Tab и ловушка фокуса следуют за вьюпортом.</value>
+  </data>
   <data name="EmptyState_Title" xml:space="preserve">
     <value>Пустое состояние</value>
   </data>

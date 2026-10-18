@@ -1,0 +1,26 @@
+@* Responsive follows the same breakpoint in CSS and in the keyboard layer: the persistent sidebar at
+   960px and wider, the modal overlay below it. Open it first, then resize across the breakpoint - the
+   focus trap, Escape and the dialog semantics appear and disappear with the viewport. *@
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem;">
+    @GalleryStrings.Drawer_ResponsiveDesc
+</FlareText>
+
+<FlareButton OnClick="@(() => _open = true)">@GalleryStrings.Drawer_OpenResponsive</FlareButton>
+
+<FlareDrawer @bind-Open="_open" Variant="DrawerVariant.Responsive">
+    <HeaderContent>@GalleryStrings.Drawer_Responsive</HeaderContent>
+    <ChildContent>
+        <FlareStack Gap="FlareSpacing.Medium">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Drawer_Subtitle
+            </FlareText>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => _open = false)">
+                @GalleryStrings.Drawer_Close
+            </FlareButton>
+        </FlareStack>
+    </ChildContent>
+</FlareDrawer>
+
+@code {
+    private bool _open;
+}

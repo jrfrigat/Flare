@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject IBrowserViewportService Viewport
 @implements IAsyncDisposable
 
 @* Responsive is Temporary below the breakpoint, so it renders a scrim too - and carries a class
@@ -14,8 +15,8 @@
 <div class="@BuildCssClass(_anchorClass, _openClass, _variantClass, _autoCloseClass, _contentPadClass)"
      style="@_sizeStyle @_contentPadStyle @Style"
      role="@_role"
-     tabindex="@(Variant == DrawerVariant.Temporary ? "-1" : null)"
-     aria-modal="@(Variant == DrawerVariant.Temporary ? "true" : null)"
+     tabindex="@(_dialogLike ? "-1" : null)"
+     aria-modal="@(_dialogLike ? "true" : null)"
      aria-label="@(AriaLabel ?? FlareStrings.Drawer_Label)"
      inert="@_closedOverlay"
      @ref="_drawerEl"
@@ -40,7 +41,10 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Optional header content shown above the body.</summary>
     [Parameter] public RenderFragment? HeaderContent { get; set; }
-    /// <summary>Drawer variant - temporary (slides in/out, default), permanent (always visible), or mini (icon-only, expands on hover).</summary>
+    /// <summary>Drawer variant: Temporary (slides in as a modal dialog, default), Persistent (in the
+    /// layout flow, collapsing to zero width when closed), Permanent (always visible), Mini (icon-only,
+    /// expands on hover), or Responsive (Persistent at 960px and wider, Temporary below that - the
+    /// stylesheet decides, and the keyboard modal state follows the same breakpoint).</summary>
     [Parameter] public DrawerVariant Variant { get; set; } = DrawerVariant.Temporary;
     /// <summary>Edge from which the drawer slides in.</summary>
     [Parameter] public DrawerAnchor Anchor { get; set; } = DrawerAnchor.Left;
@@ -55,7 +59,8 @@
     [Parameter] public bool CloseOnEsc { get; set; } = true;
     /// <summary>Accessible label for the drawer element. Null uses the localized default.</summary>
     [Parameter] public string? AriaLabel { get; set; }
-    /// <summary>Breakpoint below which the drawer is automatically hidden.</summary>
+    /// <summary>Breakpoint below which the drawer is automatically hidden. A drawer the stylesheet has
+    /// hidden holds no focus trap, so the page behind it stays reachable by keyboard.</summary>
     [Parameter] public Breakpoint? AutoCloseBelow { get; set; }
     /// <summary>
     /// Horizontal inset on the content region, on the shared <see cref="FlareSpacing"/> scale - the same
@@ -100,7 +105,21 @@
 
     private readonly string _id = Guid.NewGuid().ToString("N")[..8];
     private DotNetObjectReference<FlareDrawer>? _dotNetRef;
-    private bool _wasOpen;
+    // The viewport tier drives the Responsive variant and AutoCloseBelow. Md is the fallback the viewport
+    // service reports when no browser width is known (prerender), so a drawer does not flash a modal
+    // state it may not have.
+    private Breakpoint _breakpoint = Breakpoint.Md;
+    private IAsyncDisposable? _breakpointSubscription;
+    private bool _modalActive;
+    private bool _escRegistered;
+    // A render can arrive while a previous OnAfterRenderAsync is still awaiting JS. The transitions then
+    // have to run one after the other - otherwise a close releases what an open has not registered yet,
+    // and the open traps focus on a drawer that is already hidden. The same race FlareDialog serializes.
+    private readonly SemaphoreSlim _modalSync = new(1, 1);
+    private bool _disposed;
+    // Whether the drawer was already open at the previous reconciliation: a drawer that becomes modal
+    // while already open is a background layer under whatever modal is above it, not a newly opened one.
+    private bool _wasOpenAtLastSync;
 
     private string? _anchorClass;
     private string? _openClass;
@@ -108,10 +127,25 @@
     private string? _autoCloseClass;
     private string? _autoCloseScrimClass;
 
-    // Only the overlay variant is a modal dialog. An in-flow drawer sits in the layout with the rest
-    // of the page reachable beside it, so calling it a modal dialog tells a screen reader the page is
-    // inert when it is not.
-    private string _role => Variant == DrawerVariant.Temporary ? "dialog" : "navigation";
+    // Responsive is the in-flow drawer at 960px and wider and the overlay below it, so whether this
+    // drawer behaves as a modal dialog depends on the viewport, not on the variant alone.
+    private bool _dialogLike => Variant == DrawerVariant.Temporary
+        || (Variant == DrawerVariant.Responsive && _breakpoint < Breakpoint.Md);
+
+    // AutoCloseBelow hides the drawer with display:none below its bound; a hidden drawer is neither
+    // modal nor allowed to hold the keyboard.
+    private bool _autoClosed => AutoCloseBelow is { } below && _breakpoint < below;
+
+    // The ONE state the Escape handler and the focus trap follow.
+    private bool _effectiveModal => Open && _dialogLike && !_autoClosed;
+
+    // Only a drawer rendered as an overlay is a modal dialog. An in-flow drawer sits in the layout with
+    // the rest of the page reachable beside it, so calling it a modal dialog tells a screen reader the
+    // page is inert when it is not.
+    private string _role => _dialogLike ? "dialog" : "navigation";
+
+    // The viewport is only needed where it changes behavior; a plain Temporary drawer subscribes to nothing.
+    private bool _needsViewport => Variant == DrawerVariant.Responsive || AutoCloseBelow is not null;
 
     // A closed overlay drawer is only translated off screen, so without this its links and buttons stay in
     // the tab order and the accessibility tree. Responsive is included at every width: below the breakpoint
@@ -189,26 +223,95 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Open && !_wasOpen && Variant == DrawerVariant.Temporary)
+        await _modalSync.WaitAsync();
+        try
         {
-            _wasOpen = true;
+            if (_disposed) return;
+            await SyncViewportSubscriptionAsync();
+            await SyncModalAsync();
+        }
+        finally
+        {
+            _modalSync.Release();
+        }
+    }
+
+    // Subscribed only where the viewport changes behavior. The immediate notification seeds the current
+    // tier; the CSS breakpoints and FlareBreakpoints share the same bounds, so a tier change is exactly a
+    // breakpoint crossing.
+    private async Task SyncViewportSubscriptionAsync()
+    {
+        if (_needsViewport == (_breakpointSubscription is not null)) return;
+
+        if (_needsViewport)
+        {
+            try { _breakpointSubscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointChangedAsync); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else
+        {
+            var subscription = _breakpointSubscription;
+            _breakpointSubscription = null;
+            _breakpoint = Breakpoint.Md;
+            if (subscription is not null)
+            {
+                try { await subscription.DisposeAsync(); } catch { }
+            }
+        }
+    }
+
+    private async Task OnBreakpointChangedAsync(Breakpoint breakpoint)
+    {
+        if (_disposed || breakpoint == _breakpoint) return;
+        _breakpoint = breakpoint;
+        try { await InvokeAsync(StateHasChanged); }
+        catch (ObjectDisposedException) { }
+    }
+
+    // Idempotent reconciliation, so every transition - open, close, variant switch, resize, breakpoint
+    // hiding, CloseOnEsc toggled while open - converges on the same registrations and releases the rest.
+    private async Task SyncModalAsync()
+    {
+        var modal = _effectiveModal;
+        var wasOpen = _wasOpenAtLastSync;
+        _wasOpenAtLastSync = Open;
+
+        if (modal && CloseOnEsc && !_escRegistered)
+        {
+            _dotNetRef ??= DotNetObjectReference.Create(this);
             try
             {
-                _dotNetRef ??= DotNetObjectReference.Create(this);
-
-                if (CloseOnEsc)
-                    await Overlay.RegisterDialogEscAsync(_id, _dotNetRef);
-
-                await Overlay.TrapFocusAsync(_id, _drawerEl);
+                await Overlay.RegisterDialogEscAsync(_id, _dotNetRef);
+                _escRegistered = true;
             }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
             catch (JSException) { }
         }
-        else if (!Open && _wasOpen && Variant == DrawerVariant.Temporary)
+        else if (_escRegistered && (!modal || !CloseOnEsc))
         {
-            _wasOpen = false;
+            _escRegistered = false;
             try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
+        }
+
+        if (modal && !_modalActive)
+        {
+            try
+            {
+                // A drawer that was already open when it became modal is a background layer: a dialog
+                // above it keeps the keyboard, and the drawer takes over when that dialog closes.
+                await Overlay.TrapFocusAsync(_id, _drawerEl, background: wasOpen);
+                _modalActive = true;
+            }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!modal && _modalActive)
+        {
+            _modalActive = false;
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
         }
     }
@@ -228,9 +331,27 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
-        try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
-        _dotNetRef?.Dispose();
+        _disposed = true;
+        // A queued OnAfterRenderAsync must not register anything after this point; wait for the one in
+        // flight and release whatever it or an earlier pass acquired.
+        await _modalSync.WaitAsync();
+        try
+        {
+            var subscription = _breakpointSubscription;
+            _breakpointSubscription = null;
+            if (subscription is not null)
+            {
+                try { await subscription.DisposeAsync(); } catch { }
+            }
+            try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
+            try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
+            _dotNetRef?.Dispose();
+            _dotNetRef = null;
+        }
+        finally
+        {
+            _modalSync.Release();
+        }
         await base.DisposeAsync();
     }
 }

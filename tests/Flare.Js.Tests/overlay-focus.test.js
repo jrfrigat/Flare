@@ -132,6 +132,31 @@ it('does not send Escape to a dialog underneath a MessageBox', () => {
     key('Escape'); expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });
 
+it('keeps an open dialog above a drawer that becomes modal underneath it', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const confirm = dialog('confirm');
+    registerDialogEscHandler('confirm', receiver);
+    trapFocus('confirm', confirm.el);
+    expect(document.activeElement).toBe(confirm.first);
+
+    // The drawer was open as a sidebar and the viewport narrowed: it is now a modal layer BELOW the
+    // modal dialog that was opened on top of it, so it registers as a background trap.
+    const drawer = dialog('drawer');
+    trapFocus('drawer', drawer.el, true);
+
+    expect(document.activeElement).toBe(confirm.first);          // focus stays with the dialog
+    key('Escape');
+    expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();    // and so does Escape
+    key('Tab', true);
+    expect(document.activeElement).toBe(confirm.last);            // and Tab
+
+    releaseFocusTrap('confirm'); confirm.el.remove();
+    // The dialog is gone; the drawer is topmost and takes the keyboard over.
+    expect(document.activeElement).toBe(drawer.first);
+    key('Tab', true);
+    expect(document.activeElement).toBe(drawer.last);
+});
+
 it('leaves Escape to a registered popup inside the dialog, and not to an expanded disclosure', () => {
     const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
     const d = dialog('select'); registerDialogEscHandler('select', receiver); trapFocus('select', d.el);
