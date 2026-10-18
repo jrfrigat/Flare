@@ -95,7 +95,7 @@ public class FlarePopoverTriggerTests : FlareTestContext
     }
 
     [Fact]
-    public async Task HoverTrigger_ClosesOnEscapeAndWhenFocusLeaves()
+    public async Task HoverTrigger_ClosesWhenFocusLeaves()
     {
         var states = new List<bool>();
         var cut = Render<FlarePopover>(p => p
@@ -106,17 +106,27 @@ public class FlarePopoverTriggerTests : FlareTestContext
             .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
         var root = cut.Find($".{Css.Classes.Popover.Anchor}");
 
-        await cut.InvokeAsync(() => root.KeyDown("Escape"));
-        Assert.Equal(new[] { false }, states);
-
-        states.Clear();
         await cut.InvokeAsync(() => root.FocusOut());
         await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
         Assert.Contains(false, states);
     }
 
-    // The keyboard path is the hover trigger's alone. On any other trigger a root handler would hear every
-    // keystroke typed into the panel and re-render the popover for each one.
+    // Escape belongs to the shared overlay layer now, for every trigger. A root keydown would hear
+    // every keystroke typed into the panel and round-trip it to Blazor.
+    [Fact]
+    public void HoverTrigger_ListensToNoKeysOnTheRoot()
+    {
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Hover)
+            .Add(x => x.Open, true)
+            .Add(x => x.AnchorContent, "<button>anchor</button>"));
+        var root = cut.Find($".{Css.Classes.Popover.Anchor}");
+
+        Assert.Throws<MissingEventHandlerException>(() => root.KeyDown("Escape"));
+    }
+
+    // Only the hover trigger listens to focus on the root; Escape now belongs to the shared overlay layer
+    // for every trigger, so no root keydown handler is needed at all.
     [Theory]
     [InlineData(PopoverTrigger.Click)]
     [InlineData(PopoverTrigger.Manual)]

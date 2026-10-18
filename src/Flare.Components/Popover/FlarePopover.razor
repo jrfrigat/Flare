@@ -1,11 +1,12 @@
 @namespace Flare.Components
+@using Microsoft.JSInterop
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" @ref="_anchorRef"
      @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave"
-     @onfocusin="_focusIn" @onfocusout="_focusOut" @onkeydown="_keyDown">
+     @onfocusin="_focusIn" @onfocusout="_focusOut">
     @if (Trigger == PopoverTrigger.Click)
     {
         <span style="display:inline-flex;cursor:pointer" @onclick="ToggleAsync">@AnchorContent</span>
@@ -78,6 +79,8 @@
     // Debounce guard: each hover enter/leave bumps this so a stale delayed open/close is discarded.
     private int _hoverGen;
     private readonly string _id = "flare-popover-" + Guid.NewGuid().ToString("N")[..8];
+    private DotNetObjectReference<FlarePopover>? _selfRef;
+    private bool _escapeLayerRegistered;
 
     private string _placementClass => Placement switch
     {
@@ -154,6 +157,30 @@
             _wasOpen = false;
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
         }
+
+        // The open panel owns Escape: it registers as the topmost layer, so a dialog around it stays
+        // open even though focus is inside the panel. Every trigger registers - a hover panel is just
+        // as visible and just as dismissible as a click one - and the shared stack decides which of
+        // several open surfaces gets the key. The root therefore needs no keydown handler at all: no
+        // Blazor round trip per keystroke typed into a form inside the panel.
+        if (Open && !_escapeLayerRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.PushPopupLayerAsync(_id, _selfRef, nameof(CloseFromEscape));
+                _escapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!Open && _escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _escapeLayerRegistered = false;
+        }
     }
 
     private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
@@ -209,23 +236,29 @@
         Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusIn) : default;
     private EventCallback<FocusEventArgs> _focusOut =>
         Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<FocusEventArgs>(this, HandleFocusOut) : default;
-    private EventCallback<KeyboardEventArgs> _keyDown =>
-        Trigger == PopoverTrigger.Hover ? EventCallback.Factory.Create<KeyboardEventArgs>(this, HandleKeyDown) : default;
-
     private Task HandleFocusIn(FocusEventArgs _) => HandleMouseEnter();
 
     private Task HandleFocusOut(FocusEventArgs _) => HandleMouseLeave();
 
-    // Escape closes an open hover popover; Click and Manual popovers close through their own paths.
-    private async Task HandleKeyDown(KeyboardEventArgs e)
+    /// <summary>Closes the popover when the shared overlay Escape layer selects it.</summary>
+    [JSInvokable]
+    public Task CloseFromEscape() => InvokeAsync(async () =>
     {
-        if (Trigger != PopoverTrigger.Hover || !Open || e.Key != "Escape") return;
+        // A pending hover open or hide belongs to the state being closed; cancel it with the same
+        // generation counter the pointer and focus paths use.
         ++_hoverGen;
         await OpenChanged.InvokeAsync(false);
-    }
+    });
 
     public override async ValueTask DisposeAsync()
     {
+        if (_escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
         if (_wasOpen)
         {
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
