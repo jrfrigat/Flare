@@ -38,6 +38,10 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <summary>Focuses the first focusable element inside <paramref name="container"/>.</summary>
     ValueTask FocusFirstAsync(ElementReference container);
 
+    /// <summary>Moves focus out of <paramref name="container"/> - to the last element focused outside it -
+    /// so a subtree that is about to become <c>inert</c> does not strand the keyboard on the page body.</summary>
+    ValueTask RestoreFocusOutsideAsync(ElementReference container);
+
     /// <summary>
     /// Positions <paramref name="panel"/> as a fixed popup anchored to <paramref name="anchor"/>,
     /// flipping to the opposite side when there is not enough room, re-positioning on scroll/resize,

@@ -1134,6 +1134,18 @@
   <data name="Drawer_OpenResponsive" xml:space="preserve">
     <value>Open Responsive</value>
   </data>
+  <data name="Drawer_Persistent" xml:space="preserve">
+    <value>Persistent</value>
+  </data>
+  <data name="Drawer_PersistentContent" xml:space="preserve">
+    <value>Main content sits beside the drawer and takes the room back when it closes.</value>
+  </data>
+  <data name="Drawer_PersistentDesc" xml:space="preserve">
+    <value>A persistent drawer stays in the layout and collapses to zero width. Closed content is inert: Tab skips it, and closing with focus inside hands focus back to the toggle.</value>
+  </data>
+  <data name="Drawer_TogglePersistent" xml:space="preserve">
+    <value>Toggle Persistent</value>
+  </data>
   <data name="Drawer_Responsive" xml:space="preserve">
     <value>Responsive: sidebar above 960px, modal below</value>
   </data>

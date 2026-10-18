@@ -3774,6 +3774,42 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Persistent.
+        /// </summary>
+        public static string Drawer_Persistent {
+            get {
+                return ResourceManager.GetString("Drawer_Persistent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Main content sits beside the drawer and takes the room back when it closes..
+        /// </summary>
+        public static string Drawer_PersistentContent {
+            get {
+                return ResourceManager.GetString("Drawer_PersistentContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A persistent drawer stays in the layout and collapses to zero width. Closed content is inert: Tab skips it, and closing with focus inside hands focus back to the toggle..
+        /// </summary>
+        public static string Drawer_PersistentDesc {
+            get {
+                return ResourceManager.GetString("Drawer_PersistentDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle Persistent.
+        /// </summary>
+        public static string Drawer_TogglePersistent {
+            get {
+                return ResourceManager.GetString("Drawer_TogglePersistent", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Responsive: sidebar above 960px, modal below.
         /// </summary>
         public static string Drawer_Responsive {

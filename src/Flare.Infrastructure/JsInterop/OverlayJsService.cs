@@ -32,6 +32,10 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     /// <inheritdoc />
     public ValueTask FocusFirstAsync(ElementReference container) => InvokeVoidAsync("focusFirstInDialog", container);
 
+    /// <inheritdoc />
+    public ValueTask RestoreFocusOutsideAsync(ElementReference container)
+        => InvokeImmediateVoidAsync("restoreFocusOutside", container);
+
     // Options go across as a JSON string written without reflection (AnchoredPanelOptionsJson), and null as null: the
     // script's defaults are the same as AnchoredPanelOptions'.
 

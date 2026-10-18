@@ -1134,6 +1134,18 @@
   <data name="Drawer_OpenResponsive" xml:space="preserve">
     <value>Открыть адаптивную</value>
   </data>
+  <data name="Drawer_Persistent" xml:space="preserve">
+    <value>Постоянная</value>
+  </data>
+  <data name="Drawer_PersistentContent" xml:space="preserve">
+    <value>Основной контент располагается рядом с панелью и забирает место обратно при закрытии.</value>
+  </data>
+  <data name="Drawer_PersistentDesc" xml:space="preserve">
+    <value>Постоянная панель остается в раскладке и складывается до нулевой ширины. Закрытое содержимое inert: Tab его пропускает, а закрытие с фокусом внутри возвращает фокус на переключатель.</value>
+  </data>
+  <data name="Drawer_TogglePersistent" xml:space="preserve">
+    <value>Переключить постоянную</value>
+  </data>
   <data name="Drawer_Responsive" xml:space="preserve">
     <value>Адаптивная: панель от 960px, модальная ниже</value>
   </data>

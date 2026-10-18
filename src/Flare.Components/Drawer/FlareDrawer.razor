@@ -19,6 +19,8 @@
      aria-modal="@(_dialogLike ? "true" : null)"
      aria-label="@(AriaLabel ?? FlareStrings.Drawer_Label)"
      inert="@_closedOverlay"
+     @onfocusin="HandleFocusIn"
+     @onfocusout="HandleFocusOut"
      @ref="_drawerEl"
      @attributes="AdditionalAttributes">
     @if (HeaderContent is not null)
@@ -117,9 +119,14 @@
     // and the open traps focus on a drawer that is already hidden. The same race FlareDialog serializes.
     private readonly SemaphoreSlim _modalSync = new(1, 1);
     private bool _disposed;
-    // Whether the drawer was already open at the previous reconciliation: a drawer that becomes modal
-    // while already open is a background layer under whatever modal is above it, not a newly opened one.
+    // Whether the drawer was already open and modal at the previous reconciliation: a drawer that becomes
+    // modal while already open is a background layer under whatever modal is above it, not a newly opened
+    // one, and a modal close already restores focus by releasing its trap.
     private bool _wasOpenAtLastSync;
+    private bool _wasModalAtLastSync;
+    // Whether focus currently sits inside the drawer. Only the close path needs it: an in-flow drawer that
+    // becomes inert with focus inside would strand the keyboard on the page body.
+    private bool _focusInside;
 
     private string? _anchorClass;
     private string? _openClass;
@@ -147,11 +154,12 @@
     // The viewport is only needed where it changes behavior; a plain Temporary drawer subscribes to nothing.
     private bool _needsViewport => Variant == DrawerVariant.Responsive || AutoCloseBelow is not null;
 
-    // A closed overlay drawer is only translated off screen, so without this its links and buttons stay in
-    // the tab order and the accessibility tree. Responsive is included at every width: below the breakpoint
-    // it is the same overlay, above it a closed drawer is zero wide and just as unseen. Permanent and Mini have
-    // no closed state, and Persistent is not covered here.
-    private bool _closedOverlay => !Open && Variant is DrawerVariant.Temporary or DrawerVariant.Responsive;
+    // A closed drawer can still be painted: Temporary/Responsive are translated off screen and Persistent
+    // keeps `visibility: visible` so its width can animate to zero. Without inert their links, buttons and
+    // fields stay in the tab order and the accessibility tree while nobody can see them. Permanent and
+    // Mini have no closed state, so they are never inert.
+    private bool _closedOverlay => !Open
+        && Variant is DrawerVariant.Temporary or DrawerVariant.Responsive or DrawerVariant.Persistent;
 
     private string BuildScrimCssClass()
     {
@@ -270,13 +278,25 @@
         catch (ObjectDisposedException) { }
     }
 
+    // focusin/focusout bubble and C# has no event target, but the close path only needs to know whether
+    // THIS drawer held focus. The blur that `inert` itself causes on close must not erase that fact before
+    // the focus is sent back out, hence the guard.
+    private void HandleFocusIn() => _focusInside = true;
+
+    private void HandleFocusOut()
+    {
+        if (!_closedOverlay) _focusInside = false;
+    }
+
     // Idempotent reconciliation, so every transition - open, close, variant switch, resize, breakpoint
     // hiding, CloseOnEsc toggled while open - converges on the same registrations and releases the rest.
     private async Task SyncModalAsync()
     {
         var modal = _effectiveModal;
         var wasOpen = _wasOpenAtLastSync;
+        var wasModal = _wasModalAtLastSync;
         _wasOpenAtLastSync = Open;
+        _wasModalAtLastSync = modal;
 
         if (modal && CloseOnEsc && !_escRegistered)
         {
@@ -312,7 +332,16 @@
         else if (!modal && _modalActive)
         {
             _modalActive = false;
+            _focusInside = false;
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
+        }
+
+        // An in-flow drawer becomes inert from this render on, and the modal path above already restored
+        // focus by releasing its trap. This one moves the keyboard back to where the user came from.
+        if (wasOpen && !Open && !wasModal && _closedOverlay && _focusInside)
+        {
+            _focusInside = false;
+            try { await Overlay.RestoreFocusOutsideAsync(_drawerEl); } catch { }
         }
     }
 

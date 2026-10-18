@@ -4,7 +4,6 @@ using Flare.Abstractions.Tokens;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
@@ -16,11 +15,11 @@ namespace Flare.Components.Tests;
 /// </summary>
 public sealed class FlareDrawerModalLifecycleTests : FlareTestContext
 {
-    private readonly RecordingRuntime _runtime;
+    private readonly RecordingJsRuntime _runtime;
 
     public FlareDrawerModalLifecycleTests()
     {
-        _runtime = new RecordingRuntime(JSInterop.JSRuntime);
+        _runtime = new RecordingJsRuntime(JSInterop.JSRuntime);
         Services.AddScoped<IOverlayJsService>(_ => new OverlayJsService(_runtime));
         Services.AddScoped<IBrowserViewportService>(_ => new BrowserViewportService(_runtime));
     }
@@ -191,40 +190,4 @@ public sealed class FlareDrawerModalLifecycleTests : FlareTestContext
             ? args[2] as bool?
             : null;
 
-    // Records module method calls in order, including their arguments; bUnit's own module reference keeps neither.
-    private sealed class RecordingRuntime(IJSRuntime runtime) : IJSRuntime
-    {
-        public List<string> Calls { get; } = [];
-
-        public List<(string Id, object?[]? Args)> Invocations { get; } = [];
-
-        public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
-            => InvokeAsync<TValue>(identifier, default, args);
-
-        public async ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken,
-            object?[]? args)
-        {
-            if (typeof(TValue) != typeof(IJSObjectReference))
-                return await runtime.InvokeAsync<TValue>(identifier, cancellationToken, args);
-
-            var reference = await runtime.InvokeAsync<IJSObjectReference>("import", cancellationToken, args);
-            return (TValue)(object)new RecordingReference(reference, this);
-        }
-
-        private sealed class RecordingReference(IJSObjectReference inner, RecordingRuntime owner) : IJSObjectReference
-        {
-            public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
-                => InvokeAsync<TValue>(identifier, default, args);
-
-            public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken,
-                object?[]? args)
-            {
-                owner.Calls.Add(identifier);
-                owner.Invocations.Add((identifier, args));
-                return inner.InvokeAsync<TValue>(identifier, cancellationToken, args);
-            }
-
-            public ValueTask DisposeAsync() => inner.DisposeAsync();
-        }
-    }
 }

@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import {
     trapFocus, releaseFocusTrap, registerDialogEscHandler, removeDialogEscHandler,
-    pushPopupLayer, removePopupLayer,
+    pushPopupLayer, removePopupLayer, restoreFocusOutside,
 } from '../../src/Flare.Components/wwwroot/js/flare-overlay.js';
 
 const ids = [];
@@ -130,6 +130,32 @@ it('does not send Escape to a dialog underneath a MessageBox', () => {
     key('Escape'); expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
     releaseFocusTrap('messagebox'); inner.el.remove();
     key('Escape'); expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});
+
+it('sends focus back to where it came from when a subtree closes', () => {
+    const toggle = visible(document.createElement('button'));
+    document.body.append(toggle);
+    const drawer = visible(document.createElement('div'));
+    const inner = visible(document.createElement('button'));
+    drawer.append(inner);
+    document.body.append(drawer);
+
+    toggle.focus();
+    inner.focus();                       // the history now holds the toggle, then the drawer's button
+    restoreFocusOutside(drawer);
+
+    expect(document.activeElement).toBe(toggle);
+});
+
+it('does not move focus that is already outside the closing subtree', () => {
+    const toggle = visible(document.createElement('button'));
+    const drawer = visible(document.createElement('div'));
+    document.body.append(toggle, drawer);
+
+    toggle.focus();
+    restoreFocusOutside(drawer);
+
+    expect(document.activeElement).toBe(toggle);
 });
 
 it('keeps an open dialog above a drawer that becomes modal underneath it', () => {

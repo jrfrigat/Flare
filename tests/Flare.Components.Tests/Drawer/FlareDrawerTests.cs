@@ -168,17 +168,19 @@ public class FlareDrawerTests : FlareTestContext
         Assert.Equal(ariaModal, drawer.GetAttribute("aria-modal"));
     }
 
-    // A closed overlay drawer is only translated off screen, so without inert its controls stay in the
-    // tab order and the accessibility tree while nobody can see them.
+    // A closed drawer can still be painted - Temporary/Responsive are moved off screen, Persistent keeps
+    // visibility so its width can animate to zero - so without inert their controls stay in the tab order
+    // and the accessibility tree while nobody can see them. Permanent and Mini have no closed state.
     [Theory]
     [InlineData(DrawerVariant.Temporary, false, true)]
     [InlineData(DrawerVariant.Temporary, true, false)]
     [InlineData(DrawerVariant.Responsive, false, true)]
     [InlineData(DrawerVariant.Responsive, true, false)]
+    [InlineData(DrawerVariant.Persistent, false, true)]
+    [InlineData(DrawerVariant.Persistent, true, false)]
     [InlineData(DrawerVariant.Permanent, false, false)]
     [InlineData(DrawerVariant.Mini, false, false)]
-    [InlineData(DrawerVariant.Persistent, false, false)]
-    public void OnlyAClosedOverlayDrawerIsInert(DrawerVariant variant, bool open, bool inert)
+    public void OnlyAClosedDrawerWithAClosedStateIsInert(DrawerVariant variant, bool open, bool inert)
     {
         var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, variant)

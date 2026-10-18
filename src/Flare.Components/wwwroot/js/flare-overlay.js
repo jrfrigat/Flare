@@ -197,6 +197,20 @@ export function focusFirstInDialog(dialogEl) {
     (focusable || dialogEl)?.focus({ preventScroll: true });
 }
 
+// Sends focus out of a subtree that is becoming inert. The last element focused outside it is where the
+// user came from (a toggle, usually); without one the active element is simply blurred rather than left
+// inside a subtree that can no longer take focus.
+export function restoreFocusOutside(element) {
+    const target = focusOutside(element);
+    if (target && target !== document.body && target.isConnected
+        && !target.matches(':disabled') && visibleFocusTarget(target)) {
+        target.focus({ preventScroll: true });
+        if (document.activeElement === target) return;
+    }
+    const active = document.activeElement;
+    if (active && element.contains(active)) active.blur();
+}
+
 // A floating panel has to be readable wherever its component was placed - in a Card, in a scrolling
 // grid, in a dialog. `position: fixed` is only half of that: it escapes an ancestor's `overflow`, and
 // it still loses to a later stacking context. The top layer is the other half - it paints above every
