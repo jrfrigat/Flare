@@ -117,6 +117,11 @@ Returns: `Task`.
 Clears all filters.
 Returns: `Task`.
 
+### `CloseFilterMenuFromEscape()`
+
+Closes the column filter menu when the overlay layer receives Escape.
+Returns: `Task`.
+
 ### `DisposeAsync()`
 
 Tears down JS interop and observers.

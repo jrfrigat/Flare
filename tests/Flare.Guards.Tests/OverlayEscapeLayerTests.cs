@@ -16,9 +16,7 @@ public sealed class OverlayEscapeLayerTests
     {
         ["FlareSubMenu.razor"] = "part of a FlareMenu; the parent registers the layer",
         ["FlareOptionList.razor"] = "rendered inside FlarePopup, which registers the layer",
-        ["FlareDataGrid.razor"] = "uses DataGridColumnPicker; tracked by its own card",
-        ["DataGridColumnPicker.razor"] = "known gap: TASK-607",
-        ["FlareFloatingActionMenu.razor"] = "known gap: TASK-607 (CSS menu owned by FlareFloatingActionButton)",
+        ["FlareFloatingActionMenu.razor"] = "passive markup; the FlareFloatingActionButton owns the state and registers the layer",
         ["FlareCodeBlock.razor"] = "role=menu is not a popup here",
     };
 

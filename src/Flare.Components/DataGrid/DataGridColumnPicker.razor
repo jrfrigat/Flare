@@ -47,6 +47,9 @@
     private ElementReference _wrapRef;
     private ElementReference _panelRef;
     private readonly AnchoredLayer _layer = new();
+    private DotNetObjectReference<DataGridColumnPicker<TItem>>? _selfRef;
+    private bool _escapeLayerRegistered;
+    private readonly string _escapeLayerId = "flare-datagrid-columns-" + Guid.NewGuid().ToString("N")[..8];
 
     // The picker lives in the grid's toolbar, so the grid's own scroll container never reached it - but a
     // card around the grid does, and the panel opens downwards into exactly that clip.
@@ -56,11 +59,50 @@
         await base.OnAfterRenderAsync(firstRender);
         await _layer.SyncAsync(Overlay, _open, _wrapRef, _panelRef,
             new AnchoredPanelOptions { Placement = PanelPlacement.BottomEnd });
+
+        // An open picker is a dismissible popup: it is the newest overlay layer, so Escape closes it alone and
+        // a dialog around the grid stays open.
+        if (_open && !_escapeLayerRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.PushPopupLayerAsync(_escapeLayerId, _selfRef, nameof(CloseFromEscape));
+                _escapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!_open && _escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_escapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _escapeLayerRegistered = false;
+        }
     }
 
-    /// <summary>Releases the panel's placement listeners.</summary>
+    /// <summary>Closes the picker when the overlay layer receives Escape.</summary>
+    [JSInvokable]
+    public Task CloseFromEscape() => InvokeAsync(() =>
+    {
+        Close();
+        StateHasChanged();
+    });
+
+    /// <summary>Releases the panel's placement listeners and the Escape layer.</summary>
     /// <returns>A task that completes when the layer has been released.</returns>
-    public ValueTask DisposeAsync() => _layer.ReleaseAsync(Overlay);
+    public async ValueTask DisposeAsync()
+    {
+        if (_escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_escapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
+        await _layer.ReleaseAsync(Overlay);
+    }
 
     private IReadOnlyList<(string Key, string Title)> _columns =>
         Columns ?? Owner?.PickableColumns ?? [];

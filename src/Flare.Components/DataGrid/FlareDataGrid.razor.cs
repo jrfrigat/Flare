@@ -224,6 +224,9 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private ElementReference _filterMenuRef;
     private readonly AnchoredLayer _filterMenuLayer = new();
     private readonly string _filterTriggerPrefix = $"flare-grid-filter-{Guid.NewGuid():N}-";
+    private DotNetObjectReference<FlareDataGrid<TItem>>? _filterMenuSelfRef;
+    private bool _filterMenuEscapeLayerRegistered;
+    private readonly string _filterMenuEscapeLayerId = "flare-datagrid-filter-" + Guid.NewGuid().ToString("N")[..8];
 
     // The DOM id of a column's filter trigger, which is what the open panel is anchored to.
     private string FilterTriggerId(string? columnKey) => _filterTriggerPrefix + Uri.EscapeDataString(columnKey ?? "");
@@ -594,6 +597,28 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         await _filterMenuLayer.SyncByIdAsync(Overlay, _filterMenuOpen is not null,
             FilterTriggerId(_filterMenuOpen), _filterMenuRef);
 
+        // The filter menu is a dismissible popup of its own: while open it is the newest overlay layer, so
+        // Escape closes the menu and leaves a dialog around the grid open.
+        if (_filterMenuOpen is not null && !_filterMenuEscapeLayerRegistered)
+        {
+            _filterMenuSelfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.PushPopupLayerAsync(_filterMenuEscapeLayerId, _filterMenuSelfRef,
+                    nameof(CloseFilterMenuFromEscape));
+                _filterMenuEscapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (_filterMenuOpen is null && _filterMenuEscapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_filterMenuEscapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _filterMenuEscapeLayerRegistered = false;
+        }
+
         // (Re)attach the IntersectionObserver to the sentinel while in infinite mode.
         if (_infiniteMode && !_infiniteObserverReady)
         {
@@ -613,6 +638,16 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         }
     }
 
+    /// <summary>Closes the column filter menu when the overlay layer receives Escape.</summary>
+    [JSInvokable]
+    public Task CloseFilterMenuFromEscape() => InvokeAsync(() =>
+    {
+        _filterMenuOpen = null;
+        _filterMenuValue = "";
+        _filterMenuOperator = "contains";
+        StateHasChanged();
+    });
+
     private async Task DisposeInfiniteObserverAsync()
     {
         try { await Grid.DisposeInfiniteAsync(_infiniteSentinel); }
@@ -630,6 +665,13 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _filterDebounceTimer?.Dispose();
+        if (_filterMenuEscapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_filterMenuEscapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _filterMenuSelfRef?.Dispose();
         await _filterMenuLayer.ReleaseAsync(Overlay);
         await DisposeInfiniteObserverAsync();
         _infiniteRef?.Dispose();

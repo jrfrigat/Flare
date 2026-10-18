@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 @if (ChildContent is not null)
 {
@@ -55,9 +56,59 @@ else
 
     private bool _open;
     private ElementReference _element;
+    private DotNetObjectReference<FlareFloatingActionButton>? _selfRef;
+    private bool _escapeLayerRegistered;
+    private readonly string _escapeLayerId = "flare-fab-menu-" + Guid.NewGuid().ToString("N")[..8];
 
     /// <summary>Sets keyboard focus to the FAB element.</summary>
     public ValueTask FocusAsync() => _element.FocusAsync();
+
+    // The speed dial is a dismissible popup. The menu is passive markup and the button owns the open state,
+    // so the button registers the layer: while open, Escape reaches the newest layer and a dialog under it
+    // stays open.
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_open && !_escapeLayerRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.PushPopupLayerAsync(_escapeLayerId, _selfRef, nameof(CloseFromEscape));
+                _escapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!_open && _escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_escapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _escapeLayerRegistered = false;
+        }
+    }
+
+    /// <summary>Closes the speed-dial menu when the overlay layer receives Escape.</summary>
+    [JSInvokable]
+    public Task CloseFromEscape() => InvokeAsync(() =>
+    {
+        Close();
+        StateHasChanged();
+    });
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        if (_escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_escapeLayerId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
+        await base.DisposeAsync();
+    }
 
     private string? _sizeClass => Size switch
     {
