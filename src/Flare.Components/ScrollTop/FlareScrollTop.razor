@@ -7,9 +7,14 @@
 @* Watches through IScrollService rather than its own JS listener, so the visibility check is throttled
    before it crosses interop and shares the service's teardown instead of owning a second one. *@
 
+@* The hidden state is opacity and pointer-events only, which leaves a button nobody can see but Tab
+   still reaches and a screen reader still announces. inert takes it out of the tab order, hit-testing
+   and the accessibility tree until it appears, and the browser drops focus from it when it hides. *@
 <button class="@BuildCssClass(_visibleClass)"
         type="button"
         aria-label="@(FlareStrings.Nav_BackToTop)"
+        inert="@(_visible ? null : "")"
+        aria-hidden="@(_visible ? null : "true")"
         style="@Style"
         @onclick="BackToTopAsync"
         @attributes="AdditionalAttributes">

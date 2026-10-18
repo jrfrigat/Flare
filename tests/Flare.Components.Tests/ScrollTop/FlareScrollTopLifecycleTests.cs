@@ -103,6 +103,28 @@ public class FlareScrollTopLifecycleTests : FlareTestContext
         Assert.Empty(fake.Disposed);
     }
 
+    [Fact]
+    public async Task AppearingAndDisappearing_TogglesTheButtonAccessibility()
+    {
+        var fake = UseFake();
+        var cut = Render<FlareScrollTop>();
+        Assert.True(cut.Find("button").HasAttribute("inert"));
+
+        await cut.InvokeAsync(() => fake.PushAsync(300));
+
+        var visible = cut.Find("button");
+        Assert.Contains(Css.Classes.Scroll.TopVisible, visible.ClassName ?? "");
+        Assert.False(visible.HasAttribute("inert"));
+        Assert.Null(visible.GetAttribute("aria-hidden"));
+
+        await cut.InvokeAsync(() => fake.PushAsync(0));
+
+        var hidden = cut.Find("button");
+        Assert.DoesNotContain(Css.Classes.Scroll.TopVisible, hidden.ClassName ?? "");
+        Assert.True(hidden.HasAttribute("inert"));
+        Assert.Equal("true", hidden.GetAttribute("aria-hidden"));
+    }
+
     // Threshold needs no resubscribe, but it does need the position already known to be re-tested:
     // lowering it below the current offset must show the button now, not at the next scroll event.
     [Fact]

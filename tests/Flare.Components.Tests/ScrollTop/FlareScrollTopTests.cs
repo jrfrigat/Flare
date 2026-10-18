@@ -37,6 +37,18 @@ public class FlareScrollTopTests : FlareTestContext
         Assert.DoesNotContain(Css.Classes.Scroll.TopVisible, cut.Find("button").ClassName ?? "");
     }
 
+    // Hidden is opacity and pointer-events only, so without inert the button is still a Tab stop and
+    // still announced while nobody can see it.
+    [Fact]
+    public void HiddenButton_IsInertAndOutOfTheAccessibilityTree()
+    {
+        var cut = Render<FlareScrollTop>();
+
+        var button = cut.Find("button");
+        Assert.True(button.HasAttribute("inert"));
+        Assert.Equal("true", button.GetAttribute("aria-hidden"));
+    }
+
     [Fact]
     public void RendersDefaultArrowIcon()
     {
