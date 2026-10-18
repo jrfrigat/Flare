@@ -110,6 +110,45 @@ public sealed class GanttLayoutTests : GanttTestBase
         Assert.Equal(200, cut.FindAll(".flare-gantt__row").Count);
     }
 
+    private static (Node[] Rows, Work[] Items, GanttLink[] Links) FarAndNearLinks()
+    {
+        var rows = Enumerable.Range(0, 200).Select(i => new Node($"r{i}")).ToArray();
+        var items = new[]
+        {
+            new Work("far-a", "r0", Day(2), Day(3)),
+            new Work("far-b", "r190", Day(2), Day(3)),
+            new Work("near-a", "r80", Day(2), Day(3)),
+            new Work("near-b", "r81", Day(2), Day(3)),
+        };
+        var links = new[] { new GanttLink("far-a", "far-b"), new GanttLink("near-a", "near-b") };
+        return (rows, items, links);
+    }
+
+    [Fact]
+    public void Virtualized_panels_route_only_links_between_drawn_rows()
+    {
+        var (rows, items, links) = FarAndNearLinks();
+        var cut = Chart(p => p.Add(x => x.Rows, rows).Add(x => x.Items, items).Add(x => x.Links, links),
+            g => g.Add(x => x.Virtualize, true));
+        var panel = cut.Find(".flare-gantt__body").GetAttribute("data-panel")!;
+
+        // Rows of 30 px: this window covers roughly rows 75-100, where only the near link's ends sit.
+        cut.InvokeAsync(() => cut.Instance.Visible([panel], [3000], [3600]));
+
+        var link = Assert.Single(cut.FindAll(".flare-gantt__link"));
+        Assert.Equal("near-a", link.GetAttribute("data-from"));
+        Assert.Equal("near-b", link.GetAttribute("data-to"));
+    }
+
+    [Fact]
+    public void Without_virtualize_all_links_are_routed()
+    {
+        var (rows, items, links) = FarAndNearLinks();
+        var cut = Chart(p => p.Add(x => x.Rows, rows).Add(x => x.Items, items).Add(x => x.Links, links));
+
+        Assert.Equal(2, cut.FindAll(".flare-gantt__link").Count);
+    }
+
     [Fact]
     public void Dragged_side_width_is_kept_and_reported()
     {

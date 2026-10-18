@@ -32,7 +32,7 @@
             }
         </div>
 
-        @{ var drawn = DrawnRows(); }
+        @{ var drawn = _drawnRows; }
         @if (_spacer > 0)
         {
             <div class="@Css.Classes.Gantt.Spacer" style="height:@GanttFormat.Px(_spacer)" aria-hidden="true"></div>

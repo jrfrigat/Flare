@@ -116,10 +116,12 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     private readonly string _id = "g" + Guid.NewGuid().ToString("N")[..8];
 
     private List<GanttRowLayout<TRow, TItem>> _rows = [];
+    private List<GanttRowLayout<TRow, TItem>> _drawnRows = [];
     private List<GanttLinkLayout> _links = [];
     private List<GanttRegion> _panelRegions = [];
     private List<GanttMarker> _panelMarkers = [];
     private HashSet<string> _critical = [];
+    private bool _criticalDirty = true;
     private Dictionary<string, GanttBarLayout<TItem>> _bars = [];
     private double _height;
     private bool _isTree;
@@ -131,11 +133,19 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         Gantt.Register(this);
     }
 
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        // Any parameter push can change the graph the critical path is computed from; scrolling cannot.
+        _criticalDirty = true;
+    }
+
     /// <summary>Expands every tree row.</summary>
-    public void ExpandAll() { _expanded.Clear(); _expandAll = true; StateHasChanged(); }
+    public void ExpandAll() { _expanded.Clear(); _expandAll = true; _criticalDirty = true; StateHasChanged(); }
 
     /// <summary>Collapses every tree row.</summary>
-    public void CollapseAll() { _expanded.Clear(); _expandAll = false; StateHasChanged(); }
+    public void CollapseAll() { _expanded.Clear(); _expandAll = false; _criticalDirty = true; StateHasChanged(); }
 
     void IGanttPanel.Refresh() => InvokeAsync(StateHasChanged);
 
@@ -166,7 +176,11 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
 
     private bool IsExpanded(string key) => _expanded.TryGetValue(key, out var value) ? value : _expandAll ?? ExpandedByDefault;
 
-    private void Toggle(string key) => _expanded[key] = !IsExpanded(key);
+    private void Toggle(string key)
+    {
+        _expanded[key] = !IsExpanded(key);
+        _criticalDirty = true;
+    }
 
     // Everything the markup draws is computed here, from the parameters and the axis, on every render.
     private void Layout()
@@ -261,12 +275,29 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         _height = top;
         _rows = rows;
 
+        // The visible window is decided once per render: the markup draws these rows, and only the links whose two
+        // ends sit in them are routed. A link to a row outside the window would not be visible anyway.
+        _drawnRows = DrawnRows();
+        var drawnKeys = gantt.Virtualize ? _drawnRows.Select(r => r.Key).ToHashSet() : null;
+
         var links = (Links ?? []).Where(l => LinkTypes is null || LinkTypes.Contains(l.Type)).ToList();
-        _critical = ShowCriticalPath
-            ? [.. GanttGraph.CriticalPath(_bars.Values.Where(b => !b.IsSummary).ToDictionary(b => b.Key, b => b.Span), Links ?? [])]
-            : [];
+        if (ShowCriticalPath)
+        {
+            if (_criticalDirty)
+            {
+                _critical = [.. GanttGraph.CriticalPath(_bars.Values.Where(b => !b.IsSummary).ToDictionary(b => b.Key, b => b.Span), Links ?? [])];
+                _criticalDirty = false;
+            }
+        }
+        else
+        {
+            _critical.Clear();
+        }
+
         _links = [.. links
-            .Where(l => _bars.ContainsKey(l.FromKey) && _bars.ContainsKey(l.ToKey))
+            .Where(l => _bars.ContainsKey(l.FromKey) && _bars.ContainsKey(l.ToKey)
+                && (drawnKeys is null
+                    || (drawnKeys.Contains(_bars[l.FromKey].RowKey) && drawnKeys.Contains(_bars[l.ToKey].RowKey))))
             .Select(l => new GanttLinkLayout(l, GanttRouting.Path(_bars[l.FromKey].Box, _bars[l.ToKey].Box, l.Type, gantt.LinkGap),
                 _critical.Contains(l.FromKey) && _critical.Contains(l.ToKey)))];
     }
