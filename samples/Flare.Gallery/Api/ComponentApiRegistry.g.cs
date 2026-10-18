@@ -5229,6 +5229,8 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the popover when the shared overlay Escape layer selects it.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },

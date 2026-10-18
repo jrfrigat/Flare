@@ -28,6 +28,11 @@
 
 ## Methods
 
+### `CloseFromEscape()`
+
+Closes the popover when the shared overlay Escape layer selects it.
+Returns: `Task`.
+
 ### `DisposeAsync()`
 
 Disposes the component; override to release JS interop or subscriptions.
