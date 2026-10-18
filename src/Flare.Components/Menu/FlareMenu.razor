@@ -83,6 +83,8 @@
     private ElementReference _panelEl;
     private ElementReference _activatorEl;
     private readonly AnchoredLayer _layer = new();
+    private DotNetObjectReference<FlareMenu>? _selfRef;
+    private bool _escapeLayerRegistered;
     private FlareMenuItem? _focusedItem;
     // Whether this opening came from the keyboard, which decides if an item starts out active. A pointer
     // user is looking at where they clicked and has no use for a highlight on the first item; a keyboard
@@ -146,6 +148,44 @@
             // filled the slot.
             try { await Overlay.FocusFirstAsync(_activatorEl); } catch (JSException) { }
         }
+
+        // The open menu owns Escape: it registers as the topmost layer, so a dialog around it stays open even
+        // though the panel, not the activator, holds the focus.
+        if (_open && !_escapeLayerRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.PushPopupLayerAsync(_panelId, _selfRef, nameof(CloseFromEscape));
+                _escapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!_open && _escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_panelId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _escapeLayerRegistered = false;
+        }
+    }
+
+    /// <summary>Closes the menu when the overlay layer receives Escape.</summary>
+    [JSInvokable]
+    public Task CloseFromEscape() => InvokeAsync(CloseAsync);
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        if (_escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_panelId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
+        await base.DisposeAsync();
     }
 
     // The anchor class now carries only the corner the open animation expands FROM; where the panel

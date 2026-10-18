@@ -1,5 +1,8 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { trapFocus, releaseFocusTrap, registerDialogEscHandler, removeDialogEscHandler } from '../../src/Flare.Components/wwwroot/js/flare-overlay.js';
+import {
+    trapFocus, releaseFocusTrap, registerDialogEscHandler, removeDialogEscHandler,
+    pushPopupLayer, removePopupLayer,
+} from '../../src/Flare.Components/wwwroot/js/flare-overlay.js';
 
 const ids = [];
 function visible(el) {
@@ -24,6 +27,7 @@ function key(name, shiftKey = false) {
 afterEach(() => {
     for (const id of ids.reverse()) { releaseFocusTrap(id); removeDialogEscHandler(id); }
     ids.length = 0;
+    for (const id of ['popup-1', 'popup-2', 'select']) removePopupLayer(id);
     document.body.replaceChildren();
 });
 
@@ -128,14 +132,51 @@ it('does not send Escape to a dialog underneath a MessageBox', () => {
     key('Escape'); expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });
 
-it('leaves Escape to an open select inside the dialog, but not to an expanded disclosure', () => {
+it('leaves Escape to a registered popup inside the dialog, and not to an expanded disclosure', () => {
     const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
     const d = dialog('select'); registerDialogEscHandler('select', receiver); trapFocus('select', d.el);
+    const popup = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('select', popup, 'CloseFromEscape');
     const select = visible(document.createElement('div'));
     select.tabIndex = 0; select.setAttribute('role', 'combobox'); select.setAttribute('aria-expanded', 'true');
     const disclosure = visible(document.createElement('button'));
     disclosure.setAttribute('aria-expanded', 'true');
     d.el.append(select, disclosure);
-    select.focus(); key('Escape'); expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
-    disclosure.focus(); key('Escape'); expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+
+    select.focus(); key('Escape');
+    expect(popup.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
+    expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
+
+    removePopupLayer('select');
+    disclosure.focus(); key('Escape');
+    expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});
+
+it('closes only the top of two open popups', () => {
+    const first = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const second = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('popup-1', first, 'CloseFromEscape');
+    pushPopupLayer('popup-2', second, 'CloseFromEscape');
+
+    key('Escape');
+    expect(second.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
+    expect(first.invokeMethodAsync).not.toHaveBeenCalled();
+
+    removePopupLayer('popup-2');
+    key('Escape');
+    expect(first.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
+});
+
+it('lets Escape reach the dialog again once the popup layer is removed', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const d = dialog('dialog'); registerDialogEscHandler('dialog', receiver); trapFocus('dialog', d.el);
+    const popup = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('popup-1', popup, 'CloseFromEscape');
+
+    key('Escape');
+    expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
+
+    removePopupLayer('popup-1');
+    key('Escape');
+    expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });

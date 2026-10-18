@@ -16,6 +16,7 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     private bool _trapped;
     private bool _returnToField;
     private bool _dismissRegistered;
+    private bool _escapeLayerRegistered;
     private Func<Task>? _dismiss;
     private DotNetObjectReference<PickerPopup>? _selfRef;
     private Task? _pendingSync;
@@ -100,6 +101,29 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
         if (_disposed || (open && generation != _syncGeneration)) return;
 
         _dismiss = dismiss;
+
+        // Every open picker, modal or not, owns Escape while it is above the rest: a calendar opened from a
+        // dialog closes alone. The focus trap already keeps the dialog from seeing a modal picker's Escape, but
+        // the explicit layer also covers the non-modal, field-opened popup.
+        if (open && !_escapeLayerRegistered)
+        {
+            try
+            {
+                _selfRef ??= DotNetObjectReference.Create(this);
+                await overlay.PushPopupLayerAsync(id, _selfRef, nameof(CloseFromEscape));
+                _escapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!open && _escapeLayerRegistered)
+        {
+            try { await overlay.RemovePopupLayerAsync(id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _escapeLayerRegistered = false;
+        }
+
         if (open && FromField && !_dismissRegistered && dismiss is not null)
         {
             try
@@ -140,6 +164,10 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     [JSInvokable]
     public Task DismissFromJs() => FromField ? _dismiss?.Invoke() ?? Task.CompletedTask : Task.CompletedTask;
 
+    /// <summary>Closes the popup on Escape from the overlay layer, whether it was opened from the field or the toggle.</summary>
+    [JSInvokable]
+    public Task CloseFromEscape() => _dismiss?.Invoke() ?? Task.CompletedTask;
+
     private async ValueTask RemoveDismissAsync()
     {
         if (!_dismissRegistered) return;
@@ -154,6 +182,13 @@ internal sealed class PickerPopup(IOverlayJsService overlay, string id)
     {
         _disposed = true;
         if (_pendingSync is { IsCompleted: false } pending) await pending;
+        if (_escapeLayerRegistered)
+        {
+            try { await overlay.RemovePopupLayerAsync(id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            _escapeLayerRegistered = false;
+        }
         await RemoveDismissAsync();
         if (_trapped)
         {

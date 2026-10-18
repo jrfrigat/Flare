@@ -201,9 +201,11 @@ else
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
                 await Overlay.RegisterDismissAsync(_triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
+                await Overlay.PushPopupLayerAsync(_triggerId, _selfRef, nameof(CloseFromOutside));
             }
             else
             {
+                await Overlay.RemovePopupLayerAsync(_triggerId);
                 await Overlay.RemoveDismissAsync(_triggerId);
             }
             // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
@@ -239,7 +241,10 @@ else
         try
         {
             if (_outsideRegistered)
+            {
+                await Overlay.RemovePopupLayerAsync(_triggerId);
                 await Overlay.RemoveDismissAsync(_triggerId);
+            }
             await _layer.ReleaseAsync(Overlay);
             if (_canvasInitialized)
                 await Canvas.DestroyAsync(_canvas);

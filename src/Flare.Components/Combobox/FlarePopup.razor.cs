@@ -92,10 +92,13 @@ public partial class FlarePopup
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
                 await Overlay.RegisterDismissAsync(_id, dismissRoot, _selfRef, nameof(DismissFromJs));
+                // The open popup owns Escape while it is registered, so a dialog around it stays open.
+                await Overlay.PushPopupLayerAsync(_id, _selfRef, nameof(DismissFromJs));
                 _registered = true;
             }
             else
             {
+                await Overlay.RemovePopupLayerAsync(_id);
                 await Overlay.RemoveDismissAsync(_id);
                 _registered = false;
             }
@@ -125,6 +128,9 @@ public partial class FlarePopup
         if (_pendingSync is { IsCompleted: false } pending) await pending;
         if (_registered)
         {
+            try { await Overlay.RemovePopupLayerAsync(_id); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
             try { await Overlay.RemoveDismissAsync(_id); }
             catch (JSDisconnectedException) { }
             catch (JSException) { }

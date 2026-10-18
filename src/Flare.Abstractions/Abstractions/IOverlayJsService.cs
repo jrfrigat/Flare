@@ -107,4 +107,18 @@ public interface IOverlayJsService : IAsyncDisposable
 
     /// <summary>Removes the dismissal handler registered under <paramref name="id"/>.</summary>
     ValueTask RemoveDismissAsync(string id);
+
+    /// <summary>
+    /// Declares an open popup as the topmost layer that owns Escape: while it is registered, Escape invokes
+    /// <paramref name="method"/> on <paramref name="dotNetRef"/> and no dialog underneath receives it. The newest
+    /// layer wins, so a menu above a dialog closes alone. Registering the same id again moves it to the top.
+    /// </summary>
+    /// <param name="id">A stable id identifying the open popup.</param>
+    /// <param name="dotNetRef">The component reference whose <paramref name="method"/> is invoked.</param>
+    /// <param name="method">The <c>[JSInvokable]</c> method that closes the popup.</param>
+    ValueTask PushPopupLayerAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id,
+        DotNetObjectReference<T> dotNetRef, string method) where T : class;
+
+    /// <summary>Removes the Escape layer registered under <paramref name="id"/>; an unknown id is ignored.</summary>
+    ValueTask RemovePopupLayerAsync(string id);
 }

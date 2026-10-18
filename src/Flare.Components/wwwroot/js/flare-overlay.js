@@ -37,14 +37,47 @@ function documentBus(type, options) {
 
 const _escHandlers = documentBus('keydown');
 
-// A control whose popup is open (a select, combobox or menu button) owns Escape: it closes that popup, and the
-// dialog around it stays open. aria-haspopup tells it apart from a disclosure, whose Escape is the dialog's.
-const OPEN_POPUP_OWNER = '[aria-expanded="true"]:is([role="combobox"], [aria-haspopup]:not([aria-haspopup="false"]))';
+// Open dismissible popups, oldest first. Escape belongs to the newest one: a menu, select or picker above a
+// dialog closes alone, and the dialog underneath never sees that key. The stack is explicit; the old rule
+// inferred the owner from aria-expanded on the focused element, and a menu that moves focus into its panel -
+// which is not inside the activator - fell through to the dialog.
+const _popupLayers = [];
+let _popupEscAttached = false;
+
+const _popupEscape = (e) => {
+    if (e.key !== 'Escape' || _popupLayers.length === 0) return;
+    const top = _popupLayers[_popupLayers.length - 1];
+    // The layer may remove itself before the dialog handlers on the same node run; the mark keeps this key
+    // from reaching them. bUnit/Blazor still sees the event as handled by the popup.
+    e.flarePopupHandled = true;
+    top.dotNetRef.invokeMethodAsync(top.method).catch(() => { });
+};
+
+/** Registers an open popup as the topmost Escape layer. Registers replaced ids at the top. */
+export function pushPopupLayer(id, dotNetRef, method) {
+    removePopupLayer(id);
+    _popupLayers.push({ id, dotNetRef, method });
+    if (!_popupEscAttached) {
+        document.addEventListener('keydown', _popupEscape);
+        _popupEscAttached = true;
+    }
+}
+
+/** Removes a popup layer; its id may already be gone. */
+export function removePopupLayer(id) {
+    const index = _popupLayers.findIndex(layer => layer.id === id);
+    if (index < 0) return;
+    _popupLayers.splice(index, 1);
+    if (_popupLayers.length === 0 && _popupEscAttached) {
+        document.removeEventListener('keydown', _popupEscape);
+        _popupEscAttached = false;
+    }
+}
 
 export function registerDialogEscHandler(id, dotNetRef) {
     _escHandlers.set(id, (e) => {
-        if (e.key === 'Escape' && (!_focusOrder.length || _focusOrder.at(-1) === id)
-            && !(e.target instanceof Element && e.target.closest(OPEN_POPUP_OWNER))) {
+        if (e.key === 'Escape' && !e.flarePopupHandled && _popupLayers.length === 0
+            && (!_focusOrder.length || _focusOrder.at(-1) === id)) {
             e.preventDefault();
             dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });
         }

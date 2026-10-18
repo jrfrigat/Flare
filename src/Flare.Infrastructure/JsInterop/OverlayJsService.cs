@@ -85,4 +85,12 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
 
     /// <inheritdoc />
     public ValueTask RemoveDismissAsync(string id) => InvokeVoidAsync("removeDismiss", id);
+
+    /// <inheritdoc />
+    public ValueTask PushPopupLayerAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id,
+        DotNetObjectReference<T> dotNetRef, string method) where T : class
+        => InvokeImmediateVoidAsync("pushPopupLayer", id, dotNetRef, method);
+
+    /// <inheritdoc />
+    public ValueTask RemovePopupLayerAsync(string id) => InvokeVoidAsync("removePopupLayer", id);
 }
