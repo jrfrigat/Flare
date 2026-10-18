@@ -180,3 +180,28 @@ it('lets Escape reach the dialog again once the popup layer is removed', () => {
     key('Escape');
     expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });
+
+it('sends Escape only to the newest registration of a popup closed and opened again', () => {
+    const first = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const second = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('popup-1', first, 'CloseFromEscape');
+    removePopupLayer('popup-1');
+    pushPopupLayer('popup-1', second, 'CloseFromEscape');
+
+    key('Escape');
+    expect(second.invokeMethodAsync).toHaveBeenCalledOnce();
+    expect(first.invokeMethodAsync).not.toHaveBeenCalled();
+});
+
+it('drops a layer disposed while its popup was still open', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const d = dialog('dialog'); registerDialogEscHandler('dialog', receiver); trapFocus('dialog', d.el);
+    const popup = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('popup-1', popup, 'CloseFromEscape');
+
+    removePopupLayer('popup-1');
+    key('Escape');
+
+    expect(popup.invokeMethodAsync).not.toHaveBeenCalled();
+    expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});

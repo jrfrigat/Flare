@@ -29,6 +29,16 @@
 Closes the menu (also callable programmatically), clears registered items and keyboard focus, and raises OnToggle.
 Returns: `Task`.
 
+### `CloseFromEscape()`
+
+Closes the menu when the overlay layer receives Escape.
+Returns: `Task`.
+
+### `DisposeAsync()`
+
+Disposes the component; override to release JS interop or subscriptions.
+Returns: `ValueTask`.
+
 ### `OpenAsync()`
 
 Opens the menu programmatically (no-op if already open) and raises OnToggle.

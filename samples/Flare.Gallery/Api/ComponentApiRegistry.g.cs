@@ -4230,6 +4230,10 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the menu (also callable programmatically), clears registered items and keyboard focus, and raises OnToggle.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the menu when the overlay layer receives Escape.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the menu programmatically (no-op if already open) and raises OnToggle.",
                     System.Array.Empty<ApiMethodParameter>()),
             },

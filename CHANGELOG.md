@@ -26,6 +26,27 @@ All notable changes to Flare are documented here. This project adheres to
   Glass. A focused bar or expand button wears the theme's focus ring, and the bar a link starts from wears it
   dashed. `--flare-gantt-focus`, `--flare-gantt-focus-width` and `--flare-gantt-focus-offset` are gone; restyle
   the focus through `--flare-focus-ring`.
+- **Breaking for custom overlay services: `IOverlayJsService` has two more members.** `PushPopupLayerAsync` and
+  `RemovePopupLayerAsync` register a dismissible popup with the overlay engine, so Escape reaches the newest
+  popup instead of whatever element holds the focus. The in-box `OverlayJsService` implements both; a custom
+  implementation has to add them.
+
+### Fixed
+
+- Escape in an open `FlareMenu` inside a dialog closes the menu and keeps the dialog open. Menus and every other
+  dismissible popup now register as layers of one overlay stack, and the newest layer owns Escape. The engine used
+  to look for `aria-expanded` on the focused element, and a menu moves the focus into its own panel, so the key
+  reached the dialog and left the menu open. Two open popups close one at a time, the top one first.
+- Removing a component runs its `IDisposable` cleanup. Blazor calls only `DisposeAsync` when a component
+  implements both contracts, so overriding `Dispose` alone did nothing; a removed `FlareRibbon` tab, for example,
+  left the ribbon with no active tab.
+- Closing a dialog right after opening it no longer leaves the page scroll locked. Registration of the scroll lock
+  and the focus trap crosses an asynchronous gap, and a close that landed in that gap released nothing. Opening
+  and closing are serialized now, and a registration that fails releases what it has already taken.
+- A collapsed `FlareNavGroup` takes its items out of the Tab order with `inert`; `aria-hidden` stopped screen
+  readers, but the keyboard still walked into the hidden links.
+- A virtualized `FlareGanttPanel` draws a dependency only when both of its rows are drawn. A link that reached
+  outside the window used to produce a line from a row that was not on screen.
 
 ## [0.45.0] - 2026-10-17
 
