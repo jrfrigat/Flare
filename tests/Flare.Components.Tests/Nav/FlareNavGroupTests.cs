@@ -53,6 +53,31 @@ public class FlareNavGroupTests : FlareTestContext
     }
 
     [Fact]
+    public void CollapsedGroup_TakesItsItemsOutOfTheTabOrder()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(x => x.Expanded, false)
+            .AddChildContent("<a href=\"#\">Link</a>"));
+
+        var items = cut.Find($".{Css.Classes.Navigation.GroupItems}");
+        Assert.True(items.HasAttribute("inert"),
+            "A collapsed group keeps its links in the tab order unless the wrapper is inert.");
+        Assert.Equal("true", items.GetAttribute("aria-hidden"));
+    }
+
+    [Fact]
+    public void ExpandedGroup_LeavesItsItemsFocusable()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(x => x.Expanded, true)
+            .AddChildContent("<a href=\"#\">Link</a>"));
+
+        var items = cut.Find($".{Css.Classes.Navigation.GroupItems}");
+        Assert.False(items.HasAttribute("inert"));
+        Assert.Null(items.GetAttribute("aria-hidden"));
+    }
+
+    [Fact]
     public void HeaderButton_IsClickable()
     {
         var cut = Render<FlareNavGroup>(p => p
