@@ -136,6 +136,11 @@
     private ElementReference _resizerEl;
     private DotNetObjectReference<FlareDialog>? _dotNetRef;
     private bool _wasVisible;
+    // A render can arrive while a previous OnAfterRenderAsync is still awaiting JS. The open and the close then
+    // have to run one after the other - otherwise the close releases what the open has not registered yet, and the
+    // open registers the trap, the Escape handler and the scroll lock after the close is over.
+    private readonly SemaphoreSlim _modalSync = new(1, 1);
+    private bool _disposed;
 
     protected override void OnInitialized()
     {
@@ -170,44 +175,66 @@
         if (held is not null) await held.DisposeAsync();
     }
 
+    // Releases the modal state this dialog may hold. Every step is idempotent, so the close path, the failed-open
+    // path and dispose can all call it without tracking how far the open got.
+    private async Task ReleaseModalAsync()
+    {
+        try { await ReleaseScrollLockAsync(); } catch { }
+        try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
+        try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
+        if (Draggable) { try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { } }
+        if (Resizable) { try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { } }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Visible && !_wasVisible)
+        await _modalSync.WaitAsync();
+        try
         {
-            _wasVisible = true;
-            try
+            if (_disposed) return;
+
+            if (Visible)
             {
-                _dotNetRef ??= DotNetObjectReference.Create(this);
+                if (_wasVisible) return;
+                try
+                {
+                    _dotNetRef ??= DotNetObjectReference.Create(this);
 
-                // Escape and the trap go out together and first: a field in the body can take autofocus as soon
-                // as the dialog renders, and the dialog has to own the keyboard by then. Awaiting one before
-                // sending the other would leave a round trip in which Escape does nothing.
-                var esc = CloseOnEsc ? Overlay.RegisterDialogEscAsync(_id, _dotNetRef) : ValueTask.CompletedTask;
-                var trap = Overlay.TrapFocusAsync(_id, _dialogEl);
-                await esc;
-                await trap;
+                    // Escape and the trap go out together and first: a field in the body can take autofocus as soon
+                    // as the dialog renders, and the dialog has to own the keyboard by then. Awaiting one before
+                    // sending the other would leave a round trip in which Escape does nothing.
+                    var esc = CloseOnEsc ? Overlay.RegisterDialogEscAsync(_id, _dotNetRef) : ValueTask.CompletedTask;
+                    var trap = Overlay.TrapFocusAsync(_id, _dialogEl);
+                    await esc;
+                    await trap;
 
-                _scrollLock = await Scroll.LockAsync();
+                    _scrollLock = await Scroll.LockAsync();
 
-                if (Draggable)
-                    await DialogDrag.RegisterDragAsync(_headerEl, _dialogEl);
-                if (Resizable)
-                    await DialogDrag.RegisterResizeAsync(_resizerEl, _dialogEl, "240", "160");
+                    if (Draggable)
+                        await DialogDrag.RegisterDragAsync(_headerEl, _dialogEl);
+                    if (Resizable)
+                        await DialogDrag.RegisterResizeAsync(_resizerEl, _dialogEl, "240", "160");
+
+                    // Only a finished open owns the modal state; until then a close has nothing to release and a
+                    // failed open releases its own partial state below.
+                    _wasVisible = true;
+                }
+                catch
+                {
+                    // SSR or pre-render: JS not available. A partial registration must not outlive the attempt.
+                    _wasVisible = false;
+                    await ReleaseModalAsync();
+                }
             }
-            catch { /* SSR or pre-render: JS not available */ }
+            else if (_wasVisible)
+            {
+                _wasVisible = false;
+                await ReleaseModalAsync();
+            }
         }
-        else if (!Visible && _wasVisible)
+        finally
         {
-            _wasVisible = false;
-            try
-            {
-                await ReleaseScrollLockAsync();
-                await Overlay.RemoveDialogEscAsync(_id);
-                await Overlay.ReleaseFocusTrapAsync(_id);
-                if (Draggable) await DialogDrag.RemoveDragAsync(_headerEl);
-                if (Resizable) await DialogDrag.RemoveResizeAsync(_resizerEl);
-            }
-            catch { }
+            _modalSync.Release();
         }
     }
 
@@ -245,17 +272,22 @@
 
     public override async ValueTask DisposeAsync()
     {
+        _disposed = true;
         Navigation.LocationChanged -= HandleLocationChanged;
-        // If the dialog is still open when disposed (e.g. page navigation), release locks/handlers.
-        if (_wasVisible)
+        // A queued OnAfterRenderAsync must not register anything after this point; wait for the one in flight and
+        // release whatever it or an earlier open acquired.
+        await _modalSync.WaitAsync();
+        try
         {
-            try { await ReleaseScrollLockAsync(); } catch { }
-            if (Draggable) { try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { } }
-            if (Resizable) { try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { } }
+            _wasVisible = false;
+            await ReleaseModalAsync();
+            _dotNetRef?.Dispose();
+            _dotNetRef = null;
         }
-        try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
-        try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
-        _dotNetRef?.Dispose();
+        finally
+        {
+            _modalSync.Release();
+        }
         await base.DisposeAsync();
     }
 }
