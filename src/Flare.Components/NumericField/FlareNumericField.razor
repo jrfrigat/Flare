@@ -144,6 +144,7 @@
 
     private async Task HandleClear(MouseEventArgs e)
     {
+        _debounceCts.Cancel();
         await ValueChanged.InvokeAsync(default);
         if (_useTextMode) _text = string.Empty;
         NotifyFieldChanged();
@@ -154,7 +155,16 @@
     // provided by FlareFieldBase (ControlId/HelperId/ErrorId/SupportDescribedBy/DisplayedErrorText).
     // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
     // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
-    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
+    protected override void OnParametersSet()
+    {
+        UpdateFieldIdentifier(For);
+        // A pending debounced commit belongs to the value the field was editing. Once the external
+        // value changes, or the field becomes non-editable, that commit would resurrect stale text.
+        var valueChanged = !_hasLastValue || !EqualityComparer<TValue?>.Default.Equals(_lastValue, Value);
+        _hasLastValue = true;
+        _lastValue = Value;
+        if (valueChanged || Disabled || ReadOnly) _debounceCts.Cancel();
+    }
 
     public override async ValueTask DisposeAsync()
     {
@@ -183,6 +193,8 @@
             : "decimal";
     private bool _focused;
     private string _text = string.Empty;
+    private TValue? _lastValue;
+    private bool _hasLastValue;
     private CultureInfo _fmtCulture => Culture ?? CultureInfo.CurrentCulture;
 
     // What the input element shows. Number mode: raw invariant value. Text mode: the live edit
@@ -224,6 +236,7 @@
     private async Task StepBy(double delta)
     {
         if (ReadOnly || Disabled) return;
+        _debounceCts.Cancel();
 
         var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
 
@@ -317,6 +330,9 @@
     {
         var raw = e.Value?.ToString();
         if (_useTextMode) _text = raw ?? string.Empty;
+        // Commit the clamped value now; a debounced unclamped commit from the last keystroke must not
+        // land afterwards and put the out-of-range value back.
+        _debounceCts.Cancel();
         return Commit(raw, clamp: true);
     }
 
