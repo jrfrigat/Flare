@@ -27,7 +27,7 @@ function key(name, shiftKey = false) {
 afterEach(() => {
     for (const id of ids.reverse()) { releaseFocusTrap(id); removeDialogEscHandler(id); }
     ids.length = 0;
-    for (const id of ['popup-1', 'popup-2', 'select']) removePopupLayer(id);
+    for (const id of ['popup-1', 'popup-2', 'select', 'menu']) removePopupLayer(id);
     document.body.replaceChildren();
 });
 
@@ -150,6 +150,26 @@ it('leaves Escape to a registered popup inside the dialog, and not to an expande
     removePopupLayer('select');
     disclosure.focus(); key('Escape');
     expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
+});
+
+it('closes a menu focused inside its role=menu panel without closing the dialog', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const d = dialog('dialog'); registerDialogEscHandler('dialog', receiver); trapFocus('dialog', d.el);
+    const menuLayer = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('menu', menuLayer, 'CloseFromEscape');
+
+    // FlareMenu moves the focus into its panel, which is a sibling of the activator and carries role=menu but
+    // no aria-expanded or aria-haspopup - the exact element the old ARIA heuristic failed to recognise.
+    const panel = visible(document.createElement('div'));
+    panel.setAttribute('role', 'menu');
+    panel.tabIndex = -1;
+    d.el.append(panel);
+    panel.focus();
+    expect(document.activeElement).toBe(panel);
+
+    key('Escape');
+    expect(menuLayer.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
+    expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
 });
 
 it('closes only the top of two open popups', () => {
