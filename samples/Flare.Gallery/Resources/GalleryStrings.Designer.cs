@@ -9885,6 +9885,24 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Text alignment.
+        /// </summary>
+        public static string ToggleButton_AriaAlignment {
+            get {
+                return ResourceManager.GetString("ToggleButton_AriaAlignment", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Period.
+        /// </summary>
+        public static string ToggleButton_AriaPeriod {
+            get {
+                return ResourceManager.GetString("ToggleButton_AriaPeriod", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Today.
         /// </summary>
         public static string ToggleButton_FullWidthToday {

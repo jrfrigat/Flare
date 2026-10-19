@@ -7386,6 +7386,8 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the group, forwarded as aria-label. The group is announced as one named control, so a screen reader user hears what the pressed buttons choose between (""Text alignment"") rather than a run of unrelated toggles. An aria-label passed as an unmatched attribute names the group too; this parameter wins when both are set.", null, false, false, false, @"FlareToggleGroup"),
+                new ApiParameterInfo(@"AriaLabelledBy", @"string?", null, @"Id (or space-separated ids) of the element that names the group, forwarded as aria-labelledby - for a visible heading that labels the choice. An unmatched aria-labelledby on the component works the same way.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"CheckMark", @"bool", @"false", @"Shows a leading checkmark on each selected button.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child FlareToggleButton components.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Color", @"FlareColor?", null, @"Color cascaded to every child FlareToggleButton (tints the selected state). When null (default) each button keeps its own Color.", null, false, false, false, @"FlareToggleGroup"),

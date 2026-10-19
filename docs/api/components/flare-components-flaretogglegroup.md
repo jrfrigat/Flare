@@ -8,6 +8,8 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the group, forwarded as aria-label. The group is announced as one named control, so a screen reader user hears what the pressed buttons choose between ("Text alignment") rather than a run of unrelated toggles. An aria-label passed as an unmatched attribute names the group too; this parameter wins when both are set. |
+| `AriaLabelledBy` | `string?` | `` | Parameter |  | Id (or space-separated ids) of the element that names the group, forwarded as aria-labelledby - for a visible heading that labels the choice. An unmatched aria-labelledby on the component works the same way. |
 | `CheckMark` | `bool` | `false` | Parameter |  | Shows a leading checkmark on each selected button. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Child FlareToggleButton components. |
 | `Color` | `FlareColor?` | `` | Parameter |  | Color cascaded to every child FlareToggleButton (tints the selected state). When null (default) each button keeps its own Color. |

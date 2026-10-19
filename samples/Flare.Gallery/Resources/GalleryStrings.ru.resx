@@ -2881,6 +2881,12 @@
   <data name="ToggleButton_GroupVertical" xml:space="preserve">
     <value>Группа переключателей - вертикальная</value>
   </data>
+  <data name="ToggleButton_AriaAlignment" xml:space="preserve">
+    <value>Выравнивание текста</value>
+  </data>
+  <data name="ToggleButton_AriaPeriod" xml:space="preserve">
+    <value>Период</value>
+  </data>
   <data name="ToggleButton_FullWidthToday" xml:space="preserve">
     <value>Сегодня</value>
   </data>

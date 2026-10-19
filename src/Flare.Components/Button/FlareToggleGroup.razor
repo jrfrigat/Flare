@@ -3,7 +3,14 @@
 @typeparam TValue
 
 <CascadingValue Value="_context" IsFixed="false">
-    <div class="@BuildCssClass(_orientationClass, _fullWidthClass)" style="@Style" @attributes="AdditionalAttributes">
+    @* role="group" is what lets a name reach the accessibility tree: the buttons stay ordinary toggle
+       buttons with aria-pressed, grouped so a screen reader can say what the choice is for - not a radio
+       group, because a single selection here can be cleared and MultiSelect allows several. *@
+    <div class="@BuildCssClass(_orientationClass, _fullWidthClass)" style="@Style"
+         role="group"
+         aria-label="@_groupAriaLabel"
+         aria-labelledby="@_groupAriaLabelledBy"
+         @attributes="_wrapperAttributes">
         @ChildContent
     </div>
 </CascadingValue>
@@ -49,6 +56,15 @@
     /// A label longer than its share is shortened with an ellipsis instead of making the group scroll.
     /// Default false: the group is as wide as its buttons and scrolls when the container is narrower.</summary>
     [Parameter] public bool FullWidth { get; set; }
+    /// <summary>Accessible name of the group, forwarded as <c>aria-label</c>. The group is announced as one
+    /// named control, so a screen reader user hears what the pressed buttons choose between ("Text
+    /// alignment") rather than a run of unrelated toggles. An <c>aria-label</c> passed as an unmatched
+    /// attribute names the group too; this parameter wins when both are set.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Id (or space-separated ids) of the element that names the group, forwarded as
+    /// <c>aria-labelledby</c> - for a visible heading that labels the choice. An unmatched
+    /// <c>aria-labelledby</c> on the component works the same way.</summary>
+    [Parameter] public string? AriaLabelledBy { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.ToggleGroup.Root;
 
@@ -56,6 +72,29 @@
         Orientation == "vertical" ? Css.Classes.ToggleGroup.Vertical : string.Empty;
 
     private string _fullWidthClass => FullWidth ? Css.Classes.ToggleGroup.Full : string.Empty;
+
+    // The explicit parameters win; an unmatched attribute already names the group now that the root has
+    // a role, so it is honoured rather than painted a second time beside the parameter.
+    private string? _unmatchedAttribute(string name) =>
+        AdditionalAttributes?.TryGetValue(name, out var value) == true ? value?.ToString() : null;
+
+    private string? _groupAriaLabel => AriaLabel ?? _unmatchedAttribute("aria-label");
+    private string? _groupAriaLabelledBy => AriaLabelledBy ?? _unmatchedAttribute("aria-labelledby");
+
+    private IReadOnlyDictionary<string, object>? _wrapperAttributes
+    {
+        get
+        {
+            if (AdditionalAttributes is null) return null;
+            if (!AdditionalAttributes.ContainsKey("aria-label") && !AdditionalAttributes.ContainsKey("aria-labelledby"))
+                return AdditionalAttributes;
+
+            var copy = new Dictionary<string, object>(AdditionalAttributes);
+            copy.Remove("aria-label");
+            copy.Remove("aria-labelledby");
+            return copy;
+        }
+    }
 
     private HashSet<object?> _selected = new();
     private FlareToggleGroupContext _context = null!;

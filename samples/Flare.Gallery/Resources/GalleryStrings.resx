@@ -2881,6 +2881,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="ToggleButton_GroupVertical" xml:space="preserve">
     <value>Toggle Group - Vertical</value>
   </data>
+  <data name="ToggleButton_AriaAlignment" xml:space="preserve">
+    <value>Text alignment</value>
+  </data>
+  <data name="ToggleButton_AriaPeriod" xml:space="preserve">
+    <value>Period</value>
+  </data>
   <data name="ToggleButton_FullWidthToday" xml:space="preserve">
     <value>Today</value>
   </data>
