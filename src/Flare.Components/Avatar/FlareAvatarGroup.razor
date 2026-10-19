@@ -4,8 +4,13 @@
 <div class="@BuildCssClass()"
      style="@($"{Css.Tokens.AvatarField.GroupSpacing}:{Spacing}; {Style}")"
      @attributes="AdditionalAttributes">
+    @* The version tells the avatars that the registration counters were reset. Without it a child whose
+       own parameters did not change is skipped by Blazor's diff after Max grows, so a previously hidden
+       avatar never re-registers and stays hidden. *@
     <CascadingValue Value="@this" IsFixed="true">
-        @ChildContent
+        <CascadingValue Value="_registrationVersion" Name="FlareAvatarGroupVersion">
+            @ChildContent
+        </CascadingValue>
     </CascadingValue>
     @if (_overflow > 0)
     {
@@ -32,6 +37,7 @@
 
     private int _overflow;
     private int _visibleCount;
+    private int _registrationVersion;
 
     private string _overflowLabel =>
         string.Format(FlareStrings.Avatar_OverflowMore, _overflow);
@@ -55,5 +61,6 @@
     {
         _overflow = 0;
         _visibleCount = 0;
+        _registrationVersion++;
     }
 }

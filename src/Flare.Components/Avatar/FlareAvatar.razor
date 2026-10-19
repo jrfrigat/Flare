@@ -52,24 +52,18 @@
 
     /// <summary>Parent avatar group that manages max-visible and overflow counting.</summary>
     [CascadingParameter] public FlareAvatarGroup? Group { get; set; }
+    // Changes whenever the group resets its counters, which is what makes an avatar re-register even
+    // when its own parameters are unchanged - Blazor skips such a child otherwise.
+    [CascadingParameter(Name = "FlareAvatarGroupVersion")] private int GroupVersion { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Avatar.Root;
 
     private bool _visible = true;
 
-    private string? _lastContent;
-    private RenderFragment? _lastFallback;
-    protected override bool ShouldRender()
-    {
-        var current = $"{Src}:{Text}:{Alt}:{Color}:{Size}:{Shape}:{FallbackIcon}";
-        // FallbackContent is a RenderFragment and cannot be content-hashed; re-render when its
-        // reference changes so swapping only the fallback fragment is not suppressed.
-        if (current == _lastContent && ReferenceEquals(FallbackContent, _lastFallback)) return false;
-        _lastContent = current;
-        _lastFallback = FallbackContent;
-        return true;
-    }
-
+    // Deliberately no ShouldRender memo. The avatar used to skip a render when a key built from its
+    // content parameters was unchanged, which also suppressed every later change to Class, Style and
+    // unmatched attributes - and kept a group-hidden avatar hidden after Max grew. One div is cheaper
+    // to render than a complete key (which would have to hash the attribute dictionary) is to build.
     protected override void OnParametersSet()
     {
         _visible = Group is null || Group.RegisterAvatar();
