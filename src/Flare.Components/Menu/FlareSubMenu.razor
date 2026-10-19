@@ -220,8 +220,10 @@
                 // Focus is a stronger signal than the pointer: a keyboard user stays in the submenu
                 // even when the mouse has moved away.
                 if (ct.IsCancellationRequested || _panelFocused) return;
-                _open = false;
-                StateHasChanged();
+                // A pointer close takes the same path as a keyboard one: the item registrations belong to
+                // the open instance, and a reopen builds new child components. Keeping the old entries
+                // left arrows, Home/End and Enter pointing at elements that no longer exist.
+                if (_open) _ = CloseSubmenuAsync();
             });
         }, TaskScheduler.Default);
     }

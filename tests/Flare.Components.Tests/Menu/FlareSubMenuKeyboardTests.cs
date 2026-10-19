@@ -44,7 +44,8 @@ public class FlareSubMenuKeyboardTests : FlareTestContext
         b.OpenComponent<FlareSubMenu>(3);
         b.AddAttribute(4, nameof(FlareSubMenu.Label), "More");
         b.AddAttribute(5, nameof(FlareSubMenu.Disabled), disabled);
-        b.AddAttribute(6, nameof(FlareSubMenu.ChildContent), (RenderFragment)(sb =>
+        b.AddAttribute(6, nameof(FlareSubMenu.HideDelay), 0);
+        b.AddAttribute(7, nameof(FlareSubMenu.ChildContent), (RenderFragment)(sb =>
         {
             sb.OpenComponent<FlareMenuItem>(0);
             sb.AddAttribute(1, nameof(FlareMenuItem.ChildContent), (RenderFragment)(cb => cb.AddContent(0, "First")));
@@ -252,4 +253,36 @@ public class FlareSubMenuKeyboardTests : FlareTestContext
     private bool SubmenuLayerRemoved() => _runtime.Invocations.Any(i =>
         i.Id == "removePopupLayer" && i.Args is { Length: > 0 } args
         && args[0] is string id && id.StartsWith("flare-submenu-", StringComparison.Ordinal));
+
+    // The item registrations belong to the open instance: a pointer close must clear them, or the next
+    // hover adds the new child components next to the disposed ones and the keyboard walks ghosts.
+    [Fact]
+    public async Task PointerClose_ClearsTheItemRegistrationsForTheNextOpen()
+    {
+        var cut = OpenMenu(MenuWithSubmenu(() => { }, () => { }, () => { }));
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        var submenu = cut.FindComponent<FlareSubMenu>().Instance;
+
+        await cut.InvokeAsync(() => cut.Find(SubmenuActivatorSelector).TriggerEvent("onmouseenter", new MouseEventArgs()));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(SubmenuPanelSelector)));
+        Assert.Equal(2, ItemCount(submenu));
+
+        await cut.InvokeAsync(() => cut.Find(SubmenuActivatorSelector).TriggerEvent("onmouseleave", new MouseEventArgs()));
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(SubmenuPanelSelector)));
+        Assert.Null(FocusedItem(submenu));
+
+        await cut.InvokeAsync(() => cut.Find(SubmenuActivatorSelector).TriggerEvent("onmouseenter", new MouseEventArgs()));
+        cut.WaitForAssertion(() => Assert.Single(cut.FindAll(SubmenuPanelSelector)));
+        Assert.Equal(2, ItemCount(submenu));
+    }
+
+    private static int ItemCount(FlareSubMenu submenu)
+        => ((System.Collections.ICollection)typeof(FlareSubMenu)
+            .GetField("_items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+            .GetValue(submenu)!).Count;
+
+    private static object? FocusedItem(FlareSubMenu submenu)
+        => typeof(FlareSubMenu)
+            .GetField("_focusedItem", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
+            .GetValue(submenu);
 }
