@@ -141,6 +141,43 @@ public class FlarePasswordFieldTests : FlareTestContext
 
         Assert.Contains(Css.Classes.Input.MarginDense, cut.Find($".{Css.Classes.Input.Root}").ClassName);
     }
+
+    [Fact]
+    public void InputAttributes_ReachTheNativeInput()
+    {
+        var attributes = new Dictionary<string, object>
+        {
+            ["name"] = "password",
+            ["form"] = "login",
+            ["aria-label"] = "Password",
+            ["autofocus"] = "true",
+            ["data-testid"] = "pwd",
+        };
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.InputAttributes, attributes)
+            .AddUnmatched("data-wrapper", "shell"));
+
+        var input = cut.Find("input");
+        Assert.Equal("password", input.GetAttribute("name"));
+        Assert.Equal("login", input.GetAttribute("form"));
+        Assert.Equal("Password", input.GetAttribute("aria-label"));
+        Assert.True(input.HasAttribute("autofocus"));
+        Assert.Equal("pwd", input.GetAttribute("data-testid"));
+
+        // The unmatched attribute stays on the field's root, not on the control.
+        var root = cut.Find($".{Css.Classes.Input.Root}");
+        Assert.Equal("shell", root.GetAttribute("data-wrapper"));
+        Assert.Null(root.GetAttribute("name"));
+    }
+
+    [Fact]
+    public void Autocomplete_ReachesTheNativeInput()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Autocomplete, "current-password"));
+
+        Assert.Equal("current-password", cut.Find("input").GetAttribute("autocomplete"));
+    }
 }
 
 // The reveal button is a control the caller reaches with the keyboard, so it has to exist for a screen
