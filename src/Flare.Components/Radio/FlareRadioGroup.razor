@@ -9,12 +9,14 @@
     {
         <legend class="@Css.Classes.RadioGroup.Legend">@Label</legend>
     }
-    <CascadingValue Value="_context" IsFixed="true">
+    @* Not fixed: the context carries the selection and the error id, and both change after the first render.
+       A fixed provider would keep the initial value, so a radio would never see a new check or the error. *@
+    <CascadingValue Value="_context">
         @ChildContent
     </CascadingValue>
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@Css.Classes.RadioGroup.ErrorMsg">@_displayedError</span>
+        <span id="@_errorId" class="@Css.Classes.RadioGroup.ErrorMsg" role="alert">@_displayedError</span>
     }
 </fieldset>
 
@@ -54,6 +56,8 @@
     private FieldIdentifier _fieldId;
     private FlareRadioGroupContext _context = default!;
     private readonly string _groupName = $"flare-radio-{Guid.NewGuid():N}";
+    // Every radio describes itself with the error while it is shown; the id stays stable across updates.
+    private string _errorId => $"{_groupName}-err";
 
     protected override void OnInitialized()
     {
@@ -67,16 +71,25 @@
         if (EditContext is not null && For is not null)
             _fieldId = FieldIdentifier.Create(For);
 
-        _context = new FlareRadioGroupContext(
-            Value,
-            Disabled,
-            SelectBoxedAsync,
-            _groupName,
-            Size);
+        UpdateContext();
     }
 
+    // The error id reaches the radios through the context, and validation changes arrive without a
+    // parameter set: rebuild it before the render that shows or clears the message.
+    private void UpdateContext() => _context = new FlareRadioGroupContext(
+        Value,
+        Disabled,
+        SelectBoxedAsync,
+        _groupName,
+        Size,
+        string.IsNullOrEmpty(_displayedError) ? null : _errorId);
+
     private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
+        => InvokeAsync(() =>
+        {
+            UpdateContext();
+            StateHasChanged();
+        });
 
     public override async ValueTask DisposeAsync()
     {

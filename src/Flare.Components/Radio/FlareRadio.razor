@@ -8,6 +8,8 @@
                name="@(GroupContext?.GroupName)"
                checked="@_checked"
                disabled="@_disabled"
+               aria-describedby="@GroupContext?.ErrorId"
+               aria-invalid="@(GroupContext?.ErrorId is null ? null : "true")"
                @onchange="HandleChange" />
         <span class="@Css.Classes.Radio.Indicator" aria-hidden="true"></span>
     </span>
