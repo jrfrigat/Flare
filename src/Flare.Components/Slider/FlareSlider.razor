@@ -8,12 +8,17 @@
     @if (LabelContent is not null || !string.IsNullOrEmpty(Label) || (ShowValue && Range))
     {
         <div class="@Css.Classes.Slider.LabelRow">
-            <label class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
+            <label id="@_labelId" class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
             @if (ShowValue)
             {
                 <span class="@Css.Classes.Slider.Value">@_displayText</span>
             }
         </div>
+    }
+    @if (Range)
+    {
+        <span id="@_lowEndpointId" class="@Css.Classes.Visually.Hidden">@_lowEndpointText</span>
+        <span id="@_highEndpointId" class="@Css.Classes.Visually.Hidden">@_highEndpointText</span>
     }
     <div class="@Css.Classes.Slider.Row">
         @if (StartIcon is not null)
@@ -47,7 +52,9 @@
                            disabled="@Disabled"
                            style="z-index:@(_lowPct > 50 ? 5 : 2)"
                            aria-orientation="@(Vertical ? "vertical" : null)"
-                           aria-label="@_lowAria"
+                           aria-labelledby="@_lowLabelledBy"
+                           aria-describedby="@_describedBy"
+                           aria-invalid="@_invalidAttr"
                            aria-valuetext="@_lowText"
                            @oninput="HandleLowInput" />
                     <input class="@Css.Classes.Slider.Input @Css.Classes.Slider.InputHigh"
@@ -56,7 +63,9 @@
                            value="@_valueEndAttr"
                            disabled="@Disabled"
                            aria-orientation="@(Vertical ? "vertical" : null)"
-                           aria-label="@_highAria"
+                           aria-labelledby="@_highLabelledBy"
+                           aria-describedby="@_describedBy"
+                           aria-invalid="@_invalidAttr"
                            aria-valuetext="@_highText"
                            @oninput="HandleHighInput" />
                 }
@@ -68,7 +77,10 @@
                            value="@_valueAttr"
                            disabled="@Disabled"
                            aria-orientation="@(Vertical ? "vertical" : null)"
-                           aria-label="@(Label is null ? AriaLabel : null)"
+                           aria-labelledby="@(_hasVisibleLabel ? _labelId : null)"
+                           aria-label="@(_hasVisibleLabel ? null : AriaLabel)"
+                           aria-describedby="@_describedBy"
+                           aria-invalid="@_invalidAttr"
                            aria-valuetext="@_lowText"
                            @oninput="HandleInput" />
                 }
@@ -114,11 +126,11 @@
     </div>
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@Css.Classes.Slider.Helper @Css.Classes.Slider.HelperError">@_displayedError</span>
+        <span id="@_errorId" class="@Css.Classes.Slider.Helper @Css.Classes.Slider.HelperError" role="alert">@_displayedError</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
-        <span class="@Css.Classes.Slider.Helper">@HelperText</span>
+        <span id="@_helperId" class="@Css.Classes.Slider.Helper">@HelperText</span>
     }
     @* Zones register via the cascaded collection and render no DOM of their own; the rail above draws
        their bands. IsFixed: the collection instance never changes identity. *@
@@ -250,6 +262,21 @@
     };
 
     private FieldIdentifier _fieldId;
+    private readonly string _controlId = $"flare-slider-{Guid.NewGuid():N}";
+    private string _labelId => $"{_controlId}-label";
+    private string _helperId => $"{_controlId}-help";
+    private string _errorId => $"{_controlId}-err";
+    private string _lowEndpointId => $"{_controlId}-low";
+    private string _highEndpointId => $"{_controlId}-high";
+    private bool _hasVisibleLabel => LabelContent is not null || !string.IsNullOrEmpty(Label);
+    private string? _describedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+    private string? _invalidAttr => string.IsNullOrEmpty(_displayedError) ? null : "true";
+    private string _lowLabelledBy => _hasVisibleLabel ? $"{_labelId} {_lowEndpointId}" : _lowEndpointId;
+    private string _highLabelledBy => _hasVisibleLabel ? $"{_labelId} {_highEndpointId}" : _highEndpointId;
+    private string _lowEndpointText => _hasVisibleLabel ? "minimum" : $"{AriaLabel} minimum".Trim();
+    private string _highEndpointText => _hasVisibleLabel ? "maximum" : $"{AriaLabel} maximum".Trim();
 
     // OWASP: silently clamp when Min > Max to prevent invalid range
     private double _safeMin => Math.Min(Min, Max);
@@ -412,8 +439,6 @@
     private string _lowText => _effLow.ToString(Format ?? "G", CultureInfo.CurrentCulture);
     private string _highText => _effHigh.ToString(Format ?? "G", CultureInfo.CurrentCulture);
     private string _displayText => Range ? $"{_lowText} - {_highText}" : _lowText;
-    private string _lowAria => Range ? $"{Label ?? AriaLabel} minimum".Trim() : (Label ?? AriaLabel ?? string.Empty);
-    private string _highAria => $"{Label ?? AriaLabel} maximum".Trim();
     private string _valueAttr => _effLow.ToString(CultureInfo.InvariantCulture);
     private string _valueEndAttr => _effHigh.ToString(CultureInfo.InvariantCulture);
     private string _minText => _safeMin.ToString(CultureInfo.InvariantCulture);
