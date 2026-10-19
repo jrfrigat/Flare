@@ -65,7 +65,11 @@
     transition: opacity var(--flare-motion-duration-state-change),
                 transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-decelerate);
 }
-.flare-fab-menu__list--open { content-visibility: visible; }
+/* No transition on the way IN: a discrete content-visibility change flips at the midpoint, so the
+   list stayed unrendered for the first half of the open animation and swallowed the focus request
+   that lands on the first action right after the class is applied. The close keeps the base rule's
+   transition (the after-change style is the closing one), so it still animates out. */
+.flare-fab-menu__list--open { content-visibility: visible; transition: none; }
 
 .flare-fab-menu__list--open .flare-fab-menu__item {
     opacity: 1;

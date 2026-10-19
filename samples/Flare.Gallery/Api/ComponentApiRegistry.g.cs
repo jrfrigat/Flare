@@ -520,7 +520,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the group, forwarded as aria-label. Name a group whose buttons belong together for a reason the buttons alone do not say - ""Filter by status"", ""Text alignment"".", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The buttons to render inside the group.", null, false, false, false, @"FlareButtonGroup"),
-                new ApiParameterInfo(@"Collapsible", @"bool", @"false", @"Folds the segments that no longer fit into an overflow menu at the trailing end, and unfolds them again when the room comes back. Whether something fits is a question only the browser can answer, so this is the one part of the group measured in script rather than decided in CSS. Suits the standard model, which hugs its buttons and therefore can run out of room; a connected group is meant to span its surface and share the width out instead of overflowing.", null, false, false, false, @"FlareButtonGroup"),
+                new ApiParameterInfo(@"Collapsible", @"bool", @"false", @"Folds the segments that no longer fit into an overflow menu at the trailing end, and unfolds them again when the room comes back. Whether something fits is a question only the browser can answer, so this is the one part of the group measured in script rather than decided in CSS. Suits the standard model, which hugs its buttons and therefore can run out of room; a connected group is meant to span its surface and share the width out instead of overflowing. The content is rendered twice - once in the bar and once in the overflow panel - because a RenderFragment cannot be partly relocated. The two copies are separate component instances, so a stateful child needs a controlled value (FlareToggleButton.Toggled) for both copies to show the same state; an uncontrolled child keeps one state per copy.", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"Color", @"FlareColor?", null, @"Color applied to all buttons in the group. Null keeps each button's own Color.", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"Connected", @"bool", @"false", @"Switches the group from the standard model to the connected one. The two differ in how a press travels: a standard group's segments respond to each other, so pressing one changes its width and its neighbours give up the space; a connected group's segments are independent, and a press changes only the shape of the button pressed. Connected is the model for a row of related options that can be selected - it is what replaces the older segmented button - and it is usually paired with FullWidth, since a connected group is meant to span its surface and widen its buttons to fill it. Default false (standard).", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"When true, the group stretches to fill the full width of its container.", null, false, false, false, @"FlareButtonGroup"),
@@ -3051,7 +3051,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -3077,7 +3081,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

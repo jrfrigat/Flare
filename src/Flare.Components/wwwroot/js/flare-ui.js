@@ -52,6 +52,32 @@ export function removeTreeKeyboard(root) {
 
 // Focuses the row at a flat index. A virtualized row far from the viewport is not in the DOM yet: the container
 // is scrolled to where it would be, and the row is focused once the virtualizer renders it.
+// A FAB speed-dial menu moves focus between its actions in .NET. The browser's own handling of the same
+// keys would scroll the page under the focused action, so those keys are kept from it; Tab, Enter, Space
+// and Escape still do what they do everywhere else.
+const _fabKeyboards = registry();
+const FAB_MENU_KEYS = new Set(['ArrowUp', 'ArrowDown', 'Home', 'End']);
+
+export function registerFabMenuKeyboard(list) {
+    if (!list) return;
+    // The trigger sits beside the list, not inside it, and opens the menu with the same arrows: the
+    // listener belongs on their common parent so both take the default scroll away.
+    const root = list.parentElement || list;
+    const keydown = e => {
+        if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || !FAB_MENU_KEYS.has(e.key)) return;
+        const onItem = e.target.closest?.('[role="menuitem"]');
+        const onTrigger = e.key === 'ArrowUp' || e.key === 'ArrowDown'
+            ? e.target.matches?.('button[aria-haspopup="menu"]')
+            : false;
+        if (onItem || onTrigger) e.preventDefault();
+    };
+    _fabKeyboards.keep(list, listen(root, 'keydown', keydown));
+}
+
+export function removeFabMenuKeyboard(list) {
+    if (list) _fabKeyboards.drop(list);
+}
+
 export function focusTreeItem(root, index, timeoutMs = 1000) {
     if (!root) return Promise.resolve(false);
     const find = () => root.querySelector(`[data-flare-tree-index="${index}"]`);

@@ -1,11 +1,15 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IUiJsService Ui
 
-<div class="@BuildCssClass(_sideClass, _alignClass, _open ? Css.Classes.FabMenu.ListOpen : null)"
-     role="menu"
-     aria-hidden="@((!_open).ToString().ToLowerInvariant())"
+<div @ref="_list"
+     class="@BuildCssClass(_sideClass, _alignClass, _open ? Css.Classes.FabMenu.ListOpen : null)"
      style="@Style"
-     @attributes="AdditionalAttributes">
+     @attributes="AdditionalAttributes"
+     id="@FabContext?.MenuId"
+     role="menu"
+     aria-labelledby="@FabContext?.TriggerId"
+     aria-hidden="@((!_open).ToString().ToLowerInvariant())">
     @ChildContent
 </div>
 
@@ -27,6 +31,39 @@
     protected override string ComponentCssClass => Css.Classes.FabMenu.List;
 
     private bool _open => Open;
+
+    private ElementReference _list;
+    private bool _keyboardRegistered;
+
+    // The actions move focus in .NET; the browser's own handling of the arrows would scroll the page
+    // under them. The listener is registered once, not per open: items are always mounted and only
+    // become focusable while the list is visible.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_keyboardRegistered) return;
+
+        try
+        {
+            await Ui.RegisterFabMenuKeyboardAsync(_list);
+            _keyboardRegistered = true;
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (InvalidOperationException) { }
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        if (_keyboardRegistered)
+        {
+            try { await Ui.RemoveFabMenuKeyboardAsync(_list); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+        }
+        await base.DisposeAsync();
+    }
 
     private string _sideClass => Placement switch
     {

@@ -4,12 +4,13 @@
 
 @if (ChildContent is not null)
 {
-    @* Speed-dial mode: the FAB is the trigger for a child FlareFloatingActionMenu *@
+    @* Speed-dial mode: the FAB is the trigger for a child FlareFloatingActionMenu. The trigger comes
+       first in the DOM so Tab leaves the popup instead of landing back on it. *@
     <div class="@_menuWrapperClass" style="@(Position == FabPosition.Static ? Style : null)">
-        <CascadingValue Value="@(new FabMenuContext(_open, Close))">
+        @RenderFab(isTrigger: true)
+        <CascadingValue Value="Context">
             @ChildContent
         </CascadingValue>
-        @RenderFab(isTrigger: true)
     </div>
 }
 else if (Position != FabPosition.Static)
@@ -59,6 +60,13 @@ else
     private DotNetObjectReference<FlareFloatingActionButton>? _selfRef;
     private bool _escapeLayerRegistered;
     private readonly string _escapeLayerId = "flare-fab-menu-" + Guid.NewGuid().ToString("N")[..8];
+    private readonly string _triggerId = "flare-fab-trigger-" + Guid.NewGuid().ToString("N")[..8];
+    private readonly string _menuId = "flare-fab-list-" + Guid.NewGuid().ToString("N")[..8];
+    private readonly FabMenuItems _items = new();
+    private bool _focusFirstOnOpen;
+    private bool _focusLastOnOpen;
+
+    private FabMenuContext Context => new(_open, Close, _menuId, _triggerId, _items);
 
     /// <summary>Sets keyboard focus to the FAB element.</summary>
     public ValueTask FocusAsync() => _element.FocusAsync();
@@ -91,15 +99,24 @@ else
         if (_focusOnClose && !_open)
         {
             _focusOnClose = false;
-            try { await _element.FocusAsync(); }
+            try { await _element.FocusAsync(preventScroll: true); }
             catch (JSException) { }
             catch (InvalidOperationException) { }
+        }
+
+        // After the open class has made the list visible: a focus on an item while the list still
+        // carries content-visibility: hidden goes nowhere.
+        if (_open && (_focusFirstOnOpen || _focusLastOnOpen))
+        {
+            var first = _focusFirstOnOpen;
+            _focusFirstOnOpen = _focusLastOnOpen = false;
+            await _items.FocusEdgeAsync(first);
         }
     }
 
     /// <summary>Closes the speed-dial menu when the overlay layer receives Escape.</summary>
     [JSInvokable]
-    public Task CloseFromEscape() => InvokeAsync(Close);
+    public Task CloseFromEscape() => InvokeAsync(() => Close(true));
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
@@ -157,18 +174,63 @@ else
     private async Task HandleClick(MouseEventArgs e)
     {
         if (ChildContent is not null)
-            _open = !_open;
+        {
+            if (_open)
+            {
+                Close(true);
+                return;
+            }
+
+            // A keyboard activation reports detail 0; a pointer click leaves focus on the trigger.
+            _focusFirstOnOpen = e.Detail == 0;
+            _focusLastOnOpen = false;
+            _open = true;
+        }
         else if (OnClick.HasDelegate)
+        {
             await OnClick.InvokeAsync(e);
+        }
+    }
+
+    private async Task HandleTriggerKeyDown(KeyboardEventArgs e)
+    {
+        if (ChildContent is null || Disabled) return;
+
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                if (_open) await _items.FocusEdgeAsync(first: true);
+                else OpenWithFocus(first: true);
+                break;
+            case "ArrowUp":
+                if (_open) await _items.FocusEdgeAsync(first: false);
+                else OpenWithFocus(first: false);
+                break;
+            case "Home" when _open:
+                await _items.FocusEdgeAsync(first: true);
+                break;
+            case "End" when _open:
+                await _items.FocusEdgeAsync(first: false);
+                break;
+        }
+    }
+
+    private void OpenWithFocus(bool first)
+    {
+        _focusFirstOnOpen = first;
+        _focusLastOnOpen = !first;
+        _open = true;
+        StateHasChanged();
     }
 
     private bool _focusOnClose;
 
-    private void Close()
+    private void Close(bool restoreFocus)
     {
         if (!_open) return;
         _open = false;
-        _focusOnClose = true;
+        _focusFirstOnOpen = _focusLastOnOpen = false;
+        _focusOnClose = restoreFocus;
         StateHasChanged();
     }
 
@@ -177,11 +239,15 @@ else
         <button @ref="_element"
                 class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
                 style="@CombineStyle(isTrigger ? null : Style)"
+                id="@(isTrigger ? _triggerId : null)"
                 aria-label="@AriaLabel"
+                aria-haspopup="@(isTrigger ? "menu" : null)"
+                aria-controls="@(isTrigger ? _menuId : null)"
                 aria-expanded="@(isTrigger ? _open.ToString().ToLowerInvariant() : null)"
                 type="button"
                 disabled="@Disabled"
                 @onclick="HandleClick"
+                @onkeydown="HandleTriggerKeyDown"
                 @attributes="AdditionalAttributes">
             @if (IconContent is not null)
             {

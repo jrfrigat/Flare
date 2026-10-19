@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests;
@@ -144,6 +145,173 @@ public class FlareFabMenuTests : FlareTestContext
             var target = Assert.IsType<ElementReference>(focus.Arguments[0]);
             Assert.Equal(triggerId, target.Id);
         });
+    }
+
+    private static string TriggerSelector => $".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}";
+    private static string ActionSelector => $"button.{Css.Classes.FabMenu.Btn}";
+
+    private static void AddAction(RenderTreeBuilder builder, int seq, string label, bool disabled)
+    {
+        builder.OpenComponent<FlareFloatingActionMenuItem>(seq);
+        builder.AddAttribute(seq + 1, nameof(FlareFloatingActionMenuItem.Icon), FlareIcons.Edit);
+        builder.AddAttribute(seq + 2, nameof(FlareFloatingActionMenuItem.Label), label);
+        builder.AddAttribute(seq + 3, nameof(FlareFloatingActionMenuItem.Disabled), disabled);
+        builder.CloseComponent();
+    }
+
+    // Three actions in a fixed order, the middle one disabled: every focus assertion needs to know
+    // which button comes next, and a disabled one has to be skipped on the way.
+    private IRenderedComponent<FlareFloatingActionButton> RenderThreeActions() =>
+        Render<FlareFloatingActionButton>(p => p
+            .Add(x => x.AriaLabel, "Actions")
+            .Add(x => x.Position, FabPosition.Static)
+            .Add(x => x.ChildContent, (RenderFragment)(builder =>
+            {
+                builder.OpenComponent<FlareFloatingActionMenu>(0);
+                builder.AddAttribute(1, nameof(FlareFloatingActionMenu.Placement), Placement.Top);
+                builder.AddAttribute(2, nameof(FlareFloatingActionMenu.ChildContent), (RenderFragment)(items =>
+                {
+                    AddAction(items, 0, "Edit", false);
+                    AddAction(items, 10, "Archived", true);
+                    AddAction(items, 20, "Delete", false);
+                }));
+                builder.CloseComponent();
+            })));
+
+    private int FocusCallCount() =>
+        JSInterop.Invocations.Count(i => i.Identifier == "Blazor._internal.domWrapper.focus");
+
+    // bUnit never assigns element-reference ids, so it can count a focus request but not say which
+    // element received it; the browser suite checks the target through document.activeElement.
+    private void AssertFocusRequested(IRenderedComponent<FlareFloatingActionButton> cut, int expectedCalls) =>
+        cut.WaitForAssertion(() => Assert.Equal(expectedCalls, FocusCallCount()));
+
+    private void OpenWithMouse(IRenderedComponent<FlareFloatingActionButton> cut)
+    {
+        cut.Find(TriggerSelector).Click(new MouseEventArgs { Detail = 1 });
+        Assert.Equal("true", cut.Find(TriggerSelector).GetAttribute("aria-expanded"));
+        Assert.Equal(0, FocusCallCount());
+    }
+
+    [Fact]
+    public void Trigger_AnnouncesTheMenuItControls()
+    {
+        var cut = RenderFabMenu();
+        var trigger = cut.Find(TriggerSelector);
+        var list = cut.Find($".{Css.Classes.FabMenu.List}");
+
+        Assert.Equal("menu", trigger.GetAttribute("aria-haspopup"));
+        Assert.Equal(list.GetAttribute("id"), trigger.GetAttribute("aria-controls"));
+        Assert.Equal("menu", list.GetAttribute("role"));
+        Assert.Equal(trigger.GetAttribute("id"), list.GetAttribute("aria-labelledby"));
+    }
+
+    [Fact]
+    public void Actions_AreMenuItems()
+    {
+        var cut = RenderFabMenu();
+
+        var action = cut.Find(ActionSelector);
+        Assert.Equal("menuitem", action.GetAttribute("role"));
+        Assert.Equal("-1", action.GetAttribute("tabindex"));
+        Assert.Equal("none", cut.Find($".{Css.Classes.FabMenu.Item}").GetAttribute("role"));
+    }
+
+    [Fact]
+    public void KeyboardClick_OpensAndRequestsFocus()
+    {
+        var cut = RenderThreeActions();
+
+        cut.Find(TriggerSelector).Click(new MouseEventArgs { Detail = 0 });
+
+        Assert.Equal("true", cut.Find(TriggerSelector).GetAttribute("aria-expanded"));
+        AssertFocusRequested(cut, 1);
+    }
+
+    [Fact]
+    public void MouseClick_OpensWithoutMovingFocus()
+    {
+        var cut = RenderThreeActions();
+
+        cut.Find(TriggerSelector).Click(new MouseEventArgs { Detail = 1 });
+
+        Assert.Equal("true", cut.Find(TriggerSelector).GetAttribute("aria-expanded"));
+        Assert.Equal(0, FocusCallCount());
+    }
+
+    [Fact]
+    public void ArrowDown_OnTheTriggerOpensAndRequestsFocus()
+    {
+        var cut = RenderThreeActions();
+
+        cut.Find(TriggerSelector).KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+
+        cut.WaitForAssertion(() => Assert.Equal("true", cut.Find(TriggerSelector).GetAttribute("aria-expanded")));
+        AssertFocusRequested(cut, 1);
+    }
+
+    [Fact]
+    public void ArrowUp_OnTheTriggerOpensAndRequestsFocus()
+    {
+        var cut = RenderThreeActions();
+
+        cut.Find(TriggerSelector).KeyDown(new KeyboardEventArgs { Key = "ArrowUp" });
+
+        cut.WaitForAssertion(() => Assert.Equal("true", cut.Find(TriggerSelector).GetAttribute("aria-expanded")));
+        AssertFocusRequested(cut, 1);
+    }
+
+    [Fact]
+    public void ArrowKeys_RequestFocusOncePerPress()
+    {
+        var cut = RenderThreeActions();
+        OpenWithMouse(cut);
+
+        cut.FindAll(ActionSelector)[0].KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        AssertFocusRequested(cut, 1);
+
+        cut.FindAll(ActionSelector)[2].KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        AssertFocusRequested(cut, 2);
+
+        cut.FindAll(ActionSelector)[0].KeyDown(new KeyboardEventArgs { Key = "ArrowUp" });
+        AssertFocusRequested(cut, 3);
+    }
+
+    [Fact]
+    public void HomeAndEnd_RequestFocus()
+    {
+        var cut = RenderThreeActions();
+        OpenWithMouse(cut);
+
+        cut.FindAll(ActionSelector)[2].KeyDown(new KeyboardEventArgs { Key = "Home" });
+        AssertFocusRequested(cut, 1);
+
+        cut.FindAll(ActionSelector)[0].KeyDown(new KeyboardEventArgs { Key = "End" });
+        AssertFocusRequested(cut, 2);
+    }
+
+    [Fact]
+    public void EscapeFromAnAction_ClosesTheMenuAndRequestsFocusOnTheTrigger()
+    {
+        var cut = RenderThreeActions();
+        OpenWithMouse(cut);
+
+        cut.FindAll(ActionSelector)[0].KeyDown(new KeyboardEventArgs { Key = "Escape" });
+
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.Find(TriggerSelector).GetAttribute("aria-expanded")));
+        AssertFocusRequested(cut, 1);
+    }
+
+    [Fact]
+    public void TabFromAnAction_ClosesTheMenuWithoutPullingFocusBack()
+    {
+        var cut = RenderThreeActions();
+        OpenWithMouse(cut);
+
+        cut.FindAll(ActionSelector)[0].KeyDown(new KeyboardEventArgs { Key = "Tab" });
+
+        cut.WaitForAssertion(() => Assert.Equal("false", cut.Find(TriggerSelector).GetAttribute("aria-expanded")));
+        Assert.Equal(0, FocusCallCount());
     }
 
     // Each Placement is a side and an alignment. A bare side centres, which is the side class's own

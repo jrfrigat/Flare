@@ -1,0 +1,22 @@
+@page "/fab-menu"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px;min-height:2000px">
+        <FlareFloatingActionButton id="fab-trigger" AriaLabel="Actions" Position="FabPosition.Static">
+            <FlareFloatingActionMenu Placement="Placement.Bottom">
+                <FlareFloatingActionMenuItem id="fab-edit" Label="Edit" OnClick="OnAction" />
+                <FlareFloatingActionMenuItem id="fab-archived" Label="Archived" Disabled="true" />
+                <FlareFloatingActionMenuItem id="fab-delete" Label="Delete" OnClick="OnAction" />
+            </FlareFloatingActionMenu>
+        </FlareFloatingActionButton>
+
+        <button id="after-fab" @onclick="OnAction">After</button>
+        <span id="actions">@_actions</span>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private int _actions;
+
+    private void OnAction() => _actions++;
+}

@@ -1,16 +1,20 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="none">
     @if (!string.IsNullOrEmpty(Label))
     {
         <span class="@Css.Classes.FabMenu.Label" aria-hidden="true">@Label</span>
     }
-    <button class="@Css.Classes.Button.Root @Css.Classes.Fab.Root @Css.Classes.Fab.SizeSm @Css.Classes.Fab.Surface @Css.Classes.FabMenu.Btn"
+    <button @ref="_element"
+            class="@Css.Classes.Button.Root @Css.Classes.Fab.Root @Css.Classes.Fab.SizeSm @Css.Classes.Fab.Surface @Css.Classes.FabMenu.Btn"
             type="button"
+            role="menuitem"
+            tabindex="-1"
             disabled="@Disabled"
             aria-label="@Label"
-            @onclick="HandleClickAsync">
+            @onclick="HandleClickAsync"
+            @onkeydown="HandleKeyDownAsync">
         <FlareIconView Value="Icon" Class="@Css.Classes.Fab.Icon" />
     </button>
 </div>
@@ -26,14 +30,61 @@
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     [CascadingParameter] private FabMenuContext? FabContext { get; set; }
-    private Action? CloseFabMenu => FabContext?.Close;
+    private ElementReference _element;
 
     protected override string ComponentCssClass => Css.Classes.FabMenu.Item;
+
+    /// <summary>Registers this action with the speed-dial menu for keyboard focus movement.</summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        FabContext?.Items.Register(this);
+    }
+
+    /// <summary>Focuses the action's button without scrolling the page under the speed dial.</summary>
+    internal ValueTask FocusAsync() => _element.FocusAsync(preventScroll: true);
+
+    /// <inheritdoc />
+    public override ValueTask DisposeAsync()
+    {
+        FabContext?.Items.Unregister(this);
+        return base.DisposeAsync();
+    }
 
     private async Task HandleClickAsync(MouseEventArgs e)
     {
         if (Disabled) return;
-        CloseFabMenu?.Invoke();
+        FabContext?.Close(true);
         if (OnClick.HasDelegate) await OnClick.InvokeAsync(e);
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs e)
+    {
+        var context = FabContext;
+        if (context is null) return;
+
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                await context.Items.MoveAsync(this, 1);
+                break;
+            case "ArrowUp":
+                await context.Items.MoveAsync(this, -1);
+                break;
+            case "Home":
+                await context.Items.FocusEdgeAsync(first: true);
+                break;
+            case "End":
+                await context.Items.FocusEdgeAsync(first: false);
+                break;
+            case "Escape":
+                context.Close(true);
+                break;
+            case "Tab":
+                // The browser has already moved focus out of the menu by the time this runs;
+                // pulling it back to the trigger would undo the Tab the user asked for.
+                context.Close(false);
+                break;
+        }
     }
 }

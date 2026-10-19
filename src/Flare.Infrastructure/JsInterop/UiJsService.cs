@@ -69,5 +69,11 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask RemoveTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("removeTreeKeyboard", root);
 
     /// <inheritdoc />
+    public ValueTask RegisterFabMenuKeyboardAsync(ElementReference list) => InvokeVoidAsync("registerFabMenuKeyboard", list);
+
+    /// <inheritdoc />
+    public ValueTask RemoveFabMenuKeyboardAsync(ElementReference list) => InvokeVoidAsync("removeFabMenuKeyboard", list);
+
+    /// <inheritdoc />
     public ValueTask FocusTreeItemAsync(ElementReference root, int index) => InvokeVoidAsync("focusTreeItem", root, index);
 }

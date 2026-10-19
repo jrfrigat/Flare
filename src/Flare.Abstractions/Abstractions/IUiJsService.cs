@@ -85,6 +85,18 @@ public interface IUiJsService : IAsyncDisposable
     ValueTask RemoveTreeKeyboardAsync(ElementReference root) => ValueTask.CompletedTask;
 
     /// <summary>
+    /// Keeps the browser from scrolling the page with the keys a FAB speed-dial menu handles itself
+    /// (arrows, Home and End on an action). Tab, Enter, Space and Escape keep their ordinary behavior.
+    /// Defaults to doing nothing, which leaves the browser's scrolling in place.
+    /// </summary>
+    /// <param name="list">The menu list element that holds the actions.</param>
+    ValueTask RegisterFabMenuKeyboardAsync(ElementReference list) => ValueTask.CompletedTask;
+
+    /// <summary>Removes the listener added by <see cref="RegisterFabMenuKeyboardAsync"/>.</summary>
+    /// <param name="list">The menu list element.</param>
+    ValueTask RemoveFabMenuKeyboardAsync(ElementReference list) => ValueTask.CompletedTask;
+
+    /// <summary>
     /// Focuses the tree row at a flat index, scrolling a virtualized row that is not rendered yet into view first.
     /// Defaults to doing nothing.
     /// </summary>
