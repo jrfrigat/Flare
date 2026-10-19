@@ -238,6 +238,23 @@ it('closes only the top of two open popups', () => {
     expect(first.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
 });
 
+// The menu and its submenu are two popup layers. A real document keydown must reach the submenu alone;
+// the C# key handler's stopPropagation cannot do that, which is why each submenu owns a layer.
+it('closes the innermost submenu layer with Escape, then the menu underneath', () => {
+    const menu = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const submenu = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    pushPopupLayer('menu', menu, 'CloseFromEscape');
+    pushPopupLayer('submenu', submenu, 'CloseFromEscape');
+
+    key('Escape');
+    expect(submenu.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
+    expect(menu.invokeMethodAsync).not.toHaveBeenCalled();
+
+    removePopupLayer('submenu');
+    key('Escape');
+    expect(menu.invokeMethodAsync).toHaveBeenCalledWith('CloseFromEscape');
+});
+
 it('lets Escape reach the dialog again once the popup layer is removed', () => {
     const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
     const d = dialog('dialog'); registerDialogEscHandler('dialog', receiver); trapFocus('dialog', d.el);

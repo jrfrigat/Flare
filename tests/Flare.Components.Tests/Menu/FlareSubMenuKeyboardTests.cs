@@ -1,8 +1,10 @@
 using Flare.Abstractions;
 using Flare.Components;
 using Flare.Abstractions.Tokens;
+using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Flare.Components.Tests;
 
@@ -13,6 +15,14 @@ namespace Flare.Components.Tests;
 /// </summary>
 public class FlareSubMenuKeyboardTests : FlareTestContext
 {
+    private readonly RecordingJsRuntime _runtime;
+
+    public FlareSubMenuKeyboardTests()
+    {
+        _runtime = new RecordingJsRuntime(JSInterop.JSRuntime);
+        Services.AddScoped<IOverlayJsService>(_ => new OverlayJsService(_runtime));
+    }
+
     private static MouseEventArgs FromKeyboard() => new() { Detail = 0 };
     private static KeyboardEventArgs Key(string key, bool shift = false) => new() { Key = key, ShiftKey = shift };
 
@@ -181,4 +191,65 @@ public class FlareSubMenuKeyboardTests : FlareTestContext
 
         Assert.Equal(2, cut.FindAll(SubmenuPanelSelector).Count);
     }
+
+    // The submenu owns its own Escape layer while open. The menu's layer stays underneath, so the native
+    // document listener closes the submenu alone instead of the whole menu - a C# stopPropagation never
+    // reaches that listener.
+    [Fact]
+    public async Task OpeningASubmenu_RegistersItsOwnEscapeLayer()
+    {
+        var cut = OpenMenu(MenuWithSubmenu(() => { }, () => { }, () => { }));
+        await OpenSubmenuAsync(cut);
+        cut.WaitForAssertion(() => Assert.True(SubmenuLayerPushed()));
+
+        await cut.InvokeAsync(() => cut.Find(SubmenuPanelSelector).KeyDown(Key("Escape")));
+
+        cut.WaitForAssertion(() => Assert.True(SubmenuLayerRemoved()));
+    }
+
+    [Fact]
+    public async Task CloseFromEscape_ClosesOnlyTheSubmenu()
+    {
+        var cut = OpenMenu(MenuWithSubmenu(() => { }, () => { }, () => { }));
+        await OpenSubmenuAsync(cut);
+
+        await cut.FindComponent<FlareSubMenu>().Instance.CloseFromEscape();
+
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Empty(cut.FindAll(SubmenuPanelSelector));
+            Assert.Single(cut.FindAll(PanelSelector));
+        });
+    }
+
+    [Fact]
+    public async Task ClosingTheMenu_RemovesTheSubmenuEscapeLayer()
+    {
+        var cut = OpenMenu(MenuWithSubmenu(() => { }, () => { }, () => { }));
+        await OpenSubmenuAsync(cut);
+        cut.WaitForAssertion(() => Assert.True(SubmenuLayerPushed()));
+
+        await cut.InvokeAsync(() => cut.Find($".{Css.Classes.Menu.Backdrop}").Click());
+
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Empty(cut.FindAll(PanelSelector));
+            Assert.True(SubmenuLayerRemoved());
+        });
+    }
+
+    private static async Task OpenSubmenuAsync(IRenderedComponent<FlareMenu> cut)
+    {
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        await cut.InvokeAsync(() => cut.Find(PanelSelector).KeyDown(Key("ArrowDown")));
+        await cut.InvokeAsync(() => cut.Find(PanelSelector).KeyDown(Key("ArrowRight")));
+    }
+
+    private bool SubmenuLayerPushed() => _runtime.Invocations.Any(i =>
+        i.Id == "pushPopupLayer" && i.Args is { Length: > 0 } args
+        && args[0] is string id && id.StartsWith("flare-submenu-", StringComparison.Ordinal));
+
+    private bool SubmenuLayerRemoved() => _runtime.Invocations.Any(i =>
+        i.Id == "removePopupLayer" && i.Args is { Length: > 0 } args
+        && args[0] is string id && id.StartsWith("flare-submenu-", StringComparison.Ordinal));
 }

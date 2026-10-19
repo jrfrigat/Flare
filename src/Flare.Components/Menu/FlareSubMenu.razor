@@ -111,6 +111,11 @@
 
     private FlareMenuContext? _menuContext;
     private readonly CancelScope _hideCts = new();
+    // The submenu is its own topmost Escape layer while open: the parent menu's layer stays underneath,
+    // so one Escape closes the submenu and not the whole menu. A C# key handler cannot do this alone -
+    // its stopPropagation never reaches the native document listener that owns the popup stack.
+    private DotNetObjectReference<FlareSubMenu>? _selfRef;
+    private bool _escapeLayerRegistered;
 
     protected override void OnInitialized()
     {
@@ -140,7 +145,30 @@
             _wasOpen = false;
             try { await _activatorEl.FocusAsync(); } catch { }
         }
+
+        if (_open && !_escapeLayerRegistered)
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                await Overlay.PushPopupLayerAsync(_panelId, _selfRef, nameof(CloseFromEscape));
+                _escapeLayerRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!_open && _escapeLayerRegistered)
+        {
+            _escapeLayerRegistered = false;
+            try { await Overlay.RemovePopupLayerAsync(_panelId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
     }
+
+    /// <summary>Closes this submenu when the overlay layer receives Escape.</summary>
+    [JSInvokable]
+    public Task CloseFromEscape() => InvokeAsync(CloseSubmenuAsync);
 
     private void ShowSubmenu()
     {
@@ -280,6 +308,13 @@
     public override async ValueTask DisposeAsync()
     {
         _hideCts.Dispose();
+        if (_escapeLayerRegistered)
+        {
+            try { await Overlay.RemovePopupLayerAsync(_panelId); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _selfRef?.Dispose();
         await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }
