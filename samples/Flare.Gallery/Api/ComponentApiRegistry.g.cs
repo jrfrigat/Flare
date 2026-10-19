@@ -6242,13 +6242,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of the primary action button, for a child that is only an icon. The dropdown trigger has its own name (MenuAriaLabel), so a screen reader announces the two halves differently. An aria-label passed as an unmatched attribute names the primary action too; this parameter wins when both are set.", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"AriaLabelledBy", @"string?", null, @"Id (or space-separated ids) of the element that names the primary action. Forwarded as aria-labelledby; an unmatched aria-labelledby on the component works the same way.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Label/content of the primary action button.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to both buttons.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the whole split button.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"Stretches the split button to the full width of its container (the primary action grows).", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"When set, the primary action button renders as a link (<a>) to this URL.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a spinner on the primary action button and disables it.", null, false, false, false, @"FlareSplitButton"),
-                new ApiParameterInfo(@"MenuAriaLabel", @"string?", null, @"Accessible label for the dropdown trigger and menu. Null uses the localized default.", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"MenuAriaLabel", @"string?", null, @"Accessible label for the dropdown trigger and menu. Null uses the localized default. It does not name the primary action - use AriaLabel for that.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"MenuItems", @"RenderFragment?", null, @"FlareMenuItem entries shown in the dropdown opened by the trigger.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the primary action button is clicked.", null, false, true, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Placement", @"MenuAnchor", @"MenuAnchor.BottomRight", @"Corner of the trigger the dropdown menu aligns to. Defaults to BottomRight.", null, false, false, false, @"FlareSplitButton"),

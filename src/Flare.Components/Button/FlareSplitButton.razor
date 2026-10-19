@@ -2,11 +2,12 @@
 @inherits FlareComponentBase
 @implements IFlareButton
 
-<div class="@BuildCssClass(_sizeClass, _openedClass, _fullClass)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_sizeClass, _openedClass, _fullClass)" style="@Style" @attributes="_wrapperAttributes">
     <FlareButton @ref="_main" Class="@Css.Classes.SplitButton.Main"
                  Variant="Variant" Color="Color" Size="Size"
                  Disabled="Disabled" Loading="Loading"
                  Href="@Href" Target="@Target" Rel="@Rel"
+                 AriaLabel="@_mainAriaLabel" aria-labelledby="@_mainAriaLabelledBy"
                  OnClick="OnClick">
         @ChildContent
     </FlareButton>
@@ -54,7 +55,16 @@
     [Parameter] public MenuAnchor Placement { get; set; } = MenuAnchor.BottomRight;
     /// <summary>Callback invoked when the primary action button is clicked.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
-    /// <summary>Accessible label for the dropdown trigger and menu. Null uses the localized default.</summary>
+    /// <summary>Accessible name of the primary action button, for a child that is only an icon. The
+    /// dropdown trigger has its own name (<see cref="MenuAriaLabel"/>), so a screen reader announces the
+    /// two halves differently. An <c>aria-label</c> passed as an unmatched attribute names the primary
+    /// action too; this parameter wins when both are set.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Id (or space-separated ids) of the element that names the primary action. Forwarded as
+    /// <c>aria-labelledby</c>; an unmatched <c>aria-labelledby</c> on the component works the same way.</summary>
+    [Parameter] public string? AriaLabelledBy { get; set; }
+    /// <summary>Accessible label for the dropdown trigger and menu. Null uses the localized default.
+    /// It does not name the primary action - use <see cref="AriaLabel"/> for that.</summary>
     [Parameter] public string? MenuAriaLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.SplitButton.Root;
@@ -74,6 +84,30 @@
 
     private string _fullClass => FullWidth ? Css.Classes.SplitButton.Full : string.Empty;
     private string _menuAriaLabel => MenuAriaLabel ?? FlareStrings.Aria_MoreActions;
+
+    // The wrapper has no role, so a name left on it announces nothing. A caller's aria-label /
+    // aria-labelledby is therefore the primary action's name: the explicit parameters win, and the two
+    // keys are removed from the wrapper's copy of the attributes rather than painted twice.
+    private string? _unmatchedAttribute(string name) =>
+        AdditionalAttributes?.TryGetValue(name, out var value) == true ? value?.ToString() : null;
+
+    private string? _mainAriaLabel => AriaLabel ?? _unmatchedAttribute("aria-label");
+    private string? _mainAriaLabelledBy => AriaLabelledBy ?? _unmatchedAttribute("aria-labelledby");
+
+    private IReadOnlyDictionary<string, object>? _wrapperAttributes
+    {
+        get
+        {
+            if (AdditionalAttributes is null) return null;
+            if (!AdditionalAttributes.ContainsKey("aria-label") && !AdditionalAttributes.ContainsKey("aria-labelledby"))
+                return AdditionalAttributes;
+
+            var copy = new Dictionary<string, object>(AdditionalAttributes);
+            copy.Remove("aria-label");
+            copy.Remove("aria-labelledby");
+            return copy;
+        }
+    }
 
     private void ToggleMenuState(bool opened)
     {

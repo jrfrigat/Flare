@@ -16,6 +16,16 @@
         </MenuItems>
     </FlareSplitButton>
 
+    @* An icon-only primary action has no text to name it, so AriaLabel carries the name; the trigger
+       keeps its own MenuAriaLabel and the two halves announce differently. *@
+    <FlareSplitButton Variant="ButtonVariant.Tonal" AriaLabel="@GalleryStrings.SplitButton_Export"
+                      MenuAriaLabel="@GalleryStrings.SplitButton_SaveAs" OnClick="@(() => _last = GalleryStrings.SplitButton_Export)">
+        <ChildContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Download" /></ChildContent>
+        <MenuItems>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SaveAs" OnClick="@(() => _last = GalleryStrings.SplitButton_SaveAs)">@GalleryStrings.SplitButton_SaveAs</FlareMenuItem>
+        </MenuItems>
+    </FlareSplitButton>
+
     <FlareSplitButton Variant="ButtonVariant.Filled" Disabled="true" MenuAriaLabel="Disabled actions">
         <ChildContent>Disabled</ChildContent>
         <MenuItems>

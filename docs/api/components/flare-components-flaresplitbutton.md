@@ -8,13 +8,15 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of the primary action button, for a child that is only an icon. The dropdown trigger has its own name (MenuAriaLabel), so a screen reader announces the two halves differently. An aria-label passed as an unmatched attribute names the primary action too; this parameter wins when both are set. |
+| `AriaLabelledBy` | `string?` | `` | Parameter |  | Id (or space-separated ids) of the element that names the primary action. Forwarded as aria-labelledby; an unmatched aria-labelledby on the component works the same way. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Label/content of the primary action button. |
 | `Color` | `FlareColor` | `` | Parameter |  | Semantic color applied to both buttons. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the whole split button. |
 | `FullWidth` | `bool` | `false` | Parameter |  | Stretches the split button to the full width of its container (the primary action grows). |
 | `Href` | `string?` | `` | Parameter |  | When set, the primary action button renders as a link (<a>) to this URL. |
 | `Loading` | `bool` | `false` | Parameter |  | Shows a spinner on the primary action button and disables it. |
-| `MenuAriaLabel` | `string?` | `` | Parameter |  | Accessible label for the dropdown trigger and menu. Null uses the localized default. |
+| `MenuAriaLabel` | `string?` | `` | Parameter |  | Accessible label for the dropdown trigger and menu. Null uses the localized default. It does not name the primary action - use AriaLabel for that. |
 | `MenuItems` | `RenderFragment?` | `` | Parameter |  | FlareMenuItem entries shown in the dropdown opened by the trigger. |
 | `OnClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Callback invoked when the primary action button is clicked. |
 | `Placement` | `MenuAnchor` | `MenuAnchor.BottomRight` | Parameter |  | Corner of the trigger the dropdown menu aligns to. Defaults to BottomRight. |

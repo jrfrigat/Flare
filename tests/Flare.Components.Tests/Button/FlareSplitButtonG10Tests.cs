@@ -5,6 +5,55 @@ namespace Flare.Components.Tests;
 public class FlareSplitButtonG10Tests : FlareTestContext
 {
     [Fact]
+    public void AriaLabel_NamesThePrimaryActionAndMenuAriaLabelNamesTheTrigger()
+    {
+        var cut = Render<FlareSplitButton>(p => p
+            .Add(x => x.AriaLabel, "Export")
+            .Add(x => x.MenuAriaLabel, "Export options")
+            .AddChildContent("Go"));
+
+        Assert.Equal("Export", cut.Find($"button.{Css.Classes.SplitButton.Main}").GetAttribute("aria-label"));
+        Assert.Equal("Export options", cut.Find($"button.{Css.Classes.SplitButton.Trigger}").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void AnUnmatchedAriaLabel_LandsOnThePrimaryActionNotTheWrapper()
+    {
+        var cut = Render<FlareSplitButton>(p => p
+            .AddUnmatched("aria-label", "Icon action")
+            .AddUnmatched("data-testid", "split")
+            .AddChildContent("<span aria-hidden=\"true\">*</span>"));
+
+        Assert.Equal("Icon action", cut.Find($"button.{Css.Classes.SplitButton.Main}").GetAttribute("aria-label"));
+        var root = cut.Find($".{Css.Classes.SplitButton.Root}");
+        Assert.Null(root.GetAttribute("aria-label"));
+        Assert.Equal("split", root.GetAttribute("data-testid"));
+    }
+
+    [Fact]
+    public void AriaLabelledBy_ReachesThePrimaryAction()
+    {
+        var cut = Render<FlareSplitButton>(p => p
+            .Add(x => x.AriaLabelledBy, "export-heading")
+            .AddChildContent("Go"));
+
+        Assert.Equal("export-heading", cut.Find($"button.{Css.Classes.SplitButton.Main}").GetAttribute("aria-labelledby"));
+        Assert.Null(cut.Find($".{Css.Classes.SplitButton.Root}").GetAttribute("aria-labelledby"));
+    }
+
+    [Fact]
+    public void AnExplicitAriaLabel_WinsOverAnUnmatchedOne()
+    {
+        var cut = Render<FlareSplitButton>(p => p
+            .Add(x => x.AriaLabel, "Explicit")
+            .AddUnmatched("aria-label", "Unmatched")
+            .AddChildContent("Go"));
+
+        Assert.Equal("Explicit", cut.Find($"button.{Css.Classes.SplitButton.Main}").GetAttribute("aria-label"));
+        Assert.Null(cut.Find($".{Css.Classes.SplitButton.Root}").GetAttribute("aria-label"));
+    }
+
+    [Fact]
     public void FullWidth_AddsFullClass()
     {
         var cut = Render<FlareSplitButton>(p => p.Add(x => x.FullWidth, true).AddChildContent("Save"));
