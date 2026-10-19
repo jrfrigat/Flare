@@ -82,7 +82,7 @@
     width: calc(var(--_cb-size) * 0.28);   /* ~5px at default 18px */
     height: calc(var(--_cb-size) * 0.5);   /* ~9px at default 18px */
     border-style: solid;
-    border-color: var(--flare-color-on-primary);
+    border-color: var(--fc-on, var(--flare-color-on-primary));
     border-width: 0 2px 2px 0;
     /* center the rotated tick; -60% Y compensates for the rotation's optical offset */
     transform: translate(-50%, -60%) rotate(45deg);
@@ -90,8 +90,8 @@
 
 /* Indeterminate */
 .flare-checkbox__indicator--indeterminate {
-    background-color: var(--flare-color-primary);
-    border-color: var(--flare-color-primary);
+    background-color: var(--fc-main, var(--flare-color-primary));
+    border-color: var(--fc-main, var(--flare-color-primary));
 }
 
 .flare-checkbox__indicator--indeterminate::after {
@@ -101,7 +101,7 @@
     top: 50%;
     width: calc(var(--_cb-size) * 0.5);   /* ~9px at default 18px */
     height: 2px;
-    background: var(--flare-color-on-primary);
+    background: var(--fc-on, var(--flare-color-on-primary));
     transform: translate(-50%, -50%);
 }
 

@@ -1,0 +1,19 @@
+@page "/checkbox"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <div id="role">
+            <FlareCheckbox TValue="bool?" Color="FlareColor.Secondary" Label="Role" />
+        </div>
+        <div id="role-checked">
+            <FlareCheckbox TValue="bool?" Value="true" Color="FlareColor.Secondary" Label="Role checked" />
+        </div>
+        <div id="custom">
+            <FlareCheckbox TValue="bool?" Color="Red" Label="Custom" />
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly FlareColor Red = FlareColor.Custom("#ff0000");
+}

@@ -120,7 +120,7 @@
     private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.Checkbox.LabelStart : string.Empty;
     private bool _hasIcons => CheckedIcon is not null || UncheckedIcon is not null || IndeterminateIcon is not null;
     private string _iconClass => _hasIcons ? Css.Classes.Checkbox.CustomIcon : string.Empty;
-    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+    private string? _inlineStyle => Color.IsCustom ? $"{Color.StyleMainOn()}{Style}" : Style;
 
     // TValue is bool or bool? and nothing else. The check is per instance rather than per render, and it
     // is a throw rather than a silent render because the alternative is a checkbox that draws itself
