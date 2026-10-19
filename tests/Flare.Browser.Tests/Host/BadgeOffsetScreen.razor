@@ -1,0 +1,37 @@
+@page "/badge-offset"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:48px;display:flex;gap:96px;align-items:center">
+        <FlareBadge id="count-top-left" Origin="BadgeOrigin.TopLeft" Count="3" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+        <FlareBadge id="count-top-right" Origin="BadgeOrigin.TopRight" Count="3" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+        <FlareBadge id="count-bottom-left" Origin="BadgeOrigin.BottomLeft" Count="3" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+        <FlareBadge id="count-bottom-right" Origin="BadgeOrigin.BottomRight" Count="3" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+    </main>
+    <main style="padding:48px;display:flex;gap:96px;align-items:center">
+        <FlareBadge id="dot-top-left" Origin="BadgeOrigin.TopLeft" Dot="true" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+        <FlareBadge id="dot-top-right" Origin="BadgeOrigin.TopRight" Dot="true" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+        <FlareBadge id="dot-bottom-left" Origin="BadgeOrigin.BottomLeft" Dot="true" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+        <FlareBadge id="dot-bottom-right" Origin="BadgeOrigin.BottomRight" Dot="true" Style="@_offsets">
+            <span style="@_anchor"></span>
+        </FlareBadge>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private const string _offsets = "--flare-badge-offset:17px;--flare-badge-dot-offset:9px";
+    private const string _anchor = "display:block;inline-size:48px;block-size:48px";
+}
