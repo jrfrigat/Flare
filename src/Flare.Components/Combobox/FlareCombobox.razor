@@ -322,13 +322,13 @@
     }
 
 
-    private void HandleFocus()
+    private async Task HandleFocus()
     {
         if (Disabled || ReadOnly) return;
         _editing = true;
-        // Open showing all options; the label clears so the next keystroke is a fresh query.
         _state.SetInput(string.Empty);
         if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+        await NotifyOpenAsync();
     }
 
     // The chevron's own action. Closing goes through the dismiss path rather than a bare Close() so a
@@ -343,8 +343,7 @@
         }
         else
         {
-            HandleFocus();
-            await NotifyOpenAsync();
+            await HandleFocus();
         }
 
         // The button is not a tab stop and mousedown was prevented, so focus never moved; put it on the
@@ -388,6 +387,7 @@
 
             _state.SetSource(results.Take(MaxItems).ToList());
             if (!_state.IsOpen) _state.Open(FocusStrategy.First); else _state.HighlightFirst();
+            await NotifyOpenAsync();
         }
         catch (OperationCanceledException) { }
         finally
@@ -418,8 +418,8 @@
         if (Disabled || ReadOnly) return;
         switch (e.Key)
         {
-            case "ArrowDown": _state.MoveHighlight(1); break;
-            case "ArrowUp": _state.MoveHighlight(-1); break;
+            case "ArrowDown": _state.MoveHighlight(1); await NotifyOpenAsync(); break;
+            case "ArrowUp": _state.MoveHighlight(-1); await NotifyOpenAsync(); break;
             case "Enter":
                 if (_state.IsOpen && _state.HighlightedItem is { } hi)
                     await HandleSelectAsync(hi);
