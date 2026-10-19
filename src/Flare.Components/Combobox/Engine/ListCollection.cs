@@ -21,7 +21,7 @@ public readonly record struct ComboboxRow<TItem>(bool IsHeader, string? Group, T
 /// <typeparam name="TItem">The option value type.</typeparam>
 public sealed class ListCollection<TItem>
 {
-    private readonly ComboboxPolicy<TItem> _policy;
+    private ComboboxPolicy<TItem> _policy;
     private IReadOnlyList<TItem> _source = Array.Empty<TItem>();
     private List<TItem> _ordered = new();
     private List<TItem> _filtered = new();
@@ -51,11 +51,23 @@ public sealed class ListCollection<TItem>
     public void SetSource(IReadOnlyList<TItem>? items)
     {
         _source = items ?? Array.Empty<TItem>();
-        _ordered = _policy.Group is null
-            ? new List<TItem>(_source)
-            : _source.GroupBy(_policy.Group).SelectMany(static g => g).ToList();
+        BuildOrdered();
         Refilter();
     }
+
+    /// <summary>Replaces the behaviour configuration and recomputes the ordered + filtered projections.</summary>
+    /// <param name="policy">The new configuration.</param>
+    public void SetPolicy(ComboboxPolicy<TItem> policy)
+    {
+        if (policy == _policy) return;
+        _policy = policy;
+        BuildOrdered();
+        Refilter();
+    }
+
+    private void BuildOrdered() => _ordered = _policy.Group is null
+        ? new List<TItem>(_source)
+        : _source.GroupBy(_policy.Group).SelectMany(static g => g).ToList();
 
     /// <summary>Caps the visible options after filtering; 0 or less means no cap.</summary>
     /// <param name="maxResults">The maximum number of visible options.</param>

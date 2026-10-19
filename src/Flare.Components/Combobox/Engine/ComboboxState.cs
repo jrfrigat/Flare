@@ -14,7 +14,7 @@ namespace Flare.Components.Combobox;
 /// <typeparam name="TItem">The option value type.</typeparam>
 public sealed class ComboboxState<TItem>
 {
-    private readonly ComboboxPolicy<TItem> _policy;
+    private ComboboxPolicy<TItem> _policy;
     private string _typeBuffer = string.Empty;
 
     /// <summary>Creates the engine for the given policy.</summary>
@@ -28,6 +28,17 @@ public sealed class ComboboxState<TItem>
 
     /// <summary>The behaviour configuration in force.</summary>
     public ComboboxPolicy<TItem> Policy => _policy;
+
+    /// <summary>Replaces the behaviour configuration, keeping the query, highlight and selection.</summary>
+    /// <param name="policy">The new configuration.</param>
+    public void SetPolicy(ComboboxPolicy<TItem> policy)
+    {
+        if (policy == _policy) return;
+        _policy = policy;
+        Collection.SetPolicy(policy);
+        Selection.SetPolicy(policy);
+        if (HighlightedIndex >= Collection.Count) HighlightedIndex = Collection.Count - 1;
+    }
 
     /// <summary>The ordered / filtered item view.</summary>
     public ListCollection<TItem> Collection { get; }

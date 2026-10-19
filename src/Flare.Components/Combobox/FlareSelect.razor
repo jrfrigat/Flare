@@ -252,26 +252,29 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _state = new ComboboxState<TValue>(ComboboxPolicy<TValue>.ForSingleSelect() with
-        {
-            Label = ResolveLabel,
-            Group = GroupBy,
-            ItemDisabled = ResolveDisabled,
-            Fuzzy = Fuzzy,
-            RankScorer = RankFunc,
-            Comparer = EqualityComparer<TValue>.Default,
-            Pinned = IsNullOption,
-            Searchable = true,  // filtering is a shell rendering choice; the engine filters only when SetInput is called
-        });
+        _state = new ComboboxState<TValue>(BuildPolicy());
         _state.Changed += OnStateChanged;
         _state.ScrollRequested += OnScrollRequested;
     }
+
+    private ComboboxPolicy<TValue> BuildPolicy() => ComboboxPolicy<TValue>.ForSingleSelect() with
+    {
+        Label = ResolveLabel,
+        Group = GroupBy,
+        ItemDisabled = ResolveDisabled,
+        Fuzzy = Fuzzy,
+        RankScorer = RankFunc,
+        Comparer = EqualityComparer<TValue>.Default,
+        Pinned = IsNullOption,
+        Searchable = true,
+    };
 
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         UpdateFieldIdentifier(For);
+        _state.SetPolicy(BuildPolicy());
         GuardNullOption();
 
         if (Controlled) _internal = Value;

@@ -10,7 +10,7 @@ namespace Flare.Components.Combobox;
 /// <typeparam name="TItem">The option value type.</typeparam>
 public sealed class SelectionManager<TItem>
 {
-    private readonly ComboboxPolicy<TItem> _policy;
+    private ComboboxPolicy<TItem> _policy;
     private readonly List<TItem> _order;      // selection order, drives chip / comma-list display
     private HashSet<TItem> _set;               // O(1) membership for per-option render
 
@@ -25,6 +25,15 @@ public sealed class SelectionManager<TItem>
 
     /// <summary>Single- vs multi-value selection (from the policy).</summary>
     public SelectionMode Mode => _policy.SelectionMode;
+
+    /// <summary>Replaces the behaviour configuration, keeping the selected items in order.</summary>
+    /// <param name="policy">The new configuration.</param>
+    public void SetPolicy(ComboboxPolicy<TItem> policy)
+    {
+        if (policy == _policy) return;
+        _policy = policy;
+        _set = new HashSet<TItem>(_order, policy.Comparer);
+    }
 
     /// <summary>The selected items in selection order.</summary>
     public IReadOnlyList<TItem> Selected => _order;

@@ -280,26 +280,29 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _state = new ComboboxState<TValue>(ComboboxPolicy<TValue>.ForMultiSelect() with
-        {
-            Label = ResolveLabel,
-            Group = GroupBy,
-            ItemDisabled = ResolveDisabled,
-            Fuzzy = Fuzzy,
-            RankScorer = RankFunc,
-            Comparer = EqualityComparer<TValue>.Default,
-            MaxSelections = MaxSelections,
-            Searchable = true,
-        });
+        _state = new ComboboxState<TValue>(BuildPolicy());
         _state.Changed += OnStateChanged;
         _state.ScrollRequested += OnScrollRequested;
     }
+
+    private ComboboxPolicy<TValue> BuildPolicy() => ComboboxPolicy<TValue>.ForMultiSelect() with
+    {
+        Label = ResolveLabel,
+        Group = GroupBy,
+        ItemDisabled = ResolveDisabled,
+        Fuzzy = Fuzzy,
+        RankScorer = RankFunc,
+        Comparer = EqualityComparer<TValue>.Default,
+        MaxSelections = MaxSelections,
+        Searchable = true,
+    };
 
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         UpdateFieldIdentifier(For);
+        _state.SetPolicy(BuildPolicy());
 
         // Push the controlled/uncontrolled selection into the engine when it changes externally.
         if (Controlled || !_seeded)

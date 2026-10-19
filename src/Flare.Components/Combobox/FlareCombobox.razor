@@ -242,14 +242,12 @@
 
     private ComboboxPolicy<TValue> BuildPolicy() => ComboboxPolicy<TValue>.ForCombobox() with
     {
-        // Delegates read the current parameters via `this`, so the policy is built once but stays live.
         Label = ResolveLabel,
         Group = GroupBy,
         ItemDisabled = ResolveDisabled,
         Fuzzy = Fuzzy,
         RankScorer = RankFunc,
         Comparer = EqualityComparer<TValue>.Default,
-        // Async search owns filtering; local Items are filtered by the engine.
         Searchable = SearchFunc is null,
     };
 
@@ -258,6 +256,7 @@
     {
         base.OnParametersSet();
         UpdateFieldIdentifier(For);
+        _state.SetPolicy(BuildPolicy());
         if (Disabled || ReadOnly)
         {
             _cts.Cancel();
