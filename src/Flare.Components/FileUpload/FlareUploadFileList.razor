@@ -11,9 +11,11 @@
    root without cancelling the very thing it exists to receive - it used to, and drag-and-drop had never
    worked. The list is the part of the zone with no input beneath it, and there the browser default is to
    navigate away to the dropped file, so the cancel belongs here instead. *@
-<ul class="@Css.Classes.FileUpload.List"
+<ul class="@BuildCssClass()"
+    style="@Style"
     @ondragover:preventDefault="true"
-    @ondrop:preventDefault="true">
+    @ondrop:preventDefault="true"
+    @attributes="AdditionalAttributes">
     @foreach (var item in Items)
     {
         <li class="@Css.Classes.FileUpload.File @StateClass(item.State)">
@@ -109,9 +111,10 @@
     /// <summary>Replaces the row body entirely, receiving the queue entry.</summary>
     [Parameter] public RenderFragment<FlareUploadFile>? FileTemplate { get; set; }
 
-    // The list paints inside the upload component's own root, so it contributes no root class of its own.
+    // The ul is the component's own root, so Class, Style and unmatched attributes land on it; the drop
+    // guards stay bound because attribute splatting does not replace event handlers.
     /// <inheritdoc />
-    protected override string ComponentCssClass => string.Empty;
+    protected override string ComponentCssClass => Css.Classes.FileUpload.List;
 
     private static string? StateClass(FlareUploadState state) => state switch
     {
