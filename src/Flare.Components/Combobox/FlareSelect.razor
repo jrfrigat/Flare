@@ -216,6 +216,7 @@
     protected override string ComponentCssClass => Css.Classes.Select.Root;
 
     private ComboboxState<TValue> _state = default!;
+    private readonly CancelScope _typeaheadCts = new();
     private FlareFieldChrome? _chrome;
     private FlarePopup? _popup;
     private ElementReference _controlEl;
@@ -382,9 +383,29 @@
 
     private void HandleHover(int index) => _state.HighlightAt(index);
 
+    private void ResetTypeaheadNow()
+    {
+        _typeaheadCts.Cancel();
+        _state.ResetTypeahead();
+    }
+
+    private void ScheduleTypeaheadReset()
+    {
+        var token = _typeaheadCts.Next();
+        _ = ResetTypeaheadAfterAsync(token);
+    }
+
+    private async Task ResetTypeaheadAfterAsync(CancellationToken token)
+    {
+        try { await Task.Delay(_state.Policy.TypeaheadResetMs, token); }
+        catch (TaskCanceledException) { return; }
+        if (!token.IsCancellationRequested) await InvokeAsync(_state.ResetTypeahead);
+    }
+
     private async Task HandleInputAsync(ChangeEventArgs e)
     {
         if (ReadOnly) return;
+        ResetTypeaheadNow();
         _editing = true;
         _state.SetInput(e.Value?.ToString() ?? string.Empty);
         if (!_state.IsOpen) _state.Open(FocusStrategy.First);
@@ -410,8 +431,8 @@
             // An arrow on a closed select opens it; that transition reaches a bound Open like every other.
             case "ArrowDown": _state.MoveHighlight(1); await NotifyOpenAsync(); break;
             case "ArrowUp": _state.MoveHighlight(-1); await NotifyOpenAsync(); break;
-            case "Home": if (_state.IsOpen && !Searchable) _state.HighlightFirst(); else return; break;
-            case "End": if (_state.IsOpen && !Searchable) _state.HighlightLast(); else return; break;
+            case "Home": if (_state.IsOpen && !Searchable) { ResetTypeaheadNow(); _state.HighlightFirst(); } else return; break;
+            case "End": if (_state.IsOpen && !Searchable) { ResetTypeaheadNow(); _state.HighlightLast(); } else return; break;
             case "Enter":
                 // Index, not the item: a null row (the NullOption) is a legitimate highlight and the
                 // "is { } item" pattern would skip it.
@@ -424,13 +445,14 @@
                 else { _state.Open(); await NotifyOpenAsync(); }
                 break;
             case "Escape":
+                ResetTypeaheadNow();
                 if (_state.IsOpen) { _state.Close(); _editing = false; await NotifyOpenAsync(); }
                 break;
             default:
-                // Printable single characters drive type-ahead in the non-searchable select.
                 if (!Searchable && e.Key.Length == 1 && !char.IsControl(e.Key[0]))
                 {
                     _state.TypeAhead(e.Key[0]);
+                    ScheduleTypeaheadReset();
                     await NotifyOpenAsync();
                 }
                 else return;
@@ -447,6 +469,7 @@
 
     private async Task HandleDismissAsync()
     {
+        ResetTypeaheadNow();
         _editing = false;
         _state.SetInputSilent(string.Empty);
         _state.Close();
@@ -472,6 +495,7 @@
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        _typeaheadCts.Dispose();
         if (_state is not null)
         {
             _state.Changed -= OnStateChanged;
