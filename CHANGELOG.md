@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.47.0] - 2026-10-19
+## [0.47.0] - 2026-10-20
 
 ### Added
 
