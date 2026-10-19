@@ -13,7 +13,7 @@
          @attributes="AdditionalAttributes">
         @if (_safeImage is not null)
         {
-            <img class="@Css.Classes.Avatar.Img" src="@_safeImage" alt="@Alt" />
+            <img class="@Css.Classes.Avatar.Img" src="@_safeImage" alt="@Alt" @onerror="HandleImageError" />
         }
         else if (!string.IsNullOrEmpty(Text))
         {
@@ -59,6 +59,8 @@
     protected override string ComponentCssClass => Css.Classes.Avatar.Root;
 
     private bool _visible = true;
+    private bool _imageFailed;
+    private string? _lastSrc;
 
     // Deliberately no ShouldRender memo. The avatar used to skip a render when a key built from its
     // content parameters was unchanged, which also suppressed every later change to Class, Style and
@@ -67,6 +69,19 @@
     protected override void OnParametersSet()
     {
         _visible = Group is null || Group.RegisterAvatar();
+        // A failed image gets another chance only when the URL itself changes; the group's version
+        // cascades through this method too, and resetting on every call would retry a dead URL forever.
+        if (!string.Equals(_lastSrc, Src, StringComparison.Ordinal))
+        {
+            _lastSrc = Src;
+            _imageFailed = false;
+        }
+    }
+
+    private void HandleImageError()
+    {
+        _imageFailed = true;
+        StateHasChanged();
     }
 
     private static readonly (string bg, string fg)[] _palette =
@@ -97,7 +112,7 @@
         _                   => string.Empty
     };
 
-    private string? _safeImage => CssValidator.IsImageSrcSafe(Src) ? Src : null;
+    private string? _safeImage => !_imageFailed && CssValidator.IsImageSrcSafe(Src) ? Src : null;
 
     // All paths feed the shared --fc-container/--fc-on-container tokens (avatar is tonal):
     // custom -> inline value + contrast; default -> stable palette pick; role -> null (class sets them).
