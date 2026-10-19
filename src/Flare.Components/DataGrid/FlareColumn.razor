@@ -92,6 +92,8 @@
     /// <summary>This column's stable identity: explicit Id, else SortKey, else Title.</summary>
     internal override string ColumnKey => Id ?? SortKey ?? Title;
 
+    private string? _lastTitle;
+
     protected override void OnInitialized()
     {
         // A column inside a composite row is a field of that row, not a grid column.
@@ -101,10 +103,20 @@
             return;
         }
 
+        _lastTitle = Title;
         Grid?.AddColumn(this);
         // Header structure: a column inside a band reports to it; otherwise it is a top-level header node.
         if (Band is not null) Band.AddChild(this);
         else Grid?.AddTopLevelColumn(this);
+    }
+
+    protected override void OnParametersSet()
+    {
+        // The grid projects this component into its internal column model. A localized header changes
+        // Title without touching structure, so the cached projection has to be invalidated by hand.
+        if (Row is not null || Title == _lastTitle) return;
+        _lastTitle = Title;
+        Grid?.NotifyStructureChanged();
     }
 
     public void Dispose()
