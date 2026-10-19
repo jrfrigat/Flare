@@ -49,7 +49,7 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         var page = await context.NewPageAsync();
         await page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.Reduce });
         await page.GotoAsync($"{fixture.BaseUrl}/disclosure-menu");
-        await Expect(page.Locator("#acc button[aria-expanded]")).ToBeVisibleAsync();
+        await Expect(page.Locator("#acc button[aria-expanded]").First).ToBeVisibleAsync();
         // The animated transforms below are read as they settle; measurement is about the resting
         // value, not the frame the transition happens to be on.
         await page.AddStyleTagAsync(new() { Content = "*, *::before, *::after { transition: none !important; animation: none !important; }" });
@@ -69,9 +69,8 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         return rects;
     }
 
-    private static async Task AssertWrapsToStartEdgeAsync(IPage page, string rootId, string cssClass, bool rtl, string what)
+    private static async Task AssertWrapsToStartEdgeAsync(ILocator text, bool rtl, string what)
     {
-        var text = page.Locator($"#{rootId} .{cssClass}");
         var lines = await LinesAsync(text);
         Assert.True(lines.Length >= 2, $"{what}: expected the header to wrap, got {lines.Length} line(s)");
 
@@ -105,8 +104,15 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context, fixture, rtl, themeId);
 
-        await AssertWrapsToStartEdgeAsync(page, "acc", Css.Classes.Accordion.PanelHeaderText, rtl, $"{themeId} accordion");
-        await AssertWrapsToStartEdgeAsync(page, "collapse", Css.Classes.Collapse.HeaderText, rtl, $"{themeId} collapse");
+        var panels = page.Locator($"#acc .{Css.Classes.Accordion.Panel}");
+        await AssertWrapsToStartEdgeAsync(
+            panels.Nth(0).Locator($".{Css.Classes.Accordion.PanelHeaderText}"), rtl, $"{themeId} accordion");
+        // A right-to-left script in the same header, proving the start edge is the paragraph's and not
+        // the script's.
+        await AssertWrapsToStartEdgeAsync(
+            panels.Nth(1).Locator($".{Css.Classes.Accordion.PanelHeaderText}"), rtl, $"{themeId} hebrew accordion");
+        await AssertWrapsToStartEdgeAsync(
+            page.Locator($"#collapse .{Css.Classes.Collapse.HeaderText}"), rtl, $"{themeId} collapse");
     }
 
     [Theory]
@@ -168,7 +174,7 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         var page = await OpenAsync(context, fixture, rtl: true, "md3-expressive");
         await page.SetViewportSizeAsync(320, 900);
 
-        var header = page.Locator($"#acc .{Css.Classes.Accordion.Header}");
+        var header = page.Locator($"#acc .{Css.Classes.Accordion.Header}").First;
         var size = await header.EvaluateAsync<double[]>("el => [el.scrollWidth, el.clientWidth]");
         Assert.True(size[0] <= size[1] + 1, $"accordion header overflows: {size[0]:0.#} > {size[1]:0.#}");
 
