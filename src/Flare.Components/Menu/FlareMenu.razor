@@ -185,6 +185,7 @@
             catch (JSException) { }
         }
         _selfRef?.Dispose();
+        await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }
 
