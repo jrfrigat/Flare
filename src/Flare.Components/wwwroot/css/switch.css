@@ -17,7 +17,10 @@
     --_thumb-pressed-on-size: var(--flare-switch-thumb-pressed-on-size-md);
     --_thumb-off-left: var(--flare-switch-thumb-off-left-md);
     --_thumb-on-left: var(--flare-switch-thumb-on-left-md);
+    --_thumb-grow-direction: 1;
 }
+
+.flare-switch:dir(rtl) { --_thumb-grow-direction: -1; }
 
 .flare-switch__track {
     position: relative;
@@ -54,7 +57,7 @@
 .flare-switch__handle {
     position: absolute;
     top: 50%;
-    left: var(--_thumb-off-left);
+    inset-inline-start: var(--_thumb-off-left);
     transform: translateY(-50%);
     width: var(--_thumb-off-size);
     height: var(--_thumb-off-size);
@@ -72,7 +75,7 @@
        fill stays on the plain ramp because a spring on a colour would overshoot past the target
        tone and clamp there rather than settling into it. */
     transition:
-        left var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
+        inset-inline-start var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         width var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         height var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         transform var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
@@ -101,8 +104,8 @@
 
 /* Checked/ON state - thumb ball */
 .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
-    /* 24dp handle, 4dp from the right edge of the 52dp track (was 1.375rem -> 2px overflow). */
-    left: var(--_thumb-on-left);
+    /* 24dp handle, 4dp from the inline end of the 52dp track (was 1.375rem -> 2px overflow). */
+    inset-inline-start: var(--_thumb-on-left);
     width: var(--_thumb-on-size);
     height: var(--_thumb-on-size);
     background: var(--flare-switch-thumb-on-color);
@@ -118,12 +121,12 @@
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__thumb .flare-switch__handle {
     width: var(--_thumb-pressed-off-size);
     height: var(--_thumb-pressed-off-size);
-    transform: translate(calc((var(--_thumb-off-size) - var(--_thumb-pressed-off-size)) / 2), -50%);
+    transform: translate(calc(var(--_thumb-grow-direction) * (var(--_thumb-off-size) - var(--_thumb-pressed-off-size)) / 2), -50%);
 }
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
     width: var(--_thumb-pressed-on-size);
     height: var(--_thumb-pressed-on-size);
-    transform: translate(calc((var(--_thumb-on-size) - var(--_thumb-pressed-on-size)) / 2), -50%);
+    transform: translate(calc(var(--_thumb-grow-direction) * (var(--_thumb-on-size) - var(--_thumb-pressed-on-size)) / 2), -50%);
 }
 
 /* Hover - track background (a theme may add a subtle fill on OFF hover; default = no change) */
