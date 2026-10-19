@@ -1,0 +1,59 @@
+@page "/form"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:8px;min-height:1400px">
+        <FlareForm Model="_model" Layout="_layout" Dense="Dense"
+                   id="form-root" data-testid="form-root" Class="custom-form"
+                   OnValidSubmit="OnValid" OnInvalidSubmit="OnInvalid">
+            <FlareFormField Label="@_nameLabel" For="name">
+                <FlareTextInput Id="name" @bind-Value="_model.Name" />
+            </FlareFormField>
+            <FlareFormField Label="Email" For="email" HelperText="We never share it.">
+                <FlareTextInput Id="email" @bind-Value="_model.Email" />
+            </FlareFormField>
+            <FlareFormField Label="Note" For="note">
+                <FlareTextInput Id="note" @bind-Value="_model.Note" />
+            </FlareFormField>
+            <FlareButton id="submit" Type="ButtonType.Submit">Save</FlareButton>
+        </FlareForm>
+        <span id="status">@_status</span>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    [SupplyParameterFromQuery] public string? Layout { get; set; }
+    [SupplyParameterFromQuery] public bool Dense { get; set; }
+    [SupplyParameterFromQuery] public bool Long { get; set; }
+    [SupplyParameterFromQuery] public bool Empty { get; set; }
+
+    private readonly FormModel _model = new();
+    private string _status = string.Empty;
+
+    private FormLayout _layout => Layout switch
+    {
+        "inline" => FormLayout.Inline,
+        "horizontal" => FormLayout.Horizontal,
+        _ => FormLayout.Vertical,
+    };
+
+    private string _nameLabel => Long
+        ? "A deliberately long field label that has to wrap inside a narrow column without pushing the control off screen"
+        : "Name";
+
+    protected override void OnInitialized()
+    {
+        if (Empty) _model.Name = null;
+    }
+
+    private void OnValid(EditContext _) => _status = "valid";
+    private void OnInvalid(EditContext _) => _status = "invalid";
+
+    public sealed class FormModel
+    {
+        [Required] public string? Name { get; set; } = "Alice";
+        public string? Email { get; set; }
+        public string? Note { get; set; }
+    }
+}

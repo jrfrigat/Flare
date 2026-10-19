@@ -19,8 +19,36 @@
     margin-top: var(--flare-spacing-12);
 }
 
+/* The layout lives on the component's own wrapper. The <form> EditForm renders exists for submission
+   and validation, not for layout, so `display: contents` takes its box out of the flow: the fields are
+   the flex/grid items the rules below describe, while the element keeps its form semantics. */
+.flare-form > form { display: contents; }
+
 /* FlareForm layout variants */
-.flare-form--horizontal { display: grid; grid-template-columns: var(--flare-form-horizontal-columns); align-items: start; }
+/* Horizontal puts each field's label beside its control; the fields themselves still stack. */
+.flare-form--horizontal .flare-input {
+    display: grid;
+    /* The theme may set the pair; the structural default keeps the layout even when it does not. */
+    grid-template-columns: var(--flare-form-horizontal-columns, auto 1fr);
+    align-items: start;
+    column-gap: var(--flare-spacing-6);
+    row-gap: var(--flare-spacing-2);
+}
+/* A field without a label has nothing for the first column. */
+.flare-form--horizontal .flare-input:not(:has(> .flare-input__label)) .flare-input__control-slot { grid-column: 1 / -1; }
+.flare-form--horizontal .flare-input__helper { grid-column: 1 / -1; }
+/* Lets a control narrower than its content shrink instead of widening the grid. */
+.flare-form--horizontal .flare-input__control-slot { min-inline-size: 0; }
+/* Below this width a label column and a control cannot share a row without one of them leaving the
+   screen, so each field falls back to the vertical stack. */
+@media (max-width: 36rem) {
+    .flare-form--horizontal .flare-input {
+        display: flex;
+        flex-direction: column;
+        gap: var(--flare-spacing-2);
+    }
+    .flare-form--horizontal .flare-input__label { overflow-wrap: anywhere; }
+}
 .flare-form--inline { flex-direction: row; flex-wrap: wrap; align-items: flex-end; }
 .flare-form--dense { gap: var(--flare-spacing-4); }
 

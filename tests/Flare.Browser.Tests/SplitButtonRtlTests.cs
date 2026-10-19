@@ -49,7 +49,7 @@ public sealed class SplitButtonRtlTests(BrowserFixture fixture) : IClassFixture<
         var page = await OpenAsync(context, fixture);
         await page.Locator(themeId == "fluent2" ? "#fluent" : "#md3e").ClickAsync();
         var root = page.Locator($".{Css.Classes.Theme.Root}");
-        await Expect(root).ToHaveClassAsync(new Regex(Regex.Escape($"flare-theme-{themeId}")));
+        await Expect(root).ToHaveClassAsync(new Regex(Regex.Escape(Css.Classes.Theme.ForTheme(themeId))));
         await page.Locator("#ltr").ClickAsync();
         await Expect(root).ToHaveAttributeAsync("dir", "ltr");
         // Park the pointer off the controls: the expressive hover morph changes the corners.
