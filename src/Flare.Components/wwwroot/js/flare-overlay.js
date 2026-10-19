@@ -74,9 +74,16 @@ export function removePopupLayer(id) {
     }
 }
 
+// The focused trigger of an open popup still reports aria-expanded="true" before the popup registers its
+// layer, which crosses a Blazor round trip. The C# key handler closes the list in that window, so the
+// dialog underneath must not read the same Escape as its own.
+const _focusedPopupOwner = (e) =>
+    e.target instanceof Element && e.target.closest('[aria-expanded="true"]') !== null;
+
 export function registerDialogEscHandler(id, dotNetRef) {
     _escHandlers.set(id, (e) => {
         if (e.key === 'Escape' && !e.flarePopupHandled && _popupLayers.length === 0
+            && !_focusedPopupOwner(e)
             && (!_focusOrder.length || _focusOrder.at(-1) === id)) {
             e.preventDefault();
             dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });

@@ -1,0 +1,26 @@
+@page "/drawer-select"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px">
+        <FlareButton id="open" OnClick="OpenDrawer">New endpoint</FlareButton>
+
+        <FlareDrawer Open="_open" OpenChanged="OnOpenChanged">
+            <div style="padding:16px;width:280px">
+                <FlareSelect TValue="string" Items="_items" @bind-Value="_method" Label="Method" Clearable="true" />
+            </div>
+        </FlareDrawer>
+
+        <span id="drawer-state">@(_open ? "open" : "closed")</span>
+        <span id="select-state">@(_method ?? "-")</span>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private bool _open;
+    private string? _method;
+    private static readonly string[] _items = ["GET", "POST", "PUT", "DELETE"];
+
+    private void OpenDrawer() => _open = true;
+
+    private void OnOpenChanged(bool open) => _open = open;
+}
