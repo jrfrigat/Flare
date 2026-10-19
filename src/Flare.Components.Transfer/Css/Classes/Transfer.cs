@@ -11,6 +11,8 @@ public static class Transfer
     public const string Item = "flare-transfer__item";
     /// <summary>The <c>flare-transfer__item--selected</c> CSS class.</summary>
     public const string ItemSelected = "flare-transfer__item--selected";
+    /// <summary>The <c>flare-transfer__item--active</c> CSS class, marking the keyboard cursor in a list.</summary>
+    public const string ItemActive = "flare-transfer__item--active";
     /// <summary>The <c>flare-transfer__list</c> CSS class.</summary>
     public const string List = "flare-transfer__list";
     /// <summary>The <c>flare-transfer__panel</c> CSS class.</summary>

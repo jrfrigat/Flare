@@ -8,15 +8,23 @@
         <div class="@Css.Classes.Transfer.PanelHeader">
             <FlareText Typo="TypographyScale.LabelLarge">@SourceTitle (@_source.Count)</FlareText>
         </div>
-        <div class="@Css.Classes.Transfer.List">
-            @foreach (var item in _source)
+        <div class="@Css.Classes.Transfer.List"
+             role="listbox"
+             aria-label="@SourceTitle"
+             aria-multiselectable="true"
+             aria-activedescendant="@_srcActiveId"
+             tabindex="0"
+             @onfocus="FocusSource"
+             @onkeydown="HandleSourceKeyDown">
+            @for (var i = 0; i < _source.Count; i++)
             {
-                var it = item;
-                <div class="@Css.Classes.Transfer.Item @(_srcSelected.Contains(it) ? Css.Classes.Transfer.ItemSelected : "")"
-                     @onclick="@(() => ToggleSrcSelect(it))"
+                var idx = i;
+                var it = _source[i];
+                <div class="@BuildItemClass(_srcSelected.Contains(it), idx == _srcActive)"
+                     id="@($"{_srcId}-opt-{idx}")"
+                     @onclick="@(() => SelectSourceAt(idx))"
                      role="option"
-                     aria-selected="@(_srcSelected.Contains(it) ? "true" : "false")"
-                     tabindex="0">
+                     aria-selected="@(_srcSelected.Contains(it) ? "true" : "false")">
                     @ItemText(it)
                 </div>
             }
@@ -48,15 +56,23 @@
         <div class="@Css.Classes.Transfer.PanelHeader">
             <FlareText Typo="TypographyScale.LabelLarge">@TargetTitle (@_target.Count)</FlareText>
         </div>
-        <div class="@Css.Classes.Transfer.List">
-            @foreach (var item in _target)
+        <div class="@Css.Classes.Transfer.List"
+             role="listbox"
+             aria-label="@TargetTitle"
+             aria-multiselectable="true"
+             aria-activedescendant="@_tgtActiveId"
+             tabindex="0"
+             @onfocus="FocusTarget"
+             @onkeydown="HandleTargetKeyDown">
+            @for (var i = 0; i < _target.Count; i++)
             {
-                var it = item;
-                <div class="@Css.Classes.Transfer.Item @(_tgtSelected.Contains(it) ? Css.Classes.Transfer.ItemSelected : "")"
-                     @onclick="@(() => ToggleTgtSelect(it))"
+                var idx = i;
+                var it = _target[i];
+                <div class="@BuildItemClass(_tgtSelected.Contains(it), idx == _tgtActive)"
+                     id="@($"{_tgtId}-opt-{idx}")"
+                     @onclick="@(() => SelectTargetAt(idx))"
                      role="option"
-                     aria-selected="@(_tgtSelected.Contains(it) ? "true" : "false")"
-                     tabindex="0">
+                     aria-selected="@(_tgtSelected.Contains(it) ? "true" : "false")">
                     @ItemText(it)
                 </div>
             }
@@ -84,6 +100,13 @@
     private List<TItem> _target = [];
     private readonly HashSet<TItem> _srcSelected = [];
     private readonly HashSet<TItem> _tgtSelected = [];
+    private int _srcActive = -1;
+    private int _tgtActive = -1;
+    private readonly string _srcId = "flare-transfer-src-" + Guid.NewGuid().ToString("N")[..8];
+    private readonly string _tgtId = "flare-transfer-tgt-" + Guid.NewGuid().ToString("N")[..8];
+
+    private string? _srcActiveId => _srcActive >= 0 && _srcActive < _source.Count ? $"{_srcId}-opt-{_srcActive}" : null;
+    private string? _tgtActiveId => _tgtActive >= 0 && _tgtActive < _target.Count ? $"{_tgtId}-opt-{_tgtActive}" : null;
 
     protected override void OnParametersSet()
     {
@@ -91,12 +114,50 @@
         _target = TargetItems?.ToList() ?? [];
         _srcSelected.RemoveWhere(i => !_source.Contains(i));
         _tgtSelected.RemoveWhere(i => !_target.Contains(i));
+        if (_srcActive >= _source.Count) _srcActive = _source.Count - 1;
+        if (_tgtActive >= _target.Count) _tgtActive = _target.Count - 1;
     }
 
     private string ItemText(TItem item) => ItemLabel?.Invoke(item) ?? item?.ToString() ?? "";
 
+    private string BuildItemClass(bool selected, bool active) => string.Join(' ', new[]
+    {
+        Css.Classes.Transfer.Item,
+        selected ? Css.Classes.Transfer.ItemSelected : null,
+        active ? Css.Classes.Transfer.ItemActive : null,
+    }.Where(c => !string.IsNullOrEmpty(c)));
+
     private void ToggleSrcSelect(TItem item) { if (!_srcSelected.Remove(item)) _srcSelected.Add(item); }
     private void ToggleTgtSelect(TItem item) { if (!_tgtSelected.Remove(item)) _tgtSelected.Add(item); }
+
+    private void FocusSource() { if (_srcActive < 0 && _source.Count > 0) _srcActive = 0; }
+    private void FocusTarget() { if (_tgtActive < 0 && _target.Count > 0) _tgtActive = 0; }
+
+    private void SelectSourceAt(int index) { _srcActive = index; ToggleSrcSelect(_source[index]); }
+    private void SelectTargetAt(int index) { _tgtActive = index; ToggleTgtSelect(_target[index]); }
+
+    private void HandleSourceKeyDown(KeyboardEventArgs e)
+        => HandleListKeyDown(e, _source.Count, _srcActive, v => _srcActive = v, () => ToggleSrcSelect(_source[_srcActive]));
+
+    private void HandleTargetKeyDown(KeyboardEventArgs e)
+        => HandleListKeyDown(e, _target.Count, _tgtActive, v => _tgtActive = v, () => ToggleTgtSelect(_target[_tgtActive]));
+
+    private static void HandleListKeyDown(KeyboardEventArgs e, int count, int active, Action<int> setActive, Action toggle)
+    {
+        if (count == 0) return;
+        switch (e.Key)
+        {
+            case "ArrowDown": setActive(Math.Min(active + 1, count - 1)); break;
+            case "ArrowUp": setActive(active <= 0 ? 0 : active - 1); break;
+            case "Home": setActive(0); break;
+            case "End": setActive(count - 1); break;
+            case " ":
+            case "Enter":
+                if (active < 0) setActive(0);
+                else toggle();
+                break;
+        }
+    }
 
     private async Task MoveToTarget()
     {
