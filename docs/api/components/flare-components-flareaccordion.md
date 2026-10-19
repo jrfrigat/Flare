@@ -8,7 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AllowMultiple` | `bool` | `false` | Parameter |  | When true, multiple panels can be expanded simultaneously. |
+| `AllowMultiple` | `bool` | `false` | Parameter |  | When true, multiple panels can be expanded simultaneously. Turning it off while several are open keeps the most recently opened one and collapses the rest; a panel may still veto that through its OnBeforeToggle. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Accordion panels rendered as children. |
 | `HeadingLevel` | `int` | `3` | Parameter |  | Heading level announced for the panel titles, so screen reader heading navigation reaches the accordion's sections. The right level depends on the surrounding document - an accordion under an h2 section title wants 3 - which is why it is a parameter and not a fixed tag. Set 0 to drop the heading semantics for an accordion that is a control rather than a section of the document. Default 3. A panel may override it with its own HeadingLevel. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

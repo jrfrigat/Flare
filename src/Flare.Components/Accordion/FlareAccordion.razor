@@ -10,7 +10,9 @@
 @code {
     /// <summary>Accordion panels rendered as children.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>When true, multiple panels can be expanded simultaneously.</summary>
+    /// <summary>When true, multiple panels can be expanded simultaneously. Turning it off while several
+    /// are open keeps the most recently opened one and collapses the rest; a panel may still veto that
+    /// through its <see cref="FlareAccordionPanel.OnBeforeToggle"/>.</summary>
     [Parameter] public bool AllowMultiple { get; set; }
     /// <summary>
     /// Heading level announced for the panel titles, so screen reader heading navigation reaches the
@@ -27,6 +29,8 @@
     protected override string ComponentCssClass => Css.Classes.Accordion.Root;
 
     private FlareAccordionPanel? _expandedPanel;
+    private readonly List<FlareAccordionPanel> _panels = [];
+    private bool _lastAllowMultiple;
 
     // Returns false when the currently open panel refuses to close, in which case the panel that asked
     // must not open either - otherwise a vetoed collapse silently turns single-expand into multi-expand.
@@ -39,6 +43,17 @@
         return true;
     }
 
+    // A panel whose Expanded parameter changed after mount: the parent, not a click, decided this, so
+    // the slot follows it. The previous panel is asked to collapse rather than dismissed silently, so a
+    // veto keeps its word; the new panel owns the slot either way, which is what the next sibling toggle
+    // needs to restore single-expand.
+    internal async Task PanelExternallyExpandedAsync(FlareAccordionPanel panel)
+    {
+        if (!AllowMultiple && _expandedPanel is not null && _expandedPanel != panel)
+            await _expandedPanel.CollapseAsync();
+        _expandedPanel = panel;
+    }
+
     // Claims the slot for a panel declared Expanded in markup. Nothing is collapsed here: initial state
     // is the author's declaration, not a user toggle for the accordion to arbitrate.
     internal void PanelInitiallyExpanded(FlareAccordionPanel panel)
@@ -49,5 +64,30 @@
     internal void PanelCollapsed(FlareAccordionPanel panel)
     {
         if (_expandedPanel == panel) _expandedPanel = null;
+    }
+
+    internal void RegisterPanel(FlareAccordionPanel panel)
+    {
+        if (!_panels.Contains(panel)) _panels.Add(panel);
+    }
+
+    internal void UnregisterPanel(FlareAccordionPanel panel)
+    {
+        _panels.Remove(panel);
+        if (_expandedPanel == panel) _expandedPanel = null;
+    }
+
+    // Switching from multi to single expand is an explicit policy: the last opened panel survives and
+    // every other open panel is asked to close, so a veto is honored rather than overridden.
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_lastAllowMultiple && !AllowMultiple)
+        {
+            _expandedPanel ??= _panels.FirstOrDefault(panel => panel.IsExpanded);
+            foreach (var panel in _panels.ToArray())
+                if (panel != _expandedPanel && panel.IsExpanded)
+                    await panel.CollapseAsync();
+        }
+        _lastAllowMultiple = AllowMultiple;
     }
 }

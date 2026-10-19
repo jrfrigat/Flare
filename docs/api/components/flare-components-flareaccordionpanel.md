@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content revealed when the panel is expanded. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the panel's toggle (cannot expand/collapse). |
-| `Expanded` | `bool` | `false` | Parameter |  | Controls whether the panel is currently expanded. |
+| `Expanded` | `bool` | `false` | Parameter |  | Controls whether the panel is currently expanded. A change after the first render expands or collapses the panel, and the accordion's single-expand slot follows it. |
 | `ExpandedChanged` | `EventCallback<bool>` | `` | Callback |  | Callback fired when the expanded state changes. |
 | `Header` | `string` | `""` | Parameter |  | Text displayed in the panel's toggle header button. |
 | `HeaderContent` | `RenderFragment?` | `` | Parameter |  | Rich header content (icons, badges, custom markup); overrides Header when set. |
@@ -22,7 +22,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `DisposeAsync()`
+
+Disposes the component; override to release JS interop or subscriptions.
+Returns: `ValueTask`.
+
 
 ## Inheritance
 

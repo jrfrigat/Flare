@@ -38,7 +38,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AllowMultiple", @"bool", @"false", @"When true, multiple panels can be expanded simultaneously.", null, false, false, false, @"FlareAccordion"),
+                new ApiParameterInfo(@"AllowMultiple", @"bool", @"false", @"When true, multiple panels can be expanded simultaneously. Turning it off while several are open keeps the most recently opened one and collapses the rest; a panel may still veto that through its OnBeforeToggle.", null, false, false, false, @"FlareAccordion"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Accordion panels rendered as children.", null, false, false, false, @"FlareAccordion"),
                 new ApiParameterInfo(@"HeadingLevel", @"int", @"3", @"Heading level announced for the panel titles, so screen reader heading navigation reaches the accordion's sections. The right level depends on the surrounding document - an accordion under an h2 section title wants 3 - which is why it is a parameter and not a fixed tag. Set 0 to drop the heading semantics for an accordion that is a control rather than a section of the document. Default 3. A panel may override it with its own HeadingLevel.", null, false, false, false, @"FlareAccordion"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -65,7 +65,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content revealed when the panel is expanded.", null, false, false, false, @"FlareAccordionPanel"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the panel's toggle (cannot expand/collapse).", null, false, false, false, @"FlareAccordionPanel"),
-                new ApiParameterInfo(@"Expanded", @"bool", @"false", @"Controls whether the panel is currently expanded.", null, false, false, false, @"FlareAccordionPanel"),
+                new ApiParameterInfo(@"Expanded", @"bool", @"false", @"Controls whether the panel is currently expanded. A change after the first render expands or collapses the panel, and the accordion's single-expand slot follows it.", null, false, false, false, @"FlareAccordionPanel"),
                 new ApiParameterInfo(@"ExpandedChanged", @"EventCallback<bool>", null, @"Callback fired when the expanded state changes.", null, false, true, false, @"FlareAccordionPanel"),
                 new ApiParameterInfo(@"Header", @"string", @"""""", @"Text displayed in the panel's toggle header button.", null, false, false, false, @"FlareAccordionPanel"),
                 new ApiParameterInfo(@"HeaderContent", @"RenderFragment?", null, @"Rich header content (icons, badges, custom markup); overrides Header when set.", null, false, false, false, @"FlareAccordionPanel"),
@@ -75,7 +75,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",

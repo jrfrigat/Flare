@@ -52,7 +52,8 @@
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Content revealed when the panel is expanded.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Controls whether the panel is currently expanded.</summary>
+    /// <summary>Controls whether the panel is currently expanded. A change after the first render
+    /// expands or collapses the panel, and the accordion's single-expand slot follows it.</summary>
     [Parameter] public bool Expanded { get; set; }
     /// <summary>Callback fired when the expanded state changes.</summary>
     [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
@@ -78,13 +79,28 @@
     private string _headerId => $"flare-accordion-hdr-{_panelId}";
     private string _contentId => $"flare-accordion-cnt-{_panelId}";
 
+    /// <summary>Whether the panel is currently expanded, for the accordion's single-expand policy.</summary>
+    internal bool IsExpanded => _expanded;
+
+    /// <summary>Registers this panel with its accordion, so switching to single expand can reach it.</summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Accordion?.RegisterPanel(this);
+    }
+
     // Two-way state contract (docs/ru/component-conventions.md), same shape as FlareCollapse: a
     // controlled panel follows the parameter on every set, an uncontrolled one keeps local state until
     // the parameter ITSELF changes. _lastExpanded mirrors the parameter and is never written from an
     // event handler, which is what lets a sibling-driven re-render pass through without reopening a
     // panel the accordion just auto-collapsed - the reason this used to sync only once.
-    protected override void OnParametersSet()
+    //
+    // A parameter change after mount is the parent opening or closing the panel, and the accordion has
+    // to hear about it: otherwise a panel opened from outside never occupies the single-expand slot,
+    // and the next sibling toggle leaves two panels open.
+    protected override async Task OnParametersSetAsync()
     {
+        var wasExpanded = _expanded;
         if (ExpandedChanged.HasDelegate)
             _expanded = Expanded;
         else if (Expanded != _lastExpanded)
@@ -98,6 +114,18 @@
             // toggle of another panel finds no panel to close and leaves both open.
             if (_expanded) Accordion?.PanelInitiallyExpanded(this);
         }
+        else if (Accordion is not null && _expanded != wasExpanded)
+        {
+            if (_expanded) await Accordion.PanelExternallyExpandedAsync(this);
+            else Accordion.PanelCollapsed(this);
+        }
+    }
+
+    /// <inheritdoc />
+    public override ValueTask DisposeAsync()
+    {
+        Accordion?.UnregisterPanel(this);
+        return base.DisposeAsync();
     }
 
     // A collapsed panel is removed from the accessibility tree and the tab order by inert, which leaves
