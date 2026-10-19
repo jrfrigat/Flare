@@ -435,8 +435,9 @@
         if (Disabled || ReadOnly) return;
         switch (e.Key)
         {
-            case "ArrowDown": _state.MoveHighlight(1); break;
-            case "ArrowUp": _state.MoveHighlight(-1); break;
+            // An arrow on a closed select opens it; that transition reaches a bound Open like every other.
+            case "ArrowDown": _state.MoveHighlight(1); await NotifyOpenAsync(); break;
+            case "ArrowUp": _state.MoveHighlight(-1); await NotifyOpenAsync(); break;
             case "Home": if (_state.IsOpen && !Searchable) _state.HighlightFirst(); else return; break;
             case "End": if (_state.IsOpen && !Searchable) _state.HighlightLast(); else return; break;
             case "Enter":
