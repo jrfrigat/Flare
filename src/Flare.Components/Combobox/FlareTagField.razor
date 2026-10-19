@@ -205,16 +205,12 @@
             _tags.Clear();
             _tags.AddRange(Values);
         }
+        _state.SetMaxResults(MaxSuggestions);
         RefreshLocalSource();
     }
 
     private string ResolveLabel(TValue item) => ItemText?.Invoke(item) ?? item?.ToString() ?? string.Empty;
 
-    // A caller-supplied colour goes through the chip's own custom-colour contract (--fc-main paints the
-    // fill, --fc-on its text) rather than being written straight onto background-color. The old form
-    // also forced `color:#fff`, which is the core deciding a foreground it cannot know is legible - a
-    // pale tag colour rendered white-on-white - and the one hardcoded colour left in any component's
-    // markup. Unset, --fc-on falls back to the theme's on-colour; ChipTextColor overrides it.
     private string? ChipStyleOf(TValue item)
     {
         if (ChipColor?.Invoke(item) is not { } background) return null;
@@ -233,15 +229,10 @@
         catch (ObjectDisposedException) { }
     }
 
-    // Feed the engine the available local suggestions (excluding already-added tags).
     private void RefreshLocalSource()
     {
-        if (SearchFunc is not null) return; // async owns the source
-        var available = (Suggestions ?? Enumerable.Empty<TValue>())
-            .Where(s => !IsTagged(s))
-            .Take(MaxSuggestions)
-            .ToList();
-        _state.SetSource(available);
+        if (SearchFunc is not null) return;
+        _state.SetSource((Suggestions ?? Enumerable.Empty<TValue>()).Where(s => !IsTagged(s)).ToList());
     }
 
     private bool IsTagged(TValue item)
@@ -261,10 +252,10 @@
 
     private void HandleHover(int index) => _state.HighlightAt(index);
 
-    private async Task HandleFocusAsync()
+    private void HandleFocusAsync()
     {
         if (Disabled || ReadOnly || !_hasSuggestions) return;
-        if (SearchFunc is null)
+        if (SearchFunc is null && MinChars == 0)
         {
             _state.SetInput(string.Empty);
             if (!_state.IsOpen) _state.Open(FocusStrategy.First);
@@ -273,11 +264,21 @@
 
     private async Task HandleInputAsync(ChangeEventArgs e)
     {
-        if (ReadOnly) return;
+        if (Disabled || ReadOnly) return;
         var text = e.Value?.ToString() ?? string.Empty;
         _state.SetInput(text);
-        if (SearchFunc is not null && _hasSuggestions)
+        if (!_hasSuggestions) return;
+        if (SearchFunc is not null)
+        {
             await RunSearchAsync(text);
+            return;
+        }
+        if (text.Trim().Length < MinChars)
+        {
+            _state.Close();
+            return;
+        }
+        if (!_state.IsOpen) _state.Open(FocusStrategy.First); else _state.HighlightFirst();
     }
 
     private async Task RunSearchAsync(string text)

@@ -35,6 +35,10 @@ public sealed class ComboboxState<TItem>
     /// <summary>The selection axis (selected items + membership + select-all).</summary>
     public SelectionManager<TItem> Selection { get; }
 
+    /// <summary>Caps the visible options after filtering; 0 means no cap.</summary>
+    /// <param name="maxResults">The maximum number of visible options.</param>
+    public void SetMaxResults(int maxResults) => Collection.SetMaxResults(maxResults);
+
     /// <summary>Whether the dropdown is open.</summary>
     public bool IsOpen { get; private set; }
 

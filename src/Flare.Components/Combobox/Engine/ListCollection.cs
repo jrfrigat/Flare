@@ -26,6 +26,7 @@ public sealed class ListCollection<TItem>
     private List<TItem> _ordered = new();
     private List<TItem> _filtered = new();
     private string _query = string.Empty;
+    private int _maxResults;
     private IReadOnlyList<ComboboxRow<TItem>>? _rows;
 
     /// <summary>Creates the view for the given policy (which supplies label/group/disabled/filter delegates).</summary>
@@ -53,6 +54,16 @@ public sealed class ListCollection<TItem>
         _ordered = _policy.Group is null
             ? new List<TItem>(_source)
             : _source.GroupBy(_policy.Group).SelectMany(static g => g).ToList();
+        Refilter();
+    }
+
+    /// <summary>Caps the visible options after filtering; 0 or less means no cap.</summary>
+    /// <param name="maxResults">The maximum number of visible options.</param>
+    public void SetMaxResults(int maxResults)
+    {
+        maxResults = Math.Max(0, maxResults);
+        if (_maxResults == maxResults) return;
+        _maxResults = maxResults;
         Refilter();
     }
 
@@ -93,6 +104,8 @@ public sealed class ListCollection<TItem>
             if (head.Count > 0)
                 result = head.Concat(result.Where(i => !pinned(i)));
         }
+
+        if (_maxResults > 0) result = result.Take(_maxResults);
 
         _filtered = result as List<TItem> ?? result.ToList();
         _rows = null; // invalidate the cached row projection; rebuilt on next access
