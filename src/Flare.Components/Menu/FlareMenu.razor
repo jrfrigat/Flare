@@ -85,6 +85,7 @@
     private readonly AnchoredLayer _layer = new();
     private DotNetObjectReference<FlareMenu>? _selfRef;
     private bool _escapeLayerRegistered;
+    private bool _disposing;
     private IMenuEntry? _focusedItem;
     // Whether this opening came from the keyboard, which decides if an item starts out active. A pointer
     // user is looking at where they clicked and has no use for a highlight on the first item; a keyboard
@@ -108,7 +109,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _menuContext = new FlareMenuContext(CloseAsync, RegisterItem);
+        _menuContext = new FlareMenuContext(CloseAsync, RegisterItem, UnregisterItem);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -178,6 +179,7 @@
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        _disposing = true;
         if (_escapeLayerRegistered)
         {
             try { await Overlay.RemovePopupLayerAsync(_panelId); }
@@ -294,6 +296,19 @@
     {
         if (!_items.Contains(item))
             _items.Add(item);
+    }
+
+    /// <summary>Removes a disposed item and moves the keyboard focus to the nearest survivor.</summary>
+    /// <param name="item">The item that left the tree.</param>
+    internal void UnregisterItem(IMenuEntry item)
+    {
+        var index = _items.IndexOf(item);
+        if (index < 0) return;
+        _items.RemoveAt(index);
+        if (!ReferenceEquals(_focusedItem, item)) return;
+        _focusedItem = _items.Skip(index).FirstOrDefault(i => !i.Disabled)
+            ?? _items.Take(index).LastOrDefault(i => !i.Disabled);
+        if (!_disposing) StateHasChanged();
     }
 
     /// <summary>Handles keyboard navigation inside the open panel (Escape closes; Arrow/Home/End move focus; Tab cycles).</summary>

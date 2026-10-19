@@ -73,8 +73,8 @@ else
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [CascadingParameter] private FlareMenuContext? MenuContext { get; set; }
     [CascadingParameter(Name = "MenuFocusedItem")] private IMenuEntry? MenuFocusedItem { get; set; }
-    private Func<Task>? CloseMenu => MenuContext?.Close;
-    private Action<IMenuEntry>? RegisterMenuItem => MenuContext?.Register;
+    private FlareMenuContext? _context;
+    private Func<Task>? CloseMenu => _context?.Close;
 
     protected override string ComponentCssClass => Css.Classes.Menu.Item;
 
@@ -106,7 +106,15 @@ else
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        RegisterMenuItem?.Invoke(this);
+        _context = MenuContext;
+        _context?.Register(this);
+    }
+
+    /// <inheritdoc />
+    public override ValueTask DisposeAsync()
+    {
+        _context?.Unregister(this);
+        return base.DisposeAsync();
     }
 
     /// <summary>Invokes <see cref="OnClick"/> (unless disabled) and closes the parent menu when

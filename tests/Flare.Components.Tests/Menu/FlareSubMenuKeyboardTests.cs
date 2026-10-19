@@ -276,6 +276,29 @@ public class FlareSubMenuKeyboardTests : FlareTestContext
         Assert.Equal(2, ItemCount(submenu));
     }
 
+    [Fact]
+    public async Task PointerCloseAndReopen_ThreeTimes_KeepsTheRegistryAtTheRenderedItems()
+    {
+        var cut = OpenMenu(MenuWithSubmenu(() => { }, () => { }, () => { }));
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click(FromKeyboard()));
+        var submenu = cut.FindComponent<FlareSubMenu>().Instance;
+
+        for (var i = 0; i < 3; i++)
+        {
+            await cut.InvokeAsync(() => cut.Find(SubmenuActivatorSelector).TriggerEvent("onmouseenter", new MouseEventArgs()));
+            cut.WaitForAssertion(() => Assert.Single(cut.FindAll(SubmenuPanelSelector)));
+            Assert.Equal(2, ItemCount(submenu));
+
+            await cut.InvokeAsync(() => cut.Find(SubmenuPanelSelector).KeyDown(Key("ArrowDown")));
+            var focused = Assert.IsAssignableFrom<IMenuEntry>(FocusedItem(submenu));
+            Assert.Single(cut.FindAll($"#{focused.ItemId}"));
+
+            await cut.InvokeAsync(() => cut.Find(SubmenuActivatorSelector).TriggerEvent("onmouseleave", new MouseEventArgs()));
+            cut.WaitForAssertion(() => Assert.Empty(cut.FindAll(SubmenuPanelSelector)));
+            Assert.Equal(0, ItemCount(submenu));
+        }
+    }
+
     private static int ItemCount(FlareSubMenu submenu)
         => ((System.Collections.ICollection)typeof(FlareSubMenu)
             .GetField("_items", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!

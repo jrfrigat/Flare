@@ -110,18 +110,21 @@
     private readonly string _panelId = "flare-submenu-" + Guid.NewGuid().ToString("N")[..8];
 
     private FlareMenuContext? _menuContext;
+    private FlareMenuContext? _parentMenuContext;
     private readonly CancelScope _hideCts = new();
     // The submenu is its own topmost Escape layer while open: the parent menu's layer stays underneath,
     // so one Escape closes the submenu and not the whole menu. A C# key handler cannot do this alone -
     // its stopPropagation never reaches the native document listener that owns the popup stack.
     private DotNetObjectReference<FlareSubMenu>? _selfRef;
     private bool _escapeLayerRegistered;
+    private bool _disposing;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _menuContext = new FlareMenuContext(CloseAllAsync, RegisterItem);
-        ParentMenuContext?.Register(this);
+        _menuContext = new FlareMenuContext(CloseAllAsync, RegisterItem, UnregisterItem);
+        _parentMenuContext = ParentMenuContext;
+        _parentMenuContext?.Register(this);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -234,14 +237,25 @@
         _open = false;
         _items.Clear();
         _focusedItem = null;
-        if (ParentMenuContext is not null)
-            await ParentMenuContext.Close();
+        if (_parentMenuContext is not null)
+            await _parentMenuContext.Close();
     }
 
     internal void RegisterItem(IMenuEntry item)
     {
         if (!_items.Contains(item))
             _items.Add(item);
+    }
+
+    internal void UnregisterItem(IMenuEntry item)
+    {
+        var index = _items.IndexOf(item);
+        if (index < 0) return;
+        _items.RemoveAt(index);
+        if (!ReferenceEquals(_focusedItem, item)) return;
+        _focusedItem = _items.Skip(index).FirstOrDefault(i => !i.Disabled)
+            ?? _items.Take(index).LastOrDefault(i => !i.Disabled);
+        if (!_disposing) StateHasChanged();
     }
 
     private void HandlePanelFocusIn() => _panelFocused = true;
@@ -309,6 +323,8 @@
 
     public override async ValueTask DisposeAsync()
     {
+        _disposing = true;
+        _parentMenuContext?.Unregister(this);
         _hideCts.Dispose();
         if (_escapeLayerRegistered)
         {
