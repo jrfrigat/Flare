@@ -394,40 +394,96 @@
         NotifyFieldChanged();
     }
 
+    // A percent format writes 0.25 as "25%"; pasted text carrying the symbol must come back as the
+    // fraction. .NET has no percent parse style, so the symbol is removed here and the number scaled.
+    private bool _percentFormat => Format is { Length: > 0 } format && IsPercentFormat(format);
+
+    // A standard P/p format (with optional precision digits), or a custom format with an unescaped and
+    // unquoted percent placeholder.
+    private static bool IsPercentFormat(string format)
+    {
+        var trimmed = format.Trim();
+        if (trimmed.Length > 0 && (trimmed[0] is 'P' or 'p') && trimmed.Skip(1).All(char.IsDigit)) return true;
+        for (var i = 0; i < trimmed.Length; i++)
+        {
+            var ch = trimmed[i];
+            if (ch == '\\') { i++; continue; }
+            if (ch is '"' or '\'')
+            {
+                var quote = ch;
+                for (i++; i < trimmed.Length && trimmed[i] != quote; i++)
+                {
+                    if (trimmed[i] == '\\') i++;
+                }
+                continue;
+            }
+            if (ch == '%') return true;
+        }
+        return false;
+    }
+
+    // The culture's percent symbol in any position (prefix cultures put it before the number), with the
+    // surrounding space a formatted value may carry. Only a percent format scales the result.
+    private string StripPercentSymbol(string raw, out bool percent)
+    {
+        percent = false;
+        if (!_useTextMode || !_percentFormat) return raw;
+        var symbol = _fmtCulture.NumberFormat.PercentSymbol;
+        if (string.IsNullOrEmpty(symbol)) return raw;
+        var index = raw.IndexOf(symbol, StringComparison.Ordinal);
+        if (index < 0) return raw;
+        percent = true;
+        return raw.Remove(index, symbol.Length).Trim();
+    }
+
     // Tolerant parse: try the culture (currency/thousands), then a stripped fallback (e.g. percent).
     private bool TryParseNumber(string raw, out double value)
     {
         var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
-        if (double.TryParse(raw, NumberStyles.Any, c, out value)) return true;
+        var text = StripPercentSymbol(raw, out var percent);
+        if (double.TryParse(text, NumberStyles.Any, c, out value))
+        {
+            if (percent) value /= 100d;
+            return true;
+        }
 
         var dec = c.NumberFormat.NumberDecimalSeparator;
-        var sb = new System.Text.StringBuilder(raw.Length);
-        foreach (var ch in raw)
+        var sb = new System.Text.StringBuilder(text.Length);
+        foreach (var ch in text)
         {
             if (char.IsDigit(ch) || ch == '-' || ch == '+') sb.Append(ch);
             else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
         }
-        return double.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+        if (!double.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value)) return false;
+        if (percent) value /= 100d;
+        return true;
     }
 
     private bool TryParseDecimalNumber(string raw, out decimal value)
     {
         var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
-        if (decimal.TryParse(raw, NumberStyles.Any, c, out value)) return true;
+        var text = StripPercentSymbol(raw, out var percent);
+        if (decimal.TryParse(text, NumberStyles.Any, c, out value))
+        {
+            if (percent) value /= 100m;
+            return true;
+        }
 
         // A well-formed number the decimal parser refused overflowed its range (or asked for a
         // precision it cannot hold). Stripping its characters would invent a different value - "1e100"
         // became "1100" - so the caller keeps the previous value instead.
-        if (double.TryParse(raw, NumberStyles.Any, c, out _)) { value = default; return false; }
+        if (double.TryParse(text, NumberStyles.Any, c, out _)) { value = default; return false; }
 
         var dec = c.NumberFormat.NumberDecimalSeparator;
-        var sb = new System.Text.StringBuilder(raw.Length);
-        foreach (var ch in raw)
+        var sb = new System.Text.StringBuilder(text.Length);
+        foreach (var ch in text)
         {
             if (char.IsDigit(ch) || ch == '-' || ch == '+') sb.Append(ch);
             else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
         }
-        return decimal.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+        if (!decimal.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value)) return false;
+        if (percent) value /= 100m;
+        return true;
     }
 
     // Range-checked conversion. An out-of-range or fractional value returns false, so the component
