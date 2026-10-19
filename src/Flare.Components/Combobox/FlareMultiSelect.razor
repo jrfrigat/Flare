@@ -36,6 +36,7 @@
              aria-readonly="@(ReadOnly ? "true" : null)"
              aria-required="@(!Searchable && Required ? "true" : null)"
              aria-invalid="@(!Searchable && !string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+             aria-keyshortcuts="@(ShowSelectAll ? "Control+A Meta+A" : null)"
              tabindex="@(Disabled || Searchable ? -1 : 0)"
              @onclick="OnControlClick"
              @onkeydown="HandleKeyDownAsync"
@@ -82,6 +83,7 @@
                        aria-describedby="@_describedBy"
                        aria-required="@(Required ? "true" : null)"
                        aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+                       aria-keyshortcuts="@(ShowSelectAll ? "Control+A Meta+A" : null)"
                        @oninput="HandleInputAsync"
                        @onfocus="OnInputFocus"
                        @onkeydown="HandleKeyDownAsync"
@@ -136,6 +138,7 @@
                             <div class="@Css.Classes.Listbox.Option @Css.Classes.Multiselect.Option @Css.Classes.Multiselect.OptionSelectAll"
                                  role="option"
                                  aria-selected="@(tri == TriState.All ? "true" : "false")"
+                                 aria-checked="@(tri == TriState.All ? "true" : tri == TriState.Some ? "mixed" : "false")"
                                  @onclick="ToggleSelectAllAsync"
                                  @onclick:stopPropagation="true"
                                  @onmousedown:preventDefault="Searchable">
@@ -460,6 +463,12 @@
     private async Task HandleKeyDownAsync(KeyboardEventArgs e)
     {
         if (Disabled || ReadOnly) return;
+        if (ShowSelectAll && _state.IsOpen && (e.CtrlKey || e.MetaKey)
+            && string.Equals(e.Key, "a", StringComparison.OrdinalIgnoreCase))
+        {
+            await ToggleSelectAllAsync();
+            return;
+        }
         switch (e.Key)
         {
             // An arrow on a closed select opens it; that transition reaches a bound Open like every other.

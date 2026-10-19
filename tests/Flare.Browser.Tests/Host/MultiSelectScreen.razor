@@ -1,0 +1,17 @@
+@page "/multiselect"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <FlareMultiSelect TValue="string"
+                          Items="Cities"
+                          ShowSelectAll="true"
+                          Placeholder="Cities"
+                          @bind-Values="_selected" />
+        <span id="selected">@string.Join(",", _selected)</span>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly string[] Cities = ["Berlin", "Boston", "Paris"];
+    private IReadOnlyList<string> _selected = [];
+}
