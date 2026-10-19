@@ -182,6 +182,42 @@ else
 
     private ElementReference _element;
     private readonly CancelScope _debounce = new();
+    private int _generation;
+    private bool _hasLastValue;
+    private string? _lastValue;
+    private string? _lastPublished;
+    private bool _hasLastConfig;
+    private bool _lastImmediate;
+    private int _lastDebounce;
+
+    // A pending debounced write belongs to the text the control was editing. A commit, an external
+    // value change or a change that makes it non-editable means that text is no longer what the field
+    // holds, so the write is cancelled and its continuation is invalidated by the generation counter
+    // as well - cancelling the token stops the delay, the counter also stops a continuation that has
+    // already passed it.
+    private void CancelPending()
+    {
+        _generation++;
+        _debounce.Cancel();
+    }
+
+    protected override void OnParametersSet()
+    {
+        var valueChanged = !_hasLastValue || !string.Equals(_lastValue, Value, StringComparison.Ordinal);
+        // The parent's echo of a value this control just published is not an external reset; treating
+        // it as one would cancel a newer keystroke that is still waiting out its own delay.
+        var echoOfOwnWrite = string.Equals(Value, _lastPublished, StringComparison.Ordinal);
+        var configChanged = _hasLastConfig && (Immediate != _lastImmediate || DebounceInterval != _lastDebounce);
+
+        _hasLastValue = true;
+        _lastValue = Value;
+        _hasLastConfig = true;
+        _lastImmediate = Immediate;
+        _lastDebounce = DebounceInterval;
+
+        if ((valueChanged && !echoOfOwnWrite) || Disabled || ReadOnly || configChanged)
+            CancelPending();
+    }
 
     private string ControlCss() =>
         string.IsNullOrEmpty(ControlClass) ? Css.Classes.Input.Control : $"{Css.Classes.Input.Control} {ControlClass}";
@@ -201,7 +237,15 @@ else
     /// <summary>Focuses the control and selects the character range [<paramref name="start"/>, <paramref name="end"/>).</summary>
     public ValueTask SelectRangeAsync(int start, int end) => ElementJs.SelectRangeAsync(_element, start, end);
 
-    private Task HandleChange(ChangeEventArgs e) => ValueChanged.InvokeAsync(e.Value?.ToString());
+    private Task HandleChange(ChangeEventArgs e)
+    {
+        // The committed value owns the field: a debounced write from the last keystroke would publish
+        // older text a second time, possibly after the parent already reset the value.
+        CancelPending();
+        var raw = e.Value?.ToString();
+        _lastPublished = raw;
+        return ValueChanged.InvokeAsync(raw);
+    }
 
     private async Task HandleInput(ChangeEventArgs e)
     {
@@ -209,13 +253,17 @@ else
         var raw = e.Value?.ToString();
         if (DebounceInterval <= 0)
         {
+            _lastPublished = raw;
             await ValueChanged.InvokeAsync(raw);
             return;
         }
+        var generation = _generation;
         var token = _debounce.Next();
         try
         {
             await Task.Delay(DebounceInterval, token);
+            if (generation != _generation) return;
+            _lastPublished = raw;
             await InvokeAsync(() => ValueChanged.InvokeAsync(raw));
         }
         catch (TaskCanceledException) { }
@@ -224,6 +272,7 @@ else
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
     {
+        _generation++;
         _debounce.Dispose();
         await base.DisposeAsync();
     }
