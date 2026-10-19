@@ -1,0 +1,28 @@
+@page "/badge-standalone"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+        @foreach (var size in _sizes)
+        {
+            <div style="display:flex;gap:24px;align-items:center">
+                <FlareBadge id="@($"count-{size}")" Size="@size" Count="5" Color="FlareColor.Primary" />
+                <FlareBadge id="@($"text-{size}")" Size="@size" Text="New" Color="FlareColor.Primary" />
+                <FlareBadge id="@($"dot-{size}")" Size="@size" Dot="true" Color="FlareColor.Primary" />
+            </div>
+        }
+
+        <div style="display:flex;gap:8px">
+            <button id="fluent" @onclick="UseFluent">Fluent 2</button>
+            <button id="md3e" @onclick="UseMd3e">Material 3 Expressive</button>
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly FieldSize[] _sizes =
+        [FieldSize.Xs, FieldSize.Sm, FieldSize.Md, FieldSize.Lg, FieldSize.Xl];
+
+    private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
+    private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");
+}

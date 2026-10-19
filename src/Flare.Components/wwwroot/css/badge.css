@@ -46,6 +46,9 @@
     width: var(--_dot-size);
     height: var(--_dot-size);
     padding: 0;
+    /* A dot is a circle by definition; the pill radius token belongs to count/text badges, and a theme
+       that gives them a small corner would otherwise square the dot off. */
+    border-radius: 50%;
     top: var(--flare-badge-dot-offset);
     right: var(--flare-badge-dot-offset);
 }
@@ -110,7 +113,9 @@
     right: auto;
 }
 
-/* Standalone pill - indicator flows inline instead of anchoring to a corner */
+/* Standalone pill - the indicator flows inline instead of anchoring to a corner. Only the positioning
+   changes: the size scale's height, minimum width, horizontal padding and dot diameter stay in charge,
+   so the standalone badge answers to the theme exactly like a corner one. */
 .flare-badge--standalone {
     vertical-align: middle;
 }
@@ -121,7 +126,4 @@
     right: auto;
     left: auto;
     bottom: auto;
-    height: auto;
-    min-width: 0;
-    padding: 0.1rem var(--flare-spacing-4);
 }
