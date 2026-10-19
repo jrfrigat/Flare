@@ -52,6 +52,7 @@
        role="button"
        aria-label="@AriaLabel"
        title="@Tooltip"
+       aria-pressed="@(AriaPressed is { } p ? (p ? "true" : "false") : null)"
        aria-disabled="@(Disabled || Loading ? "true" : null)"
        aria-busy="@(Loading ? "true" : null)"
        tabindex="@(Disabled || Loading ? "-1" : null)"
