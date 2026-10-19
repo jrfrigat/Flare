@@ -8,7 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the video element. Defaults to "Video player". |
+| `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the video element. Defaults to the localized "Video player" string. |
 | `AutoPlay` | `bool` | `false` | Parameter |  | Automatically starts playback when the component mounts. |
 | `Controls` | `bool` | `true` | Parameter |  | Shows the custom Flare-themed control bar. |
 | `Loop` | `bool` | `false` | Parameter |  | Loops video playback when it reaches the end. |
@@ -31,6 +31,14 @@ Returns: `ValueTask`.
 ### `OnEnded()`
 
 Returns: `void`.
+
+### `OnFullscreenChanged(bool isFullscreen)`
+
+Returns: `void`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `isFullscreen` | `bool` | — |
 
 ### `OnPlayStateChanged(bool isPlaying)`
 

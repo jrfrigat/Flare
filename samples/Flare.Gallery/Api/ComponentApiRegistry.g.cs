@@ -7661,7 +7661,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the video element. Defaults to ""Video player"".", null, false, false, false, @"FlareVideoPlayer"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the video element. Defaults to the localized ""Video player"" string.", null, false, false, false, @"FlareVideoPlayer"),
                 new ApiParameterInfo(@"AutoPlay", @"bool", @"false", @"Automatically starts playback when the component mounts.", null, false, false, false, @"FlareVideoPlayer"),
                 new ApiParameterInfo(@"Controls", @"bool", @"true", @"Shows the custom Flare-themed control bar.", null, false, false, false, @"FlareVideoPlayer"),
                 new ApiParameterInfo(@"Loop", @"bool", @"false", @"Loops video playback when it reaches the end.", null, false, false, false, @"FlareVideoPlayer"),
@@ -7680,6 +7680,11 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnEnded", @"OnEnded()", @"void", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnFullscreenChanged", @"OnFullscreenChanged(bool isFullscreen)", @"void", null, null,
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"isFullscreen", @"bool", null),
+                    }),
                 new ApiMethodInfo(@"OnPlayStateChanged", @"OnPlayStateChanged(bool isPlaying)", @"void", null, null,
                     new ApiMethodParameter[]
                     {

@@ -13,7 +13,7 @@
            loop="@Loop"
            muted="@(Muted || _isMuted)"
            playsinline
-           aria-label="@(AriaLabel ?? "Video player")">
+           aria-label="@(AriaLabel ?? VideoPlayerStrings.Label)">
         @if (!string.IsNullOrEmpty(SubtitleSrc))
         {
             <track kind="subtitles" src="@SubtitleSrc" default />
@@ -25,7 +25,7 @@
         <div class="@Css.Classes.VideoPlayer.Controls">
             <button class="@Css.Classes.VideoPlayer.Button"
                     type="button"
-                    aria-label="@(_isPlaying ? "Pause" : "Play")"
+                    aria-label="@(_isPlaying ? VideoPlayerStrings.Pause : VideoPlayerStrings.Play)"
                     @onclick="TogglePlayAsync">
                 <FlareIconView Value="@(_isPlaying ? FlareIcons.Pause : FlareIcons.PlayArrow)" Size="1.25rem" />
             </button>
@@ -36,14 +36,14 @@
                    max="@((int)(_duration > 0 ? _duration : 1))"
                    value="@((int)_currentTime)"
                    step="1"
-                   aria-label="Seek"
+                   aria-label="@VideoPlayerStrings.Seek"
                    @oninput="OnSeekInput" />
 
             <span class="@Css.Classes.VideoPlayer.Time">@FormatTime(_currentTime) / @FormatTime(_duration)</span>
 
             <button class="@Css.Classes.VideoPlayer.Button"
                     type="button"
-                    aria-label="@(_isMuted ? "Unmute" : "Mute")"
+                    aria-label="@(_isMuted ? VideoPlayerStrings.Unmute : VideoPlayerStrings.Mute)"
                     @onclick="ToggleMuteAsync">
                 <FlareIconView Value="@(_isMuted ? FlareIcons.VolumeOff : FlareIcons.VolumeUp)" Size="1.25rem" />
             </button>
@@ -54,14 +54,14 @@
                    max="1"
                    step="0.05"
                    value="@_volume.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)"
-                   aria-label="Volume"
+                   aria-label="@VideoPlayerStrings.Volume"
                    style="flex:0 0 5rem"
                    @oninput="OnVolumeInput" />
 
             @if (PlaybackRates is { Count: > 0 })
             {
                 <select class="@Css.Classes.VideoPlayer.Rate"
-                        aria-label="Playback speed"
+                        aria-label="@VideoPlayerStrings.PlaybackSpeed"
                         @onchange="OnPlaybackRateChange">
                     @foreach (var rate in PlaybackRates)
                     {
@@ -75,7 +75,7 @@
 
             <button class="@Css.Classes.VideoPlayer.Button"
                     type="button"
-                    aria-label="Fullscreen"
+                    aria-label="@(_isFullscreen ? VideoPlayerStrings.ExitFullscreen : VideoPlayerStrings.Fullscreen)"
                     @onclick="RequestFullscreenAsync">
                 <FlareIconView Value="@FlareIcons.Fullscreen" Size="1.25rem" />
             </button>
@@ -106,7 +106,7 @@
     /// <summary>Available playback speed options shown in a select control. E.g. [0.5, 1.0, 1.5, 2.0].</summary>
     [Parameter] public IReadOnlyList<double>? PlaybackRates { get; set; }
 
-    /// <summary>Accessible label for the video element. Defaults to "Video player".</summary>
+    /// <summary>Accessible label for the video element. Defaults to the localized "Video player" string.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.VideoPlayer.Root;
@@ -117,6 +117,7 @@
     private readonly string _id = Guid.NewGuid().ToString("N");
 
     private bool _isPlaying;
+    private bool _isFullscreen;
     private double _currentTime;
     private double _duration;
     private double _volume = 1.0;
@@ -238,6 +239,13 @@
     public void OnPlayStateChanged(bool isPlaying)
     {
         _isPlaying = isPlaying;
+        InvokeAsync(StateHasChanged);
+    }
+
+    [JSInvokable]
+    public void OnFullscreenChanged(bool isFullscreen)
+    {
+        _isFullscreen = isFullscreen;
         InvokeAsync(StateHasChanged);
     }
 
