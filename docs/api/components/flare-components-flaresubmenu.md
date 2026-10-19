@@ -20,6 +20,11 @@
 
 ## Methods
 
+### `CloseFromEscape()`
+
+Closes this submenu when the overlay layer receives Escape.
+Returns: `Task`.
+
 ### `DisposeAsync()`
 
 Disposes the component; override to release JS interop or subscriptions.

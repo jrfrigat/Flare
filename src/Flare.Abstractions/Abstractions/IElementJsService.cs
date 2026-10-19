@@ -28,6 +28,16 @@ public interface IElementJsService
     /// <summary>Removes focus from <paramref name="element"/> (programmatic blur).</summary>
     ValueTask BlurAsync(ElementReference element);
 
+    /// <summary>Activates <paramref name="element"/> as a real click does - for a link that means the
+    /// browser's own navigation, including its <c>target</c>, <c>rel</c> and <c>download</c>.
+    /// <para>
+    /// Defaults to <see cref="NotSupportedException"/> rather than a silent no-op: a caller that offers a
+    /// fallback must be able to take it instead of believing the element was clicked.
+    /// </para>
+    /// </summary>
+    ValueTask ClickAsync(ElementReference element) => throw new NotSupportedException(
+        "This JS adapter cannot click an element; the caller falls back to its own activation path.");
+
     /// <summary>Focuses <paramref name="element"/> and selects the character range [<paramref name="start"/>, <paramref name="end"/>).</summary>
     ValueTask SelectRangeAsync(ElementReference element, int start, int end);
 

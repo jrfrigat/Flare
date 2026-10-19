@@ -22,6 +22,12 @@ export const flareOtp = {
     }
 };
 
+// A real click on the element, so a link keeps the browser's own navigation (target, rel, download).
+// Keyboard activation of a menu item cannot reproduce that from C#: NavigationManager has no target.
+export const flareDom = {
+    click: function (el) { if (el) el.click(); }
+};
+
 // Focus is done natively from C# via ElementReference.FocusAsync; only the
 // operations with no built-in Blazor equivalent live here.
 export const flareField = {

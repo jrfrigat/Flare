@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @implements IMenuEntry
+@inject Flare.Components.Services.IElementJsService Element
 
 @if (Href is not null)
 {
@@ -13,6 +14,7 @@
        tabindex="@_tabIndex"
        aria-disabled="@Disabled.ToString().ToLowerInvariant()"
        style="@Style"
+       @ref="_itemEl"
        @onclick="HandleClick"
        @onclick:preventDefault="@Disabled"
        @attributes="AdditionalAttributes">
@@ -32,6 +34,7 @@ else
             disabled="@Disabled"
             tabindex="@_tabIndex"
             style="@Style"
+            @ref="_itemEl"
             @onclick="HandleClick"
             @attributes="AdditionalAttributes">
         @if (Icon is not null)
@@ -78,6 +81,8 @@ else
     /// <summary>Stable element id, referenced by the menu's <c>aria-activedescendant</c> when focused.</summary>
     internal string ItemId { get; } = "flare-mi-" + Guid.NewGuid().ToString("N")[..8];
 
+    private ElementReference _itemEl;
+
     private string _disabledClass => Disabled
         ? Css.Classes.Menu.ItemDisabled
         : (ReferenceEquals(MenuFocusedItem, this) ? Css.Classes.Menu.ItemFocused : string.Empty);
@@ -113,11 +118,26 @@ else
         if (AutoClose && CloseMenu is not null) await CloseMenu();
     }
 
-    /// <summary>Activates the item from the menu's keyboard navigation: the action runs once, the menu
-    /// closes when <see cref="AutoClose"/> is set, and a link navigates through the router.</summary>
+    /// <summary>Activates the item from the menu's keyboard navigation. A link is clicked natively, so
+    /// its <c>target</c> and the rest of the anchor's semantics work exactly as they do for the mouse;
+    /// without a usable JS module the router fallback still runs the action and closes the menu.</summary>
     internal async Task ActivateAsync()
     {
         if (Disabled) return;
+
+        if (Href is not null)
+        {
+            try
+            {
+                await Element.ClickAsync(_itemEl);
+                return;
+            }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (NotSupportedException) { }
+        }
+
         if (OnClick.HasDelegate) await OnClick.InvokeAsync();
         if (AutoClose && CloseMenu is not null) await CloseMenu();
         if (Href is not null) Navigation.NavigateTo(_safeHref);

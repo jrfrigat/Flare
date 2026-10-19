@@ -24,6 +24,10 @@ public sealed class ElementJsService : FlareJsModule, IElementJsService
         InvokeVoidAsync("flareField.blur", element);
 
     /// <inheritdoc />
+    public ValueTask ClickAsync(ElementReference element) =>
+        InvokeVoidAsync("flareDom.click", element);
+
+    /// <inheritdoc />
     public ValueTask SelectRangeAsync(ElementReference element, int start, int end) =>
         InvokeVoidAsync("flareField.selectRange", element, start, end);
 
