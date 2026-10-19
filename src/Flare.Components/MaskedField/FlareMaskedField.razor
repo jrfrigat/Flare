@@ -21,7 +21,7 @@
                                Id="@ControlId"
                                Type="text"
                                InputMode="@EffectiveInputMode"
-                               Placeholder="@(_placeholder ?? Placeholder)"
+                               Placeholder="@(string.IsNullOrEmpty(Placeholder) ? _derivedPlaceholder : Placeholder)"
                                Disabled="Disabled"
                                ReadOnly="ReadOnly"
                                Required="Required"
@@ -121,7 +121,7 @@
         }
     }
 
-    private string? _placeholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>
+    private string? _derivedPlaceholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>
         c == '#' || c == 'A' || c == '*' ? '_' : c));
 
     private string? _lastValue;
