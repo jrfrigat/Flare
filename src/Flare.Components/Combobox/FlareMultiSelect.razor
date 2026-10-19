@@ -38,7 +38,7 @@
              tabindex="@(Disabled || Searchable ? -1 : 0)"
              @onclick="OnControlClick"
              @onkeydown="HandleKeyDownAsync"
-             @attributes="InputAttributes">
+             @attributes="(Searchable ? null : ComboboxInputAttributes.Forwardable(InputAttributes))">
             <span class="@Css.Classes.Multiselect.Value">
                 @if (_selected.Count > 0)
                 {
@@ -83,7 +83,8 @@
                        @oninput="HandleInputAsync"
                        @onfocus="OnInputFocus"
                        @onkeydown="HandleKeyDownAsync"
-                       @onkeydown:stopPropagation="true" />
+                       @onkeydown:stopPropagation="true"
+                       @attributes="(Searchable ? ComboboxInputAttributes.Forwardable(InputAttributes) : null)" />
             }
             @if (Clearable && !Disabled && !ReadOnly && _selected.Count > 0)
             {
