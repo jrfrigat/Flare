@@ -270,11 +270,8 @@
         }
         _prevValue = Value;
 
-        // Feed the engine the current source + selection.
-        // An empty declarative set is not a source: a wrapper forwarding @ChildContent produces a
-        // non-null fragment even with no children, and "no options declared" must leave Items in charge.
         _declared = DeclaredOptions.ParseOrNull<TValue>(ChildContent, EqualityComparer<TValue>.Default);
-        _state.SetSource(SourceItems());
+        if (SearchFunc is null) _state.SetSource(SourceItems());
         _state.SetSelection(Current is null ? System.Array.Empty<TValue>() : new[] { Current });
 
         // Two-way Open is only honored when the consumer controls it (binds OpenChanged); otherwise the
