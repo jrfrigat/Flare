@@ -245,6 +245,17 @@
   <data name="FileUpload_Cancelled" xml:space="preserve"><value>Cancelled</value></data>
   <data name="RTE_Label" xml:space="preserve"><value>Rich text editor</value></data>
   <data name="RTE_Placeholder" xml:space="preserve"><value>Start typing…</value></data>
+  <data name="RTE_Heading1" xml:space="preserve"><value>Heading 1</value></data>
+  <data name="RTE_Heading2" xml:space="preserve"><value>Heading 2</value></data>
+  <data name="RTE_Heading3" xml:space="preserve"><value>Heading 3</value></data>
+  <data name="RTE_Bold" xml:space="preserve"><value>Bold</value></data>
+  <data name="RTE_Italic" xml:space="preserve"><value>Italic</value></data>
+  <data name="RTE_Underline" xml:space="preserve"><value>Underline</value></data>
+  <data name="RTE_BulletList" xml:space="preserve"><value>Bullet list</value></data>
+  <data name="RTE_NumberedList" xml:space="preserve"><value>Numbered list</value></data>
+  <data name="RTE_InsertLink" xml:space="preserve"><value>Insert link</value></data>
+  <data name="RTE_ApplyLink" xml:space="preserve"><value>Apply link</value></data>
+  <data name="RTE_LinkUrl" xml:space="preserve"><value>Link URL</value></data>
 
   <!-- MultiSelect -->
   <data name="MultiSelect_Search" xml:space="preserve"><value>Search…</value></data>

@@ -1511,6 +1511,39 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("RTE_Placeholder", resourceCulture);
             }
         }
+
+        /// <summary>Looks up the localized level-one heading toolbar label.</summary>
+        public static string RTE_Heading1 => ResourceManager.GetString("RTE_Heading1", resourceCulture);
+
+        /// <summary>Looks up the localized level-two heading toolbar label.</summary>
+        public static string RTE_Heading2 => ResourceManager.GetString("RTE_Heading2", resourceCulture);
+
+        /// <summary>Looks up the localized level-three heading toolbar label.</summary>
+        public static string RTE_Heading3 => ResourceManager.GetString("RTE_Heading3", resourceCulture);
+
+        /// <summary>Looks up the localized bold toolbar label.</summary>
+        public static string RTE_Bold => ResourceManager.GetString("RTE_Bold", resourceCulture);
+
+        /// <summary>Looks up the localized italic toolbar label.</summary>
+        public static string RTE_Italic => ResourceManager.GetString("RTE_Italic", resourceCulture);
+
+        /// <summary>Looks up the localized underline toolbar label.</summary>
+        public static string RTE_Underline => ResourceManager.GetString("RTE_Underline", resourceCulture);
+
+        /// <summary>Looks up the localized bullet-list toolbar label.</summary>
+        public static string RTE_BulletList => ResourceManager.GetString("RTE_BulletList", resourceCulture);
+
+        /// <summary>Looks up the localized numbered-list toolbar label.</summary>
+        public static string RTE_NumberedList => ResourceManager.GetString("RTE_NumberedList", resourceCulture);
+
+        /// <summary>Looks up the localized insert-link toolbar label.</summary>
+        public static string RTE_InsertLink => ResourceManager.GetString("RTE_InsertLink", resourceCulture);
+
+        /// <summary>Looks up the localized apply-link toolbar label.</summary>
+        public static string RTE_ApplyLink => ResourceManager.GetString("RTE_ApplyLink", resourceCulture);
+
+        /// <summary>Looks up the localized accessible name of the link URL field.</summary>
+        public static string RTE_LinkUrl => ResourceManager.GetString("RTE_LinkUrl", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Keyboard Shortcuts.

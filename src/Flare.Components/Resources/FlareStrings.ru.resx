@@ -245,6 +245,17 @@
   <data name="FileUpload_Cancelled" xml:space="preserve"><value>Отменено</value></data>
   <data name="RTE_Label" xml:space="preserve"><value>Редактор текста</value></data>
   <data name="RTE_Placeholder" xml:space="preserve"><value>Начните вводить текст…</value></data>
+  <data name="RTE_Heading1" xml:space="preserve"><value>Заголовок 1</value></data>
+  <data name="RTE_Heading2" xml:space="preserve"><value>Заголовок 2</value></data>
+  <data name="RTE_Heading3" xml:space="preserve"><value>Заголовок 3</value></data>
+  <data name="RTE_Bold" xml:space="preserve"><value>Полужирный</value></data>
+  <data name="RTE_Italic" xml:space="preserve"><value>Курсив</value></data>
+  <data name="RTE_Underline" xml:space="preserve"><value>Подчеркнутый</value></data>
+  <data name="RTE_BulletList" xml:space="preserve"><value>Маркированный список</value></data>
+  <data name="RTE_NumberedList" xml:space="preserve"><value>Нумерованный список</value></data>
+  <data name="RTE_InsertLink" xml:space="preserve"><value>Вставить ссылку</value></data>
+  <data name="RTE_ApplyLink" xml:space="preserve"><value>Применить ссылку</value></data>
+  <data name="RTE_LinkUrl" xml:space="preserve"><value>Адрес ссылки</value></data>
 
   <!-- MultiSelect -->
   <data name="MultiSelect_Search" xml:space="preserve"><value>Поиск…</value></data>
