@@ -14,6 +14,9 @@
                @attributes="InputAttributes"
                type="checkbox"
                aria-checked="@(_indeterminate ? "mixed" : (_checked ? "true" : "false"))"
+               aria-labelledby="@(_hasLabel ? _labelTextId : null)"
+               aria-describedby="@(_displayedError is null ? null : _errorId)"
+               aria-invalid="@(_displayedError is null ? null : "true")"
                checked="@_checked"
                disabled="@Disabled"
                @onchange="HandleChange" />
@@ -35,13 +38,13 @@
             }
         </span>
     </span>
-    @if (ChildContent is not null || !string.IsNullOrEmpty(Label))
+    @if (_hasLabel)
     {
-        <span class="@Css.Classes.Checkbox.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
+        <span id="@_labelTextId" class="@Css.Classes.Checkbox.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
     }
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@Css.Classes.Checkbox.ErrorMsg">@_displayedError</span>
+        <span id="@_errorId" class="@Css.Classes.Checkbox.ErrorMsg" role="alert">@_displayedError</span>
     }
 </label>
 
@@ -99,6 +102,11 @@
     [CascadingParameter] private EditContext? EditContext { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Checkbox.Root;
+
+    private readonly string _controlId = $"flare-checkbox-{Guid.NewGuid():N}";
+    private string _labelTextId => $"{_controlId}-label";
+    private string _errorId => $"{_controlId}-err";
+    private bool _hasLabel => ChildContent is not null || !string.IsNullOrEmpty(Label);
 
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string _sizeClass => Size switch
