@@ -81,6 +81,7 @@
     private string[] _digits = [];
     private ElementReference[] _refs = [];
     private int _active = -1;
+    private string? _lastValue;
 
     protected override void OnParametersSet()
     {
@@ -88,10 +89,15 @@
         {
             _digits = new string[Length];
             _refs = new ElementReference[Length];
+            _lastValue = null;
         }
 
-        for (var i = 0; i < Length; i++)
-            _digits[i] = i < Value.Length ? Value[i].ToString() : string.Empty;
+        if (Value != _lastValue)
+        {
+            for (var i = 0; i < Length; i++)
+                _digits[i] = i < Value.Length ? Value[i].ToString() : string.Empty;
+            _lastValue = Value;
+        }
 
         UpdateFieldIdentifier(For);
     }
@@ -181,6 +187,7 @@
     private async Task NotifyChange()
     {
         var value = string.Concat(_digits);
+        _lastValue = value;
         await ValueChanged.InvokeAsync(value);
         NotifyFieldChanged();
         if (value.Length == Length && _digits.All(d => !string.IsNullOrEmpty(d)))
@@ -199,6 +206,7 @@
     public async Task ClearAsync()
     {
         for (var i = 0; i < Length; i++) _digits[i] = string.Empty;
+        _lastValue = string.Empty;
         await ValueChanged.InvokeAsync(string.Empty);
         await FocusCell(0);
         StateHasChanged();
