@@ -158,6 +158,7 @@
         {
             var parts = new List<string>();
             if (MaxLines > 0) parts.Add($"{Css.Tokens.LocalVars.TextAreaMaxLines}:{MaxLines}");
+            if (_maxLinesHeight is { } maxHeight) parts.Add($"max-height:{maxHeight}");
             // The inline value would outrank the autogrow rule's resize:none, so it is written only
             // when the content controls the height itself. A later toggle recomputes it.
             var resize = AutoGrow ? null : ResizeCss();
@@ -165,6 +166,60 @@
             if (_typoStyle is not null) parts.Add(_typoStyle);
             return parts.Count > 0 ? string.Join(';', parts) : null;
         }
+    }
+
+    // The cap has to count whole lines at the control's real line height plus its block padding: the
+    // textarea is border-box, so a cap of N lines alone would show less than N. The line height is `lh`;
+    // the padding is the theme's input padding token for this size, the same one the CSS applies.
+    private string? _maxLinesHeight
+    {
+        get
+        {
+            if (!AutoGrow || MaxLines <= 0) return null;
+            var token = Size switch
+            {
+                FieldSize.Xs => Css.Tokens.InputField.PaddingXs,
+                FieldSize.Sm => Css.Tokens.InputField.PaddingSm,
+                FieldSize.Lg => Css.Tokens.InputField.PaddingLg,
+                FieldSize.Xl => Css.Tokens.InputField.PaddingXl,
+                _ => Css.Tokens.InputField.PaddingMd,
+            };
+            var padding = BlockPaddingSum(ReadTokenRaw(token));
+            return padding is null
+                ? $"calc({MaxLines} * 1lh)"
+                : $"calc({MaxLines} * 1lh + {padding})";
+        }
+    }
+
+    // The padding token is a CSS shorthand. Its block sides are the first value when it has one or two,
+    // and the first plus the third when it has three or four; whitespace inside calc() is not a
+    // separator. Returns the sum as a calc expression, or null when nothing usable was supplied.
+    private static string? BlockPaddingSum(string? padding)
+    {
+        if (string.IsNullOrWhiteSpace(padding)) return null;
+
+        var parts = new List<string>(4);
+        var current = new System.Text.StringBuilder();
+        var depth = 0;
+        foreach (var c in padding)
+        {
+            if (c == '(') depth++;
+            else if (c == ')') depth--;
+            if (char.IsWhiteSpace(c) && depth == 0)
+            {
+                if (current.Length > 0) { parts.Add(current.ToString()); current.Clear(); }
+                continue;
+            }
+            current.Append(c);
+        }
+        if (current.Length > 0) parts.Add(current.ToString());
+
+        return parts.Count switch
+        {
+            1 or 2 => $"calc({parts[0]} * 2)",
+            3 or 4 => $"calc({parts[0]} + {parts[2]})",
+            _ => null,
+        };
     }
 
     // Debounce/immediate policy lives in FlareTextInput; this just raises the typed callback.

@@ -4,9 +4,10 @@
     <FlareTextArea @bind-Value="_code" Label="@GalleryStrings.TextArea_ResizeCode"
                    Rows="3" Resize="TextAreaResize.None" Spellcheck="false" />
     @* AutoGrow sizes the field from its content, so the manual resize handle is off even though
-       Resize is set - turn AutoGrow off and the handle comes back. *@
+       Resize is set - turn AutoGrow off and the handle comes back. MaxLines caps the growth at three
+       real text lines (whatever the typography and field size are); the rest scrolls. *@
     <FlareTextArea @bind-Value="_grow" Label="@GalleryStrings.TextArea_ResizeAutoGrow"
-                   Rows="2" AutoGrow="true" Resize="TextAreaResize.Both" />
+                   Rows="2" AutoGrow="true" MaxLines="3" Resize="TextAreaResize.Both" />
 </FlareStack>
 
 @code {

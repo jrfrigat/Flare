@@ -100,6 +100,27 @@ public class FlareTextAreaTests : FlareTestContext
     }
 
     [Fact]
+    public void AutoGrowMaxLines_WritesTheLineHeightCap()
+    {
+        var cut = Render<FlareTextArea>(p => p
+            .Add(x => x.AutoGrow, true)
+            .Add(x => x.MaxLines, 3));
+
+        var style = cut.Find("textarea").GetAttribute("style") ?? string.Empty;
+        Assert.Contains($"{Css.Tokens.LocalVars.TextAreaMaxLines}:3", style);
+        Assert.Contains("max-height:calc(3 * 1lh", style);
+    }
+
+    [Fact]
+    public void WithoutAutoGrow_NoLineHeightCapIsWritten()
+    {
+        var cut = Render<FlareTextArea>(p => p
+            .Add(x => x.MaxLines, 3));
+
+        Assert.DoesNotContain("max-height", cut.Find("textarea").GetAttribute("style") ?? string.Empty);
+    }
+
+    [Fact]
     public void TurningAutoGrowOff_RestoresTheResizeSetting()
     {
         var cut = Render<FlareTextArea>(p => p

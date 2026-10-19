@@ -14,7 +14,10 @@
 .flare-textarea--autogrow .flare-textarea__control {
   field-sizing: content;
   resize: none;
-  /* MaxLines cap: stop growing after N lines, then scroll. Unset -> unlimited. */
-  max-height: calc(var(--flare-textarea-max-lines, 1000) * 1.5em + 1.5rem);
+  /* MaxLines cap: stop growing after N lines, then scroll. Unset -> unlimited. `lh` is the control's
+     real line height under any Typo, not a guess; the block padding of the border-box height comes from
+     the theme's input padding token, which the component adds inline. Without a theme only the lines
+     are counted. */
+  max-height: calc(var(--flare-textarea-max-lines, 1000) * 1lh);
   overflow-y: auto;
 }

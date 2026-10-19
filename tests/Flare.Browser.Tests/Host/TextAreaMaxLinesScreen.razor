@@ -1,0 +1,44 @@
+@page "/textarea-maxlines"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+        @foreach (var size in _sizes)
+        {
+            <FlareTextArea id="@($"cap-{size}")" Size="@size" AutoGrow="true" MaxLines="3" Rows="1"
+                           Value="@_fourLines" Label="@($"Cap {size}")" />
+            @* Uncapped two-line control of the same size: its height is two real line boxes plus the padding. *@
+            <FlareTextArea id="@($"short-{size}")" Size="@size" AutoGrow="true" Rows="1"
+                           Value="@_twoLines" Label="@($"Short {size}")" />
+        }
+
+        <FlareTextArea id="cap-short" AutoGrow="true" MaxLines="3" Rows="1" Value="@_twoLines" Label="Short" />
+
+        <FlareTextArea id="cap-typo" AutoGrow="true" MaxLines="2" Rows="1" Typo="TypographyScale.HeadlineLarge"
+                       Value="@_fourLines" Label="Headline cap" />
+        <FlareTextArea id="typo-short" AutoGrow="true" MaxLines="0" Rows="1" Typo="TypographyScale.HeadlineLarge"
+                       Value="@_twoLines" Label="Headline short" />
+
+        <div style="inline-size:120px">
+            <FlareTextArea id="cap-narrow" AutoGrow="true" MaxLines="3" Rows="1" Value="@_longLine" Label="Narrow" />
+        </div>
+
+        <div style="display:flex;gap:8px">
+            <button id="fluent" @onclick="UseFluent">Fluent 2</button>
+            <button id="md3e" @onclick="UseMd3e">Material 3 Expressive</button>
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly FieldSize[] _sizes =
+        [FieldSize.Xs, FieldSize.Sm, FieldSize.Md, FieldSize.Lg, FieldSize.Xl];
+
+    private const string _fourLines = "one\ntwo\nthree\nfour";
+    private const string _twoLines = "one\ntwo";
+    private const string _longLine =
+        "A deliberately long single line of text that has to wrap several times inside a narrow column";
+
+    private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
+    private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");
+}
