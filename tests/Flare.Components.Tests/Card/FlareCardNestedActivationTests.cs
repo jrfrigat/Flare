@@ -142,6 +142,40 @@ public class FlareCardNestedActivationTests : FlareTestContext
         Assert.Null(hit.GetAttribute("aria-labelledby"));
     }
 
+    // Attributes that change what following the link does belong to the anchor that follows it. On the
+    // div they were silently inert: a download card navigated to the file instead of downloading it.
+    [Fact]
+    public void LinkAttributes_ReachTheActivationAnchor()
+    {
+        var cut = Render<FlareCard>(p => p
+            .Add(x => x.Href, "/file.pdf")
+            .AddUnmatched("download", "report.pdf")
+            .AddUnmatched("rel", "nofollow")
+            .AddUnmatched("hreflang", "en")
+            .AddUnmatched("referrerpolicy", "no-referrer"));
+
+        var hit = cut.Find($"a{HitSelector}");
+        Assert.Equal("report.pdf", hit.GetAttribute("download"));
+        Assert.Equal("nofollow", hit.GetAttribute("rel"));
+        Assert.Equal("en", hit.GetAttribute("hreflang"));
+        Assert.Equal("no-referrer", hit.GetAttribute("referrerpolicy"));
+
+        var root = cut.Find($".{Css.Classes.Card.Root}");
+        Assert.Null(root.GetAttribute("download"));
+        Assert.Null(root.GetAttribute("rel"));
+    }
+
+    [Fact]
+    public void UnmatchedAttributesThatAreNotLinkSemantics_StayOnTheRoot()
+    {
+        var cut = Render<FlareCard>(p => p
+            .Add(x => x.Href, "/target")
+            .AddUnmatched("data-testid", "card"));
+
+        Assert.Equal("card", cut.Find($".{Css.Classes.Card.Root}").GetAttribute("data-testid"));
+        Assert.Null(cut.Find($"a{HitSelector}").GetAttribute("data-testid"));
+    }
+
     [Fact]
     public void LinkCard_KeepsContentOutOfTheAnchor()
     {
