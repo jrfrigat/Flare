@@ -113,6 +113,7 @@
 
     private async Task OnInput(ChangeEventArgs e, int idx)
     {
+        if (ReadOnly || Disabled) return;
         var text = e.Value?.ToString() ?? string.Empty;
         if (string.IsNullOrEmpty(text))
         {
@@ -132,6 +133,18 @@
     {
         switch (e.Key)
         {
+            case "ArrowLeft":
+                if (idx > 0) await FocusCell(idx - 1);
+                return;
+            case "ArrowRight":
+                if (idx < Length - 1) await FocusCell(idx + 1);
+                return;
+        }
+
+        if (ReadOnly || Disabled) return;
+
+        switch (e.Key)
+        {
             case "Backspace":
                 if (string.IsNullOrEmpty(_digits[idx]) && idx > 0)
                 {
@@ -145,12 +158,6 @@
                     await NotifyChange();
                 }
                 break;
-            case "ArrowLeft":
-                if (idx > 0) await FocusCell(idx - 1);
-                break;
-            case "ArrowRight":
-                if (idx < Length - 1) await FocusCell(idx + 1);
-                break;
             case "Delete":
                 _digits[idx] = string.Empty;
                 await NotifyChange();
@@ -160,6 +167,7 @@
 
     private async Task OnPaste(ClipboardEventArgs e)
     {
+        if (ReadOnly || Disabled) return;
         var text = await Clipboard.ReadAsync();
         if (string.IsNullOrEmpty(text)) return;
         var clean = new string(text.Where(c => char.IsLetterOrDigit(c)).ToArray());
