@@ -258,6 +258,12 @@
     {
         base.OnParametersSet();
         UpdateFieldIdentifier(For);
+        if (Disabled || ReadOnly)
+        {
+            _cts.Cancel();
+            _searching = false;
+            _state.Close();
+        }
 
         // Controlled/uncontrolled value reconciliation.
         if (Controlled)
@@ -421,6 +427,8 @@
                     await TryCommitCustomAsync();
                 break;
             case "Escape":
+                _cts.Cancel();
+                _searching = false;
                 if (_state.IsOpen) { _state.Close(); RevertDisplay(); }
                 await NotifyOpenAsync();
                 break;
@@ -443,6 +451,8 @@
 
     private async Task HandleDismissAsync()
     {
+        _cts.Cancel();
+        _searching = false;
         _editing = false;
         // Reconcile the typed text: commit a custom value, or revert to the selected label.
         if (AllowsCustomValue && !string.IsNullOrWhiteSpace(_state.Input) && !MatchesCurrent())
