@@ -3,6 +3,60 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.47.0] - 2026-10-19
+
+### Added
+
+- `FlareMultiSelect` toggles select-all from the keyboard: `Ctrl+A` (`Cmd+A` on macOS) selects or clears every visible
+  enabled option while the list is open, `aria-keyshortcuts` announces the shortcut and the select-all row reports
+  `aria-checked="mixed"` for a partial selection.
+- `FlareRadio.InputAttributes` forwards attributes to the native radio input, while `Class`, `Style` and unmatched
+  attributes land on the label; the group name, value and state attributes stay owned by the component.
+
+### Fixed
+
+- A pending combobox search is canceled when the popup is dismissed, the field becomes disabled or read-only, or
+  Escape closes it; the canceled result no longer reopens the list.
+- `FlareCombobox` and `FlareSelect` raise `OpenChanged` when the list opens from focus, an arrow key or an async
+  search, not only from a click.
+- Selects and tag fields apply a changed grouping, ranking function or `MaxSelections` after the first render instead
+  of keeping the policy they started with.
+- An async combobox result survives a parent re-render instead of being replaced by the unfiltered source.
+- `FlareTagField` stops committing, searching and opening the list once it becomes disabled or read-only; its
+  `MinChars` threshold behaves the same for local and async suggestions, and suggestions are searched past the
+  number rendered in the list.
+- Select, multi-select and tag field `aria-labelledby` follows a rich `LabelContent`, and invalid selection fields
+  report `aria-invalid`.
+- `FlareSelect.InputAttributes` reaches the search input in searchable mode, not only the wrapper.
+- Type-ahead in `FlareSelect` and `FlareMultiSelect` starts a new buffer after `TypeaheadResetMs` of inactivity and is
+  reset by Home, End, Escape, typing and closing the list, so a later key no longer completes an old prefix.
+- `FlareNumericField` lets the native number input own arrow stepping in number mode, so one press steps once; decimal
+  and long values keep their precision and an overflowing value no longer turns into another number; a pasted
+  percentage is parsed back into its fraction, and a pending debounce is canceled before a clamped commit.
+- `FlareMaskedField` keeps its display in step when `Value`, `Pattern` or `AutoApply` changes, and an explicit
+  `Placeholder` wins over the mask hint.
+- `FlareRadioGroup` passes its validation error to every radio through `aria-describedby` and `aria-invalid`.
+- `FlareCarousel` keeps a valid current slide when items shrink or disappear; Prev/Next and GoTo no longer leave the
+  index outside the item list.
+- The floating action button menu closes on Escape and returns focus to its trigger.
+- A date picker keeps the calendar cursor on the date typed into the field instead of moving it elsewhere.
+- A snackbar pauses its auto-hide while it has focus or the pointer is over it, so it is not removed while being read.
+- A closed persistent drawer and collapsed disclosure content leave the Tab order; the drawer's focus trap follows its
+  real modal state instead of the parameter that requested it.
+- A collapsed navigation group returns focus to its header.
+- The hidden scroll-to-top button leaves the Tab order.
+- Chip selection classes stay in step when the group's selection changes.
+- A menu opens its submenus from the keyboard and keeps Escape inside the open submenu; Enter and Space activate
+  menu items, and Tab releases the menu; a link item activates through the link itself.
+- Closing a submenu with the pointer clears its item registrations, so the next open does not mix in stale entries;
+  items removed from an open menu leave the keyboard registry and the focus moves to a surviving item.
+- An open `FlareMenu` releases its placement layer when it is removed from the page, so listeners and top-layer
+  registrations do not outlive it.
+- Nested actions inside a clickable card no longer activate the card, and link attributes stay on the card's link.
+- A popover closes on Escape through the shared overlay layer; a tooltip's description follows the focusable trigger
+  and stays current when it is replaced.
+- The file upload zone shows the theme's focus ring when reached from the keyboard.
+
 ## [0.46.0] - 2026-10-18
 
 ### Added
