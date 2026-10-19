@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IUiJsService Ui
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 @* The group manages geometry via CSS (seams + per-corner radii) and cascades
    Size/Variant/Color to child FlareButton via FlareButtonGroupContext. *@
@@ -18,9 +19,10 @@
         {
             @* The overflow control sits at the trailing end, where the guidance puts it. Its panel holds a
                SECOND copy of the same content: with ChildContent an opaque fragment, the group cannot move
-               a button it never enumerated - but it can render the same fragment twice and let the measurer
-               show each item in exactly one of the two places. Nothing is on screen twice, and a folded
-               button keeps its own handlers and state because it IS the same component, declared once.
+               a button it never enumerated, so the measurer shows each declared item in exactly one of the
+               two places. The copies are separate component instances - a stateful child must bind its
+               value (FlareToggleButton.Toggled) so both copies agree; the measurer makes the panel copy's
+               ids unique because arbitrary markup may carry them.
 
                FreeContent because those copies are buttons, not menu items: they take the focus themselves,
                and a menu that swallowed Tab and Enter on their behalf would leave them unreachable.
@@ -85,6 +87,12 @@
     /// so this is the one part of the group measured in script rather than decided in CSS.
     /// Suits the standard model, which hugs its buttons and therefore can run out of room; a connected
     /// group is meant to span its surface and share the width out instead of overflowing.
+    /// <para>
+    /// The content is rendered twice - once in the bar and once in the overflow panel - because a
+    /// <see cref="RenderFragment"/> cannot be partly relocated. The two copies are separate component
+    /// instances, so a stateful child needs a controlled value (<c>FlareToggleButton.Toggled</c>) for both
+    /// copies to show the same state; an uncontrolled child keeps one state per copy.
+    /// </para>
     /// </summary>
     [Parameter] public bool Collapsible { get; set; }
 
@@ -157,10 +165,19 @@
         // The overflow control stays in the DOM either way - it has to be measurable for the fold to
         // reserve room for it - so an empty menu is hidden by CSS rather than by not rendering it.
         if (_hiddenCount == hidden) return;
+        var wasOverflowing = _hiddenCount > 0;
         _hiddenCount = hidden;
         // Room came back while the panel was open: it now lists nothing, and leaving it open would park
-        // an empty panel under a control CSS is about to hide.
-        if (hidden == 0 && _menu is not null) await _menu.CloseAsync();
+        // an empty panel under a control CSS is about to hide. The menu's own close moves the focus to
+        // its activator, which is that hidden control - hand it to the first segment still on screen.
+        if (hidden == 0 && _menu is not null && wasOverflowing)
+        {
+            await _menu.CloseAsync();
+            try { await Overlay.FocusFirstAsync(_root); }
+            catch (Microsoft.JSInterop.JSException) { }
+            catch (ObjectDisposedException) { }
+            catch (InvalidOperationException) { }
+        }
         StateHasChanged();
     }
 

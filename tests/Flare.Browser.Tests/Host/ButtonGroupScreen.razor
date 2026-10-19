@@ -1,0 +1,35 @@
+@page "/button-group"
+@using Flare.Css
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px">
+        <div id="sizer" style="width:@(_wide ? "760px" : "240px")">
+            <FlareButtonGroup Collapsible="true" AriaLabel="Formatting">
+                <span id="hint" class="@Css.Classes.Visually.Hidden">Formatting options</span>
+                <FlareButton id="bold" AriaLabel="Bold">B</FlareButton>
+                <FlareButton id="italic" AriaLabel="Italic">I</FlareButton>
+                <FlareToggleButton id="underline" AriaLabel="Underline" aria-describedby="hint"
+                                   Toggled="_under" ToggledChanged="OnToggled">U</FlareToggleButton>
+                <FlareToggleButton id="free" AriaLabel="Free">F</FlareToggleButton>
+                <FlareButton id="strike" AriaLabel="Strike">S</FlareButton>
+            </FlareButtonGroup>
+        </div>
+
+        <button id="narrow" @onclick="() => _wide = false">Narrow</button>
+        <button id="widen" @onclick="() => _wide = true">Widen</button>
+        <span id="state">@(_under ? "on" : "off")</span>
+        <span id="toggles">@_toggles</span>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private bool _wide = true;
+    private bool _under;
+    private int _toggles;
+
+    private void OnToggled(bool value)
+    {
+        _under = value;
+        _toggles++;
+    }
+}

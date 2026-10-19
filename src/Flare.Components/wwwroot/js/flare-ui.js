@@ -143,6 +143,52 @@ export function removeTabScroller(bar) {
 const HIDDEN_ATTR = 'data-flare-bg-hidden';
 const _groupCollapsers = registry();
 
+// The panel is a second copy of the same declared content, so the ids inside it are a second copy too.
+// Blazor did not write this rewrite, so its next render does not undo it; new nodes are handled on the
+// next pass, and a reference is remapped only while it still names an original id.
+const OVERFLOW_ID_PREFIX = 'flare-bg-overflow-';
+let _overflowIdSeq = 0;
+const _ID_REF_ATTRS = ['for', 'aria-labelledby', 'aria-describedby', 'aria-controls',
+    'aria-activedescendant', 'aria-owns', 'aria-flowto', 'headers'];
+
+function _uniqueOverflowIds(panel) {
+    const map = new Map();
+    for (const el of panel.querySelectorAll('[id]')) {
+        let original = el.getAttribute('data-flare-bg-original-id');
+        if (original === null) {
+            original = el.id;
+            el.setAttribute('data-flare-bg-original-id', original);
+        }
+        if (!el.id.startsWith(OVERFLOW_ID_PREFIX)) {
+            el.id = `${OVERFLOW_ID_PREFIX}${++_overflowIdSeq}-${original}`;
+        }
+        map.set(original, el.id);
+    }
+    if (map.size === 0) return;
+
+    for (const el of panel.querySelectorAll('*')) {
+        for (const attr of _ID_REF_ATTRS) {
+            const value = el.getAttribute(attr);
+            if (!value) continue;
+            const parts = value.split(/\s+/);
+            let changed = false;
+            const mapped = parts.map(part => {
+                const next = map.get(part);
+                if (next === undefined) return part;
+                changed = true;
+                return next;
+            });
+            if (changed) el.setAttribute(attr, mapped.join(' '));
+        }
+        for (const attr of ['href', 'xlink:href']) {
+            const value = el.getAttribute(attr);
+            if (!value || !value.startsWith('#')) continue;
+            const next = map.get(value.slice(1));
+            if (next !== undefined) el.setAttribute(attr, `#${next}`);
+        }
+    }
+}
+
 function _segments(root) {
     return Array.from(root.children).filter(el =>
         (el.classList.contains('flare-btn') || el.classList.contains('flare-toggle-btn')) &&
@@ -190,6 +236,7 @@ export function applyButtonGroupOverflow(root, dotNetRef) {
     // The panel holds a second copy of the same content: it shows exactly what the bar hid.
     const panel = root.querySelector(':scope > .flare-btn-group__more .flare-btn-group__overflow-list');
     if (panel) {
+        _uniqueOverflowIds(panel);
         const copies = Array.from(panel.children);
         copies.forEach((el, i) => {
             if (i < visible) el.setAttribute(HIDDEN_ATTR, '');
@@ -209,7 +256,14 @@ export function registerButtonGroupCollapse(root, dotNetRef) {
     const ro = new ResizeObserver(run);
     ro.observe(root);
     if (root.parentElement) ro.observe(root.parentElement);
-    _groupCollapsers.keep(root, () => ro.disconnect());
+    // The panel is mounted by FlareMenu only while the menu is open, so its copy appears outside the
+    // group's own render. The observer gives the new nodes their unique ids before they can be read.
+    const mo = new MutationObserver(() => {
+        const panel = root.querySelector(':scope > .flare-btn-group__more .flare-btn-group__overflow-list');
+        if (panel) _uniqueOverflowIds(panel);
+    });
+    mo.observe(root, { childList: true, subtree: true });
+    _groupCollapsers.keep(root, () => { ro.disconnect(); mo.disconnect(); });
     // No first pass from here: observe() already schedules one, and the component asks for another as
     // soon as this call returns. A third would only measure the same layout again.
 }

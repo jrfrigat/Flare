@@ -1,6 +1,6 @@
 @* Drag the slider to narrow the container: the segments that no longer fit fold into the ellipsis at the
-   trailing end and come back when the room does - and the folded buttons are the same components, moved
-   into the menu rather than copied. *@
+   trailing end and come back when the room does. The overflow panel holds a second rendering of the same
+   markup, so a stateful segment binds its value - the toggle below does, which keeps both copies in step. *@
 <FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Stretch">
 
     <FlareSlider @bind-Value="_width" Min="0" Max="100" Step="1" Label="@($"Container width: {_width}%")" />
@@ -9,6 +9,7 @@
         <FlareButtonGroup Collapsible Variant="ButtonVariant.Tonal">
             <FlareButton>Cut</FlareButton>
             <FlareButton>Copy</FlareButton>
+            <FlareToggleButton Toggled="_pinned" ToggledChanged="value => _pinned = value">Pin</FlareToggleButton>
             <FlareButton>Paste</FlareButton>
             <FlareButton>Duplicate</FlareButton>
             <FlareButton>Rename</FlareButton>
@@ -19,4 +20,5 @@
 
 @code {
     private double _width = 100;
+    private bool _pinned;
 }
