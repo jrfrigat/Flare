@@ -48,57 +48,69 @@
 /* Every segment carries its share of the frame - the long edges on each, the ends on the first and last -
    in place of the transparent border every button reserves, so a segment keeps the button's size. Each
    is separated from the next by a rule rather than by a gap. The fill stops at the padding box so a
-   selected segment does not paint under a translucent frame. */
+   selected segment does not paint under a translucent frame.
+
+   The edges are named by the inline axis, not by left and right: in RTL the first segment sits on the
+   right, so a physical left edge would put the frame and the seam on the wrong side of the run. */
 .flare-togglegroup > .flare-btn {
     border-radius: 0;
     background: transparent;
     background-clip: padding-box;
-    border-top: var(--flare-togglegroup-border);
-    border-bottom: var(--flare-togglegroup-border);
-    border-left: none;
-    border-right: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
+    border-block: var(--flare-togglegroup-border);
+    border-inline-start: none;
+    border-inline-end: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
     flex: 0 0 auto;
 }
 
 .flare-togglegroup > .flare-btn:first-child {
-    border-left: var(--flare-togglegroup-border);
+    border-inline-start: var(--flare-togglegroup-border);
 }
 
 .flare-togglegroup > .flare-btn:last-child {
-    border-right: var(--flare-togglegroup-border);
+    border-inline-end: var(--flare-togglegroup-border);
 }
 
+/* Vertical runs down the block axis, so the two side edges belong to every segment and the ends are
+   again the first and the last. */
 .flare-togglegroup--vertical > .flare-btn {
-    border-left: var(--flare-togglegroup-border);
-    border-right: var(--flare-togglegroup-border);
-    border-top: none;
-    border-bottom: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
+    border-inline: var(--flare-togglegroup-border);
+    border-block-start: none;
+    border-block-end: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
 }
 
 .flare-togglegroup--vertical > .flare-btn:first-child {
-    border-top: var(--flare-togglegroup-border);
+    border-block-start: var(--flare-togglegroup-border);
 }
 
 .flare-togglegroup--vertical > .flare-btn:last-child {
-    border-bottom: var(--flare-togglegroup-border);
+    border-block-end: var(--flare-togglegroup-border);
 }
 
-/* Restore rounded corners on first/last items of group */
-.flare-togglegroup > .flare-btn:first-child {
-    border-radius: var(--flare-togglegroup-radius) 0 0 var(--flare-togglegroup-radius);
+/* Restore rounded corners on the group's outer ends. The corners are named by the axes they join for
+   the same reason as the edges: the first segment's corners sit on the inline-start side, which is the
+   left in LTR and the right in RTL. */
+.flare-togglegroup:not(.flare-togglegroup--vertical) > .flare-btn:first-child {
+    border-start-start-radius: var(--flare-togglegroup-radius);
+    border-end-start-radius: var(--flare-togglegroup-radius);
 }
-.flare-togglegroup > .flare-btn:last-child {
-    border-radius: 0 var(--flare-togglegroup-radius) var(--flare-togglegroup-radius) 0;
+.flare-togglegroup:not(.flare-togglegroup--vertical) > .flare-btn:last-child {
+    border-start-end-radius: var(--flare-togglegroup-radius);
+    border-end-end-radius: var(--flare-togglegroup-radius);
 }
 .flare-togglegroup > .flare-btn:only-child {
     border-radius: var(--flare-togglegroup-radius);
 }
 
 .flare-togglegroup--vertical > .flare-btn:first-child {
-    border-radius: var(--flare-togglegroup-radius-vertical) var(--flare-togglegroup-radius-vertical) 0 0;
+    border-start-start-radius: var(--flare-togglegroup-radius-vertical);
+    border-start-end-radius: var(--flare-togglegroup-radius-vertical);
 }
 .flare-togglegroup--vertical > .flare-btn:last-child {
-    border-radius: 0 0 var(--flare-togglegroup-radius-vertical) var(--flare-togglegroup-radius-vertical);
+    border-end-start-radius: var(--flare-togglegroup-radius-vertical);
+    border-end-end-radius: var(--flare-togglegroup-radius-vertical);
+}
+.flare-togglegroup--vertical > .flare-btn:only-child {
+    border-radius: var(--flare-togglegroup-radius-vertical);
 }
 
 /* A selected segment takes the button family's selected paint but not its selected SHAPE: inside a
@@ -116,15 +128,25 @@
     background-clip: padding-box;
     color: var(--fc-on-container, var(--flare-btn-selected-color));
 }
-.flare-togglegroup > .flare-btn.flare-btn--selected:first-child {
-    border-radius: var(--flare-togglegroup-radius) 0 0 var(--flare-togglegroup-radius);
+.flare-togglegroup:not(.flare-togglegroup--vertical) > .flare-btn.flare-btn--selected:first-child {
+    border-start-start-radius: var(--flare-togglegroup-radius);
+    border-end-start-radius: var(--flare-togglegroup-radius);
 }
-.flare-togglegroup > .flare-btn.flare-btn--selected:last-child {
-    border-radius: 0 var(--flare-togglegroup-radius) var(--flare-togglegroup-radius) 0;
+.flare-togglegroup:not(.flare-togglegroup--vertical) > .flare-btn.flare-btn--selected:last-child {
+    border-start-end-radius: var(--flare-togglegroup-radius);
+    border-end-end-radius: var(--flare-togglegroup-radius);
+}
+.flare-togglegroup > .flare-btn.flare-btn--selected:only-child {
+    border-radius: var(--flare-togglegroup-radius);
 }
 .flare-togglegroup--vertical > .flare-btn.flare-btn--selected:first-child {
-    border-radius: var(--flare-togglegroup-radius-vertical) var(--flare-togglegroup-radius-vertical) 0 0;
+    border-start-start-radius: var(--flare-togglegroup-radius-vertical);
+    border-start-end-radius: var(--flare-togglegroup-radius-vertical);
 }
 .flare-togglegroup--vertical > .flare-btn.flare-btn--selected:last-child {
-    border-radius: 0 0 var(--flare-togglegroup-radius-vertical) var(--flare-togglegroup-radius-vertical);
+    border-end-start-radius: var(--flare-togglegroup-radius-vertical);
+    border-end-end-radius: var(--flare-togglegroup-radius-vertical);
+}
+.flare-togglegroup--vertical > .flare-btn.flare-btn--selected:only-child {
+    border-radius: var(--flare-togglegroup-radius-vertical);
 }

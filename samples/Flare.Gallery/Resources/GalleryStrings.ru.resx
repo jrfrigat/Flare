@@ -2878,6 +2878,9 @@
   <data name="ToggleButton_GroupFullWidth" xml:space="preserve">
     <value>Группа переключателей - на всю ширину</value>
   </data>
+  <data name="ToggleButton_GroupVertical" xml:space="preserve">
+    <value>Группа переключателей - вертикальная</value>
+  </data>
   <data name="ToggleButton_FullWidthToday" xml:space="preserve">
     <value>Сегодня</value>
   </data>

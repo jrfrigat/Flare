@@ -1,0 +1,86 @@
+@page "/toggle-group-rtl"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:8px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+        <FlareToggleGroup TValue="string" @bind-Value="_horizontal" id="h">
+            <FlareToggleButton Value="@("first")">First</FlareToggleButton>
+            <FlareToggleButton Value="@("middle")">Middle</FlareToggleButton>
+            <FlareToggleButton Value="@("last")">Last</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" @bind-Value="_vertical" id="v" Orientation="vertical">
+            <FlareToggleButton Value="@("first")">First</FlareToggleButton>
+            <FlareToggleButton Value="@("middle")">Middle</FlareToggleButton>
+            <FlareToggleButton Value="@("last")">Last</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" @bind-Value="_single" id="single">
+            <FlareToggleButton Value="@("only")">Only</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" @bind-Value="_singleSelected" id="single-selected">
+            <FlareToggleButton Value="@("only")">Only</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" @bind-Value="_singleVertical" id="single-vertical" Orientation="vertical">
+            <FlareToggleButton Value="@("only")">Only</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" @bind-Value="_selectedFirst" id="selected-first">
+            <FlareToggleButton Value="@("first")">First</FlareToggleButton>
+            <FlareToggleButton Value="@("last")">Last</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" @bind-Value="_selectedLast" id="selected-last">
+            <FlareToggleButton Value="@("first")">First</FlareToggleButton>
+            <FlareToggleButton Value="@("last")">Last</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <FlareToggleGroup TValue="string" id="disabled" Disabled="true">
+            <FlareToggleButton Value="@("first")">First</FlareToggleButton>
+            <FlareToggleButton Value="@("last")">Last</FlareToggleButton>
+        </FlareToggleGroup>
+
+        <div style="inline-size:120px">
+            <FlareToggleGroup TValue="string" @bind-Value="_scroll" id="scroll">
+                <FlareToggleButton Value="@("alpha")">Alpha</FlareToggleButton>
+                <FlareToggleButton Value="@("beta")">Beta</FlareToggleButton>
+                <FlareToggleButton Value="@("gamma")">Gamma</FlareToggleButton>
+                <FlareToggleButton Value="@("delta")">Delta</FlareToggleButton>
+            </FlareToggleGroup>
+        </div>
+
+        <div style="inline-size:360px">
+            <FlareToggleGroup TValue="string" @bind-Value="_full" id="full" FullWidth>
+                <FlareToggleButton Value="@("first")">First</FlareToggleButton>
+                <FlareToggleButton Value="@("middle")">Middle</FlareToggleButton>
+                <FlareToggleButton Value="@("last")">Last</FlareToggleButton>
+            </FlareToggleGroup>
+        </div>
+
+        <div style="display:flex;gap:8px">
+            <button id="rtl" @onclick="EnableRtl">RTL</button>
+            <button id="ltr" @onclick="EnableLtr">LTR</button>
+            <button id="fluent" @onclick="UseFluent">Fluent 2</button>
+            <button id="md3e" @onclick="UseMd3e">Material 3 Expressive</button>
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private string? _horizontal = "middle";
+    private string? _vertical;
+    private string? _single;
+    private string? _singleSelected = "only";
+    private string? _singleVertical = "only";
+    private string? _selectedFirst = "first";
+    private string? _selectedLast = "last";
+    private string? _scroll;
+    private string? _full = "middle";
+
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+    private Task EnableLtr() => ThemeService.SetRtlAsync(false);
+    private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
+    private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");
+}

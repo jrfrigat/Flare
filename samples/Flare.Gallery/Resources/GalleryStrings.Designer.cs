@@ -9876,6 +9876,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle Group - Vertical.
+        /// </summary>
+        public static string ToggleButton_GroupVertical {
+            get {
+                return ResourceManager.GetString("ToggleButton_GroupVertical", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Today.
         /// </summary>
         public static string ToggleButton_FullWidthToday {

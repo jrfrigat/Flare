@@ -1,0 +1,13 @@
+@* Vertical orientation seams the segments down the block axis: the frame runs along the two sides,
+   and its rounded ends belong to the first and last segment on that axis. *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareToggleGroup TValue="string" @bind-Value="_period" Orientation="vertical">
+        <FlareToggleButton Value="@("today")">@GalleryStrings.ToggleButton_FullWidthToday</FlareToggleButton>
+        <FlareToggleButton Value="@("week")">@GalleryStrings.ToggleButton_FullWidthThisWeek</FlareToggleButton>
+        <FlareToggleButton Value="@("month")">@GalleryStrings.ToggleButton_FullWidthThisMonth</FlareToggleButton>
+    </FlareToggleGroup>
+</FlareStack>
+
+@code {
+    private string? _period = "week";
+}
