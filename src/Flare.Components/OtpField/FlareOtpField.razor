@@ -39,7 +39,8 @@
                        @onkeydown="@(e => OnKeyDown(e, idx))"
                        @onfocus="@(() => _active = idx)"
                        @onblur="@(() => _active = -1)"
-                       @onpaste="@(e => OnPaste(e))" />
+                       @onpaste="@(e => OnPaste(e, idx))"
+                       @onpaste:preventDefault="true" />
             }
         </div>
     </Field>
@@ -125,13 +126,31 @@
         {
             _digits[idx] = string.Empty;
         }
-        else
+        else if (text.Length == 1)
         {
-            _digits[idx] = text[^1].ToString();
+            _digits[idx] = text;
             if (idx < Length - 1)
                 await FocusCell(idx + 1);
         }
+        else
+        {
+            await FillFromAsync(idx, text);
+            return;
+        }
 
+        await NotifyChange();
+    }
+
+    private async Task FillFromAsync(int start, string text)
+    {
+        var clean = new string(text.Where(char.IsLetterOrDigit).ToArray());
+        var written = 0;
+        for (var i = start; i < Length && written < clean.Length; i++, written++)
+            _digits[i] = clean[written].ToString();
+        for (var i = start + written; i < Length; i++)
+            _digits[i] = string.Empty;
+
+        await FocusCell(Math.Min(start + written, Length - 1));
         await NotifyChange();
     }
 
@@ -171,17 +190,12 @@
         }
     }
 
-    private async Task OnPaste(ClipboardEventArgs e)
+    private async Task OnPaste(ClipboardEventArgs e, int idx)
     {
         if (ReadOnly || Disabled) return;
         var text = await Clipboard.ReadAsync();
         if (string.IsNullOrEmpty(text)) return;
-        var clean = new string(text.Where(c => char.IsLetterOrDigit(c)).ToArray());
-        for (var i = 0; i < Length && i < clean.Length; i++)
-            _digits[i] = clean[i].ToString();
-        var focus = Math.Min(clean.Length, Length - 1);
-        await FocusCell(focus);
-        await NotifyChange();
+        await FillFromAsync(idx, text);
     }
 
     private async Task NotifyChange()
