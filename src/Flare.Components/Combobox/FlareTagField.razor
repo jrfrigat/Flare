@@ -46,9 +46,10 @@
                        aria-autocomplete="@(_hasSuggestions ? "list" : null)"
                        aria-controls="@(_hasSuggestions && _state.IsOpen ? _listboxId : null)"
                        aria-activedescendant="@_activeDescendantId"
-                       aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                       aria-labelledby="@(_hasLabel ? _labelId : null)"
                        aria-describedby="@_describedBy"
                        aria-required="@(Required ? "true" : null)"
+                       aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
                        @oninput="HandleInputAsync"
                        @onfocus="HandleFocusAsync"
                        @onblur="HandleBlurAsync"
@@ -67,7 +68,7 @@
                                  IsDisabled="_state.Collection.IsDisabled"
                                  Label="ResolveLabel"
                                  ItemTemplate="SuggestionTemplate"
-                                 AriaLabelledBy="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                                 AriaLabelledBy="@(_hasLabel ? _labelId : null)"
                                  OnSelect="PickSuggestionAsync"
                                  OnHighlight="HandleHover"
                                  PreventMouseDownDefault="true">
@@ -165,6 +166,7 @@
 
     private readonly string _controlId = $"flare-tagfield-{Guid.NewGuid():N}";
     private string _labelId => $"{_controlId}-label";
+    private bool _hasLabel => LabelContent is not null || !string.IsNullOrEmpty(Label);
     private string _errorId => $"{_controlId}-err";
     private string _helperId => $"{_controlId}-help";
     private string _listboxId => $"{_controlId}-listbox";

@@ -30,8 +30,8 @@
              aria-expanded="@(Searchable ? null : (_state.IsOpen ? "true" : "false"))"
              aria-controls="@(!Searchable && _state.IsOpen ? _listboxId : null)"
              aria-activedescendant="@(Searchable ? null : _activeDescendantId)"
-             aria-labelledby="@(!Searchable && !string.IsNullOrEmpty(Label) ? _labelId : null)"
-             aria-label="@(!Searchable && string.IsNullOrEmpty(Label) ? Placeholder : null)"
+             aria-labelledby="@(!Searchable && _hasLabel ? _labelId : null)"
+             aria-label="@(!Searchable && !_hasLabel ? Placeholder : null)"
              aria-describedby="@(Searchable ? null : _describedBy)"
              aria-disabled="@(Disabled ? "true" : null)"
              aria-readonly="@(ReadOnly ? "true" : null)"
@@ -78,7 +78,7 @@
                        aria-controls="@(_state.IsOpen ? _listboxId : null)"
                        aria-autocomplete="list"
                        aria-activedescendant="@_activeDescendantId"
-                       aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                       aria-labelledby="@(_hasLabel ? _labelId : null)"
                        aria-describedby="@_describedBy"
                        aria-required="@(Required ? "true" : null)"
                        aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
@@ -127,7 +127,7 @@
                                  OptionClass="@Css.Classes.Select.Option"
                                  Virtualize="true"
                                  VirtualizeThreshold="VirtualizeThreshold"
-                                 AriaLabelledBy="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                                 AriaLabelledBy="@(_hasLabel ? _labelId : null)"
                                  OnSelect="HandleSelectAsync"
                                  OnHighlight="HandleHover"
                                  PreventMouseDownDefault="Searchable">
@@ -227,6 +227,7 @@
 
     private readonly string _controlId = $"flare-select-{Guid.NewGuid():N}";
     private string _labelId => $"{_controlId}-label";
+    private bool _hasLabel => LabelContent is not null || !string.IsNullOrEmpty(Label);
     private string _errorId => $"{_controlId}-err";
     private string _helperId => $"{_controlId}-help";
     private string _listboxId => $"{_controlId}-listbox";
