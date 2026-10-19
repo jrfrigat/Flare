@@ -316,4 +316,6 @@
   <data name="TimeSpan_SecondsShort" xml:space="preserve"><value>s</value></data>
   <data name="Resize_Decrease" xml:space="preserve"><value>Decrease size</value></data>
   <data name="Resize_Increase" xml:space="preserve"><value>Increase size</value></data>
+  <data name="Slider_Minimum" xml:space="preserve"><value>minimum</value></data>
+  <data name="Slider_Maximum" xml:space="preserve"><value>maximum</value></data>
 </root>

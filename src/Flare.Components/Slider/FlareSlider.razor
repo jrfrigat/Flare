@@ -223,6 +223,10 @@
     [Parameter] public RenderFragment? LabelContent { get; set; }
     /// <summary>Accessible label used when no visible <see cref="Label"/> is provided.</summary>
     [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Accessible name of the lower range handle; defaults to the localized "minimum". Ignored in single mode.</summary>
+    [Parameter] public string? RangeStartLabel { get; set; }
+    /// <summary>Accessible name of the upper range handle; defaults to the localized "maximum". Ignored in single mode.</summary>
+    [Parameter] public string? RangeEndLabel { get; set; }
     /// <summary>Helper text shown below the slider.</summary>
     [Parameter] public string? HelperText { get; set; }
     /// <summary>Overrides validation with a custom error message.</summary>
@@ -275,8 +279,10 @@
     private string? _invalidAttr => string.IsNullOrEmpty(_displayedError) ? null : "true";
     private string _lowLabelledBy => _hasVisibleLabel ? $"{_labelId} {_lowEndpointId}" : _lowEndpointId;
     private string _highLabelledBy => _hasVisibleLabel ? $"{_labelId} {_highEndpointId}" : _highEndpointId;
-    private string _lowEndpointText => _hasVisibleLabel ? "minimum" : $"{AriaLabel} minimum".Trim();
-    private string _highEndpointText => _hasVisibleLabel ? "maximum" : $"{AriaLabel} maximum".Trim();
+    private string _lowEndpointWord => RangeStartLabel ?? FlareStrings.Slider_Minimum;
+    private string _highEndpointWord => RangeEndLabel ?? FlareStrings.Slider_Maximum;
+    private string _lowEndpointText => _hasVisibleLabel ? _lowEndpointWord : $"{AriaLabel} {_lowEndpointWord}".Trim();
+    private string _highEndpointText => _hasVisibleLabel ? _highEndpointWord : $"{AriaLabel} {_highEndpointWord}".Trim();
 
     // OWASP: silently clamp when Min > Max to prevent invalid range
     private double _safeMin => Math.Min(Min, Max);

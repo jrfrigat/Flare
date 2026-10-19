@@ -27,6 +27,8 @@
 | `Min` | `double` | `0` | Parameter |  | Minimum value of the slider range. |
 | `MouseWheel` | `bool` | `false` | Parameter |  | When true, hovering the slider and turning the mouse wheel adjusts Value: each notch moves by Step (scroll up increases, down decreases) and page scrolling is suppressed over the track. In range mode a plain wheel moves the low handle (Value) and Ctrl+wheel moves the high handle (ValueEnd); neither handle can cross the other. No effect when Disabled. |
 | `Range` | `bool` | `false` | Parameter |  | Enables a two-handle range slider (Value = low, ValueEnd = high). |
+| `RangeEndLabel` | `string?` | `` | Parameter |  | Accessible name of the upper range handle; defaults to the localized "maximum". Ignored in single mode. |
+| `RangeStartLabel` | `string?` | `` | Parameter |  | Accessible name of the lower range handle; defaults to the localized "minimum". Ignored in single mode. |
 | `ShowValue` | `bool` | `true` | Parameter |  | Shows the current value (or low-high range) next to the label when true. |
 | `Size` | `TrackSize` | `TrackSize.Xs` | Parameter |  | Size variant (XSmall-XLarge). Controls track thickness and handle height. |
 | `StartIcon` | `FlareIcon?` | `` | Parameter |  | Icon shown before the track - any provider (a bare string is a Material Symbols name). |

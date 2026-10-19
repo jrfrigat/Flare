@@ -1589,6 +1589,12 @@ namespace Flare.Components.Resources {
 
         /// <summary>Localized label for increasing a resizable dimension.</summary>
         public static string Resize_Increase => ResourceManager.GetString("Resize_Increase", resourceCulture);
+
+        /// <summary>Accessible name of the lower end of a slider range.</summary>
+        public static string Slider_Minimum => ResourceManager.GetString("Slider_Minimum", resourceCulture);
+
+        /// <summary>Accessible name of the upper end of a slider range.</summary>
+        public static string Slider_Maximum => ResourceManager.GetString("Slider_Maximum", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Next.

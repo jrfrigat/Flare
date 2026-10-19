@@ -86,6 +86,31 @@ public class SliderAriaTests : FlareTestContext
     }
 
     [Fact]
+    public void RangeEndpointWords_AreLocalized()
+    {
+        var ru = System.Globalization.CultureInfo.GetCultureInfo("ru");
+        Assert.Equal("минимум", Flare.Components.Resources.FlareStrings.ResourceManager.GetString("Slider_Minimum", ru));
+        Assert.Equal("максимум", Flare.Components.Resources.FlareStrings.ResourceManager.GetString("Slider_Maximum", ru));
+        Assert.Equal("minimum", Flare.Components.Resources.FlareStrings.ResourceManager.GetString("Slider_Minimum", System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    [Fact]
+    public void RangeEndpointLabels_CanBeOverridden()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.AriaLabel, "Volume")
+            .Add(x => x.Range, true)
+            .Add(x => x.RangeStartLabel, "lower")
+            .Add(x => x.RangeEndLabel, "upper")
+            .Add(x => x.Value, 20)
+            .Add(x => x.ValueEnd, 80));
+
+        var inputs = cut.FindAll(Inputs);
+        Assert.Equal("Volume lower", cut.Find($"#{inputs[0].GetAttribute("aria-labelledby")}").TextContent.Trim());
+        Assert.Equal("Volume upper", cut.Find($"#{inputs[1].GetAttribute("aria-labelledby")}").TextContent.Trim());
+    }
+
+    [Fact]
     public void AnError_IsDescribedMarkedInvalidAndAnnounced()
     {
         var cut = Render<FlareSlider>(p => p
