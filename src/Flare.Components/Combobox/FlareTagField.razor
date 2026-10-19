@@ -205,6 +205,12 @@
             _tags.Clear();
             _tags.AddRange(Values);
         }
+        if (Disabled || ReadOnly)
+        {
+            _cts.Cancel();
+            _loading = false;
+            _state.Close();
+        }
         _state.SetMaxResults(MaxSuggestions);
         RefreshLocalSource();
     }
@@ -302,6 +308,12 @@
 
             var results = await SearchFunc!(query, token);
             if (token.IsCancellationRequested) return;
+            if (Disabled || ReadOnly)
+            {
+                _loading = false;
+                _state.Close();
+                return;
+            }
 
             _state.SetSource(results.Where(s => !IsTagged(s)).Take(MaxSuggestions).ToList());
             if (!_state.IsOpen) _state.Open(FocusStrategy.First); else _state.HighlightFirst();
@@ -347,8 +359,11 @@
 
     private async Task HandleBlurAsync()
     {
-        // Option clicks do not blur (the listbox prevents its mousedown default), so a real blur means the
-        // field lost focus: add the pending text as a tag when configured, then close.
+        if (Disabled || ReadOnly)
+        {
+            _state.Close();
+            return;
+        }
         if (AddOnBlur && !string.IsNullOrWhiteSpace(_state.Input))
             await CommitCustomAsync(_state.Input);
         _state.Close();
@@ -389,6 +404,7 @@
 
     private async Task AddTagAsync(TValue tag)
     {
+        if (Disabled || ReadOnly) return;
         if (MaxTags > 0 && _tags.Count >= MaxTags) return;
         if (!AllowDuplicates && IsTagged(tag)) return;
         _tags.Add(tag);
@@ -397,6 +413,7 @@
 
     private async Task RemoveTagAsync(TValue tag)
     {
+        if (Disabled || ReadOnly) return;
         var cmp = EqualityComparer<TValue>.Default;
         for (var i = _tags.Count - 1; i >= 0; i--)
             if (cmp.Equals(_tags[i], tag)) { _tags.RemoveAt(i); break; }
