@@ -12,6 +12,8 @@ All notable changes to Flare are documented here. This project adheres to
   `aria-checked="mixed"` for a partial selection.
 - `FlareRadio.InputAttributes` forwards attributes to the native radio input, while `Class`, `Style` and unmatched
   attributes land on the label; the group name, value and state attributes stay owned by the component.
+- `FlareSlider` range endpoints have accessible names of their own; `RangeStartLabel` and `RangeEndLabel` override
+  the localized minimum and maximum.
 
 ### Fixed
 
@@ -73,6 +75,26 @@ All notable changes to Flare are documented here. This project adheres to
   A popup that has not registered its layer yet no longer takes the drawer down with it.
 - A `FlareColumn` whose `Title` changes after the first render (a language switch) updates the grid header and the
   column lists instead of keeping the old title.
+- A slider's label, helper text and validation error are linked to its handles through
+  `aria-labelledby`/`aria-describedby`, and an invalid slider reports `aria-invalid`.
+- A collapsible `FlareButtonGroup` renders its overflow panel without duplicate ids, keeps a controlled toggle in
+  step across the fold and returns focus to the group when the fold disappears.
+- The FAB speed dial has a full keyboard contract: Enter/Space opens it, arrows and Home/End move between enabled
+  actions, Escape closes it and returns focus, and Tab leaves it.
+- The FAB speed dial is placed by the shared overlay engine, so it leaves a clipping ancestor, flips when the
+  preferred side has no room, stays inside the viewport, wraps long labels and follows the writing direction for
+  Start/End; a pinned FAB keeps clear of safe-area insets.
+- A single-select `FlareToggleGroup` can represent "nothing selected": a nullable value type (`int?`, an enum or
+  `Guid?`) makes the default an ordinary choice and clearing yields null, while a non-nullable value type throws
+  with guidance instead of silently selecting its default.
+- The rich text editor's toolbar labels and its link field's accessible name follow the current UI culture; English
+  and Russian are filled in.
+- The video player's controls follow the current UI culture, and the fullscreen button announces whether it enters
+  or leaves fullscreen.
+- A selection over `MaxFiles` no longer breaks the upload change event, and every file a limit keeps out is
+  explained with a localized alert next to the control; a selection with nothing usable leaves the previous files
+  and queue untouched.
+- `FlareUploadFileList` forwards `Class`, `Style`, `id`, `aria-label` and unmatched attributes to its list element.
 
 ## [0.46.0] - 2026-10-18
 
