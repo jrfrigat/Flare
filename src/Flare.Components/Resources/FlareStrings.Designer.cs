@@ -1115,6 +1115,12 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("FileUpload_Cancelled", resourceCulture);
             }
         }
+
+        /// <summary>Looks up the message for a file rejected by the file-count limit.</summary>
+        public static string FileUpload_FileLimitReached => ResourceManager.GetString("FileUpload_FileLimitReached", resourceCulture);
+
+        /// <summary>Looks up the message for a file rejected by the size limit.</summary>
+        public static string FileUpload_FileTooLarge => ResourceManager.GetString("FileUpload_FileTooLarge", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset.

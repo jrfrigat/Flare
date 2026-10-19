@@ -56,6 +56,15 @@
                    disabled="@(Disabled || Loading)"
                    OnChange="HandleChangeAsync" />
     </div>
+    @if (Rejections.Count > 0)
+    {
+        <ul class="@Css.Classes.FileUpload.Errors" role="alert">
+            @foreach (var rejection in Rejections)
+            {
+                <li>@rejection</li>
+            }
+        </ul>
+    }
     @if (ShowFileList && Queue.Count > 0)
     {
         <FlareUploadFileList Items="Queue"

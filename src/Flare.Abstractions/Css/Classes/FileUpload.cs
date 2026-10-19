@@ -41,6 +41,8 @@ public static class FileUpload
     public const string FileActions = "flare-file-upload__file-actions";
     /// <summary>The <c>flare-file-upload__progress</c> CSS class - the per-row transfer bar.</summary>
     public const string Progress = "flare-file-upload__progress";
+    /// <summary>The <c>flare-file-upload__errors</c> CSS class - the messages for files a limit kept out.</summary>
+    public const string Errors = "flare-file-upload__errors";
 
     // A modifier per queue state that HAS a distinct look. Queued has none - the indeterminate bar already
     // says the row is waiting - so it gets no class rather than a class with no rule behind it.

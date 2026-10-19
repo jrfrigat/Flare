@@ -1,3 +1,5 @@
+using System.Globalization;
+using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -18,13 +20,14 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     [Parameter] public bool Multiple { get; set; }
     /// <summary>Disables the control - the trigger stops opening the file picker.</summary>
     [Parameter] public bool Disabled { get; set; }
-    /// <summary>Maximum number of files that can be selected.</summary>
+    /// <summary>Maximum number of files that can be selected. Files beyond it are left out of the
+    /// selection and reported with a localized message beside the control.</summary>
     [Parameter] public int MaxFiles { get; set; } = 10;
     /// <summary>
-    /// Largest accepted file, in bytes. Anything over it is dropped from the selection before
-    /// <see cref="OnFilesChanged"/> sees it. Unlimited by default: a cap discards the user's file with no
-    /// explanation, so it is the caller - who knows what the server will take - that opts in.
-    /// Filtering here is UX only; always check the size again on the server.
+    /// Largest accepted file, in bytes. Anything over it is left out of the selection and reported with a
+    /// localized message beside the control before <see cref="OnFilesChanged"/> sees the rest. Unlimited by
+    /// default: a cap discards the user's file, so it is the caller - who knows what the server will take -
+    /// that opts in. Filtering here is UX only; always check the size again on the server.
     /// </summary>
     [Parameter] public long MaxFileSize { get; set; } = long.MaxValue;
     /// <summary>Shows the list of selected files under the trigger, including queue progress when an
@@ -100,19 +103,58 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// <summary>Per-file queue state, in selection order. Empty until files are selected.</summary>
     protected readonly List<FlareUploadFile> Queue = [];
 
+    /// <summary>Why files from the latest selection were not added, one localized message per rejected
+    /// file. Empty when every file was accepted.</summary>
+    protected readonly List<string> Rejections = [];
+
     private readonly Dictionary<string, CancellationTokenSource> _cancels = [];
     private bool _running;
 
     /// <summary>Id linking the trigger's <c>&lt;label for&gt;</c> to the hidden input.</summary>
     protected readonly string InputId = $"flare-fu-{Guid.NewGuid():N}";
 
-    /// <summary>Reads the picked files, applies <see cref="MaxFiles"/> and <see cref="MaxFileSize"/>, and
-    /// raises <see cref="OnFilesChanged"/>.</summary>
+    /// <summary>
+    /// Reads the picked files, applies <see cref="MaxFiles"/> and <see cref="MaxFileSize"/>, and raises
+    /// <see cref="OnFilesChanged"/>.
+    /// <para>
+    /// The policy is stated rather than implied: files are taken in selection order while the count is
+    /// under <see cref="MaxFiles"/> and the size is within <see cref="MaxFileSize"/>; every file that does
+    /// not make it gets a message in <see cref="Rejections"/>. A selection with nothing usable leaves the
+    /// previous files and queue exactly as they were and raises no callback - a rejected pick must not
+    /// wipe what the user already chose. The raw selection is read with no count limit because the
+    /// underlying input API throws when asked for fewer files than were picked, which used to break the
+    /// change event instead of explaining the limit.
+    /// </para>
+    /// </summary>
     protected async Task HandleChangeAsync(InputFileChangeEventArgs e)
     {
         if (Disabled) return;
+
+        Rejections.Clear();
+        var accepted = new List<IBrowserFile>(Math.Max(0, Math.Min(e.FileCount, MaxFiles)));
+        foreach (var file in e.GetMultipleFiles(int.MaxValue))
+        {
+            if (accepted.Count >= MaxFiles)
+            {
+                Rejections.Add(string.Format(CultureInfo.CurrentUICulture,
+                    FlareStrings.FileUpload_FileLimitReached, file.Name, MaxFiles));
+                continue;
+            }
+            if (file.Size > MaxFileSize)
+            {
+                Rejections.Add(string.Format(CultureInfo.CurrentUICulture,
+                    FlareStrings.FileUpload_FileTooLarge, file.Name, FormatSize(MaxFileSize)));
+                continue;
+            }
+            accepted.Add(file);
+        }
+
+        // Nothing usable: the previous selection stands, and no callback reports a change that did not
+        // happen. The render that follows the event shows the messages.
+        if (accepted.Count == 0) return;
+
         Files.Clear();
-        Files.AddRange(e.GetMultipleFiles(MaxFiles).Where(f => f.Size <= MaxFileSize));
+        Files.AddRange(accepted);
 
         CancelAll();
         Queue.Clear();

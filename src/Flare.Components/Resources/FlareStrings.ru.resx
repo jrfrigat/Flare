@@ -243,6 +243,8 @@
   <data name="FileUpload_Remove" xml:space="preserve"><value>Убрать файл</value></data>
   <data name="FileUpload_Failed" xml:space="preserve"><value>Загрузка не удалась</value></data>
   <data name="FileUpload_Cancelled" xml:space="preserve"><value>Отменено</value></data>
+  <data name="FileUpload_FileLimitReached" xml:space="preserve"><value>Файл "{0}" не добавлен: достигнут лимит файлов ({1}).</value></data>
+  <data name="FileUpload_FileTooLarge" xml:space="preserve"><value>Файл "{0}" не добавлен: он больше {1}.</value></data>
   <data name="RTE_Label" xml:space="preserve"><value>Редактор текста</value></data>
   <data name="RTE_Placeholder" xml:space="preserve"><value>Начните вводить текст…</value></data>
   <data name="RTE_Heading1" xml:space="preserve"><value>Заголовок 1</value></data>

@@ -163,6 +163,19 @@
     font-size: var(--flare-typescale-label-small-size);
 }
 
+/* Limit feedback under the trigger: one line per rejected file. The same error color as a failed row,
+   because it is the same message to the reader - this file did not make it. */
+.flare-file-upload__errors {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--flare-file-upload-row-error-color);
+    font-size: var(--flare-typescale-label-small-size);
+}
+
 /* The bar sits between the size and the actions and takes the slack, so a long name still truncates
    rather than pushing the affordances off the row. */
 .flare-file-upload__progress {
