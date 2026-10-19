@@ -140,16 +140,27 @@
     private string? _placeholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>
         c == '#' || c == 'A' || c == '*' ? '_' : c));
 
-    protected override void OnInitialized()
+    private string? _lastValue;
+    private string? _lastPattern;
+    private bool _lastAutoApply;
+    private bool _hasSyncedParameters;
+
+    protected override void OnParametersSet()
     {
-        base.OnInitialized();
-        if (!string.IsNullOrEmpty(Value))
-            _display = AutoApply ? ApplyMask(Value) : Value;
+        UpdateFieldIdentifier(For);
+        var pattern = Pattern;
+        if (!_hasSyncedParameters || Value != _lastValue || pattern != _lastPattern || AutoApply != _lastAutoApply)
+        {
+            _hasSyncedParameters = true;
+            _lastValue = Value;
+            _lastPattern = pattern;
+            _lastAutoApply = AutoApply;
+            _display = FormatValue(Value);
+        }
     }
 
-    // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
-    // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
-    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
+    private string FormatValue(string? value) =>
+        string.IsNullOrEmpty(value) ? string.Empty : AutoApply ? ApplyMask(value) : value;
 
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(100);
 
@@ -167,17 +178,8 @@
     private async Task OnInput(string? raw)
     {
         raw ??= string.Empty;
-        if (AutoApply)
-        {
-            _display = ApplyMask(raw);
-            var unmasked = ExtractRaw(_display);
-            await ValueChanged.InvokeAsync(unmasked.Length > 0 ? _display : null);
-        }
-        else
-        {
-            _display = raw;
-            await ValueChanged.InvokeAsync(raw.Length > 0 ? raw : null);
-        }
+        _display = AutoApply ? ApplyMask(raw) : raw;
+        await ValueChanged.InvokeAsync(_display.Length > 0 ? _display : null);
         NotifyFieldChanged();
     }
 
