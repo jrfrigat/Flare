@@ -1,0 +1,41 @@
+@page "/disclosure-menu"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:8px;max-inline-size:720px">
+        <FlareAccordion id="acc" AllowMultiple="true">
+            <FlareAccordionPanel Header="@_longHeader">Accordion body</FlareAccordionPanel>
+        </FlareAccordion>
+
+        <FlareCollapse id="collapse" Header="@_longHeader">Collapse body</FlareCollapse>
+
+        <FlareMenu AriaLabel="Actions" id="menu">
+            <Activator>
+                <FlareButton @attributes="context.Attributes">Actions</FlareButton>
+            </Activator>
+            <ChildContent>
+                <FlareMenuItem>An item whose label is long enough to fill the row</FlareMenuItem>
+                <FlareSubMenu Label="More options">
+                    <FlareMenuItem>Nested</FlareMenuItem>
+                </FlareSubMenu>
+            </ChildContent>
+        </FlareMenu>
+
+        <div style="display:flex;gap:8px;margin-block-start:16px">
+            <button id="rtl" @onclick="EnableRtl">RTL</button>
+            <button id="ltr" @onclick="EnableLtr">LTR</button>
+            <button id="fluent" @onclick="UseFluent">Fluent 2</button>
+            <button id="md3e" @onclick="UseMd3e">Material 3 Expressive</button>
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private const string _longHeader =
+        "A deliberately long disclosure header that has to wrap onto a second line so the start edge of every line can be measured in both writing directions";
+
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+    private Task EnableLtr() => ThemeService.SetRtlAsync(false);
+    private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
+    private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");
+}

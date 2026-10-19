@@ -20,7 +20,7 @@
     background: transparent;
     border: none;
     border-radius: var(--flare-menu-item-radius);
-    text-align: left;
+    text-align: start;
     text-decoration: none;
     font-family: var(--flare-menu-item-label-font);
     font-weight: var(--flare-menu-item-label-weight);

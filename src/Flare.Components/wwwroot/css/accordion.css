@@ -35,7 +35,7 @@
   font-weight: var(--flare-accordion-header-label-weight);
   border: none;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 }
 
 /* State layer, as on the button and the menu item - see list.css for why the old

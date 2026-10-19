@@ -95,7 +95,7 @@
 /* .flare-icon.<class> keeps 0,2,0 so the submenu chevron size/color win over the base .flare-icon rule
    (menu.css imports before icon.css, so equal specificity would otherwise lose). */
 .flare-icon.flare-submenu__icon {
-    margin-left: auto;
+    margin-inline-start: auto;
     font-size: var(--flare-menu-item-icon-size);
     color: var(--flare-color-on-surface-variant);
     transition: transform var(--flare-motion-duration-small-move);
@@ -104,6 +104,18 @@
 .flare-submenu:hover > .flare-submenu__activator .flare-submenu__icon,
 .flare-submenu[aria-expanded="true"] > .flare-submenu__activator .flare-submenu__icon {
     transform: rotate(90deg);
+}
+
+/* The chevron points toward the side a submenu opens on: right in LTR, left in RTL. Mirroring the
+   glyph is what turns right into left; the open state then turns it down again, which is the same
+   direction in both writing modes, so the mirror has to be undone by a rotation of the other sign. */
+:dir(rtl) .flare-icon.flare-submenu__icon {
+    transform: scaleX(-1);
+}
+
+:dir(rtl) .flare-submenu:hover > .flare-submenu__activator .flare-submenu__icon,
+:dir(rtl) .flare-submenu[aria-expanded="true"] > .flare-submenu__activator .flare-submenu__icon {
+    transform: scaleX(-1) rotate(-90deg);
 }
 
 .flare-submenu__panel {

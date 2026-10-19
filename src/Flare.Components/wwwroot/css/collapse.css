@@ -21,7 +21,7 @@
     border: none;
     border-radius: var(--flare-collapse-header-radius);
     cursor: pointer;
-    text-align: left;
+    text-align: start;
 }
 
 /* State layer, as on the button and the menu item - see list.css for why the old
