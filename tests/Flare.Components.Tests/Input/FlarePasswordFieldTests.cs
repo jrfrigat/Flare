@@ -178,6 +178,39 @@ public class FlarePasswordFieldTests : FlareTestContext
 
         Assert.Equal("current-password", cut.Find("input").GetAttribute("autocomplete"));
     }
+
+    [Fact]
+    public void Disabled_DisablesTheRevealAndKeepsTheValueHidden()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Disabled, true)
+            .Add(x => x.Value, "s3cret"));
+
+        var toggle = cut.FindAll("button").Single(b => b.GetAttribute("aria-pressed") is not null);
+        Assert.True(toggle.HasAttribute("disabled"));
+
+        toggle.Click();
+
+        Assert.Equal("password", cut.Find("input").GetAttribute("type"));
+        Assert.Equal("false", cut.FindAll("button")
+            .Single(b => b.GetAttribute("aria-pressed") is not null)
+            .GetAttribute("aria-pressed"));
+    }
+
+    [Fact]
+    public void ReadOnly_StillAllowsRevealing()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.ReadOnly, true)
+            .Add(x => x.Value, "s3cret"));
+
+        var toggle = cut.FindAll("button").Single(b => b.GetAttribute("aria-pressed") is not null);
+        Assert.False(toggle.HasAttribute("disabled"));
+
+        toggle.Click();
+
+        Assert.Equal("text", cut.Find("input").GetAttribute("type"));
+    }
 }
 
 // The reveal button is a control the caller reaches with the keyboard, so it has to exist for a screen
