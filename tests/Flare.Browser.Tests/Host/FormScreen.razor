@@ -1,7 +1,6 @@
 @page "/form"
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Components.Forms
-@inject IThemeService ThemeService
 
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
     <main style="padding:8px;min-height:1400px">
@@ -46,9 +45,6 @@
     protected override void OnInitialized()
     {
         if (Empty) _model.Name = null;
-        // Flare is a plugin-model library: a theme is required for any component to be styled, and the
-        // horizontal form's column pair is a theme token. The page applies one like a real app would.
-        _ = ThemeService.SetThemeAsync("md3-expressive");
     }
 
     private void OnValid(EditContext _) => _status = "valid";

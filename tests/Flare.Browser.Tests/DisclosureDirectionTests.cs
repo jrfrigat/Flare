@@ -50,6 +50,8 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         await page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.Reduce });
         await page.GotoAsync($"{fixture.BaseUrl}/disclosure-menu");
         await Expect(page.Locator("#acc button[aria-expanded]").First).ToBeVisibleAsync();
+        // Text metrics decide where the lines break; wait for the real font before measuring them.
+        await page.EvaluateAsync<bool>("() => document.fonts.ready.then(() => true)");
         // The animated transforms below are read as they settle; measurement is about the resting
         // value, not the frame the transition happens to be on.
         await page.AddStyleTagAsync(new() { Content = "*, *::before, *::after { transition: none !important; animation: none !important; }" });
@@ -59,6 +61,10 @@ public sealed class DisclosureDirectionTests(BrowserFixture fixture) : IClassFix
         await Expect(root).ToHaveClassAsync(new Regex(Regex.Escape(Css.Classes.Theme.ForTheme(themeId))));
         await page.Locator(rtl ? "#rtl" : "#ltr").ClickAsync();
         await Expect(root).ToHaveAttributeAsync("dir", rtl ? "rtl" : "ltr");
+        // The token bundle arrives with the theme stylesheet; the header's padding is 0 until it does.
+        await page.WaitForFunctionAsync(
+            "sel => { const el = document.querySelector(sel); return !!el && parseFloat(getComputedStyle(el).paddingLeft) > 0; }",
+            $"#acc .{Css.Classes.Accordion.Header}");
         return page;
     }
 

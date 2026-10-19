@@ -16,6 +16,8 @@ public sealed class FormLayoutBrowserTests(BrowserFixture fixture) : IClassFixtu
         await page.SetViewportSizeAsync(width, 900);
         await page.GotoAsync($"{fixture.BaseUrl}/form{query}");
         await Expect(page.Locator("#submit")).ToBeVisibleAsync();
+        // Field heights feed the gap measurements; a late font would shift them mid-assertion.
+        await page.EvaluateAsync<bool>("() => document.fonts.ready.then(() => true)");
         // The host applies a theme itself; wait for its token bundle so the layout rules resolve.
         await Expect(page.Locator($".{Css.Classes.Theme.Root}")).ToHaveClassAsync(
             new System.Text.RegularExpressions.Regex(

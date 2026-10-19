@@ -20,6 +20,7 @@ public sealed class SplitButtonRtlTests(BrowserFixture fixture) : IClassFixture<
         await page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.Reduce });
         await page.GotoAsync($"{fixture.BaseUrl}/split-button");
         await Expect(page.Locator("[data-testid=split-Md]")).ToBeVisibleAsync();
+        await page.EvaluateAsync<bool>("() => document.fonts.ready.then(() => true)");
         return page;
     }
 
@@ -52,6 +53,10 @@ public sealed class SplitButtonRtlTests(BrowserFixture fixture) : IClassFixture<
         await Expect(root).ToHaveClassAsync(new Regex(Regex.Escape(Css.Classes.Theme.ForTheme(themeId))));
         await page.Locator("#ltr").ClickAsync();
         await Expect(root).ToHaveAttributeAsync("dir", "ltr");
+        // The token bundle arrives with the theme stylesheet; a radius read before it resolves is 0.
+        await page.WaitForFunctionAsync(
+            "sel => { const el = document.querySelector(sel); return !!el && parseFloat(getComputedStyle(el).borderTopLeftRadius) > 0; }",
+            $"[data-testid=split-Md] .{Css.Classes.SplitButton.Main}");
         // Park the pointer off the controls: the expressive hover morph changes the corners.
         await page.Mouse.MoveAsync(0, 0);
 
