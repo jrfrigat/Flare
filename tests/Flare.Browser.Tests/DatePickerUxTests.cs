@@ -86,6 +86,45 @@ public sealed partial class DatePickerUxTests(BrowserFixture fixture) : IClassFi
         }
     }, $"?preRender={preRender}&inline={inline}");
 
+    // TASK-602: a date typed into the field takes the calendar's cursor with it. The picked 16th used to stay
+    // tabbable and focused after the field committed the 20th, so ArrowRight plus Enter picked the 17th.
+    [Theory]
+    [InlineData("md2")]
+    [InlineData("fluent2")]
+    public Task TypedCommit_MovesTheCalendarCursorAndTheNextArrowKey(string theme) => RunAsync(async page =>
+    {
+        await ApplyThemeAsync(page, theme, dark: false);
+        var subject = page.GetByTestId("subject");
+        var panel = subject.Locator($".{Css.Classes.DatePicker.Panel}");
+        var cursor = panel.Locator("[role=gridcell][tabindex='0']");
+
+        await subject.Locator("button[aria-haspopup]").ClickAsync();
+        await Expect(panel).ToHaveAttributeAsync("data-flare-placed", "");
+        await page.Keyboard.PressAsync("ArrowRight");                 // from the 15th to the 16th
+        await Expect(cursor).ToHaveAttributeAsync("aria-label", "Friday, October 16, 2026");
+        await page.Keyboard.PressAsync("Enter");                      // picks the 16th and closes
+        await Expect(page.GetByTestId("value")).ToHaveTextAsync("2026-10-16");
+        await Expect(panel).ToBeHiddenAsync();                        // the focus trap is gone before typing
+
+        var input = subject.Locator("input");
+        await input.FocusAsync();                                     // focus, not click: a click opens the popup
+        await input.PressAsync("Control+A");
+        // One digit per server roundtrip: the mask rewrites the field and restores the caret after each key.
+        await input.PressSequentiallyAsync("10202026", new() { Delay = 60 });
+        await Expect(input).ToHaveValueAsync("10/20/2026");
+        await page.Keyboard.PressAsync("Enter");
+        await Expect(page.GetByTestId("value")).ToHaveTextAsync("2026-10-20");
+
+        await subject.Locator("button[aria-haspopup]").ClickAsync();
+        await Expect(cursor).ToBeFocusedAsync();
+        await Expect(cursor).ToHaveAttributeAsync("aria-label", "Tuesday, October 20, 2026");
+        await page.Keyboard.PressAsync("ArrowRight");
+        await Expect(cursor).ToHaveAttributeAsync("aria-label", "Wednesday, October 21, 2026");
+        await page.Keyboard.PressAsync("Enter");
+        await Expect(page.GetByTestId("value")).ToHaveTextAsync("2026-10-21");
+        await Expect(panel).ToBeHiddenAsync();
+    });
+
     [Theory]
     [InlineData("?unavailable=true")]
     [InlineData("?inline=true&readOnly=true")]

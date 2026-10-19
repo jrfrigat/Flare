@@ -119,6 +119,9 @@ public partial class FlareDatePicker
         if (open)
         {
             ShowMonthOf(Value ?? Today);
+            // Every opening starts from the accepted value: a cursor left over from an earlier navigation
+            // would otherwise make the old day tabbable and take the popup's initial focus.
+            _focusedDate = Value;
             _calView = _initialView;
             await Opened.InvokeAsync();
         }
@@ -197,9 +200,14 @@ public partial class FlareDatePicker
         // keystrokes typed against the old one; a new display (DateFormat, Culture) only outside
         // editing. A focused field takes the value in its editing form.
         var display = DisplayValue;
-        // A new value set from outside shows its month: an inline calendar is never reopened to re-anchor it, and a
-        // new display alone (Culture, DateFormat) keeps the month the user browsed to.
-        if (!Equals(Value, _syncedValue) && Value is { } shown) ShowMonthOf(shown);
+        // A new value set from outside shows its month and takes the keyboard cursor with it: an inline calendar
+        // is never reopened to re-anchor it, and a new display alone (Culture, DateFormat) keeps the month the
+        // user browsed to.
+        if (!Equals(Value, _syncedValue))
+        {
+            if (Value is { } shown) ShowMonthOf(shown);
+            _focusedDate = null;
+        }
         if (!Equals(Value, _syncedValue) || (!_focused && display != _syncedText))
         {
             _syncedValue = Value;
@@ -374,6 +382,9 @@ public partial class FlareDatePicker
     {
         if (Disabled || ReadOnly) return;
         if (d.HasValue) ShowMonthOf(d.Value);
+        // The accepted value is where the keyboard cursor sits now: without this, a picked day kept the
+        // roving tabindex and the popup's initial focus while the field already showed the typed date.
+        _focusedDate = d;
         _syncedValue = d;
         await ValueChanged.InvokeAsync(d);
         NotifyFieldChanged();
