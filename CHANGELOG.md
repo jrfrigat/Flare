@@ -56,6 +56,17 @@ All notable changes to Flare are documented here. This project adheres to
 - A popover closes on Escape through the shared overlay layer; a tooltip's description follows the focusable trigger
   and stays current when it is replaced.
 - The file upload zone shows the theme's focus ring when reached from the keyboard.
+- A selected chip in `FlareMultiSelect` can be removed even when its option is disabled; `ValuesChanged` is raised
+  only when the selection actually changes.
+- `FlareOtpField` ignores Delete, Backspace, typing and paste while it is read-only or disabled. Deleting a middle
+  digit keeps that cell in place, and an autofilled or pasted full code fills the cells from the focused one, clears
+  the old tail and completes once.
+- Both panes of `FlareTransfer` are named listboxes with a single tab stop; arrows, Home/End and Space/Enter select
+  rows from the keyboard.
+- `FlareCheckbox` and `FlareSwitch` pass `InputAttributes` to their native input and announce a validation error
+  through `aria-describedby`/`aria-invalid` without adding the error to the accessible name. The checkbox's `Color`
+  now also paints the indeterminate state, with the matching on-color.
+- The switch handle follows the writing direction and keeps its centre while pressed in RTL.
 
 ## [0.46.0] - 2026-10-18
 
