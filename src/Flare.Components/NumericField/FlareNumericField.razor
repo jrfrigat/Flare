@@ -415,6 +415,11 @@
         var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
         if (decimal.TryParse(raw, NumberStyles.Any, c, out value)) return true;
 
+        // A well-formed number the decimal parser refused overflowed its range (or asked for a
+        // precision it cannot hold). Stripping its characters would invent a different value - "1e100"
+        // became "1100" - so the caller keeps the previous value instead.
+        if (double.TryParse(raw, NumberStyles.Any, c, out _)) { value = default; return false; }
+
         var dec = c.NumberFormat.NumberDecimalSeparator;
         var sb = new System.Text.StringBuilder(raw.Length);
         foreach (var ch in raw)
