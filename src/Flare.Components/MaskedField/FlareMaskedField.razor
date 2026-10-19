@@ -5,9 +5,6 @@
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Web
 
-@* Masked text field. Composes the shared FlareFieldChrome frame + FlareTextInput (immediate mode, so the
-   mask applies as the user types); only the mask/preset formatting is component-specific. *@
-
 <FlareFieldChrome Variant="Variant" Size="Size"
                   Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
@@ -52,23 +49,17 @@
 </FlareFieldChrome>
 
 @code {
-    /// <summary>Current unmasked value of the input.</summary>
+    /// <summary>Current value as the field shows it: the text formatted by the active mask, or the literal
+    /// text when <see cref="AutoApply"/> is false. Null when the field is empty.</summary>
     [Parameter] public string? Value { get; set; }
-    /// <summary>Callback invoked when the value changes.</summary>
+    /// <summary>Raised with the formatted value as the user edits, or null when the field becomes empty.</summary>
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     /// <summary>Mask pattern; use # digit, A letter, * alphanumeric. Overrides <see cref="Preset"/>.</summary>
     [Parameter] public string? Mask { get; set; }
     /// <summary>Ready-made mask preset (Phone/Date/Time/IpAddress/CreditCard/Ssn). Used when <see cref="Mask"/> is not set.</summary>
     [Parameter] public MaskPreset Preset { get; set; } = MaskPreset.None;
-    /// <summary>
-    /// When true (default), the mask is applied automatically as the user types -- literal
-    /// characters (separators like <c>-</c>, <c>/</c>, <c>(</c>) are inserted for them. Set false
-    /// to disable auto-formatting and let the user type the value freely.
-    /// </summary>
+    /// <summary>Applies the mask while typing, inserting the mask literals. False keeps the typed text as is.</summary>
     [Parameter] public bool AutoApply { get; set; } = true;
-    // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
-    // FlareFieldBase (IFlareField).
-    // Variant, Size and Typo are inherited from FlareFieldBase.
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<string?>>? For { get; set; }
     /// <summary>Shows a clear (x) button inside the field when it has a value.</summary>
@@ -105,7 +96,6 @@
         await OnClearButtonClick.InvokeAsync(e);
     }
 
-    // Effective mask: explicit Mask wins, else the selected preset.
     private string? Pattern => Mask ?? (Preset switch
     {
         MaskPreset.Phone      => "(###) ###-####",
@@ -117,14 +107,9 @@
         _ => null,
     });
 
-    /// <summary>
-    /// The mobile keyboard hint. Null derives it from the mask, which is what a caller wants: every
-    /// preset here is digits, and a text keyboard for a credit-card number is a phone-sized mistake.
-    /// </summary>
+    /// <summary>The mobile keyboard hint; derived from the mask when null.</summary>
     [Parameter] public string? InputMode { get; set; }
 
-    // Derived from the MASK, not from the preset, so a custom Mask of all-# gets the numeric keyboard too.
-    // A mask with any letter placeholder stays on the full keyboard, because that is what it needs.
     private string? EffectiveInputMode
     {
         get
@@ -136,7 +121,6 @@
         }
     }
 
-    // Auto-derived placeholder from mask: '#','A','*' -> '_', literals kept
     private string? _placeholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>
         c == '#' || c == 'A' || c == '*' ? '_' : c));
 
@@ -164,7 +148,6 @@
 
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(100);
 
-    /// <summary>Validates that <paramref name="value"/> matches <see cref="Mask"/> when treated as a regex pattern. Returns true when Mask is null or empty.</summary>
     private bool MatchesMask(string value)
     {
         if (string.IsNullOrEmpty(Pattern)) return true;
@@ -183,12 +166,10 @@
         NotifyFieldChanged();
     }
 
-    // Apply mask: '#'=digit, 'A'=letter, '*'=alphanumeric, others=literals
     private string ApplyMask(string input)
     {
         if (string.IsNullOrEmpty(Pattern)) return input;
         var raw = ExtractRaw(input);
-        // Empty -> render nothing so the placeholder pattern shows (no leading literals yet).
         if (raw.Length == 0) return string.Empty;
         var result = new System.Text.StringBuilder();
         var ri = 0;
@@ -197,7 +178,6 @@
             var isPlaceholder = mc is '#' or 'A' or '*';
             if (isPlaceholder)
             {
-                // A placeholder needs a typed char; stop once the input is exhausted.
                 if (ri >= raw.Length) break;
                 var c = raw[ri];
                 var ok = mc switch
@@ -212,8 +192,6 @@
             }
             else
             {
-                // Literal separator: auto-insert it (even when the input is exhausted, so the
-                // separator appears as soon as the preceding group is complete).
                 result.Append(mc);
                 if (ri < raw.Length && raw[ri] == mc) ri++;
             }
@@ -221,7 +199,6 @@
         return result.ToString();
     }
 
-    // Extract only the user-typed characters (strip mask literals)
     private string ExtractRaw(string masked)
     {
         if (string.IsNullOrEmpty(Pattern)) return masked;
@@ -229,11 +206,7 @@
         var mi = 0;
         foreach (var c in masked)
         {
-            // Walk past literal mask positions first. A literal that is already
-            // present in the input is consumed in place; otherwise the slot is
-            // skipped so this char can fill the next placeholder. Skipping is
-            // what lets a leading literal (e.g. '+' or '(') be auto-filled when
-            // the user types the first value char into an empty field.
+            // Skip mask literals not present in the input.
             var consumedLiteral = false;
             while (mi < Pattern.Length && Pattern[mi] is not ('#' or 'A' or '*'))
             {
@@ -242,7 +215,6 @@
             }
             if (consumedLiteral) continue;
             if (mi >= Pattern.Length) break;
-            // Placeholder position: capture the typed char.
             result.Append(c);
             mi++;
         }

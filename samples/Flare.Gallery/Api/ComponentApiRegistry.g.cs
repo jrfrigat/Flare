@@ -4133,10 +4133,10 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AutoApply", @"bool", @"true", @"When true (default), the mask is applied automatically as the user types -- literal characters (separators like -, /, () are inserted for them. Set false to disable auto-formatting and let the user type the value freely.", null, false, false, false, @"FlareMaskedField"),
+                new ApiParameterInfo(@"AutoApply", @"bool", @"true", @"Applies the mask while typing, inserting the mask literals. False keeps the typed text as is.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear (x) button inside the field when it has a value.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"For", @"Expression<Func<string?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"InputMode", @"string?", null, @"The mobile keyboard hint. Null derives it from the mask, which is what a caller wants: every preset here is digits, and a text keyboard for a credit-card number is a phone-sized mistake.", null, false, false, false, @"FlareMaskedField"),
+                new ApiParameterInfo(@"InputMode", @"string?", null, @"The mobile keyboard hint; derived from the mask when null.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Mask", @"string?", null, @"Mask pattern; use # digit, A letter, * alphanumeric. Overrides Preset.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"OnBlur", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input loses focus.", null, false, true, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"OnClearButtonClick", @"EventCallback<MouseEventArgs>", null, @"Invoked when the clear (x) button is clicked, after the value has been reset.", null, false, true, false, @"FlareMaskedField"),
@@ -4144,8 +4144,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keydown in the input (e.g. to submit the form on Enter).", null, false, true, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"OnKeyUp", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keyup in the input.", null, false, true, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Preset", @"MaskPreset", @"MaskPreset.None", @"Ready-made mask preset (Phone/Date/Time/IpAddress/CreditCard/Ssn). Used when Mask is not set.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Value", @"string?", null, @"Current unmasked value of the input.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the value changes.", null, false, true, false, @"FlareMaskedField"),
+                new ApiParameterInfo(@"Value", @"string?", null, @"Current value as the field shows it: the text formatted by the active mask, or the literal text when AutoApply is false. Null when the field is empty.", null, false, false, false, @"FlareMaskedField"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Raised with the formatted value as the user edits, or null when the field becomes empty.", null, false, true, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the field's control after its first render (best-effort). Only one field per page should set this. Focus is applied via FocusCoreAsync, which each field wires to its real input.", null, false, false, false, @"FlareEditableFieldBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

@@ -8,10 +8,10 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `AutoApply` | `bool` | `true` | Parameter |  | When true (default), the mask is applied automatically as the user types -- literal characters (separators like -, /, () are inserted for them. Set false to disable auto-formatting and let the user type the value freely. |
+| `AutoApply` | `bool` | `true` | Parameter |  | Applies the mask while typing, inserting the mask literals. False keeps the typed text as is. |
 | `Clearable` | `bool` | `false` | Parameter |  | Shows a clear (x) button inside the field when it has a value. |
 | `For` | `Expression<Func<string?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
-| `InputMode` | `string?` | `` | Parameter |  | The mobile keyboard hint. Null derives it from the mask, which is what a caller wants: every preset here is digits, and a text keyboard for a credit-card number is a phone-sized mistake. |
+| `InputMode` | `string?` | `` | Parameter |  | The mobile keyboard hint; derived from the mask when null. |
 | `Mask` | `string?` | `` | Parameter |  | Mask pattern; use # digit, A letter, * alphanumeric. Overrides Preset. |
 | `OnBlur` | `EventCallback<FocusEventArgs>` | `` | Callback |  | Invoked when the input loses focus. |
 | `OnClearButtonClick` | `EventCallback<MouseEventArgs>` | `` | Callback |  | Invoked when the clear (x) button is clicked, after the value has been reset. |
@@ -19,8 +19,8 @@
 | `OnKeyDown` | `EventCallback<KeyboardEventArgs>` | `` | Callback |  | Invoked on keydown in the input (e.g. to submit the form on Enter). |
 | `OnKeyUp` | `EventCallback<KeyboardEventArgs>` | `` | Callback |  | Invoked on keyup in the input. |
 | `Preset` | `MaskPreset` | `MaskPreset.None` | Parameter |  | Ready-made mask preset (Phone/Date/Time/IpAddress/CreditCard/Ssn). Used when Mask is not set. |
-| `Value` | `string?` | `` | Parameter |  | Current unmasked value of the input. |
-| `ValueChanged` | `EventCallback<string?>` | `` | Callback |  | Callback invoked when the value changes. |
+| `Value` | `string?` | `` | Parameter |  | Current value as the field shows it: the text formatted by the active mask, or the literal text when AutoApply is false. Null when the field is empty. |
+| `ValueChanged` | `EventCallback<string?>` | `` | Callback |  | Raised with the formatted value as the user edits, or null when the field becomes empty. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the field's control after its first render (best-effort). Only one field per page should set this. Focus is applied via FocusCoreAsync, which each field wires to its real input. Inherited from `FlareEditableFieldBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
