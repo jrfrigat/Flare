@@ -15,6 +15,7 @@
 | `ErrorText` | `string?` | `` | Parameter |  | Overrides validation with a custom error message. |
 | `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression naming the model property this box edits, so the enclosing form can validate it and show the message. It is typed TValue like Value, so the two always name the same property - point both at a bool for a consent box (@bind-Value="Model.Accepted" For="@(() => Model.Accepted)"). |
 | `IndeterminateIcon` | `RenderFragment?` | `` | Parameter |  | Custom icon shown when indeterminate. |
+| `InputAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Attributes forwarded to the native checkbox input - a form name, required, or an accessible name for a box without a visible label. The type, checked state and disabled state stay owned by the component. AdditionalAttributes land on the label. |
 | `Label` | `string?` | `` | Parameter |  | Label text displayed next to the checkbox. Ignored when ChildContent is set. |
 | `LabelPlacement` | `LabelPlacement` | `LabelPlacement.End` | Parameter |  | Label position relative to the checkbox (End = after, Start = before). Default End. |
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what a step measures. |

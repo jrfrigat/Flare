@@ -11,6 +11,7 @@
 <label class="@BuildCssClass(_stateClass, _colorClass, _sizeClass, _labelClass, _iconClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
     <span class="@Css.Classes.Checkbox.Container">
         <input class="@Css.Classes.Checkbox.Input"
+               @attributes="InputAttributes"
                type="checkbox"
                aria-checked="@(_indeterminate ? "mixed" : (_checked ? "true" : "false"))"
                checked="@_checked"
@@ -68,6 +69,12 @@
     [Parameter] public string? ErrorText { get; set; }
     /// <summary>Disables the checkbox when true.</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>
+    /// Attributes forwarded to the native checkbox input - a form <c>name</c>, <c>required</c>, or an
+    /// accessible name for a box without a visible label. The type, checked state and disabled state stay
+    /// owned by the component. <see cref="FlareComponentBase.AdditionalAttributes"/> land on the label.
+    /// </summary>
+    [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     /// <summary>Accent color of the checked indicator (role -> shared class, custom -> inline token). Default = primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Label position relative to the checkbox (End = after, Start = before). Default End.</summary>
