@@ -8,8 +8,8 @@ public sealed class SwitchRtlTests(BrowserFixture fixture) : IClassFixture<Brows
     // [trackLeft, trackRight, handleLeft, handleRight]
     private static Task<double[]> MeasureAsync(IPage page, string selector)
         => page.EvaluateAsync<double[]>(
-            "s => { const t = document.querySelector(s + ' .flare-switch__thumb').getBoundingClientRect();"
-            + " const h = document.querySelector(s + ' .flare-switch__handle').getBoundingClientRect();"
+            $"s => {{ const t = document.querySelector(s + ' .{Css.Classes.Switch.Thumb}').getBoundingClientRect();"
+            + $" const h = document.querySelector(s + ' .{Css.Classes.Switch.Handle}').getBoundingClientRect();"
             + " return [t.left, t.right, h.left, h.right]; }",
             selector);
 
@@ -20,7 +20,7 @@ public sealed class SwitchRtlTests(BrowserFixture fixture) : IClassFixture<Brows
         var page = await context.NewPageAsync();
         await page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.Reduce });
         await page.GotoAsync($"{fixture.BaseUrl}/switch");
-        await Expect(page.Locator("#rtl .flare-switch__handle")).ToBeVisibleAsync();
+        await Expect(page.Locator($"#rtl .{Css.Classes.Switch.Handle}")).ToBeVisibleAsync();
         return page;
     }
 
@@ -49,7 +49,7 @@ public sealed class SwitchRtlTests(BrowserFixture fixture) : IClassFixture<Brows
         var page = await OpenAsync(context);
 
         var resting = await MeasureAsync(page, "#rtl");
-        await page.Locator("#rtl .flare-switch__track").HoverAsync();
+        await page.Locator($"#rtl .{Css.Classes.Switch.Track}").HoverAsync();
         await page.Mouse.DownAsync();
         await Task.Delay(50);
         var pressed = await MeasureAsync(page, "#rtl");

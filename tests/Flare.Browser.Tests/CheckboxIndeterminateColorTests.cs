@@ -10,12 +10,14 @@ public sealed class CheckboxIndeterminateColorTests(BrowserFixture fixture) : IC
     {
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await context.NewPageAsync();
+        await page.EmulateMediaAsync(new() { ReducedMotion = ReducedMotion.Reduce });
         await page.GotoAsync($"{fixture.BaseUrl}/checkbox");
-        await Expect(page.Locator("#role .flare-checkbox__indicator")).ToBeVisibleAsync();
+        var indicator = $".{Css.Classes.Checkbox.Indicator}";
+        await Expect(page.Locator($"#role {indicator}")).ToBeVisibleAsync();
 
-        var role = await BackgroundAsync(page, "#role .flare-checkbox__indicator");
-        var checkedRole = await BackgroundAsync(page, "#role-checked .flare-checkbox__indicator");
-        var custom = await BackgroundAsync(page, "#custom .flare-checkbox__indicator");
+        var role = await BackgroundAsync(page, $"#role {indicator}");
+        var checkedRole = await BackgroundAsync(page, $"#role-checked {indicator}");
+        var custom = await BackgroundAsync(page, $"#custom {indicator}");
 
         Assert.Equal(checkedRole, role);
         Assert.Equal("rgb(255, 0, 0)", custom);

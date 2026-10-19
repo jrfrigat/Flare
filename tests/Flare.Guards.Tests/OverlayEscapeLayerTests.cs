@@ -18,6 +18,7 @@ public sealed class OverlayEscapeLayerTests
         ["FlareOptionList.razor"] = "rendered inside FlarePopup, which registers the layer",
         ["FlareFloatingActionMenu.razor"] = "passive markup; the FlareFloatingActionButton owns the state and registers the layer",
         ["FlareCodeBlock.razor"] = "role=menu is not a popup here",
+        ["FlareTransfer.razor"] = "inline listboxes; nothing opens or closes, so there is no layer to own Escape",
     };
 
     [Fact]
