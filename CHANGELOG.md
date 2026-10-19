@@ -14,6 +14,10 @@ All notable changes to Flare are documented here. This project adheres to
   attributes land on the label; the group name, value and state attributes stay owned by the component.
 - `FlareSlider` range endpoints have accessible names of their own; `RangeStartLabel` and `RangeEndLabel` override
   the localized minimum and maximum.
+- `FlareSplitButton.AriaLabel` and `AriaLabelledBy` name an icon-only main action while the dropdown trigger keeps
+  its own name.
+- `FlareToggleGroup` is announced as a named group through `AriaLabel`/`AriaLabelledBy`; its buttons keep their own
+  pressed states and the group stays deselectable or multi-select rather than becoming a radio group.
 
 ### Fixed
 
@@ -95,6 +99,37 @@ All notable changes to Flare are documented here. This project adheres to
   explained with a localized alert next to the control; a selection with nothing usable leaves the previous files
   and queue untouched.
 - `FlareUploadFileList` forwards `Class`, `Style`, `id`, `aria-label` and unmatched attributes to its list element.
+- The split button's outer corners follow the writing direction in right-to-left layouts.
+- A horizontal `FlareForm` places labels and controls in a grid with the controls aligned, an inline form aligns
+  its fields, and a narrow viewport stacks them so the form does not overflow.
+- A link (`Href`) button reports its toggle state through `aria-pressed`, as the button element does.
+- An accordion panel opened by its parent takes the single-expand slot, a removed panel no longer blocks the next
+  toggle, and switching to single expand keeps the last opened panel while honouring a panel's veto.
+- Accordion, collapse and menu-item titles align to the text direction, and a submenu chevron points at the side
+  its flyout opens on in right-to-left.
+- The segmented toggle group's frame, seam and rounded ends follow the writing direction; a selected single
+  segment keeps its corners, and a vertical single segment uses the vertical radius token.
+- A card that is both a link and a selectable control is rejected with an explanation instead of silently
+  dropping the selection.
+- A pending debounced write in a text input is canceled by a commit, an external value change, disabling the
+  field or changing the debounce, so older text no longer lands late.
+- `FlareTextInput` forwards its `Class` to the input or textarea beside `ControlClass`.
+- An avatar picks up later changes to `Class`, `Style` and unmatched attributes, and a group shows an avatar
+  that was hidden when its `Max` grows.
+- An avatar whose image fails to load falls back to its initials, fallback content or icon; a new source is
+  tried again.
+- Avatar initials split on any whitespace and keep whole text elements, so repeated spaces, tabs, surrogate
+  pairs and combining marks no longer break them.
+- `FlareTextArea` hides the manual resize handle while `AutoGrow` is on and restores the `Resize` setting when it
+  is turned off.
+- `AutoGrow` with `MaxLines` caps the text area at the real text lines for its size and typography, with the
+  theme's padding included.
+- Badge offsets come from the theme's tokens in all four origins for counts and dots, instead of fixed corner
+  values.
+- `FlarePasswordField.InputAttributes` reaches the native password input, so `name`, `form`, `autofocus` and
+  `aria-*` work there.
+- A standalone badge follows the same size scale as a corner badge at every size, and a dot stays round.
+- The password reveal button is disabled together with the field; a read-only field still allows revealing.
 
 ## [0.46.0] - 2026-10-18
 
