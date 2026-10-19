@@ -84,6 +84,68 @@ public class FlareFabMenuTests : FlareTestContext
         Assert.Equal("true", cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").GetAttribute("aria-expanded"));
     }
 
+    private IRenderedComponent<FlareFloatingActionButton> RenderFabMenu(Action onClick) =>
+        Render<FlareFloatingActionButton>(p => p
+            .Add(x => x.AriaLabel, "Actions")
+            .Add(x => x.Position, FabPosition.Static)
+            .AddChildContent<FlareFloatingActionMenu>(menu => menu
+                .AddChildContent<FlareFloatingActionMenuItem>(item => item
+                    .Add(i => i.Icon, FlareIcons.Edit)
+                    .Add(i => i.Label, "Edit")
+                    .Add(i => i.OnClick, EventCallback.Factory.Create<MouseEventArgs>(this, (MouseEventArgs _) => onClick())))));
+
+    [Fact]
+    public void ActionClick_ClosesTheMenuAndRaisesTheCallbackOnce()
+    {
+        var clicks = 0;
+        var cut = RenderFabMenu(() => clicks++);
+
+        cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").Click();
+        cut.Find($"button.{Css.Classes.FabMenu.Btn}").Click();
+
+        Assert.Equal(1, clicks);
+        Assert.DoesNotContain(Css.Classes.FabMenu.Open, cut.Find($".{Css.Classes.FabMenu.Wrapper}").ClassName ?? string.Empty);
+        Assert.DoesNotContain(Css.Classes.FabMenu.ListOpen, cut.Find($".{Css.Classes.FabMenu.List}").ClassName ?? string.Empty);
+        Assert.Equal("false", cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void ActionClick_ReturnsFocusToTheTrigger()
+    {
+        var cut = RenderFabMenu(() => { });
+        var trigger = cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}");
+        var triggerId = trigger.GetAttribute("blazor:elementreference");
+
+        trigger.Click();
+        cut.Find($"button.{Css.Classes.FabMenu.Btn}").Click();
+
+        cut.WaitForAssertion(() =>
+        {
+            var focus = JSInterop.Invocations.Last(i => i.Identifier == "Blazor._internal.domWrapper.focus");
+            var target = Assert.IsType<ElementReference>(focus.Arguments[0]);
+            Assert.Equal(triggerId, target.Id);
+        });
+    }
+
+    [Fact]
+    public async Task EscapeClose_ReturnsFocusToTheTrigger()
+    {
+        var cut = RenderFabMenu(() => { });
+        var trigger = cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}");
+        var triggerId = trigger.GetAttribute("blazor:elementreference");
+        trigger.Click();
+
+        await cut.InvokeAsync(() => cut.Instance.CloseFromEscape());
+
+        Assert.Equal("false", cut.Find($".{Css.Classes.FabMenu.Wrapper} > button.{Css.Classes.Fab.Root}").GetAttribute("aria-expanded"));
+        cut.WaitForAssertion(() =>
+        {
+            var focus = JSInterop.Invocations.Last(i => i.Identifier == "Blazor._internal.domWrapper.focus");
+            var target = Assert.IsType<ElementReference>(focus.Arguments[0]);
+            Assert.Equal(triggerId, target.Id);
+        });
+    }
+
     // Each Placement is a side and an alignment. A bare side centres, which is the side class's own
     // layout, so it must carry NO alignment class - a stray one would pull a centred list to an edge.
     [Theory]

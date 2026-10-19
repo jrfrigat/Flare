@@ -87,15 +87,19 @@ else
             catch (JSException) { }
             _escapeLayerRegistered = false;
         }
+
+        if (_focusOnClose && !_open)
+        {
+            _focusOnClose = false;
+            try { await _element.FocusAsync(); }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+        }
     }
 
     /// <summary>Closes the speed-dial menu when the overlay layer receives Escape.</summary>
     [JSInvokable]
-    public Task CloseFromEscape() => InvokeAsync(() =>
-    {
-        Close();
-        StateHasChanged();
-    });
+    public Task CloseFromEscape() => InvokeAsync(Close);
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()
@@ -158,7 +162,15 @@ else
             await OnClick.InvokeAsync(e);
     }
 
-    private void Close() => _open = false;
+    private bool _focusOnClose;
+
+    private void Close()
+    {
+        if (!_open) return;
+        _open = false;
+        _focusOnClose = true;
+        StateHasChanged();
+    }
 
     private RenderFragment RenderFab(bool isTrigger) => __builder =>
     {
