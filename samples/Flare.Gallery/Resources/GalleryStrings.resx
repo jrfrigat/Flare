@@ -3603,6 +3603,27 @@ Read the card, check the tests, and report what is left.</value>
   <data name="FabMenu_ActionShare" xml:space="preserve">
     <value>Share</value>
   </data>
+  <data name="FabMenu_ActionDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="FabMenu_ActionDownload" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="FabMenu_ActionPrint" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="FabMenu_ActionsUp" xml:space="preserve">
+    <value>Actions (up)</value>
+  </data>
+  <data name="FabMenu_ActionsRight" xml:space="preserve">
+    <value>Actions (right)</value>
+  </data>
+  <data name="FabMenu_DirectionUp" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="FabMenu_DirectionRight" xml:space="preserve">
+    <value>Right</value>
+  </data>
   <data name="SplitButton_SaveAs" xml:space="preserve">
     <value>Save as</value>
   </data>

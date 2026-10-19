@@ -1,0 +1,42 @@
+@page "/fab-menu-placement"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:8px;min-height:1600px">
+        <div id="clipper" style="inline-size:120px;block-size:70px;overflow:hidden;outline:1px solid #ccc">
+            <FlareFloatingActionButton id="clipped-fab" AriaLabel="Clipped actions" Position="FabPosition.Static">
+                <FlareFloatingActionMenu Placement="Placement.Bottom">
+                    <FlareFloatingActionMenuItem id="long-item" Label="@LongLabel" />
+                    <FlareFloatingActionMenuItem Label="Second" />
+                    <FlareFloatingActionMenuItem Label="Third" />
+                </FlareFloatingActionMenu>
+            </FlareFloatingActionButton>
+        </div>
+
+        <div id="edge" style="display:flex;justify-content:flex-end;inline-size:100%">
+            <FlareFloatingActionButton id="edge-fab" AriaLabel="Edge actions" Position="FabPosition.Static">
+                <FlareFloatingActionMenu Placement="Placement.Right">
+                    <FlareFloatingActionMenuItem Label="One" />
+                    <FlareFloatingActionMenuItem Label="Two" />
+                </FlareFloatingActionMenu>
+            </FlareFloatingActionButton>
+        </div>
+
+        <div id="centered" style="display:flex;justify-content:center;inline-size:100%">
+            <FlareFloatingActionButton id="rtl-fab" AriaLabel="RTL actions" Position="FabPosition.Static">
+                <FlareFloatingActionMenu Placement="Placement.TopStart">
+                    <FlareFloatingActionMenuItem Label="One" />
+                    <FlareFloatingActionMenuItem Label="Two" />
+                </FlareFloatingActionMenu>
+            </FlareFloatingActionButton>
+        </div>
+
+        <button id="enable-rtl" @onclick="EnableRtl">RTL</button>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private const string LongLabel = "Archive every selected record and notify the owners";
+
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+}

@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IUiJsService Ui
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div @ref="_list"
      class="@BuildCssClass(_sideClass, _alignClass, _open ? Css.Classes.FabMenu.ListOpen : null)"
@@ -22,6 +23,11 @@
     /// <see cref="Components.Placement"/> a <see cref="FlarePopover"/> takes. A bare side centres the
     /// actions on the FAB; <c>Start</c> and <c>End</c> line up an edge instead, which is what keeps a
     /// speed dial pinned to a screen corner from hanging half off the screen.
+    /// <para>
+    /// The side is a preference: when it has no room, the list opens on the opposite one. On a top or
+    /// bottom side <c>Start</c> and <c>End</c> follow the writing direction - in a right-to-left layout
+    /// <c>Start</c> is the right edge.
+    /// </para>
     /// </summary>
     [Parameter] public Placement Placement { get; set; } = Placement.Top;
 
@@ -34,22 +40,42 @@
 
     private ElementReference _list;
     private bool _keyboardRegistered;
+    private readonly AnchoredLayer _layer = new();
+
+    // The theme decides the distance; the resting CSS reads the same variable for its own frame.
+    private const string MenuOffsetVariable = "--_fab-menu-offset";
 
     // The actions move focus in .NET; the browser's own handling of the arrows would scroll the page
     // under them. The listener is registered once, not per open: items are always mounted and only
     // become focusable while the list is visible.
+    //
+    // Placement goes through the library's overlay engine for the same reason every popup does: the
+    // trigger may sit in a card with overflow: hidden, a grid cell or a dialog, and the actions have
+    // to leave that box, flip when the preferred side has no room and stay inside the viewport.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (_keyboardRegistered) return;
-
-        try
+        if (!_keyboardRegistered)
         {
-            await Ui.RegisterFabMenuKeyboardAsync(_list);
-            _keyboardRegistered = true;
+            try
+            {
+                await Ui.RegisterFabMenuKeyboardAsync(_list);
+                _keyboardRegistered = true;
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
         }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
-        catch (InvalidOperationException) { }
+
+        // A standalone menu has no trigger to anchor to; without a FAB the caller owns its markup.
+        if (FabContext is { } context)
+        {
+            await _layer.SyncByIdAsync(Overlay, _open, context.TriggerId, _list, new AnchoredPanelOptions
+            {
+                Placement = _panelPlacement,
+                Gap = 12,
+                GapToken = MenuOffsetVariable,
+            });
+        }
     }
 
     /// <inheritdoc />
@@ -62,7 +88,27 @@
             catch (JSException) { }
             catch (InvalidOperationException) { }
         }
+        await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
+    }
+
+    // Start and End on a top or bottom side align along the inline axis, so in a right-to-left layout
+    // they trade places. On a left or right side that alignment is vertical and direction-free.
+    private string _panelPlacement
+    {
+        get
+        {
+            var placement = Placement.ToPanelPlacement();
+            if (Theme?.IsRtl != true) return placement;
+            return placement switch
+            {
+                PanelPlacement.TopStart => PanelPlacement.TopEnd,
+                PanelPlacement.TopEnd => PanelPlacement.TopStart,
+                PanelPlacement.BottomStart => PanelPlacement.BottomEnd,
+                PanelPlacement.BottomEnd => PanelPlacement.BottomStart,
+                _ => placement,
+            };
+        }
     }
 
     private string _sideClass => Placement switch

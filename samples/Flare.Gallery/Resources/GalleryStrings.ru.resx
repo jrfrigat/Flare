@@ -3603,6 +3603,27 @@
   <data name="FabMenu_ActionShare" xml:space="preserve">
     <value>Поделиться</value>
   </data>
+  <data name="FabMenu_ActionDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="FabMenu_ActionDownload" xml:space="preserve">
+    <value>Скачать</value>
+  </data>
+  <data name="FabMenu_ActionPrint" xml:space="preserve">
+    <value>Печать</value>
+  </data>
+  <data name="FabMenu_ActionsUp" xml:space="preserve">
+    <value>Действия (вверх)</value>
+  </data>
+  <data name="FabMenu_ActionsRight" xml:space="preserve">
+    <value>Действия (вправо)</value>
+  </data>
+  <data name="FabMenu_DirectionUp" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="FabMenu_DirectionRight" xml:space="preserve">
+    <value>Вправо</value>
+  </data>
   <data name="SplitButton_SaveAs" xml:space="preserve">
     <value>Сохранить как</value>
   </data>

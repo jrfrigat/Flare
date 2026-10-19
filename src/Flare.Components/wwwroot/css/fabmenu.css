@@ -15,12 +15,20 @@
     transform: rotate(45deg);
 }
 
-/* Action list (FlareFloatingActionMenu) - absolutely placed off the trigger */
+/* Action list (FlareFloatingActionMenu). The overlay engine places it as a fixed panel in the top
+   layer, so it leaves any ancestor that clips its trigger. The resting rules below only cover the
+   frame before that placement lands (and a standalone render with no FAB to anchor to); the engine's
+   data-flare-placed attribute switches them off, or their transforms would shift the measured box a
+   second time. */
 .flare-fab-menu__list {
     position: absolute;
     display: flex;
     gap: var(--flare-spacing-6);
     margin: 0;
+    /* No wider than the room the engine publishes (the viewport minus its edge margin). A long label
+       wraps instead of pushing the panel off the screen; the theme decides how much air the edge
+       keeps before the engine has placed it. */
+    max-inline-size: var(--flare-anchored-width, calc(100vw - var(--flare-overlay-viewport-inset)));
     /* A closed speed dial must not take up its OPEN footprint. Only the items fade out; the list stays
        laid out at its direction's offset, so a right-opening menu on a narrow screen reached 91px past
        the edge and gave the page horizontal scroll while nothing was open. Size containment collapses
@@ -32,27 +40,43 @@
 }
 /* Distance between the trigger and the nearest action. No FabTokens member names it yet (Gap is the
    icon-label space on an extended FAB, AnchorOffset the distance from the screen edge), so it lives in
-   one place here instead of four until it becomes a token. */
+   one place here instead of four until it becomes a token. The engine reads the same variable. */
 .flare-fab-menu__list { --_fab-menu-offset: 0.75rem; }
 
-/* SIDE: which edge of the trigger the actions open from. A bare side centres them on the trigger. */
-.flare-fab-menu__list--up    { bottom: calc(100% + var(--_fab-menu-offset)); left: 50%; transform: translateX(-50%); flex-direction: column-reverse; align-items: center; }
-.flare-fab-menu__list--down  { top:    calc(100% + var(--_fab-menu-offset)); left: 50%; transform: translateX(-50%); flex-direction: column;         align-items: center; }
-.flare-fab-menu__list--left  { right:  calc(100% + var(--_fab-menu-offset)); top:  50%; transform: translateY(-50%); flex-direction: row-reverse;     align-items: center; }
-.flare-fab-menu__list--right { left:   calc(100% + var(--_fab-menu-offset)); top:  50%; transform: translateY(-50%); flex-direction: row;             align-items: center; }
+/* SIDE: which edge of the trigger the actions open from, and how they stack. A bare side centres
+   them on the trigger. */
+.flare-fab-menu__list--up    { flex-direction: column-reverse; align-items: center; }
+.flare-fab-menu__list--down  { flex-direction: column;         align-items: center; }
+.flare-fab-menu__list--left  { flex-direction: row-reverse;    align-items: center; }
+.flare-fab-menu__list--right { flex-direction: row;            align-items: center; }
+
+/* RESTING PLACEMENT: relative to the FAB wrapper, for the frame before the engine takes over. */
+.flare-fab-menu__list--up:not([data-flare-placed])    { bottom: calc(100% + var(--_fab-menu-offset)); inset-inline-start: 50%; transform: translateX(-50%); }
+.flare-fab-menu__list--down:not([data-flare-placed])  { top:    calc(100% + var(--_fab-menu-offset)); inset-inline-start: 50%; transform: translateX(-50%); }
+.flare-fab-menu__list--left:not([data-flare-placed])  { right:  calc(100% + var(--_fab-menu-offset)); top: 50%; transform: translateY(-50%); }
+.flare-fab-menu__list--right:not([data-flare-placed]) { left:   calc(100% + var(--_fab-menu-offset)); top: 50%; transform: translateY(-50%); }
 
 /* ALIGNMENT: line an edge up with the trigger's instead of centring - the words and the meaning are
-   Placement's, shared with the popover. On a top/bottom side the cross axis is horizontal, so Start is
-   the left edge; on a left/right side it is vertical, so Start is the top edge. The centring transform
-   is dropped with the centring offset, or the list would still be pulled half its own width over. */
+   Placement's, shared with the popover. On a top/bottom side the cross axis is the inline one, so
+   Start is the edge the writing direction starts from (right in RTL); on a left/right side it is
+   vertical, so Start is the top edge. align-items always follows; the offsets are resting-only. */
 .flare-fab-menu__list--up.flare-fab-menu__list--align-start,
-.flare-fab-menu__list--down.flare-fab-menu__list--align-start  { left: 0; right: auto; transform: none; align-items: flex-start; }
+.flare-fab-menu__list--down.flare-fab-menu__list--align-start  { align-items: flex-start; }
 .flare-fab-menu__list--up.flare-fab-menu__list--align-end,
-.flare-fab-menu__list--down.flare-fab-menu__list--align-end    { left: auto; right: 0; transform: none; align-items: flex-end; }
+.flare-fab-menu__list--down.flare-fab-menu__list--align-end    { align-items: flex-end; }
 .flare-fab-menu__list--left.flare-fab-menu__list--align-start,
-.flare-fab-menu__list--right.flare-fab-menu__list--align-start { top: 0; bottom: auto; transform: none; align-items: flex-start; }
+.flare-fab-menu__list--right.flare-fab-menu__list--align-start { align-items: flex-start; }
 .flare-fab-menu__list--left.flare-fab-menu__list--align-end,
-.flare-fab-menu__list--right.flare-fab-menu__list--align-end   { top: auto; bottom: 0; transform: none; align-items: flex-end; }
+.flare-fab-menu__list--right.flare-fab-menu__list--align-end   { align-items: flex-end; }
+
+.flare-fab-menu__list--up.flare-fab-menu__list--align-start:not([data-flare-placed]),
+.flare-fab-menu__list--down.flare-fab-menu__list--align-start:not([data-flare-placed])  { inset-inline-start: 0; inset-inline-end: auto; transform: none; }
+.flare-fab-menu__list--up.flare-fab-menu__list--align-end:not([data-flare-placed]),
+.flare-fab-menu__list--down.flare-fab-menu__list--align-end:not([data-flare-placed])    { inset-inline-start: auto; inset-inline-end: 0; transform: none; }
+.flare-fab-menu__list--left.flare-fab-menu__list--align-start:not([data-flare-placed]),
+.flare-fab-menu__list--right.flare-fab-menu__list--align-start:not([data-flare-placed]) { top: 0; bottom: auto; transform: none; }
+.flare-fab-menu__list--left.flare-fab-menu__list--align-end:not([data-flare-placed]),
+.flare-fab-menu__list--right.flare-fab-menu__list--align-end:not([data-flare-placed])   { top: auto; bottom: 0; transform: none; }
 
 /* Items animate in when the list is open */
 .flare-fab-menu__item {
@@ -83,7 +107,8 @@
 /* Horizontal 'right' direction places the label after the button - keep it readable */
 .flare-fab-menu__list--right .flare-fab-menu__item { flex-direction: row-reverse; }
 
-/* Action label chip */
+/* Action label chip. A long label wraps inside the width the engine allows the list instead of
+   running past the edge of the screen. */
 .flare-fab-menu__label {
     font-family: var(--flare-typescale-label-large-font);
     font-size: var(--flare-typescale-label-large-size);
@@ -91,7 +116,8 @@
     color: var(--flare-color-inverse-on-surface);
     padding: var(--flare-spacing-2) var(--flare-spacing-5);
     border-radius: var(--flare-shape-extra-small);
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
     box-shadow: var(--flare-elevation-1);
 }
 

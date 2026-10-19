@@ -11779,6 +11779,27 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>Looks up the localized delete action.</summary>
+        public static string FabMenu_ActionDelete => ResourceManager.GetString("FabMenu_ActionDelete", resourceCulture);
+
+        /// <summary>Looks up the localized download action.</summary>
+        public static string FabMenu_ActionDownload => ResourceManager.GetString("FabMenu_ActionDownload", resourceCulture);
+
+        /// <summary>Looks up the localized print action.</summary>
+        public static string FabMenu_ActionPrint => ResourceManager.GetString("FabMenu_ActionPrint", resourceCulture);
+
+        /// <summary>Looks up the accessible name of the upward FAB demo.</summary>
+        public static string FabMenu_ActionsUp => ResourceManager.GetString("FabMenu_ActionsUp", resourceCulture);
+
+        /// <summary>Looks up the accessible name of the rightward FAB demo.</summary>
+        public static string FabMenu_ActionsRight => ResourceManager.GetString("FabMenu_ActionsRight", resourceCulture);
+
+        /// <summary>Looks up the upward direction caption.</summary>
+        public static string FabMenu_DirectionUp => ResourceManager.GetString("FabMenu_DirectionUp", resourceCulture);
+
+        /// <summary>Looks up the rightward direction caption.</summary>
+        public static string FabMenu_DirectionRight => ResourceManager.GetString("FabMenu_DirectionRight", resourceCulture);
+
         /// <summary>Looks up the localized Kanban read-only demo title.</summary>
         public static string Kanban_ReadOnly => ResourceManager.GetString("Kanban_ReadOnly", resourceCulture);
 

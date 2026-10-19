@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The FlareFloatingActionMenuItem entries. |
-| `Placement` | `Placement` | `Placement.Top` | Parameter |  | Which side of the FAB the actions open on, and how they line up along it - the same Placement a FlarePopover takes. A bare side centres the actions on the FAB; Start and End line up an edge instead, which is what keeps a speed dial pinned to a screen corner from hanging half off the screen. |
+| `Placement` | `Placement` | `Placement.Top` | Parameter |  | Which side of the FAB the actions open on, and how they line up along it - the same Placement a FlarePopover takes. A bare side centres the actions on the FAB; Start and End line up an edge instead, which is what keeps a speed dial pinned to a screen corner from hanging half off the screen. The side is a preference: when it has no room, the list opens on the opposite one. On a top or bottom side Start and End follow the writing direction - in a right-to-left layout Start is the right edge. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

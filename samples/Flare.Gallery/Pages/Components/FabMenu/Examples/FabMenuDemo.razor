@@ -2,37 +2,37 @@
 
 <FlareStack Row Gap="FlareSpacing.XLarge" Wrap Align="FlareAlignItems.End" Style="min-height:12rem;padding:3rem 1rem 1rem;">
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareFloatingActionButton Position="FabPosition.Static" AriaLabel="Actions (up)">
+        <FlareFloatingActionButton Position="FabPosition.Static" AriaLabel="@GalleryStrings.FabMenu_ActionsUp">
             <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></IconContent>
             <ChildContent>
                 <FlareFloatingActionMenu Placement="Placement.Top">
-                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" Label="Edit" OnClick="@(() => Snackbar.Show("Edit"))" />
-                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Share" Label="Share" OnClick="@(() => Snackbar.Show("Share"))" />
-                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Delete" Label="Delete" OnClick="@(() => Snackbar.Show("Delete", SnackbarSeverity.Error))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" Label="@GalleryStrings.FabMenu_ActionEdit"
+                                                 OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionEdit))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Share" Label="@GalleryStrings.FabMenu_ActionShare"
+                                                 OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionShare))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Delete" Label="@GalleryStrings.FabMenu_ActionDelete"
+                                                 OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionDelete, SnackbarSeverity.Error))" />
                 </FlareFloatingActionMenu>
             </ChildContent>
         </FlareFloatingActionButton>
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Up</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.FabMenu_DirectionUp</FlareText>
     </FlareStack>
 
-    @* The direction is the author's call, and a horizontal one needs the room to open into: two labelled
-       actions beside the button are wider than a phone. So the direction follows the breakpoint - which
-       is what a real screen does, rather than opening off the edge and giving the page a sideways
-       scroll. FlareMediaQuery reports the active breakpoint; nothing here is CSS. *@
-    <FlareMediaQuery Context="bp">
-        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-            <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="Actions (right)">
-                <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreHoriz" /></IconContent>
-                <ChildContent>
-                    <FlareFloatingActionMenu Placement="@(bp <= Breakpoint.Sm ? Placement.Top : Placement.Right)">
-                        <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Download" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />
-                        <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Print" Label="Print" OnClick="@(() => Snackbar.Show("Printing…"))" />
-                    </FlareFloatingActionMenu>
-                </ChildContent>
-            </FlareFloatingActionButton>
-            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
-                @(bp <= Breakpoint.Sm ? "Right (Up on a phone)" : "Right")
-            </FlareText>
-        </FlareStack>
-    </FlareMediaQuery>
+    @* The direction is a preference, not a promise: when the chosen side has no room the list opens
+       on the opposite one. The Gallery used to switch Placement by breakpoint itself, which was the
+       application compensating for what the component now does. *@
+    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+        <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="@GalleryStrings.FabMenu_ActionsRight">
+            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreHoriz" /></IconContent>
+            <ChildContent>
+                <FlareFloatingActionMenu Placement="Placement.Right">
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Download" Label="@GalleryStrings.FabMenu_ActionDownload"
+                                                 OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionDownload))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Print" Label="@GalleryStrings.FabMenu_ActionPrint"
+                                                 OnClick="@(() => Snackbar.Show(GalleryStrings.FabMenu_ActionPrint))" />
+                </FlareFloatingActionMenu>
+            </ChildContent>
+        </FlareFloatingActionButton>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.FabMenu_DirectionRight</FlareText>
+    </FlareStack>
 </FlareStack>

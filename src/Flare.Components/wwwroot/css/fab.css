@@ -83,12 +83,14 @@
     z-index: var(--flare-z-chrome);
 }
 
+/* A pinned FAB keeps clear of the system gesture bar and a display cutout, not just the viewport
+   edge. env() is 0 where the platform has no inset. */
 .flare-fab-anchor--bottom-right {
-    bottom: var(--flare-fab-anchor-offset);
-    right: var(--flare-fab-anchor-offset);
+    bottom: calc(var(--flare-fab-anchor-offset) + env(safe-area-inset-bottom, 0px));
+    right: calc(var(--flare-fab-anchor-offset) + env(safe-area-inset-right, 0px));
 }
 
 .flare-fab-anchor--bottom-left {
-    bottom: var(--flare-fab-anchor-offset);
-    left: var(--flare-fab-anchor-offset);
+    bottom: calc(var(--flare-fab-anchor-offset) + env(safe-area-inset-bottom, 0px));
+    left: calc(var(--flare-fab-anchor-offset) + env(safe-area-inset-left, 0px));
 }
