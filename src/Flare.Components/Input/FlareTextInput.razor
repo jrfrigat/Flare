@@ -262,9 +262,14 @@ else
         try
         {
             await Task.Delay(DebounceInterval, token);
-            if (generation != _generation) return;
-            _lastPublished = raw;
-            await InvokeAsync(() => ValueChanged.InvokeAsync(raw));
+            // The generation is read on the component's own dispatcher: a cancellation written by the
+            // renderer thread is then guaranteed to be visible to the continuation that follows it.
+            await InvokeAsync(async () =>
+            {
+                if (generation != _generation) return;
+                _lastPublished = raw;
+                await ValueChanged.InvokeAsync(raw);
+            });
         }
         catch (TaskCanceledException) { }
     }
