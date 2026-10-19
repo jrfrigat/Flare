@@ -6555,6 +6555,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the switch when true.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"For", @"Expression<Func<bool>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareSwitch"),
+                new ApiParameterInfo(@"InputAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Attributes forwarded to the native switch input - a form name, required, or an accessible name for a switch without a visible label. The type, role, checked state and disabled state stay owned by the component. AdditionalAttributes land on the label.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed next to the switch. Ignored when ChildContent is set.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"LabelPlacement", @"LabelPlacement", @"LabelPlacement.End", @"Label position relative to the switch (End = after, Start = before). Default End.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"SelectedIcon", @"RenderFragment?", null, @"Icon shown on the handle when the switch is ON (e.g. a check mark).", null, false, false, false, @"FlareSwitch"),

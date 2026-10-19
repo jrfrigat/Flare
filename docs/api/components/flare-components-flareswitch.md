@@ -13,6 +13,7 @@
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the switch when true. |
 | `ErrorText` | `string?` | `` | Parameter |  | Overrides validation with a custom error message. |
 | `For` | `Expression<Func<bool>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
+| `InputAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Attributes forwarded to the native switch input - a form name, required, or an accessible name for a switch without a visible label. The type, role, checked state and disabled state stay owned by the component. AdditionalAttributes land on the label. |
 | `Label` | `string?` | `` | Parameter |  | Label text displayed next to the switch. Ignored when ChildContent is set. |
 | `LabelPlacement` | `LabelPlacement` | `LabelPlacement.End` | Parameter |  | Label position relative to the switch (End = after, Start = before). Default End. |
 | `SelectedIcon` | `RenderFragment?` | `` | Parameter |  | Icon shown on the handle when the switch is ON (e.g. a check mark). |

@@ -6,9 +6,13 @@
 <label class="@BuildCssClass(_stateClass, _withIconClass, _colorClass, _labelClass, _sizeClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
     <span class="@Css.Classes.Switch.Track">
         <input class="@Css.Classes.Switch.Input"
+               @attributes="InputAttributes"
                type="checkbox"
                role="switch"
                aria-checked="@(Value ? "true" : "false")"
+               aria-labelledby="@(_hasLabel ? _labelTextId : null)"
+               aria-describedby="@(_displayedError is null ? null : _errorId)"
+               aria-invalid="@(_displayedError is null ? null : "true")"
                checked="@Value"
                disabled="@Disabled"
                @onchange="HandleChange" />
@@ -16,13 +20,13 @@
             <span class="@Css.Classes.Switch.Handle">@_handleIcon</span>
         </span>
     </span>
-    @if (ChildContent is not null || !string.IsNullOrEmpty(Label))
+    @if (_hasLabel)
     {
-        <span class="@Css.Classes.Switch.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
+        <span id="@_labelTextId" class="@Css.Classes.Switch.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
     }
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@Css.Classes.Switch.Error">@_displayedError</span>
+        <span id="@_errorId" class="@Css.Classes.Switch.Error" role="alert">@_displayedError</span>
     }
 </label>
 
@@ -46,6 +50,12 @@
     [Parameter] public string? ErrorText { get; set; }
     /// <summary>Disables the switch when true.</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>
+    /// Attributes forwarded to the native switch input - a form <c>name</c>, <c>required</c>, or an
+    /// accessible name for a switch without a visible label. The type, role, checked state and disabled
+    /// state stay owned by the component. <see cref="FlareComponentBase.AdditionalAttributes"/> land on the label.
+    /// </summary>
+    [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
     /// <summary>Accent color of the selected track (role -> shared class, custom -> inline token). Default = primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Switch size (Xs..Xl) on the shared scale; <c>Md</c> is the default. Each theme decides what
@@ -63,6 +73,11 @@
     [CascadingParameter] private EditContext? EditContext { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Switch.Root;
+
+    private readonly string _controlId = $"flare-switch-{Guid.NewGuid():N}";
+    private string _labelTextId => $"{_controlId}-label";
+    private string _errorId => $"{_controlId}-err";
+    private bool _hasLabel => ChildContent is not null || !string.IsNullOrEmpty(Label);
 
     private string _stateClass => Disabled ? Css.Classes.Switch.Disabled : string.Empty;
     private bool _hasIcons => SelectedIcon is not null || UnselectedIcon is not null;
