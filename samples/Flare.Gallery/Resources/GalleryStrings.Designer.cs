@@ -9829,6 +9829,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("ToggleButton_Group", resourceCulture);
             }
         }
+
+        /// <summary>Looks up the title of the nullable-value toggle group demo.</summary>
+        public static string ToggleButton_GroupValueType => ResourceManager.GetString("ToggleButton_GroupValueType", resourceCulture);
+
+        /// <summary>Looks up the label before the selected value in the demo.</summary>
+        public static string ToggleButton_SelectedValue => ResourceManager.GetString("ToggleButton_SelectedValue", resourceCulture);
+
+        /// <summary>Looks up the text shown when the demo has no selection.</summary>
+        public static string ToggleButton_NoValue => ResourceManager.GetString("ToggleButton_NoValue", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Group cascade.

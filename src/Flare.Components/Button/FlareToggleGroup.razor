@@ -9,7 +9,16 @@
 </CascadingValue>
 
 @code {
-    /// <summary>Selected value when MultiSelect is false.</summary>
+    /// <summary>
+    /// Selected value when <see cref="MultiSelect"/> is false.
+    /// <para>
+    /// A value type has to be nullable - <c>TValue="int?"</c>, <c>MyEnum?</c>, <c>Guid?</c> - because a
+    /// non-nullable one cannot tell "nothing is selected" from its own default: an unset
+    /// <c>Value</c> would silently show <c>0</c> (or the enum's first member) as chosen, and the group
+    /// could never be cleared. A reference type such as <c>string</c> needs nothing special; null is
+    /// already the empty state. The group throws when a single-select type cannot express "nothing".
+    /// </para>
+    /// </summary>
     [Parameter] public TValue? Value { get; set; }
     /// <summary>Callback raised when the single selection changes.</summary>
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
@@ -30,7 +39,9 @@
     /// <summary>When true, disables every child <c>FlareToggleButton</c> in the group.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Single-select only: when true the active button cannot be deselected by clicking it (one
-    /// selection is always kept). Default false - single-select is deselectable (a "toggle" selection).</summary>
+    /// selection is always kept). Default false - single-select is deselectable (a "toggle" selection).
+    /// The value type still has to be nullable (see <see cref="Value"/>); Mandatory only stops the user
+    /// from clearing a selection that was made, it does not invent one.</summary>
     [Parameter] public bool Mandatory { get; set; }
     /// <summary>Shows a leading checkmark on each selected button.</summary>
     [Parameter] public bool CheckMark { get; set; }
@@ -51,8 +62,25 @@
     // Tracks the last cascaded settings so the context is rebuilt when they change (not only on selection change).
     private (ButtonSize? Size, FlareColor? Color, bool Disabled, bool CheckMark) _lastCascade;
 
+    // Closed-generic statics: the answer is fixed by TValue, so it is computed once per instantiation.
+    private static readonly bool LacksEmptyValue =
+        typeof(TValue).IsValueType && Nullable.GetUnderlyingType(typeof(TValue)) is null;
+
     protected override void OnParametersSet()
     {
+        // A single selection has to be able to say "nothing is selected". For a non-nullable value type
+        // the parameter and the callback are that same type, so "nothing" has no representation and the
+        // group would silently treat default(TValue) as chosen - the hidden selection this guard exists
+        // to stop.
+        if (!MultiSelect && LacksEmptyValue)
+        {
+            throw new InvalidOperationException(
+                $"FlareToggleGroup<{typeof(TValue).Name}> cannot represent \"no selection\": a non-nullable " +
+                $"value type makes an unset Value and default({typeof(TValue).Name}) the same value, so the " +
+                "group would keep that button selected and could never be cleared. Use a nullable value " +
+                "type (for example TValue=\"int?\" or MyEnum?), a reference type such as string, or MultiSelect.");
+        }
+
         var newSelected = MultiSelect
             ? new HashSet<object?>(Values?.Cast<object?>() ?? Enumerable.Empty<object?>())
             : Value is not null ? new HashSet<object?> { Value } : new HashSet<object?>();

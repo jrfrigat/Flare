@@ -2860,6 +2860,15 @@ Read the card, check the tests, and report what is left.</value>
   <data name="ToggleButton_Group" xml:space="preserve">
     <value>Toggle Group</value>
   </data>
+  <data name="ToggleButton_GroupValueType" xml:space="preserve">
+    <value>A number group (0 is a value)</value>
+  </data>
+  <data name="ToggleButton_SelectedValue" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="ToggleButton_NoValue" xml:space="preserve">
+    <value>none</value>
+  </data>
   <data name="ToggleButton_GroupMulti" xml:space="preserve">
     <value>Toggle Group - Multi Select</value>
   </data>

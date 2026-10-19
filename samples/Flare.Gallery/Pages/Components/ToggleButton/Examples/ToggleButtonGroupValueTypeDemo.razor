@@ -1,0 +1,17 @@
+@* Zero is a real choice, not "nothing". TValue is int? so the group can also sit with no selection
+   at all; the line below shows which of the two states it is in, and clicking the active number
+   clears the selection. *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareToggleGroup TValue="int?" @bind-Value="_level">
+        <FlareToggleButton Value="@(0)">0</FlareToggleButton>
+        <FlareToggleButton Value="@(1)">1</FlareToggleButton>
+        <FlareToggleButton Value="@(2)">2</FlareToggleButton>
+    </FlareToggleGroup>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        @GalleryStrings.ToggleButton_SelectedValue: @(_level?.ToString() ?? GalleryStrings.ToggleButton_NoValue)
+    </FlareText>
+</FlareStack>
+
+@code {
+    private int? _level;
+}

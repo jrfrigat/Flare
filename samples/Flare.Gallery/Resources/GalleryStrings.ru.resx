@@ -2860,6 +2860,15 @@
   <data name="ToggleButton_Group" xml:space="preserve">
     <value>Группа переключателей</value>
   </data>
+  <data name="ToggleButton_GroupValueType" xml:space="preserve">
+    <value>Группа с числом (0 - это значение)</value>
+  </data>
+  <data name="ToggleButton_SelectedValue" xml:space="preserve">
+    <value>Выбрано</value>
+  </data>
+  <data name="ToggleButton_NoValue" xml:space="preserve">
+    <value>нет</value>
+  </data>
   <data name="ToggleButton_GroupMulti" xml:space="preserve">
     <value>Группа переключателей - множественный выбор</value>
   </data>

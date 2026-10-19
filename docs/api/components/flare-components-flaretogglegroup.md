@@ -13,11 +13,11 @@
 | `Color` | `FlareColor?` | `` | Parameter |  | Color cascaded to every child FlareToggleButton (tints the selected state). When null (default) each button keeps its own Color. |
 | `Disabled` | `bool` | `false` | Parameter |  | When true, disables every child FlareToggleButton in the group. |
 | `FullWidth` | `bool` | `false` | Parameter |  | Stretches the group across its container and gives every button an equal share of the width. A label longer than its share is shortened with an ellipsis instead of making the group scroll. Default false: the group is as wide as its buttons and scrolls when the container is narrower. |
-| `Mandatory` | `bool` | `false` | Parameter |  | Single-select only: when true the active button cannot be deselected by clicking it (one selection is always kept). Default false - single-select is deselectable (a "toggle" selection). |
+| `Mandatory` | `bool` | `false` | Parameter |  | Single-select only: when true the active button cannot be deselected by clicking it (one selection is always kept). Default false - single-select is deselectable (a "toggle" selection). The value type still has to be nullable (see Value); Mandatory only stops the user from clearing a selection that was made, it does not invent one. |
 | `MultiSelect` | `bool` | `false` | Parameter |  | Allows multiple buttons to be active simultaneously. |
 | `Orientation` | `string` | `"horizontal"` | Parameter |  | "horizontal" (default) or "vertical". |
 | `Size` | `ButtonSize?` | `` | Parameter |  | Size cascaded to every child FlareToggleButton. When null (default) each button keeps its own Size. |
-| `Value` | `TValue?` | `` | Parameter |  | Selected value when MultiSelect is false. |
+| `Value` | `TValue?` | `` | Parameter |  | Selected value when MultiSelect is false. A value type has to be nullable - TValue="int?", MyEnum?, Guid? - because a non-nullable one cannot tell "nothing is selected" from its own default: an unset Value would silently show 0 (or the enum's first member) as chosen, and the group could never be cleared. A reference type such as string needs nothing special; null is already the empty state. The group throws when a single-select type cannot express "nothing". |
 | `ValueChanged` | `EventCallback<TValue?>` | `` | Callback |  | Callback raised when the single selection changes. |
 | `Values` | `IReadOnlyList<TValue?>?` | `` | Parameter |  | Selected values when MultiSelect is true. |
 | `ValuesChanged` | `EventCallback<IReadOnlyList<TValue?>>` | `` | Callback |  | Callback raised when the multi-selection changes. |
