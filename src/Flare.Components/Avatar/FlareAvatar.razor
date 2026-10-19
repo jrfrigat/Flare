@@ -129,13 +129,21 @@
         }
     }
 
-    private string GetInitials(string? name)
+    // Splits on any whitespace, so repeated spaces, tabs and outer padding never become an initial,
+    // and takes whole text elements so a surrogate pair or a combining mark is never cut in half.
+    private static string GetInitials(string? name)
     {
         if (string.IsNullOrWhiteSpace(name)) return "?";
-        ReadOnlySpan<char> span = name.AsSpan().Trim();
-        int spaceIdx = span.IndexOf(' ');
-        if (spaceIdx < 0) return span[0].ToString().ToUpperInvariant();
-        return new string([span[0], span[spaceIdx + 1]]).ToUpperInvariant();
+        var parts = name.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+        var first = FirstTextElement(parts[0]);
+        if (parts.Length == 1) return first.ToUpperInvariant();
+        return (first + FirstTextElement(parts[1])).ToUpperInvariant();
+    }
+
+    private static string FirstTextElement(string value)
+    {
+        var elements = System.Globalization.StringInfo.GetTextElementEnumerator(value);
+        return elements.MoveNext() ? elements.GetTextElement() : string.Empty;
     }
 
     private string _initials => GetInitials(Text);
