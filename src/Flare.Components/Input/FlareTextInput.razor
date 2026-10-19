@@ -219,8 +219,19 @@ else
             CancelPending();
     }
 
-    private string ControlCss() =>
-        string.IsNullOrEmpty(ControlClass) ? Css.Classes.Input.Control : $"{Css.Classes.Input.Control} {ControlClass}";
+    // The control is this component's only element, so the inherited Class belongs on it - the same
+    // promise FlareComponentBase makes for every component's root. ControlClass is the component-level
+    // hook and comes first, the caller's Class last, matching the order BuildCssClass uses.
+    private string ControlCss()
+    {
+        if (string.IsNullOrWhiteSpace(Class) && string.IsNullOrWhiteSpace(ControlClass))
+            return Css.Classes.Input.Control;
+
+        var parts = new List<string>(3) { Css.Classes.Input.Control };
+        if (!string.IsNullOrWhiteSpace(ControlClass)) parts.Add(ControlClass);
+        if (!string.IsNullOrWhiteSpace(Class)) parts.Add(Class);
+        return string.Join(' ', parts);
+    }
 
     /// <summary>The underlying input element, for the parent field to focus it.</summary>
     public ElementReference Element => _element;

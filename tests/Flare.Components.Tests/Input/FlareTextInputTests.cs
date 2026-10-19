@@ -67,6 +67,34 @@ public class FlareTextInputTests : FlareTestContext
     }
 
     [Fact]
+    public void InheritedClass_ComposesOnTheInputBesideControlClass()
+    {
+        var cut = Render<FlareTextInput>(p => p
+            .Add(x => x.Class, "my-control")
+            .Add(x => x.ControlClass, "custom-control")
+            .Add(x => x.Style, "color: red")
+            .AddUnmatched("data-testid", "field"));
+
+        var input = cut.Find($"input.{Css.Classes.Input.Control}");
+        Assert.Contains(Css.Classes.Input.Control, input.ClassName);
+        Assert.Contains("custom-control", input.ClassName);
+        Assert.Contains("my-control", input.ClassName);
+        Assert.Equal("color: red", input.GetAttribute("style"));
+        Assert.Equal("field", input.GetAttribute("data-testid"));
+    }
+
+    [Fact]
+    public void InheritedClass_ReachesTheTextarea()
+    {
+        var cut = Render<FlareTextInput>(p => p
+            .Add(x => x.Multiline, true)
+            .Add(x => x.Class, "my-control"));
+
+        var textarea = cut.Find($"textarea.{Css.Classes.Input.Control}");
+        Assert.Contains("my-control", textarea.ClassName);
+    }
+
+    [Fact]
     public void Non_immediate_does_not_emit_on_input()
     {
         string? captured = null;
