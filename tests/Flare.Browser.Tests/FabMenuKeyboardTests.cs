@@ -34,6 +34,7 @@ public sealed class FabMenuKeyboardTests(BrowserFixture fixture) : IClassFixture
 
         await Expect(Edit(page)).ToBeFocusedAsync();
         await Expect(Trigger(page)).ToHaveAttributeAsync("aria-expanded", "true");
+        await Expect(page.Locator($".{Css.Classes.FabMenu.List}")).ToHaveAttributeAsync("aria-labelledby", "fab-trigger");
         await Expect(page.Locator("#fab-archived button[role=menuitem]")).ToBeDisabledAsync();
     }
 

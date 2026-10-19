@@ -207,6 +207,22 @@ public class FlareFabMenuTests : FlareTestContext
     }
 
     [Fact]
+    public void AProvidedTriggerId_IsTheOneTheMenuNames()
+    {
+        var cut = Render<FlareFloatingActionButton>(p => p
+            .Add(x => x.AriaLabel, "Actions")
+            .Add(x => x.Position, FabPosition.Static)
+            .AddUnmatched("id", "custom-fab")
+            .AddChildContent<FlareFloatingActionMenu>(menu => menu
+                .AddChildContent<FlareFloatingActionMenuItem>(item => item
+                    .Add(i => i.Icon, FlareIcons.Edit)
+                    .Add(i => i.Label, "Edit"))));
+
+        Assert.Equal("custom-fab", cut.Find(TriggerSelector).GetAttribute("id"));
+        Assert.Equal("custom-fab", cut.Find($".{Css.Classes.FabMenu.List}").GetAttribute("aria-labelledby"));
+    }
+
+    [Fact]
     public void Actions_AreMenuItems()
     {
         var cut = RenderFabMenu();

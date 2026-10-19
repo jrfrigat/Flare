@@ -60,13 +60,20 @@ else
     private DotNetObjectReference<FlareFloatingActionButton>? _selfRef;
     private bool _escapeLayerRegistered;
     private readonly string _escapeLayerId = "flare-fab-menu-" + Guid.NewGuid().ToString("N")[..8];
-    private readonly string _triggerId = "flare-fab-trigger-" + Guid.NewGuid().ToString("N")[..8];
+    private readonly string _generatedTriggerId = "flare-fab-trigger-" + Guid.NewGuid().ToString("N")[..8];
     private readonly string _menuId = "flare-fab-list-" + Guid.NewGuid().ToString("N")[..8];
     private readonly FabMenuItems _items = new();
     private bool _focusFirstOnOpen;
     private bool _focusLastOnOpen;
 
-    private FabMenuContext Context => new(_open, Close, _menuId, _triggerId, _items);
+    // The menu names its trigger through aria-labelledby, so it has to use the id the button really
+    // has: a caller's own id wins over the generated one when the attributes are splatted.
+    private string TriggerId =>
+        AdditionalAttributes?.TryGetValue("id", out var id) == true && id is string provided && provided.Length > 0
+            ? provided
+            : _generatedTriggerId;
+
+    private FabMenuContext Context => new(_open, Close, _menuId, TriggerId, _items);
 
     /// <summary>Sets keyboard focus to the FAB element.</summary>
     public ValueTask FocusAsync() => _element.FocusAsync();
@@ -239,7 +246,7 @@ else
         <button @ref="_element"
                 class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
                 style="@CombineStyle(isTrigger ? null : Style)"
-                id="@(isTrigger ? _triggerId : null)"
+                id="@(isTrigger ? TriggerId : null)"
                 aria-label="@AriaLabel"
                 aria-haspopup="@(isTrigger ? "menu" : null)"
                 aria-controls="@(isTrigger ? _menuId : null)"
