@@ -16,7 +16,7 @@ public sealed class BadgeStandaloneSizeTests(BrowserFixture fixture) : IClassFix
     // [height, paddingLeft, paddingRight, width, radius, tokenHeight, tokenPaddingX, tokenDotSize,
     //  circleCheck]
     private const string MetricsScript = """
-        (el, size) => {
+        (el, tokens) => {
             const s = getComputedStyle(el);
             const ind = el.querySelector(':scope > span');
             const is = getComputedStyle(ind);
@@ -30,18 +30,26 @@ public sealed class BadgeStandaloneSizeTests(BrowserFixture fixture) : IClassFix
                 probe.remove();
                 return w;
             };
-            const suffix = size.toLowerCase();
             const num = v => v === 'auto' || v === 'none' ? 0 : parseFloat(v) || 0;
             const width = num(is.width);
             const radius = is.borderTopLeftRadius.trim();
             const circle = radius.endsWith('%') ? parseFloat(radius) >= 50 : parseFloat(radius) >= width / 2 - 0.5;
             return [num(is.height), num(is.paddingLeft), num(is.paddingRight), width, parseFloat(radius),
-                    px(s.getPropertyValue('--flare-badge-height-' + suffix)),
-                    px(s.getPropertyValue('--flare-badge-padding-x-' + suffix)),
-                    px(s.getPropertyValue('--flare-badge-dot-size-' + suffix)),
+                    px(s.getPropertyValue(tokens[0])),
+                    px(s.getPropertyValue(tokens[1])),
+                    px(s.getPropertyValue(tokens[2])),
                     circle ? 1 : 0];
         }
         """;
+
+    private static string[] TokensFor(string size) => size switch
+    {
+        "Xs" => [Css.Tokens.Badge.Height.Xs, Css.Tokens.Badge.PaddingX.Xs, Css.Tokens.Badge.DotSize.Xs],
+        "Sm" => [Css.Tokens.Badge.Height.Sm, Css.Tokens.Badge.PaddingX.Sm, Css.Tokens.Badge.DotSize.Sm],
+        "Lg" => [Css.Tokens.Badge.Height.Lg, Css.Tokens.Badge.PaddingX.Lg, Css.Tokens.Badge.DotSize.Lg],
+        "Xl" => [Css.Tokens.Badge.Height.Xl, Css.Tokens.Badge.PaddingX.Xl, Css.Tokens.Badge.DotSize.Xl],
+        _ => [Css.Tokens.Badge.Height.Md, Css.Tokens.Badge.PaddingX.Md, Css.Tokens.Badge.DotSize.Md],
+    };
 
     private static async Task<IPage> OpenAsync(IBrowserContext context, BrowserFixture fixture, string themeId)
     {
@@ -53,12 +61,13 @@ public sealed class BadgeStandaloneSizeTests(BrowserFixture fixture) : IClassFix
             .ToHaveClassAsync(new Regex(Regex.Escape(Css.Classes.Theme.ForTheme(themeId))));
         // The token bundle arrives with the theme stylesheet; measure only once it is live.
         await page.WaitForFunctionAsync(
-            "() => getComputedStyle(document.querySelector('#count-Md')).getPropertyValue('--flare-badge-height-md').trim().length > 0");
+            "args => getComputedStyle(document.querySelector(args[0])).getPropertyValue(args[1]).trim().length > 0",
+            new[] { "#count-Md", TokensFor("Md")[0] });
         return page;
     }
 
     private static Task<double[]> MetricsAsync(IPage page, string id, string size)
-        => page.Locator($"#{id}").EvaluateAsync<double[]>(MetricsScript, size);
+        => page.Locator($"#{id}").EvaluateAsync<double[]>(MetricsScript, TokensFor(size));
 
     [Theory]
     [InlineData("md3-expressive")]

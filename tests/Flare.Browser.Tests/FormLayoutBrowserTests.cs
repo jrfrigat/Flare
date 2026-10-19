@@ -16,6 +16,13 @@ public sealed class FormLayoutBrowserTests(BrowserFixture fixture) : IClassFixtu
         await page.SetViewportSizeAsync(width, 900);
         await page.GotoAsync($"{fixture.BaseUrl}/form{query}");
         await Expect(page.Locator("#submit")).ToBeVisibleAsync();
+        // The host applies a theme itself; wait for its token bundle so the layout rules resolve.
+        await Expect(page.Locator($".{Css.Classes.Theme.Root}")).ToHaveClassAsync(
+            new System.Text.RegularExpressions.Regex(
+                System.Text.RegularExpressions.Regex.Escape(Css.Classes.Theme.ForTheme("md3-expressive"))));
+        await page.WaitForFunctionAsync(
+            "token => getComputedStyle(document.querySelector('#form-root')).getPropertyValue(token).trim().length > 0",
+            Css.Tokens.FormField.HorizontalColumns);
         return page;
     }
 

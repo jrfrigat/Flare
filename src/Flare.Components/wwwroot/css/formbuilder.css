@@ -28,8 +28,8 @@
 /* Horizontal puts each field's label beside its control; the fields themselves still stack. */
 .flare-form--horizontal .flare-input {
     display: grid;
-    /* The theme may set the pair; the structural default keeps the layout even when it does not. */
-    grid-template-columns: var(--flare-form-horizontal-columns, auto 1fr);
+    /* Every theme supplies the pair (it is a required form token), so no fallback is written here. */
+    grid-template-columns: var(--flare-form-horizontal-columns);
     align-items: start;
     column-gap: var(--flare-spacing-6);
     row-gap: var(--flare-spacing-2);
