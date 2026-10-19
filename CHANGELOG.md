@@ -67,6 +67,12 @@ All notable changes to Flare are documented here. This project adheres to
   through `aria-describedby`/`aria-invalid` without adding the error to the accessible name. The checkbox's `Color`
   now also paints the indeterminate state, with the matching on-color.
 - The switch handle follows the writing direction and keeps its centre while pressed in RTL.
+- The clear button of a `FlareSelect` or `FlareMultiSelect` sits next to the expand arrow at the trailing edge
+  instead of floating in the middle of a wide field.
+- Escape inside a select in a temporary `FlareDrawer` closes only the list first; the next Escape closes the drawer.
+  A popup that has not registered its layer yet no longer takes the drawer down with it.
+- A `FlareColumn` whose `Title` changes after the first render (a language switch) updates the grid header and the
+  column lists instead of keeping the old title.
 
 ## [0.46.0] - 2026-10-18
 
