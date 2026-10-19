@@ -258,6 +258,18 @@ public sealed class ComboboxState<TItem>
         return new CommitResult(kind, closed);
     }
 
+    /// <summary>
+    /// Removes an explicitly selected item (a chip's remove button or Backspace), even when the option is
+    /// disabled. Returns whether the selection changed.
+    /// </summary>
+    /// <param name="item">The selected item to remove.</param>
+    public bool Deselect(TItem item)
+    {
+        if (!Selection.Deselect(item)) return false;
+        Raise();
+        return true;
+    }
+
     /// <summary>Commits the currently highlighted option (Enter / Space), or NoOp when none is highlighted.</summary>
     public CommitResult CommitHighlighted()
     {

@@ -450,8 +450,7 @@
 
     private async Task RemoveOneAsync(TValue item)
     {
-        _state.Commit(item);   // toggles the selected item off
-        await PushValuesAsync();
+        if (_state.Deselect(item)) await PushValuesAsync();
     }
 
     private async Task ToggleSelectAllAsync()

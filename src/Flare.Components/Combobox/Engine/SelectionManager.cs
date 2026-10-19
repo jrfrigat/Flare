@@ -86,6 +86,20 @@ public sealed class SelectionManager<TItem>
         return CommitKind.Changed;
     }
 
+    /// <summary>
+    /// Removes an explicitly selected item, whether or not the option is disabled: a chip's remove button
+    /// names the value to drop rather than toggling the option. Honors disallow-empty.
+    /// </summary>
+    /// <param name="item">The selected item to remove.</param>
+    /// <returns>Whether the selection changed.</returns>
+    public bool Deselect(TItem item)
+    {
+        if (!_set.Contains(item)) return false;
+        if (_policy.DisallowEmpty && _order.Count == 1) return false;
+        Remove(item);
+        return true;
+    }
+
     /// <summary>Removes the most recently added item (Backspace on an empty query). Returns false when empty.</summary>
     public bool RemoveLast()
     {
