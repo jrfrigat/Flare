@@ -1,11 +1,16 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:32rem;">
-    <FlareTextArea @bind-Value="_notes" Label="Notes (resizable + clearable + spellcheck)"
+    <FlareTextArea @bind-Value="_notes" Label="@GalleryStrings.TextArea_ResizeNotes"
                    Rows="3" Resize="TextAreaResize.Vertical" Clearable="true" Spellcheck="true" />
-    <FlareTextArea @bind-Value="_code" Label="Code (no spellcheck, not resizable)"
+    <FlareTextArea @bind-Value="_code" Label="@GalleryStrings.TextArea_ResizeCode"
                    Rows="3" Resize="TextAreaResize.None" Spellcheck="false" />
+    @* AutoGrow sizes the field from its content, so the manual resize handle is off even though
+       Resize is set - turn AutoGrow off and the handle comes back. *@
+    <FlareTextArea @bind-Value="_grow" Label="@GalleryStrings.TextArea_ResizeAutoGrow"
+                   Rows="2" AutoGrow="true" Resize="TextAreaResize.Both" />
 </FlareStack>
 
 @code {
     private string? _notes = "Drag the bottom edge to resize me.";
     private string? _code;
+    private string? _grow;
 }

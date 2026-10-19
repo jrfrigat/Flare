@@ -158,7 +158,9 @@
         {
             var parts = new List<string>();
             if (MaxLines > 0) parts.Add($"{Css.Tokens.LocalVars.TextAreaMaxLines}:{MaxLines}");
-            var resize = ResizeCss();
+            // The inline value would outrank the autogrow rule's resize:none, so it is written only
+            // when the content controls the height itself. A later toggle recomputes it.
+            var resize = AutoGrow ? null : ResizeCss();
             if (resize is not null) parts.Add(resize);
             if (_typoStyle is not null) parts.Add(_typoStyle);
             return parts.Count > 0 ? string.Join(';', parts) : null;

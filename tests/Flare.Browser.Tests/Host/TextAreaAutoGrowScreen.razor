@@ -1,0 +1,15 @@
+@page "/textarea-autogrow"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+        <FlareTextArea id="grow" AutoGrow="_autoGrow" Resize="TextAreaResize.Both" Label="Auto grow" />
+        <FlareTextArea id="manual" Resize="TextAreaResize.Both" Label="Manual" />
+        <button id="toggle" @onclick="Toggle">Toggle auto grow</button>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private bool _autoGrow = true;
+
+    private void Toggle() => _autoGrow = !_autoGrow;
+}

@@ -6437,6 +6437,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("TextArea_Resize", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Notes - resizable, clearable, spellcheck.
+        /// </summary>
+        public static string TextArea_ResizeNotes {
+            get {
+                return ResourceManager.GetString("TextArea_ResizeNotes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Code - no spellcheck, not resizable.
+        /// </summary>
+        public static string TextArea_ResizeCode {
+            get {
+                return ResourceManager.GetString("TextArea_ResizeCode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto grow - the resize handle is off.
+        /// </summary>
+        public static string TextArea_ResizeAutoGrow {
+            get {
+                return ResourceManager.GetString("TextArea_ResizeAutoGrow", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Currency, percent, separators &amp; clamp.

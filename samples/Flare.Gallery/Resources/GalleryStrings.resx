@@ -1324,6 +1324,15 @@ Read the card, check the tests, and report what is left.</value>
   <data name="TextArea_Resize" xml:space="preserve">
     <value>Resize, clearable &amp; spellcheck</value>
   </data>
+  <data name="TextArea_ResizeNotes" xml:space="preserve">
+    <value>Notes - resizable, clearable, spellcheck</value>
+  </data>
+  <data name="TextArea_ResizeCode" xml:space="preserve">
+    <value>Code - no spellcheck, not resizable</value>
+  </data>
+  <data name="TextArea_ResizeAutoGrow" xml:space="preserve">
+    <value>Auto grow - the resize handle is off</value>
+  </data>
   <data name="TextArea_Title" xml:space="preserve">
     <value>Text Area</value>
   </data>

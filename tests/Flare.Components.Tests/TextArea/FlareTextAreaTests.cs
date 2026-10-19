@@ -73,4 +73,44 @@ public class FlareTextAreaTests : FlareTestContext
 
         Assert.Equal("6", cut.Find("textarea").GetAttribute("rows"));
     }
+
+    [Theory]
+    [InlineData(TextAreaResize.None)]
+    [InlineData(TextAreaResize.Vertical)]
+    [InlineData(TextAreaResize.Horizontal)]
+    [InlineData(TextAreaResize.Both)]
+    public void AutoGrow_DropsTheInlineResize(TextAreaResize resize)
+    {
+        var cut = Render<FlareTextArea>(p => p
+            .Add(x => x.AutoGrow, true)
+            .Add(x => x.Resize, resize));
+
+        var style = cut.Find("textarea").GetAttribute("style") ?? string.Empty;
+        Assert.DoesNotContain("resize:", style);
+        Assert.Contains(Css.Classes.Textarea.Autogrow, cut.Markup);
+    }
+
+    [Fact]
+    public void Resize_IsWrittenInlineWhenAutoGrowIsOff()
+    {
+        var cut = Render<FlareTextArea>(p => p
+            .Add(x => x.Resize, TextAreaResize.Both));
+
+        Assert.Contains("resize:both", cut.Find("textarea").GetAttribute("style") ?? string.Empty);
+    }
+
+    [Fact]
+    public void TurningAutoGrowOff_RestoresTheResizeSetting()
+    {
+        var cut = Render<FlareTextArea>(p => p
+            .Add(x => x.AutoGrow, true)
+            .Add(x => x.Resize, TextAreaResize.Both));
+        Assert.DoesNotContain("resize:", cut.Find("textarea").GetAttribute("style") ?? string.Empty);
+
+        cut.Render(p => p
+            .Add(x => x.AutoGrow, false)
+            .Add(x => x.Resize, TextAreaResize.Both));
+
+        Assert.Contains("resize:both", cut.Find("textarea").GetAttribute("style") ?? string.Empty);
+    }
 }
