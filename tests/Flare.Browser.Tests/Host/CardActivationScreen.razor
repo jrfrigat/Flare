@@ -1,0 +1,22 @@
+@page "/card-activation"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+        <FlareCard id="link-card" Href="#target" Variant="CardVariant.Outlined">
+            <FlareCardHeader>Linked card</FlareCardHeader>
+            <FlareCardContent>Click to open</FlareCardContent>
+        </FlareCard>
+
+        <FlareCard id="selectable-card" Selectable="true" @bind-Selected="_selected" Variant="CardVariant.Outlined">
+            <FlareCardHeader>Selectable card</FlareCardHeader>
+            <FlareCardContent>Space toggles it</FlareCardContent>
+        </FlareCard>
+
+        <span id="status">@(_selected ? "selected" : "not selected")</span>
+        <span id="target">target</span>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private bool _selected;
+}

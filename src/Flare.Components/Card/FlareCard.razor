@@ -54,14 +54,18 @@
 
     /// <summary>When set, the card activates as a link to this URL. An empty anchor is stretched over the
     /// surface rather than wrapped around the content, so nested interactive elements stay valid and
-    /// independent.</summary>
+    /// independent. A link card cannot also be <see cref="Selectable"/>: one activation control cannot
+    /// navigate and toggle, and no element is announced as both a link and a checkbox. The combination
+    /// throws; put a checkbox in the card's content instead.</summary>
     [Parameter] public string? Href { get; set; }
 
     /// <summary>Target for the link card (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
     [Parameter] public string? Target { get; set; }
 
     /// <summary>When true, the card can be toggled selected; its activation control carries
-    /// <c>role=checkbox</c> and the checked state. Selection shows an accent ring.</summary>
+    /// <c>role=checkbox</c> and the checked state. Selection shows an accent ring. Cannot be combined with
+    /// <see cref="Href"/> - a navigating card and a selecting card are two different controls - and that
+    /// combination throws instead of silently ignoring the selection.</summary>
     [Parameter] public bool Selectable { get; set; }
 
     /// <summary>Whether a selectable card is currently selected. Supports two-way binding (@bind-Selected).</summary>
@@ -120,6 +124,17 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        // A link activation control navigates; a selectable one toggles. Rendering the link branch alone
+        // would drop the selection handler and aria-checked while the selection CSS still painted - a
+        // parameter silently ignored. The two behaviors are exclusive, so say so where the caller sees it.
+        if (Href is not null && Selectable)
+        {
+            throw new InvalidOperationException(
+                "FlareCard cannot be both a link and a selection control: Href makes the stretched " +
+                "activation element navigate, while Selectable needs it to toggle and to announce " +
+                "role=checkbox. Use one of them - keep Href and place a checkbox inside the card's " +
+                "content, or drop Href and keep Selectable.");
+        }
         SplitAttributes();
     }
 
