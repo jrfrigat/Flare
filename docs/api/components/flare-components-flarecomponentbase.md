@@ -153,6 +153,7 @@ This component exposes no documented public methods.
 - `FlareQueryBuilder`
 - `FlareQueryEditor`
 - `FlareQuickAccessToolbar`
+- `FlareRadio`
 - `FlareRadioGroup`
 - `FlareRating`
 - `FlareResizable`

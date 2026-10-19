@@ -1709,6 +1709,7 @@ public static class ComponentApiRegistry
                 @"FlareQueryBuilder",
                 @"FlareQueryEditor",
                 @"FlareQuickAccessToolbar",
+                @"FlareRadio",
                 @"FlareRadioGroup",
                 @"FlareRating",
                 @"FlareResizable",
@@ -5546,12 +5547,17 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Markup rendered as the label instead of Label, for a label that is more than a string - a link in a consent line, a unit, an inline badge. Writing it between the tags binds here.", null, false, false, false, @"FlareRadio"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables this radio button individually.", null, false, false, false, @"FlareRadio"),
+                new ApiParameterInfo(@"InputAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Attributes forwarded to the native radio input. The group name, value and state attributes stay owned by the component.", null, false, false, false, @"FlareRadio"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed next to the radio button. Ignored when ChildContent is set.", null, false, false, false, @"FlareRadio"),
                 new ApiParameterInfo(@"Value", @"TValue?", null, @"Value this radio button represents in the group.", null, false, false, false, @"FlareRadio"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },

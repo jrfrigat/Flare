@@ -12,8 +12,12 @@ One option of a radio group: a single choice among several, checked when its val
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Markup rendered as the label instead of Label, for a label that is more than a string - a link in a consent line, a unit, an inline badge. Writing it between the tags binds here. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables this radio button individually. |
+| `InputAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Attributes forwarded to the native radio input. The group name, value and state attributes stay owned by the component. |
 | `Label` | `string?` | `` | Parameter |  | Label text displayed next to the radio button. Ignored when ChildContent is set. |
 | `Value` | `TValue?` | `` | Parameter |  | Value this radio button represents in the group. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -21,5 +25,6 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

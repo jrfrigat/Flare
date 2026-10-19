@@ -1,11 +1,14 @@
 @namespace Flare.Components
+@inherits FlareComponentBase
 @typeparam TValue
 
-<label class="@Css.Classes.Radio.Root @(_disabled ? Css.Classes.Radio.Disabled : "") @_sizeClass">
+<label class="@BuildCssClass(_disabled ? Css.Classes.Radio.Disabled : null, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
     <span class="@Css.Classes.Radio.Container">
         <input class="@Css.Classes.Radio.Input"
+               @attributes="InputAttributes"
                type="radio"
                name="@(GroupContext?.GroupName)"
+               value="@(Value is null ? null : Value.ToString())"
                checked="@_checked"
                disabled="@_disabled"
                aria-describedby="@GroupContext?.ErrorId"
@@ -36,6 +39,11 @@
 
     /// <summary>Disables this radio button individually.</summary>
     [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Attributes forwarded to the native radio input. The group name, value and state attributes stay owned by the component.</summary>
+    [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Radio.Root;
 
     private bool _checked => GroupContext is not null
         && GroupContext.SelectedValue is TValue selected
