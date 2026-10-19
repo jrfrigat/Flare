@@ -531,6 +531,11 @@ export function initFloatingTooltips() {
 // carries. A root with no focusable element is left alone: the component keeps the wrapper relation as
 // a fallback. Passing enabled=false removes only this tooltip's id.
 const _tooltipDescriptions = new WeakMap();
+// A re-render can replace the trigger element (a button becomes a link, a trigger appears after an
+// empty first render), and Blazor does not tell the component that the DOM it rendered has changed
+// underneath its content. Watching the root here keeps the relation correct without an interop call
+// per render. Weak keys: a root removed from the page takes its observer with it.
+const _tooltipObservers = new WeakMap();
 
 function tooltipTrigger(root) {
     return Array.from(root.querySelectorAll(FOCUSABLE_SELECTORS))
@@ -544,14 +549,12 @@ function removeTooltipDescription(entry) {
     else entry.target.removeAttribute('aria-describedby');
 }
 
-export function syncTooltipDescription(root, tooltipId, enabled) {
-    if (!root || !tooltipId) return;
+function describeTooltip(root, tooltipId) {
     const previous = _tooltipDescriptions.get(root);
     if (previous) {
         removeTooltipDescription(previous);
         _tooltipDescriptions.delete(root);
     }
-    if (!enabled) return;
     const target = tooltipTrigger(root);
     if (!target) return;
     const ids = (target.getAttribute('aria-describedby') || '')
@@ -559,6 +562,46 @@ export function syncTooltipDescription(root, tooltipId, enabled) {
     ids.push(tooltipId);
     target.setAttribute('aria-describedby', ids.join(' '));
     _tooltipDescriptions.set(root, { target, tooltipId });
+}
+
+export function syncTooltipDescription(root, tooltipId, enabled) {
+    if (!root || !tooltipId) return;
+
+    const observer = _tooltipObservers.get(root);
+    if (observer) {
+        observer.disconnect();
+        _tooltipObservers.delete(root);
+    }
+
+    if (!enabled) {
+        const previous = _tooltipDescriptions.get(root);
+        if (previous) {
+            removeTooltipDescription(previous);
+            _tooltipDescriptions.delete(root);
+        }
+        return;
+    }
+
+    describeTooltip(root, tooltipId);
+
+    if (typeof MutationObserver === 'undefined') return;
+    let queued = false;
+    const watch = new MutationObserver(() => {
+        if (queued) return;
+        queued = true;
+        queueMicrotask(() => {
+            queued = false;
+            describeTooltip(root, tooltipId);
+        });
+    });
+    // aria-describedby itself is not watched: writing it from describeTooltip would re-enter the observer.
+    watch.observe(root, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['disabled', 'tabindex', 'href'],
+    });
+    _tooltipObservers.set(root, watch);
 }
 
 // -- Scroll the keyboard-highlighted option into view within its listbox scroll container. --

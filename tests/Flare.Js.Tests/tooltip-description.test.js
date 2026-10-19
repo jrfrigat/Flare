@@ -50,6 +50,52 @@ it('moves the id to a new trigger and leaves the old one clean', () => {
     expect(second.getAttribute('aria-describedby')).toBe('tip-1');
 });
 
+// A re-render can swap the trigger element without the component calling sync again: the DOM watcher
+// installed by the first call must keep the relation on whichever element is the trigger now.
+it('relinks the description when the trigger element is replaced', async () => {
+    const root = tooltip();
+    syncTooltipDescription(root, 'tip-1', true);
+    const first = root.querySelector('#trigger');
+    expect(first.getAttribute('aria-describedby')).toBe('tip-1');
+
+    first.remove();
+    const second = document.createElement('button');
+    second.id = 'trigger2';
+    root.prepend(second);
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(first.hasAttribute('aria-describedby')).toBe(false);
+    expect(second.getAttribute('aria-describedby')).toBe('tip-1');
+});
+
+it('links a trigger that appears after the first sync', async () => {
+    const root = tooltip('<span id="plain">plain trigger</span>');
+    syncTooltipDescription(root, 'tip-1', true);
+    expect(root.querySelector('#plain').hasAttribute('aria-describedby')).toBe(false);
+
+    const late = document.createElement('button');
+    late.id = 'late';
+    root.prepend(late);
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(late.getAttribute('aria-describedby')).toBe('tip-1');
+});
+
+it('stops watching once the tooltip is disabled', async () => {
+    const root = tooltip();
+    syncTooltipDescription(root, 'tip-1', true);
+    syncTooltipDescription(root, 'tip-1', false);
+
+    const first = root.querySelector('#trigger');
+    first.remove();
+    const second = document.createElement('button');
+    second.id = 'trigger2';
+    root.prepend(second);
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(second.hasAttribute('aria-describedby')).toBe(false);
+});
+
 it('removes only its own id when the tooltip is disabled or empty', () => {
     const root = tooltip();
     const trigger = root.querySelector('#trigger');
