@@ -1987,6 +1987,9 @@
   <data name="Select_NullOption" xml:space="preserve">
     <value>Пустое значение: «Все» без sentinel-значения</value>
   </data>
+  <data name="Select_Clearable" xml:space="preserve">
+    <value>Очистка при коротком значении</value>
+  </data>
   <data name="Select_Validation" xml:space="preserve">
     <value>Подсказка и ошибка</value>
   </data>

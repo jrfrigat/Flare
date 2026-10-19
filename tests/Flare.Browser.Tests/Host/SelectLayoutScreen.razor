@@ -1,0 +1,69 @@
+@page "/select-layout"
+@inject IThemeService Theme
+@using Flare.Abstractions.Tokens
+
+<FlareThemeProvider RespectSystemColorScheme="false">
+    <main style="padding:16px" data-ready-theme="@_readyTheme" data-ready-mode="@_readyMode">
+        <select aria-label="Theme" @onchange="ChangeTheme">
+            @foreach (var theme in Theme.Themes) { <option value="@theme.Id">@theme.Id</option> }
+        </select>
+        <select aria-label="Mode" @onchange="ChangeMode"><option>Light</option><option>Dark</option></select>
+
+        <div data-testid="wide-plain" style="width:420px">
+            <FlareSelect TValue="string" Items="_items" @bind-Value="_wide" Clearable="true" Label="Wide" />
+        </div>
+        <div data-testid="wide-search" style="width:420px">
+            <FlareSelect TValue="string" Items="_items" @bind-Value="_search" Clearable="true" Searchable="true" Label="Searchable" />
+        </div>
+        <div data-testid="narrow" style="width:170px">
+            <FlareSelect TValue="string" Items="_items" @bind-Value="_narrow" Clearable="true" Label="Narrow" />
+        </div>
+        <div data-testid="empty" style="width:420px">
+            <FlareSelect TValue="string" Items="_items" Clearable="true" Label="Empty" />
+        </div>
+        <div data-testid="readonly" style="width:420px">
+            <FlareSelect TValue="string" Items="_items" @bind-Value="_readonly" Clearable="true" ReadOnly="true" Label="Read only" />
+        </div>
+        <div data-testid="disabled" style="width:420px">
+            <FlareSelect TValue="string" Items="_items" @bind-Value="_disabled" Clearable="true" Disabled="true" Label="Disabled" />
+        </div>
+        <div data-testid="wide-rtl" dir="rtl" style="width:420px">
+            <FlareSelect TValue="string" Items="_items" @bind-Value="_rtl" Clearable="true" Label="RTL" />
+        </div>
+        <div data-testid="multiselect" style="width:420px">
+            <FlareMultiSelect TValue="string" Items="_items" @bind-Values="_multi" Clearable="true" Label="Multi" />
+        </div>
+        <div data-testid="combobox" style="width:420px">
+            <FlareCombobox TValue="string" Items="_items" @bind-Value="_combo" Clearable="true" Label="Combobox" />
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly string[] _items = ["a", "b", "c"];
+    private string? _wide = "a";
+    private string? _search = "b";
+    private string? _narrow = "c";
+    private string? _readonly = "a";
+    private string? _disabled = "a";
+    private string? _rtl = "b";
+    private IReadOnlyList<string> _multi = ["a"];
+    private string? _combo = "b";
+    private string _readyTheme = "";
+    private string _readyMode = "";
+
+    private async Task ChangeTheme(ChangeEventArgs e)
+    {
+        var id = (string)e.Value!;
+        await Theme.SetThemeAsync(id);
+        await Theme.SetPaletteAsync(Theme.Themes.First(theme => theme.Id == id).DefaultPaletteId);
+        _readyTheme = id;
+    }
+
+    private async Task ChangeMode(ChangeEventArgs e)
+    {
+        var mode = (string)e.Value!;
+        await Theme.SetModeAsync(Enum.Parse<ThemeMode>(mode));
+        _readyMode = mode;
+    }
+}

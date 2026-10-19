@@ -7580,6 +7580,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Select_NullOption", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Clearable with a short value.
+        /// </summary>
+        public static string Select_Clearable {
+            get {
+                return ResourceManager.GetString("Select_Clearable", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Custom item template.

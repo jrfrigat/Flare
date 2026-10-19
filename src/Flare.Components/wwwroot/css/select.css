@@ -11,7 +11,7 @@
    and this only adds the trigger-specific layout (font/color match the shared flare-input__control). */
 .flare-select__control,
 .flare-multiselect__control {
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: var(--flare-spacing-4);
     /* Same medium step of the Xs..Xl ramp the inner-input fields apply (input.css), applied here for
        the same reason: the combobox trigger is a structurally different control, so it needs its own
@@ -29,7 +29,16 @@
 .flare-select--open .flare-select__control,
 .flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
 
-.flare-select__value { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The value takes the free space so the clear and expand buttons stay together at the inline end.
+   Growing the value instead would split the width with the search input in Searchable mode. */
+.flare-select__value {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin-inline-end: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
 /* In-field search input (Searchable), shared by Select and MultiSelect. It sits inside the flare-input__field

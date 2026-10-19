@@ -1,7 +1,8 @@
 /* Root column layout comes from the shared field-family root (input.css). */
 /* The combobox trigger (__control) and its --open indicator are shared with FlareSelect - see the
    combined rules in select.css. Only __value differs: multiselect holds chips, so it does not ellipsis. */
-.flare-multiselect__value { flex: 0 1 auto; min-width: 0; }
+/* The value takes the free space so the clear and expand buttons stay together at the inline end. */
+.flare-multiselect__value { flex: 0 1 auto; min-width: 0; margin-inline-end: auto; }
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
 /* Disabled/error surface + the value dim are shared with FlareSelect - the disabled __value rule in
