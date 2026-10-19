@@ -1,0 +1,33 @@
+@page "/split-button"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="padding:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+        @foreach (var size in _sizes)
+        {
+            <div data-testid="@($"split-{size}")">
+                <FlareSplitButton Variant="ButtonVariant.Filled" Size="@size" AriaLabel="Export">
+                    <ChildContent>Save</ChildContent>
+                    <MenuItems>
+                        <FlareMenuItem>Save as</FlareMenuItem>
+                    </MenuItems>
+                </FlareSplitButton>
+            </div>
+        }
+
+        <button id="rtl" @onclick="EnableRtl">RTL</button>
+        <button id="ltr" @onclick="EnableLtr">LTR</button>
+        <button id="fluent" @onclick="UseFluent">Fluent 2</button>
+        <button id="md3e" @onclick="UseMd3e">Material 3 Expressive</button>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly ButtonSize[] _sizes =
+        [ButtonSize.Xs, ButtonSize.Sm, ButtonSize.Md, ButtonSize.Lg, ButtonSize.Xl];
+
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+    private Task EnableLtr() => ThemeService.SetRtlAsync(false);
+    private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
+    private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");
+}

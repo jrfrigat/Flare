@@ -37,12 +37,12 @@
        The button group already does this (calc height/2 outer), which is why its inner corner renders fine.
        Same specificity as the base radius rules, but this theme sheet loads later. */
     .flare-split-btn .flare-split-btn__main.flare-btn {
-        border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
-        border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-start-start-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-end-start-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn {
-        border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
-        border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-start-end-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-end-end-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
     /* When the menu is open the trigger becomes fully round: ALL 4 corners = height / 2,
@@ -66,14 +66,15 @@
        (0,4,0) beats the scoped rest radius (0,3,0).
        ====================================================================== */
     .flare-split-btn .flare-split-btn__main.flare-btn:hover {
-        border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
-        border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-start-end-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-end-end-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
-    /* Trigger: inner LEFT grows to the full capsule (except the open state - already a full circle). */
+    /* Trigger: the inner (inline-start) corners grow to the full capsule (except the open state -
+       already a full circle). */
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:hover {
-        border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
-        border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-start-start-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-end-start-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
     /* ======================================================================

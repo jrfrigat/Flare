@@ -26,18 +26,18 @@
 
 /* Main action button (default = MD radii) */
 .flare-split-btn .flare-split-btn__main.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-main-radius-md-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-main-radius-md-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-main-radius-md-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-main-radius-md-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-main-radius-md-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-main-radius-md-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-main-radius-md-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-main-radius-md-bottom-left) !important;
 }
 
 /* Dropdown trigger button (default = MD radii) */
 .flare-split-btn .flare-split-btn__trigger.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-trigger-radius-md-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-trigger-radius-md-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-trigger-radius-md-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-trigger-radius-md-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
     /* Trigger width, per size. A length pins it; `auto` lets the aspect ratio take the width from the
        actual height, which gives a square trigger. The token cannot do the square case itself: it is
        declared on :root, where the per-size --_flare-btn-height does not exist, so a value referring to
@@ -78,31 +78,31 @@
 /* Extra Small */
 .flare-split-btn--xs { --_caret-size: var(--flare-split-btn-caret-size-xs); --_trigger-width: var(--flare-split-btn-trigger-width-xs); }
 .flare-split-btn--xs .flare-split-btn__main.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-main-radius-xs-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-main-radius-xs-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-main-radius-xs-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-main-radius-xs-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-main-radius-xs-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-main-radius-xs-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-main-radius-xs-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-main-radius-xs-bottom-left) !important;
 }
 .flare-split-btn--xs .flare-split-btn__trigger.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-trigger-radius-xs-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-trigger-radius-xs-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-xs-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-xs-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-trigger-radius-xs-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-trigger-radius-xs-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-trigger-radius-xs-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-trigger-radius-xs-bottom-left) !important;
 }
 
 /* Small */
 .flare-split-btn--sm { --_caret-size: var(--flare-split-btn-caret-size-sm); --_trigger-width: var(--flare-split-btn-trigger-width-sm); }
 .flare-split-btn--sm .flare-split-btn__main.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-main-radius-sm-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-main-radius-sm-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-main-radius-sm-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-main-radius-sm-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-main-radius-sm-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-main-radius-sm-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-main-radius-sm-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-main-radius-sm-bottom-left) !important;
 }
 .flare-split-btn--sm .flare-split-btn__trigger.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-trigger-radius-sm-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-trigger-radius-sm-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-sm-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-sm-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-trigger-radius-sm-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-trigger-radius-sm-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-trigger-radius-sm-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-trigger-radius-sm-bottom-left) !important;
 }
 
 /* Medium */
@@ -111,29 +111,29 @@
 /* Large */
 .flare-split-btn--lg { --_caret-size: var(--flare-split-btn-caret-size-lg); --_trigger-width: var(--flare-split-btn-trigger-width-lg); }
 .flare-split-btn--lg .flare-split-btn__main.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-main-radius-lg-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-main-radius-lg-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-main-radius-lg-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-main-radius-lg-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-main-radius-lg-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-main-radius-lg-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-main-radius-lg-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-main-radius-lg-bottom-left) !important;
 }
 .flare-split-btn--lg .flare-split-btn__trigger.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-trigger-radius-lg-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-trigger-radius-lg-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-lg-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-lg-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-trigger-radius-lg-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-trigger-radius-lg-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-trigger-radius-lg-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-trigger-radius-lg-bottom-left) !important;
 }
 
 /* Extra Large */
 .flare-split-btn--xl { --_caret-size: var(--flare-split-btn-caret-size-xl); --_trigger-width: var(--flare-split-btn-trigger-width-xl); }
 .flare-split-btn--xl .flare-split-btn__main.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-main-radius-xl-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-main-radius-xl-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-main-radius-xl-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-main-radius-xl-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-main-radius-xl-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-main-radius-xl-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-main-radius-xl-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-main-radius-xl-bottom-left) !important;
 }
 .flare-split-btn--xl .flare-split-btn__trigger.flare-btn {
-    border-top-left-radius: var(--flare-split-btn-trigger-radius-xl-top-left) !important;
-    border-top-right-radius: var(--flare-split-btn-trigger-radius-xl-top-right) !important;
-    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-xl-bottom-right) !important;
-    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-xl-bottom-left) !important;
+    border-start-start-radius: var(--flare-split-btn-trigger-radius-xl-top-left) !important;
+    border-start-end-radius: var(--flare-split-btn-trigger-radius-xl-top-right) !important;
+    border-end-end-radius: var(--flare-split-btn-trigger-radius-xl-bottom-right) !important;
+    border-end-start-radius: var(--flare-split-btn-trigger-radius-xl-bottom-left) !important;
 }
