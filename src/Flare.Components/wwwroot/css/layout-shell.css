@@ -123,18 +123,28 @@
     position: fixed;
     top: var(--flare-layout-appbar-height);
     bottom: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: var(--fld-w, var(--flare-layout-drawer-width));
     z-index: calc(var(--flare-z-drawer) + 1);
     transform: translateX(-100%);
     transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
     box-shadow: var(--flare-elevation-3);
 }
+/* The edge is logical, the slide direction is not: a start drawer under RTL leaves toward the right,
+   and an end drawer toward the left. Without this the drawer jumped from the opposite screen edge. */
+:dir(rtl) .flare-layout-drawer--floating:not(.flare-layout-drawer--open),
+:dir(rtl) .flare-layout-drawer--temporary:not(.flare-layout-drawer--open) {
+    transform: translateX(100%);
+}
 .flare-layout-drawer--floating.flare-layout-drawer--end,
 .flare-layout-drawer--temporary.flare-layout-drawer--end {
-    left: auto;
-    right: 0;
+    inset-inline-start: auto;
+    inset-inline-end: 0;
     transform: translateX(100%);
+}
+:dir(rtl) .flare-layout-drawer--floating.flare-layout-drawer--end:not(.flare-layout-drawer--open),
+:dir(rtl) .flare-layout-drawer--temporary.flare-layout-drawer--end:not(.flare-layout-drawer--open) {
+    transform: translateX(-100%);
 }
 /* `none` rather than `translateX(0)`, for the reason spelled out on `.flare-drawer--open`: a settled
    drawer that keeps a transform is the containing block for every fixed-position overlay inside it. */
@@ -159,14 +169,14 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
+    inset-inline-start: 0;
     width: var(--fld-w, var(--flare-layout-drawer-width));
     background: var(--flare-layout-drawer-bg);
     box-shadow: var(--flare-elevation-3);
 }
 .flare-layout-drawer--hover-expand.flare-layout-drawer--end .flare-layout-drawer__inner {
-    left: auto;
-    right: 0;
+    inset-inline-start: auto;
+    inset-inline-end: 0;
 }
 
 .flare-layout-content {

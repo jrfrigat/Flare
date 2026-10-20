@@ -85,6 +85,13 @@
     private bool _hovered;
     private bool _focused;
     private bool _registered;
+    // The layout's track list and scrim read these at render time; a drawer whose own parameters change
+    // after mount has to ask the shell for a render or its grid stays on the old width/variant.
+    private bool _hasParameterSnapshot;
+    private string? _lastWidth;
+    private string? _lastRailWidth;
+    private DrawerVariant _lastVariant;
+    private DrawerAnchor _lastAnchor;
 
     private ElementReference _navEl;
     private DotNetObjectReference<FlareLayoutDrawer>? _dotNetRef;
@@ -192,12 +199,25 @@
 
     protected override void OnParametersSet()
     {
+        var changed = _hasParameterSnapshot
+            && (Open != _lastParamOpen || Width != _lastWidth || RailWidth != _lastRailWidth
+                || Variant != _lastVariant || Anchor != _lastAnchor);
+
         if (Open != _lastParamOpen)
         {
             _open = Open;
             _lastParamOpen = Open;
-            Layout?.NotifyStateChanged();
         }
+
+        _lastWidth = Width;
+        _lastRailWidth = RailWidth;
+        _lastVariant = Variant;
+        _lastAnchor = Anchor;
+        _hasParameterSnapshot = true;
+
+        // The first pass runs while the parent header is still rendering; notifying then would ask the
+        // shell to render in the middle of its own render.
+        if (changed) Layout?.NotifyStateChanged();
     }
 
     /// <summary>Sets the open state, raises <see cref="OpenChanged"/>, and notifies the layout. No-op when unchanged.</summary>

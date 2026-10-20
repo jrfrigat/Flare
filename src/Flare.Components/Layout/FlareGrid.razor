@@ -85,7 +85,14 @@
         // otherwise it is a fixed N-column grid. AutoFit picks auto-fit (items stretch to fill the row)
         // over the default auto-fill (empty trailing tracks kept). GS-3: sanitize the user-supplied length.
         if (MinColumnWidth is not null)
-            parts.Append($"grid-template-columns:repeat({(AutoFit ? "auto-fit" : "auto-fill")},minmax({Flare.Components.Security.CssValidator.StripDangerous(MinColumnWidth)},1fr))");
+        {
+            // A track may not be wider than the space it is laid into: minmax(30rem, 1fr) in a 320px
+            // container produced a 480px track and horizontal overflow. The cap keeps the requested
+            // minimum whenever it fits and falls back to the container width when it does not.
+            var minTrack = Flare.Components.Security.CssValidator.StripDangerous(MinColumnWidth);
+            if (string.IsNullOrWhiteSpace(minTrack)) minTrack = "0";
+            parts.Append($"grid-template-columns:repeat({(AutoFit ? "auto-fit" : "auto-fill")},minmax(min({minTrack},100%),1fr))");
+        }
         else
             parts.Append($"grid-template-columns:repeat({Columns},1fr)");
 

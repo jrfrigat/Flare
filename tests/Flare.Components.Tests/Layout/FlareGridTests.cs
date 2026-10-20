@@ -25,7 +25,9 @@ public class FlareGridTests : FlareTestContext
             .Add(x => x.MinColumnWidth, "15rem")
             .Add(x => x.Columns, 4));
         var style = cut.Find($".{Css.Classes.Grid.Root}").GetAttribute("style") ?? "";
-        Assert.Contains("repeat(auto-fill,minmax(15rem,1fr))", style);
+        // The requested minimum is capped by the container width: a 30rem minimum in a 320px card used
+        // to produce a 480px track and horizontal overflow.
+        Assert.Contains("repeat(auto-fill,minmax(min(15rem,100%),1fr))", style);
         // MinColumnWidth overrides the fixed Columns track set.
         Assert.DoesNotContain("repeat(4,1fr)", style);
     }

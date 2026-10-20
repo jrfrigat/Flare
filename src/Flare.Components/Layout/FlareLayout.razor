@@ -39,6 +39,9 @@
     private readonly FlareLayoutContext _ctx = new();
     private IAsyncDisposable? _subscription;
     private bool _isMobile;
+    // The parameter can change after mount; the watcher follows it rather than being a first-render
+    // decision. The flag also stops the reset render below from subscribing again in a loop.
+    private bool _responsiveActive;
 
     protected override void OnInitialized()
     {
@@ -48,15 +51,32 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender || !Responsive) return;
-        try
+        if (Responsive == _responsiveActive) return;
+        _responsiveActive = Responsive;
+
+        if (Responsive)
         {
-            // The service reports the current breakpoint immediately (in sync) and on every change.
-            _subscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
+            try
+            {
+                // The service reports the current breakpoint immediately (in sync) and on every change.
+                _subscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
+            }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        else
+        {
+            var subscription = _subscription;
+            _subscription = null;
+            if (subscription is not null)
+            {
+                try { await subscription.DisposeAsync(); } catch { }
+            }
+            // Turning responsiveness off means the desktop layout: a stale mobile state would keep
+            // drawers floating and navigation closing overlays.
+            await SetMobileAsync(false);
+        }
     }
 
     private Task OnBreakpointAsync(Breakpoint bp) => InvokeAsync(() => SetMobileAsync(IsMobile(bp)));

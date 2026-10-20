@@ -1,0 +1,19 @@
+@page "/layout-rtl"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="shell" dir="ltr" style="height:800px">
+        <FlareLayout Responsive="false">
+            <FlareLayoutDrawer id="start-drawer" Variant="DrawerVariant.Temporary"
+                               Anchor="DrawerAnchor.Left" Open="true">
+                <div id="start-content" style="width:200px">start</div>
+            </FlareLayoutDrawer>
+            <FlareLayoutContent>
+                <div style="height:700px">content</div>
+            </FlareLayoutContent>
+            <FlareLayoutDrawer id="end-drawer" Variant="DrawerVariant.Temporary"
+                               Anchor="DrawerAnchor.Right" Open="true">
+                <div id="end-content" style="width:200px">end</div>
+            </FlareLayoutDrawer>
+        </FlareLayout>
+    </div>
+</FlareThemeProvider>
