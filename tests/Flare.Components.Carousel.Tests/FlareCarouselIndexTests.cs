@@ -45,7 +45,9 @@ public class FlareCarouselIndexTests : FlareTestContext
     [Fact]
     public async Task EmptyItems_AreSafeForKeysAndAutoPlay()
     {
-        var cut = RenderCarousel(Slides, autoPlay: true);
+        // A slow interval keeps the auto-play tick away from the click below; the timer is disposed when
+        // the items are emptied, and the test only needs auto-play to have been on.
+        var cut = RenderCarousel(Slides, autoPlay: true, interval: 10_000);
         cut.FindAll(".flare-carousel__dot")[2].Click();
 
         cut.Render(p => p.Add(x => x.Items, Array.Empty<string>()));
