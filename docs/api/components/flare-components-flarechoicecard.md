@@ -15,6 +15,9 @@ One option of a FlareChoiceGroup: a card with a title, a hint and a radio contro
 | `Hint` | `string?` | `` | Parameter |  | Explanatory line under the title. |
 | `Title` | `string?` | `` | Parameter |  | Title of the option. |
 | `Value` | `TValue?` | `` | Parameter |  | Value this card represents in the group. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -22,5 +25,6 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

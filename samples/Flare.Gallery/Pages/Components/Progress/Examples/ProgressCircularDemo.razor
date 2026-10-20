@@ -1,19 +1,19 @@
 @* The bare ring. The wave a theme can draw on it lives in its own section. *@
 <FlareStack Row Gap="FlareSpacing.Medium" Wrap>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgressCircular Value="40" />
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="40" />
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">40%</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgressCircular Value="75" />
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="75" />
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">75%</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgressCircular data-testid="progress-circular-indeterminate" />
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" data-testid="progress-circular-indeterminate" />
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Progress_Indeterminate</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgressCircular Value="60" Color="FlareColor.Success" />
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="60" Color="FlareColor.Success" />
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">60%</FlareText>
     </FlareStack>
 </FlareStack>

@@ -165,6 +165,22 @@ public class FlareCardNestedActivationTests : FlareTestContext
         Assert.Null(root.GetAttribute("rel"));
     }
 
+    // The link card used to render its anchor with no handler at all, so OnClick was declared as a click
+    // handler but could never run on that branch. The native navigation still happens; the callback runs
+    // beside it.
+    [Fact]
+    public void LinkCard_RunsOnClickAlongsideNavigation()
+    {
+        var clicks = 0;
+        var cut = Render<FlareCard>(p => p
+            .Add(x => x.Href, "/target")
+            .Add(x => x.OnClick, () => clicks++));
+
+        cut.Find($"a{HitSelector}").Click();
+
+        Assert.Equal(1, clicks);
+    }
+
     [Fact]
     public void UnmatchedAttributesThatAreNotLinkSemantics_StayOnTheRoot()
     {

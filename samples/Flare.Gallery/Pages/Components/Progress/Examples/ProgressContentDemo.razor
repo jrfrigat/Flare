@@ -3,18 +3,21 @@
    so the smallest ring gets a label that fits it. *@
 <FlareStack Gap="FlareSpacing.Large">
     <FlareStack Row Gap="FlareSpacing.Medium" Wrap Align="FlareAlignItems.Center">
-        <FlareProgressCircular Value="72" Size="TrackSize.Lg" data-testid="progress-content-ring">
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="72" Size="TrackSize.Lg" data-testid="progress-content-ring">
             <FlareText Typo="TypographyScale.LabelLarge">72%</FlareText>
         </FlareProgressCircular>
-        <FlareProgressCircular Value="40" Size="TrackSize.Xl" Color="FlareColor.Success">
+        @* The visible label is a step count, so the announced value has to be that count, not "40". *@
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading"
+                               aria-valuetext="@GalleryStrings.Progress_ThreeOfSeven"
+                               Value="40" Size="TrackSize.Xl" Color="FlareColor.Success">
             <FlareText Typo="TypographyScale.TitleMedium">3/7</FlareText>
         </FlareProgressCircular>
-        <FlareProgressCircular Value="90" Size="TrackSize.Lg" Color="FlareColor.Warning">
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="90" Size="TrackSize.Lg" Color="FlareColor.Warning">
             <FlareIconView Value="@MaterialDesign3Icons.Regular.Bolt" />
         </FlareProgressCircular>
         @* A ring holds a couple of glyphs, not a sentence: the box does not grow, so a long label
            would spill over whatever sits next to it. *@
-        <FlareProgressCircular Size="TrackSize.Lg">
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Size="TrackSize.Lg">
             <FlareIconView Value="@MaterialDesign3Icons.Regular.Sync" />
         </FlareProgressCircular>
     </FlareStack>
@@ -22,7 +25,7 @@
     @* A bar is a few pixels tall whatever its size step, so the label rides across it rather than
        fitting inside: keep it short, and give it a colour that reads over both the fill and the
        remaining track. *@
-    <FlareProgressLinear Value="64" Size="TrackSize.Xl" data-testid="progress-content-bar">
+    <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="64" Size="TrackSize.Xl" data-testid="progress-content-bar">
         <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurface">64%</FlareText>
     </FlareProgressLinear>
 </FlareStack>

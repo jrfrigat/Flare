@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-@if (!string.IsNullOrEmpty(Href) && !Disabled)
+@if (_hasTarget && !Disabled)
 {
     <a class="@BuildCssClass(_colorClass, _underlineClass, _typoClass)"
        href="@_safeHref"
@@ -11,11 +11,23 @@
        style="@_inlineStyle"
        @attributes="AdditionalAttributes">@ChildContent</a>
 }
+else if (Disabled)
+{
+    @* A disabled link is still announced as a link, but nothing tells assistive technology it can be
+       followed - and the descriptive attributes stay on it. *@
+    <span class="@BuildCssClass(_colorClass, _underlineClass, _typoClass, Css.Classes.Link.Disabled)"
+          role="link"
+          aria-disabled="true"
+          title="@Title"
+          style="@_inlineStyle"
+          @attributes="AdditionalAttributes">@ChildContent</span>
+}
 else
 {
-    <span class="@BuildCssClass(_colorClass, _underlineClass, _typoClass, Disabled ? Css.Classes.Link.Disabled : null)"
-          role="link"
-          aria-disabled="@Disabled.ToString().ToLower()"
+    @* No target is not a link: a span with role=link was announced as an actionable link but could not
+       be tabbed to, activated, or followed. It is plain text with the same styling and title. *@
+    <span class="@BuildCssClass(_colorClass, _underlineClass, _typoClass)"
+          title="@Title"
           style="@_inlineStyle"
           @attributes="AdditionalAttributes">@ChildContent</span>
 }
@@ -41,10 +53,12 @@ else
 
     protected override string ComponentCssClass => Css.Classes.Link.Root;
 
-    /// <summary>Validates Href against known safe URI schemes; falls back to about:blank to block XSS.</summary>
-    private string _safeHref => Flare.Components.Security.CssValidator.IsHrefSafe(Href)
-        ? Href!
-        : "about:blank";
+    // Empty and unsafe targets both mean "there is nowhere to go"; they render as text rather than as a
+    // link. Unsafe does not fall back to about:blank, which announced a working link to nowhere.
+    private bool _hasTarget => !string.IsNullOrEmpty(Href) && Flare.Components.Security.CssValidator.IsHrefSafe(Href);
+
+    /// <summary>The validated URL of the anchor when it has one.</summary>
+    private string _safeHref => _hasTarget ? Href! : string.Empty;
 
     // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main;
     // FlareColor.Default -> no class, link inherits surrounding color.

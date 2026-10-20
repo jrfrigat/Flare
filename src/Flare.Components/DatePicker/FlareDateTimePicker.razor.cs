@@ -314,10 +314,15 @@ public partial class FlareDateTimePicker
             _minute = dt.Value.Minute;
             _second = dt.Value.Second;
             _viewDate = _selectedDate.Value;
+            // The roving cursor outranks the selection in FocusedCursor. A day clicked earlier in this
+            // session stayed there after a typed value was committed, so the next ArrowDown from the
+            // field focused the old day; the accepted value is the cursor now.
+            _focusedDate = _selectedDate;
         }
         else
         {
             _selectedDate = null;
+            _focusedDate = null;
         }
         _syncedValue = dt;
         await ValueChanged.InvokeAsync(dt);

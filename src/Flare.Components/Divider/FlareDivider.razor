@@ -7,7 +7,10 @@
 }
 else if (ChildContent is not null || !string.IsNullOrEmpty(Text))
 {
-    <div class="@BuildCssClass(Css.Classes.Divider.Text, _textAlignClass, _insetClass)" style="@Style" aria-hidden="true" @attributes="AdditionalAttributes">
+    @* A text divider is a labelled separator: the text is the meaning ("OR", a section name), and a
+       caller-provided fragment may even be interactive. Hiding the whole node removed all of it from
+       the accessibility tree; only the purely decorative line below stays hidden. *@
+    <div class="@BuildCssClass(Css.Classes.Divider.Text, _textAlignClass, _insetClass)" style="@Style" @attributes="AdditionalAttributes">
         <span class="@Css.Classes.Divider.TextContent">@if (ChildContent is not null) { @ChildContent } else { @Text }</span>
     </div>
 }
@@ -40,14 +43,9 @@ else
         _ => string.Empty,
     };
 
-    private string? _lastKey;
-    protected override bool ShouldRender()
-    {
-        var key = $"{Vertical}:{Text}:{TextAlign}:{Inset}";
-        if (key == _lastKey) return false;
-        _lastKey = key;
-        return true;
-    }
+    // No gated ShouldRender: the old key covered only four parameters, so a changed Class, Style,
+    // AdditionalAttributes or ChildContent after one unchanged render was skipped and the DOM kept the
+    // stale markup. A divider is a handful of nodes; the diff is the cheaper correct answer.
 
     private string _textAlignClass => TextAlign switch
     {

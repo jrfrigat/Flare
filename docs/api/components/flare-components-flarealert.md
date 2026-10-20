@@ -25,7 +25,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `Dispose()`
+
+Marks the component gone so a pending exit delay cannot call back into a removed parent.
+Returns: `void`.
+
 
 ## Inheritance
 

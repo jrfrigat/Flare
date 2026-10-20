@@ -3,23 +3,23 @@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">25%</FlareText>
-        <FlareProgressLinear Value="25" />
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="25" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@_value%</FlareText>
-        <FlareProgressLinear Value="@_value" data-testid="progress-linear" />
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="@_value" data-testid="progress-linear" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">90%</FlareText>
-        <FlareProgressLinear Value="90" Color="FlareColor.Success" />
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="90" Color="FlareColor.Success" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Indeterminate</FlareText>
-        <FlareProgressLinear data-testid="progress-linear-indeterminate" />
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" data-testid="progress-linear-indeterminate" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">@GalleryStrings.Progress_Thick</FlareText>
-        <FlareProgressLinear Value="50" Size="TrackSize.Xl" />
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="50" Size="TrackSize.Xl" />
     </FlareStack>
     <FlareButton OnClick="@(() => _value = _value == 70 ? 25 : 70)" Style="align-self:flex-start;" data-testid="progress-linear-update">@GalleryStrings.Progress_UpdateValue</FlareButton>
 </FlareStack>

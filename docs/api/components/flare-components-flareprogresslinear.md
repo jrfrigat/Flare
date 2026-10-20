@@ -8,7 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `BufferValue` | `double` | `0` | Parameter |  | Secondary buffer fill percentage (0-100), used only with Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead. |
+| `BufferValue` | `double` | `0` | Parameter |  | Secondary buffer fill percentage (0-100), used only with Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. A non-finite value is treated as 0. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content centred over the track - a percentage, a short count, an icon. The track does not grow to fit it: a bar is a few dp tall by design, so a label sits across it and the caller picks a size that reads. Purely decorative to assistive technology: the indicator already announces its value, so set aria-valuetext on the component when the content says something else. |
 | `Variant` | `LinearProgressVariant` | `LinearProgressVariant.Bar` | Parameter |  | Which shape the linear track takes. |
 | `Zones` | `RenderFragment?` | `` | Parameter |  | Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Because zones need an uninterrupted track, using them renders a continuous track instead of the split one (gap plus trailing stop dot). |
@@ -17,7 +17,7 @@
 | `Color` | `FlareColor` | `` | Parameter |  | Semantic color applied to the progress indicator. Inherited from `FlareProgressBase`. |
 | `Size` | `TrackSize` | `TrackSize.Md` | Parameter |  | Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth. Inherited from `FlareProgressBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
-| `Value` | `double?` | `` | Parameter |  | Percentage value (0-100); null for indeterminate mode. Inherited from `FlareProgressBase`. |
+| `Value` | `double?` | `` | Parameter |  | Percentage value (0-100); null for indeterminate mode. A non-finite value (NaN, positive or negative infinity) is treated as not given, so ARIA and the geometry agree on an indeterminate indicator instead of emitting NaN. Inherited from `FlareProgressBase`. |
 
 ## Methods
 

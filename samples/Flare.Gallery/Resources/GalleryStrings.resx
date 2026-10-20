@@ -1897,6 +1897,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Progress_ContentDesc" xml:space="preserve">
     <value>ChildContent is centred on the ring or the bar. Its type size comes from the size step, so the smallest indicator gets a label that fits it.</value>
   </data>
+  <data name="Progress_Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="Progress_ThreeOfSeven" xml:space="preserve">
+    <value>3 of 7 steps</value>
+  </data>
   <data name="Progress_Circular" xml:space="preserve">
     <value>Circular</value>
   </data>

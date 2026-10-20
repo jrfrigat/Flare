@@ -4,7 +4,7 @@
        Zones need an uninterrupted track, so the split gap + stop dot are dropped automatically. *@
     <FlareStack Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.LabelLarge">Disk usage: @_used%</FlareText>
-        <FlareProgressLinear Value="_used">
+        <FlareProgressLinear aria-label="@GalleryStrings.Progress_Loading" Value="_used">
             <Zones>
                 <FlareZone Start="0" End="75" Color="FlareColor.Success" />
                 <FlareZone Start="75" End="90" Color="FlareColor.Warning" />

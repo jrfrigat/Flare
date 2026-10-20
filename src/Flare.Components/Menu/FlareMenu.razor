@@ -35,7 +35,12 @@
     /// screen reader lands on is the one announcing the menu and whether it is open.
     /// </summary>
     [Parameter] public RenderFragment<FlareMenuActivatorContext>? Activator { get; set; }
-    /// <summary>Menu items rendered inside the dropdown panel.</summary>
+    /// <summary>
+    /// Menu items rendered inside the dropdown panel. Keyboard order follows the order the items
+    /// mount. Reordering them with <c>@key</c> while the menu is OPEN is not supported: Blazor moves
+    /// the existing components without re-registering them, so the rendered order changes and the
+    /// arrow keys keep the previous sequence. Render the list in its final order before opening it.
+    /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Corner of the activator the panel aligns to.</summary>
     [Parameter] public MenuAnchor Anchor { get; set; } = MenuAnchor.BottomLeft;

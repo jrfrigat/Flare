@@ -11,8 +11,12 @@
     @ChildContent
     @if (Href is not null)
     {
+        @* The navigation is native; the handler rides alongside it, so a link card with an OnClick
+           side effect is not a silently ignored parameter. It never toggles selection - Href and
+           Selectable are rejected together above. *@
         <a class="@Css.Classes.Card.Hit" href="@Href" target="@Target"
            aria-label="@_activationAriaLabel" aria-labelledby="@_activationLabelledBy"
+           @onclick="HandleClick"
            @attributes="_linkAttributes"></a>
     }
     else if (_interactive)
@@ -49,7 +53,8 @@
 
     /// <summary>Click handler. When set (or <see cref="Href"/>), the whole surface becomes clickable
     /// through a native activation control, so nested buttons, links and fields keep their own clicks and
-    /// keys, and keyboard focus shows on the card.</summary>
+    /// keys, and keyboard focus shows on the card. On a link card the callback runs alongside the native
+    /// navigation, which is not prevented.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     /// <summary>When set, the card activates as a link to this URL. An empty anchor is stretched over the

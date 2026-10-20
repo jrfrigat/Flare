@@ -1,13 +1,19 @@
 @namespace Flare.Components
+@inherits FlareComponentBase
 @typeparam TValue
 
-<label class="@_cssClass">
+@* The card follows the same escape hatch as every other Flare component: Class/Style on the root,
+   unmatched attributes (id, data-*, aria-*) on the control they describe - here the native radio, so
+   aria-label names the option itself rather than only the label wrapping it. *@
+<label class="@BuildCssClass(_selected ? Css.Classes.ChoiceCard.Selected : null, _disabled ? Css.Classes.ChoiceCard.Disabled : null)"
+       style="@Style">
     <input class="@Css.Classes.ChoiceCard.Input"
            type="radio"
            name="@GroupContext?.GroupName"
            checked="@_selected"
            disabled="@_disabled"
-           @onchange="HandleChange" />
+           @onchange="HandleChange"
+           @attributes="AdditionalAttributes" />
     <span class="@Css.Classes.ChoiceCard.Body">
         @if (!string.IsNullOrEmpty(Title))
         {
@@ -49,16 +55,8 @@
 
     private bool _disabled => Disabled || (GroupContext?.GroupDisabled ?? false);
 
-    private string _cssClass
-    {
-        get
-        {
-            var parts = new List<string>(3) { Css.Classes.ChoiceCard.Root };
-            if (_selected) parts.Add(Css.Classes.ChoiceCard.Selected);
-            if (_disabled) parts.Add(Css.Classes.ChoiceCard.Disabled);
-            return string.Join(' ', parts);
-        }
-    }
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.ChoiceCard.Root;
 
     private async Task HandleChange()
     {

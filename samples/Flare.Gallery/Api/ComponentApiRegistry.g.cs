@@ -112,7 +112,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Marks the component gone so a pending exit delay cannot call back into a removed parent.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -598,7 +602,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Compact", @"bool", @"false", @"When true, lays the card out horizontally (media on the leading side, content beside it). Default false (vertical).", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"Elevation", @"int?", null, @"Overrides the card's drop shadow with an explicit elevation level (0-5 on the elevation scale, clamped). Elevation=""0"" is flat (no shadow); higher values lift the card further. When null (default) each Variant keeps its own elevation - Elevated is level 1, while Filled/Outlined/Tonal/Text are flat. The level is applied through the --flare-card-elevation variable rather than the final box-shadow, so a clickable elevated card still lifts on hover.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"When set, the card activates as a link to this URL. An empty anchor is stretched over the surface rather than wrapped around the content, so nested interactive elements stay valid and independent. A link card cannot also be Selectable: one activation control cannot navigate and toggle, and no element is announced as both a link and a checkbox. The combination throws; put a checkbox in the card's content instead.", null, false, false, false, @"FlareCard"),
-                new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Click handler. When set (or Href), the whole surface becomes clickable through a native activation control, so nested buttons, links and fields keep their own clicks and keys, and keyboard focus shows on the card.", null, false, true, false, @"FlareCard"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Click handler. When set (or Href), the whole surface becomes clickable through a native activation control, so nested buttons, links and fields keep their own clicks and keys, and keyboard focus shows on the card. On a link card the callback runs alongside the native navigation, which is not prevented.", null, false, true, false, @"FlareCard"),
                 new ApiParameterInfo(@"OnSelectionChange", @"EventCallback<bool>", null, @"Fired with the new selected state whenever the user toggles a selectable card.", null, false, true, false, @"FlareCard"),
                 new ApiParameterInfo(@"Selectable", @"bool", @"false", @"When true, the card can be toggled selected; its activation control carries role=checkbox and the checked state. Selection shows an accent ring. Cannot be combined with Href - a navigating card and a selecting card are two different controls - and that combination throws instead of silently ignoring the selection.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"Selected", @"bool", @"false", @"Whether a selectable card is currently selected. Supports two-way binding (@bind-Selected).", null, false, false, false, @"FlareCard"),
@@ -1030,10 +1034,14 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Hint", @"string?", null, @"Explanatory line under the title.", null, false, false, false, @"FlareChoiceCard"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Title of the option.", null, false, false, false, @"FlareChoiceCard"),
                 new ApiParameterInfo(@"Value", @"TValue?", null, @"Value this card represents in the group.", null, false, false, false, @"FlareChoiceCard"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -1615,6 +1623,7 @@ public static class ComponentApiRegistry
                 @"FlareChip",
                 @"FlareChipGroup",
                 @"FlareChipStrip",
+                @"FlareChoiceCard",
                 @"FlareChoiceGroup",
                 @"FlareClipboard",
                 @"FlareClockDial",
@@ -4236,7 +4245,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Activator", @"RenderFragment<FlareMenuActivatorContext>?", null, @"Element that opens the menu when clicked. The slot receives a FlareMenuActivatorContext, whose Attributes belong on the focusable element inside it - <FlareButton @attributes=""context.Attributes""> - so that the button a screen reader lands on is the one announcing the menu and whether it is open.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Anchor", @"MenuAnchor", @"MenuAnchor.BottomLeft", @"Corner of the activator the panel aligns to.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the menu panel (role=""menu"").", null, false, false, false, @"FlareMenu"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the dropdown panel.", null, false, false, false, @"FlareMenu"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the dropdown panel. Keyboard order follows the order the items mount. Reordering them with @key while the menu is OPEN is not supported: Blazor moves the existing components without re-registering them, so the rendered order changes and the arrow keys keep the previous sequence. Render the list in its final order before opening it.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Reduces item height/padding for a denser menu (consistent with other components' Dense).", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"FreeContent", @"bool", @"false", @"Declares that the panel holds ordinary focusable content - buttons, fields, anything that answers the keyboard itself - rather than FlareMenuItem entries. A menu of items keeps the focus on the panel and moves a highlight over them, so it has to swallow the keys that would otherwise move the focus away; content that is focusable in its own right needs the opposite, and swallowing those keys would leave it reachable by nothing but Escape. Set this and the panel announces itself as a group instead of a menu and lets Tab, Enter and Space through. Escape still closes either way.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"MaxHeight", @"string?", null, @"Optional CSS max-height for the panel (e.g. ""20rem""); a longer list scrolls instead of overflowing the viewport.", null, false, false, false, @"FlareMenu"),
@@ -5314,7 +5323,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgressBase"),
                 new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth.", null, false, false, false, @"FlareProgressBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgressBase"),
+                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode. A non-finite value (NaN, positive or negative infinity) is treated as not given, so ARIA and the geometry agree on an indeterminate indicator instead of emitting NaN.", null, false, false, false, @"FlareProgressBase"),
             },
             new ApiMethodInfo[]
             {
@@ -5339,7 +5348,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgressLinear"),
+                new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. A non-finite value is treated as 0. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgressLinear"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content centred over the track - a percentage, a short count, an icon. The track does not grow to fit it: a bar is a few dp tall by design, so a label sits across it and the caller picks a size that reads. Purely decorative to assistive technology: the indicator already announces its value, so set aria-valuetext on the component when the content says something else.", null, false, false, false, @"FlareProgressLinear"),
                 new ApiParameterInfo(@"Variant", @"LinearProgressVariant", @"LinearProgressVariant.Bar", @"Which shape the linear track takes.", null, false, false, false, @"FlareProgressLinear"),
                 new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareZone children, each an absolute [Start, End] region on the 0-100 scale in its own color (threshold/danger ranges, a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Because zones need an uninterrupted track, using them renders a continuous track instead of the split one (gap plus trailing stop dot).", null, false, false, false, @"FlareProgressLinear"),
@@ -5348,7 +5357,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgressBase"),
                 new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It selects which per-size theme token the CSS reads and carries no geometry of its own, so the theme owns what each step is worth.", null, false, false, false, @"FlareProgressBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgressBase"),
+                new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode. A non-finite value (NaN, positive or negative infinity) is treated as not given, so ARIA and the geometry agree on an indeterminate indicator instead of emitting NaN.", null, false, false, false, @"FlareProgressBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -7643,6 +7652,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"FocusOnInvalidSubmit", @"bool", @"true", @"Moves focus to the summary when a submit fails validation. It stays put on a valid submit, and it does not move on field edits (every blur is not a submit). Default true.", null, false, false, false, @"FlareValidationSummary"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

@@ -6914,6 +6914,24 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Progress_ContentDesc", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Loading.
+        /// </summary>
+        public static string Progress_Loading {
+            get {
+                return ResourceManager.GetString("Progress_Loading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 3 of 7 steps.
+        /// </summary>
+        public static string Progress_ThreeOfSeven {
+            get {
+                return ResourceManager.GetString("Progress_ThreeOfSeven", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Circular.

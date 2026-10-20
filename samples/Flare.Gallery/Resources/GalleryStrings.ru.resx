@@ -1897,6 +1897,12 @@
   <data name="Progress_ContentDesc" xml:space="preserve">
     <value>ChildContent центрируется на кольце или на полосе. Размер текста берется от шага размера, поэтому в самый маленький индикатор попадает метка, которая в него влезает.</value>
   </data>
+  <data name="Progress_Loading" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="Progress_ThreeOfSeven" xml:space="preserve">
+    <value>3 из 7 шагов</value>
+  </data>
   <data name="Progress_Circular" xml:space="preserve">
     <value>Круговой</value>
   </data>

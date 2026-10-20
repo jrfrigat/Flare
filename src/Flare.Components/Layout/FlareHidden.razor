@@ -77,6 +77,9 @@
         _ => Css.Classes.Hidden.InvertOnlyXxl,
     };
 
+    // Below the smallest tier is an empty range, so its inverse is everything: an unconditionally
+    // hidden element. Returning no class made the component a pass-through and showed the content
+    // everywhere, the opposite of what Invert promised.
     private static string InvertBelow(Breakpoint bp) => bp switch
     {
         Breakpoint.Sm => Css.Classes.Hidden.InvertBelowSm,
@@ -84,9 +87,10 @@
         Breakpoint.Lg => Css.Classes.Hidden.InvertBelowLg,
         Breakpoint.Xl => Css.Classes.Hidden.InvertBelowXl,
         Breakpoint.Xxl => Css.Classes.Hidden.InvertBelowXxl,
-        _ => string.Empty,
+        _ => Css.Classes.Hidden.Root,
     };
 
+    // Above the largest tier is likewise empty; its inverse hides everywhere.
     private static string InvertAbove(Breakpoint bp) => bp switch
     {
         Breakpoint.Xs => Css.Classes.Hidden.InvertAboveXs,
@@ -94,6 +98,6 @@
         Breakpoint.Md => Css.Classes.Hidden.InvertAboveMd,
         Breakpoint.Lg => Css.Classes.Hidden.InvertAboveLg,
         Breakpoint.Xl => Css.Classes.Hidden.InvertAboveXl,
-        _ => string.Empty,
+        _ => Css.Classes.Hidden.Root,
     };
 }

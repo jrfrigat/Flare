@@ -53,4 +53,22 @@ public class HiddenXxlTests : FlareTestContext
             .Add(x => x.Only, Breakpoint.Xxl).Add(x => x.Invert, true).AddChildContent("<i>x</i>"));
         Assert.Contains(Css.Classes.Hidden.InvertOnlyXxl, cut.Markup);
     }
+
+    // An empty range inverted is everything: "below Xs" hides nothing, so its inverse hides always.
+    // Returning no class showed the content at every width - the exact opposite of the promise.
+    [Fact]
+    public void Invert_BelowTheSmallestTier_IsUnconditionallyHidden()
+    {
+        var cut = Render<FlareHidden>(p => p
+            .Add(x => x.Below, Breakpoint.Xs).Add(x => x.Invert, true).AddChildContent("<i>x</i>"));
+        Assert.Contains(Css.Classes.Hidden.Root, cut.Find("div").ClassName);
+    }
+
+    [Fact]
+    public void Invert_AboveTheLargestTier_IsUnconditionallyHidden()
+    {
+        var cut = Render<FlareHidden>(p => p
+            .Add(x => x.Above, Breakpoint.Xxl).Add(x => x.Invert, true).AddChildContent("<i>x</i>"));
+        Assert.Contains(Css.Classes.Hidden.Root, cut.Find("div").ClassName);
+    }
 }

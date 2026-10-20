@@ -38,6 +38,29 @@ public class FlareChoiceCardTests : FlareTestContext
     }
 
     [Fact]
+    public void ClassAndStyleStayOnTheRootWhileControlAttributesNameTheRadio()
+    {
+        var cut = Render<FlareChoiceCard<string>>(p => p
+            .Add(x => x.Value, "allow")
+            .Add(x => x.Title, "Allow")
+            .Add(x => x.Class, "local-card")
+            .Add(x => x.Style, "color:red")
+            .AddUnmatched("id", "choice-allow")
+            .AddUnmatched("data-testid", "choice")
+            .AddUnmatched("aria-label", "Allow this run"));
+
+        var root = cut.Find($".{Css.Classes.ChoiceCard.Root}");
+        Assert.Contains("local-card", root.ClassName);
+        Assert.Equal("color:red", root.GetAttribute("style"));
+
+        var radio = cut.Find($"input.{Css.Classes.ChoiceCard.Input}");
+        Assert.Equal("choice-allow", radio.GetAttribute("id"));
+        Assert.Equal("choice", radio.GetAttribute("data-testid"));
+        Assert.Equal("Allow this run", radio.GetAttribute("aria-label"));
+        Assert.Equal("radio", radio.GetAttribute("type"));
+    }
+
+    [Fact]
     public void RendersTitleAndHint()
     {
         var cut = Render<ChoiceHost>();
