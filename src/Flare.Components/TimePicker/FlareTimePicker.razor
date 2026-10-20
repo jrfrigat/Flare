@@ -35,7 +35,7 @@
                    readonly="@ReadOnly"
                    required="@Required"
                    aria-required="@(Required ? "true" : null)"
-                   aria-label="@(Label ?? FlareStrings.TimePicker_FieldLabel)"
+                   aria-label="@(LabelContent is null ? Label ?? FlareStrings.TimePicker_FieldLabel : null)"
                    aria-invalid="@(_invalid ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"
                    role="@(_isList ? "combobox" : null)"

@@ -11,6 +11,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A JavaScript module that failed to import is imported again on the next call instead of staying broken until the page reloads.
 - A replaced event handler inside `InputAttributes` or `AdditionalAttributes` reaches the DOM even when a closed picker skips its parameter render.
 - A theme scope carries inherited high-contrast and RTL state into its subtree and announces its own parameter changes to scoped subscribers.
+- `FlareDateTimePicker`, `FlareMonthPicker`, `FlareWeekPicker`, `FlareMultiDatePicker` and `FlareTimePicker` take the accessible name from a rich `LabelContent` instead of the placeholder.
 
 ## [0.47.0] - 2026-10-20
 
