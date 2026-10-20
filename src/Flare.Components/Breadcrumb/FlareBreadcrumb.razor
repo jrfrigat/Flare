@@ -1,7 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@using Microsoft.Extensions.DependencyInjection
 @using Microsoft.JSInterop
-@inject Flare.Components.Services.IUiJsService Ui
+@inject IServiceProvider Services
 
 <nav class="@BuildCssClass()" style="@Style" aria-label="@_ariaLabel" @attributes="AdditionalAttributes">
     <ol class="@Css.Classes.Breadcrumb.List">
@@ -110,7 +111,11 @@
         if (_focusPendingId is null) return;
         var id = _focusPendingId;
         _focusPendingId = null;
-        try { await Ui.FocusElementAsync(id); }
+        try
+        {
+            if (Services.GetService<Flare.Components.Services.IUiJsService>() is { } ui)
+                await ui.FocusElementAsync(id);
+        }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }

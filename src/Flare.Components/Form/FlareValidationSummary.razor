@@ -1,8 +1,9 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.Extensions.DependencyInjection
 @using Microsoft.JSInterop
-@inject Flare.Components.Services.IUiJsService Ui
+@inject IServiceProvider Services
 
 @if (_messages.Count > 0)
 {
@@ -107,7 +108,11 @@
 
     private async Task FocusFieldAsync(string controlId)
     {
-        try { await Ui.FocusElementAsync(controlId); }
+        try
+        {
+            if (Services.GetService<Flare.Components.Services.IUiJsService>() is { } ui)
+                await ui.FocusElementAsync(controlId);
+        }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
