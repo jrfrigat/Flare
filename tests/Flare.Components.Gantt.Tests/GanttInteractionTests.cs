@@ -117,13 +117,13 @@ public sealed class GanttInteractionTests : GanttTestBase
     }
 
     [Fact]
-    public void A_gesture_for_another_panel_an_unknown_action_or_a_row_change_that_is_not_allowed_moves_nothing_across_rows()
+    public async Task A_gesture_for_another_panel_an_unknown_action_or_a_row_change_that_is_not_allowed_moves_nothing_across_rows()
     {
         var seen = new List<GanttChangeEventArgs>();
         var cut = Editable(seen, more: p => p.Add(x => x.AllowRowChange, false));
 
-        cut.InvokeAsync(() => cut.Instance.BarDragged("elsewhere", "a", "Move", 1, null)).GetAwaiter().GetResult();
-        cut.InvokeAsync(() => cut.Instance.BarDragged(cut.Find(".flare-gantt__body").GetAttribute("data-panel")!, "a", "Spin", 1, null)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => cut.Instance.BarDragged("elsewhere", "a", "Move", 1, null));
+        await cut.InvokeAsync(() => cut.Instance.BarDragged(cut.Find(".flare-gantt__body").GetAttribute("data-panel")!, "a", "Spin", 1, null));
         Assert.Empty(seen);
 
         Drag(cut, "a", GanttEditAction.Move, 1, "r2");
@@ -132,7 +132,7 @@ public sealed class GanttInteractionTests : GanttTestBase
 
     // The same rules as the keyboard: a link drawn with the pointer is checked for cycles before it is offered.
     [Fact]
-    public void A_link_drawn_with_the_pointer_is_created_or_refused()
+    public async Task A_link_drawn_with_the_pointer_is_created_or_refused()
     {
         var created = new List<GanttLink>();
         var rejected = new List<GanttLinkRejectedEventArgs>();
@@ -142,10 +142,10 @@ public sealed class GanttInteractionTests : GanttTestBase
             .Add(x => x.OnLinkRejected, (GanttLinkRejectedEventArgs e) => rejected.Add(e)));
         var panel = cut.Find(".flare-gantt__body").GetAttribute("data-panel")!;
 
-        cut.InvokeAsync(() => cut.Instance.LinkDragged(panel, "b", "a")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => cut.Instance.LinkDragged(panel, "b", "a"));
         Assert.Equal(GanttValidationCode.Cycle, Assert.Single(rejected).Validation.Code);
 
-        cut.InvokeAsync(() => cut.Instance.LinkDragged(panel, "a", "b")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => cut.Instance.LinkDragged(panel, "a", "b"));
         Assert.Equal(GanttValidationCode.Duplicate, rejected[1].Validation.Code);
         Assert.Empty(created);
         Assert.Equal(2, cut.FindAll(".flare-gantt__link-handle").Count);
