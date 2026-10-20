@@ -10,6 +10,17 @@
     background: transparent;
 }
 
+/* Built-in click activator: focusable, keyboard-operable text/anchor content. */
+.flare-popover__trigger {
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.flare-popover__trigger:focus-visible {
+    outline: var(--flare-border-width-emphasis) solid var(--flare-color-primary);
+    outline-offset: var(--flare-spacing-1);
+}
+
 .flare-popover__paper {
     position: absolute;
     z-index: calc(var(--flare-z-dropdown) + 1);
@@ -19,8 +30,15 @@
     color: var(--flare-popover-color);
     border-radius: var(--flare-popover-radius);
     box-shadow: var(--flare-popover-shadow);
-    overflow: auto;
+    /* Visible, so the arrow below can paint outside the panel. The inner box is what scrolls. */
+    overflow: visible;
     animation: flare-popover-in var(--flare-motion-duration-enter-small) var(--flare-motion-easing-decelerate);
+}
+
+.flare-popover__scroll {
+    max-height: inherit;
+    overflow: auto;
+    border-radius: inherit;
 }
 
 /* MatchAnchorWidth: the panel tracks the anchor's width. Once the placement engine has it, the engine
@@ -71,22 +89,24 @@
    asked for the bottom of an anchor near the window's lower edge ends up above it. `data-flare-side`
    carries the requested side from the component and the resolved one from the engine, so one set of
    rules serves both, and twelve placements collapse to the four sides an arrow can have. */
+/* The engine publishes where the anchor's centre lands inside the panel, so the tip keeps pointing at
+   the trigger after a viewport clamp or an edge flip; 1rem is only the resting fallback before JS. */
 .flare-popover__paper.flare-popover--arrow[data-flare-side="bottom"]::before {
     top: -0.3125rem;
-    left: 1rem;
+    left: var(--_flare-anchor-offset, 1rem);
 }
 
 .flare-popover__paper.flare-popover--arrow[data-flare-side="top"]::before {
     bottom: -0.3125rem;
-    left: 1rem;
+    left: var(--_flare-anchor-offset, 1rem);
 }
 
 .flare-popover__paper.flare-popover--arrow[data-flare-side="right"]::before {
     left: -0.3125rem;
-    top: 1rem;
+    top: var(--_flare-anchor-offset, 1rem);
 }
 
 .flare-popover__paper.flare-popover--arrow[data-flare-side="left"]::before {
     right: -0.3125rem;
-    top: 1rem;
+    top: var(--_flare-anchor-offset, 1rem);
 }

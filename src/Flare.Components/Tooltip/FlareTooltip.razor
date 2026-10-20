@@ -9,7 +9,9 @@
      data-flare-placement="@_panelPlacement"
      aria-describedby="@(_hasTooltip && !Disabled ? _tooltipId : null)"
      @onclick="HandleRootClick"
-     @onkeydown="HandleKeyDown">
+     @onkeydown="HandleKeyDown"
+     @onmouseleave="HandleMouseLeave"
+     @onfocusout="HandleFocusOut">
     @ChildContent
     @if (_clickOpen)
     {
@@ -80,6 +82,9 @@
     private readonly AnchoredLayer _layer = new();
     private bool _clickOpen;
     private bool _descriptionLinked;
+    // Escape hides a hover/focus bubble without taking the focus away. The flag stays until the
+    // pointer or the focus leaves, which is what makes a later approach a fresh intent to show it.
+    private bool _escapeDismissed;
 
     // The side class places the bubble at rest (pure CSS); the engine then aligns it with the full
     // placement, which travels on data-flare-placement for the page-wide hover/focus listener.
@@ -112,6 +117,7 @@
             if (ShowOnFocus) parts.Add(Css.Classes.Tooltip.TriggerFocus);
             if (ShowOnClick) parts.Add(Css.Classes.Tooltip.TriggerClick);
             if (ShowOnClick && _clickOpen) parts.Add(Css.Classes.Tooltip.Open);
+            if (_escapeDismissed) parts.Add(Css.Classes.Tooltip.Dismissed);
             if (Arrow) parts.Add(Css.Classes.Tooltip.Arrow);
             return string.Join(' ', parts);
         }
@@ -180,12 +186,35 @@
 
     private async Task HandleKeyDown(KeyboardEventArgs e)
     {
-        if (e.Key == "Escape" && _clickOpen)
-            await CloseClick();
+        if (e.Key != "Escape" || Disabled || !_hasTooltip) return;
+        _escapeDismissed = true;
+        if (_clickOpen)
+        {
+            _clickOpen = false;
+            await OpenChanged.InvokeAsync(false);
+        }
+        else if (Open)
+        {
+            // A controlled tooltip is dismissed the same way; the caller may reopen it deliberately.
+            await OpenChanged.InvokeAsync(false);
+        }
+    }
+
+    private void HandleMouseLeave()
+    {
+        if (_escapeDismissed) _escapeDismissed = false;
+    }
+
+    private void HandleFocusOut()
+    {
+        if (_escapeDismissed) _escapeDismissed = false;
     }
 
     public override async ValueTask DisposeAsync()
     {
+        // The hover/focus placement is registered by the page-wide listener under the bubble id, not
+        // under the layer's id: release it explicitly or the registry keeps the detached trigger alive.
+        try { await Overlay.RemoveTooltipPlacementAsync(_floatingRef); } catch { }
         await _layer.ReleaseAsync(Overlay);
         await base.DisposeAsync();
     }

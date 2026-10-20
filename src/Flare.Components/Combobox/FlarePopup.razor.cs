@@ -48,6 +48,8 @@ public partial class FlarePopup
     private bool _registered;
     private Task? _pendingSync;
     private bool _requestedOpen;
+    private bool _requestedMatchWidth;
+    private string? _requestedAnchorId;
     private long _syncGeneration;
     private bool _disposed;
 
@@ -59,10 +61,18 @@ public partial class FlarePopup
     {
         if (_disposed) return Task.CompletedTask;
         var open = Open;
-        if (_pendingSync is not { IsCompleted: false } && open == _requestedOpen && open == _registered)
+        var matchWidth = MatchWidth;
+        var anchorId = Anchor.Id;
+        // Placement inputs are not part of the open/close state: MatchWidth or the anchor can change
+        // while the panel stays open, and the panel has to follow without a close and a reopen.
+        var optionsChanged = matchWidth != _requestedMatchWidth || anchorId != _requestedAnchorId;
+        if (_pendingSync is not { IsCompleted: false } && open == _requestedOpen && open == _registered
+            && !optionsChanged)
             return Task.CompletedTask;
         if (open != _requestedOpen) _syncGeneration++;
         _requestedOpen = open;
+        _requestedMatchWidth = matchWidth;
+        _requestedAnchorId = anchorId;
         var generation = _syncGeneration;
         // Focus and parameter changes can render again while placement or dismissal is awaiting JS.
         // Queue the complete lifecycle, keeping the element belonging to each opening.
@@ -83,7 +93,7 @@ public partial class FlarePopup
     {
         // A queued close must release the old element even when a newer opening is already requested.
         if (_disposed || (open && generation != _syncGeneration)) return;
-        if (open == _registered && open == _layer.Placed) return;
+        // The layer itself re-places when its options changed, so it decides whether this is a no-op.
         await _layer.SyncAsync(Overlay, open, anchor, panel, new AnchoredPanelOptions { MatchWidth = matchWidth });
         if (_disposed || (open && generation != _syncGeneration) || open == _registered) return;
         try

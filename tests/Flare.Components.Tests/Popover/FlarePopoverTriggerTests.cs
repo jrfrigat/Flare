@@ -3,6 +3,7 @@ using Flare.Abstractions;
 using Flare.Components;
 using Flare.Abstractions.Tokens;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests;
 
@@ -18,15 +19,46 @@ public class FlarePopoverTriggerTests : FlareTestContext
             .Add(x => x.AnchorContent, "<button>open</button>")
             .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
 
-        await cut.InvokeAsync(() => cut.Find("span[style*=cursor]").Click());
+        var trigger = cut.Find($".{Css.Classes.Popover.Trigger}");
+        Assert.Equal("button", trigger.GetAttribute("role"));
+        Assert.Equal("0", trigger.GetAttribute("tabindex"));
+        Assert.Equal("false", trigger.GetAttribute("aria-expanded"));
+        Assert.Null(trigger.GetAttribute("aria-controls"));
+
+        await cut.InvokeAsync(() => trigger.Click());
         Assert.Equal(new[] { true }, states);   // anchor click requested open
+    }
+
+    [Fact]
+    public async Task ClickTrigger_ConnectsTheKeyboardActivatorToThePanel()
+    {
+        var states = new List<bool>();
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Click)
+            .Add(x => x.AnchorContent, "<span>open</span>")
+            .Add(x => x.Open, true)
+            .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
+
+        var trigger = cut.Find($".{Css.Classes.Popover.Trigger}");
+        Assert.Equal("true", trigger.GetAttribute("aria-expanded"));
+        Assert.Equal("dialog", trigger.GetAttribute("aria-haspopup"));
+        var controls = trigger.GetAttribute("aria-controls");
+        Assert.False(string.IsNullOrWhiteSpace(controls));
+
+        var paper = cut.Find($".{Css.Classes.Popover.Paper}");
+        Assert.Equal(controls, paper.GetAttribute("id"));
+        Assert.Equal("dialog", paper.GetAttribute("role"));
+        Assert.Equal(trigger.GetAttribute("id"), paper.GetAttribute("aria-labelledby"));
+
+        await cut.InvokeAsync(() => trigger.KeyDown(new KeyboardEventArgs { Key = "Enter" }));
+        Assert.Equal(new[] { false }, states);
     }
 
     [Fact]
     public void ManualTrigger_DoesNotWrapAnchor()
     {
         var cut = Render<FlarePopover>(p => p.Add(x => x.AnchorContent, "<button>x</button>"));
-        Assert.Empty(cut.FindAll("span[style*=cursor]"));   // default Manual: no built-in handler
+        Assert.Empty(cut.FindAll($".{Css.Classes.Popover.Trigger}"));   // default Manual: no built-in handler
     }
 
     // The bug this pins: moving the pointer from the anchor into the panel closed the popover under it.

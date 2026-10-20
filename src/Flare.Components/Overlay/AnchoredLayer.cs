@@ -1,3 +1,4 @@
+using System.Globalization;
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -24,6 +25,9 @@ internal sealed class AnchoredLayer
 {
     private readonly string _id = $"flare-layer-{Guid.NewGuid():N}";
     private bool _placed;
+    // The inputs that decide where the panel lands. A parameter change while the panel is open has to
+    // reach the browser without closing it; comparing this signature keeps an unchanged render free.
+    private string? _signature;
 
     /// <summary>Whether the panel is currently positioned and held in the top layer.</summary>
     public bool Placed => _placed;
@@ -39,7 +43,7 @@ internal sealed class AnchoredLayer
     /// <param name="options">Placement options; the defaults place the panel below the anchor.</param>
     public ValueTask SyncAsync(IOverlayJsService overlay, bool open,
         ElementReference anchor, ElementReference panel, AnchoredPanelOptions? options = null)
-        => SyncCoreAsync(overlay, open, panel,
+        => SyncCoreAsync(overlay, open, panel, Signature(panel, anchor.Id, options),
             (o, p) => o.PositionAnchoredPanelAsync(_id, anchor, p, options));
 
     /// <summary>
@@ -53,7 +57,7 @@ internal sealed class AnchoredLayer
     /// <param name="options">Placement options; the defaults place the panel below the anchor.</param>
     public ValueTask SyncByIdAsync(IOverlayJsService overlay, bool open,
         string anchorElementId, ElementReference panel, AnchoredPanelOptions? options = null)
-        => SyncCoreAsync(overlay, open, panel,
+        => SyncCoreAsync(overlay, open, panel, Signature(panel, "#" + anchorElementId, options),
             (o, p) => o.PositionAnchoredPanelByIdAsync(_id, anchorElementId, p, options));
 
     /// <summary>
@@ -79,26 +83,46 @@ internal sealed class AnchoredLayer
     }
 
     private async ValueTask SyncCoreAsync(IOverlayJsService overlay, bool open, ElementReference panel,
-        Func<IOverlayJsService, ElementReference, ValueTask> place)
+        string signature, Func<IOverlayJsService, ElementReference, ValueTask> place)
     {
-        if (open == _placed) return;
+        // Re-place an open panel whose inputs changed; the engine replaces its listeners and keeps the
+        // same top-layer element, so this is a re-measure rather than a close and a reopen.
+        if (open == _placed && !(open && signature != _signature)) return;
         try
         {
             if (open)
             {
                 await place(overlay, panel);
                 _placed = true;
+                _signature = signature;
             }
             else
             {
                 await overlay.RemoveAnchoredPanelAsync(_id);
                 _placed = false;
+                _signature = null;
             }
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
     }
+
+    private static string Signature(ElementReference panel, string anchorKey, AnchoredPanelOptions? options)
+    {
+        var o = options ?? new AnchoredPanelOptions();
+        var point = o.AnchorPoint;
+        var offset = o.AnchorOffset;
+        var rect = o.AnchorRect;
+        return string.Join('|',
+            panel.Id, anchorKey, o.Placement, I(o.Gap), o.GapToken ?? string.Empty, o.MatchWidth,
+            point is { } p ? $"{I(p.XPct)},{I(p.YPct)}" : string.Empty,
+            offset is { } f ? $"{I(f.X)},{I(f.Y)}" : string.Empty,
+            rect is { } r ? $"{I(r.X)},{I(r.Y)},{I(r.Width)},{I(r.Height)}" : string.Empty,
+            o.TopLayer);
+    }
+
+    private static string I(double value) => value.ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Releases the panel without waiting for a render, for a component being disposed. A panel whose
@@ -110,6 +134,7 @@ internal sealed class AnchoredLayer
     {
         if (!_placed) return;
         _placed = false;
+        _signature = null;
         try { await overlay.RemoveAnchoredPanelAsync(_id); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }

@@ -301,14 +301,23 @@ const _topLayer = new Map();
 const SIDES = ['bottom', 'top', 'left', 'right'];
 const ROOM_VAR = '--flare-anchored-room';
 const WIDTH_VAR = '--flare-anchored-width';
+// A panel that has to scroll inside itself can name the element that does the scrolling. The cap then
+// goes there instead of on the panel, which lets the panel paint the arrow OUTSIDE its border box.
+const SCROLL_TARGET = ':scope > [data-flare-panel-scroll]';
+// Where the anchor's centre lands inside the panel, for an arrow that has to point at the trigger even
+// after the panel was shifted away from its preferred alignment.
+const ARROW_VAR = '--_flare-anchor-offset';
 
 // Undoes the height cap a placement put on the panel; only the engine's own inline values are touched.
 function uncap(panel) {
     if (!('flareCapped' in panel.dataset)) return;
     delete panel.dataset.flareCapped;
+    const scroller = panel.querySelector(SCROLL_TARGET);
+    if (scroller) { scroller.style.maxHeight = ''; scroller.style.overflowY = ''; }
     panel.style.maxHeight = '';
     panel.style.overflowY = '';
     panel.style.removeProperty(ROOM_VAR);
+    panel.style.removeProperty(ARROW_VAR);
 }
 
 // Re-places a panel whose own size changed after it was placed. The first report, which only states the
@@ -348,7 +357,11 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     const offset = opts.anchorOffset;
     const parts = String(opts.placement || 'bottom-start').split('-');
     const wantSide = SIDES.includes(parts[0]) ? parts[0] : 'bottom';
-    const align = parts[1] === 'start' || parts[1] === 'end' ? parts[1] : (parts.length > 1 ? 'start' : 'center');
+    // Start/End name the INLINE edges, so RTL swaps the physical side they mean. Left/Right stay
+    // physical: a caller asking for the left side wants the left side in both writing directions.
+    const logical = parts[1] === 'start' || parts[1] === 'end' ? parts[1] : (parts.length > 1 ? 'start' : 'center');
+    const rtl = getComputedStyle(panel).direction === 'rtl';
+    const align = rtl && logical === 'start' ? 'end' : rtl && logical === 'end' ? 'start' : logical;
 
     const anchorBox = () => {
         if (fixedRect) {
@@ -412,8 +425,9 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
             panel.dataset.flareCapped = '';
             panel.style.setProperty(ROOM_VAR, `${avail}px`);
             if (panel.getBoundingClientRect().height > avail) {
-                panel.style.maxHeight = `${avail}px`;
-                panel.style.overflowY = 'auto';
+                const target = panel.querySelector(SCROLL_TARGET) || panel;
+                target.style.maxHeight = `${avail}px`;
+                target.style.overflowY = 'auto';
             }
             p = panel.getBoundingClientRect();
             if (scrolled) panel.scrollTop = scrolled;
@@ -436,6 +450,14 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         measuredHeight = panel.offsetHeight;
         panel.style.top = `${Math.max(vTop + margin, Math.min(top, vBottom - p.height - margin))}px`;
         panel.style.left = `${Math.max(vLeft + margin, Math.min(left, vRight - p.width - margin))}px`;
+        // The arrow sits on the side facing the anchor; its offset is the anchor's centre measured from
+        // the panel's start/end, clamped so the tip stays on the panel after a shift.
+        const arrowSpan = 12;
+        const finalTop = parseFloat(panel.style.top) || 0;
+        const finalLeft = parseFloat(panel.style.left) || 0;
+        const arrowX = Math.max(arrowSpan, Math.min((a.left + a.right) / 2 - finalLeft, p.width - arrowSpan));
+        const arrowY = Math.max(arrowSpan, Math.min((a.top + a.bottom) / 2 - finalTop, p.height - arrowSpan));
+        panel.style.setProperty(ARROW_VAR, `${vertical ? arrowX : arrowY}px`);
         // `flarePlaced` already switched resting CSS off before measurement: fallback edges and
         // centring transforms must not affect the box being measured. `flareSide` is where it landed,
         // which is what an arrow points away from; the placement parameter is only a preference.
@@ -491,6 +513,43 @@ export function dropFromTopLayer(panel) {
 // releasing it there would drop it back to its resting position mid-fade, in full view - and the next
 // hover simply places it again.
 let _tooltipsReady = false;
+// Placements made by the delegated hover/focus path, keyed by bubble id. The component owns the bubble,
+// so its Dispose releases the entry by the same id, and a leave releases it once the fade is over. The
+// entry is otherwise never removed, and the anchored-panel registry would keep a detached trigger and
+// its document listeners alive for the rest of the session.
+const _tooltipPlacements = new Map();
+
+function releaseTooltipPlacementLater(root) {
+    if (!(root instanceof Element)) return;
+    for (const [id, entry] of _tooltipPlacements) {
+        if (entry.root !== root) continue;
+        const bubble = document.getElementById(id);
+        if (!bubble) { _tooltipPlacements.delete(id); continue; }
+        // A click- or Open-revealed bubble has no leave state: its placement belongs to the component.
+        if (root.classList.contains('flare-tooltip--open')
+            || bubble.classList.contains('flare-tooltip__content--visible')) return;
+        if (entry.timer) clearTimeout(entry.timer);
+        const fade = Math.max(200, ...getComputedStyle(bubble).transitionDuration
+            .split(',')
+            .map(part => {
+                const value = parseFloat(part);
+                return part.trim().endsWith('ms') ? value : value * 1000;
+            }));
+        entry.timer = setTimeout(() => {
+            _tooltipPlacements.delete(id);
+            removeAnchoredPanel(id);
+        }, fade + 50);
+    }
+}
+
+/** Releases the placement a hover/focus tooltip registered, for the component's Dispose. */
+export function releaseTooltipPlacement(bubble) {
+    if (!bubble?.id) return;
+    const entry = _tooltipPlacements.get(bubble.id);
+    if (entry?.timer) clearTimeout(entry.timer);
+    _tooltipPlacements.delete(bubble.id);
+    removeAnchoredPanel(bubble.id);
+}
 
 const TOOLTIP_SIDES = [
     ['flare-tooltip--bottom', 'bottom'],
@@ -516,6 +575,9 @@ function placeTooltip(e) {
     if (!root || root.classList.contains('flare-tooltip--disabled')) return;
     const bubble = root.querySelector(':scope > .flare-tooltip__content');
     if (!bubble?.id) return;
+    const placed = _tooltipPlacements.get(bubble.id);
+    if (placed?.timer) clearTimeout(placed.timer);
+    _tooltipPlacements.set(bubble.id, { root, timer: null });
     let side = 'top';
     for (const [cls, name] of TOOLTIP_SIDES) { if (root.classList.contains(cls)) { side = name; break; } }
     // The side class places the bubble at rest; the full placement - side plus start/end alignment -
@@ -550,6 +612,26 @@ export function initFloatingTooltips() {
     // trigger may be either.
     document.addEventListener('pointerover', placeTooltip, true);
     document.addEventListener('focusin', placeTooltip, true);
+    // The matching leave path. It only releases the registry entry AFTER the fade, so the bubble fades
+    // out where it was placed instead of dropping back to its resting corner mid-fade.
+    document.addEventListener('pointerout', (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const root = target.closest('.flare-tooltip');
+        if (!root) return;
+        const to = e.relatedTarget;
+        if (to instanceof Node && root.contains(to)) return;
+        releaseTooltipPlacementLater(root);
+    }, true);
+    document.addEventListener('focusout', (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const root = target.closest('.flare-tooltip');
+        if (!root) return;
+        const to = e.relatedTarget;
+        if (to instanceof Node && root.contains(to)) return;
+        releaseTooltipPlacementLater(root);
+    }, true);
 }
 
 // aria-describedby is not inherited, so an id on the .flare-tooltip wrapper never reaches the button

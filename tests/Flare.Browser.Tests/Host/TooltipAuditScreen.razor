@@ -1,0 +1,16 @@
+@page "/tooltip-audit"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="padding:120px 16px">
+        <FlareTooltip Content="@_longText" ShowOnClick="true">
+            <FlareButton id="tip-trigger">Show tooltip</FlareButton>
+        </FlareTooltip>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private const string _longText =
+        "This is a deliberately long tooltip phrase that used to run past the edge of a narrow screen "
+        + "without wrapping, and it ends with a very long URL "
+        + "https://example.com/a/very/long/path/that/has/no/spaces/and/used/to/overflow/the/bubble";
+}

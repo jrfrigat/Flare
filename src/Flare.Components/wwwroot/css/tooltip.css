@@ -27,8 +27,15 @@
   line-height: var(--flare-typescale-body-small-height);
   letter-spacing: var(--flare-typescale-body-small-spacing);
   border-radius: var(--flare-shape-extra-small);
-  white-space: nowrap;
-  pointer-events: none;
+  /* A long phrase or URL used to run off the screen: nowrap with no cap. The same cap the rich bubble
+     uses keeps the text readable and wraps it, and `anywhere` breaks a URL that has no spaces. */
+  width: max-content;
+  max-width: var(--flare-tooltip-max-width);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  /* The pointer must be able to reach the bubble and stay there while the user reads it; the bridge
+     below covers the offset gap so crossing it does not count as leaving the trigger. */
+  pointer-events: auto;
   opacity: 0;
   visibility: hidden;
   /* A tooltip nobody can see must not take up room either. `visibility: hidden` keeps the box in the
@@ -49,9 +56,31 @@
   transition-behavior: allow-discrete;
 }
 
+/* Invisible hover bridge across the gap between the bubble and its trigger. It is a child of the
+   bubble, so hovering it is hovering the tooltip wrapper and the CSS reveal stays on while the
+   pointer crosses the offset distance. The side names where the BUBBLE is, so the bridge grows toward
+   the opposite edge, where the anchor sits. */
+.flare-tooltip__content::before {
+  content: '';
+  position: absolute;
+  pointer-events: auto;
+}
+.flare-tooltip__content[data-flare-side="top"]::before {
+  left: 0; right: 0; bottom: calc(-1 * var(--flare-tooltip-offset)); height: var(--flare-tooltip-offset);
+}
+.flare-tooltip__content[data-flare-side="bottom"]::before {
+  left: 0; right: 0; top: calc(-1 * var(--flare-tooltip-offset)); height: var(--flare-tooltip-offset);
+}
+.flare-tooltip__content[data-flare-side="left"]::before {
+  top: 0; bottom: 0; right: calc(-1 * var(--flare-tooltip-offset)); width: var(--flare-tooltip-offset);
+}
+.flare-tooltip__content[data-flare-side="right"]::before {
+  top: 0; bottom: 0; left: calc(-1 * var(--flare-tooltip-offset)); width: var(--flare-tooltip-offset);
+}
+
 /* Rich tooltip: its own surface, text and shadow tokens, medium shape, wraps. Unlike the plain
-   tooltip it is interactive (may hold a subhead + action), so it re-enables pointer events that the
-   base bubble suppresses -- otherwise its actions are unclickable. */
+   tooltip it is interactive (may hold a subhead + action), so it keeps pointer events and adds the
+   surface a subhead and an action need. */
 .flare-tooltip__content--rich {
   background: var(--flare-tooltip-rich-bg);
   color: var(--flare-tooltip-rich-color);
@@ -87,6 +116,18 @@
 
 /* A disabled tooltip never shows, even if a trigger or controlled Open would otherwise reveal it. */
 .flare-tooltip--disabled .flare-tooltip__content {
+  opacity: 0;
+  visibility: hidden;
+  content-visibility: hidden;
+}
+
+/* Escape hid the bubble but the focus (or the pointer) is still on the trigger. These selectors are
+   as specific as the reveal ones on purpose, so the bubble stays hidden until the pointer or focus
+   leaves and comes back - which is the fresh intent that clears the class. */
+.flare-tooltip--dismissed.flare-tooltip--hover:hover .flare-tooltip__content,
+.flare-tooltip--dismissed.flare-tooltip--focus:focus-within .flare-tooltip__content,
+.flare-tooltip--dismissed .flare-tooltip__content--visible,
+.flare-tooltip--dismissed.flare-tooltip--open .flare-tooltip__content {
   opacity: 0;
   visibility: hidden;
   content-visibility: hidden;

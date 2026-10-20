@@ -25,6 +25,8 @@ public static class Tooltip
     public const string Arrow = "flare-tooltip--arrow";
     /// <summary>The <c>flare-tooltip--disabled</c> modifier that suppresses the tooltip.</summary>
     public const string Disabled = "flare-tooltip--disabled";
+    /// <summary>The <c>flare-tooltip--dismissed</c> modifier applied after Escape until fresh hover/focus.</summary>
+    public const string Dismissed = "flare-tooltip--dismissed";
     /// <summary>The <c>flare-tooltip__backdrop</c> CSS class (outside-click catcher for the click trigger).</summary>
     public const string Backdrop = "flare-tooltip__backdrop";
     /// <summary>The <c>flare-tooltip__content</c> CSS class.</summary>

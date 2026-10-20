@@ -9,7 +9,19 @@
      @onfocusin="_focusIn" @onfocusout="_focusOut">
     @if (Trigger == PopoverTrigger.Click)
     {
-        <span style="display:inline-flex;cursor:pointer" @onclick="ToggleAsync">@AnchorContent</span>
+        @* A real activator contract: focusable, keyboard-operable, and connected to the panel it
+           controls. The panel id is stable for the component's lifetime, so aria-controls names the
+           same element before and after opening. *@
+        <span id="@_triggerId"
+              class="@Css.Classes.Popover.Trigger"
+              role="button"
+              tabindex="0"
+              aria-haspopup="dialog"
+              aria-expanded="@(Open ? "true" : "false")"
+              aria-controls="@(Open ? _paperId : null)"
+              @onclick="ToggleAsync"
+              @onkeydown="HandleTriggerKeyDown"
+              @onkeydown:preventDefault="true">@AnchorContent</span>
     }
     else
     {
@@ -24,12 +36,19 @@
         @* data-flare-side starts at the requested side and is rewritten by the placement engine with the
            side the panel actually landed on, which is what the arrow points away from. *@
         <div @ref="_floatingRef"
+             id="@_paperId"
+             role="dialog"
+             aria-labelledby="@(Trigger == PopoverTrigger.Click ? _triggerId : null)"
              class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass @_matchWidthClass"
              data-flare-side="@_sideName"
              style="@_paperStyle">
-            <CascadingValue Value="@((Func<Task>)CloseAsync)" Name="ClosePopover">
-                @ChildContent
-            </CascadingValue>
+            @* The scrolling box is a child of the panel, not the panel itself: the arrow paints outside
+               the panel's border box, and an `overflow: auto` panel would clip it. *@
+            <div class="@Css.Classes.Popover.Scroll" data-flare-panel-scroll>
+                <CascadingValue Value="@((Func<Task>)CloseAsync)" Name="ClosePopover">
+                    @ChildContent
+                </CascadingValue>
+            </div>
         </div>
     }
 </div>
@@ -79,6 +98,8 @@
     // Debounce guard: each hover enter/leave bumps this so a stale delayed open/close is discarded.
     private int _hoverGen;
     private readonly string _id = "flare-popover-" + Guid.NewGuid().ToString("N")[..8];
+    private string _triggerId => $"flare-popover-trigger-{_id}";
+    private string _paperId => $"flare-popover-paper-{_id}";
     private DotNetObjectReference<FlarePopover>? _selfRef;
     private bool _escapeLayerRegistered;
 
@@ -187,6 +208,12 @@
 
     // Built-in anchor handler for Trigger="Click".
     private async Task ToggleAsync() => await OpenChanged.InvokeAsync(!Open);
+
+    private async Task HandleTriggerKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" || e.Key == " " || e.Key == "Spacebar")
+            await ToggleAsync();
+    }
 
     // Hover trigger: open after Delay, close after HideDelay. Bumping _hoverGen is what discards a delayed
     // action that a later enter/leave has overtaken - it is the only cancellation there is, so every enter

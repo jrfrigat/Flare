@@ -127,6 +127,14 @@ public interface IOverlayJsService : IAsyncDisposable
     ValueTask SyncTooltipDescriptionAsync(ElementReference root, string tooltipId, bool enabled);
 
     /// <summary>
+    /// Releases the anchored-panel registration a hover/focus tooltip made for <paramref name="bubble"/>.
+    /// The delegated placement is owned by the page listener rather than by a component id, so the
+    /// component has to release it by the bubble element when it is disposed or its route goes away.
+    /// </summary>
+    /// <param name="bubble">The tooltip bubble element.</param>
+    ValueTask RemoveTooltipPlacementAsync(ElementReference bubble);
+
+    /// <summary>
     /// Declares an open popup as the topmost layer that owns Escape: while it is registered, Escape invokes
     /// <paramref name="method"/> on <paramref name="dotNetRef"/> and no dialog underneath receives it. The newest
     /// layer wins, so a menu above a dialog closes alone. Registering the same id again moves it to the top.
