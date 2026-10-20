@@ -638,6 +638,11 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   min-width: 100%;
 }
 
+/* The exact sum is written inline by the component; it must also win over the scroll-x minimum. */
+.flare-datagrid__table--widths-exact {
+  min-width: 0;
+}
+
 /* Fixed layout takes every column width from the header, so a label wider than its column is cut
    with an ellipsis instead of spilling into the next one. Only the plain label is cut: the sort,
    resize and filter affordances after it stay visible and move to the next line when no room is

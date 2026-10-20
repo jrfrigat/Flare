@@ -106,7 +106,7 @@ public partial class FlareDataGrid<TItem>
                 if (column.IsComposite || _hiddenColumns.Contains(column.Key)) continue;
                 widths.Add(column.Width!.Trim());
             }
-            return $"width:calc({string.Join(" + ", widths)});min-width:0";
+            return $"width:calc({string.Join(" + ", widths)})";
         }
     }
 

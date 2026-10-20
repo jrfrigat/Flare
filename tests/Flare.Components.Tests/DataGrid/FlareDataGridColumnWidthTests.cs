@@ -52,7 +52,7 @@ public class FlareDataGridColumnWidthTests : FlareTestContext
         var classes = Classes(cut);
         Assert.Contains(Css.Classes.DataGrid.TableFixed, classes);
         Assert.Contains(Css.Classes.DataGrid.TableWidthsExact, classes);
-        Assert.Equal("width:calc(96px + 60px + 120px);min-width:0", cut.Find("table").GetAttribute("style"));
+        Assert.Equal("width:calc(96px + 60px + 120px)", cut.Find("table").GetAttribute("style"));
         Assert.Equal("width:96px", cut.FindAll("thead th[role='columnheader']")[0].GetAttribute("style"));
     }
 
