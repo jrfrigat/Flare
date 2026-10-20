@@ -20,8 +20,15 @@ export function requestPermission() {
     });
 }
 
+// A backslash is a path separator for web schemes in WHATWG parsing, so a string that reads as
+// relative can still resolve to another origin. The service refuses it; this guards direct callers too.
+export function isSafeAddress(url) {
+    return typeof url === 'string' && url.length > 0 && !url.includes('\\');
+}
+
 // An address in the application is opened the way a link in it would be - without reloading the app.
 function open(url) {
+    if (!isSafeAddress(url)) return;
     const target = new URL(url, location.href);
     if (target.origin === location.origin && window.Blazor && typeof window.Blazor.navigateTo === 'function')
         window.Blazor.navigateTo(target.pathname + target.search + target.hash);

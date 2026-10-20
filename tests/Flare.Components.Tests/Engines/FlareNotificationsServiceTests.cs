@@ -75,6 +75,10 @@ public class FlareNotificationsServiceTests : FlareTestContext
     [InlineData("javascript:alert(1)")]
     [InlineData("data:text/html,hi")]
     [InlineData("//elsewhere.example/page")]
+    [InlineData("\\evil.example")]
+    [InlineData("\\\\evil.example")]
+    [InlineData("/\\evil.example")]
+    [InlineData("\\/evil.example")]
     public async Task Show_RefusesAnAddressThatIsNotAWebAddress(string url)
     {
         await Assert.ThrowsAsync<ArgumentException>(() =>

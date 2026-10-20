@@ -53,6 +53,9 @@ public sealed class FlareNotificationsService : FlareJsModule, IFlareNotificatio
     internal static bool IsSafeUrl(string url)
     {
         if (string.IsNullOrWhiteSpace(url)) return false;
+        // WHATWG URL parsing turns a backslash into a path separator for web schemes, so "\evil.com"
+        // starts as relative and still resolves to another origin.
+        if (url.Contains('\\')) return false;
         if (Uri.TryCreate(url, UriKind.Absolute, out var absolute) && !url.StartsWith('/'))
             return absolute.Scheme == Uri.UriSchemeHttp || absolute.Scheme == Uri.UriSchemeHttps;
         return Uri.TryCreate(url, UriKind.Relative, out _) && !url.StartsWith("//", StringComparison.Ordinal);

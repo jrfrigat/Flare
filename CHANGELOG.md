@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- A notification address containing a backslash is refused instead of opening another origin.
+
 ## [0.47.0] - 2026-10-20
 
 ### Added

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { getPermission, show } from '../../src/Flare.Components/wwwroot/js/flare-notifications.js';
+import { getPermission, isSafeAddress, show } from '../../src/Flare.Components/wwwroot/js/flare-notifications.js';
 
 // A stand-in for the browser's Notification: records what was shown and lets a test click it.
 class FakeNotification {
@@ -69,6 +69,13 @@ it('degrades where the browser has no notifications', async () => {
 
     expect(getPermission()).toBe('unsupported');
     expect(await show('Build finished', null, null, null, null)).toBe('unsupported');
+});
+
+it('refuses an address whose backslashes would change the origin', () => {
+    for (const url of ['\\evil.example', '\\\\evil.example', '/\\evil.example', '\\/evil.example'])
+        expect(isSafeAddress(url)).toBe(false);
+    expect(isSafeAddress('/builds/42')).toBe(true);
+    expect(isSafeAddress('https://ci.example/builds/42')).toBe(true);
 });
 
 it('leaves nothing listening on the window', async () => {
