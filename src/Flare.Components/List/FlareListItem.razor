@@ -19,11 +19,11 @@
     <div class="@Css.Classes.List.Content">
         @if (!string.IsNullOrEmpty(Primary))
         {
-            <span class="@PrimaryClass">@Primary</span>
+            <span class="@_primaryClass">@Primary</span>
         }
         @if (!string.IsNullOrEmpty(Secondary))
         {
-            <span class="@SecondaryClass">@Secondary</span>
+            <span class="@_secondaryClass">@Secondary</span>
         }
         @ChildContent
     </div>
@@ -59,11 +59,11 @@
 
     protected override string ComponentCssClass => Css.Classes.List.Item;
 
-    private string PrimaryClass => Mono
+    private string _primaryClass => Mono
         ? $"{Css.Classes.List.Primary} {Css.Classes.Text.Mono}"
         : Css.Classes.List.Primary;
 
-    private string SecondaryClass => Mono
+    private string _secondaryClass => Mono
         ? $"{Css.Classes.List.Secondary} {Css.Classes.Text.Mono}"
         : Css.Classes.List.Secondary;
 
