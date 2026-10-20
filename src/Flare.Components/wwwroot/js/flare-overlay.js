@@ -88,10 +88,22 @@ const _focusedPopupOwner = (e) => {
         || owner.hasAttribute('aria-autocomplete');
 };
 
+// What owned this key has to be read BEFORE any listener can act on it. Blazor WebAssembly runs the
+// component's own keydown handler inside the same dispatch, so a select closes itself - clearing
+// aria-expanded and removing its layer - before this module's document listeners run, and the dialog
+// would then read a page with no popup and close as well. The window's capture phase is the first stop
+// of the event, ahead of every listener registered by Blazor or by this module. Server rendering has a
+// round trip after the dispatch and sees the same state either way.
+const _markEscapeOwner = (e) => {
+    if (e.key !== 'Escape') return;
+    e.flarePopupOwned = _popupLayers.length > 0 || _focusedPopupOwner(e);
+};
+window.addEventListener('keydown', _markEscapeOwner, true);
+
 export function registerDialogEscHandler(id, dotNetRef) {
     _escHandlers.set(id, (e) => {
-        if (e.key === 'Escape' && !e.flarePopupHandled && _popupLayers.length === 0
-            && !_focusedPopupOwner(e)
+        if (e.key === 'Escape' && !e.flarePopupHandled
+            && !(e.flarePopupOwned ?? (_popupLayers.length > 0 || _focusedPopupOwner(e)))
             && (!_focusOrder.length || _focusOrder.at(-1) === id)) {
             e.preventDefault();
             dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });

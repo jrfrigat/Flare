@@ -203,6 +203,34 @@ it('leaves Escape to a registered popup inside the dialog, and not to an expande
     expect(receiver.invokeMethodAsync).toHaveBeenCalledOnce();
 });
 
+it('keeps the dialog open when the component closes its popup earlier in the same keydown', () => {
+    const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    const d = dialog('wasm'); trapFocus('wasm', d.el);
+    const select = visible(document.createElement('div'));
+    select.tabIndex = 0; select.setAttribute('role', 'combobox'); select.setAttribute('aria-expanded', 'true');
+    d.el.append(select);
+    const popup = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
+    // Blazor WebAssembly runs the component's keydown handler synchronously inside the dispatch, so a
+    // Release build has already closed the select - layer gone, aria-expanded=false - when the module's
+    // document listeners run. A listener registered first reproduces that order.
+    const componentHandler = (e) => {
+        if (e.key !== 'Escape') return;
+        removePopupLayer('select');
+        select.setAttribute('aria-expanded', 'false');
+    };
+    document.addEventListener('keydown', componentHandler);
+    pushPopupLayer('select', popup, 'CloseFromEscape');
+    registerDialogEscHandler('wasm', receiver);
+    select.focus();
+    key('Escape');
+    document.removeEventListener('keydown', componentHandler);
+
+    // The C# handler closed the list; the dialog that owned the key before that must stay open, and the
+    // removed layer must not ask the component to close a second time.
+    expect(popup.invokeMethodAsync).not.toHaveBeenCalled();
+    expect(receiver.invokeMethodAsync).not.toHaveBeenCalled();
+});
+
 it('closes a menu focused inside its role=menu panel without closing the dialog', () => {
     const receiver = { invokeMethodAsync: vi.fn(() => Promise.resolve()) };
     const d = dialog('dialog'); registerDialogEscHandler('dialog', receiver); trapFocus('dialog', d.el);
