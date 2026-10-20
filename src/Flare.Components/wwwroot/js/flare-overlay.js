@@ -76,9 +76,17 @@ export function removePopupLayer(id) {
 
 // The focused trigger of an open popup still reports aria-expanded="true" before the popup registers its
 // layer, which crosses a Blazor round trip. The C# key handler closes the list in that window, so the
-// dialog underneath must not read the same Escape as its own.
-const _focusedPopupOwner = (e) =>
-    e.target instanceof Element && e.target.closest('[aria-expanded="true"]') !== null;
+// dialog underneath must not read the same Escape as its own. Only a control that OWNS a popup counts:
+// a disclosure - an accordion header, a tree item, a detail row - also carries aria-expanded, and Escape
+// there closes the dialog.
+const _focusedPopupOwner = (e) => {
+    if (!(e.target instanceof Element)) return false;
+    const owner = e.target.closest('[aria-expanded="true"]');
+    if (!owner) return false;
+    return owner.hasAttribute('aria-haspopup')
+        || owner.getAttribute('role') === 'combobox'
+        || owner.hasAttribute('aria-autocomplete');
+};
 
 export function registerDialogEscHandler(id, dotNetRef) {
     _escHandlers.set(id, (e) => {
