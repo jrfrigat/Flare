@@ -195,26 +195,43 @@ public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : ICla
         await context.Tracing.StartAsync(new() { Screenshots = true, Snapshots = true, Sources = true });
         await context.AddInitScriptAsync("""
             window.hideFlareSplash = () => { window.flareTestReady = true; };
-            window.inputProof = { wheel: 0, touch: 0, afterRelease: 0, afterReleaseDistance: 0, motions: [], released: null };
+            // Event.timeStamp is when the browser created the event, so a handler delayed by load no
+            // longer moves the proof out of its window. performance.now() in the handler measured the
+            // delay instead of the gesture and made the inertia proof flaky.
+            window.inputProof = { wheel: 0, touch: 0, afterRelease: 0, afterReleaseDistance: 0, motions: [], released: null, moves: [], gestureMs: 0 };
             document.addEventListener('wheel', e => { if (e.isTrusted) window.inputProof.wheel++; }, true);
             document.addEventListener('touchstart', e => {
-                if (e.isTrusted) { window.inputProof.touch++; window.inputProof.released = null; }
+                if (e.isTrusted) {
+                    window.inputProof.touch++;
+                    window.inputProof.released = null;
+                    window.inputProof.moves = [];
+                    window.inputProof.gestureMs = 0;
+                }
+            }, true);
+            document.addEventListener('touchmove', e => {
+                if (e.isTrusted) window.inputProof.moves.push(e.timeStamp);
             }, true);
             document.addEventListener('touchend', e => {
                 const col = e.target.closest('[data-time-column]');
                 if (col) {
-                    window.inputProof.released = { col, top: col.scrollTop, current: col.dataset.timeCurrent, at: performance.now() };
-                    window.inputProof.motions.push({ type: 'release', column: col.dataset.timeColumn, top: col.scrollTop, current: col.dataset.timeCurrent });
+                    const moves = window.inputProof.moves;
+                    window.inputProof.gestureMs = moves.length > 1
+                        ? Math.round(moves[moves.length - 1] - moves[0])
+                        : 0;
+                    window.inputProof.released = { col, top: col.scrollTop, current: col.dataset.timeCurrent, at: e.timeStamp };
+                    window.inputProof.motions.push({ type: 'release', at: e.timeStamp, column: col.dataset.timeColumn, top: col.scrollTop, current: col.dataset.timeCurrent });
                 }
             }, true);
             document.addEventListener('scroll', e => {
                 const r = window.inputProof.released;
-                if (e.target.matches?.('[data-time-column]')) window.inputProof.motions.push({ type: 'scroll', column: e.target.dataset.timeColumn, top: e.target.scrollTop, current: e.target.dataset.timeCurrent });
-                // The component settles after 160 ms idle; earlier movement excludes its programmatic centering.
-                if (r && e.target === r.col && performance.now() - r.at < 150 && r.current === r.col.dataset.timeCurrent && Math.abs(r.top - r.col.scrollTop) > 1) {
+                if (e.target.matches?.('[data-time-column]')) window.inputProof.motions.push({ type: 'scroll', at: e.timeStamp, column: e.target.dataset.timeColumn, top: e.target.scrollTop, current: e.target.dataset.timeCurrent });
+                // The component settles after 160 ms idle, so movement created earlier is native.
+                // The selection may legitimately change during the coast; the time bound, not the
+                // value, is what separates this from the component's programmatic centering.
+                if (r && e.target === r.col && e.timeStamp >= r.at && e.timeStamp - r.at < 160 && Math.abs(r.top - r.col.scrollTop) > 1) {
                     window.inputProof.afterRelease++;
                     window.inputProof.afterReleaseDistance = Math.max(window.inputProof.afterReleaseDistance, Math.abs(r.top - r.col.scrollTop));
-                    window.inputProof.motions.push({ type: 'motion', column: r.col.dataset.timeColumn, top: r.col.scrollTop, current: r.col.dataset.timeCurrent, elapsed: performance.now() - r.at });
+                    window.inputProof.motions.push({ type: 'motion', at: e.timeStamp, column: r.col.dataset.timeColumn, top: r.col.scrollTop, current: r.col.dataset.timeCurrent, elapsed: e.timeStamp - r.at });
                 }
             }, true);
             """);
