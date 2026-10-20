@@ -22,6 +22,7 @@ public sealed class FlareDrawerModalLifecycleTests : FlareTestContext
         _runtime = new RecordingJsRuntime(JSInterop.JSRuntime);
         Services.AddScoped<IOverlayJsService>(_ => new OverlayJsService(_runtime));
         Services.AddScoped<IBrowserViewportService>(_ => new BrowserViewportService(_runtime));
+        Services.AddScoped<IScrollService>(_ => new ScrollService(_runtime));
     }
 
     // The breakpoint subscription is attached in OnAfterRenderAsync; resizing before it exists would be
@@ -182,6 +183,59 @@ public sealed class FlareDrawerModalLifecycleTests : FlareTestContext
 
         cut.WaitForAssertion(() => Assert.Contains(_runtime.Invocations, i => i.Id == "trapFocus"));
         Assert.True(BackgroundFlag());
+    }
+
+    [Fact]
+    public void OpeningAModalDrawer_LocksTheBackgroundScrollAndClosingReleasesIt()
+    {
+        var cut = Render<FlareDrawer>(p => p
+            .Add(x => x.Variant, DrawerVariant.Temporary)
+            .Add(x => x.Open, true)
+            .Add(x => x.ChildContent, Inside()));
+        cut.WaitForAssertion(() => Assert.Contains("lock", _runtime.Calls));
+
+        cut.Render(p => p
+            .Add(x => x.Variant, DrawerVariant.Temporary)
+            .Add(x => x.Open, false)
+            .Add(x => x.ChildContent, Inside()));
+
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Contains("unlock", _runtime.Calls);
+            Assert.True(_runtime.Calls.IndexOf("unlock") > _runtime.Calls.IndexOf("lock"),
+                "The drawer stayed scroll-locked after it closed: " + string.Join(", ", _runtime.Calls));
+        });
+    }
+
+    [Fact]
+    public async Task AutoCloseBelowXxl_HidesTheDrawerAcrossTheWholeWidestTier()
+    {
+        var cut = Render<FlareDrawer>(p => p
+            .Add(x => x.Variant, DrawerVariant.Temporary)
+            .Add(x => x.Open, true)
+            .Add(x => x.AutoCloseBelow, Breakpoint.Xxl)
+            .Add(x => x.ChildContent, Inside()));
+
+        Assert.Contains(Css.Classes.Drawer.AcXxl, cut.Find($".{Css.Classes.Drawer.Root}").ClassName);
+        Assert.Contains(Css.Classes.Drawer.ScrimAcXxl, cut.Find($".{Css.Classes.Drawer.Scrim}").ClassName);
+        WaitForSubscription(cut);
+
+        // Without a reported width the drawer sits on the Md fallback, which is below Xxl: it is hidden
+        // and holds neither the trap nor the scroll lock.
+        Assert.DoesNotContain("trapFocus", _runtime.Calls);
+        Assert.DoesNotContain("lock", _runtime.Calls);
+
+        // 2559 is still Xl: AutoCloseBelow Xxl applies to the whole tier below 2560, so the drawer stays
+        // hidden there and only becomes modal once the viewport reaches Xxl itself.
+        await ResizeAsync(2559, 900);
+
+        await ResizeAsync(2560, 900);
+        cut.WaitForAssertion(() => Assert.Contains("trapFocus", _runtime.Calls));
+        cut.WaitForAssertion(() => Assert.Contains("lock", _runtime.Calls));
+
+        await ResizeAsync(2559, 900);
+        cut.WaitForAssertion(() => Assert.Contains("releaseFocusTrap", _runtime.Calls));
+        cut.WaitForAssertion(() => Assert.Contains("unlock", _runtime.Calls));
     }
 
     // The third trapFocus argument: true means "stack under an open modal instead of taking the keyboard".

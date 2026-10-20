@@ -72,6 +72,8 @@ public static class Drawer
     public const string AcLg = "flare-drawer--ac-lg";
     /// <summary>The <c>flare-drawer--ac-xl</c> CSS class.</summary>
     public const string AcXl = "flare-drawer--ac-xl";
+    /// <summary>The <c>flare-drawer--ac-xxl</c> CSS class.</summary>
+    public const string AcXxl = "flare-drawer--ac-xxl";
     /// <summary>The <c>flare-drawer-scrim--ac-sm</c> CSS class.</summary>
     public const string ScrimAcSm = "flare-drawer-scrim--ac-sm";
     /// <summary>The <c>flare-drawer-scrim--ac-md</c> CSS class.</summary>
@@ -80,6 +82,8 @@ public static class Drawer
     public const string ScrimAcLg = "flare-drawer-scrim--ac-lg";
     /// <summary>The <c>flare-drawer-scrim--ac-xl</c> CSS class.</summary>
     public const string ScrimAcXl = "flare-drawer-scrim--ac-xl";
+    /// <summary>The <c>flare-drawer-scrim--ac-xxl</c> CSS class.</summary>
+    public const string ScrimAcXxl = "flare-drawer-scrim--ac-xxl";
     /// <summary>The <c>flare-drawer__header</c> CSS class.</summary>
     public const string Header = "flare-drawer__header";
     /// <summary>The <c>flare-drawer__content</c> CSS class.</summary>

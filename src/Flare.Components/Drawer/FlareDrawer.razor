@@ -2,6 +2,7 @@
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject IBrowserViewportService Viewport
+@inject IScrollService Scroll
 @implements IAsyncDisposable
 
 @* Responsive is Temporary below the breakpoint, so it renders a scrim too - and carries a class
@@ -114,6 +115,10 @@
     private IAsyncDisposable? _breakpointSubscription;
     private bool _modalActive;
     private bool _escRegistered;
+    // An open modal drawer owns the background scroll the same way a dialog does. The lock is held as a
+    // token rather than paired calls: disposing it twice is a no-op, so the close path and the dispose
+    // path cannot both decrement the shared count for one open.
+    private IAsyncDisposable? _scrollLock;
     // A render can arrive while a previous OnAfterRenderAsync is still awaiting JS. The transitions then
     // have to run one after the other - otherwise a close releases what an open has not registered yet,
     // and the open traps focus on a drawer that is already hidden. The same race FlareDialog serializes.
@@ -214,6 +219,7 @@
             Breakpoint.Md => Css.Classes.Drawer.AcMd,
             Breakpoint.Lg => Css.Classes.Drawer.AcLg,
             Breakpoint.Xl => Css.Classes.Drawer.AcXl,
+            Breakpoint.Xxl => Css.Classes.Drawer.AcXxl,
             _             => null,
         };
 
@@ -223,6 +229,7 @@
             Breakpoint.Md => Css.Classes.Drawer.ScrimAcMd,
             Breakpoint.Lg => Css.Classes.Drawer.ScrimAcLg,
             Breakpoint.Xl => Css.Classes.Drawer.ScrimAcXl,
+            Breakpoint.Xxl => Css.Classes.Drawer.ScrimAcXxl,
             _             => null,
         };
     }
@@ -316,6 +323,18 @@
             try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
         }
 
+        if (modal && _scrollLock is null)
+        {
+            try { _scrollLock = await Scroll.LockAsync(); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!modal && _scrollLock is not null)
+        {
+            try { await ReleaseScrollLockAsync(); } catch { }
+        }
+
         if (modal && !_modalActive)
         {
             try
@@ -352,6 +371,13 @@
             await OpenChanged.InvokeAsync(false);
     }
 
+    private async Task ReleaseScrollLockAsync()
+    {
+        var held = _scrollLock;
+        _scrollLock = null;
+        if (held is not null) await held.DisposeAsync();
+    }
+
     private async Task CloseDrawer()
     {
         if (CloseOnScrimClick)
@@ -372,6 +398,7 @@
             {
                 try { await subscription.DisposeAsync(); } catch { }
             }
+            try { await ReleaseScrollLockAsync(); } catch { }
             try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
             try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
             _dotNetRef?.Dispose();

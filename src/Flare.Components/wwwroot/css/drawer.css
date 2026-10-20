@@ -142,12 +142,18 @@
   box-shadow: none;
   border-inline-end: var(--flare-drawer-border);
   width: var(--flare-drawer-mini-width);
+  max-width: 100vw;
   z-index: auto;
   transition: width var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
 }
 
-.flare-drawer--mini:hover {
-  width: var(--flare-drawer-width);
+/* Expanding on hover alone left the rail clipped for the keyboard: tabbing into a link or a field
+   never widened it. `focus-within` keeps the rail open while focus moves among its own children and
+   closes it when focus leaves, without a pointer being involved; a tap focuses the control and takes
+   the same path. The viewport cap keeps the expanded rail from overflowing a narrow screen. */
+.flare-drawer--mini:hover,
+.flare-drawer--mini:focus-within {
+  width: min(var(--flare-drawer-width), 100vw);
 }
 
 /* An in-flow drawer draws its divider against the content, so a right anchor borders its START
@@ -176,4 +182,7 @@
 }
 @media (max-width: 1919.98px) {
   .flare-drawer--ac-xl,   .flare-drawer-scrim--ac-xl   { display: none !important; }
+}
+@media (max-width: 2559.98px) {
+  .flare-drawer--ac-xxl,  .flare-drawer-scrim--ac-xxl  { display: none !important; }
 }

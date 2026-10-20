@@ -1,0 +1,15 @@
+@page "/drawer-mini"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="display:flex;min-height:100vh">
+        <FlareDrawer Variant="DrawerVariant.Mini" Open="true">
+            <nav id="mini-nav" style="display:flex;flex-direction:column;gap:8px">
+                <a id="mini-link" href="#one">A navigation destination with a long label</a>
+                <button id="mini-button" type="button">Settings</button>
+            </nav>
+        </FlareDrawer>
+        <main style="flex:1;padding:16px">
+            <FlareButton id="outside">Outside</FlareButton>
+        </main>
+    </div>
+</FlareThemeProvider>
