@@ -11,7 +11,7 @@
                     id="@tab.TabButtonId"
                     role="tab"
                     aria-selected="@(isActive ? "true" : "false")"
-                    aria-controls="@tab.PanelId"
+                    aria-controls="@(isActive ? tab.PanelId : null)"
                     aria-disabled="@(tab.Disabled ? "true" : null)"
                     @ref="tab.ButtonRef"
                     tabindex="@(isActive ? 0 : -1)"

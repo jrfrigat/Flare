@@ -13,6 +13,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A theme scope carries inherited high-contrast and RTL state into its subtree and announces its own parameter changes to scoped subscribers.
 - `FlareDateTimePicker`, `FlareMonthPicker`, `FlareWeekPicker`, `FlareMultiDatePicker` and `FlareTimePicker` take the accessible name from a rich `LabelContent` instead of the placeholder.
 - A JSON grid export gives columns with the same title distinct keys instead of silently overwriting one value with another.
+- A ribbon starts on its first enabled tab and leaves a tab that becomes disabled; an inactive tab no longer points at a panel that is not rendered.
 
 ## [0.47.0] - 2026-10-20
 

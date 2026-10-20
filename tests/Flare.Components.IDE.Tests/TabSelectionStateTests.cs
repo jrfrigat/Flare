@@ -1,4 +1,6 @@
 using Flare.Components.IDE;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Flare.Components.Tests;
 
@@ -37,4 +39,37 @@ public class TabSelectionStateTests : FlareTestContext
 
         Assert.Equal(["true", "false"], cut.FindAll("[role=tab]").Select(t => t.GetAttribute("aria-selected")));
     }
+
+    [Fact]
+    public void Ribbon_StartsOnTheFirstEnabledTab()
+    {
+        var cut = Render<FlareRibbon>(p => p
+            .AddChildContent<FlareRibbonTab>(t => t.Add(x => x.Title, "Home").Add(x => x.Disabled, true))
+            .AddChildContent<FlareRibbonTab>(t => t.Add(x => x.Title, "Insert")));
+
+        Assert.Equal(["false", "true"], cut.FindAll("[role=tab]").Select(t => t.GetAttribute("aria-selected")));
+    }
+
+    [Fact]
+    public void Ribbon_MovesOffAnActiveTabThatBecomesDisabled()
+    {
+        var cut = Render<FlareRibbon>(p => p.Add(x => x.ChildContent, RibbonTabs(homeDisabled: false, insertDisabled: true)));
+        Assert.Equal(["true", "false"], cut.FindAll("[role=tab]").Select(t => t.GetAttribute("aria-selected")));
+
+        cut.Render(p => p.Add(x => x.ChildContent, RibbonTabs(homeDisabled: true, insertDisabled: false)));
+
+        Assert.Equal(["false", "true"], cut.FindAll("[role=tab]").Select(t => t.GetAttribute("aria-selected")));
+    }
+
+    private static RenderFragment RibbonTabs(bool homeDisabled, bool insertDisabled) => builder =>
+    {
+        builder.OpenComponent<FlareRibbonTab>(0);
+        builder.AddAttribute(1, nameof(FlareRibbonTab.Title), "Home");
+        builder.AddAttribute(2, nameof(FlareRibbonTab.Disabled), homeDisabled);
+        builder.CloseComponent();
+        builder.OpenComponent<FlareRibbonTab>(3);
+        builder.AddAttribute(4, nameof(FlareRibbonTab.Title), "Insert");
+        builder.AddAttribute(5, nameof(FlareRibbonTab.Disabled), insertDisabled);
+        builder.CloseComponent();
+    };
 }

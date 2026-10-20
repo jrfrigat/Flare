@@ -10,7 +10,7 @@
                  id="@tab.TabButtonId"
                  role="tab"
                  aria-selected="@(isActive ? "true" : "false")"
-                 aria-controls="@tab.PanelId"
+                 aria-controls="@(isActive ? tab.PanelId : null)"
                  tabindex="@(isActive ? 0 : -1)"
                  @onclick="@(() => ActivateTab(tab))"
                  @oncontextmenu="@((e) => HandleContextMenu(e, tab))"

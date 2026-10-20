@@ -25,6 +25,7 @@
 
     protected override string ComponentCssClass => Css.Classes.Ide.Ribbon.TabPanel;
 
+    private bool _disabled;
     internal string TabId { get; } = Guid.NewGuid().ToString("N")[..8];
     internal string PanelId => $"flare-ribbon-panel-{TabId}";
 
@@ -40,6 +41,14 @@
     {
         base.OnInitialized();
         Ribbon.RegisterTab(this);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (_disabled == Disabled) return;
+        _disabled = Disabled;
+        // A tab disabled after it became active must hand the ribbon to the first enabled tab.
+        Ribbon.RefreshActive();
     }
 
     public void Dispose()

@@ -20,9 +20,13 @@ public class TabPanelLabellingTests : FlareTestContext
     [Fact]
     public void Ribbon_PanelAndItsTabPointAtEachOther()
     {
-        var cut = Render<FlareRibbon>(p => p.AddChildContent<FlareRibbonTab>(t => t
-            .Add(x => x.Title, "Home")
-            .AddChildContent<FlareRibbonGroup>(g => g.Add(x => x.Label, "Clipboard"))));
+        var cut = Render<FlareRibbon>(p => p
+            .AddChildContent<FlareRibbonTab>(t => t
+                .Add(x => x.Title, "Home")
+                .AddChildContent<FlareRibbonGroup>(g => g.Add(x => x.Label, "Clipboard")))
+            .AddChildContent<FlareRibbonTab>(t => t
+                .Add(x => x.Title, "Insert")
+                .AddChildContent<FlareRibbonGroup>(g => g.Add(x => x.Label, "Tables"))));
 
         AssertEveryAriaReferenceResolves(cut.Markup);
     }
@@ -31,7 +35,8 @@ public class TabPanelLabellingTests : FlareTestContext
     public void DocumentTabs_PanelAndItsTabPointAtEachOther()
     {
         var cut = Render<FlareDocumentTabs>(p => p
-            .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "readme.md")));
+            .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "readme.md"))
+            .AddChildContent<FlareDocumentTab>(t => t.Add(x => x.Title, "notes.md")));
 
         AssertEveryAriaReferenceResolves(cut.Markup);
     }

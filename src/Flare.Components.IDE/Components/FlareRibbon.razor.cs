@@ -33,11 +33,19 @@ public partial class FlareRibbon : FlareComponentBase
         if (_tabs.Contains(tab)) return;
         _tabs.Add(tab);
         // The first tab that can be opened starts active; a disabled one is skipped.
-        if (_activeTab is null || (_activeTab.Disabled && !tab.Disabled))
+        if (!tab.Disabled && (_activeTab is null || _activeTab.Disabled))
         {
             _activeTab = tab;
             StateHasChanged();
         }
+    }
+
+    /// <summary>Picks the first enabled tab when the active one became disabled or went away.</summary>
+    internal void RefreshActive()
+    {
+        if (_activeTab is { Disabled: false }) return;
+        _activeTab = _tabs.FirstOrDefault(tab => !tab.Disabled);
+        StateHasChanged();
     }
 
     private ElementReference _tablistRef;
@@ -106,7 +114,7 @@ public partial class FlareRibbon : FlareComponentBase
     {
         _tabs.Remove(tab);
         if (_activeTab == tab)
-            _activeTab = _tabs.FirstOrDefault();
+            _activeTab = _tabs.FirstOrDefault(candidate => !candidate.Disabled);
         StateHasChanged();
     }
 
