@@ -63,7 +63,14 @@ public sealed class TooltipAuditTests(BrowserFixture fixture) : IClassFixture<Br
         await Task.Delay(300, Xunit.TestContext.Current.CancellationToken);
         await Expect(page.Locator(Bubble)).ToHaveCSSAsync("opacity", "1");
 
+        var activeId = await page.EvaluateAsync<string>(
+            "document.activeElement?.id || document.activeElement?.tagName || ''");
+        Assert.Equal("tip-trigger", activeId);
+
         await page.Keyboard.PressAsync("Escape");
+        await Expect(page.Locator($".{Css.Classes.Tooltip.Root}"))
+            .ToHaveClassAsync(new System.Text.RegularExpressions.Regex(
+                System.Text.RegularExpressions.Regex.Escape(Css.Classes.Tooltip.Dismissed)));
         await Expect(page.Locator(Bubble)).ToHaveCSSAsync("visibility", "hidden");
 
         // Leaving the trigger is the fresh intent: coming back shows it again.

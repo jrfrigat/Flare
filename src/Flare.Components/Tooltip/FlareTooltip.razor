@@ -10,7 +10,7 @@
      aria-describedby="@(_hasTooltip && !Disabled ? _tooltipId : null)"
      @onclick="HandleRootClick"
      @onkeydown="HandleKeyDown"
-     @onmouseleave="HandleMouseLeave"
+     @onmouseenter="HandleMouseEnter"
      @onfocusout="HandleFocusOut">
     @ChildContent
     @if (_clickOpen)
@@ -200,7 +200,10 @@
         }
     }
 
-    private void HandleMouseLeave()
+    // The FRESH INTENT is the pointer entering again, not leaving: hiding the bubble on Escape makes
+    // the pointer hover whatever is under it, which fires mouseleave on the root. Clearing there
+    // re-showed the tooltip the same instant it hid, so Escape looked broken under the pointer.
+    private void HandleMouseEnter()
     {
         if (_escapeDismissed) _escapeDismissed = false;
     }

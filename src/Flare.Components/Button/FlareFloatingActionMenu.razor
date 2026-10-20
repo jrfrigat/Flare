@@ -92,24 +92,9 @@
         await base.DisposeAsync();
     }
 
-    // Start and End on a top or bottom side align along the inline axis, so in a right-to-left layout
-    // they trade places. On a left or right side that alignment is vertical and direction-free.
-    private string _panelPlacement
-    {
-        get
-        {
-            var placement = Placement.ToPanelPlacement();
-            if (Theme?.IsRtl != true) return placement;
-            return placement switch
-            {
-                PanelPlacement.TopStart => PanelPlacement.TopEnd,
-                PanelPlacement.TopEnd => PanelPlacement.TopStart,
-                PanelPlacement.BottomStart => PanelPlacement.BottomEnd,
-                PanelPlacement.BottomEnd => PanelPlacement.BottomStart,
-                _ => placement,
-            };
-        }
-    }
+    // Start and End name the inline edges, and the placement engine mirrors them for RTL. Doing it
+    // here as well mirrored twice: the engine received End and swapped it back to Start.
+    private string _panelPlacement => Placement.ToPanelPlacement();
 
     private string _sideClass => Placement switch
     {
