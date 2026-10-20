@@ -27,9 +27,18 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Which edge carries the drag handle. Default <see cref="ResizableEdge.Right" /> (width).</summary>
     [Parameter] public ResizableEdge Edge { get; set; } = ResizableEdge.Right;
+    /// <summary>Initial size as a CSS length (for example <c>300px</c> or <c>20rem</c>), applied along
+    /// the edge's axis: width for left/right, height for top/bottom.</summary>
     [Parameter] public string? InitialSize { get; set; }
+    /// <summary>Minimum size as a CSS length. <c>px</c>, <c>rem</c>, <c>em</c>, <c>%</c>, <c>vw</c>
+    /// and <c>vh</c> are resolved against the parent box (percentages) or the viewport; an unsupported
+    /// value is ignored rather than treated as pixels. The handle's own footprint is always a floor.</summary>
     [Parameter] public string? MinSize { get; set; }
+    /// <summary>Maximum size, with the same units and resolution as <see cref="MinSize"/>. A value
+    /// below the resolved minimum is raised to it, so the range is never inverted.</summary>
     [Parameter] public string? MaxSize { get; set; }
+    /// <summary>Invoked with the resulting size in pixels (for example <c>256px</c>) after a drag, a
+    /// step button, or Home/End.</summary>
     [Parameter] public EventCallback<string> OnResized { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Resizable.Root;
@@ -47,20 +56,28 @@
     private ElementReference _container;
     private ElementReference _handle;
     private DotNetObjectReference<FlareResizable>? _dotNetRef;
+    // The drag configuration travels to JS once per change instead of once per instance. Registering
+    // again replaces the previous listener set in the JS registry, so repeated updates cannot stack
+    // handlers; a parameter change that leaves these three alone needs no round trip.
+    private string? _registeredEdge;
+    private string? _registeredMin;
+    private string? _registeredMax;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        var edge = Edge.ToString().ToLowerInvariant();
+        if (edge == _registeredEdge && MinSize == _registeredMin && MaxSize == _registeredMax) return;
+
+        _registeredEdge = edge;
+        _registeredMin = MinSize;
+        _registeredMax = MaxSize;
+        _dotNetRef ??= DotNetObjectReference.Create(this);
+        try
         {
-            _dotNetRef = DotNetObjectReference.Create(this);
-            try
-            {
-                await Resize.RegisterAsync(_container, _handle, Edge.ToString().ToLower(),
-                    MinSize, MaxSize, _dotNetRef);
-            }
-            catch (InvalidOperationException) { }
-            catch (JSException) { }
+            await Resize.RegisterAsync(_container, _handle, edge, MinSize, MaxSize, _dotNetRef);
         }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
     }
 
     [JSInvokable]

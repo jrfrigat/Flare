@@ -128,3 +128,70 @@ it('keeps the resize controls reachable at Home without an explicit minimum', ()
     r.controls.children[1].click();
     expect(r.container.style.width).toBe('96px');
 });
+
+it('resolves percentage, rem and unsupported limits instead of reading them as pixels', () => {
+    // 20% and 50% of the 600px parent; the control footprint (80px) stays the floor.
+    const percent = resizable('right', '20%', '50%');
+    key(percent.handle, 'Home');
+    expect(percent.container.style.width).toBe('120px');
+    key(percent.handle, 'End');
+    expect(percent.container.style.width).toBe('300px');
+
+    // rem is against the root font (16px in jsdom), em against the container's.
+    const rem = resizable('right', '10rem', '20rem');
+    key(rem.handle, 'Home');
+    expect(rem.container.style.width).toBe('160px');
+    key(rem.handle, 'End');
+    expect(rem.container.style.width).toBe('320px');
+
+    // An inverted range cannot produce min > max or a NaN width.
+    const inverted = resizable('right', '80%', '10%');
+    key(inverted.handle, 'Home');
+    expect(inverted.container.style.width).toBe('480px');
+    key(inverted.handle, 'End');
+    expect(inverted.container.style.width).toBe('480px');
+
+    // "banana" is not a length and must not turn into NaNpx by way of parseFloat.
+    const invalid = resizable('right', 'banana', 'nonsense');
+    key(invalid.handle, 'Home');
+    expect(invalid.container.style.width).toBe('80px');
+    expect(invalid.handle.getAttribute('aria-valuenow')).toBe('80');
+});
+
+it('keeps the splitter following the pointer under RTL and reversed flex directions', () => {
+    const rtl = splitter('horizontal');
+    rtl.gutter.parentElement.style.direction = 'rtl';
+    key(rtl.gutter, 'ArrowRight');          // the previous sibling is on the right: the key shrinks it
+    expect(rtl.prev.style.width).toBe('228px');
+    key(rtl.gutter, 'ArrowLeft');
+    expect(rtl.prev.style.width).toBe('240px');
+
+    const rowReverse = splitter('horizontal');
+    rowReverse.gutter.parentElement.style.flexDirection = 'row-reverse';
+    key(rowReverse.gutter, 'ArrowRight');
+    expect(rowReverse.prev.style.width).toBe('228px');
+
+    const columnReverse = splitter('vertical');
+    columnReverse.gutter.parentElement.style.flexDirection = 'column-reverse';
+    key(columnReverse.gutter, 'ArrowDown');
+    expect(columnReverse.prev.style.height).toBe('228px');
+});
+
+it('follows an orientation change and a parent flex change without re-registering', async () => {
+    const s = splitter('auto');
+    expect(s.gutter.getAttribute('aria-orientation')).toBe('vertical');
+
+    // A parent that turns into a column before any interaction: classes and aria follow.
+    s.gutter.parentElement.style.flexDirection = 'column';
+    await new Promise(resolve => setTimeout(resolve, 0));
+    expect(s.gutter.getAttribute('aria-orientation')).toBe('horizontal');
+    expect(s.gutter.classList.contains('flare-splitter--vertical')).toBe(true);
+    key(s.gutter, 'ArrowDown');
+    expect(s.prev.style.height).toBe('252px');
+
+    // An explicit Orientation parameter set after mount wins over the layout.
+    s.gutter.dataset.flareSplitterOrientation = 'horizontal';
+    await new Promise(resolve => setTimeout(resolve, 0));
+    expect(s.gutter.getAttribute('aria-orientation')).toBe('vertical');
+    expect(s.gutter.classList.contains('flare-splitter--horizontal')).toBe(true);
+});

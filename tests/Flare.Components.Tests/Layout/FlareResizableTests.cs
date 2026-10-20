@@ -1,7 +1,18 @@
+using Flare.Components.Services;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Flare.Components.Tests;
 
 public class FlareResizableTests : FlareTestContext
 {
+    private readonly RecordingJsRuntime _runtime;
+
+    public FlareResizableTests()
+    {
+        _runtime = new RecordingJsRuntime(JSInterop.JSRuntime);
+        Services.AddScoped<IResizeJsService>(_ => new ResizeJsService(_runtime));
+    }
+
     [Theory]
     [InlineData(ResizableEdge.Right, "vertical")]
     [InlineData(ResizableEdge.Left, "vertical")]
@@ -74,5 +85,37 @@ public class FlareResizableTests : FlareTestContext
 
         var style = cut.Find($".{Css.Classes.Resizable.Root}").GetAttribute("style") ?? "";
         Assert.Contains("300px", style);
+    }
+
+    [Fact]
+    public void ChangingEdgeOrLimits_ReRegistersTheDragWithoutStackingCallbacks()
+    {
+        var cut = Render<FlareResizable>(p => p
+            .Add(x => x.Edge, ResizableEdge.Right)
+            .Add(x => x.MinSize, "120px")
+            .Add(x => x.MaxSize, "480px"));
+        cut.WaitForAssertion(() => Assert.Contains(_runtime.Invocations, i => i.Id == "registerResizeHandle"));
+
+        cut.Render(p => p
+            .Add(x => x.Edge, ResizableEdge.Bottom)
+            .Add(x => x.MinSize, "80px")
+            .Add(x => x.MaxSize, "300px"));
+
+        cut.WaitForAssertion(() =>
+        {
+            var last = _runtime.Invocations.Last(i => i.Id == "registerResizeHandle");
+            Assert.Equal("bottom", last.Args![2]);
+            Assert.Equal("80px", last.Args[3]);
+            Assert.Equal("300px", last.Args[4]);
+        });
+
+        // A render with unchanged configuration does not add another registration.
+        var count = _runtime.Invocations.Count(i => i.Id == "registerResizeHandle");
+        cut.Render(p => p
+            .Add(x => x.Edge, ResizableEdge.Bottom)
+            .Add(x => x.MinSize, "80px")
+            .Add(x => x.MaxSize, "300px"));
+        cut.WaitForAssertion(() =>
+            Assert.Equal(count, _runtime.Invocations.Count(i => i.Id == "registerResizeHandle")));
     }
 }
