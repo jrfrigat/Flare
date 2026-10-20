@@ -1,0 +1,33 @@
+@page "/select-in-dialog"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <button id="open-dialog" type="button" @onclick="() => _visible = true">Open settings</button>
+        <output id="value">@_value</output>
+        <output id="count">@_picked.Count</output>
+        <output id="dialog-state">@(_visible ? "open" : "closed")</output>
+
+        <FlareDialog @bind-Visible="_visible" Title="Settings">
+            <ChildContent>
+                <FlareStack Gap="FlareSpacing.Medium">
+                    <FlareSelect TValue="string" @bind-Value="_value" Label="Status"
+                                 Items="_statuses" ItemLabel="@(value => value)" />
+                    <FlareMultiSelect TValue="string" Items="_tags" ItemLabel="@(tag => tag)"
+                                      Values="_picked" ValuesChanged="@(values => _picked = values.ToList())"
+                                      Label="Tags" />
+                </FlareStack>
+            </ChildContent>
+            <ActionsContent>
+                <FlareButton OnClick="@(() => _visible = false)">Close</FlareButton>
+            </ActionsContent>
+        </FlareDialog>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private readonly string[] _statuses = ["Open", "Closed"];
+    private readonly string[] _tags = ["Red", "Green"];
+    private string _value = "Open";
+    private List<string> _picked = [];
+    private bool _visible;
+}
