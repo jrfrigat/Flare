@@ -3,6 +3,23 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `FlareListItem.Mono` renders its text in the monospace font, so an identifier keeps the item's title slot and row typography.
+- `FlareSkeleton.Announce` marks one placeholder as the loading indicator of its region.
+- Data grid rows and tree items reorder from the keyboard with `Alt+Space` to pick up or put down and `Alt+ArrowUp`/`Alt+ArrowDown` to move, without taking over the keys those surfaces use for selection, navigation and expanding.
+
+### Changed
+
+- `FlareTransfer` panel titles follow the interface language instead of fixed English text; `SourceTitle` and `TargetTitle` fall back to the localized default when not set.
+- A `FlareSkeleton` is decorative by default and no longer announces itself; set `Announce` or put one status on the loading region.
+- The `FlareChip` body is a native button and the close button is its sibling; a selectable chip announces `aria-pressed`, and Enter or Space on the close button no longer toggles the chip.
+- `FlareListItem` stays a list item and moves its click action into a native button, announcing selection with `aria-pressed`, or `aria-current` on a static selected item.
+- An icon-only `FlareButton` keeps its square shape while `Loading` is true.
+- A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
+
 ## [0.48.0] - 2026-10-20
 
 ### Fixed

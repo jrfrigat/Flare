@@ -16,9 +16,10 @@ public sealed class SkeletonAccessibilityTests(BrowserFixture fixture) : IClassF
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/skeleton");
-        await Expect(page.Locator("#loading-area .flare-skeleton").First).ToBeVisibleAsync();
+        var skeleton = $"#loading-area .{Css.Classes.Skeleton.Root}";
+        await Expect(page.Locator(skeleton).First).ToBeVisibleAsync();
 
-        Assert.Equal(3, await page.Locator("#loading-area .flare-skeleton").CountAsync());
+        Assert.Equal(3, await page.Locator(skeleton).CountAsync());
 
         var snapshot = await page.Locator("#loading-area").AriaSnapshotAsync();
 
