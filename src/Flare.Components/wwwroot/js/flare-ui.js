@@ -355,6 +355,16 @@ export function getAnimationDurationMs(element) {
     return Math.max(longest(style.animationDuration), longest(style.transitionDuration));
 }
 
+// Focuses an element chosen by id and brings it into view. Returns whether focus landed; the caller
+// can fall back to another target when the element went away between the render and the call.
+export function focusElement(elementId) {
+    const el = elementId ? document.getElementById(elementId) : null;
+    if (!el) return false;
+    el.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    el.focus({ preventScroll: true });
+    return document.activeElement === el;
+}
+
 export function supportsEyeDropper() {
     return 'EyeDropper' in window;
 }

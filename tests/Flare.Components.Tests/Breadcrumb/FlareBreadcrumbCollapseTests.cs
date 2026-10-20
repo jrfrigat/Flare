@@ -50,4 +50,58 @@ public class FlareBreadcrumbCollapseTests : FlareTestContext
         Assert.Empty(cut.FindAll($".{Css.Classes.Breadcrumb.Expander}"));
         Assert.Equal(5, cut.FindAll($".{Css.Classes.Breadcrumb.Item}").Count);
     }
+
+    [Fact]
+    public void ItemsAfterCollapseZero_StillKeepsTheCurrentPage()
+    {
+        var cut = Render<FlareBreadcrumb>(p => p
+            .Add(x => x.Items, Five)
+            .Add(x => x.MaxItems, 3)
+            .Add(x => x.ItemsAfterCollapse, 0));
+
+        Assert.Single(cut.FindAll($".{Css.Classes.Breadcrumb.Expander}"));
+        Assert.Contains("D", cut.Markup);
+        Assert.Null(cut.Find($".{Css.Classes.Breadcrumb.Current}").QuerySelector("a"));
+        Assert.Equal("page", cut.Find($".{Css.Classes.Breadcrumb.Current} .{Css.Classes.Breadcrumb.Text}")
+            .GetAttribute("aria-current"));
+    }
+
+    [Fact]
+    public void CountsCoveringTheWholePath_CollapseNothing()
+    {
+        var cut = Render<FlareBreadcrumb>(p => p
+            .Add(x => x.Items, Five)
+            .Add(x => x.MaxItems, 3)
+            .Add(x => x.ItemsBeforeCollapse, 10)
+            .Add(x => x.ItemsAfterCollapse, 1));
+
+        Assert.Empty(cut.FindAll($".{Css.Classes.Breadcrumb.Expander}"));
+        Assert.Equal(5, cut.FindAll($".{Css.Classes.Breadcrumb.Item}").Count);
+    }
+
+    [Fact]
+    public void ANegativeBeforeCount_StillLeavesAnExpanderToRevealTheMiddle()
+    {
+        var cut = Render<FlareBreadcrumb>(p => p
+            .Add(x => x.Items, Five)
+            .Add(x => x.MaxItems, 3)
+            .Add(x => x.ItemsBeforeCollapse, -5));
+
+        Assert.Single(cut.FindAll($".{Css.Classes.Breadcrumb.Expander}"));
+        Assert.Contains("D", cut.Markup);
+    }
+
+    [Fact]
+    public void ExpandingGivesTheKeyboardAFocusTargetAmongTheRevealedCrumbs()
+    {
+        var cut = Render<FlareBreadcrumb>(p => p
+            .Add(x => x.Items, Five)
+            .Add(x => x.MaxItems, 3));
+
+        cut.Find($".{Css.Classes.Breadcrumb.Expander}").Click();
+
+        var target = cut.FindAll($".{Css.Classes.Breadcrumb.Item}")[1];
+        Assert.Equal("-1", target.GetAttribute("tabindex"));
+        Assert.False(string.IsNullOrEmpty(target.GetAttribute("id")));
+    }
 }

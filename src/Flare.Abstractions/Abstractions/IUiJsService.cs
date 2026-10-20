@@ -93,6 +93,14 @@ public interface IUiJsService : IAsyncDisposable
     ValueTask<double> GetAnimationDurationMsAsync(ElementReference element) => ValueTask.FromResult(0d);
 
     /// <summary>
+    /// Focuses the element with <paramref name="elementId"/>, scrolling it into view. Used where the
+    /// target is chosen from data (a validation summary row, a revealed breadcrumb) rather than from a
+    /// captured <see cref="ElementReference"/>. Returns false when no such element exists.
+    /// </summary>
+    /// <param name="elementId">The DOM id of the element to focus.</param>
+    ValueTask<bool> FocusElementAsync(string elementId) => ValueTask.FromResult(false);
+
+    /// <summary>
     /// Keeps the browser from scrolling the page with the keys a FAB speed-dial menu handles itself
     /// (arrows, Home and End on an action). Tab, Enter, Space and Escape keep their ordinary behavior.
     /// Defaults to doing nothing, which leaves the browser's scrolling in place.

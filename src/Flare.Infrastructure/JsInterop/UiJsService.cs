@@ -67,6 +67,10 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
         => InvokeAsync<double>("getAnimationDurationMs", element);
 
     /// <inheritdoc />
+    public ValueTask<bool> FocusElementAsync(string elementId)
+        => InvokeAsync<bool>("focusElement", elementId);
+
+    /// <inheritdoc />
     public ValueTask RegisterTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("registerTreeKeyboard", root);
 
     /// <inheritdoc />

@@ -7,6 +7,8 @@ public static class Validation
     public const string Summary = "flare-validation-summary";
     /// <summary>The <c>flare-validation-summary__item</c> CSS class.</summary>
     public const string SummaryItem = "flare-validation-summary__item";
+    /// <summary>The <c>flare-validation-summary__link</c> CSS class (a message that links to its field).</summary>
+    public const string SummaryLink = "flare-validation-summary__link";
     /// <summary>The <c>flare-validation-summary__list</c> CSS class.</summary>
     public const string SummaryList = "flare-validation-summary__list";
 }

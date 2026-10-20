@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Forms
 
 <div class="@BuildCssClass(_layoutClass, Dense ? Css.Classes.Form.Dense : null)" style="@Style" @attributes="AdditionalAttributes">
     <EditForm Model="@Model"
@@ -7,7 +8,11 @@
               OnInvalidSubmit="HandleInvalidSubmit">
         <DataAnnotationsValidator />
         <CascadingValue Value="this" IsFixed="true">
-            @ChildContent
+            @* Fields register their control ids here so the validation summary can link a message to
+               the field that produced it. *@
+            <CascadingValue Value="_fieldRegistry" IsFixed="true">
+                @ChildContent
+            </CascadingValue>
         </CascadingValue>
     </EditForm>
 </div>
@@ -27,6 +32,10 @@
     [Parameter] public bool Dense { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Form.Root;
+
+    // FieldIdentifier -> the control's DOM id, filled by the fields and read by the summary. A plain
+    // BCL dictionary keeps the cooperation an implementation detail rather than a public type.
+    private readonly Dictionary<FieldIdentifier, string> _fieldRegistry = [];
 
     private string _layoutClass => Layout switch
     {

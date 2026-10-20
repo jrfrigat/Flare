@@ -70,6 +70,9 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
     /// <summary>The cascaded edit context used for validation when the field is bound with a <c>For</c> accessor.</summary>
     [CascadingParameter] protected EditContext? EditContext { get; set; }
 
+    /// <summary>The form's field map, so a validation summary can turn a message into a link to this control.</summary>
+    [CascadingParameter] private Dictionary<FieldIdentifier, string>? FieldRegistry { get; set; }
+
     /// <summary>Identifier of the bound model field, created from the component's <c>For</c> accessor.</summary>
     protected FieldIdentifier FieldId { get; private set; }
 
@@ -132,7 +135,39 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
         {
             FieldId = FieldIdentifier.Create(accessor);
             _hasBoundField = true;
+            SyncFieldRegistration();
         }
+    }
+
+    private Dictionary<FieldIdentifier, string>? _registeredFieldRegistry;
+    private FieldIdentifier _registeredField;
+    private string? _registeredControlId;
+
+    // Keeps the form's map in step with this field: a field that moves to another form unregisters
+    // from the old one, and a field that stops being bound disappears from the map.
+    private void SyncFieldRegistration()
+    {
+        if (!ReferenceEquals(FieldRegistry, _registeredFieldRegistry))
+        {
+            UnregisterField();
+            _registeredFieldRegistry = FieldRegistry;
+        }
+        if (FieldRegistry is null || !_hasBoundField) return;
+        _registeredField = FieldId;
+        _registeredControlId = ControlId;
+        FieldRegistry[_registeredField] = _registeredControlId;
+    }
+
+    private void UnregisterField()
+    {
+        if (_registeredFieldRegistry is not null && _registeredControlId is not null
+            && _registeredFieldRegistry.TryGetValue(_registeredField, out var current)
+            && current == _registeredControlId)
+        {
+            _registeredFieldRegistry.Remove(_registeredField);
+        }
+        _registeredFieldRegistry = null;
+        _registeredControlId = null;
     }
 
     /// <summary>The first validation message for the bound field, or null when the field is unbound or valid.</summary>
@@ -183,6 +218,7 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
     {
         if (_validationSubscribed && EditContext is not null)
             EditContext.OnValidationStateChanged -= HandleValidationStateChanged;
+        UnregisterField();
         await base.DisposeAsync();
     }
 }

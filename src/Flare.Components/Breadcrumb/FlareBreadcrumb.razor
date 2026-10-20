@@ -1,5 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
 
 <nav class="@BuildCssClass()" style="@Style" aria-label="@_ariaLabel" @attributes="AdditionalAttributes">
     <ol class="@Css.Classes.Breadcrumb.List">
@@ -11,28 +13,34 @@
         {
             var list = Items.ToList();
             var total = list.Count;
-            // Collapse the middle into an expander when MaxItems is exceeded.
+            // Collapse the middle into an expander when MaxItems is exceeded. The counts are
+            // normalized: before cannot be negative and after keeps at least the current page, so
+            // ItemsAfterCollapse=0 cannot hide the page the reader is on. An empty middle (counts
+            // covering the whole path) collapses nothing - there would be no expander to reveal it.
             var collapse = !_expanded && MaxItems > 0 && total > MaxItems
-                           && ItemsBeforeCollapse + ItemsAfterCollapse < total;
+                           && _before + _after < total;
             for (int i = 0; i < total; i++)
             {
                 var isLast = i == total - 1;
-                if (collapse && i == ItemsBeforeCollapse)
+                if (collapse && i == _before)
                 {
                     <li class="@Css.Classes.Breadcrumb.Item">
                         <button type="button" class="@Css.Classes.Breadcrumb.Expander"
                                 aria-label="@(FlareStrings.Breadcrumb_Expand)"
-                                @onclick="() => _expanded = true">...</button>
+                                @onclick="Expand">...</button>
                         <span class="@Css.Classes.Breadcrumb.Separator" aria-hidden="true">@Separator</span>
                     </li>
                 }
-                if (collapse && i >= ItemsBeforeCollapse && i < total - ItemsAfterCollapse)
+                if (collapse && i >= _before && i < total - _after)
                 {
                     continue; // hidden middle item
                 }
 
                 var item = list[i];
-                <li class="@Css.Classes.Breadcrumb.Item @(isLast ? Css.Classes.Breadcrumb.Current : "")">
+                var isFocusTarget = _focusPendingId is not null && i == _focusIndex;
+                <li class="@Css.Classes.Breadcrumb.Item @(isLast ? Css.Classes.Breadcrumb.Current : "")"
+                    id="@(isFocusTarget ? _focusPendingId : null)"
+                    tabindex="@(isFocusTarget ? "-1" : null)">
                     @if (!isLast && item.Href is not null && !item.Disabled && Flare.Components.Security.CssValidator.IsHrefSafe(item.Href))
                     {
                         <a class="@Css.Classes.Breadcrumb.Link" href="@item.Href">@item.Text</a>
@@ -73,6 +81,40 @@
     protected override string ComponentCssClass => Css.Classes.Breadcrumb.Root;
 
     private bool _expanded;
+    private int _before = 1;
+    private int _after = 1;
+    private readonly string _id = "flare-breadcrumb-" + Guid.NewGuid().ToString("N")[..8];
+    private string? _focusPendingId;
+    private int _focusIndex;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _before = Math.Max(0, ItemsBeforeCollapse);
+        // The last item is the current page: it is always shown, whatever the caller passed.
+        _after = Math.Max(1, ItemsAfterCollapse);
+    }
+
+    // Expanding removes the button that had focus, so the keyboard has to land somewhere predictable:
+    // the first crumb the expansion revealed. It is made focusable for that one render and focused
+    // after it, instead of leaving the user on the document body.
+    private void Expand()
+    {
+        _expanded = true;
+        _focusIndex = _before;
+        _focusPendingId = $"{_id}-crumb-{_focusIndex}";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusPendingId is null) return;
+        var id = _focusPendingId;
+        _focusPendingId = null;
+        try { await Ui.FocusElementAsync(id); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+    }
 
     private string _ariaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (FlareStrings.Nav_Breadcrumb);
 }

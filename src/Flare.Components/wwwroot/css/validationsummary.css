@@ -9,10 +9,28 @@
 
 .flare-validation-summary__list {
   margin: 0;
-  padding: 0 0 0 var(--flare-spacing-10);
+  padding-block: 0;
+  padding-inline: var(--flare-spacing-10) 0;
   display: flex;
   flex-direction: column;
   gap: var(--flare-spacing-2);
 }
 
 .flare-validation-summary__item { line-height: 1.4; }
+
+/* The summary itself is focused after a failed submit; a visible ring says where the keyboard is. */
+.flare-validation-summary:focus-visible {
+  outline: var(--flare-border-width-emphasis) solid var(--flare-color-primary);
+  outline-offset: var(--flare-spacing-1);
+}
+
+.flare-validation-summary__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.flare-validation-summary__link:focus-visible {
+  outline: var(--flare-border-width-emphasis) solid var(--flare-color-primary);
+  outline-offset: var(--flare-spacing-1);
+}

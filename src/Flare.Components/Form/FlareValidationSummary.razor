@@ -1,14 +1,30 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
 
-@if (_messages.Any())
+@if (_messages.Count > 0)
 {
-    <div class="@BuildCssClass()" role="alert" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass()" role="alert" tabindex="-1" style="@Style"
+         @ref="_summaryEl" @attributes="AdditionalAttributes">
         <ul class="@Css.Classes.Validation.SummaryList">
-            @foreach (var msg in _messages)
+            @foreach (var (message, targetId) in _messages)
             {
-                <li class="@Css.Classes.Validation.SummaryItem">@msg</li>
+                <li class="@Css.Classes.Validation.SummaryItem">
+                    @if (targetId is null)
+                    {
+                        @message
+                    }
+                    else
+                    {
+                        @* A message whose field is known links to it. Activation moves focus to the
+                           control, not just to its position in the page, so a long form is navigable
+                           from the summary with Tab and Enter. *@
+                        <a class="@Css.Classes.Validation.SummaryLink" href="#@targetId"
+                           @onclick="() => FocusFieldAsync(targetId)" @onclick:preventDefault="true">@message</a>
+                    }
+                </li>
             }
         </ul>
     </div>
@@ -16,26 +32,98 @@
 
 @code {
     [CascadingParameter] private EditContext? EditContext { get; set; }
+    /// <summary>The form's map of bound fields to control ids, filled by FlareFieldBase.</summary>
+    [CascadingParameter] private Dictionary<FieldIdentifier, string>? FieldMap { get; set; }
+
+    /// <summary>Moves focus to the summary when a submit fails validation. It stays put on a valid
+    /// submit, and it does not move on field edits (every blur is not a submit). Default true.</summary>
+    [Parameter] public bool FocusOnInvalidSubmit { get; set; } = true;
 
     protected override string ComponentCssClass => Css.Classes.Validation.Summary;
 
-    private IEnumerable<string> _messages =>
-        EditContext?.GetValidationMessages() ?? [];
+    private ElementReference _summaryEl;
+    private EditContext? _subscribed;
+    private bool _focusAfterValidation;
 
-    protected override void OnInitialized()
+    private List<(string Message, string? TargetId)> _messages
     {
-        base.OnInitialized();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged += OnValidationChanged;
+        get
+        {
+            var result = new List<(string, string?)>();
+            var all = EditContext?.GetValidationMessages().ToList() ?? [];
+            // A field's messages are taken one by one so each can carry its control id. The aggregate
+            // list then contributes only what no field claimed (model-level and custom messages).
+            var claimed = new List<string>();
+            if (EditContext is not null && FieldMap is not null)
+            {
+                foreach (var (fieldId, controlId) in FieldMap)
+                {
+                    foreach (var message in EditContext.GetValidationMessages(fieldId))
+                    {
+                        result.Add((message, controlId));
+                        claimed.Add(message);
+                    }
+                }
+            }
+            foreach (var message in all)
+            {
+                var index = claimed.IndexOf(message);
+                if (index >= 0) { claimed.RemoveAt(index); continue; }
+                result.Add((message, null));
+            }
+            return result;
+        }
+    }
+
+    // The cascading context can change without this component being re-created (an EditForm whose
+    // Model parameter changes makes a new one): detach from the old and subscribe to the new here,
+    // not only in OnInitialized.
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (ReferenceEquals(_subscribed, EditContext)) return;
+        Detach();
+        _subscribed = EditContext;
+        if (_subscribed is not null)
+        {
+            _subscribed.OnValidationStateChanged += OnValidationChanged;
+            _subscribed.OnValidationRequested += OnValidationRequested;
+        }
     }
 
     private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
         => InvokeAsync(StateHasChanged);
 
+    private void OnValidationRequested(object? sender, ValidationRequestedEventArgs e)
+        => _focusAfterValidation = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_focusAfterValidation) return;
+        _focusAfterValidation = false;
+        if (!FocusOnInvalidSubmit || _messages.Count == 0) return;
+        try { await _summaryEl.FocusAsync(); } catch { }
+    }
+
+    private async Task FocusFieldAsync(string controlId)
+    {
+        try { await Ui.FocusElementAsync(controlId); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+    }
+
+    private void Detach()
+    {
+        if (_subscribed is null) return;
+        _subscribed.OnValidationStateChanged -= OnValidationChanged;
+        _subscribed.OnValidationRequested -= OnValidationRequested;
+        _subscribed = null;
+    }
+
     public override async ValueTask DisposeAsync()
     {
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        Detach();
         await base.DisposeAsync();
     }
 }
