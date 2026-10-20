@@ -4,8 +4,8 @@
 @* A span, not a div: a chip is an inline run - a tag beside prose, a label in a table cell - and a div
    inside a <p> is invalid. It has always painted as inline-flex, so nothing moves.
 
-   A static chip drops the role, the tab stop, the handlers and the state layers rather than switching
-   them off: a control that announces itself and then refuses is worse than no control. *@
+   A static chip renders no action button at all rather than switching one off: a control that
+   announces itself and then refuses is worse than no control. *@
 <span class="@BuildCssClass(_resolvedSelectedClass, _disabledClass, _sizeClass, _variantClass, _colorClass, _staticClass, _hoverLayerClass, _focusLayerClass, _pressedLayerClass)" style="@_chipStyle" @attributes="AdditionalAttributes">
     @if (AvatarContent is not null)
     {

@@ -106,7 +106,8 @@
 .flare-chip__label { flex: 1; }
 
 /* The native action covers the whole chip, padding included, so a pointer anywhere on it activates
-   the chip. It is transparent rather than opacity:0: the keyboard focus ring has to stay visible. */
+   the chip. It paints nothing, so the label and icons stay visible; the focus ring is drawn on the
+   chip below. */
 .flare-chip__action {
     position: absolute;
     inset: 0;
