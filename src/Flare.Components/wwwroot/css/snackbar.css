@@ -14,14 +14,14 @@
 /* Default: bottom-center */
 .flare-snackbar-provider,
 .flare-snackbar-provider--bottom-center {
-  bottom: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-bottom, 0px) + var(--flare-snackbar-provider-offset, 0px));
+  bottom: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-bottom, 0px) + var(--flare-snackbar-provider-offset));
   left: 50%;
   transform: translateX(-50%);
   align-items: center;
 }
 
 .flare-snackbar-provider--top-center {
-  top: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-top, 0px) + var(--flare-snackbar-provider-offset, 0px));
+  top: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-top, 0px) + var(--flare-snackbar-provider-offset));
   bottom: auto;
   left: 50%;
   transform: translateX(-50%);
@@ -30,7 +30,7 @@
 }
 
 .flare-snackbar-provider--bottom-left {
-  bottom: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-bottom, 0px) + var(--flare-snackbar-provider-offset, 0px));
+  bottom: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-bottom, 0px) + var(--flare-snackbar-provider-offset));
   left: var(--flare-snackbar-provider-inset);
   right: auto;
   transform: none;
@@ -38,7 +38,7 @@
 }
 
 .flare-snackbar-provider--bottom-right {
-  bottom: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-bottom, 0px) + var(--flare-snackbar-provider-offset, 0px));
+  bottom: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-bottom, 0px) + var(--flare-snackbar-provider-offset));
   right: var(--flare-snackbar-provider-inset);
   left: auto;
   transform: none;
@@ -46,7 +46,7 @@
 }
 
 .flare-snackbar-provider--top-left {
-  top: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-top, 0px) + var(--flare-snackbar-provider-offset, 0px));
+  top: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-top, 0px) + var(--flare-snackbar-provider-offset));
   bottom: auto;
   left: var(--flare-snackbar-provider-inset);
   right: auto;
@@ -56,7 +56,7 @@
 }
 
 .flare-snackbar-provider--top-right {
-  top: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-top, 0px) + var(--flare-snackbar-provider-offset, 0px));
+  top: calc(var(--flare-snackbar-provider-inset) + env(safe-area-inset-top, 0px) + var(--flare-snackbar-provider-offset));
   bottom: auto;
   right: var(--flare-snackbar-provider-inset);
   left: auto;
@@ -70,7 +70,6 @@
   align-items: center;
   gap: var(--flare-spacing-4);
   min-width: var(--flare-snackbar-min-width);
-  max-width: var(--flare-snackbar-max-width);
   /* Single-line 48dp, two-line grows to ~68dp via wrapping content */
   min-height: var(--flare-snackbar-min-height);
   /* Never wider than the stack, even when the theme's min-width is larger than a narrow screen. */
