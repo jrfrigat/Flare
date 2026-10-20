@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Flare.Components.Tests;
 
 /// <summary>
@@ -6,6 +8,12 @@ namespace Flare.Components.Tests;
 /// </summary>
 public class KeyboardNavigationTests : BunitContext
 {
+    public KeyboardNavigationTests()
+    {
+        Services.AddSingleton<Flare.Components.Services.IUiJsService>(
+            _ => new Flare.Components.Services.UiJsService(JSInterop.JSRuntime));
+    }
+
     [Fact]
     public void FlareButton_Should_Have_Type_Button()
     {

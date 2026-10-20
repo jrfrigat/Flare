@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Flare.Components.Tests;
 
 /// <summary>
@@ -6,6 +8,14 @@ namespace Flare.Components.Tests;
 /// </summary>
 public class AccessibilityTests : BunitContext
 {
+    public AccessibilityTests()
+    {
+        // A bare BunitContext has no AddFlare; the alert resolves its motion timing through the
+        // service, so register the real implementation over bUnit's JS runtime.
+        Services.AddSingleton<Flare.Components.Services.IUiJsService>(
+            _ => new Flare.Components.Services.UiJsService(JSInterop.JSRuntime));
+    }
+
     [Fact]
     public void FlareButton_Should_RenderButtonElement()
     {

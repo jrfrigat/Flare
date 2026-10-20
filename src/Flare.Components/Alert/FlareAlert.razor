@@ -1,8 +1,7 @@
 @namespace Flare.Components
-@using Microsoft.Extensions.DependencyInjection
 @using Microsoft.JSInterop
 @inherits FlareComponentBase
-@inject IServiceProvider Services
+@inject Flare.Components.Services.IUiJsService Ui
 @implements IDisposable
 
 @if (!_dismissed)
@@ -59,10 +58,6 @@
     private bool _disposed;
     private ElementReference _rootEl;
 
-    // The timing check is an enhancement, not a dependency: a bare test renderer that never
-    // registered AddFlare still renders the alert, with the fallback timing.
-    private Flare.Components.Services.IUiJsService? Ui => Services.GetService<Flare.Components.Services.IUiJsService>();
-
     private string? _dismissingClass => _dismissing ? Css.Classes.Alert.Dismissing : null;
 
     private string _severityClass => Severity switch
@@ -102,7 +97,7 @@
             // Wait for the motion the ACTIVE THEME plays, not a constant: a slow exit used to lose its
             // last frames to the removal, and a reduced-motion one still waited the full 300ms.
             var delayMs = 0d;
-            try { if (Ui is { } ui) delayMs = await ui.GetAnimationDurationMsAsync(_rootEl); }
+            try { delayMs = await Ui.GetAnimationDurationMsAsync(_rootEl); }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
             catch (JSException) { }
