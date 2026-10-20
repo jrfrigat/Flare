@@ -999,6 +999,12 @@
   <data name="DataGrid_ColumnTypesDesc" xml:space="preserve">
     <value>Рендеринг с учетом типа: булево значение как значок флажка, даты и числа с учетом культуры и формата через FlareColumn.Type/Format. Тип определяется автоматически, если не задан; редакторы фильтров и выравнивание текста (числа вправо, булевы по центру) следуют типу колонки. Переопределяется для каждой колонки через FlareColumn.Align.</value>
   </data>
+  <data name="DataGrid_ColumnWidthsTitle" xml:space="preserve">
+    <value>Ширины колонок</value>
+  </data>
+  <data name="DataGrid_ColumnWidthsDesc" xml:space="preserve">
+    <value>Заданные ширины остаются точными; колонка без ширины заполняет остаток сетки.</value>
+  </data>
   <data name="DataGrid_QueryableTitle" xml:space="preserve">
     <value>Queryable (IQueryable / EF Core)</value>
   </data>

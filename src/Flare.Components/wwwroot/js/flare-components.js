@@ -127,12 +127,23 @@ export const FlareDataGrid = {
         handle.dataset.flareResize = '1';
 
         let startW = 0;
+        let startTableW = 0;
         let table = null;
+        let exact = false;
         startDrag(handle, {
             cursor: 'col-resize',
-            onStart() { startW = thEl.offsetWidth; table = thEl.closest('table'); },
+            onStart() {
+                startW = thEl.offsetWidth;
+                table = thEl.closest('table');
+                startTableW = table.offsetWidth;
+                exact = table.classList.contains('flare-datagrid__table--widths-exact');
+            },
             onMove(dx) {
-                thEl.style.width = Math.max(40, startW + dx) + 'px';
+                const width = Math.max(40, startW + dx);
+                thEl.style.width = width + 'px';
+                // An exact-width table is as wide as the sum of its columns; the drag has to move the
+                // table too, or the spare width returns to the columns and the column cannot shrink.
+                if (exact) table.style.width = startTableW + width - startW + 'px';
                 FlareDataGrid.updateFrozenOffsets(table);   // sticky offsets stay right during the drag
             },
         });

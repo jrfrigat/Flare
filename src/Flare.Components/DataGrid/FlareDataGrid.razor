@@ -84,7 +84,8 @@
         <table @ref="_tableRef"
                tabindex="0"
                role="grid"
-               class="@Css.Classes.DataGrid.Table @(_dimTable ? Css.Classes.DataGrid.TableLoading : "") @(_hasFrozen ? Css.Classes.DataGrid.TableScrollX : "") @(_shouldVirtualize ? Css.Classes.DataGrid.TableFixed : "") @(CellSelection ? Css.Classes.DataGrid.CellSelectMode : "")"
+               class="@Css.Classes.DataGrid.Table @(_dimTable ? Css.Classes.DataGrid.TableLoading : "") @(_hasFrozen ? Css.Classes.DataGrid.TableScrollX : "") @((_shouldVirtualize || _hasVisibleColumnWidth) ? Css.Classes.DataGrid.TableFixed : "") @(_visibleColumnWidthsExact ? Css.Classes.DataGrid.TableWidthsExact : "") @(CellSelection ? Css.Classes.DataGrid.CellSelectMode : "")"
+               style="@_exactTableWidthStyle"
                aria-rowcount="@_totalRows"
                aria-colcount="@_totalColumnCount"
                @onkeydown="HandleGridKeyDown"
@@ -573,7 +574,8 @@
         data-flare-drag="@(ReorderableColumns ? ColumnDragId(col.Key) : null)"
         data-flare-drag-group="@(ReorderableColumns ? ColumnZone : null)"
         @onclick="@(async (e) => await OnHeaderClick(col, e))">
-        @if (col.TitleContent is not null) { @col.TitleContent } else { @col.Title }
+        @if (col.TitleContent is not null) { @col.TitleContent }
+        else { <span class="@Css.Classes.DataGrid.ThLabel">@col.Title</span> }
         @if (col.Sortable)
         {
             var sortIdx = _sortStack.FindIndex(s => s.Column.Key == col.Key);

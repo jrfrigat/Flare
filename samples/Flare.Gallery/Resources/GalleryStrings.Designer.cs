@@ -2615,6 +2615,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Explicit widths stay exact; the column without one fills the rest of the grid..
+        /// </summary>
+        public static string DataGrid_ColumnWidthsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnWidthsDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Column widths.
+        /// </summary>
+        public static string DataGrid_ColumnWidthsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnWidthsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Size, Paging and the Sticky Header.
         /// </summary>
         public static string DataGrid_ScrollModeTitle {

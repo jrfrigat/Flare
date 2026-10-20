@@ -223,10 +223,18 @@ public static class DataGrid
     public const string TableScrollX = "flare-datagrid__table--scroll-x";
     /// <summary>The <c>flare-datagrid__table--fixed</c> CSS class, resolving column widths from the
     /// header instead of from the rendered rows - required while rows are recycled, since the rendered
-    /// rows change as the user scrolls.</summary>
+    /// rows change as the user scrolls, and wherever a column declares an explicit Width.</summary>
     public const string TableFixed = "flare-datagrid__table--fixed";
+    /// <summary>The <c>flare-datagrid__table--widths-exact</c> CSS class: the table keeps exactly the
+    /// sum of its declared column widths instead of filling the wrapper and spreading the spare width
+    /// over every column.</summary>
+    public const string TableWidthsExact = "flare-datagrid__table--widths-exact";
     /// <summary>The <c>flare-datagrid__td--edit-actions</c> CSS class.</summary>
     public const string TdEditActions = "flare-datagrid__td--edit-actions";
     /// <summary>The <c>flare-datagrid__th--edit-actions</c> CSS class.</summary>
     public const string ThEditActions = "flare-datagrid__th--edit-actions";
+    /// <summary>The <c>flare-datagrid__th-label</c> CSS class: the plain title text of a header cell,
+    /// kept separate from the sort, resize and filter affordances so a fixed-width column can cut the
+    /// label with an ellipsis without hiding them.</summary>
+    public const string ThLabel = "flare-datagrid__th-label";
 }

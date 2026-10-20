@@ -1,0 +1,10 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareDataGrid Items="@DatagridData._people">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Width="120px" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" Width="160px" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+</FlareDataGrid>

@@ -58,6 +58,88 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Keys of the columns currently hidden (a key is absent here when the column is visible).</summary>
     public IReadOnlyCollection<string> HiddenColumnKeys => _hiddenColumns;
 
+    // A flat table with an explicit Width uses fixed layout, so the width comes from the header and
+    // does not follow the widest cell. Banded and composite headers keep their own layout: fixed
+    // layout splits a band cell's colspan width equally and would ignore the leaf widths.
+    private bool _hasVisibleColumnWidth
+    {
+        get
+        {
+            if (_hasBands || _hasBandedComposite) return false;
+            foreach (var column in _gridColumns)
+            {
+                if (column.IsComposite || _hiddenColumns.Contains(column.Key)) continue;
+                if (!string.IsNullOrWhiteSpace(column.Width)) return true;
+            }
+            return false;
+        }
+    }
+
+    // Every visible column declares a plain length: the table keeps exactly their sum. Filling the
+    // wrapper instead would divide the spare width over every column, widening compact ones.
+    private bool _visibleColumnWidthsExact
+    {
+        get
+        {
+            if (_hasBands || _hasBandedComposite) return false;
+            var visible = 0;
+            foreach (var column in _gridColumns)
+            {
+                if (column.IsComposite || _hiddenColumns.Contains(column.Key)) continue;
+                visible++;
+                if (!IsPlainLength(column.Width)) return false;
+            }
+            return visible > 0;
+        }
+    }
+
+    // The sum is written as a calc() width, so the table is definite: max-content would follow the
+    // header labels and the filter editors and widen the columns past their declared width.
+    private string? _exactTableWidthStyle
+    {
+        get
+        {
+            if (!_visibleColumnWidthsExact) return null;
+            var widths = new List<string>();
+            foreach (var column in _gridColumns)
+            {
+                if (column.IsComposite || _hiddenColumns.Contains(column.Key)) continue;
+                widths.Add(column.Width!.Trim());
+            }
+            return $"width:calc({string.Join(" + ", widths)});min-width:0";
+        }
+    }
+
+    private static readonly string[] LengthUnits =
+    [
+        "px", "rem", "em", "ex", "ch", "cm", "mm", "q", "in", "pt", "pc",
+        "vw", "vh", "vmin", "vmax", "svw", "svh", "lvw", "lvh", "dvw", "dvh"
+    ];
+
+    // A width calc() can add up as a length. Anything else - a percentage, a keyword, a function -
+    // stays a share of the table, and the grid keeps filling its container.
+    private static bool IsPlainLength(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        var text = value.AsSpan().Trim();
+        var digits = 0;
+        var i = 0;
+        while (i < text.Length && char.IsAsciiDigit(text[i])) { i++; digits++; }
+        if (i < text.Length && text[i] == '.')
+        {
+            i++;
+            while (i < text.Length && char.IsAsciiDigit(text[i])) { i++; digits++; }
+        }
+        if (digits == 0) return false;
+        if (i == text.Length) return text is "0";
+        var unit = text[i..];
+        foreach (var candidate in LengthUnits)
+        {
+            if (unit.Equals(candidate, StringComparison.OrdinalIgnoreCase)) return true;
+        }
+        return false;
+    }
+
     /// <summary>Toggles a column's visibility by its stable key. Used by a bound
     /// <see cref="DataGridColumnPicker{TItem}"/>; honors controlled <c>HiddenColumns</c>.</summary>
     public Task ToggleColumnAsync(string key) => ToggleColumnVisibility(key);

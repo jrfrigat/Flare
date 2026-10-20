@@ -15,6 +15,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A JSON grid export gives columns with the same title distinct keys instead of silently overwriting one value with another.
 - A ribbon starts on its first enabled tab and leaves a tab that becomes disabled; an inactive tab no longer points at a panel that is not rendered.
 - Gantt axis captions read the same Gregorian calendar the axis counts, and week captions follow the culture's date order instead of a fixed `dd.MM`.
+- A `FlareColumn.Width` is exact: compact columns keep their width on a wide grid, columns without one share the rest, and a table whose every column declares a plain width stops at their sum instead of spreading the spare width over every column.
 
 ## [0.47.0] - 2026-10-20
 

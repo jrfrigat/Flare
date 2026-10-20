@@ -999,6 +999,12 @@
   <data name="DataGrid_ColumnTypesDesc" xml:space="preserve">
     <value>Type-aware rendering: boolean as a checkbox icon, culture- and format-aware dates and numbers via FlareColumn.Type/Format. Type is auto-detected when not set; filter editors and text alignment (numbers right, booleans centered) follow the column type. Override per column with FlareColumn.Align.</value>
   </data>
+  <data name="DataGrid_ColumnWidthsTitle" xml:space="preserve">
+    <value>Column widths</value>
+  </data>
+  <data name="DataGrid_ColumnWidthsDesc" xml:space="preserve">
+    <value>Explicit widths stay exact; the column without one fills the rest of the grid.</value>
+  </data>
   <data name="DataGrid_QueryableTitle" xml:space="preserve">
     <value>Queryable (IQueryable / EF Core)</value>
   </data>
