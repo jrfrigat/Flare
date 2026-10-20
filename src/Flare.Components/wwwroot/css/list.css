@@ -32,6 +32,8 @@
 .flare-list-item:has(.flare-list-item__secondary) { min-height: var(--flare-list-item-height-two-line); }
 
 .flare-list-item__leading {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -51,11 +53,30 @@
 /* __secondary style comes from the shared supporting-text rule (input.css). */
 
 .flare-list-item__trailing {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     flex-shrink: 0;
     --_flare-icon-size: var(--flare-list-item-icon-size);
     color: var(--flare-list-item-trailing-color);
+}
+
+/* The native action covers the whole row, padding included, so a pointer anywhere on it activates
+   the row. It paints nothing, so the row content stays visible; the slots sit above it. */
+.flare-list-item__action {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: transparent;
+    font: inherit;
+    appearance: none;
+    cursor: inherit;
 }
 
 .flare-list-item--clickable {

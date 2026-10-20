@@ -25,4 +25,7 @@ public static class List
     public const string Primary = "flare-list-item__primary";
     /// <summary>The <c>flare-list-item__secondary</c> CSS class.</summary>
     public const string Secondary = "flare-list-item__secondary";
+    /// <summary>The <c>flare-list-item__action</c> CSS class: the native button stretched over a
+    /// clickable item.</summary>
+    public const string Action = "flare-list-item__action";
 }

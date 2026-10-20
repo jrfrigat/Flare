@@ -2,21 +2,16 @@
 @inherits FlareComponentBase
 
 <li class="@BuildCssClass(_clickableClass, _selectedClass, _disabledClass)"
-    role="@(OnClick.HasDelegate ? "button" : null)"
-    tabindex="@(OnClick.HasDelegate && !Disabled ? 0 : (int?)null)"
-    aria-disabled="@(Disabled ? "true" : null)"
-    aria-selected="@(Selected ? "true" : null)"
+    aria-current="@(Selected && !OnClick.HasDelegate ? "true" : null)"
     style="@Style"
-    @onclick="HandleClick"
-    @onkeydown="HandleKeyDown"
     @attributes="AdditionalAttributes">
-    @* The slots hold the row's own actions: on a clickable row their clicks and keys stay in the slot. *@
+    @* The slots hold the row's own actions; they sit above the stretched action (list.css), so their
+       clicks never reach it and the row itself stays a plain listitem. *@
     @if (Leading is not null)
     {
-        <div class="@Css.Classes.List.Leading"
-             @onclick:stopPropagation="OnClick.HasDelegate" @onkeydown:stopPropagation="OnClick.HasDelegate">@Leading</div>
+        <div class="@Css.Classes.List.Leading">@Leading</div>
     }
-    <div class="@Css.Classes.List.Content">
+    <div class="@Css.Classes.List.Content" id="@_contentId">
         @if (!string.IsNullOrEmpty(Primary))
         {
             <span class="@_primaryClass">@Primary</span>
@@ -29,8 +24,15 @@
     </div>
     @if (Trailing is not null)
     {
-        <div class="@Css.Classes.List.Trailing"
-             @onclick:stopPropagation="OnClick.HasDelegate" @onkeydown:stopPropagation="OnClick.HasDelegate">@Trailing</div>
+        <div class="@Css.Classes.List.Trailing">@Trailing</div>
+    }
+    @* A native button stretched over the row: the li keeps listitem semantics, while Enter/Space,
+       disabled and focus behave as they do on any button. *@
+    @if (OnClick.HasDelegate)
+    {
+        <button class="@Css.Classes.List.Action" type="button" disabled="@Disabled"
+                aria-labelledby="@_contentId" aria-pressed="@(Selected ? "true" : "false")"
+                @onclick="HandleClick"></button>
     }
 </li>
 
@@ -59,6 +61,8 @@
 
     protected override string ComponentCssClass => Css.Classes.List.Item;
 
+    private readonly string _contentId = "flare-list-item-content-" + Guid.NewGuid().ToString("N")[..8];
+
     private string _primaryClass => Mono
         ? $"{Css.Classes.List.Primary} {Css.Classes.Text.Mono}"
         : Css.Classes.List.Primary;
@@ -75,14 +79,5 @@
     {
         if (!Disabled && OnClick.HasDelegate)
             await OnClick.InvokeAsync();
-    }
-
-    // A clickable item exposes role="button" + tabindex=0, so keyboard users must be able to activate
-    // it with Enter or Space (WCAG 2.1.1), matching native button behavior.
-    private async Task HandleKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
-    {
-        if (!OnClick.HasDelegate) return;
-        if (e.Key is "Enter" or " " or "Spacebar")
-            await HandleClick();
     }
 }

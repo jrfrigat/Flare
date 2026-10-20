@@ -103,6 +103,69 @@ public class FlareListItemTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Clickable}"));
     }
 
+    // The clickable row used to replace listitem with role=button. It stays a listitem and puts the
+    // control in a native button stretched over it.
+    [Fact]
+    public void ClickableRow_KeepsListItemSemanticsAndAddsAButton()
+    {
+        var cut = Render<FlareListItem>(p => p
+            .Add(x => x.Primary, "Item")
+            .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })));
+
+        var li = cut.Find($"li.{Css.Classes.List.Item}");
+        Assert.Null(li.GetAttribute("role"));
+        Assert.Null(li.GetAttribute("tabindex"));
+
+        var action = cut.Find($".{Css.Classes.List.Action}");
+        Assert.Equal("BUTTON", action.TagName);
+        Assert.Equal("false", action.GetAttribute("aria-pressed"));
+    }
+
+    [Fact]
+    public void SelectedClickableRow_AnnouncesPressedState()
+    {
+        var cut = Render<FlareListItem>(p => p
+            .Add(x => x.Primary, "Item")
+            .Add(x => x.Selected, true)
+            .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })));
+
+        Assert.Equal("true", cut.Find($".{Css.Classes.List.Action}").GetAttribute("aria-pressed"));
+    }
+
+    [Fact]
+    public void StaticSelectedRow_AnnouncesCurrent()
+    {
+        var cut = Render<FlareListItem>(p => p
+            .Add(x => x.Primary, "Item")
+            .Add(x => x.Selected, true));
+
+        Assert.Equal("true", cut.Find($"li.{Css.Classes.List.Item}").GetAttribute("aria-current"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.List.Action}"));
+    }
+
+    [Fact]
+    public void StaticRow_HasNoActionAndNoCurrentState()
+    {
+        var cut = Render<FlareListItem>(p => p.Add(x => x.Primary, "Item"));
+
+        Assert.Null(cut.Find("li").GetAttribute("aria-current"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.List.Action}"));
+    }
+
+    [Fact]
+    public void ActionButton_IsNamedByTheContent()
+    {
+        var cut = Render<FlareListItem>(p => p
+            .Add(x => x.Primary, "Item")
+            .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })));
+
+        var action = cut.Find($".{Css.Classes.List.Action}");
+        var contentId = action.GetAttribute("aria-labelledby");
+
+        Assert.False(string.IsNullOrEmpty(contentId));
+        Assert.Contains("Item", cut.Find($"#{contentId}").TextContent);
+    }
+
     // A clickable row with its own action in a slot (Merito: a delete button on a catalogue row). The
     // button must act alone, by mouse and by keyboard, while the rest of the row still opens it.
     // Keys are checked in Flare.Browser.Tests: bUnit bubbles keydown past a stopPropagation that a browser honours.
@@ -142,7 +205,7 @@ public class FlareListItemTests : FlareTestContext
     {
         var (cut, rowClicks, _) = RowWithSlotButton(trailing: true);
 
-        cut.Find($".{Css.Classes.List.Primary}").Click();
+        cut.Find($".{Css.Classes.List.Action}").Click();
 
         Assert.Equal(1, rowClicks());
     }
