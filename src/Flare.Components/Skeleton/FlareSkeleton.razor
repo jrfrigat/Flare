@@ -3,9 +3,10 @@
 
 <span class="@BuildCssClass(_variantClass, _animClass)"
       style="@_sizeStyle @Style"
-      aria-busy="true"
-      aria-label="@(FlareStrings.Aria_Loading)"
-      role="status"
+      role="@(Announce ? "status" : null)"
+      aria-busy="@(Announce ? "true" : null)"
+      aria-label="@(Announce ? FlareStrings.Aria_Loading : null)"
+      aria-hidden="@(Announce ? null : "true")"
       @attributes="AdditionalAttributes">
 </span>
 
@@ -18,6 +19,10 @@
     [Parameter] public string? Width { get; set; }
     /// <summary>CSS height applied inline to the skeleton element.</summary>
     [Parameter] public string? Height { get; set; }
+    /// <summary>Makes this placeholder the single loading indicator of its region, so it announces
+    /// itself as a status. When false (the default) the placeholder is decorative and hidden from
+    /// assistive technology - the usual case for several bars that belong to one loading area.</summary>
+    [Parameter] public bool Announce { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Skeleton.Root;
 

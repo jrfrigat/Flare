@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Animation` | `SkeletonAnimation` | `SkeletonAnimation.Wave` | Parameter |  | Loading animation style: Wave, Pulse, or None. |
+| `Announce` | `bool` | `false` | Parameter |  | Makes this placeholder the single loading indicator of its region, so it announces itself as a status. When false (the default) the placeholder is decorative and hidden from assistive technology - the usual case for several bars that belong to one loading area. |
 | `Height` | `string?` | `` | Parameter |  | CSS height applied inline to the skeleton element. |
 | `Variant` | `SkeletonVariant` | `SkeletonVariant.Rect` | Parameter |  | Shape of the skeleton placeholder: Rect, Text, or Circle. |
 | `Width` | `string?` | `` | Parameter |  | CSS width applied inline to the skeleton element. |

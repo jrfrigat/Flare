@@ -6124,6 +6124,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Animation", @"SkeletonAnimation", @"SkeletonAnimation.Wave", @"Loading animation style: Wave, Pulse, or None.", null, false, false, false, @"FlareSkeleton"),
+                new ApiParameterInfo(@"Announce", @"bool", @"false", @"Makes this placeholder the single loading indicator of its region, so it announces itself as a status. When false (the default) the placeholder is decorative and hidden from assistive technology - the usual case for several bars that belong to one loading area.", null, false, false, false, @"FlareSkeleton"),
                 new ApiParameterInfo(@"Height", @"string?", null, @"CSS height applied inline to the skeleton element.", null, false, false, false, @"FlareSkeleton"),
                 new ApiParameterInfo(@"Variant", @"SkeletonVariant", @"SkeletonVariant.Rect", @"Shape of the skeleton placeholder: Rect, Text, or Circle.", null, false, false, false, @"FlareSkeleton"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"CSS width applied inline to the skeleton element.", null, false, false, false, @"FlareSkeleton"),
