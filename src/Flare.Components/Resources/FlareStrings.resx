@@ -301,6 +301,8 @@
   <data name="OnThisPage_Title" xml:space="preserve"><value>On this page</value></data>
 
   <!-- Transfer -->
+  <data name="Transfer_SourceTitle" xml:space="preserve"><value>Available</value></data>
+  <data name="Transfer_TargetTitle" xml:space="preserve"><value>Selected</value></data>
   <data name="Transfer_MoveToTarget" xml:space="preserve"><value>Move selected to target</value></data>
   <data name="Transfer_MoveAllToTarget" xml:space="preserve"><value>Move all to target</value></data>
   <data name="Transfer_MoveToSource" xml:space="preserve"><value>Move selected to source</value></data>

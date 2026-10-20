@@ -7531,10 +7531,10 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ItemLabel", @"Func<TItem?, string>?", null, @"Function that returns the display text for an item.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"SourceItems", @"IReadOnlyList<TItem?>?", null, @"Items available in the source (left) panel.", null, false, false, false, @"FlareTransfer"),
-                new ApiParameterInfo(@"SourceTitle", @"string", @"""Available""", @"Header label shown above the source panel.", null, false, false, false, @"FlareTransfer"),
+                new ApiParameterInfo(@"SourceTitle", @"string?", null, @"Header label shown above the source panel; when null, the localized default is used.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"TargetItems", @"IReadOnlyList<TItem?>?", null, @"Items already placed in the target (right) panel.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"TargetItemsChanged", @"EventCallback<IReadOnlyList<TItem?>>", null, @"Callback raised when the target list changes.", null, false, true, false, @"FlareTransfer"),
-                new ApiParameterInfo(@"TargetTitle", @"string", @"""Selected""", @"Header label shown above the target panel.", null, false, false, false, @"FlareTransfer"),
+                new ApiParameterInfo(@"TargetTitle", @"string?", null, @"Header label shown above the target panel; when null, the localized default is used.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

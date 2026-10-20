@@ -6,11 +6,11 @@
     <!-- Source list -->
     <div class="@Css.Classes.Transfer.Panel">
         <div class="@Css.Classes.Transfer.PanelHeader">
-            <FlareText Typo="TypographyScale.LabelLarge">@SourceTitle (@_source.Count)</FlareText>
+            <FlareText Typo="TypographyScale.LabelLarge">@ResolvedSourceTitle (@_source.Count)</FlareText>
         </div>
         <div class="@Css.Classes.Transfer.List"
              role="listbox"
-             aria-label="@SourceTitle"
+             aria-label="@ResolvedSourceTitle"
              aria-multiselectable="true"
              aria-activedescendant="@_srcActiveId"
              tabindex="0"
@@ -54,11 +54,11 @@
     <!-- Target list -->
     <div class="@Css.Classes.Transfer.Panel">
         <div class="@Css.Classes.Transfer.PanelHeader">
-            <FlareText Typo="TypographyScale.LabelLarge">@TargetTitle (@_target.Count)</FlareText>
+            <FlareText Typo="TypographyScale.LabelLarge">@ResolvedTargetTitle (@_target.Count)</FlareText>
         </div>
         <div class="@Css.Classes.Transfer.List"
              role="listbox"
-             aria-label="@TargetTitle"
+             aria-label="@ResolvedTargetTitle"
              aria-multiselectable="true"
              aria-activedescendant="@_tgtActiveId"
              tabindex="0"
@@ -89,10 +89,10 @@
     [Parameter] public EventCallback<IReadOnlyList<TItem>> TargetItemsChanged { get; set; }
     /// <summary>Function that returns the display text for an item.</summary>
     [Parameter] public Func<TItem, string>? ItemLabel { get; set; }
-    /// <summary>Header label shown above the source panel.</summary>
-    [Parameter] public string SourceTitle { get; set; } = "Available";
-    /// <summary>Header label shown above the target panel.</summary>
-    [Parameter] public string TargetTitle { get; set; } = "Selected";
+    /// <summary>Header label shown above the source panel; when null, the localized default is used.</summary>
+    [Parameter] public string? SourceTitle { get; set; }
+    /// <summary>Header label shown above the target panel; when null, the localized default is used.</summary>
+    [Parameter] public string? TargetTitle { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Transfer.Root;
 
@@ -117,6 +117,9 @@
         if (_srcActive >= _source.Count) _srcActive = _source.Count - 1;
         if (_tgtActive >= _target.Count) _tgtActive = _target.Count - 1;
     }
+
+    private string ResolvedSourceTitle => SourceTitle ?? FlareStrings.Transfer_SourceTitle;
+    private string ResolvedTargetTitle => TargetTitle ?? FlareStrings.Transfer_TargetTitle;
 
     private string ItemText(TItem item) => ItemLabel?.Invoke(item) ?? item?.ToString() ?? "";
 

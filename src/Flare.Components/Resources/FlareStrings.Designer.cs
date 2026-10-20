@@ -1877,7 +1877,25 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Transfer_MoveToTarget", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Available.
+        /// </summary>
+        public static string Transfer_SourceTitle {
+            get {
+                return ResourceManager.GetString("Transfer_SourceTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Selected.
+        /// </summary>
+        public static string Transfer_TargetTitle {
+            get {
+                return ResourceManager.GetString("Transfer_TargetTitle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Collapse.
         /// </summary>

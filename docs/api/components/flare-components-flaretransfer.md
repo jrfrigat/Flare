@@ -10,10 +10,10 @@
 | --- | --- | --- | --- | --- | --- |
 | `ItemLabel` | `Func<TItem?, string>?` | `` | Parameter |  | Function that returns the display text for an item. |
 | `SourceItems` | `IReadOnlyList<TItem?>?` | `` | Parameter |  | Items available in the source (left) panel. |
-| `SourceTitle` | `string` | `"Available"` | Parameter |  | Header label shown above the source panel. |
+| `SourceTitle` | `string?` | `` | Parameter |  | Header label shown above the source panel; when null, the localized default is used. |
 | `TargetItems` | `IReadOnlyList<TItem?>?` | `` | Parameter |  | Items already placed in the target (right) panel. |
 | `TargetItemsChanged` | `EventCallback<IReadOnlyList<TItem?>>` | `` | Callback |  | Callback raised when the target list changes. |
-| `TargetTitle` | `string` | `"Selected"` | Parameter |  | Header label shown above the target panel. |
+| `TargetTitle` | `string?` | `` | Parameter |  | Header label shown above the target panel; when null, the localized default is used. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
