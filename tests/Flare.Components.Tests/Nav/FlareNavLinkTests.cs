@@ -56,6 +56,57 @@ public class FlareNavLinkTests : FlareTestContext
         Assert.Contains(Css.Classes.Navigation.NavLinkDisabled, cut.Find("a").ClassName ?? "");
     }
 
+    // Disabled used to keep the href, so Enter still navigated without the callback and the link
+    // stayed in the tab order.
+    [Fact]
+    public void Disabled_RemovesHrefAndLeavesTheTabOrder()
+    {
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Href, "/locked")
+            .Add(x => x.Disabled, true)
+            .AddChildContent("Locked"));
+
+        var link = cut.Find("a");
+        Assert.Null(link.GetAttribute("href"));
+        Assert.Equal("true", link.GetAttribute("aria-disabled"));
+        Assert.Equal("-1", link.GetAttribute("tabindex"));
+    }
+
+    [Fact]
+    public void Disabled_ClickDoesNotInvokeOnClick()
+    {
+        var clicks = 0;
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Href, "/locked")
+            .Add(x => x.Disabled, true)
+            .Add(x => x.OnClick, () => clicks++)
+            .AddChildContent("Locked"));
+
+        cut.Find("a").Click();
+
+        Assert.Equal(0, clicks);
+        Assert.Null(cut.Find("a").GetAttribute("href"));
+    }
+
+    [Fact]
+    public void ReenabledLink_RestoresHrefAndTabOrder()
+    {
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Href, "/page")
+            .Add(x => x.Disabled, true));
+
+        Assert.Null(cut.Find("a").GetAttribute("href"));
+
+        cut.Render(p => p
+            .Add(x => x.Href, "/page")
+            .Add(x => x.Disabled, false));
+
+        var link = cut.Find("a");
+        Assert.Equal("/page", link.GetAttribute("href"));
+        Assert.Null(link.GetAttribute("aria-disabled"));
+        Assert.Null(link.GetAttribute("tabindex"));
+    }
+
     [Fact]
     public void Icon_RendersIconSpan()
     {
