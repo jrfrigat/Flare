@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.48.0] - 2026-10-20
 
 ### Fixed
 
@@ -17,6 +17,18 @@ All notable changes to Flare are documented here. This project adheres to
 - Gantt axis captions read the same Gregorian calendar the axis counts, and week captions follow the culture's date order instead of a fixed `dd.MM`.
 - A `FlareColumn.Width` is exact: compact columns keep their width on a wide grid, columns without one share the rest, and a table whose every column declares a plain width stops at their sum instead of spreading the spare width over every column.
 - A mouse click on an option of `FlareSelect` or `FlareMultiSelect` inside a dialog or drawer selects it and keeps focus in the dialog instead of closing the list before the click.
+- Escape inside a select in a temporary `FlareDrawer` closes only the list first; the next Escape closes the drawer. A popup that has not registered its layer yet no longer takes the drawer down with it.
+- A mini `FlareDrawer` expands when it receives keyboard focus and stays open while focus moves inside it; a modal drawer locks scrolling behind it.
+- `FlareLayout`, `FlareGrid` and `FlareBottomNav` keep their content inside their containers and follow the writing direction: the bottom bar reserves the safe area, a grid falls back to its narrow container, floating drawers swap edges in right-to-left layouts, and a drawer or responsive mode changed after mount updates the layout tracks.
+- `FlareResizable` and `FlareSplitter` honor their CSS minimum and maximum sizes and the writing direction, and changed edges or limits replace the drag handlers instead of stacking them.
+- A long tooltip wraps inside a narrow viewport and the pointer can move onto its bubble; Escape hides it until the pointer leaves and returns. A popover keeps its style and attributes on the panel, re-places when `MatchWidth` changes, and links a click trigger's keyboard activator to the panel.
+- A dialog keeps its panel on screen while dragged or resized, keeps the close button and actions reachable at narrow widths, and exposes dragging and resizing to the keyboard; its geometry comes from the theme.
+- Updating a snackbar replaces its auto-hide deadline with the new lifetime, and the provider keeps its own class, style and attributes off each toast.
+- An alert waits for the exit animation its theme plays before it closes, and a repeated close raises each callback once.
+- Progress and meter treat non-finite values as indeterminate instead of rendering `NaN`, and very large meter weights keep their proportions.
+- Breadcrumbs keep the current page when they collapse and give the keyboard a focus target among the revealed crumbs; the validation summary links each message to its control and follows a changed `EditContext`.
+- Small component contracts close: a linked card runs `OnClick` alongside navigation, a radio keeps `Class` and `Style` on its root while its control attributes reach the input, a typed date commit moves the reopened calendar to it, a text divider is not `aria-hidden`, `FlareHidden` honors its inverted tiers at the extremes, and a link without `href` renders as plain text.
+- The shared placement engine mirrors its preferred side in right-to-left layouts, and a tooltip dismissed with Escape stays hidden instead of reopening.
 
 ## [0.47.0] - 2026-10-20
 
@@ -90,8 +102,6 @@ All notable changes to Flare are documented here. This project adheres to
 - The switch handle follows the writing direction and keeps its centre while pressed in RTL.
 - The clear button of a `FlareSelect` or `FlareMultiSelect` sits next to the expand arrow at the trailing edge
   instead of floating in the middle of a wide field.
-- Escape inside a select in a temporary `FlareDrawer` closes only the list first; the next Escape closes the drawer.
-  A popup that has not registered its layer yet no longer takes the drawer down with it.
 - A `FlareColumn` whose `Title` changes after the first render (a language switch) updates the grid header and the
   column lists instead of keeping the old title.
 - A slider's label, helper text and validation error are linked to its handles through
