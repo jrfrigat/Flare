@@ -26,6 +26,8 @@
             </CascadingValue>
         </CascadingValue>
     </ul>
+    @* A keyboard move has no preview, so the position is spoken instead. *@
+    <span role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@_announcement</span>
 </FlareDragContext>
 
 @code {
@@ -36,7 +38,10 @@
     /// <summary>When true, multiple tree items may be selected simultaneously.
     /// Exposes aria-multiselectable="true" on the tree root for assistive technologies.</summary>
     [Parameter] public bool MultiSelect { get; set; }
-    /// <summary>Enables drag-and-drop reordering of tree items.</summary>
+    /// <summary>Enables reordering of tree items. Pointer drag-and-drop and a keyboard gesture both
+    /// raise <see cref="OnItemDrop"/>. The keyboard gesture is Alt+Space to pick the focused item up or
+    /// put it down, Alt+ArrowUp/Down to move it among its siblings, and Escape to stop; plain Space,
+    /// Enter and the arrow keys keep their select, expand and collapse meaning.</summary>
     [Parameter] public bool Draggable { get; set; }
     /// <summary>Callback raised when an item is dropped on a valid target. Contains source item and target item.</summary>
     [Parameter] public EventCallback<TreeDropEventArgs> OnItemDrop { get; set; }
@@ -58,6 +63,8 @@
     // [Parameter]s are applied before OnInitialized, and the cascade is fixed, matching the prior behaviour.
     private FlareTreeContext _treeContext = default!;
 
+    private string _announcement = "";
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -65,6 +72,12 @@
         {
             Draggable = Draggable,
             DragRegistry = _dragRegistry,
+            OnItemDrop = OnItemDrop,
+            Announce = text =>
+            {
+                _announcement = text;
+                StateHasChanged();
+            },
         };
     }
 

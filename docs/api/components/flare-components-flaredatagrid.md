@@ -58,7 +58,7 @@ FlareDataGrid partial: column-band (grouped header) layout logic.
 | `RowClick` | `EventCallback<TItem?>` | `` | Callback |  | Callback fired when a row is clicked. |
 | `RowDetailTemplate` | `RenderFragment<TItem?>?` | `` | Parameter |  | Template rendered as an expandable detail row below each data row. |
 | `RowKey` | `Func<TItem?, object>?` | `` | Parameter |  | Stable identity selector for each row, used as the render key (improves diffing, selection and virtualization). Defaults to the item reference when not set. |
-| `RowReorderable` | `bool` | `false` | Parameter |  | Enables drag-and-drop reordering of rows. Reordering raises OnRowReordered; the owner updates the backing data (the grid does not mutate Items). |
+| `RowReorderable` | `bool` | `false` | Parameter |  | Enables row reordering. Pointer drag-and-drop and a keyboard gesture both raise OnRowReordered; the owner updates the backing data (the grid does not mutate Items). The keyboard gesture is Alt+Space to pick the focused row up or put it down, Alt+ArrowUp/Down to move it, and Escape to stop; plain Space, Enter and the arrows keep their selection and navigation meaning. |
 | `RowStyleFunc` | `Func<TItem?, string>?` | `` | Parameter |  | Returns an inline style string for each data row, given the row item. |
 | `RowsLabel` | `string?` | `` | Parameter |  | Overrides the rows-per-page label shown next to the page size selector. |
 | `RowsPerPageOptions` | `IReadOnlyList<int>` | `` | Parameter |  | Available page-size choices rendered in the pagination row-count selector. When empty the selector is hidden. |

@@ -65,6 +65,33 @@ internal sealed class TreeDragRegistry
     public bool TryGetId(object item, out string id) => _ids.TryGetValue(item, out id!);
 
     /// <summary>
+    /// The sibling one step away in the given direction (negative for up/previous). Sibling order is the
+    /// registration order, which follows the order the items were rendered in. <paramref name="position"/>
+    /// is one-based, and <paramref name="count"/> is the number of siblings, for the announcement.
+    /// </summary>
+    public bool TryGetSibling(string id, int direction, out object item, out int position, out int count)
+    {
+        item = null!;
+        position = 0;
+        count = 0;
+        if (!_items.TryGetValue(id, out var node)) return false;
+
+        var siblings = new List<(string Id, object Item)>();
+        foreach (var (key, candidate) in _items)
+            if (Equals(candidate.ParentId, node.ParentId))
+                siblings.Add((key, candidate.Item));
+
+        var index = siblings.FindIndex(s => s.Id == id);
+        var next = index + direction;
+        count = siblings.Count;
+        if (index < 0 || next < 0 || next >= count) return false;
+
+        item = siblings[next].Item;
+        position = next + 1;
+        return true;
+    }
+
+    /// <summary>
     /// Every drop zone inside the given node, including its own branch - which is to say the node and
     /// each descendant that has children of its own, since a zone is a branch and a leaf has none.
     /// Leaves are left out because the list is marshalled to the browser and a subtree is mostly leaves.

@@ -134,8 +134,11 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public IReadOnlyList<string>? ColumnOrder { get; set; }
     /// <summary>Raised after the user reorders columns, with the new left-to-right order (column keys).</summary>
     [Parameter] public EventCallback<IReadOnlyList<string>> OnColumnOrderChanged { get; set; }
-    /// <summary>Enables drag-and-drop reordering of rows. Reordering raises <see cref="OnRowReordered"/>;
-    /// the owner updates the backing data (the grid does not mutate <see cref="Items"/>).</summary>
+    /// <summary>Enables row reordering. Pointer drag-and-drop and a keyboard gesture both raise
+    /// <see cref="OnRowReordered"/>; the owner updates the backing data (the grid does not mutate
+    /// <see cref="Items"/>). The keyboard gesture is Alt+Space to pick the focused row up or put it
+    /// down, Alt+ArrowUp/Down to move it, and Escape to stop; plain Space, Enter and the arrows keep
+    /// their selection and navigation meaning.</summary>
     [Parameter] public bool RowReorderable { get; set; }
     /// <summary>Raised after the user drags a row onto another row, with the dragged item, the drop
     /// target, and their indices within the current page.</summary>

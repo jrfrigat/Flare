@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the tree, forwarded as aria-label. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Tree items rendered inside the tree view. |
-| `Draggable` | `bool` | `false` | Parameter |  | Enables drag-and-drop reordering of tree items. |
+| `Draggable` | `bool` | `false` | Parameter |  | Enables reordering of tree items. Pointer drag-and-drop and a keyboard gesture both raise OnItemDrop. The keyboard gesture is Alt+Space to pick the focused item up or put it down, Alt+ArrowUp/Down to move it among its siblings, and Escape to stop; plain Space, Enter and the arrow keys keep their select, expand and collapse meaning. |
 | `MultiSelect` | `bool` | `false` | Parameter |  | When true, multiple tree items may be selected simultaneously. Exposes aria-multiselectable="true" on the tree root for assistive technologies. |
 | `OnItemDragEnd` | `EventCallback` | `` | Callback |  | Callback raised when an item drag ends. |
 | `OnItemDragStart` | `EventCallback<TreeDragEventArgs>` | `` | Callback |  | Callback raised when an item drag starts. |

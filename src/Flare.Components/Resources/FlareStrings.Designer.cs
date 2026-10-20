@@ -1931,7 +1931,16 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Drag_Picked", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Picked up. Alt with the arrow keys moves it, Alt with space drops it, escape cancels..
+        /// </summary>
+        public static string Drag_PickedRow {
+            get {
+                return ResourceManager.GetString("Drag_PickedRow", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Position {0} of {1}.
         /// </summary>
