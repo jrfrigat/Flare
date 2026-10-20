@@ -59,8 +59,24 @@ public sealed class GanttAxisTests
         Assert.Equal(D(2026, 10, 12), ru.UnitOf(thursday).Start); // Monday
         Assert.Equal(D(2026, 10, 11), us.UnitOf(thursday).Start); // Sunday
         Assert.Equal(2, ru.Units, 6);
-        Assert.Equal("12.10", ru.Ticks()[0].Label);
+        Assert.Equal("12.10.2026", ru.Ticks()[0].Label);
         Assert.Equal(4 / 7d, ru.Ticks()[0].Width, 6);           // the first week is clipped to Thu-Sun
+    }
+
+    [Fact]
+    public void Captions_use_the_gregorian_calendar_of_the_axis_units()
+    {
+        var fa = new CultureInfo("fa-IR");
+        var months = new GanttAxis(new GanttSpan(D(2026, 10, 1), D(2026, 11, 1)), GanttScale.Month, fa);
+        Assert.Equal("اکتبر", months.Ticks()[0].Label); // Gregorian October, not Mehr
+        Assert.Equal("2026", months.MajorTicks()[0].Label);
+
+        var days = new GanttAxis(new GanttSpan(D(2026, 10, 13), D(2026, 10, 15)), GanttScale.Day, Us);
+        Assert.Equal(["13", "14"], days.Ticks().Select(t => t.Label));
+        Assert.Equal(["Tue", "Wed"], days.Ticks().Select(t => t.Caption));
+
+        var weeks = new GanttAxis(new GanttSpan(D(2026, 10, 15), D(2026, 10, 29)), GanttScale.Week, Us);
+        Assert.Equal("10/11/2026", weeks.Ticks()[0].Label);
     }
 
     [Fact]

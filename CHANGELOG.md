@@ -14,6 +14,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareDateTimePicker`, `FlareMonthPicker`, `FlareWeekPicker`, `FlareMultiDatePicker` and `FlareTimePicker` take the accessible name from a rich `LabelContent` instead of the placeholder.
 - A JSON grid export gives columns with the same title distinct keys instead of silently overwriting one value with another.
 - A ribbon starts on its first enabled tab and leaves a tab that becomes disabled; an inactive tab no longer points at a panel that is not rendered.
+- Gantt axis captions read the same Gregorian calendar the axis counts, and week captions follow the culture's date order instead of a fixed `dd.MM`.
 
 ## [0.47.0] - 2026-10-20
 

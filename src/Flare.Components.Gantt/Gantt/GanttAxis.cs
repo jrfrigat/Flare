@@ -24,8 +24,17 @@ public sealed class GanttAxis
         Range = range;
         Scale = scale;
         Culture = culture ?? CultureInfo.CurrentCulture;
+        // Units are built from Gregorian DateTime, so captions must read the same calendar. A culture with
+        // its own calendar (fa-IR, ar-SA) would otherwise label an October cell "Mehr 1405" while the axis
+        // counts Gregorian October.
+        var captions = (CultureInfo)Culture.Clone();
+        try { captions.DateTimeFormat.Calendar = new GregorianCalendar(); }
+        catch (ArgumentException) { }
+        _captionCulture = captions;
         Units = Offset(range.End);
     }
+
+    private readonly CultureInfo _captionCulture;
 
     /// <summary>Visible time.</summary>
     public GanttSpan Range { get; }
@@ -33,7 +42,8 @@ public sealed class GanttAxis
     /// <summary>Step of one unit.</summary>
     public GanttScale Scale { get; }
 
-    /// <summary>Culture for captions and the first day of week.</summary>
+    /// <summary>Culture for the first day of week and number formatting; captions use it with a Gregorian
+    /// calendar, because the axis units are Gregorian.</summary>
     public CultureInfo Culture { get; }
 
     /// <summary>Length of the range in units.</summary>
@@ -94,18 +104,18 @@ public sealed class GanttAxis
         var major = scale != Scale;
         return scale switch
         {
-            GanttScale.Hour => (start.ToString("HH:mm", Culture), null),
-            GanttScale.Day when major => (start.ToString("d MMM", Culture), Culture.DateTimeFormat.GetAbbreviatedDayName(start.DayOfWeek)),
-            GanttScale.Day => (start.Day.ToString(Culture), Culture.DateTimeFormat.GetAbbreviatedDayName(start.DayOfWeek)),
-            GanttScale.Week => (start.ToString("dd.MM", Culture), null),
-            GanttScale.Month when major => (Capitalize(start.ToString("MMMM yyyy", Culture)), null),
-            GanttScale.Month => (Capitalize(Culture.DateTimeFormat.GetAbbreviatedMonthName(start.Month).TrimEnd('.')), null),
+            GanttScale.Hour => (start.ToString("HH:mm", _captionCulture), null),
+            GanttScale.Day when major => (start.ToString("d MMM", _captionCulture), _captionCulture.DateTimeFormat.GetAbbreviatedDayName(start.DayOfWeek)),
+            GanttScale.Day => (start.Day.ToString(_captionCulture), _captionCulture.DateTimeFormat.GetAbbreviatedDayName(start.DayOfWeek)),
+            GanttScale.Week => (start.ToString("d", _captionCulture), null),
+            GanttScale.Month when major => (Capitalize(start.ToString("MMMM yyyy", _captionCulture)), null),
+            GanttScale.Month => (Capitalize(_captionCulture.DateTimeFormat.GetAbbreviatedMonthName(start.Month).TrimEnd('.')), null),
             GanttScale.Quarter => ($"Q{(start.Month - 1) / 3 + 1}", null),
-            _ => (start.Year.ToString(Culture), null)
+            _ => (start.Year.ToString(_captionCulture), null)
         };
     }
 
-    private string Capitalize(string text) => text.Length == 0 ? text : char.ToUpper(text[0], Culture) + text[1..];
+    private string Capitalize(string text) => text.Length == 0 ? text : char.ToUpper(text[0], _captionCulture) + text[1..];
 
     // Continuous position of a moment counted in units from a fixed origin.
     private double Position(GanttScale scale, DateTime moment)
