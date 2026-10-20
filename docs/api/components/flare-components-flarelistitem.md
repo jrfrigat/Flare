@@ -11,6 +11,7 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Additional content rendered inside the item body. |
 | `Disabled` | `bool` | `false` | Parameter |  | Prevents the item from being interacted with. |
 | `Leading` | `RenderFragment?` | `` | Parameter |  | Content rendered at the start of the item. On a clickable item, clicks and key presses inside it do not activate the item, so the slot can hold the item's own controls. |
+| `Mono` | `bool` | `false` | Parameter |  | Renders the primary and secondary text in the monospace font, so an identifier keeps the item's title slot and row typography instead of falling back to ChildContent. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the item is clicked. |
 | `Primary` | `string?` | `` | Parameter |  | Primary text label displayed in the item. |
 | `Secondary` | `string?` | `` | Parameter |  | Secondary text displayed below the primary label. |

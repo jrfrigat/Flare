@@ -34,6 +34,31 @@ public class FlareListItemTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.List.Secondary}"));
     }
 
+    // An identifier used to lose its monospace when passed as Primary, or lose the title slot when
+    // pushed into ChildContent instead.
+    [Fact]
+    public void Mono_AddsTheTextMonoClassToBothSlots()
+    {
+        var cut = Render<FlareListItem>(p => p
+            .Add(x => x.Primary, "src/Flare.Components/List")
+            .Add(x => x.Secondary, "FlareListItem.razor")
+            .Add(x => x.Mono, true));
+
+        Assert.Contains(Css.Classes.Text.Mono, cut.Find($".{Css.Classes.List.Primary}").ClassName);
+        Assert.Contains(Css.Classes.Text.Mono, cut.Find($".{Css.Classes.List.Secondary}").ClassName);
+    }
+
+    [Fact]
+    public void WithoutMono_SlotsKeepTheRowFont()
+    {
+        var cut = Render<FlareListItem>(p => p
+            .Add(x => x.Primary, "Title")
+            .Add(x => x.Secondary, "Subtitle"));
+
+        Assert.DoesNotContain(Css.Classes.Text.Mono, cut.Find($".{Css.Classes.List.Primary}").ClassName);
+        Assert.DoesNotContain(Css.Classes.Text.Mono, cut.Find($".{Css.Classes.List.Secondary}").ClassName);
+    }
+
     [Fact]
     public void NoPrimary_NoPrimarySpan()
     {

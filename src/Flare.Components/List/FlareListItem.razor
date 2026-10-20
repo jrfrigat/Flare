@@ -19,11 +19,11 @@
     <div class="@Css.Classes.List.Content">
         @if (!string.IsNullOrEmpty(Primary))
         {
-            <span class="@Css.Classes.List.Primary">@Primary</span>
+            <span class="@PrimaryClass">@Primary</span>
         }
         @if (!string.IsNullOrEmpty(Secondary))
         {
-            <span class="@Css.Classes.List.Secondary">@Secondary</span>
+            <span class="@SecondaryClass">@Secondary</span>
         }
         @ChildContent
     </div>
@@ -47,6 +47,9 @@
     [Parameter] public string? Primary { get; set; }
     /// <summary>Secondary text displayed below the primary label.</summary>
     [Parameter] public string? Secondary { get; set; }
+    /// <summary>Renders the primary and secondary text in the monospace font, so an identifier keeps the
+    /// item's title slot and row typography instead of falling back to <see cref="ChildContent"/>.</summary>
+    [Parameter] public bool Mono { get; set; }
     /// <summary>Whether the item is in a selected state.</summary>
     [Parameter] public bool Selected { get; set; }
     /// <summary>Prevents the item from being interacted with.</summary>
@@ -55,6 +58,14 @@
     [Parameter] public EventCallback OnClick { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.List.Item;
+
+    private string PrimaryClass => Mono
+        ? $"{Css.Classes.List.Primary} {Css.Classes.Text.Mono}"
+        : Css.Classes.List.Primary;
+
+    private string SecondaryClass => Mono
+        ? $"{Css.Classes.List.Secondary} {Css.Classes.Text.Mono}"
+        : Css.Classes.List.Secondary;
 
     private string _clickableClass => OnClick.HasDelegate ? Css.Classes.List.Clickable : string.Empty;
     private string _selectedClass  => Selected  ? Css.Classes.List.Selected  : string.Empty;

@@ -4104,6 +4104,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Additional content rendered inside the item body.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents the item from being interacted with.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Leading", @"RenderFragment?", null, @"Content rendered at the start of the item. On a clickable item, clicks and key presses inside it do not activate the item, so the slot can hold the item's own controls.", null, false, false, false, @"FlareListItem"),
+                new ApiParameterInfo(@"Mono", @"bool", @"false", @"Renders the primary and secondary text in the monospace font, so an identifier keeps the item's title slot and row typography instead of falling back to ChildContent.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the item is clicked.", null, false, true, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Primary", @"string?", null, @"Primary text label displayed in the item.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Secondary", @"string?", null, @"Secondary text displayed below the primary label.", null, false, false, false, @"FlareListItem"),
