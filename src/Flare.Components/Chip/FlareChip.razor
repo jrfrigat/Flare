@@ -25,7 +25,7 @@
     @if (_isInteractive)
     {
         <button class="@Css.Classes.Chip.Action" type="button" disabled="@Disabled"
-                aria-labelledby="@_labelId" @onclick="HandleClick"></button>
+                aria-labelledby="@_labelId" aria-pressed="@_pressedState" @onclick="HandleClick"></button>
     }
     @if (Closeable || Closable)
     {
@@ -101,6 +101,13 @@
     private bool _isSelected => GroupContext is not null
         ? GroupContext.SelectedValues.Contains(Value ?? "")
         : Selected;
+
+    // Only a chip that can change its selection is a toggle; an action-only chip stays a plain
+    // button instead of announcing a pressed state it never had.
+    private bool _isToggle => _isInteractive
+        && (GroupContext is not null || SelectedChanged.HasDelegate || Selected);
+
+    private string? _pressedState => _isToggle ? (_isSelected ? "true" : "false") : null;
 
     private string _resolvedSelectedClass => _isSelected ? Css.Classes.Chip.Selected : string.Empty;
     private string _disabledClass => Disabled ? Css.Classes.Chip.Disabled : string.Empty;
