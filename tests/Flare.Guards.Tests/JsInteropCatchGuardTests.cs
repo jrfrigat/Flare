@@ -11,9 +11,6 @@ namespace Flare.Guards.Tests;
 /// </summary>
 public sealed class JsInteropCatchGuardTests
 {
-    private const string Disconnected = "catch (JSDisconnectedException)";
-    private const string Generic = "catch (JSException";
-
     [Fact]
     public void EveryJsDisconnectedCatchAlsoCatchesJsException()
     {
@@ -25,19 +22,8 @@ public sealed class JsInteropCatchGuardTests
             var ext = Path.GetExtension(file);
             if (ext is not (".razor" or ".cs") || IsBuildArtifact(file)) continue;
 
-            var lines = File.ReadAllLines(file);
-            for (var i = 0; i < lines.Length; i++)
-            {
-                var at = lines[i].IndexOf(Disconnected, StringComparison.Ordinal);
-                if (at < 0) continue;
-                // The generic catch has to be the very next catch clause of the same try - which is
-                // either the rest of this line (one-liner catches) or the line below.
-                var rest = lines[i][(at + Disconnected.Length)..];
-                var next = i + 1 < lines.Length ? lines[i + 1] : string.Empty;
-                if (rest.Contains(Generic, StringComparison.Ordinal)
-                    || next.Contains(Generic, StringComparison.Ordinal)) continue;
-                offenders.Add($"{Path.GetRelativePath(srcDir, file)}:{i + 1}");
-            }
+            foreach (var line in JsCatchGuardScanner.FindOffenders(File.ReadAllText(file)))
+                offenders.Add($"{Path.GetRelativePath(srcDir, file)}:{line}");
         }
 
         Assert.True(offenders.Count == 0,
