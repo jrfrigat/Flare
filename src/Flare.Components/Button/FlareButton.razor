@@ -206,8 +206,9 @@ else
     // Custom -> derived tokens; dynamic -> precomputed tonal set; role/default -> null.
     private string? BuildColorTokens() => _effectiveColor.StyleFull(OnColor);
 
-    // Icon-only: an icon is present but no text (ChildContent) -> square icon button.
-    private bool _iconOnly => ChildContent is null && !Loading
+    // Icon-only: an icon is present but no text (ChildContent) -> square icon button. Loading keeps
+    // the square: its spinner replaces the glyph without changing the button's footprint.
+    private bool _iconOnly => ChildContent is null
         && (LeadingIcon is not null || TrailingIcon is not null);
 
     private string _iconOnlyClass => _iconOnly ? Css.Classes.Button.IconOnly : string.Empty;

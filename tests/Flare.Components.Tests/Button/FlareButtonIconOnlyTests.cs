@@ -27,6 +27,29 @@ public class FlareButtonIconOnlyTests : FlareTestContext
         Assert.DoesNotContain(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
     }
 
+    // The square used to collapse into a spinner-width box as soon as the button started loading.
+    [Fact]
+    public void Loading_KeepsIconOnlyClass()
+    {
+        var cut = Render<FlareButton>(p => p
+            .Add(x => x.LeadingIcon, Icon)
+            .Add(x => x.Loading, true)
+            .Add(x => x.AriaLabel, "loading"));
+
+        Assert.Contains(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
+    }
+
+    [Fact]
+    public void TextButton_StaysLabelledWhileLoading()
+    {
+        var cut = Render<FlareButton>(p => p
+            .Add(x => x.LeadingIcon, Icon)
+            .Add(x => x.Loading, true)
+            .AddChildContent("Save"));
+
+        Assert.DoesNotContain(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
+    }
+
     [Fact]
     public void RendersWithFilledVariant()
     {
