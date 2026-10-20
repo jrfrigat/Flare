@@ -109,8 +109,7 @@ internal static class CalendarMath
 
     /// <summary>The week-of-year number for <paramref name="date"/>, honouring the culture's week rule
     /// and the given <paramref name="firstDayOfWeek"/> (used for the optional week-number column). Counted on the
-    /// calendar the grid is drawn on - the Gregorian one <see cref="PickerCulture"/> swaps in, not the culture's
-    /// native Persian or Hijri calendar.</summary>
+    /// calendar the grid is drawn on - the culture's own, including the Persian or Hijri one.</summary>
     public static int WeekOfYear(DateOnly date, CultureInfo culture, DayOfWeek firstDayOfWeek)
         => culture.DateTimeFormat.Calendar.GetWeekOfYear(
             date.ToDateTime(TimeOnly.MinValue),

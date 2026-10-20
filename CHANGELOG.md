@@ -324,6 +324,9 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareDatePicker.PreRenderCalendar` optionally creates the calendar with its field and retains it while closed.
   The default remains lazy. Pre-rendering shifts work to mounting and updating the field, including hidden day templates.
 
+- The month picker gained `ParseInput`; the week and multi-date pickers gained `DayTemplate` and `Calendar`; the
+  multi-date picker gained `MaxShownDates`; `FlareMonthGrid` exposes `DayContent`, `MultiSelectable` and `FocusedDate`.
+
 ### Fixed
 
 - Available dates from adjacent months keep readable contrast and remain distinct from disabled dates.
@@ -384,7 +387,9 @@ All notable changes to Flare are documented here. This project adheres to
 - **Breaking for custom themes: the picker panels are sized by tokens.** `DateTimePickerTokens` now requires
   `PanelMinWidth`, `DialPanelMinWidth`, `SplitPanelMinWidth`, `PaneBasis`, `DialPaneWidth` and `TimeInputWidth`;
   `TimePickerTokens` requires `PanelMinWidth`, `DialPanelMinWidth`, `ColumnMaxHeight` and `CellMinWidth`; and
-  `PickerTokens` requires `WeekNumberWidth`, `RangeFieldBasis`, `RangeCalendarMaxWidth` and `RangeSeparatorSize`.
+  `PickerTokens` requires `WeekNumberWidth`, `RangeFieldBasis`, `RangeCalendarMaxWidth`, `RangeSeparatorSize`,
+  `CalendarPanelPadding`, `HeaderGap`, `ActionHeight`, `ActionPadding`, `ActionMargin`, `ActionBorder`,
+  `TodayBorder` and `TodayWeight`.
   The built-in themes set the sizes the stylesheets used to hard-code, so nothing moves; a custom theme built with
   `new ... { }` has to set them too.
 - **The arrow keys in a date picker calendar move a cursor instead of changing the value.** The day is chosen with
@@ -415,8 +420,8 @@ All notable changes to Flare are documented here. This project adheres to
 - **`FlareClockDial.MinuteSelected`** is raised once the minute is settled (released or typed), and
   `FlareTimePicker.AutoClose` now finishes the clock dial as well as the columns.
 - **`Css.Classes.TimePicker.PanelDropdown`** names the panel of the columns popup.
-- **`FlareDateTimePicker.ShowSeconds`, `HourStep`, `MinuteStep` and `IsDateDisabled`** work as on
-  `FlareTimePicker` and `FlareDatePicker`: seconds in the field and the time pane, stepped hour and minute boxes,
+- **`FlareDateTimePicker.ShowSeconds`, `HourStep`, `MinuteStep` and `IsDateDisabled`** work in
+  `FlareDateTimePicker`: seconds in the field and the time pane, stepped hour and minute boxes,
   and days that cannot be picked, typed or confirmed.
 - **`FlareDateRangePicker.Culture`, `ReadOnly`, `StartFor` and `EndFor`**: the range picker takes a culture
   (passed to its fields), a read-only state, and a form field per end, so an `EditForm` sees both ends change and
@@ -458,7 +463,7 @@ All notable changes to Flare are documented here. This project adheres to
   the scope started with.
 Date pickers: week numbers for a culture on the Persian or Hijri calendar are counted on the Gregorian calendar the grid shows, not on the culture's own calendar.
 Date picker: the month and year views turn off the months and years that lie wholly outside Min and Max, and an inline calendar moves to the month of a value its parent sets.
-Date pickers: the weekday headers are now column headers inside the calendar grid and give screen readers the full day name, the month label is announced when it changes, the date picker's header button says whether it switches to months, years or days, and the selected month and year are marked with aria-pressed.
+Date pickers: the weekday headers are now column headers inside the calendar grid and give screen readers the full day name, the month label is announced when it changes, the date picker's header button title names the view it switches to, and the selected month and year are marked with aria-pressed.
 Time picker: the keyboard now drives every column of the dropdown - Up/Down step the hour, minute or second over the offered cells, Home/End jump to the ends, Enter confirms - and the clock dial is a focusable slider that Up/Down/PageUp/PageDown/Home/End move and screen readers read. The popup toggles of the date, time and date-time pickers report aria-expanded as true/false.
 - **`FlareTimePicker` shows and takes a 12-hour time on a 12-hour clock.** With `Use24Hour="false"` (or a 12-hour
   culture) the field still showed and took "14:30" while the dial showed 2:30 PM. The field now reads "02:30 PM"
