@@ -21,7 +21,7 @@
 | `OnHighlight` | `EventCallback<int>` | `` | Callback |  | Invoked with the option index the pointer moved over (hover highlight). |
 | `OnSelect` | `EventCallback<TItem?>` | `` | Callback |  | Invoked with the item of the clicked option. |
 | `OptionClass` | `string?` | `` | Parameter |  | Extra CSS class on each option row. |
-| `PreventMouseDownDefault` | `bool` | `false` | Parameter |  | Prevents the default mousedown so clicking an option does not blur the host's input. |
+| `PreventMouseDownDefault` | `bool` | `false` | Parameter |  | Prevents the default mousedown so clicking an option does not move focus out of the host. Inside a Dialog or Drawer the nearest focusable ancestor is the overlay panel itself: an unprevented mousedown focuses it, the host's focusout dismisses the list, and the click that chooses the option arrives after the row is gone. Keep it on for every option list. |
 | `Rows` | `IReadOnlyList<ComboboxRow<TItem?>>` | `` | Parameter | Yes | The header+option rows to render, already ordered and grouped (from the engine's cached projection). |
 | `ShowCheck` | `bool` | `false` | Parameter |  | Renders a trailing check mark on the selected option (single-select). |
 | `ShowCheckbox` | `bool` | `false` | Parameter |  | Renders a leading visual checkbox on each option (multi-select). |

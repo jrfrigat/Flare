@@ -3558,6 +3558,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Form fields.
+        /// </summary>
+        public static string Dialog_FormFields {
+            get {
+                return ResourceManager.GetString("Dialog_FormFields", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Inline.
         /// </summary>
         public static string Dialog_Inline {

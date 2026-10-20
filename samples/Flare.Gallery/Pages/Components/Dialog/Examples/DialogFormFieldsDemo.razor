@@ -1,0 +1,24 @@
+@* A select and a numeric field inside a dialog: the popup list and the fields must keep mouse
+   selection and focus inside the dialog. *@
+<FlareButton OnClick="@(() => _visible = true)">Order parameters</FlareButton>
+
+<FlareDialog @bind-Visible="_visible" Title="Order parameters">
+    <ChildContent>
+        <FlareStack Gap="FlareSpacing.Medium">
+            <FlareSelect TValue="bool?" @bind-Value="_promo" Label="Take promo into account"
+                         Items="_choices" ItemLabel="@(v => v == true ? "Yes" : "No")" />
+            <FlareNumericField TValue="int" @bind-Value="_days" Label="Promo sales window, days" Min="0" Max="100" />
+        </FlareStack>
+    </ChildContent>
+    <ActionsContent>
+        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _visible = false)">Cancel</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _visible = false)">Save</FlareButton>
+    </ActionsContent>
+</FlareDialog>
+
+@code {
+    private readonly bool?[] _choices = [true, false];
+    private bool? _promo;
+    private int _days = 14;
+    private bool _visible;
+}

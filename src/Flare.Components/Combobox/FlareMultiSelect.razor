@@ -130,7 +130,7 @@
                                  AriaLabelledBy="@(_hasLabel ? _labelId : null)"
                                  OnSelect="HandleSelectAsync"
                                  OnHighlight="HandleHover"
-                                 PreventMouseDownDefault="Searchable">
+                                 PreventMouseDownDefault="true">
                     <HeaderContent>
                         @if (ShowSelectAll && _state.Collection.Count > 0)
                         {

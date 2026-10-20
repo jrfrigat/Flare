@@ -89,7 +89,10 @@
 
     // The listbox root's extra CSS class is the inherited FlareComponentBase.Class.
 
-    /// <summary>Prevents the default mousedown so clicking an option does not blur the host's input.</summary>
+    /// <summary>Prevents the default mousedown so clicking an option does not move focus out of the host.
+    /// Inside a Dialog or Drawer the nearest focusable ancestor is the overlay panel itself: an
+    /// unprevented mousedown focuses it, the host's focusout dismisses the list, and the click that
+    /// chooses the option arrives after the row is gone. Keep it on for every option list.</summary>
     [Parameter] public bool PreventMouseDownDefault { get; set; }
 
     /// <summary>Invoked with the item of the clicked option.</summary>

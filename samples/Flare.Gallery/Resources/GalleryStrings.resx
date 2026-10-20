@@ -1086,6 +1086,9 @@
   <data name="Dialog_Inline" xml:space="preserve">
     <value>Inline</value>
   </data>
+  <data name="Dialog_FormFields" xml:space="preserve">
+    <value>Form fields</value>
+  </data>
   <data name="Dialog_Icon" xml:space="preserve">
     <value>Hero icon &amp; divider</value>
   </data>
