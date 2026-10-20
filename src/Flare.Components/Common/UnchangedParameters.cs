@@ -19,7 +19,8 @@ namespace Flare.Components;
 /// <item>both are delegates other than a plain <see cref="RenderFragment"/> and the component's markup does not
 /// currently read its delegates;</item>
 /// <item>both are <c>For</c> accessors rebuilt by the parent that name the same field of the same model object;</item>
-/// <item>both are attribute dictionaries with the same keys and the same values;</item>
+/// <item>both are attribute dictionaries with the same keys and the same values; an event callback inside one is
+/// compared by its delegate, because it reaches the DOM;</item>
 /// <item>both are the same read-only culture or calendar;</item>
 /// <item>both are the same instance cascaded from above - a cascade announces its changes on its own.</item>
 /// </list>
@@ -105,7 +106,9 @@ internal sealed class UnchangedParameters
             if (value is null || other is null) { if (value is not null || other is not null) return false; continue; }
             var type = value.GetType();
             if (type != other.GetType()) return false;
-            if (IsEventCallback(type)) continue;
+            // A callback in an attribute dictionary reaches the DOM, so a replaced handler must render;
+            // a standalone EventCallback parameter never takes part in markup and is skipped in Same.
+            if (IsEventCallback(type)) { if (!value.Equals(other)) return false; continue; }
             if (!IsImmutable(type) || !value.Equals(other)) return false;
         }
         return true;

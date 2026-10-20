@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests;
 
@@ -168,6 +169,39 @@ public class UnchangedParametersTests : FlareTestContext
         Push(cut, more: p => p.AddUnmatched("data-x", "2"));
         Assert.True(cut.RenderCount > count);
         Assert.Equal("2", cut.Find($".{Css.Classes.DatePicker.Root}").GetAttribute("data-x"));
+    }
+
+    [Fact]
+    public void AttributeDictionary_WithAChangedEventCallback_CountsAsChanged()
+    {
+        var fired = 0;
+        EventCallback<MouseEventArgs> Callback(int value) => EventCallback.Factory.Create<MouseEventArgs>(this, _ => fired = value);
+        Dictionary<string, object?> Attributes(EventCallback<MouseEventArgs> callback) =>
+            new() { ["onclick"] = callback, ["data-x"] = "1" };
+        var parameters = new UnchangedParameters();
+        Assert.NotEqual(Callback(1), Callback(2));
+        ParameterView Push(EventCallback<MouseEventArgs> callback) =>
+            ParameterView.FromDictionary(new Dictionary<string, object?> { ["AdditionalAttributes"] = Attributes(callback) });
+
+        Assert.False(parameters.Matches(Push(Callback(1)), false));
+        Assert.False(parameters.Matches(Push(Callback(2)), false));
+    }
+
+    [Fact]
+    public void ReplacedEventCallbackInAttributes_IsRendered_AndTheNewHandlerRuns()
+    {
+        var fired = 0;
+        EventCallback<MouseEventArgs> Callback(int value) => EventCallback.Factory.Create<MouseEventArgs>(this, _ => fired = value);
+        static Dictionary<string, object> Attributes(EventCallback<MouseEventArgs> callback) => new() { ["onclick"] = callback };
+        var cut = Picker(p => p.Add(x => x.AdditionalAttributes, Attributes(Callback(1))));
+        Push(cut, more: p => p.Add(x => x.AdditionalAttributes, Attributes(Callback(1))));
+        var count = cut.RenderCount;
+
+        Push(cut, more: p => p.Add(x => x.AdditionalAttributes, Attributes(Callback(2))));
+
+        Assert.True(cut.RenderCount > count);
+        cut.Find($".{Css.Classes.DatePicker.Root}").Click();
+        Assert.Equal(2, fired);
     }
 
     [Fact]
