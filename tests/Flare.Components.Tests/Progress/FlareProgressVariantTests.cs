@@ -33,6 +33,7 @@ public class FlareProgressVariantTests : FlareTestContext
     {
         var cut = Render<FlareProgressLinear>(p => p
             .Add(x => x.Variant, LinearProgressVariant.Buffer)
+            .Add(x => x.Value, 30.0)
             .Add(x => x.BufferValue, 60.0));
 
         var fill = cut.Find($".{Css.Classes.Progress.BufferFill}");

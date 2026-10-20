@@ -11,7 +11,9 @@ namespace Flare.Components;
 /// </summary>
 public abstract class FlareProgressBase : FlareComponentBase
 {
-    /// <summary>Percentage value (0-100); null for indeterminate mode.</summary>
+    /// <summary>Percentage value (0-100); null for indeterminate mode. A non-finite value
+    /// (<see cref="double.NaN"/>, positive or negative infinity) is treated as not given, so ARIA and
+    /// the geometry agree on an indeterminate indicator instead of emitting NaN.</summary>
     [Parameter] public double? Value { get; set; }
 
     /// <summary>
@@ -27,11 +29,16 @@ public abstract class FlareProgressBase : FlareComponentBase
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.Progress.Root;
 
-    /// <summary>True when no value was given and the indicator reports only that work is happening.</summary>
-    private protected bool Indeterminate => Value is null;
+    private protected static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
 
-    /// <summary>The value held to 0-100, so an out-of-range one cannot overflow the track.</summary>
-    private protected double ClampedValue => Math.Clamp(Value ?? 0, 0, 100);
+    /// <summary>True when no usable value was given and the indicator reports only that work is happening.
+    /// Non-finite numbers are not a percentage, so they count as "not given".</summary>
+    private protected bool Indeterminate => Value is not { } value || !IsFinite(value);
+
+    /// <summary>The value held to 0-100, so an out-of-range one cannot overflow the track. Math.Clamp
+    /// alone propagates NaN, which is why the finite check comes first.</summary>
+    private protected double ClampedValue =>
+        Value is { } value && IsFinite(value) ? Math.Clamp(value, 0, 100) : 0;
 
     /// <summary>The value as ARIA wants it, or null while indeterminate.</summary>
     private protected string? AriaValueNow =>

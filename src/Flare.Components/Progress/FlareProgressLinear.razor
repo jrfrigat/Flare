@@ -4,15 +4,27 @@
 
 @if (Variant == LinearProgressVariant.Buffer)
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, SizeClass, ColorClass, _contentClass)"
+    @* Buffer without a value has no fill to draw. Rendering an empty 0% track looked like "nothing
+       happened" while ARIA already said indeterminate; it now shows the same indeterminate sweep as
+       the plain bar, so the visual and the announcement agree. *@
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, Indeterminate ? Css.Classes.Progress.Indeterminate : null, SizeClass, ColorClass, _contentClass)"
          role="progressbar"
          aria-valuenow="@AriaValueNow"
          aria-valuemin="0"
          aria-valuemax="100"
          style="@($"{ColorTokens}{Style}")"
          @attributes="AdditionalAttributes">
-        <div class="@Css.Classes.Progress.BufferFill" style="width:@(_clampedBufferValue.ToString("F0"))%"></div>
-        <div class="@Css.Classes.Progress.Bar" style="width:@(ClampedValue.ToString("F0"))%"></div>
+        @if (Indeterminate)
+        {
+            <div class="@Css.Classes.Progress.Remain"></div>
+            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateFirst}")"></div>
+            <div class="@($"{Css.Classes.Progress.Bar} {Css.Classes.Progress.IndeterminateSecond}")"></div>
+        }
+        else
+        {
+            <div class="@Css.Classes.Progress.BufferFill" style="width:@(_clampedBufferValue.ToString("F0"))%"></div>
+            <div class="@Css.Classes.Progress.Bar" style="width:@(ClampedValue.ToString("F0"))%"></div>
+        }
         @if (ChildContent is not null)
         {
             <div class="@Css.Classes.Progress.Content" aria-hidden="true">@ChildContent</div>
@@ -95,9 +107,9 @@ else
     /// <summary>
     /// Secondary buffer fill percentage (0-100), used only with <see cref="LinearProgressVariant.Buffer"/>.
     /// This is shorthand for the common case: a SINGLE buffered range anchored at the track start,
-    /// auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that
-    /// does not start at 0 (a media player's <c>TimeRanges</c>) - use <see cref="Zones"/> with explicit
-    /// <see cref="FlareZone"/> bands instead.
+    /// auto-painted as a muted accent. A non-finite value is treated as 0. For anything richer -
+    /// several buffered ranges, or a range that does not start at 0 (a media player's
+    /// <c>TimeRanges</c>) - use <see cref="Zones"/> with explicit <see cref="FlareZone"/> bands instead.
     /// </summary>
     [Parameter] public double BufferValue { get; set; }
 
@@ -118,7 +130,8 @@ else
 
     private bool _hasZones => _zones.Count > 0;
 
-    private double _clampedBufferValue => Math.Clamp(BufferValue, 0, 100);
+    private double _clampedBufferValue =>
+        IsFinite(BufferValue) ? Math.Clamp(BufferValue, 0, 100) : 0;
 
     // Indeterminate wins; zones force a continuous track; otherwise the default split track.
     private string _trackClass => Indeterminate

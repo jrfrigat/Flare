@@ -212,6 +212,14 @@
   .flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
     animation: none;
   }
+
+  /* Query is an indeterminate wait too: a static, shorter band still reads as "working" without the
+     endless sweep. It was missing from this block, so it kept animating under reduce. */
+  .flare-progress--linear.flare-progress--query .flare-progress__bar {
+    animation: none;
+    transform: none;
+    width: 35% !important;
+  }
 }
 
 /* ==========================================================================

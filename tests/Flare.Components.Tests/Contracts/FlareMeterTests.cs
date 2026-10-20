@@ -22,6 +22,62 @@ public class FlareMeterTests : FlareTestContext
     };
 
     [Fact]
+    public void VeryLargeWeightsKeepTheirProportionsWithoutOverflowingToInfinity()
+    {
+        RenderFragment huge = b =>
+        {
+            for (var i = 0; i < 2; i++)
+            {
+                b.OpenComponent<FlareMeterSegment>(i * 2);
+                b.AddAttribute(i * 2 + 1, nameof(FlareMeterSegment.Value), (double?)double.MaxValue);
+                b.CloseComponent();
+            }
+        };
+
+        var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, huge));
+        var segs = cut.FindAll($".{Css.Classes.Meter.Seg}");
+
+        Assert.Equal(2, segs.Count);
+        Assert.Contains("flex-grow:50", segs[0].GetAttribute("style"));
+        Assert.Contains("flex-grow:50", segs[1].GetAttribute("style"));
+        Assert.DoesNotContain("Infinity", cut.Markup);
+        Assert.DoesNotContain("NaN", cut.Markup);
+    }
+
+    [Fact]
+    public void InfiniteWeightTakesTheBarAndOtherNonFiniteWeightsAreIgnored()
+    {
+        RenderFragment mixed = b =>
+        {
+            var values = new (double? Value, int Seq)[]
+            {
+                (double.PositiveInfinity, 0),
+                (100d, 2),
+                (double.NaN, 4),
+                (double.NegativeInfinity, 6),
+                (0d, 8),
+                (null, 10),
+            };
+            foreach (var (value, seq) in values)
+            {
+                b.OpenComponent<FlareMeterSegment>(seq);
+                b.AddAttribute(seq + 1, nameof(FlareMeterSegment.Value), value);
+                b.CloseComponent();
+            }
+        };
+
+        var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, mixed));
+        var segs = cut.FindAll($".{Css.Classes.Meter.Seg}");
+
+        // Only the infinite and the finite positive weight render; the infinite one owns the bar.
+        Assert.Equal(2, segs.Count);
+        Assert.Contains("flex-grow:100", segs[0].GetAttribute("style"));
+        Assert.Contains("flex-grow:0", segs[1].GetAttribute("style"));
+        Assert.DoesNotContain("Infinity", cut.Markup);
+        Assert.DoesNotContain("NaN", cut.Markup);
+    }
+
+    [Fact]
     public void RendersOneSegmentPerPositiveValue()
     {
         var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, TwoSegments));

@@ -103,18 +103,38 @@
         get
         {
             var inv = CultureInfo.InvariantCulture;
+            // Only positive weights contribute: null, NaN, negative and zero are not part of a whole.
+            // +Infinity is a declared weight too large to compare with a finite one, so infinite
+            // segments take the bar and share it when there are several.
             var parts = _zones
                 .Typed<FlareMeterSegment>(nameof(FlareMeter), "<FlareMeterSegment Value=\"..\" /> children")
                 .Where(s => (s.Value ?? 0) > 0)
                 .ToList();
-            // Sum first: the grow factors have to be scaled against the whole before any is emitted.
-            var total = parts.Sum(s => s.Value ?? 0);
+            var raw = parts.Select(s => s.Value ?? 0).ToList();
+            var infinite = raw.Count(double.IsPositiveInfinity);
+            // Sum first, but never the raw values: two double.MaxValue weights overflow to Infinity
+            // and every grow factor becomes 0 or NaN. Scaling by the largest keeps the proportions and
+            // the sum finite; the equal-share fallback covers a scale that underflows to zero.
+            var weights = infinite > 0
+                ? raw.Select(v => double.IsPositiveInfinity(v) ? 1d : 0d).ToList()
+                : parts.Count == 0 ? new List<double>() : raw.Select(v => v / raw.Max()).ToList();
+            var total = weights.Sum();
+            if (!(total > 0) || !double.IsFinite(total))
+            {
+                weights = weights.Select(_ => 1d).ToList();
+                total = weights.Count;
+            }
 
             var list = new List<SegView>(parts.Count);
-            foreach (var s in parts)
+            for (var index = 0; index < parts.Count; index++)
             {
+                var s = parts[index];
                 var value = s.Value ?? 0;
-                var display = value.ToString(Format ?? DefaultFormat, CultureInfo.CurrentCulture);
+                // An infinite weight is a whole, not a number to print: the wording "Infinity" in a
+                // tooltip or aria-label reads like a defect. ∞ is the infinity sign.
+                var display = double.IsPositiveInfinity(value)
+                    ? "∞"
+                    : value.ToString(Format ?? DefaultFormat, CultureInfo.CurrentCulture);
                 var colorStyle = s.Color.StyleMain();
                 var title = s.Label is { Length: > 0 } lbl
                     ? (ShowValues ? $"{lbl}: {display}" : lbl)
@@ -125,7 +145,7 @@
                 // proportions, which is what makes it easy to miss. Raw sub-1 values are ordinary for a meter
                 // (fractions of a millisecond, ratios), so normalizing here keeps "declare raw values" true
                 // while still leaving the division to the browser - one factor per segment, no rounding gaps.
-                var grow = value / total * GrowTotal;
+                var grow = weights[index] / total * GrowTotal;
                 list.Add(new SegView
                 {
                     SegClass = string.IsNullOrEmpty(s.Color.CssClass)
