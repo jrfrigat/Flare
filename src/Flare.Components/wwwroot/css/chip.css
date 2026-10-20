@@ -105,7 +105,40 @@
 
 .flare-chip__label { flex: 1; }
 
+/* The native action covers the whole chip, padding included, so a pointer anywhere on it activates
+   the chip. It is transparent rather than opacity:0: the keyboard focus ring has to stay visible. */
+.flare-chip__action {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: transparent;
+    font: inherit;
+    appearance: none;
+    cursor: inherit;
+}
+
+/* The focus layer paints on the chip while the inner action holds keyboard focus. */
+.flare-chip:has(.flare-chip__action:focus-visible)::before {
+    background: var(--flare-state-focus-layer);
+    opacity: 1;
+}
+
+/* The chip clips its children, so the action's own ring would be cut off at the edge; paint the ring
+   on the chip itself, where :focus-visible drew it when the chip was the control. */
+.flare-chip:has(.flare-chip__action:focus-visible) {
+    outline: var(--flare-focus-ring);
+    outline-offset: 2px;
+}
+.flare-chip__action:focus-visible { outline: none; }
+
 .flare-chip__close {
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;

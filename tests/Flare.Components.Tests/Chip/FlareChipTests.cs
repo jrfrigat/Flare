@@ -14,8 +14,9 @@ public class FlareChipTests : FlareTestContext
 
         var chip = cut.Find($".{Css.Classes.Chip.Root}");
         Assert.Contains(Css.Classes.Chip.Disabled, chip.ClassName);
-        Assert.Equal("true", chip.GetAttribute("aria-disabled"));
-        Assert.Equal("-1", chip.GetAttribute("tabindex"));
+        Assert.Null(chip.GetAttribute("role"));
+        Assert.Null(chip.GetAttribute("tabindex"));
+        Assert.True(cut.Find($"button.{Css.Classes.Chip.Action}").HasAttribute("disabled"));
     }
 
     [Fact]
@@ -27,8 +28,8 @@ public class FlareChipTests : FlareTestContext
 
         var chip = cut.Find($".{Css.Classes.Chip.Root}");
         Assert.DoesNotContain(Css.Classes.Chip.Disabled, chip.ClassName);
-        Assert.Null(chip.GetAttribute("aria-disabled"));
-        Assert.Equal("0", chip.GetAttribute("tabindex"));
+        Assert.Null(chip.GetAttribute("tabindex"));
+        Assert.False(cut.Find($"button.{Css.Classes.Chip.Action}").HasAttribute("disabled"));
     }
 
     [Fact]
@@ -43,8 +44,10 @@ public class FlareChipTests : FlareTestContext
             .Add(x => x.OnClick, () => clicks++)
             .Add(x => x.SelectedChanged, (bool _) => selections++));
 
-        cut.Find($".{Css.Classes.Chip.Root}").Click();
-        cut.Find($".{Css.Classes.Chip.Root}").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "Enter" });
+        var action = cut.Find($"button.{Css.Classes.Chip.Action}");
+        Assert.True(action.HasAttribute("disabled"));
+
+        action.Click();
 
         Assert.Equal(0, clicks);
         Assert.Equal(0, selections);
@@ -79,7 +82,7 @@ public class FlareChipTests : FlareTestContext
                 .Add(x => x.Value, "archived")
                 .Add(x => x.Disabled, true)));
 
-        cut.Find($".{Css.Classes.Chip.Root}").Click();
+        cut.Find($"button.{Css.Classes.Chip.Action}").Click();
 
         Assert.Null(selected);
     }
@@ -116,25 +119,25 @@ public class FlareChipInteractionTests : FlareTestContext
     [Fact]
     public void OnClickBound_IsAButton()
     {
-        var chip = Render<FlareChip>(p => p
-                .Add(x => x.Label, "Filter")
-                .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })))
-            .Find($".{Css.Classes.Chip.Root}");
+        var cut = Render<FlareChip>(p => p
+            .Add(x => x.Label, "Filter")
+            .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })));
 
-        Assert.Equal("button", chip.GetAttribute("role"));
-        Assert.Equal("0", chip.GetAttribute("tabindex"));
+        var chip = cut.Find($".{Css.Classes.Chip.Root}");
+        Assert.Null(chip.GetAttribute("role"));
+        Assert.Equal("BUTTON", cut.Find($".{Css.Classes.Chip.Action}").TagName);
         Assert.DoesNotContain(Css.Classes.Chip.Static, chip.ClassName);
     }
 
     [Fact]
     public void SelectedChangedBound_IsAButton()
     {
-        var chip = Render<FlareChip>(p => p
-                .Add(x => x.Label, "Filter")
-                .Add(x => x.SelectedChanged, EventCallback.Factory.Create<bool>(this, _ => { })))
-            .Find($".{Css.Classes.Chip.Root}");
+        var cut = Render<FlareChip>(p => p
+            .Add(x => x.Label, "Filter")
+            .Add(x => x.SelectedChanged, EventCallback.Factory.Create<bool>(this, _ => { })));
 
-        Assert.Equal("button", chip.GetAttribute("role"));
+        Assert.Null(cut.Find($".{Css.Classes.Chip.Root}").GetAttribute("role"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Action}"));
     }
 
     // Selected without a way to change it is a state being shown, not a control.
@@ -166,13 +169,12 @@ public class FlareChipInteractionTests : FlareTestContext
     [Fact]
     public void ExplicitButton_OverridesTheAbsenceOfWiring()
     {
-        var chip = Render<FlareChip>(p => p
-                .Add(x => x.Label, "splatted")
-                .Add(x => x.Interaction, ChipInteraction.Button))
-            .Find($".{Css.Classes.Chip.Root}");
+        var cut = Render<FlareChip>(p => p
+            .Add(x => x.Label, "splatted")
+            .Add(x => x.Interaction, ChipInteraction.Button));
 
-        Assert.Equal("button", chip.GetAttribute("role"));
-        Assert.Equal("0", chip.GetAttribute("tabindex"));
+        Assert.Null(cut.Find($".{Css.Classes.Chip.Root}").GetAttribute("role"));
+        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Action}"));
     }
 
     [Fact]
@@ -186,8 +188,7 @@ public class FlareChipInteractionTests : FlareTestContext
 
         var chip = cut.Find($".{Css.Classes.Chip.Root}");
         Assert.Null(chip.GetAttribute("role"));
-
-        chip.Click();
+        Assert.Empty(cut.FindAll($".{Css.Classes.Chip.Action}"));
         Assert.Equal(0, clicks);
     }
 

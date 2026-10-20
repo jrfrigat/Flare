@@ -105,7 +105,7 @@ public class FlareChipGroupTests : FlareTestContext
         var cut = Render(ChipGroupWith(["Alpha", "Beta"],
             selectedValuesChanged: callback));
 
-        cut.FindAll($".{Css.Classes.Chip.Root}")[0].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[0].Click();
 
         Assert.NotNull(captured);
         Assert.Contains("Alpha", captured!);
@@ -140,7 +140,7 @@ public class FlareChipGroupTests : FlareTestContext
             selectedValues: ["Cat"],
             selectedValuesChanged: callback));
 
-        cut.FindAll($".{Css.Classes.Chip.Root}")[0].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[0].Click();
 
         Assert.NotNull(captured);
         Assert.Empty(captured!);
@@ -151,7 +151,7 @@ public class FlareChipGroupTests : FlareTestContext
     {
         var cut = Render<ChipGroupHost>();
 
-        cut.FindAll($".{Css.Classes.Chip.Root}")[1].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[1].Click();
 
         var chips = cut.FindAll($".{Css.Classes.Chip.Root}");
         Assert.DoesNotContain(Css.Classes.Chip.Selected, chips[0].ClassName);
@@ -163,7 +163,7 @@ public class FlareChipGroupTests : FlareTestContext
     {
         var cut = Render<ChipGroupHost>();
 
-        cut.FindAll($".{Css.Classes.Chip.Root}")[0].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[0].Click();
 
         Assert.DoesNotContain(Css.Classes.Chip.Selected,
             cut.FindAll($".{Css.Classes.Chip.Root}")[0].ClassName);
@@ -174,13 +174,13 @@ public class FlareChipGroupTests : FlareTestContext
     {
         var cut = Render<ChipGroupHost>(p => p.Add(x => x.Multi, true));
 
-        cut.FindAll($".{Css.Classes.Chip.Root}")[1].Click();
-        cut.FindAll($".{Css.Classes.Chip.Root}")[2].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[1].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[2].Click();
 
         var chips = cut.FindAll($".{Css.Classes.Chip.Root}");
         Assert.All(chips, c => Assert.Contains(Css.Classes.Chip.Selected, c.ClassName));
 
-        cut.FindAll($".{Css.Classes.Chip.Root}")[1].Click();
+        cut.FindAll($"button.{Css.Classes.Chip.Action}")[1].Click();
 
         chips = cut.FindAll($".{Css.Classes.Chip.Root}");
         Assert.Contains(Css.Classes.Chip.Selected, chips[0].ClassName);

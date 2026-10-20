@@ -6,7 +6,7 @@
 
    A static chip drops the role, the tab stop, the handlers and the state layers rather than switching
    them off: a control that announces itself and then refuses is worse than no control. *@
-<span class="@BuildCssClass(_resolvedSelectedClass, _disabledClass, _sizeClass, _variantClass, _colorClass, _staticClass, _hoverLayerClass, _focusLayerClass, _pressedLayerClass)" style="@_chipStyle" @attributes="AdditionalAttributes" role="@(_isInteractive ? "button" : null)" aria-disabled="@(_isInteractive && Disabled ? "true" : null)" tabindex="@(_isInteractive ? (Disabled ? -1 : 0) : default(int?))" @onclick="HandleClick" @onkeydown="HandleKeyDown">
+<span class="@BuildCssClass(_resolvedSelectedClass, _disabledClass, _sizeClass, _variantClass, _colorClass, _staticClass, _hoverLayerClass, _focusLayerClass, _pressedLayerClass)" style="@_chipStyle" @attributes="AdditionalAttributes">
     @if (AvatarContent is not null)
     {
         <span class="@Css.Classes.Chip.Avatar">@AvatarContent</span>
@@ -18,7 +18,15 @@
     @* Content between the tags wins over the string. A component that renders caller text and has no
        ChildContent does not fail to compile - AdditionalAttributes captures the fragment as an unmatched
        attribute and it is dropped - so the slot has to exist for the natural spelling to mean anything. *@
-    <span class="@Css.Classes.Chip.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
+    <span class="@Css.Classes.Chip.Label" id="@_labelId">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
+    @* The action is a native button stretched over the chip: Enter and Space behave as they do on any
+       button (no page scroll, no hand-written key handling), and the close button is its sibling, so
+       its keys never reach the action. *@
+    @if (_isInteractive)
+    {
+        <button class="@Css.Classes.Chip.Action" type="button" disabled="@Disabled"
+                aria-labelledby="@_labelId" @onclick="HandleClick"></button>
+    }
     @if (Closeable || Closable)
     {
         <button class="@Css.Classes.Chip.Close" type="button" disabled="@Disabled" @onclick="HandleClose" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Chip_Delete)">
@@ -88,6 +96,8 @@
 
     protected override string ComponentCssClass => Css.Classes.Chip.Root;
 
+    private readonly string _labelId = "flare-chip-label-" + Guid.NewGuid().ToString("N")[..8];
+
     private bool _isSelected => GroupContext is not null
         ? GroupContext.SelectedValues.Contains(Value ?? "")
         : Selected;
@@ -151,11 +161,5 @@
     {
         if (Disabled) return;
         await OnClose.InvokeAsync();
-    }
-
-    private async Task HandleKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Key is "Enter" or " ")
-            await HandleClick();
     }
 }

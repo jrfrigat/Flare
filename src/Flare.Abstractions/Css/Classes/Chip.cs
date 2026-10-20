@@ -15,6 +15,9 @@ public static class Chip
     public const string Static = "flare-chip--static";
     /// <summary>The <c>flare-chip__label</c> CSS class.</summary>
     public const string Label = "flare-chip__label";
+    /// <summary>The <c>flare-chip__action</c> CSS class: the native button stretched over an
+    /// interactive chip.</summary>
+    public const string Action = "flare-chip__action";
     /// <summary>The <c>flare-chip__close</c> CSS class.</summary>
     public const string Close = "flare-chip__close";
     /// <summary>The <c>flare-chip--elevated</c> CSS class.</summary>
