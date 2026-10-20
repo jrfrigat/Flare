@@ -1,5 +1,6 @@
 using Flare.Components.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 namespace Flare.Components;
@@ -12,6 +13,7 @@ namespace Flare.Components;
 internal sealed class OverlayWarmup : ComponentBase
 {
     [Inject] private IOverlayJsService Overlay { get; set; } = default!;
+    [Inject] private ILogger<OverlayWarmup> Logger { get; set; } = default!;
 
     /// <inheritdoc />
     protected override bool ShouldRender() => false;
@@ -22,7 +24,7 @@ internal sealed class OverlayWarmup : ComponentBase
         if (!firstRender) return;
         try { await Overlay.PrepareAsync(); }
         catch (JSDisconnectedException) { }
-        catch (JSException) { }
-        catch (InvalidOperationException) { }
+        catch (JSException error) { Logger.LogWarning(error, "The overlay module could not be prepared; the next popup imports it again."); }
+        catch (InvalidOperationException error) { Logger.LogWarning(error, "The overlay module cannot be imported here; the next popup imports it again."); }
     }
 }

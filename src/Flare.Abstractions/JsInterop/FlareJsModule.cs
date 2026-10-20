@@ -28,9 +28,17 @@ public abstract class FlareJsModule : IAsyncDisposable
         _modulePath = modulePath;
     }
 
-    /// <summary>Imports (once) and returns the module reference.</summary>
-    protected Task<IJSObjectReference> ModuleAsync() =>
-        _module ??= _js.InvokeAsync<IJSObjectReference>("import", _modulePath).AsTask();
+    /// <summary>Imports (once) and returns the module reference; a failed import is retried on the next call.</summary>
+    protected Task<IJSObjectReference> ModuleAsync()
+    {
+        var module = _module;
+        if (module is null || module.IsFaulted || module.IsCanceled)
+            _module = module = ImportModuleAsync();
+        return module;
+    }
+
+    private async Task<IJSObjectReference> ImportModuleAsync() =>
+        await _js.InvokeAsync<IJSObjectReference>("import", _modulePath);
 
     /// <summary>Invokes an exported function and returns its result.</summary>
     protected async ValueTask<T> InvokeAsync<[DynamicallyAccessedMembers(JsonSerialized)] T>(string identifier, params object?[] args) =>
@@ -53,6 +61,7 @@ public abstract class FlareJsModule : IAsyncDisposable
         }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
+        catch (InvalidOperationException) { }
         catch (OperationCanceledException) { }
         GC.SuppressFinalize(this);
     }

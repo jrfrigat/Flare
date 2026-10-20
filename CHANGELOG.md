@@ -8,6 +8,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Fixed
 
 - A notification address containing a backslash is refused instead of opening another origin.
+- A JavaScript module that failed to import is imported again on the next call instead of staying broken until the page reloads.
 
 ## [0.47.0] - 2026-10-20
 
