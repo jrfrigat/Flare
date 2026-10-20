@@ -213,6 +213,8 @@ public static class SnackbarPanel
     public const string PaddingBlock = "--flare-snackbar-padding-block";
     /// <summary>CSS custom-property name for the provider inset from the viewport edge.</summary>
     public const string ProviderInset = "--flare-snackbar-provider-inset";
+    /// <summary>CSS custom-property name for extra clearance between the stack and an app-chrome bar.</summary>
+    public const string ProviderOffset = "--flare-snackbar-provider-offset";
     /// <summary>CSS custom-property name for the dismiss-button opacity.</summary>
     public const string CloseOpacity = "--flare-snackbar-close-opacity";
     /// <summary>CSS custom-property name for the snackbar minimum width token.</summary>

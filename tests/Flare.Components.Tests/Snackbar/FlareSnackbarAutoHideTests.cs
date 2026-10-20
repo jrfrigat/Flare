@@ -73,6 +73,26 @@ public class FlareSnackbarAutoHideTests : FlareTestContext
     }
 
     [Fact]
+    public async Task UpdateReplacesTheOldDeadlineWithTheNewLifetime()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var service = Services.GetRequiredService<ISnackbarService>();
+        var id = Guid.NewGuid();
+        service.Show(new SnackbarMessage(id, "Update available", SnackbarSeverity.Normal, 5000));
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 1);
+
+        // Finite -> persistent: the old 5s deadline must not hide the message that is now sticky.
+        service.Update(new SnackbarMessage(id, "Updating...", SnackbarSeverity.Normal, 0));
+        cut.WaitForState(() => cut.Find($".{Css.Classes.Snackbar.Root}").TextContent.Contains("Updating"));
+        await Task.Delay(300, Xunit.TestContext.Current.CancellationToken);
+        Assert.Single(cut.FindAll($".{Css.Classes.Snackbar.Root}"));
+
+        // Persistent -> finite gets a FRESH deadline instead of staying forever.
+        service.Update(new SnackbarMessage(id, "Done", SnackbarSeverity.Normal, 100));
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count == 0);
+    }
+
+    [Fact]
     public async Task RemoveCancelsTheTimer()
     {
         var cut = Render<FlareSnackbarProvider>();

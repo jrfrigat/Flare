@@ -13,6 +13,28 @@ public class FlareSnackbarProviderTests : FlareTestContext
     }
 
     [Fact]
+    public void HostClassStyleAndAttributesStayOnTheProviderAndNotOnEachToast()
+    {
+        var cut = Render<FlareSnackbarProvider>(p => p
+            .Add(x => x.Class, "custom-host")
+            .Add(x => x.Style, "color:red")
+            .AddUnmatched("data-testid", "toasts"));
+
+        var host = cut.Find($".{Css.Classes.Snackbar.Provider}");
+        Assert.Contains("custom-host", host.ClassName);
+        Assert.Equal("color:red", host.GetAttribute("style"));
+        Assert.Equal("toasts", host.GetAttribute("data-testid"));
+
+        var service = Services.GetRequiredService<ISnackbarService>();
+        service.Show("Saved", new SnackbarOptions { CssClass = "per-message" });
+        cut.WaitForState(() => cut.FindAll($".{Css.Classes.Snackbar.Root}").Count > 0);
+
+        var toast = cut.Find($".{Css.Classes.Snackbar.Root}");
+        Assert.Contains("per-message", toast.ClassName);
+        Assert.DoesNotContain("custom-host", toast.ClassName);
+    }
+
+    [Fact]
     public void RendersProviderDiv()
     {
         var cut = Render<FlareSnackbarProvider>();

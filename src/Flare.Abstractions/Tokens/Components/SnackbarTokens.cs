@@ -22,6 +22,13 @@ public sealed record SnackbarTokens
     /// <summary>Inset of the snackbar stack from the viewport edge.</summary>
     [CssVar(SnackbarPanel.ProviderInset)] public string ProviderInset { get; init; } = Var(Css.Tokens.Spacing.S12);
 
+    /// <summary>
+    /// Extra clearance added to <see cref="ProviderInset"/> on the pinned side, for app chrome that
+    /// occupies the edge - a bottom navigation bar, a mobile toolbar. The safe-area inset is added
+    /// separately by CSS, so a theme that sets this does not have to know the device.
+    /// </summary>
+    [CssVar(SnackbarPanel.ProviderOffset)] public required string ProviderOffset { get; init; }
+
     /// <summary>Opacity of the dismiss button.</summary>
     [CssVar(SnackbarPanel.CloseOpacity)] public required string CloseOpacity { get; init; }
 

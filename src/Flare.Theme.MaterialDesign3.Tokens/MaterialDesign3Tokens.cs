@@ -815,6 +815,7 @@ public class MaterialDesign3Tokens
         CloseOpacity = "0.75",
         MinWidth = "20rem",
         MaxWidth = "36rem",
+        ProviderOffset = "0px",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip

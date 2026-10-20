@@ -1163,6 +1163,7 @@ public class FluentUI2Tokens
         CloseOpacity = "0.75",
         MinWidth = "20rem",
         MaxWidth = "36rem",
+        ProviderOffset = "0px",
         // Fluent toast: colorNeutralBackground1 / colorNeutralForeground1, the action in colorBrandForeground1, shadow8. Intents use the theme's status containers rather than Material's accent containers.
         Bg = "var(--flare-color-surface)",
         Color = "var(--flare-color-on-surface)",

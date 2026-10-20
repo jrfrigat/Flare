@@ -817,6 +817,7 @@ internal static class MaterialDesign2Tokens
         CloseOpacity = "0.75",
         MinWidth = "21.5rem", // @material/snackbar $min-width 344px
         MaxWidth = "42rem",   // $max-width 672px
+        ProviderOffset = "0px",
         // MDC snackbar: on-surface mixed 80% into surface, label in surface at high emphasis.
         Bg = "color-mix(in srgb, var(--flare-color-on-surface) 80%, var(--flare-color-surface))",
         Color = "color-mix(in srgb, var(--flare-color-surface) 87%, transparent)",
