@@ -1,9 +1,13 @@
 @namespace Flare.Components
+@using Microsoft.JSInterop
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IUiJsService Ui
+@implements IDisposable
 
 @if (!_dismissed)
 {
-    <div class="@BuildCssClass(_severityClass, _variantClass, _dismissingClass)" role="alert" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass(_severityClass, _variantClass, _dismissingClass)" role="alert" style="@Style" @attributes="AdditionalAttributes"
+         @ref="_rootEl">
         @if (!NoIcon)
         {
             <span class="@Css.Classes.Alert.Icon" aria-hidden="true">@if (IconContent is not null) { @IconContent } else { @_defaultIcon }</span>
@@ -17,7 +21,8 @@
         </div>
         @if (ShowCloseButton || Dismissible)
         {
-            <button class="@Css.Classes.Alert.Close" type="button" aria-label="@(FlareStrings.Alert_Close)" @onclick="HandleClose">✕</button>
+            <button class="@Css.Classes.Alert.Close" type="button" aria-label="@(FlareStrings.Alert_Close)"
+                    disabled="@_dismissing" @onclick="HandleClose">✕</button>
         }
     </div>
 }
@@ -50,6 +55,8 @@
 
     private bool _dismissed;
     private bool _dismissing;
+    private bool _disposed;
+    private ElementReference _rootEl;
 
     private string? _dismissingClass => _dismissing ? Css.Classes.Alert.Dismissing : null;
 
@@ -80,14 +87,29 @@
 
     private async Task HandleClose()
     {
+        // One close, however many clicks or key presses arrive while the exit is playing.
+        if (_dismissing || _dismissed || _disposed) return;
+        _dismissing = true;
+
         if (AnimateDismiss)
         {
-            _dismissing = true;
             StateHasChanged();
-            await Task.Delay(300);
+            // Wait for the motion the ACTIVE THEME plays, not a constant: a slow exit used to lose its
+            // last frames to the removal, and a reduced-motion one still waited the full 300ms.
+            var delayMs = 0d;
+            try { delayMs = await Ui.GetAnimationDurationMsAsync(_rootEl); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            if (delayMs > 0 && !_disposed) await Task.Delay((int)Math.Ceiling(delayMs));
         }
+
+        if (_disposed) return;
         _dismissed = true;
         await OnClose.InvokeAsync();
         await OnDismiss.InvokeAsync();
     }
+
+    /// <summary>Marks the component gone so a pending exit delay cannot call back into a removed parent.</summary>
+    public void Dispose() => _disposed = true;
 }

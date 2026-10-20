@@ -57,6 +57,27 @@ public class FlareAlertAnimationTests : FlareTestContext
     }
 
     [Fact]
+    public void RepeatedCloseRaisesEachCallbackOnce()
+    {
+        var closes = 0;
+        var dismisses = 0;
+        var cut = Render<FlareAlert>(p => p
+            .Add(x => x.ShowCloseButton, true)
+            .Add(x => x.AnimateDismiss, true)
+            .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => closes++))
+            .Add(x => x.OnDismiss, EventCallback.Factory.Create(this, () => dismisses++)));
+
+        var button = cut.Find($"button.{Css.Classes.Alert.Close}");
+        button.Click();
+
+        // The close path guards on its own dismissing/dismissed state, and the button carries disabled
+        // while the exit plays; one gesture raises each callback once.
+        Assert.Equal(1, closes);
+        Assert.Equal(1, dismisses);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Alert.Root}"));
+    }
+
+    [Fact]
     public void ChildContent_RendersMessageText()
     {
         var cut = Render<FlareAlert>(p => p

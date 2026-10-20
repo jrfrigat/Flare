@@ -94,7 +94,13 @@
   flex-shrink: 0;
 }
 
-.flare-alert__content { flex: 1; }
+.flare-alert__content {
+  flex: 1;
+  /* A long unbroken phrase or URL has to wrap inside the card. Without this its min-content width
+     pushed the icon and close button out of the alert. */
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
 
 .flare-alert__title {
   font-weight: var(--flare-typescale-label-large-weight);

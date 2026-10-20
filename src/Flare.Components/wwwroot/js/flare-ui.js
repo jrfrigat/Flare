@@ -339,6 +339,22 @@ export function setUnloadPrompt(enabled) {
 }
 
 
+// The longer of the computed animation and transition durations, in milliseconds. A component whose
+// exit is an animation needs the theme's real duration, not a number baked into C#: a reduce rule or a
+// slower theme both change it. Comma lists (one duration per animated property) are maxed.
+export function getAnimationDurationMs(element) {
+    if (!element) return 0;
+    const style = getComputedStyle(element);
+    const longest = value => Math.max(0, ...String(value || '')
+        .split(',')
+        .map(part => {
+            const n = parseFloat(part);
+            if (!Number.isFinite(n)) return 0;
+            return part.trim().endsWith('ms') ? n : n * 1000;
+        }));
+    return Math.max(longest(style.animationDuration), longest(style.transitionDuration));
+}
+
 export function supportsEyeDropper() {
     return 'EyeDropper' in window;
 }

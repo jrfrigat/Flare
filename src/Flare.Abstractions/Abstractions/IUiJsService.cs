@@ -85,6 +85,14 @@ public interface IUiJsService : IAsyncDisposable
     ValueTask RemoveTreeKeyboardAsync(ElementReference root) => ValueTask.CompletedTask;
 
     /// <summary>
+    /// Returns the longer of the element's computed animation and transition durations, in milliseconds,
+    /// so a component that finishes an exit animation in C# waits for what the active theme actually
+    /// plays. Returns 0 when no browser is available (prerender) or nothing is animating.
+    /// </summary>
+    /// <param name="element">The element whose computed timings are read.</param>
+    ValueTask<double> GetAnimationDurationMsAsync(ElementReference element) => ValueTask.FromResult(0d);
+
+    /// <summary>
     /// Keeps the browser from scrolling the page with the keys a FAB speed-dial menu handles itself
     /// (arrows, Home and End on an action). Tab, Enter, Space and Escape keep their ordinary behavior.
     /// Defaults to doing nothing, which leaves the browser's scrolling in place.
