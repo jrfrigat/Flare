@@ -12,6 +12,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A replaced event handler inside `InputAttributes` or `AdditionalAttributes` reaches the DOM even when a closed picker skips its parameter render.
 - A theme scope carries inherited high-contrast and RTL state into its subtree and announces its own parameter changes to scoped subscribers.
 - `FlareDateTimePicker`, `FlareMonthPicker`, `FlareWeekPicker`, `FlareMultiDatePicker` and `FlareTimePicker` take the accessible name from a rich `LabelContent` instead of the placeholder.
+- A JSON grid export gives columns with the same title distinct keys instead of silently overwriting one value with another.
 
 ## [0.47.0] - 2026-10-20
 

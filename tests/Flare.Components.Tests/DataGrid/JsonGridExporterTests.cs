@@ -30,6 +30,20 @@ public partial class JsonGridExporterTests
     }
 
     [Fact]
+    public async Task Export_GivesDuplicateTitlesDistinctKeys()
+    {
+        var download = new Capture();
+        await new JsonGridExporter<object?[]>().ExportAsync(new DataGridExportData<object?[]>
+        {
+            Columns = [new("Name", r => r[0]), new("Name", r => r[1]), new("Name", r => r[2])],
+            Rows = [new object?[] { "a", "b", "c" }],
+            FileName = "duplicates",
+        }, download);
+
+        Assert.Equal("[{\"Name\":\"a\",\"Name (2)\":\"b\",\"Name (3)\":\"c\"}]", download.Content);
+    }
+
+    [Fact]
     public async Task Export_RejectsMissingMetadataBeforeDownload()
     {
         var download = new Capture();

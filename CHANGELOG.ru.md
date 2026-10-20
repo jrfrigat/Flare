@@ -13,6 +13,7 @@
 - Замененный обработчик события в `InputAttributes` или `AdditionalAttributes` доходит до DOM, даже когда закрытый пикер пропускает перерисовку параметров.
 - Тематическая область передает унаследованные high-contrast и RTL в поддерево и сообщает подписчикам scoped-сервиса об изменении своих параметров.
 - `FlareDateTimePicker`, `FlareMonthPicker`, `FlareWeekPicker`, `FlareMultiDatePicker` и `FlareTimePicker` берут доступное имя из rich-`LabelContent`, а не из placeholder.
+- JSON-экспорт сетки дает колонкам с одинаковым заголовком разные ключи, а не перезаписывает одно значение другим.
 
 ## [0.47.0] - 2026-10-20
 

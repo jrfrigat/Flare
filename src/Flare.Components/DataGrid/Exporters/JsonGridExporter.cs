@@ -11,7 +11,10 @@ public sealed class JsonGridExporter<TItem> : IDataGridExporter<TItem>
 {
     /// <summary>Optional source-generated metadata for complex cell types and custom converters.
     /// Without it, JSON DOM values, primitive values, enumerables and string-key dictionaries are supported.
-    /// Other types throw rather than being converted to text. Register every runtime type used by complex cells.</summary>
+    /// Other types throw rather than being converted to text. Register every runtime type used by complex cells.
+    /// From <see cref="JsonSerializerOptions"/> only <see cref="JsonSerializerOptions.Encoder"/>,
+    /// <see cref="JsonSerializerOptions.WriteIndented"/> and <see cref="JsonSerializerOptions.MaxDepth"/> apply to the
+    /// built-in values; converters and number handling apply through the registered metadata.</summary>
     public JsonSerializerContext? SerializerContext { get; init; }
 
     /// <summary>Unique exporter id.</summary>
@@ -32,14 +35,15 @@ public sealed class JsonGridExporter<TItem> : IDataGridExporter<TItem>
             MaxDepth = SerializerContext?.Options.MaxDepth is > 0 and var depth ? depth : 64,
         }))
         {
+            var keys = UniqueKeys(data.Columns);
             json.WriteStartArray();
             foreach (var row in data.Rows)
             {
                 json.WriteStartObject();
-                foreach (var c in data.Columns)
+                for (var i = 0; i < data.Columns.Count; i++)
                 {
-                    json.WritePropertyName(c.Title);
-                    WriteValue(json, c.Value(row));
+                    json.WritePropertyName(keys[i]);
+                    WriteValue(json, data.Columns[i].Value(row));
                 }
                 json.WriteEndObject();
             }
@@ -47,6 +51,21 @@ public sealed class JsonGridExporter<TItem> : IDataGridExporter<TItem>
         }
         var file = data.FileName + ".json";
         await download.DownloadAsync(file, Encoding.UTF8.GetString(buffer.ToArray()), "application/json");
+    }
+
+    // Two columns may carry the same title (a localized header or two grouped fields). A JSON object cannot hold
+    // duplicate keys, so later ones get a numeric suffix instead of silently overwriting the first value.
+    private static string[] UniqueKeys(IReadOnlyList<FlareExportColumn<TItem>> columns)
+    {
+        var keys = new string[columns.Count];
+        var seen = new Dictionary<string, int>(StringComparer.Ordinal);
+        for (var i = 0; i < columns.Count; i++)
+        {
+            var title = columns[i].Title;
+            seen[title] = seen.TryGetValue(title, out var count) ? count + 1 : 1;
+            keys[i] = seen[title] == 1 ? title : $"{title} ({seen[title]})";
+        }
+        return keys;
     }
 
     // Source-generated metadata takes precedence, including converters for otherwise built-in types.
