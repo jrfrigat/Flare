@@ -53,8 +53,12 @@ public sealed class ButtonGroupOverflowTests(BrowserFixture fixture) : IClassFix
         var page = await OpenAsync(context);
         await FoldAsync(page);
         await page.Locator(MoreButton).ClickAsync();
+        await Expect(page.Locator(Panel)).ToBeVisibleAsync();
 
-        await page.GetByRole(AriaRole.Button, new() { Name = "Underline" }).ClickAsync();
+        // The group renders its content twice, in the bar and in this panel, with the same accessible
+        // name. Scoped to the panel, the click lands on the copy the user sees, not on the clipped
+        // original under the menu backdrop.
+        await page.Locator(Panel).GetByRole(AriaRole.Button, new() { Name = "Underline" }).ClickAsync();
         await Expect(page.Locator("#state")).ToHaveTextAsync("on");
         await Expect(page.Locator("#toggles")).ToHaveTextAsync("1");
 
@@ -74,8 +78,9 @@ public sealed class ButtonGroupOverflowTests(BrowserFixture fixture) : IClassFix
         var page = await OpenAsync(context);
         await FoldAsync(page);
         await page.Locator(MoreButton).ClickAsync();
+        await Expect(page.Locator(Panel)).ToBeVisibleAsync();
 
-        await page.GetByRole(AriaRole.Button, new() { Name = "Free" }).ClickAsync();
+        await page.Locator(Panel).GetByRole(AriaRole.Button, new() { Name = "Free" }).ClickAsync();
         await page.EvaluateAsync("document.getElementById('sizer').style.width = '760px'");
         await Expect(page.Locator(MoreButton)).ToBeHiddenAsync();
 
