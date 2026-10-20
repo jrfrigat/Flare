@@ -24,7 +24,8 @@ public class FlareTooltipTests : FlareTestContext
             cut.Find($".{Css.Classes.Tooltip.Root}").ClassName);
         Assert.Equal(new[] { false }, openStates);
 
-        root.TriggerEvent("onmouseleave", new Microsoft.AspNetCore.Components.Web.MouseEventArgs());
+        // A fresh hover intent is the pointer entering again; leaving alone must not reveal the bubble.
+        root.TriggerEvent("onmouseenter", new Microsoft.AspNetCore.Components.Web.MouseEventArgs());
         Assert.DoesNotContain(Css.Classes.Tooltip.Dismissed,
             cut.Find($".{Css.Classes.Tooltip.Root}").ClassName);
     }
