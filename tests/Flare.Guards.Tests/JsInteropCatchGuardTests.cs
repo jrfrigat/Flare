@@ -12,7 +12,7 @@ namespace Flare.Guards.Tests;
 public sealed class JsInteropCatchGuardTests
 {
     private const string Disconnected = "catch (JSDisconnectedException)";
-    private const string Generic = "catch (JSException)";
+    private const string Generic = "catch (JSException";
 
     [Fact]
     public void EveryJsDisconnectedCatchAlsoCatchesJsException()
