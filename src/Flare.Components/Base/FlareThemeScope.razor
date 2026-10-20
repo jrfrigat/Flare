@@ -48,6 +48,8 @@
     private ITheme _theme = default!;
     private Palette _palette = default!;
     private bool _isDark;
+    private bool _isHighContrast;
+    private bool _isRtl;
     private string _cssClass = string.Empty;
     private IThemeService? _subscribed;
     private int _version;
@@ -65,12 +67,18 @@
         _subscribed = Outer;
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
+        var hadSnapshot = _snapshot.Theme is not null;
         Resolve();
-        // A new Theme, Palette or Mode is a new snapshot, which is what tells the subtree to render again.
-        if (!ReferenceEquals(_snapshot.Theme, _theme) || !ReferenceEquals(_snapshot.Palette, _palette) || _snapshot.IsDark != _isDark)
+        // A new Theme, Palette, Mode, high-contrast state or direction is a new snapshot, which is what
+        // tells the subtree to render again; the scoped service announces it to its own subscribers.
+        if (!ReferenceEquals(_snapshot.Theme, _theme) || !ReferenceEquals(_snapshot.Palette, _palette)
+            || _snapshot.IsDark != _isDark || _snapshot.IsHighContrast != _isHighContrast || _snapshot.IsRtl != _isRtl)
+        {
             _snapshot = CreateSnapshot();
+            if (hadSnapshot) await _scoped.RaiseAsync();
+        }
     }
 
     /// <inheritdoc />
@@ -109,17 +117,29 @@
         {
             ThemeMode.Dark => true,
             ThemeMode.Light => false,
+            ThemeMode.HighContrast => true,
             _ => outer.IsDark,   // Auto / unset -> follow the outer resolved state
         };
+        _isHighContrast = Mode switch
+        {
+            ThemeMode.HighContrast => true,
+            ThemeMode.Dark or ThemeMode.Light => false,
+            _ => outer.IsHighContrast,
+        };
+        _isRtl = outer.IsRtl;
 
-        _cssClass = string.Join(' ',
+        var classes = new List<string>
+        {
             Css.Classes.Theme.Root,
             ThemeLineage.RootClasses(_theme),
             Css.Classes.Theme.ForPalette(_palette.Id),
-            Css.Classes.Theme.Mode(_isDark),
-            Class);
+            Css.Classes.Theme.ModeClasses(_isDark, _isHighContrast),
+        };
+        if (_isRtl) classes.Add(Css.Classes.Theme.Rtl);
+        if (!string.IsNullOrEmpty(Class)) classes.Add(Class);
+        _cssClass = string.Join(' ', classes);
 
-        _scoped.Set(_theme, _palette, mode, _isDark);
+        _scoped.Set(_theme, _palette, mode, _isDark, _isHighContrast, _isRtl);
 
         // The static stylesheet only carries the active theme/palette by default; make sure this
         // scope's (possibly different) combination is emitted so its class rules actually resolve.
@@ -144,6 +164,8 @@
             Theme = _theme,
             Palette = _palette,
             IsDark = _isDark,
+            IsHighContrast = _isHighContrast,
+            IsRtl = _isRtl,
             Delivery = Outer?.Delivery ?? ThemeDelivery.ClassToggle,
             Version = _version
         };

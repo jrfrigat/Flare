@@ -10,6 +10,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A notification address containing a backslash is refused instead of opening another origin.
 - A JavaScript module that failed to import is imported again on the next call instead of staying broken until the page reloads.
 - A replaced event handler inside `InputAttributes` or `AdditionalAttributes` reaches the DOM even when a closed picker skips its parameter render.
+- A theme scope carries inherited high-contrast and RTL state into its subtree and announces its own parameter changes to scoped subscribers.
 
 ## [0.47.0] - 2026-10-20
 

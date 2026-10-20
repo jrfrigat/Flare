@@ -51,7 +51,9 @@ public sealed class StubThemeService : IThemeService
     public ThemeMode Mode { get; private set; } = ThemeMode.Light;
     public bool IsDark => Mode is ThemeMode.Dark or ThemeMode.HighContrast;
     public bool IsHighContrast => Mode == ThemeMode.HighContrast;
-    public bool IsRtl => false;
+    /// <summary>Whether the stub reports RTL; settable so scope tests can exercise the inherited direction.</summary>
+    public bool Rtl { get; set; }
+    public bool IsRtl => Rtl;
     public ThemeDelivery Delivery => ThemeDelivery.ClassToggle;
     public IReadOnlyList<ITheme> Themes => [_theme];
     public IReadOnlyList<Palette> Palettes => [_palette];
