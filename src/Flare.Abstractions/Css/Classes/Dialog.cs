@@ -54,4 +54,6 @@ public static class Dialog
     public const string DragHandle = "flare-dialog__drag-handle";
     /// <summary>The <c>flare-dialog__resizer</c> CSS class: the bottom-right resize gripper.</summary>
     public const string Resizer = "flare-dialog__resizer";
+    /// <summary>The <c>flare-dialog--has-close</c> CSS class applied while the built-in close button renders.</summary>
+    public const string HasClose = "flare-dialog--has-close";
 }

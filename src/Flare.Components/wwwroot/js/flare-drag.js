@@ -242,21 +242,66 @@ export function removeResizeHandle(handle) {
 // the bottom-right gripper down to the given minimums.
 const _dialogDrags = registry();
 
+const DIALOG_MARGIN = 8;
+
+function dialogViewport() {
+    const vv = window.visualViewport;
+    return vv
+        ? { left: vv.offsetLeft, top: vv.offsetTop, width: vv.width, height: vv.height }
+        : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+}
+
+// Keeps the whole panel on screen. The title, the close button and the actions are its first and last
+// rows; dragging or resizing the panel past an edge put them out of reach with no way to scroll back.
+function clampDialogOffset(rect, x, y) {
+    const v = dialogViewport();
+    const minX = v.left + DIALOG_MARGIN - rect.left;
+    const maxX = v.left + v.width - DIALOG_MARGIN - rect.left - rect.width;
+    const minY = v.top + DIALOG_MARGIN - rect.top;
+    const maxY = v.top + v.height - DIALOG_MARGIN - rect.top - rect.height;
+    return {
+        x: maxX >= minX ? Math.max(minX, Math.min(x, maxX)) : minX,
+        y: maxY >= minY ? Math.max(minY, Math.min(y, maxY)) : minY,
+    };
+}
+
+function dialogPlacement(panel) {
+    const m = new DOMMatrixReadOnly(getComputedStyle(panel).transform);
+    const r = panel.getBoundingClientRect();
+    return {
+        x: m.m41, y: m.m42,
+        rect: { left: r.left - m.m41, top: r.top - m.m42, width: r.width, height: r.height },
+    };
+}
+
 export function registerDialogDrag(handle, panel) {
     if (!handle || !panel) return;
-    let startX = 0, startY = 0;
+    let start = null;
+    const moveTo = (placement, x, y) => {
+        const c = clampDialogOffset(placement.rect, x, y);
+        panel.style.transform = `translate(${c.x}px, ${c.y}px)`;
+    };
     const off = startDrag(handle, {
         cursor: 'move',
-        onStart() {
-            const m = new DOMMatrixReadOnly(getComputedStyle(panel).transform);
-            startX = m.m41;
-            startY = m.m42;
-        },
-        onMove(dx, dy) {
-            panel.style.transform = `translate(${startX + dx}px, ${startY + dy}px)`;
-        },
+        onStart() { start = dialogPlacement(panel); },
+        onMove(dx, dy) { if (start) moveTo(start, start.x + dx, start.y + dy); },
     });
-    _dialogDrags.keep(handle, off);
+    // Keyboard alternative for the same gesture: the header is focusable when Draggable.
+    const keyboard = e => {
+        if (e.target !== handle) return;
+        const step = e.shiftKey ? 1 : 16;
+        const dx = e.key === 'ArrowLeft' ? -step : e.key === 'ArrowRight' ? step : 0;
+        const dy = e.key === 'ArrowUp' ? -step : e.key === 'ArrowDown' ? step : 0;
+        if (!dx && !dy) return;
+        const current = dialogPlacement(panel);
+        moveTo(current, current.x + dx, current.y + dy);
+        e.preventDefault();
+    };
+    handle.addEventListener('keydown', keyboard);
+    _dialogDrags.keep(handle, () => {
+        off();
+        handle.removeEventListener('keydown', keyboard);
+    });
 }
 
 export function removeDialogDrag(handle) {
@@ -269,24 +314,46 @@ export function registerDialogResize(handle, panel, minWidth, minHeight) {
     if (!handle || !panel) return;
     const minW = parseFloat(minWidth) || 0;
     const minH = parseFloat(minHeight) || 0;
-    let sw = 0, sh = 0;
+    let start = null;
+    const resizeTo = (sw, sh, dx, dy) => {
+        const v = dialogViewport();
+        const r = panel.getBoundingClientRect();
+        const maxW = Math.max(minW, v.left + v.width - DIALOG_MARGIN - r.left);
+        const maxH = Math.max(minH, v.top + v.height - DIALOG_MARGIN - r.top);
+        panel.style.width = Math.max(minW, Math.min(sw + dx, maxW)) + 'px';
+        panel.style.height = Math.max(minH, Math.min(sh + dy, maxH)) + 'px';
+    };
+    const liftCaps = () => {
+        // The size preset caps max-width/height; lift them so the dragged size takes effect. The new
+        // caps are the visible area, applied in resizeTo, so the panel cannot leave the screen.
+        panel.style.maxWidth = 'none';
+        panel.style.maxHeight = 'none';
+    };
     const off = startDrag(handle, {
         cursor: 'nwse-resize',
         onStart() {
             const r = panel.getBoundingClientRect();
-            sw = r.width;
-            sh = r.height;
-            // The size preset caps max-width/height; lift the caps so the dragged size takes effect
-            // (only once the user actually resizes, so the initial size is untouched).
-            panel.style.maxWidth = 'none';
-            panel.style.maxHeight = 'none';
+            start = { w: r.width, h: r.height };
+            liftCaps();
         },
-        onMove(dx, dy) {
-            panel.style.width = Math.max(minW, sw + dx) + 'px';
-            panel.style.height = Math.max(minH, sh + dy) + 'px';
-        },
+        onMove(dx, dy) { if (start) resizeTo(start.w, start.h, dx, dy); },
     });
-    _dialogResizes.keep(handle, off);
+    const keyboard = e => {
+        if (e.target !== handle) return;
+        const step = e.shiftKey ? 1 : 16;
+        const dx = e.key === 'ArrowRight' ? step : e.key === 'ArrowLeft' ? -step : 0;
+        const dy = e.key === 'ArrowDown' ? step : e.key === 'ArrowUp' ? -step : 0;
+        if (!dx && !dy) return;
+        const r = panel.getBoundingClientRect();
+        liftCaps();
+        resizeTo(r.width, r.height, dx, dy);
+        e.preventDefault();
+    };
+    handle.addEventListener('keydown', keyboard);
+    _dialogResizes.keep(handle, () => {
+        off();
+        handle.removeEventListener('keydown', keyboard);
+    });
 }
 
 export function removeDialogResize(handle) {

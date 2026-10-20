@@ -148,6 +148,36 @@ public static class DialogPanel
     public const string Color = "--flare-dialog-color";
     /// <summary>CSS custom-property name for the dialog panel shadow.</summary>
     public const string Shadow = "--flare-dialog-shadow";
+    /// <summary>CSS custom-property name for the dialog's minimum width.</summary>
+    public const string MinWidth = "--flare-dialog-min-width";
+    /// <summary>CSS custom-property name for the Xs size preset's maximum width.</summary>
+    public const string MaxWidthXs = "--flare-dialog-max-width-xs";
+    /// <summary>CSS custom-property name for the Sm size preset's maximum width.</summary>
+    public const string MaxWidthSm = "--flare-dialog-max-width-sm";
+    /// <summary>CSS custom-property name for the Md size preset's maximum width.</summary>
+    public const string MaxWidthMd = "--flare-dialog-max-width-md";
+    /// <summary>CSS custom-property name for the Lg size preset's maximum width.</summary>
+    public const string MaxWidthLg = "--flare-dialog-max-width-lg";
+    /// <summary>CSS custom-property name for the Xl size preset's maximum width.</summary>
+    public const string MaxWidthXl = "--flare-dialog-max-width-xl";
+    /// <summary>CSS custom-property name for the built-in close button's size.</summary>
+    public const string CloseSize = "--flare-dialog-close-size";
+    /// <summary>CSS custom-property name for the close button's focus ring width.</summary>
+    public const string FocusRingWidth = "--flare-dialog-focus-ring-width";
+    /// <summary>CSS custom-property name for the close button's focus ring color.</summary>
+    public const string FocusRingColor = "--flare-dialog-focus-ring-color";
+    /// <summary>CSS custom-property name for the close button's focus ring offset.</summary>
+    public const string FocusRingOffset = "--flare-dialog-focus-ring-offset";
+    /// <summary>CSS custom-property name for the dialog title's font family.</summary>
+    public const string TitleFont = "--flare-dialog-title-font";
+    /// <summary>CSS custom-property name for the dialog title's font size.</summary>
+    public const string TitleSize = "--flare-dialog-title-size";
+    /// <summary>CSS custom-property name for the dialog title's font weight.</summary>
+    public const string TitleWeight = "--flare-dialog-title-weight";
+    /// <summary>CSS custom-property name for the dialog title's line height.</summary>
+    public const string TitleLineHeight = "--flare-dialog-title-line-height";
+    /// <summary>CSS custom-property name for the dialog title's letter spacing.</summary>
+    public const string TitleSpacing = "--flare-dialog-title-spacing";
 }
 
 /// <summary>CSS variable tokens for the navigation drawer.</summary>

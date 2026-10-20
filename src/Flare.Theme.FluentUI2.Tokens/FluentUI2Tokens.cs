@@ -1188,6 +1188,17 @@ public class FluentUI2Tokens
         // Fluent dialog surface: colorNeutralBackground1 / colorNeutralForeground1 at shadow64.
         Bg = "var(--flare-color-surface)",
         Shadow = "0 0 8px var(--flare-shadow-penumbra), 0 32px 64px var(--flare-shadow-umbra)",
+        // Fluent's dialog is 600px wide at its default size, with a 20px/28px title.
+        MinWidth = "17.5rem",
+        MaxWidthXs = "20rem",
+        MaxWidthSm = "28rem",
+        MaxWidthMd = "37.5rem",
+        MaxWidthLg = "50rem",
+        MaxWidthXl = "70rem",
+        CloseSize = "2rem",
+        TitleSize = "1.25rem",
+        TitleLineHeight = "1.75rem",
+        TitleWeight = "600",
     };
 
     internal static readonly AppBarTokens AppBar = new()

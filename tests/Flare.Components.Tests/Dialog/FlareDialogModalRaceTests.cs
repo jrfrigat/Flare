@@ -19,6 +19,7 @@ public sealed class FlareDialogModalRaceTests : FlareTestContext
         _runtime = new RecordingRuntime(JSInterop.JSRuntime);
         Services.AddScoped<IOverlayJsService>(_ => new OverlayJsService(_runtime));
         Services.AddScoped<IScrollService>(_ => new ScrollService(_runtime));
+        Services.AddScoped<IDialogDragJsService>(_ => new DialogDragJsService(_runtime));
     }
 
     // Exposes the protected lifecycle so the test can call it while the renderer's own call is still awaiting JS -
@@ -68,6 +69,51 @@ public sealed class FlareDialogModalRaceTests : FlareTestContext
         Assert.True(lockAt >= 0, "The open never took the scroll lock: " + string.Join(", ", _runtime.Calls));
         Assert.True(unlockAt > lockAt,
             "The dialog stayed scroll-locked after the close: " + string.Join(", ", _runtime.Calls));
+    }
+
+    [Fact]
+    public void TogglingCloseOnEscDragAndResizeWhileOpen_ReconcilesWithoutReopening()
+    {
+        var cut = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.CloseOnEsc, false)
+            .Add(x => x.Draggable, false)
+            .Add(x => x.Resizable, false)
+            .AddChildContent("<p>body</p>"));
+        cut.WaitForAssertion(() => Assert.Contains("trapFocus", _runtime.Calls));
+        Assert.DoesNotContain("registerDialogEscHandler", _runtime.Calls);
+        Assert.DoesNotContain("registerDialogDrag", _runtime.Calls);
+        Assert.DoesNotContain("registerDialogResize", _runtime.Calls);
+
+        cut.Render(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.CloseOnEsc, true)
+            .Add(x => x.Draggable, true)
+            .Add(x => x.Resizable, true)
+            .AddChildContent("<p>body</p>"));
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Contains("registerDialogEscHandler", _runtime.Calls);
+            Assert.Contains("registerDialogDrag", _runtime.Calls);
+            Assert.Contains("registerDialogResize", _runtime.Calls);
+        });
+
+        cut.Render(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.CloseOnEsc, false)
+            .Add(x => x.Draggable, false)
+            .Add(x => x.Resizable, false)
+            .AddChildContent("<p>body</p>"));
+        cut.WaitForAssertion(() =>
+        {
+            Assert.Contains("removeDialogEscHandler", _runtime.Calls);
+            Assert.Contains("removeDialogDrag", _runtime.Calls);
+            Assert.Contains("removeDialogResize", _runtime.Calls);
+        });
+
+        // None of those toggles reopened the dialog: one trap and one scroll lock for one Visible=true.
+        Assert.Equal(1, _runtime.Calls.Count(c => c == "trapFocus"));
+        Assert.Equal(1, _runtime.Calls.Count(c => c == "lock"));
     }
 
     // Records the module method calls in order; the ordinary bUnit module reference does not keep their sequence.

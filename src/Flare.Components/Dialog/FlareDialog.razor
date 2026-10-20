@@ -9,7 +9,7 @@
 @if (Visible)
 {
     <div class="@_scrimClass" @onclick="HandleScrimClick">
-        <div class="@BuildCssClass(_sizeClass, _positionClass, _draggableClass, _fillClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
+        <div class="@BuildCssClass(_sizeClass, _positionClass, _draggableClass, _fillClass, _hasCloseClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
              @attributes="AdditionalAttributes"
              role="dialog" aria-modal="true" tabindex="-1"
              aria-labelledby="@(string.IsNullOrEmpty(Title) ? null : _titleId)"
@@ -34,7 +34,10 @@
             @if (_showHeader)
             {
                 <div class="@Css.Classes.Dialog.Header @(IconContent is not null ? Css.Classes.Dialog.HeaderCentered : null) @(Draggable ? Css.Classes.Dialog.DragHandle : null)"
-                     @ref="_headerEl">
+                     @ref="_headerEl"
+                     tabindex="@(Draggable ? "0" : null)"
+                     role="@(Draggable ? "group" : null)"
+                     aria-label="@(Draggable ? FlareStrings.Dialog_Move : null)">
                     @if (!string.IsNullOrEmpty(Title))
                     {
                         <h2 class="@Css.Classes.Dialog.Title" id="@_titleId">@Title</h2>
@@ -56,7 +59,10 @@
             }
             @if (Resizable)
             {
-                <div class="@Css.Classes.Dialog.Resizer" @ref="_resizerEl" aria-hidden="true"></div>
+                @* Focusable and named: the pointer gesture has a keyboard twin (arrow keys resize), so a
+                   user without a pointer is not locked out of the feature. *@
+                <div class="@Css.Classes.Dialog.Resizer" @ref="_resizerEl" role="separator"
+                     tabindex="0" aria-label="@FlareStrings.Dialog_Resize"></div>
             }
         </div>
     </div>
@@ -111,6 +117,7 @@
 
     private string _positionClass => Position == DialogPosition.Bottom ? Css.Classes.Dialog.PositionBottom : string.Empty;
     private string _draggableClass => Draggable ? Css.Classes.Dialog.Draggable : string.Empty;
+    private string _hasCloseClass => ShowCloseButton ? Css.Classes.Dialog.HasClose : string.Empty;
 
     // Its own class rather than the shared `.flare-fill`: the scrim is a ROW flex container, so the
     // shared `flex: 1 1 0` would set the panel's flex-basis on the horizontal axis and take over its
@@ -136,6 +143,11 @@
     private ElementReference _resizerEl;
     private DotNetObjectReference<FlareDialog>? _dotNetRef;
     private bool _wasVisible;
+    // What is actually registered in the browser, which is not the same question as what the current
+    // parameters ask for: CloseOnEsc / Draggable / Resizable can change while the dialog stays open.
+    private bool _escRegistered;
+    private bool _dragActive;
+    private bool _resizeActive;
     // A render can arrive while a previous OnAfterRenderAsync is still awaiting JS. The open and the close then
     // have to run one after the other - otherwise the close releases what the open has not registered yet, and the
     // open registers the trap, the Escape handler and the scroll lock after the close is over.
@@ -176,14 +188,57 @@
     }
 
     // Releases the modal state this dialog may hold. Every step is idempotent, so the close path, the failed-open
-    // path and dispose can all call it without tracking how far the open got.
+    // path and dispose can all call it without tracking how far the open got. The drag/resize checks use the
+    // REGISTERED flags, not the current parameters: a feature switched off while open was already detached, and
+    // one switched on must not be released as if it had been there since the open.
     private async Task ReleaseModalAsync()
     {
         try { await ReleaseScrollLockAsync(); } catch { }
-        try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
+        if (_escRegistered) { _escRegistered = false; try { await Overlay.RemoveDialogEscAsync(_id); } catch { } }
+        if (_dragActive) { _dragActive = false; try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { } }
+        if (_resizeActive) { _resizeActive = false; try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { } }
         try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
-        if (Draggable) { try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { } }
-        if (Resizable) { try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { } }
+    }
+
+    // Reconciles the optional registrations with the CURRENT parameters. Called on every render while the
+    // dialog is visible, so a toggle takes effect without closing and reopening the window.
+    private async Task SyncOptionsAsync()
+    {
+        if (CloseOnEsc && !_escRegistered)
+        {
+            try { await Overlay.RegisterDialogEscAsync(_id, _dotNetRef!); _escRegistered = true; }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!CloseOnEsc && _escRegistered)
+        {
+            _escRegistered = false;
+            try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
+        }
+
+        if (Draggable && !_dragActive)
+        {
+            try { await DialogDrag.RegisterDragAsync(_headerEl, _dialogEl); _dragActive = true; }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!Draggable && _dragActive)
+        {
+            _dragActive = false;
+            try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { }
+        }
+
+        if (Resizable && !_resizeActive)
+        {
+            try { await DialogDrag.RegisterResizeAsync(_resizerEl, _dialogEl, "240", "160"); _resizeActive = true; }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        else if (!Resizable && _resizeActive)
+        {
+            _resizeActive = false;
+            try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { }
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -195,36 +250,35 @@
 
             if (Visible)
             {
-                if (_wasVisible) return;
-                try
+                if (!_wasVisible)
                 {
-                    _dotNetRef ??= DotNetObjectReference.Create(this);
+                    try
+                    {
+                        _dotNetRef ??= DotNetObjectReference.Create(this);
 
-                    // Escape and the trap go out together and first: a field in the body can take autofocus as soon
-                    // as the dialog renders, and the dialog has to own the keyboard by then. Awaiting one before
-                    // sending the other would leave a round trip in which Escape does nothing.
-                    var esc = CloseOnEsc ? Overlay.RegisterDialogEscAsync(_id, _dotNetRef) : ValueTask.CompletedTask;
-                    var trap = Overlay.TrapFocusAsync(_id, _dialogEl);
-                    await esc;
-                    await trap;
+                        // Escape and the trap go out together and first: a field in the body can take autofocus as soon
+                        // as the dialog renders, and the dialog has to own the keyboard by then. Awaiting one before
+                        // sending the other would leave a round trip in which Escape does nothing.
+                        var esc = CloseOnEsc ? Overlay.RegisterDialogEscAsync(_id, _dotNetRef) : ValueTask.CompletedTask;
+                        _escRegistered = CloseOnEsc;
+                        var trap = Overlay.TrapFocusAsync(_id, _dialogEl);
+                        await esc;
+                        await trap;
 
-                    _scrollLock = await Scroll.LockAsync();
-
-                    if (Draggable)
-                        await DialogDrag.RegisterDragAsync(_headerEl, _dialogEl);
-                    if (Resizable)
-                        await DialogDrag.RegisterResizeAsync(_resizerEl, _dialogEl, "240", "160");
-
-                    // Only a finished open owns the modal state; until then a close has nothing to release and a
-                    // failed open releases its own partial state below.
-                    _wasVisible = true;
+                        _scrollLock = await Scroll.LockAsync();
+                        _wasVisible = true;
+                    }
+                    catch
+                    {
+                        // SSR or pre-render: JS not available. A partial registration must not outlive the attempt.
+                        _wasVisible = false;
+                        await ReleaseModalAsync();
+                    }
                 }
-                catch
-                {
-                    // SSR or pre-render: JS not available. A partial registration must not outlive the attempt.
-                    _wasVisible = false;
-                    await ReleaseModalAsync();
-                }
+
+                // Runs for a dialog that just opened and for every later render: CloseOnEsc, Draggable and
+                // Resizable are reconciled against what the browser actually holds.
+                if (_wasVisible) await SyncOptionsAsync();
             }
             else if (_wasVisible)
             {

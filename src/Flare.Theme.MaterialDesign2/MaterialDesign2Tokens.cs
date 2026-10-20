@@ -888,6 +888,13 @@ internal static class MaterialDesign2Tokens
     {
         Radius = "var(--flare-shape-extra-small)",
         IconSize = "1.5rem",
+        MinWidth = "17.5rem",
+        MaxWidthXs = "20rem",
+        MaxWidthSm = "28rem",
+        MaxWidthMd = "35rem",
+        MaxWidthLg = "50rem",
+        MaxWidthXl = "70rem",
+        CloseSize = "2rem",
         // Dialog: surface at 24dp.
         Bg = "var(--flare-color-surface)",
         // 24dp: the shared scale has no step for it (spec "Default elevation values").

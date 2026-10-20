@@ -1,0 +1,27 @@
+@page "/dialog-audit"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareButton id="open-dialog" OnClick="() => _open = true">Open dialog</FlareButton>
+
+    <FlareDialog @bind-Visible="_open" Title="@_title" Draggable="true" Resizable="true"
+                 ShowCloseButton="true" Size="DialogSize.Md">
+        <ChildContent>
+            <p id="dialog-body">
+                A short body so the dialog fits on screen. The header can be dragged and the corner resized,
+                and none of those gestures may put the title or the actions out of reach.
+            </p>
+        </ChildContent>
+        <ActionsContent>
+            <FlareButton id="dialog-cancel" OnClick="CloseDialog">Cancel with a rather long label</FlareButton>
+            <FlareButton id="dialog-ok" OnClick="CloseDialog">Confirm with a rather long label</FlareButton>
+        </ActionsContent>
+    </FlareDialog>
+</FlareThemeProvider>
+
+@code {
+    private bool _open;
+
+    private void CloseDialog() => _open = false;
+    private const string _title =
+        "A dialog title long enough to wrap on a narrow screen and to reach the close button";
+}

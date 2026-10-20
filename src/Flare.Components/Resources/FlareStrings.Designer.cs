@@ -980,7 +980,25 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Dialog_Close", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Move dialog.
+        /// </summary>
+        public static string Dialog_Move {
+            get {
+                return ResourceManager.GetString("Dialog_Move", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Resize dialog.
+        /// </summary>
+        public static string Dialog_Resize {
+            get {
+                return ResourceManager.GetString("Dialog_Resize", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm.
         /// </summary>

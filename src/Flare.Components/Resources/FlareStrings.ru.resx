@@ -80,6 +80,8 @@
   <data name="Dialog_Cancel" xml:space="preserve"><value>Отмена</value></data>
   <data name="Dialog_Ok" xml:space="preserve"><value>ОК</value></data>
   <data name="Dialog_Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="Dialog_Move" xml:space="preserve"><value>Переместить окно</value></data>
+  <data name="Dialog_Resize" xml:space="preserve"><value>Изменить размер окна</value></data>
 
   <!-- DatePicker / TimePicker -->
   <data name="Picker_Ok" xml:space="preserve"><value>ОК</value></data>

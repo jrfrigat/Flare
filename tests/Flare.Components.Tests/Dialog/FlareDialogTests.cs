@@ -1,5 +1,6 @@
 using Flare.Infrastructure;
 using Flare.Abstractions;
+using Flare.Components.Resources;
 using Flare.Theming;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +8,28 @@ namespace Flare.Components.Tests;
 
 public class FlareDialogTests : FlareTestContext
 {
+    [Fact]
+    public void DraggableHeaderAndResizerAreKeyboardReachableAndTheCloseReservesHeaderSpace()
+    {
+        var cut = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.Title, "Title")
+            .Add(x => x.Draggable, true)
+            .Add(x => x.Resizable, true)
+            .Add(x => x.ShowCloseButton, true));
+
+        var header = cut.Find($".{Css.Classes.Dialog.Header}");
+        Assert.Equal("0", header.GetAttribute("tabindex"));
+        Assert.Equal(FlareStrings.Dialog_Move, header.GetAttribute("aria-label"));
+
+        var resizer = cut.Find($".{Css.Classes.Dialog.Resizer}");
+        Assert.Equal("0", resizer.GetAttribute("tabindex"));
+        Assert.Equal("separator", resizer.GetAttribute("role"));
+        Assert.Equal(FlareStrings.Dialog_Resize, resizer.GetAttribute("aria-label"));
+
+        Assert.Contains(Css.Classes.Dialog.HasClose, cut.Find($".{Css.Classes.Dialog.Root}").ClassName);
+    }
+
     [Fact]
     public void HiddenWhenVisibleFalse()
     {

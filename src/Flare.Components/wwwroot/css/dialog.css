@@ -24,8 +24,8 @@
     background-color: var(--flare-dialog-bg);
     color: var(--flare-dialog-color);
     border-radius: var(--flare-dialog-radius);
-    min-width: 17.5rem;
-    max-width: 35rem;
+    min-width: var(--flare-dialog-min-width);
+    max-width: var(--flare-dialog-max-width-md);
     width: 100%;
     max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset));
     box-shadow: var(--flare-dialog-shadow);
@@ -56,8 +56,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: var(--flare-dialog-close-size);
+    height: var(--flare-dialog-close-size);
     padding: 0;
     border: none;
     border-radius: var(--flare-shape-full);
@@ -72,8 +72,8 @@
 }
 
 .flare-dialog__close:focus-visible {
-    outline: 2px solid var(--flare-color-primary);
-    outline-offset: 2px;
+    outline: var(--flare-dialog-focus-ring-width) solid var(--flare-dialog-focus-ring-color);
+    outline-offset: var(--flare-dialog-focus-ring-offset);
 }
 
 .flare-dialog__close .flare-icon { font-size: 1.25rem; }
@@ -121,7 +121,19 @@
 }
 
 /* Shared overlay-header title (dialog family + empty state): identical headline-small style. */
-.flare-dialog__title,
+.flare-dialog__title {
+    /* Component tokens: the theme's own title role, not whatever the shared headline-small step is. */
+    font-family: var(--flare-dialog-title-font);
+    font-size: var(--flare-dialog-title-size);
+    font-weight: var(--flare-dialog-title-weight);
+    line-height: var(--flare-dialog-title-line-height);
+    letter-spacing: var(--flare-dialog-title-spacing);
+    color: var(--flare-color-on-surface);
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+/* The other overlay headers keep sharing the semantic headline-small step. */
 .flare-msgbox__title,
 .flare-confirmdialog__title,
 .flare-empty-state__title {
@@ -130,6 +142,11 @@
     font-weight: var(--flare-typescale-headline-small-weight);
     color: var(--flare-color-on-surface);
     margin: 0;
+}
+
+/* The close button floats over the corner; the header has to stop before it instead of running under. */
+.flare-dialog--has-close .flare-dialog__header {
+    padding-inline-end: calc(var(--flare-dialog-close-size) + 2 * var(--flare-spacing-6));
 }
 
 .flare-dialog__content {
@@ -141,6 +158,7 @@
 
 .flare-dialog__actions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--flare-spacing-4);
     padding: 0 var(--flare-spacing-12) var(--flare-spacing-12);
@@ -155,11 +173,11 @@
 }
 
 /* Size modifiers */
-.flare-dialog--xs   { max-width: 20rem; }
-.flare-dialog--sm   { max-width: 28rem; }
-.flare-dialog--md   { max-width: 35rem; }
-.flare-dialog--lg   { max-width: 50rem; }
-.flare-dialog--xl   { max-width: 70rem; }
+.flare-dialog--xs   { max-width: var(--flare-dialog-max-width-xs); }
+.flare-dialog--sm   { max-width: var(--flare-dialog-max-width-sm); }
+.flare-dialog--md   { max-width: var(--flare-dialog-max-width-md); }
+.flare-dialog--lg   { max-width: var(--flare-dialog-max-width-lg); }
+.flare-dialog--xl   { max-width: var(--flare-dialog-max-width-xl); }
 .flare-dialog--full      { max-width: calc(100vw - var(--flare-overlay-viewport-inset)); max-block-size: calc(100dvh - var(--flare-overlay-viewport-inset)); }
 .flare-dialog--fullwidth { width: calc(100vw - var(--flare-overlay-viewport-inset)); max-width: calc(100vw - var(--flare-overlay-viewport-inset)); }
 

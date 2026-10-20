@@ -878,6 +878,13 @@ public class MaterialDesign3Tokens
     internal static readonly DialogTokens Dialog = new()
     {
         IconSize = "1.5rem",
+        MinWidth = "17.5rem",
+        MaxWidthXs = "20rem",
+        MaxWidthSm = "28rem",
+        MaxWidthMd = "35rem",
+        MaxWidthLg = "50rem",
+        MaxWidthXl = "70rem",
+        CloseSize = "2rem",
     };
 
     // DataGrid baseline geometry/colors. No theme customizes the grid, so both references carry the
