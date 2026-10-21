@@ -1,6 +1,8 @@
 .flare-overlay {
     position: fixed;
     inset: 0;
+    /* The layer is the theme's; an explicit ZIndex on the component overrides it inline. */
+    z-index: var(--flare-overlay-scrim-layer);
 }
 
 /* Decoration behind the content: the scrim paint and the component's Opacity belong to this layer,
@@ -11,6 +13,8 @@
     z-index: -1;
     border-radius: inherit;
     background: var(--flare-color-scrim);
+    /* The backdrop's density is the theme's; an explicit Opacity overrides it inline. */
+    opacity: var(--flare-overlay-scrim-opacity);
     transition: opacity var(--flare-motion-duration-enter-small);
 }
 

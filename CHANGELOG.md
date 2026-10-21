@@ -19,6 +19,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Changed
 
 - `FlareAvatar` takes its five diameters and text sizes from the theme (`--flare-avatar-size-*` and `--flare-avatar-font-*`), and an avatar group uses the theme's overlap unless `Spacing` is set.
+- A `FlareOverlay` takes its stacking layer and backdrop opacity from the theme (`--flare-overlay-scrim-layer` and `--flare-overlay-scrim-opacity`); an explicit `ZIndex` or `Opacity` still wins.
 - `FlareTransfer` panel titles follow the interface language instead of fixed English text; `SourceTitle` and `TargetTitle` fall back to the localized default when not set.
 - A `FlareSkeleton` is decorative by default and no longer announces itself; set `Announce` or put one status on the loading region.
 - The `FlareChip` body is a native button and the close button is its sibling; a selectable chip announces `aria-pressed`, and Enter or Space on the close button no longer toggles the chip.

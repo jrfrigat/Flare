@@ -31,39 +31,38 @@
     [Parameter] public bool              Absolute    { get; set; }
     /// <summary>Renders a dark semi-transparent background.</summary>
     [Parameter] public bool              Dark        { get; set; } = true;
-    /// <summary>Background opacity value between 0 and 1.</summary>
-    [Parameter] public double            Opacity     { get; set; } = 0.5;
-    /// <summary>CSS z-index applied to the overlay element.</summary>
-    [Parameter] public int               ZIndex      { get; set; } = 1200;
+    /// <summary>Background opacity value between 0 and 1. Null uses the theme's backdrop opacity
+    /// (the <c>--flare-overlay-scrim-opacity</c> token); an explicit value wins.</summary>
+    [Parameter] public double?           Opacity     { get; set; }
+    /// <summary>CSS z-index applied to the overlay element. Null uses the theme's layer (the
+    /// <c>--flare-overlay-scrim-layer</c> token); an explicit value wins.</summary>
+    [Parameter] public int?              ZIndex      { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Overlay.Root;
 
     private string _absoluteClass => Absolute ? Css.Classes.Overlay.Absolute : string.Empty;
 
-    private string _style
+    private string? _style
     {
         get
         {
-            var parts = new List<string>
-            {
-                $"z-index:{ZIndex}",
-            };
+            var parts = new List<string>(2);
+            if (ZIndex is { } z) parts.Add($"z-index:{z}");
             if (Style is not null) parts.Add(Style);
-            return string.Join(';', parts);
+            return parts.Count > 0 ? string.Join(';', parts) : null;
         }
     }
 
     // The scrim is decoration behind the content, so Opacity lives here and never on the root.
-    private string _scrimStyle
+    private string? _scrimStyle
     {
         get
         {
-            var parts = new List<string>
-            {
-                $"opacity:{Opacity.ToString("F2", CultureInfo.InvariantCulture)}",
-            };
+            var parts = new List<string>(2);
+            if (Opacity is { } o)
+                parts.Add($"opacity:{o.ToString("F2", CultureInfo.InvariantCulture)}");
             if (!Dark) parts.Add("background:transparent");
-            return string.Join(';', parts);
+            return parts.Count > 0 ? string.Join(';', parts) : null;
         }
     }
 

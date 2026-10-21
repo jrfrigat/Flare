@@ -778,6 +778,11 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OnCarouselKey", @"OnCarouselKey(string key)", @"void", null, null,
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", null),
+                    }),
             },
             new string[]
             {
@@ -5057,9 +5062,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Dark", @"bool", @"true", @"Renders a dark semi-transparent background.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"OnBackdropClick", @"EventCallback", null, @"Callback raised when the backdrop (the scrim outside ChildContent) is clicked. A click inside the content does not raise it. A backdrop click still bubbles to OnClick, so set only one of the two for a dismissal.", null, false, true, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when anything on the overlay surface is clicked - a click inside ChildContent reaches it through bubbling too. For a dismissal that only a click on the backdrop should trigger, use OnBackdropClick instead.", null, false, true, false, @"FlareOverlay"),
-                new ApiParameterInfo(@"Opacity", @"double", @"0.5", @"Background opacity value between 0 and 1.", null, false, false, false, @"FlareOverlay"),
+                new ApiParameterInfo(@"Opacity", @"double?", null, @"Background opacity value between 0 and 1. Null uses the theme's backdrop opacity (the --flare-overlay-scrim-opacity token); an explicit value wins.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the overlay is visible.", null, false, false, false, @"FlareOverlay"),
-                new ApiParameterInfo(@"ZIndex", @"int", @"1200", @"CSS z-index applied to the overlay element.", null, false, false, false, @"FlareOverlay"),
+                new ApiParameterInfo(@"ZIndex", @"int?", null, @"CSS z-index applied to the overlay element. Null uses the theme's layer (the --flare-overlay-scrim-layer token); an explicit value wins.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

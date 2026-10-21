@@ -26,6 +26,14 @@
 Disposes the component; override to release JS interop or subscriptions.
 Returns: `ValueTask`.
 
+### `OnCarouselKey(string key)`
+
+Returns: `void`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `string` | — |
+
 
 ## Inheritance
 

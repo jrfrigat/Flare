@@ -13,9 +13,9 @@
 | `Dark` | `bool` | `true` | Parameter |  | Renders a dark semi-transparent background. |
 | `OnBackdropClick` | `EventCallback` | `` | Callback |  | Callback raised when the backdrop (the scrim outside ChildContent) is clicked. A click inside the content does not raise it. A backdrop click still bubbles to OnClick, so set only one of the two for a dismissal. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when anything on the overlay surface is clicked - a click inside ChildContent reaches it through bubbling too. For a dismissal that only a click on the backdrop should trigger, use OnBackdropClick instead. |
-| `Opacity` | `double` | `0.5` | Parameter |  | Background opacity value between 0 and 1. |
+| `Opacity` | `double?` | `` | Parameter |  | Background opacity value between 0 and 1. Null uses the theme's backdrop opacity (the --flare-overlay-scrim-opacity token); an explicit value wins. |
 | `Open` | `bool` | `false` | Parameter |  | Controls whether the overlay is visible. |
-| `ZIndex` | `int` | `1200` | Parameter |  | CSS z-index applied to the overlay element. |
+| `ZIndex` | `int?` | `` | Parameter |  | CSS z-index applied to the overlay element. Null uses the theme's layer (the --flare-overlay-scrim-layer token); an explicit value wins. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

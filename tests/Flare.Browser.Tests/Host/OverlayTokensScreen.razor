@@ -1,0 +1,9 @@
+@page "/overlay-tokens"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareOverlay id="default" Open="true" Absolute="true" />
+    <div style="--flare-overlay-scrim-layer:1600;--flare-overlay-scrim-opacity:0.2">
+        <FlareOverlay id="themed" Open="true" Absolute="true" />
+    </div>
+    <FlareOverlay id="explicit" Open="true" Absolute="true" ZIndex="9999" Opacity="0.8" />
+</FlareThemeProvider>

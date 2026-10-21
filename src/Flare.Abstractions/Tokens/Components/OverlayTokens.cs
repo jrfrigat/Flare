@@ -22,4 +22,11 @@ public sealed record OverlayTokens
 
     /// <summary>How much of the viewport a floating panel may grow to.</summary>
     [CssVar(Overlay.PanelMaxBlockSize)] public required string PanelMaxBlockSize { get; init; }
+
+    /// <summary>Stacking layer of the overlay surface, so a theme - and the app's other layers - can place
+    /// it. An explicit <c>ZIndex</c> wins.</summary>
+    [CssVar(Overlay.ScrimLayer)] public required string ScrimLayer { get; init; }
+
+    /// <summary>Opacity of the overlay backdrop. An explicit <c>Opacity</c> wins.</summary>
+    [CssVar(Overlay.ScrimOpacity)] public required string ScrimOpacity { get; init; }
 }

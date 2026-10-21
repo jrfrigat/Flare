@@ -17,4 +17,10 @@ public static class Overlay
 
     /// <summary>CSS custom-property name for the share of the viewport a floating panel may grow to.</summary>
     public const string PanelMaxBlockSize = "--flare-overlay-panel-max-block-size";
+
+    /// <summary>CSS custom-property name for the stacking layer of the overlay surface.</summary>
+    public const string ScrimLayer = "--flare-overlay-scrim-layer";
+
+    /// <summary>CSS custom-property name for the opacity of the overlay backdrop.</summary>
+    public const string ScrimOpacity = "--flare-overlay-scrim-opacity";
 }

@@ -103,6 +103,19 @@ public class FlareOverlayTests : FlareTestContext
         Assert.Empty(cut.FindAll($".{Css.Classes.Overlay.Absolute}"));
     }
 
+    // The theme's layer and backdrop density must reach the surface; writing the old defaults inline
+    // kept every theme from changing them.
+    [Fact]
+    public void WithoutExplicitValues_ThemeTokensAreNotOverridden()
+    {
+        var cut = Render<FlareOverlay>(p => p.Add(x => x.Open, true));
+
+        var rootStyle = cut.Find($".{Css.Classes.Overlay.Root}").GetAttribute("style") ?? string.Empty;
+        var scrimStyle = cut.Find($".{Css.Classes.Overlay.Scrim}").GetAttribute("style") ?? string.Empty;
+        Assert.DoesNotContain("z-index", rootStyle);
+        Assert.DoesNotContain("opacity", scrimStyle);
+    }
+
     [Fact]
     public void BackdropClick_RaisesOnBackdropClick()
     {
