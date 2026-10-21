@@ -5112,7 +5112,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the pagination nav element.", null, false, false, false, @"FlarePagination"),
-                new ApiParameterInfo(@"BoundaryCount", @"int", @"1", @"Number of pages always shown at the start and end of the range.", null, false, false, false, @"FlarePagination"),
+                new ApiParameterInfo(@"BoundaryCount", @"int", @"1", @"Number of pages always shown at the start and end of the range. Negative values are treated as zero.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the active page button.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"Current", @"int", @"1", @"Currently active page number (1-based).", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"CurrentChanged", @"EventCallback<int>", null, @"Supports @bind-Current two-way binding.", null, false, true, false, @"FlarePagination"),
@@ -5122,7 +5122,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"RowsPerPageOptions", @"int[]?", null, @"Page-size options shown in a rows-per-page selector. When null/empty the selector is hidden.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"ShowFirstLast", @"bool", @"false", @"Shows ""First"" («) and ""Last"" (») navigation buttons.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"ShowInfo", @"bool", @"false", @"Shows page info (e.g., ""1–10 of 100"").", null, false, false, false, @"FlarePagination"),
-                new ApiParameterInfo(@"SiblingCount", @"int", @"2", @"Number of pages shown on each side of the current page.", null, false, false, false, @"FlarePagination"),
+                new ApiParameterInfo(@"SiblingCount", @"int", @"2", @"Number of pages shown on each side of the current page. Negative values are treated as zero.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"Size", @"PaginationSize", @"PaginationSize.Md", @"Size of the pagination controls.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"TotalItems", @"int", @"0", @"Total number of items across all pages. Used for info display.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"TotalPages", @"int", @"0", @"Total number of pages available.", null, false, false, false, @"FlarePagination"),

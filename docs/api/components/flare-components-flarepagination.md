@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the pagination nav element. |
-| `BoundaryCount` | `int` | `1` | Parameter |  | Number of pages always shown at the start and end of the range. |
+| `BoundaryCount` | `int` | `1` | Parameter |  | Number of pages always shown at the start and end of the range. Negative values are treated as zero. |
 | `Color` | `FlareColor` | `` | Parameter |  | Semantic color applied to the active page button. |
 | `Current` | `int` | `1` | Parameter |  | Currently active page number (1-based). |
 | `CurrentChanged` | `EventCallback<int>` | `` | Callback |  | Supports @bind-Current two-way binding. |
@@ -19,7 +19,7 @@
 | `RowsPerPageOptions` | `int[]?` | `` | Parameter |  | Page-size options shown in a rows-per-page selector. When null/empty the selector is hidden. |
 | `ShowFirstLast` | `bool` | `false` | Parameter |  | Shows "First" («) and "Last" (») navigation buttons. |
 | `ShowInfo` | `bool` | `false` | Parameter |  | Shows page info (e.g., "1–10 of 100"). |
-| `SiblingCount` | `int` | `2` | Parameter |  | Number of pages shown on each side of the current page. |
+| `SiblingCount` | `int` | `2` | Parameter |  | Number of pages shown on each side of the current page. Negative values are treated as zero. |
 | `Size` | `PaginationSize` | `PaginationSize.Md` | Parameter |  | Size of the pagination controls. |
 | `TotalItems` | `int` | `0` | Parameter |  | Total number of items across all pages. Used for info display. |
 | `TotalPages` | `int` | `0` | Parameter |  | Total number of pages available. |

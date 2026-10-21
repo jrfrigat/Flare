@@ -9,7 +9,7 @@
             {
                 @InfoTemplate(new PaginationInfoContext
                 {
-                    CurrentPage = _infoPage,
+                    CurrentPage = _displayPage,
                     PageSize = _effectivePageSize,
                     TotalItems = TotalItems,
                     TotalPages = TotalPages,
@@ -38,15 +38,15 @@
     @if (ShowFirstLast)
     {
         <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
-                disabled="@(Current <= 1)"
+                disabled="@(_displayPage <= 1)"
                 aria-label="@(FlareStrings.Pagination_First)"
                 @onclick="@(() => GoTo(1))">«</button>
     }
 
     <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
-            disabled="@(Current <= 1)"
+            disabled="@(_displayPage <= 1)"
             aria-label="@(FlareStrings.Pagination_Prev)"
-            @onclick="@(() => GoTo(Current - 1))">‹</button>
+            @onclick="@(() => GoTo(_displayPage - 1))">‹</button>
 
     @foreach (var page in _pageNumbers)
     {
@@ -57,22 +57,22 @@
         else
         {
             var p = page.Value;
-            <button type="button" class="@Css.Classes.Pagination.Btn @(p == Current ? Css.Classes.Pagination.BtnActive : "")"
+            <button type="button" class="@Css.Classes.Pagination.Btn @(p == _displayPage ? Css.Classes.Pagination.BtnActive : "")"
                     aria-label="@(string.Format(FlareStrings.Pagination_Page, p))"
-                    aria-current="@(p == Current ? "page" : null)"
+                    aria-current="@(p == _displayPage ? "page" : null)"
                     @onclick="@(() => GoTo(p))">@p</button>
         }
     }
 
     <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
-            disabled="@(Current >= TotalPages)"
+            disabled="@(_displayPage >= TotalPages)"
             aria-label="@(FlareStrings.Pagination_Next)"
-            @onclick="@(() => GoTo(Current + 1))">›</button>
+            @onclick="@(() => GoTo(_displayPage + 1))">›</button>
 
     @if (ShowFirstLast)
     {
         <button type="button" class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
-                disabled="@(Current >= TotalPages)"
+                disabled="@(_displayPage >= TotalPages)"
                 aria-label="@(FlareStrings.Pagination_Last)"
                 @onclick="@(() => GoTo(TotalPages))">»</button>
     }
@@ -105,9 +105,11 @@
     [Parameter] public int PageSize { get; set; }
     /// <summary>Supports <c>@bind-PageSize</c> two-way binding.</summary>
     [Parameter] public EventCallback<int> PageSizeChanged { get; set; }
-    /// <summary>Number of pages always shown at the start and end of the range.</summary>
+    /// <summary>Number of pages always shown at the start and end of the range. Negative values are
+    /// treated as zero.</summary>
     [Parameter] public int BoundaryCount { get; set; } = 1;
-    /// <summary>Number of pages shown on each side of the current page.</summary>
+    /// <summary>Number of pages shown on each side of the current page. Negative values are treated as
+    /// zero.</summary>
     [Parameter] public int SiblingCount { get; set; } = 2;
 
     protected override string ComponentCssClass => Css.Classes.Pagination.Root;
@@ -128,16 +130,27 @@
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string? _inlineStyle => Color.StyleMainOn() is { } t ? t + Style : Style;
 
-    // PageSize is optional: without it, the info line still has to divide the items into the pages the
-    // caller declared instead of printing a backwards range for the zero default.
-    private int _effectivePageSize =>
-        PageSize > 0 ? PageSize
-        : TotalPages > 0 ? Math.Max(1, (int)Math.Ceiling((double)TotalItems / TotalPages))
-        : Math.Max(1, TotalItems);
+    // A shrunken TotalPages must not leave the bar without an active page. The caller's Current is not
+    // rewritten from here - GoTo reports a valid page instead - but everything the bar draws, and every
+    // comparison it makes, uses the page it can actually show.
+    private int _displayPage => Math.Clamp(Current, 1, Math.Max(1, TotalPages));
 
-    private int _infoPage => Math.Clamp(Current, 1, Math.Max(1, TotalPages));
-    private int _infoFrom => Math.Min(((_infoPage - 1) * _effectivePageSize) + 1, TotalItems);
-    private int _infoTo => Math.Min(_infoPage * _effectivePageSize, TotalItems);
+    private int _effectivePageSize
+    {
+        get
+        {
+            if (PageSize > 0) return PageSize;
+            var pages = Math.Max(1, TotalPages);
+            var items = Math.Max(0, TotalItems);
+            var size = (long)Math.Ceiling((double)items / pages);
+            return (int)Math.Clamp(size, 1, int.MaxValue);
+        }
+    }
+
+    // Long arithmetic and a clamp to the real item count keep the range straight and inside int at any
+    // PageSize or TotalPages a caller can pass.
+    private int _infoFrom => (int)Math.Min((((long)_displayPage - 1) * _effectivePageSize) + 1, Math.Max(0, TotalItems));
+    private int _infoTo => (int)Math.Min((long)_displayPage * _effectivePageSize, Math.Max(0, TotalItems));
 
     private async Task HandlePageSizeChange(ChangeEventArgs e)
     {
@@ -145,20 +158,37 @@
             await PageSizeChanged.InvokeAsync(size);
     }
 
+    // Pages a caller may ask for on one side. The bar cannot draw an unbounded range, and values near
+    // int.MaxValue used to overflow the loop bound (a hang) or build a set of billions (no memory left).
+    private const int MaxPagesPerSide = 1000;
+
     private IEnumerable<int?> _pageNumbers
     {
         get
         {
+            var total = Math.Max(0, TotalPages);
+            if (total == 0) yield break;
+
+            var current = _displayPage;
+            var boundary = Math.Clamp(BoundaryCount, 0, MaxPagesPerSide);
+            var siblings = Math.Clamp(SiblingCount, 0, MaxPagesPerSide);
+
             var visible = new SortedSet<int>();
 
-            for (var i = 1; i <= Math.Min(BoundaryCount, TotalPages); i++)
-                visible.Add(i);
+            // Every counter is long: an int counter that reaches int.MaxValue wraps to int.MinValue on
+            // ++ and the loop never ends, which is exactly what a page list ending at int.MaxValue did.
+            for (var i = 1L; i <= Math.Min(boundary, total); i++)
+                visible.Add((int)i);
 
-            for (var i = Math.Max(1, Current - SiblingCount); i <= Math.Min(TotalPages, Current + SiblingCount); i++)
-                visible.Add(i);
+            // current +/- siblings in long: current may be int.MaxValue and the sum must not wrap.
+            var from = Math.Max(1L, (long)current - siblings);
+            var to = Math.Min(total, (long)current + siblings);
+            for (var i = from; i <= to; i++)
+                visible.Add((int)i);
 
-            for (var i = Math.Max(1, TotalPages - BoundaryCount + 1); i <= TotalPages; i++)
-                visible.Add(i);
+            var last = Math.Max(1L, (long)total - boundary + 1);
+            for (var i = last; i <= total; i++)
+                visible.Add((int)i);
 
             int? prev = null;
             foreach (var p in visible)
@@ -174,7 +204,7 @@
     private async Task GoTo(int page)
     {
         page = Math.Clamp(page, 1, Math.Max(1, TotalPages));
-        if (page != Current)
+        if (page != _displayPage)
         {
             await CurrentChanged.InvokeAsync(page);
         }
