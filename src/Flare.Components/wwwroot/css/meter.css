@@ -72,11 +72,15 @@
     color: var(--flare-color-on-surface-variant);
 }
 .flare-meter__legend-swatch {
-    width: 0.75rem;
-    height: 0.75rem;
+    /* The spacing scale's 12px step in both themes: a swatch is a spacing-sized square, not a meter
+       invention, so it follows the same ramp the legend gaps already read. */
+    width: var(--flare-spacing-6);
+    height: var(--flare-spacing-6);
     border-radius: var(--flare-shape-extra-small);
     background: var(--fc-main, var(--flare-color-primary));
     flex-shrink: 0;
 }
 .flare-meter__legend-label { color: var(--flare-color-on-surface); }
-.flare-meter__legend-value { color: var(--flare-color-on-surface-variant); font-weight: 500; }
+/* The value is one more label-medium run, so it takes that role's weight as well as its size (the
+   item already reads the size): a theme that strengthens its label weight strengthens this too. */
+.flare-meter__legend-value { color: var(--flare-color-on-surface-variant); font-weight: var(--flare-typescale-label-medium-weight); }
