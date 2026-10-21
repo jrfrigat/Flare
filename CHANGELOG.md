@@ -18,6 +18,10 @@ All notable changes to Flare are documented here. This project adheres to
 - `--flare-scroll-top-panel-offset` reserves the height of an app's own bottom bar under the scroll-to-top button, so the button sits above that bar instead of on top of it.
 - A `FlareEmptyState` takes its icon opacity and description width from `--flare-empty-state-icon-opacity` and `--flare-empty-state-description-max-width`, so a theme sets them without app CSS.
 - `--flare-fab-menu-offset` sets the distance between a floating action button and its menu, so a theme tunes the gap without a CSS override.
+- `FlareSpacer` takes a `Height` and `Width` from the spacing scale (or an explicit value), so a fixed gap is a parameter instead of an empty styled paragraph.
+- `FlareSection` gives a page a named section: a heading at the requested level, an anchor id and `aria-labelledby`, while the look of the heading stays the theme's typography role.
+- `FlareStack` and `FlareCard` expose `FocusAsync()`, so a panel can take focus without a raw element.
+- `FlareVisuallyHidden` renders a region that exists for assistive technology only, with an optional role and live mode.
 - `FlareOnThisPage.RefreshAsync()` rescans the content for headings added or replaced after the first render, and a change to `Root`, `HeadingSelector` or `ScrollRoot` re-registers the table automatically.
 
 ### Changed

@@ -616,7 +616,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly. The box that SUPPLIES a height does not fill: when Style declares a height of its own, that height wins and this switch is ignored, because the two are contradictory instructions and the written number is the one you can see in the markup.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Moves keyboard focus to the card root. The card must be focusable for this to do anything visible - pass tabindex=""-1"" through additional attributes.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareContainerBase",
@@ -1741,6 +1745,7 @@ public static class ComponentApiRegistry
                 @"FlareRibbonTab",
                 @"FlareRichTextEditor",
                 @"FlareScrollTop",
+                @"FlareSection",
                 @"FlareSelect",
                 @"FlareSheetTabs",
                 @"FlareSignaturePad",
@@ -1783,6 +1788,7 @@ public static class ComponentApiRegistry
                 @"FlareValidationSummary",
                 @"FlareVideoPlayer",
                 @"FlareVirtualList",
+                @"FlareVisuallyHidden",
                 @"FlareWeekPicker",
             }
             );
@@ -5940,6 +5946,34 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareSection"] = new ApiComponentInfo(
+            @"FlareSection",
+            @"Flare.Components.FlareSection",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Section body.", null, false, false, false, @"FlareSection"),
+                new ApiParameterInfo(@"HeadingContent", @"RenderFragment?", null, @"Replaces the built-in title element - for a heading that has to carry more than text (an icon, a copy-link button). The caller then owns the heading's id and the section stays unnamed.", null, false, false, false, @"FlareSection"),
+                new ApiParameterInfo(@"Id", @"string?", null, @"Anchor id placed on the title, so a table of contents and a deep link can target the section. Null generates one used by aria-labelledby.", null, false, false, false, @"FlareSection"),
+                new ApiParameterInfo(@"Level", @"int", @"2", @"Heading level 2-6 the title is announced as. Default 2: a page has one h1 and its sections sit directly under it.", null, false, false, false, @"FlareSection"),
+                new ApiParameterInfo(@"Title", @"string?", null, @"Section title. Null leaves the heading to HeadingContent or to the caller's own markup, and the section stays unnamed.", null, false, false, false, @"FlareSection"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale", @"TypographyScale.TitleLarge", @"Typography role the title is drawn with. The element level comes from Level.", null, false, false, false, @"FlareSection"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareSelect"] = new ApiComponentInfo(
             @"FlareSelect",
             @"Flare.Components.FlareSelect",
@@ -6242,6 +6276,10 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"Height", @"FlareSpacing?", null, @"Fixed block size of the spacer, as a step on the shared spacing scale. Null (the default) keeps the spacer flexible: it pushes the following items to the far edge of a stack.", null, false, false, false, @"FlareSpacer"),
+                new ApiParameterInfo(@"HeightValue", @"string?", null, @"Raw CSS height used when Height is Custom.", null, false, false, false, @"FlareSpacer"),
+                new ApiParameterInfo(@"Width", @"FlareSpacing?", null, @"Fixed inline size of the spacer, as a step on the shared spacing scale. Null leaves the width to the layout.", null, false, false, false, @"FlareSpacer"),
+                new ApiParameterInfo(@"WidthValue", @"string?", null, @"Raw CSS width used when Width is Custom.", null, false, false, false, @"FlareSpacer"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -6373,7 +6411,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"FillHeight", @"bool", @"false", @"Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly. The box that SUPPLIES a height does not fill: when Style declares a height of its own, that height wins and this switch is ignored, because the two are contradictory instructions and the written number is the one you can see in the markup.", null, false, false, false, @"FlareContainerBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Moves keyboard focus to the stack itself. The stack must be focusable for this to do anything visible - pass tabindex=""-1"" through additional attributes.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareContainerBase",
@@ -7745,6 +7787,31 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Template used to render each individual item.", null, false, false, false, @"FlareVirtualList"),
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<TItem?>?", null, @"Data source list to virtualize and render.", null, false, false, false, @"FlareVirtualList"),
                 new ApiParameterInfo(@"OverscanCount", @"int", @"3", @"Number of extra items rendered outside the visible viewport.", null, false, false, false, @"FlareVirtualList"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareVisuallyHidden"] = new ApiComponentInfo(
+            @"FlareVisuallyHidden",
+            @"Flare.Components.FlareVisuallyHidden",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLive", @"string?", null, @"Live-region mode: polite, assertive or off. Null leaves the role's implicit behavior.", null, false, false, false, @"FlareVisuallyHidden"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The text or markup read by assistive technology.", null, false, false, false, @"FlareVisuallyHidden"),
+                new ApiParameterInfo(@"Role", @"string?", null, @"ARIA role of the region - status for a polite announcement, alert for an urgent one. Null leaves the region without a role.", null, false, false, false, @"FlareVisuallyHidden"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -9146,6 +9213,7 @@ public static class ComponentApiRegistry
                 @"FlareGrid",
                 @"FlareLayoutDrawer",
                 @"FlarePaper",
+                @"FlareSpacer",
                 @"FlareStack",
             });
 
@@ -10386,6 +10454,7 @@ public static class ComponentApiRegistry
                 @"FlareNumericField",
                 @"FlareOtpField",
                 @"FlarePasswordField",
+                @"FlareSection",
                 @"FlareSelect",
                 @"FlareTabs",
                 @"FlareTagField",

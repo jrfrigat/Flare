@@ -166,6 +166,7 @@ This component exposes no documented public methods.
 - `FlareRibbonTab`
 - `FlareRichTextEditor`
 - `FlareScrollTop`
+- `FlareSection`
 - `FlareSelect`
 - `FlareSheetTabs`
 - `FlareSignaturePad`
@@ -208,4 +209,5 @@ This component exposes no documented public methods.
 - `FlareValidationSummary`
 - `FlareVideoPlayer`
 - `FlareVirtualList`
+- `FlareVisuallyHidden`
 - `FlareWeekPicker`

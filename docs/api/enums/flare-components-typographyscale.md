@@ -43,6 +43,7 @@ Semantic type-scale roles mapped to semantic HTML elements and CSS utility class
 - `FlareNumericField`
 - `FlareOtpField`
 - `FlarePasswordField`
+- `FlareSection`
 - `FlareSelect`
 - `FlareTabs`
 - `FlareTagField`

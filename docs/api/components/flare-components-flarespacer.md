@@ -8,6 +8,10 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `Height` | `FlareSpacing?` | `` | Parameter |  | Fixed block size of the spacer, as a step on the shared spacing scale. Null (the default) keeps the spacer flexible: it pushes the following items to the far edge of a stack. |
+| `HeightValue` | `string?` | `` | Parameter |  | Raw CSS height used when Height is Custom. |
+| `Width` | `FlareSpacing?` | `` | Parameter |  | Fixed inline size of the spacer, as a step on the shared spacing scale. Null leaves the width to the layout. |
+| `WidthValue` | `string?` | `` | Parameter |  | Raw CSS width used when Width is Custom. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

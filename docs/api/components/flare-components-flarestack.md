@@ -26,7 +26,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `FocusAsync()`
+
+Moves keyboard focus to the stack itself. The stack must be focusable for this to do anything visible - pass tabindex="-1" through additional attributes.
+Returns: `ValueTask`.
+
 
 ## Inheritance
 
