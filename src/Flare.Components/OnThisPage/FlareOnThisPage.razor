@@ -66,25 +66,71 @@
     private HashSet<string> _activeIds = [];
     private int _baseLevel = 2;
 
+    // What the live JS registration was built from. The registration outlives any number of re-renders,
+    // so a parent that later changes Root, HeadingSelector or ScrollRoot has to be re-registered against
+    // the new values - and a re-scan replaces the old listeners instead of adding a second set.
+    private bool _registered;
+    private string? _registeredRoot;
+    private string _registeredHeadingSelector = "";
+    private string? _registeredScrollRoot;
+
+    /// <summary>
+    /// Re-scans the content root for headings whose content appeared or changed after the first render -
+    /// an article loaded asynchronously, another tab or a language switch. Call it after the new headings
+    /// are in the DOM; the scan replaces both the list and the scroll listeners. Does nothing before the
+    /// component has rendered.
+    /// </summary>
+    public Task RefreshAsync() => _objRef is null ? Task.CompletedTask : RegisterAsync();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
+        _objRef ??= DotNetObjectReference.Create(this);
+        if (_registered
+            && Root == _registeredRoot
+            && HeadingSelector == _registeredHeadingSelector
+            && ScrollRoot == _registeredScrollRoot)
+            return;
+        await RegisterAsync();
+    }
+
+    private async Task RegisterAsync()
+    {
         try
         {
-            _objRef = DotNetObjectReference.Create(this);
-            await Toc.InitAsync(_handle, _objRef, Root, HeadingSelector, ScrollRoot);
+            await Toc.InitAsync(_handle, _objRef!, Root, HeadingSelector, ScrollRoot);
         }
         catch (InvalidOperationException) { }
-        catch (JSException) { }
+        catch (JSException) { return; }
+        _registered = true;
+        _registeredRoot = Root;
+        _registeredHeadingSelector = HeadingSelector;
+        _registeredScrollRoot = ScrollRoot;
     }
 
     /// <summary>Invoked by JS with the headings discovered in the content root.</summary>
     [JSInvokable]
     public void SetHeadings(TocHeading[] headings)
     {
+        // A frequent Refresh (or a re-registration with the same parameters) reports the same list again;
+        // re-rendering the table of contents for it would churn the DOM for nothing.
+        if (SameHeadings(headings)) return;
         _headings = headings;
         _baseLevel = headings.Length > 0 ? headings.Min(h => h.Level) : 2;
         _ = InvokeAsync(StateHasChanged);
+    }
+
+    private bool SameHeadings(TocHeading[] headings)
+    {
+        if (headings.Length != _headings.Count) return false;
+        for (var i = 0; i < headings.Length; i++)
+        {
+            var current = _headings[i];
+            if (headings[i].Id != current.Id
+                || headings[i].Text != current.Text
+                || headings[i].Level != current.Level)
+                return false;
+        }
+        return true;
     }
 
     /// <summary>Invoked by JS with the ids of every heading currently visible on screen.</summary>

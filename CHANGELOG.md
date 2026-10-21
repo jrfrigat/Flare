@@ -16,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareOverlay.OnBackdropClick` fires only when the backdrop is clicked, so an action inside the content no longer dismisses the surface; `OnClick` keeps its surface-wide bubbling.
 - `FlareSkeleton` draws a visible Rect placeholder with no sizes of its own: the height comes from the new `--flare-skeleton-rect-height` token, one line of body text by default, and an explicit `Height` or `Width` still wins.
 - `--flare-scroll-top-panel-offset` reserves the height of an app's own bottom bar under the scroll-to-top button, so the button sits above that bar instead of on top of it.
+- `FlareOnThisPage.RefreshAsync()` rescans the content for headings added or replaced after the first render, and a change to `Root`, `HeadingSelector` or `ScrollRoot` re-registers the table automatically.
 
 ### Changed
 
@@ -61,6 +62,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A nested `FlareTimeline` keeps its own alignment and connector style, and the outer last item no longer hides its lines.
 - A `FlareScrollTop` sits clear of the screen's safe area on the bottom edge and on the side it occupies, and clears the left inset in RTL, so a notch or a gesture bar no longer covers the button.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
+- A `FlareOnThisPage` whose `Root` is not in the page shows an empty table instead of collecting every heading of the page, and a rescan replaces the previous scroll listeners.
 
 ## [0.48.0] - 2026-10-20
 

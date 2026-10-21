@@ -106,4 +106,80 @@ public class FlareOnThisPageTests : FlareTestContext
         Assert.Equal("heading", nav.GetAttribute("aria-labelledby"));
         Assert.Equal("value", nav.GetAttribute("data-test"));
     }
+
+    private int InitCalls() => JSInterop.Invocations.Count(i => i.Identifier == "FlareToc.init");
+
+    [Fact]
+    public void FirstRender_RegistersOnceWithParameters()
+    {
+        Render<FlareOnThisPage>(p => p
+            .Add(x => x.Root, "#content")
+            .Add(x => x.HeadingSelector, "h2")
+            .Add(x => x.ScrollRoot, "#panel"));
+
+        Assert.Equal(1, InitCalls());
+        var call = JSInterop.Invocations.Last(i => i.Identifier == "FlareToc.init");
+        Assert.Equal("#content", call.Arguments[2]);
+        Assert.Equal("h2", call.Arguments[3]);
+        Assert.Equal("#panel", call.Arguments[4]);
+    }
+
+    [Fact]
+    public async Task RefreshAsync_RescansWithCurrentParameters()
+    {
+        var cut = Render<FlareOnThisPage>(p => p.Add(x => x.Root, "#content"));
+
+        await cut.InvokeAsync(() => cut.Instance.RefreshAsync());
+
+        var calls = JSInterop.Invocations.Where(i => i.Identifier == "FlareToc.init").ToList();
+        Assert.Equal(2, calls.Count);
+        Assert.Equal("#content", calls[1].Arguments[2]);
+    }
+
+    [Fact]
+    public void ChangedParameters_ReRegister()
+    {
+        var cut = Render<FlareOnThisPage>(p => p.Add(x => x.HeadingSelector, "h2"));
+
+        cut.Render(p => p
+            .Add(x => x.Root, "#content")
+            .Add(x => x.HeadingSelector, "h2, h3"));
+
+        var calls = JSInterop.Invocations.Where(i => i.Identifier == "FlareToc.init").ToList();
+        Assert.Equal(2, calls.Count);
+        Assert.Equal("#content", calls[1].Arguments[2]);
+        Assert.Equal("h2, h3", calls[1].Arguments[3]);
+    }
+
+    [Fact]
+    public void UnchangedParameters_OnRerender_DoNotReRegister()
+    {
+        var cut = Render<FlareOnThisPage>(p => p.Add(x => x.Root, "#content"));
+
+        cut.Render(p => p.Add(x => x.Title, "Contents"));
+
+        Assert.Equal(1, InitCalls());
+    }
+
+    [Fact]
+    public async Task Dispose_RemovesTheRegistration()
+    {
+        var cut = Render<FlareOnThisPage>();
+
+        await cut.InvokeAsync(() => cut.Instance.DisposeAsync().AsTask());
+
+        Assert.Contains(JSInterop.Invocations, i => i.Identifier == "FlareToc.dispose");
+    }
+
+    [Fact]
+    public async Task SetHeadings_UnchangedSet_DoesNotRerender()
+    {
+        var cut = Render<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
+        await cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
+        var renders = cut.RenderCount;
+
+        await cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
+
+        Assert.Equal(renders, cut.RenderCount);
+    }
 }

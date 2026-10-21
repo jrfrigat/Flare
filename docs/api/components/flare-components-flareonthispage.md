@@ -25,6 +25,11 @@
 Disposes the component; override to release JS interop or subscriptions.
 Returns: `ValueTask`.
 
+### `RefreshAsync()`
+
+Re-scans the content root for headings whose content appeared or changed after the first render - an article loaded asynchronously, another tab or a language switch. Call it after the new headings are in the DOM; the scan replaces both the list and the scroll listeners. Does nothing before the component has rendered.
+Returns: `Task`.
+
 ### `SetActive(string[] ids)`
 
 Invoked by JS with the ids of every heading currently visible on screen.

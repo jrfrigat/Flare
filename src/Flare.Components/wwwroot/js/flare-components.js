@@ -226,7 +226,21 @@ export const FlareToc = (() => {
 
     return {
         init(handle, dotNetRef, rootSelector, headingSelector, scrollRootSelector) {
-            const root = (rootSelector && document.querySelector(rootSelector)) || document.body;
+            // init is also the re-scan entry point (RefreshAsync and a parameter change both call it), so
+            // it must first drop whatever the previous scan registered: a re-registration replaces the
+            // listeners, and a scan that now finds nothing has to leave the old ones behind.
+            instances.drop(handle);
+
+            // A root the caller named but that is not in the page yet is not the whole document: report an
+            // empty table of contents rather than collecting every heading the app happens to render.
+            let root = document.body;
+            if (rootSelector) {
+                root = document.querySelector(rootSelector);
+                if (!root) {
+                    dotNetRef.invokeMethodAsync('SetHeadings', []).catch(() => { });
+                    return;
+                }
+            }
             const sel = headingSelector || 'h2, h3';
             const items = collect(root, sel);
             dotNetRef.invokeMethodAsync('SetHeadings', items.map(i => ({ id: i.id, text: i.text, level: i.level }))).catch(() => { });

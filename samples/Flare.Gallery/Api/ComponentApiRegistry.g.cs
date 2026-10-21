@@ -4936,6 +4936,8 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"RefreshAsync", @"RefreshAsync()", @"Task", null, @"Re-scans the content root for headings whose content appeared or changed after the first render - an article loaded asynchronously, another tab or a language switch. Call it after the new headings are in the DOM; the scan replaces both the list and the scroll listeners. Does nothing before the component has rendered.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SetActive", @"SetActive(string[] ids)", @"Task", null, @"Invoked by JS with the ids of every heading currently visible on screen.",
                     new ApiMethodParameter[]
                     {

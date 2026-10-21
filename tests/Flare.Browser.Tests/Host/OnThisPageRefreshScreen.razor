@@ -1,0 +1,35 @@
+@page "/on-this-page-refresh"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="content">
+        <h2 id="first">First</h2>
+        <h3 id="second">Second</h3>
+        @if (_extraHeadings > 0)
+        {
+            <h2 id="third">Third</h2>
+        }
+    </div>
+    @* Sits outside the scanned root: a missing Root must not fall back to the whole page. *@
+    <h2 id="outside">Outside</h2>
+    <div id="toc">
+        <FlareOnThisPage @ref="_toc" Root="@_root" HeadingSelector="h2, h3" ShowWhenEmpty="true" />
+    </div>
+    <button id="add" @onclick="AddHeading">Add heading</button>
+    <button id="refresh" @onclick="RefreshAsync">Refresh</button>
+    <button id="missing" @onclick="UseMissingRoot">Missing root</button>
+    <button id="real" @onclick="UseRealRoot">Real root</button>
+</FlareThemeProvider>
+
+@code {
+    private FlareOnThisPage? _toc;
+    private string? _root = "#content";
+    private int _extraHeadings;
+
+    private void AddHeading() => _extraHeadings++;
+
+    private Task RefreshAsync() => _toc?.RefreshAsync() ?? Task.CompletedTask;
+
+    private void UseMissingRoot() => _root = "#nowhere";
+
+    private void UseRealRoot() => _root = "#content";
+}
