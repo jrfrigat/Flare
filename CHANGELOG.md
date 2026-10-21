@@ -16,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareOverlay.OnBackdropClick` fires only when the backdrop is clicked, so an action inside the content no longer dismisses the surface; `OnClick` keeps its surface-wide bubbling.
 - `FlareSkeleton` draws a visible Rect placeholder with no sizes of its own: the height comes from the new `--flare-skeleton-rect-height` token, one line of body text by default, and an explicit `Height` or `Width` still wins.
 - `--flare-scroll-top-panel-offset` reserves the height of an app's own bottom bar under the scroll-to-top button, so the button sits above that bar instead of on top of it.
+- A `FlareEmptyState` takes its icon opacity and description width from `--flare-empty-state-icon-opacity` and `--flare-empty-state-description-max-width`, so a theme sets them without app CSS.
 - `FlareOnThisPage.RefreshAsync()` rescans the content for headings added or replaced after the first render, and a change to `Root`, `HeadingSelector` or `ScrollRoot` re-registers the table automatically.
 
 ### Changed
@@ -29,6 +30,7 @@ All notable changes to Flare are documented here. This project adheres to
 - An icon-only `FlareButton` keeps its square shape while `Loading` is true.
 - A 360px `FlareLayoutAppBar` keeps its brand, the color-mode toggle and two icon buttons on one row at 200% text: the icon controls stop at the bar's height and the title truncates instead of sliding under the trailing block.
 - The active indicator pill in `FlareBottomNav` is capped at its item's width instead of painting over the neighbouring items at a large root font size.
+- A `FlareMeter` legend takes its swatch size from the spacing scale and its value weight from label-medium, so each theme's own type scale reaches the legend instead of a fixed weight.
 - A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
 
 ### Fixed

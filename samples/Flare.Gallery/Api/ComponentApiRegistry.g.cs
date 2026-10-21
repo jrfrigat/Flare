@@ -5061,7 +5061,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Absolute", @"bool", @"false", @"Uses absolute positioning instead of fixed.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Optional content rendered on top of the overlay.", null, false, false, false, @"FlareOverlay"),
-                new ApiParameterInfo(@"Dark", @"bool", @"true", @"Renders a dark semi-transparent background.", null, false, false, false, @"FlareOverlay"),
+                new ApiParameterInfo(@"Dark", @"bool", @"true", @"Paints the theme's dark scrim. When false the backdrop is transparent: the overlay still covers its area and reports clicks, but nothing is dimmed.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"OnBackdropClick", @"EventCallback", null, @"Callback raised when the backdrop (the scrim outside ChildContent) is clicked. A click inside the content does not raise it. A backdrop click still bubbles to OnClick, so set only one of the two for a dismissal.", null, false, true, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when anything on the overlay surface is clicked - a click inside ChildContent reaches it through bubbling too. For a dismissal that only a click on the backdrop should trigger, use OnBackdropClick instead.", null, false, true, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"Opacity", @"double?", null, @"Background opacity value between 0 and 1. Null uses the theme's backdrop opacity (the --flare-overlay-scrim-opacity token); an explicit value wins.", null, false, false, false, @"FlareOverlay"),

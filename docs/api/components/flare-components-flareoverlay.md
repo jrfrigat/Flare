@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `Absolute` | `bool` | `false` | Parameter |  | Uses absolute positioning instead of fixed. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Optional content rendered on top of the overlay. |
-| `Dark` | `bool` | `true` | Parameter |  | Renders a dark semi-transparent background. |
+| `Dark` | `bool` | `true` | Parameter |  | Paints the theme's dark scrim. When false the backdrop is transparent: the overlay still covers its area and reports clicks, but nothing is dimmed. |
 | `OnBackdropClick` | `EventCallback` | `` | Callback |  | Callback raised when the backdrop (the scrim outside ChildContent) is clicked. A click inside the content does not raise it. A backdrop click still bubbles to OnClick, so set only one of the two for a dismissal. |
 | `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when anything on the overlay surface is clicked - a click inside ChildContent reaches it through bubbling too. For a dismissal that only a click on the backdrop should trigger, use OnBackdropClick instead. |
 | `Opacity` | `double?` | `` | Parameter |  | Background opacity value between 0 and 1. Null uses the theme's backdrop opacity (the --flare-overlay-scrim-opacity token); an explicit value wins. |
