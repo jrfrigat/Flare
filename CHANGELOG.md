@@ -27,6 +27,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- `FlarePagination` draws its Previous/Next chevrons in the reading direction and spaces the rows selector with a logical margin.
+- `FlareNavMenu` mirrors the group indent, chevron and active bar in RTL through logical properties.
+- `FlareChip` mirrors the leading avatar and close-button spacing in RTL, and the avatar inset is a component token instead of a literal.
 - A disabled or loading `FlareButton` rendered as a link no longer invokes its click handler and uses the same disabled paint as the native button.
 - A `FlareNavLink` in a mini-rail keeps its label in the accessibility tree without a `Tooltip`; the labeled rail still shows the caption.
 - `FlareOverlay` applies `Opacity` to its backdrop only, so the content stays fully opaque and usable at any opacity.
