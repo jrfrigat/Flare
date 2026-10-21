@@ -2,7 +2,7 @@
 
 <FlareStack Gap="FlareSpacing.None">
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
-        <FlareButton OnClick="@(() => _darkOpen = true)">Show dark overlay</FlareButton>
+        <FlareButton @ref="_darkTrigger" OnClick="OpenDark">Show dark overlay</FlareButton>
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _loadingOpen = true)">Show loading overlay</FlareButton>
     </FlareStack>
     <FlareCard Style="position:relative;height:6rem;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-small);overflow:hidden;display:flex;align-items:center;justify-content:center;">
@@ -15,10 +15,53 @@
         </FlareOverlay>
     </FlareCard>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Click the overlay to dismiss.</FlareText>
-    <FlareOverlay Open="@_darkOpen" OnBackdropClick="@(() => _darkOpen = false)" />
+    @* The overlay is the backdrop only. The panel inside it wears the dialog role, closes on Escape and
+       returns focus to the trigger; a focus trap and scroll lock are FlareDialog's job, not this one's. *@
+    <FlareOverlay Open="@_darkOpen" OnBackdropClick="CloseDarkAsync">
+        <div role="dialog" aria-modal="true" aria-labelledby="overlay-demo-title" @onkeydown="HandleDarkKey"
+             style="max-width:24rem;margin:6rem auto 0;">
+            <FlareCard Style="padding:1.5rem;">
+                <FlareStack Gap="FlareSpacing.Medium">
+                    <FlareText id="overlay-demo-title" Typo="TypographyScale.TitleMedium">@GalleryStrings.Overlay_DemoTitle</FlareText>
+                    <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Overlay_DemoBody</FlareText>
+                    <FlareStack Row Justify="FlareJustifyContent.End">
+                        <FlareButton @ref="_darkClose" Variant="ButtonVariant.Filled" OnClick="CloseDarkAsync">@GalleryStrings.Overlay_DemoClose</FlareButton>
+                    </FlareStack>
+                </FlareStack>
+            </FlareCard>
+        </div>
+    </FlareOverlay>
 </FlareStack>
 
 @code {
     private bool _darkOpen;
     private bool _loadingOpen;
+    private bool _focusClose;
+    private FlareButton? _darkTrigger;
+    private FlareButton? _darkClose;
+
+    private void OpenDark()
+    {
+        _darkOpen = true;
+        _focusClose = true;
+    }
+
+    private async Task CloseDarkAsync()
+    {
+        if (!_darkOpen) return;
+        _darkOpen = false;
+        try { if (_darkTrigger is not null) await _darkTrigger.FocusAsync(); }
+        catch (JSException) { }
+    }
+
+    private Task HandleDarkKey(KeyboardEventArgs e)
+        => e.Key == "Escape" ? CloseDarkAsync() : Task.CompletedTask;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_darkOpen || !_focusClose) return;
+        _focusClose = false;
+        try { if (_darkClose is not null) await _darkClose.FocusAsync(); }
+        catch (JSException) { }
+    }
 }

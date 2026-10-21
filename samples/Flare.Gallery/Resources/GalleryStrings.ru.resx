@@ -1793,13 +1793,31 @@
     <value>Оверлей</value>
   </data>
   <data name="Overlay_Subtitle" xml:space="preserve">
-    <value>FlareOverlay - полноэкранная подложка со светлым и темным вариантами.</value>
+    <value>FlareOverlay - примитив подложки: фон, который сообщает о кликах, без модального поведения.</value>
+  </data>
+  <data name="Overlay_ScrimNote" xml:space="preserve">
+    <value>FlareOverlay рисует подложку и сообщает о кликах. У него нет ни роли, ни ловушки фокуса, ни блокировки скролла, ни Escape - модальная поверхность это</value>
   </data>
   <data name="Overlay_Overlay" xml:space="preserve">
-    <value>Темный и локальный оверлей</value>
+    <value>Панель на подложке с закрытием</value>
+  </data>
+  <data name="Overlay_DemoTitle" xml:space="preserve">
+    <value>Подложка, а не диалог</value>
+  </data>
+  <data name="Overlay_DemoBody" xml:space="preserve">
+    <value>Escape и Close закрывают панель и возвращают фокус на кнопку, которая ее открыла. Ловушка фокуса и блокировка скролла есть у FlareDialog, а не у оверлея.</value>
+  </data>
+  <data name="Overlay_DemoClose" xml:space="preserve">
+    <value>Закрыть</value>
   </data>
   <data name="Overlay_Light" xml:space="preserve">
-    <value>Светлый фон, прозрачность и z-index</value>
+    <value>Прозрачная подложка (Dark=false)</value>
+  </data>
+  <data name="Overlay_LightContract" xml:space="preserve">
+    <value>Dark=false не рисует подложку: невидимый слой по-прежнему ловит клики. Затемнять нечего, Opacity ни на что не влияет; ZIndex по-прежнему задает слой.</value>
+  </data>
+  <data name="Overlay_LightActive" xml:space="preserve">
+    <value>Невидимый слой теперь над этой карточкой - кликните, чтобы закрыть.</value>
   </data>
   <data name="Popover_Title" xml:space="preserve">
     <value>Popover</value>

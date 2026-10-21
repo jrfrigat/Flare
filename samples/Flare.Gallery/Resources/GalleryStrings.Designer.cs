@@ -6718,6 +6718,33 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Escape and Close both close this panel and return focus to the button that opened it.
+        /// </summary>
+        public static string Overlay_DemoBody {
+            get {
+                return ResourceManager.GetString("Overlay_DemoBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close.
+        /// </summary>
+        public static string Overlay_DemoClose {
+            get {
+                return ResourceManager.GetString("Overlay_DemoClose", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scrim, not a dialog.
+        /// </summary>
+        public static string Overlay_DemoTitle {
+            get {
+                return ResourceManager.GetString("Overlay_DemoTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Light scrim, opacity &amp; z-index.
         /// </summary>
         public static string Overlay_Light {
@@ -6725,7 +6752,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Overlay_Light", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The invisible layer is over this card.
+        /// </summary>
+        public static string Overlay_LightActive {
+            get {
+                return ResourceManager.GetString("Overlay_LightActive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dark=false paints no scrim.
+        /// </summary>
+        public static string Overlay_LightContract {
+            get {
+                return ResourceManager.GetString("Overlay_LightContract", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Dark &amp; scoped overlay.
         /// </summary>
@@ -6736,6 +6781,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareOverlay paints the backdrop and reports clicks.
+        /// </summary>
+        public static string Overlay_ScrimNote {
+            get {
+                return ResourceManager.GetString("Overlay_ScrimNote", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareOverlay - full-screen backdrop with light and dark variants..
         /// </summary>
         public static string Overlay_Subtitle {
@@ -6743,7 +6797,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Overlay_Subtitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Overlay.
         /// </summary>

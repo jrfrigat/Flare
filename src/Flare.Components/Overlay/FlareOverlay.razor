@@ -29,7 +29,8 @@
     [Parameter] public EventCallback     OnBackdropClick { get; set; }
     /// <summary>Uses absolute positioning instead of fixed.</summary>
     [Parameter] public bool              Absolute    { get; set; }
-    /// <summary>Renders a dark semi-transparent background.</summary>
+    /// <summary>Paints the theme's dark scrim. When <see langword="false"/> the backdrop is transparent:
+    /// the overlay still covers its area and reports clicks, but nothing is dimmed.</summary>
     [Parameter] public bool              Dark        { get; set; } = true;
     /// <summary>Background opacity value between 0 and 1. Null uses the theme's backdrop opacity
     /// (the <c>--flare-overlay-scrim-opacity</c> token); an explicit value wins.</summary>

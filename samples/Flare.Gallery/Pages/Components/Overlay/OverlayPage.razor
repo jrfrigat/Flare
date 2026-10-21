@@ -8,5 +8,11 @@
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Overlay_Subtitle</FlareText>
 </GalleryPageTitle>
 
+@* The primitive/modal split is the page's whole point: a reader who takes this component for a
+   dialog builds a dialog without a trap, a role or an Escape path. *@
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
+    @GalleryStrings.Overlay_ScrimNote <FlareLink Href="components/dialog">FlareDialog</FlareLink>
+</FlareText>
+
 <AutoDemoSection Title="@GalleryStrings.Overlay_Overlay" DemoType="typeof(Examples.OverlayBasicDemo)" />
 <AutoDemoSection Title="@GalleryStrings.Overlay_Light" DemoType="typeof(Examples.OverlayLightDemo)" />

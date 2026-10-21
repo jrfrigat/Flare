@@ -1793,13 +1793,31 @@ Read the card, check the tests, and report what is left.</value>
     <value>Overlay</value>
   </data>
   <data name="Overlay_Subtitle" xml:space="preserve">
-    <value>FlareOverlay - full-screen backdrop with light and dark variants.</value>
+    <value>FlareOverlay - a scrim primitive: a backdrop that reports clicks, without modal behavior.</value>
+  </data>
+  <data name="Overlay_ScrimNote" xml:space="preserve">
+    <value>FlareOverlay paints the backdrop and reports clicks. It owns no role, focus trap, scroll lock or Escape path - a modal surface is</value>
   </data>
   <data name="Overlay_Overlay" xml:space="preserve">
-    <value>Dark &amp; scoped overlay</value>
+    <value>Dismissible panel on a scrim</value>
+  </data>
+  <data name="Overlay_DemoTitle" xml:space="preserve">
+    <value>Scrim, not a dialog</value>
+  </data>
+  <data name="Overlay_DemoBody" xml:space="preserve">
+    <value>Escape and Close both close this panel and return focus to the button that opened it. A focus trap and scroll lock come with FlareDialog, not with the overlay.</value>
+  </data>
+  <data name="Overlay_DemoClose" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="Overlay_Light" xml:space="preserve">
-    <value>Light scrim, opacity &amp; z-index</value>
+    <value>Transparent backdrop (Dark=false)</value>
+  </data>
+  <data name="Overlay_LightContract" xml:space="preserve">
+    <value>Dark=false paints no scrim: the invisible layer still catches clicks. Opacity has nothing to shade; ZIndex still orders the layer.</value>
+  </data>
+  <data name="Overlay_LightActive" xml:space="preserve">
+    <value>The invisible layer is over this card - click it to dismiss.</value>
   </data>
   <data name="Popover_Title" xml:space="preserve">
     <value>Popover</value>

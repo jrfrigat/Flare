@@ -1,9 +1,11 @@
+@* Dark=false paints no scrim: the layer stays invisible and still catches clicks, so it is a dismiss
+   surface rather than a dimmed backdrop. Opacity has nothing to shade; ZIndex still orders the layer. *@
 <FlareStack Gap="FlareSpacing.None">
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
         <FlareButton OnClick="@(() => _open = true)">Show light overlay</FlareButton>
     </FlareStack>
     <FlareCard Style="position:relative;height:6rem;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-small);overflow:hidden;display:flex;align-items:center;justify-content:center;">
-        <FlareText Typo="TypographyScale.BodyMedium">Light scrim (Dark=false) with custom Opacity and ZIndex</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">@(_open ? GalleryStrings.Overlay_LightActive : GalleryStrings.Overlay_LightContract)</FlareText>
         <FlareOverlay Open="_open" Absolute="true" Dark="false" Opacity="0.6" ZIndex="5"
                       OnBackdropClick="@(() => _open = false)" />
     </FlareCard>
