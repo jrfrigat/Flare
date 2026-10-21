@@ -27,6 +27,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- A third-party `IUiJsService` implementation compiles again: the three tab keyboard members have no-op defaults, like the rest of the optional surface, instead of forcing every custom implementation to grow new members.
 - A `FlareDatePicker` entry it cannot accept - an impossible date, an incomplete one, or a date outside Min/Max/IsDateDisabled - stays in the field with a localized reason and `aria-invalid` instead of being silently replaced by the last committed value.
 - The `FlareTabs` keyboard keeps working when the module that owns it cannot load: the arrows, Home and End fall back to a C# handler for as long as the module is missing, and the focus reveal no longer calls into the failed module and terminates the circuit.
 - A `FlareStepper` focus reveal into a stale module that no longer has it is ignored instead of terminating the circuit.
