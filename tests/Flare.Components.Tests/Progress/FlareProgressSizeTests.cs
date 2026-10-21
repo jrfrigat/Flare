@@ -71,4 +71,16 @@ public class FlareProgressSizeTests : FlareTestContext
         Assert.DoesNotContain("--flare-progress-linear-height", style);
         Assert.DoesNotContain("height:", style);
     }
+
+    [Fact]
+    public void Circular_Diameter_SetsBothAxes()
+    {
+        var cut = Render<FlareProgressCircular>(p => p
+            .Add(x => x.Value, 50d)
+            .Add(x => x.Diameter, "6rem"));
+
+        var style = cut.Find($".{Css.Classes.Progress.Root}").GetAttribute("style") ?? "";
+        Assert.Contains("width:6rem", style);
+        Assert.Contains("height:6rem", style);
+    }
 }
