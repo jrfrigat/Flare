@@ -50,9 +50,12 @@
 
     <FlareLayoutContent>
         @* Two-column doc layout built from Flare primitives: a flexible content column and a fixed
-           "On this page" rail. The rail hides below the md breakpoint (Css.Classes.Hidden.BelowMd) --
-           when it does, the content column simply fills the row. No gallery CSS. *@
-        <FlareStack Row Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start" StretchFirst>
+           "On this page" rail. The row is a query container, so the rail hides both below the md
+           viewport and when the row itself is narrower than md - at 200% text the chrome around the
+           content grows, the row drops below md while the window does not, and the rail has to yield
+           the width to the demos. No gallery CSS. *@
+        <FlareStack Row Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start" StretchFirst
+                    Class="@Css.Classes.QueryContainer.Root">
             @* Plain content host: StretchFirst makes this first child fill the space beside the fixed rail
                (flex:1 1 auto + min-width:0 so wide code blocks can shrink) - no inline flex needed. The id
                is a scan target for the TOC, not a styling hook. *@
@@ -62,7 +65,7 @@
             <FlareOnThisPage @key="NavManager.Uri"
                              Root="#gallery-main"
                              HeadingSelector=".demo-section__title"
-                             Class="@Css.Classes.Hidden.BelowMd"
+                             Class="@($"{Css.Classes.Hidden.BelowMd} {Css.Classes.Hidden.ContainerBelowMd}")"
                              Style="position:sticky;top:1rem;flex:none;width:14rem;max-height:calc(100vh - 6rem);overflow-y:auto;" />
         </FlareStack>
     </FlareLayoutContent>

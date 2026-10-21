@@ -82,6 +82,16 @@
 @media (min-width: 1920px) and (max-width: 2559.98px) { .flare-hidden--only-xl { display: none !important; } }
 @media (min-width: 2560px)                            { .flare-hidden--only-xxl { display: none !important; } }
 
+/* A query container, for the container-width utility below - and for any consumer container query.
+   Opt-in: inline-size containment makes the box's width independent of its content, which fits a
+   column the layout sizes and not a box that shrink-wraps. */
+.flare-query-container { container-type: inline-size; }
+
+/* below-md, measured against the nearest .flare-query-container instead of the viewport. A column can
+   be narrow while the window is wide - a doc aside that no longer fits beside the content once the
+   chrome around it grows with the root font size - and this is the rule that notices. */
+@container (max-width: 959.98px) { .flare-hidden--container-below-md { display: none !important; } }
+
 /* below-{bp}: hide while the viewport is narrower than that tier's lower bound */
 @media (max-width: 599.98px)  { .flare-hidden--below-sm { display: none !important; } }
 @media (max-width: 959.98px)  { .flare-hidden--below-md { display: none !important; } }

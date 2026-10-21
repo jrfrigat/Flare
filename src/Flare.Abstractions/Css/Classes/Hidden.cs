@@ -17,6 +17,9 @@ public static class Hidden
     public const string BelowLg = "flare-hidden--below-lg";
     /// <summary>The <c>flare-hidden--below-md</c> CSS class.</summary>
     public const string BelowMd = "flare-hidden--below-md";
+    /// <summary>The <c>flare-hidden--container-below-md</c> CSS class: like <see cref="BelowMd"/>, but
+    /// measured against the nearest <see cref="QueryContainer.Root"/> ancestor instead of the viewport.</summary>
+    public const string ContainerBelowMd = "flare-hidden--container-below-md";
     /// <summary>The <c>flare-hidden--below-sm</c> CSS class.</summary>
     public const string BelowSm = "flare-hidden--below-sm";
     /// <summary>The <c>flare-hidden--below-xl</c> CSS class.</summary>

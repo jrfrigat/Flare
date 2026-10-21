@@ -7,6 +7,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- `flare-query-container` makes an element the container its children's container-width utilities measure, and `flare-hidden--container-below-md` hides a child when that container is narrower than the md breakpoint even on a wide viewport - a documentation aside yields its width to the content once the chrome around it grows at 200% text.
 - `FlareBottomNav.LabelMode="Wrap"` gives each item label up to two lines and grows the bar, and the space a pinned bar reserves, to the height those lines need, so the labels of a narrow bar stay readable at 200% text.
 - `--flare-layout-appbar-control-max-size` sets the ceiling for an icon control in the layout app bar and for the glyph inside it, and defaults to the bar's height, so a bar stays one row when the root font size grows.
 - `FlareListItem.Mono` renders its text in the monospace font, so an identifier keeps the item's title slot and row typography.
