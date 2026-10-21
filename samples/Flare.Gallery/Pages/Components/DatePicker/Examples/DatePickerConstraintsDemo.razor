@@ -1,20 +1,22 @@
+@inherits LocalizedPage
+
 <FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:36rem;">
-    <FlareDatePicker @bind-Value="_date" Label="This month only"
+    <FlareDatePicker @bind-Value="_date" Label="@GalleryStrings.DpDemo_ThisMonthLabel"
                      Min="_min" Max="_max"
-                     HelperText="Min/Max restrict the selectable range"
-                     TodayText="Today" ClearText="Clear"
+                     HelperText="@GalleryStrings.DpDemo_ThisMonthHelper"
+                     TodayText="@GalleryStrings.DpDemo_TodayText" ClearText="@GalleryStrings.DpDemo_ClearText"
                      ShowTodayButton="true" ShowClearButton="true"
                      Style="flex:1;min-width:14rem;" />
-    <FlareDatePicker @bind-Value="_weekday" Label="Weekdays only (no weekends)"
+    <FlareDatePicker @bind-Value="_weekday" Label="@GalleryStrings.DpDemo_WeekdaysLabel"
                      IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)"
-                     HelperText="IsDateDisabled greys out Sat/Sun"
+                     HelperText="@GalleryStrings.DpDemo_WeekdaysHelper"
                      Style="flex:1;min-width:14rem;" />
-    <FlareDatePicker @bind-Value="_localized" Label="German culture"
+    <FlareDatePicker @bind-Value="_localized" Label="@GalleryStrings.DpDemo_GermanLabel"
                      Culture="_deCulture"
-                     HelperText="Localized day/month names, Monday first"
+                     HelperText="@GalleryStrings.DpDemo_GermanHelper"
                      Style="flex:1;min-width:14rem;" />
-    <FlareDatePicker @bind-Value="_required" Label="Required (error until set)"
-                     ErrorText="@(_required is null ? "Date is required" : null)" HasError="_required is null"
+    <FlareDatePicker @bind-Value="_required" Label="@GalleryStrings.DpDemo_RequiredLabel"
+                     ErrorText="@(_required is null ? GalleryStrings.DpDemo_RequiredError : null)" HasError="_required is null"
                      Style="flex:1;min-width:14rem;" />
 </FlareStack>
 

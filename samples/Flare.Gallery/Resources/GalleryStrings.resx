@@ -3981,6 +3981,63 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DpDemo_WordTomorrow" xml:space="preserve">
     <value>tomorrow</value>
   </data>
+  <data name="DpDemo_AppointmentLabel" xml:space="preserve">
+    <value>Appointment date</value>
+  </data>
+  <data name="DpDemo_PickPlaceholder" xml:space="preserve">
+    <value>Pick a date</value>
+  </data>
+  <data name="DpDemo_DisabledLabel" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="DpDemo_Selected" xml:space="preserve">
+    <value>Selected: {0}</value>
+  </data>
+  <data name="DpDemo_ThisMonthLabel" xml:space="preserve">
+    <value>This month only</value>
+  </data>
+  <data name="DpDemo_ThisMonthHelper" xml:space="preserve">
+    <value>Min/Max restrict the selectable range</value>
+  </data>
+  <data name="DpDemo_TodayText" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="DpDemo_ClearText" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="DpDemo_WeekdaysLabel" xml:space="preserve">
+    <value>Weekdays only (no weekends)</value>
+  </data>
+  <data name="DpDemo_WeekdaysHelper" xml:space="preserve">
+    <value>IsDateDisabled greys out Sat/Sun</value>
+  </data>
+  <data name="DpDemo_GermanLabel" xml:space="preserve">
+    <value>German culture</value>
+  </data>
+  <data name="DpDemo_GermanHelper" xml:space="preserve">
+    <value>Localized day/month names, Monday first</value>
+  </data>
+  <data name="DpDemo_RequiredLabel" xml:space="preserve">
+    <value>Required (error until set)</value>
+  </data>
+  <data name="DpDemo_RequiredError" xml:space="preserve">
+    <value>Date is required</value>
+  </data>
+  <data name="DpDemo_PopupStatus" xml:space="preserve">
+    <value>Popup: {0}</value>
+  </data>
+  <data name="DpDemo_Opened" xml:space="preserve">
+    <value>opened</value>
+  </data>
+  <data name="DpDemo_Closed" xml:space="preserve">
+    <value>closed</value>
+  </data>
+  <data name="DpDemo_DobLabel" xml:space="preserve">
+    <value>Date of birth (opens on year view + ISO week numbers, Monday-first)</value>
+  </data>
+  <data name="DpDemo_InlineLabel" xml:space="preserve">
+    <value>Inline calendar (always visible)</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Keeps its UTC offset</value>
   </data>

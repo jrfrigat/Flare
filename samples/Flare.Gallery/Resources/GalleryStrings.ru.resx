@@ -3981,6 +3981,63 @@
   <data name="DpDemo_WordTomorrow" xml:space="preserve">
     <value>завтра</value>
   </data>
+  <data name="DpDemo_AppointmentLabel" xml:space="preserve">
+    <value>Дата приема</value>
+  </data>
+  <data name="DpDemo_PickPlaceholder" xml:space="preserve">
+    <value>Выберите дату</value>
+  </data>
+  <data name="DpDemo_DisabledLabel" xml:space="preserve">
+    <value>Отключено</value>
+  </data>
+  <data name="DpDemo_Selected" xml:space="preserve">
+    <value>Выбрано: {0}</value>
+  </data>
+  <data name="DpDemo_ThisMonthLabel" xml:space="preserve">
+    <value>Только этот месяц</value>
+  </data>
+  <data name="DpDemo_ThisMonthHelper" xml:space="preserve">
+    <value>Min/Max ограничивают доступный диапазон</value>
+  </data>
+  <data name="DpDemo_TodayText" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="DpDemo_ClearText" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="DpDemo_WeekdaysLabel" xml:space="preserve">
+    <value>Только будни (без выходных)</value>
+  </data>
+  <data name="DpDemo_WeekdaysHelper" xml:space="preserve">
+    <value>IsDateDisabled отключает субботу и воскресенье</value>
+  </data>
+  <data name="DpDemo_GermanLabel" xml:space="preserve">
+    <value>Немецкая культура</value>
+  </data>
+  <data name="DpDemo_GermanHelper" xml:space="preserve">
+    <value>Локализованные названия дней и месяцев, неделя с понедельника</value>
+  </data>
+  <data name="DpDemo_RequiredLabel" xml:space="preserve">
+    <value>Обязательное (ошибка до выбора)</value>
+  </data>
+  <data name="DpDemo_RequiredError" xml:space="preserve">
+    <value>Дата обязательна</value>
+  </data>
+  <data name="DpDemo_PopupStatus" xml:space="preserve">
+    <value>Попап: {0}</value>
+  </data>
+  <data name="DpDemo_Opened" xml:space="preserve">
+    <value>открыт</value>
+  </data>
+  <data name="DpDemo_Closed" xml:space="preserve">
+    <value>закрыт</value>
+  </data>
+  <data name="DpDemo_DobLabel" xml:space="preserve">
+    <value>Дата рождения (открывается на годе, ISO-номера недель, неделя с понедельника)</value>
+  </data>
+  <data name="DpDemo_InlineLabel" xml:space="preserve">
+    <value>Встроенный календарь (всегда виден)</value>
+  </data>
   <data name="DtpDemo_OffsetLabel" xml:space="preserve">
     <value>Сохраняет смещение UTC</value>
   </data>

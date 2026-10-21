@@ -1,12 +1,18 @@
+@inherits LocalizedPage
+
 <FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:32rem;">
-    <FlareDatePicker @bind-Value="_date" Label="Appointment date" Placeholder="Pick a date"
-                     DateFormat="dd MMM yyyy" Style="flex:1;min-width:12rem;" />
-    <FlareDatePicker Label="Disabled" Disabled Style="flex:1;min-width:12rem;" />
+    <FlareDatePicker @bind-Value="_date" Label="@GalleryStrings.DpDemo_AppointmentLabel"
+                     Placeholder="@GalleryStrings.DpDemo_PickPlaceholder"
+                     DateFormat="@DateFormat" Style="flex:1;min-width:12rem;" />
+    <FlareDatePicker Label="@GalleryStrings.DpDemo_DisabledLabel" Disabled Style="flex:1;min-width:12rem;" />
 </FlareStack>
 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
-    Selected: @_date?.ToString("dd MMM yyyy")
+    @(string.Format(GalleryStrings.DpDemo_Selected, _date?.ToString(DateFormat)))
 </FlareText>
 
 @code {
+    // One format for the field and the selected-value line, so the two always agree; MMM follows the
+    // current culture, which is what makes the month name change with the Gallery language.
+    private const string DateFormat = "dd MMM yyyy";
     private DateOnly? _date;
 }

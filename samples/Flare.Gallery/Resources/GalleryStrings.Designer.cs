@@ -12271,6 +12271,63 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DpDemo_WordTomorrow string.</summary>
         public static string DpDemo_WordTomorrow => ResourceManager.GetString("DpDemo_WordTomorrow", resourceCulture);
 
+        /// <summary>Looks up the localized DpDemo_AppointmentLabel string.</summary>
+        public static string DpDemo_AppointmentLabel => ResourceManager.GetString("DpDemo_AppointmentLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_PickPlaceholder string.</summary>
+        public static string DpDemo_PickPlaceholder => ResourceManager.GetString("DpDemo_PickPlaceholder", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_DisabledLabel string.</summary>
+        public static string DpDemo_DisabledLabel => ResourceManager.GetString("DpDemo_DisabledLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_Selected string.</summary>
+        public static string DpDemo_Selected => ResourceManager.GetString("DpDemo_Selected", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_ThisMonthLabel string.</summary>
+        public static string DpDemo_ThisMonthLabel => ResourceManager.GetString("DpDemo_ThisMonthLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_ThisMonthHelper string.</summary>
+        public static string DpDemo_ThisMonthHelper => ResourceManager.GetString("DpDemo_ThisMonthHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_TodayText string.</summary>
+        public static string DpDemo_TodayText => ResourceManager.GetString("DpDemo_TodayText", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_ClearText string.</summary>
+        public static string DpDemo_ClearText => ResourceManager.GetString("DpDemo_ClearText", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_WeekdaysLabel string.</summary>
+        public static string DpDemo_WeekdaysLabel => ResourceManager.GetString("DpDemo_WeekdaysLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_WeekdaysHelper string.</summary>
+        public static string DpDemo_WeekdaysHelper => ResourceManager.GetString("DpDemo_WeekdaysHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_GermanLabel string.</summary>
+        public static string DpDemo_GermanLabel => ResourceManager.GetString("DpDemo_GermanLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_GermanHelper string.</summary>
+        public static string DpDemo_GermanHelper => ResourceManager.GetString("DpDemo_GermanHelper", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_RequiredLabel string.</summary>
+        public static string DpDemo_RequiredLabel => ResourceManager.GetString("DpDemo_RequiredLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_RequiredError string.</summary>
+        public static string DpDemo_RequiredError => ResourceManager.GetString("DpDemo_RequiredError", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_PopupStatus string.</summary>
+        public static string DpDemo_PopupStatus => ResourceManager.GetString("DpDemo_PopupStatus", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_Opened string.</summary>
+        public static string DpDemo_Opened => ResourceManager.GetString("DpDemo_Opened", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_Closed string.</summary>
+        public static string DpDemo_Closed => ResourceManager.GetString("DpDemo_Closed", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_DobLabel string.</summary>
+        public static string DpDemo_DobLabel => ResourceManager.GetString("DpDemo_DobLabel", resourceCulture);
+
+        /// <summary>Looks up the localized DpDemo_InlineLabel string.</summary>
+        public static string DpDemo_InlineLabel => ResourceManager.GetString("DpDemo_InlineLabel", resourceCulture);
+
         /// <summary>Looks up the localized DtpDemo_OffsetLabel string.</summary>
         public static string DtpDemo_OffsetLabel => ResourceManager.GetString("DtpDemo_OffsetLabel", resourceCulture);
 
