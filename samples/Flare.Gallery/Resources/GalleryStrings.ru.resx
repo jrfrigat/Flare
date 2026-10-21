@@ -1804,6 +1804,27 @@
   <data name="OnThisPage_Block" xml:space="preserve">
     <value>Блок оглавления (ручные ссылки)</value>
   </data>
+  <data name="TocDemo_Contents" xml:space="preserve">
+    <value>Содержание</value>
+  </data>
+  <data name="TocDemo_Introduction" xml:space="preserve">
+    <value>Введение</value>
+  </data>
+  <data name="TocDemo_Installation" xml:space="preserve">
+    <value>Установка</value>
+  </data>
+  <data name="TocDemo_Configuration" xml:space="preserve">
+    <value>Настройка</value>
+  </data>
+  <data name="TocDemo_Theming" xml:space="preserve">
+    <value>Темы</value>
+  </data>
+  <data name="TocDemo_Api" xml:space="preserve">
+    <value>Справочник API</value>
+  </data>
+  <data name="TocDemo_Section" xml:space="preserve">
+    <value>Настоящий раздел этой страницы: ссылка в содержании ведет сюда.</value>
+  </data>
   <data name="Overlay_Title" xml:space="preserve">
     <value>Оверлей</value>
   </data>

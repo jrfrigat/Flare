@@ -6662,7 +6662,70 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("OnThisPage_Block", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на API reference.
+        /// </summary>
+        public static string TocDemo_Api {
+            get {
+                return ResourceManager.GetString("TocDemo_Api", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Configuration.
+        /// </summary>
+        public static string TocDemo_Configuration {
+            get {
+                return ResourceManager.GetString("TocDemo_Configuration", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Contents.
+        /// </summary>
+        public static string TocDemo_Contents {
+            get {
+                return ResourceManager.GetString("TocDemo_Contents", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Installation.
+        /// </summary>
+        public static string TocDemo_Installation {
+            get {
+                return ResourceManager.GetString("TocDemo_Installation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Introduction.
+        /// </summary>
+        public static string TocDemo_Introduction {
+            get {
+                return ResourceManager.GetString("TocDemo_Introduction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A real section on this page - the link in the contents jumps here..
+        /// </summary>
+        public static string TocDemo_Section {
+            get {
+                return ResourceManager.GetString("TocDemo_Section", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theming.
+        /// </summary>
+        public static string TocDemo_Theming {
+            get {
+                return ResourceManager.GetString("TocDemo_Theming", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Table of contents with auto anchors.
         /// </summary>
