@@ -12,9 +12,9 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Link text/content. |
 | `Href` | `string?` | `` | Parameter |  | Anchor target, e.g. "#section" or a full path plus fragment. |
 | `Level` | `int` | `0` | Parameter |  | Indent depth (0 = top level). Each level adds one indent step. |
+| `Style` | `string?` | `` | Parameter |  | Inline style applied to the link itself - the element the consumer sees and styles. The indent set by Level stays on the list item. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
-| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 

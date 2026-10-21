@@ -7324,9 +7324,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Link text/content.", null, false, false, false, @"FlareTocLink"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"Anchor target, e.g. ""#section"" or a full path plus fragment.", null, false, false, false, @"FlareTocLink"),
                 new ApiParameterInfo(@"Level", @"int", @"0", @"Indent depth (0 = top level). Each level adds one indent step.", null, false, false, false, @"FlareTocLink"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style applied to the link itself - the element the consumer sees and styles. The indent set by Level stays on the list item.", null, false, false, false, @"FlareTocLink"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]

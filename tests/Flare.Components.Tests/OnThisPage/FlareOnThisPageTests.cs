@@ -88,4 +88,22 @@ public class FlareOnThisPageTests : FlareTestContext
         cut.InvokeAsync(() => cut.Instance.SetActive(["intro", "details"]));
         Assert.Equal(["intro", "details"], fired);
     }
+
+    [Fact]
+    public void AdditionalAttributes_ReachTheNav()
+    {
+        var cut = Render<FlareOnThisPage>(p => p
+            .Add(x => x.ShowWhenEmpty, true)
+            .Add(x => x.AdditionalAttributes, new Dictionary<string, object>
+            {
+                ["id"] = "toc",
+                ["aria-labelledby"] = "heading",
+                ["data-test"] = "value",
+            }));
+
+        var nav = cut.Find("nav");
+        Assert.Equal("toc", nav.GetAttribute("id"));
+        Assert.Equal("heading", nav.GetAttribute("aria-labelledby"));
+        Assert.Equal("value", nav.GetAttribute("data-test"));
+    }
 }

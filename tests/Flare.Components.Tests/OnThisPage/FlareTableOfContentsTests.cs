@@ -73,4 +73,17 @@ public class FlareTableOfContentsTests : FlareTestContext
 
         Assert.False(cut.Find("a").HasAttribute("href"));
     }
+
+    [Fact]
+    public void TocLink_StyleLandsOnTheLinkAndTheDepthStaysOnTheItem()
+    {
+        var cut = Render<FlareTocLink>(p => p
+            .Add(x => x.Href, "#a")
+            .Add(x => x.Level, 2)
+            .Add(x => x.Style, "color:rgb(1, 2, 3)")
+            .Add(x => x.ChildContent, "Deep"));
+
+        Assert.Equal("color:rgb(1, 2, 3)", cut.Find("a").GetAttribute("style"));
+        Assert.Contains($"{Css.Tokens.LocalVars.TocDepth}:2", cut.Find("li").GetAttribute("style"));
+    }
 }

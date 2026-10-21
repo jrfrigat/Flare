@@ -4,6 +4,7 @@
 <li class="@Css.Classes.TableOfContents.Item" style="@($"{Css.Tokens.LocalVars.TocDepth}:{Math.Max(0, Level)}")">
     <a class="@BuildCssClass(_activeClass)"
        href="@_safeHref"
+       style="@Style"
        aria-current="@(Active ? "true" : null)"
        @attributes="AdditionalAttributes">@ChildContent</a>
 </li>
@@ -20,6 +21,10 @@
 
     /// <summary>Link text/content.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Inline style applied to the link itself - the element the consumer sees and styles.
+    /// The indent set by <see cref="Level"/> stays on the list item.</summary>
+    [Parameter] public override string? Style { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.TableOfContents.Link;
 

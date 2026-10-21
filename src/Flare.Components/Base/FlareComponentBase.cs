@@ -36,7 +36,7 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
     /// <summary>Additional CSS class(es) appended to the component's root element.</summary>
     [Parameter] public string? Class { get; set; }
     /// <summary>Inline <c>style</c> string appended to the component's root element.</summary>
-    [Parameter] public string? Style { get; set; }
+    [Parameter] public virtual string? Style { get; set; }
 
     /// <summary>The component's root CSS class; each component overrides this.</summary>
     protected abstract string ComponentCssClass { get; }

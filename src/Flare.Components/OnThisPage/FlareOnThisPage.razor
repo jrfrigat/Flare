@@ -8,7 +8,8 @@
 @if (_headings.Count > 0 || ShowWhenEmpty)
 {
     @* The presentational block does the rendering; this component only feeds it scanned headings. *@
-    <FlareTableOfContents Title="@_title" Class="@Class" Style="@Style">
+    <FlareTableOfContents Title="@_title" Class="@Class" Style="@Style"
+                          AdditionalAttributes="@AdditionalAttributes">
         @foreach (var h in _headings)
         {
             <FlareTocLink Href="@($"{_basePath}#{h.Id}")"
