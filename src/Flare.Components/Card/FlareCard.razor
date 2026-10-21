@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareContainerBase
+@inherits FlareLayoutBoxBase
 @using Microsoft.AspNetCore.Components.Web
 
 @* The content is never wrapped in the card's own control. The root is a plain box; an EMPTY native
@@ -158,9 +158,10 @@
     {
         get
         {
-            if (Elevation is not { } level) return Style;
-            var shadow = $"{Css.Tokens.CardField.Elevation}:var({ElevationToken(level)});";
-            return string.IsNullOrEmpty(Style) ? shadow : shadow + Style;
+            var shadow = Elevation is { } level
+                ? $"{Css.Tokens.CardField.Elevation}:var({ElevationToken(level)})"
+                : null;
+            return JoinStyle(shadow, BoxStyle, Style);
         }
     }
 

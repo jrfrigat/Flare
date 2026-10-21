@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareContainerBase
+@inherits FlareLayoutBoxBase
 
 <div class="@BuildCssClass(_dirClass, _wrapClass, _stretchClass, _gapClass, _alignClass, _justifyClass, FillClass)"
      style="@_resolvedStyle"
@@ -101,8 +101,9 @@
 
         // GS-3: sanitize user-supplied CSS value before injection
         var safeGapValue = Flare.Components.Security.CssValidator.StripDangerous(GapValue);
-        _resolvedStyle = Gap == FlareSpacing.Custom && safeGapValue is not null
-            ? (Style is not null ? $"gap:{safeGapValue};{Style}" : $"gap:{safeGapValue}")
-            : Style;
+        _resolvedStyle = JoinStyle(
+            Gap == FlareSpacing.Custom && safeGapValue is not null ? $"gap:{safeGapValue}" : null,
+            BoxStyle,
+            Style);
     }
 }

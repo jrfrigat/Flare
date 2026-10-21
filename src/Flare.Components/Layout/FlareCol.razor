@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareContainerBase
+@inherits FlareLayoutBoxBase
 
 <div class="@BuildCssClass(FillClass)" style="@_colStyle" @attributes="AdditionalAttributes">
     @ChildContent
@@ -47,6 +47,8 @@
             // ColStart wins over Offset; Offset N starts the column at line N+1.
             var start = ColStart ?? (Offset > 0 ? Offset + 1 : (int?)null);
             if (start is int s) parts.Add($"{Css.Tokens.LocalVars.ColStart}:{s}");
+            var box = BoxStyle;
+            if (box is not null) parts.Add(box);
             if (!string.IsNullOrWhiteSpace(Style)) parts.Add(Style);
             return string.Join(';', parts);
         }
