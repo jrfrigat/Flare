@@ -45,7 +45,10 @@
     margin-top: var(--flare-spacing-2);
 }
 
-.flare-timeline-item:last-child .flare-timeline-item__line { display: none; }
+/* Only the list's own last item loses its line: a nested timeline inside that item keeps its own lines. */
+.flare-timeline > .flare-timeline-item:last-child > .flare-timeline-item__connector > .flare-timeline-item__line {
+    display: none;
+}
 
 .flare-timeline-item__body {
     flex: 1;
@@ -87,10 +90,12 @@
     align-items: center;
 }
 
-/* Where the body is right-aligned, the title's line hugs the same edge. */
-.flare-timeline--right .flare-timeline-item__header,
-.flare-timeline--alternate .flare-timeline-item:nth-child(even) .flare-timeline-item__header,
-.flare-timeline--alternating .flare-timeline__item--right .flare-timeline-item__header {
+/* Where the body is right-aligned, the title's line hugs the same edge. Every rule below names the
+   list's DIRECT items: a nested timeline inside an item keeps its own Align and Connector instead of
+   inheriting the outer one. */
+.flare-timeline--right > .flare-timeline-item > .flare-timeline-item__body > .flare-timeline-item__header,
+.flare-timeline--alternate > .flare-timeline-item:nth-child(even) > .flare-timeline-item__body > .flare-timeline-item__header,
+.flare-timeline--alternating > .flare-timeline__item--right > .flare-timeline-item__body > .flare-timeline-item__header {
     justify-content: flex-end;
 }
 
@@ -100,44 +105,44 @@
     color: var(--flare-color-on-surface-variant);
 }
 
-/* Connector variants */
-.flare-timeline--dashed .flare-timeline-item__line {
+/* Connector variants - direct items only, so a nested timeline keeps its own connector. */
+.flare-timeline--dashed > .flare-timeline-item > .flare-timeline-item__connector > .flare-timeline-item__line {
     background: none;
     border-left: var(--flare-timeline-line-width) dashed var(--flare-timeline-line-color);
     width: 0;
 }
 
-.flare-timeline--dotted .flare-timeline-item__line {
+.flare-timeline--dotted > .flare-timeline-item > .flare-timeline-item__connector > .flare-timeline-item__line {
     background: none;
     border-left: var(--flare-timeline-line-width) dotted var(--flare-timeline-line-color);
     width: 0;
 }
 
 /* Align = Right: mirror the row so the connector sits on the trailing edge. */
-.flare-timeline--right .flare-timeline-item { flex-direction: row-reverse; }
-.flare-timeline--right .flare-timeline-item__body { text-align: right; }
+.flare-timeline--right > .flare-timeline-item { flex-direction: row-reverse; }
+.flare-timeline--right > .flare-timeline-item > .flare-timeline-item__body { text-align: right; }
 
 /* Align = Alternate: alternate sides per item (CSS-only via nth-child). */
-.flare-timeline--alternate .flare-timeline-item:nth-child(even) { flex-direction: row-reverse; }
-.flare-timeline--alternate .flare-timeline-item:nth-child(even) .flare-timeline-item__body { text-align: right; }
+.flare-timeline--alternate > .flare-timeline-item:nth-child(even) { flex-direction: row-reverse; }
+.flare-timeline--alternate > .flare-timeline-item:nth-child(even) > .flare-timeline-item__body { text-align: right; }
 
 /* Alternating layout */
 .flare-timeline--alternating {
     position: relative;
 }
 
-.flare-timeline--alternating .flare-timeline-item {
+.flare-timeline--alternating > .flare-timeline-item {
     width: 100%;
 }
 
-.flare-timeline--alternating .flare-timeline__item--left {
+.flare-timeline--alternating > .flare-timeline__item--left {
     flex-direction: row;
 }
 
-.flare-timeline--alternating .flare-timeline__item--right {
+.flare-timeline--alternating > .flare-timeline__item--right {
     flex-direction: row-reverse;
 }
 
-.flare-timeline--alternating .flare-timeline__item--right .flare-timeline-item__body {
+.flare-timeline--alternating > .flare-timeline__item--right > .flare-timeline-item__body {
     text-align: right;
 }

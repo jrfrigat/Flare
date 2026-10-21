@@ -1,0 +1,25 @@
+@page "/timeline-nested"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="display:flex;flex-direction:column;gap:24px;padding:8px">
+        <FlareTimeline id="outer" Align="TimelineAlign.Right" Connector="ConnectorVariant.Dashed">
+            <FlareTimelineItem id="outer-1" Title="One" />
+            <FlareTimelineItem id="outer-2" Title="Two">
+                <FlareTimeline id="inner">
+                    <FlareTimelineItem id="inner-1" Title="Inner one" />
+                    <FlareTimelineItem id="inner-2" Title="Inner two" />
+                </FlareTimeline>
+            </FlareTimelineItem>
+        </FlareTimeline>
+
+        <FlareTimeline id="alternating" Alternating="true">
+            <FlareTimelineItem id="alt-1" Title="A">
+                <FlareTimeline id="alt-inner">
+                    <FlareTimelineItem id="alt-inner-1" Title="A1" />
+                    <FlareTimelineItem id="alt-inner-2" Title="A2" />
+                </FlareTimeline>
+            </FlareTimelineItem>
+            <FlareTimelineItem id="alt-2" Title="B" />
+        </FlareTimeline>
+    </div>
+</FlareThemeProvider>
