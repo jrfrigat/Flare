@@ -1,11 +1,11 @@
 <FlareStack Row Wrap Gap="FlareSpacing.Medium" MaxWidth="40rem">
-    <FlareStack FlexGrow="1" MinWidth="12rem">
+    <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
         <FlareNumericField TValue="double" @bind-Value="_price" Label="Price" Prefix="€" Min="0" Max="9999" Step="0.01" Format="F2" />
     </FlareStack>
-    <FlareStack FlexGrow="1" MinWidth="12rem">
+    <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
         <FlareNumericField TValue="double" @bind-Value="_weight" Label="Weight" Suffix="kg" Min="0" Max="500" Step="0.5" Format="F1" />
     </FlareStack>
-    <FlareStack FlexGrow="1" MinWidth="12rem">
+    <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
         <FlareNumericField TValue="int" @bind-Value="_percent" Label="Percentage" Suffix="%" Min="0" Max="100" Step="1" />
     </FlareStack>
 </FlareStack>

@@ -108,7 +108,8 @@ public class FlareLayoutBoxTests : FlareTestContext
             .Add(x => x.Foreground, FlareColor.OnSurface)
             .Add(x => x.Sticky, true)
             .Add(x => x.StickyTop, "1rem")
-            .Add(x => x.Contain, "layout paint"));
+            .Add(x => x.Contain, "layout paint")
+            .Add(x => x.FlexBasis, "0"));
 
         var style = StyleOf(cut);
         Assert.Contains("overflow:auto", style);
@@ -118,6 +119,7 @@ public class FlareLayoutBoxTests : FlareTestContext
         Assert.Contains("position:sticky", style);
         Assert.Contains("top:1rem", style);
         Assert.Contains("contain:layout paint", style);
+        Assert.Contains("flex-basis:0", style);
     }
 
     [Fact]

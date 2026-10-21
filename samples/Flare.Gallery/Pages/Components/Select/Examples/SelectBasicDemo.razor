@@ -1,10 +1,10 @@
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" MaxWidth="32rem">
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareSelect TValue="string" @bind-Value="_role" Label="Role"
                          Items="_roles" ItemLabel="RoleLabel" NullOption="Select role…" />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareSelect TValue="string" Label="Disabled" Disabled
                          Items="_roles" NullOption="Not available" />
         </FlareStack>

@@ -2,7 +2,7 @@
     <FlareStack Row Wrap Align="FlareAlignItems.Center" Gap="FlareSpacing.Small"
                 Padding="FlareSpacing.Custom" PaddingValue="0.75rem"
                 Background="@(FlareColor.Custom("var(--flare-color-surface-container)"))">
-        <FlareText Typo="TypographyScale.BodySmall" FlexGrow="1" Mono>dotnet add package Flare.Components</FlareText>
+        <FlareText Typo="TypographyScale.BodySmall" FlexGrow="1" FlexBasis="0" Mono>dotnet add package Flare.Components</FlareText>
         <FlareClipboard Text="dotnet add package Flare.Components" ShowFeedback="true" OnCopied="@(() => _count++)" />
     </FlareStack>
 

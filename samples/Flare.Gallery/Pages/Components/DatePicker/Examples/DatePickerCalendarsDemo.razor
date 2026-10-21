@@ -2,12 +2,12 @@
 @inherits LocalizedPage
 
 <FlareStack Row Wrap Gap="FlareSpacing.Large" MaxWidth="48rem">
-    <FlareStack FlexGrow="1" MinWidth="18rem">
+    <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="18rem">
         <FlareDatePicker @bind-Value="_persian" Label="@GalleryStrings.DpDemo_PersianLabel"
                          HelperText="@GalleryStrings.DpDemo_PersianHelper"
                          Culture="_fa" Inline="true" />
     </FlareStack>
-    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" MinWidth="18rem">
+    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" FlexBasis="0" MinWidth="18rem">
         <FlareDatePicker @bind-Value="_umAlQura" Label="@GalleryStrings.DpDemo_UmAlQuraLabel"
                          HelperText="@GalleryStrings.DpDemo_UmAlQuraHelper" Culture="_ar" />
         <FlareDatePicker @bind-Value="_hebrew" Label="@GalleryStrings.DpDemo_HebrewLabel"

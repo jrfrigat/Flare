@@ -3,14 +3,14 @@
    and the closed field shows its text instead of looking empty. *@
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" MaxWidth="38rem">
-        <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="14rem">
             <FlareSelect TValue="string" @bind-Value="_ingredient"
                          Items="_ingredients"
                          NullOption="All ingredients"
                          Label="Ingredient" />
         </FlareStack>
 
-        <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="14rem">
             <FlareSelect TValue="string" @bind-Value="_cake"
                          Items="_cakes"
                          NullOption="Any cake"

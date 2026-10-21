@@ -1,7 +1,7 @@
 @inherits LocalizedPage
 
 <FlareStack Row Wrap Gap="FlareSpacing.Large" MaxWidth="48rem">
-    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" MinWidth="16rem">
+    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" FlexBasis="0" MinWidth="16rem">
         <FlareWeekPicker @bind-Value="_sprint" Label="@GalleryStrings.WpDemo_SprintLabel"
                          HelperText="@GalleryStrings.WpDemo_SprintHelper" />
         <FlareWeekPicker @bind-Value="_iso" Label="@GalleryStrings.WpDemo_IsoLabel"
@@ -10,7 +10,7 @@
             @string.Format(GalleryStrings.WpDemo_Value, _iso?.ToString("yyyy-MM-dd") ?? "-")
         </FlareText>
     </FlareStack>
-    <FlareStack FlexGrow="1" MinWidth="18rem">
+    <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="18rem">
         <FlareWeekPicker @bind-Value="_inline" Label="@GalleryStrings.WpDemo_InlineLabel"
                          HelperText="@GalleryStrings.WpDemo_InlineHelper" Inline="true" />
     </FlareStack>

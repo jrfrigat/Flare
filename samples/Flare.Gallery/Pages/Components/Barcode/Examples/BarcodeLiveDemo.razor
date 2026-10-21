@@ -4,7 +4,7 @@
 <FlareStack Gap="FlareSpacing.Medium" MaxWidth="34rem">
 
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.End">
-        <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="14rem">
             <FlareTextField Label="@GalleryStrings.Barcode_Value" @bind-Value="_value" />
         </FlareStack>
         <FlareSelect TValue="BarcodeSymbology" @bind-Value="_symbology"

@@ -1,7 +1,7 @@
 @inherits LocalizedPage
 
 <FlareStack Row Wrap Gap="FlareSpacing.Large" MaxWidth="48rem">
-    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" MinWidth="16rem">
+    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" FlexBasis="0" MinWidth="16rem">
         <FlareMultiDatePicker @bind-Values="_vacation" Label="@GalleryStrings.MdpDemo_VacationLabel"
                               HelperText="@GalleryStrings.MdpDemo_VacationHelper" MaxCount="5"
                               IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)" />
@@ -9,7 +9,7 @@
             @string.Format(GalleryStrings.MdpDemo_Value, _vacation.Count == 0 ? "-" : string.Join(", ", _vacation.Select(d => d.ToString("yyyy-MM-dd"))))
         </FlareText>
     </FlareStack>
-    <FlareStack FlexGrow="1" MinWidth="18rem">
+    <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="18rem">
         <FlareMultiDatePicker @bind-Values="_shifts" Label="@GalleryStrings.MdpDemo_ShiftsLabel"
                               HelperText="@GalleryStrings.MdpDemo_ShiftsHelper" Inline="true" ShowWeekNumbers="true" />
     </FlareStack>

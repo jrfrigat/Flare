@@ -2,34 +2,34 @@
 
 <FlareStack Gap="FlareSpacing.Large" MaxWidth="40rem">
     <FlareStack Row Wrap Gap="FlareSpacing.Large">
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker @bind-Value="_dial" Label="@GalleryStrings.TpDemo_DialLabel"
                              HelperText="@GalleryStrings.TpDemo_DialHelper" />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker @bind-Value="_dial24" Label="@GalleryStrings.TpDemo_Dial24Label"
                              Use24Hour="true"
                              HelperText="@GalleryStrings.TpDemo_Dial24Helper" />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker @bind-Value="_twelve" Label="@GalleryStrings.TpDemo_TwelveLabel"
                              Culture="@EnUs"
                              HelperText="@GalleryStrings.TpDemo_TwelveHelper" />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker @bind-Value="_columns" Label="@GalleryStrings.TpDemo_DropdownLabel"
                              PopupVariant="TimePickerVariant.Dropdown" MinuteStep="5"
                              HelperText="@GalleryStrings.TpDemo_DropdownHelper" />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker @bind-Value="_list" Label="@GalleryStrings.TpDemo_ListLabel"
                              PopupVariant="TimePickerVariant.List" MinuteStep="30"
                              HelperText="@GalleryStrings.TpDemo_ListHelper" />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker Label="@GalleryStrings.TpDemo_DisabledLabel" Disabled />
         </FlareStack>
-        <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareStack FlexGrow="1" FlexBasis="0" MinWidth="12rem">
             <FlareTimePicker @bind-Value="_required" Label="@GalleryStrings.TpDemo_RequiredLabel" Required="true"
                              ErrorText="@(_required is null ? GalleryStrings.TpDemo_RequiredError : null)" />
         </FlareStack>

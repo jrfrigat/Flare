@@ -76,6 +76,11 @@ public abstract class FlareLayoutBoxBase : FlareContainerBase
     /// to the layout; 1 makes it share the free space with every other growing child.</summary>
     [Parameter] public double? FlexGrow { get; set; }
 
+    /// <summary>The box's starting size along the row's main axis before free space is shared. Null
+    /// leaves it to the content (<c>auto</c>); <c>0</c> is the flex shorthand's basis, where growing
+    /// children split the free space evenly instead of growing from their content width.</summary>
+    [Parameter] public string? FlexBasis { get; set; }
+
     /// <summary>Upper bound for the box's width; any CSS length or percentage.</summary>
     [Parameter] public string? MaxWidth { get; set; }
 
@@ -163,6 +168,7 @@ public abstract class FlareLayoutBoxBase : FlareContainerBase
             if (Relative) parts.Add("position:relative");
             AddValue(parts, "contain", Contain);
             AddValue(parts, "top", StickyTop);
+            AddValue(parts, "flex-basis", FlexBasis);
             AddPaint(parts, Background, Foreground);
             if (FlexGrow is { } grow) parts.Add($"flex-grow:{grow.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
             return parts.Count > 0 ? string.Join(';', parts) : null;

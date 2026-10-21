@@ -58,7 +58,7 @@
         <ChildContent>
             <FlareStack Gap="FlareSpacing.None" Height="100%">
                 <FlareFormulaBar CellRef="@_cellRef" Value="@_formula" ValueChanged="@(v => _formula = v)" />
-                <FlareStack FlexGrow="1" MinHeight="0" Overflow="auto">
+                <FlareStack FlexGrow="1" FlexBasis="0" MinHeight="0" Overflow="auto">
                     <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
                         <Columns>
                             <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
