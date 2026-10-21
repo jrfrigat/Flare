@@ -1,0 +1,13 @@
+@inject ISnackbarService Snackbar
+
+@* Two long messages at once: the host stacks them above the bottom edge, and on a narrow screen each one
+   wraps instead of pushing the other off. They stay until dismissed so the wrap can be read. *@
+<FlareButton OnClick="ShowBoth">@GalleryStrings.Snackbar_StackButton</FlareButton>
+
+@code {
+    private void ShowBoth()
+    {
+        Snackbar.Show(GalleryStrings.Snackbar_LongOne, SnackbarSeverity.Warning, durationMs: 0);
+        Snackbar.Show(GalleryStrings.Snackbar_LongTwo, SnackbarSeverity.Info, durationMs: 0);
+    }
+}

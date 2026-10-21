@@ -9607,6 +9607,321 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Persistent and timed updates.
+        /// </summary>
+        public static string Snackbar_Timing {
+            get {
+                return ResourceManager.GetString("Snackbar_Timing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long messages on a narrow screen.
+        /// </summary>
+        public static string Snackbar_Overflow {
+            get {
+                return ResourceManager.GetString("Snackbar_Overflow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With action.
+        /// </summary>
+        public static string Snackbar_WithAction {
+            get {
+                return ResourceManager.GetString("Snackbar_WithAction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long duration.
+        /// </summary>
+        public static string Snackbar_LongDuration {
+            get {
+                return ResourceManager.GetString("Snackbar_LongDuration", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No close button.
+        /// </summary>
+        public static string Snackbar_NoClose {
+            get {
+                return ResourceManager.GetString("Snackbar_NoClose", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Item deleted.
+        /// </summary>
+        public static string Snackbar_ItemDeleted {
+            get {
+                return ResourceManager.GetString("Snackbar_ItemDeleted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Stays for 10 seconds.
+        /// </summary>
+        public static string Snackbar_TenSeconds {
+            get {
+                return ResourceManager.GetString("Snackbar_TenSeconds", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No close button.
+        /// </summary>
+        public static string Snackbar_NoCloseMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_NoCloseMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на UNDO.
+        /// </summary>
+        public static string Snackbar_Undo {
+            get {
+                return ResourceManager.GetString("Snackbar_Undo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Undo clicked.
+        /// </summary>
+        public static string Snackbar_UndoClicked {
+            get {
+                return ResourceManager.GetString("Snackbar_UndoClicked", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Last action: {0}.
+        /// </summary>
+        public static string Snackbar_LastAction {
+            get {
+                return ResourceManager.GetString("Snackbar_LastAction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на -
+        /// </summary>
+        public static string Snackbar_None {
+            get {
+                return ResourceManager.GetString("Snackbar_None", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default.
+        /// </summary>
+        public static string Snackbar_SeverityDefault {
+            get {
+                return ResourceManager.GetString("Snackbar_SeverityDefault", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Success.
+        /// </summary>
+        public static string Snackbar_SeveritySuccess {
+            get {
+                return ResourceManager.GetString("Snackbar_SeveritySuccess", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Warning.
+        /// </summary>
+        public static string Snackbar_SeverityWarning {
+            get {
+                return ResourceManager.GetString("Snackbar_SeverityWarning", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Error.
+        /// </summary>
+        public static string Snackbar_SeverityError {
+            get {
+                return ResourceManager.GetString("Snackbar_SeverityError", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Info.
+        /// </summary>
+        public static string Snackbar_SeverityInfo {
+            get {
+                return ResourceManager.GetString("Snackbar_SeverityInfo", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default message.
+        /// </summary>
+        public static string Snackbar_DefaultMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_DefaultMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Success!.
+        /// </summary>
+        public static string Snackbar_SuccessMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_SuccessMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Warning!.
+        /// </summary>
+        public static string Snackbar_WarningMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_WarningMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Error occurred.
+        /// </summary>
+        public static string Snackbar_ErrorMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_ErrorMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Info message.
+        /// </summary>
+        public static string Snackbar_InfoMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_InfoMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Severity + progress.
+        /// </summary>
+        public static string Snackbar_ProgressButton {
+            get {
+                return ResourceManager.GetString("Snackbar_ProgressButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Uploading project files...
+        /// </summary>
+        public static string Snackbar_Uploading {
+            get {
+                return ResourceManager.GetString("Snackbar_Uploading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close after navigation.
+        /// </summary>
+        public static string Snackbar_CloseOnNavButton {
+            get {
+                return ResourceManager.GetString("Snackbar_CloseOnNavButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dismissed when you navigate away.
+        /// </summary>
+        public static string Snackbar_CloseOnNavMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_CloseOnNavMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Keep one until dismissed.
+        /// </summary>
+        public static string Snackbar_KeepButton {
+            get {
+                return ResourceManager.GetString("Snackbar_KeepButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Give the shown one 5 seconds.
+        /// </summary>
+        public static string Snackbar_ArmButton {
+            get {
+                return ResourceManager.GetString("Snackbar_ArmButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show a timed message.
+        /// </summary>
+        public static string Snackbar_TimedButton {
+            get {
+                return ResourceManager.GetString("Snackbar_TimedButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This message stays until you close it.
+        /// </summary>
+        public static string Snackbar_KeepMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_KeepMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The timer now has five seconds.
+        /// </summary>
+        public static string Snackbar_ArmedMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_ArmedMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This one closes after six seconds unless you hover or focus it.
+        /// </summary>
+        public static string Snackbar_TimedMessage {
+            get {
+                return ResourceManager.GetString("Snackbar_TimedMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show two long messages.
+        /// </summary>
+        public static string Snackbar_StackButton {
+            get {
+                return ResourceManager.GetString("Snackbar_StackButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your import finished with 128 rows added.
+        /// </summary>
+        public static string Snackbar_LongOne {
+            get {
+                return ResourceManager.GetString("Snackbar_LongOne", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The export is ready.
+        /// </summary>
+        public static string Snackbar_LongTwo {
+            get {
+                return ResourceManager.GetString("Snackbar_LongTwo", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Severity.
         /// </summary>
         public static string Snackbar_Severity {

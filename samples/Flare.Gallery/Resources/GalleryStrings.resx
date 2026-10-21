@@ -3459,6 +3459,41 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Snackbar_Custom" xml:space="preserve"><value>Custom content</value></data>
   <data name="Snackbar_CustomBody" xml:space="preserve"><value>Custom body with an icon</value></data>
   <data name="Snackbar_ClearAll" xml:space="preserve"><value>Clear all</value></data>
+  <data name="Snackbar_Timing" xml:space="preserve"><value>Persistent and timed updates</value></data>
+  <data name="Snackbar_Overflow" xml:space="preserve"><value>Long messages on a narrow screen</value></data>
+  <data name="Snackbar_WithAction" xml:space="preserve"><value>With action</value></data>
+  <data name="Snackbar_LongDuration" xml:space="preserve"><value>Long duration</value></data>
+  <data name="Snackbar_NoClose" xml:space="preserve"><value>No close button</value></data>
+  <data name="Snackbar_ItemDeleted" xml:space="preserve"><value>Item deleted</value></data>
+  <data name="Snackbar_TenSeconds" xml:space="preserve"><value>Stays for 10 seconds</value></data>
+  <data name="Snackbar_NoCloseMessage" xml:space="preserve"><value>No close button</value></data>
+  <data name="Snackbar_Undo" xml:space="preserve"><value>UNDO</value></data>
+  <data name="Snackbar_UndoClicked" xml:space="preserve"><value>Undo clicked</value></data>
+  <data name="Snackbar_LastAction" xml:space="preserve"><value>Last action: {0}</value></data>
+  <data name="Snackbar_None" xml:space="preserve"><value>-</value></data>
+  <data name="Snackbar_SeverityDefault" xml:space="preserve"><value>Default</value></data>
+  <data name="Snackbar_SeveritySuccess" xml:space="preserve"><value>Success</value></data>
+  <data name="Snackbar_SeverityWarning" xml:space="preserve"><value>Warning</value></data>
+  <data name="Snackbar_SeverityError" xml:space="preserve"><value>Error</value></data>
+  <data name="Snackbar_SeverityInfo" xml:space="preserve"><value>Info</value></data>
+  <data name="Snackbar_DefaultMessage" xml:space="preserve"><value>Default message</value></data>
+  <data name="Snackbar_SuccessMessage" xml:space="preserve"><value>Success!</value></data>
+  <data name="Snackbar_WarningMessage" xml:space="preserve"><value>Warning!</value></data>
+  <data name="Snackbar_ErrorMessage" xml:space="preserve"><value>Error occurred</value></data>
+  <data name="Snackbar_InfoMessage" xml:space="preserve"><value>Info message</value></data>
+  <data name="Snackbar_ProgressButton" xml:space="preserve"><value>Severity + progress</value></data>
+  <data name="Snackbar_Uploading" xml:space="preserve"><value>Uploading project files...</value></data>
+  <data name="Snackbar_CloseOnNavButton" xml:space="preserve"><value>Close after navigation</value></data>
+  <data name="Snackbar_CloseOnNavMessage" xml:space="preserve"><value>Dismissed when you navigate away</value></data>
+  <data name="Snackbar_KeepButton" xml:space="preserve"><value>Keep one until dismissed</value></data>
+  <data name="Snackbar_ArmButton" xml:space="preserve"><value>Give the shown one 5 seconds</value></data>
+  <data name="Snackbar_TimedButton" xml:space="preserve"><value>Show a timed message</value></data>
+  <data name="Snackbar_KeepMessage" xml:space="preserve"><value>This message stays until you close it; a timed message would pause its countdown while you hover or focus it.</value></data>
+  <data name="Snackbar_ArmedMessage" xml:space="preserve"><value>The timer now has five seconds - hover or focus keeps this on screen.</value></data>
+  <data name="Snackbar_TimedMessage" xml:space="preserve"><value>This one closes after six seconds unless you hover or focus it.</value></data>
+  <data name="Snackbar_StackButton" xml:space="preserve"><value>Show two long messages</value></data>
+  <data name="Snackbar_LongOne" xml:space="preserve"><value>Your import finished with 128 rows added and 3 rows skipped because the email column was empty.</value></data>
+  <data name="Snackbar_LongTwo" xml:space="preserve"><value>The export is ready. The file stays available for seven days and then moves to the archive.</value></data>
   <data name="Query_Lbl_Source" xml:space="preserve"><value>Source</value></data>
   <data name="Query_Lbl_Columns" xml:space="preserve"><value>Columns</value></data>
   <data name="Query_Lbl_Filter" xml:space="preserve"><value>Filter</value></data>

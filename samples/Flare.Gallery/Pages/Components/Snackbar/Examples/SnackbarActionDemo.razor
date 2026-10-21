@@ -1,18 +1,20 @@
 @inject ISnackbarService Snackbar
 
-<FlareButton OnClick="ShowWithAction">With action</FlareButton>
-<FlareButton OnClick="@(() => Snackbar.Show("Stays for 10 seconds", SnackbarSeverity.Info, durationMs: 10000))">Long duration</FlareButton>
-<FlareButton OnClick="@(() => Snackbar.Show("No close button", SnackbarSeverity.Normal, showClose: false))">No close button</FlareButton>
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="ShowWithAction">@GalleryStrings.Snackbar_WithAction</FlareButton>
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_TenSeconds, SnackbarSeverity.Info, durationMs: 10000))">@GalleryStrings.Snackbar_LongDuration</FlareButton>
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_NoCloseMessage, SnackbarSeverity.Normal, showClose: false))">@GalleryStrings.Snackbar_NoClose</FlareButton>
+</FlareStack>
 
 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium" Style="margin-top:0.75rem">
-    Last action: @_lastAction
+    @string.Format(GalleryStrings.Snackbar_LastAction, _lastAction)
 </FlareText>
 
 @code {
-    private string _lastAction = "-";
+    private string _lastAction = GalleryStrings.Snackbar_None;
 
     private void ShowWithAction()
-        => Snackbar.Show("Item deleted", SnackbarSeverity.Success,
-            actionText: "UNDO",
-            onAction: () => { _lastAction = "Undo clicked"; InvokeAsync(StateHasChanged); return Task.CompletedTask; });
+        => Snackbar.Show(GalleryStrings.Snackbar_ItemDeleted, SnackbarSeverity.Success,
+            actionText: GalleryStrings.Snackbar_Undo,
+            onAction: () => { _lastAction = GalleryStrings.Snackbar_UndoClicked; InvokeAsync(StateHasChanged); return Task.CompletedTask; });
 }

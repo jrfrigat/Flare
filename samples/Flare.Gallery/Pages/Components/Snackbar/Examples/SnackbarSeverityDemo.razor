@@ -1,7 +1,9 @@
 @inject ISnackbarService Snackbar
 
-<FlareButton OnClick="@(() => Snackbar.Show("Default message"))">Default</FlareButton>
-<FlareButton OnClick="@(() => Snackbar.Show("Success!", SnackbarSeverity.Success))">Success</FlareButton>
-<FlareButton OnClick="@(() => Snackbar.Show("Warning!", SnackbarSeverity.Warning))">Warning</FlareButton>
-<FlareButton OnClick="@(() => Snackbar.Show("Error occurred", SnackbarSeverity.Error))">Error</FlareButton>
-<FlareButton OnClick="@(() => Snackbar.Show("Info message", SnackbarSeverity.Info))">Info</FlareButton>
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_DefaultMessage))">@GalleryStrings.Snackbar_SeverityDefault</FlareButton>
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_SuccessMessage, SnackbarSeverity.Success))">@GalleryStrings.Snackbar_SeveritySuccess</FlareButton>
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_WarningMessage, SnackbarSeverity.Warning))">@GalleryStrings.Snackbar_SeverityWarning</FlareButton>
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_ErrorMessage, SnackbarSeverity.Error))">@GalleryStrings.Snackbar_SeverityError</FlareButton>
+    <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_InfoMessage, SnackbarSeverity.Info))">@GalleryStrings.Snackbar_SeverityInfo</FlareButton>
+</FlareStack>

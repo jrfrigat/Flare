@@ -1,0 +1,31 @@
+@inject ISnackbarService Snackbar
+
+@* Persistent and timed in one place: a message shown with DurationMs 0 has no timer, and Update on the
+   same id turns it into a five-second one without moving it in the stack. Hovering or focusing a timed
+   message pauses its timer, so a reader who needs longer keeps it.
+   Flow: keep first, then arm the timer while it is on screen. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="ShowPersistent">@GalleryStrings.Snackbar_KeepButton</FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" OnClick="ArmTimer" Disabled="@(!_shown)">@GalleryStrings.Snackbar_ArmButton</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowTimed">@GalleryStrings.Snackbar_TimedButton</FlareButton>
+</FlareStack>
+
+@code {
+    private readonly Guid _id = Guid.NewGuid();
+    private bool _shown;
+
+    private void ShowPersistent()
+    {
+        Snackbar.Show(new SnackbarMessage(_id, GalleryStrings.Snackbar_KeepMessage, SnackbarSeverity.Normal, 0));
+        _shown = true;
+    }
+
+    private void ArmTimer()
+    {
+        Snackbar.Update(new SnackbarMessage(_id, GalleryStrings.Snackbar_ArmedMessage, SnackbarSeverity.Info, 5000));
+        _shown = false;
+    }
+
+    private void ShowTimed()
+        => Snackbar.Show(GalleryStrings.Snackbar_TimedMessage, SnackbarSeverity.Info, durationMs: 6000);
+}

@@ -3459,6 +3459,41 @@
   <data name="Snackbar_Custom" xml:space="preserve"><value>Свое содержимое</value></data>
   <data name="Snackbar_CustomBody" xml:space="preserve"><value>Свое тело с иконкой</value></data>
   <data name="Snackbar_ClearAll" xml:space="preserve"><value>Очистить все</value></data>
+  <data name="Snackbar_Timing" xml:space="preserve"><value>Постоянное и обновляемое время</value></data>
+  <data name="Snackbar_Overflow" xml:space="preserve"><value>Длинные сообщения на узком экране</value></data>
+  <data name="Snackbar_WithAction" xml:space="preserve"><value>С действием</value></data>
+  <data name="Snackbar_LongDuration" xml:space="preserve"><value>Долгое время</value></data>
+  <data name="Snackbar_NoClose" xml:space="preserve"><value>Без кнопки закрытия</value></data>
+  <data name="Snackbar_ItemDeleted" xml:space="preserve"><value>Запись удалена</value></data>
+  <data name="Snackbar_TenSeconds" xml:space="preserve"><value>Останется на 10 секунд</value></data>
+  <data name="Snackbar_NoCloseMessage" xml:space="preserve"><value>Без кнопки закрытия</value></data>
+  <data name="Snackbar_Undo" xml:space="preserve"><value>ОТМЕНИТЬ</value></data>
+  <data name="Snackbar_UndoClicked" xml:space="preserve"><value>Отмена нажата</value></data>
+  <data name="Snackbar_LastAction" xml:space="preserve"><value>Последнее действие: {0}</value></data>
+  <data name="Snackbar_None" xml:space="preserve"><value>-</value></data>
+  <data name="Snackbar_SeverityDefault" xml:space="preserve"><value>Обычное</value></data>
+  <data name="Snackbar_SeveritySuccess" xml:space="preserve"><value>Успех</value></data>
+  <data name="Snackbar_SeverityWarning" xml:space="preserve"><value>Предупреждение</value></data>
+  <data name="Snackbar_SeverityError" xml:space="preserve"><value>Ошибка</value></data>
+  <data name="Snackbar_SeverityInfo" xml:space="preserve"><value>Сведения</value></data>
+  <data name="Snackbar_DefaultMessage" xml:space="preserve"><value>Обычное сообщение</value></data>
+  <data name="Snackbar_SuccessMessage" xml:space="preserve"><value>Готово!</value></data>
+  <data name="Snackbar_WarningMessage" xml:space="preserve"><value>Предупреждение!</value></data>
+  <data name="Snackbar_ErrorMessage" xml:space="preserve"><value>Произошла ошибка</value></data>
+  <data name="Snackbar_InfoMessage" xml:space="preserve"><value>Сообщение</value></data>
+  <data name="Snackbar_ProgressButton" xml:space="preserve"><value>Важность и прогресс</value></data>
+  <data name="Snackbar_Uploading" xml:space="preserve"><value>Загрузка файлов проекта...</value></data>
+  <data name="Snackbar_CloseOnNavButton" xml:space="preserve"><value>Закрыть после перехода</value></data>
+  <data name="Snackbar_CloseOnNavMessage" xml:space="preserve"><value>Закрывается при переходе на другую страницу</value></data>
+  <data name="Snackbar_KeepButton" xml:space="preserve"><value>Оставить до закрытия</value></data>
+  <data name="Snackbar_ArmButton" xml:space="preserve"><value>Дать показанному 5 секунд</value></data>
+  <data name="Snackbar_TimedButton" xml:space="preserve"><value>Показать сообщение с таймером</value></data>
+  <data name="Snackbar_KeepMessage" xml:space="preserve"><value>Это сообщение висит до закрытия; у сообщения с таймером отсчет приостанавливается, пока вы на него смотрите или держите фокус.</value></data>
+  <data name="Snackbar_ArmedMessage" xml:space="preserve"><value>Теперь у таймера пять секунд - наведение или фокус удержат сообщение на экране.</value></data>
+  <data name="Snackbar_TimedMessage" xml:space="preserve"><value>Это закроется через шесть секунд, если не навести или не поставить фокус.</value></data>
+  <data name="Snackbar_StackButton" xml:space="preserve"><value>Показать два длинных сообщения</value></data>
+  <data name="Snackbar_LongOne" xml:space="preserve"><value>Импорт завершен: добавлено 128 строк, 3 пропущены из-за пустой колонки почты.</value></data>
+  <data name="Snackbar_LongTwo" xml:space="preserve"><value>Экспорт готов. Файл доступен семь дней, затем уходит в архив.</value></data>
   <data name="Query_Lbl_Source" xml:space="preserve"><value>Источник</value></data>
   <data name="Query_Lbl_Columns" xml:space="preserve"><value>Колонки</value></data>
   <data name="Query_Lbl_Filter" xml:space="preserve"><value>Отбор</value></data>
