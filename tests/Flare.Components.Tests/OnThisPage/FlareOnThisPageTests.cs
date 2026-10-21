@@ -25,6 +25,25 @@ public class FlareOnThisPageTests : FlareTestContext
     }
 
     [Fact]
+    public void ShowWhenEmpty_ForwardsTheBoxParametersToTheRenderedRoot()
+    {
+        var cut = Render<FlareOnThisPage>(p => p
+            .Add(x => x.ShowWhenEmpty, true)
+            .Add(x => x.Sticky, true)
+            .Add(x => x.StickyTop, "1rem")
+            .Add(x => x.Width, "14rem")
+            .Add(x => x.MaxHeight, "calc(100vh - 6rem)")
+            .Add(x => x.Overflow, "auto"));
+
+        var style = cut.Find($".{Css.Classes.TableOfContents.Root}").GetAttribute("style") ?? string.Empty;
+        Assert.Contains("position:sticky", style);
+        Assert.Contains("top:1rem", style);
+        Assert.Contains("width:14rem", style);
+        Assert.Contains("max-height:calc(100vh - 6rem)", style);
+        Assert.Contains("overflow:auto", style);
+    }
+
+    [Fact]
     public void SetHeadings_RendersLinksWithHrefs()
     {
         var cut = Render<FlareOnThisPage>();

@@ -55,6 +55,10 @@
 .flare-stack--justify-space-around  { justify-content: space-around; }
 .flare-stack--justify-space-evenly  { justify-content: space-evenly; }
 
+/* A block stack keeps the box (padding, size, overflow) but lays its children out in normal flow,
+   so inline-flex children such as buttons keep their inline width instead of stretching. */
+.flare-stack--block { display: block; }
+
 .flare-spacer { flex: 1 1 auto; }
 /* A spacer that was given a size stops stretching: the size is the point, and a flex-grown box would
    stop matching it. */

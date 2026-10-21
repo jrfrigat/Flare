@@ -1,6 +1,6 @@
 @* Requires interactive render mode (not compatible with static SSR). *@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLayoutBoxBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.ITocJsService Toc
 @inject NavigationManager Nav
@@ -8,7 +8,7 @@
 @if (_headings.Count > 0 || ShowWhenEmpty)
 {
     @* The presentational block does the rendering; this component only feeds it scanned headings. *@
-    <FlareTableOfContents Title="@_title" Class="@Class" Style="@Style"
+    <FlareTableOfContents Title="@_title" Class="@Class" Style="@JoinStyle(BoxStyle, Style)"
                           AdditionalAttributes="@AdditionalAttributes">
         @foreach (var h in _headings)
         {

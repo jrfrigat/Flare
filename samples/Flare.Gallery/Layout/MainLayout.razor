@@ -61,11 +61,10 @@
                is a scan target for the TOC, not a styling hook. *@
             <FlareSection id="gallery-main">@Body</FlareSection>
             @* Recreated per navigation (@key) so it re-scans the new page's demo-section titles. *@
-            <FlareStack @key="NavManager.Uri" Sticky="true" StickyTop="1rem" Width="14rem"
-                        MaxHeight="calc(100vh - 6rem)" Overflow="auto"
-                        Class="@($"{Css.Classes.Hidden.BelowMd} {Css.Classes.Hidden.ContainerBelowMd}")">
-                <FlareOnThisPage Root="#gallery-main" HeadingSelector=".demo-section__title" />
-            </FlareStack>
+            <FlareOnThisPage @key="NavManager.Uri" Root="#gallery-main" HeadingSelector=".demo-section__title"
+                             Sticky="true" StickyTop="1rem" Width="14rem"
+                             MaxHeight="calc(100vh - 6rem)" Overflow="auto"
+                             Class="@($"{Css.Classes.Hidden.BelowMd} {Css.Classes.Hidden.ContainerBelowMd}")" />
         </FlareStack>
     </FlareLayoutContent>
 </FlareLayout>

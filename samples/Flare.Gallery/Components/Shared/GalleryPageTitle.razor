@@ -10,7 +10,7 @@
             </FlareStack>
             @foreach (var api in _apis)
             {
-                <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Circular"
+                <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm"
                              Href="@($"api/{api}")">
                     <LeadingIcon><FlareIconView Value="@FlareIcons.DataObject" /></LeadingIcon>
                     <ChildContent>@(_apis.Length > 1 ? api : GalleryStrings.Nav_Api)</ChildContent>
@@ -20,10 +20,10 @@
         </FlareStack>
         @* NuGet package this component/service ships in - click to copy the install command. *@
         <FlareStack Row MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.6rem">
-            <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm"
+            <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Xs"
                          OnClick="CopyInstallAsync" Tooltip="@($"dotnet add package {_package}")">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Package2" /></LeadingIcon>
-                <ChildContent><FlareCode>@_package</FlareCode></ChildContent>
+                <ChildContent><FlareText Element="code" Mono Typo="TypographyScale.BodySmall">@_package</FlareText></ChildContent>
                 <TrailingIcon><FlareIconView Value="@(_copied ? FlareIcons.Check : FlareIcons.ContentCopy)" /></TrailingIcon>
             </FlareButton>
         </FlareStack>

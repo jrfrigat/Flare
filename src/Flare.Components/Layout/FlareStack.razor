@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareLayoutBoxBase
 
-<div class="@BuildCssClass(_dirClass, _wrapClass, _stretchClass, _gapClass, _alignClass, _justifyClass, FillClass)"
+<div class="@BuildCssClass(_blockClass, _dirClass, _wrapClass, _stretchClass, _gapClass, _alignClass, _justifyClass, FillClass)"
      style="@_resolvedStyle"
      @ref="_root"
      @attributes="AdditionalAttributes">
@@ -46,7 +46,14 @@
     /// <summary>Main-axis justification of children.</summary>
     [Parameter] public FlareJustifyContent Justify { get; set; } = FlareJustifyContent.Default;
 
+    /// <summary>When true, lays the children out in normal block flow instead of a flex column. The
+    /// box still takes every spacing and size parameter; use it when content should keep its own
+    /// inline layout - a demo surface with buttons in a row, for example.</summary>
+    [Parameter] public bool Block { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Stack.Root;
+
+    private string _blockClass => Block ? Css.Classes.Stack.Block : string.Empty;
 
     private string _dirClass => Row
     ? (Reverse ? Css.Classes.Stack.RowReverse : Css.Classes.Stack.Row)

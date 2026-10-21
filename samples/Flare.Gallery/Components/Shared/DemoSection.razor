@@ -22,7 +22,7 @@
     <FlareStack Gap="FlareSpacing.XSmall">
         <FlareLazy MinHeight="@(MinHeight ?? Height ?? "200px")">
             <FlarePaper Elevation="0" Padding="FlareSpacing.Large">
-                <FlareStack Height="@Height" MinHeight="@MinHeight" MaxHeight="@MaxHeight">
+                <FlareStack Block="true" Height="@Height" MinHeight="@MinHeight" MaxHeight="@MaxHeight">
                     @DemoContent
                 </FlareStack>
             </FlarePaper>

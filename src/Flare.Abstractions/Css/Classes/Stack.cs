@@ -15,6 +15,9 @@ public static class Stack
     public const string ColumnReverse = "flare-stack--column-reverse";
     /// <summary>The <c>flare-stack--wrap</c> CSS class.</summary>
     public const string Wrap = "flare-stack--wrap";
+    /// <summary>The <c>flare-stack--block</c> CSS class: the stack lays its children out as a plain
+    /// block, keeping the box parameters (spacing, size, overflow) without the flex layout.</summary>
+    public const string Block = "flare-stack--block";
     /// <summary>The <c>flare-stack--stretch</c> CSS class: every direct child grows to share the space equally.</summary>
     public const string Stretch = "flare-stack--stretch";
     /// <summary>The <c>flare-stack--stretch-first</c> CSS class: the first direct child grows to fill the remaining space.</summary>

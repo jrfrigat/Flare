@@ -44,4 +44,14 @@ public class FlareStackTests : FlareTestContext
 
         Assert.False(string.IsNullOrEmpty(cut.Instance.RootElement.Id));
     }
+
+    [Fact]
+    public void Block_LaysChildrenOutInNormalFlow()
+    {
+        var cut = Render<FlareStack>(p => p
+            .Add(x => x.Block, true)
+            .AddChildContent("<button>one</button>"));
+
+        Assert.Contains(Css.Classes.Stack.Block, cut.Find($".{Css.Classes.Stack.Root}").ClassName);
+    }
 }
