@@ -1,0 +1,25 @@
+@page "/carousel-rtl"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main style="width:640px;padding:8px">
+        <div id="carousel" style="width:600px;height:200px">
+            <FlareCarousel TItem="string" Items="_items">
+                <ItemTemplate Context="slide">
+                    <span class="slide-text" style="display:flex;align-items:center;justify-content:center;height:200px">@slide</span>
+                </ItemTemplate>
+            </FlareCarousel>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="rtl" @onclick="EnableRtl">RTL</button>
+            <button id="ltr" @onclick="EnableLtr">LTR</button>
+        </div>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private static readonly string[] _items = ["one", "two", "three"];
+
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+    private Task EnableLtr() => ThemeService.SetRtlAsync(false);
+}

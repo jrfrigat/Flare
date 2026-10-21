@@ -23,11 +23,11 @@ public class FlareCarouselIndexTests : FlareTestContext
     {
         var cut = RenderCarousel(Slides);
         cut.FindAll(".flare-carousel__dot")[2].Click();
-        Assert.Contains("-200%", Track(cut));
+        Assert.Contains("--_carousel-index:2", Track(cut));
 
         cut.Render(p => p.Add(x => x.Items, new[] { "one", "two" }));
 
-        Assert.Contains("-100%", Track(cut));
+        Assert.Contains("--_carousel-index:1", Track(cut));
         Assert.Equal("true", cut.FindAll(".flare-carousel__dot")[1].GetAttribute("aria-selected"));
     }
 
@@ -39,7 +39,7 @@ public class FlareCarouselIndexTests : FlareTestContext
 
         cut.Render(p => p.Add(x => x.Items, Slides));
 
-        Assert.Contains("-100%", Track(cut));
+        Assert.Contains("--_carousel-index:1", Track(cut));
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class FlareCarouselIndexTests : FlareTestContext
         await Task.Delay(60);
 
         Assert.Empty(cut.FindAll(".flare-carousel__slide"));
-        Assert.Contains("-0%", Track(cut));
+        Assert.Contains("--_carousel-index:0", Track(cut));
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class FlareCarouselIndexTests : FlareTestContext
     {
         var cut = RenderCarousel(new[] { "one", "two" }, autoPlay: true);
 
-        cut.WaitForAssertion(() => Assert.Contains("-100%", Track(cut)), TimeSpan.FromSeconds(2));
-        cut.WaitForAssertion(() => Assert.Contains("-0%", Track(cut)), TimeSpan.FromSeconds(2));
+        cut.WaitForAssertion(() => Assert.Contains("--_carousel-index:1", Track(cut)), TimeSpan.FromSeconds(2));
+        cut.WaitForAssertion(() => Assert.Contains("--_carousel-index:0", Track(cut)), TimeSpan.FromSeconds(2));
     }
 }

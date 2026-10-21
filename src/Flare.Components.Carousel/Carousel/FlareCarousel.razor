@@ -13,7 +13,8 @@
          @onpointerup="OnPointerUp"
          @ontouchstart="OnTouchStart"
          @ontouchend="OnTouchEnd">
-        <div class="@Css.Classes.Carousel.Track" style="transform:translateX(-@(_current * 100)%)">
+        <div class="@Css.Classes.Carousel.Track"
+             style="--_carousel-index:@(_current.ToString(System.Globalization.CultureInfo.InvariantCulture))">
             @if (Items != null && ItemTemplate != null)
             {
                 @foreach (var item in Items)
@@ -82,6 +83,9 @@
     private bool _paused;
     private double _dragStartX;
 
+    // The reading direction the theme publishes; the same signal FlareThemeProvider writes to dir.
+    private bool IsRtl => Theme?.IsRtl == true;
+
     protected override void OnParametersSet()
     {
         if (_count == 0) _current = 0;
@@ -128,8 +132,10 @@
 
     private void OnKeyDown(KeyboardEventArgs e)
     {
-        if (e.Key == "ArrowLeft") Prev();
-        else if (e.Key == "ArrowRight") Next();
+        // Arrows follow the side the reader sees the neighbouring slide on: in RTL the next slide is to
+        // the left, so ArrowLeft advances and ArrowRight goes back.
+        if (e.Key == "ArrowLeft") { if (IsRtl) Next(); else Prev(); }
+        else if (e.Key == "ArrowRight") { if (IsRtl) Prev(); else Next(); }
     }
 
     private void OnPointerDown(PointerEventArgs e) => _dragStartX = e.ClientX;
@@ -150,6 +156,9 @@
     private void ApplySwipe(double delta)
     {
         if (Math.Abs(delta) <= 40) return;
+        // Positive delta means the pointer travelled left. That reveals the next slide in LTR, while in
+        // RTL the next slide waits on the right, so the same gesture goes back there.
+        if (IsRtl) delta = -delta;
         if (delta > 0) Next();
         else Prev();
     }

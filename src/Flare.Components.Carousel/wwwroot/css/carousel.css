@@ -13,8 +13,16 @@
 
 .flare-carousel__track {
     display: flex;
+    transform: translateX(calc(var(--_carousel-index, 0) * -100%));
     transition: transform var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-emphasized, ease);
     will-change: transform;
+}
+
+/* The track inherits the reader's direction and lays its slides out along it. In RTL the next slide sits
+   on the left, so the same index shifts the track the other way. Reading the direction from the computed
+   value keeps the shift and the flex layout in agreement, including a dir set without the theme. */
+.flare-carousel__track:dir(rtl) {
+    transform: translateX(calc(var(--_carousel-index, 0) * 100%));
 }
 
 .flare-carousel__slide {
@@ -51,8 +59,13 @@
     cursor: default;
 }
 
-.flare-carousel__arrow--prev { left: 0.5rem; }
-.flare-carousel__arrow--next { right: 0.5rem; }
+.flare-carousel__arrow--prev { inset-inline-start: 0.5rem; }
+.flare-carousel__arrow--next { inset-inline-end: 0.5rem; }
+
+/* A chevron points towards the reading start; in RTL that is the right side, so the glyph is mirrored. */
+.flare-carousel__arrow:dir(rtl) .flare-icon {
+    transform: scaleX(-1);
+}
 
 /* Keyboard focus ring (owned here since Carousel is its own package). */
 .flare-carousel__arrow:focus-visible,
