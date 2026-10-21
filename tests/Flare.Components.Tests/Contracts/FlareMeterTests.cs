@@ -226,4 +226,66 @@ public class FlareMeterTests : FlareTestContext
         Assert.Contains("FlareMeter", ex.Message);
         Assert.Contains("FlareMeterSegment", ex.Message);
     }
+
+    // The track, legend and aria-label read one memoized snapshot per render. These three prove the
+    // snapshot is dropped when the data behind it changes: a segment value, a display parameter and the
+    // set of segments itself.
+    private static RenderFragment Segments(params (double Value, string Label)[] parts) => b =>
+    {
+        for (var i = 0; i < parts.Length; i++)
+        {
+            b.OpenComponent<FlareMeterSegment>(i * 3);
+            b.AddAttribute(i * 3 + 1, nameof(FlareMeterSegment.Value), (double?)parts[i].Value);
+            b.AddAttribute(i * 3 + 2, nameof(FlareMeterSegment.Label), parts[i].Label);
+            b.CloseComponent();
+        }
+    };
+
+    [Fact]
+    public void ChangingASegmentValue_RebuildsTheRenderedSnapshot()
+    {
+        var cut = Render<FlareMeter>(p => p
+            .Add(x => x.ShowValues, true)
+            .Add(x => x.ChildContent, Segments((75, "DB"), (25, "Other"))));
+        Assert.Contains("flex-grow:75", cut.FindAll($".{Css.Classes.Meter.Seg}")[0].GetAttribute("style"));
+
+        cut.Render(p => p
+            .Add(x => x.ShowValues, true)
+            .Add(x => x.ChildContent, Segments((50, "DB"), (50, "Other"))));
+
+        var segs = cut.FindAll($".{Css.Classes.Meter.Seg}");
+        Assert.Equal(2, segs.Count);
+        Assert.Contains("flex-grow:50", segs[0].GetAttribute("style"));
+        Assert.Contains("flex-grow:50", segs[1].GetAttribute("style"));
+        Assert.Contains("DB 50", cut.Find($".{Css.Classes.Meter.Root}").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void EnablingShowValues_RebuildsTheRenderedSnapshot()
+    {
+        var cut = Render<FlareMeter>(p => p
+            .Add(x => x.ShowLegend, true)
+            .Add(x => x.ChildContent, TwoSegments));
+        Assert.DoesNotContain("75", cut.Find($".{Css.Classes.Meter.Legend}").TextContent);
+
+        cut.Render(p => p
+            .Add(x => x.ShowLegend, true)
+            .Add(x => x.ShowValues, true)
+            .Add(x => x.ChildContent, TwoSegments));
+
+        Assert.Contains("75", cut.Find($".{Css.Classes.Meter.Legend}").TextContent);
+        Assert.Contains("DB 75", cut.Find($".{Css.Classes.Meter.Root}").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void AddingASegment_RebuildsTheRenderedSnapshot()
+    {
+        var cut = Render<FlareMeter>(p => p.Add(x => x.ChildContent, Segments((75, "DB"))));
+        Assert.Single(cut.FindAll($".{Css.Classes.Meter.Seg}"));
+
+        cut.Render(p => p.Add(x => x.ChildContent, Segments((75, "DB"), (25, "Other"))));
+
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Meter.Seg}").Count);
+        Assert.Equal("DB; Other", cut.Find($".{Css.Classes.Meter.Root}").GetAttribute("aria-label"));
+    }
 }
