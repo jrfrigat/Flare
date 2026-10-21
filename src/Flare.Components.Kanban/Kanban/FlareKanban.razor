@@ -28,7 +28,7 @@
                         else
                         {
                             <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
-                            <span class="@Css.Classes.Kanban.Count" aria-label="@colCards.Count cards">@colCards.Count</span>
+                            <span class="@Css.Classes.Kanban.Count" aria-label="@CardCountLabel(colCards.Count)">@colCards.Count</span>
                         }
                     </div>
                     <div class="@Css.Classes.Kanban.Cards" role="list">
@@ -93,6 +93,18 @@
 
     private List<KanbanCard> CardsForColumn(string colId) =>
         _cards.Where(c => c.ColumnId == colId).ToList();
+
+    // Slavic plural rules cover the two languages the library ships: 1 -> One, 2-4 -> Few, the rest ->
+    // Many, and 11-14 take Many even though they end in 1-4. English maps 2+ onto Few and Many, which
+    // carry the same "cards" text, so the same rule reads correctly in both.
+    private static string CardCountLabel(int count)
+    {
+        var form = count % 100 is >= 11 and <= 14 ? FlareStrings.Kanban_CardCount_Many
+            : count % 10 == 1 ? FlareStrings.Kanban_CardCount_One
+            : count % 10 is >= 2 and <= 4 ? FlareStrings.Kanban_CardCount_Few
+            : FlareStrings.Kanban_CardCount_Many;
+        return string.Format(form, count);
+    }
 
     private RenderFragment RenderCard(KanbanCard c) => @<text>
         @if (ReadOnly)

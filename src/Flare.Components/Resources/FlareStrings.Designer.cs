@@ -2210,5 +2210,32 @@ namespace Flare.Components.Resources {
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to {0} card.
+        /// </summary>
+        public static string Kanban_CardCount_One {
+            get {
+                return ResourceManager.GetString("Kanban_CardCount_One", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} cards.
+        /// </summary>
+        public static string Kanban_CardCount_Few {
+            get {
+                return ResourceManager.GetString("Kanban_CardCount_Few", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} cards.
+        /// </summary>
+        public static string Kanban_CardCount_Many {
+            get {
+                return ResourceManager.GetString("Kanban_CardCount_Many", resourceCulture);
+            }
+        }
+
     }
 }

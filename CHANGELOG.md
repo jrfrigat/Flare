@@ -52,6 +52,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareOnThisPage` forwards `id`, `aria-*` and `data-*` attributes to its navigation, and `FlareTocLink.Style` styles the link itself while the indent stays on the list item.
 - A `FlareDescriptionList` with `Striped` or `Bordered` styles only its own rows, so a nested list keeps its own stripes and dividers.
 - A `FlareDescriptionList` fits a narrow parent: the label column gives way, long terms wrap, a `LabelWidth` is a preference rather than a floor, and a nested list keeps a width.
+- A `FlareKanban` column count is announced in the interface language with the right plural form, including the Russian one/two-to-four/five-plus rules.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
 
 ## [0.48.0] - 2026-10-20

@@ -339,4 +339,7 @@
   <data name="Resize_Increase" xml:space="preserve"><value>Увеличить размер</value></data>
   <data name="Slider_Minimum" xml:space="preserve"><value>минимум</value></data>
   <data name="Slider_Maximum" xml:space="preserve"><value>максимум</value></data>
+  <data name="Kanban_CardCount_One" xml:space="preserve"><value>{0} карточка</value></data>
+  <data name="Kanban_CardCount_Few" xml:space="preserve"><value>{0} карточки</value></data>
+  <data name="Kanban_CardCount_Many" xml:space="preserve"><value>{0} карточек</value></data>
 </root>
