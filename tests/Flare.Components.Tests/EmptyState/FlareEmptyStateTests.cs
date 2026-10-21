@@ -74,4 +74,40 @@ public class FlareEmptyStateTests : FlareTestContext
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateDescription}"));
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Empty.StateAction}"));
     }
+
+    [Fact]
+    public void Style_AndAdditionalAttributes_GoToTheRoot()
+    {
+        var cut = Render<FlareEmptyState>(p => p
+            .Add(x => x.Title, "Empty")
+            .Add(x => x.Style, "margin-top:1rem")
+            .Add(x => x.AdditionalAttributes, new Dictionary<string, object>
+            {
+                ["id"] = "empty-state",
+                ["data-test"] = "state",
+                ["aria-labelledby"] = "heading"
+            }));
+
+        var root = cut.Find($".{Css.Classes.Empty.State}");
+        Assert.Equal("margin-top:1rem", root.GetAttribute("style"));
+        Assert.Equal("empty-state", root.GetAttribute("id"));
+        Assert.Equal("state", root.GetAttribute("data-test"));
+        Assert.Equal("heading", root.GetAttribute("aria-labelledby"));
+    }
+
+    [Fact]
+    public void ConsumerRoleAndAriaLive_ReplaceTheDefaults()
+    {
+        var cut = Render<FlareEmptyState>(p => p
+            .Add(x => x.Title, "Empty")
+            .Add(x => x.AdditionalAttributes, new Dictionary<string, object>
+            {
+                ["role"] = "status",
+                ["aria-live"] = "off"
+            }));
+
+        var root = cut.Find($".{Css.Classes.Empty.State}");
+        Assert.Equal("status", root.GetAttribute("role"));
+        Assert.Equal("off", root.GetAttribute("aria-live"));
+    }
 }

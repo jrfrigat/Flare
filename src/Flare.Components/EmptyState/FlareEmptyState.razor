@@ -1,7 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_compactClass)" role="region" aria-label="@(Title ?? FlareStrings.EmptyState_Label)" aria-live="polite">
+@* Consumer attributes are applied last, so role, aria-live and aria-label can replace the region defaults; Style belongs to the root. *@
+<div class="@BuildCssClass(_compactClass)" style="@Style" role="region" aria-label="@(Title ?? FlareStrings.EmptyState_Label)" aria-live="polite" @attributes="AdditionalAttributes">
     @if (IconContent != null)
     {
         <div class="@Css.Classes.Empty.StateIcon">@IconContent</div>
