@@ -49,3 +49,11 @@
 .flare-skeleton--circle {
     border-radius: 50%;
 }
+
+/* The shimmer and the pulse are decoration, not the message: a reader who asked for less motion gets a
+   still placeholder. The wave layer is removed rather than frozen - without its animation the gradient
+   would sit as a bright band across the middle and read as an artefact. */
+@media (prefers-reduced-motion: reduce) {
+    .flare-skeleton--wave::after { display: none; }
+    .flare-skeleton--pulse { animation: none; }
+}
