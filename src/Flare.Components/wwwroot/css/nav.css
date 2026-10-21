@@ -212,11 +212,25 @@
    hidden and the icons are centered; nested group items collapse away (they have no icons). Turns
    on via FlareNavMenu.Rail, or automatically inside a collapsed FlareLayout MiniRail drawer.
 */
-.flare-nav-menu--rail .flare-nav-link__text,
 .flare-nav-menu--rail .flare-nav-link__badge,
 .flare-nav-menu--rail .flare-nav-group__title,
 .flare-nav-menu--rail .flare-nav-group__chevron {
   display: none;
+}
+
+/* The icon is decorative and Tooltip is optional, so the rail keeps the label in the accessibility
+   tree instead of removing it with display:none. The labeled rail below shows the text and is not
+   matched here. */
+.flare-nav-menu--rail:not(.flare-nav-menu--rail-labeled) .flare-nav-link__text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .flare-nav-menu--rail .flare-nav-link,

@@ -1,0 +1,23 @@
+@page "/nav-rail"
+@using Flare.Icons
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="display:flex;gap:1rem;align-items:flex-start">
+        <div id="icon-rail" style="width:4rem">
+            <FlareNavMenu Rail="true" AriaLabel="Icon rail">
+                <FlareNavLink Href="#dashboard">
+                    <IconContent><FlareIconView Value="@FlareIcons.Home" /></IconContent>
+                    <ChildContent>Dashboard</ChildContent>
+                </FlareNavLink>
+            </FlareNavMenu>
+        </div>
+        <div id="labeled-rail" style="width:8rem">
+            <FlareNavMenu Mode="NavMenuMode.RailLabeled" AriaLabel="Labeled rail">
+                <FlareNavLink Href="#reports">
+                    <IconContent><FlareIconView Value="@FlareIcons.Search" /></IconContent>
+                    <ChildContent>Reports</ChildContent>
+                </FlareNavLink>
+            </FlareNavMenu>
+        </div>
+    </div>
+</FlareThemeProvider>
