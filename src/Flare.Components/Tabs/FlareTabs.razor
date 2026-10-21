@@ -19,7 +19,7 @@
     }
     <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef"
          data-flare-keyboard-fallback="@(_jsKeyboardRegistered ? null : "true")"
-         @onkeydown="_fallbackKeyHandler">
+         @onkeydown="OnFallbackKeyDown">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _context?.ActiveTab;
@@ -410,14 +410,12 @@
         return !args.Cancel;
     }
 
-    // The C# path for the keys the module owns. Bound only while the module's registration has failed:
-    // with the module live it would send every key in the tablist over the circuit for nothing, and the
-    // module already drives the same navigation.
-    private Func<KeyboardEventArgs, Task>? _fallbackKeyHandler =>
-        _jsKeyboardRegistered ? null : OnFallbackKeyDown;
-
+    // The C# path for the keys the module owns. It stays bound while the module is registered, because
+    // an event attribute cannot take a nullable handler; the early return keeps a live module at one
+    // step per key, and the C# path drives navigation only after a failed registration.
     private async Task OnFallbackKeyDown(KeyboardEventArgs e)
     {
+        if (_jsKeyboardRegistered) return;
         // No module means no computed-direction read: the resolved theme RTL state is the best truth
         // available, and the module path overrides it with what the browser actually lays out.
         if (e.Key is "Home" or "End" or "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Delete")
