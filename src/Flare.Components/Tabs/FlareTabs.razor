@@ -418,8 +418,10 @@
 
     private async Task OnFallbackKeyDown(KeyboardEventArgs e)
     {
+        // No module means no computed-direction read: the resolved theme RTL state is the best truth
+        // available, and the module path overrides it with what the browser actually lays out.
         if (e.Key is "Home" or "End" or "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Delete")
-            await OnTabNavigation(e.Key, false);
+            await OnTabNavigation(e.Key, ThemeService?.IsRtl == true);
     }
 
     // The listener lives in flare-ui.js, which a stale PWA can serve as a failed module. One retry on
