@@ -29,12 +29,13 @@
 }
 
 /* Striped: tint alternate rows (both cells, so the stripe spans the row). Same paint as a striped
-   table or data grid - see StripeTokens for why one token rather than three. */
-.flare-description-list--striped .flare-description-list__row:nth-child(even) > * {
+   table or data grid - see StripeTokens for why one token rather than three. Only the direct rows of
+   THIS list count: a nested list lives in a value cell and keeps its own configuration. */
+.flare-description-list--striped > .flare-description-list__row:nth-child(even) > * {
     background: var(--flare-stripe-bg);
 }
 
-/* Bordered: a hairline under every row but the last. */
-.flare-description-list--bordered .flare-description-list__row:not(:last-child) > * {
+/* Bordered: a hairline under every row but the last, again only for this list's own rows. */
+.flare-description-list--bordered > .flare-description-list__row:not(:last-child) > * {
     border-bottom: var(--flare-border-divider);
 }

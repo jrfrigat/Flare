@@ -1,0 +1,23 @@
+@page "/description-list-scope"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="width:640px;padding:8px">
+        <FlareDescriptionList id="outer" Striped Bordered>
+            <FlareDescriptionItem id="outer-1" Label="One">first</FlareDescriptionItem>
+            <FlareDescriptionItem id="outer-2" Label="Two">
+                <FlareDescriptionList id="plain">
+                    <FlareDescriptionItem id="plain-1" Label="P1">p1</FlareDescriptionItem>
+                    <FlareDescriptionItem id="plain-2" Label="P2">p2</FlareDescriptionItem>
+                    <FlareDescriptionItem id="plain-3" Label="P3">p3</FlareDescriptionItem>
+                </FlareDescriptionList>
+            </FlareDescriptionItem>
+            <FlareDescriptionItem id="outer-3" Label="Three">
+                <FlareDescriptionList id="inner" Striped Bordered>
+                    <FlareDescriptionItem id="inner-1" Label="I1">i1</FlareDescriptionItem>
+                    <FlareDescriptionItem id="inner-2" Label="I2">i2</FlareDescriptionItem>
+                </FlareDescriptionList>
+            </FlareDescriptionItem>
+            <FlareDescriptionItem id="outer-4" Label="Four">fourth</FlareDescriptionItem>
+        </FlareDescriptionList>
+    </div>
+</FlareThemeProvider>
