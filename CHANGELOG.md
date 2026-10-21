@@ -31,6 +31,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A 360px `FlareLayoutAppBar` keeps its brand, the color-mode toggle and two icon buttons on one row at 200% text: the icon controls stop at the bar's height and the title truncates instead of sliding under the trailing block.
 - The active indicator pill in `FlareBottomNav` is capped at its item's width instead of painting over the neighbouring items at a large root font size.
 - A `FlareMeter` legend takes its swatch size from the spacing scale and its value weight from label-medium, so each theme's own type scale reaches the legend instead of a fixed weight.
+- A `FlarePasswordField` judges the password once per render, so a custom `StrengthEvaluator` runs a single time and the meter, its colour and the announced text always agree.
 - A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
 
 ### Fixed
