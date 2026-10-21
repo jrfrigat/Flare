@@ -27,6 +27,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- A disabled or loading `FlareButton` rendered as a link no longer invokes its click handler and uses the same disabled paint as the native button.
+- A `FlareNavLink` in a mini-rail keeps its label in the accessibility tree without a `Tooltip`; the labeled rail still shows the caption.
+- `FlareOverlay` applies `Opacity` to its backdrop only, so the content stays fully opaque and usable at any opacity.
+- `FlareEmptyState` forwards `Style` and additional attributes to its root, and consumer attributes can replace its region role and live setting.
 - A `FlarePagination` info line no longer reads backwards when `PageSize` is not set: the page size is derived from `TotalItems` and `TotalPages`, and a current page outside the range is clamped.
 - A `FlareTocLink` refuses a script-bearing `Href` (`javascript:`, `vbscript:`) the same way the other link components do, keeping relative, HTTP(S), mailto and fragment addresses.
 - A `FlareButton` rendered as a link now answers Space like the button its role promises, without scrolling the page; Enter still activates it once.
