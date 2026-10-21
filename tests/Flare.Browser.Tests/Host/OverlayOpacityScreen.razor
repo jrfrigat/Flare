@@ -1,0 +1,17 @@
+@page "/overlay-opacity"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareOverlay Open="true" Opacity="_opacity" Dark="_dark" ZIndex="100">
+        <div style="padding:2rem">
+            <button id="opacity-02" @onclick="() => _opacity = 0.2">0.2</button>
+            <button id="opacity-0" @onclick="() => _opacity = 0">0</button>
+            <button id="toggle-dark" @onclick="() => _dark = !_dark">Dark</button>
+            <span id="content">Content</span>
+        </div>
+    </FlareOverlay>
+</FlareThemeProvider>
+
+@code {
+    private double _opacity = 0.2;
+    private bool _dark = true;
+}

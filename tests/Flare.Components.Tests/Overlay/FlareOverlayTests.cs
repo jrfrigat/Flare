@@ -47,14 +47,40 @@ public class FlareOverlayTests : FlareTestContext
     }
 
     [Fact]
-    public void Opacity_AppliedInStyle()
+    public void Opacity_LivesOnTheScrimNotTheRoot()
     {
         var cut = Render<FlareOverlay>(p => p
             .Add(x => x.Open, true)
             .Add(x => x.Opacity, 0.75));
 
-        var style = cut.Find($".{Css.Classes.Overlay.Root}").GetAttribute("style") ?? "";
-        Assert.Contains("0.75", style);
+        var rootStyle = cut.Find($".{Css.Classes.Overlay.Root}").GetAttribute("style") ?? "";
+        Assert.DoesNotContain("opacity", rootStyle);
+        var scrim = cut.Find($".{Css.Classes.Overlay.Scrim}");
+        Assert.Contains("0.75", scrim.GetAttribute("style"));
+        Assert.Equal("true", scrim.GetAttribute("aria-hidden"));
+    }
+
+    [Fact]
+    public void LightOverlay_ScrimHasNoBackground()
+    {
+        var cut = Render<FlareOverlay>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.Dark, false));
+
+        var scrim = cut.Find($".{Css.Classes.Overlay.Scrim}");
+        Assert.Contains("background:transparent", scrim.GetAttribute("style"));
+    }
+
+    [Fact]
+    public void ChildContent_IsSiblingOfTheScrim()
+    {
+        var cut = Render<FlareOverlay>(p => p
+            .Add(x => x.Open, true)
+            .AddChildContent("<span id=\"overlay-child\">Content</span>"));
+
+        var root = cut.Find($".{Css.Classes.Overlay.Root}");
+        Assert.NotEmpty(root.QuerySelectorAll($":scope > .{Css.Classes.Overlay.Scrim}"));
+        Assert.NotEmpty(root.QuerySelectorAll(":scope > #overlay-child"));
     }
 
     [Fact]

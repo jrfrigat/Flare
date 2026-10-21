@@ -7,4 +7,7 @@ public static class Overlay
     public const string Root = "flare-overlay";
     /// <summary>The <c>flare-overlay--absolute</c> CSS class.</summary>
     public const string Absolute = "flare-overlay--absolute";
+    /// <summary>The <c>flare-overlay__scrim</c> CSS class of the decorative backdrop layer that carries
+    /// the scrim paint and the overlay opacity.</summary>
+    public const string Scrim = "flare-overlay__scrim";
 }

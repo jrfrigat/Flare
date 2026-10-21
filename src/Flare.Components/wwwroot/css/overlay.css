@@ -1,8 +1,15 @@
 .flare-overlay {
     position: fixed;
     inset: 0;
-    /* Background uses the scrim token at full opacity;
-       the rendered opacity is controlled by the component's inline style (Opacity param). */
+}
+
+/* Decoration behind the content: the scrim paint and the component's Opacity belong to this layer,
+   so content never turns semi-transparent with it. */
+.flare-overlay__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
     background: var(--flare-color-scrim);
     transition: opacity var(--flare-motion-duration-enter-small);
 }

@@ -8,6 +8,7 @@
          style="@_style"
          @onclick="HandleClickAsync"
          @attributes="AdditionalAttributes">
+        <div class="@Css.Classes.Overlay.Scrim" style="@_scrimStyle" aria-hidden="true"></div>
         @ChildContent
     </div>
 }
@@ -39,10 +40,22 @@
             var parts = new List<string>
             {
                 $"z-index:{ZIndex}",
+            };
+            if (Style is not null) parts.Add(Style);
+            return string.Join(';', parts);
+        }
+    }
+
+    // The scrim is decoration behind the content, so Opacity lives here and never on the root.
+    private string _scrimStyle
+    {
+        get
+        {
+            var parts = new List<string>
+            {
                 $"opacity:{Opacity.ToString("F2", CultureInfo.InvariantCulture)}",
             };
             if (!Dark) parts.Add("background:transparent");
-            if (Style is not null) parts.Add(Style);
             return string.Join(';', parts);
         }
     }
