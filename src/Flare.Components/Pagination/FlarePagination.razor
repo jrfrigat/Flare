@@ -9,17 +9,17 @@
             {
                 @InfoTemplate(new PaginationInfoContext
                 {
-                    CurrentPage = Current,
-                    PageSize = PageSize,
+                    CurrentPage = _infoPage,
+                    PageSize = _effectivePageSize,
                     TotalItems = TotalItems,
                     TotalPages = TotalPages,
-                    From = Math.Min(((Current - 1) * PageSize) + 1, TotalItems),
-                    To = Math.Min(Current * PageSize, TotalItems)
+                    From = _infoFrom,
+                    To = _infoTo
                 })
             }
             else
             {
-                @(string.Format(FlareStrings.Pagination_Range, ((Current - 1) * PageSize) + 1, Math.Min(Current * PageSize, TotalItems), TotalItems))
+                @(string.Format(FlareStrings.Pagination_Range, _infoFrom, _infoTo, TotalItems))
             }
         </span>
     }
@@ -127,6 +127,17 @@
 
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string? _inlineStyle => Color.StyleMainOn() is { } t ? t + Style : Style;
+
+    // PageSize is optional: without it, the info line still has to divide the items into the pages the
+    // caller declared instead of printing a backwards range for the zero default.
+    private int _effectivePageSize =>
+        PageSize > 0 ? PageSize
+        : TotalPages > 0 ? Math.Max(1, (int)Math.Ceiling((double)TotalItems / TotalPages))
+        : Math.Max(1, TotalItems);
+
+    private int _infoPage => Math.Clamp(Current, 1, Math.Max(1, TotalPages));
+    private int _infoFrom => Math.Min(((_infoPage - 1) * _effectivePageSize) + 1, TotalItems);
+    private int _infoTo => Math.Min(_infoPage * _effectivePageSize, TotalItems);
 
     private async Task HandlePageSizeChange(ChangeEventArgs e)
     {
