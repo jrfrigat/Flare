@@ -69,8 +69,17 @@ export function unsubscribe(id) {
 }
 
 
+const prefersReducedMotion = () =>
+    globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+
+// Smooth means "animate unless the reader asked for less motion": under that preference the scroll
+// jumps instead. 'instant' rather than 'auto', because 'auto' would obey a scroll-behavior:smooth rule
+// and animate anyway. Auto and Instant keep their own meaning; the query is read per call, so a
+// preference changed while the page is open applies to the next scroll.
 function behaviorOf(b) {
-    return b === 'Smooth' ? 'smooth' : b === 'Instant' ? 'instant' : 'auto';
+    if (b === 'Instant') return 'instant';
+    if (b === 'Smooth') return prefersReducedMotion() ? 'instant' : 'smooth';
+    return 'auto';
 }
 
 export function scrollTo(element, selector, top, behavior) {

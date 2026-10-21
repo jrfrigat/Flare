@@ -47,6 +47,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A `FlarePagination` keeps an active page when `TotalPages` shrinks, treats zero or negative page counts as an empty bar with disabled navigation, and computes its range without integer overflow at extreme counts.
 - A `FlareSkeleton` applies later changes to its class, style, extra attributes and `Announce` instead of keeping the first markup.
 - A `FlareSkeleton` stops its wave and pulse under reduced motion, leaving a still placeholder; the normal mode and `Animation=None` are unchanged.
+- A smooth programmatic scroll - including the `FlareScrollTop` return to the top - jumps instead when the reader asked for reduced motion, and still animates otherwise.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
 
 ## [0.48.0] - 2026-10-20

@@ -1,0 +1,8 @@
+@page "/scroll-top-motion"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="scroller" style="height:300px;overflow:auto;border:1px solid #ccc">
+        <div style="height:2000px;padding:8px">Tall content</div>
+    </div>
+    <FlareScrollTop id="back" Selector="#scroller" Threshold="100" />
+</FlareThemeProvider>
