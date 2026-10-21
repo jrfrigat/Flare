@@ -1,11 +1,15 @@
 @namespace Flare.Components
 @typeparam TItem
 @inherits FlareComponentBase
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 
+@* Keyboard navigation is registered by flare-carousel.js: a key from the root or from one of the
+   carousel's own controls moves the slides, a key from a field or editor inside a slide stays there. *@
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"
      role="region" aria-roledescription="carousel" aria-label="@(FlareStrings.Carousel_Label)"
      tabindex="0"
-     @onkeydown="OnKeyDown"
+     @ref="_root"
      @onmouseenter="PauseAutoPlay"
      @onmouseleave="ResumeAutoPlay">
     <div class="@Css.Classes.Carousel.Viewport"
@@ -28,12 +32,14 @@
     @if (ShowArrows && _count > 1)
     {
         <button type="button" class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowPrev"
+                data-flare-carousel-control
                 @onclick="Prev"
                 aria-label="@(FlareStrings.Carousel_Prev)"
                 disabled="@(!Loop && _current == 0)">
             <FlareIconView Value="@FlareIcons.ChevronLeft" />
         </button>
         <button type="button" class="@Css.Classes.Carousel.Arrow @Css.Classes.Carousel.ArrowNext"
+                data-flare-carousel-control
                 @onclick="Next"
                 aria-label="@(FlareStrings.Carousel_Next)"
                 disabled="@(!Loop && _current >= _count - 1)">
@@ -48,6 +54,7 @@
             {
                 var idx = i;
                 <button type="button" class="@Css.Classes.Carousel.Dot @(_current == idx ? Css.Classes.Carousel.DotActive : "")"
+                        data-flare-carousel-control
                         @onclick="@(() => GoTo(idx))"
                         role="tab"
                         aria-selected="@(_current == idx ? "true" : "false")"
@@ -82,6 +89,10 @@
     private int _timerInterval;
     private bool _paused;
     private double _dragStartX;
+    private ElementReference _root;
+    private IJSObjectReference? _keyboardModule;
+    private DotNetObjectReference<FlareCarousel<TItem>>? _keyboardRef;
+    private bool _keyboardRegistered;
 
     // The reading direction the theme publishes; the same signal FlareThemeProvider writes to dir.
     private bool IsRtl => Theme?.IsRtl == true;
@@ -130,12 +141,15 @@
     private void PauseAutoPlay() => _paused = true;
     private void ResumeAutoPlay() => _paused = false;
 
-    private void OnKeyDown(KeyboardEventArgs e)
+    // A key the carousel's own listener has claimed: it came from the root or from a carousel control.
+    // Arrows follow the side the reader sees the neighbouring slide on: in RTL the next slide is to the
+    // left, so ArrowLeft advances and ArrowRight goes back.
+    [JSInvokable]
+    public void OnCarouselKey(string key)
     {
-        // Arrows follow the side the reader sees the neighbouring slide on: in RTL the next slide is to
-        // the left, so ArrowLeft advances and ArrowRight goes back.
-        if (e.Key == "ArrowLeft") { if (IsRtl) Next(); else Prev(); }
-        else if (e.Key == "ArrowRight") { if (IsRtl) Prev(); else Next(); }
+        if (key == "ArrowLeft") { if (IsRtl) Next(); else Prev(); }
+        else if (key == "ArrowRight") { if (IsRtl) Prev(); else Next(); }
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private void OnPointerDown(PointerEventArgs e) => _dragStartX = e.ClientX;
@@ -163,8 +177,37 @@
         else Prev();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _keyboardModule = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/Flare.Components.Carousel/js/flare-carousel.js");
+            _keyboardRef = DotNetObjectReference.Create(this);
+            await _keyboardModule.InvokeVoidAsync("registerKeyboard", _root, _keyboardRef);
+            _keyboardRegistered = true;
+        }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
+
     public override async ValueTask DisposeAsync()
     {
+        if (_keyboardModule is not null)
+        {
+            try
+            {
+                if (_keyboardRegistered) await _keyboardModule.InvokeVoidAsync("unregisterKeyboard", _root);
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+            try { await _keyboardModule.DisposeAsync(); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+        }
+        _keyboardRef?.Dispose();
         _timer?.Dispose();
         await base.DisposeAsync();
     }

@@ -1,0 +1,21 @@
+@page "/carousel-keyboard"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="width:600px">
+        <FlareCarousel id="carousel" TItem="string" Items="_items">
+            <ItemTemplate Context="slide">
+                <div style="height:160px;padding:8px">
+                    @if (slide == "one")
+                    {
+                        <input id="slide-input" value="" />
+                    }
+                    <span>@slide</span>
+                </div>
+            </ItemTemplate>
+        </FlareCarousel>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private static readonly string[] _items = ["one", "two", "three"];
+}

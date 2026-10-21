@@ -20,6 +20,8 @@ public sealed class CarouselRtlTests(BrowserFixture fixture) : IClassFixture<Bro
         await page.GotoAsync($"{fixture.BaseUrl}/carousel-rtl");
         await page.WaitForFunctionAsync(
             $"() => {{ const el = document.querySelector('.{Css.Classes.Carousel.Root}'); return el !== null && getComputedStyle(el).overflow === 'hidden'; }}");
+        await page.WaitForFunctionAsync(
+            $"() => document.querySelector('.{Css.Classes.Carousel.Root}')?.__flareCarouselKeyboard !== undefined");
 
         var root = page.Locator($".{Css.Classes.Carousel.Root}");
         var track = page.Locator($".{Css.Classes.Carousel.Track}");

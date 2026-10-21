@@ -26,24 +26,23 @@ public class FlareCarouselRtlTests : FlareTestContext
             .Split("--_carousel-index:")[1], System.Globalization.CultureInfo.InvariantCulture);
 
     [Fact]
-    public void Rtl_RightArrowGoesBackAndLeftArrowAdvances()
+    public async Task Rtl_RightArrowGoesBackAndLeftArrowAdvances()
     {
         var cut = RenderCarousel(rtl: true);
-        var root = cut.Find(".flare-carousel");
 
-        root.KeyDown("ArrowRight");
+        await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowRight"));
         Assert.Equal(2, Index(cut));
 
-        root.KeyDown("ArrowLeft");
+        await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowLeft"));
         Assert.Equal(0, Index(cut));
     }
 
     [Fact]
-    public void Ltr_ArrowsKeepTheirDirection()
+    public async Task Ltr_ArrowsKeepTheirDirection()
     {
         var cut = RenderCarousel(rtl: false);
 
-        cut.Find(".flare-carousel").KeyDown("ArrowRight");
+        await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowRight"));
 
         Assert.Equal(1, Index(cut));
     }

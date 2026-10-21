@@ -52,8 +52,10 @@ public class FlareCarouselIndexTests : FlareTestContext
 
         cut.Render(p => p.Add(x => x.Items, Array.Empty<string>()));
 
-        cut.Find(".flare-carousel").KeyDown("ArrowRight");
-        cut.Find(".flare-carousel").KeyDown("ArrowLeft");
+        // The key listener hands the key over through the JS-invokable method; the bUnit event helper
+        // cannot reach it because no Blazor keydown handler is bound to the root any more.
+        await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowRight"));
+        await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowLeft"));
         await Task.Delay(60);
 
         Assert.Empty(cut.FindAll(".flare-carousel__slide"));
