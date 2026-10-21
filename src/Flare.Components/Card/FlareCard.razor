@@ -7,7 +7,7 @@
    button or field is therefore not a descendant of the card's handler: its click and its Enter/Space
    answer the nested control alone, and the card never sees them. The native element also supplies
    Enter/Space activation and Space-without-page-scroll, which a div with a key handler cannot. *@
-<div class="@CssClass" style="@_cardStyle" id="@(_hasActivationControl ? _rootId : null)" @attributes="_rootAttributes">
+<div class="@CssClass" style="@_cardStyle" id="@(_hasActivationControl ? _rootId : null)" @ref="_root" @attributes="_rootAttributes">
     @ChildContent
     @if (Href is not null)
     {
@@ -83,6 +83,12 @@
     [Parameter] public EventCallback<bool> OnSelectionChange { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Card.Root;
+
+    /// <summary>Moves keyboard focus to the card root. The card must be focusable for this to do anything
+    /// visible - pass <c>tabindex="-1"</c> through additional attributes.</summary>
+    public ValueTask FocusAsync() => _root.FocusAsync();
+
+    private ElementReference _root;
 
     // Attributes that describe what the browser does when it FOLLOWS the link. They belong on the
     // activation anchor; a div ignores them, and a card that used to render as <a> lost download/rel

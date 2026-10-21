@@ -184,4 +184,20 @@ public class FlareCardTests : FlareTestContext
 
         Assert.Null(cut.Find($".{Css.Classes.Card.Root}").GetAttribute("role"));
     }
+
+    // A card used as a dialog or a focus target needs the same programmatic focus a raw box would give it.
+    [Fact]
+    public async Task FocusAsync_MovesFocusToTheCardRoot()
+    {
+        var cut = Render<FlareCard>(p => p
+            .AddUnmatched("tabindex", "-1")
+            .AddUnmatched("role", "dialog"));
+
+        await cut.InvokeAsync(() => cut.Instance.FocusAsync().AsTask());
+
+        Assert.Contains(JSInterop.Invocations, i => i.Identifier == "Blazor._internal.domWrapper.focus");
+        var root = cut.Find($".{Css.Classes.Card.Root}");
+        Assert.Equal("-1", root.GetAttribute("tabindex"));
+        Assert.Equal("dialog", root.GetAttribute("role"));
+    }
 }

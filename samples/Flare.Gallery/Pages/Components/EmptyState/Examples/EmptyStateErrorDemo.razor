@@ -23,7 +23,7 @@
     }
     else
     {
-        <div @ref="_loaded" tabindex="-1" style="outline:none;width:100%;max-width:32rem">
+        <FlareStack @ref="_loaded" tabindex="-1" Style="outline:none;width:100%;max-width:32rem">
             <FlareStack Gap="FlareSpacing.Small">
                 <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.EmptyState_LoadedTitle</FlareText>
                 @foreach (var item in _items)
@@ -32,7 +32,7 @@
                 }
                 <FlareButton Variant="ButtonVariant.Text" OnClick="SimulateFailure">@GalleryStrings.EmptyState_FailAgain</FlareButton>
             </FlareStack>
-        </div>
+        </FlareStack>
     }
 </FlareStack>
 
@@ -45,7 +45,7 @@
     private bool _focusLoaded;
     private bool _focusRetry;
     private bool _disposed;
-    private ElementReference _loaded;
+    private FlareStack? _loaded;
     private FlareButton? _retryButton;
 
     private async Task RetryAsync()
@@ -68,7 +68,7 @@
         if (_focusLoaded)
         {
             _focusLoaded = false;
-            try { await _loaded.FocusAsync(); }
+            try { if (_loaded is not null) await _loaded.FocusAsync(); }
             catch (JSException) { }
         }
         if (_focusRetry)
