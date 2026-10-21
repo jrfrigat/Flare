@@ -187,6 +187,12 @@ internal class LiquidGlassTokens
         Gap = "0.75rem",
     };
 
+    internal static readonly EmptyStateTokens EmptyState = new()
+    {
+        IconOpacity = "0.5",
+        DescriptionMaxWidth = "32rem",
+    };
+
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
@@ -531,6 +537,7 @@ internal class LiquidGlassTokens
         State = State,
         Badge = Badge,
         Alert = Alert,
+        EmptyState = EmptyState,
         Button = Button,
         ButtonGroup = MaterialDesign3Tokens.Design.ButtonGroup,
         SplitButton = SplitButton,

@@ -219,6 +219,12 @@ public class MaterialDesign3Tokens
         Gap = "0.75rem",
     };
 
+    internal static readonly EmptyStateTokens EmptyState = new()
+    {
+        IconOpacity = "0.5",
+        DescriptionMaxWidth = "32rem",
+    };
+
     internal static readonly ButtonTokens Button = new()
     {
         // Baseline M3 does not reshape a selected button - swapping round and square on selection is an
@@ -1289,6 +1295,7 @@ public class MaterialDesign3Tokens
         State = State,
         Badge = Badge,
         Alert = Alert,
+        EmptyState = EmptyState,
         Button = Button,
         ButtonGroup = ButtonGroup,
         SplitButton = SplitButton,

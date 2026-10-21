@@ -9,8 +9,9 @@
     color: var(--flare-color-on-surface-variant);
 }
 .flare-empty-state__icon {
-    font-size: 3rem;
-    opacity: 0.5;
+    /* The spacing scale's 3rem step; the illustration is spaced, not typographic. */
+    font-size: var(--flare-spacing-24);
+    opacity: var(--flare-empty-state-icon-opacity);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,13 +20,13 @@
 .flare-empty-state__description {
     font-family: var(--flare-typescale-body-medium-font);
     font-size: var(--flare-typescale-body-medium-size);
-    max-width: 32rem;
+    max-width: var(--flare-empty-state-description-max-width);
     margin: 0;
 }
 .flare-empty-state__action { margin-top: var(--flare-spacing-4); }
 
 /* Compact: inline empty states inside cards/lists - tighter padding, smaller icon/title. */
 .flare-empty-state--compact { padding: var(--flare-spacing-12) var(--flare-spacing-8); gap: var(--flare-spacing-4); }
-.flare-empty-state--compact .flare-empty-state__icon { font-size: 2rem; }
+.flare-empty-state--compact .flare-empty-state__icon { font-size: var(--flare-spacing-16); }
 .flare-empty-state--compact .flare-empty-state__title { font-size: var(--flare-typescale-title-medium-size); }
 .flare-empty-state--compact .flare-empty-state__description { font-size: var(--flare-typescale-body-small-size); }

@@ -42,6 +42,8 @@ public sealed record DesignTokens
     public required BadgeTokens Badge { get; init; }
     /// <summary>Alert token.</summary>
     public required AlertTokens Alert { get; init; }
+    /// <summary>Empty state token.</summary>
+    public required EmptyStateTokens EmptyState { get; init; }
     /// <summary>Button token.</summary>
     public required ButtonTokens Button { get; init; }
     /// <summary>Button group token.</summary>

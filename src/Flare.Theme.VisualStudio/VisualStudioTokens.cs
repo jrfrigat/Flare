@@ -185,6 +185,12 @@ internal class VisualStudioTokens
         Gap = "0.625rem",
     };
 
+    internal static readonly EmptyStateTokens EmptyState = new()
+    {
+        IconOpacity = "0.5",
+        DescriptionMaxWidth = "32rem",
+    };
+
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
@@ -562,6 +568,7 @@ internal class VisualStudioTokens
         State = State,
         Badge = Badge,
         Alert = Alert,
+        EmptyState = EmptyState,
         Button = Button,
         ButtonGroup = FluentUI2Tokens.Design.ButtonGroup,
         SplitButton = SplitButton,
