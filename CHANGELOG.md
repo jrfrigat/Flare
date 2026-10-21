@@ -25,6 +25,10 @@ All notable changes to Flare are documented here. This project adheres to
 - The active indicator pill in `FlareBottomNav` is capped at its item's width instead of painting over the neighbouring items at a large root font size.
 - A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
 
+### Fixed
+
+- The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
+
 ## [0.48.0] - 2026-10-20
 
 ### Fixed

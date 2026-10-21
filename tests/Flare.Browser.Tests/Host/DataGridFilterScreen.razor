@@ -1,0 +1,28 @@
+@page "/datagrid-filter"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="grid-shell" style="inline-size:720px;padding:1rem">
+        <FlareDataGrid TItem="Employee" Items="@_items" FilterMode="DataGridFilterMode.Menu">
+            <Columns>
+                <FlareColumn Title="Name" Field="@(e => e.Name)" Filterable="true" />
+                <FlareColumn Title="City" Field="@(e => e.City)" Filterable="true" />
+            </Columns>
+        </FlareDataGrid>
+    </div>
+    <div id="page-background" style="min-block-size:600px">Background</div>
+</FlareThemeProvider>
+
+@code {
+    private sealed class Employee
+    {
+        public string Name { get; set; } = "";
+        public string City { get; set; } = "";
+    }
+
+    private readonly List<Employee> _items =
+    [
+        new() { Name = "Ada", City = "London" },
+        new() { Name = "Grace", City = "New York" },
+        new() { Name = "Alan", City = "Manchester" },
+    ];
+}

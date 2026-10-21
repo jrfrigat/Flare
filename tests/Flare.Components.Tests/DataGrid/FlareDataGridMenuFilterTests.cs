@@ -50,6 +50,20 @@ public class FlareDataGridMenuFilterTests : FlareTestContext
     }
 
     [Fact]
+    public async Task StandardPopupDismiss_ClosesTheMenu()
+    {
+        var cut = Render(Grid());
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click(); // open
+        Assert.Single(cut.FindAll($".{Css.Classes.DataGrid.FilterMenu}"));
+
+        // The standard popup reports a pointer-down outside the widget, a focus-out escaping it and
+        // Escape through this one callback; JS interop arrives on the renderer's dispatcher.
+        await cut.InvokeAsync(() => cut.FindComponent<FlarePopup>().Instance.DismissFromJs());
+
+        cut.WaitForAssertion(() => Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.FilterMenu}")));
+    }
+
+    [Fact]
     public void ApplyFilter_FiltersRows_AndMarksTriggerActive()
     {
         var cut = Render(Grid());

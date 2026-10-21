@@ -220,16 +220,20 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     // Excel-style value checklist state: the set of currently checked distinct values + the search box.
     private readonly HashSet<string> _filterMenuValues = new(StringComparer.Ordinal);
     private string _filterMenuSearch = "";
-    // Only one menu is open at a time, so one panel element and one layer serve every column.
-    private ElementReference _filterMenuRef;
-    private readonly AnchoredLayer _filterMenuLayer = new();
     private readonly string _filterTriggerPrefix = $"flare-grid-filter-{Guid.NewGuid():N}-";
-    private DotNetObjectReference<FlareDataGrid<TItem>>? _filterMenuSelfRef;
-    private bool _filterMenuEscapeLayerRegistered;
-    private readonly string _filterMenuEscapeLayerId = "flare-datagrid-filter-" + Guid.NewGuid().ToString("N")[..8];
+    // One trigger and one widget root per column: the standard popup anchors to the clicked column's
+    // trigger and measures its dismissal containment against that column's widget.
+    private readonly Dictionary<string, ElementReference> _filterTriggerRefs = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, ElementReference> _filterWidgetRefs = new(StringComparer.Ordinal);
 
     // The DOM id of a column's filter trigger, which is what the open panel is anchored to.
     private string FilterTriggerId(string? columnKey) => _filterTriggerPrefix + Uri.EscapeDataString(columnKey ?? "");
+
+    // The render reads a column's ref before the capture callbacks of that same render have filled it
+    // (and, while the menu is closed, a column that has not rendered yet has none): default until it does.
+    private static ElementReference FilterElementRef(
+        IReadOnlyDictionary<string, ElementReference> refs, string columnKey)
+        => refs.TryGetValue(columnKey, out var element) ? element : default;
 
     // Active group-by keys (server contract), populated from the effective grouping levels.
     private readonly List<string> _groupKeys = [];
@@ -588,37 +592,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
             }
         }
 
-        // The filter menu drops out of the header into the body area and is taller than most grids, so
-        // both the grid's own scroll container and whatever the grid sits in (a card, most of all) used
-        // to cut it off - and the actions row is at the far end of it, which made "Apply" the part that
-        // disappeared. It is placed against its trigger and raised into the top layer instead. The anchor
-        // goes by DOM id because the triggers are rendered one per column: a captured reference would
-        // hold the last column's button rather than the one that was clicked.
-        await _filterMenuLayer.SyncByIdAsync(Overlay, _filterMenuOpen is not null,
-            FilterTriggerId(_filterMenuOpen), _filterMenuRef);
-
-        // The filter menu is a dismissible popup of its own: while open it is the newest overlay layer, so
-        // Escape closes the menu and leaves a dialog around the grid open.
-        if (_filterMenuOpen is not null && !_filterMenuEscapeLayerRegistered)
-        {
-            _filterMenuSelfRef ??= DotNetObjectReference.Create(this);
-            try
-            {
-                await Overlay.PushPopupLayerAsync(_filterMenuEscapeLayerId, _filterMenuSelfRef,
-                    nameof(CloseFilterMenuFromEscape));
-                _filterMenuEscapeLayerRegistered = true;
-            }
-            catch (JSDisconnectedException) { }
-            catch (JSException) { }
-        }
-        else if (_filterMenuOpen is null && _filterMenuEscapeLayerRegistered)
-        {
-            try { await Overlay.RemovePopupLayerAsync(_filterMenuEscapeLayerId); }
-            catch (JSDisconnectedException) { }
-            catch (JSException) { }
-            _filterMenuEscapeLayerRegistered = false;
-        }
-
         // (Re)attach the IntersectionObserver to the sentinel while in infinite mode.
         if (_infiniteMode && !_infiniteObserverReady)
         {
@@ -638,10 +611,12 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         }
     }
 
-    /// <summary>Closes the column filter menu when the overlay layer receives Escape.</summary>
-    [JSInvokable]
-    public Task CloseFilterMenuFromEscape() => InvokeAsync(() =>
+    // The standard popup's dismissal (pointer-down outside the widget, focus-out escaping it, or
+    // Escape). The key guard drops a dismissal that arrives after another column's trigger has already
+    // opened its menu - the old popup reports its dismissal a round trip after the new one opened.
+    private Task CloseFilterMenu(string columnKey) => InvokeAsync(() =>
     {
+        if (_filterMenuOpen != columnKey) return;
         _filterMenuOpen = null;
         _filterMenuValue = "";
         _filterMenuOperator = "contains";
@@ -665,14 +640,6 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _filterDebounceTimer?.Dispose();
-        if (_filterMenuEscapeLayerRegistered)
-        {
-            try { await Overlay.RemovePopupLayerAsync(_filterMenuEscapeLayerId); }
-            catch (JSDisconnectedException) { }
-            catch (JSException) { }
-        }
-        _filterMenuSelfRef?.Dispose();
-        await _filterMenuLayer.ReleaseAsync(Overlay);
         await DisposeInfiniteObserverAsync();
         _infiniteRef?.Dispose();
         await base.DisposeAsync();

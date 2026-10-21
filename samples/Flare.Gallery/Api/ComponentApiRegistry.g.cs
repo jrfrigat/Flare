@@ -1937,8 +1937,6 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ClearAllFiltersAsync", @"ClearAllFiltersAsync()", @"Task", null, @"Clears all filters.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"CloseFilterMenuFromEscape", @"CloseFilterMenuFromEscape()", @"Task", null, @"Closes the column filter menu when the overlay layer receives Escape.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Tears down JS interop and observers.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FilterByAsync", @"FilterByAsync(string columnKey, string value)", @"Task", null, @"Applies a filter command to the grid.",

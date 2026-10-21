@@ -98,6 +98,21 @@ public sealed class FlareDataGridEscapeLayerTests : FlareTestContext
     }
 
     [Fact]
+    public void FilterMenu_OpeningRegistersTheStandardDismissalAndClosingRemovesIt()
+    {
+        var cut = RenderGrid(filterMenu: true);
+
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
+        cut.WaitForAssertion(() => Assert.Contains("registerDismiss", Names()));
+
+        cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
+        cut.WaitForAssertion(() => Assert.Contains("removeDismiss", Names()));
+
+        Assert.True(Names().IndexOf("removeDismiss") > Names().IndexOf("registerDismiss"),
+            "The filter menu removed its dismissal before registering it: " + string.Join(", ", Names()));
+    }
+
+    [Fact]
     public async Task FilterMenu_EscapeClosesTheMenuAndRemovesTheLayer()
     {
         var cut = RenderGrid(filterMenu: true);
@@ -105,35 +120,50 @@ public sealed class FlareDataGridEscapeLayerTests : FlareTestContext
         cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
         cut.WaitForAssertion(() => Assert.Contains("pushPopupLayer", Names()));
 
-        await InvokeEscapeAsync("CloseFilterMenuFromEscape");
+        // The standard popup owns Escape and outside-click dismissal through one callback; JS interop
+        // arrives on the renderer's dispatcher.
+        await cut.InvokeAsync(InvokePopupDismissAsync);
 
         cut.WaitForAssertion(() => Assert.Empty(cut.FindAll($".{Css.Classes.DataGrid.FilterMenu}")));
         cut.WaitForAssertion(() => Assert.Contains("removePopupLayer", Names()));
     }
 
     [Fact]
-    public async Task FilterMenu_DisposingTheGridWhileOpenRemovesTheLayer()
+    public async Task FilterMenu_DisposingThePopupWhileOpenRemovesTheLayer()
     {
         var cut = RenderGrid(filterMenu: true);
 
         cut.Find($"button.{Css.Classes.DataGrid.FilterTrigger}").Click();
         cut.WaitForAssertion(() => Assert.Contains("pushPopupLayer", Names()));
 
-        await cut.Instance.DisposeAsync();
+        await cut.FindComponent<FlarePopup>().Instance.DisposeAsync();
 
         Assert.Contains("removePopupLayer", Names());
         Assert.True(Names().IndexOf("removePopupLayer") > Names().IndexOf("pushPopupLayer"),
-            "The grid went away without removing its filter menu layer: " + string.Join(", ", Names()));
+            "The filter popup went away without removing its layer: " + string.Join(", ", Names()));
     }
 
-    // The two components are generic, so the layer's DotNetObjectReference<T> is read through its public Value.
+    // The components are generic, so the layer's DotNetObjectReference<T> is read through its public Value.
     private async Task InvokeEscapeAsync(string methodName)
     {
         var push = _runtime.Calls.Last(c => c.Name == "pushPopupLayer");
         Assert.Equal(methodName, push.Args![2]);
-        var dotNetRef = push.Args[1]!;
+        await InvokePushedAsync(push);
+    }
+
+    // The standard popup registers the same callback for Escape and for outside-click dismissal.
+    private async Task InvokePopupDismissAsync()
+    {
+        var push = _runtime.Calls.Last(c =>
+            c.Name == "pushPopupLayer" && (string?)c.Args![2] == nameof(FlarePopup.DismissFromJs));
+        await InvokePushedAsync(push);
+    }
+
+    private static async Task InvokePushedAsync((string Name, object?[]? Args) push)
+    {
+        var dotNetRef = push.Args![1]!;
         var instance = dotNetRef.GetType().GetProperty("Value")!.GetValue(dotNetRef)!;
-        var method = instance.GetType().GetMethod(methodName)!;
+        var method = instance.GetType().GetMethod((string)push.Args[2]!)!;
         await (Task)method.Invoke(instance, null)!;
     }
 

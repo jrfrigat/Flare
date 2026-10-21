@@ -80,6 +80,9 @@ public static class DataGrid
     public const string FilterBuilderValue = "flare-datagrid__filter-builder-value";
     /// <summary>The <c>flare-datagrid__filter-builder-actions</c> CSS class.</summary>
     public const string FilterBuilderActions = "flare-datagrid__filter-builder-actions";
+    /// <summary>The <c>flare-datagrid__filter-widget</c> CSS class: one column's filter trigger and its
+    /// popup, which together form the widget the popup's outside-click dismissal measures.</summary>
+    public const string FilterWidget = "flare-datagrid__filter-widget";
     /// <summary>The <c>flare-datagrid__filter-trigger</c> CSS class.</summary>
     public const string FilterTrigger = "flare-datagrid__filter-trigger";
     /// <summary>The <c>flare-datagrid__filter-trigger--active</c> CSS class.</summary>

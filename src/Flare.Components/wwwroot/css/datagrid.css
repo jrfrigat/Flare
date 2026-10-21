@@ -902,7 +902,14 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   opacity: 1;
 }
 
-/* Menu filter (FilterMode.Menu): per-column trigger button + popover panel. */
+/* Menu filter (FilterMode.Menu): per-column trigger button + popover panel. The trigger and its
+   popup live in one widget root, which is what the popup's outside-click dismissal measures:
+   a pointer-down on the trigger is inside the widget and only toggles the menu. */
+.flare-datagrid__filter-widget {
+  display: inline-flex;
+  align-items: center;
+}
+
 .flare-datagrid__filter-trigger {
   display: inline-flex;
   align-items: center;
