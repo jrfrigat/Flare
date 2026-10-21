@@ -1,0 +1,18 @@
+@page "/button-link-keyboard"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="height:2000px;padding-top:80px">
+        <div style="margin-top:600px;display:flex;gap:1rem" @onclick:preventDefault="true">
+            <FlareButton Href="#keyboard-target" OnClick="@(() => _clicks++)">Act</FlareButton>
+            <FlareButton Href="#disabled-target" Disabled="true" OnClick="@(() => _disabledClicks++)">Blocked</FlareButton>
+        </div>
+        <span id="keyboard-target"></span>
+        <span id="clicks">@_clicks</span>
+        <span id="disabled-clicks">@_disabledClicks</span>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private int _clicks;
+    private int _disabledClicks;
+}
