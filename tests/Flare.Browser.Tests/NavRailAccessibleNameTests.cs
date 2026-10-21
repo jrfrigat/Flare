@@ -22,14 +22,14 @@ public sealed class NavRailAccessibleNameTests(BrowserFixture fixture) : IClassF
         var link = page.GetByRole(AriaRole.Link, new() { Name = "Dashboard", Exact = true });
         await Expect(link).ToBeVisibleAsync();
         await Expect(link).ToHaveAccessibleNameAsync("Dashboard");
-        var text = link.Locator(".flare-nav-link__text");
+        var text = link.Locator($".{Css.Classes.Navigation.NavLinkText}");
         Assert.Equal("absolute", await text.EvaluateAsync<string>("el => getComputedStyle(el).position"));
         Assert.Equal("1px", await text.EvaluateAsync<string>("el => getComputedStyle(el).width"));
 
         var labeled = page.GetByRole(AriaRole.Link, new() { Name = "Reports", Exact = true });
         await Expect(labeled).ToBeVisibleAsync();
         await Expect(labeled).ToContainTextAsync("Reports");
-        var labeledText = labeled.Locator(".flare-nav-link__text");
+        var labeledText = labeled.Locator($".{Css.Classes.Navigation.NavLinkText}");
         Assert.NotEqual("absolute", await labeledText.EvaluateAsync<string>("el => getComputedStyle(el).position"));
         Assert.True(await labeledText.EvaluateAsync<double>("el => el.getBoundingClientRect().width") > 1);
     }

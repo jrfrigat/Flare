@@ -19,10 +19,10 @@ public sealed class OverlayOpacityTests(BrowserFixture fixture) : IClassFixture<
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/overlay-opacity");
         await page.WaitForFunctionAsync(
-            "() => getComputedStyle(document.documentElement).getPropertyValue('--flare-color-scrim').trim() !== ''");
+            $"() => getComputedStyle(document.documentElement).getPropertyValue('{Css.Tokens.Color.Scrim}').trim() !== ''");
 
-        var root = page.Locator(".flare-overlay");
-        var scrim = page.Locator(".flare-overlay__scrim");
+        var root = page.Locator($".{Css.Classes.Overlay.Root}");
+        var scrim = page.Locator($".{Css.Classes.Overlay.Scrim}");
         var content = page.Locator("#content");
         await Expect(scrim).ToHaveCSSAsync("opacity", "0.2");
 
