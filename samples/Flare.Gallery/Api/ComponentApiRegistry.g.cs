@@ -198,7 +198,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Avatar items to render in the group.", null, false, false, false, @"FlareAvatarGroup"),
                 new ApiParameterInfo(@"Max", @"int", @"5", @"Maximum number of avatars to display before showing an overflow badge.", null, false, false, false, @"FlareAvatarGroup"),
                 new ApiParameterInfo(@"Size", @"AvatarSize", @"AvatarSize.Md", @"Size shared by the overflow badge (child avatars set their own size).", null, false, false, false, @"FlareAvatarGroup"),
-                new ApiParameterInfo(@"Spacing", @"string", @"""-0.75rem""", @"Negative margin applied between avatars, e.g. ""-0.75rem"".", null, false, false, false, @"FlareAvatarGroup"),
+                new ApiParameterInfo(@"Spacing", @"string?", null, @"Negative margin applied between avatars, e.g. ""-0.75rem"". Null uses the theme's value (the --flare-avatar-group-spacing token); an explicit value wins over the theme.", null, false, false, false, @"FlareAvatarGroup"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

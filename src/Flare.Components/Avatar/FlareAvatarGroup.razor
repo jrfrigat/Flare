@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass()"
-     style="@($"{Css.Tokens.AvatarField.GroupSpacing}:{Spacing}; {Style}")"
+     style="@_groupStyle"
      @attributes="AdditionalAttributes">
     @* The version tells the avatars that the registration counters were reset. Without it a child whose
        own parameters did not change is skipped by Blazor's diff after Max grows, so a previously hidden
@@ -30,14 +30,29 @@
     [Parameter] public int Max { get; set; } = 5;
     /// <summary>Size shared by the overflow badge (child avatars set their own size).</summary>
     [Parameter] public AvatarSize Size { get; set; } = AvatarSize.Md;
-    /// <summary>Negative margin applied between avatars, e.g. "-0.75rem".</summary>
-    [Parameter] public string Spacing { get; set; } = "-0.75rem";
+    /// <summary>Negative margin applied between avatars, e.g. "-0.75rem". Null uses the theme's value
+    /// (the <c>--flare-avatar-group-spacing</c> token); an explicit value wins over the theme.</summary>
+    [Parameter] public string? Spacing { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Avatar.Group;
 
     private int _overflow;
     private int _visibleCount;
     private int _registrationVersion;
+
+    // Only a caller-set Spacing becomes an inline variable; otherwise the stylesheet reads the theme's
+    // token. The value is a length, so it goes through the same sanitiser as every other inline length.
+    private string? _groupStyle
+    {
+        get
+        {
+            var parts = new List<string>(2);
+            if (!string.IsNullOrWhiteSpace(Spacing))
+                parts.Add($"{Css.Tokens.AvatarField.GroupSpacing}:{Flare.Components.Security.CssValidator.StripDangerous(Spacing)}");
+            if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
+            return parts.Count > 0 ? string.Join(';', parts) : null;
+        }
+    }
 
     private string _overflowLabel =>
         string.Format(FlareStrings.Avatar_OverflowMore, _overflow);

@@ -179,10 +179,10 @@ public static class CardField
 }
 
 /// <summary>
-/// CSS variable tokens for the avatar GROUP (overlapping stack + overflow badge). Avatar-proper color,
-/// size, radius and font are NOT tokenized here on purpose: they come from the shared systems - the color
-/// role / tonal <c>--fc-*</c> model, <c>--flare-shape-*</c>, <c>--flare-typescale-*</c> and the size
-/// utility classes - so the component is themed the same way as every other surface.
+/// CSS variable tokens for the avatar and its GROUP (overlapping stack + overflow badge). The color and
+/// the shape still come from the shared systems - the color role / tonal <c>--fc-*</c> model and
+/// <c>--flare-shape-*</c>; the diameter and the text size are the component's own scale, so they are
+/// tokens the theme sets.
 /// </summary>
 public static class AvatarField
 {
@@ -196,6 +196,26 @@ public static class AvatarField
     public const string OverflowBg = "--flare-avatar-overflow-bg";
     /// <summary>CSS custom-property name for the overflow badge text color.</summary>
     public const string OverflowColor = "--flare-avatar-overflow-color";
+    /// <summary>CSS custom-property name for the extra-small avatar diameter.</summary>
+    public const string SizeXs = "--flare-avatar-size-xs";
+    /// <summary>CSS custom-property name for the small avatar diameter.</summary>
+    public const string SizeSm = "--flare-avatar-size-sm";
+    /// <summary>CSS custom-property name for the medium avatar diameter.</summary>
+    public const string SizeMd = "--flare-avatar-size-md";
+    /// <summary>CSS custom-property name for the large avatar diameter.</summary>
+    public const string SizeLg = "--flare-avatar-size-lg";
+    /// <summary>CSS custom-property name for the extra-large avatar diameter.</summary>
+    public const string SizeXl = "--flare-avatar-size-xl";
+    /// <summary>CSS custom-property name for the extra-small avatar text size.</summary>
+    public const string FontXs = "--flare-avatar-font-xs";
+    /// <summary>CSS custom-property name for the small avatar text size.</summary>
+    public const string FontSm = "--flare-avatar-font-sm";
+    /// <summary>CSS custom-property name for the medium avatar text size.</summary>
+    public const string FontMd = "--flare-avatar-font-md";
+    /// <summary>CSS custom-property name for the large avatar text size.</summary>
+    public const string FontLg = "--flare-avatar-font-lg";
+    /// <summary>CSS custom-property name for the extra-large avatar text size.</summary>
+    public const string FontXl = "--flare-avatar-font-xl";
 }
 
 /// <summary>CSS variable tokens for progress field.</summary>

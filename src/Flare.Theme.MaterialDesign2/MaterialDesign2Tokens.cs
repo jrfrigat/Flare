@@ -796,6 +796,8 @@ internal static class MaterialDesign2Tokens
     internal static readonly AvatarTokens Avatar = new()
     {
         GroupSpacing = "-0.75rem",
+        SizeXs = "1.5rem",  SizeSm = "2rem",   SizeMd = "2.5rem", SizeLg = "3rem",   SizeXl = "4rem",
+        FontXs = "0.625rem", FontSm = "0.75rem", FontMd = "1rem", FontLg = "1.125rem", FontXl = "1.5rem",
     };
 
     // The navigation drawer is 256dp wide here (spec redline "Standard navigation drawer"), against

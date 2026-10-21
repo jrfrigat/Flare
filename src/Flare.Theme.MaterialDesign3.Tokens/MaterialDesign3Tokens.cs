@@ -796,6 +796,8 @@ public class MaterialDesign3Tokens
     internal static readonly AvatarTokens Avatar = new()
     {
         GroupSpacing = "-0.75rem",
+        SizeXs = "1.5rem",  SizeSm = "2rem",   SizeMd = "2.5rem", SizeLg = "3rem",   SizeXl = "4rem",
+        FontXs = "0.625rem", FontSm = "0.75rem", FontMd = "1rem", FontLg = "1.125rem", FontXl = "1.5rem",
     };
 
     internal static readonly DrawerTokens Drawer = new()

@@ -20,7 +20,6 @@
 .flare-avatar-group__overflow {
     background: var(--flare-avatar-overflow-bg);
     color: var(--flare-avatar-overflow-color);
-    font-size: 0.75rem;
     font-weight: 600;
     cursor: default;
 }

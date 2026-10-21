@@ -1,0 +1,24 @@
+@page "/avatar-tokens"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="padding:8px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:8px;align-items:center">
+            <FlareAvatar id="xs" Size="AvatarSize.Xs" Text="Al" />
+            <FlareAvatar id="sm" Size="AvatarSize.Sm" Text="Al" />
+            <FlareAvatar id="md" Size="AvatarSize.Md" Text="Al" />
+            <FlareAvatar id="lg" Size="AvatarSize.Lg" Text="Al" />
+            <FlareAvatar id="xl" Size="AvatarSize.Xl" Text="Al" />
+        </div>
+        <div style="--flare-avatar-size-md:3rem">
+            <FlareAvatar id="overridden" Size="AvatarSize.Md" Text="Al" />
+        </div>
+        <FlareAvatarGroup id="group">
+            <FlareAvatar Text="Al" />
+            <FlareAvatar Text="Bo" />
+        </FlareAvatarGroup>
+        <FlareAvatarGroup id="group-spaced" Spacing="-0.5rem">
+            <FlareAvatar Text="Al" />
+            <FlareAvatar Text="Bo" />
+        </FlareAvatarGroup>
+    </div>
+</FlareThemeProvider>

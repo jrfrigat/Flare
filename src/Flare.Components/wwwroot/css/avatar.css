@@ -13,11 +13,11 @@
     color: var(--fc-on-container, var(--flare-color-on-secondary-container));
 }
 
-.flare-avatar--xs { width: 1.5rem; height: 1.5rem; font-size: 0.625rem; }
-.flare-avatar--sm { width: 2rem;   height: 2rem;   font-size: 0.75rem; }
-.flare-avatar--md { width: 2.5rem; height: 2.5rem; font-size: 1rem;    }
-.flare-avatar--lg { width: 3rem;   height: 3rem;   font-size: 1.125rem;}
-.flare-avatar--xl { width: 4rem;   height: 4rem;   font-size: 1.5rem;  }
+.flare-avatar--xs { width: var(--flare-avatar-size-xs); height: var(--flare-avatar-size-xs); font-size: var(--flare-avatar-font-xs); }
+.flare-avatar--sm { width: var(--flare-avatar-size-sm); height: var(--flare-avatar-size-sm); font-size: var(--flare-avatar-font-sm); }
+.flare-avatar--md { width: var(--flare-avatar-size-md); height: var(--flare-avatar-size-md); font-size: var(--flare-avatar-font-md); }
+.flare-avatar--lg { width: var(--flare-avatar-size-lg); height: var(--flare-avatar-size-lg); font-size: var(--flare-avatar-font-lg); }
+.flare-avatar--xl { width: var(--flare-avatar-size-xl); height: var(--flare-avatar-size-xl); font-size: var(--flare-avatar-font-xl); }
 
 .flare-avatar--square  { border-radius: 0; }
 .flare-avatar--rounded { border-radius: var(--flare-shape-small); }
