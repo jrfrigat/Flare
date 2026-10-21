@@ -1,26 +1,28 @@
 <FlareGrid Columns="12" Gap="FlareSpacing.Large">
     <FlareCol Span="12" Md="8">
-        <div class="toc-demo-content">
+        @* The marker class is only a scan target for Root below; it carries no styling. *@
+        <FlareStack class="toc-demo-content" Gap="FlareSpacing.Medium">
             <FlareText Typo="TypographyScale.HeadlineSmall" id="installation">Installation<SectionAnchor For="installation" /></FlareText>
             <FlareText Typo="TypographyScale.BodyMedium">Add the NuGet package and register the theme provider. This heading carries its own id.</FlareText>
-            <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Scroll down to watch the active section track in the list on the right.</p>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">Scroll down to watch the active section track in the list on the right.</FlareText>
+            <FlareSpacer Height="FlareSpacing.Custom" HeightValue="14rem" />
 
             <FlareText Typo="TypographyScale.TitleMedium">Prerequisites</FlareText>
             <FlareText Typo="TypographyScale.BodyMedium">No id here - FlareOnThisPage slugifies the text and assigns one automatically.</FlareText>
-            <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+            <FlareSpacer Height="FlareSpacing.Custom" HeightValue="14rem" />
 
             <FlareText Typo="TypographyScale.HeadlineSmall" id="usage">Usage<SectionAnchor For="usage" /></FlareText>
             <FlareText Typo="TypographyScale.BodyMedium">Drop the component beside your content; the scroll container is detected automatically.</FlareText>
-            <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+            <FlareSpacer Height="FlareSpacing.Custom" HeightValue="14rem" />
 
             <FlareText Typo="TypographyScale.TitleMedium">Configuration</FlareText>
             <FlareText Typo="TypographyScale.BodyMedium">Hover a heading with an id to reveal its "#" - pressing it copies the link to that section.</FlareText>
-            <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+            <FlareSpacer Height="FlareSpacing.Custom" HeightValue="14rem" />
 
             <FlareText Typo="TypographyScale.HeadlineSmall">Accessibility</FlareText>
             <FlareText Typo="TypographyScale.BodyMedium">The active section is mirrored with aria-current as you scroll.</FlareText>
-            <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
-        </div>
+            <FlareSpacer Height="FlareSpacing.Custom" HeightValue="14rem" />
+        </FlareStack>
     </FlareCol>
 
     <FlareCol Span="12" Md="4">

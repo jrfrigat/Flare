@@ -1,8 +1,47 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"></div>
+<div class="@BuildCssClass(_fixedClass)" style="@_resolvedStyle" @attributes="AdditionalAttributes"></div>
 
 @code {
+    /// <summary>Fixed block size of the spacer, as a step on the shared spacing scale. Null (the default)
+    /// keeps the spacer flexible: it pushes the following items to the far edge of a stack.</summary>
+    [Parameter] public FlareSpacing? Height { get; set; }
+
+    /// <summary>Raw CSS height used when <see cref="Height"/> is <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? HeightValue { get; set; }
+
+    /// <summary>Fixed inline size of the spacer, as a step on the shared spacing scale. Null leaves the
+    /// width to the layout.</summary>
+    [Parameter] public FlareSpacing? Width { get; set; }
+
+    /// <summary>Raw CSS width used when <see cref="Width"/> is <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? WidthValue { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Spacer.Root;
+
+    private string? _fixedClass;
+    private string? _resolvedStyle;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        var height = Resolve(Height, HeightValue);
+        var width = Resolve(Width, WidthValue);
+        _fixedClass = height is not null || width is not null ? Css.Classes.Spacer.Fixed : null;
+
+        var parts = new List<string>(3);
+        if (height is not null) parts.Add($"height:{height}");
+        if (width is not null) parts.Add($"width:{width}");
+        if (Style is not null) parts.Add(Style);
+        _resolvedStyle = parts.Count > 0 ? string.Join(';', parts) : null;
+    }
+
+    private static string? Resolve(FlareSpacing? spacing, string? raw) => spacing switch
+    {
+        null => null,
+        FlareSpacing.Custom => Flare.Components.Security.CssValidator.StripDangerous(raw),
+        _ => FlareSpacingVars.Var(spacing.Value),
+    };
 }

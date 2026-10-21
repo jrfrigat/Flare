@@ -56,3 +56,6 @@
 .flare-stack--justify-space-evenly  { justify-content: space-evenly; }
 
 .flare-spacer { flex: 1 1 auto; }
+/* A spacer that was given a size stops stretching: the size is the point, and a flex-grown box would
+   stop matching it. */
+.flare-spacer--fixed { flex: 0 0 auto; }

@@ -1,40 +1,57 @@
 namespace Flare.Components.Tests;
 
+// A spacer either stretches (no size) or holds a fixed size given as a spacing step or a raw value;
+// the fixed form must stop stretching so the size is what shows.
 public class FlareSpacerTests : FlareTestContext
 {
     [Fact]
-    public void RendersRootElement()
+    public void DefaultSpacer_StretchesWithNoSize()
     {
         var cut = Render<FlareSpacer>();
 
-        Assert.NotEmpty(cut.FindAll("div"));
+        var el = cut.Find($".{Css.Classes.Spacer.Root}");
+        Assert.DoesNotContain(Css.Classes.Spacer.Fixed, el.ClassName);
+        Assert.Null(el.GetAttribute("style"));
     }
 
     [Fact]
-    public void HasSpacerClass()
+    public void HeightStep_UsesTheSpacingTokenAndStopsStretching()
     {
-        var cut = Render<FlareSpacer>();
+        var cut = Render<FlareSpacer>(p => p.Add(x => x.Height, FlareSpacing.Small));
 
-        Assert.Contains(Css.Classes.Spacer.Root, cut.Find("div").ClassName ?? "");
+        var el = cut.Find($".{Css.Classes.Spacer.Root}");
+        Assert.Contains(Css.Classes.Spacer.Fixed, el.ClassName);
+        Assert.Contains($"height:var({Css.Tokens.Spacing.S6})", el.GetAttribute("style"));
     }
 
     [Fact]
-    public void AdditionalAttributes_StylePassesThrough()
-    {
-        var cut = Render<FlareSpacer>(p => p
-            .AddUnmatched("style", "flex-grow:1"));
-
-        Assert.NotEmpty(cut.FindAll("div"));
-        Assert.NotNull(cut.Instance);
-    }
-
-    [Fact]
-    public void Style_Param_PassesThrough()
+    public void CustomHeight_IsApplied()
     {
         var cut = Render<FlareSpacer>(p => p
-            .Add(x => x.Style, "flex-grow:2"));
+            .Add(x => x.Height, FlareSpacing.Custom)
+            .Add(x => x.HeightValue, "14rem"));
 
-        var style = cut.Find("div").GetAttribute("style") ?? "";
-        Assert.Contains("flex-grow", style);
+        Assert.Contains("height:14rem", cut.Find($".{Css.Classes.Spacer.Root}").GetAttribute("style"));
+    }
+
+    [Fact]
+    public void CustomWidth_IsApplied()
+    {
+        var cut = Render<FlareSpacer>(p => p
+            .Add(x => x.Width, FlareSpacing.Custom)
+            .Add(x => x.WidthValue, "8px"));
+
+        Assert.Contains("width:8px", cut.Find($".{Css.Classes.Spacer.Root}").GetAttribute("style"));
+    }
+
+    [Fact]
+    public void DangerousValue_IsStripped()
+    {
+        var cut = Render<FlareSpacer>(p => p
+            .Add(x => x.Height, FlareSpacing.Custom)
+            .Add(x => x.HeightValue, "1rem;width:expression(alert(1))"));
+
+        var style = cut.Find($".{Css.Classes.Spacer.Root}").GetAttribute("style");
+        Assert.DoesNotContain("expression", style);
     }
 }
