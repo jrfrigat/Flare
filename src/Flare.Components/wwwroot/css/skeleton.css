@@ -44,6 +44,7 @@
 
 .flare-skeleton--rect {
     width: 100%;
+    height: var(--flare-skeleton-rect-height);
 }
 
 .flare-skeleton--circle {

@@ -1,0 +1,14 @@
+@page "/skeleton-size"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="container" style="width:200px">
+        <FlareSkeleton id="default" />
+        <FlareSkeleton id="height-only" Height="40px" />
+        <FlareSkeleton id="width-only" Width="80px" />
+        <FlareSkeleton id="text" Variant="SkeletonVariant.Text" />
+        <FlareSkeleton id="circle" Variant="SkeletonVariant.Circle" Width="40px" Height="40px" />
+        <div style="--flare-skeleton-rect-height:32px">
+            <FlareSkeleton id="themed" />
+        </div>
+    </div>
+</FlareThemeProvider>

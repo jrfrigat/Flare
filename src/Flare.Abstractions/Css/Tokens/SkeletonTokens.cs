@@ -7,4 +7,6 @@ public static class SkeletonField
     public const string PulseMinOpacity = "--flare-skeleton-pulse-min-opacity";
     /// <summary>CSS custom-property name for the wave opacity token.</summary>
     public const string WaveOpacity = "--flare-skeleton-wave-opacity";
+    /// <summary>CSS custom-property name for the height of a Rect placeholder that sets no Height of its own.</summary>
+    public const string RectHeight = "--flare-skeleton-rect-height";
 }

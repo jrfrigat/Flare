@@ -14,6 +14,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareSkeleton.Announce` marks one placeholder as the loading indicator of its region.
 - Data grid rows and tree items reorder from the keyboard with `Alt+Space` to pick up or put down and `Alt+ArrowUp`/`Alt+ArrowDown` to move, without taking over the keys those surfaces use for selection, navigation and expanding.
 - `FlareOverlay.OnBackdropClick` fires only when the backdrop is clicked, so an action inside the content no longer dismisses the surface; `OnClick` keeps its surface-wide bubbling.
+- `FlareSkeleton` draws a visible Rect placeholder with no sizes of its own: the height comes from the new `--flare-skeleton-rect-height` token, one line of body text by default, and an explicit `Height` or `Width` still wins.
 
 ### Changed
 
