@@ -79,6 +79,14 @@
     cursor: inherit;
 }
 
+/* The action is inside the row, so its own ring is covered by the neighbouring rows; draw the ring
+   on the row itself, inset so the list's overflow cannot cut it. */
+.flare-list-item:has(.flare-list-item__action:focus-visible) {
+    outline: var(--flare-focus-ring);
+    outline-offset: -2px;
+}
+.flare-list-item__action:focus-visible { outline: none; }
+
 .flare-list-item--clickable {
     cursor: pointer;
     user-select: none;
