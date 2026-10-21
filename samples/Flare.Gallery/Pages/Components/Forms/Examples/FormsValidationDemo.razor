@@ -1,20 +1,13 @@
 @inject ISnackbarService Snackbar
 
-@* FlareForm owns the EditForm, the validation summary's field map and the layout. FlareFormField supplies
-   the label, helper and required marker for the field control it wraps; the field itself still registers
-   its validation state through the form. *@
+@* FlareForm owns the EditForm, the validation summary's field map and the layout. Fields register their
+   control ids through it, so a summary message links straight to the control that failed. *@
 <FlareForm Model="@_model" OnValidSubmit="HandleValid">
     <FlareStack Gap="FlareSpacing.Medium">
-        <FlareFormField Label="@GalleryStrings.Forms_NameLabel" For="forms-name"
-                        HelperText="@GalleryStrings.Forms_NameHelper" Required="true">
-            <FlareTextField @bind-Value="_model.Name" For="@(() => _model.Name)"
-                            InputAttributes="@(new Dictionary<string, object> { ["id"] = "forms-name" })" />
-        </FlareFormField>
-        <FlareFormField Label="@GalleryStrings.Forms_EmailLabel" For="forms-email"
-                        HelperText="@GalleryStrings.Forms_EmailHelper" Required="true">
-            <FlareTextField @bind-Value="_model.Email" For="@(() => _model.Email)"
-                            InputAttributes="@(new Dictionary<string, object> { ["id"] = "forms-email" })" />
-        </FlareFormField>
+        <FlareTextField Label="@GalleryStrings.Forms_NameLabel" HelperText="@GalleryStrings.Forms_NameHelper"
+                        Required="true" @bind-Value="_model.Name" For="@(() => _model.Name)" />
+        <FlareTextField Label="@GalleryStrings.Forms_EmailLabel" HelperText="@GalleryStrings.Forms_EmailHelper"
+                        Required="true" @bind-Value="_model.Email" For="@(() => _model.Email)" />
         <FlareCheckbox Label="@GalleryStrings.Forms_Accept" @bind-Value="_model.AcceptsTerms"
                        For="@(() => _model.AcceptsTerms)" />
         <FlareValidationSummary />

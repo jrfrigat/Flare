@@ -4485,6 +4485,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на A custom control in FlareFormField.
+        /// </summary>
+        public static string Forms_FormField {
+            get {
+                return ResourceManager.GetString("Forms_FormField", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Vertical (default).
         /// </summary>
         public static string Forms_LayoutVertical {

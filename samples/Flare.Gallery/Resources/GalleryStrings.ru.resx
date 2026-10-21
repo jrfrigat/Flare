@@ -1335,6 +1335,9 @@
   <data name="Forms_Layouts" xml:space="preserve">
     <value>Варианты: вертикальный, горизонтальный, строчный и плотный</value>
   </data>
+  <data name="Forms_FormField" xml:space="preserve">
+    <value>Свой контрол в FlareFormField</value>
+  </data>
   <data name="Forms_LayoutVertical" xml:space="preserve">
     <value>Вертикальный (по умолчанию)</value>
   </data>
