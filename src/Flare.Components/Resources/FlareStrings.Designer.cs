@@ -2237,5 +2237,14 @@ namespace Flare.Components.Resources {
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to QR code for: {0}.
+        /// </summary>
+        public static string QrCode_Label {
+            get {
+                return ResourceManager.GetString("QrCode_Label", resourceCulture);
+            }
+        }
+
     }
 }

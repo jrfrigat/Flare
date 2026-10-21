@@ -84,4 +84,56 @@ public class FlareQrCodeTests : FlareTestContext
         Assert.Equal(before, ModuleCountOf(cut, 200));
         Assert.Contains("#123456", cut.Markup);
     }
+
+    private sealed class CultureScope : IDisposable
+    {
+        private readonly CultureInfo _previous = CultureInfo.CurrentUICulture;
+        public CultureScope(string name) => CultureInfo.CurrentUICulture = new CultureInfo(name);
+        public void Dispose() => CultureInfo.CurrentUICulture = _previous;
+    }
+
+    [Fact]
+    public void DefaultLabel_ComesFromResources()
+    {
+        var cut = Render<FlareQrCode>(p => p.Add(x => x.Value, "hello"));
+
+        Assert.Equal(string.Format(FlareStrings.QrCode_Label, "hello"), cut.Find("svg").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void DefaultLabel_IsLocalized()
+    {
+        using var _ = new CultureScope("ru");
+        var cut = Render<FlareQrCode>(p => p.Add(x => x.Value, "hello"));
+
+        Assert.Equal("QR-код для: hello", cut.Find("svg").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void Fallback_KeepsTheImageRoleAndALocalizedName()
+    {
+        var cut = Render<FlareQrCode>(p => p
+            .Add(x => x.Value, new string('x', 3000))
+            .Add(x => x.ErrorCorrectionLevel, QrErrorCorrectionLevel.H));
+
+        var svg = cut.Find("svg");
+        Assert.Equal("img", svg.GetAttribute("role"));
+        Assert.Equal(FlareStrings.QrCode_ValueTooLong, svg.GetAttribute("aria-label"));
+        Assert.Equal(FlareStrings.QrCode_ValueTooLong, svg.TextContent.Trim());
+    }
+
+    [Fact]
+    public void ExplicitLabel_WinsInBothStates()
+    {
+        var normal = Render<FlareQrCode>(p => p
+            .Add(x => x.Value, "hello")
+            .Add(x => x.AriaLabel, "Scan me"));
+        Assert.Equal("Scan me", normal.Find("svg").GetAttribute("aria-label"));
+
+        var fallback = Render<FlareQrCode>(p => p
+            .Add(x => x.Value, new string('x', 3000))
+            .Add(x => x.ErrorCorrectionLevel, QrErrorCorrectionLevel.H)
+            .Add(x => x.AriaLabel, "Scan me"));
+        Assert.Equal("Scan me", fallback.Find("svg").GetAttribute("aria-label"));
+    }
 }

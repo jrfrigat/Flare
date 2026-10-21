@@ -342,4 +342,5 @@
   <data name="Kanban_CardCount_One" xml:space="preserve"><value>{0} card</value></data>
   <data name="Kanban_CardCount_Few" xml:space="preserve"><value>{0} cards</value></data>
   <data name="Kanban_CardCount_Many" xml:space="preserve"><value>{0} cards</value></data>
+  <data name="QrCode_Label" xml:space="preserve"><value>QR code for: {0}</value></data>
 </root>
