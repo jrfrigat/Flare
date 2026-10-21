@@ -462,7 +462,9 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
     const clamp = v => Math.round(Math.max(min(), Math.min(v, max())));
     const step = () => Math.max(1, Number(d.flareSplitterKeyboardStep) || 16);
     const show = v => {
-        scope()?.style.setProperty(d.flareSplitterVariable, v + 'px');
+        // ValueVariable is optional: without it the size still changes and is reported, the consumer
+        // just applies it itself instead of reading a live CSS variable.
+        if (d.flareSplitterVariable) scope()?.style.setProperty(d.flareSplitterVariable, v + 'px');
         gutter.setAttribute('aria-valuenow', String(v));
     };
     const commit = v => {
@@ -517,7 +519,7 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
 
 export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, dotNetRef) {
     if (!gutter) return;
-    if (gutter.dataset.flareSplitterVariable) { registerValueSplitter(gutter, orientation, dotNetRef); return; }
+    if (gutter.dataset.flareSplitterValue !== undefined) { registerValueSplitter(gutter, orientation, dotNetRef); return; }
     // The limits are read when they are used, so new MinSize/MaxSize parameters apply without re-registering.
     const limit = (name, fallback) => gutter.dataset[name] ?? fallback;
     // Reflect the (possibly auto-detected) axis on the element so the handle renders correctly.

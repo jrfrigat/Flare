@@ -112,7 +112,9 @@
     [Parameter] public double? DefaultValue { get; set; }
 
     /// <summary>CSS custom property (for example <c>--side-width</c>) the browser sets to the size while a
-    /// <see cref="Value"/> separator is dragged, so the layout follows the pointer without a round trip.</summary>
+    /// <see cref="Value"/> separator is dragged, so the layout follows the pointer without a round trip.
+    /// Null keeps the value mode but skips the live write: the size still changes and is reported through
+    /// <see cref="OnSizeChanged"/>, and the consumer applies it itself.</summary>
     [Parameter] public string? ValueVariable { get; set; }
 
     /// <summary>Selector of the ancestor that carries <see cref="ValueVariable"/>; the separator's parent when null.</summary>

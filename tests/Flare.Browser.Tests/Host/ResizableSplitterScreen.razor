@@ -1,0 +1,32 @@
+@page "/resizable-splitter"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="display:flex;flex-direction:column;gap:2rem;padding:1rem">
+        <div id="resizable-box" style="width:700px">
+            <FlareResizable InitialSize="200px" MinSize="100px" MaxSize="@_max" OnResized="OnResized">
+                <div style="height:40px">Content</div>
+            </FlareResizable>
+        </div>
+        <button id="raise-max" @onclick="RaiseMax">Raise max</button>
+        <span id="max-value">@_max</span>
+        <span id="resized-size">@_resized</span>
+
+        <div id="splitter-row" style="display:flex;width:600px;height:40px">
+            <div id="pane-a" style="flex:0 0 300px"></div>
+            <FlareSplitter Value="_value" MinSize="100px" MaxSize="500px" OnSizeChanged="OnSplit" />
+            <div id="pane-b" style="flex:0 0 300px"></div>
+        </div>
+        <span id="split-size">@_split</span>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private string? _max = "300px";
+    private string? _resized;
+    private double? _value = 200;
+    private string? _split;
+
+    private void OnResized(string size) => _resized = size;
+    private void OnSplit(string size) => _split = size;
+    private void RaiseMax() => _max = "500px";
+}
