@@ -2566,6 +2566,120 @@
   <data name="Tooltip_Triggers" xml:space="preserve">
     <value>Триггеры, стрелка и отключение</value>
   </data>
+  <data name="Tooltip_Collision" xml:space="preserve">
+    <value>Коллизии и обрезка</value>
+  </data>
+  <data name="Tooltip_CollisionBody" xml:space="preserve">
+    <value>Подсказка размещается относительно триггера в пределах окна и поднимается в верхний слой, поэтому переворачивается, а не уходит за экран, и остается читаемой в карточке, прокручиваемой сетке или диалоге.</value>
+  </data>
+  <data name="Tooltip_TopContent" xml:space="preserve">
+    <value>Подсказка сверху</value>
+  </data>
+  <data name="Tooltip_BottomContent" xml:space="preserve">
+    <value>Подсказка снизу</value>
+  </data>
+  <data name="Tooltip_LeftContent" xml:space="preserve">
+    <value>Подсказка слева</value>
+  </data>
+  <data name="Tooltip_RightContent" xml:space="preserve">
+    <value>Подсказка справа</value>
+  </data>
+  <data name="Tooltip_TopButton" xml:space="preserve">
+    <value>Сверху</value>
+  </data>
+  <data name="Tooltip_BottomButton" xml:space="preserve">
+    <value>Снизу</value>
+  </data>
+  <data name="Tooltip_LeftButton" xml:space="preserve">
+    <value>Слева</value>
+  </data>
+  <data name="Tooltip_RightButton" xml:space="preserve">
+    <value>Справа</value>
+  </data>
+  <data name="Tooltip_TopStartButton" xml:space="preserve">
+    <value>Сверху у начала</value>
+  </data>
+  <data name="Tooltip_BottomEndButton" xml:space="preserve">
+    <value>Снизу у конца</value>
+  </data>
+  <data name="Tooltip_NoDelay" xml:space="preserve">
+    <value>Без задержки</value>
+  </data>
+  <data name="Tooltip_HalfSecond" xml:space="preserve">
+    <value>Задержка 500 мс</value>
+  </data>
+  <data name="Tooltip_OneSecond" xml:space="preserve">
+    <value>Задержка 1 с</value>
+  </data>
+  <data name="Tooltip_RichButton" xml:space="preserve">
+    <value>Форматированная подсказка</value>
+  </data>
+  <data name="Tooltip_RichTitle" xml:space="preserve">
+    <value>Сохранить документ</value>
+  </data>
+  <data name="Tooltip_RichBody" xml:space="preserve">
+    <value>Сохраняет изменения и обновляет предпросмотр.</value>
+  </data>
+  <data name="Tooltip_ClickButton" xml:space="preserve">
+    <value>Открытие по клику</value>
+  </data>
+  <data name="Tooltip_ClickContent" xml:space="preserve">
+    <value>Открывается и закрывается кликом</value>
+  </data>
+  <data name="Tooltip_HoverFocusButton" xml:space="preserve">
+    <value>Наведение, фокус и стрелка</value>
+  </data>
+  <data name="Tooltip_HoverFocusContent" xml:space="preserve">
+    <value>Показывается при наведении и фокусе с клавиатуры</value>
+  </data>
+  <data name="Tooltip_FocusButton" xml:space="preserve">
+    <value>Только фокус</value>
+  </data>
+  <data name="Tooltip_FocusContent" xml:space="preserve">
+    <value>Только по фокусу (Tab до кнопки)</value>
+  </data>
+  <data name="Tooltip_DisabledButton" xml:space="preserve">
+    <value>Отключенная подсказка</value>
+  </data>
+  <data name="Tooltip_DisabledContent" xml:space="preserve">
+    <value>Это не должно показываться</value>
+  </data>
+  <data name="Tooltip_A11yNote" xml:space="preserve">
+    <value>Триггер описывается пузырем, поэтому экранный диктор читает подсказку вместе с кнопкой. Escape закрывает подсказку наведения или фокуса, не уводя фокус.</value>
+  </data>
+  <data name="Tooltip_CardContent" xml:space="preserve">
+    <value>Читается из карточки</value>
+  </data>
+  <data name="Tooltip_ThemeOffsetButton" xml:space="preserve">
+    <value>Смещение темы</value>
+  </data>
+  <data name="Tooltip_ThemeOffsetContent" xml:space="preserve">
+    <value>Расстояние по умолчанию из токена темы</value>
+  </data>
+  <data name="Tooltip_Offset16Button" xml:space="preserve">
+    <value>Смещение 16</value>
+  </data>
+  <data name="Tooltip_Offset16Content" xml:space="preserve">
+    <value>16px от триггера</value>
+  </data>
+  <data name="Tooltip_ArrowButton" xml:space="preserve">
+    <value>Со стрелкой</value>
+  </data>
+  <data name="Tooltip_ArrowContent" xml:space="preserve">
+    <value>Стрелка указывает от той стороны, с которой оказался пузырь</value>
+  </data>
+  <data name="Tooltip_Long" xml:space="preserve">
+    <value>Длинный текст и закрытие с клавиатуры</value>
+  </data>
+  <data name="Tooltip_LongButton" xml:space="preserve">
+    <value>Длинное описание</value>
+  </data>
+  <data name="Tooltip_LongContent" xml:space="preserve">
+    <value>Подсказка, объясняющая настройку, обычно не помещается в одну строку. Эта переносится внутри пузыря, а не растягивается по странице, и Escape закрывает ее, пока указатель или фокус остаются на триггере.</value>
+  </data>
+  <data name="Tooltip_LongNote" xml:space="preserve">
+    <value>Пузырь - это описание, а не место для кнопок: до интерактивных элементов в нем не добраться с клавиатуры.</value>
+  </data>
   <data name="Clipboard_Title" xml:space="preserve">
     <value>Буфер обмена (Clipboard)</value>
   </data>

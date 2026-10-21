@@ -11226,6 +11226,348 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Collision and clipping
+        /// </summary>
+        public static string Tooltip_Collision {
+            get {
+                return ResourceManager.GetString("Tooltip_Collision", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A tooltip is placed against its trigger in the viewport and raised into the top layer, so it flips rather than hanging off the screen - and stays readable inside a card, a scrolling grid or a dialog.
+        /// </summary>
+        public static string Tooltip_CollisionBody {
+            get {
+                return ResourceManager.GetString("Tooltip_CollisionBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Top tooltip
+        /// </summary>
+        public static string Tooltip_TopContent {
+            get {
+                return ResourceManager.GetString("Tooltip_TopContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bottom tooltip
+        /// </summary>
+        public static string Tooltip_BottomContent {
+            get {
+                return ResourceManager.GetString("Tooltip_BottomContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Left tooltip
+        /// </summary>
+        public static string Tooltip_LeftContent {
+            get {
+                return ResourceManager.GetString("Tooltip_LeftContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Right tooltip
+        /// </summary>
+        public static string Tooltip_RightContent {
+            get {
+                return ResourceManager.GetString("Tooltip_RightContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover (top)
+        /// </summary>
+        public static string Tooltip_TopButton {
+            get {
+                return ResourceManager.GetString("Tooltip_TopButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover (bottom)
+        /// </summary>
+        public static string Tooltip_BottomButton {
+            get {
+                return ResourceManager.GetString("Tooltip_BottomButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover (left)
+        /// </summary>
+        public static string Tooltip_LeftButton {
+            get {
+                return ResourceManager.GetString("Tooltip_LeftButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover (right)
+        /// </summary>
+        public static string Tooltip_RightButton {
+            get {
+                return ResourceManager.GetString("Tooltip_RightButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover (top-start)
+        /// </summary>
+        public static string Tooltip_TopStartButton {
+            get {
+                return ResourceManager.GetString("Tooltip_TopStartButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover (bottom-end)
+        /// </summary>
+        public static string Tooltip_BottomEndButton {
+            get {
+                return ResourceManager.GetString("Tooltip_BottomEndButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No delay
+        /// </summary>
+        public static string Tooltip_NoDelay {
+            get {
+                return ResourceManager.GetString("Tooltip_NoDelay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 500ms delay
+        /// </summary>
+        public static string Tooltip_HalfSecond {
+            get {
+                return ResourceManager.GetString("Tooltip_HalfSecond", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 1 second delay
+        /// </summary>
+        public static string Tooltip_OneSecond {
+            get {
+                return ResourceManager.GetString("Tooltip_OneSecond", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Rich tooltip
+        /// </summary>
+        public static string Tooltip_RichButton {
+            get {
+                return ResourceManager.GetString("Tooltip_RichButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Save document
+        /// </summary>
+        public static string Tooltip_RichTitle {
+            get {
+                return ResourceManager.GetString("Tooltip_RichTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Stores your changes and updates the preview.
+        /// </summary>
+        public static string Tooltip_RichBody {
+            get {
+                return ResourceManager.GetString("Tooltip_RichBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click trigger
+        /// </summary>
+        public static string Tooltip_ClickButton {
+            get {
+                return ResourceManager.GetString("Tooltip_ClickButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click to toggle
+        /// </summary>
+        public static string Tooltip_ClickContent {
+            get {
+                return ResourceManager.GetString("Tooltip_ClickContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover / focus + arrow
+        /// </summary>
+        public static string Tooltip_HoverFocusButton {
+            get {
+                return ResourceManager.GetString("Tooltip_HoverFocusButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shown on hover or keyboard focus
+        /// </summary>
+        public static string Tooltip_HoverFocusContent {
+            get {
+                return ResourceManager.GetString("Tooltip_HoverFocusContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Focus only
+        /// </summary>
+        public static string Tooltip_FocusButton {
+            get {
+                return ResourceManager.GetString("Tooltip_FocusButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Focus only (Tab to me)
+        /// </summary>
+        public static string Tooltip_FocusContent {
+            get {
+                return ResourceManager.GetString("Tooltip_FocusContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled tooltip
+        /// </summary>
+        public static string Tooltip_DisabledButton {
+            get {
+                return ResourceManager.GetString("Tooltip_DisabledButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You should never see this
+        /// </summary>
+        public static string Tooltip_DisabledContent {
+            get {
+                return ResourceManager.GetString("Tooltip_DisabledContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The trigger is described by the bubble, so a screen reader reads it with the button. Escape closes a hover or focus bubble without moving focus.
+        /// </summary>
+        public static string Tooltip_A11yNote {
+            get {
+                return ResourceManager.GetString("Tooltip_A11yNote", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Readable from inside a card
+        /// </summary>
+        public static string Tooltip_CardContent {
+            get {
+                return ResourceManager.GetString("Tooltip_CardContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme offset
+        /// </summary>
+        public static string Tooltip_ThemeOffsetButton {
+            get {
+                return ResourceManager.GetString("Tooltip_ThemeOffsetButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default distance, from the theme's token
+        /// </summary>
+        public static string Tooltip_ThemeOffsetContent {
+            get {
+                return ResourceManager.GetString("Tooltip_ThemeOffsetContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Offset 16
+        /// </summary>
+        public static string Tooltip_Offset16Button {
+            get {
+                return ResourceManager.GetString("Tooltip_Offset16Button", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 16px from the trigger
+        /// </summary>
+        public static string Tooltip_Offset16Content {
+            get {
+                return ResourceManager.GetString("Tooltip_Offset16Content", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With an arrow
+        /// </summary>
+        public static string Tooltip_ArrowButton {
+            get {
+                return ResourceManager.GetString("Tooltip_ArrowButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Arrows point away from the side the bubble landed on
+        /// </summary>
+        public static string Tooltip_ArrowContent {
+            get {
+                return ResourceManager.GetString("Tooltip_ArrowContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long text and keyboard dismissal
+        /// </summary>
+        public static string Tooltip_Long {
+            get {
+                return ResourceManager.GetString("Tooltip_Long", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long description
+        /// </summary>
+        public static string Tooltip_LongButton {
+            get {
+                return ResourceManager.GetString("Tooltip_LongButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A tooltip that has to explain a setting usually needs more than one line. This one wraps inside the bubble instead of stretching across the page, and Escape closes it while the pointer or focus stays on the trigger.
+        /// </summary>
+        public static string Tooltip_LongContent {
+            get {
+                return ResourceManager.GetString("Tooltip_LongContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The bubble is a description, not a place for buttons: anything interactive in it cannot be reached by keyboard.
+        /// </summary>
+        public static string Tooltip_LongNote {
+            get {
+                return ResourceManager.GetString("Tooltip_LongNote", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareTooltip with Top, Bottom, Left, Right placements..
         /// </summary>
         public static string Tooltip_Subtitle {

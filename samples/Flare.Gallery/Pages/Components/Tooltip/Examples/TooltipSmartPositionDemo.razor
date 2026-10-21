@@ -1,39 +1,36 @@
 <FlareStack Gap="FlareSpacing.Large">
     <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
-        A tooltip is placed against its trigger in the viewport and raised into the browser's top layer,
-        so it flips to the opposite side rather than hanging off the screen - and stays readable inside a
-        card, a scrolling grid or a dialog, all of which clip what their children paint outside them.
-        Nothing to switch on.
+        @GalleryStrings.Tooltip_CollisionBody
     </FlareText>
 
     <FlareCard Variant="CardVariant.Outlined">
         <FlareCardContent>
             <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.Center">
-                <FlareTooltip Content="Readable from inside a card">
-                    <FlareButton Variant="ButtonVariant.Outlined">Top</FlareButton>
+                <FlareTooltip Content="@GalleryStrings.Tooltip_CardContent">
+                    <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Tooltip_TopButton</FlareButton>
                 </FlareTooltip>
-                <FlareTooltip Content="Readable from inside a card" Placement="Placement.Bottom">
-                    <FlareButton Variant="ButtonVariant.Outlined">Bottom</FlareButton>
+                <FlareTooltip Content="@GalleryStrings.Tooltip_CardContent" Placement="Placement.Bottom">
+                    <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Tooltip_BottomButton</FlareButton>
                 </FlareTooltip>
-                <FlareTooltip Content="Readable from inside a card" Placement="Placement.Left">
-                    <FlareButton Variant="ButtonVariant.Outlined">Left</FlareButton>
+                <FlareTooltip Content="@GalleryStrings.Tooltip_CardContent" Placement="Placement.Left">
+                    <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Tooltip_LeftButton</FlareButton>
                 </FlareTooltip>
-                <FlareTooltip Content="Readable from inside a card" Placement="Placement.Right">
-                    <FlareButton Variant="ButtonVariant.Outlined">Right</FlareButton>
+                <FlareTooltip Content="@GalleryStrings.Tooltip_CardContent" Placement="Placement.Right">
+                    <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Tooltip_RightButton</FlareButton>
                 </FlareTooltip>
             </FlareStack>
         </FlareCardContent>
     </FlareCard>
 
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
-        <FlareTooltip Content="Default distance, from the theme's token">
-            <FlareButton>Theme offset</FlareButton>
+        <FlareTooltip Content="@GalleryStrings.Tooltip_ThemeOffsetContent">
+            <FlareButton>@GalleryStrings.Tooltip_ThemeOffsetButton</FlareButton>
         </FlareTooltip>
-        <FlareTooltip Content="16px from the trigger" Offset="16">
-            <FlareButton>Offset 16</FlareButton>
+        <FlareTooltip Content="@GalleryStrings.Tooltip_Offset16Content" Offset="16">
+            <FlareButton>@GalleryStrings.Tooltip_Offset16Button</FlareButton>
         </FlareTooltip>
-        <FlareTooltip Content="Arrows point away from the side the bubble landed on" Arrow>
-            <FlareButton>With an arrow</FlareButton>
+        <FlareTooltip Content="@GalleryStrings.Tooltip_ArrowContent" Arrow>
+            <FlareButton>@GalleryStrings.Tooltip_ArrowButton</FlareButton>
         </FlareTooltip>
     </FlareStack>
 </FlareStack>

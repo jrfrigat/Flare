@@ -2566,6 +2566,120 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Tooltip_Triggers" xml:space="preserve">
     <value>Triggers, arrow and disabled</value>
   </data>
+  <data name="Tooltip_Collision" xml:space="preserve">
+    <value>Collision and clipping</value>
+  </data>
+  <data name="Tooltip_CollisionBody" xml:space="preserve">
+    <value>A tooltip is placed against its trigger in the viewport and raised into the top layer, so it flips rather than hanging off the screen - and stays readable inside a card, a scrolling grid or a dialog.</value>
+  </data>
+  <data name="Tooltip_TopContent" xml:space="preserve">
+    <value>Top tooltip</value>
+  </data>
+  <data name="Tooltip_BottomContent" xml:space="preserve">
+    <value>Bottom tooltip</value>
+  </data>
+  <data name="Tooltip_LeftContent" xml:space="preserve">
+    <value>Left tooltip</value>
+  </data>
+  <data name="Tooltip_RightContent" xml:space="preserve">
+    <value>Right tooltip</value>
+  </data>
+  <data name="Tooltip_TopButton" xml:space="preserve">
+    <value>Hover (top)</value>
+  </data>
+  <data name="Tooltip_BottomButton" xml:space="preserve">
+    <value>Hover (bottom)</value>
+  </data>
+  <data name="Tooltip_LeftButton" xml:space="preserve">
+    <value>Hover (left)</value>
+  </data>
+  <data name="Tooltip_RightButton" xml:space="preserve">
+    <value>Hover (right)</value>
+  </data>
+  <data name="Tooltip_TopStartButton" xml:space="preserve">
+    <value>Hover (top-start)</value>
+  </data>
+  <data name="Tooltip_BottomEndButton" xml:space="preserve">
+    <value>Hover (bottom-end)</value>
+  </data>
+  <data name="Tooltip_NoDelay" xml:space="preserve">
+    <value>No delay</value>
+  </data>
+  <data name="Tooltip_HalfSecond" xml:space="preserve">
+    <value>500ms delay</value>
+  </data>
+  <data name="Tooltip_OneSecond" xml:space="preserve">
+    <value>1 second delay</value>
+  </data>
+  <data name="Tooltip_RichButton" xml:space="preserve">
+    <value>Rich tooltip</value>
+  </data>
+  <data name="Tooltip_RichTitle" xml:space="preserve">
+    <value>Save document</value>
+  </data>
+  <data name="Tooltip_RichBody" xml:space="preserve">
+    <value>Stores your changes and updates the preview.</value>
+  </data>
+  <data name="Tooltip_ClickButton" xml:space="preserve">
+    <value>Click trigger</value>
+  </data>
+  <data name="Tooltip_ClickContent" xml:space="preserve">
+    <value>Click to toggle</value>
+  </data>
+  <data name="Tooltip_HoverFocusButton" xml:space="preserve">
+    <value>Hover / focus + arrow</value>
+  </data>
+  <data name="Tooltip_HoverFocusContent" xml:space="preserve">
+    <value>Shown on hover or keyboard focus</value>
+  </data>
+  <data name="Tooltip_FocusButton" xml:space="preserve">
+    <value>Focus only</value>
+  </data>
+  <data name="Tooltip_FocusContent" xml:space="preserve">
+    <value>Focus only (Tab to me)</value>
+  </data>
+  <data name="Tooltip_DisabledButton" xml:space="preserve">
+    <value>Disabled tooltip</value>
+  </data>
+  <data name="Tooltip_DisabledContent" xml:space="preserve">
+    <value>You should never see this</value>
+  </data>
+  <data name="Tooltip_A11yNote" xml:space="preserve">
+    <value>The trigger is described by the bubble, so a screen reader reads it with the button. Escape closes a hover or focus bubble without moving focus.</value>
+  </data>
+  <data name="Tooltip_CardContent" xml:space="preserve">
+    <value>Readable from inside a card</value>
+  </data>
+  <data name="Tooltip_ThemeOffsetButton" xml:space="preserve">
+    <value>Theme offset</value>
+  </data>
+  <data name="Tooltip_ThemeOffsetContent" xml:space="preserve">
+    <value>Default distance, from the theme's token</value>
+  </data>
+  <data name="Tooltip_Offset16Button" xml:space="preserve">
+    <value>Offset 16</value>
+  </data>
+  <data name="Tooltip_Offset16Content" xml:space="preserve">
+    <value>16px from the trigger</value>
+  </data>
+  <data name="Tooltip_ArrowButton" xml:space="preserve">
+    <value>With an arrow</value>
+  </data>
+  <data name="Tooltip_ArrowContent" xml:space="preserve">
+    <value>Arrows point away from the side the bubble landed on</value>
+  </data>
+  <data name="Tooltip_Long" xml:space="preserve">
+    <value>Long text and keyboard dismissal</value>
+  </data>
+  <data name="Tooltip_LongButton" xml:space="preserve">
+    <value>Long description</value>
+  </data>
+  <data name="Tooltip_LongContent" xml:space="preserve">
+    <value>A tooltip that has to explain a setting usually needs more than one line. This one wraps inside the bubble instead of stretching across the page, and Escape closes it while the pointer or focus stays on the trigger.</value>
+  </data>
+  <data name="Tooltip_LongNote" xml:space="preserve">
+    <value>The bubble is a description, not a place for buttons: anything interactive in it cannot be reached by keyboard.</value>
+  </data>
   <data name="Clipboard_Title" xml:space="preserve">
     <value>Clipboard</value>
   </data>
