@@ -34,6 +34,10 @@ public sealed record FabTokens
     /// <summary>Distance an anchored FAB sits from the screen edge.</summary>
     [CssVar(Fab.AnchorOffset)] public string AnchorOffset { get; init; } = Var(Css.Tokens.Spacing.S12);
 
+    /// <summary>Distance between the FAB trigger and the nearest action of its menu. A theme may widen or
+    /// close the gap; leaving it unset keeps the spacing scale's step.</summary>
+    [CssVar(Fab.MenuOffset)] public string MenuOffset { get; init; } = Var(Css.Tokens.Spacing.S6);
+
     /// <summary>Glyph size of the icon on a small FAB.</summary>
     [CssVar(Fab.IconSize.Sm)] public required string IconSizeSm { get; init; }
     /// <summary>Glyph size of the icon on a baseline FAB.</summary>

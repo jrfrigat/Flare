@@ -33,6 +33,8 @@ public static class Fab
     public const string HoverShadow = "--flare-fab-hover-shadow";
     /// <summary>CSS custom-property name for the anchor offset token.</summary>
     public const string AnchorOffset = "--flare-fab-anchor-offset";
+    /// <summary>CSS custom-property name for the distance between the FAB trigger and its menu.</summary>
+    public const string MenuOffset = "--flare-fab-menu-offset";
 
     /// <summary>Glyph size of the FAB's icon, one per size step. The icon grows with the container: a
     /// language that sizes the hero FAB up sizes its glyph up too.</summary>

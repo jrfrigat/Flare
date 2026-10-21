@@ -38,10 +38,9 @@
     transition: content-visibility var(--flare-motion-duration-enter-small);
     transition-behavior: allow-discrete;
 }
-/* Distance between the trigger and the nearest action. No FabTokens member names it yet (Gap is the
-   icon-label space on an extended FAB, AnchorOffset the distance from the screen edge), so it lives in
-   one place here instead of four until it becomes a token. The engine reads the same variable. */
-.flare-fab-menu__list { --_fab-menu-offset: 0.75rem; }
+/* Distance between the trigger and the nearest action: the theme's --flare-fab-menu-offset token, aliased
+   to the local name the rest of this file and the placement engine read. */
+.flare-fab-menu__list { --_fab-menu-offset: var(--flare-fab-menu-offset); }
 
 /* SIDE: which edge of the trigger the actions open from, and how they stack. A bare side centres
    them on the trigger. */
