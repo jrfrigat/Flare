@@ -1,0 +1,29 @@
+@page "/text-scale-bottomnav"
+@using Flare.Icons
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="bottomnav-shell" style="inline-size:360px">
+        <FlareBottomNav AriaLabel="Main" Position="BottomNavPosition.Fixed" LabelMode="BottomNavLabelMode.Wrap">
+            <FlareBottomNavItem Href="#home">
+                <IconContent><FlareIconView Value="@FlareIcons.Home" /></IconContent>
+                <ChildContent>Home</ChildContent>
+            </FlareBottomNavItem>
+            <FlareBottomNavItem Href="#check">
+                <IconContent><FlareIconView Value="@FlareIcons.Search" /></IconContent>
+                <ChildContent>Check</ChildContent>
+            </FlareBottomNavItem>
+            <FlareBottomNavItem Href="#catalog" Active="true">
+                <IconContent><FlareIconView Value="@FlareIcons.Menu" /></IconContent>
+                <ChildContent>Catalog</ChildContent>
+            </FlareBottomNavItem>
+            <FlareBottomNavItem Href="#purchases">
+                <IconContent><FlareIconView Value="@FlareIcons.Favorite" /></IconContent>
+                <ChildContent>Purchases</ChildContent>
+            </FlareBottomNavItem>
+            <FlareBottomNavItem Href="#history">
+                <IconContent><FlareIconView Value="@FlareIcons.Person" /></IconContent>
+                <ChildContent>History</ChildContent>
+            </FlareBottomNavItem>
+        </FlareBottomNav>
+    </div>
+</FlareThemeProvider>

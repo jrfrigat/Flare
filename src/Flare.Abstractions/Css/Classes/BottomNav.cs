@@ -12,6 +12,9 @@ public static class BottomNav
     /// <summary>The <c>flare-bottom-nav__spacer</c> CSS class: the in-flow placeholder that reserves the
     /// pinned bar's height so content is not hidden behind it.</summary>
     public const string Spacer = "flare-bottom-nav__spacer";
+    /// <summary>The <c>flare-bottom-nav--labels-wrap</c> modifier: labels may use two lines, and the bar
+    /// (and its spacer) grow to the height those lines need.</summary>
+    public const string LabelsWrap = "flare-bottom-nav--labels-wrap";
     /// <summary>The <c>flare-bottom-nav-item</c> CSS class.</summary>
     public const string Item = "flare-bottom-nav-item";
     /// <summary>The <c>flare-bottom-nav-item--active</c> CSS class.</summary>

@@ -896,7 +896,70 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("BottomNav_Disabled", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Wrapped labels.
+        /// </summary>
+        public static string BottomNav_WrapLabels {
+            get {
+                return ResourceManager.GetString("BottomNav_WrapLabels", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на LabelMode="Wrap" gives each label up to two lines..
+        /// </summary>
+        public static string BottomNav_WrapLabelsDesc {
+            get {
+                return ResourceManager.GetString("BottomNav_WrapLabelsDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Home.
+        /// </summary>
+        public static string BottomNavDemo_Home {
+            get {
+                return ResourceManager.GetString("BottomNavDemo_Home", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search.
+        /// </summary>
+        public static string BottomNavDemo_Search {
+            get {
+                return ResourceManager.GetString("BottomNavDemo_Search", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Favorites.
+        /// </summary>
+        public static string BottomNavDemo_Favorites {
+            get {
+                return ResourceManager.GetString("BottomNavDemo_Favorites", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Purchases.
+        /// </summary>
+        public static string BottomNavDemo_Purchases {
+            get {
+                return ResourceManager.GetString("BottomNavDemo_Purchases", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile.
+        /// </summary>
+        public static string BottomNavDemo_Profile {
+            get {
+                return ResourceManager.GetString("BottomNavDemo_Profile", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareBottomNav, FlareBottomNavItem - mobile bottom navigation bar..
         /// </summary>

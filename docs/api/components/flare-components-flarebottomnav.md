@@ -10,6 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible label for the navigation landmark, forwarded as aria-label. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The FlareBottomNavItem entries rendered inside the bar, laid out with equal flex distribution across the available width. |
+| `LabelMode` | `BottomNavLabelMode` | `BottomNavLabelMode.SingleLine` | Parameter |  | How an item's label is laid out. SingleLine (the default) keeps the theme's bar height and ends a label that does not fit with an ellipsis; Wrap gives the label up to two lines and grows the bar, and the space it reserves, to the height those lines need. Choose Wrap when labels must stay readable at a large root font size. |
 | `Position` | `BottomNavPosition` | `BottomNavPosition.Static` | Parameter |  | How the bar sits in the page. Static (the default) leaves it in the flow for the consumer's layout to place; Fixed pins it to the bottom of the viewport with its safe-area inset intact, which is what a PWA shell needs. |
 | `ReserveSpace` | `bool` | `true` | Parameter |  | While pinned, keeps a same-height spacer in the flow so page content is never hidden behind the bar. Default true. Turn it off when the layout already reserves the space itself. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |

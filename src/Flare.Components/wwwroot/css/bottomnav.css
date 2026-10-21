@@ -2,6 +2,13 @@
    Mobile bottom-navigation bar (FlareBottomNav / FlareBottomNavItem). Static by default - the
    consumer's layout places it - with Position="Fixed"/"Sticky" pinning it, safe-area inset included.
 */
+/* The label's line box. The wrap mode derives the bar's height from the same number, so the two can
+   never drift apart. It is stated on the modifier too, because the spacer carries only the modifier. */
+.flare-bottom-nav,
+.flare-bottom-nav--labels-wrap {
+  --_bottom-nav-label-line-height: 1.15;
+}
+
 .flare-bottom-nav {
   /* The bar's total height, published so the spacer (and any consumer layout) can reserve exactly it. */
   --_bottom-nav-total-height: calc(
@@ -11,7 +18,7 @@
   width: 100%;
   /* BarHeight is the content height (the token says so); the safe area is reserved BENEATH it. With
      border-box, a height of BarHeight alone made the inset eat into the controls. */
-  height: calc(var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding));
+  height: var(--_bottom-nav-total-height);
   padding-bottom: var(--flare-bottom-nav-safe-area-padding);
   background: var(--flare-bottom-nav-bar-bg);
   border-top: var(--flare-border-width) var(--flare-border-style) var(--flare-bottom-nav-border-color);
@@ -31,10 +38,38 @@
   z-index: var(--flare-z-chrome);
 }
 
-/* Sits immediately before the pinned bar, so it inherits nothing and has to recompute the height. */
+/* Sits immediately before the pinned bar, so it inherits nothing and has to recompute the height.
+   The wrap mode sets the variable on the spacer as well, and its rule below wins on source order. */
 .flare-bottom-nav__spacer {
   flex: none;
-  height: calc(var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding));
+  height: var(--_bottom-nav-total-height,
+      calc(var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding)));
+}
+
+/* Labels on two lines. The height is derived from the same tokens the item is built from - two label
+   lines plus the indicator, the gap, the item's vertical padding and the top border - so a pinned bar
+   and its spacer reserve the same, taller height at every text scale. The clamp keeps a label that
+   needs a third line from pushing the content past that budget. */
+.flare-bottom-nav--labels-wrap {
+  --_bottom-nav-total-height: max(
+      calc(var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding)),
+      calc(2 * var(--_bottom-nav-label-line-height) * var(--flare-bottom-nav-label-font-size)
+          + var(--flare-bottom-nav-item-gap)
+          + var(--flare-bottom-nav-indicator-size)
+          + 2 * var(--flare-spacing-3)
+          + var(--flare-border-width)
+          + var(--flare-bottom-nav-safe-area-padding)));
+  height: var(--_bottom-nav-total-height);
+}
+
+.flare-bottom-nav--labels-wrap .flare-bottom-nav-item__label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 /* Each item shares the bar equally. */
@@ -64,7 +99,11 @@
   justify-content: center;
   border-radius: var(--flare-bottom-nav-indicator-radius);
   padding-inline: var(--flare-spacing-6);
-  min-width: var(--flare-bottom-nav-indicator-width);
+  /* The pill is decoration behind the icon, so it may never grow past the item that owns it: at a
+     large root font size its min-width outgrows a phone-width item and would paint over its
+     neighbours. */
+  min-width: min(var(--flare-bottom-nav-indicator-width), 100%);
+  max-width: 100%;
   height: var(--flare-bottom-nav-indicator-size);
   background: transparent;
   transition: background-color var(--flare-motion-duration-state-change);
@@ -85,7 +124,7 @@
   font-family: var(--flare-typescale-label-medium-font);
   font-size: var(--flare-bottom-nav-label-font-size);
   font-weight: var(--flare-bottom-nav-label-font-weight);
-  line-height: 1.15;
+  line-height: var(--_bottom-nav-label-line-height);
 }
 
 .flare-bottom-nav-item--active {

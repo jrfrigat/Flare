@@ -6,9 +6,11 @@
    than the shell CSS every consumer would otherwise write. *@
 @if (_pinned && ReserveSpace)
 {
-    <div class="@Css.Classes.BottomNav.Spacer" aria-hidden="true"></div>
+    @* The spacer carries the label-mode modifier too: in wrap mode the bar's height is derived from
+       its tokens, and the spacer has to reserve exactly that derived height. *@
+    <div class="@_spacerClass" aria-hidden="true"></div>
 }
-<nav class="@BuildCssClass(_positionClass)" style="@Style"
+<nav class="@BuildCssClass(_positionClass, _labelsClass)" style="@Style"
      aria-label="@(string.IsNullOrEmpty(AriaLabel) ? FlareStrings.Nav_BottomNavigation : AriaLabel)"
      @attributes="AdditionalAttributes">
     @ChildContent
@@ -35,6 +37,15 @@
     /// </summary>
     [Parameter] public bool ReserveSpace { get; set; } = true;
 
+    /// <summary>
+    /// How an item's label is laid out. <see cref="BottomNavLabelMode.SingleLine"/> (the default) keeps
+    /// the theme's bar height and ends a label that does not fit with an ellipsis;
+    /// <see cref="BottomNavLabelMode.Wrap"/> gives the label up to two lines and grows the bar, and the
+    /// space it reserves, to the height those lines need. Choose <c>Wrap</c> when labels must stay
+    /// readable at a large root font size.
+    /// </summary>
+    [Parameter] public BottomNavLabelMode LabelMode { get; set; } = BottomNavLabelMode.SingleLine;
+
     protected override string ComponentCssClass => Css.Classes.BottomNav.Root;
 
     private bool _pinned => Position is BottomNavPosition.Fixed or BottomNavPosition.Sticky;
@@ -45,4 +56,10 @@
         BottomNavPosition.Sticky => Css.Classes.BottomNav.Sticky,
         _ => null,
     };
+
+    private string? _labelsClass =>
+        LabelMode == BottomNavLabelMode.Wrap ? Css.Classes.BottomNav.LabelsWrap : null;
+
+    private string _spacerClass => string.Join(' ',
+        new[] { Css.Classes.BottomNav.Spacer, _labelsClass }.Where(s => !string.IsNullOrEmpty(s)));
 }

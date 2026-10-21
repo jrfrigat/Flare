@@ -336,6 +336,27 @@
   <data name="BottomNav_Disabled" xml:space="preserve">
     <value>Disabled item &amp; custom aria-label</value>
   </data>
+  <data name="BottomNav_WrapLabels" xml:space="preserve">
+    <value>Wrapped labels</value>
+  </data>
+  <data name="BottomNav_WrapLabelsDesc" xml:space="preserve">
+    <value>LabelMode="Wrap" gives each label up to two lines and grows the bar, and the space a pinned bar reserves, to the height those lines need. A narrow bar and a large root font size keep their labels readable instead of ending every one with an ellipsis.</value>
+  </data>
+  <data name="BottomNavDemo_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="BottomNavDemo_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="BottomNavDemo_Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="BottomNavDemo_Purchases" xml:space="preserve">
+    <value>Purchases</value>
+  </data>
+  <data name="BottomNavDemo_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="Breadcrumb_Title" xml:space="preserve">
     <value>Breadcrumb</value>
   </data>

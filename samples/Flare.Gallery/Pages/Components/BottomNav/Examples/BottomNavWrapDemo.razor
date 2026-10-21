@@ -1,0 +1,28 @@
+@inherits LocalizedPage
+
+@* A narrow bar with five items. Wrap gives each label up to two lines and grows the bar, and the
+   space a pinned bar reserves, to the height those lines need. *@
+<FlareCard Variant="CardVariant.Filled" Style="max-width:260px;padding:0;overflow:hidden;border-radius:var(--flare-shape-medium);">
+    <FlareBottomNav LabelMode="BottomNavLabelMode.Wrap">
+        <FlareBottomNavItem Href="#home">
+            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Home" /></IconContent>
+            <ChildContent>@GalleryStrings.BottomNavDemo_Home</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#search" Active="true">
+            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Search" /></IconContent>
+            <ChildContent>@GalleryStrings.BottomNavDemo_Search</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#favorites">
+            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Favorite" /></IconContent>
+            <ChildContent>@GalleryStrings.BottomNavDemo_Favorites</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#purchases">
+            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.ShoppingCart" /></IconContent>
+            <ChildContent>@GalleryStrings.BottomNavDemo_Purchases</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#profile">
+            <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Person" /></IconContent>
+            <ChildContent>@GalleryStrings.BottomNavDemo_Profile</ChildContent>
+        </FlareBottomNavItem>
+    </FlareBottomNav>
+</FlareCard>

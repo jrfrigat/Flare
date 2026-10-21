@@ -61,4 +61,31 @@ public class FlareBottomNavTests : FlareTestContext
 
         Assert.Equal("bottom-nav-root", cut.Find($".{Css.Classes.BottomNav.Root}").GetAttribute("data-testid"));
     }
+
+    [Fact]
+    public void SingleLineLabelMode_DoesNotAddTheWrapModifier()
+    {
+        var cut = Render<FlareBottomNav>();
+
+        Assert.Empty(cut.FindAll($".{Css.Classes.BottomNav.LabelsWrap}"));
+    }
+
+    [Fact]
+    public void WrapLabelMode_MarksTheBar()
+    {
+        var cut = Render<FlareBottomNav>(p => p
+            .Add(x => x.LabelMode, BottomNavLabelMode.Wrap));
+
+        Assert.NotEmpty(cut.FindAll($"nav.{Css.Classes.BottomNav.LabelsWrap}"));
+    }
+
+    [Fact]
+    public void PinnedWrapBar_MarksItsSpacerToo()
+    {
+        var cut = Render<FlareBottomNav>(p => p
+            .Add(x => x.LabelMode, BottomNavLabelMode.Wrap)
+            .Add(x => x.Position, BottomNavPosition.Fixed));
+
+        Assert.NotEmpty(cut.FindAll($".{Css.Classes.BottomNav.Spacer}.{Css.Classes.BottomNav.LabelsWrap}"));
+    }
 }

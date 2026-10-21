@@ -7,6 +7,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- `FlareBottomNav.LabelMode="Wrap"` gives each item label up to two lines and grows the bar, and the space a pinned bar reserves, to the height those lines need, so the labels of a narrow bar stay readable at 200% text.
 - `--flare-layout-appbar-control-max-size` sets the ceiling for an icon control in the layout app bar and for the glyph inside it, and defaults to the bar's height, so a bar stays one row when the root font size grows.
 - `FlareListItem.Mono` renders its text in the monospace font, so an identifier keeps the item's title slot and row typography.
 - `FlareSkeleton.Announce` marks one placeholder as the loading indicator of its region.
@@ -20,6 +21,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareListItem` stays a list item and moves its click action into a native button, announcing selection with `aria-pressed`, or `aria-current` on a static selected item.
 - An icon-only `FlareButton` keeps its square shape while `Loading` is true.
 - A 360px `FlareLayoutAppBar` keeps its brand, the color-mode toggle and two icon buttons on one row at 200% text: the icon controls stop at the bar's height and the title truncates instead of sliding under the trailing block.
+- The active indicator pill in `FlareBottomNav` is capped at its item's width instead of painting over the neighbouring items at a large root font size.
 - A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
 
 ## [0.48.0] - 2026-10-20

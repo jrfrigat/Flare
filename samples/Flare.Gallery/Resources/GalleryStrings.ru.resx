@@ -336,6 +336,27 @@
   <data name="BottomNav_Disabled" xml:space="preserve">
     <value>Отключенный элемент и своя aria-label</value>
   </data>
+  <data name="BottomNav_WrapLabels" xml:space="preserve">
+    <value>Перенос подписей</value>
+  </data>
+  <data name="BottomNav_WrapLabelsDesc" xml:space="preserve">
+    <value>LabelMode="Wrap" дает каждой подписи до двух строк и увеличивает панель, а также место, которое резервирует закрепленная панель, до нужной высоты. Узкая панель и крупный корневой шрифт сохраняют подписи читаемыми, а не обрезают каждую многоточием.</value>
+  </data>
+  <data name="BottomNavDemo_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="BottomNavDemo_Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="BottomNavDemo_Favorites" xml:space="preserve">
+    <value>Избранное</value>
+  </data>
+  <data name="BottomNavDemo_Purchases" xml:space="preserve">
+    <value>Покупки</value>
+  </data>
+  <data name="BottomNavDemo_Profile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
   <data name="Breadcrumb_Title" xml:space="preserve">
     <value>Хлебные крошки</value>
   </data>

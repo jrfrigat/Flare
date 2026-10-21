@@ -357,6 +357,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, forwarded as aria-label.", null, false, false, false, @"FlareBottomNav"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The FlareBottomNavItem entries rendered inside the bar, laid out with equal flex distribution across the available width.", null, false, false, false, @"FlareBottomNav"),
+                new ApiParameterInfo(@"LabelMode", @"BottomNavLabelMode", @"BottomNavLabelMode.SingleLine", @"How an item's label is laid out. SingleLine (the default) keeps the theme's bar height and ends a label that does not fit with an ellipsis; Wrap gives the label up to two lines and grows the bar, and the space it reserves, to the height those lines need. Choose Wrap when labels must stay readable at a large root font size.", null, false, false, false, @"FlareBottomNav"),
                 new ApiParameterInfo(@"Position", @"BottomNavPosition", @"BottomNavPosition.Static", @"How the bar sits in the page. Static (the default) leaves it in the flow for the consumer's layout to place; Fixed pins it to the bottom of the viewport with its safe-area inset intact, which is what a PWA shell needs.", null, false, false, false, @"FlareBottomNav"),
                 new ApiParameterInfo(@"ReserveSpace", @"bool", @"true", @"While pinned, keeps a same-height spacer in the flow so page content is never hidden behind the bar. Default true. Turn it off when the layout already reserves the space itself.", null, false, false, false, @"FlareBottomNav"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -8008,6 +8009,22 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareBarcode",
+            });
+
+        e[@"BottomNavLabelMode"] = new ApiEnumInfo(
+            @"BottomNavLabelMode",
+            @"Flare.Components.BottomNavLabelMode",
+            @"Flare.Components",
+            @"How FlareBottomNav lays out an item's label.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"SingleLine", @"0", @"One line at the theme's bar height; a label that does not fit ends with an ellipsis. This is the default and keeps the bar exactly as tall as the theme says."),
+                new ApiEnumMember(@"Wrap", @"1", @"Up to two lines, and the bar grows (with the space it reserves) to the height those two lines need. At a large root font size a five-item bar can no longer show its labels on one line, and this mode keeps them readable instead of ending each with an ellipsis."),
+            },
+            new string[]
+            {
+                @"FlareBottomNav",
             });
 
         e[@"BottomNavPosition"] = new ApiEnumInfo(
