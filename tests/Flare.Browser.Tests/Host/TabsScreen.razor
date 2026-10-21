@@ -1,0 +1,16 @@
+@page "/tabs-fallback"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <FlareTabs @bind-ActiveIndex="_active">
+            <FlareTab Label="One" />
+            <FlareTab Label="Two" />
+            <FlareTab Label="Three" />
+        </FlareTabs>
+        <output id="active">@_active</output>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    private int _active;
+}

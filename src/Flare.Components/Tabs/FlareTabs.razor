@@ -17,7 +17,8 @@
             <FlareIconView Value="FlareIcons.ChevronLeft" />
         </button>
     }
-    <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef">
+    <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef"
+         data-flare-keyboard-fallback="@(_jsKeyboardRegistered ? null : "true")">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _context?.ActiveTab;
@@ -185,6 +186,9 @@
     private bool _overflowing;
     private bool _atStart = true;
     private bool _atEnd;
+    private bool _jsKeyboardRegistered;
+    private int _keyboardRegistrationAttempts;
+    private bool _retryKeyboardPending;
     private bool _showArrows => _overflowing && !_vertical;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -193,13 +197,18 @@
         if (firstRender)
         {
             _dotNetRef = DotNetObjectReference.Create(this);
-            try
+            await RegisterKeyboardAsync();
+            if (_jsKeyboardRegistered && !_vertical)
             {
-                await Ui.RegisterTabKeyboardAsync(_barRef, _dotNetRef);
-                if (!_vertical) await Ui.RegisterTabScrollerAsync(_barRef, _dotNetRef);
+                try { await Ui.RegisterTabScrollerAsync(_barRef, _dotNetRef); }
+                catch (InvalidOperationException) { }
+                catch (JSException) { }
             }
-            catch (InvalidOperationException) { }
-            catch (JSException) { }
+        }
+        else if (_retryKeyboardPending)
+        {
+            _retryKeyboardPending = false;
+            await RegisterKeyboardAsync();
         }
         if (_focusPending is { } target)
         {
@@ -390,6 +399,27 @@
         var args = new TabInteractionEventArgs { PanelIndex = index, Label = label, InteractionType = type };
         await OnPreviewInteraction.InvokeAsync(args);
         return !args.Cancel;
+    }
+
+    // The listener lives in flare-ui.js, which a stale PWA can serve as a failed module. One retry on
+    // the next render recovers when the module becomes available; without it the failure was silent
+    // and the arrows, Home, End and Delete stayed dead for the life of the page.
+    private async Task RegisterKeyboardAsync()
+    {
+        try
+        {
+            await Ui.RegisterTabKeyboardAsync(_barRef, _dotNetRef!);
+            _jsKeyboardRegistered = true;
+        }
+        catch (InvalidOperationException) { _jsKeyboardRegistered = false; }
+        catch (JSException) { _jsKeyboardRegistered = false; }
+
+        if (!_jsKeyboardRegistered && _keyboardRegistrationAttempts == 0)
+        {
+            _keyboardRegistrationAttempts = 1;
+            _retryKeyboardPending = true;
+            StateHasChanged();
+        }
     }
 
     /// <summary>Activates and focuses the available tab addressed by an orientation-aware navigation key.</summary>

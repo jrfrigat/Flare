@@ -12,6 +12,15 @@ const tabScrollBehavior = () => globalThis.matchMedia?.('(prefers-reduced-motion
 
 export function registerTabKeyboard(bar, dotNetRef) {
     if (!bar) return;
+    // A broken .NET call used to be swallowed, so the key was preventDefaulted and nothing happened.
+    // Report it once per listener; the component's C# fallback cannot help here because this listener
+    // is registered (it is the stale-circuit case), but the page is no longer silent about it.
+    let reported = false;
+    const reportFailure = error => {
+        if (reported) return;
+        reported = true;
+        globalThis.console?.warn?.('Flare: tab keyboard navigation could not reach .NET.', error);
+    };
     const keydown = e => {
         if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing) return;
         const tab = e.target.closest('[role="tab"]');
@@ -22,7 +31,7 @@ export function registerTabKeyboard(bar, dotNetRef) {
                 : e.key === 'ArrowLeft' || e.key === 'ArrowRight');
         if (!handled) return;
         e.preventDefault();
-        dotNetRef.invokeMethodAsync('OnTabNavigation', e.key, getComputedStyle(bar).direction === 'rtl').catch(() => {});
+        dotNetRef.invokeMethodAsync('OnTabNavigation', e.key, getComputedStyle(bar).direction === 'rtl').catch(reportFailure);
     };
     _tabKeyboards.keep(bar, listen(bar, 'keydown', keydown));
 }

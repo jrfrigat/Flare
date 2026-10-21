@@ -1,5 +1,6 @@
 using Flare.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace Flare.Components.IDE;
@@ -50,15 +51,43 @@ public partial class FlareRibbon : FlareComponentBase
 
     private ElementReference _tablistRef;
     private DotNetObjectReference<FlareRibbon>? _dotNetRef;
+    private int _keyboardRegistrationAttempts;
+    private bool _retryKeyboardPending;
 
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
-        _dotNetRef = DotNetObjectReference.Create(this);
-        try { await Ui.RegisterTabKeyboardAsync(_tablistRef, _dotNetRef); }
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await RegisterKeyboardAsync();
+        }
+        else if (_retryKeyboardPending)
+        {
+            _retryKeyboardPending = false;
+            await RegisterKeyboardAsync();
+        }
+    }
+
+    // A stale PWA can serve flare-ui.js as a failed module. One retry on the next render recovers when
+    // the module becomes available; the old code swallowed the failure and lost the keyboard silently.
+    private async Task RegisterKeyboardAsync()
+    {
+        var registered = false;
+        try
+        {
+            await Ui.RegisterTabKeyboardAsync(_tablistRef, _dotNetRef!);
+            registered = true;
+        }
         catch (InvalidOperationException) { }
         catch (JSException) { }
+
+        if (!registered && _keyboardRegistrationAttempts == 0)
+        {
+            _keyboardRegistrationAttempts = 1;
+            _retryKeyboardPending = true;
+            StateHasChanged();
+        }
     }
 
     /// <summary>
