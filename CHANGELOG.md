@@ -44,6 +44,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A `FlareStepper` focus reveal into a stale module that no longer has it is ignored instead of terminating the circuit.
 - `FlareCarousel` follows the reading direction: the track shifts along the RTL flow, the arrows swap sides and mirror their chevrons, and the keys and swipe move the way the reader looks.
 - A `FlarePagination` keeps an active page when `TotalPages` shrinks, treats zero or negative page counts as an empty bar with disabled navigation, and computes its range without integer overflow at extreme counts.
+- A `FlareSkeleton` applies later changes to its class, style, extra attributes and `Announce` instead of keeping the first markup.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
 
 ## [0.48.0] - 2026-10-20

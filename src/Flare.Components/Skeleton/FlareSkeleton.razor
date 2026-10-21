@@ -26,14 +26,10 @@
 
     protected override string ComponentCssClass => Css.Classes.Skeleton.Root;
 
-    private string? _lastKey;
-    protected override bool ShouldRender()
-    {
-        var key = $"{Variant}:{Animation}:{Width}:{Height}";
-        if (key == _lastKey) return false;
-        _lastKey = key;
-        return true;
-    }
+    // Deliberately no ShouldRender memo. A key built from Variant, Animation, Width and Height swallowed
+    // every later change to Class, Style, Announce and unmatched attributes - the DOM kept the first
+    // markup. One empty span is cheaper to render than a complete key (which would have to hash the
+    // attribute dictionary) is to build, the same answer Divider and Avatar already carry.
 
     private string _variantClass => Variant switch
     {
