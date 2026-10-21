@@ -446,7 +446,151 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Alerts_AnimateDismiss", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Announcement modes.
+        /// </summary>
+        public static string Alerts_Announcements {
+            get {
+                return ResourceManager.GetString("Alerts_Announcements", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long text and links in a narrow card.
+        /// </summary>
+        public static string Alerts_LongText {
+            get {
+                return ResourceManager.GetString("Alerts_LongText", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The default role=alert announces this immediately..
+        /// </summary>
+        public static string AlertDemo_AssertiveBody {
+            get {
+                return ResourceManager.GetString("AlertDemo_AssertiveBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Connection lost.
+        /// </summary>
+        public static string AlertDemo_AssertiveTitle {
+            get {
+                return ResourceManager.GetString("AlertDemo_AssertiveTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close the alert to see the fade-out slide-up animation..
+        /// </summary>
+        public static string AlertDemo_AnimateBody {
+            get {
+                return ResourceManager.GetString("AlertDemo_AnimateBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Animated dismiss.
+        /// </summary>
+        public static string AlertDemo_AnimateTitle {
+            get {
+                return ResourceManager.GetString("AlertDemo_AnimateTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filled.
+        /// </summary>
+        public static string AlertDemo_Filled {
+            get {
+                return ResourceManager.GetString("AlertDemo_Filled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Your account has used most of its storage..
+        /// </summary>
+        public static string AlertDemo_LongBody {
+            get {
+                return ResourceManager.GetString("AlertDemo_LongBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Storage almost full.
+        /// </summary>
+        public static string AlertDemo_LongTitle {
+            get {
+                return ResourceManager.GetString("AlertDemo_LongTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Outlined.
+        /// </summary>
+        public static string AlertDemo_Outlined {
+            get {
+                return ResourceManager.GetString("AlertDemo_Outlined", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на role=status announces this politely, without interrupting..
+        /// </summary>
+        public static string AlertDemo_PoliteBody {
+            get {
+                return ResourceManager.GetString("AlertDemo_PoliteBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Saved.
+        /// </summary>
+        public static string AlertDemo_PoliteTitle {
+            get {
+                return ResourceManager.GetString("AlertDemo_PoliteTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset demo.
+        /// </summary>
+        public static string AlertDemo_Reset {
+            get {
+                return ResourceManager.GetString("AlertDemo_Reset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Read when a reader reaches it; role=note keeps it out of live announcements..
+        /// </summary>
+        public static string AlertDemo_StaticBody {
+            get {
+                return ResourceManager.GetString("AlertDemo_StaticBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Static notice.
+        /// </summary>
+        public static string AlertDemo_StaticTitle {
+            get {
+                return ResourceManager.GetString("AlertDemo_StaticTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Text.
+        /// </summary>
+        public static string AlertDemo_Text {
+            get {
+                return ResourceManager.GetString("AlertDemo_Text", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Custom icon &amp; no icon.
         /// </summary>

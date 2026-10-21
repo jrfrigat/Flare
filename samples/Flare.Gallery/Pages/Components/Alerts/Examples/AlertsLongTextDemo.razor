@@ -1,0 +1,10 @@
+@inherits LocalizedPage
+
+@* A narrow card is where an alert has to wrap: the long sentence and the long link text both have to fit
+   instead of overflowing, and the link keeps its own name and target. *@
+<FlareCard Style="max-width:20rem">
+    <FlareAlert Severity="AlertSeverity.Warning" Title="@GalleryStrings.AlertDemo_LongTitle" Dismissible="true">
+        @GalleryStrings.AlertDemo_LongBody
+        <FlareLink Href="https://example.com/storage">https://example.com/storage/management/guide/that/keeps/going</FlareLink>
+    </FlareAlert>
+</FlareCard>

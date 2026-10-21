@@ -201,6 +201,54 @@
   <data name="Alerts_AnimateDismiss" xml:space="preserve">
     <value>Анимированное скрытие</value>
   </data>
+  <data name="Alerts_Announcements" xml:space="preserve">
+    <value>Режимы объявления</value>
+  </data>
+  <data name="Alerts_LongText" xml:space="preserve">
+    <value>Длинный текст и ссылки в узкой карточке</value>
+  </data>
+  <data name="AlertDemo_StaticTitle" xml:space="preserve">
+    <value>Обычное уведомление</value>
+  </data>
+  <data name="AlertDemo_StaticBody" xml:space="preserve">
+    <value>Читается, когда до него доходят; role=note не включает его в live-объявления.</value>
+  </data>
+  <data name="AlertDemo_PoliteTitle" xml:space="preserve">
+    <value>Сохранено</value>
+  </data>
+  <data name="AlertDemo_PoliteBody" xml:space="preserve">
+    <value>role=status объявляет это вежливо, не прерывая.</value>
+  </data>
+  <data name="AlertDemo_AssertiveTitle" xml:space="preserve">
+    <value>Соединение потеряно</value>
+  </data>
+  <data name="AlertDemo_AssertiveBody" xml:space="preserve">
+    <value>Стандартный role=alert объявляет это сразу.</value>
+  </data>
+  <data name="AlertDemo_LongTitle" xml:space="preserve">
+    <value>Место почти закончилось</value>
+  </data>
+  <data name="AlertDemo_LongBody" xml:space="preserve">
+    <value>Аккаунт занял почти все хранилище. Удалите большие файлы или смените план; полное руководство - по длинной ссылке ниже.</value>
+  </data>
+  <data name="AlertDemo_AnimateTitle" xml:space="preserve">
+    <value>Анимация закрытия</value>
+  </data>
+  <data name="AlertDemo_AnimateBody" xml:space="preserve">
+    <value>Закройте уведомление, чтобы увидеть анимацию ухода.</value>
+  </data>
+  <data name="AlertDemo_Reset" xml:space="preserve">
+    <value>Сбросить демо</value>
+  </data>
+  <data name="AlertDemo_Filled" xml:space="preserve">
+    <value>Заполненный</value>
+  </data>
+  <data name="AlertDemo_Outlined" xml:space="preserve">
+    <value>Контурный</value>
+  </data>
+  <data name="AlertDemo_Text" xml:space="preserve">
+    <value>Текстовый</value>
+  </data>
   <data name="Accordion_Title" xml:space="preserve">
     <value>Аккордеон</value>
   </data>

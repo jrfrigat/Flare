@@ -1,13 +1,13 @@
 @if (_showAnimatedAlert)
 {
-    <FlareAlert Severity="AlertSeverity.Info" Title="Animated dismiss" AnimateDismiss="true"
+    <FlareAlert Severity="AlertSeverity.Info" Title="@GalleryStrings.AlertDemo_AnimateTitle" AnimateDismiss="true"
                 Dismissible="true" OnClose="@(() => _showAnimatedAlert = false)">
-        Click × to see the fade-out slide-up animation before this alert disappears.
+        @GalleryStrings.AlertDemo_AnimateBody
     </FlareAlert>
 }
 else
 {
-    <FlareButton OnClick="@(() => _showAnimatedAlert = true)">Reset demo</FlareButton>
+    <FlareButton OnClick="@(() => _showAnimatedAlert = true)">@GalleryStrings.AlertDemo_Reset</FlareButton>
 }
 
 @code

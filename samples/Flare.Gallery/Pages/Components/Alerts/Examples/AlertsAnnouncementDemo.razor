@@ -1,0 +1,18 @@
+@inherits LocalizedPage
+
+@* The role decides who hears the alert: role=alert (the default) is assertive, role=status is polite, and
+   a plain note is read when a reader reaches it instead of interrupting. The component applies consumer
+   attributes after its own role, so these replace it. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareAlert Severity="AlertSeverity.Info" Title="@GalleryStrings.AlertDemo_StaticTitle"
+                role="note" aria-live="off" Dismissible="true">
+        @GalleryStrings.AlertDemo_StaticBody
+    </FlareAlert>
+    <FlareAlert Severity="AlertSeverity.Success" Title="@GalleryStrings.AlertDemo_PoliteTitle"
+                role="status">
+        @GalleryStrings.AlertDemo_PoliteBody
+    </FlareAlert>
+    <FlareAlert Severity="AlertSeverity.Error" Title="@GalleryStrings.AlertDemo_AssertiveTitle" Dismissible="true">
+        @GalleryStrings.AlertDemo_AssertiveBody
+    </FlareAlert>
+</FlareStack>

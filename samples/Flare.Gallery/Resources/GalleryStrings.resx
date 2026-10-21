@@ -201,6 +201,54 @@
   <data name="Alerts_AnimateDismiss" xml:space="preserve">
     <value>Animated Dismiss</value>
   </data>
+  <data name="Alerts_Announcements" xml:space="preserve">
+    <value>Announcement modes</value>
+  </data>
+  <data name="Alerts_LongText" xml:space="preserve">
+    <value>Long text and links in a narrow card</value>
+  </data>
+  <data name="AlertDemo_StaticTitle" xml:space="preserve">
+    <value>Static notice</value>
+  </data>
+  <data name="AlertDemo_StaticBody" xml:space="preserve">
+    <value>Read when a reader reaches it; role=note keeps it out of live announcements.</value>
+  </data>
+  <data name="AlertDemo_PoliteTitle" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="AlertDemo_PoliteBody" xml:space="preserve">
+    <value>role=status announces this politely, without interrupting.</value>
+  </data>
+  <data name="AlertDemo_AssertiveTitle" xml:space="preserve">
+    <value>Connection lost</value>
+  </data>
+  <data name="AlertDemo_AssertiveBody" xml:space="preserve">
+    <value>The default role=alert announces this immediately.</value>
+  </data>
+  <data name="AlertDemo_LongTitle" xml:space="preserve">
+    <value>Storage almost full</value>
+  </data>
+  <data name="AlertDemo_LongBody" xml:space="preserve">
+    <value>Your account has used most of its storage. Remove large files or change the plan; the full guide is at the long link below.</value>
+  </data>
+  <data name="AlertDemo_AnimateTitle" xml:space="preserve">
+    <value>Animated dismiss</value>
+  </data>
+  <data name="AlertDemo_AnimateBody" xml:space="preserve">
+    <value>Close the alert to see the fade-out slide-up animation.</value>
+  </data>
+  <data name="AlertDemo_Reset" xml:space="preserve">
+    <value>Reset demo</value>
+  </data>
+  <data name="AlertDemo_Filled" xml:space="preserve">
+    <value>Filled</value>
+  </data>
+  <data name="AlertDemo_Outlined" xml:space="preserve">
+    <value>Outlined</value>
+  </data>
+  <data name="AlertDemo_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
   <data name="Accordion_Title" xml:space="preserve">
     <value>Accordion</value>
   </data>
