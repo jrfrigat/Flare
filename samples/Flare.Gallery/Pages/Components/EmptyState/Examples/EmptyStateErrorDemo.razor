@@ -10,7 +10,7 @@
                 <FlareIconView Size="3rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Error" />
             </IconContent>
             <ActionContent>
-                <FlareButton Variant="ButtonVariant.Outlined" OnClick="RetryAsync">@GalleryStrings.EmptyState_Retry</FlareButton>
+                <FlareButton @ref="_retryButton" Variant="ButtonVariant.Outlined" OnClick="RetryAsync">@GalleryStrings.EmptyState_Retry</FlareButton>
             </ActionContent>
         </FlareEmptyState>
     }
@@ -43,8 +43,10 @@
 
     private LoadState _state = LoadState.Error;
     private bool _focusLoaded;
+    private bool _focusRetry;
     private bool _disposed;
     private ElementReference _loaded;
+    private FlareButton? _retryButton;
 
     private async Task RetryAsync()
     {
@@ -55,14 +57,26 @@
         _focusLoaded = true;
     }
 
-    private void SimulateFailure() => _state = LoadState.Error;
+    private void SimulateFailure()
+    {
+        _state = LoadState.Error;
+        _focusRetry = true;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!_focusLoaded) return;
-        _focusLoaded = false;
-        try { await _loaded.FocusAsync(); }
-        catch (JSException) { }
+        if (_focusLoaded)
+        {
+            _focusLoaded = false;
+            try { await _loaded.FocusAsync(); }
+            catch (JSException) { }
+        }
+        if (_focusRetry)
+        {
+            _focusRetry = false;
+            try { if (_retryButton is not null) await _retryButton.FocusAsync(); }
+            catch (JSException) { }
+        }
     }
 
     public void Dispose() => _disposed = true;
