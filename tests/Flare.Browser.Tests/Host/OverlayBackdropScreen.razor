@@ -1,0 +1,23 @@
+@page "/overlay-backdrop"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="surface" style="position:relative;width:600px;height:300px">
+        <FlareOverlay Open="true" Absolute="true" ZIndex="5"
+                      OnBackdropClick="OnBackdrop" OnClick="OnSurface">
+            <button id="overlay-action" style="position:absolute;left:40px;top:40px" @onclick="OnAction">Act</button>
+        </FlareOverlay>
+    </div>
+    <span id="backdrops">@_backdrops</span>
+    <span id="surfaces">@_surfaces</span>
+    <span id="actions">@_actions</span>
+</FlareThemeProvider>
+
+@code {
+    private int _backdrops;
+    private int _surfaces;
+    private int _actions;
+
+    private void OnBackdrop() => _backdrops++;
+    private void OnSurface() => _surfaces++;
+    private void OnAction() => _actions++;
+}

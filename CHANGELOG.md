@@ -13,6 +13,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareListItem.Mono` renders its text in the monospace font, so an identifier keeps the item's title slot and row typography.
 - `FlareSkeleton.Announce` marks one placeholder as the loading indicator of its region.
 - Data grid rows and tree items reorder from the keyboard with `Alt+Space` to pick up or put down and `Alt+ArrowUp`/`Alt+ArrowDown` to move, without taking over the keys those surfaces use for selection, navigation and expanding.
+- `FlareOverlay.OnBackdropClick` fires only when the backdrop is clicked, so an action inside the content no longer dismisses the surface; `OnClick` keeps its surface-wide bubbling.
 
 ### Changed
 

@@ -102,4 +102,47 @@ public class FlareOverlayTests : FlareTestContext
 
         Assert.Empty(cut.FindAll($".{Css.Classes.Overlay.Absolute}"));
     }
+
+    [Fact]
+    public void BackdropClick_RaisesOnBackdropClick()
+    {
+        var backdrop = 0;
+        var cut = Render<FlareOverlay>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.OnBackdropClick, () => backdrop++));
+
+        cut.Find($".{Css.Classes.Overlay.Scrim}").Click();
+
+        Assert.Equal(1, backdrop);
+    }
+
+    [Fact]
+    public void ContentClick_RaisesOnClickButNotOnBackdropClick()
+    {
+        var surface = 0;
+        var backdrop = 0;
+        var cut = Render<FlareOverlay>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.OnClick, () => surface++)
+            .Add(x => x.OnBackdropClick, () => backdrop++)
+            .AddChildContent("<button id=\"overlay-action\">Act</button>"));
+
+        cut.Find("#overlay-action").Click();
+
+        Assert.Equal(0, backdrop);
+        Assert.Equal(1, surface);
+    }
+
+    [Fact]
+    public void BackdropClick_StillBubblesToOnClick()
+    {
+        var surface = 0;
+        var cut = Render<FlareOverlay>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.OnClick, () => surface++));
+
+        cut.Find($".{Css.Classes.Overlay.Scrim}").Click();
+
+        Assert.Equal(1, surface);
+    }
 }

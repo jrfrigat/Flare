@@ -11,7 +11,8 @@
 | `Absolute` | `bool` | `false` | Parameter |  | Uses absolute positioning instead of fixed. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Optional content rendered on top of the overlay. |
 | `Dark` | `bool` | `true` | Parameter |  | Renders a dark semi-transparent background. |
-| `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when the overlay surface is clicked. |
+| `OnBackdropClick` | `EventCallback` | `` | Callback |  | Callback raised when the backdrop (the scrim outside ChildContent) is clicked. A click inside the content does not raise it. A backdrop click still bubbles to OnClick, so set only one of the two for a dismissal. |
+| `OnClick` | `EventCallback` | `` | Callback |  | Callback raised when anything on the overlay surface is clicked - a click inside ChildContent reaches it through bubbling too. For a dismissal that only a click on the backdrop should trigger, use OnBackdropClick instead. |
 | `Opacity` | `double` | `0.5` | Parameter |  | Background opacity value between 0 and 1. |
 | `Open` | `bool` | `false` | Parameter |  | Controls whether the overlay is visible. |
 | `ZIndex` | `int` | `1200` | Parameter |  | CSS z-index applied to the overlay element. |

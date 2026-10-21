@@ -8,7 +8,8 @@
          style="@_style"
          @onclick="HandleClickAsync"
          @attributes="AdditionalAttributes">
-        <div class="@Css.Classes.Overlay.Scrim" style="@_scrimStyle" aria-hidden="true"></div>
+        <div class="@Css.Classes.Overlay.Scrim" style="@_scrimStyle" aria-hidden="true"
+             @onclick="HandleBackdropClickAsync"></div>
         @ChildContent
     </div>
 }
@@ -18,8 +19,14 @@
     [Parameter] public bool              Open        { get; set; }
     /// <summary>Optional content rendered on top of the overlay.</summary>
     [Parameter] public RenderFragment?   ChildContent { get; set; }
-    /// <summary>Callback raised when the overlay surface is clicked.</summary>
+    /// <summary>Callback raised when anything on the overlay surface is clicked - a click inside
+    /// <see cref="ChildContent"/> reaches it through bubbling too. For a dismissal that only a click on the
+    /// backdrop should trigger, use <see cref="OnBackdropClick"/> instead.</summary>
     [Parameter] public EventCallback     OnClick     { get; set; }
+    /// <summary>Callback raised when the backdrop (the scrim outside <see cref="ChildContent"/>) is clicked.
+    /// A click inside the content does not raise it. A backdrop click still bubbles to <see cref="OnClick"/>,
+    /// so set only one of the two for a dismissal.</summary>
+    [Parameter] public EventCallback     OnBackdropClick { get; set; }
     /// <summary>Uses absolute positioning instead of fixed.</summary>
     [Parameter] public bool              Absolute    { get; set; }
     /// <summary>Renders a dark semi-transparent background.</summary>
@@ -63,5 +70,11 @@
     private async Task HandleClickAsync()
     {
         if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+    }
+
+    // Only the scrim reaches this handler; content clicks never touch the backdrop layer.
+    private async Task HandleBackdropClickAsync()
+    {
+        if (OnBackdropClick.HasDelegate) await OnBackdropClick.InvokeAsync();
     }
 }
