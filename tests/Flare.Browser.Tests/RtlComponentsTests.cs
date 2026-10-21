@@ -37,4 +37,31 @@ public sealed class RtlComponentsTests(BrowserFixture fixture) : IClassFixture<B
         var ltrRows = page.Locator($"#ltr-pagination .{Css.Classes.Pagination.Rows}");
         Assert.True(await ltrRows.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginRight)") > 0);
     }
+
+    [Fact]
+    public async Task NavMenu_MirrorsIndentAndActiveBar()
+    {
+        await using var context = await fixture.Browser.NewContextAsync(new()
+        {
+            ViewportSize = new() { Width = 1200, Height = 900 }
+        });
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/rtl-components");
+        await page.WaitForFunctionAsync(
+            $"() => getComputedStyle(document.documentElement).getPropertyValue('{Css.Tokens.Spacing.S8}').trim() !== ''");
+
+        var rtlActive = page.Locator($"#rtl-nav .{Css.Classes.Navigation.NavLinkActive}");
+        var rtlInner = page.Locator($"#rtl-nav .{Css.Classes.Navigation.GroupItemsInner}");
+        Assert.Equal(3, await rtlActive.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).borderRightWidth)"));
+        Assert.Equal(0, await rtlActive.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).borderLeftWidth)"));
+        Assert.True(await rtlInner.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).paddingRight)") > 0);
+        Assert.Equal(0, await rtlInner.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).paddingLeft)"));
+
+        var ltrActive = page.Locator($"#ltr-nav .{Css.Classes.Navigation.NavLinkActive}");
+        var ltrInner = page.Locator($"#ltr-nav .{Css.Classes.Navigation.GroupItemsInner}");
+        Assert.Equal(3, await ltrActive.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).borderLeftWidth)"));
+        Assert.Equal(0, await ltrActive.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).borderRightWidth)"));
+        Assert.True(await ltrInner.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).paddingLeft)") > 0);
+        Assert.Equal(0, await ltrInner.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).paddingRight)"));
+    }
 }

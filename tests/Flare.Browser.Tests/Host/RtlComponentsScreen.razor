@@ -10,6 +10,20 @@
             <FlarePagination Current="2" TotalPages="10" ShowFirstLast="true"
                              RowsPerPageOptions="_rows" PageSize="25" />
         </div>
+        <div id="rtl-nav" dir="rtl" style="--flare-nav-active-left-bar: 3px solid red;width:16rem">
+            <FlareNavMenu AriaLabel="RTL navigation">
+                <FlareNavGroup Label="Group" Expanded="true">
+                    <FlareNavLink Href="#rtl-active" Active="true">Active</FlareNavLink>
+                </FlareNavGroup>
+            </FlareNavMenu>
+        </div>
+        <div id="ltr-nav" dir="ltr" style="--flare-nav-active-left-bar: 3px solid red;width:16rem">
+            <FlareNavMenu AriaLabel="LTR navigation">
+                <FlareNavGroup Label="Group" Expanded="true">
+                    <FlareNavLink Href="#ltr-active" Active="true">Active</FlareNavLink>
+                </FlareNavGroup>
+            </FlareNavMenu>
+        </div>
     </div>
 </FlareThemeProvider>
 
