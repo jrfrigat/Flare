@@ -838,6 +838,33 @@ namespace Flare.Components.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter a valid date..
+        /// </summary>
+        public static string DatePicker_Error_Invalid {
+            get {
+                return ResourceManager.GetString("DatePicker_Error_Invalid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter the date in full..
+        /// </summary>
+        public static string DatePicker_Error_Incomplete {
+            get {
+                return ResourceManager.GetString("DatePicker_Error_Incomplete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на That date is not available..
+        /// </summary>
+        public static string DatePicker_Error_Unavailable {
+            get {
+                return ResourceManager.GetString("DatePicker_Error_Unavailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Today.
         /// </summary>
         public static string DatePicker_Today {

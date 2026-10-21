@@ -62,7 +62,7 @@ public class PickerExtensibilityTests : FlareTestContext
     }
 
     [Fact]
-    public void ParseInput_RefusingTheText_KeepsTheValue()
+    public void ParseInput_RefusingTheText_KeepsTheEntryWithAReason()
     {
         var calls = 0;
         var cut = Render<FlareDatePicker>(p => p.Add(x => x.Culture, Ru).Add(x => x.Value, new DateOnly(2026, 10, 15))
@@ -72,7 +72,8 @@ public class PickerExtensibilityTests : FlareTestContext
         cut.Find("input").Blur();
 
         Assert.Equal(0, calls);
-        Assert.Equal("15.10.2026", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("nonsense", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("true", cut.Find("input").GetAttribute("aria-invalid"));
     }
 
     [Fact]

@@ -44,7 +44,7 @@ public class MaskedEditingScenarioTests : FlareTestContext
     }
 
     [Fact]
-    public void DeleteInsideTheMonth_DoesNotCommit_AndBlurRestoresTheValue()
+    public void DeleteInsideTheMonth_DoesNotCommit_AndKeepsTheEntryWithAReason()
     {
         UseStub();
         var changes = 0;
@@ -56,7 +56,8 @@ public class MaskedEditingScenarioTests : FlareTestContext
         cut.Find("input").Blur();
 
         Assert.Equal(0, changes);
-        Assert.Equal("15.10.2026", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("15.02.026", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("true", cut.Find("input").GetAttribute("aria-invalid"));
     }
 
     [Theory]

@@ -13,11 +13,11 @@
    trigger well (input + calendar toggle) and the anchored calendar popup, rendered in the Field slot. *@
 <FlareFieldChrome @ref="_chrome" ComponentClass="@Css.Classes.DatePicker.Root"
                   Variant="Variant" Size="Size"
-                  Invalid="@_invalid"
+                  Invalid="@_errorShown"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
-                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
+                  ErrorText="@_EffectiveError" ErrorId="@ErrorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
@@ -33,8 +33,8 @@
                    disabled="@Disabled"
                    aria-label="@(LabelContent is null ? Label ?? Placeholder : null)"
                    aria-required="@(Required ? "true" : null)"
-                   aria-invalid="@(_invalid ? "true" : null)"
-                   aria-describedby="@SupportDescribedBy"
+                   aria-invalid="@(_errorShown ? "true" : null)"
+                   aria-describedby="@_describedBy"
                    @onfocus="HandleFocus"
                    @onclick="OpenFromField"
                    @onkeydown="FieldKeyDown"

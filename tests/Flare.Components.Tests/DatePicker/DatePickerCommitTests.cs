@@ -21,8 +21,11 @@ public class DatePickerCommitTests : FlareTestContext
         cut.Find("input").Input("11.02.026");
         cut.Find("input").Change("11.02.026");
 
+        // The half-edit is refused and never parsed as a different month/year; since TASK-223 it stays
+        // in the field with its reason instead of being replaced by the committed value.
         Assert.Null(committed);
-        Assert.Equal("15.10.2026", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("11.02.026", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("true", cut.Find("input").GetAttribute("aria-invalid"));
     }
 
     [Fact]

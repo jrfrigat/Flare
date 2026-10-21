@@ -34,7 +34,7 @@ public class MaskedStaleSelectionTests : FlareTestContext
     }
 
     [Fact]
-    public async Task DatePicker_LateSelectionAfterBlur_KeepsTheRestoredText()
+    public async Task DatePicker_LateSelectionAfterBlur_KeepsTheRefusedEntry()
     {
         var gate = UseGate();
         var calls = 0;
@@ -43,7 +43,10 @@ public class MaskedStaleSelectionTests : FlareTestContext
 
         await LeaveWhileSelectionIsPending(cut, gate, "1.10.2026");
 
-        Assert.Equal("15.10.2026", cut.Find("input").GetAttribute("value"));
+        // Since TASK-223 the refused entry stays in the field with its reason; the late caret answer
+        // must still not write a different text back or commit.
+        Assert.Equal("1.10.2026", cut.Find("input").GetAttribute("value"));
+        Assert.Equal("true", cut.Find("input").GetAttribute("aria-invalid"));
         Assert.Equal(0, calls);
     }
 

@@ -1,0 +1,17 @@
+@page "/datepicker-input-error"
+@using System.Globalization
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="inline-size:360px;padding:1rem">
+        <FlareDatePicker Culture="@CultureInfo.GetCultureInfo("en-US")"
+                         Min="_min" Max="_max"
+                         @bind-Value="_value" Label="Appointment date" />
+        <output id="value">@(_value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))</output>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private DateOnly? _value = new(2026, 10, 18);
+    private readonly DateOnly _min = new(2026, 10, 1);
+    private readonly DateOnly _max = new(2026, 10, 31);
+}

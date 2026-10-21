@@ -268,6 +268,9 @@
 
   <!-- DatePicker / DateTimePicker / DateRangePicker -->
   <data name="DatePicker_Open" xml:space="preserve"><value>Открыть выбор даты</value></data>
+  <data name="DatePicker_Error_Invalid" xml:space="preserve"><value>Введите корректную дату.</value></data>
+  <data name="DatePicker_Error_Incomplete" xml:space="preserve"><value>Введите дату полностью.</value></data>
+  <data name="DatePicker_Error_Unavailable" xml:space="preserve"><value>Эта дата недоступна.</value></data>
   <data name="DatePicker_Today" xml:space="preserve"><value>Сегодня</value></data>
   <data name="DateTimePicker_DateTab" xml:space="preserve"><value>Дата</value></data>
   <data name="DateTimePicker_Tabs" xml:space="preserve"><value>Дата и время</value></data>
