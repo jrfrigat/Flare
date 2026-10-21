@@ -18,7 +18,7 @@
     @* The overlay is the backdrop only. The panel inside it wears the dialog role, closes on Escape and
        returns focus to the trigger; a focus trap and scroll lock are FlareDialog's job, not this one's. *@
     <FlareOverlay Open="@_darkOpen" OnBackdropClick="CloseDarkAsync">
-        <div role="dialog" aria-modal="true" aria-labelledby="overlay-demo-title" @onkeydown="HandleDarkKey"
+        <div role="dialog" aria-labelledby="overlay-demo-title" @onkeydown="HandleDarkKey"
              style="max-width:24rem;margin:6rem auto 0;">
             <FlareCard Style="padding:1.5rem;">
                 <FlareStack Gap="FlareSpacing.Medium">
