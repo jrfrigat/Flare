@@ -1,7 +1,13 @@
 .flare-scroll-top {
     position: fixed;
-    bottom: var(--flare-scroll-top-inset);
-    right: var(--flare-scroll-top-inset);
+    /* The button sits at the inline-end edge, clear of the safe area and of an app's own bottom bar
+       (--flare-scroll-top-panel-offset). The safe-area inset is a physical edge, so the mirrored rule
+       below names the one the button actually sits on in RTL. */
+    bottom: calc(var(--flare-scroll-top-inset) + env(safe-area-inset-bottom, 0px));
+    /* The app's own bottom bar sits under the button: its height is a margin, so a unitless zero token
+       and a px length from the app both stay valid here (a bare 0 inside calc would be a number). */
+    margin-bottom: var(--flare-scroll-top-panel-offset);
+    inset-inline-end: calc(var(--flare-scroll-top-inset) + env(safe-area-inset-right, 0px));
     width: var(--flare-scroll-top-size);
     height: var(--flare-scroll-top-size);
     border-radius: 50%;
@@ -53,4 +59,9 @@
 .flare-scroll-top .flare-icon {
     font-size: 1.5rem;
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* In RTL the inline-end edge is the physical left, so the safe area to clear is the left one. */
+.flare-scroll-top:dir(rtl) {
+    inset-inline-end: calc(var(--flare-scroll-top-inset) + env(safe-area-inset-left, 0px));
 }

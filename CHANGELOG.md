@@ -15,6 +15,7 @@ All notable changes to Flare are documented here. This project adheres to
 - Data grid rows and tree items reorder from the keyboard with `Alt+Space` to pick up or put down and `Alt+ArrowUp`/`Alt+ArrowDown` to move, without taking over the keys those surfaces use for selection, navigation and expanding.
 - `FlareOverlay.OnBackdropClick` fires only when the backdrop is clicked, so an action inside the content no longer dismisses the surface; `OnClick` keeps its surface-wide bubbling.
 - `FlareSkeleton` draws a visible Rect placeholder with no sizes of its own: the height comes from the new `--flare-skeleton-rect-height` token, one line of body text by default, and an explicit `Height` or `Width` still wins.
+- `--flare-scroll-top-panel-offset` reserves the height of an app's own bottom bar under the scroll-to-top button, so the button sits above that bar instead of on top of it.
 
 ### Changed
 
@@ -58,6 +59,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A `FlareCarousel` keeps arrow keys inside a slide's fields and editors; the focused carousel and its arrow and dot controls still navigate.
 - A `FlareTimeline` announces itself as a list, so its items belong to a list assistive technology can see; a nested timeline is its own list.
 - A nested `FlareTimeline` keeps its own alignment and connector style, and the outer last item no longer hides its lines.
+- A `FlareScrollTop` sits clear of the screen's safe area on the bottom edge and on the side it occupies, and clears the left inset in RTL, so a notch or a gesture bar no longer covers the button.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
 
 ## [0.48.0] - 2026-10-20

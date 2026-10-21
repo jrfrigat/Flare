@@ -1,0 +1,24 @@
+@page "/scroll-top-safe-area"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="height:1200px">Tall page</div>
+    <div id="scroller" style="height:200px;width:300px;overflow:auto">
+        <div style="height:1000px">Inner content</div>
+    </div>
+    <FlareScrollTop id="back" Threshold="100" />
+    <button id="bar" @onclick="ShowBottomBar">Bar</button>
+    <button id="bar-clear" @onclick="HideBottomBar">No bar</button>
+    <button id="rtl" @onclick="EnableRtl">RTL</button>
+</FlareThemeProvider>
+
+@code {
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+
+    // An app with its own bottom bar says how tall it is; the button has to clear it.
+    private void ShowBottomBar()
+        => ThemeService.SetCustomToken(Css.Tokens.ScrollTopField.PanelOffset, "56px");
+
+    private void HideBottomBar()
+        => ThemeService.ClearCustomToken(Css.Tokens.ScrollTopField.PanelOffset);
+}
