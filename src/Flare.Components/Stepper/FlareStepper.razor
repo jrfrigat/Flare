@@ -323,7 +323,11 @@
             _focusedIndex = target;
             StateHasChanged();
             await _stepElements[target].FocusAsync(preventScroll: true);
-            await Ui.RevealFocusedTabAsync(_headerRef);
+            // The reveal lives in the module that owns this keyboard. A stale module can lack it, and
+            // the exception would escape this JS-invoked callback and terminate the circuit.
+            try { await Ui.RevealFocusedTabAsync(_headerRef); }
+            catch (InvalidOperationException) { }
+            catch (JSException) { }
             return;
         }
     }

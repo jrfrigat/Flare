@@ -1,10 +1,32 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
 
 public class FlareStepperTests : FlareTestContext
 {
+    private const string UiModule = "./_content/Flare.Components/js/flare-ui.js";
+
+    [Fact]
+    public async Task KeyboardNavigation_SurvivesAStaleModuleWithoutTheFocusReveal()
+    {
+        // A PWA can serve a module that still registers the keyboard but no longer exports the focus
+        // reveal. The exception must not escape the JS-invoked callback and terminate the circuit.
+        JSInterop.SetupModule(UiModule)
+            .SetupVoid("revealFocusedTab", _ => true)
+            .SetException(new JSException("stale module"));
+
+        var cut = Render<FlareStepper>(p => p
+            .Add(x => x.NonLinear, true)
+            .AddChildContent(ThreeSteps("One", "Two", "Three")));
+
+        await cut.InvokeAsync(() => cut.Instance.OnTabNavigation("ArrowRight", false));
+
+        cut.WaitForAssertion(() =>
+            Assert.Equal("0", cut.FindAll("[role=tab]")[1].GetAttribute("tabindex")));
+    }
+
     [Fact]
     public void MultipleSteppers_HaveUniqueIdsAndOwnPanelLabels()
     {

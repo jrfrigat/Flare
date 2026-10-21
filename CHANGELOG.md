@@ -28,6 +28,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Fixed
 
 - The `FlareTabs` keyboard keeps working when the module that owns it cannot load: the arrows, Home and End fall back to a C# handler for as long as the module is missing, and the focus reveal no longer calls into the failed module and terminates the circuit.
+- A `FlareStepper` focus reveal into a stale module that no longer has it is ignored instead of terminating the circuit.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
 
 ## [0.48.0] - 2026-10-20
