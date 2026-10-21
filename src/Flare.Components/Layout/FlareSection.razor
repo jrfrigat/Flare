@@ -1,0 +1,52 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* A named section splits a page into landmarks; an unnamed one is just a block. The built-in heading is a
+   real h2-h6 (level) while its look stays the theme's typography role (Typo) - a section title that reads
+   like a title but nests where the page structure says it should. *@
+<section class="@BuildCssClass()" aria-labelledby="@_labelledBy" style="@Style" @attributes="AdditionalAttributes">
+    @if (HeadingContent is not null)
+    {
+        @HeadingContent
+    }
+    else if (!string.IsNullOrEmpty(Title))
+    {
+        <FlareText Element="@_headingElement" id="@_headingId" Typo="Typo">@Title</FlareText>
+    }
+    @ChildContent
+</section>
+
+@code {
+    /// <summary>Section title. Null leaves the heading to <see cref="HeadingContent"/> or to the caller's own
+    /// markup, and the section stays unnamed.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Typography role the title is drawn with. The element level comes from <see cref="Level"/>.</summary>
+    [Parameter] public TypographyScale Typo { get; set; } = TypographyScale.TitleLarge;
+
+    /// <summary>Heading level 2-6 the title is announced as. Default 2: a page has one h1 and its sections
+    /// sit directly under it.</summary>
+    [Parameter] public int Level { get; set; } = 2;
+
+    /// <summary>Anchor id placed on the title, so a table of contents and a deep link can target the
+    /// section. Null generates one used by <c>aria-labelledby</c>.</summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>Replaces the built-in title element - for a heading that has to carry more than text (an
+    /// icon, a copy-link button). The caller then owns the heading's id and the section stays unnamed.</summary>
+    [Parameter] public RenderFragment? HeadingContent { get; set; }
+
+    /// <summary>Section body.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Section.Root;
+
+    private string _headingId => Id ?? _autoId;
+    private readonly string _autoId = $"flare-section-{Guid.NewGuid():N}";
+    private string _headingElement => $"h{Math.Clamp(Level, 2, 6)}";
+
+    // Only the built-in heading is referenced: a custom one is the caller's markup, and guessing which
+    // element names the section would be worse than leaving it unnamed.
+    private string? _labelledBy =>
+        HeadingContent is null && !string.IsNullOrEmpty(Title) ? _headingId : null;
+}

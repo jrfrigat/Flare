@@ -15,56 +15,56 @@
 <FlareStack Gap="FlareSpacing.Large">
 
 @* -- Requirements ------------------------------------------------------------ *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Rule" Title="@GalleryStrings.GettingStarted_Requirements" AnchorId="requirements" />
     <FlareAlert Severity="AlertSeverity.Info">@GalleryStrings.GettingStarted_RequirementsDesc</FlareAlert>
-</section>
+</FlareSection>
 
 @* -- 1. Installation --------------------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Download" Title="@GalleryStrings.GettingStarted_Installation" AnchorId="installation" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_Installation_NuGetDesc
     </FlareText>
     <FlareCodeBlock Value="@_installCode" Language="bash" />
     <FlareAlert Severity="AlertSeverity.Info" Style="margin-top:1rem;">@GalleryStrings.GettingStarted_Installation_Alert</FlareAlert>
-</section>
+</FlareSection>
 
 @* -- 2. DI setup ------------------------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Settings" Title="@GalleryStrings.GettingStarted_DiSetup" AnchorId="di-setup" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_DiSetupDesc
     </FlareText>
     <FlareCodeBlock Value="@_diSetupCode" Language="csharp" />
-</section>
+</FlareSection>
 
 @* -- 3. Wiring up the styles ------------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Style" Title="@GalleryStrings.GettingStarted_Styles" AnchorId="styles" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_StylesDesc
     </FlareText>
     <FlareCodeBlock Value="@_stylesCode" Language="html" />
-</section>
+</FlareSection>
 
 @* -- 4. Wrap with the theme provider ----------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Palette" Title="@GalleryStrings.GettingStarted_ThemeProvider" AnchorId="theme-provider" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_ThemeProviderDesc
     </FlareText>
     <FlareCodeBlock Value="@_themeProviderCode" Language="razor" />
-</section>
+</FlareSection>
 
 @* -- 5. Global imports ------------------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Code" Title="@GalleryStrings.GettingStarted_GlobalImports" AnchorId="global-imports" />
     <FlareCodeBlock Value="@_globalImportsCode" Language="razor" />
-</section>
+</FlareSection>
 
 @* -- 6. First component (live) ----------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.PlayArrow" Title="@GalleryStrings.GettingStarted_FirstComponent" AnchorId="first-component" />
     <FlareCard Style="margin-bottom:1rem;">
         <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
@@ -76,10 +76,10 @@
         </FlareStack>
     </FlareCard>
     <FlareCodeBlock Value="@_firstComponentCode" Language="razor" />
-</section>
+</FlareSection>
 
 @* -- 7. Theme switcher (live) ------------------------------------------------ *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Contrast" Title="@GalleryStrings.GettingStarted_ThemeSwitcher" AnchorId="theme-switcher" />
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
         @foreach (var theme in ThemeService.Themes)
@@ -92,34 +92,34 @@
         }
     </FlareStack>
     <FlareCodeBlock Value="@_themeSwitcherCode" Language="razor" />
-</section>
+</FlareSection>
 
 @* -- 8. Form validation ------------------------------------------------------ *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.FactCheck" Title="@GalleryStrings.GettingStarted_FormValidation" AnchorId="form-validation" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_FormValidationDesc
     </FlareText>
     <FlareCodeBlock Value="@_formValidationCode" Language="razor" />
-</section>
+</FlareSection>
 
 @* -- 9. Dialog and Snackbar -------------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Notifications" Title="@GalleryStrings.GettingStarted_DialogSnackbar" AnchorId="dialog-snackbar" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_DialogSnackbarDesc
     </FlareText>
     <FlareCodeBlock Value="@_dialogSnackbarCode" Language="razor" />
-</section>
+</FlareSection>
 
 @* -- 10. Docker -------------------------------------------------------------- *@
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.DeployedCode" Title="@GalleryStrings.GettingStarted_Docker" AnchorId="docker" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
         @GalleryStrings.GettingStarted_DockerDesc
     </FlareText>
     <FlareCodeBlock Value="@_dockerCode" Language="bash" />
-</section>
+</FlareSection>
 
 </FlareStack>
 

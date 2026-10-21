@@ -1,0 +1,3 @@
+/* A semantic page section. No paint of its own: the heading and the body bring the theme's typography and
+   surfaces, and a section is structure, not a box. */
+.flare-section { display: block; }

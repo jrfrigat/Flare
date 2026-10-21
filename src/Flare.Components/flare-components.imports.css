@@ -21,6 +21,7 @@
    it rather than fight it. */
 @import 'fill.css';
 @import 'stack.css';
+@import 'section.css';
 /* Navigation */
 @import 'menu.css';
 @import 'menugroup.css';

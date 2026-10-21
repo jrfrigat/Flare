@@ -14,7 +14,7 @@
 
 <FlareStack Gap="FlareSpacing.Large">
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Palette" Title="@GalleryStrings.Theming_LiveSwitcher" />
     <FlareStack Gap="FlareSpacing.Medium">
 
@@ -79,9 +79,9 @@
         </FlareCard>
 
     </FlareStack>
-</section>
+</FlareSection>
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.DarkMode" Title="@GalleryStrings.Theming_AutoDarkMode" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
@@ -91,9 +91,9 @@
             @GalleryStrings.Theming_AutoDarkModeNote
         </FlareText>
     </FlareCard>
-</section>
+</FlareSection>
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Code" Title="@GalleryStrings.Theming_HowItWorks" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
@@ -101,9 +101,9 @@
         </FlareText>
         <FlareCodeBlock Value="@_howItWorksCode" Language="razor" />
     </FlareCard>
-</section>
+</FlareSection>
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Brush" Title="@GalleryStrings.Theming_CreateTheme" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
@@ -111,9 +111,9 @@
         </FlareText>
         <FlareCodeBlock Value="@_createThemeCode" Language="csharp" />
     </FlareCard>
-</section>
+</FlareSection>
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.TableChart" Title="@GalleryStrings.Theming_TokenReference" />
     <FlareCard Style="padding:0;overflow:hidden;">
         <FlareTable TItem="object">
@@ -140,9 +140,9 @@
             </tbody>
         </FlareTable>
     </FlareCard>
-</section>
+</FlareSection>
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Stars" Title="@GalleryStrings.Theming_GenerateTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
@@ -156,9 +156,9 @@
             </FlareButton>
         </FlareStack>
     </FlareCard>
-</section>
+</FlareSection>
 
-<section>
+<FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Contrast" Title="@GalleryStrings.Theming_ScopeTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
@@ -191,7 +191,7 @@
             </FlareThemeScope>
         </FlareStack>
     </FlareCard>
-</section>
+</FlareSection>
 </FlareStack>
 
 @code {
