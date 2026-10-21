@@ -35,7 +35,7 @@
     justify-content: center;
     width: var(--flare-chip-avatar-size-md);
     height: var(--flare-chip-avatar-size-md);
-    margin-left: -0.5rem;
+    margin-inline-start: var(--flare-chip-avatar-inset);
     border-radius: var(--flare-shape-full);
     overflow: hidden;
     flex-shrink: 0;
@@ -145,7 +145,7 @@
     justify-content: center;
     width: 1.1em;
     height: 1.1em;
-    margin-left: var(--flare-spacing-2);
+    margin-inline-start: var(--flare-spacing-2);
     border: none;
     background: none;
     cursor: pointer;

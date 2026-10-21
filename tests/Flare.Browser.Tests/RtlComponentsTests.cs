@@ -64,4 +64,31 @@ public sealed class RtlComponentsTests(BrowserFixture fixture) : IClassFixture<B
         Assert.True(await ltrInner.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).paddingLeft)") > 0);
         Assert.Equal(0, await ltrInner.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).paddingRight)"));
     }
+
+    [Fact]
+    public async Task Chip_MirrorsLeadingAvatarAndCloseSpacing()
+    {
+        await using var context = await fixture.Browser.NewContextAsync(new()
+        {
+            ViewportSize = new() { Width = 1200, Height = 900 }
+        });
+        var page = await context.NewPageAsync();
+        await page.GotoAsync($"{fixture.BaseUrl}/rtl-components");
+        await page.WaitForFunctionAsync(
+            $"() => getComputedStyle(document.documentElement).getPropertyValue('{Css.Tokens.Spacing.S2}').trim() !== ''");
+
+        var rtlAvatar = page.Locator($"#rtl-chip .{Css.Classes.Chip.Avatar}");
+        var rtlClose = page.Locator($"#rtl-chip .{Css.Classes.Chip.Close}");
+        Assert.True(await rtlAvatar.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginRight)") < 0);
+        Assert.Equal(0, await rtlAvatar.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginLeft)"));
+        Assert.True(await rtlClose.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginRight)") > 0);
+        Assert.Equal(0, await rtlClose.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginLeft)"));
+
+        var ltrAvatar = page.Locator($"#ltr-chip .{Css.Classes.Chip.Avatar}");
+        var ltrClose = page.Locator($"#ltr-chip .{Css.Classes.Chip.Close}");
+        Assert.True(await ltrAvatar.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginLeft)") < 0);
+        Assert.Equal(0, await ltrAvatar.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginRight)"));
+        Assert.True(await ltrClose.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginLeft)") > 0);
+        Assert.Equal(0, await ltrClose.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).marginRight)"));
+    }
 }

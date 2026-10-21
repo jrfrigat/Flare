@@ -70,6 +70,8 @@ public sealed record ChipTokens
     [CssVar(Chip.AvatarSize.Lg)] public required string AvatarSizeLg { get; init; }
     /// <summary>Leading avatar box at the xl size.</summary>
     [CssVar(Chip.AvatarSize.Xl)] public required string AvatarSizeXl { get; init; }
+    /// <summary>How far the leading avatar tucks into the chip's start edge.</summary>
+    [CssVar(Chip.AvatarInset)] public string AvatarInset { get; init; } = $"calc({Var(Css.Tokens.Spacing.S2)} * -1)";
 
     /// <summary>Inline padding of a chip at the xs size.</summary>
     [CssVar(Chip.PaddingInline.Xs)] public string PaddingInlineXs { get; init; } = Var(Css.Tokens.Spacing.S4);

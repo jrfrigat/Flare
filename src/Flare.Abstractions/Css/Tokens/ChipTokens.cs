@@ -15,6 +15,8 @@ public static class Chip
     public const string BorderColor = "--flare-chip-border-color";
     /// <summary>CSS custom-property name for the label colour of an unselected chip with no Color set.</summary>
     public const string LabelColor = "--flare-chip-label-color";
+    /// <summary>CSS custom-property name for how far the leading avatar tucks into the chip's start edge.</summary>
+    public const string AvatarInset = "--flare-chip-avatar-inset";
 
     /// <summary>Family of a chip label. A chip is as often an identifier - a ticket key, a version, a
     /// type tag - as it is a word, and an identifier wants the face the rest of the identifiers use.</summary>
