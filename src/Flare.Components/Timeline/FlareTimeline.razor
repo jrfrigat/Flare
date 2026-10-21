@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_alignClass, _connectorClass, _alternatingClass)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_alignClass, _connectorClass, _alternatingClass)" role="list" style="@Style" @attributes="AdditionalAttributes">
     <CascadingValue Value="@this" IsFixed="false">
         @ChildContent
     </CascadingValue>

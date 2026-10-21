@@ -55,6 +55,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A `FlareKanban` column count is announced in the interface language with the right plural form, including the Russian one/two-to-four/five-plus rules.
 - A `FlareQrCode` names its image in the interface language, and the too-long notice is still an image with a localized name instead of unnamed graphics.
 - A `FlareCarousel` keeps arrow keys inside a slide's fields and editors; the focused carousel and its arrow and dot controls still navigate.
+- A `FlareTimeline` announces itself as a list, so its items belong to a list assistive technology can see; a nested timeline is its own list.
 - The `FlareDataGrid` column filter menu closes on a click outside it - it is the same standard anchored popup as the rest of Flare now, so the page background, another control or Escape dismisses it without applying the filter.
 
 ## [0.48.0] - 2026-10-20
