@@ -3,7 +3,7 @@
 
 <li class="@Css.Classes.TableOfContents.Item" style="@($"{Css.Tokens.LocalVars.TocDepth}:{Math.Max(0, Level)}")">
     <a class="@BuildCssClass(_activeClass)"
-       href="@Href"
+       href="@_safeHref"
        aria-current="@(Active ? "true" : null)"
        @attributes="AdditionalAttributes">@ChildContent</a>
 </li>
@@ -24,4 +24,8 @@
     protected override string ComponentCssClass => Css.Classes.TableOfContents.Link;
 
     private string? _activeClass => Active ? Css.Classes.TableOfContents.LinkActive : null;
+
+    // The other link components refuse a script-bearing scheme the same way; null stays null so the
+    // attribute is still omitted when no target was given.
+    private string? _safeHref => Href is null || CssValidator.IsHrefSafe(Href) ? Href : "about:blank";
 }

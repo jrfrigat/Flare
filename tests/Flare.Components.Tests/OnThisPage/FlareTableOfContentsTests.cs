@@ -38,4 +38,39 @@ public class FlareTableOfContentsTests : FlareTestContext
         var li = cut.Find($".{Css.Classes.TableOfContents.Item}");
         Assert.Contains($"{Css.Tokens.LocalVars.TocDepth}:2", li.GetAttribute("style"));
     }
+
+    [Theory]
+    [InlineData("javascript:alert(1)")]
+    [InlineData("  javascript:alert(1)")]
+    [InlineData("vbscript:msgbox(1)")]
+    public void TocLink_RefusesAScriptScheme(string href)
+    {
+        var cut = Render<FlareTocLink>(p => p
+            .Add(x => x.Href, href)
+            .Add(x => x.ChildContent, "Unsafe"));
+
+        Assert.Equal("about:blank", cut.Find("a").GetAttribute("href"));
+    }
+
+    [Theory]
+    [InlineData("#section")]
+    [InlineData("/components/pagination")]
+    [InlineData("https://example.com/page")]
+    [InlineData("mailto:a@example.com")]
+    public void TocLink_KeepsAnAllowedHref(string href)
+    {
+        var cut = Render<FlareTocLink>(p => p
+            .Add(x => x.Href, href)
+            .Add(x => x.ChildContent, "Safe"));
+
+        Assert.Equal(href, cut.Find("a").GetAttribute("href"));
+    }
+
+    [Fact]
+    public void TocLink_WithoutHref_OmitsTheAttribute()
+    {
+        var cut = Render<FlareTocLink>(p => p.Add(x => x.ChildContent, "Plain"));
+
+        Assert.False(cut.Find("a").HasAttribute("href"));
+    }
 }
