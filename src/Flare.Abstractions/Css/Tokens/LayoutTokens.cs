@@ -43,6 +43,9 @@ public static class LayoutField
     public const string DrawerShadowBlur = "--flare-layout-drawer-shadow-blur";
     /// <summary>CSS custom-property name for the colour of the drawer's edge shadow.</summary>
     public const string DrawerShadowColor = "--flare-layout-drawer-shadow-color";
+    /// <summary>CSS custom-property name for the ceiling on a square icon control the app bar hosts
+    /// (an icon-only button, an icon-only color-mode toggle) and on its glyph.</summary>
+    public const string AppBarControlMaxSize = "--flare-layout-appbar-control-max-size";
     /// <summary>CSS custom-property name for the side of the app bar's drawer-toggle button.</summary>
     public const string AppBarToggleSize = "--flare-layout-appbar-toggle-size";
     /// <summary>CSS custom-property name for the width of the drawer-toggle glyph's bars.</summary>

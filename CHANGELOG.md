@@ -7,6 +7,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- `--flare-layout-appbar-control-max-size` sets the ceiling for an icon control in the layout app bar and for the glyph inside it, and defaults to the bar's height, so a bar stays one row when the root font size grows.
 - `FlareListItem.Mono` renders its text in the monospace font, so an identifier keeps the item's title slot and row typography.
 - `FlareSkeleton.Announce` marks one placeholder as the loading indicator of its region.
 - Data grid rows and tree items reorder from the keyboard with `Alt+Space` to pick up or put down and `Alt+ArrowUp`/`Alt+ArrowDown` to move, without taking over the keys those surfaces use for selection, navigation and expanding.
@@ -18,6 +19,7 @@ All notable changes to Flare are documented here. This project adheres to
 - The `FlareChip` body is a native button and the close button is its sibling; a selectable chip announces `aria-pressed`, and Enter or Space on the close button no longer toggles the chip.
 - `FlareListItem` stays a list item and moves its click action into a native button, announcing selection with `aria-pressed`, or `aria-current` on a static selected item.
 - An icon-only `FlareButton` keeps its square shape while `Loading` is true.
+- A 360px `FlareLayoutAppBar` keeps its brand, the color-mode toggle and two icon buttons on one row at 200% text: the icon controls stop at the bar's height and the title truncates instead of sliding under the trailing block.
 - A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
 
 ## [0.48.0] - 2026-10-20

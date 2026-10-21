@@ -75,6 +75,15 @@ public sealed record LayoutTokens
     /// <summary>Colour of the drawer's edge shadow. See <see cref="DrawerShadowOffset"/>.</summary>
     [CssVar(LayoutField.DrawerShadowColor)] public required string DrawerShadowColor { get; init; }
 
+    /// <summary>
+    /// Upper bound for a square icon control placed in the app bar - an icon-only button, an icon-only
+    /// color-mode toggle - and for the glyph inside it. Icon controls grow with the root font size,
+    /// and without a ceiling three of them can outgrow a phone-width bar at a large text scale.
+    /// Defaults to the app bar height, so a control never leaves the row it sits in; a theme may set a
+    /// smaller or larger ceiling without changing the bar itself.
+    /// </summary>
+    [CssVar(LayoutField.AppBarControlMaxSize)] public string AppBarControlMaxSize { get; init; } = Var(LayoutField.AppBarHeight);
+
     /// <summary>Side of the round button that toggles the primary drawer from the app bar. On a coarse
     /// pointer it still grows to the touch-target minimum.</summary>
     [CssVar(LayoutField.AppBarToggleSize)] public required string AppBarToggleSize { get; init; }

@@ -1666,6 +1666,12 @@
   <data name="LayoutShell_DensityDesc" xml:space="preserve">
     <value>Dense рисует более узкий app bar (48px вместо стандартных 64px) для оконных / IDE-подобных оболочек; Height задает любую CSS-длину. Оба задают токен --flare-layout-appbar-height, так что темы тоже могут его переопределить.</value>
   </data>
+  <data name="LayoutShell_NarrowAppBar" xml:space="preserve">
+    <value>Узкая шапка</value>
+  </data>
+  <data name="LayoutShell_NarrowAppBarDesc" xml:space="preserve">
+    <value>Шапка шириной 360px удерживает бренд, переключатель темы и две кнопки-иконки в одной строке. При 200% текста иконки останавливаются на высоте шапки, а заголовок обрезается, поэтому правый блок остается внутри шапки и не наезжает на бренд.</value>
+  </data>
   <data name="Link_Title" xml:space="preserve">
     <value>Ссылка</value>
   </data>

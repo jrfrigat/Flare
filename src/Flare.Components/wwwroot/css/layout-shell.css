@@ -47,6 +47,31 @@
     --flare-layout-appbar-height: var(--flare-layout-appbar-height-dense);
 }
 
+/* Chrome scale. A root font size of 200% doubles every rem-based icon control, and three of them
+   outgrow a 360px bar: the trailing block then slides over the title. A square icon control the bar
+   hosts is capped at the bar's own height, so it never leaves the row it sits in, and its glyph at
+   half of that, so it still fits the capped box. The ceiling is a token of its own - a theme can make
+   the bar's controls smaller or larger than the bar without touching the bar's geometry. */
+.flare-layout-appbar {
+    --_flare-appbar-control-max: var(--flare-layout-appbar-control-max-size);
+}
+
+.flare-layout-appbar :where(.flare-btn--icon-only) {
+    max-inline-size: var(--_flare-appbar-control-max);
+    max-block-size: var(--_flare-appbar-control-max);
+}
+
+.flare-layout-appbar :where(.flare-btn--icon-only, .flare-color-mode-toggle) :where(.flare-icon) {
+    max-inline-size: calc(var(--_flare-appbar-control-max) / 2);
+    max-block-size: calc(var(--_flare-appbar-control-max) / 2);
+}
+
+/* The icon-only color-mode toggle sizes itself from its glyph and its padding, both of which follow
+   the same ceiling. A labelled toggle keeps its text - text has to scale - and is left alone. */
+.flare-layout-appbar .flare-color-mode-toggle:not(:has(.flare-color-mode-toggle__label)) {
+    padding: min(var(--flare-spacing-4), calc(var(--_flare-appbar-control-max) / 4));
+}
+
 /* In-flow drawers and the content sit in row 2 and auto-flow into the computed columns in markup
    order (start drawers, content, end drawers). */
 .flare-layout-drawer,

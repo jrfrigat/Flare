@@ -1,0 +1,20 @@
+@inherits LocalizedPage
+
+@* A phone-width bar. At 200% text its icon controls stop growing at the bar's height, so the trailing
+   block stays inside the bar and the title truncates instead of being covered. *@
+<div style="inline-size:360px;max-inline-size:100%;height:240px;overflow:hidden;border-radius:var(--flare-shape-medium);">
+    <FlareLayout>
+        <FlareLayoutAppBar>
+            <FlareText Typo="TypographyScale.TitleLarge" MaxLines="1" Style="flex:1;">@GalleryStrings.LayoutShell_Title</FlareText>
+            <FlareColorModeToggle ShowLabel="false" />
+            <FlareIconButton Icon="@MaterialDesign3Icons.Regular.Search" AriaLabel="@GalleryStrings.Icons_Search" />
+            <FlareIconButton Icon="@MaterialDesign3Icons.Regular.Settings" AriaLabel="@GalleryStrings.Settings_Title" />
+        </FlareLayoutAppBar>
+
+        <FlareLayoutContent>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.LayoutShell_NarrowAppBarDesc
+            </FlareText>
+        </FlareLayoutContent>
+    </FlareLayout>
+</div>

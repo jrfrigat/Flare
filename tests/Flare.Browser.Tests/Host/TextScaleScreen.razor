@@ -1,0 +1,16 @@
+@page "/text-scale-appbar"
+@using Flare.Icons
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="appbar-shell" style="inline-size:360px">
+        <FlareLayoutAppBar>
+            <FlareText id="appbar-brand" Typo="TypographyScale.TitleLarge" MaxLines="1"
+                       Style="flex:1">Merito</FlareText>
+            <div id="appbar-trailing" style="display:flex;align-items:center;gap:8px">
+                <FlareColorModeToggle ShowLabel="false" />
+                <FlareIconButton Icon="@FlareIcons.Search" AriaLabel="Search" />
+                <FlareIconButton Icon="@FlareIcons.Settings" AriaLabel="Settings" />
+            </div>
+        </FlareLayoutAppBar>
+    </div>
+</FlareThemeProvider>

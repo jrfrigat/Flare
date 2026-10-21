@@ -5772,6 +5772,24 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Narrow app bar.
+        /// </summary>
+        public static string LayoutShell_NarrowAppBar {
+            get {
+                return ResourceManager.GetString("LayoutShell_NarrowAppBar", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A 360px-wide bar holds its brand, the color-mode toggle and two icon buttons on one row..
+        /// </summary>
+        public static string LayoutShell_NarrowAppBarDesc {
+            get {
+                return ResourceManager.GetString("LayoutShell_NarrowAppBarDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareLayout - ready-made admin shell with app bar, collapsible drawer, and main content area..
         /// </summary>
         public static string LayoutShell_Subtitle {
