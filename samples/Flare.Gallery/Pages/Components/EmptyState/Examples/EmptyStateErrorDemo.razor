@@ -1,11 +1,69 @@
+@implements IDisposable
+@* A local state machine, no request: error -> loading -> loaded. Retry ends with focus on the result, so
+   a keyboard user does not land back on the page body when the error block disappears. *@
 <FlareStack Row Wrap Justify="FlareJustifyContent.Center" Style="padding:2rem 1rem;">
-    <FlareEmptyState Title="Something went wrong"
-                     Description="We couldn't load your data. Please try again.">
-        <IconContent>
-            <FlareIconView Size="3rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Error" />
-        </IconContent>
-        <ActionContent>
-            <FlareButton Variant="ButtonVariant.Outlined">Retry</FlareButton>
-        </ActionContent>
-    </FlareEmptyState>
+    @if (_state == LoadState.Error)
+    {
+        <FlareEmptyState Title="@GalleryStrings.EmptyState_ErrorTitle"
+                         Description="@GalleryStrings.EmptyState_ErrorBody">
+            <IconContent>
+                <FlareIconView Size="3rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Error" />
+            </IconContent>
+            <ActionContent>
+                <FlareButton Variant="ButtonVariant.Outlined" OnClick="RetryAsync">@GalleryStrings.EmptyState_Retry</FlareButton>
+            </ActionContent>
+        </FlareEmptyState>
+    }
+    else if (_state == LoadState.Loading)
+    {
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small">
+            <FlareProgressCircular />
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.EmptyState_Loading</FlareText>
+        </FlareStack>
+    }
+    else
+    {
+        <div @ref="_loaded" tabindex="-1" style="outline:none;width:100%;max-width:32rem">
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.EmptyState_LoadedTitle</FlareText>
+                @foreach (var item in _items)
+                {
+                    <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+                }
+                <FlareButton Variant="ButtonVariant.Text" OnClick="SimulateFailure">@GalleryStrings.EmptyState_FailAgain</FlareButton>
+            </FlareStack>
+        </div>
+    }
 </FlareStack>
+
+@code {
+    private enum LoadState { Error, Loading, Loaded }
+
+    private static readonly string[] _items = ["Row 12", "Row 18", "Row 21"];
+
+    private LoadState _state = LoadState.Error;
+    private bool _focusLoaded;
+    private bool _disposed;
+    private ElementReference _loaded;
+
+    private async Task RetryAsync()
+    {
+        _state = LoadState.Loading;
+        await Task.Delay(500);
+        if (_disposed) return;
+        _state = LoadState.Loaded;
+        _focusLoaded = true;
+    }
+
+    private void SimulateFailure() => _state = LoadState.Error;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_focusLoaded) return;
+        _focusLoaded = false;
+        try { await _loaded.FocusAsync(); }
+        catch (JSException) { }
+    }
+
+    public void Dispose() => _disposed = true;
+}

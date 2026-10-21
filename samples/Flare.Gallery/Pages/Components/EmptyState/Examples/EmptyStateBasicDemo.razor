@@ -1,13 +1,32 @@
-<FlareStack Row Wrap Justify="FlareJustifyContent.Center" Style="padding:2rem 1rem;">
-    <FlareEmptyState Title="No results found"
-                     Description="Try adjusting your search or filters to find what you're looking for.">
-        <IconContent>
-            <FlareIconView Size="3rem" Color="FlareColor.OnSurfaceVariant" Value="@MaterialDesign3Icons.Regular.SearchOff" />
-        </IconContent>
-        <ActionContent>
-            <FlareButton Variant="ButtonVariant.Filled">Clear filters</FlareButton>
-        </ActionContent>
-    </FlareEmptyState>
+@* Search plus empty state: the list is local and the empty state's action really clears the query, then
+   puts focus back in the field so a keyboard user keeps typing where they were. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="padding:2rem 1rem;max-width:32rem;margin:0 auto">
+    <FlareTextField @ref="_search"
+                    Label="@GalleryStrings.EmptyState_SearchLabel"
+                    Value="@_query"
+                    ValueChanged="OnQueryChanged"
+                    Immediate="true" />
+    @if (_matches.Count > 0)
+    {
+        <FlareStack Gap="FlareSpacing.XSmall">
+            @foreach (var item in _matches)
+            {
+                <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+            }
+        </FlareStack>
+    }
+    else
+    {
+        <FlareEmptyState Title="@GalleryStrings.EmptyState_NoMatchesTitle"
+                         Description="@GalleryStrings.EmptyState_NoMatchesBody">
+            <IconContent>
+                <FlareIconView Size="3rem" Color="FlareColor.OnSurfaceVariant" Value="@MaterialDesign3Icons.Regular.SearchOff" />
+            </IconContent>
+            <ActionContent>
+                <FlareButton Variant="ButtonVariant.Filled" OnClick="ClearFiltersAsync">@GalleryStrings.EmptyState_ClearFilters</FlareButton>
+            </ActionContent>
+        </FlareEmptyState>
+    }
 
     <FlareEmptyState Compact="true" Title="No items"
                      Description="This list is empty.">
@@ -16,3 +35,26 @@
         </IconContent>
     </FlareEmptyState>
 </FlareStack>
+
+@code {
+    private static readonly string[] _all = ["Alpha", "Beta", "Gamma", "Delta"];
+    private string _query = "";
+    private List<string> _matches = [.. _all];
+    private FlareTextField? _search;
+
+    private void OnQueryChanged(string? value)
+    {
+        _query = value ?? "";
+        _matches = _all
+            .Where(item => item.Contains(_query, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+    }
+
+    private async Task ClearFiltersAsync()
+    {
+        _query = "";
+        _matches = [.. _all];
+        try { if (_search is not null) await _search.FocusAsync(); }
+        catch (JSException) { }
+    }
+}

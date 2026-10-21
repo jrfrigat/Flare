@@ -1212,6 +1212,36 @@
   <data name="EmptyState_ErrorState" xml:space="preserve">
     <value>Состояние ошибки</value>
   </data>
+  <data name="EmptyState_SearchLabel" xml:space="preserve">
+    <value>Поиск по списку</value>
+  </data>
+  <data name="EmptyState_NoMatchesTitle" xml:space="preserve">
+    <value>Ничего не найдено</value>
+  </data>
+  <data name="EmptyState_NoMatchesBody" xml:space="preserve">
+    <value>Измените запрос или фильтры, чтобы найти нужное.</value>
+  </data>
+  <data name="EmptyState_ClearFilters" xml:space="preserve">
+    <value>Сбросить фильтры</value>
+  </data>
+  <data name="EmptyState_ErrorTitle" xml:space="preserve">
+    <value>Что-то пошло не так</value>
+  </data>
+  <data name="EmptyState_ErrorBody" xml:space="preserve">
+    <value>Не удалось загрузить данные. Попробуйте еще раз.</value>
+  </data>
+  <data name="EmptyState_Retry" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
+  <data name="EmptyState_Loading" xml:space="preserve">
+    <value>Загрузка…</value>
+  </data>
+  <data name="EmptyState_LoadedTitle" xml:space="preserve">
+    <value>Данные загружены</value>
+  </data>
+  <data name="EmptyState_FailAgain" xml:space="preserve">
+    <value>Смоделировать ошибку</value>
+  </data>
   <data name="FileUpload_Title" xml:space="preserve">
     <value>Загрузка файлов</value>
   </data>

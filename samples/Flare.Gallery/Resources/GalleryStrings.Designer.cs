@@ -3997,7 +3997,97 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("EmptyState_ErrorState", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Something went wrong.
+        /// </summary>
+        public static string EmptyState_ErrorTitle {
+            get {
+                return ResourceManager.GetString("EmptyState_ErrorTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на We couldn't load your data. Please try again..
+        /// </summary>
+        public static string EmptyState_ErrorBody {
+            get {
+                return ResourceManager.GetString("EmptyState_ErrorBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Clear filters.
+        /// </summary>
+        public static string EmptyState_ClearFilters {
+            get {
+                return ResourceManager.GetString("EmptyState_ClearFilters", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulate failure.
+        /// </summary>
+        public static string EmptyState_FailAgain {
+            get {
+                return ResourceManager.GetString("EmptyState_FailAgain", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data loaded.
+        /// </summary>
+        public static string EmptyState_LoadedTitle {
+            get {
+                return ResourceManager.GetString("EmptyState_LoadedTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Loading….
+        /// </summary>
+        public static string EmptyState_Loading {
+            get {
+                return ResourceManager.GetString("EmptyState_Loading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Try adjusting your search or filters to find what you are looking for..
+        /// </summary>
+        public static string EmptyState_NoMatchesBody {
+            get {
+                return ResourceManager.GetString("EmptyState_NoMatchesBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No results found.
+        /// </summary>
+        public static string EmptyState_NoMatchesTitle {
+            get {
+                return ResourceManager.GetString("EmptyState_NoMatchesTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Retry.
+        /// </summary>
+        public static string EmptyState_Retry {
+            get {
+                return ResourceManager.GetString("EmptyState_Retry", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search the list.
+        /// </summary>
+        public static string EmptyState_SearchLabel {
+            get {
+                return ResourceManager.GetString("EmptyState_SearchLabel", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Minimal - no action.
         /// </summary>
