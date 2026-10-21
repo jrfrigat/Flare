@@ -1,3 +1,4 @@
+using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 namespace Flare.Components.Tests;
 
@@ -275,5 +276,86 @@ public class FlarePasswordFieldAccessibilityTests : FlareTestContext
         var icon = cut.Find($".{Css.Classes.Input.IconTrailing}");
         Assert.Null(icon.GetAttribute("aria-hidden"));                    // the slot no longer hides
         Assert.NotEmpty(icon.QuerySelectorAll("[aria-hidden=true]"));     // the glyph inside still does
+    }
+
+    // The evaluator is the application's code and may be expensive or stateful: the meter's segments, its
+    // colour and the announced text must read one judgment, so it runs exactly once per render.
+    [Fact]
+    public void StrengthEvaluator_RunsOncePerRender()
+    {
+        var calls = 0;
+        Func<string?, FlarePasswordStrength> evaluator = _ =>
+        {
+            calls++;
+            return new FlarePasswordStrength(2, ["Use more characters"]);
+        };
+
+        Render<FlarePasswordField>(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abcdefgh")
+            .Add(x => x.StrengthEvaluator, evaluator));
+
+        Assert.Equal(1, calls);
+    }
+
+    [Fact]
+    public void NewValueOrEvaluator_Reevaluates()
+    {
+        var calls = 0;
+        Func<string?, FlarePasswordStrength> evaluator = _ =>
+        {
+            calls++;
+            return new FlarePasswordStrength(1, []);
+        };
+
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abc")
+            .Add(x => x.StrengthEvaluator, evaluator));
+        Assert.Equal(1, calls);
+
+        cut.Render(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abcdefgh")
+            .Add(x => x.StrengthEvaluator, evaluator));
+        Assert.Equal(2, calls);
+
+        Func<string?, FlarePasswordStrength> replacement = _ => new(4, []);
+        cut.Render(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abcdefgh")
+            .Add(x => x.StrengthEvaluator, replacement));
+
+        Assert.Equal(2, calls);
+        Assert.Contains(FlareStrings.Password_Strong, cut.Find($".{Css.Classes.Input.StrengthLabel}").TextContent);
+    }
+
+    // A stateful evaluator that answers differently on every call would make the painted meter and the
+    // spoken score disagree; a per-render snapshot means both come from the first and only answer.
+    [Fact]
+    public void StatefulEvaluator_MeterAndTextUseTheSameJudgment()
+    {
+        var answer = 0;
+        Func<string?, FlarePasswordStrength> evaluator = _ => new(answer++ % 2 == 0 ? 1 : 4, []);
+
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abcdefgh")
+            .Add(x => x.StrengthEvaluator, evaluator));
+
+        Assert.Contains(FlareStrings.Password_Weak, cut.Find($".{Css.Classes.Input.StrengthLabel}").TextContent);
+        var segments = cut.FindAll($".{Css.Classes.Meter.Seg}");
+        Assert.Single(segments, s => s.ClassList.Contains(FlareColor.Error.CssClass));
+    }
+
+    [Fact]
+    public void StrengthOff_DoesNotEvaluate()
+    {
+        var calls = 0;
+        Render<FlarePasswordField>(p => p
+            .Add(x => x.Value, "abcdefgh")
+            .Add(x => x.StrengthEvaluator, _ => { calls++; return new FlarePasswordStrength(2, []); }));
+
+        Assert.Equal(0, calls);
     }
 }
