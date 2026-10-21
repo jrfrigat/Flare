@@ -1,14 +1,15 @@
 @inherits LocalizedPage
 
 @* FlareFormField wraps a control the form did not build: it supplies the label, the helper line, the
-   required marker and the label's `for`, and the native input carries Flare's own control class. *@
+   required marker and the label's `for`, and the control it wraps is a bare FlareTextInput - the Flare
+   control without the field chrome - carrying the same id. *@
 <FlareForm Model="@_model">
     <FlareFormField Label="@GalleryStrings.Forms_NameLabel" For="forms-custom-name"
                     HelperText="@GalleryStrings.Forms_NameHelper" Required="true">
-        <input id="forms-custom-name" class="@Css.Classes.Input.Control" @bind="_name" />
+        <FlareTextInput Id="forms-custom-name" Value="@_name" ValueChanged="@(v => _name = v)" />
     </FlareFormField>
     <FlareFormField Label="@GalleryStrings.Forms_CityLabel" For="forms-custom-city">
-        <input id="forms-custom-city" class="@Css.Classes.Input.Control" @bind="_city" />
+        <FlareTextInput Id="forms-custom-city" Value="@_city" ValueChanged="@(v => _city = v)" />
     </FlareFormField>
 </FlareForm>
 
