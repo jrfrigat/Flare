@@ -1,6 +1,6 @@
 @* A count of zero is visible on purpose: Visible defaults to true, so hiding a zero is an explicit
    Visible="false". One status line reports the live count - the badges themselves stay passive. *@
-<div role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@string.Format(GalleryStrings.Badge_UnreadStatus, _unread)</div>
+<FlareVisuallyHidden Role="status" AriaLive="polite">@string.Format(GalleryStrings.Badge_UnreadStatus, _unread)</FlareVisuallyHidden>
 <FlareBadge Count="5">
     <FlareButton Variant="ButtonVariant.Outlined" AriaLabel="@string.Format(GalleryStrings.Badge_NotificationsAria, 5)">Notifications</FlareButton>
 </FlareBadge>

@@ -1,0 +1,22 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* A region that exists for assistive technology alone: clipped from the page, still announced when its
+   text changes. Without a role it stays a silent helper for a control that needs more words than the
+   screen can show. *@
+<span class="@BuildCssClass()" role="@Role" aria-live="@AriaLive" style="@Style" @attributes="AdditionalAttributes">@ChildContent</span>
+
+@code {
+    /// <summary>ARIA role of the region - <c>status</c> for a polite announcement, <c>alert</c> for an
+    /// urgent one. Null leaves the region without a role.</summary>
+    [Parameter] public string? Role { get; set; }
+
+    /// <summary>Live-region mode: <c>polite</c>, <c>assertive</c> or <c>off</c>. Null leaves the
+    /// role's implicit behavior.</summary>
+    [Parameter] public string? AriaLive { get; set; }
+
+    /// <summary>The text or markup read by assistive technology.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Visually.Hidden;
+}
