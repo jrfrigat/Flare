@@ -2017,6 +2017,57 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Popover_ScrollAnchor" xml:space="preserve">
     <value>Scrollable popover</value>
   </data>
+  <data name="Popover_UserInfoButton" xml:space="preserve">
+    <value>User info</value>
+  </data>
+  <data name="Popover_UserRole" xml:space="preserve">
+    <value>Senior Engineer · Berlin</value>
+  </data>
+  <data name="Popover_ViewProfile" xml:space="preserve">
+    <value>View profile</value>
+  </data>
+  <data name="Popover_HelpButton" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Popover_HelpTitle" xml:space="preserve">
+    <value>How to use Popover</value>
+  </data>
+  <data name="Popover_HelpBody" xml:space="preserve">
+    <value>Wrap your trigger in AnchorContent and place any content inside ChildContent. Control visibility with @bind-Open.</value>
+  </data>
+  <data name="Popover_DeleteButton" xml:space="preserve">
+    <value>Delete item</value>
+  </data>
+  <data name="Popover_ConfirmTitle" xml:space="preserve">
+    <value>Confirm deletion</value>
+  </data>
+  <data name="Popover_ConfirmBody" xml:space="preserve">
+    <value>This action cannot be undone.</value>
+  </data>
+  <data name="Popover_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Popover_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Popover_Deleted" xml:space="preserve">
+    <value>Deleted!</value>
+  </data>
+  <data name="Popover_Nested" xml:space="preserve">
+    <value>Nested popover with arrow</value>
+  </data>
+  <data name="Popover_NestedAnchor" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="Popover_NestedBody" xml:space="preserve">
+    <value>Pick a filter, then open its options without losing this one.</value>
+  </data>
+  <data name="Popover_NestedOptions" xml:space="preserve">
+    <value>More options</value>
+  </data>
+  <data name="Popover_NestedOptionsBody" xml:space="preserve">
+    <value>A second popover anchored inside the first one.</value>
+  </data>
   <data name="PasswordInput_Title" xml:space="preserve">
     <value>Password Field</value>
   </data>

@@ -11,10 +11,11 @@
         </ChildContent>
     </FlarePopover>
 
-    @* MatchAnchorWidth sizes the panel to the trigger, like a dropdown. *@
+    @* MatchAnchorWidth sizes the panel to the trigger, like a dropdown. Trigger=Click already toggles on
+       the anchor, so the button must not toggle again on its own. *@
     <FlarePopover @bind-Open="_width" Trigger="PopoverTrigger.Click" MatchAnchorWidth="true" Placement="Placement.BottomStart">
         <AnchorContent>
-            <FlareButton Variant="ButtonVariant.Filled" Style="min-width:16rem;" OnClick="@(() => _width = !_width)">@GalleryStrings.Popover_WidthAnchor</FlareButton>
+            <FlareButton Variant="ButtonVariant.Filled" Style="min-width:16rem;">@GalleryStrings.Popover_WidthAnchor</FlareButton>
         </AnchorContent>
         <ChildContent>
             <FlareStack Gap="FlareSpacing.None" Style="padding:0.5rem;">
@@ -27,7 +28,7 @@
     @* MaxHeight caps the panel so long content scrolls inside it. *@
     <FlarePopover @bind-Open="_scroll" Trigger="PopoverTrigger.Click" MaxHeight="12rem" Placement="Placement.BottomStart">
         <AnchorContent>
-            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => _scroll = !_scroll)">@GalleryStrings.Popover_ScrollAnchor</FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal">@GalleryStrings.Popover_ScrollAnchor</FlareButton>
         </AnchorContent>
         <ChildContent>
             <FlareStack Gap="FlareSpacing.None" Style="padding:0.5rem;">

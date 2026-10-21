@@ -7555,6 +7555,159 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на User info.
+        /// </summary>
+        public static string Popover_UserInfoButton {
+            get {
+                return ResourceManager.GetString("Popover_UserInfoButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Senior Engineer · Berlin.
+        /// </summary>
+        public static string Popover_UserRole {
+            get {
+                return ResourceManager.GetString("Popover_UserRole", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на View profile.
+        /// </summary>
+        public static string Popover_ViewProfile {
+            get {
+                return ResourceManager.GetString("Popover_ViewProfile", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Help.
+        /// </summary>
+        public static string Popover_HelpButton {
+            get {
+                return ResourceManager.GetString("Popover_HelpButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на How to use Popover.
+        /// </summary>
+        public static string Popover_HelpTitle {
+            get {
+                return ResourceManager.GetString("Popover_HelpTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Wrap your trigger in AnchorContent.
+        /// </summary>
+        public static string Popover_HelpBody {
+            get {
+                return ResourceManager.GetString("Popover_HelpBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete item.
+        /// </summary>
+        public static string Popover_DeleteButton {
+            get {
+                return ResourceManager.GetString("Popover_DeleteButton", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Confirm deletion.
+        /// </summary>
+        public static string Popover_ConfirmTitle {
+            get {
+                return ResourceManager.GetString("Popover_ConfirmTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This action cannot be undone..
+        /// </summary>
+        public static string Popover_ConfirmBody {
+            get {
+                return ResourceManager.GetString("Popover_ConfirmBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        public static string Popover_Cancel {
+            get {
+                return ResourceManager.GetString("Popover_Cancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delete.
+        /// </summary>
+        public static string Popover_Delete {
+            get {
+                return ResourceManager.GetString("Popover_Delete", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Deleted!.
+        /// </summary>
+        public static string Popover_Deleted {
+            get {
+                return ResourceManager.GetString("Popover_Deleted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Nested popover with arrow.
+        /// </summary>
+        public static string Popover_Nested {
+            get {
+                return ResourceManager.GetString("Popover_Nested", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filters.
+        /// </summary>
+        public static string Popover_NestedAnchor {
+            get {
+                return ResourceManager.GetString("Popover_NestedAnchor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pick a filter, then open its options without losing this one..
+        /// </summary>
+        public static string Popover_NestedBody {
+            get {
+                return ResourceManager.GetString("Popover_NestedBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на More options.
+        /// </summary>
+        public static string Popover_NestedOptions {
+            get {
+                return ResourceManager.GetString("Popover_NestedOptions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A second popover anchored inside the first one..
+        /// </summary>
+        public static string Popover_NestedOptionsBody {
+            get {
+                return ResourceManager.GetString("Popover_NestedOptionsBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlarePopover anchored content with placements and an optional arrow..
         /// </summary>
         public static string Popover_Subtitle {

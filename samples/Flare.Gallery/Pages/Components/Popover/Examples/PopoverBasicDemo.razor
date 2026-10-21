@@ -3,7 +3,7 @@
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Start">
     <FlarePopover @bind-Open="_popInfo" Placement="Placement.BottomStart">
         <AnchorContent>
-            <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _popInfo = !_popInfo)">User info ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _popInfo = !_popInfo)">@GalleryStrings.Popover_UserInfoButton</FlareButton>
         </AnchorContent>
         <ChildContent>
             <FlareStack Gap="FlareSpacing.Small" Style="padding:1rem;min-width:16rem;">
@@ -11,11 +11,11 @@
                     <FlareAvatar Text="Alice Johnson" Size="AvatarSize.Lg" />
                     <FlareStack Gap="FlareSpacing.None">
                         <FlareText Typo="TypographyScale.TitleSmall">Alice Johnson</FlareText>
-                        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">Senior Engineer · Berlin</FlareText>
+                        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Popover_UserRole</FlareText>
                     </FlareStack>
                 </FlareStack>
                 <FlareDivider Style="margin:0.25rem 0 0.5rem;" />
-                <FlareLink Href="#" Underline="LinkUnderline.Hover">View profile</FlareLink>
+                <FlareLink Href="#" Underline="LinkUnderline.Hover">@GalleryStrings.Popover_ViewProfile</FlareLink>
             </FlareStack>
         </ChildContent>
     </FlarePopover>
@@ -23,14 +23,14 @@
     <FlarePopover @bind-Open="_popHelp" Placement="Placement.RightStart" Arrow="true">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _popHelp = !_popHelp)">
-                <FlareIconView Value="@MaterialDesign3Icons.Regular.Help" /> Help
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Help" /> @GalleryStrings.Popover_HelpButton
             </FlareButton>
         </AnchorContent>
         <ChildContent>
             <FlareStack Gap="FlareSpacing.XSmall" Style="padding:0.75rem 1rem;max-width:18rem;">
-                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-bottom:0.5rem;">How to use Popover</FlareText>
+                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-bottom:0.5rem;">@GalleryStrings.Popover_HelpTitle</FlareText>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-                    Wrap your trigger in AnchorContent and place any content inside ChildContent. Control visibility with @@bind-Open.
+                    @GalleryStrings.Popover_HelpBody
                 </FlareText>
             </FlareStack>
         </ChildContent>
@@ -38,17 +38,17 @@
 
     <FlarePopover @bind-Open="_popConfirm" Placement="Placement.TopStart">
         <AnchorContent>
-            <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _popConfirm = !_popConfirm)">Delete item</FlareButton>
+            <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _popConfirm = !_popConfirm)">@GalleryStrings.Popover_DeleteButton</FlareButton>
         </AnchorContent>
         <ChildContent>
             <FlareStack Gap="FlareSpacing.XSmall" Style="padding:1rem;max-width:16rem;">
-                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-bottom:0.5rem;">Confirm deletion</FlareText>
-                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem">This action cannot be undone.</FlareText>
+                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-bottom:0.5rem;">@GalleryStrings.Popover_ConfirmTitle</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem">@GalleryStrings.Popover_ConfirmBody</FlareText>
                 <FlareStack Gap="FlareSpacing.XSmall" Justify="FlareJustifyContent.End">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _popConfirm = false)">Cancel</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _popConfirm = false)">@GalleryStrings.Popover_Cancel</FlareButton>
                     <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm"
-                                 OnClick="@(() => { _popConfirm = false; Snackbar.Show("Deleted!", SnackbarSeverity.Error); })">
-                        Delete
+                                 OnClick="@(() => { _popConfirm = false; Snackbar.Show(GalleryStrings.Popover_Deleted, SnackbarSeverity.Error); })">
+                        @GalleryStrings.Popover_Delete
                     </FlareButton>
                 </FlareStack>
             </FlareStack>

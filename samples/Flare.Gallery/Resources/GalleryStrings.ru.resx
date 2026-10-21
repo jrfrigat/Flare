@@ -2017,6 +2017,57 @@
   <data name="Popover_ScrollAnchor" xml:space="preserve">
     <value>Прокручиваемый попап</value>
   </data>
+  <data name="Popover_UserInfoButton" xml:space="preserve">
+    <value>О пользователе</value>
+  </data>
+  <data name="Popover_UserRole" xml:space="preserve">
+    <value>Старший инженер · Берлин</value>
+  </data>
+  <data name="Popover_ViewProfile" xml:space="preserve">
+    <value>Открыть профиль</value>
+  </data>
+  <data name="Popover_HelpButton" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="Popover_HelpTitle" xml:space="preserve">
+    <value>Как пользоваться Popover</value>
+  </data>
+  <data name="Popover_HelpBody" xml:space="preserve">
+    <value>Оберните триггер в AnchorContent, а содержимое положите в ChildContent. Видимостью управляет @bind-Open.</value>
+  </data>
+  <data name="Popover_DeleteButton" xml:space="preserve">
+    <value>Удалить запись</value>
+  </data>
+  <data name="Popover_ConfirmTitle" xml:space="preserve">
+    <value>Подтвердите удаление</value>
+  </data>
+  <data name="Popover_ConfirmBody" xml:space="preserve">
+    <value>Это действие нельзя отменить.</value>
+  </data>
+  <data name="Popover_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Popover_Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Popover_Deleted" xml:space="preserve">
+    <value>Удалено!</value>
+  </data>
+  <data name="Popover_Nested" xml:space="preserve">
+    <value>Вложенный поповер со стрелкой</value>
+  </data>
+  <data name="Popover_NestedAnchor" xml:space="preserve">
+    <value>Фильтры</value>
+  </data>
+  <data name="Popover_NestedBody" xml:space="preserve">
+    <value>Выберите фильтр и откройте его параметры, не закрывая этот.</value>
+  </data>
+  <data name="Popover_NestedOptions" xml:space="preserve">
+    <value>Еще параметры</value>
+  </data>
+  <data name="Popover_NestedOptionsBody" xml:space="preserve">
+    <value>Второй поповер, привязанный внутри первого.</value>
+  </data>
   <data name="PasswordInput_Title" xml:space="preserve">
     <value>Поле пароля</value>
   </data>
