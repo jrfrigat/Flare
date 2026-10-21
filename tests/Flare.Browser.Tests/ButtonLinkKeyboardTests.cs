@@ -39,5 +39,10 @@ public sealed class ButtonLinkKeyboardTests(BrowserFixture fixture) : IClassFixt
         await page.Keyboard.PressAsync("Space");
         await Expect(page.Locator("#disabled-clicks")).ToHaveTextAsync("0");
         Assert.Equal(scrollBeforeBlocked, await page.EvaluateAsync<double>("window.scrollY"));
+        Assert.Equal("none", await blocked.EvaluateAsync<string>("el => getComputedStyle(el).pointerEvents"));
+        var opacity = await blocked.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).opacity)");
+        var activeColor = await act.EvaluateAsync<string>("el => getComputedStyle(el).color");
+        var disabledColor = await blocked.EvaluateAsync<string>("el => getComputedStyle(el).color");
+        Assert.True(opacity < 1 || disabledColor != activeColor, "the disabled link keeps the active paint");
     }
 }

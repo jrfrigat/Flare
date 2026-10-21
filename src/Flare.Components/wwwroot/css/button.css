@@ -186,20 +186,20 @@
    it". Only a variant with a container repaints one, and only the outlined variant a stroke.
    The repaint rules carry one class of specificity (the state sits in :where) and follow the variants, so
    they outrank the core variants but not a theme's own variant rules or a selected button's paint. */
-.flare-btn:disabled, .flare-btn[disabled] {
+.flare-btn:disabled, .flare-btn[disabled], .flare-btn[aria-disabled="true"] {
     pointer-events: none;
     opacity: var(--flare-btn-disabled-opacity);
     box-shadow: var(--flare-elevation-0) !important;
 }
-.flare-btn:where(:disabled, [disabled]) {
+.flare-btn:where(:disabled, [disabled], [aria-disabled="true"]) {
     color: color-mix(in srgb, var(--flare-btn-disabled-content) var(--flare-btn-disabled-repaint), var(--_flare-btn-content, currentColor));
 }
-.flare-btn--filled:where(:disabled, [disabled]),
-.flare-btn--tonal:where(:disabled, [disabled]),
-.flare-btn--elevated:where(:disabled, [disabled]) {
+.flare-btn--filled:where(:disabled, [disabled], [aria-disabled="true"]),
+.flare-btn--tonal:where(:disabled, [disabled], [aria-disabled="true"]),
+.flare-btn--elevated:where(:disabled, [disabled], [aria-disabled="true"]) {
     background-color: color-mix(in srgb, var(--flare-btn-disabled-container) var(--flare-btn-disabled-repaint), var(--_flare-btn-container));
 }
-.flare-btn--outlined:where(:disabled, [disabled]) {
+.flare-btn--outlined:where(:disabled, [disabled], [aria-disabled="true"]) {
     border-color: color-mix(in srgb, var(--flare-btn-disabled-stroke) var(--flare-btn-disabled-repaint), var(--_flare-btn-stroke));
 }
 

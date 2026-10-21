@@ -56,7 +56,7 @@
        aria-disabled="@(Disabled || Loading ? "true" : null)"
        aria-busy="@(Loading ? "true" : null)"
        tabindex="@(Disabled || Loading ? "-1" : null)"
-       @onclick="OnClick"
+       @onclick="OnLinkClick"
        @attributes="AdditionalAttributes">@_inner</a>
 }
 else
@@ -205,6 +205,14 @@ else
 
     // Custom -> derived tokens; dynamic -> precomputed tonal set; role/default -> null.
     private string? BuildColorTokens() => _effectiveColor.StyleFull(OnColor);
+
+    // A disabled or loading link keeps aria-disabled and loses href, but a programmatic click still
+    // reaches the handler; the guard makes the callback as inert as the native button's.
+    private async Task OnLinkClick(MouseEventArgs e)
+    {
+        if (Disabled || Loading) return;
+        await OnClick.InvokeAsync(e);
+    }
 
     // Icon-only: an icon is present but no text (ChildContent) -> square icon button. Loading keeps
     // the square: its spinner replaces the glyph without changing the button's footprint.

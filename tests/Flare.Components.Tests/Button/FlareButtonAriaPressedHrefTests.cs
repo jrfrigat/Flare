@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components.Web;
+
 namespace Flare.Components.Tests;
 
 /// <summary>
@@ -38,5 +40,49 @@ public class FlareButtonAriaPressedHrefTests : FlareTestContext
         Assert.Null(link.GetAttribute("href"));
         Assert.Equal("true", link.GetAttribute("aria-disabled"));
         Assert.Equal("true", link.GetAttribute("aria-pressed"));
+    }
+
+    [Fact]
+    public void ADisabledHrefButton_DoesNotInvokeOnClick()
+    {
+        var clicked = false;
+        var cut = Render<FlareButton>(p => p
+            .Add(x => x.Href, "#target")
+            .Add(x => x.Disabled, true)
+            .Add(x => x.OnClick, (MouseEventArgs _) => clicked = true)
+            .AddChildContent("Action"));
+
+        cut.Find("a").Click();
+
+        Assert.False(clicked);
+    }
+
+    [Fact]
+    public void ALoadingHrefButton_DoesNotInvokeOnClick()
+    {
+        var clicked = false;
+        var cut = Render<FlareButton>(p => p
+            .Add(x => x.Href, "#target")
+            .Add(x => x.Loading, true)
+            .Add(x => x.OnClick, (MouseEventArgs _) => clicked = true)
+            .AddChildContent("Action"));
+
+        cut.Find("a").Click();
+
+        Assert.False(clicked);
+    }
+
+    [Fact]
+    public void AnEnabledHrefButton_InvokesOnClick()
+    {
+        var clicked = false;
+        var cut = Render<FlareButton>(p => p
+            .Add(x => x.Href, "#target")
+            .Add(x => x.OnClick, (MouseEventArgs _) => clicked = true)
+            .AddChildContent("Action"));
+
+        cut.Find("a").Click();
+
+        Assert.True(clicked);
     }
 }
