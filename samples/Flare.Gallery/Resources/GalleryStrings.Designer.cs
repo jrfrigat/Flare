@@ -4474,7 +4474,178 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Forms_Validation", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Layouts: vertical, horizontal, inline and dense.
+        /// </summary>
+        public static string Forms_Layouts {
+            get {
+                return ResourceManager.GetString("Forms_Layouts", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vertical (default).
+        /// </summary>
+        public static string Forms_LayoutVertical {
+            get {
+                return ResourceManager.GetString("Forms_LayoutVertical", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Horizontal.
+        /// </summary>
+        public static string Forms_LayoutHorizontal {
+            get {
+                return ResourceManager.GetString("Forms_LayoutHorizontal", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline.
+        /// </summary>
+        public static string Forms_LayoutInline {
+            get {
+                return ResourceManager.GetString("Forms_LayoutInline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dense.
+        /// </summary>
+        public static string Forms_LayoutDense {
+            get {
+                return ResourceManager.GetString("Forms_LayoutDense", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string Forms_NameLabel {
+            get {
+                return ResourceManager.GetString("Forms_NameLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на At least two characters..
+        /// </summary>
+        public static string Forms_NameHelper {
+            get {
+                return ResourceManager.GetString("Forms_NameHelper", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email.
+        /// </summary>
+        public static string Forms_EmailLabel {
+            get {
+                return ResourceManager.GetString("Forms_EmailLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на We never share it..
+        /// </summary>
+        public static string Forms_EmailHelper {
+            get {
+                return ResourceManager.GetString("Forms_EmailHelper", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на City.
+        /// </summary>
+        public static string Forms_CityLabel {
+            get {
+                return ResourceManager.GetString("Forms_CityLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Accept the terms.
+        /// </summary>
+        public static string Forms_Accept {
+            get {
+                return ResourceManager.GetString("Forms_Accept", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Submit.
+        /// </summary>
+        public static string Forms_Submit {
+            get {
+                return ResourceManager.GetString("Forms_Submit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset.
+        /// </summary>
+        public static string Forms_Reset {
+            get {
+                return ResourceManager.GetString("Forms_Reset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Form submitted!.
+        /// </summary>
+        public static string Forms_Submitted {
+            get {
+                return ResourceManager.GetString("Forms_Submitted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name is required.
+        /// </summary>
+        public static string Forms_Err_NameRequired {
+            get {
+                return ResourceManager.GetString("Forms_Err_NameRequired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Min 2 characters.
+        /// </summary>
+        public static string Forms_Err_NameShort {
+            get {
+                return ResourceManager.GetString("Forms_Err_NameShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email is required.
+        /// </summary>
+        public static string Forms_Err_EmailRequired {
+            get {
+                return ResourceManager.GetString("Forms_Err_EmailRequired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid email.
+        /// </summary>
+        public static string Forms_Err_EmailInvalid {
+            get {
+                return ResourceManager.GetString("Forms_Err_EmailInvalid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You must accept the terms.
+        /// </summary>
+        public static string Forms_Err_Terms {
+            get {
+                return ResourceManager.GetString("Forms_Err_Terms", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Dialog and Snackbar.
         /// </summary>

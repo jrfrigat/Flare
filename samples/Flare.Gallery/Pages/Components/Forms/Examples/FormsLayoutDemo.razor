@@ -1,0 +1,56 @@
+@inherits LocalizedPage
+
+@* Four layouts of the same two fields. Horizontal turns each field into a label/control grid and falls
+   back to the vertical stack below 36rem; Inline lays the fields out as a wrapping row; Dense tightens the
+   form gap. At 320px the grid below stacks the demos, and each form stays usable. *@
+<FlareGrid Columns="12" Gap="FlareSpacing.Large">
+    <FlareCol Span="12" Md="6">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.Forms_LayoutVertical</FlareText>
+            <FlareForm Model="@_vertical">
+                <FlareTextField Label="@GalleryStrings.Forms_NameLabel" @bind-Value="_vertical.Name" />
+                <FlareTextField Label="@GalleryStrings.Forms_CityLabel" @bind-Value="_vertical.City" />
+            </FlareForm>
+        </FlareStack>
+    </FlareCol>
+    <FlareCol Span="12" Md="6">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.Forms_LayoutHorizontal</FlareText>
+            <FlareForm Model="@_horizontal" Layout="FormLayout.Horizontal">
+                <FlareTextField Label="@GalleryStrings.Forms_NameLabel" @bind-Value="_horizontal.Name" />
+                <FlareTextField Label="@GalleryStrings.Forms_CityLabel" @bind-Value="_horizontal.City" />
+            </FlareForm>
+        </FlareStack>
+    </FlareCol>
+    <FlareCol Span="12" Md="6">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.Forms_LayoutInline</FlareText>
+            <FlareForm Model="@_inline" Layout="FormLayout.Inline">
+                <FlareTextField Label="@GalleryStrings.Forms_NameLabel" @bind-Value="_inline.Name" />
+                <FlareTextField Label="@GalleryStrings.Forms_CityLabel" @bind-Value="_inline.City" />
+            </FlareForm>
+        </FlareStack>
+    </FlareCol>
+    <FlareCol Span="12" Md="6">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.Forms_LayoutDense</FlareText>
+            <FlareForm Model="@_dense" Dense="true">
+                <FlareTextField Label="@GalleryStrings.Forms_NameLabel" @bind-Value="_dense.Name" />
+                <FlareTextField Label="@GalleryStrings.Forms_CityLabel" @bind-Value="_dense.City" />
+            </FlareForm>
+        </FlareStack>
+    </FlareCol>
+</FlareGrid>
+
+@code {
+    private LayoutModel _vertical = new();
+    private LayoutModel _horizontal = new();
+    private LayoutModel _inline = new();
+    private LayoutModel _dense = new();
+
+    private sealed class LayoutModel
+    {
+        public string? Name { get; set; }
+        public string? City { get; set; }
+    }
+}

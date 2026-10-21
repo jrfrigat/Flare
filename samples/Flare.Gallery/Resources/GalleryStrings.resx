@@ -1324,13 +1324,70 @@
     <value>Auto-generated form</value>
   </data>
   <data name="Forms_Title" xml:space="preserve">
-    <value>Form Validation</value>
+    <value>Forms</value>
   </data>
   <data name="Forms_Subtitle" xml:space="preserve">
-    <value>EditForm with DataAnnotationsValidator and Flare form controls.</value>
+    <value>FlareForm with its layouts, validation and the validation summary.</value>
   </data>
   <data name="Forms_Validation" xml:space="preserve">
-    <value>Validated EditForm</value>
+    <value>Validated form</value>
+  </data>
+  <data name="Forms_Layouts" xml:space="preserve">
+    <value>Layouts: vertical, horizontal, inline and dense</value>
+  </data>
+  <data name="Forms_LayoutVertical" xml:space="preserve">
+    <value>Vertical (default)</value>
+  </data>
+  <data name="Forms_LayoutHorizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="Forms_LayoutInline" xml:space="preserve">
+    <value>Inline</value>
+  </data>
+  <data name="Forms_LayoutDense" xml:space="preserve">
+    <value>Dense</value>
+  </data>
+  <data name="Forms_NameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Forms_NameHelper" xml:space="preserve">
+    <value>At least two characters.</value>
+  </data>
+  <data name="Forms_EmailLabel" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Forms_EmailHelper" xml:space="preserve">
+    <value>We never share it.</value>
+  </data>
+  <data name="Forms_CityLabel" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Forms_Accept" xml:space="preserve">
+    <value>Accept the terms</value>
+  </data>
+  <data name="Forms_Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Forms_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Forms_Submitted" xml:space="preserve">
+    <value>Form submitted!</value>
+  </data>
+  <data name="Forms_Err_NameRequired" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="Forms_Err_NameShort" xml:space="preserve">
+    <value>Min 2 characters</value>
+  </data>
+  <data name="Forms_Err_EmailRequired" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="Forms_Err_EmailInvalid" xml:space="preserve">
+    <value>Invalid email</value>
+  </data>
+  <data name="Forms_Err_Terms" xml:space="preserve">
+    <value>You must accept the terms</value>
   </data>
   <data name="Icon_Title" xml:space="preserve">
     <value>Icon</value>

@@ -1,44 +1,54 @@
 @inject ISnackbarService Snackbar
 
-<div style="max-width:28rem;">
-    <EditForm Model="@_model" OnValidSubmit="HandleValid">
-        <DataAnnotationsValidator />
-        <FlareStack Gap="FlareSpacing.Medium">
-            <FlareField TValue="string" Label="Name" Placeholder="Enter name…"
-                        @bind-Value="_model.Name"
-                        For="@(() => _model.Name)" />
-            <FlareField TValue="string" Label="Email" Placeholder="name@example.com"
-                        @bind-Value="_model.Email"
-                        For="@(() => _model.Email)" />
-            <FlareCheckbox Label="Accept terms"
-                           @bind-Value="_model.AcceptsTerms"
-                           For="@(() => _model.AcceptsTerms)" />
-            <FlareValidationSummary />
-            <FlareStack Row Wrap Gap="FlareSpacing.XSmall">
-                <FlareButton Variant="ButtonVariant.Filled" Type="@ButtonType.Submit">Submit</FlareButton>
-                <FlareButton Variant="ButtonVariant.Outlined" Type="@ButtonType.Reset" OnClick="Reset">Reset</FlareButton>
-            </FlareStack>
+@* FlareForm owns the EditForm, the validation summary's field map and the layout. FlareFormField supplies
+   the label, helper and required marker for the field control it wraps; the field itself still registers
+   its validation state through the form. *@
+<FlareForm Model="@_model" OnValidSubmit="HandleValid">
+    <FlareStack Gap="FlareSpacing.Medium">
+        <FlareFormField Label="@GalleryStrings.Forms_NameLabel" For="forms-name"
+                        HelperText="@GalleryStrings.Forms_NameHelper" Required="true">
+            <FlareTextField @bind-Value="_model.Name" For="@(() => _model.Name)"
+                            InputAttributes="@(new Dictionary<string, object> { ["id"] = "forms-name" })" />
+        </FlareFormField>
+        <FlareFormField Label="@GalleryStrings.Forms_EmailLabel" For="forms-email"
+                        HelperText="@GalleryStrings.Forms_EmailHelper" Required="true">
+            <FlareTextField @bind-Value="_model.Email" For="@(() => _model.Email)"
+                            InputAttributes="@(new Dictionary<string, object> { ["id"] = "forms-email" })" />
+        </FlareFormField>
+        <FlareCheckbox Label="@GalleryStrings.Forms_Accept" @bind-Value="_model.AcceptsTerms"
+                       For="@(() => _model.AcceptsTerms)" />
+        <FlareValidationSummary />
+        <FlareStack Row Wrap Gap="FlareSpacing.XSmall">
+            <FlareButton Variant="ButtonVariant.Filled" Type="@ButtonType.Submit">@GalleryStrings.Forms_Submit</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" Type="@ButtonType.Reset" OnClick="Reset">@GalleryStrings.Forms_Reset</FlareButton>
         </FlareStack>
-    </EditForm>
-</div>
+    </FlareStack>
+</FlareForm>
 
 @code {
     private FormModel _model = new();
 
     private sealed class FormModel
     {
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Name is required")]
-        [System.ComponentModel.DataAnnotations.MinLength(2, ErrorMessage = "Min 2 characters")]
+        [System.ComponentModel.DataAnnotations.Required(
+            ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.Forms_Err_NameRequired))]
+        [System.ComponentModel.DataAnnotations.MinLength(2,
+            ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.Forms_Err_NameShort))]
         public string? Name { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Email is required")]
-        [System.ComponentModel.DataAnnotations.EmailAddress(ErrorMessage = "Invalid email")]
+        [System.ComponentModel.DataAnnotations.Required(
+            ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.Forms_Err_EmailRequired))]
+        [System.ComponentModel.DataAnnotations.EmailAddress(
+            ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.Forms_Err_EmailInvalid))]
         public string? Email { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms")]
+        [System.ComponentModel.DataAnnotations.Range(typeof(bool), "true", "true",
+            ErrorMessageResourceType = typeof(GalleryStrings), ErrorMessageResourceName = nameof(GalleryStrings.Forms_Err_Terms))]
         public bool AcceptsTerms { get; set; }
     }
 
-    private void HandleValid() => Snackbar.Show("Form submitted!", SnackbarSeverity.Success);
+    private void HandleValid() => Snackbar.Show(GalleryStrings.Forms_Submitted, SnackbarSeverity.Success);
+
+    // A fresh model gives the form a new edit context, so the summary and the field errors go with it.
     private void Reset() => _model = new();
 }

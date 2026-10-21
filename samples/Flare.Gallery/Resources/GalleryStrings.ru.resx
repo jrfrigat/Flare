@@ -1324,13 +1324,70 @@
     <value>Автогенерируемая форма</value>
   </data>
   <data name="Forms_Title" xml:space="preserve">
-    <value>Валидация формы</value>
+    <value>Формы</value>
   </data>
   <data name="Forms_Subtitle" xml:space="preserve">
-    <value>EditForm с DataAnnotationsValidator и элементами формы Flare.</value>
+    <value>FlareForm с вариантами размещения, валидацией и сводкой ошибок.</value>
   </data>
   <data name="Forms_Validation" xml:space="preserve">
     <value>Форма с валидацией</value>
+  </data>
+  <data name="Forms_Layouts" xml:space="preserve">
+    <value>Варианты: вертикальный, горизонтальный, строчный и плотный</value>
+  </data>
+  <data name="Forms_LayoutVertical" xml:space="preserve">
+    <value>Вертикальный (по умолчанию)</value>
+  </data>
+  <data name="Forms_LayoutHorizontal" xml:space="preserve">
+    <value>Горизонтальный</value>
+  </data>
+  <data name="Forms_LayoutInline" xml:space="preserve">
+    <value>Строчный</value>
+  </data>
+  <data name="Forms_LayoutDense" xml:space="preserve">
+    <value>Плотный</value>
+  </data>
+  <data name="Forms_NameLabel" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Forms_NameHelper" xml:space="preserve">
+    <value>Не меньше двух символов.</value>
+  </data>
+  <data name="Forms_EmailLabel" xml:space="preserve">
+    <value>Почта</value>
+  </data>
+  <data name="Forms_EmailHelper" xml:space="preserve">
+    <value>Мы ее не передаем.</value>
+  </data>
+  <data name="Forms_CityLabel" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="Forms_Accept" xml:space="preserve">
+    <value>Принять условия</value>
+  </data>
+  <data name="Forms_Submit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Forms_Reset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="Forms_Submitted" xml:space="preserve">
+    <value>Форма отправлена!</value>
+  </data>
+  <data name="Forms_Err_NameRequired" xml:space="preserve">
+    <value>Укажите имя</value>
+  </data>
+  <data name="Forms_Err_NameShort" xml:space="preserve">
+    <value>Минимум 2 символа</value>
+  </data>
+  <data name="Forms_Err_EmailRequired" xml:space="preserve">
+    <value>Укажите почту</value>
+  </data>
+  <data name="Forms_Err_EmailInvalid" xml:space="preserve">
+    <value>Неверный адрес почты</value>
+  </data>
+  <data name="Forms_Err_Terms" xml:space="preserve">
+    <value>Нужно принять условия</value>
   </data>
   <data name="Icon_Title" xml:space="preserve">
     <value>Иконка</value>
