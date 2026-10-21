@@ -303,6 +303,21 @@
   <data name="Badge_Origin" xml:space="preserve">
     <value>Позиция и видимость</value>
   </data>
+  <data name="Badge_ZeroVisible" xml:space="preserve">
+    <value>Ноль виден по умолчанию</value>
+  </data>
+  <data name="Badge_Hidden" xml:space="preserve">
+    <value>Скрыт (Visible=false)</value>
+  </data>
+  <data name="Badge_NotificationsAria" xml:space="preserve">
+    <value>Уведомления, новых: {0}</value>
+  </data>
+  <data name="Badge_UnreadStatus" xml:space="preserve">
+    <value>Непрочитанных уведомлений: {0}</value>
+  </data>
+  <data name="Badge_Add" xml:space="preserve">
+    <value>Добавить уведомление</value>
+  </data>
   <data name="Chip_Title" xml:space="preserve">
     <value>Чип (Chip)</value>
   </data>

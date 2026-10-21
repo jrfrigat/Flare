@@ -1,5 +1,8 @@
+@* A count of zero is visible on purpose: Visible defaults to true, so hiding a zero is an explicit
+   Visible="false". One status line reports the live count - the badges themselves stay passive. *@
+<div role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@string.Format(GalleryStrings.Badge_UnreadStatus, _unread)</div>
 <FlareBadge Count="5">
-    <FlareButton Variant="ButtonVariant.Outlined">Notifications</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" AriaLabel="@string.Format(GalleryStrings.Badge_NotificationsAria, 5)">Notifications</FlareButton>
 </FlareBadge>
 <FlareBadge Count="150" Max="99">
     <FlareButton Variant="ButtonVariant.Outlined">Overflow (Max=99)</FlareButton>
@@ -8,7 +11,10 @@
     <FlareButton Variant="ButtonVariant.Outlined">Dot</FlareButton>
 </FlareBadge>
 <FlareBadge Count="0">
-    <FlareButton Variant="ButtonVariant.Outlined">Zero (hidden)</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Badge_ZeroVisible</FlareButton>
+</FlareBadge>
+<FlareBadge Count="0" Visible="false">
+    <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Badge_Hidden</FlareButton>
 </FlareBadge>
 <FlareBadge Count="8" Size="FieldSize.Sm">
     <FlareButton Variant="ButtonVariant.Outlined">Small badge</FlareButton>
@@ -16,3 +22,13 @@
 <FlareBadge Count="8" Size="FieldSize.Xl" Color="FlareColor.Primary">
     <FlareButton Variant="ButtonVariant.Outlined">XL badge</FlareButton>
 </FlareBadge>
+<FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+    <FlareBadge Count="@_unread">
+        <FlareButton Variant="ButtonVariant.Outlined" AriaLabel="@string.Format(GalleryStrings.Badge_NotificationsAria, _unread)">Notifications</FlareButton>
+    </FlareBadge>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _unread++)">@GalleryStrings.Badge_Add</FlareButton>
+</FlareStack>
+
+@code {
+    private int _unread = 5;
+}

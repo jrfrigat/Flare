@@ -842,7 +842,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Badge_Origin", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add notification.
+        /// </summary>
+        public static string Badge_Add {
+            get {
+                return ResourceManager.GetString("Badge_Add", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hidden (Visible=false).
+        /// </summary>
+        public static string Badge_Hidden {
+            get {
+                return ResourceManager.GetString("Badge_Hidden", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Notifications, unread: {0}.
+        /// </summary>
+        public static string Badge_NotificationsAria {
+            get {
+                return ResourceManager.GetString("Badge_NotificationsAria", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unread notifications: {0}.
+        /// </summary>
+        public static string Badge_UnreadStatus {
+            get {
+                return ResourceManager.GetString("Badge_UnreadStatus", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zero count is visible by default.
+        /// </summary>
+        public static string Badge_ZeroVisible {
+            get {
+                return ResourceManager.GetString("Badge_ZeroVisible", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Standalone pills &amp; colors.
         /// </summary>

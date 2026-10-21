@@ -303,6 +303,21 @@
   <data name="Badge_Origin" xml:space="preserve">
     <value>Origin &amp; visibility</value>
   </data>
+  <data name="Badge_ZeroVisible" xml:space="preserve">
+    <value>Zero count is visible by default</value>
+  </data>
+  <data name="Badge_Hidden" xml:space="preserve">
+    <value>Hidden (Visible=false)</value>
+  </data>
+  <data name="Badge_NotificationsAria" xml:space="preserve">
+    <value>Notifications, unread: {0}</value>
+  </data>
+  <data name="Badge_UnreadStatus" xml:space="preserve">
+    <value>Unread notifications: {0}</value>
+  </data>
+  <data name="Badge_Add" xml:space="preserve">
+    <value>Add notification</value>
+  </data>
   <data name="Chip_Title" xml:space="preserve">
     <value>Chip</value>
   </data>
