@@ -18,7 +18,8 @@
         </button>
     }
     <div class="@Css.Classes.Tabs.Bar" role="tablist" tabindex="-1" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef"
-         data-flare-keyboard-fallback="@(_jsKeyboardRegistered ? null : "true")">
+         data-flare-keyboard-fallback="@(_jsKeyboardRegistered ? null : "true")"
+         @onkeydown="_fallbackKeyHandler">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _context?.ActiveTab;
@@ -216,7 +217,15 @@
             if (_tabElements.TryGetValue(target, out var element))
             {
                 await element.FocusAsync(preventScroll: true);
-                await Ui.RevealFocusedTabAsync(_barRef);
+                // The reveal is an enhancement of the module that owns the keyboard. When that module
+                // failed to load, calling it throws and the circuit dies - which is what made the
+                // C# fallback look like it lost the second key.
+                if (_jsKeyboardRegistered)
+                {
+                    try { await Ui.RevealFocusedTabAsync(_barRef); }
+                    catch (InvalidOperationException) { }
+                    catch (JSException) { }
+                }
             }
         }
         else if (_focusBarPending)
@@ -399,6 +408,18 @@
         var args = new TabInteractionEventArgs { PanelIndex = index, Label = label, InteractionType = type };
         await OnPreviewInteraction.InvokeAsync(args);
         return !args.Cancel;
+    }
+
+    // The C# path for the keys the module owns. Bound only while the module's registration has failed:
+    // with the module live it would send every key in the tablist over the circuit for nothing, and the
+    // module already drives the same navigation.
+    private Func<KeyboardEventArgs, Task>? _fallbackKeyHandler =>
+        _jsKeyboardRegistered ? null : OnFallbackKeyDown;
+
+    private async Task OnFallbackKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Home" or "End" or "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Delete")
+            await OnTabNavigation(e.Key, false);
     }
 
     // The listener lives in flare-ui.js, which a stale PWA can serve as a failed module. One retry on

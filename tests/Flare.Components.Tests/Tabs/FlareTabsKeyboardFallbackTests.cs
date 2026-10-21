@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests;
@@ -46,5 +47,23 @@ public class FlareTabsKeyboardFallbackTests : FlareTestContext
         RenderTabs();
 
         Assert.Single(keyboard.Invocations);
+    }
+
+    [Fact]
+    public void FailedRegistration_KeysStillNavigate()
+    {
+        JSInterop.SetupModule(Module)
+            .SetupVoid("registerTabKeyboard", _ => true)
+            .SetException(new JSException("module not loaded"));
+
+        var cut = RenderTabs();
+
+        cut.Find("[role=tablist]").KeyDown(new KeyboardEventArgs { Key = "End" });
+        cut.WaitForAssertion(() =>
+            Assert.Equal("true", cut.FindAll("[role=tab]")[^1].GetAttribute("aria-selected")));
+
+        cut.Find("[role=tablist]").KeyDown(new KeyboardEventArgs { Key = "Home" });
+        cut.WaitForAssertion(() =>
+            Assert.Equal("true", cut.FindAll("[role=tab]")[0].GetAttribute("aria-selected")));
     }
 }
