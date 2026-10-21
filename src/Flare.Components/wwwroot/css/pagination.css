@@ -94,7 +94,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--flare-spacing-4);
-  margin-right: var(--flare-spacing-4);
+  margin-inline-end: var(--flare-spacing-4);
   color: var(--flare-color-on-surface-variant);
   font-size: var(--flare-typescale-body-medium-size);
 }

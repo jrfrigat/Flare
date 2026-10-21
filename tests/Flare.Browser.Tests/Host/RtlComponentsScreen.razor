@@ -1,0 +1,18 @@
+@page "/rtl-components"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div style="display:flex;gap:2rem;align-items:flex-start">
+        <div id="rtl-pagination" dir="rtl">
+            <FlarePagination Current="2" TotalPages="10" ShowFirstLast="true"
+                             RowsPerPageOptions="_rows" PageSize="25" />
+        </div>
+        <div id="ltr-pagination" dir="ltr">
+            <FlarePagination Current="2" TotalPages="10" ShowFirstLast="true"
+                             RowsPerPageOptions="_rows" PageSize="25" />
+        </div>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private readonly int[] _rows = [10, 25, 50];
+}

@@ -62,6 +62,12 @@
   text-align: right;
 }
 
+/* Pagination - draw the navigation chevrons in the reading direction; the flex order is already
+   mirrored, so only the glyph itself is flipped. */
+[dir="rtl"] .flare-pagination__btn--nav {
+  transform: scaleX(-1);
+}
+
 /* ============================================
    Input Components
    ============================================ */
