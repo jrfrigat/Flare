@@ -4,9 +4,9 @@
         threshold. Scroll this page down - it appears in the bottom-right corner; click it to glide back up.
     </FlareText>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-        Usage: <code>&lt;FlareScrollTop Threshold="200" /&gt;</code> watches the page (window). Pass
-        <code>Selector</code> to watch an app-shell scroll container instead - this Gallery scrolls its
-        <code>&lt;main&gt;</code>, so the demo uses <code>Selector=".flare-layout-content"</code>.
+        Usage: <FlareCode>&lt;FlareScrollTop Threshold="200" /&gt;</FlareCode> watches the page (window). Pass
+        <FlareCode>Selector</FlareCode> to watch an app-shell scroll container instead - this Gallery scrolls its
+        <FlareCode>&lt;main&gt;</FlareCode>, so the demo uses <FlareCode>Selector=".flare-layout-content"</FlareCode>.
     </FlareText>
 
     <FlareDivider />
@@ -16,7 +16,7 @@
     {
         var n = i;
         <FlareText Typo="TypographyScale.BodyMedium">
-            <strong>@n.</strong> Keep scrolling down. The back-to-top button fades in once you pass the
+            <FlareText Element="strong" Inherit>@n.</FlareText> Keep scrolling down. The back-to-top button fades in once you pass the
             200px threshold, and clicking it smoothly returns you to the top of the content.
         </FlareText>
     }

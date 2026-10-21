@@ -1,12 +1,13 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareSelect TValue="string"
-                 @bind-Value="_selected"
-                 Label="Country"
-                 Placeholder="Search a country..."
-                 Items="_countries"
-                 Searchable="true"
-                 Fuzzy="true"
-                 Style="max-width:24rem;" />
+    <FlareStack MaxWidth="24rem">
+        <FlareSelect TValue="string"
+                     @bind-Value="_selected"
+                     Label="Country"
+                     Placeholder="Search a country..."
+                     Items="_countries"
+                     Searchable="true"
+                     Fuzzy="true" />
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         Selected: @(_selected ?? "-")
     </FlareText>

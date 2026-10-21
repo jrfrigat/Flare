@@ -1,14 +1,16 @@
-﻿@inject LanguageService Lang
+@inject LanguageService Lang
 
 <FlareCalendar Events="_events" SelectedDate="_selected" SelectedDateChanged="@(d => _selected = d)" />
 
-<FlareText Typo="TypographyScale.LabelMedium" Style="margin-bottom:0.5rem;">Events this month:</FlareText>
-<FlareList TItem="object" Style="max-width:200px;border:1px solid var(--flare-color-outline-variant);">
-    @foreach (var ev in _events)
-    {
-        <FlareListItem Primary="@ev.Title" Secondary="@ev.Date.ToString("MMM d")" />
-    }
-</FlareList>
+<FlareText Typo="TypographyScale.LabelMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">Events this month:</FlareText>
+<FlareCard Variant="CardVariant.Outlined" MaxWidth="200px" Padding="FlareSpacing.None">
+    <FlareList TItem="object">
+        @foreach (var ev in _events)
+        {
+            <FlareListItem Primary="@ev.Title" Secondary="@ev.Date.ToString("MMM d")" />
+        }
+    </FlareList>
+</FlareCard>
 
 @code{
     private DateOnly? _selected;

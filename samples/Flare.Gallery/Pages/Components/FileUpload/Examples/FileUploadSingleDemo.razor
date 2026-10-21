@@ -1,8 +1,8 @@
-<FlareStack Style="max-width:32rem;">
+<FlareStack MaxWidth="32rem">
     <FlareFileUploadZone Accept=".jpg,.png,.gif,.webp" OnFilesChanged="HandleSingle" />
     @if (_singleName is not null)
     {
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Selected: @_singleName</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">Selected: @_singleName</FlareText>
     }
 </FlareStack>
 

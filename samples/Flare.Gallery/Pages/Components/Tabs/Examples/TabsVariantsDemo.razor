@@ -1,5 +1,7 @@
 <FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
-    <FlareSelect TValue="TabsVariant" @bind-Value="_variant" Items="_variantValues" Label="Variant" Style="max-width:18rem" />
+    <FlareStack MaxWidth="18rem">
+        <FlareSelect TValue="TabsVariant" @bind-Value="_variant" Items="_variantValues" Label="Variant" />
+    </FlareStack>
 
     <FlareTabs Variant="_variant">
         <FlareTab Label="Overview">

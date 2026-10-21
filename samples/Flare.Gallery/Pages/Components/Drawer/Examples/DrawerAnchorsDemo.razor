@@ -6,7 +6,7 @@
 <FlareDrawer @bind-Open="_top" Anchor="DrawerAnchor.Top" Height="180px" CloseOnEsc="true" CloseOnScrimClick="true">
     <HeaderContent>Top sheet (Height=180px)</HeaderContent>
     <ChildContent>
-        <FlareStack Style="padding:1rem;">
+        <FlareStack Padding="FlareSpacing.Custom" PaddingValue="1rem">
             <FlareText Typo="TypographyScale.BodyMedium">Click the scrim or press Esc to close.</FlareText>
         </FlareStack>
     </ChildContent>
@@ -15,7 +15,7 @@
 <FlareDrawer @bind-Open="_bottom" Anchor="DrawerAnchor.Bottom" Height="220px" CloseOnScrimClick="false">
     <HeaderContent>Bottom sheet (CloseOnScrimClick=false)</HeaderContent>
     <ChildContent>
-        <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
+        <FlareStack Gap="FlareSpacing.Medium" Padding="FlareSpacing.Custom" PaddingValue="1rem">
             <FlareText Typo="TypographyScale.BodyMedium">Scrim click is disabled - use the button.</FlareText>
             <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _bottom = false)">Close</FlareButton>
         </FlareStack>

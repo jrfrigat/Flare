@@ -18,13 +18,14 @@
     <FlareCard Variant="CardVariant.Outlined">
         <FlareStack Gap="FlareSpacing.Medium">
             <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
-                <label class="flare-btn flare-btn--tonal flare-btn--md" style="cursor:pointer;">
-                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Upload" Size="1.25rem" />
-                    <span class="flare-btn__label">@GalleryStrings.Services_DynamicUpload</span>
-                    <InputFile OnChange="OnFileAsync" accept="image/*" style="display:none;" />
-                </label>
-                <FlareField TValue="string" @bind-Value="_url" Label="@GalleryStrings.Services_DynamicUrl"
-                            Placeholder="https://..." Style="flex:1;min-width:16rem;" />
+                <FlareFileUploadButton Variant="ButtonVariant.Tonal" Accept="image/*" OnFilesChanged="OnFilesAsync">
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Upload" Size="1.25rem" /></LeadingIcon>
+                    <ChildContent>@GalleryStrings.Services_DynamicUpload</ChildContent>
+                </FlareFileUploadButton>
+                <FlareStack FlexGrow="1" MinWidth="16rem">
+                    <FlareField TValue="string" @bind-Value="_url" Label="@GalleryStrings.Services_DynamicUrl"
+                                Placeholder="https://..." />
+                </FlareStack>
                 <FlareButton Variant="ButtonVariant.Filled" OnClick="LoadUrlAsync">@GalleryStrings.Services_DynamicLoad</FlareButton>
             </FlareStack>
             <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
@@ -33,32 +34,36 @@
             </FlareStack>
             @if (!string.IsNullOrEmpty(_fileError))
             {
-                <FlareAlert Severity="AlertSeverity.Error" Style="margin-top:0.5rem;">@_fileError</FlareAlert>
+                <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
+                    <FlareAlert Severity="AlertSeverity.Error">@_fileError</FlareAlert>
+                </FlareStack>
             }
         </FlareStack>
     </FlareCard>
 
     @* ---- "Music player" themed by the extracted color --------------------------------- *@
-    <div style="max-width:24rem;">
-        <FlareCard Style="@($"padding:1.25rem;overflow:hidden;{_dynamic.StyleFull()}")">
+    <FlareStack MaxWidth="24rem">
+        <FlareColorScope Color="_dynamic">
+        <FlareCard Padding="FlareSpacing.Custom" PaddingValue="1.25rem" Overflow="hidden">
             <FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
                 @* Cover *@
-                <div style="aspect-ratio:1/1;border-radius:var(--flare-shape-large);overflow:hidden;
-                            background:linear-gradient(135deg, var(--fc-container), var(--fc-main));
-                            display:flex;align-items:center;justify-content:center;">
+                <FlareCard Background="@ContainerFill" Height="16rem" Padding="FlareSpacing.None"
+                           Overflow="hidden" Variant="CardVariant.Filled">
                     @if (_imageUrl is not null)
                     {
-                        <img src="@_imageUrl" alt="cover" style="width:100%;height:100%;object-fit:cover;" />
+                        <FlareImage Src="@_imageUrl" Alt="cover" Width="100%" Height="100%" />
                     }
                     else
                     {
-                        <FlareIconView Value="@MaterialDesign3Icons.Regular.MusicNote" Size="4rem" Style="color:var(--fc-on-container);opacity:.7;" />
+                        <FlareStack Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center" Height="100%">
+                            <FlareIconView Value="@MaterialDesign3Icons.Regular.MusicNote" Size="4rem" Color="@OnContainer" />
+                        </FlareStack>
                     }
-                </div>
+                </FlareCard>
 
                 @* Track info *@
                 <FlareStack Gap="FlareSpacing.None">
-                    <FlareText Typo="TypographyScale.LabelSmall" Style="color:var(--fc-main);">@GalleryStrings.Services_DynamicNowPlaying</FlareText>
+                    <FlareText Typo="TypographyScale.LabelSmall" Foreground="@MainForeground">@GalleryStrings.Services_DynamicNowPlaying</FlareText>
                     <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Services_DynamicTrack</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_DynamicArtist</FlareText>
                 </FlareStack>
@@ -76,8 +81,9 @@
                 </FlareStack>
             </FlareStack>
         </FlareCard>
-    </div>
-    <FlareText Typo="TypographyScale.TitleSmall" Style="margin-top:0.5rem">@GalleryStrings.Services_Usage</FlareText>
+        </FlareColorScope>
+    </FlareStack>
+    <FlareText Typo="TypographyScale.TitleSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">@GalleryStrings.Services_Usage</FlareText>
     <FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
 </FlareStack>
 
@@ -105,13 +111,18 @@
 
     private FlareColor _dynamic => FlareColor.Dynamic(_seed);
 
+    private static readonly FlareColor ContainerFill = FlareColor.Custom("var(--fc-container)");
+    private static readonly FlareColor OnContainer = FlareColor.Custom("var(--fc-on-container)");
+    private static readonly FlareColor MainForeground = FlareColor.Custom("var(--fc-main)");
+
     private const long MaxFileSize = 50 * 1024 * 1024; // 50 MB
     private string? _fileError;
 
-    private async Task OnFileAsync(InputFileChangeEventArgs e)
+    private async Task OnFilesAsync(IReadOnlyList<IBrowserFile> files)
     {
         _fileError = null;
-        var file = e.File;
+        if (files.Count == 0) return;
+        var file = files[0];
         if (file.Size > MaxFileSize)
         {
             _fileError = $"File size ({file.Size / 1024 / 1024} MB) exceeds maximum ({MaxFileSize / 1024 / 1024} MB).";

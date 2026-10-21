@@ -21,7 +21,7 @@
     </FlareText>
 </GalleryPageTitle>
 
-<FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
+<FlareStack Row Wrap Gap="FlareSpacing.Small" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
     <FlareButton Variant="ButtonVariant.Filled" OnClick="Apply">
         <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Check" /></LeadingIcon>
         <ChildContent>Confirm</ChildContent>
@@ -32,7 +32,7 @@
     </FlareButton>
     <FlareSpacer />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-        Base: <strong>@ThemeService.CurrentTheme.DisplayName</strong> / @ThemeService.CurrentPalette.Name / @(ThemeService.IsDark ? "Dark" : "Light")
+        Base: <FlareText Element="strong" Inherit>@ThemeService.CurrentTheme.DisplayName</FlareText> / @ThemeService.CurrentPalette.Name / @(ThemeService.IsDark ? "Dark" : "Light")
     </FlareText>
 </FlareStack>
 
@@ -45,31 +45,30 @@
            out of the DOM until selected, and the edits live in the JSON trees so nothing is lost. *@
         <FlareTabs Lazy="true">
             <FlareTab Label="Palette">
-                @* Flare has no scroll-container primitive, so the constrained-scroll panel is a plain
-                   div with token-based inline style (CtScroll). data-scroll is the FlareLazy hook
-                   (a JS selector target, not a styling class). *@
-                <div style="@CtScroll" data-scroll>
-                    <FlareText Typo="TypographyScale.TitleSmall" Style="margin:0.5rem 0;">Light colors</FlareText>
+                @* The constrained-scroll panel is a FlareStack: MaxHeight + Overflow keep the editor
+                   inside the tab, and data-scroll is the FlareLazy hook. *@
+                <FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem" data-scroll>
+                    <FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="0.5rem 0">Light colors</FlareText>
                     @RenderGroup(_light)
-                    <FlareDivider Style="margin:1.25rem 0;" />
-                    <FlareText Typo="TypographyScale.TitleSmall" Style="margin:0.5rem 0;">Dark colors</FlareText>
+                    <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1.25rem" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.25rem"><FlareDivider /></FlareStack>
+                    <FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="0.5rem 0">Dark colors</FlareText>
                     @* The dark-colors half (another ~45 pickers) sits below the scroll fold; defer it
                        within the editor's own scroll panel so the tab opens with half the work. *@
                     <FlareLazy Root="[data-scroll]" RootMargin="150px" MinHeight="50vh">
                         @RenderGroup(_dark)
                     </FlareLazy>
-                </div>
+                </FlareStack>
             </FlareTab>
 
-            <FlareTab Label="Spacing"><div style="@CtScroll">@GroupTab("Spacing")</div></FlareTab>
-            <FlareTab Label="Shape"><div style="@CtScroll">@GroupTab("Shape")</div></FlareTab>
-            <FlareTab Label="Typography"><div style="@CtScroll">@GroupTab("Typography")</div></FlareTab>
-            <FlareTab Label="Motion"><div style="@CtScroll">@GroupTab("Motion")</div></FlareTab>
-            <FlareTab Label="Elevation"><div style="@CtScroll">@GroupTab("Elevation")</div></FlareTab>
-            <FlareTab Label="State"><div style="@CtScroll">@GroupTab("State")</div></FlareTab>
+            <FlareTab Label="Spacing"><FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@GroupTab("Spacing")</FlareStack></FlareTab>
+            <FlareTab Label="Shape"><FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@GroupTab("Shape")</FlareStack></FlareTab>
+            <FlareTab Label="Typography"><FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@GroupTab("Typography")</FlareStack></FlareTab>
+            <FlareTab Label="Motion"><FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@GroupTab("Motion")</FlareStack></FlareTab>
+            <FlareTab Label="Elevation"><FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@GroupTab("Elevation")</FlareStack></FlareTab>
+            <FlareTab Label="State"><FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@GroupTab("State")</FlareStack></FlareTab>
 
             <FlareTab Label="Components">
-                <div style="@CtScroll">@RenderComponents()</div>
+                <FlareStack MaxHeight="60vh" Overflow="auto" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">@RenderComponents()</FlareStack>
             </FlareTab>
 
             <FlareTab Label="Export JSON">
@@ -120,7 +119,7 @@
         </FlareTabs>
     </FlareCol>
 
-    <FlareCol Span="12" Md="4" Style="position:sticky;top:1rem;">
+    <FlareCol Span="12" Md="4" Sticky="true" StickyTop="1rem">
         <FlareCard Variant="CardVariant.Outlined">
             <FlareStack Gap="FlareSpacing.Medium">
                 <FlareText Typo="TypographyScale.TitleMedium">Live preview</FlareText>
@@ -176,7 +175,6 @@
     // Constrained-scroll panel style for each editor tab. Flare has no scroll-container primitive,
     // so this token-light layout is inlined (see the data-scroll divs above) rather than living in
     // gallery CSS; padding-right keeps the scrollbar off the content.
-    private const string CtScroll = "max-height:60vh;overflow:auto;padding-right:0.5rem;";
 
     private string _exportJson = string.Empty;
     private string? _importText;
@@ -297,7 +295,7 @@
         @{ var leaves = _design.Where(p => p.Value is JsonValue).ToList(); }
         @if (leaves.Count > 0)
         {
-            <FlareGrid MinColumnWidth="15rem" RowGap="0.75rem" ColumnGap="1rem" Style="padding-top:0.5rem;">
+            <FlareGrid MinColumnWidth="15rem" RowGap="0.75rem" ColumnGap="1rem" PaddingBlockStart="FlareSpacing.Custom" PaddingBlockStartValue="0.5rem">
                 @foreach (var (key, _) in leaves) { @LeafField(_design, key) }
             </FlareGrid>
         }
@@ -305,7 +303,7 @@
             .Where(p => p.Value is JsonObject && !_coreGroups.Contains(p.Key) && p.Key != "Extended")
             .OrderBy(p => p.Key))
         {
-            <FlareText Typo="TypographyScale.TitleSmall" Style="margin:1rem 0 0.25rem;">@HumanizeProp(key)</FlareText>
+            <FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="1rem 0 0.25rem">@HumanizeProp(key)</FlareText>
             @RenderGroup(val!.AsObject())
         }
     </text>;
@@ -318,13 +316,13 @@
         }
         @if (leaves.Count > 0)
         {
-            <FlareGrid MinColumnWidth="15rem" RowGap="0.75rem" ColumnGap="1rem" Style="padding-top:0.5rem;">
+            <FlareGrid MinColumnWidth="15rem" RowGap="0.75rem" ColumnGap="1rem" PaddingBlockStart="FlareSpacing.Custom" PaddingBlockStartValue="0.5rem">
                 @foreach (var (key, _) in leaves) { @LeafField(obj, key) }
             </FlareGrid>
         }
         @foreach (var (key, val) in nested)
         {
-            <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurfaceVariant" Style="margin:0.75rem 0 0.25rem;">@HumanizeProp(key)</FlareText>
+            <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurfaceVariant" Margin="FlareSpacing.Custom" MarginValue="0.75rem 0 0.25rem">@HumanizeProp(key)</FlareText>
             @RenderGroup(val!.AsObject())
         }
     </text>;
@@ -334,9 +332,9 @@
     @* A FlareStack (div, NOT a <label>): a label forwards inner clicks (backdrop, canvas) to its first
        control (the picker trigger), which reopens the popover the moment its backdrop closes it. The
        label is a truncating caption built from FlareText (no gallery CSS). *@
-    private RenderFragment LeafField(JsonObject parent, string key) =>@<FlareStack Gap="FlareSpacing.XXSmall" Style="min-width:0;" @key="key">
-        <FlareText Element="span" Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant"
-                   Style="text-transform:capitalize;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="@key">@HumanizeProp(key)</FlareText>
+    private RenderFragment LeafField(JsonObject parent, string key) =>@<FlareStack Gap="FlareSpacing.XXSmall" MinWidth="0" @key="key">
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant"
+                   Transform="TextTransform.Capitalize" MaxLines="1" title="@key">@HumanizeProp(key)</FlareText>
         <CtTokenField Parent="@parent" PropKey="@key" />
     </FlareStack>;
 

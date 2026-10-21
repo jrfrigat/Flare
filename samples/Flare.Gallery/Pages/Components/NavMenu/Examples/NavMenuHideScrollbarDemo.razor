@@ -1,7 +1,9 @@
 @* HideScrollbar="true" lets the menu scroll its overflow while hiding the scrollbar.
    The fixed-height card constrains the menu so it actually scrolls. *@
-<FlareCard Variant="CardVariant.Filled" Style="max-width:280px;height:200px;padding:0.75rem 0;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-medium);display:flex;">
-    <FlareNavMenu HideScrollbar="true">
+<FlareCard Variant="CardVariant.Filled" MaxWidth="280px" Height="200px" Padding="FlareSpacing.Custom" PaddingValue="0.75rem 0"
+           Background="@(FlareColor.Custom("var(--flare-color-surface-container-low)"))">
+    <FlareStack FillHeight="true">
+    <FlareNavMenu HideScrollbar="true" Class="@Css.Classes.Fill.Root">
         @for (var i = 1; i <= 15; i++)
         {
             var n = i;
@@ -11,4 +13,5 @@
             </FlareNavLink>
         }
     </FlareNavMenu>
+    </FlareStack>
 </FlareCard>

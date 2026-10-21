@@ -8,7 +8,7 @@
      aria-valuenow="@AriaValueNow"
      aria-valuemin="0"
      aria-valuemax="100"
-     style="@($"{ColorTokens}{_ringArcVar}{Style}")"
+     style="@($"{ColorTokens}{_ringArcVar}{_diameterStyle}{Style}")"
      @attributes="AdditionalAttributes">
     @* The browser resolves CSS lengths and fits this fallback drawing to the actual viewport.
        Dash lengths stay in percent units at every size; CSS owns all animation. *@
@@ -44,6 +44,19 @@
     /// on the component when the content says something the value does not.
     /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>The ring's own diameter as a CSS length. Null follows the size step and the theme;
+    /// set it when one indicator needs a size the shared step does not offer.</summary>
+    [Parameter] public string? Diameter { get; set; }
+
+    private string? _diameterStyle
+    {
+        get
+        {
+            var safe = Flare.Components.Security.CssValidator.StripDangerous(Diameter);
+            return string.IsNullOrWhiteSpace(safe) ? null : $"width:{safe};height:{safe};";
+        }
+    }
 
     private const double Circumference = 2 * Math.PI * 18;
 

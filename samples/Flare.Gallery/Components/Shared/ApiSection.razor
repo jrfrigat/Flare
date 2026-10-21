@@ -21,48 +21,44 @@
         {
             <FlareStack Gap="FlareSpacing.Small">
                 <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Parameters</FlareText>
-                <FlareTable TItem="object" Bordered="true">
-                    <thead>
-                        <tr>
-                            <th>@GalleryStrings.Api_Name</th>
-                            <th>@GalleryStrings.Api_Type</th>
-                            <th>@GalleryStrings.Api_Default</th>
-                            <th>@GalleryStrings.Api_Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var p in _parameters)
-                        {
-                            <tr>
-                                <td>
-                                    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Wrap="true">
-                                        <code>@p.Name</code>
-                                        @if (p.IsRequired)
-                                        {
-                                            <FlareBadge Text="@GalleryStrings.Api_Required" Standalone="true" Color="FlareColor.Error" />
-                                        }
-                                        @if (IsInherited(p))
-                                        {
-                                            <FlareBadge Text="@GalleryStrings.Api_Inherited" Standalone="true" Color="FlareColor.Info" />
-                                        }
-                                    </FlareStack>
-                                </td>
-                                <td><code>@RenderTypeLinks(p.Type)</code></td>
-                                <td>
-                                    @if (p.Default is not null)
+                <FlareDataGrid TItem="ApiParameterInfo" Items="_parameters" RowKey="@(p => p.Name)"
+                               Bordered="true" Height="auto" PageSize="0" ShowPager="false" Hoverable="false">
+                    <Columns>
+                        <FlareColumn Title="@GalleryStrings.Api_Name">
+                            <Template Context="p">
+                                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Wrap="true">
+                                    <FlareCode>@p.Name</FlareCode>
+                                    @if (p.IsRequired)
                                     {
-                                        <code>@p.Default</code>
+                                        <FlareBadge Text="@GalleryStrings.Api_Required" Standalone="true" Color="FlareColor.Error" />
                                     }
-                                    else
+                                    @if (IsInherited(p))
                                     {
-                                        <span>-</span>
+                                        <FlareBadge Text="@GalleryStrings.Api_Inherited" Standalone="true" Color="FlareColor.Info" />
                                     }
-                                </td>
-                                <td>@Describe(p.Summary, p.Remarks)</td>
-                            </tr>
-                        }
-                    </tbody>
-                </FlareTable>
+                                </FlareStack>
+                            </Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Type">
+                            <Template Context="p">@RenderTypeLinks(p.Type)</Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Default">
+                            <Template Context="p">
+                                @if (p.Default is not null)
+                                {
+                                    <FlareCode>@p.Default</FlareCode>
+                                }
+                                else
+                                {
+                                    <FlareText Element="span" Inherit>-</FlareText>
+                                }
+                            </Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Description">
+                            <Template Context="p">@Describe(p.Summary, p.Remarks)</Template>
+                        </FlareColumn>
+                    </Columns>
+                </FlareDataGrid>
             </FlareStack>
         }
 
@@ -70,25 +66,20 @@
         {
             <FlareStack Gap="FlareSpacing.Small">
                 <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Events</FlareText>
-                <FlareTable TItem="object" Bordered="true">
-                    <thead>
-                        <tr>
-                            <th>@GalleryStrings.Api_Name</th>
-                            <th>@GalleryStrings.Api_Type</th>
-                            <th>@GalleryStrings.Api_Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var e in _events)
-                        {
-                            <tr>
-                                <td><code>@e.Name</code></td>
-                                <td><code>@RenderTypeLinks(e.Type)</code></td>
-                                <td>@Describe(e.Summary, e.Remarks)</td>
-                            </tr>
-                        }
-                    </tbody>
-                </FlareTable>
+                <FlareDataGrid TItem="ApiParameterInfo" Items="_events" RowKey="@(e => e.Name)"
+                               Bordered="true" Height="auto" PageSize="0" ShowPager="false" Hoverable="false">
+                    <Columns>
+                        <FlareColumn Title="@GalleryStrings.Api_Name">
+                            <Template Context="e"><FlareCode>@e.Name</FlareCode></Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Type">
+                            <Template Context="e">@RenderTypeLinks(e.Type)</Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Description">
+                            <Template Context="e">@Describe(e.Summary, e.Remarks)</Template>
+                        </FlareColumn>
+                    </Columns>
+                </FlareDataGrid>
             </FlareStack>
         }
 
@@ -96,25 +87,20 @@
         {
             <FlareStack Gap="FlareSpacing.Small">
                 <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Methods</FlareText>
-                <FlareTable TItem="object" Bordered="true">
-                    <thead>
-                        <tr>
-                            <th>@GalleryStrings.Api_Name</th>
-                            <th>@GalleryStrings.Api_Returns</th>
-                            <th>@GalleryStrings.Api_Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var m in _info.Methods)
-                        {
-                            <tr>
-                                <td><code>@m.Signature</code></td>
-                                <td><code>@RenderTypeLinks(m.ReturnType)</code></td>
-                                <td>@Describe(m.Summary, m.ReturnSummary)</td>
-                            </tr>
-                        }
-                    </tbody>
-                </FlareTable>
+                <FlareDataGrid TItem="ApiMethodInfo" Items="_info.Methods" RowKey="@(m => m.Signature)"
+                               Bordered="true" Height="auto" PageSize="0" ShowPager="false" Hoverable="false">
+                    <Columns>
+                        <FlareColumn Title="@GalleryStrings.Api_Name">
+                            <Template Context="m"><FlareCode>@m.Signature</FlareCode></Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Returns">
+                            <Template Context="m">@RenderTypeLinks(m.ReturnType)</Template>
+                        </FlareColumn>
+                        <FlareColumn Title="@GalleryStrings.Api_Description">
+                            <Template Context="m">@Describe(m.Summary, m.ReturnSummary)</Template>
+                        </FlareColumn>
+                    </Columns>
+                </FlareDataGrid>
             </FlareStack>
         }
 
@@ -168,23 +154,17 @@ else if (_enum is not null)
 
         <FlareStack Gap="FlareSpacing.Small">
             <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Members</FlareText>
-            <FlareTable TItem="object" Bordered="true">
-                <thead>
-                    <tr>
-                        <th>@GalleryStrings.Api_Name</th>
-                        <th>@GalleryStrings.Api_Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var m in _enum.Members)
-                    {
-                        <tr>
-                            <td><code>@m.Name</code></td>
-                            <td>@(m.Summary ?? string.Empty)</td>
-                        </tr>
-                    }
-                </tbody>
-            </FlareTable>
+            <FlareDataGrid TItem="ApiEnumMember" Items="_enum.Members" RowKey="@(m => m.Name)"
+                           Bordered="true" Height="auto" PageSize="0" ShowPager="false" Hoverable="false">
+                <Columns>
+                    <FlareColumn Title="@GalleryStrings.Api_Name">
+                        <Template Context="m"><FlareCode>@m.Name</FlareCode></Template>
+                    </FlareColumn>
+                    <FlareColumn Title="@GalleryStrings.Api_Description">
+                        <Template Context="m">@(m.Summary ?? string.Empty)</Template>
+                    </FlareColumn>
+                </Columns>
+            </FlareDataGrid>
         </FlareStack>
 
         @if (_enum.UsedBy.Count > 0)
@@ -262,11 +242,12 @@ else
         {
             if (token.IsIdentifier && ComponentApiRegistry.IsDocumented(token.Text))
             {
-                builder.OpenElement(seq++, "a");
-                builder.AddAttribute(seq++, "href", $"api/{token.Text}");
-                builder.AddAttribute(seq++, "style", "color:var(--flare-color-primary);text-decoration:none;");
-                builder.AddContent(seq++, token.Text);
-                builder.CloseElement();
+                builder.OpenComponent<FlareLink>(seq++);
+                builder.AddAttribute(seq++, "Href", $"api/{token.Text}");
+                builder.AddAttribute(seq++, "Color", FlareColor.Primary);
+                builder.AddAttribute(seq++, "Underline", LinkUnderline.None);
+                builder.AddAttribute(seq++, "ChildContent", (RenderFragment)(b => b.AddContent(0, token.Text)));
+                builder.CloseComponent();
             }
             else
             {

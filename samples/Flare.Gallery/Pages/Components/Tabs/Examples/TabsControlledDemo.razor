@@ -2,7 +2,7 @@
     <FlareStack Row="true" Wrap="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="Prev" Disabled="@(_active == 0)">Prev</FlareButton>
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="Next" Disabled="@(_active == 2)">Next</FlareButton>
-        <FlareText Typo="TypographyScale.BodyMedium">Active index: <strong>@_active</strong></FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">Active index: <FlareText Element="strong" Inherit>@_active</FlareText></FlareText>
         <FlareSwitch @bind-Value="_guard" Label="Block leaving tab 1" />
     </FlareStack>
 

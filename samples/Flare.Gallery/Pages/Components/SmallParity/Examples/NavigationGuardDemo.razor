@@ -1,7 +1,7 @@
 @* Two halves. Leaving the SITE gets the browser's own prompt, whose wording no page has been able to
    choose since 2016. Leaving the PAGE gets a Flare dialog, which looks like the rest of the application -
    that is the half the reference frameworks do not do. Try the nav links on the left while dirty. *@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="30rem">
 
     <FlareNavigationGuard IsDirty="_dirty" OnConfirm="@(() => _dirty = false)" />
 

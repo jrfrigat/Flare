@@ -3,9 +3,9 @@
 <FlareStack Row Wrap Gap="FlareSpacing.Large">
     @foreach (var icon in _icons)
     {
-        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="width:5rem;">
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Width="5rem">
             <FlareIconView Size="1.75rem" Color="FlareColor.OnSurfaceVariant" Value="@(FlareIcons.Find(icon)!)" />
-            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" Style="word-break:break-all">@icon</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" MaxLines="1" title="@icon">@icon</FlareText>
         </FlareStack>
     }
 </FlareStack>

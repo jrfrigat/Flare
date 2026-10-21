@@ -12,10 +12,11 @@
        disappears, pick 1C and so do cross joins and paging by offset. Nothing is offered that would
        only fail once the query was rendered. *@
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
-        <span>@GalleryStrings.Query_Target</span>
-        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
-                     Value="@_target" ValueChanged="@(value => _target = value ?? string.Empty)"
-                     Style="width: 12rem" />
+        <FlareText Element="span" Inherit>@GalleryStrings.Query_Target</FlareText>
+        <FlareStack Width="12rem">
+            <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
+                         Value="@_target" ValueChanged="@(value => _target = value ?? string.Empty)" />
+        </FlareStack>
     </FlareStack>
 
     <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" Capabilities="@TargetCapabilities"

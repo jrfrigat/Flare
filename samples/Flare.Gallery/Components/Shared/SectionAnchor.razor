@@ -12,16 +12,20 @@
    navigation manager to know where "here" is and the clipboard to hand the address over, and a page
    that wants one composes it beside its own heading. Flare supplies the pieces - FlareText draws the
    glyph, IFlareClipboard does the copying. *@
-<a class="section-anchor @(_copied ? "section-anchor--copied" : "")"
-   href="@_href"
-   title="@_label"
-   aria-label="@_label"
-   @onclick="CopyAsync"
-   @onclick:preventDefault="true">
-    <FlareText Element="span" Color="FlareColor.Primary" Weight="FontWeight.SemiBold">@(_copied ? Tick : "#")</FlareText>
-</a>
+<FlareLink Href="@_href"
+          title="@_label"
+          aria-label="@_label"
+          Color="FlareColor.Primary"
+          Underline="LinkUnderline.None"
+          @onclick="CopyAsync">
+    <FlareText Element="span" Color="FlareColor.Primary" Weight="FontWeight.SemiBold">@SpaceAndGlyph</FlareText>
+</FlareLink>
 
 @code {
+    // U+00A0 NO-BREAK SPACE keeps the glyph off the heading text without a stylesheet.
+    private const string SpaceAndGlyphPrefix = "\u00A0";
+    private string SpaceAndGlyph => SpaceAndGlyphPrefix + (_copied ? Tick : "#");
+
     /// <summary>The id of the heading this points at.</summary>
     [Parameter, EditorRequired] public string For { get; set; } = "";
 

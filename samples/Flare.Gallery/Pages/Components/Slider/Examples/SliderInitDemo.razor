@@ -1,13 +1,13 @@
 @* Init anchors the fill: the active track grows from Init toward Value (not from Min).
    Great for left/right balance controls (Min=-100, Max=100, Init=0). *@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="30rem">
     <FlareSlider @bind-Value="_balance" Label="Speaker balance (L / R)"
                  Min="-100" Max="100" Init="0" Step="5"
                  StartIcon="@MaterialDesign3Icons.Regular.VolumeUp" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp" Indicator="true" />
     <FlareSlider @bind-Value="_trim" Label="Trim around 0"
                  Min="-12" Max="12" Init="0" Step="1" Stepper="true" Format="+0;-0;0" />
 </FlareStack>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     Balance: @_balance | Trim: @_trim
 </FlareText>
 

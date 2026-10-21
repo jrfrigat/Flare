@@ -5,10 +5,11 @@
 {
     var horizontal = edge is ResizableEdge.Left or ResizableEdge.Right;
     <FlareCard Variant="CardVariant.Outlined">
-    <FlareResizable Edge="edge" InitialSize="240px" MinSize="120px" MaxSize="480px"
-                    Style="@(horizontal ? "height:120px;" : "width:240px;")">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@Flare.Components.Resources.FlareStrings.Splitter_Resize: @edge</FlareText>
-    </FlareResizable>
+    <FlareStack Height="@(horizontal ? "120px" : null)" Width="@(horizontal ? null : "240px")">
+        <FlareResizable Edge="edge" InitialSize="240px" MinSize="120px" MaxSize="480px" Class="@Css.Classes.Fill.Root">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@Flare.Components.Resources.FlareStrings.Splitter_Resize: @edge</FlareText>
+        </FlareResizable>
+    </FlareStack>
     </FlareCard>
 }
 </FlareStack>

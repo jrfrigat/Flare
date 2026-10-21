@@ -12,12 +12,9 @@
     <FlareStep Label="@GalleryStrings.StepDemo_Profile" Description="@GalleryStrings.StepDemo_Customize" Optional="true">
         <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.StepDemo_ProfileNote</FlareText>
         <FlareStack Gap="FlareSpacing.Small">
-            <FlareSelect TValue="string" Label="@GalleryStrings.StepDemo_Role">
-                <option value="">@GalleryStrings.StepDemo_ChooseRole</option>
-                <option value="dev">@GalleryStrings.StepDemo_Developer</option>
-                <option value="design">@GalleryStrings.StepDemo_Designer</option>
-                <option value="pm">@GalleryStrings.StepDemo_Manager</option>
-            </FlareSelect>
+            <FlareSelect TValue="string" Label="@GalleryStrings.StepDemo_Role"
+                         Items="_roles" ItemLabel="RoleLabel"
+                         NullOption="@GalleryStrings.StepDemo_ChooseRole" />
             <FlareSwitch Label="@GalleryStrings.StepDemo_PublicProfile" />
         </FlareStack>
     </FlareStep>
@@ -27,3 +24,14 @@
         </FlareAlert>
     </FlareStep>
 </FlareStepper>
+
+@code {
+    private static readonly string[] _roles = ["dev", "design", "pm"];
+
+    private static string RoleLabel(string role) => role switch
+    {
+        "dev" => GalleryStrings.StepDemo_Developer,
+        "design" => GalleryStrings.StepDemo_Designer,
+        _ => GalleryStrings.StepDemo_Manager,
+    };
+}

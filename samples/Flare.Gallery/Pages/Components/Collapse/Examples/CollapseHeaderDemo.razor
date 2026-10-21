@@ -1,7 +1,7 @@
 @* With a Header, the collapse renders its own clickable toggle (a single-panel disclosure). *@
-<FlareStack Gap="FlareSpacing.Small" Style="max-width:32rem;">
+<FlareStack Gap="FlareSpacing.Small" MaxWidth="32rem">
     <FlareCollapse Header="Shipping address">
-        <FlarePaper Style="padding:0.75rem 1rem;">
+        <FlarePaper Padding="FlareSpacing.Custom" PaddingValue="0.75rem 1rem">
             <FlareText Typo="TypographyScale.BodyMedium">221B Baker Street, London</FlareText>
         </FlarePaper>
     </FlareCollapse>
@@ -12,13 +12,13 @@
             <FlareText Typo="TypographyScale.TitleSmall">Rich header (starts open)</FlareText>
         </HeaderContent>
         <ChildContent>
-            <FlarePaper Style="padding:0.75rem 1rem;">
+            <FlarePaper Padding="FlareSpacing.Custom" PaddingValue="0.75rem 1rem">
                 <FlareText Typo="TypographyScale.BodyMedium">HeaderContent accepts icons and custom markup.</FlareText>
             </FlarePaper>
         </ChildContent>
     </FlareCollapse>
 
     <FlareCollapse Header="Disabled (cannot toggle)" Disabled>
-        <FlarePaper Style="padding:0.75rem 1rem;">Hidden content</FlarePaper>
+        <FlarePaper Padding="FlareSpacing.Custom" PaddingValue="0.75rem 1rem">Hidden content</FlarePaper>
     </FlareCollapse>
 </FlareStack>

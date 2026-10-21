@@ -4,11 +4,11 @@
    optional header toolbar (ShowToolbar + ToolbarContent). Collapsing shrinks the panel to a thin
    rail; bind Collapsed to drive it. Inside a FlareIdeLayout the layout owns collapse and the
    auto-hide flyout instead - see the Full IDE Layout example. *@
-<div style="display:flex;gap:0.75rem;height:280px;align-items:stretch;">
-    <FlareToolPanel Title="Explorer" ShowToolbar="true"
-                    @bind-Collapsed="_explorerCollapsed"
-                    Style="width:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
-        <ToolbarContent>
+<FlareStack Row="true" Gap="FlareSpacing.Custom" GapValue="0.75rem" Height="280px" Align="FlareAlignItems.Stretch">
+    <FlareCard Variant="CardVariant.Outlined" Width="240px" Padding="FlareSpacing.None">
+        <FlareToolPanel Title="Explorer" ShowToolbar="true"
+                        @bind-Collapsed="_explorerCollapsed">
+            <ToolbarContent>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Refresh">
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.Refresh" />
             </FlareButton>
@@ -26,31 +26,37 @@
                 <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />
             </FlareTreeView>
         </ChildContent>
-    </FlareToolPanel>
+        </FlareToolPanel>
+    </FlareCard>
 
-    <FlareToolPanel Title="Outline"
-                    @bind-Collapsed="_outlineCollapsed"
-                    Style="width:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
-        <FlareList TItem="object">
-            <FlareListItem Primary="Main(string[] args)">
-                <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
-            </FlareListItem>
-            <FlareListItem Primary="ConfigureServices()">
-                <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
-            </FlareListItem>
-            <FlareListItem Primary="Configure(app)">
-                <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
-            </FlareListItem>
-        </FlareList>
-    </FlareToolPanel>
+    <FlareCard Variant="CardVariant.Outlined" Width="240px" Padding="FlareSpacing.None">
+        <FlareToolPanel Title="Outline"
+                        @bind-Collapsed="_outlineCollapsed">
+            <FlareList TItem="object">
+                <FlareListItem Primary="Main(string[] args)">
+                    <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
+                </FlareListItem>
+                <FlareListItem Primary="ConfigureServices()">
+                    <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
+                </FlareListItem>
+                <FlareListItem Primary="Configure(app)">
+                    <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
+                </FlareListItem>
+            </FlareList>
+        </FlareToolPanel>
+    </FlareCard>
 
-    <FlarePaper Elevation="0"
-                Style="flex:1;display:flex;align-items:center;justify-content:center;border:1px dashed var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-            Collapse a panel with its chevron - it frees space and shrinks to a rail.
-        </FlareText>
-    </FlarePaper>
-</div>
+    <FlareStack FlexGrow="1">
+        <FlarePaper Outlined="true" FillHeight="true">
+            <FlareStack FillHeight="true" Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center"
+                        Padding="FlareSpacing.Small">
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    Collapse a panel with its chevron - it frees space and shrinks to a rail.
+                </FlareText>
+            </FlareStack>
+        </FlarePaper>
+    </FlareStack>
+</FlareStack>
 
 @code {
     private bool _explorerCollapsed;

@@ -7,14 +7,14 @@
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _filters = !_filters)">@GalleryStrings.Popover_NestedAnchor</FlareButton>
     </AnchorContent>
     <ChildContent>
-        <FlareStack Gap="FlareSpacing.XSmall" Style="padding:1rem;">
+        <FlareStack Gap="FlareSpacing.XSmall" Padding="FlareSpacing.Custom" PaddingValue="1rem">
             <FlareText Typo="TypographyScale.BodySmall">@GalleryStrings.Popover_NestedBody</FlareText>
             <FlarePopover @bind-Open="_options" Placement="Placement.RightStart" Arrow="true">
                 <AnchorContent>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _options = !_options)">@GalleryStrings.Popover_NestedOptions</FlareButton>
                 </AnchorContent>
                 <ChildContent>
-                    <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.75rem 1rem;max-width:14rem;">
+                    <FlareText Typo="TypographyScale.BodySmall" Padding="FlareSpacing.Custom" PaddingValue="0.75rem 1rem" MaxWidth="14rem">
                         @GalleryStrings.Popover_NestedOptionsBody
                     </FlareText>
                 </ChildContent>

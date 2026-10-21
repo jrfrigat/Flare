@@ -21,7 +21,7 @@
         RenderFragment body =
             @<FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.CloudDone" />
-                <span>@GalleryStrings.Snackbar_CustomBody</span>
+                <FlareText Element="span" Inherit>@GalleryStrings.Snackbar_CustomBody</FlareText>
             </FlareStack>;
         Snackbar.Show(body, new SnackbarOptions { Severity = SnackbarSeverity.Success, DurationMs = 0 });
     }

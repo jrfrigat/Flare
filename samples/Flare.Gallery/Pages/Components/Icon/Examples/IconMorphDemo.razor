@@ -8,7 +8,7 @@
     <FlareStack Row Wrap Gap="FlareSpacing.Large">
         @foreach (var mode in _modes)
         {
-            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="width:6rem;">
+            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Width="6rem">
                 <FlareIconView Size="2.5rem" Color="FlareColor.Primary" Morph="mode" Value="@_icons[_index]" />
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@mode</FlareText>
             </FlareStack>

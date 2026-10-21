@@ -3,47 +3,49 @@
    there is somewhere to go back to. Everything here is Flare components and tokens - the pattern is
    state, not CSS. *@
 <FlareCard Variant="CardVariant.Outlined"
-           Style="width:min(360px, 100%);height:460px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
+           Width="min(360px, 100%)" Height="460px" Padding="FlareSpacing.Custom" PaddingValue="0" Overflow="hidden">
 
-    <FlareAppBar>
-        <Leading>
-            @if (_selected is not null)
-            {
-                <FlareIconButton Icon="@FlareIcons.ArrowBack"
-                                 Variant="ButtonVariant.Text"
-                                 AriaLabel="@GalleryStrings.MobileShells_Back"
-                                 OnClick="@(() => _selected = null)" />
-            }
-        </Leading>
-        <TitleContent>
-            <FlareText Typo="TypographyScale.TitleMedium">@(_selected?.Name ?? GalleryStrings.MobileShells_Inbox)</FlareText>
-        </TitleContent>
-    </FlareAppBar>
-
-    <div style="flex:1;overflow:auto;">
-        @if (_selected is null)
-        {
-            <FlareList TItem="object">
-                @foreach (var msg in Messages)
+    <FlareStack Height="100%" Gap="FlareSpacing.None">
+        <FlareAppBar>
+            <Leading>
+                @if (_selected is not null)
                 {
-                    <FlareListItem Primary="@msg.Name"
-                                   Secondary="@msg.Preview"
-                                   OnClick="@(() => _selected = msg)">
-                        <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
-                    </FlareListItem>
+                    <FlareIconButton Icon="@FlareIcons.ArrowBack"
+                                     Variant="ButtonVariant.Text"
+                                     AriaLabel="@GalleryStrings.MobileShells_Back"
+                                     OnClick="@(() => _selected = null)" />
                 }
-            </FlareList>
-        }
-        else
-        {
-            <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
-                <FlareText Typo="TypographyScale.BodyMedium">@_selected.Body</FlareText>
-                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-                    @GalleryStrings.MobileShells_BackHint
-                </FlareText>
-            </FlareStack>
-        }
-    </div>
+            </Leading>
+            <TitleContent>
+                <FlareText Typo="TypographyScale.TitleMedium">@(_selected?.Name ?? GalleryStrings.MobileShells_Inbox)</FlareText>
+            </TitleContent>
+        </FlareAppBar>
+
+        <FlareStack FlexGrow="1" Overflow="auto" MinHeight="0">
+            @if (_selected is null)
+            {
+                <FlareList TItem="object">
+                    @foreach (var msg in Messages)
+                    {
+                        <FlareListItem Primary="@msg.Name"
+                                       Secondary="@msg.Preview"
+                                       OnClick="@(() => _selected = msg)">
+                            <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
+                        </FlareListItem>
+                    }
+                </FlareList>
+            }
+            else
+            {
+                <FlareStack Gap="FlareSpacing.Medium" Padding="FlareSpacing.Custom" PaddingValue="1rem">
+                    <FlareText Typo="TypographyScale.BodyMedium">@_selected.Body</FlareText>
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                        @GalleryStrings.MobileShells_BackHint
+                    </FlareText>
+                </FlareStack>
+            }
+        </FlareStack>
+    </FlareStack>
 </FlareCard>
 
 @code {

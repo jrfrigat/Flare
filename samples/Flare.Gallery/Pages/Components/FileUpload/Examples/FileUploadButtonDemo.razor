@@ -1,7 +1,7 @@
 @* FlareFileUploadButton: opens the OS file dialog from a button in a row, where a full drop zone would be
    overkill. It takes FlareButton's own Variant/Size/Color/Shape, so it lines up with the buttons beside it
    instead of standing out - which is the whole point of it being a separate component from the zone. *@
-<FlareStack Style="max-width:32rem;">
+<FlareStack MaxWidth="32rem">
     <FlareStack Row Wrap="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareFileUploadButton Variant="ButtonVariant.Outlined"
                                Size="ButtonSize.Sm"
@@ -15,7 +15,7 @@
     </FlareStack>
     @if (_name is not null)
     {
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">@GalleryStrings.Common_Selected @_name</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">@GalleryStrings.Common_Selected @_name</FlareText>
     }
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.FuDemo_ListHelp</FlareText>
     <FlareFileUploadButton Accept=".json" ShowFileList="true" Text="@GalleryStrings.FuDemo_WithList" />

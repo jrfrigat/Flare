@@ -9,11 +9,11 @@
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_ScopeSubtitle</FlareText>
 </GalleryPageTitle>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1rem;">
+<FlareGrid MinColumnWidth="18rem" Gap="FlareSpacing.Custom" GapValue="1rem">
     @foreach (var s in _scopes)
     {
         <FlareThemeScope Theme="@s.Theme" Palette="@s.Palette" Mode="s.Mode">
-            <FlareCard Variant="CardVariant.Outlined" Style="height:100%;">
+            <FlareCard Variant="CardVariant.Outlined" Height="100%">
                 <FlareStack Gap="FlareSpacing.Medium">
                     <FlareText Typo="TypographyScale.LabelLarge">@s.Label</FlareText>
 
@@ -34,9 +34,9 @@
             </FlareCard>
         </FlareThemeScope>
     }
-</div>
+</FlareGrid>
 
-<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
 <FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
 
 @code {

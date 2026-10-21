@@ -8,9 +8,11 @@
 
 @if (_result.HasValue)
 {
-    <FlareAlert Severity="@(_result.Value ? AlertSeverity.Success : AlertSeverity.Info)" Style="margin-top:0.75rem;">
-        Result: @(_result.Value ? "Confirmed" : "Cancelled")
-    </FlareAlert>
+    <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
+        <FlareAlert Severity="@(_result.Value ? AlertSeverity.Success : AlertSeverity.Info)">
+            Result: @(_result.Value ? "Confirmed" : "Cancelled")
+        </FlareAlert>
+    </FlareStack>
 }
 
 @code {

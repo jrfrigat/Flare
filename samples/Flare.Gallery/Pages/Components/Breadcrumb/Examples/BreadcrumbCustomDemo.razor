@@ -1,12 +1,10 @@
-@* ChildContent lets you supply your own <li> markup instead of Items. *@
-<FlareBreadcrumb AriaLabel="Custom breadcrumb">
-    <li class="flare-breadcrumb__item">
-        <a class="flare-breadcrumb__link" href="">
-            <FlareIconView Size="1rem" Value="@MaterialDesign3Icons.Regular.Home" Style="vertical-align:middle" /> Home
-        </a>
-        <span class="flare-breadcrumb__separator" aria-hidden="true">/</span>
-    </li>
-    <li class="flare-breadcrumb__item flare-breadcrumb__item--current">
-        <span class="flare-breadcrumb__text" aria-current="page">Current page</span>
-    </li>
-</FlareBreadcrumb>
+@* An item may carry an icon, so a trail starts with a home glyph without hand-written list markup. *@
+<FlareBreadcrumb AriaLabel="@GalleryStrings.Breadcrumb_Custom_Aria" Items="_items" />
+
+@code {
+    private static readonly BreadcrumbItem[] _items =
+    [
+        new(GalleryStrings.Breadcrumb_Custom_Home, "", Icon: MaterialDesign3Icons.Regular.Home),
+        new(GalleryStrings.Breadcrumb_Custom_Current),
+    ];
+}

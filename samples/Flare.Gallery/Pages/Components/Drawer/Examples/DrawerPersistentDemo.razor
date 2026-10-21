@@ -1,13 +1,14 @@
 @* Persistent stays in the layout and collapses to zero width when closed. Its contents are inert while
    closed - Tab skips them and a screen reader does not see them - and a close that happens with focus
    inside the panel hands focus back to the toggle instead of dropping the keyboard on the page body. *@
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem;">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
     @GalleryStrings.Drawer_PersistentDesc
 </FlareText>
 
 <FlareButton OnClick="@(() => _open = !_open)">@GalleryStrings.Drawer_TogglePersistent</FlareButton>
 
-<div style="display:flex; gap:1rem; align-items:flex-start; margin-top:0.75rem;">
+<FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start"
+            MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     <FlareDrawer @bind-Open="_open" Variant="DrawerVariant.Persistent">
         <HeaderContent>@GalleryStrings.Drawer_Persistent</HeaderContent>
         <ChildContent>
@@ -24,7 +25,7 @@
     <FlareText Typo="TypographyScale.BodyMedium">
         @GalleryStrings.Drawer_PersistentContent
     </FlareText>
-</div>
+</FlareStack>
 
 @code {
     private bool _open = true;

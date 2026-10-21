@@ -120,4 +120,58 @@ public class FlareTextPresentationTests : FlareTestContext
         Assert.Contains(Css.Classes.Text.Mono, cls);
         Assert.Contains(Css.Classes.Text.AlignCenter, cls);
     }
+
+    // An inline run inside a longer text must not carry a second type scale: it takes the size and
+    // color of the text it sits in, and defaults to a span rather than the scale's paragraph.
+    [Fact]
+    public void Inherit_DropsTheScaleAndRendersASpan()
+    {
+        var cut = Render<FlareText>(p => p
+            .Add(x => x.Inherit, true)
+            .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "run"))));
+
+        var element = cut.Find("span");
+        Assert.DoesNotContain(Css.Classes.Text.BodyMedium, element.ClassName);
+    }
+
+    // The element stays the caller's when the semantic matters more than the default: an inherited run
+    // asked to be a strong is a strong, with no scale class of its own.
+    [Fact]
+    public void Inherit_KeepsAnExplicitSemanticElement()
+    {
+        var cut = Render<FlareText>(p => p
+            .Add(x => x.Inherit, true)
+            .Add(x => x.Element, "strong")
+            .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "run"))));
+
+        Assert.NotNull(cut.Find("strong"));
+        Assert.DoesNotContain(Css.Classes.Text.BodyMedium, cut.Find("strong").ClassName);
+    }
+
+    [Fact]
+    public void BlockAndSpacing_ReachTheTextElement()
+    {
+        var cut = Render<FlareText>(p => p
+            .Add(x => x.Inherit, true)
+            .Add(x => x.Block, true)
+            .Add(x => x.MarginBlockEnd, FlareSpacing.Custom)
+            .Add(x => x.MarginBlockEndValue, "0.75rem")
+            .Add(x => x.PaddingInlineStart, FlareSpacing.Small)
+            .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "run"))));
+
+        var style = cut.Find("span").GetAttribute("style");
+        Assert.Contains("display:block", style);
+        Assert.Contains("margin-block-end:0.75rem", style);
+        Assert.Contains($"padding-inline-start:var({Css.Tokens.Spacing.S6})", style);
+    }
+
+    [Fact]
+    public void LetterSpacing_ReachesTheElement()
+    {
+        var cut = Render<FlareText>(p => p
+            .Add(x => x.LetterSpacing, "-1px")
+            .Add(x => x.ChildContent, (RenderFragment)(b => b.AddContent(0, "Flare"))));
+
+        Assert.Contains("letter-spacing:-1px", StyleOf(cut));
+    }
 }

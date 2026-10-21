@@ -3,8 +3,8 @@
 @* FlareBackstage / FlareBackstageItem: the Office "File" menu - a full-surface overlay with a left
    navigation rail and a content area. Open it with the File button; pick a rail entry to switch the
    content; the back arrow raises OpenChanged(false). The overlay fills the nearest positioned box. *@
-<div style="position:relative;height:340px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;background:var(--flare-color-surface);">
-    <div style="padding:0.75rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--flare-color-outline-variant);">
+<FlareCard Variant="CardVariant.Outlined" Height="340px" Padding="FlareSpacing.None">
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Padding="FlareSpacing.Small">
         <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="@(() => _open = true)">
             <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FolderOpen" /></LeadingIcon>
             <ChildContent>File</ChildContent>
@@ -12,13 +12,14 @@
         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
             The document surface sits behind the backstage.
         </FlareText>
-    </div>
+    </FlareStack>
+    <FlareDivider />
 
-    <div style="padding:1rem;">
+    <FlareStack Padding="FlareSpacing.Medium">
         <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
             Document content...
         </FlareText>
-    </div>
+    </FlareStack>
 
     <FlareBackstage @bind-Open="_open">
         <NavContent>
@@ -42,7 +43,7 @@
             </FlareStack>
         </ChildContent>
     </FlareBackstage>
-</div>
+</FlareCard>
 
 @code {
     private enum BackstageNav { New, Open, Save, Print, Options }

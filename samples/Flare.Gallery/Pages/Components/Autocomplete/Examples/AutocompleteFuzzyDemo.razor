@@ -1,5 +1,6 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareCombobox TValue="string"
+    <FlareStack MaxWidth="26rem">
+        <FlareCombobox TValue="string"
                        @bind-Value="_city"
                        Label="City"
                        Placeholder="Type a few letters..."
@@ -7,12 +8,12 @@
                        Fuzzy="true"
                        MinChars="1"
                        MaxItems="6"
-                       HelperText="Fuzzy ranking: 'lo' puts London above Los Angeles; 'snfr' still finds San Francisco."
-                       Style="max-width:26rem;" />
+                       HelperText="Fuzzy ranking: 'lo' puts London above Los Angeles; 'snfr' still finds San Francisco." />
+    </FlareStack>
 
     @if (_city is not null)
     {
-        <FlareText Typo="TypographyScale.BodyMedium">Selected: <strong>@_city</strong></FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">Selected: <FlareText Element="strong" Inherit>@_city</FlareText></FlareText>
     }
 </FlareStack>
 

@@ -5,7 +5,7 @@
 
     @foreach (var (symbology, value, note) in _samples)
     {
-        <FlareStack Gap="FlareSpacing.XSmall" Style="max-width:22rem;">
+        <FlareStack Gap="FlareSpacing.XSmall" MaxWidth="22rem">
             <FlareText Typo="TypographyScale.LabelLarge">@symbology</FlareText>
             <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@note</FlareText>
             <FlareBarcode Value="@value" Symbology="@symbology" Height="56" />

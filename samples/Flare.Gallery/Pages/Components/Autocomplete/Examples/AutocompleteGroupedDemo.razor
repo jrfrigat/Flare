@@ -1,13 +1,14 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareCombobox TValue="CountryItem"
+    <FlareStack MaxWidth="24rem">
+        <FlareCombobox TValue="CountryItem"
                        @bind-Value="_selectedCountry"
                        Label="Country"
                        Placeholder="Type to search…"
                        Items="_countries"
                        ItemText="@(c => c.Name)"
                        GroupBy="@(c => c.Continent)"
-                       MinChars="1"
-                       Style="max-width:24rem;" />
+                       MinChars="1" />
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         Selected: @_selectedCountry?.Name
     </FlareText>

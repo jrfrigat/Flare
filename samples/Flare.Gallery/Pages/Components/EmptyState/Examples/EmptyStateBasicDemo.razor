@@ -1,6 +1,6 @@
 @* Search plus empty state: the list is local and the empty state's action really clears the query, then
    puts focus back in the field so a keyboard user keeps typing where they were. *@
-<FlareStack Gap="FlareSpacing.Medium" Style="padding:2rem 1rem;max-width:32rem;margin:0 auto">
+<FlareStack Gap="FlareSpacing.Medium" Padding="FlareSpacing.Custom" PaddingValue="2rem 1rem" MaxWidth="32rem" Margin="FlareSpacing.Custom" MarginValue="0 auto">
     <FlareTextField @ref="_search"
                     Label="@GalleryStrings.EmptyState_SearchLabel"
                     Value="@_query"

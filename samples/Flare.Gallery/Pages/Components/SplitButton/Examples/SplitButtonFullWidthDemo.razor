@@ -1,6 +1,6 @@
 @* FullWidth stretches the split button; Loading shows a spinner on the primary action; Open()/Close()
    drive the dropdown programmatically. *@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:26rem;">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="26rem">
     <FlareSplitButton @ref="_split" FullWidth Loading="@_loading" Variant="ButtonVariant.Filled" Color="FlareColor.Primary" OnClick="@SaveAsync">
         <ChildContent>Save</ChildContent>
         <MenuItems>

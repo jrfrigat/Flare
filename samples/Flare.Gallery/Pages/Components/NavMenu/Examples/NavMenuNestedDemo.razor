@@ -1,6 +1,7 @@
 @* Groups can nest. Both groups below start collapsed, but auto-expand because the deep
    link is Active - a child link becoming active reveals its whole ancestor group chain. *@
-<FlareCard Variant="CardVariant.Filled" Style="max-width:280px;padding:0.75rem 0;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-medium);">
+<FlareCard Variant="CardVariant.Filled" MaxWidth="280px" Padding="FlareSpacing.Custom" PaddingValue="0.75rem 0"
+           Background="@(FlareColor.Custom("var(--flare-color-surface-container-low)"))">
     <FlareNavMenu>
         <FlareNavLink Href="" Match="NavMatchMode.Exact">
             <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Home" /></IconContent>

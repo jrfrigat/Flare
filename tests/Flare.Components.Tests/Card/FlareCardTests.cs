@@ -200,4 +200,12 @@ public class FlareCardTests : FlareTestContext
         Assert.Equal("-1", root.GetAttribute("tabindex"));
         Assert.Equal("dialog", root.GetAttribute("role"));
     }
+
+    [Fact]
+    public void RootElement_ExposesTheRenderedElement()
+    {
+        var cut = Render<FlareCard>();
+
+        Assert.False(string.IsNullOrEmpty(cut.Instance.RootElement.Id));
+    }
 }

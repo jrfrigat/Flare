@@ -8,35 +8,35 @@
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_Subtitle</FlareText>
 </GalleryPageTitle>
 
-<FlareStack Gap="FlareSpacing.Medium" Style="margin-bottom:1.5rem;">
+<FlareStack Gap="FlareSpacing.Medium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.5rem">
     <FlareText Typo="TypographyScale.BodyMedium">
-        <strong>FlareIdeLayout</strong> is the shell of the optional <strong>Flare.Components.IDE</strong>
+        <FlareText Element="strong" Inherit>FlareIdeLayout</FlareText> is the shell of the optional <FlareText Element="strong" Inherit>Flare.Components.IDE</FlareText>
         package - it arranges the chrome (ribbon, menus, dockable panels, document area, status bar)
         into a desktop-IDE layout, built entirely on the core Flare components and design tokens with no
-        custom theming. Each individual part has its own page in the <strong>IDE</strong> group of the
+        custom theming. Each individual part has its own page in the <FlareText Element="strong" Inherit>IDE</FlareText> group of the
         navigation; this page covers the layout itself.
     </FlareText>
 
     <FlareStack Gap="FlareSpacing.Small">
-        <div><strong>Named slots</strong> - <code>Ribbon</code>, <code>MenuBar</code>,
-            <code>LeftToolPanel</code>, <code>ChildContent</code> (the document area),
-            <code>RightToolPanel</code>, <code>BottomPanel</code>, and <code>StatusBar</code>.</div>
-        <div><strong>Region resizing</strong> - drag the divider between a docked panel and the document
-            (or focus it and use the arrow keys); configured via the layout's <code>*Resizable</code> /
-            <code>MinPanelSize</code> parameters. For arbitrary layouts use the standalone
-            <strong>FlareSplitter</strong> between any two flex siblings.</div>
-        <div><strong>Docked panels</strong> - collapsing a docked <code>FlareToolPanel</code> frees its
-            space (the region shrinks to a thin rail); <code>Mode="IdePanelMode.AutoHide"</code> makes it
-            fly out over the content instead of taking space.</div>
+        <FlareText Element="p" Inherit><FlareText Element="strong" Inherit>Named slots</FlareText> - <FlareCode>Ribbon</FlareCode>, <FlareCode>MenuBar</FlareCode>,
+            <FlareCode>LeftToolPanel</FlareCode>, <FlareCode>ChildContent</FlareCode> (the document area),
+            <FlareCode>RightToolPanel</FlareCode>, <FlareCode>BottomPanel</FlareCode>, and <FlareCode>StatusBar</FlareCode>.</FlareText>
+        <FlareText Element="p" Inherit><FlareText Element="strong" Inherit>Region resizing</FlareText> - drag the divider between a docked panel and the document
+            (or focus it and use the arrow keys); configured via the layout's <FlareCode>*Resizable</FlareCode> /
+            <FlareCode>MinPanelSize</FlareCode> parameters. For arbitrary layouts use the standalone
+            <FlareText Element="strong" Inherit>FlareSplitter</FlareText> between any two flex siblings.</FlareText>
+        <FlareText Element="p" Inherit><FlareText Element="strong" Inherit>Docked panels</FlareText> - collapsing a docked <FlareCode>FlareToolPanel</FlareCode> frees its
+            space (the region shrinks to a thin rail); <FlareCode>Mode="IdePanelMode.AutoHide"</FlareCode> makes it
+            fly out over the content instead of taking space.</FlareText>
     </FlareStack>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        Install: <code>dotnet add package Flare.Components.IDE</code> and reference
-        <code>_content/Flare.Components.IDE/css/flare-ide.css</code>.
+        Install: <FlareCode>dotnet add package Flare.Components.IDE</FlareCode> and reference
+        <FlareCode>_content/Flare.Components.IDE/css/flare-ide.css</FlareCode>.
     </FlareText>
 </FlareStack>
 
-<FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" Style="margin-bottom:1rem;">
+<FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
     The examples below compose the parts into complete application shells.
 </FlareText>
 

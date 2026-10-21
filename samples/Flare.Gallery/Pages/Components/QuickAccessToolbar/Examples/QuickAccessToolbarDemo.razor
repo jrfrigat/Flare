@@ -3,7 +3,7 @@
 @* FlareQuickAccessToolbar: the Office "Quick Access Toolbar" - a compact strip of small icon
    buttons, usually placed above or beside the ribbon. Purely structural; drop FlareButton items in. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
         <FlareQuickAccessToolbar>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save" OnClick="@(() => Set("Save"))">
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.Save" />
@@ -22,10 +22,10 @@
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.Mail" />
             </FlareButton>
         </FlareQuickAccessToolbar>
-    </div>
+    </FlareCard>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        Last command: <strong>@_status</strong>
+        Last command: <FlareText Element="strong" Inherit>@_status</FlareText>
     </FlareText>
 </FlareStack>
 

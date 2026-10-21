@@ -1,7 +1,7 @@
 @implements IDisposable
 @* A local state machine, no request: error -> loading -> loaded. Retry ends with focus on the result, so
    a keyboard user does not land back on the page body when the error block disappears. *@
-<FlareStack Row Wrap Justify="FlareJustifyContent.Center" Style="padding:2rem 1rem;">
+<FlareStack Row Wrap Justify="FlareJustifyContent.Center" Padding="FlareSpacing.Custom" PaddingValue="2rem 1rem">
     @if (_state == LoadState.Error)
     {
         <FlareEmptyState Title="@GalleryStrings.EmptyState_ErrorTitle"
@@ -23,7 +23,7 @@
     }
     else
     {
-        <FlareStack @ref="_loaded" tabindex="-1" Style="outline:none;width:100%;max-width:32rem">
+        <FlareStack @ref="_loaded" tabindex="-1" Width="100%" MaxWidth="32rem">
             <FlareStack Gap="FlareSpacing.Small">
                 <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.EmptyState_LoadedTitle</FlareText>
                 @foreach (var item in _items)

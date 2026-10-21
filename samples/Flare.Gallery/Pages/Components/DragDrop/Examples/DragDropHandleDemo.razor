@@ -2,7 +2,8 @@
    card itself stays an ordinary clickable surface. Without a handle a press anywhere on the item may
    become a drag, and a press that never travels is still delivered as a click. *@
 <FlareDragContext TPayload="Todo" Group="handles" OnDrop="Moved">
-    <FlareDropZone Target="list" Placement="DropPlacement.Between" Style="inline-size:min(100%,22rem)">
+    <FlareStack Width="min(100%,22rem)">
+    <FlareDropZone Target="list" Placement="DropPlacement.Between">
         <FlareStack Gap="FlareSpacing.Small">
             @foreach (var todo in _todos)
             {
@@ -17,9 +18,10 @@
             }
         </FlareStack>
     </FlareDropZone>
+    </FlareStack>
 </FlareDragContext>
 
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     @(_opened is null ? GalleryStrings.DragDrop_HandleNothingOpened : string.Format(GalleryStrings.DragDrop_HandleOpened, _opened.Title))
 </FlareText>
 

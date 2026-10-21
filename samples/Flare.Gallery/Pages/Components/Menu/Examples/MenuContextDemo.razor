@@ -4,7 +4,7 @@
     @* Context menu: right-click opens the menu pinned to the pointer. *@
     <FlareMenu Activation="MenuActivation.RightClick" PositionAtCursor="true" AriaLabel="@GalleryStrings.Menu_Context">
         <Activator>
-            <FlarePaper Style="padding:2rem 3rem;">@GalleryStrings.Menu_ContextHint</FlarePaper>
+            <FlarePaper Padding="FlareSpacing.Custom" PaddingValue="2rem 3rem">@GalleryStrings.Menu_ContextHint</FlarePaper>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Cut))">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>

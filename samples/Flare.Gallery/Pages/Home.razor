@@ -9,7 +9,7 @@
     <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareIconView Color="FlareColor.Primary" Value="@FlareIcons.Brands.FlareLogo" Size="4rem" />
         <FlareStack Gap="FlareSpacing.None">
-            <FlareText Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold" Style="letter-spacing:-1px;">@GalleryStrings.Home_Title</FlareText>
+            <FlareText Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold" LetterSpacing="-1px">@GalleryStrings.Home_Title</FlareText>
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.TitleMedium">
                 @GalleryStrings.Home_Subtitle
             </FlareText>
@@ -22,21 +22,21 @@
 <FlareSection>
     <FlareGrid Columns="3" Gap="FlareSpacing.Medium">
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
-                <FlareText Color="FlareColor.Primary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">130+</FlareText>
-                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Home_ComponentsLabel</FlareText>
+            <FlareCard Variant="CardVariant.Filled">
+                <FlareText Align="TextAlign.Center" Color="FlareColor.Primary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">130+</FlareText>
+                <FlareText Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Home_ComponentsLabel</FlareText>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
-                <FlareText Color="FlareColor.Secondary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">@ThemeService.Themes.Count</FlareText>
-                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Home_ThemesLabel</FlareText>
+            <FlareCard Variant="CardVariant.Filled">
+                <FlareText Align="TextAlign.Center" Color="FlareColor.Secondary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">@ThemeService.Themes.Count</FlareText>
+                <FlareText Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Home_ThemesLabel</FlareText>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
-                <FlareText Color="FlareColor.Tertiary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">10</FlareText>
-                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Home_DotNetLabel</FlareText>
+            <FlareCard Variant="CardVariant.Filled">
+                <FlareText Align="TextAlign.Center" Color="FlareColor.Tertiary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">10</FlareText>
+                <FlareText Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Home_DotNetLabel</FlareText>
             </FlareCard>
         </FlareCol>
     </FlareGrid>
@@ -46,66 +46,52 @@
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Widgets" Title="@GalleryStrings.Home_ComponentsHeader" />
     <FlareGrid Columns="4" Gap="FlareSpacing.Medium">
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/buttons" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Widgets" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/buttons">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Widgets" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Buttons</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Buttons_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/text-field" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.TextFields" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/text-field">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.TextFields" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Inputs</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Inputs_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/datagrid" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.GridOn" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/datagrid">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.GridOn" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_DataGrid</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_DataGrid_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/dialog" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.OpenInNew" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/dialog">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.OpenInNew" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Dialogs</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Dialogs_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/alerts" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Notifications" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/alerts">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Notifications" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Feedback</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Feedback_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/tabs" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Tab" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/tabs">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Tab" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Navigation</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Navigation_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="1">
-            <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
-                <FlareLink Href="components/typography" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.FormatSize" />
+            <FlareCard Variant="CardVariant.Outlined" Href="components/typography">
+                <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.FormatSize" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Display</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Display_Desc</FlareText>
-                </FlareLink>
             </FlareCard>
         </FlareCol>
     </FlareGrid>
@@ -114,10 +100,10 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Palette" Title="@GalleryStrings.Home_ThemeShowcase" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
-            @GalleryStrings.Home_ThemeShowcase_Active: <strong>@ThemeService.CurrentTheme.DisplayName</strong> - @GalleryStrings.Home_ThemeShowcaseHint
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
+            @GalleryStrings.Home_ThemeShowcase_Active: <FlareText Element="strong" Inherit>@ThemeService.CurrentTheme.DisplayName</FlareText> - @GalleryStrings.Home_ThemeShowcaseHint
         </FlareText>
-        <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
+        <FlareStack Row Wrap Gap="FlareSpacing.Small" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @foreach (var theme in ThemeService.Themes)
             {
                 var tid = theme.Id;

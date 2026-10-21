@@ -1,15 +1,13 @@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
-    <FlareSelect TValue="string" Variant="InputVariant.Filled" Label="Filled (shared with FlareField)" @bind-Value="_filled">
-        <option value="a">Option A</option>
-        <option value="b">Option B</option>
-    </FlareSelect>
-    <FlareSelect TValue="string" Variant="InputVariant.Outlined" Label="Outlined" @bind-Value="_outlined">
-        <option value="a">Option A</option>
-        <option value="b">Option B</option>
-    </FlareSelect>
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="28rem">
+    <FlareSelect TValue="string" Variant="InputVariant.Filled" Label="Filled (shared with FlareField)" @bind-Value="_filled" Items="_options" ItemLabel="OptionLabel" />
+    <FlareSelect TValue="string" Variant="InputVariant.Outlined" Label="Outlined" @bind-Value="_outlined" Items="_options" ItemLabel="OptionLabel" />
 </FlareStack>
 
 @code {
     private string? _filled;
     private string? _outlined;
+
+    private static readonly string[] _options = ["a", "b"];
+
+    private static string OptionLabel(string option) => option == "a" ? "Option A" : "Option B";
 }

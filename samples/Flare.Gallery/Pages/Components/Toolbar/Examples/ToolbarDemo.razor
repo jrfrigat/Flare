@@ -5,7 +5,7 @@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareSwitch @bind-Value="_dense" Label="Dense" />
 
-    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
         <FlareToolbar Dense="_dense">
             <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
@@ -22,12 +22,14 @@
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
             </FlareButton>
             <FlareRibbonSeparator />
-            <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" Style="width:180px;" />
+            <FlareStack Width="180px">
+                <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" />
+            </FlareStack>
         </FlareToolbar>
-    </div>
+    </FlareCard>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        Last command: <strong>@_status</strong>
+        Last command: <FlareText Element="strong" Inherit>@_status</FlareText>
     </FlareText>
 </FlareStack>
 

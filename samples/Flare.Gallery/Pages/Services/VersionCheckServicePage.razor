@@ -11,14 +11,14 @@
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_VersionCheckSubtitle</FlareText>
 </GalleryPageTitle>
 
-<FlareCard Variant="CardVariant.Outlined" Style="max-width:40rem;">
+<FlareCard Variant="CardVariant.Outlined" MaxWidth="40rem">
     <FlareStack Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckBody</FlareText>
 
         <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
             <FlareIconView Value="@MaterialDesign3Icons.Regular.CheckCircle" Color="FlareColor.OnSurfaceVariant" />
             <FlareText Typo="TypographyScale.BodyMedium">
-                @GalleryStrings.Services_VersionCheckCurrent: <strong>@_currentVersion</strong>
+                @GalleryStrings.Services_VersionCheckCurrent: <FlareText Element="strong" Inherit>@_currentVersion</FlareText>
             </FlareText>
         </FlareStack>
 
@@ -31,7 +31,7 @@
             else if (_detected is not null)
             {
                 <FlareIconView Value="@MaterialDesign3Icons.Regular.SystemUpdateAlt" Color="FlareColor.Warning" />
-                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckDetected <strong>@_detected</strong></FlareText>
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckDetected <FlareText Element="strong" Inherit>@_detected</FlareText></FlareText>
             }
             else if (_checking)
             {
@@ -64,10 +64,10 @@
     </FlareStack>
 </FlareCard>
 
-<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_VersionCheckSetupTitle</FlareText>
-<FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant" Style="max-width:48rem;">@GalleryStrings.Services_VersionCheckSetupIntro</FlareText>
+<FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="1.75rem 0 0.5rem">@GalleryStrings.Services_VersionCheckSetupTitle</FlareText>
+<FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant" MaxWidth="48rem">@GalleryStrings.Services_VersionCheckSetupIntro</FlareText>
 
-<FlareStack Gap="FlareSpacing.Large" Style="margin-top:1rem;max-width:48rem;">
+<FlareStack Gap="FlareSpacing.Large" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1rem" MaxWidth="48rem">
     <FlareStack Gap="FlareSpacing.XSmall">
         <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Services_VersionCheckSetupStep1Title</FlareText>
         <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckSetupStep1</FlareText>
@@ -92,7 +92,7 @@
     </FlareStack>
 </FlareStack>
 
-<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
 <FlareCodeBlock Value="@_usage" Language="csharp" ReadOnly="true" LineNumbers="true" />
 
 @code {

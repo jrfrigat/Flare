@@ -12,7 +12,7 @@
         <FlareColumn Title="Score" Field="@(p => p.Score)" Width="90px" />
     </Columns>
 </FlareDataGrid>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
     Drag a column header or a row. Column order: @string.Join(" -> ", _order)
 </FlareText>
 

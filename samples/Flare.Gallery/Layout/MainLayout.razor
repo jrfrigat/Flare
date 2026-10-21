@@ -11,11 +11,11 @@
 
 <FlareLayout>
     <FlareLayoutAppBar DrawerToggle="true">
-        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" FlexGrow="1" MinWidth="0">
             <FlareLink Href="" Underline="LinkUnderline.None" Color="FlareColor.Default">
                 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
                     <FlareIconView Color="FlareColor.Primary" Value="@FlareIcons.Brands.FlareLogo" Size="2.25rem" AriaLabel="Flare" />
-                    <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" Style="letter-spacing:-0.5px;">Flare</FlareText>
+                    <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" LetterSpacing="-0.5px">Flare</FlareText>
                 </FlareStack>
             </FlareLink>
             <FlareSpacer />
@@ -59,14 +59,13 @@
             @* Plain content host: StretchFirst makes this first child fill the space beside the fixed rail
                (flex:1 1 auto + min-width:0 so wide code blocks can shrink) - no inline flex needed. The id
                is a scan target for the TOC, not a styling hook. *@
-            <div id="gallery-main">@Body</div>
-            @* Recreated per navigation (@key) so it re-scans the new page's demo-section titles.
-               Sticky positioning is a layout concern of this rail, expressed via the component's Style. *@
-            <FlareOnThisPage @key="NavManager.Uri"
-                             Root="#gallery-main"
-                             HeadingSelector=".demo-section__title"
-                             Class="@($"{Css.Classes.Hidden.BelowMd} {Css.Classes.Hidden.ContainerBelowMd}")"
-                             Style="position:sticky;top:1rem;flex:none;width:14rem;max-height:calc(100vh - 6rem);overflow-y:auto;" />
+            <FlareSection id="gallery-main">@Body</FlareSection>
+            @* Recreated per navigation (@key) so it re-scans the new page's demo-section titles. *@
+            <FlareStack @key="NavManager.Uri" Sticky="true" StickyTop="1rem" Width="14rem"
+                        MaxHeight="calc(100vh - 6rem)" Overflow="auto"
+                        Class="@($"{Css.Classes.Hidden.BelowMd} {Css.Classes.Hidden.ContainerBelowMd}")">
+                <FlareOnThisPage Root="#gallery-main" HeadingSelector=".demo-section__title" />
+            </FlareStack>
         </FlareStack>
     </FlareLayoutContent>
 </FlareLayout>

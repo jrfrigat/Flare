@@ -19,12 +19,12 @@
     <FlareStack Gap="FlareSpacing.Medium">
 
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
-            @GalleryStrings.Theming_Active: <strong>@ThemeService.CurrentTheme.DisplayName</strong> · @ThemeService.CurrentPalette.Name · @ThemeService.Mode
+            @GalleryStrings.Theming_Active: <FlareText Element="strong" Inherit>@ThemeService.CurrentTheme.DisplayName</FlareText> · @ThemeService.CurrentPalette.Name · @ThemeService.Mode
         </FlareText>
 
         @* Design system (theme) -- the component look & feel, independent of colors. *@
         <FlareCard Variant="CardVariant.Outlined">
-            <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;display:block;">@GalleryStrings.Theme_DesignSystem</FlareText>
+            <FlareText Typo="TypographyScale.LabelLarge" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem" Block>@GalleryStrings.Theme_DesignSystem</FlareText>
             <FlareStack Row Wrap Gap="FlareSpacing.Small">
                 @foreach (var t in ThemeService.Themes)
                 {
@@ -39,7 +39,7 @@
 
         @* Palette -- just the colors. The swatch makes it obvious these are color sets, not themes. *@
         <FlareCard Variant="CardVariant.Outlined">
-            <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;display:block;">@GalleryStrings.Theme_Palette</FlareText>
+            <FlareText Typo="TypographyScale.LabelLarge" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem" Block>@GalleryStrings.Theme_Palette</FlareText>
             <FlareStack Row Wrap Gap="FlareSpacing.Small">
                 @foreach (var p in ThemeService.Palettes)
                 {
@@ -48,7 +48,7 @@
                     <FlareButton Variant="@(ThemeService.CurrentPalette.Id == pid ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                                  OnClick="@(() => ThemeService.SetPaletteAsync(pid))">
                         <LeadingIcon>
-                            <span style="@($"display:inline-block;width:0.85rem;height:0.85rem;border-radius:50%;background:{swatch};")"></span>
+                            <FlareBadge Dot="true" Standalone="true" Color="@FlareColor.Custom(swatch)" />
                         </LeadingIcon>
                         <ChildContent>@p.Name</ChildContent>
                     </FlareButton>
@@ -58,7 +58,7 @@
 
         @* Mode -- light / dark / auto. The third independent axis. *@
         <FlareCard Variant="CardVariant.Outlined">
-            <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;display:block;">@GalleryStrings.Theme_Mode</FlareText>
+            <FlareText Typo="TypographyScale.LabelLarge" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem" Block>@GalleryStrings.Theme_Mode</FlareText>
             <FlareStack Row Wrap Gap="FlareSpacing.Small">
                 <FlareButton Variant="@(ThemeService.Mode == ThemeMode.Light ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                              OnClick="@(() => ThemeService.SetModeAsync(ThemeMode.Light))">
@@ -84,7 +84,7 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.DarkMode" Title="@GalleryStrings.Theming_AutoDarkMode" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        <FlareText Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
             @GalleryStrings.Theming_AutoDarkModeDesc
         </FlareText>
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
@@ -96,7 +96,7 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Code" Title="@GalleryStrings.Theming_HowItWorks" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @GalleryStrings.Theming_HowItWorksDesc
         </FlareText>
         <FlareCodeBlock Value="@_howItWorksCode" Language="razor" />
@@ -106,7 +106,7 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Brush" Title="@GalleryStrings.Theming_CreateTheme" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @GalleryStrings.Theming_CustomThemeDesc
         </FlareText>
         <FlareCodeBlock Value="@_createThemeCode" Language="csharp" />
@@ -115,40 +115,28 @@
 
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.TableChart" Title="@GalleryStrings.Theming_TokenReference" />
-    <FlareCard Style="padding:0;overflow:hidden;">
-        <FlareTable TItem="object">
-            <thead>
-                <tr><th>@GalleryStrings.Theming_TokenCol</th><th>@GalleryStrings.Theming_PurposeCol</th><th>@GalleryStrings.Theming_ExampleCol</th></tr>
-            </thead>
-            <tbody>
-                <tr><td><code>--flare-color-primary</code></td><td>@GalleryStrings.Theming_Token_Primary</td><td>#6750a4</td></tr>
-                <tr><td><code>--flare-color-on-primary</code></td><td>@GalleryStrings.Theming_Token_OnPrimary</td><td>#ffffff</td></tr>
-                <tr><td><code>--flare-color-primary-container</code></td><td>@GalleryStrings.Theming_Token_PrimaryContainer</td><td>#eaddff</td></tr>
-                <tr><td><code>--flare-color-secondary</code></td><td>@GalleryStrings.Theming_Token_Secondary</td><td>#625b71</td></tr>
-                <tr><td><code>--flare-color-surface</code></td><td>@GalleryStrings.Theming_Token_Surface</td><td>#fffbfe</td></tr>
-                <tr><td><code>--flare-color-surface-container</code></td><td>@GalleryStrings.Theming_Token_SurfaceContainer</td><td>#f3edf7</td></tr>
-                <tr><td><code>--flare-color-on-surface</code></td><td>@GalleryStrings.Theming_Token_OnSurface</td><td>#1c1b1f</td></tr>
-                <tr><td><code>--flare-color-on-surface-variant</code></td><td>@GalleryStrings.Theming_Token_OnSurfaceVariant</td><td>#49454f</td></tr>
-                <tr><td><code>--flare-color-outline</code></td><td>@GalleryStrings.Theming_Token_Outline</td><td>#79747e</td></tr>
-                <tr><td><code>--flare-color-error</code></td><td>@GalleryStrings.Theming_Token_Error</td><td>#b3261e</td></tr>
-                <tr><td><code>--flare-shape-small</code></td><td>@GalleryStrings.Theming_Token_ShapeSmall</td><td>8px</td></tr>
-                <tr><td><code>--flare-shape-medium</code></td><td>@GalleryStrings.Theming_Token_ShapeMedium</td><td>12px</td></tr>
-                <tr><td><code>--flare-shape-full</code></td><td>@GalleryStrings.Theming_Token_ShapeFull</td><td>9999px</td></tr>
-                <tr><td><code>--flare-state-hover-opacity</code></td><td>@GalleryStrings.Theming_Token_StateOpacity</td><td>0.08</td></tr>
-                <tr><td><code>--flare-motion-duration-state-change</code></td><td>@GalleryStrings.Theming_Token_Motion</td><td>100ms</td></tr>
-                <tr><td><code>--flare-typescale-body-large-font</code></td><td>@GalleryStrings.Theming_Token_BodyFont</td><td>Roboto, sans-serif</td></tr>
-            </tbody>
-        </FlareTable>
+    <FlareCard Padding="FlareSpacing.Custom" PaddingValue="0" Overflow="hidden">
+        <FlareDataGrid TItem="TokenRow" Items="_tokenRows" RowKey="@(r => r.Token)" Hoverable="false">
+            <Columns>
+                <FlareColumn Title="@GalleryStrings.Theming_TokenCol" Field="@(r => r.Token)">
+                    <Template Context="row">
+                        <FlareCode>@row.Token</FlareCode>
+                    </Template>
+                </FlareColumn>
+                <FlareColumn Title="@GalleryStrings.Theming_PurposeCol" Field="@(r => r.Purpose)" />
+                <FlareColumn Title="@GalleryStrings.Theming_ExampleCol" Field="@(r => r.Example)" />
+            </Columns>
+        </FlareDataGrid>
     </FlareCard>
 </FlareSection>
 
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Stars" Title="@GalleryStrings.Theming_GenerateTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @GalleryStrings.Theming_GenerateDesc
         </FlareText>
-        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="align-items:center;">
+        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
             <FlareColorPicker @bind-Value="_seed" />
             <FlareButton Variant="ButtonVariant.Filled" OnClick="GenerateAsync">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Palette" /></LeadingIcon>
@@ -161,12 +149,12 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Contrast" Title="@GalleryStrings.Theming_ScopeTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @GalleryStrings.Theming_ScopeDesc
         </FlareText>
         <FlareStack Row Wrap Gap="FlareSpacing.Large">
             <FlareThemeScope Mode="ThemeMode.Dark">
-                <FlareCard Style="min-width:14rem;">
+                <FlareCard MinWidth="14rem">
                     <FlareStack Gap="FlareSpacing.Small">
                         <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Theming_ScopeDark</FlareText>
                         <FlareStack Row Gap="FlareSpacing.Small">
@@ -178,7 +166,7 @@
                 </FlareCard>
             </FlareThemeScope>
             <FlareThemeScope Mode="ThemeMode.Light">
-                <FlareCard Style="min-width:14rem;">
+                <FlareCard MinWidth="14rem">
                     <FlareStack Gap="FlareSpacing.Small">
                         <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Theming_ScopeLight</FlareText>
                         <FlareStack Row Gap="FlareSpacing.Small">
@@ -196,6 +184,28 @@
 
 @code {
     private string _seed = "#7B1FA2";
+
+    private sealed record TokenRow(string Token, string Purpose, string Example);
+
+    private readonly TokenRow[] _tokenRows =
+    [
+        new("--flare-color-primary", GalleryStrings.Theming_Token_Primary, "#6750a4"),
+        new("--flare-color-on-primary", GalleryStrings.Theming_Token_OnPrimary, "#ffffff"),
+        new("--flare-color-primary-container", GalleryStrings.Theming_Token_PrimaryContainer, "#eaddff"),
+        new("--flare-color-secondary", GalleryStrings.Theming_Token_Secondary, "#625b71"),
+        new("--flare-color-surface", GalleryStrings.Theming_Token_Surface, "#fffbfe"),
+        new("--flare-color-surface-container", GalleryStrings.Theming_Token_SurfaceContainer, "#f3edf7"),
+        new("--flare-color-on-surface", GalleryStrings.Theming_Token_OnSurface, "#1c1b1f"),
+        new("--flare-color-on-surface-variant", GalleryStrings.Theming_Token_OnSurfaceVariant, "#49454f"),
+        new("--flare-color-outline", GalleryStrings.Theming_Token_Outline, "#79747e"),
+        new("--flare-color-error", GalleryStrings.Theming_Token_Error, "#b3261e"),
+        new("--flare-shape-small", GalleryStrings.Theming_Token_ShapeSmall, "8px"),
+        new("--flare-shape-medium", GalleryStrings.Theming_Token_ShapeMedium, "12px"),
+        new("--flare-shape-full", GalleryStrings.Theming_Token_ShapeFull, "9999px"),
+        new("--flare-state-hover-opacity", GalleryStrings.Theming_Token_StateOpacity, "0.08"),
+        new("--flare-motion-duration-state-change", GalleryStrings.Theming_Token_Motion, "100ms"),
+        new("--flare-typescale-body-large-font", GalleryStrings.Theming_Token_BodyFont, "Roboto, sans-serif"),
+    ];
 
     private const string _howItWorksCode =
         """

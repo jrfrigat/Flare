@@ -2,15 +2,15 @@
 
 <FlareStack Gap="FlareSpacing.Large">
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">C# - editable, line numbers</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">C# - editable, line numbers</FlareText>
         <FlareCodeBlock @bind-Value="_codeCs" Language="csharp" Rows="8" LineNumbers="true" ReadOnly="false" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">JSON - editable</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">JSON - editable</FlareText>
         <FlareCodeBlock @bind-Value="_codeJson" Language="json" Rows="6" ReadOnly="false" />
     </FlareStack>
     <FlareStack Gap="FlareSpacing.None">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">Read-only</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">Read-only</FlareText>
         <FlareCodeBlock Value="@_codeReadOnly" Language="csharp" />
     </FlareStack>
 </FlareStack>

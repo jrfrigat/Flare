@@ -1,12 +1,18 @@
 @* The two timers are the whole point, so the demo lets you set them and then run work of a chosen
    length against them. Short work under a long delay shows nothing at all - which is the behaviour, not
    a bug in the demo. *@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:34rem;">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="34rem">
 
     <FlareStack Row Wrap Gap="FlareSpacing.Medium">
-        <FlareNumericField TValue="int" @bind-Value="_work" Label="@GalleryStrings.Busy_WorkMs" Style="width:9rem;" />
-        <FlareNumericField TValue="int" @bind-Value="_delay" Label="@GalleryStrings.Busy_Delay" Style="width:9rem;" />
-        <FlareNumericField TValue="int" @bind-Value="_min" Label="@GalleryStrings.Busy_MinDuration" Style="width:9rem;" />
+        <FlareStack Width="9rem">
+            <FlareNumericField TValue="int" @bind-Value="_work" Label="@GalleryStrings.Busy_WorkMs" />
+        </FlareStack>
+        <FlareStack Width="9rem">
+            <FlareNumericField TValue="int" @bind-Value="_delay" Label="@GalleryStrings.Busy_Delay" />
+        </FlareStack>
+        <FlareStack Width="9rem">
+            <FlareNumericField TValue="int" @bind-Value="_min" Label="@GalleryStrings.Busy_MinDuration" />
+        </FlareStack>
     </FlareStack>
 
     <FlareStack Row Wrap Gap="FlareSpacing.Small">

@@ -2,7 +2,7 @@
    component itself does not set position:fixed - here it just sits inside a bordered card so the
    demo does not take over the whole page; in a real layout you would pin it to the viewport bottom
    from your own CSS. *@
-<FlareCard Variant="CardVariant.Filled" Style="max-width:360px;padding:0;overflow:hidden;border-radius:var(--flare-shape-medium);">
+<FlareCard Variant="CardVariant.Filled" MaxWidth="360px" Padding="FlareSpacing.Custom" PaddingValue="0">
     <FlareBottomNav>
         <FlareBottomNavItem Href="" Match="NavMatchMode.Exact">
             <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Home" /></IconContent>

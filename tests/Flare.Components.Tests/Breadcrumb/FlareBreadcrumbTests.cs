@@ -70,4 +70,18 @@ public class FlareBreadcrumbTests : FlareTestContext
         var sep = cut.Find($".{Css.Classes.Breadcrumb.Separator}");
         Assert.Contains("»", sep.TextContent);
     }
+
+    [Fact]
+    public void ItemIcon_RendersInsideTheCrumb()
+    {
+        BreadcrumbItem[] items =
+        [
+            new("Home", "/", Icon: FlareIcons.Home),
+            new("Details"),
+        ];
+
+        var cut = Render<FlareBreadcrumb>(p => p.Add(x => x.Items, items));
+
+        Assert.Single(cut.FindAll($".{Css.Classes.Breadcrumb.Link} .{Css.Classes.Icon.Svg}"));
+    }
 }

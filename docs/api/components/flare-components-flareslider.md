@@ -22,6 +22,7 @@
 | `Init` | `double?` | `` | Parameter |  | Anchor the fill starts from (single mode). The active track is drawn between Init and Value; defaults to Min. Set to a mid value (e.g. 0 for a Min=-100/Max=100 left/right balance slider) so the fill grows out from that point. Ignored in range mode. |
 | `Label` | `string?` | `` | Parameter |  | Label text displayed above the slider. Ignored when LabelContent is set. |
 | `LabelContent` | `RenderFragment?` | `` | Parameter |  | Markup rendered as the label instead of Label - a unit, a link, an inline badge. Named rather than ChildContent because the label is one part of the slider among several, so content written between the tags would not say which part it meant. |
+| `Length` | `string?` | `` | Parameter |  | Length of the slider along its axis, as a CSS length. A horizontal slider fills its container by default; set this when it should take a fixed width. A vertical slider's length is the theme's default until this is set. |
 | `Marks` | `IReadOnlyDictionary<double, string>?` | `` | Parameter |  | Labeled marks placed under the track at specific values (value -> label), e.g. { [0]="Low", [50]="Mid", [100]="High" }. A mark is highlighted when it falls within the selected span. Values outside [Min, Max] are ignored. |
 | `Max` | `double` | `100` | Parameter |  | Maximum value of the slider range. |
 | `Min` | `double` | `0` | Parameter |  | Minimum value of the slider range. |

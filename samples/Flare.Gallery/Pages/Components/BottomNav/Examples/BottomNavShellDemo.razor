@@ -7,8 +7,11 @@
    descendant resolves against. (`position: relative` does NOT do that - only containment, a transform
    or a filter does.) *@
 <FlareCard Variant="CardVariant.Outlined"
-           Style="width:min(360px, 100%);height:420px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
-    <FlareCardContent Style="flex:1;overflow:auto;">
+           Width="min(360px, 100%)" Height="420px" Padding="FlareSpacing.Custom" PaddingValue="0"
+           Overflow="hidden" Contain="layout paint">
+    <FlareStack Height="100%" Gap="FlareSpacing.None">
+    <FlareStack FlexGrow="1" MinHeight="0" Overflow="auto">
+    <FlareCardContent>
         <FlareStack Gap="FlareSpacing.Small">
             <FlareText Typo="TypographyScale.TitleMedium">Today</FlareText>
             @foreach (var item in _feed)
@@ -22,6 +25,7 @@
             </FlareText>
         </FlareStack>
     </FlareCardContent>
+    </FlareStack>
 
     <FlareBottomNav Position="BottomNavPosition.Fixed">
         <FlareBottomNavItem Href="#home" Active="true">
@@ -41,6 +45,7 @@
             <ChildContent>Profile</ChildContent>
         </FlareBottomNavItem>
     </FlareBottomNav>
+    </FlareStack>
 </FlareCard>
 
 @code {

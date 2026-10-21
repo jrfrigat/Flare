@@ -18,7 +18,7 @@
     @foreach (var entry in Changelog.Entries())
     {
         <FlareCard Variant="CardVariant.Outlined">
-            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="margin-bottom:0.5rem;">
+            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">
                 <FlareBadge Text="@($"v{entry.Version}")" Standalone="true" Color="FlareColor.Secondary" />
                 @if (entry.Date is not null)
                 {

@@ -1,11 +1,11 @@
 @using Flare.Gallery.Pages.Components.DataGrid.Examples
 
 <FlareStack Gap="FlareSpacing.Medium">
-    <div style="max-width:18rem;">
+    <FlareStack MaxWidth="18rem" Gap="FlareSpacing.None">
         <FlareSelect TValue="DataGridLoadingIndicator" Items="_indicators"
                      ItemLabel="@(i => i.ToString())" Value="_indicator"
                      ValueChanged="OnIndicatorChanged" Label="Loading indicator" />
-    </div>
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
         Change the page (or sort a column) to trigger a reload - the chosen indicator shows during
         the simulated 700&#8201;ms fetch.

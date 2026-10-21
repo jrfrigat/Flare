@@ -28,13 +28,15 @@
         </FlareStack>
     </FlareCol>
     <FlareCol Span="12" Md="4">
-        <FlareTableOfContents Title="@GalleryStrings.TocDemo_Contents" Style="position:sticky;top:1rem">
+        <FlareStack Sticky="true" StickyTop="1rem">
+        <FlareTableOfContents Title="@GalleryStrings.TocDemo_Contents">
             <FlareTocLink Href="@($"{_pagePath}#introduction")" Active="true">@GalleryStrings.TocDemo_Introduction</FlareTocLink>
             <FlareTocLink Href="@($"{_pagePath}#installation")">@GalleryStrings.TocDemo_Installation</FlareTocLink>
             <FlareTocLink Href="@($"{_pagePath}#configuration")">@GalleryStrings.TocDemo_Configuration</FlareTocLink>
             <FlareTocLink Href="@($"{_pagePath}#theming")">@GalleryStrings.TocDemo_Theming</FlareTocLink>
             <FlareTocLink Href="@($"{_pagePath}#api")">@GalleryStrings.TocDemo_Api</FlareTocLink>
         </FlareTableOfContents>
+        </FlareStack>
     </FlareCol>
 </FlareGrid>
 

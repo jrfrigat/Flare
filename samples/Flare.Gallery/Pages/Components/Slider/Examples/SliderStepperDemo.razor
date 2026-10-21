@@ -1,5 +1,5 @@
 @* Stepper shows stop indicators at each Step; Indicator shows a value bubble on interaction. *@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="30rem">
     <FlareSlider @bind-Value="_rating" Label="Rating (step 1, stepper)"
                  Min="0" Max="10" Step="1" Stepper="true" />
     <FlareSlider @bind-Value="_level" Label="Level (step 25, stepper + indicator)"

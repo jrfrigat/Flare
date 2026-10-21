@@ -11,17 +11,55 @@ Renders a semantic HTML element (h1-h5, p) styled with the active theme's type s
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Align` | `TextAlign` | `TextAlign.Default` | Parameter |  | Horizontal text alignment. Default inherits the surrounding alignment. |
+| `Block` | `bool` | `false` | Parameter |  | Renders the element as a block that takes the full line instead of sitting inline. A paragraph or heading is already a block; this matters for an inherited run that should start on its own line. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Text content rendered inside the typography element. |
 | `Color` | `FlareColor` | `` | Parameter |  | Text color. Role (FlareColor.Primary) -> shared class; custom (FlareColor.Custom("#...")) -> inline token. Default inherits. |
 | `Element` | `string?` | `` | Parameter |  | HTML element to render (e.g. "h1".."h5", "p", "span"). When null a sensible default for the Typo is used. |
+| `Inherit` | `bool` | `false` | Parameter |  | Renders the text with no type-scale class of its own, so it takes the typography of whatever it sits inside. Use it for a semantic run in a longer flow - an <strong> inside body text, a plain <code> that is not the chip - where a second scale would restyle it. The element defaults to a span in this mode instead of the scale's heading or paragraph. |
+| `LetterSpacing` | `string?` | `` | Parameter |  | Tracking between letters, as a CSS length. Null keeps the type scale's own tracking. Use it for display text that needs a tighter or looser setting than its scale step carries. |
 | `MaxLines` | `int` | `0` | Parameter |  | Caps the text at this many lines and ends it with an ellipsis. 0 (the default) leaves it to wrap as far as it likes. One parameter rather than a Truncate flag beside a MaxLines count, because they are the same request at different depths and two knobs would have to explain which wins. The mechanism underneath is not the same, though, and that is why this is a count and not a bool: at one line the text stops wrapping and ends with an ellipsis, which keeps the element's own display type; past one it needs a clamped flex box, which does not. Asking for the count lets the component pick, where a caller writing the CSS by hand had to know. |
 | `Mono` | `bool` | `false` | Parameter |  | When true, renders in the monospace font - for code-like runs and keystrokes (pair with Element="code"/"kbd"). It only swaps the font; for the tonal inline-code chip use FlareCode. |
 | `Transform` | `TextTransform` | `TextTransform.None` | Parameter |  | Letter-casing applied on top of the type-scale step. None (the default) leaves the text as written. |
 | `Typo` | `TypographyScale` | `TypographyScale.BodyMedium` | Parameter |  | Type-scale role applied to the text (defaults to BodyMedium). |
 | `Weight` | `FontWeight` | `FontWeight.Default` | Parameter |  | Font weight override. Default keeps the type scale's weight. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Background` | `FlareColor` | `` | Parameter |  | The surface the box paints behind its content. A semantic role paints that role and, for the accent roles, pairs it with the role's readable on-color; a custom color paints itself. Default leaves the box transparent. Inherited from `FlareLayoutBoxBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Contain` | `string?` | `` | Parameter |  | CSS containment for the box - layout, paint, strict or a combination. A frame around a fixed-position app bar uses layout paint so the bar is pinned to the frame instead of the viewport. Inherited from `FlareLayoutBoxBase`. |
+| `FillHeight` | `bool` | `false` | Parameter |  | Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly. The box that SUPPLIES a height does not fill: when Style declares a height of its own, that height wins and this switch is ignored, because the two are contradictory instructions and the written number is the one you can see in the markup. Inherited from `FlareContainerBase`. |
+| `FlexGrow` | `double?` | `` | Parameter |  | How much of a row's spare space the box takes, relative to its siblings. Null leaves it to the layout; 1 makes it share the free space with every other growing child. Inherited from `FlareLayoutBoxBase`. |
+| `Foreground` | `FlareColor` | `` | Parameter |  | The color of the box's content. Default inherits it from the surrounding surface, or takes the background role's on-color when one was set. Inherited from `FlareLayoutBoxBase`. |
+| `Height` | `string?` | `` | Parameter |  | The box's height; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |
+| `Margin` | `FlareSpacing?` | `` | Parameter |  | Space around the box on all sides, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `MarginBlockEnd` | `FlareSpacing?` | `` | Parameter |  | Space below the box, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `MarginBlockEndValue` | `string?` | `` | Parameter |  | Raw CSS margin used when MarginBlockEnd is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `MarginBlockStart` | `FlareSpacing?` | `` | Parameter |  | Space above the box, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `MarginBlockStartValue` | `string?` | `` | Parameter |  | Raw CSS margin used when MarginBlockStart is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `MarginInlineEnd` | `FlareSpacing?` | `` | Parameter |  | Space after the box along the inline axis, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `MarginInlineEndValue` | `string?` | `` | Parameter |  | Raw CSS margin used when MarginInlineEnd is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `MarginInlineStart` | `FlareSpacing?` | `` | Parameter |  | Space before the box along the inline axis, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `MarginInlineStartValue` | `string?` | `` | Parameter |  | Raw CSS margin used when MarginInlineStart is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `MarginValue` | `string?` | `` | Parameter |  | Raw CSS margin used when Margin is Custom - a length or a shorthand such as 1rem auto. Inherited from `FlareLayoutBoxBase`. |
+| `MaxHeight` | `string?` | `` | Parameter |  | Upper bound for the box's height; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |
+| `MaxWidth` | `string?` | `` | Parameter |  | Upper bound for the box's width; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |
+| `MinHeight` | `string?` | `` | Parameter |  | Lower bound for the box's height; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |
+| `MinWidth` | `string?` | `` | Parameter |  | Lower bound for the box's width; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |
+| `Overflow` | `string?` | `` | Parameter |  | What the box does with content that does not fit: visible (the default when unset), hidden, auto, scroll or clip. A call site that wants a scrolling pane asks for auto here instead of writing an inline style. Inherited from `FlareLayoutBoxBase`. |
+| `Padding` | `FlareSpacing?` | `` | Parameter |  | Space inside the box on all sides, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingBlockEnd` | `FlareSpacing?` | `` | Parameter |  | Space below the box's content, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingBlockEndValue` | `string?` | `` | Parameter |  | Raw CSS padding used when PaddingBlockEnd is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingBlockStart` | `FlareSpacing?` | `` | Parameter |  | Space above the box's content, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingBlockStartValue` | `string?` | `` | Parameter |  | Raw CSS padding used when PaddingBlockStart is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingInlineEnd` | `FlareSpacing?` | `` | Parameter |  | Space after the box's content along the inline axis, as a step on the shared spacing scale. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingInlineEndValue` | `string?` | `` | Parameter |  | Raw CSS padding used when PaddingInlineEnd is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingInlineStart` | `FlareSpacing?` | `` | Parameter |  | Space before the box's content along the inline axis, as a step on the shared spacing scale. Logical, so it lands on the correct side in a right-to-left page. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingInlineStartValue` | `string?` | `` | Parameter |  | Raw CSS padding used when PaddingInlineStart is Custom. Inherited from `FlareLayoutBoxBase`. |
+| `PaddingValue` | `string?` | `` | Parameter |  | Raw CSS padding used when Padding is Custom - a length or a shorthand such as 1rem 2rem. Inherited from `FlareLayoutBoxBase`. |
+| `Relative` | `bool` | `false` | Parameter |  | Establishes the box as the containing block for absolutely positioned children, such as a layer or backstage that should cover this box and nothing else. Inherited from `FlareLayoutBoxBase`. |
+| `Sticky` | `bool` | `false` | Parameter |  | Keeps the box in view while the page scrolls past it - the sticky rail or preview column of a two-pane page. Inherited from `FlareLayoutBoxBase`. |
+| `StickyTop` | `string?` | `` | Parameter |  | Distance from the top of the scrollport at which a sticky box rests, as a CSS length. Null leaves it at zero. Inherited from `FlareLayoutBoxBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Width` | `string?` | `` | Parameter |  | The box's width; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |
 
 ## Methods
 
@@ -29,6 +67,8 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLayoutBoxBase`
+- `FlareContainerBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

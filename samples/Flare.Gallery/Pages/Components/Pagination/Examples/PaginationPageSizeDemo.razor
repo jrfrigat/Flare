@@ -4,7 +4,7 @@
                  PageSizeChanged="OnPageSizeChanged"
                  RowsPerPageOptions="@(new[] { 10, 25, 50, 100 })" />
 
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     @_pageSize rows per page · page @_page of @_totalPages
 </FlareText>
 

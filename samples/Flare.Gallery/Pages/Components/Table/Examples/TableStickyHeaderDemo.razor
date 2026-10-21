@@ -1,7 +1,5 @@
-<FlareStack Style="padding:0;overflow:hidden;max-height:200px;overflow-y:auto;">
-    <FlareTable TItem="Person" Items="_people" StickyHeader="true"
-                HeaderContent="@_headerContent"
-                RowTemplate="@_rowTemplate" />
+<FlareStack Padding="FlareSpacing.Custom" PaddingValue="0" MaxHeight="200px" Overflow="auto">
+    <FlareTable TItem="Person" Items="_people" Columns="_columns" StickyHeader="true" />
 </FlareStack>
 
 @code {
@@ -21,9 +19,11 @@
         new("Jack Thomas",     "Engineer",  "Singapore",  87),
     ];
 
-    private RenderFragment _headerContent =>
-        @<tr><th>Name</th><th>Role</th><th>City</th><th>Score</th></tr>;
-
-    private RenderFragment<Person> _rowTemplate =>
-        p => @<tr><td>@p.Name</td><td>@p.Role</td><td>@p.City</td><td>@p.Score</td></tr>;
+    private static readonly IReadOnlyList<FlareTableColumn<Person>> _columns =
+    [
+        new() { Header = "Name",  Field = p => p.Name },
+        new() { Header = "Role",  Field = p => p.Role },
+        new() { Header = "City",  Field = p => p.City },
+        new() { Header = "Score", Field = p => p.Score },
+    ];
 }

@@ -2,10 +2,11 @@
    between are highlighted and a live preview follows the pointer while you choose the end. Presets
    work in this mode too. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
-                          Mode="DateRangePickerMode.Calendar"
-                          ShowPresets="true"
-                          Style="max-width:22rem;" />
+    <FlareStack MaxWidth="22rem">
+        <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
+                              Mode="DateRangePickerMode.Calendar"
+                              ShowPresets="true" />
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         @($"{_start?.ToString("dd MMM yyyy") ?? "-"} -> {_end?.ToString("dd MMM yyyy") ?? "-"}")
     </FlareText>

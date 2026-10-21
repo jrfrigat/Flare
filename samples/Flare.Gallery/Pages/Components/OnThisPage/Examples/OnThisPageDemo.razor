@@ -26,9 +26,10 @@
     </FlareCol>
 
     <FlareCol Span="12" Md="4">
-        <FlareOnThisPage Root=".toc-demo-content"
-                         HeadingSelector="h4, h5"
-                         Style="position:sticky;top:1rem" />
+        <FlareStack Sticky="true" StickyTop="1rem">
+            <FlareOnThisPage Root=".toc-demo-content"
+                             HeadingSelector="h4, h5" />
+        </FlareStack>
     </FlareCol>
 </FlareGrid>
 

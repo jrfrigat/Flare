@@ -4,7 +4,8 @@
 @* Visual Studio / Access-style shell: a menu bar + icon toolbar, a Solution/Navigation tree in the
    left panel, document tabs hosting a datasheet (FlareDataGrid), a Properties sheet on the right, an
    Output panel at the bottom, and a status bar. All from base Flare + Flare.Components.IDE. *@
-<FlareIdeLayout Style="height:520px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+<FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None" Overflow="hidden">
+<FlareIdeLayout Height="520px">
     <MenuBar>
         <FlareMenuBar>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">File</FlareButton>
@@ -58,10 +59,11 @@
                 </FlareDataGrid>
             </FlareDocumentTab>
             <FlareDocumentTab Title="Program.cs" Icon="@MaterialDesign3Icons.Regular.Code" Modified="true">
-                <pre style="margin:0;padding:0.5rem;font-family:monospace;font-size:0.8rem;">var builder = WebApplication.CreateBuilder(args);
+                <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                           Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 var app = builder.Build();
-app.Run();</pre>
+app.Run();</FlareText>
             </FlareDocumentTab>
         </FlareDocumentTabs>
     </ChildContent>
@@ -92,8 +94,9 @@ app.Run();</pre>
 
     <BottomPanel>
         <FlareToolPanel Title="Output" Position="ToolPanelPosition.Bottom">
-            <pre style="margin:0;padding:0.5rem;font-family:monospace;font-size:0.8rem;">Build started...
-Build succeeded. 0 errors, 0 warnings.</pre>
+            <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                       Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">Build started...
+Build succeeded. 0 errors, 0 warnings.</FlareText>
         </FlareToolPanel>
     </BottomPanel>
 
@@ -104,6 +107,7 @@ Build succeeded. 0 errors, 0 warnings.</pre>
         </FlareStatusBar>
     </StatusBar>
 </FlareIdeLayout>
+</FlareCard>
 
 @code {
     private string _status = "Ready";

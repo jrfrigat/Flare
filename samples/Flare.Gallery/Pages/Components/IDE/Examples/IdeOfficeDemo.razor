@@ -4,8 +4,8 @@
 @* Word/Excel-style shell built only from Flare + Flare.Components.IDE: a quick-access toolbar, a
    ribbon with a dropdown gallery and a separator, a backstage (File) overlay, a formula bar, an
    Excel-like data grid with cell selection, and a sheet-tab strip. No custom theming. *@
-<div style="position:relative;height:520px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
-    <FlareIdeLayout Style="height:100%;">
+<FlareCard Variant="CardVariant.Outlined" Relative="true" Padding="FlareSpacing.None" Overflow="hidden">
+    <FlareIdeLayout Height="520px">
         <Ribbon>
             <FlareQuickAccessToolbar>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => _fileOpen = true)">File</FlareButton>
@@ -56,9 +56,9 @@
         </Ribbon>
 
         <ChildContent>
-            <div style="display:flex;flex-direction:column;height:100%;">
+            <FlareStack Gap="FlareSpacing.None" Height="100%">
                 <FlareFormulaBar CellRef="@_cellRef" Value="@_formula" ValueChanged="@(v => _formula = v)" />
-                <div style="flex:1;min-height:0;overflow:auto;">
+                <FlareStack FlexGrow="1" MinHeight="0" Overflow="auto">
                     <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
                         <Columns>
                             <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
@@ -67,10 +67,10 @@
                             <FlareColumn Title="Score" Field="@(p => p.Score)" Type="ColumnDataType.Number" />
                         </Columns>
                     </FlareDataGrid>
-                </div>
+                </FlareStack>
                 <FlareSheetTabs Sheets="@_sheets" ActiveIndex="@_sheet"
                                 ActiveIndexChanged="@(i => _sheet = i)" OnAddSheet="AddSheet" />
-            </div>
+            </FlareStack>
         </ChildContent>
 
         <StatusBar>
@@ -96,7 +96,7 @@
             </FlareText>
         </ChildContent>
     </FlareBackstage>
-</div>
+</FlareCard>
 
 @code {
     private bool _fileOpen;

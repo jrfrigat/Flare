@@ -3,51 +3,57 @@
    the axis from the parent flex direction, so neither demo sets Orientation. *@
 <FlareStack Gap="FlareSpacing.Large">
     <FlareText Typo="TypographyScale.TitleMedium">Horizontal</FlareText>
-    <div style="display:flex; height:14rem; border:1px solid var(--flare-color-outline-variant); border-radius:var(--flare-shape-medium); overflow:hidden;">
-        <div style="flex:0 0 35%; overflow:auto; padding:1rem;">
-            <FlareText Typo="TypographyScale.TitleSmall">Navigator</FlareText>
-            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-                First pane. Drag the divider to the right or left.
-            </FlareText>
-        </div>
-        <FlareSplitter MinSize="120px" MaxSize="480px" OnSizeChanged="s => _size = s" />
-        <div style="flex:1 1 0; overflow:auto; padding:1rem;">
-            <FlareText Typo="TypographyScale.TitleSmall">Editor</FlareText>
-            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-                Second pane fills the remaining space.
-            </FlareText>
-        </div>
-    </div>
+    <FlarePaper Outlined Padding="FlareSpacing.None">
+        <FlareStack Row Height="14rem" Overflow="hidden">
+            <FlareStack Width="35%" Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                <FlareText Typo="TypographyScale.TitleSmall">Navigator</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    First pane. Drag the divider to the right or left.
+                </FlareText>
+            </FlareStack>
+            <FlareSplitter MinSize="120px" MaxSize="480px" OnSizeChanged="s => _size = s" />
+            <FlareStack FlexGrow="1" Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                <FlareText Typo="TypographyScale.TitleSmall">Editor</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    Second pane fills the remaining space.
+                </FlareText>
+            </FlareStack>
+        </FlareStack>
+    </FlarePaper>
     @if (!string.IsNullOrEmpty(_size))
     {
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">First pane: @_size</FlareText>
     }
 
     <FlareText Typo="TypographyScale.TitleMedium">Vertical</FlareText>
-    <div style="display:flex; flex-direction:column; height:18rem; border:1px solid var(--flare-color-outline-variant); border-radius:var(--flare-shape-medium); overflow:hidden;">
-        <div style="flex:0 0 40%; overflow:auto; padding:1rem;">
-            <FlareText Typo="TypographyScale.TitleSmall">Preview</FlareText>
-        </div>
-        <FlareSplitter MinSize="64px" />
-        <div style="flex:1 1 0; overflow:auto; padding:1rem;">
-            <FlareText Typo="TypographyScale.TitleSmall">Console</FlareText>
-        </div>
-    </div>
+    <FlarePaper Outlined Padding="FlareSpacing.None">
+        <FlareStack Height="18rem" Overflow="hidden">
+            <FlareStack Height="40%" Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                <FlareText Typo="TypographyScale.TitleSmall">Preview</FlareText>
+            </FlareStack>
+            <FlareSplitter MinSize="64px" />
+            <FlareStack FlexGrow="1" Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                <FlareText Typo="TypographyScale.TitleSmall">Console</FlareText>
+            </FlareStack>
+        </FlareStack>
+    </FlarePaper>
 
     <FlareText Typo="TypographyScale.TitleMedium">Customized</FlareText>
-    <div style="display:flex; height:14rem; border:1px solid var(--flare-color-outline-variant); border-radius:var(--flare-shape-medium); overflow:hidden;">
-        <div style="flex:0 0 50%; overflow:auto; padding:1rem;">
-            <FlareText Typo="TypographyScale.TitleSmall">Left</FlareText>
-        </div>
-        @* Custom thickness, a centre icon that swaps on hover, and idle/hover colors (from tokens). *@
-        <FlareSplitter Size="14px"
-                       Icon="@MaterialDesign3Icons.Regular.DragIndicator" HoverIcon="@MaterialDesign3Icons.Regular.OpenWith"
-                       Color="var(--flare-color-surface-container-high)"
-                       HoverColor="var(--flare-color-primary-container)" />
-        <div style="flex:1 1 0; overflow:auto; padding:1rem;">
-            <FlareText Typo="TypographyScale.TitleSmall">Right</FlareText>
-        </div>
-    </div>
+    <FlarePaper Outlined Padding="FlareSpacing.None">
+        <FlareStack Row Height="14rem" Overflow="hidden">
+            <FlareStack Width="50%" Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                <FlareText Typo="TypographyScale.TitleSmall">Left</FlareText>
+            </FlareStack>
+            @* Custom thickness, a centre icon that swaps on hover, and idle/hover colors (from tokens). *@
+            <FlareSplitter Size="14px"
+                           Icon="@MaterialDesign3Icons.Regular.DragIndicator" HoverIcon="@MaterialDesign3Icons.Regular.OpenWith"
+                           Color="var(--flare-color-surface-container-high)"
+                           HoverColor="var(--flare-color-primary-container)" />
+            <FlareStack FlexGrow="1" Padding="FlareSpacing.Custom" PaddingValue="1rem" Overflow="auto" Gap="FlareSpacing.None">
+                <FlareText Typo="TypographyScale.TitleSmall">Right</FlareText>
+            </FlareStack>
+        </FlareStack>
+    </FlarePaper>
 </FlareStack>
 
 @code {

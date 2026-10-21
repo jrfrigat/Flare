@@ -33,11 +33,7 @@
         <FlareStack Gap="FlareSpacing.Medium">
             <FlareSwitch Label="Notifications" Value="true" />
             <FlareSwitch Label="Dark mode" />
-            <FlareSelect TValue="string" Label="Language">
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-            </FlareSelect>
+            <FlareSelect TValue="string" Label="Language" Items="_languages" ItemLabel="LanguageLabel" />
             <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _rightOpen = false)">Save</FlareButton>
         </FlareStack>
     </ChildContent>
@@ -46,4 +42,13 @@
 @code {
     private bool _leftOpen;
     private bool _rightOpen;
+
+    private static readonly string[] _languages = ["en", "de", "fr"];
+
+    private static string LanguageLabel(string language) => language switch
+    {
+        "de" => "Deutsch",
+        "fr" => "Français",
+        _ => "English",
+    };
 }

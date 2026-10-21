@@ -424,4 +424,22 @@ public class FlareSliderTests : FlareTestContext
 
         Assert.False(invoked);
     }
+
+    [Fact]
+    public void Length_ReachesTheRootStyle()
+    {
+        var cut = Render<FlareSlider>(p => p.Add(x => x.Length, "13rem"));
+
+        var style = cut.Find($".{Css.Classes.Slider.Root}").GetAttribute("style");
+        Assert.Contains($"{Css.Tokens.Slider.Length}:13rem", style);
+    }
+
+    [Fact]
+    public void NoLength_LeavesTheTokenToTheTheme()
+    {
+        var cut = Render<FlareSlider>();
+
+        var style = cut.Find($".{Css.Classes.Slider.Root}").GetAttribute("style") ?? string.Empty;
+        Assert.DoesNotContain(Css.Tokens.Slider.Length, style);
+    }
 }

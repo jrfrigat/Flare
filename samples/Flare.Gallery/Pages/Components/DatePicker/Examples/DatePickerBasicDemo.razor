@@ -1,12 +1,16 @@
 @inherits LocalizedPage
 
-<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:32rem;">
-    <FlareDatePicker @bind-Value="_date" Label="@GalleryStrings.DpDemo_AppointmentLabel"
-                     Placeholder="@GalleryStrings.DpDemo_PickPlaceholder"
-                     DateFormat="@DateFormat" Style="flex:1;min-width:12rem;" />
-    <FlareDatePicker Label="@GalleryStrings.DpDemo_DisabledLabel" Disabled Style="flex:1;min-width:12rem;" />
+<FlareStack Row Wrap Gap="FlareSpacing.Large" MaxWidth="32rem">
+    <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareDatePicker @bind-Value="_date" Label="@GalleryStrings.DpDemo_AppointmentLabel"
+                         Placeholder="@GalleryStrings.DpDemo_PickPlaceholder"
+                         DateFormat="@DateFormat" />
+    </FlareStack>
+    <FlareStack FlexGrow="1" MinWidth="12rem">
+        <FlareDatePicker Label="@GalleryStrings.DpDemo_DisabledLabel" Disabled />
+    </FlareStack>
 </FlareStack>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
     @(string.Format(GalleryStrings.DpDemo_Selected, _date?.ToString(DateFormat)))
 </FlareText>
 

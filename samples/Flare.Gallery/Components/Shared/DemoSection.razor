@@ -1,7 +1,9 @@
 @namespace Flare.Gallery.Components.Shared
 @inherits LocalizedPage
 
-<FlareStack Gap="FlareSpacing.Medium" Style="@_sectionStyle">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="@_maxWidth"
+            PaddingBlockStart="FlareSpacing.Custom" PaddingBlockStartValue="1.5rem"
+            PaddingBlockEnd="FlareSpacing.Custom" PaddingBlockEndValue="1.5rem">
     @if (!string.IsNullOrEmpty(Title))
     {
         <FlareStack Gap="FlareSpacing.XXSmall">
@@ -19,8 +21,10 @@
        many demos never instantiates all of them at once (caps the WASM heap high-water mark). *@
     <FlareStack Gap="FlareSpacing.XSmall">
         <FlareLazy MinHeight="@(MinHeight ?? Height ?? "200px")">
-            <FlarePaper Elevation="0" Padding="FlareSpacing.Large" Style="@_previewStyle">
-                @DemoContent
+            <FlarePaper Elevation="0" Padding="FlareSpacing.Large">
+                <FlareStack Height="@Height" MinHeight="@MinHeight" MaxHeight="@MaxHeight">
+                    @DemoContent
+                </FlareStack>
             </FlarePaper>
         </FlareLazy>
 
@@ -121,36 +125,13 @@
         return slug.Length > 0 ? slug : null;
     }
 
-    // Vertical breathing room so consecutive demo sections (which may be plain siblings on a page)
-    // are clearly separated -- otherwise one section's "show code" button sits right against the
-    // next section's content. Combined with the MaxWidth cap (default Lg; Full removes the cap).
-    private string _sectionStyle
+    private string? _maxWidth => MaxWidth switch
     {
-        get
-        {
-            var maxWidth = MaxWidth switch
-            {
-                ContainerMaxWidth.Xs => "max-width:480px",
-                ContainerMaxWidth.Sm => "max-width:600px",
-                ContainerMaxWidth.Md => "max-width:960px",
-                ContainerMaxWidth.Lg => "max-width:1280px",
-                ContainerMaxWidth.Xl => "max-width:1920px",
-                _ => null, // Full -- no cap
-            };
-            return maxWidth is null ? "padding-block:1.5rem" : $"{maxWidth};padding-block:1.5rem";
-        }
-    }
-
-    // Optional fixed/min/max height for the preview canvas (e.g. tall DataGrid/IDE demos).
-    private string? _previewStyle
-    {
-        get
-        {
-            var parts = new List<string>(3);
-            if (!string.IsNullOrEmpty(Height)) parts.Add($"height:{Height}");
-            if (!string.IsNullOrEmpty(MinHeight)) parts.Add($"min-height:{MinHeight}");
-            if (!string.IsNullOrEmpty(MaxHeight)) parts.Add($"max-height:{MaxHeight}");
-            return parts.Count > 0 ? string.Join(";", parts) : null;
-        }
-    }
+        ContainerMaxWidth.Xs => "480px",
+        ContainerMaxWidth.Sm => "600px",
+        ContainerMaxWidth.Md => "960px",
+        ContainerMaxWidth.Lg => "1280px",
+        ContainerMaxWidth.Xl => "1920px",
+        _ => null, // Full -- no cap
+    };
 }

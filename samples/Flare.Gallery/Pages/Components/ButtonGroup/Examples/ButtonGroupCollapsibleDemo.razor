@@ -5,7 +5,7 @@
 
     <FlareSlider @bind-Value="_width" Min="0" Max="100" Step="1" Label="@($"Container width: {_width}%")" />
 
-    <div style="@($"width:{_width}%")">
+    <FlareStack Row Width="@($"{_width}%")">
         <FlareButtonGroup Collapsible Variant="ButtonVariant.Tonal">
             <FlareButton>Cut</FlareButton>
             <FlareButton>Copy</FlareButton>
@@ -15,7 +15,7 @@
             <FlareButton>Rename</FlareButton>
             <FlareButton>Delete</FlareButton>
         </FlareButtonGroup>
-    </div>
+    </FlareStack>
 </FlareStack>
 
 @code {

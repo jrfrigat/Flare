@@ -1,6 +1,6 @@
 @* When the tab bar overflows its container, prev/next scroll arrows appear automatically
    (the bar is also scrollable by trackpad/drag). Resize the window to see arrows toggle. *@
-<div style="max-width:32rem;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
+<FlareCard Variant="CardVariant.Outlined" MaxWidth="32rem" Padding="FlareSpacing.None">
     <FlareTabs>
         @foreach (var t in _tabs)
         {
@@ -9,7 +9,7 @@
             </FlareTab>
         }
     </FlareTabs>
-</div>
+</FlareCard>
 
 @code {
     private readonly string[] _tabs =

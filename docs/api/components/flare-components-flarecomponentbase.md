@@ -65,6 +65,7 @@ This component exposes no documented public methods.
 - `FlareColorCustomizer`
 - `FlareColorModeToggle`
 - `FlareColorPicker`
+- `FlareColorScope`
 - `FlareCombobox`
 - `FlareContainer`
 - `FlareDataGrid`

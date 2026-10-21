@@ -1,0 +1,19 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div style="@_style" @attributes="AdditionalAttributes">@ChildContent</div>
+
+@code {
+    /// <summary>The color whose local tokens this subtree sees. A semantic role contributes its
+    /// class elsewhere; a custom or dynamic color contributes <c>--fc-main</c>, <c>--fc-on</c>,
+    /// <c>--fc-container</c> and <c>--fc-on-container</c> to every descendant.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+
+    /// <summary>The subtree that reads the color.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>The component has no CSS class of its own; it only carries the local tokens.</summary>
+    protected override string ComponentCssClass => string.Empty;
+
+    private string? _style => Color.StyleFull();
+}

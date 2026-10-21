@@ -1,6 +1,7 @@
 @using Flare.Components.IDE
 
-<FlareIdeLayout Style="height:460px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+<FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None" Overflow="hidden">
+<FlareIdeLayout Height="460px">
     <Ribbon>
         <FlareRibbon OnTabChanged="OnRibbonTab">
             <FlareRibbonTab Title="Home">
@@ -31,49 +32,52 @@
 
     <LeftToolPanel>
         <FlareToolPanel Title="Explorer">
-            <ul class="ide-demo__tree">
-                <li><FlareIconView Value="@FlareIcons.Folder" /> src</li>
-                <li class="ide-demo__tree-child"><FlareIconView Value="@FlareIcons.Description" /> Program.cs</li>
-                <li class="ide-demo__tree-child"><FlareIconView Value="@FlareIcons.Description" /> Startup.cs</li>
-                <li><FlareIconView Value="@FlareIcons.Folder" /> wwwroot</li>
-                <li><FlareIconView Value="@MaterialDesign3Icons.Regular.Article" /> README.md</li>
-            </ul>
+            <FlareTreeView AriaLabel="Explorer">
+                <FlareTreeItem Label="src" Icon="@FlareIcons.Folder" Expanded="true">
+                    <FlareTreeItem Label="Program.cs" Icon="@FlareIcons.Description" />
+                    <FlareTreeItem Label="Startup.cs" Icon="@FlareIcons.Description" />
+                </FlareTreeItem>
+                <FlareTreeItem Label="wwwroot" Icon="@FlareIcons.Folder" />
+                <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />
+            </FlareTreeView>
         </FlareToolPanel>
     </LeftToolPanel>
 
     <ChildContent>
         <FlareDocumentTabs OnTabChanged="OnDocTab">
             <FlareDocumentTab Title="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" Modified="true">
-                <pre class="ide-demo__code">var builder = WebApplication.CreateBuilder(args);
+                <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                           Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 
 var app = builder.Build();
 app.MapRazorComponents&lt;App&gt;();
-app.Run();</pre>
+app.Run();</FlareText>
             </FlareDocumentTab>
             <FlareDocumentTab Title="README.md" Icon="@MaterialDesign3Icons.Regular.Article">
-                <div class="ide-demo__doc">
+                <FlareStack Gap="FlareSpacing.XXSmall" Padding="FlareSpacing.Custom" PaddingValue="0.75rem">
                     <FlareText Typo="TypographyScale.TitleMedium">Flare IDE</FlareText>
                     <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
                         A desktop-style shell built from Flare components.
                     </FlareText>
-                </div>
+                </FlareStack>
             </FlareDocumentTab>
             <FlareDocumentTab Title="App.razor" Icon="@MaterialDesign3Icons.Regular.Code" Closeable="false">
-                <pre class="ide-demo__code">&lt;FlareThemeProvider&gt;
+                <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                           Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">&lt;FlareThemeProvider&gt;
     &lt;Routes /&gt;
-&lt;/FlareThemeProvider&gt;</pre>
+&lt;/FlareThemeProvider&gt;</FlareText>
             </FlareDocumentTab>
         </FlareDocumentTabs>
     </ChildContent>
 
     <RightToolPanel>
         <FlareToolPanel Title="Properties" Position="ToolPanelPosition.Right" Mode="IdePanelMode.AutoHide">
-            <dl class="ide-demo__props">
-                <dt>Name</dt><dd>Program.cs</dd>
-                <dt>Type</dt><dd>C# Source</dd>
-                <dt>Size</dt><dd>1.2 KB</dd>
-            </dl>
+            <FlareDescriptionList>
+                <FlareDescriptionItem Label="Name">Program.cs</FlareDescriptionItem>
+                <FlareDescriptionItem Label="Type">C# Source</FlareDescriptionItem>
+                <FlareDescriptionItem Label="Size">1.2 KB</FlareDescriptionItem>
+            </FlareDescriptionList>
         </FlareToolPanel>
     </RightToolPanel>
 
@@ -81,18 +85,26 @@ app.Run();</pre>
         <FlareToolPanel Title="Output" Position="ToolPanelPosition.Bottom">
             <FlareTabs>
                 <FlareTab Label="Output">
-                    <pre class="ide-demo__output">Build started...
-Build succeeded. 0 errors, 0 warnings.</pre>
+                    <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                               Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">Build started...
+Build succeeded. 0 errors, 0 warnings.</FlareText>
                 </FlareTab>
                 <FlareTab Label="Error List" Badge="2">
-                    <ul class="ide-demo__errors">
-                        <li><FlareIconView Value="@FlareIcons.Error" Class="ide-demo__err" /> CS0103: The name 'foo' does not exist (Program.cs, 12)</li>
-                        <li><FlareIconView Value="@FlareIcons.Warning" Class="ide-demo__warn" /> CS0168: Variable 'x' is declared but never used (Startup.cs, 8)</li>
-                    </ul>
+                    <FlareStack Gap="FlareSpacing.XXSmall" Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">
+                        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                            <FlareIconView Value="@FlareIcons.Error" Color="FlareColor.Error" />
+                            <FlareText Typo="TypographyScale.BodySmall">CS0103: The name 'foo' does not exist (Program.cs, 12)</FlareText>
+                        </FlareStack>
+                        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                            <FlareIconView Value="@FlareIcons.Warning" Color="FlareColor.Tertiary" />
+                            <FlareText Typo="TypographyScale.BodySmall">CS0168: Variable 'x' is declared but never used (Startup.cs, 8)</FlareText>
+                        </FlareStack>
+                    </FlareStack>
                 </FlareTab>
                 <FlareTab Label="Terminal">
-                    <pre class="ide-demo__output">PS C:\src&gt; dotnet run
-Listening on http://localhost:5000</pre>
+                    <FlareText Element="pre" Typo="TypographyScale.BodySmall" Mono Block
+                               Margin="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">PS C:\src&gt; dotnet run
+Listening on http://localhost:5000</FlareText>
                 </FlareTab>
             </FlareTabs>
         </FlareToolPanel>
@@ -106,23 +118,7 @@ Listening on http://localhost:5000</pre>
         </FlareStatusBar>
     </StatusBar>
 </FlareIdeLayout>
-
-<style>
-    .ide-demo__tree { list-style:none; margin:0; padding:0; font-size:0.85rem; }
-    .ide-demo__tree li { display:flex; align-items:center; gap:0.35rem; padding:0.2rem 0.25rem; cursor:default; }
-    .ide-demo__tree li .flare-icon { font-size:1rem; }
-    .ide-demo__tree-child { padding-left:1.25rem !important; }
-    .ide-demo__code, .ide-demo__output { margin:0; padding:0.5rem; font-family:monospace; font-size:0.8rem; white-space:pre-wrap; }
-    .ide-demo__doc { padding:0.75rem; display:flex; flex-direction:column; gap:0.35rem; }
-    .ide-demo__props { margin:0; font-size:0.8rem; display:grid; grid-template-columns:auto 1fr; gap:0.2rem 0.75rem; }
-    .ide-demo__props dt { color:var(--flare-color-on-surface-variant); }
-    .ide-demo__props dd { margin:0; }
-    .ide-demo__errors { list-style:none; margin:0; padding:0.25rem 0.5rem; font-size:0.8rem; }
-    .ide-demo__errors li { display:flex; align-items:center; gap:0.4rem; padding:0.2rem 0; }
-    .ide-demo__errors .flare-icon { font-size:1rem; }
-    .ide-demo__err { color:var(--flare-color-error); }
-    .ide-demo__warn { color:var(--flare-color-tertiary); }
-</style>
+</FlareCard>
 
 @code {
     private string _status = "Ready";

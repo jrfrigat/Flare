@@ -1,7 +1,7 @@
 @* The transfer is the application's, not Flare's: Uploader is a delegate, so anything you can write with
    an HttpClient works - including a presigned PUT or a token that refreshes mid-upload. This demo fakes
    the wire so the page needs no server, and reports progress exactly as a real transfer would. *@
-<FlareStack Style="max-width:36rem;">
+<FlareStack MaxWidth="36rem">
     <FlareFileUploadZone Uploader="FakeTransfer"
                          ShowFileList="true"
                          Auto="true"
@@ -10,14 +10,14 @@
                          OnUploadCompleted="@(f => Log(string.Format(GalleryStrings.FuDemo_Completed, f.File.Name)))"
                          OnUploadFailed="@(f => Log(string.Format(GalleryStrings.FuDemo_Failed, f.File.Name, f.Error)))" />
 
-    <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-top:0.75rem;">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
         <FlareCheckbox @bind-Value="_failNext" Label="@GalleryStrings.FuDemo_FailNext" />
         <FlareCheckbox @bind-Value="_slow" Label="@GalleryStrings.FuDemo_Slow" />
     </FlareStack>
 
     @if (_log.Count > 0)
     {
-        <FlareStack Gap="FlareSpacing.XSmall" Style="margin-top:0.75rem;">
+        <FlareStack Gap="FlareSpacing.XSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
             @foreach (var line in _log)
             {
                 <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@line</FlareText>

@@ -5,7 +5,7 @@
             <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Popover_HoverAnchor</FlareButton>
         </AnchorContent>
         <ChildContent>
-            <FlareStack Gap="FlareSpacing.XSmall" Style="padding:0.75rem 1rem;max-width:16rem;">
+            <FlareStack Gap="FlareSpacing.XSmall" Padding="FlareSpacing.Custom" PaddingValue="0.75rem 1rem" MaxWidth="16rem">
                 <FlareText Typo="TypographyScale.BodySmall">@GalleryStrings.Popover_Subtitle</FlareText>
             </FlareStack>
         </ChildContent>
@@ -15,12 +15,14 @@
        the anchor, so the button must not toggle again on its own. *@
     <FlarePopover @bind-Open="_width" Trigger="PopoverTrigger.Click" MatchAnchorWidth="true" Placement="Placement.BottomStart">
         <AnchorContent>
-            <FlareButton Variant="ButtonVariant.Filled" Style="min-width:16rem;">@GalleryStrings.Popover_WidthAnchor</FlareButton>
+            <FlareStack MinWidth="16rem">
+                <FlareButton Variant="ButtonVariant.Filled">@GalleryStrings.Popover_WidthAnchor</FlareButton>
+            </FlareStack>
         </AnchorContent>
         <ChildContent>
-            <FlareStack Gap="FlareSpacing.None" Style="padding:0.5rem;">
-                <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.5rem;">@GalleryStrings.Menu_ScrollItem 1</FlareText>
-                <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.5rem;">@GalleryStrings.Menu_ScrollItem 2</FlareText>
+            <FlareStack Gap="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">
+                <FlareText Typo="TypographyScale.BodySmall" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">@GalleryStrings.Menu_ScrollItem 1</FlareText>
+                <FlareText Typo="TypographyScale.BodySmall" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">@GalleryStrings.Menu_ScrollItem 2</FlareText>
             </FlareStack>
         </ChildContent>
     </FlarePopover>
@@ -31,10 +33,10 @@
             <FlareButton Variant="ButtonVariant.Tonal">@GalleryStrings.Popover_ScrollAnchor</FlareButton>
         </AnchorContent>
         <ChildContent>
-            <FlareStack Gap="FlareSpacing.None" Style="padding:0.5rem;">
+            <FlareStack Gap="FlareSpacing.None" Padding="FlareSpacing.Custom" PaddingValue="0.5rem">
                 @for (var i = 1; i <= 15; i++)
                 {
-                    <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.4rem 0.75rem;">@GalleryStrings.Menu_ScrollItem @i</FlareText>
+                    <FlareText Typo="TypographyScale.BodySmall" Padding="FlareSpacing.Custom" PaddingValue="0.4rem 0.75rem">@GalleryStrings.Menu_ScrollItem @i</FlareText>
                 }
             </FlareStack>
         </ChildContent>

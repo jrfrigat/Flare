@@ -20,49 +20,126 @@
         else
         {
             @* --- Typed usage: component manages thead, grouped tbody, and tfoot --- *@
-            <thead class="@Css.Classes.Table.THead">
-                @HeaderContent
-            </thead>
+            @if (Columns is not null)
+            {
+                <thead class="@Css.Classes.Table.THead">
+                    <tr>
+                        @foreach (var column in Columns)
+                        {
+                            <th>@column.Header</th>
+                        }
+                    </tr>
+                </thead>
 
-            @if (GroupBy is null)
-            {
-                <tbody>
-                    @foreach (var item in Items)
-                    {
-                        @RowTemplate?.Invoke(item)
-                    }
-                </tbody>
-            }
-            else
-            {
-                @foreach (var group in Items.GroupBy(GroupBy))
+                @if (GroupBy is null)
                 {
                     <tbody>
-                        <tr class="@Css.Classes.Table.GroupRow @(_collapsedGroups.Contains(group.Key) ? Css.Classes.Table.GroupRowCollapsed : "")"
-                            @onclick="() => ToggleGroup(group.Key)">
-                            <td colspan="@ColSpan">
-                                <span class="@Css.Classes.Table.GroupChevron">
-                                    @(_collapsedGroups.Contains(group.Key) ? "▶" : "▼")
-                                </span>
-                                @group.Key
-                            </td>
-                        </tr>
-                        @if (!_collapsedGroups.Contains(group.Key))
+                        @foreach (var item in Items)
                         {
-                            @foreach (var item in group)
-                            {
-                                @RowTemplate?.Invoke(item)
-                            }
+                            <tr>
+                                @foreach (var column in Columns)
+                                {
+                                    <td>@RenderCell(item, column)</td>
+                                }
+                            </tr>
                         }
                     </tbody>
                 }
-            }
+                else
+                {
+                    @foreach (var group in Items.GroupBy(GroupBy))
+                    {
+                        <tbody>
+                            <tr class="@Css.Classes.Table.GroupRow @(_collapsedGroups.Contains(group.Key) ? Css.Classes.Table.GroupRowCollapsed : "")"
+                                @onclick="() => ToggleGroup(group.Key)">
+                                <td colspan="@ColSpan">
+                                    <span class="@Css.Classes.Table.GroupChevron">
+                                        @(_collapsedGroups.Contains(group.Key) ? "▶" : "▼")
+                                    </span>
+                                    @group.Key
+                                </td>
+                            </tr>
+                            @if (!_collapsedGroups.Contains(group.Key))
+                            {
+                                @foreach (var item in group)
+                                {
+                                    <tr>
+                                        @foreach (var column in Columns)
+                                        {
+                                            <td>@RenderCell(item, column)</td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    }
+                }
 
-            @if (ShowFooter)
+                @if (ShowFooter)
+                {
+                    <tfoot class="@Css.Classes.Table.TFoot">
+                        @if (FooterCells is not null)
+                        {
+                            <tr>
+                                @foreach (var cell in FooterCells(Items))
+                                {
+                                    <td>@cell</td>
+                                }
+                            </tr>
+                        }
+                        else
+                        {
+                            @FooterContent?.Invoke(Items)
+                        }
+                    </tfoot>
+                }
+            }
+            else
             {
-                <tfoot class="@Css.Classes.Table.TFoot">
-                    @FooterContent?.Invoke(Items)
-                </tfoot>
+                <thead class="@Css.Classes.Table.THead">
+                    @HeaderContent
+                </thead>
+
+                @if (GroupBy is null)
+                {
+                    <tbody>
+                        @foreach (var item in Items)
+                        {
+                            @RowTemplate?.Invoke(item)
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    @foreach (var group in Items.GroupBy(GroupBy))
+                    {
+                        <tbody>
+                            <tr class="@Css.Classes.Table.GroupRow @(_collapsedGroups.Contains(group.Key) ? Css.Classes.Table.GroupRowCollapsed : "")"
+                                @onclick="() => ToggleGroup(group.Key)">
+                                <td colspan="@ColSpan">
+                                    <span class="@Css.Classes.Table.GroupChevron">
+                                        @(_collapsedGroups.Contains(group.Key) ? "▶" : "▼")
+                                    </span>
+                                    @group.Key
+                                </td>
+                            </tr>
+                            @if (!_collapsedGroups.Contains(group.Key))
+                            {
+                                @foreach (var item in group)
+                                {
+                                    @RowTemplate?.Invoke(item)
+                                }
+                            }
+                        </tbody>
+                    }
+                }
+
+                @if (ShowFooter)
+                {
+                    <tfoot class="@Css.Classes.Table.TFoot">
+                        @FooterContent?.Invoke(Items)
+                    </tfoot>
+                }
             }
         }
     </table>
@@ -89,6 +166,20 @@
 
     /// <summary>Renders a single data row for each item.</summary>
     [Parameter] public RenderFragment<TItem>? RowTemplate { get; set; }
+
+    /// <summary>
+    /// Describes the table by columns instead of raw <c>thead</c>/<c>tr</c>/<c>td</c> markup. When set
+    /// together with <see cref="Items"/>, the component renders the header and every body row itself;
+    /// <see cref="HeaderContent"/> and <see cref="RowTemplate"/> are then ignored. This is the path a
+    /// page uses when it has no business writing table markup.
+    /// </summary>
+    [Parameter] public IReadOnlyList<FlareTableColumn<TItem>>? Columns { get; set; }
+
+    /// <summary>
+    /// Footer cells for the column path, computed from all items - a total or a count under each
+    /// column. Null falls back to <see cref="FooterContent"/>; the two are not combined.
+    /// </summary>
+    [Parameter] public Func<IEnumerable<TItem>, IReadOnlyList<RenderFragment>>? FooterCells { get; set; }
 
     /// <summary>Renders the footer row(s) inside &lt;tfoot&gt; receiving all items.</summary>
     [Parameter] public RenderFragment<IEnumerable<TItem>>? FooterContent { get; set; }
@@ -134,5 +225,11 @@
         if (!_collapsedGroups.Remove(key))
             _collapsedGroups.Add(key);
     }
+
+    // A column's custom content wins; otherwise its field is rendered as culture-formatted text.
+    private static RenderFragment RenderCell(TItem item, FlareTableColumn<TItem> column) =>
+        column.Cell is not null
+            ? column.Cell(item)
+            : builder => builder.AddContent(0, column.Field?.Invoke(item)?.ToString());
 
 }

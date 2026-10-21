@@ -6,60 +6,64 @@
    the pattern at the viewport it is designed for, not at whatever width this page happens to leave
    over. Letting it shrink instead squeezed the detail pane to one character per line, which shows
    nothing about a tablet. So the frame keeps its width and the surrounding strip scrolls. *@
-<div style="overflow-x:auto;max-width:100%;">
-<FlareCard Variant="CardVariant.Outlined"
-           Style="width:768px;height:460px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
+<FlareStack Overflow="auto" MaxWidth="100%">
+    <FlareCard Variant="CardVariant.Outlined"
+               Width="768px" Height="460px" Padding="FlareSpacing.Custom" PaddingValue="0" Overflow="hidden">
 
-    <FlareAppBar Sticky="false">
-        <Leading>
-            <FlareIconButton Icon="@FlareIcons.Menu"
-                             Variant="ButtonVariant.Text"
-                             AriaLabel="@GalleryStrings.MobileShells_ToggleDrawer"
-                             OnClick="@(() => _drawerOpen = !_drawerOpen)" />
-        </Leading>
-        <TitleContent>
-            <FlareText Typo="TypographyScale.TitleMedium">@_folder</FlareText>
-        </TitleContent>
-    </FlareAppBar>
+        <FlareStack Height="100%" Gap="FlareSpacing.None">
+            <FlareAppBar Sticky="false">
+                <Leading>
+                    <FlareIconButton Icon="@FlareIcons.Menu"
+                                     Variant="ButtonVariant.Text"
+                                     AriaLabel="@GalleryStrings.MobileShells_ToggleDrawer"
+                                     OnClick="@(() => _drawerOpen = !_drawerOpen)" />
+                </Leading>
+                <TitleContent>
+                    <FlareText Typo="TypographyScale.TitleMedium">@_folder</FlareText>
+                </TitleContent>
+            </FlareAppBar>
 
-    <div style="flex:1;display:flex;min-height:0;">
-        <FlareDrawer Variant="DrawerVariant.Persistent" Open="_drawerOpen" Width="180px"
-                     AriaLabel="@GalleryStrings.MobileShells_Folders">
-            <FlareNavMenu AriaLabel="@GalleryStrings.MobileShells_Folders">
-                @foreach (var folder in _folders)
-                {
-                    <FlareNavLink Active="@(folder == _folder)" OnClick="@(() => _folder = folder)">
-                        @folder
-                    </FlareNavLink>
-                }
-            </FlareNavMenu>
-        </FlareDrawer>
+            <FlareStack Row Align="FlareAlignItems.Stretch" FlexGrow="1" MinHeight="0" Gap="FlareSpacing.None">
+                <FlareDrawer Variant="DrawerVariant.Persistent" Open="_drawerOpen" Width="180px"
+                             AriaLabel="@GalleryStrings.MobileShells_Folders">
+                    <FlareNavMenu AriaLabel="@GalleryStrings.MobileShells_Folders">
+                        @foreach (var folder in _folders)
+                        {
+                            <FlareNavLink Active="@(folder == _folder)" OnClick="@(() => _folder = folder)">
+                                @folder
+                            </FlareNavLink>
+                        }
+                    </FlareNavMenu>
+                </FlareDrawer>
 
-        @* Two panes side by side: the list keeps its selection visible while the detail is read, which is
-           exactly what the phone shell cannot do and why it drills down instead. *@
-        <div style="width:220px;flex:none;overflow:auto;border-inline-end:var(--flare-border-divider);">
-            <FlareList TItem="object">
-                @foreach (var msg in DrillDownShellDemo.Messages)
-                {
-                    <FlareListItem Primary="@msg.Name"
-                                   Secondary="@msg.Preview"
-                                   Selected="@(msg == _selected)"
-                                   OnClick="@(() => _selected = msg)">
-                        <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
-                    </FlareListItem>
-                }
-            </FlareList>
-        </div>
+                @* Two panes side by side: the list keeps its selection visible while the detail is read, which is
+                   exactly what the phone shell cannot do and why it drills down instead. *@
+                <FlareStack Width="220px" MinWidth="220px" Overflow="auto">
+                    <FlareList TItem="object">
+                        @foreach (var msg in DrillDownShellDemo.Messages)
+                        {
+                            <FlareListItem Primary="@msg.Name"
+                                           Secondary="@msg.Preview"
+                                           Selected="@(msg == _selected)"
+                                           OnClick="@(() => _selected = msg)">
+                                <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
+                            </FlareListItem>
+                        }
+                    </FlareList>
+                </FlareStack>
 
-        <div style="flex:1;overflow:auto;min-width:0;">
-            <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
-                <FlareText Typo="TypographyScale.TitleSmall">@_selected.Name</FlareText>
-                <FlareText Typo="TypographyScale.BodyMedium">@_selected.Body</FlareText>
+                <FlareDivider Vertical />
+
+                <FlareStack FlexGrow="1" Overflow="auto" MinWidth="0">
+                    <FlareStack Gap="FlareSpacing.Medium" Padding="FlareSpacing.Custom" PaddingValue="1rem">
+                        <FlareText Typo="TypographyScale.TitleSmall">@_selected.Name</FlareText>
+                        <FlareText Typo="TypographyScale.BodyMedium">@_selected.Body</FlareText>
+                    </FlareStack>
+                </FlareStack>
             </FlareStack>
-        </div>
-    </div>
-</FlareCard>
-</div>
+        </FlareStack>
+    </FlareCard>
+</FlareStack>
 
 @code {
     private bool _drawerOpen = true;

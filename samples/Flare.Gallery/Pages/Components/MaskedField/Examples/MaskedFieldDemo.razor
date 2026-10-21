@@ -1,4 +1,4 @@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="28rem">
     <FlareMaskedField @bind-Value="_phone" Mask="+# (###) ###-##-##" Label="Phone" Placeholder="Phone number" />
     <FlareMaskedField @bind-Value="_card" Mask="####-####-####-####" Label="Card number" Placeholder="Card number" />
     <FlareMaskedField @bind-Value="_date" Mask="##/##/####" Label="Date" Placeholder="DD/MM/YYYY" />
@@ -6,7 +6,7 @@
     <FlareMaskedField @bind-Value="_ip" Preset="MaskPreset.IpAddress" Label="IP address (preset)" />
     <FlareMaskedField @bind-Value="_ssn" Preset="MaskPreset.Ssn" Label="SSN (preset)" />
 </FlareStack>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
     Phone: @_phone · Card: @_card · Date: @_date · Manual: @_dateManual · IP: @_ip · SSN: @_ssn
 </FlareText>
 

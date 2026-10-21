@@ -13,6 +13,9 @@
     /// anything visible - pass <c>tabindex="-1"</c> through additional attributes.</summary>
     public ValueTask FocusAsync() => _root.FocusAsync();
 
+    /// <summary>The rendered root element, for JS interop that measures or observes the stack.</summary>
+    public ElementReference RootElement => _root;
+
     private ElementReference _root;
     /// <summary>Child content rendered inside the stack.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }

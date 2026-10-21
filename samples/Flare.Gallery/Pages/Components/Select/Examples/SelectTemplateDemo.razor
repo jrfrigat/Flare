@@ -1,16 +1,17 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareSelect TValue="Priority"
-                 @bind-Value="_priority"
-                 Label="Priority"
-                 Placeholder="Choose priority"
-                 Items="_priorities"
-                 ItemLabel="@(p => p.Name)"
-                 Style="max-width:24rem;">
-        <ItemTemplate>
-            <FlareIconView Value="@GalleryIcons.Resolve(context.Icon)" Color="@context.Color" />
-            <span>@context.Name</span>
-        </ItemTemplate>
-    </FlareSelect>
+    <FlareStack MaxWidth="24rem">
+        <FlareSelect TValue="Priority"
+                     @bind-Value="_priority"
+                     Label="Priority"
+                     Placeholder="Choose priority"
+                     Items="_priorities"
+                     ItemLabel="@(p => p.Name)">
+            <ItemTemplate>
+                <FlareIconView Value="@GalleryIcons.Resolve(context.Icon)" Color="@context.Color" />
+                <FlareText Element="span" Inherit>@context.Name</FlareText>
+            </ItemTemplate>
+        </FlareSelect>
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         Selected: @(_priority?.Name ?? "—")
     </FlareText>

@@ -1,14 +1,14 @@
-<div style="height:420px;overflow:hidden;border-radius:var(--flare-shape-medium);">
+<FlareCard Variant="CardVariant.Outlined" Height="420px" Padding="FlareSpacing.None">
     <FlareLayout>
         <FlareLayoutAppBar DrawerToggle="true">
             <FlareText Typo="TypographyScale.TitleLarge">My App</FlareText>
-            <FlareStack Row Wrap Style="flex:1;" />
+            <FlareStack Row Wrap FlexGrow="1" />
             <FlareAvatar FallbackIcon="@MaterialDesign3Icons.Regular.AccountCircle" Size="AvatarSize.Sm" />
         </FlareLayoutAppBar>
 
         @* The drawer owns its own open state; the app-bar toggle flips it. *@
         <FlareLayoutDrawer @bind-Open="_open" Variant="DrawerVariant.Persistent" Width="14rem">
-            <FlareStack Style="padding:1rem 0.5rem;">
+            <FlareStack Padding="FlareSpacing.Custom" PaddingValue="1rem 0.5rem">
                 <FlareNavMenu>
                     <FlareNavLink Href="#" Match="NavMatchMode.Exact">
                         <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Dashboard" /></IconContent>
@@ -27,7 +27,7 @@
         </FlareLayoutDrawer>
 
         <FlareLayoutContent>
-            <FlareText Typo="TypographyScale.HeadlineSmall" Style="margin-bottom:1rem;">Dashboard</FlareText>
+            <FlareText Typo="TypographyScale.HeadlineSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">Dashboard</FlareText>
             <FlareGrid Columns="3" Gap="FlareSpacing.Small">
                 <FlareCol Span="1">
                     <FlareCard>
@@ -50,7 +50,7 @@
             </FlareGrid>
         </FlareLayoutContent>
     </FlareLayout>
-</div>
+</FlareCard>
 
 @code {
     private bool _open = true;

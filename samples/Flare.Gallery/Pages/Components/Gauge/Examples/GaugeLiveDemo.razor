@@ -5,7 +5,7 @@
    reduced-motion preference switches it off without the page knowing. *@
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareStack Row Wrap Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
-        <FlareStack Style="width:14rem;">
+        <FlareStack Width="14rem">
             <FlareGauge Shape="GaugeShape.Radial" Value="@_load" Label="@GalleryStrings.Gauge_Load"
                         Format="N0" TickInterval="25" MinorTickInterval="5">
                 <FlareZone Start="0" End="60" Color="FlareColor.Success" Label="@GalleryStrings.Gauge_Healthy" />
@@ -16,7 +16,7 @@
 
         @* Target: the second reading a dashboard almost always needs, drawn as a marker across the track
            rather than a second needle - a gauge answers one question. *@
-        <FlareStack Style="width:14rem;">
+        <FlareStack Width="14rem">
             <FlareGauge Shape="GaugeShape.Arc" Value="@_throughput" Target="900" Max="1200"
                         Label="@GalleryStrings.Gauge_Throughput" Format="N0" ShowScaleLabels="true"
                         TickInterval="400" />

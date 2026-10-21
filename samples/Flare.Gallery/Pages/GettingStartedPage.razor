@@ -23,17 +23,19 @@
 @* -- 1. Installation --------------------------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Download" Title="@GalleryStrings.GettingStarted_Installation" AnchorId="installation" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_Installation_NuGetDesc
     </FlareText>
     <FlareCodeBlock Value="@_installCode" Language="bash" />
-    <FlareAlert Severity="AlertSeverity.Info" Style="margin-top:1rem;">@GalleryStrings.GettingStarted_Installation_Alert</FlareAlert>
+    <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1rem">
+        <FlareAlert Severity="AlertSeverity.Info">@GalleryStrings.GettingStarted_Installation_Alert</FlareAlert>
+    </FlareStack>
 </FlareSection>
 
 @* -- 2. DI setup ------------------------------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Settings" Title="@GalleryStrings.GettingStarted_DiSetup" AnchorId="di-setup" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_DiSetupDesc
     </FlareText>
     <FlareCodeBlock Value="@_diSetupCode" Language="csharp" />
@@ -42,7 +44,7 @@
 @* -- 3. Wiring up the styles ------------------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Style" Title="@GalleryStrings.GettingStarted_Styles" AnchorId="styles" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_StylesDesc
     </FlareText>
     <FlareCodeBlock Value="@_stylesCode" Language="html" />
@@ -51,7 +53,7 @@
 @* -- 4. Wrap with the theme provider ----------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Palette" Title="@GalleryStrings.GettingStarted_ThemeProvider" AnchorId="theme-provider" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_ThemeProviderDesc
     </FlareText>
     <FlareCodeBlock Value="@_themeProviderCode" Language="razor" />
@@ -66,11 +68,11 @@
 @* -- 6. First component (live) ----------------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.PlayArrow" Title="@GalleryStrings.GettingStarted_FirstComponent" AnchorId="first-component" />
-    <FlareCard Style="margin-bottom:1rem;">
+    <FlareCard MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
         <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
             <FlareText Typo="TypographyScale.HeadlineMedium">Hello, Flare!</FlareText>
             <FlareText Typo="TypographyScale.BodyMedium">
-                @GalleryStrings.GettingStarted_FirstComponent_Current: <strong>@ThemeService.CurrentTheme.DisplayName</strong>
+                @GalleryStrings.GettingStarted_FirstComponent_Current: <FlareText Element="strong" Inherit>@ThemeService.CurrentTheme.DisplayName</FlareText>
             </FlareText>
             <FlareButton OnClick="SwitchTheme" Variant="ButtonVariant.Filled">@GalleryStrings.GettingStarted_FirstComponent_SwitchTheme</FlareButton>
         </FlareStack>
@@ -81,7 +83,7 @@
 @* -- 7. Theme switcher (live) ------------------------------------------------ *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Contrast" Title="@GalleryStrings.GettingStarted_ThemeSwitcher" AnchorId="theme-switcher" />
-    <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
         @foreach (var theme in ThemeService.Themes)
         {
             var id = theme.Id;
@@ -97,7 +99,7 @@
 @* -- 8. Form validation ------------------------------------------------------ *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.FactCheck" Title="@GalleryStrings.GettingStarted_FormValidation" AnchorId="form-validation" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_FormValidationDesc
     </FlareText>
     <FlareCodeBlock Value="@_formValidationCode" Language="razor" />
@@ -106,7 +108,7 @@
 @* -- 9. Dialog and Snackbar -------------------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Notifications" Title="@GalleryStrings.GettingStarted_DialogSnackbar" AnchorId="dialog-snackbar" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_DialogSnackbarDesc
     </FlareText>
     <FlareCodeBlock Value="@_dialogSnackbarCode" Language="razor" />
@@ -115,7 +117,7 @@
 @* -- 10. Docker -------------------------------------------------------------- *@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.DeployedCode" Title="@GalleryStrings.GettingStarted_Docker" AnchorId="docker" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
         @GalleryStrings.GettingStarted_DockerDesc
     </FlareText>
     <FlareCodeBlock Value="@_dockerCode" Language="bash" />

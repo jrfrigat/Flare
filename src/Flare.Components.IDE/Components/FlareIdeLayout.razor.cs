@@ -18,6 +18,11 @@ public partial class FlareIdeLayout : FlareComponentBase
     /// <summary>Top ribbon area rendered above the menu bar.</summary>
     [Parameter] public RenderFragment? Ribbon { get; set; }
 
+    /// <summary>Height of the layout frame as a CSS length (e.g. <c>"520px"</c> or <c>"100%"</c>).
+    /// Null keeps the layout filling the viewport (<c>100vh</c>). Use it when the IDE is one panel of
+    /// a larger page instead of the whole screen.</summary>
+    [Parameter] public string? Height { get; set; }
+
     /// <summary>Menu bar rendered below the ribbon.</summary>
     [Parameter] public RenderFragment? MenuBar { get; set; }
 
@@ -294,7 +299,8 @@ public partial class FlareIdeLayout : FlareComponentBase
 
     private string _rootStyle =>
         $"{Css.Tokens.Ide.Layout.LeftWidth}:{EffectiveLeftWidth};{Css.Tokens.Ide.Layout.RightWidth}:{EffectiveRightWidth};" +
-        $"{Css.Tokens.Ide.Layout.BottomHeight}:{EffectiveBottomHeight};{Css.Tokens.Ide.Layout.Rail}:{RailSize};{Style}";
+        $"{Css.Tokens.Ide.Layout.BottomHeight}:{EffectiveBottomHeight};{Css.Tokens.Ide.Layout.Rail}:{RailSize};" +
+        (string.IsNullOrWhiteSpace(Height) ? string.Empty : $"height:{Height};") + Style;
 
     private string PanelClass(ToolPanelPosition position, string sideClass)
     {

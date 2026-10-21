@@ -5,12 +5,14 @@
     </FlareButton>
 
     <FlareCollapse @bind-Expanded="_open">
-        <FlarePaper Elevation="1" Style="padding:1rem;max-width:28rem;">
-            <FlareText Typo="TypographyScale.BodyMedium">
-                This region expands and collapses with a smooth height animation. It is driven entirely
-                by the Expanded flag, so any button, switch or keyboard shortcut can control it.
-            </FlareText>
-        </FlarePaper>
+        <FlareStack MaxWidth="28rem">
+            <FlarePaper Elevation="1" Padding="FlareSpacing.Medium">
+                <FlareText Typo="TypographyScale.BodyMedium">
+                    This region expands and collapses with a smooth height animation. It is driven entirely
+                    by the Expanded flag, so any button, switch or keyboard shortcut can control it.
+                </FlareText>
+            </FlarePaper>
+        </FlareStack>
     </FlareCollapse>
 </FlareStack>
 

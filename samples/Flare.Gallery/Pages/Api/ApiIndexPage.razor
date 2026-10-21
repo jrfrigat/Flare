@@ -10,26 +10,26 @@
 </GalleryPageTitle>
 
 <FlareStack Gap="FlareSpacing.Large">
-    <FlareField TValue="string" @bind-Value="_filter" Placeholder="@GalleryStrings.Api_FilterPlaceholder" Clearable="true" Style="max-width:24rem;">
-        <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Search" /></LeadingIcon>
-    </FlareField>
+    <FlareStack MaxWidth="24rem">
+        <FlareField TValue="string" @bind-Value="_filter" Placeholder="@GalleryStrings.Api_FilterPlaceholder" Clearable="true">
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Search" /></LeadingIcon>
+        </FlareField>
+    </FlareStack>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:0.75rem;">
+    <FlareGrid MinColumnWidth="16rem" Gap="FlareSpacing.Custom" GapValue="0.75rem">
         @foreach (var c in Filtered)
         {
-            <a href="@($"api/{c.Name}")" style="text-decoration:none;color:inherit;">
-                <FlareCard Variant="CardVariant.Outlined">
-                    <FlareStack Gap="FlareSpacing.XXSmall">
-                        <FlareText Typo="TypographyScale.TitleMedium" Color="@Colors.Primary">@c.Name</FlareText>
-                        @if (!string.IsNullOrWhiteSpace(c.Summary))
-                        {
-                            <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@c.Summary</FlareText>
-                        }
-                    </FlareStack>
-                </FlareCard>
-            </a>
+            <FlareCard Variant="CardVariant.Outlined" Href="@($"api/{c.Name}")">
+                <FlareStack Gap="FlareSpacing.XXSmall">
+                    <FlareText Typo="TypographyScale.TitleMedium" Color="@Colors.Primary">@c.Name</FlareText>
+                    @if (!string.IsNullOrWhiteSpace(c.Summary))
+                    {
+                        <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@c.Summary</FlareText>
+                    }
+                </FlareStack>
+            </FlareCard>
         }
-    </div>
+    </FlareGrid>
 </FlareStack>
 
 @code {

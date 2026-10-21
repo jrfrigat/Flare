@@ -5,42 +5,48 @@
 @implements IAsyncDisposable
 
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlarePaper Elevation="1" Style="padding:1rem;">
+    <FlarePaper Elevation="1" Padding="FlareSpacing.Custom" PaddingValue="1rem">
         <FlareStack Gap="FlareSpacing.Small">
             <FlareText Typo="TypographyScale.TitleSmall">
-                @GalleryStrings.Responsive_ViewportSize <strong>@_size.Width &times; @_size.Height px</strong>
+                @GalleryStrings.Responsive_ViewportSize <FlareText Element="strong" Inherit>@_size.Width &times; @_size.Height px</FlareText>
             </FlareText>
-            <FlareText>@GalleryStrings.Responsive_CurrentBp <strong>@_bp</strong></FlareText>
+            <FlareText>@GalleryStrings.Responsive_CurrentBp <FlareText Element="strong" Inherit>@_bp</FlareText></FlareText>
             <FlareText>
                 @GalleryStrings.Responsive_ViewportOrientation
-                <strong>@(_size.IsPortrait ? GalleryStrings.Responsive_Portrait : GalleryStrings.Responsive_Landscape)</strong>
+                <FlareText Element="strong" Inherit>@(_size.IsPortrait ? GalleryStrings.Responsive_Portrait : GalleryStrings.Responsive_Landscape)</FlareText>
             </FlareText>
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
-                @GalleryStrings.Responsive_PortraitQuery <strong>@_portrait</strong>
+                @GalleryStrings.Responsive_PortraitQuery <FlareText Element="strong" Inherit>@_portrait</FlareText>
             </FlareText>
         </FlareStack>
     </FlarePaper>
 
-    <div>
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.5rem;">
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">
             @GalleryStrings.Responsive_ElementObserverDesc
         </FlareText>
-        <div @ref="_box"
-             style="resize:both;overflow:auto;min-width:160px;min-height:96px;max-width:100%;padding:1rem;box-sizing:border-box;border:1px solid var(--flare-color-outline);border-radius:var(--flare-shape-medium);background:var(--flare-color-surface-container-high);color:var(--flare-color-on-surface);">
-            <strong>@GalleryStrings.Responsive_ElementSize</strong> @_boxWidth &times; @_boxHeight px
-        </div>
-    </div>
+        <FlareSlider @bind-Value="_targetWidth" Min="160" Max="480" Step="10"
+                     AriaLabel="@GalleryStrings.Responsive_ElementSize" />
+        <FlareCard @ref="_box" Variant="CardVariant.Outlined" Background="@BoxSurface"
+                   Width="@($"{_targetWidth:F0}px")" MinHeight="96px"
+                   Padding="FlareSpacing.Custom" PaddingValue="1rem">
+            <FlareText Element="strong" Inherit>@GalleryStrings.Responsive_ElementSize</FlareText> @_boxWidth &times; @_boxHeight px
+        </FlareCard>
+    </FlareStack>
 </FlareStack>
 
 @code {
     private ViewportSize _size;
     private Breakpoint _bp = Breakpoint.Md;
     private bool _portrait;
-    private ElementReference _box;
+    private FlareCard? _box;
+    private double _targetWidth = 240;
     private int _boxWidth;
     private int _boxHeight;
     private IAsyncDisposable? _viewportSub;
     private IAsyncDisposable? _elementSub;
+
+    private static readonly FlareColor BoxSurface = FlareColor.Custom("var(--flare-color-surface-container-high)");
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -48,7 +54,7 @@
         try
         {
             _viewportSub = await Viewport.SubscribeAsync(OnViewportAsync);
-            _elementSub = await Viewport.ObserveElementAsync(_box, OnElementAsync);
+            _elementSub = await Viewport.ObserveElementAsync(_box!.RootElement, OnElementAsync);
             _portrait = await Viewport.MatchesAsync("(orientation: portrait)");
             StateHasChanged();
         }

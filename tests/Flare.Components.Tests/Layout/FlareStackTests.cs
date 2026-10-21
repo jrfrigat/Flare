@@ -36,4 +36,12 @@ public class FlareStackTests : FlareTestContext
         Assert.Contains(JSInterop.Invocations, i => i.Identifier == "Blazor._internal.domWrapper.focus");
         Assert.Equal("-1", cut.Find($".{Css.Classes.Stack.Root}").GetAttribute("tabindex"));
     }
+
+    [Fact]
+    public void RootElement_ExposesTheRenderedElement()
+    {
+        var cut = Render<FlareStack>();
+
+        Assert.False(string.IsNullOrEmpty(cut.Instance.RootElement.Id));
+    }
 }

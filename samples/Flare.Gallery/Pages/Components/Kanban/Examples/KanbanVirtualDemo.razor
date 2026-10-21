@@ -1,6 +1,8 @@
 @* Virtual renders only the cards in view; the board's own height bounds the columns. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <FlareKanban Columns="_columns" @bind-Cards="_cards" Virtual="true" Style="height:420px;" />
+    <FlareStack Height="420px">
+        <FlareKanban Columns="_columns" @bind-Cards="_cards" Virtual="true" Class="@Css.Classes.Fill.Root" />
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
         @string.Format(GalleryStrings.Kanban_Virtual_Hint, _cards.Count)
     </FlareText>

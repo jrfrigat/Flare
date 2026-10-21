@@ -3,7 +3,7 @@
    viewport - is narrower than the given tier, which is the "row on desktop, stacked on a phone" case. *@
 <FlareStack Gap="FlareSpacing.Large">
     <FlareStack Row Wrap Gap="FlareSpacing.Medium">
-        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+        <FlareCard Variant="CardVariant.Outlined" FlexGrow="1" MinWidth="16rem">
             <FlareCardHeader Title="Align" Subtitle="End" />
             <FlareCardActions Align="CardActionsAlign.End">
                 <FlareButton Variant="ButtonVariant.Text">Cancel</FlareButton>
@@ -11,7 +11,7 @@
             </FlareCardActions>
         </FlareCard>
 
-        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+        <FlareCard Variant="CardVariant.Outlined" FlexGrow="1" MinWidth="16rem">
             <FlareCardHeader Title="FullWidth" Subtitle="Equal shares of the row" />
             <FlareCardActions FullWidth>
                 <FlareButton Variant="ButtonVariant.Outlined">Later</FlareButton>
@@ -21,7 +21,7 @@
     </FlareStack>
 
     <FlareStack Row Wrap Gap="FlareSpacing.Medium">
-        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+        <FlareCard Variant="CardVariant.Outlined" FlexGrow="1" MinWidth="16rem">
             <FlareCardHeader Title="Vertical" Subtitle="Stacked, full width" />
             <FlareCardActions Vertical FullWidth Gap="FlareSpacing.XSmall">
                 <FlareButton Variant="ButtonVariant.Filled">Add to the recipe</FlareButton>
@@ -30,7 +30,7 @@
         </FlareCard>
 
         @* Narrow on purpose: the same markup as the card beside it, stacked by the container query. *@
-        <FlareCard Variant="CardVariant.Outlined" Style="width:17rem;">
+        <FlareCard Variant="CardVariant.Outlined" Width="17rem">
             <FlareCardHeader Title="StackBelow=Compact" Subtitle="This card is narrow" />
             <FlareCardActions StackBelow="CardActionsStack.Compact">
                 <FlareButton Variant="ButtonVariant.Text">Discard the draft</FlareButton>
@@ -38,7 +38,7 @@
             </FlareCardActions>
         </FlareCard>
 
-        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:min(34rem, 100%);">
+        <FlareCard Variant="CardVariant.Outlined" FlexGrow="1" MinWidth="min(34rem, 100%)">
             <FlareCardHeader Title="StackBelow=Compact" Subtitle="This card is wide, so it stays a row" />
             <FlareCardActions StackBelow="CardActionsStack.Compact">
                 <FlareButton Variant="ButtonVariant.Text">Discard the draft</FlareButton>

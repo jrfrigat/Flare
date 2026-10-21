@@ -1,10 +1,10 @@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="28rem">
     <FlareSlider @bind-Value="_volume" MouseWheel="true" Label="Volume" Min="0" Max="100" Step="5"
                  StartIcon="@MaterialDesign3Icons.Regular.VolumeMute" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp" ShowValue="true" />
     <FlareSlider @bind-Value="_low" @bind-ValueEnd="_high" MouseWheel="true" Range="true"
                  Label="Range (wheel = low, Ctrl+wheel = high)" Min="0" Max="100" Step="5" ShowValue="true" />
 </FlareStack>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     Hover and turn the wheel; hold Ctrl to move the high handle. Volume: @_volume | Range: @_low - @_high
 </FlareText>
 

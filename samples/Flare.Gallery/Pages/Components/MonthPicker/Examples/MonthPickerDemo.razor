@@ -1,8 +1,8 @@
 @using System.Globalization
 @inherits LocalizedPage
 
-<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:48rem;">
-    <FlareStack Gap="FlareSpacing.Large" Style="flex:1;min-width:16rem;">
+<FlareStack Row Wrap Gap="FlareSpacing.Large" MaxWidth="48rem">
+    <FlareStack Gap="FlareSpacing.Large" FlexGrow="1" MinWidth="16rem">
         <FlareMonthPicker @bind-Value="_period" Label="@GalleryStrings.MpDemo_PeriodLabel"
                           HelperText="@GalleryStrings.MpDemo_PeriodHelper" />
         <FlareMonthPicker @bind-Value="_expiry" Label="@GalleryStrings.MpDemo_ExpiryLabel"
@@ -11,9 +11,10 @@
             @string.Format(GalleryStrings.MpDemo_Value, _period?.ToString("yyyy-MM-dd") ?? "-")
         </FlareText>
     </FlareStack>
-    <FlareMonthPicker @bind-Value="_persian" Label="@GalleryStrings.MpDemo_PersianLabel"
-                      HelperText="@GalleryStrings.MpDemo_PersianHelper" Culture="_fa" Inline="true"
-                      Style="flex:1;min-width:16rem;" />
+    <FlareStack FlexGrow="1" MinWidth="16rem">
+        <FlareMonthPicker @bind-Value="_persian" Label="@GalleryStrings.MpDemo_PersianLabel"
+                          HelperText="@GalleryStrings.MpDemo_PersianHelper" Culture="_fa" Inline="true" />
+    </FlareStack>
 </FlareStack>
 
 @code {

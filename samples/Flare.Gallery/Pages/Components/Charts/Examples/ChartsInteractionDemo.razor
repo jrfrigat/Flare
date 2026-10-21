@@ -2,12 +2,8 @@
 
 <FlareStack Gap="FlareSpacing.Large" data-testid="chart-review-demo">
     <FlareText>@GalleryStrings.ChartsDemo_ReviewHint</FlareText>
-    <FlareSelect TValue="ChartType" @bind-Value="_type" Label="@GalleryStrings.ChartsDemo_Type" data-testid="chart-review-type">
-        @foreach (var type in Enum.GetValues<ChartType>())
-        {
-            <option value="@type">@TypeLabel(type)</option>
-        }
-    </FlareSelect>
+    <FlareSelect TValue="ChartType" @bind-Value="_type" Label="@GalleryStrings.ChartsDemo_Type"
+                 Items="_types" ItemLabel="@TypeLabel" data-testid="chart-review-type" />
     <FlareStack Row Wrap Gap="FlareSpacing.Medium">
         <FlareSwitch @bind-Value="_empty" Label="@GalleryStrings.ChartsDemo_Empty" data-testid="chart-review-empty" />
         <FlareSwitch @bind-Value="_gaps" Label="@GalleryStrings.ChartsDemo_Gaps" data-testid="chart-review-gaps" />
@@ -35,6 +31,8 @@
     private ChartType _type;
     private bool _empty, _gaps, _long, _dialog;
     private int? _selected;
+
+    private static readonly ChartType[] _types = Enum.GetValues<ChartType>();
 
     private RenderFragment ReviewChart => @<FlareChart Type="_type" Data="ReviewData()" Height="280"
         Title="@GalleryStrings.ChartsDemo_ReviewTitle" Description="@GalleryStrings.ChartsDemo_ReviewHint"

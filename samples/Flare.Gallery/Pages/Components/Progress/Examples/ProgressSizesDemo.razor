@@ -22,13 +22,13 @@
         }
     </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Progress_SizeOverride</FlareText>
-    <FlareStack Row Gap="FlareSpacing.Large" Wrap Style="--flare-progress-circular-size-md:calc(6rem + 4px);">
-        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="@_value" data-testid="progress-enlarged" />
-        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Class="@Flare.Css.Classes.Md3e.Progress.Wavy" Value="@_value" data-testid="progress-wave-enlarged" />
-        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" data-testid="progress-spin-enlarged" />
+    <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Value="@_value" Diameter="calc(6rem + 4px)" data-testid="progress-enlarged" />
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Class="@Flare.Css.Classes.Md3e.Progress.Wavy" Value="@_value" Diameter="calc(6rem + 4px)" data-testid="progress-wave-enlarged" />
+        <FlareProgressCircular aria-label="@GalleryStrings.Progress_Loading" Diameter="calc(6rem + 4px)" data-testid="progress-spin-enlarged" />
     </FlareStack>
 
-    <FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
+    <FlareStack Gap="FlareSpacing.Medium" MaxWidth="30rem">
         @foreach (var step in _steps)
         {
             <FlareStack Gap="FlareSpacing.XSmall">

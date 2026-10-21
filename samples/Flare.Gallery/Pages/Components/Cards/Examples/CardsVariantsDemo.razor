@@ -1,15 +1,15 @@
-<div style="display:flex;flex-wrap:wrap;gap:1rem;">
+<FlareGrid MinColumnWidth="12rem" AutoFit="true" Gap="FlareSpacing.Medium">
     @foreach (var v in _variants)
     {
-        <FlareCard Variant="v.Variant" Style="flex:1 1 12rem;min-width:12rem;">
+        <FlareCard Variant="v.Variant" MinWidth="12rem">
             <FlareCardContent>
                 <FlareIconView Size="2rem" Color="FlareColor.Primary" Value="@GalleryIcons.Resolve(v.Icon)" />
-                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-top:0.5rem;">@v.Name</FlareText>
+                <FlareText Typo="TypographyScale.TitleSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">@v.Name</FlareText>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">@v.Description</FlareText>
             </FlareCardContent>
         </FlareCard>
     }
-</div>
+</FlareGrid>
 
 @code {
     private record VariantInfo(CardVariant Variant, string Name, string Icon, string Description);

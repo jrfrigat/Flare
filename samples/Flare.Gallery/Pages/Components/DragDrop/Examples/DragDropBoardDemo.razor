@@ -9,31 +9,34 @@
     <FlareStack Row="true" Gap="FlareSpacing.Medium" Wrap="true" Align="FlareAlignItems.Start">
         @foreach (var column in _order)
         {
-            <FlarePaper Elevation="1" Style="inline-size:13rem;padding:0.75rem">
+            <FlareStack Width="13rem">
+            <FlarePaper Elevation="1" Padding="FlareSpacing.Small">
                 <FlareStack Gap="FlareSpacing.Small">
                     <FlareText Typo="TypographyScale.LabelLarge">@column</FlareText>
+                    <FlareStack MinHeight="5rem">
                     <FlareDropZone Target="@column"
                                    Placement="DropPlacement.Between"
-                                   Accepts="@(_ => column != Archive)"
-                                   Style="min-block-size:5rem;border-radius:var(--flare-shape-small)">
+                                   Accepts="@(_ => column != Archive)">
                         <FlareStack Gap="FlareSpacing.Small">
                             @foreach (var card in _columns[column])
                             {
                                 <FlareDraggable @key="card.Id" Id="@card.Id" Payload="card">
-                                    <FlareCard Variant="CardVariant.Filled" Style="padding:0.5rem 0.75rem">
+                                    <FlareCard Variant="CardVariant.Filled" Padding="FlareSpacing.Custom" PaddingValue="0.5rem 0.75rem">
                                         <FlareText Typo="TypographyScale.BodyMedium">@card.Title</FlareText>
                                     </FlareCard>
                                 </FlareDraggable>
                             }
                         </FlareStack>
                     </FlareDropZone>
+                    </FlareStack>
                 </FlareStack>
             </FlarePaper>
+            </FlareStack>
         }
     </FlareStack>
 </FlareDragContext>
 
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     @_last
 </FlareText>
 

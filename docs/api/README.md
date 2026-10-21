@@ -47,6 +47,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareColorCustomizer`](components/flare-components-flarecolorcustomizer.md)
 - [`FlareColorModeToggle`](components/flare-components-flarecolormodetoggle.md)
 - [`FlareColorPicker`](components/flare-components-flarecolorpicker.md)
+- [`FlareColorScope`](components/flare-components-flarecolorscope.md)
 - [`FlareColumn`](components/flare-components-flarecolumn.md) — One data column of a FlareDataGrid: what to read from a row, how to display and edit it, and which of sorting, filtering, grouping and aggregation it takes part in. Declaring it registers the column with the enclosing grid, band or composite row - the markup is a description, not the cells themselves, which the grid draws.
 - [`FlareColumnBand`](components/flare-components-flarecolumnband.md) — A heading that spans several columns, turning a flat header into a banded one. It draws no cells of its own: nested columns and bands register into it, and the grid reads that tree to lay the header rows out. Bands may nest to any depth.
 - [`FlareColumnBase`](components/flare-components-flarecolumnbase.md) — Shared heading node of a FlareDataGrid: the geometry, identity and pinning every kind of header carries, whether it ends up drawing cells (a column) or only grouping others (a band or a composite row). Declaration order is captured at construction, so the grid can rebuild the header tree in the order the markup states it.

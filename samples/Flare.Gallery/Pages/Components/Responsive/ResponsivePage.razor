@@ -11,23 +11,23 @@
 </GalleryPageTitle>
 
 
-<FlareText Typo="TypographyScale.TitleMedium" Style="margin:1.5rem 0 0.5rem;">@GalleryStrings.Responsive_GridTitle</FlareText>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem">
-    @GalleryStrings.Responsive_GridDescA <code>Xs=12 Sm=6 Md=4 Lg=3</code> @GalleryStrings.Responsive_GridDescB
+<FlareText Typo="TypographyScale.TitleMedium" Margin="FlareSpacing.Custom" MarginValue="1.5rem 0 0.5rem">@GalleryStrings.Responsive_GridTitle</FlareText>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
+    @GalleryStrings.Responsive_GridDescA <FlareCode>Xs=12 Sm=6 Md=4 Lg=3</FlareCode> @GalleryStrings.Responsive_GridDescB
 </FlareText>
 <FlareGrid Columns="12" Gap="FlareSpacing.Medium">
     @for (var i = 1; i <= 8; i++)
     {
         var n = i;
         <FlareCol Xs="12" Sm="6" Md="4" Lg="3">
-            <FlarePaper Elevation="1" Style="padding:1rem;text-align:center;">
-                <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Responsive_Card @n</FlareText>
+            <FlarePaper Elevation="1" Padding="FlareSpacing.Custom" PaddingValue="1rem">
+                <FlareText Typo="TypographyScale.TitleSmall" Align="TextAlign.Center">@GalleryStrings.Responsive_Card @n</FlareText>
             </FlarePaper>
         </FlareCol>
     }
 </FlareGrid>
 
-<FlareText Typo="TypographyScale.TitleMedium" Style="margin:2rem 0 0.5rem;">@GalleryStrings.Responsive_VisibilityTitle</FlareText>
+<FlareText Typo="TypographyScale.TitleMedium" Margin="FlareSpacing.Custom" MarginValue="2rem 0 0.5rem">@GalleryStrings.Responsive_VisibilityTitle</FlareText>
 <FlareStack Gap="FlareSpacing.Small">
     <FlareHidden Below="Breakpoint.Md">
         <FlareAlert Severity="AlertSeverity.Info">@((MarkupString)GalleryStrings.Responsive_VisMdUp)</FlareAlert>
@@ -43,19 +43,19 @@
     </FlareHidden>
 </FlareStack>
 
-<FlareText Typo="TypographyScale.TitleMedium" Style="margin:2rem 0 0.5rem;">@GalleryStrings.Responsive_ViewportTitle</FlareText>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem">
-    <code>IBrowserViewportService</code> @GalleryStrings.Responsive_ViewportDesc
+<FlareText Typo="TypographyScale.TitleMedium" Margin="FlareSpacing.Custom" MarginValue="2rem 0 0.5rem">@GalleryStrings.Responsive_ViewportTitle</FlareText>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
+    <FlareCode>IBrowserViewportService</FlareCode> @GalleryStrings.Responsive_ViewportDesc
 </FlareText>
 <ViewportServiceDemo />
 
-<FlareText Typo="TypographyScale.TitleMedium" Style="margin:2rem 0 0.5rem;">@GalleryStrings.Responsive_MediaQueryTitle</FlareText>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem">
-    <code>FlareMediaQuery</code> @GalleryStrings.Responsive_MediaQueryDesc
+<FlareText Typo="TypographyScale.TitleMedium" Margin="FlareSpacing.Custom" MarginValue="2rem 0 0.5rem">@GalleryStrings.Responsive_MediaQueryTitle</FlareText>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
+    <FlareCode>FlareMediaQuery</FlareCode> @GalleryStrings.Responsive_MediaQueryDesc
 </FlareText>
 <FlareMediaQuery Context="bp" OnChanged="OnBreakpointChanged">
-    <FlarePaper Elevation="1" Style="padding:1rem;">
-        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Responsive_CurrentBp <strong>@bp</strong></FlareText>
+    <FlarePaper Elevation="1" Padding="FlareSpacing.Custom" PaddingValue="1rem">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Responsive_CurrentBp <FlareText Element="strong" Inherit>@bp</FlareText></FlareText>
         @if (bp <= Breakpoint.Sm)
         {
             <FlareText Color="FlareColor.Primary">@GalleryStrings.Responsive_CompactLayout</FlareText>

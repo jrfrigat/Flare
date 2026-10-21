@@ -4,22 +4,23 @@
    free render fragment, so it hosts plain text, icons, or interactive controls. Here the buttons
    drive the values live. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlarePaper Outlined Padding="FlareSpacing.None">
         <FlareStatusBar>
             <LeftContent>
-                <span style="display:inline-flex;align-items:center;gap:0.35rem;">
-                    <FlareIconView Value="@MaterialDesign3Icons.Regular.AccountTree" Size="1rem" /> @_branch
-                </span>
-                <span>Ln @_line, Col @_col</span>
+                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.AccountTree" Size="1rem" />
+                    <FlareText Element="span" Inherit>@_branch</FlareText>
+                </FlareStack>
+                <FlareText Element="span" Inherit>Ln @_line, Col @_col</FlareText>
             </LeftContent>
             <CenterContent>@_message</CenterContent>
             <RightContent>
-                <span>Spaces: @_indent</span>
-                <span>@_encoding</span>
-                <span>C#</span>
+                <FlareText Element="span" Inherit>Spaces: @_indent</FlareText>
+                <FlareText Element="span" Inherit>@_encoding</FlareText>
+                <FlareText Element="span" Inherit>C#</FlareText>
             </RightContent>
         </FlareStatusBar>
-    </div>
+    </FlarePaper>
 
     <FlareStack Row Gap="FlareSpacing.Small" Wrap>
         <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="MoveCursor">Move cursor</FlareButton>

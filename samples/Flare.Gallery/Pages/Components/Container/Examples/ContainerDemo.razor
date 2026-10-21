@@ -2,13 +2,15 @@
     @foreach (var mw in Enum.GetValues<ContainerMaxWidth>())
     {
         <FlareContainer MaxWidth="mw">
-            <FlareCard Style="padding:0.5rem 0.75rem;background:var(--flare-color-primary-container);border-radius:var(--flare-shape-extra-small);">
+            <FlareCard Padding="FlareSpacing.Custom" PaddingValue="0.5rem 0.75rem"
+                       Background="@(FlareColor.Custom("var(--flare-color-primary-container)"))">
                 <FlareText Typo="TypographyScale.LabelSmall">MaxWidth=@mw</FlareText>
             </FlareCard>
         </FlareContainer>
     }
     <FlareContainer Fluid="true">
-        <FlareCard Style="padding:0.5rem 0.75rem;background:var(--flare-color-secondary-container);border-radius:var(--flare-shape-extra-small);">
+        <FlareCard Padding="FlareSpacing.Custom" PaddingValue="0.5rem 0.75rem"
+                   Background="@(FlareColor.Custom("var(--flare-color-secondary-container)"))">
             <FlareText Typo="TypographyScale.LabelSmall">Fluid=true</FlareText>
         </FlareCard>
     </FlareContainer>

@@ -1,13 +1,14 @@
 @* Drag the list down from the top. Pointer events, so a mouse drag works here as well as a finger -
    which is the only way this gesture is testable on a desktop. The gesture is ignored unless the list is
    already scrolled to the top. *@
-<FlareStack Gap="FlareSpacing.Small" Style="max-width:26rem;">
+<FlareStack Gap="FlareSpacing.Small" MaxWidth="26rem">
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
         @GalleryStrings.Ptr_Hint
     </FlareText>
 
-    <FlareCard Variant="CardVariant.Outlined" Style="padding:0;overflow:hidden;">
-        <FlarePullToRefresh OnRefresh="RefreshAsync" Style="height:16rem;overflow:auto;">
+    <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.Custom" PaddingValue="0" Overflow="hidden">
+        <FlareStack Height="16rem" Overflow="auto">
+        <FlarePullToRefresh OnRefresh="RefreshAsync">
             <FlareList TItem="object">
                 @foreach (var item in _items)
                 {
@@ -15,6 +16,7 @@
                 }
             </FlareList>
         </FlarePullToRefresh>
+        </FlareStack>
     </FlareCard>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">

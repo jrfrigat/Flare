@@ -1193,6 +1193,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Breadcrumb_Custom", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Breadcrumb_Custom_Home {
+            get {
+                return ResourceManager.GetString("Breadcrumb_Custom_Home", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Current page.
+        /// </summary>
+        public static string Breadcrumb_Custom_Current {
+            get {
+                return ResourceManager.GetString("Breadcrumb_Custom_Current", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Custom breadcrumb.
+        /// </summary>
+        public static string Breadcrumb_Custom_Aria {
+            get {
+                return ResourceManager.GetString("Breadcrumb_Custom_Aria", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Separator, disabled &amp; aria-label.

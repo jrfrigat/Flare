@@ -4,41 +4,39 @@
    name box (CellRef) and the editor (Value) are two-way bound. Click a cell to select it - the bar
    loads that cell; edit the formula and it writes back to the selected cell. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlareCard Variant="CardVariant.Outlined" Overflow="hidden">
         <FlareFormulaBar CellRef="_cellRef" CellRefChanged="OnCellRefChanged"
                          Value="_formula" ValueChanged="OnFormulaChanged"
                          Placeholder="Enter a value or =formula" />
-        <table style="border-collapse:collapse;width:100%;font-size:0.85rem;">
-            <thead>
-                <tr>
-                    <th style="@_headStyle;width:2rem;"></th>
-                    @foreach (var col in _cols)
-                    {
-                        <th style="@_headStyle">@col</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in _rows)
+        <FlareGrid Columns="4" Gap="FlareSpacing.None">
+            <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center"
+                       Background="@Surface" Foreground="FlareColor.OnSurfaceVariant"
+                       Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem"></FlareText>
+            @foreach (var col in _cols)
+            {
+                <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center"
+                           Background="@Surface" Foreground="FlareColor.OnSurfaceVariant"
+                           Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">@col</FlareText>
+            }
+            @foreach (var row in _rows)
+            {
+                <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center"
+                           Background="@Surface" Foreground="FlareColor.OnSurfaceVariant"
+                           Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">@row</FlareText>
+                @foreach (var col in _cols)
                 {
-                    <tr>
-                        <th style="@_headStyle">@row</th>
-                        @foreach (var col in _cols)
-                        {
-                            var cell = $"{col}{row}";
-                            var selected = cell == _cellRef;
-                            <td style="@CellStyle(selected)" @onclick="@(() => Select(cell))">
-                                @_cells.GetValueOrDefault(cell, "")
-                            </td>
-                        }
-                    </tr>
+                    var cell = $"{col}{row}";
+                    var selected = cell == _cellRef;
+                    <FlareButton Variant="@(selected ? ButtonVariant.Filled : ButtonVariant.Text)"
+                                 Size="ButtonSize.Sm" FullWidth="true"
+                                 OnClick="@(() => Select(cell))">@_cells.GetValueOrDefault(cell, "")</FlareButton>
                 }
-            </tbody>
-        </table>
-    </div>
+            }
+        </FlareGrid>
+    </FlareCard>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        Selected cell: <strong>@_cellRef</strong>
+        Selected cell: <FlareText Element="strong" Inherit>@_cellRef</FlareText>
     </FlareText>
 </FlareStack>
 
@@ -54,6 +52,8 @@
         ["A1"] = "Revenue", ["B1"] = "Cost", ["C1"] = "Profit",
         ["A2"] = "1200", ["B2"] = "800", ["C2"] = "=A2-B2",
     };
+
+    private static readonly FlareColor Surface = FlareColor.Custom("var(--flare-color-surface-container)");
 
     private void Select(string cell)
     {
@@ -74,13 +74,4 @@
             _cells[_cellRef] = value ?? "";
     }
 
-    private const string _headStyle =
-        "background:var(--flare-color-surface-container);color:var(--flare-color-on-surface-variant);" +
-        "border:1px solid var(--flare-color-outline-variant);padding:0.25rem 0.5rem;text-align:center;font-weight:500;";
-
-    private static string CellStyle(bool selected) =>
-        "border:1px solid var(--flare-color-outline-variant);padding:0.25rem 0.5rem;cursor:pointer;" +
-        (selected
-            ? "outline:2px solid var(--flare-color-primary);outline-offset:-2px;background:var(--flare-color-primary-container);"
-            : "");
 }

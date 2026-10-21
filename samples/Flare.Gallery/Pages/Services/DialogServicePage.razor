@@ -21,12 +21,12 @@
         </FlareStack>
         @if (_result is not null)
         {
-            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_Result <code>@_result</code></FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_Result <FlareCode>@_result</FlareCode></FlareText>
         }
     </FlareStack>
 </FlareCard>
 
-<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
 <FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
 
 @code {

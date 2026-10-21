@@ -433,7 +433,16 @@
     <value>Разделитель, отключение и aria-label</value>
   </data>
   <data name="Breadcrumb_Custom" xml:space="preserve">
-    <value>Свое содержимое (ChildContent)</value>
+    <value>Элемент с иконкой (Items)</value>
+  </data>
+  <data name="Breadcrumb_Custom_Home" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="Breadcrumb_Custom_Current" xml:space="preserve">
+    <value>Текущая страница</value>
+  </data>
+  <data name="Breadcrumb_Custom_Aria" xml:space="preserve">
+    <value>Хлебные крошки с иконкой</value>
   </data>
   <data name="Breadcrumb_Collapse" xml:space="preserve">
     <value>Схлопывание длинных цепочек (MaxItems)</value>
@@ -3552,7 +3561,7 @@
   <data name="Responsive_Portrait" xml:space="preserve"><value>Портретная</value></data>
   <data name="Responsive_Landscape" xml:space="preserve"><value>Альбомная</value></data>
   <data name="Responsive_PortraitQuery" xml:space="preserve"><value>соответствует (orientation: portrait):</value></data>
-  <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync отслеживает собственный размер отдельного элемента через браузерный ResizeObserver. Потяните за нижний правый угол, чтобы изменить размер блока:</value></data>
+  <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync отслеживает собственный размер отдельного элемента через браузерный ResizeObserver. Подвиньте ползунок, чтобы изменить размер блока:</value></data>
   <data name="Responsive_ElementSize" xml:space="preserve"><value>Размер наблюдаемого элемента:</value></data>
   <data name="Chip_Variants" xml:space="preserve"><value>Варианты</value></data>
   <data name="Avatar_Fallback" xml:space="preserve"><value>Запасная иконка</value></data>

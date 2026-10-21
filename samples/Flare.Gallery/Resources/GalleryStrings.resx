@@ -433,7 +433,16 @@
     <value>Separator, disabled &amp; aria-label</value>
   </data>
   <data name="Breadcrumb_Custom" xml:space="preserve">
-    <value>Custom content (ChildContent)</value>
+    <value>Item with an icon (Items)</value>
+  </data>
+  <data name="Breadcrumb_Custom_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Breadcrumb_Custom_Current" xml:space="preserve">
+    <value>Current page</value>
+  </data>
+  <data name="Breadcrumb_Custom_Aria" xml:space="preserve">
+    <value>Custom breadcrumb</value>
   </data>
   <data name="Breadcrumb_Collapse" xml:space="preserve">
     <value>Overflow collapse (MaxItems)</value>
@@ -3552,7 +3561,7 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Responsive_Portrait" xml:space="preserve"><value>Portrait</value></data>
   <data name="Responsive_Landscape" xml:space="preserve"><value>Landscape</value></data>
   <data name="Responsive_PortraitQuery" xml:space="preserve"><value>matches (orientation: portrait):</value></data>
-  <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync tracks a single element's own size via the browser ResizeObserver. Drag the bottom-right corner to resize the box:</value></data>
+  <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync tracks a single element's own size via the browser ResizeObserver. Move the slider to resize the box:</value></data>
   <data name="Responsive_ElementSize" xml:space="preserve"><value>Observed element size:</value></data>
   <data name="Chip_Variants" xml:space="preserve"><value>Variants</value></data>
   <data name="Avatar_Fallback" xml:space="preserve"><value>Fallback icon</value></data>

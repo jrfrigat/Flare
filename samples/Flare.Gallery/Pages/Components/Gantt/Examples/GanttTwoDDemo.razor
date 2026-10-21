@@ -10,7 +10,7 @@
     <FlareGantt Range="_plan.Range" Scale="GanttScale.Day" UnitWidth="36" RowHeight="34" SideWidth="15rem" ResizableSide="true"
                 NonWorking="GanttSample.IsWeekend" Markers="_plan.Today" Regions="_plan.Sprint" @bind-SelectedKey="_selected"
                 AriaLabel="@GalleryStrings.Gantt_TwoD">
-        <Corner><span>@GalleryStrings.Gantt_Corner</span></Corner>
+        <Corner><FlareText Element="span" Inherit>@GalleryStrings.Gantt_Corner</FlareText></Corner>
         <ChildContent>
             <FlareGanttPanel TRow="GanttNode" TItem="GanttWork" Rows="_plan.Tree" RowKey="n => n.Key" RowChildren="n => n.Children"
                              RowHeader="Title" Items="_plan.Work" ItemKey="w => w.Key" ItemRow="w => w.Node" ItemSpan="w => w.Span"
@@ -45,9 +45,9 @@
         new("overload", GalleryStrings.Gantt_LegendLoad, GanttLegendShape.Cell),
     ];
 
-    private static readonly RenderFragment<GanttNode> Title = node => @<span>@node.Title</span>;
+    private static readonly RenderFragment<GanttNode> Title = node => @<FlareText Element="span" Inherit>@node.Title</FlareText>;
 
-    private static readonly RenderFragment<GanttPerson> Person = person => @<span>@person.Name</span>;
+    private static readonly RenderFragment<GanttPerson> Person = person => @<FlareText Element="span" Inherit>@person.Name</FlareText>;
 
     // The chart only proposes; the page applies what it accepts, and both panels redraw from the same data.
     private void Change(GanttChangeEventArgs change) => _plan.Apply(change);

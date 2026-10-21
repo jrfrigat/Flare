@@ -1,6 +1,6 @@
 @* Marks places labeled ticks under the track at specific values (value -> label).
    A mark highlights when it falls inside the selected span. Works in range and vertical too. *@
-<FlareStack Gap="FlareSpacing.XLarge" Style="max-width:32rem;">
+<FlareStack Gap="FlareSpacing.XLarge" MaxWidth="32rem">
     <FlareSlider @bind-Value="_quality" Label="Quality" Min="0" Max="100" Step="25"
                  Stepper="true" Marks="_qualityMarks" />
 
@@ -11,7 +11,7 @@
     <FlareStack Row Wrap Gap="FlareSpacing.XLarge">
         <FlareSlider Vertical="true" @bind-Value="_level" Min="0" Max="3" Step="1"
                      ShowValue="false" Color="FlareColor.Secondary"
-                     Marks="_levelMarks" Style="--flare-slider-length:11rem" />
+                     Marks="_levelMarks" Length="11rem" />
     </FlareStack>
 </FlareStack>
 

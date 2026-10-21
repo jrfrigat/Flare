@@ -13,43 +13,51 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Palette" Title="@GalleryStrings.Color_RolesTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.25rem">
             @GalleryStrings.Color_RolesDesc
         </FlareText>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.75rem;">
+        <FlareGrid MinColumnWidth="150px" Gap="FlareSpacing.Custom" GapValue="0.75rem">
             @foreach (var role in _roles)
             {
-                <div class="flare-color-@role.Class"
-                     style="background:var(--fc-main);color:var(--fc-on);border-radius:var(--flare-shape-medium);padding:0.875rem 1rem;min-height:84px;display:flex;flex-direction:column;justify-content:space-between;">
-                    <strong>@role.Name</strong>
-                    <code style="font-size:0.75rem;opacity:0.9;">FlareColor.@role.Name</code>
-                </div>
+                <FlareCard Background="role.Color" Padding="FlareSpacing.None" MinHeight="84px">
+                    <FlareStack Padding="FlareSpacing.Custom" PaddingValue="0.875rem 1rem"
+                                MinHeight="84px" Gap="FlareSpacing.Small"
+                                Justify="FlareJustifyContent.SpaceBetween">
+                        <FlareText Element="strong" Inherit>@role.Name</FlareText>
+                        <FlareText Element="code" Mono Typo="TypographyScale.LabelSmall">FlareColor.@role.Name</FlareText>
+                    </FlareStack>
+                </FlareCard>
             }
-        </div>
+        </FlareGrid>
     </FlareCard>
 </FlareSection>
 
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Layers" Title="@GalleryStrings.Color_PlanesTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.25rem">
             @GalleryStrings.Color_PlanesDesc
         </FlareText>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.75rem;">
+        <FlareGrid MinColumnWidth="130px" Gap="FlareSpacing.Custom" GapValue="0.75rem">
             @foreach (var plane in _planes)
             {
-                <div style="background:var(@plane);color:var(--flare-color-on-surface);border:var(--flare-border-outline);border-radius:var(--flare-shape-medium);padding:0.875rem 1rem;min-height:84px;display:flex;align-items:flex-end;">
-                    <code style="font-size:0.7rem;">@plane.Replace("--flare-color-", "")</code>
-                </div>
+                <FlareCard Variant="CardVariant.Outlined" Background="@PlaneColor(plane)"
+                           Foreground="FlareColor.OnSurface"
+                           Padding="FlareSpacing.Custom" PaddingValue="0.875rem 1rem"
+                           MinHeight="84px">
+                    <FlareStack MinHeight="52px" Justify="FlareJustifyContent.End">
+                        <FlareText Element="code" Mono Typo="TypographyScale.LabelSmall">@plane.Replace("--flare-color-", "")</FlareText>
+                    </FlareStack>
+                </FlareCard>
             }
-        </div>
+        </FlareGrid>
     </FlareCard>
 </FlareSection>
 
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.FormatColorText" Title="@GalleryStrings.Color_TextTonesTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @GalleryStrings.Color_TextTonesDesc
         </FlareText>
         <FlareStack Gap="FlareSpacing.XSmall">
@@ -63,7 +71,7 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Code" Title="@GalleryStrings.Color_UsageTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
             @GalleryStrings.Color_UsageDesc
         </FlareText>
         <FlareCodeBlock Value="@_usageCode" Language="razor" />
@@ -73,15 +81,16 @@
 <FlareSection>
     <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Stars" Title="@GalleryStrings.Color_GeneratorsTitle" />
     <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.25rem">
             @GalleryStrings.Color_GeneratorsDesc
         </FlareText>
 
-        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="align-items:center;margin-bottom:1.5rem;">
-            <div style="@($"background:{_current.Value};width:88px;height:88px;border-radius:var(--flare-shape-large);border:1px solid var(--flare-color-outline-variant);")"></div>
+        <FlareStack Row Wrap Gap="FlareSpacing.Medium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.5rem" Align="FlareAlignItems.Center">
+            <FlareCard Variant="CardVariant.Outlined" Background="_current"
+                       Width="88px" Height="88px" Padding="FlareSpacing.None" />
             <FlareStack Gap="FlareSpacing.XSmall">
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Color_CurrentLabel</FlareText>
-                <code style="font-size:1.125rem;font-weight:600;">@_current.Value</code>
+                <FlareText Element="code" Mono Typo="TypographyScale.TitleMedium">@_current.Value</FlareText>
             </FlareStack>
             <FlareStack Row Gap="FlareSpacing.Small">
                 <FlareButton Variant="ButtonVariant.Filled" OnClick="RandomColor">
@@ -95,28 +104,32 @@
             </FlareStack>
         </FlareStack>
 
-        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.5rem;">@GalleryStrings.Color_SequenceTitle</FlareText>
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem">@GalleryStrings.Color_SequenceDesc</FlareText>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;">
+        <FlareText Typo="TypographyScale.LabelLarge" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">@GalleryStrings.Color_SequenceTitle</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">@GalleryStrings.Color_SequenceDesc</FlareText>
+        <FlareStack Row Wrap Gap="FlareSpacing.Custom" GapValue="0.5rem"
+                    MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.5rem">
             @foreach (var c in Sequence())
             {
-                <div title="@c.Value"
-                     style="@($"background:{c.Value};width:48px;height:48px;border-radius:var(--flare-shape-small);border:1px solid var(--flare-color-outline-variant);")"></div>
+                <FlareCard Variant="CardVariant.Outlined" Background="c" title="@c.Value"
+                           Width="48px" Height="48px" Padding="FlareSpacing.None" />
             }
-        </div>
+        </FlareStack>
 
-        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;">@GalleryStrings.Color_AppliedTitle</FlareText>
-        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="align-items:center;">
+        <FlareText Typo="TypographyScale.LabelLarge" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">@GalleryStrings.Color_AppliedTitle</FlareText>
+        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
             <FlareButton Variant="ButtonVariant.Filled" Color="_current">Button</FlareButton>
             <FlareChip Color="_current">Chip</FlareChip>
-            <div style="min-width:200px;">
+            <FlareStack MinWidth="200px">
                 <FlareProgressLinear Color="_current" Value="65" />
-            </div>
+            </FlareStack>
         </FlareStack>
 
         @* FlareColorCustomizer: pick a primary from presets or the native picker. The WCAG contrast
            preview ("Aa" + ratio + AA/AAA/Fail badge) shows whether readable text on it is accessible. *@
-        <FlareDivider Style="margin:1.5rem 0;" />
+        <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1.5rem"
+                    MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.5rem">
+            <FlareDivider />
+        </FlareStack>
         <FlareColorCustomizer />
     </FlareCard>
 </FlareSection>
@@ -141,7 +154,7 @@
         var next   = random.Next();         // next hue (golden angle)
         """;
 
-    private sealed record RoleInfo(string Name, string Class);
+    private sealed record RoleInfo(string Name, FlareColor Color);
 
     // Furthest from the content first, so the strip reads as the ladder it is. Named from the token
     // registry rather than spelled out, which is what makes a renamed plane a compile error here.
@@ -157,16 +170,18 @@
 
     private static readonly RoleInfo[] _roles =
     [
-        new("Primary", "primary"),
-        new("Secondary", "secondary"),
-        new("Tertiary", "tertiary"),
-        new("Success", "success"),
-        new("Warning", "warning"),
-        new("Error", "error"),
-        new("Info", "info"),
+        new("Primary", FlareColor.Primary),
+        new("Secondary", FlareColor.Secondary),
+        new("Tertiary", FlareColor.Tertiary),
+        new("Success", FlareColor.Success),
+        new("Warning", FlareColor.Warning),
+        new("Error", FlareColor.Error),
+        new("Info", FlareColor.Info),
     ];
 
     private FlareColor _current = FlareColor.Custom("#3366CC");
+
+    private static FlareColor PlaneColor(string token) => FlareColor.Custom($"var({token})");
 
     private void RandomColor() => _current = FlareColor.Random();
     private void NextColor() => _current = _current.Next();

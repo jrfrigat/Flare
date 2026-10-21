@@ -10,7 +10,7 @@
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_WebPushSubtitle</FlareText>
 </GalleryPageTitle>
 
-<FlareCard Variant="CardVariant.Outlined" Style="max-width:40rem;">
+<FlareCard Variant="CardVariant.Outlined" MaxWidth="40rem">
     <FlareStack Gap="FlareSpacing.Medium">
         @if (_supported is { } supported)
         {
@@ -20,7 +20,7 @@
         }
 
         <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
-            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_WebPushPermission <code>@_permission</code></FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_WebPushPermission <FlareCode>@_permission</FlareCode></FlareText>
             <FlareButton Variant="ButtonVariant.Tonal" OnClick="RequestAsync"
                          Disabled="@(_permission != NotificationPermission.Default)">
                 <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.NotificationsActive" /></LeadingIcon>
@@ -60,7 +60,7 @@
     </FlareStack>
 </FlareCard>
 
-<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareText Typo="TypographyScale.TitleSmall" Margin="FlareSpacing.Custom" MarginValue="1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
 <FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
 
 @code {

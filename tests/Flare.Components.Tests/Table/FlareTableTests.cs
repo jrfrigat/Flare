@@ -123,4 +123,83 @@ public class FlareTableTests : FlareTestContext
 
         Assert.Equal("5", cut.Find($".{Css.Classes.Table.GroupRow} td").GetAttribute("colspan"));
     }
+
+    [Fact]
+    public void Columns_RenderHeadersAndFieldCells()
+    {
+        var people = new[] { new Person("Alice", 92), new Person("Bob", 78) };
+        FlareTableColumn<Person>[] columns =
+        [
+            new() { Header = "Name", Field = p => p.Name },
+            new() { Header = "Score", Field = p => p.Score },
+        ];
+
+        var cut = Render<FlareTable<Person>>(p => p
+            .Add(x => x.Items, people)
+            .Add(x => x.Columns, columns));
+
+        Assert.Equal(new[] { "Name", "Score" }, cut.FindAll("th").Select(th => th.TextContent).ToArray());
+        Assert.Equal(new[] { "Alice", "92", "Bob", "78" }, cut.FindAll("td").Select(td => td.TextContent).ToArray());
+    }
+
+    [Fact]
+    public void Columns_CellTemplate_ReplacesFieldText()
+    {
+        var people = new[] { new Person("Alice", 92) };
+        FlareTableColumn<Person>[] columns =
+        [
+            new()
+            {
+                Header = "Name",
+                Cell = p => builder => builder.AddContent(0, $"* {p.Name}"),
+            },
+        ];
+
+        var cut = Render<FlareTable<Person>>(p => p
+            .Add(x => x.Items, people)
+            .Add(x => x.Columns, columns));
+
+        Assert.Equal("* Alice", cut.Find("td").TextContent);
+    }
+
+    [Fact]
+    public void Columns_FooterCells_RenderFooterRow()
+    {
+        var people = new[] { new Person("Alice", 92), new Person("Bob", 78) };
+        FlareTableColumn<Person>[] columns =
+        [
+            new() { Header = "Name", Field = p => p.Name },
+        ];
+
+        var cut = Render<FlareTable<Person>>(p => p
+            .Add(x => x.Items, people)
+            .Add(x => x.Columns, columns)
+            .Add(x => x.ShowFooter, true)
+            .Add(x => x.FooterCells, (Func<IEnumerable<Person>, IReadOnlyList<RenderFragment>>)(items =>
+                new RenderFragment[] { b => b.AddContent(0, $"{items.Count()} people") })));
+
+        Assert.Equal("2 people", cut.Find("tfoot td").TextContent);
+    }
+
+    [Fact]
+    public void Columns_WithGroupBy_KeepsTheConfiguredColSpan()
+    {
+        var people = new[] { new Person("Alice", 92), new Person("Bob", 78) };
+        FlareTableColumn<Person>[] columns =
+        [
+            new() { Header = "Name", Field = p => p.Name },
+            new() { Header = "Score", Field = p => p.Score },
+        ];
+
+        var cut = Render<FlareTable<Person>>(p => p
+            .Add(x => x.Items, people)
+            .Add(x => x.Columns, columns)
+            .Add(x => x.GroupBy, (Func<Person, string>)(_ => "G"))
+            .Add(x => x.ColSpan, 2));
+
+        Assert.Equal("2", cut.Find($".{Css.Classes.Table.GroupRow} td").GetAttribute("colspan"));
+        Assert.Equal(3, cut.FindAll("tbody tr").Count);
+    }
+
+    private sealed record Person(string Name, int Score);
 }

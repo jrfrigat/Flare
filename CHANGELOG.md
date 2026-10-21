@@ -23,6 +23,15 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareStack` and `FlareCard` expose `FocusAsync()`, so a panel can take focus without a raw element.
 - `FlareVisuallyHidden` renders a region that exists for assistive technology only, with an optional role and live mode.
 - `FlareOnThisPage.RefreshAsync()` rescans the content for headings added or replaced after the first render, and a change to `Root`, `HeadingSelector` or `ScrollRoot` re-registers the table automatically.
+- Layout boxes (`FlareStack`, `FlareGrid`, `FlareCol`, `FlareCard`, `FlareText`) take padding and margin on every side (including logical inline start/end), size bounds, `FlexGrow`, `Overflow`, `MaxHeight`, `Background`/`Foreground`, `Sticky` and `Relative` as parameters, so a page lays itself out without inline CSS.
+- `FlareText.Inherit` renders a run in the surrounding typography, `Block` makes an inherited run start its own line, and `LetterSpacing` adjusts display tracking - the three pieces an inline `<strong>`, `<code>` or custom heading needed.
+- `FlareTable.Columns` and `FlareTableColumn<TItem>` describe a typed table by header, field or cell template, with `FooterCells` for totals, so the table renders its own `thead`/`tbody`/`tfoot` instead of asking the page for raw table markup.
+- `FlareIdeLayout.Height` sizes the IDE frame as a CSS length, so the layout can be one panel of a page instead of always filling the viewport.
+- `FlareSlider.Length` sets the slider's length along its axis, so a vertical slider or a fixed-width horizontal one no longer needs an inline token override.
+- `BreadcrumbItem.Icon` puts an icon before an item's label, so a trail can start with a home glyph without hand-written list markup.
+- `FlareColorScope` makes a custom or dynamic `FlareColor` the local color of a subtree, publishing `--fc-main`, `--fc-on`, `--fc-container` and `--fc-on-container` to its descendants.
+- `FlareStack.RootElement` and `FlareCard.RootElement` hand out the rendered element for JS interop that observes or measures the component.
+- Layout boxes also take `Contain` (e.g. `layout paint` to pin a fixed app bar to a frame) and `FlareProgressCircular.Diameter` sizes one ring beyond the shared size step.
 
 ### Changed
 

@@ -1,8 +1,11 @@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareText Typo="TypographyScale.BodyMedium">Above divider</FlareText>
-    <FlareDivider Style="margin:0.75rem 0;" />
+    <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem"
+                MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.75rem">
+        <FlareDivider />
+    </FlareStack>
     <FlareText Typo="TypographyScale.BodyMedium">Below divider</FlareText>
-    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" Style="margin-top:0.75rem;height:2rem;">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem" Height="2rem">
         <FlareText Typo="TypographyScale.BodyMedium">Left</FlareText>
         <FlareDivider Vertical="true" />
         <FlareText Typo="TypographyScale.BodyMedium">Right</FlareText>

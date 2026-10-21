@@ -1,12 +1,12 @@
-<div>
+<FlareStack Gap="FlareSpacing.None">
     <FlareTransfer TItem="string"
                    SourceItems="_available"
                    TargetItems="_granted"
                    TargetItemsChanged="items => _granted = items.ToList()" />
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
         Granted: @string.Join(", ", _granted)
     </FlareText>
-</div>
+</FlareStack>
 
 @code {
     private List<string> _available = ["users.read", "users.write", "orders.read", "orders.write", "reports.view", "admin.access"];

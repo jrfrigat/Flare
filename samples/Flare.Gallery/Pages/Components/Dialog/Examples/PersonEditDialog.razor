@@ -2,7 +2,7 @@
 
 @* A reusable dialog body. It receives its initial values as [Parameter]s and closes itself with a
    typed result through the cascaded FlareDialogInstance - no @bind-Visible plumbing on the caller. *@
-<FlareStack Gap="FlareSpacing.Medium" Style="min-width:18rem;">
+<FlareStack Gap="FlareSpacing.Medium" MinWidth="18rem">
     <FlareTextField @bind-Value="_name" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
     <FlareTextField @bind-Value="_email" Label="@GalleryStrings.Dialog_Email" Variant="InputVariant.Outlined" />
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">

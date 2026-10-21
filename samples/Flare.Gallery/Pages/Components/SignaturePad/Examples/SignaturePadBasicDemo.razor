@@ -7,8 +7,11 @@
     @if (_dataUrl is not null)
     {
         <FlareStack Gap="FlareSpacing.None">
-            <FlareText Typo="TypographyScale.LabelMedium" Style="margin-bottom:0.5rem;">Saved signature</FlareText>
-            <img src="@_dataUrl" alt="Signature" style="border:1px solid var(--flare-color-outline-variant);border-radius:0.5rem;display:block;" />
+            <FlareText Typo="TypographyScale.LabelMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">Saved signature</FlareText>
+            <FlareCard Variant="CardVariant.Outlined" Width="fit-content"
+                       Padding="FlareSpacing.Custom" PaddingValue="0">
+                <FlareImage Src="@_dataUrl" Alt="Signature" BorderRadius="var(--flare-shape-small)" />
+            </FlareCard>
         </FlareStack>
     }
 </FlareStack>

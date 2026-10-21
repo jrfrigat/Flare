@@ -1,9 +1,9 @@
 @* Numeric Elevation overrides the variant's shadow on the MD3 0-5 scale. Elevation="0" is flat. *@
-<div style="display:flex;flex-wrap:wrap;gap:1rem;">
+<FlareStack Row Wrap Gap="FlareSpacing.Medium">
     @for (var level = 0; level <= 5; level++)
     {
         var n = level;
-        <FlareCard Elevation="n" Style="flex:0 0 8rem;">
+        <FlareCard Elevation="n" Width="8rem" MinWidth="8rem">
             <FlareCardContent>
                 <FlareText Typo="TypographyScale.TitleSmall">Elevation @n</FlareText>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
@@ -12,4 +12,4 @@
             </FlareCardContent>
         </FlareCard>
     }
-</div>
+</FlareStack>

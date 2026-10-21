@@ -1,19 +1,28 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="max-width:32rem;">
-        <FlareSelect TValue="string" @bind-Value="_role" Label="Role" Style="flex:1;min-width:12rem;">
-            <option value="">Select role…</option>
-            <option value="dev">Developer</option>
-            <option value="design">Designer</option>
-            <option value="qa">QA</option>
-            <option value="devops">DevOps</option>
-        </FlareSelect>
-        <FlareSelect TValue="string" Label="Disabled" Disabled Style="flex:1;min-width:12rem;">
-            <option value="">Not available</option>
-        </FlareSelect>
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" MaxWidth="32rem">
+        <FlareStack FlexGrow="1" MinWidth="12rem">
+            <FlareSelect TValue="string" @bind-Value="_role" Label="Role"
+                         Items="_roles" ItemLabel="RoleLabel" NullOption="Select role…" />
+        </FlareStack>
+        <FlareStack FlexGrow="1" MinWidth="12rem">
+            <FlareSelect TValue="string" Label="Disabled" Disabled
+                         Items="_roles" NullOption="Not available" />
+        </FlareStack>
     </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Selected role: @_role</FlareText>
 </FlareStack>
 
 @code {
     private string? _role;
+
+    private static readonly string[] _roles = ["dev", "design", "qa", "devops"];
+
+    private static string RoleLabel(string role) => role switch
+    {
+        "dev" => "Developer",
+        "design" => "Designer",
+        "qa" => "QA",
+        "devops" => "DevOps",
+        _ => role,
+    };
 }

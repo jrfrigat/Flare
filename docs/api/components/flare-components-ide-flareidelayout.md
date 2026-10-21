@@ -16,6 +16,7 @@ Root layout component for an IDE-style interface. Arranges ribbon, menu bar, too
 | `BottomPanelHeight` | `string` | `"200px"` | Parameter |  | Height of the bottom panel. Default 200px. |
 | `BottomResizable` | `bool` | `true` | Parameter |  | Whether the bottom region can be drag-resized. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Main document/content area. |
+| `Height` | `string?` | `` | Parameter |  | Height of the layout frame as a CSS length (e.g. "520px" or "100%"). Null keeps the layout filling the viewport (100vh). Use it when the IDE is one panel of a larger page instead of the whole screen. |
 | `LeftCollapsed` | `bool` | `false` | Parameter |  | Whether the left region is collapsed (only a thin rail is shown). Two-way bindable. |
 | `LeftCollapsedChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when LeftCollapsed changes. |
 | `LeftPanelWidth` | `string` | `"300px"` | Parameter |  | Width of the left tool panel. Default 300px. |

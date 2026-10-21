@@ -1,4 +1,4 @@
-<div style="max-width:24rem;">
+<FlareStack MaxWidth="24rem" Gap="FlareSpacing.None">
     @* Full anatomy: Header / Body (Content) / Footer / Actions. *@
     <FlareCard Variant="CardVariant.Elevated">
         <FlareCardHeader Title="Project Apollo" Subtitle="Updated 2 hours ago">
@@ -18,7 +18,7 @@
             <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm">Open</FlareButton>
         </FlareCardActions>
     </FlareCard>
-</div>
+</FlareStack>
 
 @code {
     private readonly RenderFragment _more = @<FlareIconView Value="@MaterialDesign3Icons.Regular.MoreVert" />;

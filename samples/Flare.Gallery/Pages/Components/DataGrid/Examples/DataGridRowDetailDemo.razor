@@ -1,7 +1,7 @@
-﻿<FlareDataGrid Items="@DatagridData._people" PageSize="5">
+<FlareDataGrid Items="@DatagridData._people" PageSize="5">
     <RowDetailTemplate Context="item">
-        <FlareStack Row Wrap Style="padding:1rem;">
-            <strong>@item.Name</strong> - @item.City
+        <FlareStack Row Wrap Padding="FlareSpacing.Custom" PaddingValue="1rem">
+            <FlareText Element="strong" Inherit>@item.Name</FlareText> - @item.City
         </FlareStack>
     </RowDetailTemplate>
     <Columns>

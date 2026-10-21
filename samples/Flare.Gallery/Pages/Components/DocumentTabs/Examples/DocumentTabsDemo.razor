@@ -10,17 +10,17 @@
             <ChildContent>New file</ChildContent>
         </FlareButton>
         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-            Active: <strong>@(_active ?? "(none)")</strong>
+            Active: <FlareText Element="strong" Inherit>@(_active ?? "(none)")</FlareText>
         </FlareText>
     </FlareStack>
 
-    <div style="height:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlareCard Variant="CardVariant.Outlined" Height="240px" Padding="FlareSpacing.None">
         <FlareDocumentTabs OnTabChanged="OnChanged" OnTabClose="OnClose">
             @foreach (var doc in _docs)
             {
                 <FlareDocumentTab @key="doc.Id" Title="@doc.Title" Icon="@doc.Icon"
                                   Modified="doc.Modified" Closeable="doc.Closeable">
-                    <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.35rem;">
+                    <FlareStack Gap="FlareSpacing.Custom" GapValue="0.35rem" Padding="FlareSpacing.Small">
                         <FlareText Typo="TypographyScale.TitleSmall">@doc.Title</FlareText>
                         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
                             @doc.Description
@@ -32,14 +32,14 @@
                                 <ChildContent>Save (clear modified)</ChildContent>
                             </FlareButton>
                         }
-                    </div>
+                    </FlareStack>
                 </FlareDocumentTab>
             }
         </FlareDocumentTabs>
-    </div>
+    </FlareCard>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        The pinned <code>App.razor</code> tab has <code>Closeable="false"</code> so it has no close button.
+        The pinned <FlareCode>App.razor</FlareCode> tab has <FlareCode>Closeable="false"</FlareCode> so it has no close button.
     </FlareText>
 </FlareStack>
 

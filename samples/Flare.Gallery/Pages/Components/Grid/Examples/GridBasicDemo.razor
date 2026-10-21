@@ -1,19 +1,23 @@
-<FlareContainer Style="background:var(--flare-color-surface-container-low);padding:1rem;border-radius:var(--flare-shape-small);">
+<FlareCard Variant="CardVariant.Text" Padding="FlareSpacing.Custom" PaddingValue="1rem"
+           Background='FlareColor.Custom("var(--flare-color-surface-container-low)")'>
     <FlareGrid Columns="3" Gap="FlareSpacing.Small">
         <FlareCol Span="1">
-            <FlareCard Style="padding:0.75rem;background:var(--flare-color-primary-container);border-radius:var(--flare-shape-extra-small);text-align:center;">
-                <FlareText Typo="TypographyScale.LabelMedium">Span 1</FlareText>
+            <FlareCard Padding="FlareSpacing.Custom" PaddingValue="0.75rem" Variant="CardVariant.Text"
+                       Background='FlareColor.Custom("var(--flare-color-primary-container)")'>
+                <FlareText Align="TextAlign.Center" Typo="TypographyScale.LabelMedium">Span 1</FlareText>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="2">
-            <FlareCard Style="padding:0.75rem;background:var(--flare-color-secondary-container);border-radius:var(--flare-shape-extra-small);text-align:center;">
-                <FlareText Typo="TypographyScale.LabelMedium">Span 2</FlareText>
+            <FlareCard Padding="FlareSpacing.Custom" PaddingValue="0.75rem" Variant="CardVariant.Text"
+                       Background='FlareColor.Custom("var(--flare-color-secondary-container)")'>
+                <FlareText Align="TextAlign.Center" Typo="TypographyScale.LabelMedium">Span 2</FlareText>
             </FlareCard>
         </FlareCol>
         <FlareCol Span="3">
-            <FlareCard Style="padding:0.75rem;background:var(--flare-color-tertiary-container);border-radius:var(--flare-shape-extra-small);text-align:center;">
-                <FlareText Typo="TypographyScale.LabelMedium">Span 3 (full width)</FlareText>
+            <FlareCard Padding="FlareSpacing.Custom" PaddingValue="0.75rem" Variant="CardVariant.Text"
+                       Background='FlareColor.Custom("var(--flare-color-tertiary-container)")'>
+                <FlareText Align="TextAlign.Center" Typo="TypographyScale.LabelMedium">Span 3 (full width)</FlareText>
             </FlareCard>
         </FlareCol>
     </FlareGrid>
-</FlareContainer>
+</FlareCard>

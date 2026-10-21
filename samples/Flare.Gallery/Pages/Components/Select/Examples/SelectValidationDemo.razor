@@ -1,19 +1,23 @@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:24rem;">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="24rem">
     <FlareSelect TValue="string" @bind-Value="_priority" Label="Priority"
-                 HelperText="Choose how urgent this task is">
-        <option value="">Select…</option>
-        <option value="low">Low</option>
-        <option value="med">Medium</option>
-        <option value="high">High</option>
-    </FlareSelect>
+                 HelperText="Choose how urgent this task is" Items="_priorities" ItemLabel="PriorityLabel" NullOption="Select…" />
 
-    <FlareSelect TValue="string" Label="Country" ErrorText="This field is required">
-        <option value="">Select…</option>
-        <option value="de">Germany</option>
-        <option value="fr">France</option>
-    </FlareSelect>
+    <FlareSelect TValue="string" Label="Country" ErrorText="This field is required" Items="_countries" ItemLabel="CountryLabel" NullOption="Select…" />
 </FlareStack>
 
 @code {
     private string? _priority;
+
+    private static readonly string[] _priorities = ["low", "med", "high"];
+    private static readonly string[] _countries = ["de", "fr"];
+
+    private static string PriorityLabel(string value) => value switch
+    {
+        "low" => "Low",
+        "med" => "Medium",
+        "high" => "High",
+        _ => value,
+    };
+
+    private static string CountryLabel(string value) => value == "de" ? "Germany" : "France";
 }

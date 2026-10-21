@@ -88,6 +88,9 @@
     /// visible - pass <c>tabindex="-1"</c> through additional attributes.</summary>
     public ValueTask FocusAsync() => _root.FocusAsync();
 
+    /// <summary>The rendered root element, for JS interop that measures or observes the card.</summary>
+    public ElementReference RootElement => _root;
+
     private ElementReference _root;
 
     // Attributes that describe what the browser does when it FOLLOWS the link. They belong on the

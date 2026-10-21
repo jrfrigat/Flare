@@ -1,12 +1,14 @@
 <FlareStack Gap="FlareSpacing.Small">
-    <div style="position:sticky;top:0;z-index:1;padding:0.5rem 0;background:var(--flare-color-surface);">
+    <FlareStack Sticky="true" StickyTop="0" Background="@Surface"
+                PaddingBlockStart="FlareSpacing.Custom" PaddingBlockStartValue="0.5rem"
+                PaddingBlockEnd="FlareSpacing.Custom" PaddingBlockEndValue="0.5rem">
         <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Wrap>
             <FlareChip Label="@($"Mounted: {_mounted.Count} / {Total}")" />
             <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
                 Scroll down - each panel mounts only when it nears the viewport.
             </FlareText>
         </FlareStack>
-    </div>
+    </FlareStack>
 
     @for (var i = 0; i < Total; i++)
     {
@@ -35,6 +37,8 @@
 @code {
     private const int Total = 24;
     private readonly HashSet<int> _mounted = [];
+
+    private static readonly FlareColor Surface = FlareColor.Custom("var(--flare-color-surface)");
 
     private void Reveal(int index)
     {

@@ -1,16 +1,16 @@
 @inherits LocalizedPage
 
-<div style="height:320px;overflow:hidden;border-radius:var(--flare-shape-medium);">
+<FlareCard Variant="CardVariant.Outlined" Height="320px" Padding="FlareSpacing.None">
     <FlareLayout>
         @* Dense = a slimmer 48px bar; Height (any CSS length) would override it. *@
         <FlareLayoutAppBar Dense="true" DrawerToggle="true">
             <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.LayoutShell_Density</FlareText>
-            <FlareStack Row Wrap Style="flex:1;" />
+            <FlareStack Row Wrap FlexGrow="1" />
             <FlareAvatar FallbackIcon="@MaterialDesign3Icons.Regular.AccountCircle" Size="AvatarSize.Sm" />
         </FlareLayoutAppBar>
 
         <FlareLayoutDrawer @bind-Open="_open" Variant="DrawerVariant.Persistent" Width="12rem">
-            <FlareStack Style="padding:0.75rem 0.5rem;">
+            <FlareStack Padding="FlareSpacing.Custom" PaddingValue="0.75rem 0.5rem">
                 <FlareNavMenu>
                     <FlareNavLink Href="#" Match="NavMatchMode.Exact">
                         <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Dashboard" /></IconContent>
@@ -30,7 +30,7 @@
             </FlareText>
         </FlareLayoutContent>
     </FlareLayout>
-</div>
+</FlareCard>
 
 @code {
     private bool _open = true;

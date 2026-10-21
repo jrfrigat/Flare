@@ -21,10 +21,13 @@ Design-token spacing values for gap, padding, and margin parameters. Maps to pre
 
 ## Used by components
 
+- `FlareCard`
 - `FlareCardActions`
+- `FlareCol`
 - `FlareDrawer`
 - `FlareGrid`
 - `FlareLayoutDrawer`
 - `FlarePaper`
 - `FlareSpacer`
 - `FlareStack`
+- `FlareText`

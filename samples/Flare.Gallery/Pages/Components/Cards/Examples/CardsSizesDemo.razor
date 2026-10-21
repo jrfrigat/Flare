@@ -1,7 +1,7 @@
-<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start;">
+<FlareGrid MinColumnWidth="12rem" AutoFit="true" Gap="FlareSpacing.Medium" AlignItems="FlareAlignItems.Start">
     @foreach (var s in _sizes)
     {
-        <FlareCard Variant="CardVariant.Outlined" Size="s.Size" Style="flex:1 1 12rem;min-width:12rem;">
+        <FlareCard Variant="CardVariant.Outlined" Size="s.Size" MinWidth="12rem">
             <FlareCardHeader Title="@s.Name" Subtitle="@s.Hint" />
             <FlareCardContent>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
@@ -14,7 +14,7 @@
             </FlareCardActions>
         </FlareCard>
     }
-</div>
+</FlareGrid>
 
 @code {
     private record SizeInfo(CardSize Size, string Name, string Hint);

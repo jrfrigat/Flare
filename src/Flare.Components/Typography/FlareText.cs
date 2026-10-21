@@ -8,7 +8,7 @@ namespace Flare.Components;
 /// Renders a semantic HTML element (h1-h5, p) styled with the active theme's type scale.
 /// Uses BuildRenderTree to support dynamic element names - standard Razor cannot do this.
 /// </summary>
-public sealed class FlareText : FlareComponentBase
+public sealed class FlareText : FlareLayoutBoxBase
 {
     /// <summary>Text content rendered inside the typography element.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -31,6 +31,23 @@ public sealed class FlareText : FlareComponentBase
     /// <summary>Letter-casing applied on top of the type-scale step. <see cref="TextTransform.None"/>
     /// (the default) leaves the text as written.</summary>
     [Parameter] public TextTransform Transform { get; set; } = TextTransform.None;
+
+    /// <summary>Tracking between letters, as a CSS length. Null keeps the type scale's own tracking.
+    /// Use it for display text that needs a tighter or looser setting than its scale step carries.</summary>
+    [Parameter] public string? LetterSpacing { get; set; }
+
+    /// <summary>
+    /// Renders the text with no type-scale class of its own, so it takes the typography of whatever it
+    /// sits inside. Use it for a semantic run in a longer flow - an <c>&lt;strong&gt;</c> inside body
+    /// text, a plain <c>&lt;code&gt;</c> that is not the chip - where a second scale would restyle it.
+    /// The element defaults to a span in this mode instead of the scale's heading or paragraph.
+    /// </summary>
+    [Parameter] public bool Inherit { get; set; }
+
+    /// <summary>Renders the element as a block that takes the full line instead of sitting inline.
+    /// A paragraph or heading is already a block; this matters for an inherited run that should start
+    /// on its own line.</summary>
+    [Parameter] public bool Block { get; set; }
 
     /// <summary>
     /// Caps the text at this many lines and ends it with an ellipsis. <c>0</c> (the default) leaves it
@@ -63,7 +80,7 @@ public sealed class FlareText : FlareComponentBase
     }
 
     // Text always paints a scale, so an unset Typo falls back to body-medium here rather than in the map.
-    private string _scaleClass => FlareTypography.CssClass(Typo) ?? Css.Classes.Text.BodyMedium;
+    private string? _scaleClass => Inherit ? null : FlareTypography.CssClass(Typo) ?? Css.Classes.Text.BodyMedium;
 
     private string? _weightClass => Weight switch
     {
@@ -114,7 +131,7 @@ public sealed class FlareText : FlareComponentBase
         ? $"{Css.Tokens.LocalVars.TextMaxLines}:{MaxLines.ToString(System.Globalization.CultureInfo.InvariantCulture)};"
         : null;
 
-    private string _htmlElement => Typo switch
+    private string _htmlElement => Inherit ? "span" : Typo switch
     {
         TypographyScale.DisplayLarge
             or TypographyScale.DisplayMedium
@@ -140,8 +157,11 @@ public sealed class FlareText : FlareComponentBase
         get
         {
             var color = Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : null;
-            var combined = color + _clampStyle + Style;
-            return string.IsNullOrEmpty(combined) ? null : combined;
+            var clamp = _clampStyle;
+            var tracking = string.IsNullOrWhiteSpace(LetterSpacing)
+                ? null
+                : $"letter-spacing:{Flare.Components.Security.CssValidator.StripDangerous(LetterSpacing)}";
+            return JoinStyle(color, clamp, tracking, BoxStyle, Block ? "display:block" : null, Style);
         }
     }
 }

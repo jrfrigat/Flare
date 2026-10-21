@@ -6,7 +6,7 @@
     <FlareButton OnClick="@(() => Snackbar.Show(GalleryStrings.Snackbar_NoCloseMessage, SnackbarSeverity.Normal, showClose: false))">@GalleryStrings.Snackbar_NoClose</FlareButton>
 </FlareStack>
 
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium" Style="margin-top:0.75rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
     @string.Format(GalleryStrings.Snackbar_LastAction, _lastAction)
 </FlareText>
 

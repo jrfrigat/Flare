@@ -173,6 +173,11 @@
     [Parameter] public double? Init { get; set; }
     /// <summary>Size variant (XSmall-XLarge). Controls track thickness and handle height.</summary>
     [Parameter] public TrackSize Size { get; set; } = TrackSize.Xs;
+
+    /// <summary>Length of the slider along its axis, as a CSS length. A horizontal slider fills its
+    /// container by default; set this when it should take a fixed width. A vertical slider's length is
+    /// the theme's default until this is set.</summary>
+    [Parameter] public string? Length { get; set; }
     /// <summary>Accent color of the active track and handle. Role (<c>FlareColor.Primary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token. Default uses the theme primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Icon shown before the track - any provider (a bare string is a Material Symbols name).</summary>
@@ -254,7 +259,17 @@
 
     // Accent color: role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main.
     private string _colorClass => Color.CssClass ?? string.Empty;
-    private string? _rootStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+    private string? _rootStyle
+    {
+        get
+        {
+            var color = Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : null;
+            var length = string.IsNullOrWhiteSpace(Length)
+                ? null
+                : $"{Css.Tokens.Slider.Length}:{Flare.Components.Security.CssValidator.StripDangerous(Length)};";
+            return string.Concat(color, length, Style) is { Length: > 0 } combined ? combined : null;
+        }
+    }
 
     private string _sizeClass => Size switch
     {

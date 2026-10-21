@@ -5,7 +5,7 @@
 @* StartFor/EndFor bind each end to the form: the calendar reports both to the EditForm and shows the
    validation message itself, and a range with only the start picked reads as unfinished. MinDays/MaxDays
    limit the length. ReadOnly shows a range that can be browsed but not changed. *@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:22rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="22rem">
     <EditForm Model="_trip" OnValidSubmit="Book">
         <DataAnnotationsValidator />
         <FlareStack Gap="FlareSpacing.Small">

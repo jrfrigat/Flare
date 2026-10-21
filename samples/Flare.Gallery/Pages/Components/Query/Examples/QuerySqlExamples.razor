@@ -7,10 +7,11 @@
 
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
-        <span>@GalleryStrings.Query_Dialect</span>
-        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Dialects"
-                     Value="@_dialect" ValueChanged="@(value => _dialect = value ?? "SQL Server")"
-                     Style="width: 12rem" />
+        <FlareText Element="span" Inherit>@GalleryStrings.Query_Dialect</FlareText>
+        <FlareStack Width="12rem">
+            <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Dialects"
+                         Value="@_dialect" ValueChanged="@(value => _dialect = value ?? "SQL Server")" />
+        </FlareStack>
     </FlareStack>
 
     @foreach (var scenario in Scenarios)

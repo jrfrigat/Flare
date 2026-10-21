@@ -7,7 +7,7 @@
     <FlareSwitch Value="_collapsed" ValueChanged="OnCollapsedChanged"
                  Label="Collapse to tabs only (SizeMode)" />
 
-    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
         <FlareRibbon SizeMode="@(_collapsed ? RibbonSizeMode.Collapsed : RibbonSizeMode.Full)"
                      OnTabChanged="OnTab">
             <FlareRibbonTab Title="Home">
@@ -69,10 +69,10 @@
                 </FlareRibbonGroup>
             </FlareRibbonTab>
         </FlareRibbon>
-    </div>
+    </FlareCard>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        Last command: <strong>@_status</strong>
+        Last command: <FlareText Element="strong" Inherit>@_status</FlareText>
     </FlareText>
 </FlareStack>
 

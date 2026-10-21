@@ -1,26 +1,29 @@
 @inject ISnackbarService Snackbar
 
 <FlareStack Gap="FlareSpacing.None">
-    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
         <FlareButton @ref="_darkTrigger" OnClick="OpenDark">Show dark overlay</FlareButton>
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _loadingOpen = true)">Show loading overlay</FlareButton>
     </FlareStack>
-    <FlareCard Style="position:relative;height:6rem;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-small);overflow:hidden;display:flex;align-items:center;justify-content:center;">
-        <FlareText Typo="TypographyScale.BodyMedium">Scoped overlay area - click button above to overlay it</FlareText>
+    <FlareCard Variant="CardVariant.Text" Height="6rem" Padding="FlareSpacing.None"
+               Background='FlareColor.Custom("var(--flare-color-surface-container-low)")'>
+        <FlareStack Row Height="100%" Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center" Gap="FlareSpacing.None">
+            <FlareText Typo="TypographyScale.BodyMedium">Scoped overlay area - click button above to overlay it</FlareText>
+        </FlareStack>
         <FlareOverlay Open="@_loadingOpen" Absolute="true" Opacity="0.7" OnBackdropClick="@(() => _loadingOpen = false)">
-            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="color:white;">
+            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Foreground='FlareColor.Custom("#fff")'>
                 <FlareProgressCircular />
-                <FlareText Typo="TypographyScale.LabelMedium" Style="color:white;">Loading…</FlareText>
+                <FlareText Typo="TypographyScale.LabelMedium">Loading…</FlareText>
             </FlareStack>
         </FlareOverlay>
     </FlareCard>
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Click the overlay to dismiss.</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">Click the overlay to dismiss.</FlareText>
     @* The overlay is the backdrop only. The panel inside it wears the dialog role, closes on Escape and
        returns focus to the trigger; a focus trap and scroll lock are FlareDialog's job, not this one's. *@
     <FlareOverlay Open="@_darkOpen" OnBackdropClick="CloseDarkAsync">
         <FlareStack role="dialog" aria-labelledby="overlay-demo-title" tabindex="-1" @onkeydown="HandleDarkKey"
-                    Style="max-width:24rem;margin:6rem auto 0;">
-            <FlareCard Style="padding:1.5rem;">
+                    MaxWidth="24rem" Margin="FlareSpacing.Custom" MarginValue="6rem auto 0">
+            <FlareCard Padding="FlareSpacing.Custom" PaddingValue="1.5rem">
                 <FlareStack Gap="FlareSpacing.Medium">
                     <FlareText id="overlay-demo-title" Typo="TypographyScale.TitleMedium">@GalleryStrings.Overlay_DemoTitle</FlareText>
                     <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Overlay_DemoBody</FlareText>

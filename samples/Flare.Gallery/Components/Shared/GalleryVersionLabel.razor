@@ -5,20 +5,19 @@
 @* The live service-worker build version, shown as a quiet caption pinned in the nav footer so a
    deploy / SW swap is visible at a glance. Marked flare-nav-menu__meta so it disappears when the
    drawer collapses to a mini-rail (where only icons fit). *@
-<div class="@Css.Classes.Navigation.NavMenuMeta">
+<FlareStack Class="@Css.Classes.Navigation.NavMenuMeta">
     <FlareStack Row Align="FlareAlignItems.Center" Justify="FlareJustifyContent.SpaceBetween" Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.LabelSmall">@GalleryStrings.Settings_Version</FlareText>
-        <FlareText Typo="TypographyScale.LabelSmall" title="@VersionText"
-                   Style="font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@VersionText</FlareText>
+        <FlareText Typo="TypographyScale.LabelSmall" Mono MaxLines="1" title="@VersionText">@VersionText</FlareText>
     </FlareStack>
     @if (_updateAvailable)
     {
-        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall" Style="margin-top:0.25rem;">
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.25rem">
             <FlareIconView Value="@MaterialDesign3Icons.Regular.SystemUpdateAlt" Size="0.9rem" Color="FlareColor.Warning" />
             <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.Warning">@GalleryStrings.Settings_UpdateAvailable</FlareText>
         </FlareStack>
     }
-</div>
+</FlareStack>
 
 @code {
     private bool _updateAvailable;

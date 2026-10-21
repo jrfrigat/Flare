@@ -1,16 +1,20 @@
-<FlareStack Style="max-width:36rem;">
+<FlareStack MaxWidth="36rem">
     <FlareRichTextEditor Label="Write something…" ValueChanged="v => _html = v" />
     @if (!string.IsNullOrEmpty(_html))
     {
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
             Output HTML:
         </FlareText>
-        <FlareCard Style="padding:0.5rem;background:var(--flare-color-surface-container);margin-top:0.25rem;">
-            <pre style="margin:0;font-size:0.75rem;overflow-x:auto;white-space:pre-wrap;word-break:break-all;color:var(--flare-color-on-surface);">@_html</pre>
+        <FlareCard Background="@Surface"
+                   Padding="FlareSpacing.Custom" PaddingValue="0.5rem"
+                   MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.25rem">
+            <FlareCodeBlock Value="@_html" Language="html" ReadOnly="true" Wrap="true" />
         </FlareCard>
     }
 </FlareStack>
 
 @code {
     private string? _html;
+
+    private static readonly FlareColor Surface = FlareColor.Custom("var(--flare-color-surface-container)");
 }

@@ -1,20 +1,20 @@
 @inherits LocalizedPage
 
-<div style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-end;">
-    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Align="FlareAlignItems.End">
+    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareQrCode Value="https://github.com/jrfrigat/Flare"
                      Size="180" CornerRadius="0.25" />
-        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">CornerRadius="0.25"</span>
-    </div>
-    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareText Element="span" Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">CornerRadius="0.25"</FlareText>
+    </FlareStack>
+    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareQrCode Value="https://github.com/jrfrigat/Flare"
                      Size="180" CornerRadius="0.4" />
-        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">CornerRadius="0.4"</span>
-    </div>
-    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareText Element="span" Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">CornerRadius="0.4"</FlareText>
+    </FlareStack>
+    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareQrCode Value="https://github.com/jrfrigat/Flare"
                      Size="180" CornerRadius="0.5"
                      ForeColor="#6750A4" BackColor="#F3EFF7" />
-        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">CornerRadius="0.5" (circles)</span>
-    </div>
-</div>
+        <FlareText Element="span" Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">CornerRadius="0.5" (circles)</FlareText>
+    </FlareStack>
+</FlareStack>

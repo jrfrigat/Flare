@@ -1,11 +1,10 @@
-<div style="display:flex;flex-wrap:wrap;gap:1rem;">
+<FlareGrid MinColumnWidth="12rem" AutoFit="true" Gap="FlareSpacing.Medium">
     @foreach (var plan in _plans)
     {
         <FlareCard Variant="CardVariant.Outlined"
                    Selectable="true"
                    Selected="_selected.Contains(plan)"
-                   OnSelectionChange="@(v => Toggle(plan, v))"
-                   Style="flex:1 1 12rem;min-width:12rem;">
+                   OnSelectionChange="@(v => Toggle(plan, v))">
             <FlareCardHeader Title="@plan" Subtitle="Click to select" />
             <FlareCardContent>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
@@ -14,9 +13,9 @@
             </FlareCardContent>
         </FlareCard>
     }
-</div>
+</FlareGrid>
 
-<FlareText Typo="TypographyScale.BodyMedium" Style="margin-top:1rem;">
+<FlareText Typo="TypographyScale.BodyMedium" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1rem">
     Selected: @(_selected.Count == 0 ? "none" : string.Join(", ", _selected))
 </FlareText>
 

@@ -3,7 +3,7 @@
 <FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
     <FlareTabs Typo="_typo">
         <HeaderStart>
-            <FlareText Typo="TypographyScale.TitleMedium" Style="padding-inline:0.5rem">Project</FlareText>
+            <FlareText Typo="TypographyScale.TitleMedium" PaddingInlineStart="FlareSpacing.Custom" PaddingInlineStartValue="0.5rem" PaddingInlineEnd="FlareSpacing.Custom" PaddingInlineEndValue="0.5rem">Project</FlareText>
         </HeaderStart>
         <HeaderEnd>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => Snackbar.Show("Refresh"))">
@@ -29,7 +29,9 @@
         </ChildContent>
     </FlareTabs>
 
-    <FlareSelect TValue="TypographyScale" @bind-Value="_typo" Items="_typoValues" Label="Label Typo" Style="max-width:18rem" />
+    <FlareStack MaxWidth="18rem">
+        <FlareSelect TValue="TypographyScale" @bind-Value="_typo" Items="_typoValues" Label="Label Typo" />
+    </FlareStack>
 </FlareStack>
 
 @code {

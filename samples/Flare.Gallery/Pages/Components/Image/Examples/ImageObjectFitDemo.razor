@@ -3,14 +3,16 @@
 <FlareStack Row Wrap Gap="FlareSpacing.Medium">
     <FlareStack Align="FlareAlignItems.Center">
         <FlareImage Src="https://picsum.photos/seed/cover/300/200" Alt="Cover" Width="180px" Height="120px" ObjectFit="ImageObjectFit.Cover" BorderRadius="0.5rem" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.25rem">Cover</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.25rem">Cover</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center">
-        <FlareImage Src="https://picsum.photos/seed/contain/300/200" Alt="Contain" Width="180px" Height="120px" ObjectFit="ImageObjectFit.Contain" BorderRadius="0.5rem" Style="background:var(--flare-color-surface-container);" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.25rem">Contain</FlareText>
+        <FlareStack Background="@(FlareColor.Custom("var(--flare-color-surface-container)"))">
+            <FlareImage Src="https://picsum.photos/seed/contain/300/200" Alt="Contain" Width="180px" Height="120px" ObjectFit="ImageObjectFit.Contain" BorderRadius="0.5rem" />
+        </FlareStack>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.25rem">Contain</FlareText>
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center">
         <FlareImage Src="https://picsum.photos/seed/fill/300/200" Alt="Fill" Width="180px" Height="120px" ObjectFit="ImageObjectFit.Fill" BorderRadius="0.5rem" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.25rem">Fill</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.25rem">Fill</FlareText>
     </FlareStack>
 </FlareStack>

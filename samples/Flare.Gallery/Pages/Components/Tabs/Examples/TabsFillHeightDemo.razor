@@ -11,7 +11,7 @@
     @* The chain in full. The outer box SUPPLIES the first height and therefore does NOT fill - in a page
        that box is FlareLayoutContent. Everything below it spends what it was given: card, tab set, grid.
        Miss one link and the chain collapses back to content height, which is what the switch shows. *@
-    <FlarePaper Elevation="1" Style="height:24rem">
+    <FlareCard Variant="CardVariant.Elevated" Height="24rem" Padding="FlareSpacing.None">
         <FlareCard Variant="CardVariant.Text" FillHeight="_fill">
         <FlareTabs FillHeight="_fill">
             <FlareTab Label="Orders">
@@ -31,7 +31,7 @@
             </FlareTab>
         </FlareTabs>
         </FlareCard>
-    </FlarePaper>
+    </FlareCard>
 </FlareStack>
 
 @code {

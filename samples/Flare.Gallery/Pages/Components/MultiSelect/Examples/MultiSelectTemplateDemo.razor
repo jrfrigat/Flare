@@ -1,16 +1,17 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareMultiSelect TValue="string"
-                      @bind-Values="_selected"
-                      Items="_langs"
-                      Label="Languages"
-                      Placeholder="Pick languages"
-                      Chips="true"
-                      Style="max-width:24rem;">
-        <ItemTemplate>
-            <FlareIconView Value="@MaterialDesign3Icons.Regular.Code" Color="FlareColor.Primary" />
-            <span>@context</span>
-        </ItemTemplate>
-    </FlareMultiSelect>
+    <FlareStack MaxWidth="24rem">
+        <FlareMultiSelect TValue="string"
+                          @bind-Values="_selected"
+                          Items="_langs"
+                          Label="Languages"
+                          Placeholder="Pick languages"
+                          Chips="true">
+            <ItemTemplate>
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Code" Color="FlareColor.Primary" />
+                <FlareText Element="span" Inherit>@context</FlareText>
+            </ItemTemplate>
+        </FlareMultiSelect>
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         Selected: @(_selected.Count == 0 ? "-" : string.Join(", ", _selected))
     </FlareText>

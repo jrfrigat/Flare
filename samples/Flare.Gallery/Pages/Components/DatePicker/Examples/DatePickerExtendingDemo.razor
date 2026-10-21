@@ -4,7 +4,7 @@
 @* DayTemplate fills the day cell (here: a mark under days with events) while the picker keeps the cell's
    button, full-date label, focus and selection. ParseInput replaces the built-in parser: the field takes
    free text and reads it on change; a null result keeps the value. *@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:22rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="22rem">
     <FlareStack Gap="FlareSpacing.XSmall">
         <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.DpDemo_EventsLabel</FlareText>
         <FlareDatePicker @bind-Value="_day" Inline="true" DayTemplate="DayWithEvent" />
@@ -21,7 +21,7 @@
     private readonly HashSet<DateOnly> _events = [Today.AddDays(2), Today.AddDays(5), Today.AddDays(9)];
 
     private RenderFragment DayWithEvent(DateOnly day) => @<FlareStack Gap="FlareSpacing.None" Align="FlareAlignItems.Center">
-        <span>@day.Day</span>
+        <FlareText Element="span" Inherit>@day.Day</FlareText>
         @if (_events.Contains(day))
         {
             <FlareText Color="FlareColor.Primary" Typo="TypographyScale.LabelSmall">&#8226;</FlareText>

@@ -1,11 +1,12 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareSelect TValue="CountryItem"
-                 @bind-Value="_selectedCountry"
-                 Label="Country"
-                 Items="_countries"
-                 ItemLabel="@(c => c.Name)"
-                 GroupBy="@(c => c.Continent)"
-                 Style="max-width:24rem;" />
+    <FlareStack MaxWidth="24rem">
+        <FlareSelect TValue="CountryItem"
+                     @bind-Value="_selectedCountry"
+                     Label="Country"
+                     Items="_countries"
+                     ItemLabel="@(c => c.Name)"
+                     GroupBy="@(c => c.Continent)" />
+    </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         Selected: @_selectedCountry?.Name
     </FlareText>

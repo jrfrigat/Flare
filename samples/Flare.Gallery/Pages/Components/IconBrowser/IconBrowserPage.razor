@@ -13,7 +13,7 @@
 
 
 @* Tab bar *@
-<FlareStack Row Gap="FlareSpacing.XSmall" Style="margin-bottom:1.25rem;">
+<FlareStack Row Gap="FlareSpacing.XSmall" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1.25rem">
     <FlareButton Variant="@(_tab == "svg" ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                  OnClick="@(() => SetTab("svg"))">
         @GalleryStrings.Icons_SvgPack
@@ -25,10 +25,10 @@
 </FlareStack>
 
 @* Search + count *@
-<FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" Wrap="true" Style="margin-bottom:1rem;">
-    <FlareField @bind-Value="_search"
-                Placeholder="@GalleryStrings.Icons_Search"
-                Style="max-width:22rem;" />
+<FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" Wrap="true" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="1rem">
+    <FlareStack MaxWidth="22rem">
+        <FlareField @bind-Value="_search" Placeholder="@GalleryStrings.Icons_Search" />
+    </FlareStack>
     <FlareChip Label="@string.Format(GalleryStrings.Icons_TotalCount, _tab == "svg" ? _filtered.Count : _materialFiltered.Length)" />
     @if (_copiedName is not null)
     {
@@ -39,34 +39,42 @@
 @* Built-in FlareIcons grid (dependency-free SVG) *@
 @if (_tab == "svg")
 {
-    <div class="icon-browser-grid">
+    <FlareGrid MinColumnWidth="7rem" Gap="FlareSpacing.XSmall">
         @foreach (var name in _filtered)
         {
-            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint"
-                    @onclick="@(() => CopyUsage($"<FlareIconView Value=\"@FlareIcons.{Pascal(name)}\" />", name))">
-                <FlareIconView Value="@(FlareIcons.Find(name)!)" SizePx="28" />
-                <span class="icon-card__label">@name</span>
-            </button>
+            <FlareCard Variant="CardVariant.Outlined" title="@GalleryStrings.Icons_CopyHint"
+                       Padding="FlareSpacing.Custom" PaddingValue="0.75rem 0.5rem" MinHeight="5.5rem"
+                       OnClick="@(() => CopyUsage($"<FlareIconView Value=\"@FlareIcons.{Pascal(name)}\" />", name))">
+                <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                    <FlareIconView Value="@(FlareIcons.Find(name)!)" SizePx="28" />
+                    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant"
+                               Align="TextAlign.Center" Width="100%">@name</FlareText>
+                </FlareStack>
+            </FlareCard>
         }
-    </div>
+    </FlareGrid>
 }
 
 @* Material Symbols grid (MaterialDesign3.Svg catalog, rendered as inline SVG) *@
 @if (_tab == "material")
 {
-    <div class="icon-browser-grid">
+    <FlareGrid MinColumnWidth="7rem" Gap="FlareSpacing.XSmall">
         @foreach (var t in _materialFiltered)
         {
-            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint"
-                    @onclick="@(() => CopyUsage($"<FlareIconView Value=\"@MaterialDesign3Icons.Regular.{t.Member}\" />", t.Name))">
-                <FlareIconView Value="@t.Icon" SizePx="28" />
-                <span class="icon-card__label">@t.Name</span>
-            </button>
+            <FlareCard Variant="CardVariant.Outlined" title="@GalleryStrings.Icons_CopyHint"
+                       Padding="FlareSpacing.Custom" PaddingValue="0.75rem 0.5rem" MinHeight="5.5rem"
+                       OnClick="@(() => CopyUsage($"<FlareIconView Value=\"@MaterialDesign3Icons.Regular.{t.Member}\" />", t.Name))">
+                <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                    <FlareIconView Value="@t.Icon" SizePx="28" />
+                    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant"
+                               Align="TextAlign.Center" Width="100%">@t.Name</FlareText>
+                </FlareStack>
+            </FlareCard>
         }
-    </div>
+    </FlareGrid>
 }
 
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:1.5rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1.5rem">
     @GalleryStrings.Icons_CopyHint
 </FlareText>
 

@@ -2,20 +2,25 @@
    Clicking a chip sets both dates; the active range is highlighted. Pass Presets to
    provide a custom set. *@
 <FlareStack Gap="FlareSpacing.Large">
-    <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
-                          Label="Report period" ShowPresets="true"
-                          Style="max-width:36rem;" />
+    <FlareStack MaxWidth="36rem">
+        <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
+                              Label="Report period" ShowPresets="true" />
+    </FlareStack>
 
-    <FlareDateRangePicker @bind-StartDate="_qStart" @bind-EndDate="_qEnd"
-                          Label="Custom presets (quarters)" ShowPresets="true"
-                          Presets="_quarters" Style="max-width:36rem;" />
+    <FlareStack MaxWidth="36rem">
+        <FlareDateRangePicker @bind-StartDate="_qStart" @bind-EndDate="_qEnd"
+                              Label="Custom presets (quarters)" ShowPresets="true"
+                              Presets="_quarters" />
+    </FlareStack>
 
     @* Keep the built-in presets and append your own: spread FlareDateRangePicker.DefaultPresets. *@
-    <FlareDateRangePicker @bind-StartDate="_cStart" @bind-EndDate="_cEnd"
-                          Label="Built-in + custom" ShowPresets="true"
-                          Presets="_combined" Style="max-width:36rem;" />
+    <FlareStack MaxWidth="36rem">
+        <FlareDateRangePicker @bind-StartDate="_cStart" @bind-EndDate="_cEnd"
+                              Label="Built-in + custom" ShowPresets="true"
+                              Presets="_combined" />
+    </FlareStack>
 </FlareStack>
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
     @if (_start.HasValue || _end.HasValue)
     {
         @($"{_start?.ToString("dd MMM yyyy") ?? "-"} -> {_end?.ToString("dd MMM yyyy") ?? "-"}")

@@ -1,6 +1,6 @@
 @* Suggestions offers a static list filtered as you type; SearchFunc supplies them
    asynchronously (server-side). Already-added tags are excluded automatically. *@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:32rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="32rem">
     <FlareTagField @bind-Values="_skills" Label="Skills (static suggestions)"
                    Suggestions="_allSkills" Placeholder="Type to search…" />
 

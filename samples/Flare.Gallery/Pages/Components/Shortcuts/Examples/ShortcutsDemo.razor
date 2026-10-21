@@ -6,16 +6,22 @@
 <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
     <FlareText Typo="TypographyScale.LabelMedium">Press a shortcut to activate it:</FlareText>
     <FlareStack Row Wrap Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
-        <kbd style="background:var(--flare-color-surface-container-high);padding:0.2rem 0.5rem;border-radius:4px;font-family:monospace;">Ctrl+S</kbd>
+        <FlareText Element="kbd" Mono="true" Inherit="true"
+                   Background="@(FlareColor.Custom("var(--flare-color-surface-container-high)"))"
+                   Padding="FlareSpacing.Custom" PaddingValue="0.2rem 0.5rem">Ctrl+S</FlareText>
         <FlareText Typo="TypographyScale.BodySmall">Save</FlareText>
     </FlareStack>
     <FlareStack Row Wrap Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
-        <kbd style="background:var(--flare-color-surface-container-high);padding:0.2rem 0.5rem;border-radius:4px;font-family:monospace;">Ctrl+K</kbd>
+        <FlareText Element="kbd" Mono="true" Inherit="true"
+                   Background="@(FlareColor.Custom("var(--flare-color-surface-container-high)"))"
+                   Padding="FlareSpacing.Custom" PaddingValue="0.2rem 0.5rem">Ctrl+K</FlareText>
         <FlareText Typo="TypographyScale.BodySmall">Open search</FlareText>
     </FlareStack>
     @if (!string.IsNullOrEmpty(_fired))
     {
-        <FlareAlert Severity="AlertSeverity.Info" Style="margin-top:0.25rem;">Fired: @_fired</FlareAlert>
+        <FlareStack MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.25rem">
+            <FlareAlert Severity="AlertSeverity.Info">Fired: @_fired</FlareAlert>
+        </FlareStack>
     }
 </FlareStack>
 

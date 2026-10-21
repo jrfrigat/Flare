@@ -1,4 +1,4 @@
-<FlareStack Style="max-width:32rem;">
+<FlareStack MaxWidth="32rem">
     <FlareList TItem="ListRow" Virtual="true" Items="_bigList" Height="320px" OverscanCount="6">
         <ItemTemplate Context="row">
             <FlareListItem Primary="@row.Name" Secondary="@row.Email">
@@ -7,7 +7,7 @@
             </FlareListItem>
         </ItemTemplate>
     </FlareList>
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.5rem">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
         @_bigList.Count items - only visible rows are rendered.
     </FlareText>
 </FlareStack>

@@ -43,11 +43,23 @@
                     tabindex="@(isFocusTarget ? "-1" : null)">
                     @if (!isLast && item.Href is not null && !item.Disabled && Flare.Components.Security.CssValidator.IsHrefSafe(item.Href))
                     {
-                        <a class="@Css.Classes.Breadcrumb.Link" href="@item.Href">@item.Text</a>
+                        <a class="@Css.Classes.Breadcrumb.Link" href="@item.Href">
+                            @if (item.Icon is not null)
+                            {
+                                <FlareIconView Value="@item.Icon" Size="1rem" />
+                            }
+                            @item.Text
+                        </a>
                     }
                     else
                     {
-                        <span class="@Css.Classes.Breadcrumb.Text" aria-current="@(isLast ? "page" : null)">@item.Text</span>
+                        <span class="@Css.Classes.Breadcrumb.Text" aria-current="@(isLast ? "page" : null)">
+                            @if (item.Icon is not null)
+                            {
+                                <FlareIconView Value="@item.Icon" Size="1rem" />
+                            }
+                            @item.Text
+                        </span>
                     }
                     @if (!isLast)
                     {

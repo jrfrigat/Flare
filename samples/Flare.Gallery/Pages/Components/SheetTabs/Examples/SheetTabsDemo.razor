@@ -4,15 +4,16 @@
    controlled: bind Sheets and ActiveIndex and handle OnAddSheet. The panel below reflects the
    active sheet. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <FlarePaper Elevation="0"
-                Style="height:120px;display:flex;align-items:center;justify-content:center;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
-        <FlareText Typo="TypographyScale.TitleMedium">@_sheets[_active]</FlareText>
-    </FlarePaper>
+    <FlareCard Variant="CardVariant.Outlined" Height="120px" Padding="FlareSpacing.None">
+        <FlareStack FillHeight="true" Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center">
+            <FlareText Typo="TypographyScale.TitleMedium">@_sheets[_active]</FlareText>
+        </FlareStack>
+    </FlareCard>
 
     <FlareSheetTabs Sheets="_sheets" @bind-ActiveIndex="_active" OnAddSheet="AddSheet" />
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        Active sheet @(_active + 1) of @_sheets.Count - click <strong>+</strong> to add another.
+        Active sheet @(_active + 1) of @_sheets.Count - click <FlareText Element="strong" Inherit>+</FlareText> to add another.
     </FlareText>
 </FlareStack>
 

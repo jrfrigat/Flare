@@ -1,5 +1,5 @@
-<FlareStack Style="max-width:32rem;">
-    <FlareCard Variant="CardVariant.Outlined" Style="height:380px;overflow-y:auto;padding:0;">
+<FlareStack MaxWidth="32rem">
+    <FlareCard Variant="CardVariant.Outlined" Height="380px" Padding="FlareSpacing.Custom" PaddingValue="0" Overflow="auto">
         <FlareInfiniteScroll OnLoadMore="LoadMore" HasMore="@_hasMore" RootMargin="120px">
             <ChildContent>
                 <FlareList TItem="object">
@@ -12,17 +12,17 @@
                 </FlareList>
             </ChildContent>
             <LoadingContent>
-                <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Style="padding:1rem;justify-content:center;">
+                <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Padding="FlareSpacing.Custom" PaddingValue="1rem" Justify="FlareJustifyContent.Center">
                     <FlareProgressCircular Size="TrackSize.Xs" />
                     <FlareText Typo="TypographyScale.BodySmall">Loading more…</FlareText>
                 </FlareStack>
             </LoadingContent>
             <EndContent>
-                <FlareText Typo="TypographyScale.BodySmall" Align="TextAlign.Center" Style="padding:1rem;display:block;">You've reached the end</FlareText>
+                <FlareText Typo="TypographyScale.BodySmall" Align="TextAlign.Center" Padding="FlareSpacing.Custom" PaddingValue="1rem" Block>You've reached the end</FlareText>
             </EndContent>
         </FlareInfiniteScroll>
     </FlareCard>
-    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.5rem">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
         Scroll to the bottom to load more. @_feed.Count items loaded.
     </FlareText>
 </FlareStack>

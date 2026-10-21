@@ -1,6 +1,6 @@
 @* A duration, not a clock. The largest shown segment absorbs everything above it, which is why the
    hours-only field reads 50 rather than 2 for the same value. *@
-<FlareStack Gap="FlareSpacing.Large" Style="max-width:32rem;">
+<FlareStack Gap="FlareSpacing.Large" MaxWidth="32rem">
 
     <FlareTimeSpanPicker @bind-Value="_estimate"
                          Units="TimeSpanUnits.All"
@@ -20,9 +20,9 @@
                          HelperText="@GalleryStrings.TimeSpanDemo_VarianceHelp" />
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
-        <code>@(_estimate?.ToString() ?? "null")</code> ·
-        <code>@(_working?.ToString() ?? "null")</code> ·
-        <code>@(_variance?.ToString() ?? "null")</code>
+        <FlareCode>@(_estimate?.ToString() ?? "null")</FlareCode> ·
+        <FlareCode>@(_working?.ToString() ?? "null")</FlareCode> ·
+        <FlareCode>@(_variance?.ToString() ?? "null")</FlareCode>
     </FlareText>
 </FlareStack>
 

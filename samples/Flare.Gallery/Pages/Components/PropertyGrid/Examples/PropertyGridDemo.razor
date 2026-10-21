@@ -3,9 +3,9 @@
 @* FlarePropertyGrid / FlarePropertyGridItem: a name/value property sheet whose values are plain text
    or any editor. Here each row hosts a real Flare input (field, select, checkbox, switch, numeric)
    bound to a model, and the property sheet drives the live FlareButton preview on the right. *@
-<div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start;">
-    <FlarePropertyGrid Title="button1 (FlareButton)"
-                       Style="width:320px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
+<FlareStack Row="true" Wrap="true" Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareCard Variant="CardVariant.Outlined" Width="320px" Padding="FlareSpacing.None">
+        <FlarePropertyGrid Title="button1 (FlareButton)">
         <FlarePropertyGridItem Name="(Name)" Value="button1" />
         <FlarePropertyGridItem Name="Text">
             <FlareField TValue="string" Size="FieldSize.Sm" @bind-Value="_text" />
@@ -24,24 +24,30 @@
         <FlarePropertyGridItem Name="Visible">
             <FlareSwitch @bind-Value="_visible" />
         </FlarePropertyGridItem>
-    </FlarePropertyGrid>
+        </FlarePropertyGrid>
+    </FlareCard>
 
-    <FlarePaper Elevation="0"
-                Style="flex:1;min-width:220px;min-height:180px;display:flex;align-items:center;justify-content:center;border:1px dashed var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
-        @if (_visible)
-        {
-            <FlareButton Variant="_variant" Disabled="_disabled" Style="@($"width:{_width}px;")">
-                @(_text ?? "")
-            </FlareButton>
-        }
-        else
-        {
-            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
-                Visible = false
-            </FlareText>
-        }
-    </FlarePaper>
-</div>
+    <FlareStack FlexGrow="1" MinWidth="220px" MinHeight="180px">
+        <FlarePaper Outlined="true" FillHeight="true">
+            <FlareStack FillHeight="true" Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center">
+                @if (_visible)
+                {
+                    <FlareStack Width="@($"{_width}px")">
+                        <FlareButton Variant="_variant" Disabled="_disabled">
+                            @(_text ?? "")
+                        </FlareButton>
+                    </FlareStack>
+                }
+                else
+                {
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                        Visible = false
+                    </FlareText>
+                }
+            </FlareStack>
+        </FlarePaper>
+    </FlareStack>
+</FlareStack>
 
 @code {
     private string? _text = "Click me";

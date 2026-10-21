@@ -1,17 +1,19 @@
-<FlareStack Style="max-width:32rem;">
+<FlareStack MaxWidth="32rem">
     <FlareFileUploadZone Multiple="true" Accept=".jpg,.png,.pdf,.docx" OnFilesChanged="HandleFiles" />
     @if (_files.Count > 0)
     {
-        <FlareStack Gap="FlareSpacing.XSmall" Style="margin-top:1rem;">
-            <FlareText Typo="TypographyScale.LabelMedium" Style="margin-bottom:0.5rem;">Selected files:</FlareText>
-            <FlareList TItem="object" Style="border:1px solid var(--flare-color-outline-variant);">
-                @foreach (var f in _files)
-                {
-                    <FlareListItem Primary="@f.Name" Secondary="@($"{f.Size / 1024} KB · {f.ContentType}")">
-                        <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.Description" /></Leading>
-                    </FlareListItem>
-                }
-            </FlareList>
+        <FlareStack Gap="FlareSpacing.XSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="1rem">
+            <FlareText Typo="TypographyScale.LabelMedium" MarginBlockEnd="FlareSpacing.Custom" MarginBlockEndValue="0.5rem">Selected files:</FlareText>
+            <FlareCard Variant="CardVariant.Outlined" Padding="FlareSpacing.None">
+                <FlareList TItem="object">
+                    @foreach (var f in _files)
+                    {
+                        <FlareListItem Primary="@f.Name" Secondary="@($"{f.Size / 1024} KB · {f.ContentType}")">
+                            <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.Description" /></Leading>
+                        </FlareListItem>
+                    }
+                </FlareList>
+            </FlareCard>
         </FlareStack>
     }
 </FlareStack>

@@ -1,7 +1,7 @@
 <FlareCalendar Events="_events" MondayFirst="true" MonthCount="2" MaxVisibleEvents="2"
                InitialDate="_initial" OnEventClick="@(e => _clicked = e.Title)" />
 
-<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.5rem">
     Two months · Monday first · max 2 events/day · clicked: @(_clicked ?? "-")
 </FlareText>
 

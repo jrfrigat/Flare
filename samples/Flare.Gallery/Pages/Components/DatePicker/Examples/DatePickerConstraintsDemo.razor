@@ -1,23 +1,27 @@
 @inherits LocalizedPage
 
-<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:36rem;">
-    <FlareDatePicker @bind-Value="_date" Label="@GalleryStrings.DpDemo_ThisMonthLabel"
-                     Min="_min" Max="_max"
-                     HelperText="@GalleryStrings.DpDemo_ThisMonthHelper"
-                     TodayText="@GalleryStrings.DpDemo_TodayText" ClearText="@GalleryStrings.DpDemo_ClearText"
-                     ShowTodayButton="true" ShowClearButton="true"
-                     Style="flex:1;min-width:14rem;" />
-    <FlareDatePicker @bind-Value="_weekday" Label="@GalleryStrings.DpDemo_WeekdaysLabel"
-                     IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)"
-                     HelperText="@GalleryStrings.DpDemo_WeekdaysHelper"
-                     Style="flex:1;min-width:14rem;" />
-    <FlareDatePicker @bind-Value="_localized" Label="@GalleryStrings.DpDemo_GermanLabel"
-                     Culture="_deCulture"
-                     HelperText="@GalleryStrings.DpDemo_GermanHelper"
-                     Style="flex:1;min-width:14rem;" />
-    <FlareDatePicker @bind-Value="_required" Label="@GalleryStrings.DpDemo_RequiredLabel"
-                     ErrorText="@(_required is null ? GalleryStrings.DpDemo_RequiredError : null)" HasError="_required is null"
-                     Style="flex:1;min-width:14rem;" />
+<FlareStack Row Wrap Gap="FlareSpacing.Large" MaxWidth="36rem">
+    <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareDatePicker @bind-Value="_date" Label="@GalleryStrings.DpDemo_ThisMonthLabel"
+                         Min="_min" Max="_max"
+                         HelperText="@GalleryStrings.DpDemo_ThisMonthHelper"
+                         TodayText="@GalleryStrings.DpDemo_TodayText" ClearText="@GalleryStrings.DpDemo_ClearText"
+                         ShowTodayButton="true" ShowClearButton="true" />
+    </FlareStack>
+    <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareDatePicker @bind-Value="_weekday" Label="@GalleryStrings.DpDemo_WeekdaysLabel"
+                         IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)"
+                         HelperText="@GalleryStrings.DpDemo_WeekdaysHelper" />
+    </FlareStack>
+    <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareDatePicker @bind-Value="_localized" Label="@GalleryStrings.DpDemo_GermanLabel"
+                         Culture="_deCulture"
+                         HelperText="@GalleryStrings.DpDemo_GermanHelper" />
+    </FlareStack>
+    <FlareStack FlexGrow="1" MinWidth="14rem">
+        <FlareDatePicker @bind-Value="_required" Label="@GalleryStrings.DpDemo_RequiredLabel"
+                         ErrorText="@(_required is null ? GalleryStrings.DpDemo_RequiredError : null)" HasError="_required is null" />
+    </FlareStack>
 </FlareStack>
 
 @code {

@@ -4,7 +4,7 @@
    of labelled actions hangs half its width past the edge the button sits against. The words are
    Placement's - the same a FlarePopover takes - so the two read alike. *@
 <FlareStack Row Gap="FlareSpacing.XLarge" Wrap Align="FlareAlignItems.End" Justify="FlareJustifyContent.SpaceAround"
-            Style="min-height:14rem;padding:9rem 1rem 1rem;">
+            MinHeight="14rem" Padding="FlareSpacing.Custom" PaddingValue="9rem 1rem 1rem">
     @foreach (var (placement, caption) in _cases)
     {
         <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">

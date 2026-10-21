@@ -1,14 +1,18 @@
-<FlareStack Gap="FlareSpacing.Medium" Style="max-width:34rem;">
+<FlareStack Gap="FlareSpacing.Medium" MaxWidth="34rem">
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
         The card below is not fetched until it scrolls into view. FlareLazy raises
-        <strong>OnRevealed</strong>, which starts the (simulated) load; a skeleton holds the space
+        <FlareText Element="strong" Inherit>OnRevealed</FlareText>, which starts the (simulated) load; a skeleton holds the space
         until then, and a spinner shows while the data arrives.
     </FlareText>
 
     @* Spacer so the lazy block starts below the fold and the reveal is observable. *@
-    <div style="height:38vh;border:1px dashed var(--flare-color-outline-variant);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-        <FlareText Color="FlareColor.OnSurfaceVariant">Scroll down to reveal &amp; load the card</FlareText>
-    </div>
+    <FlareStack Height="38vh">
+        <FlarePaper Outlined="true" FillHeight="true" Padding="FlareSpacing.None">
+            <FlareStack FillHeight="true" Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center">
+                <FlareText Color="FlareColor.OnSurfaceVariant">Scroll down to reveal &amp; load the card</FlareText>
+            </FlareStack>
+        </FlarePaper>
+    </FlareStack>
 
     <FlareLazy MinHeight="150px" RootMargin="0px" OnRevealed="LoadAsync">
         <PlaceholderContent>
@@ -18,7 +22,7 @@
             @if (_data is null)
             {
                 <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center"
-                            Style="padding:2.5rem;justify-content:center;">
+                            Padding="FlareSpacing.Custom" PaddingValue="2.5rem" Justify="FlareJustifyContent.Center">
                     <FlareProgressCircular Size="TrackSize.Xs" />
                     <FlareText Typo="TypographyScale.BodySmall">Fetching data on reveal...</FlareText>
                 </FlareStack>
