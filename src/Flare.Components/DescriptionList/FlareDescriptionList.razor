@@ -14,8 +14,9 @@
     [Parameter] public bool Striped { get; set; }
     /// <summary>Draws a divider under every row.</summary>
     [Parameter] public bool Bordered { get; set; }
-    /// <summary>Width of the label column (any CSS length, e.g. "12rem"). When null the column sizes to
-    /// the widest label.</summary>
+    /// <summary>Preferred width of the label column (any CSS length, e.g. "12rem"). The column shrinks
+    /// below it when the panel is narrow. When null the column sizes to the widest label, up to half the
+    /// panel.</summary>
     [Parameter] public string? LabelWidth { get; set; }
 
     /// <summary>The component's root CSS class.</summary>
@@ -24,8 +25,10 @@
     private string _stripedClass => Striped ? Css.Classes.DescriptionList.Striped : string.Empty;
     private string _borderedClass => Bordered ? Css.Classes.DescriptionList.Bordered : string.Empty;
 
-    // LabelWidth overrides the auto label column; GS-3: sanitize the user-supplied length.
+    // LabelWidth overrides the auto label column; GS-3: sanitize the user-supplied length. It is the
+    // preferred width, not a floor: capping it at half the panel lets a narrow parent shrink the column
+    // instead of starving the value.
     private string? _style => LabelWidth is not null
-        ? $"grid-template-columns:{Flare.Components.Security.CssValidator.StripDangerous(LabelWidth)} 1fr;{Style}"
+        ? $"grid-template-columns:minmax(0, min({Flare.Components.Security.CssValidator.StripDangerous(LabelWidth)}, 50%)) minmax(0, 1fr);{Style}"
         : Style;
 }

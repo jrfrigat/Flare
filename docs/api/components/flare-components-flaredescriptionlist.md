@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `Bordered` | `bool` | `false` | Parameter |  | Draws a divider under every row. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The rows, typically FlareDescriptionItem components. |
-| `LabelWidth` | `string?` | `` | Parameter |  | Width of the label column (any CSS length, e.g. "12rem"). When null the column sizes to the widest label. |
+| `LabelWidth` | `string?` | `` | Parameter |  | Preferred width of the label column (any CSS length, e.g. "12rem"). The column shrinks below it when the panel is narrow. When null the column sizes to the widest label, up to half the panel. |
 | `Striped` | `bool` | `false` | Parameter |  | Tints alternate rows for readability. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

@@ -2399,7 +2399,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Bordered", @"bool", @"false", @"Draws a divider under every row.", null, false, false, false, @"FlareDescriptionList"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The rows, typically FlareDescriptionItem components.", null, false, false, false, @"FlareDescriptionList"),
-                new ApiParameterInfo(@"LabelWidth", @"string?", null, @"Width of the label column (any CSS length, e.g. ""12rem""). When null the column sizes to the widest label.", null, false, false, false, @"FlareDescriptionList"),
+                new ApiParameterInfo(@"LabelWidth", @"string?", null, @"Preferred width of the label column (any CSS length, e.g. ""12rem""). The column shrinks below it when the panel is narrow. When null the column sizes to the widest label, up to half the panel.", null, false, false, false, @"FlareDescriptionList"),
                 new ApiParameterInfo(@"Striped", @"bool", @"false", @"Tints alternate rows for readability.", null, false, false, false, @"FlareDescriptionList"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

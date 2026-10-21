@@ -1,8 +1,11 @@
 /* Read-only key/value panel. The <dl> is a two-column grid; rows use display:contents so every
-   label and value lines up on the shared columns regardless of content width. */
+   label and value lines up on the shared columns regardless of content width. Both tracks start at 0, so
+   a narrow parent shrinks them instead of pushing the content past its edge. */
 .flare-description-list {
     display: grid;
-    grid-template-columns: auto 1fr;
+    /* The label column hugs its text but never takes more than half of the panel; the value keeps the
+       other half. A narrow parent then shrinks both tracks instead of starving the value. */
+    grid-template-columns: minmax(0, fit-content(50%)) minmax(0, 1fr);
     font-size: var(--flare-typescale-body-medium-size);
     line-height: var(--flare-typescale-body-medium-height);
 }
@@ -11,7 +14,9 @@
 
 .flare-description-list__label,
 .flare-description-list__value {
-    padding: var(--flare-spacing-3) var(--flare-spacing-8);
+    /* The inline padding gives way to the cell when the panel is narrow: a fixed 16px on every side of
+       both columns is the one minimum a zero-width track cannot absorb. */
+    padding: var(--flare-spacing-3) min(var(--flare-spacing-8), 10%);
     min-width: 0;
 }
 
@@ -19,7 +24,8 @@
     color: var(--flare-color-on-surface-variant);
     font-weight: var(--flare-typescale-label-large-weight);
     text-align: start;
-    white-space: nowrap;
+    /* A long term wraps instead of widening the column past the panel. */
+    overflow-wrap: anywhere;
 }
 
 .flare-description-list__value {

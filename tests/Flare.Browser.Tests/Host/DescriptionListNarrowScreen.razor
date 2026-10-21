@@ -1,0 +1,28 @@
+@page "/description-list-narrow"
+@inject IThemeService ThemeService
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="narrow" style="width:320px;border:1px solid #ccc">
+        <FlareDescriptionList id="dl" Striped LabelWidth="14rem">
+            <FlareDescriptionItem id="row-long"
+                                  Label="AnExtremelyLongParameterNameThatCannotFitTheColumn">value</FlareDescriptionItem>
+            <FlareDescriptionItem id="row-nested" Label="Lines">
+                <FlareDescriptionList id="nested">
+                    <FlareDescriptionItem Label="ProductId">int</FlareDescriptionItem>
+                    <FlareDescriptionItem Label="Qty">int</FlareDescriptionItem>
+                </FlareDescriptionList>
+            </FlareDescriptionItem>
+        </FlareDescriptionList>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="md3e" @onclick="UseMd3e">MD3E</button>
+        <button id="fluent" @onclick="UseFluent">Fluent</button>
+        <button id="rtl" @onclick="EnableRtl">RTL</button>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    private Task UseMd3e() => ThemeService.SetThemeAsync("md3-expressive");
+    private Task UseFluent() => ThemeService.SetThemeAsync("fluent2");
+    private Task EnableRtl() => ThemeService.SetRtlAsync(true);
+}
