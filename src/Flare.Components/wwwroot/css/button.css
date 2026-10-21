@@ -202,7 +202,6 @@
 .flare-btn--outlined:where(:disabled, [disabled]) {
     border-color: color-mix(in srgb, var(--flare-btn-disabled-stroke) var(--flare-btn-disabled-repaint), var(--_flare-btn-stroke));
 }
-}
 
 /* Edge alignment (ButtonEdge): pull an icon/toggle button toward the container edge so its glyph lines
    up with adjacent content in app bars, toolbars and list-item slots. Generic (not .flare-btn-scoped)
