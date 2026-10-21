@@ -23,12 +23,15 @@ public sealed class DescriptionListNarrowTests(BrowserFixture fixture) : IClassF
         await AssertFitsAsync(page, "320px");
         await AssertFitsAsync(page, "160px");
 
+        // The theme class also lands on <html> from JS, so counting elements that carry it races with the
+        // script. The root's own attribute is written by the render, and it is unique.
+        var themeRoot = page.Locator($".{Css.Classes.Theme.Root}");
         await page.Locator("#md3e").ClickAsync();
-        await Expect(page.Locator("[class*='flare-theme-md3-expressive']")).ToHaveCountAsync(1);
+        await Expect(themeRoot).ToHaveAttributeAsync("data-flare-theme", "md3-expressive");
         await AssertFitsAsync(page, "160px");
 
         await page.Locator("#fluent").ClickAsync();
-        await Expect(page.Locator("[class*='flare-theme-fluent2']")).ToHaveCountAsync(1);
+        await Expect(themeRoot).ToHaveAttributeAsync("data-flare-theme", "fluent2");
         await AssertFitsAsync(page, "160px");
 
         await page.Locator("#rtl").ClickAsync();
