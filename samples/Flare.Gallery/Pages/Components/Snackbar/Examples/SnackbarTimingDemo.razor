@@ -16,7 +16,10 @@
 
     private void ShowPersistent()
     {
-        Snackbar.Show(new SnackbarMessage(_id, GalleryStrings.Snackbar_KeepMessage, SnackbarSeverity.Normal, 0));
+        var message = new SnackbarMessage(_id, GalleryStrings.Snackbar_KeepMessage, SnackbarSeverity.Normal, 0);
+        // A second click must not put a second snackbar with the same id on screen.
+        if (_shown) Snackbar.Update(message);
+        else Snackbar.Show(message);
         _shown = true;
     }
 
