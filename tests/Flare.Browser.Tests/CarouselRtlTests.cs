@@ -18,6 +18,11 @@ public sealed class CarouselRtlTests(BrowserFixture fixture) : IClassFixture<Bro
         });
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/carousel-rtl");
+        // The theme injects the carousel tokens after the first paint; the arrows are positioned by
+        // --flare-carousel-arrow-inset, so measuring before it is live puts both at their static spot.
+        await page.WaitForFunctionAsync(
+            $"() => {{ const el = document.querySelector('.{Css.Classes.Carousel.Root}'); "
+            + $"return el !== null && getComputedStyle(el).getPropertyValue('{Css.Tokens.CarouselField.ArrowInset}').trim() !== ''; }}");
         await page.WaitForFunctionAsync(
             $"() => {{ const el = document.querySelector('.{Css.Classes.Carousel.Root}'); return el !== null && getComputedStyle(el).overflow === 'hidden'; }}");
         await page.WaitForFunctionAsync(
