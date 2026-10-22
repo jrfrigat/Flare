@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Align` | `FlareAlignItems` | `FlareAlignItems.Default` | Parameter |  | Cross-axis alignment of children. |
+| `Block` | `bool` | `false` | Parameter |  | When true, lays the children out in normal block flow instead of a flex column. The box still takes every spacing and size parameter; use it when content should keep its own inline layout - a demo surface with buttons in a row, for example. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Child content rendered inside the stack. |
 | `Gap` | `FlareSpacing` | `FlareSpacing.Medium` | Parameter |  | Spacing between child elements using design-token values. |
 | `GapValue` | `string?` | `` | Parameter |  | Raw CSS gap value used when Gap is Custom. |
@@ -24,6 +25,7 @@
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Contain` | `string?` | `` | Parameter |  | CSS containment for the box - layout, paint, strict or a combination. A frame around a fixed-position app bar uses layout paint so the bar is pinned to the frame instead of the viewport. Inherited from `FlareLayoutBoxBase`. |
 | `FillHeight` | `bool` | `false` | Parameter |  | Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly. The box that SUPPLIES a height does not fill: when Style declares a height of its own, that height wins and this switch is ignored, because the two are contradictory instructions and the written number is the one you can see in the markup. Inherited from `FlareContainerBase`. |
+| `FlexBasis` | `string?` | `` | Parameter |  | The box's starting size along the row's main axis before free space is shared. Null leaves it to the content (auto); 0 is the flex shorthand's basis, where growing children split the free space evenly instead of growing from their content width. Inherited from `FlareLayoutBoxBase`. |
 | `FlexGrow` | `double?` | `` | Parameter |  | How much of a row's spare space the box takes, relative to its siblings. Null leaves it to the layout; 1 makes it share the free space with every other growing child. Inherited from `FlareLayoutBoxBase`. |
 | `Foreground` | `FlareColor` | `` | Parameter |  | The color of the box's content. Default inherits it from the surrounding surface, or takes the background role's on-color when one was set. Inherited from `FlareLayoutBoxBase`. |
 | `Height` | `string?` | `` | Parameter |  | The box's height; any CSS length or percentage. Inherited from `FlareLayoutBoxBase`. |

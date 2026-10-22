@@ -32,6 +32,8 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareColorScope` makes a custom or dynamic `FlareColor` the local color of a subtree, publishing `--fc-main`, `--fc-on`, `--fc-container` and `--fc-on-container` to its descendants.
 - `FlareStack.RootElement` and `FlareCard.RootElement` hand out the rendered element for JS interop that observes or measures the component.
 - Layout boxes also take `Contain` (e.g. `layout paint` to pin a fixed app bar to a frame) and `FlareProgressCircular.Diameter` sizes one ring beyond the shared size step.
+- Layout boxes take `FlexBasis`, and `FlareStack.Block` lays its children out in normal block flow while keeping the box parameters.
+- `FlareOnThisPage` takes the layout box parameters itself (sticky rail, width, max height, overflow), so an empty table of contents no longer reserves a column.
 
 ### Changed
 
@@ -47,9 +49,12 @@ All notable changes to Flare are documented here. This project adheres to
 - A `FlareMeter` legend takes its swatch size from the spacing scale and its value weight from label-medium, so each theme's own type scale reaches the legend instead of a fixed weight.
 - A `FlarePasswordField` judges the password once per render, so a custom `StrengthEvaluator` runs a single time and the meter, its colour and the announced text always agree.
 - A disabled `FlareNavLink` drops its `href`, reports `aria-disabled` and leaves the tab order.
+- A `FlareResizable` handle shows a splitter-style grip at rest, so the drag zone is findable without hover and on touch.
+- `FlareProgressCircular.Diameter` sizes the ring through its size variable, so a theme-drawn wave scales with the ring instead of being masked to the step size.
 
 ### Fixed
 
+- The Material Design 3 circular progress stroke no longer grows to 8px at Lg while Xl stays at 5px: the ramp is 3/3/4/4/5 and a guard checks every theme never shrinks the ring or its stroke as the step grows.
 - `FlarePagination` draws its Previous/Next chevrons in the reading direction and spaces the rows selector with a logical margin.
 - `FlareNavMenu` mirrors the group indent, chevron and active bar in RTL through logical properties.
 - `FlareChip` mirrors the leading avatar and close-button spacing in RTL, and the avatar inset is a component token instead of a literal.

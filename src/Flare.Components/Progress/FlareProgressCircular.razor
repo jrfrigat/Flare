@@ -50,8 +50,8 @@
     /// theme-drawn wave scale together; the content inside the ring keeps its step's size.</summary>
     [Parameter] public string? Diameter { get; set; }
 
-    // The core reads its width/height from --_circ-size, and the MD3 Expressive wave mask is drawn on
-    // the same variable. Overriding the local size (not width/height) keeps both in agreement.
+    // The core reads its width/height from --_circ-size, and a theme-drawn wave mask is drawn on the
+    // same variable. Overriding the local size (not width/height) keeps both in agreement.
     private string? _diameterStyle
     {
         get

@@ -27,6 +27,7 @@ Design-token spacing values for gap, padding, and margin parameters. Maps to pre
 - `FlareDrawer`
 - `FlareGrid`
 - `FlareLayoutDrawer`
+- `FlareOnThisPage`
 - `FlarePaper`
 - `FlareSpacer`
 - `FlareStack`

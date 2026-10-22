@@ -11,7 +11,7 @@ The ring is the half of progress that needs measuring: its radius is the box les
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Content centred inside the ring - a percentage, an icon, a short count. Purely decorative to assistive technology: the indicator already announces its value, so set aria-valuetext on the component when the content says something the value does not. |
-| `Diameter` | `string?` | `` | Parameter |  | The ring's own diameter as a CSS length. Null follows the size step and the theme; set it when one indicator needs a size the shared step does not offer. |
+| `Diameter` | `string?` | `` | Parameter |  | The ring's own diameter as a CSS length. Null follows the size step and the theme; set it when one indicator needs a size the shared step does not offer. The ring and any theme-drawn wave scale together; the content inside the ring keeps its step's size. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Color` | `FlareColor` | `` | Parameter |  | Semantic color applied to the progress indicator. Inherited from `FlareProgressBase`. |
