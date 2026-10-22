@@ -225,4 +225,8 @@
         await FocusCell(0);
         StateHasChanged();
     }
+
+    // Values, callbacks and fragments only: no delegate parameter takes part in the markup.
+    protected override bool SkipsUnchangedParameters => true;
+    protected override bool DelegatesAffectRender => false;
 }

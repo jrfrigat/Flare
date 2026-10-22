@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq.Expressions;
+using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -18,6 +19,83 @@ public class UnchangedParametersTests : FlareTestContext
     private static readonly DateOnly Day = new(2026, 10, 15);
 
     // A page of fields: every render passes each field its value and a new callback lambda, as Razor markup does.
+    private sealed class EditablePage : ComponentBase
+    {
+        public string? Text;
+        public string? OtherText;
+        public int Number;
+        public string Otp = string.Empty;
+
+        protected override void BuildRenderTree(RenderTreeBuilder b)
+        {
+            // Capture a local, as Razor markup does for a loop item: a lambda that captures only `this`
+            // is cached by the compiler, so the callback would be the same instance on every render.
+            var owner = this;
+            b.OpenComponent<FlareTextField>(0);
+            b.AddAttribute(1, nameof(FlareTextField.Value), Text);
+            b.AddAttribute(2, nameof(FlareTextField.ValueChanged),
+                EventCallback.Factory.Create<string?>(owner, value => owner.Text = value));
+            b.CloseComponent();
+
+            b.OpenComponent<FlareTextField>(10);
+            b.AddAttribute(11, nameof(FlareTextField.Value), OtherText);
+            b.AddAttribute(12, nameof(FlareTextField.ValueChanged),
+                EventCallback.Factory.Create<string?>(owner, value => owner.OtherText = value));
+            b.CloseComponent();
+
+            b.OpenComponent<FlareNumericField<int>>(20);
+            b.AddAttribute(21, "Value", Number);
+            b.AddAttribute(22, "ValueChanged",
+                EventCallback.Factory.Create<int>(owner, value => owner.Number = value));
+            b.CloseComponent();
+
+            b.OpenComponent<FlareOtpField>(30);
+            b.AddAttribute(31, "Value", Otp);
+            b.AddAttribute(32, "ValueChanged",
+                EventCallback.Factory.Create<string>(owner, value => owner.Otp = value));
+            b.CloseComponent();
+        }
+    }
+
+    [Fact]
+    public void CommittingAnEditableField_LeavesTheOtherEditableFieldsAlone()
+    {
+        var page = Render<EditablePage>();
+        var texts = page.FindComponents<FlareTextField>();
+        var numeric = page.FindComponents<FlareNumericField<int>>().Single();
+        var otp = page.FindComponents<FlareOtpField>().Single();
+        var (first, second) = (texts[0].RenderCount, texts[1].RenderCount);
+        var (numberCount, otpCount) = (numeric.RenderCount, otp.RenderCount);
+
+        texts[0].Find("input").Change("changed");
+
+        Assert.Equal("changed", page.Instance.Text);
+        Assert.True(texts[0].RenderCount > first);
+        Assert.Equal(second, texts[1].RenderCount);
+        Assert.Equal(numberCount, numeric.RenderCount);
+        Assert.Equal(otpCount, otp.RenderCount);
+    }
+
+    [Fact]
+    public void PasswordStrengthEvaluatorChange_IsRendered()
+    {
+        Func<string?, FlarePasswordStrength> weak = _ => new(1, []);
+        Func<string?, FlarePasswordStrength> strong = _ => new(4, []);
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abc")
+            .Add(x => x.StrengthEvaluator, weak));
+        var count = cut.RenderCount;
+
+        cut.Render(p => p
+            .Add(x => x.ShowStrength, true)
+            .Add(x => x.Value, "abc")
+            .Add(x => x.StrengthEvaluator, strong));
+
+        Assert.True(cut.RenderCount > count);
+        Assert.Contains(FlareStrings.Password_Strong, cut.Find($".{Css.Classes.Input.StrengthLabel}").TextContent);
+    }
+
     private sealed class Page : ComponentBase
     {
         public readonly DateOnly?[] Dates = new DateOnly?[3];

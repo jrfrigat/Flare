@@ -17,6 +17,13 @@ public abstract class FlareEditableFieldBase : FlareFieldBase
     /// to its real input.</summary>
     [Parameter] public bool Autofocus { get; set; }
 
+    /// <summary>An editable field renders from its values, callbacks and fragments; none of the delegate
+    /// parameters is read while rendering, so an unchanged parent push does not redraw it.</summary>
+    protected override bool SkipsUnchangedParameters => true;
+
+    /// <summary>Fields that render a delegate - the password strength evaluator - override this to true.</summary>
+    protected override bool DelegatesAffectRender => false;
+
     /// <summary>Focuses the field's editable control. Each field overrides this to point at its real
     /// input; the default is a no-op so a field that has not wired it is simply unaffected.</summary>
     protected virtual ValueTask FocusCoreAsync() => ValueTask.CompletedTask;
