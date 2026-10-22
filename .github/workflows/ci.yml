@@ -108,6 +108,12 @@ jobs:
         with:
           name: build-output
 
+      # Actions artifacts do not preserve the Unix executable bit, so the apphost the build produced is
+      # 644 after download and dotnet test reports "Zero tests ran" with Permission denied. Restore it on
+      # the apphosts only: the extension-less Flare.*Tests binaries (not their DLLs beside them).
+      - name: Restore the executable bit
+        run: find . -path '*/bin/Release/*' -type f \( -name 'Flare.*Tests' -o -name 'Flare.ApiDocGen' \) ! -name '*.dll' -exec chmod +x {} +
+
       # --no-build runs the compiled artifact; restore is still needed because the test host resolves
       # the Microsoft.Testing.Platform extensions through the generated NuGet props in obj/.
       - name: Restore
@@ -197,6 +203,10 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: build-output
+
+      # Same lost executable bit as the test jobs: dotnet run --no-build starts the ApiDocGen apphost.
+      - name: Restore the executable bit
+        run: find . -path '*/bin/Release/*' -type f \( -name 'Flare.*Tests' -o -name 'Flare.ApiDocGen' \) ! -name '*.dll' -exec chmod +x {} +
 
       - name: Restore
         run: dotnet restore Flare.slnx
