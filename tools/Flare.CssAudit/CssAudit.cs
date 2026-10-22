@@ -135,16 +135,11 @@ public static class CssAudit
             .ToArray();
         var packageCssDirs = packageDirs.Select(d => Path.Combine(d, "wwwroot", "css")).Where(Directory.Exists).ToArray();
         // A package's own variables are audited too, once they have a constants class to resolve them.
-        // Gantt still declares 68 --flare-gantt-* variables only in CSS; registering them is TASK-658,
-        // and until then its stylesheet stays out of the declaration side rather than burying every
-        // other package under findings that card already owns.
         var packageTokenDirs = packageDirs
             .Select(d => Path.Combine(d, "Css", "Tokens"))
             .Where(Directory.Exists)
             .ToArray();
-        bool auditedPackageCss(string dir) =>
-            !dir.Contains($"{Path.DirectorySeparatorChar}Flare.Components.Gantt{Path.DirectorySeparatorChar}", StringComparison.Ordinal);
-        var css = Program.CollectCssTokens(new[] { cssDir }.Concat(packageCssDirs.Where(auditedPackageCss)).ToArray());
+        var css = Program.CollectCssTokens(new[] { cssDir }.Concat(packageCssDirs).ToArray());
         Program.AddComponentCodeTokens(css, Path.Combine(root, "src", "Flare.Components"));
         var used = Program.CollectCssTokens(new[] { cssDir }.Concat(packageCssDirs).ToArray());
         Program.AddComponentCodeTokens(used, Path.Combine(root, "src", "Flare.Components"));

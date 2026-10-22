@@ -763,10 +763,12 @@ internal static class Program
         return map;
     }
 
+    // Internal registries count too: a package whose CSS variables have no C# caller keeps its names
+    // internal rather than growing the public API for the audit's sake.
     private static readonly Regex NestedClassRx =
-        new(@"public\s+static\s+class\s+([A-Za-z_]\w*)", RegexOptions.Compiled);
+        new(@"(?:public|internal)\s+static\s+class\s+([A-Za-z_]\w*)", RegexOptions.Compiled);
     private static readonly Regex ConstRx =
-        new(@"public\s+const\s+string\s+([A-Za-z_]\w*)\s*=\s*""([^""]*)""", RegexOptions.Compiled);
+        new(@"(?:public|internal)\s+const\s+string\s+([A-Za-z_]\w*)\s*=\s*""([^""]*)""", RegexOptions.Compiled);
 
     // Read constants from every per-component partial under CssClasses/ (the monolithic
     // CssClasses.cs is now near-empty after the refactoring).
