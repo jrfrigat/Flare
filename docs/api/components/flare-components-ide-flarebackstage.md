@@ -9,7 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | The content shown for the selected navigation entry. |
-| `CloseLabel` | `string` | `"Close"` | Parameter |  | Accessible label for the back/close button (default "Close"). |
+| `CloseLabel` | `string` | `"Close"` | Parameter |  | Accessible label for the back/close button; defaults to the package's localized text. |
 | `NavContent` | `RenderFragment?` | `` | Parameter |  | Left navigation entries, typically FlareBackstageItem components. |
 | `Open` | `bool` | `false` | Parameter |  | Whether the backstage is shown. |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Raised when the open state changes (e.g. the back arrow closes it). Supports two-way binding. |

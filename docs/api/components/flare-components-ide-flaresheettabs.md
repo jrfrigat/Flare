@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `ActiveIndex` | `int` | `0` | Parameter |  | Zero-based index of the active sheet. |
 | `ActiveIndexChanged` | `EventCallback<int>` | `` | Callback |  | Raised when the active sheet changes. Supports two-way binding. |
-| `AddLabel` | `string` | `"Add sheet"` | Parameter |  | Accessible label for the add button (default "Add sheet"). |
+| `AddLabel` | `string` | `"Add sheet"` | Parameter |  | Accessible label for the add button; defaults to the package's localized text. |
 | `OnAddSheet` | `EventCallback` | `` | Callback |  | Raised when the add button is clicked. |
 | `Sheets` | `IReadOnlyList<string>?` | `` | Parameter |  | The sheet names rendered as tabs, in order. |
 | `ShowAddButton` | `bool` | `true` | Parameter |  | Whether the trailing "add sheet" button is shown (default true). |

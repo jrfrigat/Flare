@@ -20,8 +20,8 @@
 | `LabelPlacement` | `LabelPlacement` | `LabelPlacement.End` | Parameter |  | Label position relative to the checkbox (End = after, Start = before). Default End. |
 | `Size` | `FieldSize` | `FieldSize.Md` | Parameter |  | Control size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what a step measures. |
 | `UncheckedIcon` | `RenderFragment?` | `` | Parameter |  | Custom icon shown when unchecked. |
-| `Value` | `TValue?` | `` | Parameter |  | Whether the box is checked. With TValue="bool?" the value is tri-state and null is the indeterminate ("some of the below") state; with TValue="bool" there are two states and the box can be validated against a plain bool on the model. |
-| `ValueChanged` | `EventCallback<TValue?>` | `` | Callback |  | Callback invoked when the checked state changes. A click always produces true or false - it resolves the indeterminate state rather than cycling back into it. |
+| `Value` | `TValue?` | `` | Parameter |  | Whether the box is checked. TValue is bool for an ordinary two-state box or bool? for a tri-state one; with bool? the value is tri-state and null is the indeterminate ("some of the below") state. The type is the caller's choice, so the value and For always describe the same model property. |
+| `ValueChanged` | `EventCallback<TValue?>` | `` | Callback |  | Callback invoked when the checked state changes. The callback carries TValue, so pass the type to a method group (ValueChanged="Handle" with void Handle(bool value)) or use a typed lambda; otherwise the compiler reports CS1503. A click always produces true or false - it resolves the indeterminate state rather than cycling back into it. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

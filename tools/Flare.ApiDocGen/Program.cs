@@ -131,10 +131,47 @@ enums = enums
     })
     .ToList();
 
+// Supporting types are public classes or records a consumer constructs or reads directly, but that
+// are not components. The list is explicit rather than a heuristic over every public type: the
+// libraries carry dozens of DTOs and internal helpers, and documenting all of them would bury the
+// consumer-facing ones. Add a type here when its members are part of how a component is used.
+string[] supportingTypeNames =
+[
+    "Flare.Components.FlareTableColumn`1",
+    "Flare.Components.DataGridColumn`1",
+];
+
+var allTypes = assemblies
+    .SelectMany(SafeGetTypes)
+    .Where(type => type.FullName is not null)
+    .GroupBy(type => type.FullName!, StringComparer.Ordinal)
+    .ToDictionary(group => group.Key, group => group.First(), StringComparer.Ordinal);
+
+var supportingTypes = new List<SupportingTypeDoc>();
+foreach (var fullName in supportingTypeNames)
+{
+    if (allTypes.TryGetValue(fullName, out var type))
+        supportingTypes.Add(extractor.ExtractSupportingType(type));
+    else
+        Console.WriteLine($"[ApiDocGen] Supporting type not found: {fullName}");
+}
+
+supportingTypes = supportingTypes
+    .Select(supporting => supporting with
+    {
+        UsedBy = components
+            .Where(component => component.Parameters.Any(parameter =>
+                parameter.Type.Contains(supporting.Name, StringComparison.Ordinal)))
+            .Select(component => component.Name)
+            .OrderBy(name => name, StringComparer.Ordinal)
+            .ToList()
+    })
+    .ToList();
+
 Console.WriteLine($"[ApiDocGen] Documented {components.Count} components, " +
     $"{components.Sum(c => c.Parameters.Count)} parameters, " +
     $"{components.Sum(c => c.Methods.Count)} methods, " +
-    $"{enums.Count} enums.");
+    $"{enums.Count} enums, {supportingTypes.Count} supporting types.");
 
 var source = RegistryEmitter.Emit(components, enums);
 
@@ -147,7 +184,7 @@ if (File.Exists(outputPath) && File.ReadAllText(outputPath) == source)
 {
     Console.WriteLine($"[ApiDocGen] Up to date: {outputPath}");
     if (markdownOutputDirectory is not null)
-        MarkdownEmitter.Write(markdownOutputDirectory, components, enums);
+        MarkdownEmitter.Write(markdownOutputDirectory, components, enums, supportingTypes);
     return 0;
 }
 
@@ -155,7 +192,7 @@ File.WriteAllText(outputPath, source);
 Console.WriteLine($"[ApiDocGen] Wrote: {outputPath}");
 
 if (markdownOutputDirectory is not null)
-    MarkdownEmitter.Write(markdownOutputDirectory, components, enums);
+    MarkdownEmitter.Write(markdownOutputDirectory, components, enums, supportingTypes);
 return 0;
 
 static List<Assembly> LoadFlareAssemblies(string dir)

@@ -89,6 +89,45 @@ internal sealed class ComponentExtractor
             DerivedBy: System.Array.Empty<string>());
     }
 
+    /// <summary>
+    /// Extracts a public supporting type: all public instance properties (not only [Parameter]) and
+    /// the public methods that carry XML documentation. Compiler-generated record members such as
+    /// ToString and Equals have no docs, so they stay out of the reference.
+    /// </summary>
+    public SupportingTypeDoc ExtractSupportingType(Type type)
+    {
+        var typeDoc = _docs.ForType(type);
+        var properties = new List<PropertyDoc>();
+
+        foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            if (prop.GetIndexParameters().Length > 0 || !prop.CanRead)
+                continue;
+
+            var doc = _docs.ForProperty(prop);
+            properties.Add(new PropertyDoc(
+                Name: prop.Name,
+                Type: TypeNameFormatter.Format(prop.PropertyType, SafeNullability(prop)),
+                Default: ReadDefault(type, prop, IsEventCallback(prop.PropertyType)),
+                Summary: doc?.Summary,
+                Remarks: doc?.Remarks));
+        }
+
+        var methods = ExtractMethods(type)
+            .Where(method => !string.IsNullOrWhiteSpace(method.Summary))
+            .ToList();
+
+        return new SupportingTypeDoc(
+            Name: CleanName(type.Name),
+            FullName: CleanName(type.FullName ?? type.Name),
+            Namespace: type.Namespace ?? string.Empty,
+            Summary: typeDoc?.Summary,
+            Remarks: typeDoc?.Remarks,
+            Properties: properties.OrderBy(p => p.Name, StringComparer.Ordinal).ToList(),
+            Methods: methods,
+            UsedBy: System.Array.Empty<string>());
+    }
+
     private List<ParameterDoc> ExtractParameters(Type type)
     {
         var result = new List<ParameterDoc>();

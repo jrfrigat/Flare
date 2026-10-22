@@ -28,6 +28,10 @@
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
+## Related types
+
+- [`FlareTableColumn`](../types/flare-components-flaretablecolumn.md) — One column of a typed FlareTable when the table is described by Columns instead of raw table markup. A column renders its header once and its Field or Cell for every item.
+
 ## Methods
 
 This component exposes no documented public methods.

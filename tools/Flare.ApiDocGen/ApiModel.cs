@@ -55,6 +55,28 @@ internal sealed record EnumMemberDoc(
     string Value,
     string? Summary);
 
+/// <summary>
+/// Documentation extracted for a public supporting type - a class or record a consumer constructs or
+/// reads when using a component, but not a component itself.
+/// </summary>
+internal sealed record SupportingTypeDoc(
+    string Name,
+    string FullName,
+    string Namespace,
+    string? Summary,
+    string? Remarks,
+    IReadOnlyList<PropertyDoc> Properties,
+    IReadOnlyList<MethodDoc> Methods,
+    IReadOnlyList<string> UsedBy);
+
+/// <summary>Documentation for one public property of a supporting type.</summary>
+internal sealed record PropertyDoc(
+    string Name,
+    string Type,
+    string? Default,
+    string? Summary,
+    string? Remarks);
+
 /// <summary>Raw XML doc comment content for one member, with inline markup normalized to text.</summary>
 internal sealed record XmlMemberDoc(
     string? Summary,

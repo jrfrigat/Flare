@@ -10,8 +10,8 @@
 | --- | --- | --- | --- | --- | --- |
 | `CellRef` | `string?` | `` | Parameter |  | The active cell reference shown in the name box (e.g. "A1"). |
 | `CellRefChanged` | `EventCallback<string?>` | `` | Callback |  | Raised when the name box text changes. Supports two-way binding. |
-| `FormulaLabel` | `string` | `"Formula"` | Parameter |  | Accessible label for the formula editor (default "Formula"). |
-| `NameBoxLabel` | `string` | `"Name box"` | Parameter |  | Accessible label for the name box (default "Name box"). |
+| `FormulaLabel` | `string` | `"Formula"` | Parameter |  | Accessible label for the formula editor; defaults to the package's localized text. |
+| `NameBoxLabel` | `string` | `"Name box"` | Parameter |  | Accessible label for the name box; defaults to the package's localized text. |
 | `Placeholder` | `string?` | `` | Parameter |  | Placeholder for the formula editor. |
 | `Value` | `string?` | `` | Parameter |  | The current cell content / formula. |
 | `ValueChanged` | `EventCallback<string?>` | `` | Callback |  | Raised when the formula text changes. Supports two-way binding. |

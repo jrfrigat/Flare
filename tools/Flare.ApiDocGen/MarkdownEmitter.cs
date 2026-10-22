@@ -5,13 +5,19 @@ namespace Flare.ApiDocGen;
 /// <summary>Writes the extracted API model as a navigable, repository-friendly Markdown reference.</summary>
 internal static class MarkdownEmitter
 {
-    public static void Write(string outputDirectory, IReadOnlyList<ComponentDoc> components, IReadOnlyList<EnumDoc> enums)
+    public static void Write(
+        string outputDirectory,
+        IReadOnlyList<ComponentDoc> components,
+        IReadOnlyList<EnumDoc> enums,
+        IReadOnlyList<SupportingTypeDoc>? supportingTypes = null)
     {
         var root = Path.GetFullPath(outputDirectory);
         var componentDirectory = Path.Combine(root, "components");
         var enumDirectory = Path.Combine(root, "enums");
+        var typeDirectory = Path.Combine(root, "types");
         Directory.CreateDirectory(componentDirectory);
         Directory.CreateDirectory(enumDirectory);
+        Directory.CreateDirectory(typeDirectory);
 
         var sortedComponents = components
             .OrderBy(component => component.Name, StringComparer.Ordinal)
@@ -21,18 +27,29 @@ internal static class MarkdownEmitter
             .OrderBy(enumDoc => enumDoc.Name, StringComparer.Ordinal)
             .ThenBy(enumDoc => enumDoc.FullName, StringComparer.Ordinal)
             .ToList();
+        var sortedTypes = (supportingTypes ?? System.Array.Empty<SupportingTypeDoc>())
+            .OrderBy(type => type.Name, StringComparer.Ordinal)
+            .ThenBy(type => type.FullName, StringComparer.Ordinal)
+            .ToList();
 
         foreach (var component in sortedComponents)
-            WriteIfChanged(Path.Combine(componentDirectory, FileName(component.FullName)), ComponentPage(component));
+            WriteIfChanged(Path.Combine(componentDirectory, FileName(component.FullName)),
+                ComponentPage(component, sortedTypes));
         foreach (var enumDoc in sortedEnums)
             WriteIfChanged(Path.Combine(enumDirectory, FileName(enumDoc.FullName)), EnumPage(enumDoc));
+        foreach (var supportingType in sortedTypes)
+            WriteIfChanged(Path.Combine(typeDirectory, FileName(supportingType.FullName)),
+                SupportingTypePage(supportingType));
 
-        WriteIfChanged(Path.Combine(root, "README.md"), IndexPage(sortedComponents, sortedEnums));
+        WriteIfChanged(Path.Combine(root, "README.md"), IndexPage(sortedComponents, sortedEnums, sortedTypes));
         Console.WriteLine($"[ApiDocGen] Wrote Markdown reference: {root} " +
-            $"({sortedComponents.Count} components, {sortedEnums.Count} enums).");
+            $"({sortedComponents.Count} components, {sortedEnums.Count} enums, {sortedTypes.Count} supporting types).");
     }
 
-    private static string IndexPage(IReadOnlyList<ComponentDoc> components, IReadOnlyList<EnumDoc> enums)
+    private static string IndexPage(
+        IReadOnlyList<ComponentDoc> components,
+        IReadOnlyList<EnumDoc> enums,
+        IReadOnlyList<SupportingTypeDoc> supportingTypes)
     {
         var sb = Header();
         sb.AppendLine("# Flare API reference");
@@ -45,6 +62,14 @@ internal static class MarkdownEmitter
             sb.AppendLine($"- [`{component.Name}`](components/{FileName(component.FullName)}){SummarySuffix(component.Summary)}");
 
         sb.AppendLine();
+        sb.AppendLine("## Supporting types");
+        sb.AppendLine();
+        if (supportingTypes.Count == 0)
+            sb.AppendLine("No supporting types are documented.");
+        foreach (var type in supportingTypes)
+            sb.AppendLine($"- [`{type.Name}`](types/{FileName(type.FullName)}){SummarySuffix(type.Summary)}");
+
+        sb.AppendLine();
         sb.AppendLine("## Enums");
         sb.AppendLine();
         foreach (var enumDoc in enums)
@@ -53,7 +78,7 @@ internal static class MarkdownEmitter
         return Normalize(sb);
     }
 
-    private static string ComponentPage(ComponentDoc component)
+    private static string ComponentPage(ComponentDoc component, IReadOnlyList<SupportingTypeDoc> supportingTypes)
     {
         var sb = Header();
         sb.AppendLine($"# {component.Name}");
@@ -82,36 +107,88 @@ internal static class MarkdownEmitter
             }
         }
 
+        var related = supportingTypes
+            .Where(type => component.Parameters.Any(parameter =>
+                parameter.Type.Contains(type.Name, StringComparison.Ordinal)))
+            .ToList();
+        if (related.Count > 0)
+        {
+            sb.AppendLine();
+            sb.AppendLine("## Related types");
+            sb.AppendLine();
+            foreach (var type in related)
+                sb.AppendLine($"- [`{type.Name}`](../types/{FileName(type.FullName)}){SummarySuffix(type.Summary)}");
+        }
+
         sb.AppendLine();
         sb.AppendLine("## Methods");
         sb.AppendLine();
-        if (component.Methods.Count == 0)
-        {
-            sb.AppendLine("This component exposes no documented public methods.");
-        }
-        else
-        {
-            foreach (var method in component.Methods)
-            {
-                sb.AppendLine($"### `{method.Signature}`");
-                sb.AppendLine();
-                if (!string.IsNullOrWhiteSpace(method.Summary))
-                    sb.AppendLine(Text(method.Summary));
-                sb.AppendLine($"Returns: `{method.ReturnType}`{Suffix(method.ReturnSummary)}");
-                if (method.Parameters.Count > 0)
-                {
-                    sb.AppendLine();
-                    sb.AppendLine("| Parameter | Type | Description |");
-                    sb.AppendLine("| --- | --- | --- |");
-                    foreach (var parameter in method.Parameters)
-                        sb.AppendLine($"| `{parameter.Name}` | `{parameter.Type}` | {Cell(parameter.Summary)} |");
-                }
-                sb.AppendLine();
-            }
-        }
+        AppendMethods(sb, component.Methods, "This component exposes no documented public methods.");
 
         AppendNameList(sb, "Inheritance", component.Inherits);
         AppendNameList(sb, "Derived components", component.DerivedBy);
+        return Normalize(sb);
+    }
+
+    private static void AppendMethods(StringBuilder sb, IReadOnlyList<MethodDoc> methods, string emptyText)
+    {
+        if (methods.Count == 0)
+        {
+            sb.AppendLine(emptyText);
+            return;
+        }
+
+        foreach (var method in methods)
+        {
+            sb.AppendLine($"### `{method.Signature}`");
+            sb.AppendLine();
+            if (!string.IsNullOrWhiteSpace(method.Summary))
+                sb.AppendLine(Text(method.Summary));
+            sb.AppendLine($"Returns: `{method.ReturnType}`{Suffix(method.ReturnSummary)}");
+            if (method.Parameters.Count > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine("| Parameter | Type | Description |");
+                sb.AppendLine("| --- | --- | --- |");
+                foreach (var parameter in method.Parameters)
+                    sb.AppendLine($"| `{parameter.Name}` | `{parameter.Type}` | {Cell(parameter.Summary)} |");
+            }
+            sb.AppendLine();
+        }
+    }
+
+    private static string SupportingTypePage(SupportingTypeDoc type)
+    {
+        var sb = Header();
+        sb.AppendLine($"# {type.Name}");
+        sb.AppendLine();
+        sb.AppendLine($"`{type.FullName}`");
+        AppendDescription(sb, type.Summary, type.Remarks);
+
+        sb.AppendLine("## Properties");
+        sb.AppendLine();
+        if (type.Properties.Count == 0)
+        {
+            sb.AppendLine("This type exposes no public properties.");
+        }
+        else
+        {
+            sb.AppendLine("| Name | Type | Default | Description |");
+            sb.AppendLine("| --- | --- | --- | --- |");
+            foreach (var property in type.Properties)
+            {
+                sb.AppendLine($"| `{property.Name}` | `{property.Type}` | `{property.Default ?? string.Empty}` | {Cell(property.Summary)} |");
+                if (!string.IsNullOrWhiteSpace(property.Remarks))
+                    sb.AppendLine($"|  |  |  | {Cell(property.Remarks)} |");
+            }
+        }
+
+        sb.AppendLine();
+        sb.AppendLine("## Methods");
+        sb.AppendLine();
+        AppendMethods(sb, type.Methods, "This type exposes no documented public methods.");
+
+        AppendNameList(sb, "Used by components", type.UsedBy);
         return Normalize(sb);
     }
 

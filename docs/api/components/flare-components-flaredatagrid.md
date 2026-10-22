@@ -78,6 +78,10 @@ FlareDataGrid partial: column-band (grouped header) layout logic.
 | `FillHeight` | `bool` | `false` | Parameter |  | Makes the component spend the height it was given rather than growing to fit its content, and pass that height on to its children. This is the screen-fit case - a grid under a filter bar, a chart beside a table, a page that fills the window instead of scrolling with it. It needs an ancestor with a height of its own, and EVERY link between that ancestor and this component needs the same switch: one link left at auto collapses the chain back to content height, silently. A page gets its first definite height from FlareLayoutContent FillHeight; anywhere else - a demo, a dialog - give the outermost box one explicitly. The box that SUPPLIES a height does not fill: when Style declares a height of its own, that height wins and this switch is ignored, because the two are contradictory instructions and the written number is the one you can see in the markup. Inherited from `FlareContainerBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
+## Related types
+
+- [`DataGridColumn`](../types/flare-components-datagridcolumn.md) — A column as data: everything FlareDataGrid needs to render, sort, filter and edit one column, with no component attached. Declarative <FlareColumn> markup is projected into this shape, and a list of these can be handed to the grid directly through FlareDataGrid.ColumnDefinitions - which is how columns are generated from metadata, kept in a field, shared between grids or reordered in C# rather than in markup.
+
 ## Methods
 
 ### `AddBand(FlareColumnBand band)`

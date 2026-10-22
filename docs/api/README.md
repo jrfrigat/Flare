@@ -215,6 +215,11 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareWeekPicker`](components/flare-components-flareweekpicker.md) — Week field bound to a DateOnly: the first day of the chosen week. A click or Enter on any day picks its week; the field writes the week by the culture's week rule ("Week 41, 2026") or by ISO 8601 ("2026-W41") and takes a week or a date typed in.
 - [`FlareZone`](components/flare-components-flarezone.md) — A coloured band drawn across part of a slider's or progress bar's track, marking a region of the host's own scale - "danger starts at 90". The range is absolute, so each zone reads as a pair of boundaries and is independent of the others. It registers with the host and renders nothing itself.
 
+## Supporting types
+
+- [`DataGridColumn`](types/flare-components-datagridcolumn.md) — A column as data: everything FlareDataGrid needs to render, sort, filter and edit one column, with no component attached. Declarative <FlareColumn> markup is projected into this shape, and a list of these can be handed to the grid directly through FlareDataGrid.ColumnDefinitions - which is how columns are generated from metadata, kept in a field, shared between grids or reordered in C# rather than in markup.
+- [`FlareTableColumn`](types/flare-components-flaretablecolumn.md) — One column of a typed FlareTable when the table is described by Columns instead of raw table markup. A column renders its header once and its Field or Cell for every item.
+
 ## Enums
 
 - [`Flare.Components.AggregateType`](enums/flare-components-aggregatetype.md) — Aggregate function type applied to a column's numeric values.

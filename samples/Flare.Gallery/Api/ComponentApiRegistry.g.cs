@@ -222,7 +222,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The content shown for the selected navigation entry.", null, false, false, false, @"FlareBackstage"),
-                new ApiParameterInfo(@"CloseLabel", @"string", @"""Close""", @"Accessible label for the back/close button (default ""Close"").", null, false, false, false, @"FlareBackstage"),
+                new ApiParameterInfo(@"CloseLabel", @"string", @"""Close""", @"Accessible label for the back/close button; defaults to the package's localized text.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"NavContent", @"RenderFragment?", null, @"Left navigation entries, typically FlareBackstageItem components.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Whether the backstage is shown.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Raised when the open state changes (e.g. the back arrow closes it). Supports two-way binding.", null, false, true, false, @"FlareBackstage"),
@@ -951,8 +951,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LabelPlacement", @"LabelPlacement", @"LabelPlacement.End", @"Label position relative to the checkbox (End = after, Start = before). Default End.", null, false, false, false, @"FlareCheckbox"),
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what a step measures.", null, false, false, false, @"FlareCheckbox"),
                 new ApiParameterInfo(@"UncheckedIcon", @"RenderFragment?", null, @"Custom icon shown when unchecked.", null, false, false, false, @"FlareCheckbox"),
-                new ApiParameterInfo(@"Value", @"TValue?", null, @"Whether the box is checked. With TValue=""bool?"" the value is tri-state and null is the indeterminate (""some of the below"") state; with TValue=""bool"" there are two states and the box can be validated against a plain bool on the model.", null, false, false, false, @"FlareCheckbox"),
-                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the checked state changes. A click always produces true or false - it resolves the indeterminate state rather than cycling back into it.", null, false, true, false, @"FlareCheckbox"),
+                new ApiParameterInfo(@"Value", @"TValue?", null, @"Whether the box is checked. TValue is bool for an ordinary two-state box or bool? for a tri-state one; with bool? the value is tri-state and null is the indeterminate (""some of the below"") state. The type is the caller's choice, so the value and For always describe the same model property.", null, false, false, false, @"FlareCheckbox"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the checked state changes. The callback carries TValue, so pass the type to a method group (ValueChanged=""Handle"" with void Handle(bool value)) or use a typed lambda; otherwise the compiler reports CS1503. A click always produces true or false - it resolves the indeterminate state rather than cycling back into it.", null, false, true, false, @"FlareCheckbox"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -3308,8 +3308,8 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"CellRef", @"string?", null, @"The active cell reference shown in the name box (e.g. ""A1"").", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"CellRefChanged", @"EventCallback<string?>", null, @"Raised when the name box text changes. Supports two-way binding.", null, false, true, false, @"FlareFormulaBar"),
-                new ApiParameterInfo(@"FormulaLabel", @"string", @"""Formula""", @"Accessible label for the formula editor (default ""Formula"").", null, false, false, false, @"FlareFormulaBar"),
-                new ApiParameterInfo(@"NameBoxLabel", @"string", @"""Name box""", @"Accessible label for the name box (default ""Name box"").", null, false, false, false, @"FlareFormulaBar"),
+                new ApiParameterInfo(@"FormulaLabel", @"string", @"""Formula""", @"Accessible label for the formula editor; defaults to the package's localized text.", null, false, false, false, @"FlareFormulaBar"),
+                new ApiParameterInfo(@"NameBoxLabel", @"string", @"""Name box""", @"Accessible label for the name box; defaults to the package's localized text.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder for the formula editor.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The current cell content / formula.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Raised when the formula text changes. Supports two-way binding.", null, false, true, false, @"FlareFormulaBar"),
@@ -6216,7 +6216,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ActiveIndex", @"int", @"0", @"Zero-based index of the active sheet.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"ActiveIndexChanged", @"EventCallback<int>", null, @"Raised when the active sheet changes. Supports two-way binding.", null, false, true, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"AddLabel", @"string", @"""Add sheet""", @"Accessible label for the add button (default ""Add sheet"").", null, false, false, false, @"FlareSheetTabs"),
+                new ApiParameterInfo(@"AddLabel", @"string", @"""Add sheet""", @"Accessible label for the add button; defaults to the package's localized text.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"OnAddSheet", @"EventCallback", null, @"Raised when the add button is clicked.", null, false, true, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"Sheets", @"IReadOnlyList<string>?", null, @"The sheet names rendered as tabs, in order.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"ShowAddButton", @"bool", @"true", @"Whether the trailing ""add sheet"" button is shown (default true).", null, false, false, false, @"FlareSheetTabs"),
