@@ -386,6 +386,12 @@ internal class VisualStudioTokens
         TabHeight = "auto",
         TabMinWidth = "0",
         TabPaddingInline = "var(--flare-spacing-10)",
+        // Flare's own part sizes, which no Fluent table states.
+        ScrollIconSize = "1.25rem",
+        CloseSize = "1.25rem",
+        CloseIconSize = "1rem",
+        BadgeSize = "1.25rem",
+        PrimaryIndicatorInset = "1.25rem",
     };
 
     internal static readonly SliderTokens Slider = FluentUI2Tokens.Design.Slider with

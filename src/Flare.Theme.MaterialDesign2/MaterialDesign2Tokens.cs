@@ -468,6 +468,12 @@ internal static class MaterialDesign2Tokens
         TabHeight = "48px",
         TabMinWidth = "90px",
         TabPaddingInline = "24px",
+        // Flare's own part sizes, which no Material table states.
+        ScrollIconSize = "1.25rem",
+        CloseSize = "1.25rem",
+        CloseIconSize = "1rem",
+        BadgeSize = "1.25rem",
+        PrimaryIndicatorInset = "1.25rem",
     };
 
     /// <summary>List container and row tokens.</summary>

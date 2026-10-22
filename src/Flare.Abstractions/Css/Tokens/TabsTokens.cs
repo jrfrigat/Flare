@@ -55,4 +55,14 @@ public static class Tabs
     public const string TabPaddingInline = "--flare-tabs-tab-padding-inline";
     /// <summary>CSS custom-property name for the glyph size of a tab's leading icon.</summary>
     public const string IconSize = "--flare-tabs-icon-size";
+    /// <summary>CSS custom-property name for the scroll-arrow glyph size.</summary>
+    public const string ScrollIconSize = "--flare-tabs-scroll-icon-size";
+    /// <summary>CSS custom-property name for the close button's size.</summary>
+    public const string CloseSize = "--flare-tabs-close-size";
+    /// <summary>CSS custom-property name for the close glyph's size.</summary>
+    public const string CloseIconSize = "--flare-tabs-close-icon-size";
+    /// <summary>CSS custom-property name for the badge's minimum size.</summary>
+    public const string BadgeSize = "--flare-tabs-badge-size";
+    /// <summary>CSS custom-property name for the primary indicator's inset from the tab edges.</summary>
+    public const string PrimaryIndicatorInset = "--flare-tabs-primary-indicator-inset";
 }

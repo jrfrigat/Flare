@@ -539,6 +539,12 @@ public class FluentUI2Tokens
         TabHeight = "auto",
         TabMinWidth = "0",
         TabPaddingInline = "var(--flare-spacing-10)",
+        // Flare's own part sizes, which no Fluent table states.
+        ScrollIconSize = "1.25rem",
+        CloseSize = "1.25rem",
+        CloseIconSize = "1rem",
+        BadgeSize = "1.25rem",
+        PrimaryIndicatorInset = "1.25rem",
     };
 
     // On-this-page - Fluent: rail style (vertical line + brand bar on the left of the active item),

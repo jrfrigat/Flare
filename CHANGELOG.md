@@ -11,15 +11,13 @@ All notable changes to Flare are documented here. This project adheres to
 - The query designer's captions come from the package's English and Russian resources and follow the current UI culture through `QueryBuilderLabels.Default` and the new `QueryBuilderLabels.For(culture)`, while the AND and OR connectors stay query-language tokens.
 - IDE components take their accessible names and default labels from the package's English and Russian resources and follow the current UI culture; a label the host passes explicitly still wins.
 - `FlareCarousel` takes its container, arrow and dot geometry, colors and focus ring from `CarouselTokens`, and the new `--flare-spacing-20` step (2.5rem) sizes the arrows from the shared spacing scale.
+- A `FlareButton` with a text label takes a themed minimum width from `ButtonTokens.MinWidth`; icon-only buttons and the buttons inside composite controls are exempt, and Material Design 2 sets the redline 64px.
+- An extended `FlareFloatingActionButton` with a label takes its own block and inline padding from `FabTokens`, so Material Design 2 draws it 48px tall instead of deriving 56px from the circular FAB's padding.
+- The tab strip's scroll arrow, close control, badge and primary-indicator inset take their sizes from `TabsTokens` instead of literals in the core stylesheet.
 
 ### Fixed
 
 - A virtualized `FlareGantt` follows a scrolling ancestor outside its own scroll box, including nested containers, instead of keeping a stale row window.
-
-### Changed
-
-- A `FlareButton` with a text label takes a themed minimum width from `ButtonTokens.MinWidth`; icon-only buttons and the buttons inside composite controls are exempt, and Material Design 2 sets the redline 64px.
-- An extended `FlareFloatingActionButton` with a label takes its own block and inline padding from `FabTokens`, so Material Design 2 draws it 48px tall instead of deriving 56px from the circular FAB's padding.
 
 ## [0.49.0] - 2026-10-21
 

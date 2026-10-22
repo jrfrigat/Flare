@@ -85,4 +85,15 @@ public sealed record TabsTokens
     /// <summary>Glyph size of a tab's leading icon. The icon is the caller's own fragment, so the size
     /// reaches it through the shared icon property rather than a class on the icon.</summary>
     [CssVar(Tabs.IconSize)] public required string IconSize { get; init; }
+
+    /// <summary>Glyph size of the arrows that scroll an overflowing tab strip.</summary>
+    [CssVar(Tabs.ScrollIconSize)] public required string ScrollIconSize { get; init; }
+    /// <summary>Size of the button that closes a tab.</summary>
+    [CssVar(Tabs.CloseSize)] public required string CloseSize { get; init; }
+    /// <summary>Glyph size of the close mark inside that button.</summary>
+    [CssVar(Tabs.CloseIconSize)] public required string CloseIconSize { get; init; }
+    /// <summary>Minimum width and height of a count badge on a tab.</summary>
+    [CssVar(Tabs.BadgeSize)] public required string BadgeSize { get; init; }
+    /// <summary>Inset of the primary tab's active indicator from the tab's inline edges.</summary>
+    [CssVar(Tabs.PrimaryIndicatorInset)] public required string PrimaryIndicatorInset { get; init; }
 }

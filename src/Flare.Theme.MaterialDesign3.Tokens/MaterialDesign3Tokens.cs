@@ -472,6 +472,12 @@ public class MaterialDesign3Tokens
         // The label and its padding decide the height here; no minimum width.
         TabHeight = "3rem",                          // md.comp.primary-navigation-tab.container.height 48dp
         TabMinWidth = "0",
+        // Flare's own part sizes, which no Material table states.
+        ScrollIconSize = "1.25rem",
+        CloseSize = "1.25rem",
+        CloseIconSize = "1rem",
+        BadgeSize = "1.25rem",
+        PrimaryIndicatorInset = "1.25rem",
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,

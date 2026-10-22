@@ -106,7 +106,7 @@
 }
 
 .flare-tabs__scroll > .flare-icon {
-  font-size: 1.25rem;
+  font-size: var(--flare-tabs-scroll-icon-size);
 }
 
 /* Directional scroll buttons: a soft edge shadow cast over the adjacent tabs hints that more
@@ -187,8 +187,8 @@
 .flare-tabs--primary:not(.flare-tabs--vertical) .flare-tabs__tab--active::after {
   content: '';
   position: absolute;
-  left: 1.25rem;
-  right: 1.25rem;
+  left: var(--flare-tabs-primary-indicator-inset);
+  right: var(--flare-tabs-primary-indicator-inset);
   bottom: 0;
   height: var(--flare-tabs-indicator-thickness);
   background: var(--flare-tabs-active-color);
@@ -291,8 +291,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.25rem;
-  height: 1.25rem;
+  min-width: var(--flare-tabs-badge-size);
+  height: var(--flare-tabs-badge-size);
   padding: 0 var(--flare-spacing-3);
   border-radius: var(--flare-shape-full);
   background: var(--fc-main, var(--flare-color-error));
@@ -322,8 +322,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: var(--flare-tabs-close-size);
+  height: var(--flare-tabs-close-size);
   margin: 0;
   padding: 0;
   border: none;
@@ -345,7 +345,7 @@
 }
 
 .flare-tabs__tab-close > .flare-icon {
-  font-size: 1rem;
+  font-size: var(--flare-tabs-close-icon-size);
 }
 
 .flare-tabs__panels { padding-top: var(--flare-spacing-8); }
