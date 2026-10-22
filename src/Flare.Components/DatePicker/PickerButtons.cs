@@ -13,7 +13,7 @@ internal static class PickerButtons
 {
     private const string IconClass =
         Css.Classes.Button.Root + " " + Css.Classes.Button.Text + " " + Css.Classes.Button.SizeSm + " " + Css.Classes.Button.IconOnly;
-    private const string TextClass = Css.Classes.Button.Root + " " + Css.Classes.Button.Text + " " + Css.Classes.Button.SizeSm;
+    private const string TextClass = Css.Classes.Button.Root + " " + Css.Classes.Button.Text + " " + Css.Classes.Button.SizeSm + " " + Css.Classes.Button.Labelled;
     private const string IconSlotClass = Css.Classes.Button.Icon + " " + Css.Classes.Button.IconLeading;
 
     /// <summary>An icon-only button; the click does not reach the popup behind it.</summary>

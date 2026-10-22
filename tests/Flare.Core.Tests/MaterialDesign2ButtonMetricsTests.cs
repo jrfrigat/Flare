@@ -1,3 +1,4 @@
+using Flare.Css.Tokens;
 using Flare.Theme.MaterialDesign2;
 
 namespace Flare.Core.Tests;
@@ -14,8 +15,8 @@ public sealed class MaterialDesign2ButtonMetricsTests
     {
         var design = new MaterialDesign2Theme().Design;
 
-        Assert.Equal("var(--flare-spacing-32)", design.Button.MinWidth);
-        Assert.Equal("var(--flare-spacing-6)", design.Fab.ExtendedPaddingBlock);
-        Assert.Equal("var(--flare-spacing-10)", design.Fab.ExtendedPaddingInline);
+        Assert.Equal($"var({Spacing.S32})", design.Button.MinWidth);
+        Assert.Equal($"var({Spacing.S6})", design.Fab.ExtendedPaddingBlock);
+        Assert.Equal($"var({Spacing.S10})", design.Fab.ExtendedPaddingInline);
     }
 }

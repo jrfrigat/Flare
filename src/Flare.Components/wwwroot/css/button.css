@@ -5,7 +5,6 @@
 .flare-btn--labelled { min-width: var(--flare-btn-min-width); }
 .flare-btn-group .flare-btn--labelled,
 .flare-split-btn .flare-btn--labelled,
-.flare-toolbar .flare-btn--labelled,
 .flare-chart .flare-btn--labelled { min-width: 0; }
 
 .flare-btn {
