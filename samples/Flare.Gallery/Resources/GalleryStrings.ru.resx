@@ -600,6 +600,21 @@
   <data name="Carousel_DotsOnly" xml:space="preserve">
     <value>Только точки (без стрелок)</value>
   </data>
+  <data name="Carousel_SlideDashboard" xml:space="preserve">
+    <value>Аналитика дашборда</value>
+  </data>
+  <data name="Carousel_SlideUsers" xml:space="preserve">
+    <value>Управление пользователями</value>
+  </data>
+  <data name="Carousel_SlideSettings" xml:space="preserve">
+    <value>Настройки и конфигурация</value>
+  </data>
+  <data name="Carousel_SlideNotifications" xml:space="preserve">
+    <value>Уведомления</value>
+  </data>
+  <data name="Carousel_AutoAdvanceHint" xml:space="preserve">
+    <value>Переключается каждые 2,5 секунды.</value>
+  </data>
   <data name="Charts_Title" xml:space="preserve">
     <value>Графики</value>
   </data>
@@ -2110,6 +2125,15 @@
   <data name="PasswordInput_LiveValueEmpty" xml:space="preserve">
     <value>(пусто)</value>
   </data>
+  <data name="PasswordInput_Label" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="PasswordInput_TooShort" xml:space="preserve">
+    <value>Пароль слишком короткий.</value>
+  </data>
+  <data name="PasswordInput_Helper" xml:space="preserve">
+    <value>Не менее 8 символов.</value>
+  </data>
   <data name="DatePicker_Title" xml:space="preserve">
     <value>Выбор даты (Date Picker)</value>
   </data>
@@ -2277,6 +2301,15 @@
   </data>
   <data name="RichTextEditor_ReadOnly" xml:space="preserve">
     <value>Режим только чтение</value>
+  </data>
+  <data name="RichTextEditor_Placeholder" xml:space="preserve">
+    <value>Напишите что-нибудь...</value>
+  </data>
+  <data name="RichTextEditor_Output" xml:space="preserve">
+    <value>Выходной HTML:</value>
+  </data>
+  <data name="RichTextEditor_ReadOnlyContent" xml:space="preserve">
+    <value>&lt;p&gt;Этот текст доступен &lt;strong&gt;только для чтения&lt;/strong&gt; и не может быть изменен.&lt;/p&gt;</value>
   </data>
   <data name="Select_Title" xml:space="preserve">
     <value>Выбор (Select)</value>

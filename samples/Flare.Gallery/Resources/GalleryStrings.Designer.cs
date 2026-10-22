@@ -1742,6 +1742,51 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Carousel_DotsOnly", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dashboard Analytics.
+        /// </summary>
+        public static string Carousel_SlideDashboard {
+            get {
+                return ResourceManager.GetString("Carousel_SlideDashboard", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to User Management.
+        /// </summary>
+        public static string Carousel_SlideUsers {
+            get {
+                return ResourceManager.GetString("Carousel_SlideUsers", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Settings &amp; Config.
+        /// </summary>
+        public static string Carousel_SlideSettings {
+            get {
+                return ResourceManager.GetString("Carousel_SlideSettings", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        public static string Carousel_SlideNotifications {
+            get {
+                return ResourceManager.GetString("Carousel_SlideNotifications", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-advances every 2.5 seconds..
+        /// </summary>
+        public static string Carousel_AutoAdvanceHint {
+            get {
+                return ResourceManager.GetString("Carousel_AutoAdvanceHint", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareCarousel - swipeable slides with auto-play, arrows, and dot indicators..
@@ -7517,6 +7562,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("PasswordInput_LiveValueEmpty", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string PasswordInput_Label {
+            get {
+                return ResourceManager.GetString("PasswordInput_Label", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Password is too short..
+        /// </summary>
+        public static string PasswordInput_TooShort {
+            get {
+                return ResourceManager.GetString("PasswordInput_TooShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Must be at least 8 characters..
+        /// </summary>
+        public static string PasswordInput_Helper {
+            get {
+                return ResourceManager.GetString("PasswordInput_Helper", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlarePasswordField - a text field with a built-in show/hide toggle for passwords..
@@ -8388,6 +8460,33 @@ namespace Flare.Gallery.Resources {
         public static string RichTextEditor_ReadOnly {
             get {
                 return ResourceManager.GetString("RichTextEditor_ReadOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Write something....
+        /// </summary>
+        public static string RichTextEditor_Placeholder {
+            get {
+                return ResourceManager.GetString("RichTextEditor_Placeholder", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Output HTML:.
+        /// </summary>
+        public static string RichTextEditor_Output {
+            get {
+                return ResourceManager.GetString("RichTextEditor_Output", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The read-only demo's HTML content.
+        /// </summary>
+        public static string RichTextEditor_ReadOnlyContent {
+            get {
+                return ResourceManager.GetString("RichTextEditor_ReadOnlyContent", resourceCulture);
             }
         }
         

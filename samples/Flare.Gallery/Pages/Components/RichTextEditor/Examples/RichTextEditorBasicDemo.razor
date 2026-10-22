@@ -1,9 +1,9 @@
 <FlareStack MaxWidth="36rem">
-    <FlareRichTextEditor Label="Write something…" ValueChanged="v => _html = v" />
+    <FlareRichTextEditor Label="@GalleryStrings.RichTextEditor_Placeholder" ValueChanged="v => _html = v" />
     @if (!string.IsNullOrEmpty(_html))
     {
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" MarginBlockStart="FlareSpacing.Custom" MarginBlockStartValue="0.75rem">
-            Output HTML:
+            @GalleryStrings.RichTextEditor_Output
         </FlareText>
         <FlareCard Background="@Surface"
                    Padding="FlareSpacing.Custom" PaddingValue="0.5rem"

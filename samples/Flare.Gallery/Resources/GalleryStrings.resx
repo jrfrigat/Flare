@@ -600,6 +600,21 @@
   <data name="Carousel_DotsOnly" xml:space="preserve">
     <value>Dots only (no arrows)</value>
   </data>
+  <data name="Carousel_SlideDashboard" xml:space="preserve">
+    <value>Dashboard Analytics</value>
+  </data>
+  <data name="Carousel_SlideUsers" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+  <data name="Carousel_SlideSettings" xml:space="preserve">
+    <value>Settings &amp; Config</value>
+  </data>
+  <data name="Carousel_SlideNotifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Carousel_AutoAdvanceHint" xml:space="preserve">
+    <value>Auto-advances every 2.5 seconds.</value>
+  </data>
   <data name="Charts_Title" xml:space="preserve">
     <value>Charts</value>
   </data>
@@ -2110,6 +2125,15 @@ Read the card, check the tests, and report what is left.</value>
   <data name="PasswordInput_LiveValueEmpty" xml:space="preserve">
     <value>(empty)</value>
   </data>
+  <data name="PasswordInput_Label" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordInput_TooShort" xml:space="preserve">
+    <value>Password is too short.</value>
+  </data>
+  <data name="PasswordInput_Helper" xml:space="preserve">
+    <value>Must be at least 8 characters.</value>
+  </data>
   <data name="DatePicker_Title" xml:space="preserve">
     <value>Date Picker</value>
   </data>
@@ -2277,6 +2301,15 @@ Read the card, check the tests, and report what is left.</value>
   </data>
   <data name="RichTextEditor_ReadOnly" xml:space="preserve">
     <value>Read-only Mode</value>
+  </data>
+  <data name="RichTextEditor_Placeholder" xml:space="preserve">
+    <value>Write something...</value>
+  </data>
+  <data name="RichTextEditor_Output" xml:space="preserve">
+    <value>Output HTML:</value>
+  </data>
+  <data name="RichTextEditor_ReadOnlyContent" xml:space="preserve">
+    <value>&lt;p&gt;This content is &lt;strong&gt;read-only&lt;/strong&gt; and cannot be edited.&lt;/p&gt;</value>
   </data>
   <data name="Select_Title" xml:space="preserve">
     <value>Select</value>
