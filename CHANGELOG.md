@@ -18,6 +18,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Fixed
 
 - A virtualized `FlareGantt` follows a scrolling ancestor outside its own scroll box, including nested containers, instead of keeping a stale row window.
+- `FlareCalendar` exposes a real accessibility grid - weekly rows, full-name column headers and `aria-selected` cells - and announces the displayed month, without changing its layout.
 
 ## [0.49.0] - 2026-10-21
 

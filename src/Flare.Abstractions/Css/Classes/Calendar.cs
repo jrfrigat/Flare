@@ -29,6 +29,8 @@ public static class Calendar
     public const string Event = "flare-calendar__event";
     /// <summary>The <c>flare-calendar__grid</c> CSS class.</summary>
     public const string Grid = "flare-calendar__grid";
+    /// <summary>The <c>flare-calendar__row</c> CSS class: a grid row wrapper kept out of the layout.</summary>
+    public const string Row = "flare-calendar__row";
     /// <summary>The <c>flare-calendar__header</c> CSS class.</summary>
     public const string Header = "flare-calendar__header";
     /// <summary>The <c>flare-calendar__nav-btn</c> CSS class.</summary>

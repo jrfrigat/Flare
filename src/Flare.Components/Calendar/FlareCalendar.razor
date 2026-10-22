@@ -21,32 +21,40 @@
             var monthCells = _allCells[mi];
             <div class="@Css.Classes.Calendar.Month">
                 <div class="@Css.Classes.Calendar.Header">
-                    <FlareText Typo="TypographyScale.TitleMedium">@_culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", _culture))</FlareText>
+                    <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@_culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", _culture))</FlareText>
                 </div>
                 <div class="@Css.Classes.Calendar.Grid" role="grid">
-                    @foreach (var name in DayHeaders)
+                    @{ var headers = DayHeaders.ToArray(); var fullNames = DayHeaderLabels.ToArray(); }
+                    <div class="@Css.Classes.Calendar.Row" role="row">
+                        @for (var hi = 0; hi < headers.Length; hi++)
+                        {
+                            <div class="@Css.Classes.Calendar.DayLabel" role="columnheader" aria-label="@fullNames[hi]">@headers[hi]</div>
+                        }
+                    </div>
+                    @for (var start = 0; start < monthCells.Count; start += 7)
                     {
-                        <div class="@Css.Classes.Calendar.DayLabel">@name</div>
-                    }
-                    @foreach (var cell in monthCells)
-                    {
-                        var c = cell;
-                        <div class="@Css.Classes.Calendar.Cell @_cellClass(c)"
-                             @onclick="@(() => SelectDate(c))"
-                             role="button"
-                             tabindex="0"
-                             aria-label="@c.Date.ToString("D", _culture)"
-                             aria-pressed="@(SelectedDate == c.Date ? "true" : "false")"
-                             aria-current="@(c.Date == Today ? "date" : null)">
-                            <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span>
-                            @foreach (var ev in c.Events.Take(MaxVisibleEvents))
+                        <div class="@Css.Classes.Calendar.Row" role="row">
+                            @for (var di = start; di < Math.Min(start + 7, monthCells.Count); di++)
                             {
-                                var calEv = ev;
-                                <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
-                                     style="@EventColorStyle(calEv.Color)"
-                                     @onclick="@(() => OnEventClick.InvokeAsync(calEv))"
-                                     @onclick:stopPropagation="true">
-                                    @calEv.Title
+                                var c = monthCells[di];
+                                <div class="@Css.Classes.Calendar.Cell @_cellClass(c)"
+                                     @onclick="@(() => SelectDate(c))"
+                                     role="gridcell"
+                                     tabindex="0"
+                                     aria-label="@c.Date.ToString("D", _culture)"
+                                     aria-selected="@(SelectedDate == c.Date ? "true" : "false")"
+                                     aria-current="@(c.Date == Today ? "date" : null)">
+                                    <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span>
+                                    @foreach (var ev in c.Events.Take(MaxVisibleEvents))
+                                    {
+                                        var calEv = ev;
+                                        <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
+                                             style="@EventColorStyle(calEv.Color)"
+                                             @onclick="@(() => OnEventClick.InvokeAsync(calEv))"
+                                             @onclick:stopPropagation="true">
+                                            @calEv.Title
+                                        </div>
+                                    }
                                 </div>
                             }
                         </div>
@@ -98,6 +106,18 @@
             var first = (int)_firstDayOfWeek;
             var fmt = _culture.DateTimeFormat;
             return Enumerable.Range(0, 7).Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)));
+        }
+    }
+
+    // The full day names behind those short labels, so each column header has a name a screen reader
+    // can speak instead of the abbreviation.
+    private IEnumerable<string> DayHeaderLabels
+    {
+        get
+        {
+            var first = (int)_firstDayOfWeek;
+            var fmt = _culture.DateTimeFormat;
+            return Enumerable.Range(0, 7).Select(i => fmt.GetDayName((DayOfWeek)((first + i) % 7)));
         }
     }
 

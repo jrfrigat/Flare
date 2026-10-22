@@ -65,6 +65,10 @@
     gap: var(--flare-spacing-1);
 }
 
+/* The role="row" wrapper of one week. display:contents keeps it out of the grid layout, so the day
+   cells still sit directly in the grid's columns. */
+.flare-calendar__row { display: contents; }
+
 .flare-calendar__day-label {
     text-align: center;
     font-size: var(--flare-typescale-label-small-size);
