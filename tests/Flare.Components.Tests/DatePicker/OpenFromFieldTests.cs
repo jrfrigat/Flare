@@ -98,6 +98,20 @@ public class OpenFromFieldTests : FlareTestContext
     }
 
     [Fact]
+    public void TypingInTheField_KeepsTheNonModalPopupOpen()
+    {
+        var cut = Render<FlareDatePicker>(p => p.Add(x => x.Culture, System.Globalization.CultureInfo.GetCultureInfo("en-US")));
+        var input = cut.Find("input");
+        input.Click();
+
+        input.Input("10/15/2026");
+
+        Assert.Single(cut.FindAll("[role=dialog]"));
+        Assert.Equal("false", cut.Find("[role=dialog]").GetAttribute("aria-modal"));
+        Assert.Equal(0, Traps());
+    }
+
+    [Fact]
     public void TimeList_OpensItsListFromTheField()
     {
         var cut = Render<FlareTimePicker>(p => p.Add(x => x.PopupVariant, TimePickerVariant.List));

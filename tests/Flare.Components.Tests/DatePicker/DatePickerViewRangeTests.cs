@@ -18,6 +18,36 @@ public class DatePickerViewRangeTests : FlareTestContext
         cut.Find($".{Css.Classes.DatePicker.MonthLabel}").Click();
 
     [Fact]
+    public void DayGrid_DisablesOutOfRangeAndPredicateDays_AndRefusesTheirClick()
+    {
+        DateOnly? committed = null;
+        var cut = Render<FlareDatePicker>(p => p
+            .Add(x => x.Inline, true)
+            .Add(x => x.Culture, En)
+            .Add(x => x.Value, new DateOnly(2026, 10, 15))
+            .Add(x => x.Min, new DateOnly(2026, 10, 12))
+            .Add(x => x.Max, new DateOnly(2026, 10, 20))
+            .Add(x => x.IsDateDisabled, (DateOnly d) => d.Day == 14)
+            .Add(x => x.ValueChanged, (DateOnly? v) => committed = v));
+
+        var cells = cut.FindAll($".{Css.Classes.Picker.Grid} button[role=gridcell]");
+        static AngleSharp.Dom.IElement Day(IReadOnlyList<AngleSharp.Dom.IElement> cells, string number) =>
+            cells.First(c => c.TextContent.Trim() == number);
+
+        Assert.True(Day(cells, "11").HasAttribute("disabled"));  // before Min
+        Assert.True(Day(cells, "14").HasAttribute("disabled"));  // IsDateDisabled
+        Assert.True(Day(cells, "21").HasAttribute("disabled"));  // after Max
+        Assert.False(Day(cells, "16").HasAttribute("disabled"));
+
+        Day(cut.FindAll($".{Css.Classes.Picker.Grid} button[role=gridcell]"), "14").Click();
+        Assert.Null(committed);
+
+        // Re-find: a click may re-render the grid and leave the old element detached.
+        Day(cut.FindAll($".{Css.Classes.Picker.Grid} button[role=gridcell]"), "16").Click();
+        Assert.Equal(new DateOnly(2026, 10, 16), committed);
+    }
+
+    [Fact]
     public void MonthView_DisablesMonthsWhollyOutsideMinAndMax()
     {
         var cut = RenderInline(new DateOnly(2026, 7, 1), new DateOnly(2026, 6, 15), new DateOnly(2026, 9, 10));
