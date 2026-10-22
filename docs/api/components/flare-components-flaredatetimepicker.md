@@ -22,6 +22,7 @@ Date and time field: a masked text input with a popup holding a calendar and a t
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week (null = use the culture's). |
 | `For` | `Expression<Func<DateTimeOffset?>>?` | `` | Parameter |  | Expression used to bind and validate the field inside an EditForm. |
 | `HourStep` | `int` | `1` | Parameter |  | Hour increment of the number-field time pane (default 1): a typed hour drops to the step below it. The hour stays unstepped on the dial and in typed entry: a 12-hour dial's cells are discrete values 1-12, and a stepped grid there would produce an hour of zero. |
+| `Inline` | `bool` | `false` | Parameter |  | Renders the calendar and time pane inline under the field instead of in a popup: no toggle, no scrim, no focus trap, and OK commits without closing. The draft is reloaded when the bound value changes; picking a day or time edits the draft, as in the popup. |
 | `IsDateDisabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed. |
 | `Max` | `DateTimeOffset?` | `` | Parameter |  | Latest value that may be committed; later days are disabled in the calendar. |
 | `Min` | `DateTimeOffset?` | `` | Parameter |  | Earliest value that may be committed; earlier days are disabled in the calendar. |

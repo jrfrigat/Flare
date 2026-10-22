@@ -39,6 +39,10 @@ public partial class FlareDateTimePicker
     [Parameter] public TimePickerVariant TimeVariant { get; set; } = TimePickerVariant.Dropdown;
     /// <summary>Popup layout: <see cref="DateTimeVariant.Auto"/> (default, responsive), <see cref="DateTimeVariant.Tabs"/> or <see cref="DateTimeVariant.Panels"/> (side by side).</summary>
     [Parameter] public DateTimeVariant Mode { get; set; } = DateTimeVariant.Auto;
+    /// <summary>Renders the calendar and time pane inline under the field instead of in a popup: no toggle,
+    /// no scrim, no focus trap, and OK commits without closing. The draft is reloaded when the bound value
+    /// changes; picking a day or time edits the draft, as in the popup.</summary>
+    [Parameter] public bool Inline { get; set; }
     /// <summary>Forces 12/24-hour clock on the dial. Null auto-detects from culture.</summary>
     [Parameter] public bool? Use24Hour { get; set; }
     /// <summary>Adds seconds to the field (the default format uses the culture's long time pattern) and a seconds
@@ -96,7 +100,7 @@ public partial class FlareDateTimePicker
     /// <summary>Closes the picker popup.</summary>
     public async Task CloseAsync()
     {
-        if (!_open) return;
+        if (Inline || !_open) return;
         _open = false;
         await Closed.InvokeAsync();
         StateHasChanged();
@@ -112,7 +116,8 @@ public partial class FlareDateTimePicker
         return CloseAsync();
     }
 
-    private Task HandlePanelKeyDown(KeyboardEventArgs e) => e.Key == "Escape" ? CancelAsync() : Task.CompletedTask;
+    private Task HandlePanelKeyDown(KeyboardEventArgs e) =>
+        !Inline && e.Key == "Escape" ? CancelAsync() : Task.CompletedTask;
     /// <summary>Clears the selected value and closes the popup. Does nothing while the field is disabled or read-only.</summary>
     public Task ClearAsync() => Clear();
     /// <summary>Sets keyboard focus to the input.</summary>
@@ -136,7 +141,7 @@ public partial class FlareDateTimePicker
     /// <inheritdoc />
     protected override bool SkipsUnchangedParameters => true;
     /// <inheritdoc />
-    protected override bool DelegatesAffectRender => _open;
+    protected override bool DelegatesAffectRender => _open || Inline;
     private bool _autofocused;
     private int _activeTab;
     private bool _keyboardEntry;
@@ -243,7 +248,19 @@ public partial class FlareDateTimePicker
             _text = _focused && Value.HasValue && _digitEditing ? CalendarMath.FormatSafe(Value.Value, _editPattern, _culture) : display;
             _editGeneration++;
         }
+
+        // An inline picker has no opening to load its draft at: it loads on the first render and whenever the
+        // bound value changes from outside, while a commit keeps its own draft.
+        if (Inline && (!_inlineLoaded || !Equals(Value, _inlineSynced)))
+        {
+            _inlineLoaded = true;
+            _inlineSynced = Value;
+            LoadDraft();
+        }
     }
+
+    private bool _inlineLoaded;
+    private DateTimeOffset? _inlineSynced;
 
     private void HandleFocus()
     {
@@ -326,13 +343,14 @@ public partial class FlareDateTimePicker
             _focusedDate = null;
         }
         _syncedValue = dt;
+        _inlineSynced = dt;
         await ValueChanged.InvokeAsync(dt);
         NotifyFieldChanged();
     }
 
     private async Task TogglePanel()
     {
-        if (Disabled || ReadOnly) return;
+        if (Inline || Disabled || ReadOnly) return;
         if (_open) { await CloseAsync(); return; }
         LoadDraft();
         _open = true;
@@ -493,8 +511,9 @@ public partial class FlareDateTimePicker
             if (_focused) await MaskedCaret.RestoreAsync(ElementJs, _inputEl, _text, caret);
         }
 
-        // The popup is a modal dialog: the cursor day takes focus on open.
-        await _popup.SyncAsync(_open, _fieldRef, _panelEl, new AnchoredPanelOptions { MatchWidth = true },
+        // The popup is a modal dialog: the cursor day takes focus on open. An inline picker is part of the
+        // page, so the overlay engine is told it is closed and leaves it in the flow.
+        await _popup.SyncAsync(_open && !Inline, _fieldRef, _panelEl, new AnchoredPanelOptions { MatchWidth = true },
             _inputEl, AllowPicker ? _toggleEl : null, () => _grid?.FocusCursorAsync() ?? Task.CompletedTask, dismissRoot: _chrome.Root, dismiss: () => InvokeAsync(CloseAsync));
     }
 

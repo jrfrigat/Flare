@@ -13771,6 +13771,9 @@ namespace Flare.Gallery.Resources {
         /// <summary>Looks up the localized DtpDemo_PanelsListLabel string.</summary>
         public static string DtpDemo_PanelsListLabel => ResourceManager.GetString("DtpDemo_PanelsListLabel", resourceCulture);
 
+        /// <summary>Looks up the localized DtpDemo_InlineLabel string.</summary>
+        public static string DtpDemo_InlineLabel => ResourceManager.GetString("DtpDemo_InlineLabel", resourceCulture);
+
         /// <summary>Looks up the localized DtpDemo_Selected string.</summary>
         public static string DtpDemo_Selected => ResourceManager.GetString("DtpDemo_Selected", resourceCulture);
 

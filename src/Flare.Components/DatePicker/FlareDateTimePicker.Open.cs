@@ -10,7 +10,7 @@ public partial class FlareDateTimePicker
     // can go on typing. Arrow Down moves into the calendar; Escape, or Tab out of the field, closes the panel.
     private Task OpenFromField()
     {
-        if (_open || !AllowPicker || Disabled || ReadOnly) return Task.CompletedTask;
+        if (Inline || _open || !AllowPicker || Disabled || ReadOnly) return Task.CompletedTask;
         _popup.OpenFromField();
         return TogglePanel();
     }

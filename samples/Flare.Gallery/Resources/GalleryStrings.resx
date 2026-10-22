@@ -4367,6 +4367,9 @@ Read the card, check the tests, and report what is left.</value>
   <data name="DtpDemo_PanelsListLabel" xml:space="preserve">
     <value>Two cards, time list</value>
   </data>
+  <data name="DtpDemo_InlineLabel" xml:space="preserve">
+    <value>Inline, calendar and time</value>
+  </data>
   <data name="DtpDemo_Selected" xml:space="preserve">
     <value>Selected: {0}</value>
   </data>

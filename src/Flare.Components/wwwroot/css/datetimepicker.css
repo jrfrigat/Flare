@@ -14,6 +14,9 @@
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
    top/left/min-width are set via inline style from JS bounds. */
 .flare-datetimepicker__panel { min-width: var(--flare-datetimepicker-panel-min-width); }
+/* Inline: the panel is part of the column, so the popup's minimum width would make it overflow a narrow
+   side panel. It keeps its content width and wraps nothing - the panes are already content-sized. */
+.flare-picker__panel--inline.flare-datetimepicker__panel { min-width: 0; max-width: 100%; }
 /* The clock dial is a fixed 256px; with the panel's own padding it needs more than the 280 floor.
    Read off the rendered dial the way the split panes below do, rather than from a C# variant check -
    the panel is positioned by the shared overlay engine and no longer carries a measured inline width. */

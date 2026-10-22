@@ -20,6 +20,9 @@
     <FlareDateTimePicker @bind-Value="_panelsList" Label="@GalleryStrings.DtpDemo_PanelsListLabel"
                          Mode="DateTimeVariant.Panels" TimeVariant="TimePickerVariant.List" MinuteStep="30" />
 
+    <FlareDateTimePicker @bind-Value="_inline" Label="@GalleryStrings.DtpDemo_InlineLabel"
+                         Inline="true" Mode="DateTimeVariant.Tabs" />
+
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
         @string.Format(GalleryStrings.DtpDemo_Selected, _value?.ToString("g") ?? GalleryStrings.DtpDemo_None)
     </FlareText>
@@ -32,4 +35,5 @@
     private DateTimeOffset? _panelsDial;
     private DateTimeOffset? _panelsFields;
     private DateTimeOffset? _panelsList;
+    private DateTimeOffset? _inline;
 }

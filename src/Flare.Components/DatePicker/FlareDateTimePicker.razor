@@ -42,7 +42,7 @@
                    @onchange="HandleTextChange"
                    @onblur="HandleBlur"
                    @attributes="InputAttributes" />
-            @if (AllowPicker)
+            @if (AllowPicker && !Inline)
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
@@ -51,15 +51,15 @@
                 </button>
             }
         </div>
-        @if (_open)
+        @if (_open || Inline)
         {
-        @if (!_popup.FromField)
+        @if (!_popup.FromField && !Inline)
             {
                 <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
             }
-        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)"
-             role="dialog" aria-modal="@(_popup.FromField ? "false" : "true")" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
-             @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation>
+        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null) @(Inline ? Css.Classes.Picker.PanelInline : null)"
+             role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@FlareStrings.DateTimePicker_Open" @ref="_panelEl"
+             @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
             @if (_panels)
             {
                 <div class="@Css.Classes.DateTimePicker.Panes">

@@ -5,7 +5,14 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `FlareDateTimePicker.Inline` renders the calendar and time pane under the field instead of in a popup: no toggle, no scrim, no focus trap, and OK commits without closing.
+
 ### Changed
+
+- `TimePickerVariant.List` now draws a real list of times in `FlareDateTimePicker`'s time pane, with the same rows, keyboard handling and scrolling as `FlareTimePicker`, instead of falling back to number fields.
+- `MinuteStep` now applies to every way a minute is entered - number fields, keyboard entry and the clock dial - in both `FlareDateTimePicker` and `FlareTimePicker`; `HourStep` stays on the number fields and columns because a 12-hour dial's 1-12 cells have no stepped grid.
 
 - `FlareCheckbox.Value` is `TValue` and `ValueChanged` is `EventCallback<TValue>` instead of nullable, so a two-state checkbox no longer reads as nullable in the API reference; a handler now names `bool` or `bool?` explicitly.
 - The query designer's captions come from the package's English and Russian resources and follow the current UI culture through `QueryBuilderLabels.Default` and the new `QueryBuilderLabels.For(culture)`, while the AND and OR connectors stay query-language tokens.
