@@ -208,8 +208,9 @@ internal class AeroTokens
         GapLg = "0.5rem",
         GapXl = "0.5rem",
 
-        // Compact Win7/Office control heights.
-        HeightXs = "1.25rem",
+        // Compact Win7/Office control heights. Windows 7 documents a 24x22 toolbar button and a
+        // 23px command button; Xs takes the smaller documented height.
+        HeightXs = "1.375rem",  // 22px - the documented toolbar button height
         HeightSm = "1.5rem",
         HeightMd = "1.75rem",   // 28px - classic toolbar button
         HeightLg = "2.25rem",

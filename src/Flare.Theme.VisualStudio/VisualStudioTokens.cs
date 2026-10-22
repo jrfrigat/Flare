@@ -206,8 +206,9 @@ internal class VisualStudioTokens
         GapLg = "0.5rem",
         GapXl = "0.5rem",
 
-        // Compact VS command/toolbar button heights.
-        HeightXs = "1.25rem",
+        // Compact VS command/toolbar button heights. The documented Windows UX toolbar button is
+        // 24x22, so Xs stops at that minimum instead of inventing a smaller target.
+        HeightXs = "1.375rem",  // 22px - the documented toolbar button height
         HeightSm = "1.5rem",
         HeightMd = "1.75rem",   // 28px - classic VS command button
         HeightLg = "2.25rem",

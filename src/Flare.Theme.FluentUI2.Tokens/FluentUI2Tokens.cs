@@ -234,8 +234,10 @@ public class FluentUI2Tokens
         GapLg = "0.5rem",          // 8px
         GapXl = "0.5rem",          // 8px
 
-        // Container heights per the Fluent UI 2 spec
-        HeightXs = "1.25rem",   // 20px
+        // Container heights per the Fluent UI 2 spec. The spec defines Small (24), Medium (32) and
+        // Large (40) only; Xs is not a Fluent size, so it takes the smallest control the system
+        // defines and stays a denser typography/padding step rather than a smaller target.
+        HeightXs = "1.5rem",     // 24px - the spec's smallest control (Small)
         HeightSm = "1.5rem",     // 24px
         HeightMd = "2rem",      // 32px (standard button)
         HeightLg = "2.5rem",     // 40px
