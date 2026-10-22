@@ -113,6 +113,9 @@ public sealed record DesignTokens
     /// <summary>Card tokens.</summary>
     public required CardTokens Card { get; init; }
 
+    /// <summary>Carousel tokens.</summary>
+    public required CarouselTokens Carousel { get; init; }
+
     /// <summary>Avatar tokens.</summary>
     public required AvatarTokens Avatar { get; init; }
 

@@ -1091,6 +1091,7 @@ public class FluentUI2Tokens
         S10 = "1.25rem",   // XL   (20px)
         S12 = "1.5rem",    // XXL  (24px)
         S16 = "2rem",      // XXXL (32px)
+        S20 = "2.5rem",    // extension (40px)
         S24 = "3rem",      // extension (48px)
         S32 = "4rem",      // extension (64px)
     };
@@ -1452,6 +1453,7 @@ public class FluentUI2Tokens
         Tabs = Tabs,
         TableOfContents = TableOfContents,
         Slider = Slider,
+        Carousel = new() { ArrowBlur = "4px" },
         // Fluent UI 2 cards: neutral surface backgrounds, a subtle shadow on the elevated variant,
         // a 1px stroke on outline, and a neutral (not brand) "filled-alternative" for tonal.
         Card = new()

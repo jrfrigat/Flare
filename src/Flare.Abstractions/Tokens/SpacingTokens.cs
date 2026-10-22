@@ -36,6 +36,8 @@ public sealed record SpacingTokens
     [CssVar(Spacing.S12)] public required string S12 { get; init; }
     /// <summary>Sixteen base units.</summary>
     [CssVar(Spacing.S16)] public required string S16 { get; init; }
+    /// <summary>Twenty base units.</summary>
+    [CssVar(Spacing.S20)] public required string S20 { get; init; }
     /// <summary>Twenty-four base units.</summary>
     [CssVar(Spacing.S24)] public required string S24 { get; init; }
     /// <summary>Thirty-two base units - the coarsest step.</summary>

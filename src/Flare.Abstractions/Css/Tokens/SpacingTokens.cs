@@ -31,6 +31,8 @@ public static class Spacing
     public const string S12 = "--flare-spacing-12";
     /// <summary>2rem (32px).</summary>
     public const string S16 = "--flare-spacing-16";
+    /// <summary>2.5rem (40px).</summary>
+    public const string S20 = "--flare-spacing-20";
     /// <summary>3rem (48px).</summary>
     public const string S24 = "--flare-spacing-24";
     /// <summary>4rem (64px).</summary>

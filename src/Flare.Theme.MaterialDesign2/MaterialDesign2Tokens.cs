@@ -1089,6 +1089,7 @@ internal static class MaterialDesign2Tokens
         S10 = "1.25rem",
         S12 = "1.5rem",
         S16 = "2rem",
+        S20 = "2.5rem",
         S24 = "3rem",
         S32 = "4rem",
     };
@@ -1338,6 +1339,7 @@ internal static class MaterialDesign2Tokens
         Radio = Radio,
         Chip = Chip,
         Tabs = Tabs,
+        Carousel = new() { ArrowBlur = "4px" },
         // MD3 cards: elevated hover = level 3 (spec), outlined border = full outline role (spec),
         // 16px inner padding on raw-content cards. Variant bg roles come from the base CardTokens.
         Card = new()
