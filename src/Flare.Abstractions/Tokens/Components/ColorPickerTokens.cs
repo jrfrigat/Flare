@@ -22,4 +22,10 @@ public sealed record ColorPickerTokens
 
     /// <summary>Border color of the hue/alpha slider's native thumb.</summary>
     [CssVar(ColorPickerField.ThumbBorderColor)] public string ThumbBorderColor { get; init; } = Var(Css.Tokens.Color.Outline);
+
+    /// <summary>Accent of the active tab, the focused input and the preset focus ring.</summary>
+    [CssVar(ColorPickerField.Accent)] public string Accent { get; init; } = Var(Css.Tokens.Color.Primary);
+
+    /// <summary>Ring around the slider thumb while it has keyboard focus.</summary>
+    [CssVar(ColorPickerField.FocusRing)] public string FocusRing { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
 }

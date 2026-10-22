@@ -17,6 +17,7 @@ All notable changes to Flare are documented here. This project adheres to
 - The Gantt's scale rows, tree toggle, drag handles and legend samples take their sizes from the spacing scale, and its hairline legend rules from the border token; the scale height and connector weight remain the chart's own geometry.
 - `ProgressTokens.TrackColor` defaults to the secondary container role, so a theme no longer has to set the unfilled track.
 - Alert severities, the filled, tonal and elevated button variants and the FAB paint through their own tokens (`--flare-alert-{info,success,warning,error}-{bg,color,border}`, `--flare-btn-{filled,tonal,elevated}-*`, `--flare-fab-*`), whose defaults are the roles the core drew before; Fluent UI 2 paints alert severities on its status containers, like its snackbar.
+- The time picker's selected cell, active hour/minute field and selected AM/PM button, and the colour picker's accent and focus ring, paint through their own tokens (`--flare-timepicker-selected-*`, `--flare-timepicker-period-selected-*`, `--flare-colorpicker-accent`, `--flare-colorpicker-focus-ring`); the defaults are the roles the core drew before.
 
 ### Fixed
 

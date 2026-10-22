@@ -83,8 +83,8 @@
   opacity: 1;
 }
 .flare-timepicker__cell--selected {
-  background: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  background: var(--flare-timepicker-selected-bg);
+  color: var(--flare-timepicker-selected-color);
 }
 /* The keyboard sits on the columns container; the active cell shows where (aria-activedescendant). */
 .flare-timepicker__columns:focus-visible .flare-timepicker__cell--active { outline: var(--flare-focus-ring); outline-offset: -2px; }
@@ -118,8 +118,8 @@
   cursor: pointer;
 }
 .flare-timepicker__time-field--active {
-  background: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  background: var(--flare-timepicker-selected-bg);
+  color: var(--flare-timepicker-selected-color);
 }
 .flare-timepicker__period { display: inline-flex; flex-direction: column; min-width: var(--flare-timepicker-period-width); min-height: var(--flare-timepicker-period-height); border: var(--flare-border-outline); border-radius: var(--flare-shape-small); overflow: hidden; }
 .flare-timepicker__period-btn {
@@ -132,8 +132,8 @@
   font-size: var(--flare-typescale-label-large-size);
 }
 .flare-timepicker__period-btn--selected {
-  background: var(--flare-color-tertiary-container);
-  color: var(--flare-color-on-tertiary-container);
+  background: var(--flare-timepicker-period-selected-bg);
+  color: var(--flare-timepicker-period-selected-color);
 }
 
 .flare-timepicker__entry {
@@ -155,8 +155,8 @@
   cursor: text;
 }
 .flare-timepicker__entry-input:focus {
-  background: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  background: var(--flare-timepicker-selected-bg);
+  color: var(--flare-timepicker-selected-color);
   outline: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-primary);
   outline-offset: 0;
 }

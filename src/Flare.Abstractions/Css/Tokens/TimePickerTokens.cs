@@ -37,4 +37,13 @@ public static class TimePickerField
     public const string ColumnMaxHeight = "--flare-timepicker-column-max-height";
     /// <summary>CSS custom-property name for the cell minimum width token.</summary>
     public const string CellMinWidth = "--flare-timepicker-cell-min-width";
+
+    /// <summary>Fill of the selected time cell and the active hour/minute field.</summary>
+    public const string SelectedBg = "--flare-timepicker-selected-bg";
+    /// <summary>Text colour of the selected time cell and the active hour/minute field.</summary>
+    public const string SelectedColor = "--flare-timepicker-selected-color";
+    /// <summary>Fill of the selected AM/PM button.</summary>
+    public const string PeriodSelectedBg = "--flare-timepicker-period-selected-bg";
+    /// <summary>Text colour of the selected AM/PM button.</summary>
+    public const string PeriodSelectedColor = "--flare-timepicker-period-selected-color";
 }

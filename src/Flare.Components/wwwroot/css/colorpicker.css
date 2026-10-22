@@ -33,7 +33,7 @@
 }
 
 .flare-colorpicker__trigger:focus-visible {
-    outline: 2px solid var(--flare-color-primary);
+    outline: 2px solid var(--flare-colorpicker-accent);
     outline-offset: 2px;
 }
 
@@ -209,11 +209,11 @@
 }
 
 .flare-colorpicker__slider:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 3px var(--flare-color-primary-container);
+    box-shadow: 0 0 0 3px var(--flare-colorpicker-focus-ring);
 }
 
 .flare-colorpicker__slider:focus-visible::-moz-range-thumb {
-    box-shadow: 0 0 0 3px var(--flare-color-primary-container);
+    box-shadow: 0 0 0 3px var(--flare-colorpicker-focus-ring);
 }
 
 
@@ -249,8 +249,8 @@
 }
 
 .flare-colorpicker__tab--active {
-    border-bottom-color: var(--flare-color-primary);
-    color: var(--flare-color-primary);
+    border-bottom-color: var(--flare-colorpicker-accent);
+    color: var(--flare-colorpicker-accent);
 }
 
 .flare-colorpicker__input-row {
@@ -283,7 +283,7 @@
 }
 
 .flare-colorpicker__input:focus {
-    border-color: var(--flare-color-primary);
+    border-color: var(--flare-colorpicker-accent);
 }
 
 /* Hide number spinners */
@@ -333,7 +333,7 @@
 }
 
 .flare-colorpicker__preset:focus-visible {
-    outline: 2px solid var(--flare-color-primary);
+    outline: 2px solid var(--flare-colorpicker-accent);
     outline-offset: 2px;
 }
 

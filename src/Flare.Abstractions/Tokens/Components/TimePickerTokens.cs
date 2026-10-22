@@ -56,4 +56,13 @@ public sealed record TimePickerTokens
 
     /// <summary>Narrowest width of one value cell in a dropdown column.</summary>
     [CssVar(TimePickerField.CellMinWidth)] public required string CellMinWidth { get; init; }
+
+    /// <summary>Fill of the selected time cell and the active hour/minute field.</summary>
+    [CssVar(TimePickerField.SelectedBg)] public string SelectedBg { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
+    /// <summary>Text colour of the selected time cell and the active hour/minute field.</summary>
+    [CssVar(TimePickerField.SelectedColor)] public string SelectedColor { get; init; } = Var(Css.Tokens.Color.OnPrimaryContainer);
+    /// <summary>Fill of the selected AM/PM button.</summary>
+    [CssVar(TimePickerField.PeriodSelectedBg)] public string PeriodSelectedBg { get; init; } = Var(Css.Tokens.Color.TertiaryContainer);
+    /// <summary>Text colour of the selected AM/PM button.</summary>
+    [CssVar(TimePickerField.PeriodSelectedColor)] public string PeriodSelectedColor { get; init; } = Var(Css.Tokens.Color.OnTertiaryContainer);
 }
