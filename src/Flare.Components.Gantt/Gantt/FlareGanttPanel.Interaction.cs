@@ -151,7 +151,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         await Click(bar);
     }
 
-    private async Task CreateLink(GanttLink link)
+    private async Task<bool> CreateLink(GanttLink link)
     {
         var validation = GanttGraph.Validate(Links ?? [], link);
         if (!validation.IsValid)
@@ -159,9 +159,16 @@ public partial class FlareGanttPanel<TRow, TItem>
             var message = Gantt!.EffectiveTexts.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key, Gantt.Axis.Culture) ?? "";
             _announcement = message;
             await OnLinkRejected.InvokeAsync(new GanttLinkRejectedEventArgs(link, validation, message));
-            return;
+            return false;
         }
-        await OnLinkCreate.InvokeAsync(new GanttLinkEventArgs(link));
+        var args = new GanttLinkEventArgs(link);
+        await OnLinkCreate.InvokeAsync(args);
+        if (args.Cancel) return false;
+        // The consumer owns the link data; this is the component's only post-action, and Cancel suppresses it.
+        _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkCreated!,
+            _bars.TryGetValue(link.FromKey, out var from) ? from.Label ?? link.FromKey : link.FromKey,
+            _bars.TryGetValue(link.ToKey, out var to) ? to.Label ?? link.ToKey : link.ToKey);
+        return true;
     }
 
     // The new span after moving or resizing by whole axis units; a resize never inverts the item and never leaves

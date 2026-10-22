@@ -10,6 +10,7 @@
   <data name="Gantt_Expand" xml:space="preserve"><value>Expand</value></data>
   <data name="Gantt_Collapse" xml:space="preserve"><value>Collapse</value></data>
   <data name="Gantt_LinkStarted" xml:space="preserve"><value>Linking from {0}. Choose the successor and press Enter.</value></data>
+  <data name="Gantt_LinkCreated" xml:space="preserve"><value>Link created: {0} -> {1}.</value></data>
   <data name="Gantt_Moved" xml:space="preserve"><value>{0} moved to {1}.</value></data>
   <data name="Gantt_ResizeSide" xml:space="preserve"><value>Resize the column: drag, arrow keys, Home to reset</value></data>
 </root>

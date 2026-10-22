@@ -16,7 +16,7 @@ public sealed class GanttTextsTests : GanttTestBase
         Assert.Equal("Expand", en.Expand);
         Assert.Equal("{0} moved to {1}.", en.Moved);
         Assert.NotEqual(en.Expand, ru.Expand);
-        Assert.All(new[] { en.SelfLink, en.Cycle, en.Duplicate, en.Expand, en.Collapse, en.LinkStarted, en.Moved, en.ResizeSide },
+        Assert.All(new[] { en.SelfLink, en.Cycle, en.Duplicate, en.Expand, en.Collapse, en.LinkStarted, en.LinkCreated, en.Moved, en.ResizeSide },
             text => Assert.False(string.IsNullOrEmpty(text) || text.StartsWith("Gantt_", StringComparison.Ordinal)));
     }
 

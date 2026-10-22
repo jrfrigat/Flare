@@ -30,6 +30,9 @@ public sealed record GanttTexts
     /// <summary>Announcement after a link was started from an item with the keyboard; <c>{0}</c> is the item.</summary>
     public string? LinkStarted { get; init; }
 
+    /// <summary>Announcement after a link was accepted; <c>{0}</c> is the source item, <c>{1}</c> the target.</summary>
+    public string? LinkCreated { get; init; }
+
     /// <summary>Announcement after an item moved; <c>{0}</c> is the item, <c>{1}</c> its new dates.</summary>
     public string? Moved { get; init; }
 
@@ -45,6 +48,7 @@ public sealed record GanttTexts
         Expand = Text("Gantt_Expand", culture),
         Collapse = Text("Gantt_Collapse", culture),
         LinkStarted = Text("Gantt_LinkStarted", culture),
+        LinkCreated = Text("Gantt_LinkCreated", culture),
         Moved = Text("Gantt_Moved", culture),
         ResizeSide = Text("Gantt_ResizeSide", culture),
     };
@@ -61,6 +65,7 @@ public sealed record GanttTexts
             Expand = Expand ?? builtIn.Expand,
             Collapse = Collapse ?? builtIn.Collapse,
             LinkStarted = LinkStarted ?? builtIn.LinkStarted,
+            LinkCreated = LinkCreated ?? builtIn.LinkCreated,
             Moved = Moved ?? builtIn.Moved,
             ResizeSide = ResizeSide ?? builtIn.ResizeSide,
         };

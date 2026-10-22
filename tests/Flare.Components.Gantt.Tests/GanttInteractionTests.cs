@@ -175,6 +175,25 @@ public sealed class GanttInteractionTests : GanttTestBase
         Bar(cut, "a").KeyDown(new KeyboardEventArgs { Key = "L" });
         Bar(cut, "c").Click();
         Assert.Equal([new GanttLink("a", "c")], created);
+        Assert.Equal("Связь создана: a → c.", cut.Find("[role=status]").TextContent);
+        Assert.Empty(cut.FindAll(".flare-gantt__bar--link-source"));
+    }
+
+    [Fact]
+    public void A_link_the_handler_refuses_is_not_announced()
+    {
+        var created = new List<GanttLink>();
+        var cut = Chart(p => p.Add(x => x.Rows, TwoRows)
+            .Add(x => x.Items, new[] { new Work("a", "r1", Day(0), Day(1)), new Work("c", "r2", Day(4), Day(5)) })
+            .Add(x => x.Editable, true)
+            .Add(x => x.OnLinkCreate, (GanttLinkEventArgs e) => { created.Add(e.Link); e.Cancel = true; }));
+
+        Bar(cut, "a").KeyDown(new KeyboardEventArgs { Key = "l" });
+        Bar(cut, "c").Click();
+
+        Assert.Equal([new GanttLink("a", "c")], created);
+        // The refusal leaves the previous announcement alone instead of confirming a link the handler refused.
+        Assert.Equal("Связь от a. Выберите последователя и нажмите Enter.", cut.Find("[role=status]").TextContent);
         Assert.Empty(cut.FindAll(".flare-gantt__bar--link-source"));
     }
 

@@ -171,6 +171,9 @@
     private string? _selectedParameter;
     private ElementReference _root;
     private IGanttView? _browser;
+    // The flags the attached script was given; a change means the script has to be attached again.
+    private bool? _jsVirtualize;
+    private bool? _jsEndless;
     private DotNetObjectReference<FlareGantt>? _self;
     private DateTime? _pendingScroll;
     private string? _pendingFocus;
@@ -322,7 +325,8 @@
     }
 
     /// <summary>True when the stretch from <paramref name="left"/> to <paramref name="right"/> pixels is among the drawn columns.</summary>
-    internal bool InView(double left, double right) => _drawn is not { } drawn || (right > drawn.From && left < drawn.To);
+    internal bool InView(double left, double right) => !Virtualize
+        || (_drawn is { } drawn && right > drawn.From && left < drawn.To);
 
     /// <summary>True when the header cell <paramref name="tick"/> is among the drawn columns.</summary>
     internal bool InView(GanttTick tick) => InView(tick.Offset * EffectiveUnitWidth, (tick.Offset + tick.Width) * EffectiveUnitWidth);
@@ -384,9 +388,15 @@
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !Compact)
+        // The script captures the flags in its listeners, so turning Virtualize or Endless on after mounting has to
+        // reattach it. Compact has no scroll region to watch; a chart that leaves Compact attaches on that render.
+        if (!Compact && (_browser is null || _jsVirtualize != Virtualize || _jsEndless != Endless))
         {
-            _self = DotNetObjectReference.Create(this);
+            if (_browser is not null) await _browser.DisposeAsync();
+            _browser = null;
+            _self ??= DotNetObjectReference.Create(this);
+            _jsVirtualize = Virtualize;
+            _jsEndless = Endless;
             _browser = await GanttJs.AttachAsync(_root, _self, Virtualize, Endless);
         }
         // An endless axis may have grown while the module was still attaching: what waited is applied once it is here.

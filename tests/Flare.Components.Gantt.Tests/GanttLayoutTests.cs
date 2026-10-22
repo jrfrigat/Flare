@@ -71,11 +71,13 @@ public sealed class GanttLayoutTests : GanttTestBase
     [Fact]
     public void Virtualized_columns_are_drawn_only_near_the_visible_part_of_the_axis()
     {
-        // 14 days x 40 px = 560 px; 80 px are visible from 240: the window 160-400 px is drawn, that is days 4-9.
+        // 14 days x 40 px = 560 px. Before the browser reports the view, a virtualized chart draws no columns at all;
+        // then, with 80 px visible from 240, the window 160-400 px is drawn, that is days 4-9.
         var cut = Chart(p => p.Add(x => x.Rows, new[] { new Node("r") })
                 .Add(x => x.Items, new[] { new Work("early", "r", Day(0), Day(0)), new Work("late", "r", Day(12), Day(12)) }),
             g => g.Add(x => x.Virtualize, true));
-        Assert.Equal(14, cut.FindAll(".flare-gantt__scale-row:not(.flare-gantt__scale-row--major) .flare-gantt__tick").Count);
+        Assert.Empty(cut.FindAll(".flare-gantt__scale-row:not(.flare-gantt__scale-row--major) .flare-gantt__tick"));
+        Assert.Empty(cut.FindAll(".flare-gantt__bar"));
 
         cut.InvokeAsync(() => cut.Instance.Horizontal(240, 80));
 

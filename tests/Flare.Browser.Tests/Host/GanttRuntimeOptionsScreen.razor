@@ -1,0 +1,25 @@
+@page "/gantt-runtime"
+@using Flare.Components.Gantt
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main>
+        <button id="toggle-virtualize" type="button" @onclick="() => _virtualize = !_virtualize">Toggle virtualize</button>
+        <FlareGantt id="chart" Range="_range" Scale="GanttScale.Day" UnitWidth="40" RowHeight="30"
+                    Virtualize="_virtualize" Style="--flare-gantt-max-height:300px;" AriaLabel="Plan">
+            <FlareGanttPanel TRow="string" TItem="Work" Rows="_rows" RowKey="r => r" Items="_items"
+                             ItemKey="w => w.Key" ItemRow="w => w.Row" ItemSpan="w => w.Span" />
+        </FlareGantt>
+    </main>
+</FlareThemeProvider>
+
+@code {
+    public sealed record Work(string Key, string Row, GanttSpan Span);
+
+    private static readonly DateOnly Start = new(2026, 10, 12);
+    // 60 days x 40 px = 2400 px, wider than the viewport, so a virtualized axis must cut the far columns.
+    private readonly GanttSpan _range = GanttSpan.FromDays(Start, Start.AddDays(59));
+    private readonly string[] _rows = Enumerable.Range(0, 200).Select(i => $"r{i}").ToArray();
+    private readonly Work[] _items = [];
+    // Starts off: turning it on after mounting is what the test drives.
+    private bool _virtualize;
+}

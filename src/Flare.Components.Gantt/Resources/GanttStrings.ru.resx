@@ -10,6 +10,7 @@
   <data name="Gantt_Expand" xml:space="preserve"><value>Развернуть</value></data>
   <data name="Gantt_Collapse" xml:space="preserve"><value>Свернуть</value></data>
   <data name="Gantt_LinkStarted" xml:space="preserve"><value>Связь от {0}. Выберите последователя и нажмите Enter.</value></data>
+  <data name="Gantt_LinkCreated" xml:space="preserve"><value>Связь создана: {0} → {1}.</value></data>
   <data name="Gantt_Moved" xml:space="preserve"><value>{0} перенесен: {1}.</value></data>
   <data name="Gantt_ResizeSide" xml:space="preserve"><value>Ширина колонки: тяните мышью, стрелки, Home - сброс</value></data>
 </root>
