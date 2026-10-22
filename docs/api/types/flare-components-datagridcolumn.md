@@ -11,14 +11,14 @@ A column as data: everything FlareDataGrid needs to render, sort, filter and edi
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `Align` | `ColumnAlign?` | `` | Horizontal alignment of the header and cells. Null = derive from Type (numbers right, booleans centered, otherwise leading). |
-| `CellTemplate` | `RenderFragment<TItem?>?` | `` | Custom cell renderer; overrides Value text when set. |
-| `ClassFunc` | `Func<TItem?, string>?` | `` | Returns extra CSS class(es) for this column's cell, given the row item. |
+| `CellTemplate` | `RenderFragment<TItem>?` | `` | Custom cell renderer; overrides Value text when set. |
+| `ClassFunc` | `Func<TItem, string>?` | `` | Returns extra CSS class(es) for this column's cell, given the row item. |
 | `CompositeMode` | `CompositeMode` | `CompositeMode.Banded` | How a composite column lays out (banded multi-row vs single-cell card). |
 | `CompositeRows` | `IReadOnlyList<FlareColumnRow>?` | `` | Composite layout rows for a layout-host column (null for a normal data column). |
-| `EditTemplate` | `RenderFragment<TItem?>?` | `` | Custom editor renderer used while the row is being inline-edited. |
+| `EditTemplate` | `RenderFragment<TItem>?` | `` | Custom editor renderer used while the row is being inline-edited. |
 | `Editable` | `bool` | `false` | Marks the column's cells as inline-editable. |
 | `FilterDebounceMs` | `int?` | `` | Debounce delay for this column's filter input (null = use grid default). |
-| `FilterFunc` | `Func<TItem?, string, bool>?` | `` | Custom filter predicate for this column: (row, filter text) => keep (overrides the built-in match). |
+| `FilterFunc` | `Func<TItem, string, bool>?` | `` | Custom filter predicate for this column: (row, filter text) => keep (overrides the built-in match). |
 | `FilterOptions` | `IEnumerable<string>?` | `` | Explicit option values for a select filter (null = distinct cell values). |
 | `FilterType` | `ColumnFilterType?` | `` | Inline filter editor type (text/select/number/date). Null = derive from Type. |
 | `Filterable` | `bool` | `false` | Shows an inline filter editor for this column in the filter row. |
@@ -31,14 +31,14 @@ A column as data: everything FlareDataGrid needs to render, sort, filter and edi
 | `Key` | `string` | `""` | Single stable column identity used everywhere: sort stack, filter/visibility/order state, persistence and the server sort/filter contract. Precedence: explicit Id, then SortKey, then Title. |
 | `NullText` | `string?` | `` | Text rendered when the cell value is null (default: empty string). |
 | `Resizable` | `bool` | `false` | Allows the user to drag-resize this column. |
-| `SortComparison` | `Comparison<TItem?>?` | `` | Custom row comparison used when this column is sorted (overrides value-based sorting). |
+| `SortComparison` | `Comparison<TItem>?` | `` | Custom row comparison used when this column is sorted (overrides value-based sorting). |
 | `SortKey` | `string?` | `` | Sort key sent to a server-side provider (falls back to Title). |
 | `Sortable` | `bool` | `false` | Enables click-to-sort on this column. |
-| `StyleFunc` | `Func<TItem?, string>?` | `` | Returns an inline style string for this column's cell, given the row item. |
+| `StyleFunc` | `Func<TItem, string>?` | `` | Returns an inline style string for this column's cell, given the row item. |
 | `Title` | `string` | `""` | Header text shown in the column heading, and the column's name everywhere else it is referred to by name - the export, the filter menu, the column picker, the aggregate rows and the edit dictionaries. Setting TitleContent changes only what the header cell paints; this string is still required and still carries the identity. |
 | `TitleContent` | `RenderFragment?` | `` | Markup painted in the header cell instead of Title - a unit, an icon, a help affordance. Display only: it does not travel to the export, the filter menu or anywhere else the column is named, because those are text. |
 | `Type` | `ColumnDataType` | `ColumnDataType.Auto` | Semantic data type used for type-aware cell rendering and the default filter editor. Auto (default) infers it from the runtime cell value. |
-| `Value` | `Func<TItem?, object?>?` | `` | Value accessor used for cell text, sorting and filtering. |
+| `Value` | `Func<TItem, object?>?` | `` | Value accessor used for cell text, sorting and filtering. |
 | `Width` | `string?` | `` | Fixed CSS width. |
 
 ## Methods

@@ -12,8 +12,8 @@ Named advanced filters offered as a single choice, so a reader picks "Overdue" i
 | --- | --- | --- | --- | --- | --- |
 | `Presets` | `IReadOnlyList<DataGridFilterPreset>?` | `` | Parameter |  | The named filter presets to offer. Each preset's Filter is an advanced filter tree. |
 | `Size` | `FieldSize` | `FieldSize.Sm` | Parameter |  | Field size of the select. |
-| `Context` | `DataGridContext<TItem?>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |
-| `Grid` | `FlareDataGrid<TItem?>?` | `` | Parameter |  | The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself. Inherited from `FlareDataGridControl`. |
+| `Context` | `DataGridContext<TItem>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |
+| `Grid` | `FlareDataGrid<TItem>?` | `` | Parameter |  | The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself. Inherited from `FlareDataGridControl`. |
 
 ## Methods
 

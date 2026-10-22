@@ -10,9 +10,9 @@ Builds an edit form from the public properties of TModel: one field per property
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `Model` | `TModel?` | `` | Parameter | Yes | Model instance the form is bound to. Supports @bind-Model so a reset propagates back to the parent. |
-| `ModelChanged` | `EventCallback<TModel?>` | `` | Callback |  | Raised when the bound model reference changes (e.g. on reset), for two-way binding. |
-| `OnValidSubmit` | `EventCallback<TModel?>` | `` | Callback |  | Callback raised after the form passes validation. |
+| `Model` | `TModel` | `` | Parameter | Yes | Model instance the form is bound to. Supports @bind-Model so a reset propagates back to the parent. |
+| `ModelChanged` | `EventCallback<TModel>` | `` | Callback |  | Raised when the bound model reference changes (e.g. on reset), for two-way binding. |
+| `OnValidSubmit` | `EventCallback<TModel>` | `` | Callback |  | Callback raised after the form passes validation. |
 | `ResetLabel` | `string?` | `` | Parameter |  | Label text for the form reset button. When null, falls back to the localizer key FormBuilder_Reset. |
 | `ShowReset` | `bool` | `true` | Parameter |  | Shows a reset button alongside the submit button. |
 | `SubmitLabel` | `string?` | `` | Parameter |  | Label text for the form submit button. When null, falls back to the localizer key FormBuilder_Submit. |

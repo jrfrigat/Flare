@@ -11,24 +11,24 @@
 | `AllowsCustomValue` | `bool` | `false` | Parameter |  | Allows committing a typed value not in the list (free typing). Requires CustomValueFactory for non-string values. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list. |
 | `Clearable` | `bool` | `true` | Parameter |  | Shows a clear button that resets the value and text. Default: true. |
-| `CustomValueFactory` | `Func<string, TValue?>?` | `` | Parameter |  | Converts the typed text into a value when committing a custom entry. Defaults to identity for string values. |
+| `CustomValueFactory` | `Func<string, TValue>?` | `` | Parameter |  | Converts the typed text into a value when committing a custom entry. Defaults to identity for string values. |
 | `DebounceMs` | `int` | `300` | Parameter |  | Milliseconds to wait after input before running an async search. Default: 300ms. |
 | `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
 | `Fuzzy` | `bool` | `false` | Parameter |  | Ranks local matches by fuzzy relevance (via FlareSearch) instead of insertion order. |
-| `GroupBy` | `Func<TValue?, string>?` | `` | Parameter |  | Returns the group label for an item; when non-null, options are grouped under headers. |
+| `GroupBy` | `Func<TValue, string>?` | `` | Parameter |  | Returns the group label for an item; when non-null, options are grouped under headers. |
 | `InputValueChanged` | `EventCallback<string?>` | `` | Callback |  | Callback invoked when the typed input text changes. |
-| `ItemDisabled` | `Func<TValue?, bool>?` | `` | Parameter |  | Returns whether an item is disabled (shown, never committable). |
-| `ItemTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for a dropdown option. Overrides the ItemText text. |
-| `ItemText` | `Func<TValue?, string>?` | `` | Parameter |  | Returns the display text for an item. When null, the declarative label or ToString() is used. |
-| `Items` | `IEnumerable<TValue?>?` | `` | Parameter |  | Static collection of items to filter locally when no SearchFunc is supplied. |
+| `ItemDisabled` | `Func<TValue, bool>?` | `` | Parameter |  | Returns whether an item is disabled (shown, never committable). |
+| `ItemTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for a dropdown option. Overrides the ItemText text. |
+| `ItemText` | `Func<TValue, string>?` | `` | Parameter |  | Returns the display text for an item. When null, the declarative label or ToString() is used. |
+| `Items` | `IEnumerable<TValue>?` | `` | Parameter |  | Static collection of items to filter locally when no SearchFunc is supplied. |
 | `MaxItems` | `int` | `10` | Parameter |  | Maximum number of async results to display. Default: 10. |
 | `MinChars` | `int` | `1` | Parameter |  | Minimum number of typed characters before an async search runs. Default: 1. |
 | `NoResultsText` | `string?` | `` | Parameter |  | Text shown in the dropdown when a query matches nothing. When null, falls back to the localized default. |
 | `OnCustomValue` | `EventCallback<string>` | `` | Callback |  | Invoked with the raw text when a custom (not-in-list) value is committed. |
 | `Open` | `bool` | `false` | Parameter |  | Whether the dropdown is open (supports @bind-Open). |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback invoked when the open state changes, enabling @bind-Open. |
-| `RankFunc` | `Func<TValue?, string, double>?` | `` | Parameter |  | Custom relevance scorer (item, query) => score for local items; overrides Fuzzy. |
-| `SearchFunc` | `Func<string, CancellationToken, Task<IEnumerable<TValue?>>>?` | `` | Parameter |  | Async, cancelable search callback; when set it owns filtering and the engine shows its results as-is. |
+| `RankFunc` | `Func<TValue, string, double>?` | `` | Parameter |  | Custom relevance scorer (item, query) => score for local items; overrides Fuzzy. |
+| `SearchFunc` | `Func<string, CancellationToken, Task<IEnumerable<TValue>>>?` | `` | Parameter |  | Async, cancelable search callback; when set it owns filtering and the engine shows its results as-is. |
 | `Value` | `TValue?` | `` | Parameter |  | Currently selected value (supports @bind-Value). |
 | `ValueChanged` | `EventCallback<TValue?>` | `` | Callback |  | Callback invoked when the selected value changes, enabling @bind-Value. |
 | `VirtualizeThreshold` | `int` | `50` | Parameter |  | Option count above which the dropdown virtualizes (when not grouped). Default: 50. |

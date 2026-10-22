@@ -30,6 +30,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Flare.ApiDocGen.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Core meta-package (brings Flare.Components + Flare.Infrastructure + their deps). -->
     <ProjectReference Include="..\..\src\Flare\Flare.csproj" />
     <!-- Optional add-on component packages the Gallery also documents. Without these, the

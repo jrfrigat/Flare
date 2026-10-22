@@ -12,7 +12,7 @@
 | `Color` | `FlareColor` | `` | Parameter |  | Accent color of the selected radio (role -> shared class, custom -> inline token). Default = primary. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables all radio buttons in the group. |
 | `ErrorText` | `string?` | `` | Parameter |  | Overrides validation with a custom error message. |
-| `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
+| `For` | `Expression<Func<TValue>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
 | `Inline` | `bool` | `false` | Parameter |  | Arranges radio buttons horizontally when true. |
 | `Label` | `string?` | `` | Parameter |  | Legend label shown above the group. |
 | `LabelPlacement` | `LabelPlacement` | `LabelPlacement.End` | Parameter |  | Label position relative to each radio (End = after, Start = before). Default End. |

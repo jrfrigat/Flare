@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Guards the type names ApiDocGen writes into the reference. It reads the nullable annotations of
+       real compiler-emitted metadata, so it targets one runtime like the tool itself: the annotations
+       are the same on every TFM, and the formatter runs in the tool's own net10 process. -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
+    <ProjectReference Include="..\..\tools\Flare.ApiDocGen\Flare.ApiDocGen.csproj" />
+  </ItemGroup>
+
+</Project>

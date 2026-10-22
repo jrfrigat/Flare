@@ -10,23 +10,23 @@
 | --- | --- | --- | --- | --- | --- |
 | `AddOnBlur` | `bool` | `true` | Parameter |  | Adds the current input as a tag when focus leaves the field. Default: true. |
 | `AllowDuplicates` | `bool` | `false` | Parameter |  | Allows adding duplicate tags. Requires a reference/value type whose equality permits it. |
-| `ChipColor` | `Func<TValue?, string?>?` | `` | Parameter |  | Optional per-tag chip colour; rendered as the chip fill. |
-| `ChipTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for a chip's content. |
-| `ChipTextColor` | `Func<TValue?, string?>?` | `` | Parameter |  | Optional per-tag label colour to go with ChipColor. Unset, the label keeps the theme's on-colour - only the caller knows whether a colour it chose needs a light or dark label. |
-| `CustomValueFactory` | `Func<string, TValue?>?` | `` | Parameter |  | Converts the typed text into a tag value. Defaults to identity for string tags. |
+| `ChipColor` | `Func<TValue, string?>?` | `` | Parameter |  | Optional per-tag chip colour; rendered as the chip fill. |
+| `ChipTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for a chip's content. |
+| `ChipTextColor` | `Func<TValue, string?>?` | `` | Parameter |  | Optional per-tag label colour to go with ChipColor. Unset, the label keeps the theme's on-colour - only the caller knows whether a colour it chose needs a light or dark label. |
+| `CustomValueFactory` | `Func<string, TValue>?` | `` | Parameter |  | Converts the typed text into a tag value. Defaults to identity for string tags. |
 | `DebounceMs` | `int` | `200` | Parameter |  | Debounce in milliseconds before querying SearchFunc. Default: 200ms. |
-| `For` | `Expression<Func<IReadOnlyList<TValue?>>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
-| `ItemText` | `Func<TValue?, string>?` | `` | Parameter |  | Resolves a tag/suggestion's display text. When null, ToString() is used. |
+| `For` | `Expression<Func<IReadOnlyList<TValue>>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
+| `ItemText` | `Func<TValue, string>?` | `` | Parameter |  | Resolves a tag/suggestion's display text. When null, ToString() is used. |
 | `MaxSuggestions` | `int` | `8` | Parameter |  | Maximum number of suggestions shown. Default: 8. |
 | `MaxTags` | `int` | `0` | Parameter |  | Maximum number of tags; 0 means unlimited. |
 | `MinChars` | `int` | `1` | Parameter |  | Minimum characters typed before suggestions appear. Default: 1. |
 | `NoResultsText` | `string?` | `` | Parameter |  | Text shown when a query returns no suggestions. When null, falls back to the localized default. |
-| `SearchFunc` | `Func<string, CancellationToken, Task<IEnumerable<TValue?>>>?` | `` | Parameter |  | Async, cancelable suggestion provider (server-side); overrides Suggestions when set. |
+| `SearchFunc` | `Func<string, CancellationToken, Task<IEnumerable<TValue>>>?` | `` | Parameter |  | Async, cancelable suggestion provider (server-side); overrides Suggestions when set. |
 | `Separators` | `IReadOnlyList<string>` | `` | Parameter |  | Keys that commit the current input as a tag. Defaults to Enter, comma and semicolon. |
-| `SuggestionTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for a suggestion row. |
-| `Suggestions` | `IEnumerable<TValue?>?` | `` | Parameter |  | Static suggestions offered in a dropdown as the user types. Already-added tags are excluded. |
-| `Values` | `IReadOnlyList<TValue?>` | `` | Parameter |  | The current list of tags (supports @bind-Values). |
-| `ValuesChanged` | `EventCallback<IReadOnlyList<TValue?>>` | `` | Callback |  | Callback invoked when the tag list changes, enabling @bind-Values. |
+| `SuggestionTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for a suggestion row. |
+| `Suggestions` | `IEnumerable<TValue>?` | `` | Parameter |  | Static suggestions offered in a dropdown as the user types. Already-added tags are excluded. |
+| `Values` | `IReadOnlyList<TValue>` | `` | Parameter |  | The current list of tags (supports @bind-Values). |
+| `ValuesChanged` | `EventCallback<IReadOnlyList<TValue>>` | `` | Callback |  | Callback invoked when the tag list changes, enabling @bind-Values. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Disabled` | `bool` | `false` | Parameter |  | Disables the field (no input, dimmed). Inherited from `FlareFieldBase`. |

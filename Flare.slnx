@@ -43,6 +43,7 @@
     <Project Path="src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Flare.ApiDocGen.Tests/Flare.ApiDocGen.Tests.csproj" />
     <Project Path="tests/Flare.Browser.Tests/Flare.Browser.Tests.csproj" />
     <Project Path="tests/Flare.Components.Tests/Flare.Components.Tests.csproj" />
     <Project Path="tests/Flare.Components.Barcode.Tests/Flare.Components.Barcode.Tests.csproj" />

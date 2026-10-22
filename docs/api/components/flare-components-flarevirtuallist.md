@@ -9,8 +9,8 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Height` | `string` | `"400px"` | Parameter |  | CSS height of the scrollable container. |
-| `ItemTemplate` | `RenderFragment<TItem?>?` | `` | Parameter |  | Template used to render each individual item. |
-| `Items` | `IReadOnlyList<TItem?>?` | `` | Parameter |  | Data source list to virtualize and render. |
+| `ItemTemplate` | `RenderFragment<TItem>?` | `` | Parameter |  | Template used to render each individual item. |
+| `Items` | `IReadOnlyList<TItem>?` | `` | Parameter |  | Data source list to virtualize and render. |
 | `OverscanCount` | `int` | `3` | Parameter |  | Number of extra items rendered outside the visible viewport. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

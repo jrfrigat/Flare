@@ -10,8 +10,8 @@ One column of a typed FlareTable when the table is described by Columns instead 
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `Cell` | `Func<TItem?, RenderFragment>?` | `` | Custom cell content - a badge, a link, a stack of several pieces. When set it replaces the plain Field text. |
-| `Field` | `Func<TItem?, object?>?` | `` | Value rendered as plain text in each cell, formatted with the current culture. Ignored when Cell is set. |
+| `Cell` | `Func<TItem, RenderFragment>?` | `` | Custom cell content - a badge, a link, a stack of several pieces. When set it replaces the plain Field text. |
+| `Field` | `Func<TItem, object?>?` | `` | Value rendered as plain text in each cell, formatted with the current culture. Ignored when Cell is set. |
 | `Header` | `string` | `""` | Text shown in the column's header cell. |
 
 ## Methods

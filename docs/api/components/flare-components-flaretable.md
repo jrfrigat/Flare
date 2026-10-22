@@ -12,15 +12,15 @@
 | `Caption` | `string?` | `` | Parameter |  | Accessible caption rendered as a <caption> element inside the table. Provides a text summary of the table's purpose - not supported by MudBlazor or Blazorise. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Raw table content for simple (non-typed) usage. |
 | `ColSpan` | `int` | `100` | Parameter |  | Number of columns (used for group-row colspan). |
-| `Columns` | `IReadOnlyList<FlareTableColumn<TItem?>>?` | `` | Parameter |  | Describes the table by columns instead of raw thead/tr/td markup. When set together with Items, the component renders the header and every body row itself; HeaderContent and RowTemplate are then ignored. This is the path a page uses when it has no business writing table markup. |
+| `Columns` | `IReadOnlyList<FlareTableColumn<TItem>>?` | `` | Parameter |  | Describes the table by columns instead of raw thead/tr/td markup. When set together with Items, the component renders the header and every body row itself; HeaderContent and RowTemplate are then ignored. This is the path a page uses when it has no business writing table markup. |
 | `Dense` | `bool` | `false` | Parameter |  | Reduces cell padding for a denser layout (consistent with other components' Dense). |
-| `FooterCells` | `Func<IEnumerable<TItem?>, IReadOnlyList<RenderFragment>>?` | `` | Parameter |  | Footer cells for the column path, computed from all items - a total or a count under each column. Null falls back to FooterContent; the two are not combined. |
-| `FooterContent` | `RenderFragment<IEnumerable<TItem?>>?` | `` | Parameter |  | Renders the footer row(s) inside <tfoot> receiving all items. |
-| `GroupBy` | `Func<TItem?, string>?` | `` | Parameter |  | When non-null, groups items by the returned string key. |
+| `FooterCells` | `Func<IEnumerable<TItem>, IReadOnlyList<RenderFragment>>?` | `` | Parameter |  | Footer cells for the column path, computed from all items - a total or a count under each column. Null falls back to FooterContent; the two are not combined. |
+| `FooterContent` | `RenderFragment<IEnumerable<TItem>>?` | `` | Parameter |  | Renders the footer row(s) inside <tfoot> receiving all items. |
+| `GroupBy` | `Func<TItem, string>?` | `` | Parameter |  | When non-null, groups items by the returned string key. |
 | `HeaderContent` | `RenderFragment?` | `` | Parameter |  | Renders the header row(s) inside <thead>. |
 | `Hover` | `bool` | `true` | Parameter |  | Highlights the row under the cursor. |
-| `Items` | `IEnumerable<TItem?>?` | `` | Parameter |  | The data items to display. When set, the component manages rendering. |
-| `RowTemplate` | `RenderFragment<TItem?>?` | `` | Parameter |  | Renders a single data row for each item. |
+| `Items` | `IEnumerable<TItem>?` | `` | Parameter |  | The data items to display. When set, the component manages rendering. |
+| `RowTemplate` | `RenderFragment<TItem>?` | `` | Parameter |  | Renders a single data row for each item. |
 | `ShowFooter` | `bool` | `false` | Parameter |  | When true, renders a <tfoot> using FooterContent. |
 | `StickyHeader` | `bool` | `false` | Parameter |  | Pins the table header while the body scrolls. |
 | `Striped` | `bool` | `false` | Parameter |  | Alternates row background colors for readability. |

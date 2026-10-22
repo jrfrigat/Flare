@@ -10,8 +10,8 @@
 | --- | --- | --- | --- | --- | --- |
 | `AutoPlay` | `bool` | `false` | Parameter |  | Automatically advances slides on a timer. |
 | `AutoPlayIntervalMs` | `int` | `4000` | Parameter |  | Milliseconds between automatic slide advances. |
-| `ItemTemplate` | `RenderFragment<TItem?>?` | `` | Parameter |  | Template used to render each slide's content. |
-| `Items` | `IReadOnlyList<TItem?>?` | `` | Parameter |  | Data items to render as carousel slides. |
+| `ItemTemplate` | `RenderFragment<TItem>?` | `` | Parameter |  | Template used to render each slide's content. |
+| `Items` | `IReadOnlyList<TItem>?` | `` | Parameter |  | Data items to render as carousel slides. |
 | `Loop` | `bool` | `true` | Parameter |  | Wraps from the last slide back to the first. |
 | `ShowArrows` | `bool` | `true` | Parameter |  | Shows previous and next navigation arrow buttons. |
 | `ShowDots` | `bool` | `true` | Parameter |  | Shows dot indicators for direct slide navigation. |

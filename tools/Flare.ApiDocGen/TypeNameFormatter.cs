@@ -25,52 +25,62 @@ internal static class TypeNameFormatter
         ["System.Void"] = "void",
     };
 
-    /// <summary>Returns a friendly C# representation of <paramref name="type"/>, honoring the property's nullability.</summary>
-    public static string Format(Type type, NullabilityInfo? nullability = null)
+    /// <summary>Returns a friendly C# representation of <paramref name="type"/> without nullability.</summary>
+    public static string Format(Type type) => Format(type, NullabilityAnnotations.Oblivious);
+
+    /// <summary>Returns a friendly C# representation of <paramref name="type"/>, honoring <paramref name="annotations"/>.</summary>
+    public static string Format(Type type, NullabilityAnnotations annotations)
     {
-        var text = FormatCore(type, nullability);
-        // Annotate nullable reference types (value-type nullables are handled via Nullable<T>).
-        if (nullability is { ReadState: NullabilityState.Nullable } && !type.IsValueType)
-            text += "?";
-        return text;
+        var index = 0;
+        return FormatCore(type, annotations, ref index);
     }
 
-    private static string FormatCore(Type type, NullabilityInfo? nullability)
+    private static string FormatCore(Type type, NullabilityAnnotations annotations, ref int index)
     {
         if (type.IsByRef)
-            return FormatCore(type.GetElementType()!, nullability);
+            return FormatCore(type.GetElementType()!, annotations, ref index);
 
-        if (type.IsArray)
-        {
-            var elementNullability = nullability?.ElementType;
-            return Format(type.GetElementType()!, elementNullability) + "[]";
-        }
-
+        // Nullable<T> is encoded in the type itself and takes no annotation slot.
         var underlying = Nullable.GetUnderlyingType(type);
         if (underlying is not null)
-            return FormatCore(underlying, null) + "?";
+            return FormatCore(underlying, NullabilityAnnotations.Oblivious, ref index) + "?";
 
-        if (type.IsGenericType)
+        // The compiler writes one annotation byte for every reference type, generic parameter and generic
+        // struct, and none for a plain value type. Generic structs consume a slot (usually 0) and still
+        // descend into their arguments, which is why EventCallback<T> starts with 0, not 1.
+        var isValueType = type.IsValueType;
+        var consumesSlot = !isValueType || type.IsGenericType;
+        var flag = consumesSlot ? annotations.Next(ref index) : (byte)0;
+
+        string text;
+        if (type.IsArray)
         {
-            var def = type.GetGenericTypeDefinition();
-            var name = TrimGenericArity(def.Name);
+            text = FormatCore(type.GetElementType()!, annotations, ref index) + "[]";
+        }
+        else if (type.IsGenericType)
+        {
+            var name = TrimGenericArity(type.GetGenericTypeDefinition().Name);
             var args = type.GetGenericArguments();
             var formattedArgs = new string[args.Length];
             for (var i = 0; i < args.Length; i++)
-            {
-                var argNullability = nullability is not null && i < nullability.GenericTypeArguments.Length
-                    ? nullability.GenericTypeArguments[i]
-                    : null;
-                formattedArgs[i] = Format(args[i], argNullability);
-            }
+                formattedArgs[i] = FormatCore(args[i], annotations, ref index);
 
-            return $"{name}<{string.Join(", ", formattedArgs)}>";
+            text = $"{name}<{string.Join(", ", formattedArgs)}>";
+        }
+        else if (type.FullName is { } full && Aliases.TryGetValue(full, out var alias))
+        {
+            text = alias;
+        }
+        else
+        {
+            text = type.Name;
         }
 
-        if (type.FullName is { } full && Aliases.TryGetValue(full, out var alias))
-            return alias;
+        // Annotated (2) means nullable; 1 is explicit non-nullable and 0 is oblivious, as before.
+        if (!isValueType && flag == 2)
+            text += "?";
 
-        return type.Name;
+        return text;
     }
 
     private static string TrimGenericArity(string name)

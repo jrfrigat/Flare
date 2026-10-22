@@ -9,26 +9,26 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list. |
-| `ChipTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for a selected chip's content. |
+| `ChipTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for a selected chip's content. |
 | `Chips` | `bool` | `false` | Parameter |  | Renders the selected values as removable chips instead of a comma list. |
 | `Clearable` | `bool` | `false` | Parameter |  | Shows a clear button that resets the selection. |
-| `For` | `Expression<Func<IReadOnlyList<TValue?>>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
+| `For` | `Expression<Func<IReadOnlyList<TValue>>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
 | `Fuzzy` | `bool` | `false` | Parameter |  | Ranks filtered options by fuzzy relevance instead of insertion order. |
-| `GroupBy` | `Func<TValue?, string>?` | `` | Parameter |  | Returns the group label for an item; when non-null, options are grouped under headers. |
-| `ItemDisabled` | `Func<TValue?, bool>?` | `` | Parameter |  | Returns whether an item is disabled (shown, never committable). |
-| `ItemLabel` | `Func<TValue?, string>?` | `` | Parameter |  | Returns the display text for an item. |
-| `ItemTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for a dropdown option row. |
-| `Items` | `IEnumerable<TValue?>?` | `` | Parameter |  | Collection of items to populate the dropdown. |
+| `GroupBy` | `Func<TValue, string>?` | `` | Parameter |  | Returns the group label for an item; when non-null, options are grouped under headers. |
+| `ItemDisabled` | `Func<TValue, bool>?` | `` | Parameter |  | Returns whether an item is disabled (shown, never committable). |
+| `ItemLabel` | `Func<TValue, string>?` | `` | Parameter |  | Returns the display text for an item. |
+| `ItemTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for a dropdown option row. |
+| `Items` | `IEnumerable<TValue>?` | `` | Parameter |  | Collection of items to populate the dropdown. |
 | `MaxSelections` | `int` | `0` | Parameter |  | Maximum number of selected items; 0 means unlimited. |
 | `NoResultsText` | `string?` | `` | Parameter |  | Text shown in the dropdown when a search query matches no options. |
 | `OnMaxSelectionsReached` | `EventCallback` | `` | Callback |  | Invoked when a pick is rejected because MaxSelections is reached. |
 | `Open` | `bool` | `false` | Parameter |  | Whether the dropdown is open (supports @bind-Open). |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback invoked when the open state changes. |
-| `RankFunc` | `Func<TValue?, string, double>?` | `` | Parameter |  | Custom relevance scorer (item, query) => score; overrides Fuzzy. |
+| `RankFunc` | `Func<TValue, string, double>?` | `` | Parameter |  | Custom relevance scorer (item, query) => score; overrides Fuzzy. |
 | `Searchable` | `bool` | `false` | Parameter |  | Shows an in-field search input that filters the options as the user types. |
 | `ShowSelectAll` | `bool` | `false` | Parameter |  | Shows a select-all row at the top of the dropdown. |
-| `Values` | `IReadOnlyList<TValue?>` | `` | Parameter |  | The bound collection of selected values (supports @bind-Values). |
-| `ValuesChanged` | `EventCallback<IReadOnlyList<TValue?>>` | `` | Callback |  | Callback invoked when the selection changes, enabling @bind-Values. |
+| `Values` | `IReadOnlyList<TValue>` | `` | Parameter |  | The bound collection of selected values (supports @bind-Values). |
+| `ValuesChanged` | `EventCallback<IReadOnlyList<TValue>>` | `` | Callback |  | Callback invoked when the selection changes, enabling @bind-Values. |
 | `VirtualizeThreshold` | `int` | `50` | Parameter |  | Option count above which the dropdown virtualizes (when not grouped). Default: 50. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |

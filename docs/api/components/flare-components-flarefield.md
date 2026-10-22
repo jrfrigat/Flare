@@ -20,7 +20,7 @@
 | `EnterKeyHint` | `string?` | `` | Parameter |  | The HTML enterkeyhint, which labels the on-screen keyboard's action key. Left unset, only a search field gets one. |
 | `Error` | `bool` | `false` | Parameter |  | Forces the field into the error (invalid) visual state - red active indicator and aria-invalid - without requiring an ErrorText message. Useful when the error is surfaced elsewhere (a form-level summary) or when only the state, not a message, is wanted. The error state is also shown automatically whenever ErrorText or a bound validation message is present. |
 | `FloatingLabel` | `bool` | `false` | Parameter |  | Renders the label as an animated floating label that moves above the input on focus. |
-| `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
+| `For` | `Expression<Func<TValue>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
 | `FullWidth` | `bool` | `true` | Parameter |  | When true (the default), the field is block-level and fills the width of its container. Set to false to size the field to its content (inline) instead. |
 | `HelperTextOnFocus` | `bool` | `false` | Parameter |  | Shows the HelperText only while the input is focused. |
 | `Immediate` | `bool` | `false` | Parameter |  | When true, the value updates on every keystroke (oninput) rather than only on change/blur. |

@@ -11,7 +11,7 @@
 | `Clearable` | `bool` | `false` | Parameter |  | Shows a clear (x) button inside the field when it has a value. |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture used to render and parse Format. Defaults to the current UI culture. |
 | `DebounceInterval` | `int` | `0` | Parameter |  | Debounce in milliseconds for Immediate updates. 0 = no debounce. |
-| `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
+| `For` | `Expression<Func<TValue>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
 | `Format` | `string?` | `` | Parameter |  | Display format applied while the field is not focused: standard .NET numeric format (e.g. "N0" group separators, "C2" currency, "P0" percent). Setting this switches the control to a text field that shows the formatted value when blurred and a plain editable number while focused (focus-swap), so separators/currency symbols do not block typing. |
 | `Immediate` | `bool` | `false` | Parameter |  | When true, the value updates on every keystroke (oninput) rather than only on change/blur. |
 | `Max` | `double?` | `` | Parameter |  | Maximum allowed value. |

@@ -13,7 +13,6 @@ internal sealed class ComponentExtractor
     private const string ComponentBaseTypeName = "Microsoft.AspNetCore.Components.ComponentBase";
 
     private readonly XmlDocReader _docs;
-    private readonly NullabilityInfoContext _nullability = new();
     private readonly Dictionary<Type, object?> _instanceCache = new();
 
     public ComponentExtractor(XmlDocReader docs) => _docs = docs;
@@ -107,7 +106,7 @@ internal sealed class ComponentExtractor
             var doc = _docs.ForProperty(prop);
             properties.Add(new PropertyDoc(
                 Name: prop.Name,
-                Type: TypeNameFormatter.Format(prop.PropertyType, SafeNullability(prop)),
+                Type: TypeNameFormatter.Format(prop.PropertyType, NullabilityAnnotations.Read(prop)),
                 Default: ReadDefault(type, prop, IsEventCallback(prop.PropertyType)),
                 Summary: doc?.Summary,
                 Remarks: doc?.Remarks));
@@ -139,14 +138,13 @@ internal sealed class ComponentExtractor
             if (!isParameter && !isCascading)
                 continue;
 
-            var nullability = SafeNullability(prop);
             var doc = _docs.ForProperty(prop);
             var propType = prop.PropertyType;
             var isEventCallback = IsEventCallback(propType);
 
             result.Add(new ParameterDoc(
                 Name: prop.Name,
-                Type: TypeNameFormatter.Format(propType, nullability),
+                Type: TypeNameFormatter.Format(propType, NullabilityAnnotations.Read(prop)),
                 Default: ReadDefault(type, prop, isEventCallback),
                 Summary: doc?.Summary,
                 Remarks: doc?.Remarks,
@@ -314,11 +312,5 @@ internal sealed class ComponentExtractor
             if (attr.GetType().FullName == attributeFullName)
                 return true;
         return false;
-    }
-
-    private NullabilityInfo? SafeNullability(PropertyInfo prop)
-    {
-        try { return _nullability.Create(prop); }
-        catch { return null; }
     }
 }

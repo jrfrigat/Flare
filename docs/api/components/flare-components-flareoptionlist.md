@@ -13,16 +13,16 @@
 | `HeaderContent` | `RenderFragment?` | `` | Parameter |  | Content rendered above the options (e.g. a select-all row). |
 | `HighlightedIndex` | `int` | `-1` | Parameter |  | The highlighted option index (into the filtered options); -1 for none. |
 | `Id` | `string?` | `` | Parameter |  | Listbox root id; option ids are {Id}-opt-{optionIndex} for aria-activedescendant. |
-| `IsDisabled` | `Func<TItem?, bool>?` | `` | Parameter |  | Returns whether an item is disabled (drives aria-disabled and non-committable styling). |
-| `IsSelected` | `Func<TItem?, bool>?` | `` | Parameter |  | Returns whether an item is selected (drives aria-selected and the selected styling). |
-| `ItemTemplate` | `RenderFragment<TItem?>?` | `` | Parameter |  | Custom render template for an option row. Overrides the Label text. |
-| `Label` | `Func<TItem?, string>` | `` | Parameter |  | Resolves an item's display text when no ItemTemplate is supplied. |
+| `IsDisabled` | `Func<TItem, bool>?` | `` | Parameter |  | Returns whether an item is disabled (drives aria-disabled and non-committable styling). |
+| `IsSelected` | `Func<TItem, bool>?` | `` | Parameter |  | Returns whether an item is selected (drives aria-selected and the selected styling). |
+| `ItemTemplate` | `RenderFragment<TItem>?` | `` | Parameter |  | Custom render template for an option row. Overrides the Label text. |
+| `Label` | `Func<TItem, string>` | `` | Parameter |  | Resolves an item's display text when no ItemTemplate is supplied. |
 | `Multiselectable` | `bool` | `false` | Parameter |  | Sets aria-multiselectable on the listbox root. |
 | `OnHighlight` | `EventCallback<int>` | `` | Callback |  | Invoked with the option index the pointer moved over (hover highlight). |
-| `OnSelect` | `EventCallback<TItem?>` | `` | Callback |  | Invoked with the item of the clicked option. |
+| `OnSelect` | `EventCallback<TItem>` | `` | Callback |  | Invoked with the item of the clicked option. |
 | `OptionClass` | `string?` | `` | Parameter |  | Extra CSS class on each option row. |
 | `PreventMouseDownDefault` | `bool` | `false` | Parameter |  | Prevents the default mousedown so clicking an option does not move focus out of the host. Inside a Dialog or Drawer the nearest focusable ancestor is the overlay panel itself: an unprevented mousedown focuses it, the host's focusout dismisses the list, and the click that chooses the option arrives after the row is gone. Keep it on for every option list. |
-| `Rows` | `IReadOnlyList<ComboboxRow<TItem?>>` | `` | Parameter | Yes | The header+option rows to render, already ordered and grouped (from the engine's cached projection). |
+| `Rows` | `IReadOnlyList<ComboboxRow<TItem>>` | `` | Parameter | Yes | The header+option rows to render, already ordered and grouped (from the engine's cached projection). |
 | `ShowCheck` | `bool` | `false` | Parameter |  | Renders a trailing check mark on the selected option (single-select). |
 | `ShowCheckbox` | `bool` | `false` | Parameter |  | Renders a leading visual checkbox on each option (multi-select). |
 | `Virtualize` | `bool` | `false` | Parameter |  | Enables virtualized rendering above VirtualizeThreshold when not grouped. |

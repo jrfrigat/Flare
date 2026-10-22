@@ -16,8 +16,8 @@ Page navigation for a FlareDataGrid, placed wherever the layout wants it rather 
 | `ShowFirstLast` | `bool` | `false` | Parameter |  | Shows first/last jump buttons in addition to prev/next. |
 | `SiblingCount` | `int` | `2` | Parameter |  | How many page buttons to show on each side of the current page (passed to the pagination control). |
 | `Size` | `PaginationSize` | `PaginationSize.Md` | Parameter |  | Visual size of the pagination control. |
-| `Context` | `DataGridContext<TItem?>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |
-| `Grid` | `FlareDataGrid<TItem?>?` | `` | Parameter |  | The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself. Inherited from `FlareDataGridControl`. |
+| `Context` | `DataGridContext<TItem>?` | `` | Parameter |  | The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one. Inherited from `FlareDataGridControl`. |
+| `Grid` | `FlareDataGrid<TItem>?` | `` | Parameter |  | The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself. Inherited from `FlareDataGridControl`. |
 
 ## Methods
 

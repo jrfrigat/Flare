@@ -12,21 +12,21 @@ Single-value dropdown over a list of items: a select-only combobox by default, o
 | --- | --- | --- | --- | --- | --- |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Declarative options as native <option> child markup. Two attributes are read: value (falling back to the label text when absent) and disabled, which makes the option visible but not selectable and skipped by the arrow keys - the same thing ItemDisabled says for the Items path. Grouping is not declarative; use GroupBy. Declared options take precedence over Items; content that declares none leaves Items in charge, so a wrapper component forwarding @ChildContent - which compiles to a non-empty fragment even when its own caller supplied no children - does not suppress the item list. |
 | `Clearable` | `bool` | `false` | Parameter |  | Shows a clear button that resets the value. |
-| `For` | `Expression<Func<TValue?>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
+| `For` | `Expression<Func<TValue>>?` | `` | Parameter |  | Expression used to bind and validate the field against an EditContext. |
 | `Fuzzy` | `bool` | `false` | Parameter |  | Ranks filtered options by fuzzy relevance (via FlareSearch) instead of insertion order. |
-| `GroupBy` | `Func<TValue?, string>?` | `` | Parameter |  | Returns the group label for an item; when non-null, options are grouped under headers. |
-| `ItemDisabled` | `Func<TValue?, bool>?` | `` | Parameter |  | Returns whether an item is disabled (shown, never committable). |
-| `ItemLabel` | `Func<TValue?, string>?` | `` | Parameter |  | Returns the display text for an item. When null, the declarative label or ToString() is used. |
-| `ItemTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for an item (dropdown row and, unless SelectedTemplate is set, the trigger). |
-| `Items` | `IEnumerable<TValue?>?` | `` | Parameter |  | Collection of items to populate the dropdown. |
+| `GroupBy` | `Func<TValue, string>?` | `` | Parameter |  | Returns the group label for an item; when non-null, options are grouped under headers. |
+| `ItemDisabled` | `Func<TValue, bool>?` | `` | Parameter |  | Returns whether an item is disabled (shown, never committable). |
+| `ItemLabel` | `Func<TValue, string>?` | `` | Parameter |  | Returns the display text for an item. When null, the declarative label or ToString() is used. |
+| `ItemTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for an item (dropdown row and, unless SelectedTemplate is set, the trigger). |
+| `Items` | `IEnumerable<TValue>?` | `` | Parameter |  | Collection of items to populate the dropdown. |
 | `NoResultsText` | `string?` | `` | Parameter |  | Text shown in the dropdown when a search query matches no options. |
 | `NullOption` | `string?` | `` | Parameter |  | Text of a selectable "no value" row prepended to the list - the "All ingredients" / "Any" case. Choosing it sets Value to null, and the closed field then shows this text rather than the placeholder, so a filter select needs no sentinel value of its own. The row is pinned: it stays at the top and survives typing, because a row meaning "no filter" is useless if searching hides it. Clearable composes with it - clearing selects it. Requires a nullable TValue. For a struct such as an int or an enum the default is a real value and cannot mean "none", so binding the nullable form is the only way to express it; setting this on a non-nullable value type throws rather than selecting zero. |
 | `NullOptionTemplate` | `RenderFragment?` | `` | Parameter |  | Rich content for the NullOption row, used both in the list and in the closed field. Falls back to the NullOption text. |
 | `Open` | `bool` | `false` | Parameter |  | Whether the dropdown is open (supports @bind-Open). |
 | `OpenChanged` | `EventCallback<bool>` | `` | Callback |  | Callback invoked when the open state changes, enabling @bind-Open. |
-| `RankFunc` | `Func<TValue?, string, double>?` | `` | Parameter |  | Custom relevance scorer (item, query) => score; overrides Fuzzy. |
+| `RankFunc` | `Func<TValue, string, double>?` | `` | Parameter |  | Custom relevance scorer (item, query) => score; overrides Fuzzy. |
 | `Searchable` | `bool` | `false` | Parameter |  | Shows an in-field search input that filters the options as the user types. |
-| `SelectedTemplate` | `RenderFragment<TValue?>?` | `` | Parameter |  | Custom render template for the selected value in the trigger. Falls back to ItemTemplate. |
+| `SelectedTemplate` | `RenderFragment<TValue>?` | `` | Parameter |  | Custom render template for the selected value in the trigger. Falls back to ItemTemplate. |
 | `Value` | `TValue?` | `` | Parameter |  | Currently selected value (supports @bind-Value). |
 | `ValueChanged` | `EventCallback<TValue?>` | `` | Callback |  | Callback invoked when the selection changes, enabling @bind-Value. |
 | `VirtualizeThreshold` | `int` | `50` | Parameter |  | Option count above which the dropdown virtualizes (when not grouped). Default: 50. |

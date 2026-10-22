@@ -11,8 +11,8 @@
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Child list items rendered inside the list (non-virtual mode). |
 | `Dense` | `bool` | `false` | Parameter |  | Reduces vertical padding for a compact appearance. |
 | `Height` | `string` | `"400px"` | Parameter |  | Fixed height of the virtualized container. |
-| `ItemTemplate` | `RenderFragment<TItem?>?` | `` | Parameter |  | Template used to render each item when Virtual=true. |
-| `Items` | `IReadOnlyList<TItem?>?` | `` | Parameter |  | Data source when Virtual=true. |
+| `ItemTemplate` | `RenderFragment<TItem>?` | `` | Parameter |  | Template used to render each item when Virtual=true. |
+| `Items` | `IReadOnlyList<TItem>?` | `` | Parameter |  | Data source when Virtual=true. |
 | `MaxHeight` | `string?` | `` | Parameter |  | Max height of the virtualized container (used instead of Height when set). |
 | `OverscanCount` | `int` | `3` | Parameter |  | Number of extra items rendered outside the visible viewport. |
 | `Virtual` | `bool` | `false` | Parameter |  | Enables Blazor Virtualize for large datasets. |
