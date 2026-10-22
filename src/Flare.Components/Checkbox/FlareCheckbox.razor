@@ -55,7 +55,7 @@
     /// the indeterminate ("some of the below") state. The type is the caller's choice, so the value
     /// and <see cref="For"/> always describe the same model property.
     /// </summary>
-    [Parameter] public TValue Value { get; set; }
+    [Parameter] public TValue Value { get; set; } = default!;
     /// <summary>
     /// Callback invoked when the checked state changes. The callback carries <c>TValue</c>, so pass
     /// the type to a method group (<c>ValueChanged="Handle"</c> with
