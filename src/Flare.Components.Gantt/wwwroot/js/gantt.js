@@ -64,15 +64,33 @@ export function attach(root, dotnet, virtualize, endless) {
     scroll.addEventListener('wheel', wheel, { passive: false });
 
     // Virtualized panels draw only the rows near what is on screen: report, per panel body, which part of it is
-    // visible - inside the chart's own scroll box and the window. Not while a drag is on: the drag knows the drop
-    // zones it started with, and rows drawn later would not be among them.
+    // visible - inside the chart's own scroll box, its scrolling ancestors and the window. Not while a drag is on:
+    // the drag knows the drop zones it started with, and rows drawn later would not be among them.
+    const clippingAncestors = () => {
+        const result = [];
+        for (let el = scroll.parentElement; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+            if (/(auto|scroll|hidden|clip)/.test(getComputedStyle(el).overflowY)) result.push(el);
+        }
+        return result;
+    };
+    const clipNodes = clippingAncestors();
+    const clipBounds = () => {
+        const box = scroll.getBoundingClientRect();
+        let top = Math.max(box.top, 0), bottom = Math.min(box.bottom, innerHeight);
+        for (const el of clipNodes) {
+            const r = el.getBoundingClientRect();
+            top = Math.max(top, r.top);
+            bottom = Math.min(bottom, r.bottom);
+        }
+        return [top, bottom];
+    };
+
     let windowTimer = 0;
-    let target = null, retry = 0;
+    let target = null, retry = 0, clipObserver = null;
     const visible = () => {
         windowTimer = 0;
         if (root.querySelector('.flare-drop-zone--candidate')) return;
-        const box = scroll.getBoundingClientRect();
-        const top = Math.max(box.top, 0), bottom = Math.min(box.bottom, innerHeight);
+        const [top, bottom] = clipBounds();
         const ids = [], from = [], to = [];
         for (const body of root.querySelectorAll('.flare-gantt__body[data-panel]')) {
             const r = body.getBoundingClientRect();
@@ -87,8 +105,11 @@ export function attach(root, dotnet, virtualize, endless) {
     const onScroll = () => { if (!windowTimer) windowTimer = setTimeout(visible, 60); };
     if (virtualize || endless) {
         scroll.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('scroll', onScroll, { passive: true });
+        // Scroll events do not bubble, so a scrolling ancestor outside the chart is heard in the capture phase.
+        document.addEventListener('scroll', onScroll, { capture: true, passive: true });
         window.addEventListener('resize', onScroll);
+        clipObserver = new ResizeObserver(onScroll);
+        for (const el of clipNodes) clipObserver.observe(el);
         visible();
     }
 
@@ -243,8 +264,9 @@ export function attach(root, dotnet, virtualize, endless) {
             clearTimeout(retry);
             scroll.removeEventListener('wheel', wheel);
             scroll.removeEventListener('scroll', onScroll);
-            window.removeEventListener('scroll', onScroll);
+            document.removeEventListener('scroll', onScroll, { capture: true });
             window.removeEventListener('resize', onScroll);
+            clipObserver?.disconnect();
             document.removeEventListener('pointermove', track, { capture: true });
             document.removeEventListener('pointerup', track, { capture: true });
             cancelAnimationFrame(frame);

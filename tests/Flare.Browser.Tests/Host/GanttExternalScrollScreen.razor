@@ -1,0 +1,28 @@
+@page "/gantt-external-scroll"
+@using Flare.Components.Gantt
+
+@* A virtualized chart inside a scrolling ancestor: the chart itself never scrolls, so the visible
+   window must follow the outer container. *@
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="external" style="height:300px; overflow:auto">
+        <div style="height:600px"></div>
+        <FlareGantt id="chart" Range="_range" Scale="GanttScale.Day" UnitWidth="40" RowHeight="30" Virtualize="true"
+                    AriaLabel="Plan">
+            <FlareGanttPanel TRow="string" TItem="Work" Rows="_rows" RowKey="r => r" Items="_items"
+                             ItemKey="w => w.Key" ItemRow="w => w.Row" ItemSpan="w => w.Span" />
+        </FlareGantt>
+    </div>
+</FlareThemeProvider>
+
+@code {
+    public sealed record Work(string Key, string Row, GanttSpan Span);
+
+    private static readonly DateOnly Start = new(2026, 10, 12);
+    private readonly GanttSpan _range = GanttSpan.FromDays(Start, Start.AddDays(27));
+    private readonly string[] _rows = Enumerable.Range(0, 200).Select(i => $"r{i}").ToArray();
+    private readonly List<Work> _items;
+
+    public GanttExternalScrollScreen() => _items = _rows
+        .Select((row, i) => new Work($"w{i}", row, GanttSpan.FromDays(Start.AddDays(i % 10), Start.AddDays(i % 10 + 2))))
+        .ToList();
+}

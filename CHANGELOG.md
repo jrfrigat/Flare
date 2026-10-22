@@ -12,6 +12,10 @@ All notable changes to Flare are documented here. This project adheres to
 - IDE components take their accessible names and default labels from the package's English and Russian resources and follow the current UI culture; a label the host passes explicitly still wins.
 - `FlareCarousel` takes its container, arrow and dot geometry, colors and focus ring from `CarouselTokens`, and the new `--flare-spacing-20` step (2.5rem) sizes the arrows from the shared spacing scale.
 
+### Fixed
+
+- A virtualized `FlareGantt` follows a scrolling ancestor outside its own scroll box, including nested containers, instead of keeping a stale row window.
+
 ## [0.49.0] - 2026-10-21
 
 ### Added
