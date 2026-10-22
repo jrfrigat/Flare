@@ -108,7 +108,7 @@ public sealed record GanttRowDropTarget(string RowKey)
 /// <param name="ItemKey">Item the payload was dropped on.</param>
 public sealed record GanttItemDropTarget(string ItemKey)
 {
-    private const char Marker = '';
+    private const char Marker = '\u001E';
 
     /// <summary>The zone target for an item.</summary>
     public static string Format(string itemKey) => Marker + itemKey;

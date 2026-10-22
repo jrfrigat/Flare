@@ -88,11 +88,37 @@
         Virtual ? Css.Classes.Kanban.Root + " " + Css.Classes.Kanban.Virtual : Css.Classes.Kanban.Root;
 
     private List<KanbanCard> _cards = [];
+    private IReadOnlyList<KanbanCard>? _cardsSource;
+    private bool _cardsDirty;
+    private Dictionary<string, List<KanbanCard>>? _cardsByColumn;
 
-    protected override void OnParametersSet() => _cards = Cards?.ToList() ?? [];
+    protected override void OnParametersSet()
+    {
+        // Rebuild only when the consumer supplied a new list or a move changed the local copy. A board that
+        // re-renders for its own reasons keeps the same per-column lists, so Virtualize does not reload them.
+        if (_cardsDirty || !ReferenceEquals(Cards, _cardsSource))
+        {
+            _cards = Cards?.ToList() ?? [];
+            _cardsSource = Cards;
+            _cardsDirty = false;
+            _cardsByColumn = null;
+        }
+    }
 
-    private List<KanbanCard> CardsForColumn(string colId) =>
-        _cards.Where(c => c.ColumnId == colId).ToList();
+    private List<KanbanCard> CardsForColumn(string colId)
+    {
+        if (_cardsByColumn is null)
+        {
+            _cardsByColumn = new Dictionary<string, List<KanbanCard>>(StringComparer.Ordinal);
+            foreach (var card in _cards)
+            {
+                if (!_cardsByColumn.TryGetValue(card.ColumnId, out var list))
+                    _cardsByColumn[card.ColumnId] = list = [];
+                list.Add(card);
+            }
+        }
+        return _cardsByColumn.TryGetValue(colId, out var cards) ? cards : [];
+    }
 
     // Slavic plural rules cover the two languages the library ships: 1 -> One, 2-4 -> Few, the rest ->
     // Many, and 11-14 take Many even though they end in 1-4. English maps 2+ onto Few and Many, which
@@ -165,6 +191,8 @@
         }
 
         _cards.Remove(e.Payload);
+        _cardsDirty = true;
+        _cardsByColumn = null;
         var moved = e.Payload with { ColumnId = e.TargetId };
 
         var inColumn = CardsForColumn(e.TargetId);
@@ -176,6 +204,8 @@
         var insertAt = index < inColumn.Count ? _cards.IndexOf(inColumn[index]) : _cards.Count;
 
         _cards.Insert(insertAt, moved);
+        // The column lists computed above no longer describe the board.
+        _cardsByColumn = null;
         await CardsChanged.InvokeAsync(_cards.AsReadOnly());
     }
 }

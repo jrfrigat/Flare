@@ -43,6 +43,32 @@ public sealed class KanbanVirtualTests : FlareTestContext
         Assert.Equal(2, cut.FindComponents<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<KanbanCard>>().Count);
     }
 
+    // The same Cards reference means the same column lists: a board re-render for its own reasons must not
+    // hand Virtualize new Items and make every column load its window again.
+    [Fact]
+    public void AReRenderWithTheSameCardsKeepsTheColumnItemLists()
+    {
+        var cards = ManyCards();
+        var cut = Render<FlareKanban>(p => p
+            .Add(x => x.Columns, _columns)
+            .Add(x => x.Cards, cards)
+            .Add(x => x.Virtual, true));
+        ICollection<KanbanCard>?[] Items() => cut
+            .FindComponents<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<KanbanCard>>()
+            .Select(v => v.Instance.Items)
+            .ToArray();
+
+        var before = Items();
+        cut.Render(p => p
+            .Add(x => x.Columns, _columns)
+            .Add(x => x.Cards, cards)
+            .Add(x => x.Virtual, true));
+        var after = Items();
+
+        Assert.Same(before[0], after[0]);
+        Assert.Same(before[1], after[1]);
+    }
+
     [Fact]
     public void WithoutVirtualEveryCardIsRendered()
     {

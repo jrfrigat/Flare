@@ -51,6 +51,18 @@ public sealed class GanttSideWidthTests : GanttTestBase
         Assert.Equal("1200", edge.GetAttribute("aria-valuemax"));
     }
 
+    // A reset follows the parameters as they are now, not the values the chart happened to mount with.
+    [Fact]
+    public void A_changed_width_and_default_reach_the_reset_target()
+    {
+        var cut = Resizable([]);
+        Assert.Equal("352", cut.Find(".flare-gantt__side-splitter").GetAttribute("data-flare-splitter-default"));
+
+        cut.Render(p => p.Add(x => x.SideWidth, "18rem").Add(x => x.DefaultSideWidth, "18rem"));
+
+        Assert.Equal("288", cut.Find(".flare-gantt__side-splitter").GetAttribute("data-flare-splitter-default"));
+    }
+
     // The separator's limit is the column's: seven tenths of the chart once the browser has reported its width.
     [Fact]
     public void The_separator_follows_the_column_cap_on_a_narrow_chart()

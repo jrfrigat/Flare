@@ -442,8 +442,9 @@
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
-        // The width a reset returns to: the page default, otherwise the first width received.
-        _sideDefault ??= DefaultSideWidth ?? SideWidth;
+        // The width a reset returns to follows the parameters: a changed default or width reaches Home and
+        // double click, instead of the value the chart happened to mount with.
+        _sideDefault = DefaultSideWidth ?? SideWidth;
         var before = Axis;
         _texts = null;
         Axis = new GanttAxis(Range, Scale, Culture);
