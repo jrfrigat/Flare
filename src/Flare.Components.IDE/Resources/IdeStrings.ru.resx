@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Backstage_Close" xml:space="preserve"><value>Закрыть</value></data>
+  <data name="Layout_ExpandPanel" xml:space="preserve"><value>Развернуть панель</value></data>
+  <data name="DocTabs_Label" xml:space="preserve"><value>Вкладки документов</value></data>
+  <data name="DocTabs_Modified" xml:space="preserve"><value>Изменен</value></data>
+  <data name="DocTabs_Close" xml:space="preserve"><value>Закрыть вкладку</value></data>
+  <data name="DocTabs_Hidden" xml:space="preserve"><value>Скрытые вкладки</value></data>
+  <data name="FormulaBar_NameBox" xml:space="preserve"><value>Поле имени</value></data>
+  <data name="FormulaBar_Formula" xml:space="preserve"><value>Формула</value></data>
+  <data name="SheetTabs_Add" xml:space="preserve"><value>Добавить лист</value></data>
+  <data name="ToolPanel_Expand" xml:space="preserve"><value>Развернуть</value></data>
+  <data name="ToolPanel_Collapse" xml:space="preserve"><value>Свернуть</value></data>
+</root>

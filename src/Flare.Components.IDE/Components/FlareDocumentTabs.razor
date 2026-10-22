@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <div class="@Css.Classes.Ide.DocTabs.Root" style="@Style" @attributes="AdditionalAttributes">
-    <div class="@Css.Classes.Ide.DocTabs.Bar" @ref="_barRef" role="tablist" aria-label="Document tabs">
+    <div class="@Css.Classes.Ide.DocTabs.Bar" @ref="_barRef" role="tablist" aria-label="@IdeStrings.DocTabsLabel">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _activeTab;
@@ -22,14 +22,14 @@
                 <span class="@Css.Classes.Ide.DocTabs.Label">@tab.Title</span>
                 @if (tab.Modified)
                 {
-                    <span class="@Css.Classes.Ide.DocTabs.Modified" aria-label="Modified">*</span>
+                    <span class="@Css.Classes.Ide.DocTabs.Modified" aria-label="@IdeStrings.DocTabsModified">*</span>
                 }
                 @if (tab.Closeable)
                 {
                     <button type="button" class="@Css.Classes.Ide.DocTabs.Close"
                             @onclick="@(() => CloseTab(tab))"
                             @onclick:stopPropagation="true"
-                            aria-label="Close tab">
+                            aria-label="@IdeStrings.DocTabsClose">
                         <FlareIconView Value="FlareIcons.Close" Size="0.875rem" />
                     </button>
                 }
@@ -40,7 +40,7 @@
     {
         <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
                      OnClick="@ToggleDropdown"
-                     AriaLabel="Hidden tabs">
+                     AriaLabel="@IdeStrings.DocTabsHidden">
             <FlareIconView Value="FlareIcons.ExpandMore" Size="1rem" />
         </FlareButton>
         @if (_dropdownOpen)

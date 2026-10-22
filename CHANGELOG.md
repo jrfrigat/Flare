@@ -9,6 +9,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 - `FlareCheckbox.Value` is `TValue` and `ValueChanged` is `EventCallback<TValue>` instead of nullable, so a two-state checkbox no longer reads as nullable in the API reference; a handler now names `bool` or `bool?` explicitly.
 - The query designer's captions come from the package's English and Russian resources and follow the current UI culture through `QueryBuilderLabels.Default` and the new `QueryBuilderLabels.For(culture)`, while the AND and OR connectors stay query-language tokens.
+- IDE components take their accessible names and default labels from the package's English and Russian resources and follow the current UI culture; a label the host passes explicitly still wins.
 
 ## [0.49.0] - 2026-10-21
 

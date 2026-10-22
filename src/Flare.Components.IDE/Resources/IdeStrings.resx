@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Backstage_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Layout_ExpandPanel" xml:space="preserve"><value>Expand panel</value></data>
+  <data name="DocTabs_Label" xml:space="preserve"><value>Document tabs</value></data>
+  <data name="DocTabs_Modified" xml:space="preserve"><value>Modified</value></data>
+  <data name="DocTabs_Close" xml:space="preserve"><value>Close tab</value></data>
+  <data name="DocTabs_Hidden" xml:space="preserve"><value>Hidden tabs</value></data>
+  <data name="FormulaBar_NameBox" xml:space="preserve"><value>Name box</value></data>
+  <data name="FormulaBar_Formula" xml:space="preserve"><value>Formula</value></data>
+  <data name="SheetTabs_Add" xml:space="preserve"><value>Add sheet</value></data>
+  <data name="ToolPanel_Expand" xml:space="preserve"><value>Expand</value></data>
+  <data name="ToolPanel_Collapse" xml:space="preserve"><value>Collapse</value></data>
+</root>

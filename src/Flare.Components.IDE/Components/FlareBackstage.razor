@@ -31,8 +31,8 @@
     /// <summary>The content shown for the selected navigation entry.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Accessible label for the back/close button (default "Close").</summary>
-    [Parameter] public string CloseLabel { get; set; } = "Close";
+    /// <summary>Accessible label for the back/close button; defaults to the package's localized text.</summary>
+    [Parameter] public string CloseLabel { get; set; } = IdeStrings.BackstageClose;
 
     private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
 

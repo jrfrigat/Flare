@@ -32,11 +32,11 @@
     /// <summary>Placeholder for the formula editor.</summary>
     [Parameter] public string? Placeholder { get; set; }
 
-    /// <summary>Accessible label for the name box (default "Name box").</summary>
-    [Parameter] public string NameBoxLabel { get; set; } = "Name box";
+    /// <summary>Accessible label for the name box; defaults to the package's localized text.</summary>
+    [Parameter] public string NameBoxLabel { get; set; } = IdeStrings.FormulaBarNameBox;
 
-    /// <summary>Accessible label for the formula editor (default "Formula").</summary>
-    [Parameter] public string FormulaLabel { get; set; } = "Formula";
+    /// <summary>Accessible label for the formula editor; defaults to the package's localized text.</summary>
+    [Parameter] public string FormulaLabel { get; set; } = IdeStrings.FormulaBarFormula;
 
     private async Task OnCellRefChanged(string? value) => await CellRefChanged.InvokeAsync(value);
     private async Task OnValueChanged(string? value) => await ValueChanged.InvokeAsync(value);

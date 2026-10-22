@@ -42,8 +42,8 @@
     /// <summary>Raised when the add button is clicked.</summary>
     [Parameter] public EventCallback OnAddSheet { get; set; }
 
-    /// <summary>Accessible label for the add button (default "Add sheet").</summary>
-    [Parameter] public string AddLabel { get; set; } = "Add sheet";
+    /// <summary>Accessible label for the add button; defaults to the package's localized text.</summary>
+    [Parameter] public string AddLabel { get; set; } = IdeStrings.SheetTabsAdd;
 
     private async Task SelectAsync(int index)
     {
