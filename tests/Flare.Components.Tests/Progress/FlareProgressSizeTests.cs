@@ -73,14 +73,15 @@ public class FlareProgressSizeTests : FlareTestContext
     }
 
     [Fact]
-    public void Circular_Diameter_SetsBothAxes()
+    public void Circular_Diameter_DrivesTheRingAndItsWaveMask()
     {
         var cut = Render<FlareProgressCircular>(p => p
             .Add(x => x.Value, 50d)
             .Add(x => x.Diameter, "6rem"));
 
         var style = cut.Find($".{Css.Classes.Progress.Root}").GetAttribute("style") ?? "";
-        Assert.Contains("width:6rem", style);
-        Assert.Contains("height:6rem", style);
+        Assert.Contains("--_circ-size:6rem", style);
+        Assert.DoesNotContain("width:", style);
+        Assert.DoesNotContain("height:", style);
     }
 }

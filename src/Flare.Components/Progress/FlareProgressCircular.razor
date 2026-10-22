@@ -46,15 +46,18 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>The ring's own diameter as a CSS length. Null follows the size step and the theme;
-    /// set it when one indicator needs a size the shared step does not offer.</summary>
+    /// set it when one indicator needs a size the shared step does not offer. The ring and any
+    /// theme-drawn wave scale together; the content inside the ring keeps its step's size.</summary>
     [Parameter] public string? Diameter { get; set; }
 
+    // The core reads its width/height from --_circ-size, and the MD3 Expressive wave mask is drawn on
+    // the same variable. Overriding the local size (not width/height) keeps both in agreement.
     private string? _diameterStyle
     {
         get
         {
             var safe = Flare.Components.Security.CssValidator.StripDangerous(Diameter);
-            return string.IsNullOrWhiteSpace(safe) ? null : $"width:{safe};height:{safe};";
+            return string.IsNullOrWhiteSpace(safe) ? null : $"--_circ-size:{safe};";
         }
     }
 
