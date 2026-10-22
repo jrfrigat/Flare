@@ -8,13 +8,13 @@ namespace Flare.Components.Tests;
 public class AriaBooleanStateTests : FlareTestContext
 {
     [Fact]
-    public void Calendar_PressedStateIsTextForEveryDay()
+    public void Calendar_SelectedStateIsTextForEveryDay()
     {
         var day = new DateOnly(2026, 10, 15);
         var cut = Render<FlareCalendar>(p => p.Add(x => x.InitialDate, day).Add(x => x.SelectedDate, day));
 
         var cells = cut.FindAll($".{Css.Classes.Calendar.Cell}[aria-label]");
-        var values = cells.Select(c => c.GetAttribute("aria-pressed")).ToList();
+        var values = cells.Select(c => c.GetAttribute("aria-selected")).ToList();
 
         Assert.Single(values, v => v == "true");
         Assert.All(values, v => Assert.Contains(v, new[] { "true", "false" }));
