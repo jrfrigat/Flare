@@ -148,6 +148,7 @@ public static class ComponentCatalog
         new ComponentEntry("components/scroll-top",        "Scroll Top",              "ScrollTop_Title",       ComponentGroup.Navigation),
         new ComponentEntry("components/stepper",           "Stepper",                 "Stepper_Title",         ComponentGroup.Navigation),
         new ComponentEntry("components/tabs",              "Tabs",                    "Tabs_Title",            ComponentGroup.Navigation),
+        new ComponentEntry("components/link-tabs",         "Link Tabs",               "LinkTabs_Title",        ComponentGroup.Navigation),
 
         new ComponentEntry("components/avatar",            "Avatar",                  "Avatar_Title",          ComponentGroup.DataDisplay),
         new ComponentEntry("components/avatar-group",      "Avatar Group",            "AvatarGroup_Title",     ComponentGroup.DataDisplay),

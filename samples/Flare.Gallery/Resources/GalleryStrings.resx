@@ -2527,6 +2527,18 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Tabs_FillHeight" xml:space="preserve">
     <value>Screen-fit panels (FillHeight)</value>
   </data>
+  <data name="LinkTabs_Title" xml:space="preserve">
+    <value>Link Tabs</value>
+  </data>
+  <data name="LinkTabs_Subtitle" xml:space="preserve">
+    <value>FlareLinkTabs - route links in a tab bar; the active tab follows the current page.</value>
+  </data>
+  <data name="LinkTabs_Overflow" xml:space="preserve">
+    <value>Overflow, scrolling and the active tab</value>
+  </data>
+  <data name="LinkTabs_Hint" xml:space="preserve">
+    <value>Scroll the bar sideways; the active tab is revealed when the route changes.</value>
+  </data>
   <data name="TagInput_Title" xml:space="preserve">
     <value>Tag Field</value>
   </data>

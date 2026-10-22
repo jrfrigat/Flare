@@ -10406,6 +10406,42 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Tabs_FillHeight", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Link Tabs.
+        /// </summary>
+        public static string LinkTabs_Title {
+            get {
+                return ResourceManager.GetString("LinkTabs_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to FlareLinkTabs - route links in a tab bar; the active tab follows the current page..
+        /// </summary>
+        public static string LinkTabs_Subtitle {
+            get {
+                return ResourceManager.GetString("LinkTabs_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Overflow, scrolling and the active tab.
+        /// </summary>
+        public static string LinkTabs_Overflow {
+            get {
+                return ResourceManager.GetString("LinkTabs_Overflow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scroll the bar sideways; the active tab is revealed when the route changes..
+        /// </summary>
+        public static string LinkTabs_Hint {
+            get {
+                return ResourceManager.GetString("LinkTabs_Hint", resourceCulture);
+            }
+        }
                 /// <summary>
         ///   Ищет локализованную строку, похожую на Header zones &amp; typography.
         /// </summary>

@@ -2527,6 +2527,18 @@
   <data name="Tabs_FillHeight" xml:space="preserve">
     <value>Панели во всю высоту (FillHeight)</value>
   </data>
+  <data name="LinkTabs_Title" xml:space="preserve">
+    <value>Вкладки-ссылки</value>
+  </data>
+  <data name="LinkTabs_Subtitle" xml:space="preserve">
+    <value>FlareLinkTabs - ссылки-маршруты в полосе вкладок; активная вкладка следует за текущей страницей.</value>
+  </data>
+  <data name="LinkTabs_Overflow" xml:space="preserve">
+    <value>Переполнение, прокрутка и активная вкладка</value>
+  </data>
+  <data name="LinkTabs_Hint" xml:space="preserve">
+    <value>Прокрутите полосу по горизонтали; активная вкладка показывается при смене маршрута.</value>
+  </data>
   <data name="TagInput_Title" xml:space="preserve">
     <value>Поле тегов</value>
   </data>

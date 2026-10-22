@@ -1,0 +1,21 @@
+@* A link tab bar is page navigation: each tab is an <a>, and the active one follows the current
+   route. The narrow card makes the twelve destinations overflow, so the bar scrolls sideways. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareCard Variant="CardVariant.Outlined" MaxWidth="32rem" Padding="FlareSpacing.None">
+        <FlareLinkTabs AriaLabel="@GalleryStrings.LinkTabs_Title">
+            <FlareLinkTab Href="/components/link-tabs" Match="NavMatchMode.Exact">@GalleryStrings.LinkTabs_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/tabs">@GalleryStrings.Tabs_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/button">@GalleryStrings.Buttons_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/select">@GalleryStrings.Select_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/menu">@GalleryStrings.Menu_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/dialog">@GalleryStrings.Dialog_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/datagrid">@GalleryStrings.DataGrid_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/slider">@GalleryStrings.Slider_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/switch">@GalleryStrings.Switch_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/checkbox">@GalleryStrings.Checkbox_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/badge">@GalleryStrings.Badge_Title</FlareLinkTab>
+            <FlareLinkTab Href="/components/chip">@GalleryStrings.Chip_Title</FlareLinkTab>
+        </FlareLinkTabs>
+    </FlareCard>
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.LinkTabs_Hint</FlareText>
+</FlareStack>
