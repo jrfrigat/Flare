@@ -71,6 +71,27 @@ public sealed record DataGridTokens
     /// <summary>Tint percentage for the row currently being edited.</summary>
     [CssVar(DataGridField.RowEditingPct)] public required string RowEditingPct { get; init; }
 
+    /// <summary>Paint of the row currently being edited. The default mixes the accent over the surface
+    /// at <see cref="RowEditingPct"/>; a theme may name a different pair or a flat fill.</summary>
+    [CssVar(DataGridField.EditingBg)] public string EditingBg { get; init; } = $"color-mix(in srgb, {Var(Css.Tokens.Color.Primary)} {Var(DataGridField.RowEditingPct)}, {Var(Css.Tokens.Color.Surface)})";
+
+    /// <summary>Fill of the group-count chip.</summary>
+    [CssVar(DataGridField.GroupCountBg)] public string GroupCountBg { get; init; } = Var(Css.Tokens.Color.SecondaryContainer);
+    /// <summary>Text colour of the group-count chip.</summary>
+    [CssVar(DataGridField.GroupCountColor)] public string GroupCountColor { get; init; } = Var(Css.Tokens.Color.OnSecondaryContainer);
+    /// <summary>Fill of the filter-builder condition counter.</summary>
+    [CssVar(DataGridField.FilterCountBg)] public string FilterCountBg { get; init; } = Var(Css.Tokens.Color.Primary);
+    /// <summary>Text colour of the filter-builder condition counter.</summary>
+    [CssVar(DataGridField.FilterCountColor)] public string FilterCountColor { get; init; } = Var(Css.Tokens.Color.OnPrimary);
+    /// <summary>Fill of the AND/OR connector chip.</summary>
+    [CssVar(DataGridField.ConnectorBg)] public string ConnectorBg { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
+    /// <summary>Text colour of the AND/OR connector chip.</summary>
+    [CssVar(DataGridField.ConnectorColor)] public string ConnectorColor { get; init; } = Var(Css.Tokens.Color.OnPrimaryContainer);
+    /// <summary>Border colour of the AND/OR connector chip.</summary>
+    [CssVar(DataGridField.ConnectorBorder)] public string ConnectorBorder { get; init; } = Var(Css.Tokens.Color.Primary);
+    /// <summary>Accent rail of a filter-builder group. Its width is <see cref="FilterGroupRail"/>.</summary>
+    [CssVar(DataGridField.FilterGroupRailColor)] public string FilterGroupRailColor { get; init; } = Var(Css.Tokens.Color.Primary);
+
     /// <summary>Opacity percentage of the loading veil.</summary>
     [CssVar(DataGridField.LoadingVeilPct)] public required string LoadingVeilPct { get; init; }
 

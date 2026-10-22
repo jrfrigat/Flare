@@ -19,6 +19,7 @@
 - `ProgressTokens.TrackColor` по умолчанию равен роли secondary container, поэтому теме больше не нужно задавать незаполненную дорожку.
 - Severity оповещений, варианты кнопки filled, tonal и elevated и FAB рисуются через собственные токены (`--flare-alert-{info,success,warning,error}-{bg,color,border}`, `--flare-btn-{filled,tonal,elevated}-*`, `--flare-fab-*`), значения по умолчанию - прежние роли ядра; Fluent UI 2 рисует severity оповещений на своих status-контейнерах, как и снекбар.
 - Выбранная ячейка времени, активное поле часа/минуты и выбранная кнопка AM/PM, а также акцент и кольцо фокуса ColorPicker рисуются через собственные токены (`--flare-timepicker-selected-*`, `--flare-timepicker-period-selected-*`, `--flare-colorpicker-accent`, `--flare-colorpicker-focus-ring`); значения по умолчанию - прежние роли ядра.
+- Чип количества группы, счетчик фильтра, коннектор AND/OR, рейка группы фильтра и заливка редактируемой строки DataGrid берутся из `DataGridTokens`, значения по умолчанию - прежние роли; выделенная строка по-прежнему использует общий selected-layer.
 
 ### Исправлено
 

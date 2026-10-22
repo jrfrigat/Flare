@@ -18,6 +18,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `ProgressTokens.TrackColor` defaults to the secondary container role, so a theme no longer has to set the unfilled track.
 - Alert severities, the filled, tonal and elevated button variants and the FAB paint through their own tokens (`--flare-alert-{info,success,warning,error}-{bg,color,border}`, `--flare-btn-{filled,tonal,elevated}-*`, `--flare-fab-*`), whose defaults are the roles the core drew before; Fluent UI 2 paints alert severities on its status containers, like its snackbar.
 - The time picker's selected cell, active hour/minute field and selected AM/PM button, and the colour picker's accent and focus ring, paint through their own tokens (`--flare-timepicker-selected-*`, `--flare-timepicker-period-selected-*`, `--flare-colorpicker-accent`, `--flare-colorpicker-focus-ring`); the defaults are the roles the core drew before.
+- The DataGrid's group-count chip, filter counter, AND/OR connector, filter-group rail and editing-row paint come from `DataGridTokens`, whose defaults keep the previous roles; the selected row still uses the shared selected layer.
 
 ### Fixed
 

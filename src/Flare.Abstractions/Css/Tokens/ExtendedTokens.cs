@@ -87,6 +87,25 @@ public static class DataGridField
     public const string RangeLayer = "--flare-datagrid-range-layer";
     /// <summary>CSS custom-property name for the row-being-edited tint percentage.</summary>
     public const string RowEditingPct = "--flare-datagrid-row-editing-pct";
+
+    /// <summary>Fill of the group-count chip.</summary>
+    public const string GroupCountBg = "--flare-datagrid-group-count-bg";
+    /// <summary>Text colour of the group-count chip.</summary>
+    public const string GroupCountColor = "--flare-datagrid-group-count-color";
+    /// <summary>Fill of the filter-builder condition counter.</summary>
+    public const string FilterCountBg = "--flare-datagrid-filter-count-bg";
+    /// <summary>Text colour of the filter-builder condition counter.</summary>
+    public const string FilterCountColor = "--flare-datagrid-filter-count-color";
+    /// <summary>Fill of the AND/OR connector chip.</summary>
+    public const string ConnectorBg = "--flare-datagrid-connector-bg";
+    /// <summary>Text colour of the AND/OR connector chip.</summary>
+    public const string ConnectorColor = "--flare-datagrid-connector-color";
+    /// <summary>Border colour of the AND/OR connector chip.</summary>
+    public const string ConnectorBorder = "--flare-datagrid-connector-border";
+    /// <summary>Accent rail of a filter-builder group.</summary>
+    public const string FilterGroupRailColor = "--flare-datagrid-filter-group-rail-color";
+    /// <summary>Paint of the row currently being edited (a full background value).</summary>
+    public const string EditingBg = "--flare-datagrid-editing-bg";
     /// <summary>CSS custom-property name for the loading-veil opacity percentage.</summary>
     public const string LoadingVeilPct = "--flare-datagrid-loading-veil-pct";
     /// <summary>CSS custom-property name for the loading content dim opacity.</summary>

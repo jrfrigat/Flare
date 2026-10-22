@@ -360,8 +360,8 @@
   height: 1.25rem;
   padding: 0 var(--flare-spacing-3);
   border-radius: 0.625rem;
-  background: var(--flare-color-secondary-container);
-  color: var(--flare-color-on-secondary-container);
+  background: var(--flare-datagrid-group-count-bg);
+  color: var(--flare-datagrid-group-count-color);
   font-size: var(--flare-typescale-label-small-size);
   font-weight: 600;
 }
@@ -420,8 +420,8 @@
   margin-left: var(--flare-spacing-2);
   padding: 0 var(--flare-spacing-2);
   border-radius: 0.5625rem;
-  background: var(--flare-color-primary);
-  color: var(--flare-color-on-primary);
+  background: var(--flare-datagrid-filter-count-bg);
+  color: var(--flare-datagrid-filter-count-color);
   font-size: var(--flare-typescale-label-small-size);
   font-weight: 600;
 }
@@ -460,7 +460,7 @@
 /* A logical group: a card with a left accent rail; nested groups indent visually. */
 .flare-datagrid__filter-builder-group {
   border: var(--flare-border-divider);
-  border-left: var(--flare-datagrid-filter-group-rail) solid var(--flare-color-primary);
+  border-left: var(--flare-datagrid-filter-group-rail) solid var(--flare-datagrid-filter-group-rail-color);
   border-radius: var(--flare-shape-small);
   background: var(--flare-color-surface-container);
   padding: var(--flare-spacing-4);
@@ -484,10 +484,10 @@
 .flare-datagrid__filter-builder-connector {
   min-width: 3rem;
   padding: var(--flare-spacing-1) var(--flare-spacing-5);
-  border: var(--flare-border-width) var(--flare-border-style) var(--flare-color-primary);
+  border: var(--flare-border-width) var(--flare-border-style) var(--flare-datagrid-connector-border);
   border-radius: var(--flare-shape-full);
-  background: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  background: var(--flare-datagrid-connector-bg);
+  color: var(--flare-datagrid-connector-color);
   font-size: var(--flare-typescale-label-medium-size);
   font-weight: 600;
   cursor: pointer;
@@ -843,7 +843,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 .flare-datagrid__row--editing .flare-datagrid__td {
-  background: color-mix(in srgb, var(--flare-color-primary) var(--flare-datagrid-row-editing-pct), var(--flare-color-surface));
+  background: var(--flare-datagrid-editing-bg);
 }
 
 .flare-datagrid__cell--edit {
