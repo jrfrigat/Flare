@@ -1,9 +1,11 @@
 /*
- * FlareGantt. Every look is a --flare-gantt-* variable. The package declares each one below with a default built
- * from the semantic --flare-* tokens, so the chart follows whatever theme is active and no theme has to know about
- * the package. An application restyles the timeline by setting the same variables - on .flare-gantt for the whole
- * chart, or on a .flare-gantt--kind-<key> class for one kind of bar, segment, region, marker, cell or link.
- * Geometry (positions, lane height, unit width) is computed by the component and set inline.
+ * FlareGantt. Every look is a --flare-gantt-* variable. The package declares each one below with a default; where
+ * the semantic scale has the value it comes from a --flare-* token, so the chart follows whatever theme is active
+ * and no theme has to know about the package. Values the scale does not carry - the scale height, the connector
+ * weight, the drop-outline rings - stay the chart's own geometry. An application restyles the timeline by setting
+ * the same variables - on .flare-gantt for the whole chart, or on a .flare-gantt--kind-<key> class for one kind of
+ * bar, segment, region, marker, cell or link. Geometry (positions, lane height, unit width) is computed by the
+ * component and set inline.
  */
 
 /* Zero specificity, so any rule of the application wins over these defaults. */
@@ -18,10 +20,10 @@
     --flare-gantt-header-bg: var(--flare-color-surface-container-low);
     --flare-gantt-header-fg: var(--flare-color-on-surface-variant);
     --flare-gantt-scale-height: 2.25rem;
-    --flare-gantt-scale-major-height: 1.5rem;
+    --flare-gantt-scale-major-height: var(--flare-spacing-12);
     --flare-gantt-caption-opacity: 0.75;
     --flare-gantt-side-bg: var(--flare-color-surface);
-    --flare-gantt-toggle-size: 1.25rem;
+    --flare-gantt-toggle-size: var(--flare-spacing-10);
     --flare-gantt-indent: var(--flare-spacing-6);
     --flare-gantt-hover-bg: var(--flare-color-surface-container);
     --flare-gantt-row-line: var(--flare-gantt-line);
@@ -46,8 +48,8 @@
     --flare-gantt-suggested-fg: var(--flare-color-primary);
     --flare-gantt-suggested-width: var(--flare-border-width-emphasis);
     --flare-gantt-preview-opacity: 0.7;
-    --flare-gantt-handle-width: 0.375rem;
-    --flare-gantt-link-handle-size: 0.625rem;
+    --flare-gantt-handle-width: var(--flare-spacing-3);
+    --flare-gantt-link-handle-size: var(--flare-spacing-5);
     --flare-gantt-segment-bg: transparent;
     --flare-gantt-segment-fg: inherit;
     --flare-gantt-segment-border: transparent;
@@ -71,8 +73,8 @@
     --flare-gantt-legend-fg: var(--flare-color-on-surface-variant);
     --flare-gantt-legend-font-size: var(--flare-typescale-body-small-size);
     --flare-gantt-legend-gap: var(--flare-spacing-5);
-    --flare-gantt-legend-sample-width: 1.25rem;
-    --flare-gantt-legend-sample-height: 0.625rem;
+    --flare-gantt-legend-sample-width: var(--flare-spacing-10);
+    --flare-gantt-legend-sample-height: var(--flare-spacing-5);
     --flare-gantt-legend-sample-border: var(--flare-color-outline-variant);
 }
 
@@ -632,12 +634,12 @@
 
 /* A cell sample can be the colour of the page (free time); a hairline keeps it visible. */
 .flare-gantt-legend .flare-gantt-legend__sample.flare-gantt__cell {
-    border: 1px solid var(--flare-gantt-legend-sample-border);
+    border: var(--flare-border-width) solid var(--flare-gantt-legend-sample-border);
 }
 
 /* A region is drawn edge to edge on the chart; in the key its own dashed border goes all the way round. */
 .flare-gantt-legend .flare-gantt-legend__sample.flare-gantt__region {
-    border: 1px dashed var(--flare-gantt-region-border);
+    border: var(--flare-border-width) dashed var(--flare-gantt-region-border);
 }
 
 .flare-gantt-legend .flare-gantt-legend__sample > .flare-gantt__segment {

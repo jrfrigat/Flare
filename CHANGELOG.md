@@ -14,6 +14,7 @@ All notable changes to Flare are documented here. This project adheres to
 - A `FlareButton` with a text label takes a themed minimum width from `ButtonTokens.MinWidth`; icon-only buttons and the buttons inside composite controls are exempt, and Material Design 2 sets the redline 64px.
 - An extended `FlareFloatingActionButton` with a label takes its own block and inline padding from `FabTokens`, so Material Design 2 draws it 48px tall instead of deriving 56px from the circular FAB's padding.
 - The tab strip's scroll arrow, close control, badge and primary-indicator inset take their sizes from `TabsTokens` instead of literals in the core stylesheet.
+- The Gantt's scale rows, tree toggle, drag handles and legend samples take their sizes from the spacing scale, and its hairline legend rules from the border token; the scale height and connector weight remain the chart's own geometry.
 
 ### Fixed
 
