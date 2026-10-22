@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -81,8 +80,6 @@ public partial class FlareWeekPicker
     public Task ClearAsync() => ClearValue();
     /// <summary>Sets keyboard focus to the input.</summary>
     public ValueTask FocusAsync() => _inputEl.FocusAsync();
-
-    private static readonly Regex IsoText = new(@"^\s*(\d{4})-?[Ww](\d{1,2})\s*$", RegexOptions.CultureInvariant);
 
     private ElementReference _inputEl;
     private ElementReference _fieldEl;
@@ -295,11 +292,9 @@ public partial class FlareWeekPicker
         var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
         if (string.IsNullOrEmpty(raw)) { _text = raw; await CommitAsync(null); return; }
         DateOnly day;
-        if (IsoText.Match(raw) is { Success: true } m)
+        if (TryParseIsoWeek(raw, out var year, out var week))
         {
-            if (!int.TryParse(m.Groups[1].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var year)
-                || year is < 1 or > 9999
-                || !int.TryParse(m.Groups[2].Value, NumberStyles.None, CultureInfo.InvariantCulture, out var week)
+            if (year is < 1 or > 9999
                 || week < 1 || week > ISOWeek.GetWeeksInYear(year)) { _text = DisplayValue; return; }
             day = DateOnly.FromDateTime(ISOWeek.ToDateTime(year, week, DayOfWeek.Monday));
         }
@@ -311,9 +306,29 @@ public partial class FlareWeekPicker
         _text = DisplayValue;
     }
 
-    private void HandleBlur()
+    // "2026-W41" and "2026w41": four digits, an optional dash, W/w, one or two digits, nothing else.
+    private static bool TryParseIsoWeek(string raw, out int year, out int week)
     {
-        _focused = false;
+        year = 0;
+        week = 0;
+        var text = raw.AsSpan().Trim();
+        if (text.Length < 6) return false;
+        for (var i = 0; i < 4; i++)
+            if (!char.IsAsciiDigit(text[i])) return false;
+        year = int.Parse(text[..4], NumberStyles.None, CultureInfo.InvariantCulture);
+        var index = 4;
+        if (text[index] == '-') index++;
+        if (index >= text.Length || (text[index] != 'W' && text[index] != 'w')) return false;
+        index++;
+        var start = index;
+        while (index < text.Length && char.IsAsciiDigit(text[index])) index++;
+        if (index - start is < 1 or > 2 || index != text.Length) return false;
+        week = int.Parse(text[start..index], NumberStyles.None, CultureInfo.InvariantCulture);
+        return true;
+    }
+
+    private void HandleBlur()
+    {        _focused = false;
         _text = DisplayValue;
     }
 

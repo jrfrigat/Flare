@@ -22,7 +22,7 @@
                    @onchange="OnColorChange" />
         </div>
     }
-    @if (ShowContrast && _hexRegex.IsMatch(_currentPrimary))
+    @if (ShowContrast && HexColor.IsValid(_currentPrimary))
     {
         var onColor = Flare.Theming.ColorMath.OnColor(_currentPrimary);
         var ratio = Flare.Theming.ColorMath.ContrastRatio(onColor, _currentPrimary);
@@ -69,13 +69,8 @@
     private string _currentPrimary = "";
     protected override string ComponentCssClass => Css.Classes.Color.Customizer;
 
-    private static readonly System.Text.RegularExpressions.Regex _hexRegex =
-        new(@"^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$|^#[0-9A-Fa-f]{8}$",
-            System.Text.RegularExpressions.RegexOptions.None,
-            TimeSpan.FromMilliseconds(100));
-
     private static string SafeColor(string? color) =>
-        color is not null && _hexRegex.IsMatch(color) ? color : "#6750A4";
+        HexColor.IsValid(color) ? color! : "#6750A4";
 
     protected override void OnInitialized()
     {
@@ -100,7 +95,7 @@
     private void OnColorChange(ChangeEventArgs e)
     {
         var raw = e.Value?.ToString() ?? "";
-        _currentPrimary = _hexRegex.IsMatch(raw) ? raw : "";
+        _currentPrimary = HexColor.IsValid(raw) ? raw : "";
         if (!string.IsNullOrEmpty(_currentPrimary))
             ThemeService?.SetCustomToken(Css.Tokens.Color.Primary, _currentPrimary);
     }

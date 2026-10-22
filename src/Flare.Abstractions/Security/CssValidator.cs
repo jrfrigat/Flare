@@ -1,11 +1,9 @@
-using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Flare.Components.Security;
 
-internal static partial class CssValidator
+internal static class CssValidator
 {
-    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(100);
-
     /// <summary>
     /// Strips dangerous CSS: expression(), url(javascript:), url(data:), behavior:, -moz-binding:.
     /// Returns null if input is null.
@@ -13,16 +11,11 @@ internal static partial class CssValidator
     public static string? StripDangerous(string? css)
     {
         if (css is null) return null;
-        try
-        {
-            css = ExpressionRegex().Replace(css, string.Empty);
-            css = UrlJavascriptRegex().Replace(css, "url(about:blank)");
-            css = UrlDataRegex().Replace(css, "url(about:blank)");
-            css = BehaviorRegex().Replace(css, string.Empty);
-            css = MozBindingRegex().Replace(css, string.Empty);
-            return css;
-        }
-        catch (RegexMatchTimeoutException) { return string.Empty; }
+        var result = RemoveKeywordCall(css, "expression", '(');
+        result = ReplaceDangerousUrls(result);
+        result = RemoveKeywordCall(result, "behavior", ':');
+        result = RemoveKeywordCall(result, "-moz-binding", ':');
+        return result;
     }
 
     /// <summary>
@@ -35,11 +28,7 @@ internal static partial class CssValidator
     {
         if (string.IsNullOrWhiteSpace(color)) return null;
         var c = color.Trim();
-        try
-        {
-            if (!SafeColorRegex().IsMatch(c)) return null;       // whitelist chars only (no ; { } < > ")
-        }
-        catch (RegexMatchTimeoutException) { return null; }
+        if (!IsSafeColorChars(c)) return null;                    // whitelist chars only (no ; { } < > ")
         var stripped = StripDangerous(c);                         // belt-and-suspenders
         return string.IsNullOrWhiteSpace(stripped) ? null : stripped;
     }
@@ -126,21 +115,119 @@ internal static partial class CssValidator
 
     private static bool IsIgnorable(char c) => char.IsWhiteSpace(c) || char.IsControl(c);
 
-    [GeneratedRegex(@"^[#a-zA-Z0-9(),.%\s\-]+$")]
-    private static partial Regex SafeColorRegex();
+    // The sanitizer used to be six regular expressions. Hand-written scanning keeps the same
+    // contract without linking System.Text.RegularExpressions into every Flare application, where
+    // it cost 98 KB of the startup transfer for a handful of keyword checks.
 
-    [GeneratedRegex(@"expression\s*\(", RegexOptions.IgnoreCase)]
-    private static partial Regex ExpressionRegex();
+    /// <summary>
+    /// Removes every occurrence of <paramref name="keyword"/> followed by optional whitespace and
+    /// <paramref name="terminator"/> - the "expression (" / "behavior :" family.
+    /// </summary>
+    private static string RemoveKeywordCall(string css, string keyword, char terminator)
+    {
+        var copyFrom = 0;
+        var i = 0;
+        StringBuilder? result = null;
+        while (i <= css.Length - keyword.Length)
+        {
+            if (!MatchesAt(css, i, keyword))
+            {
+                i++;
+                continue;
+            }
 
-    [GeneratedRegex(@"url\s*\(\s*[""']?\s*javascript:", RegexOptions.IgnoreCase)]
-    private static partial Regex UrlJavascriptRegex();
+            var after = i + keyword.Length;
+            while (after < css.Length && char.IsWhiteSpace(css[after])) after++;
+            if (after >= css.Length || css[after] != terminator)
+            {
+                i++;
+                continue;
+            }
 
-    [GeneratedRegex(@"url\s*\(\s*[""']?\s*data:(?!image/)", RegexOptions.IgnoreCase)]
-    private static partial Regex UrlDataRegex();
+            result ??= new StringBuilder(css.Length);
+            result.Append(css, copyFrom, i - copyFrom);
+            i = after + 1;
+            copyFrom = i;
+        }
 
-    [GeneratedRegex(@"behavior\s*:", RegexOptions.IgnoreCase)]
-    private static partial Regex BehaviorRegex();
+        if (result is null) return css;
+        result.Append(css, copyFrom, css.Length - copyFrom);
+        return result.ToString();
+    }
 
-    [GeneratedRegex(@"-moz-binding\s*:", RegexOptions.IgnoreCase)]
-    private static partial Regex MozBindingRegex();
+    /// <summary>
+    /// Replaces the "url( ... javascript:" and "url( ... data:" prefixes with "url(about:blank)".
+    /// data: is allowed only when the payload is an image, matching the browser rule Flare relies on.
+    /// </summary>
+    private static string ReplaceDangerousUrls(string css)
+    {
+        var copyFrom = 0;
+        var i = 0;
+        StringBuilder? result = null;
+        while (i <= css.Length - 3)
+        {
+            if (!MatchesAt(css, i, "url"))
+            {
+                i++;
+                continue;
+            }
+
+            var p = i + 3;
+            while (p < css.Length && char.IsWhiteSpace(css[p])) p++;
+            if (p >= css.Length || css[p] != '(')
+            {
+                i++;
+                continue;
+            }
+
+            p++;
+            while (p < css.Length && char.IsWhiteSpace(css[p])) p++;
+            if (p < css.Length && css[p] is '\'' or '"')
+            {
+                p++;
+                while (p < css.Length && char.IsWhiteSpace(css[p])) p++;
+            }
+
+            var dangerous = MatchesAt(css, p, "javascript:") ||
+                (MatchesAt(css, p, "data:") && !MatchesAt(css, p + 5, "image/"));
+            if (!dangerous)
+            {
+                i++;
+                continue;
+            }
+
+            result ??= new StringBuilder(css.Length);
+            result.Append(css, copyFrom, i - copyFrom);
+            result.Append("url(about:blank)");
+            i = p;
+            copyFrom = i;
+        }
+
+        if (result is null) return css;
+        result.Append(css, copyFrom, css.Length - copyFrom);
+        return result.ToString();
+    }
+
+    /// <summary>The character whitelist a CSS color value may use.</summary>
+    private static bool IsSafeColorChars(string color)
+    {
+        foreach (var c in color)
+            if (!(c is '#' or '(' or ')' or ',' or '.' or '%' or '-' || char.IsAsciiLetterOrDigit(c) || char.IsWhiteSpace(c)))
+                return false;
+        return true;
+    }
+
+    /// <summary>Case-insensitive match of an ASCII keyword at a position, as RegexOptions.IgnoreCase did.</summary>
+    private static bool MatchesAt(string text, int index, string keyword)
+    {
+        if (index < 0 || index + keyword.Length > text.Length) return false;
+        for (var i = 0; i < keyword.Length; i++)
+        {
+            var a = text[index + i];
+            var b = keyword[i];
+            if (a == b) continue;
+            if (char.ToLowerInvariant(a) != char.ToLowerInvariant(b)) return false;
+        }
+        return true;
+    }
 }

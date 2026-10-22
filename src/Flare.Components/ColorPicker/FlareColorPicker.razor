@@ -66,11 +66,7 @@ else
 
     protected override string ComponentCssClass => Css.Classes.Colorpicker.Root;
 
-    // -- OWASP: hex-only regex guards CSS injection via style attributes ---------
-
-    private static readonly System.Text.RegularExpressions.Regex _hexColorRegex =
-        new(@"^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$|^#[0-9A-Fa-f]{8}$",
-            System.Text.RegularExpressions.RegexOptions.Compiled);
+    // -- OWASP: hex-only validation guards CSS injection via style attributes ---------
 
     private bool _isCurrentHexSafe => _currentHexSafe;
 
@@ -81,7 +77,7 @@ else
     private string _safeTriggerCssVar => _isCurrentHexSafe ? $"--_cp-trigger-color:{_currentHex}" : string.Empty;
 
     private static string _safePresetStyle(string preset) =>
-        _hexColorRegex.IsMatch(preset ?? string.Empty) ? $"background:{preset}" : string.Empty;
+        HexColor.IsValid(preset) ? $"background:{preset}" : string.Empty;
 
 
     private string _disabledClass => Disabled ? Css.Classes.Colorpicker.Disabled : string.Empty;
@@ -392,7 +388,7 @@ else
         var hex = AlphaToHex();
         _hexInput = hex;
         _currentHex = hex;
-        _currentHexSafe = _hexColorRegex.IsMatch(hex);
+        _currentHexSafe = HexColor.IsValid(hex);
         _currentFormatted = FormatColor();
         HslToRgb(_hue, _saturation, _lightness, out var r, out var g, out var b);
         _rInput = r.ToString();

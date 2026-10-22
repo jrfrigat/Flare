@@ -1,7 +1,6 @@
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Flare.Theming;
 
@@ -71,24 +70,79 @@ public static class TokensToCss
     {
         if (string.IsNullOrEmpty(css)) return css;
 
-        // Remove comments (/* ... */)
-        var result = Regex.Replace(css, @"/\*.*?\*/", "", RegexOptions.Singleline);
+        var result = new StringBuilder(css.Length);
+        var pendingSpace = false;
+        var i = 0;
+        while (i < css.Length)
+        {
+            var c = css[i];
 
-        // Remove newlines and excess whitespace
-        result = Regex.Replace(result, @"\s+", " ");
+            // Comments are dropped.
+            if (c == '/' && i + 1 < css.Length && css[i + 1] == '*')
+            {
+                var end = css.IndexOf("*/", i + 2, StringComparison.Ordinal);
+                i = end < 0 ? css.Length : end + 2;
+                continue;
+            }
 
-        // Remove space after { and before }
-        result = Regex.Replace(result, @"\s*\{\s*", "{");
-        result = Regex.Replace(result, @"\s*\}", "}");
+            if (char.IsWhiteSpace(c))
+            {
+                pendingSpace = result.Length > 0;
+                i++;
+                continue;
+            }
 
-        // Remove space after : and before value (but keep in values like "cubic-bezier(...)")
-        result = Regex.Replace(result, @":\s+", ":");
+            if (pendingSpace)
+            {
+                pendingSpace = false;
+                var previous = result[^1];
+                if (previous is not '{' and not '}' and not ':' and not ';' &&
+                    c is not '{' and not '}' and not ':' and not ';')
+                    result.Append(' ');
+            }
 
-        // Remove trailing semicolons before }
-        result = Regex.Replace(result, ";}", "}");
+            // A quoted string is copied as written: its spaces and comment-looking text are content.
+            if (c is '\'' or '"')
+            {
+                var quote = c;
+                result.Append(c);
+                i++;
+                while (i < css.Length)
+                {
+                    result.Append(css[i]);
+                    if (css[i] == '\\' && i + 1 < css.Length)
+                    {
+                        result.Append(css[i + 1]);
+                        i += 2;
+                        continue;
+                    }
+                    if (css[i] == quote)
+                    {
+                        i++;
+                        break;
+                    }
+                    i++;
+                }
+                continue;
+            }
 
-        // Remove leading/trailing whitespace
-        return result.Trim();
+            // A semicolon directly before } is redundant, whitespace between them included.
+            if (c == ';')
+            {
+                var next = i + 1;
+                while (next < css.Length && char.IsWhiteSpace(css[next])) next++;
+                if (next < css.Length && css[next] == '}')
+                {
+                    i++;
+                    continue;
+                }
+            }
+
+            result.Append(c);
+            i++;
+        }
+
+        return result.ToString().Trim();
     }
 
     private static void Rule(StringBuilder sb, string selector, IReadOnlyDictionary<string, string> vars)
