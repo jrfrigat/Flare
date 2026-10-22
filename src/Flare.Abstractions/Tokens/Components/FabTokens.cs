@@ -44,6 +44,15 @@ public sealed record FabTokens
     /// close the gap; leaving it unset keeps the spacing scale's step.</summary>
     [CssVar(Fab.MenuOffset)] public string MenuOffset { get; init; } = Var(Css.Tokens.Spacing.S6);
 
+    /// <summary>Fill of a FAB with no Color set. A Color on the FAB still wins.</summary>
+    [CssVar(Fab.Container)] public string Container { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
+    /// <summary>Label and icon colour of a FAB with no Color set.</summary>
+    [CssVar(Fab.Content)] public string Content { get; init; } = Var(Css.Tokens.Color.OnPrimaryContainer);
+    /// <summary>Fill of a surface FAB (the small actions inside a FAB menu) with no Color set.</summary>
+    [CssVar(Fab.SurfaceContainer)] public string SurfaceContainer { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHigh);
+    /// <summary>Label and icon colour of a surface FAB with no Color set.</summary>
+    [CssVar(Fab.SurfaceContent)] public string SurfaceContent { get; init; } = Var(Css.Tokens.Color.Primary);
+
     /// <summary>Glyph size of the icon on a small FAB.</summary>
     [CssVar(Fab.IconSize.Sm)] public required string IconSizeSm { get; init; }
     /// <summary>Glyph size of the icon on a baseline FAB.</summary>

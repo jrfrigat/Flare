@@ -197,6 +197,19 @@ public class FluentUI2Tokens
         BorderWidth = "1px",
         Padding = "0.875rem 1rem",
         Gap = "0.75rem",
+        // Fluent's status containers, as its snackbar draws them; error keeps the error container.
+        InfoBg = "var(--flare-color-info-container)",
+        InfoColor = "var(--flare-color-on-info-container)",
+        InfoBorder = "var(--flare-color-info-container)",
+        SuccessBg = "var(--flare-color-success-container)",
+        SuccessColor = "var(--flare-color-on-success-container)",
+        SuccessBorder = "var(--flare-color-success-container)",
+        WarningBg = "var(--flare-color-warning-container)",
+        WarningColor = "var(--flare-color-on-warning-container)",
+        WarningBorder = "var(--flare-color-warning-container)",
+        ErrorBg = "var(--flare-color-error-container)",
+        ErrorColor = "var(--flare-color-on-error-container)",
+        ErrorBorder = "var(--flare-color-error-container)",
     };
 
     internal static readonly EmptyStateTokens EmptyState = new()

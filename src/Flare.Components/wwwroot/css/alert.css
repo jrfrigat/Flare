@@ -11,25 +11,26 @@
   line-height: var(--flare-typescale-body-medium-height);
 }
 
-/* Filled (default) severity colours */
+/* Filled (default) severity colours. The role each severity paints with is the theme's token, so a
+   design language can repaint all four without changing its palette. */
 .flare-alert--info {
-  background: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  background: var(--flare-alert-info-bg);
+  color: var(--flare-alert-info-color);
 }
 
 .flare-alert--success {
-  background: var(--flare-color-secondary-container);
-  color: var(--flare-color-on-secondary-container);
+  background: var(--flare-alert-success-bg);
+  color: var(--flare-alert-success-color);
 }
 
 .flare-alert--warning {
-  background: var(--flare-color-tertiary-container);
-  color: var(--flare-color-on-tertiary-container);
+  background: var(--flare-alert-warning-bg);
+  color: var(--flare-alert-warning-color);
 }
 
 .flare-alert--error {
-  background: var(--flare-color-error-container);
-  color: var(--flare-color-on-error-container);
+  background: var(--flare-alert-error-bg);
+  color: var(--flare-alert-error-color);
 }
 
 /* Outlined variant - transparent fill, coloured border */
@@ -39,26 +40,26 @@
 }
 
 .flare-alert--outlined.flare-alert--info {
-  border-color: var(--flare-color-primary-container);
-  color: var(--flare-color-on-primary-container);
+  border-color: var(--flare-alert-info-border);
+  color: var(--flare-alert-info-color);
   background: transparent;
 }
 
 .flare-alert--outlined.flare-alert--success {
-  border-color: var(--flare-color-secondary-container);
-  color: var(--flare-color-on-secondary-container);
+  border-color: var(--flare-alert-success-border);
+  color: var(--flare-alert-success-color);
   background: transparent;
 }
 
 .flare-alert--outlined.flare-alert--warning {
-  border-color: var(--flare-color-tertiary-container);
-  color: var(--flare-color-on-tertiary-container);
+  border-color: var(--flare-alert-warning-border);
+  color: var(--flare-alert-warning-color);
   background: transparent;
 }
 
 .flare-alert--outlined.flare-alert--error {
-  border-color: var(--flare-color-error-container);
-  color: var(--flare-color-on-error-container);
+  border-color: var(--flare-alert-error-border);
+  color: var(--flare-alert-error-color);
   background: transparent;
 }
 
@@ -69,22 +70,22 @@
 }
 
 .flare-alert--text.flare-alert--info {
-  color: var(--flare-color-on-primary-container);
+  color: var(--flare-alert-info-color);
   background: transparent;
 }
 
 .flare-alert--text.flare-alert--success {
-  color: var(--flare-color-on-secondary-container);
+  color: var(--flare-alert-success-color);
   background: transparent;
 }
 
 .flare-alert--text.flare-alert--warning {
-  color: var(--flare-color-on-tertiary-container);
+  color: var(--flare-alert-warning-color);
   background: transparent;
 }
 
 .flare-alert--text.flare-alert--error {
-  color: var(--flare-color-on-error-container);
+  color: var(--flare-alert-error-color);
   background: transparent;
 }
 

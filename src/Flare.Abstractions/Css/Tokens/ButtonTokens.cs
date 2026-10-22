@@ -198,6 +198,22 @@ public static class Button
     /// of its own.</summary>
     public const string OutlinedBorderColor = "--flare-btn-outlined-border-color";
 
+    // Variant paint. The component picks which role each variant uses; these tokens let a theme retarget
+    // the default without touching the role palette, and a Color on the button still wins over them.
+
+    /// <summary>Fill of a Filled button with no Color set.</summary>
+    public const string FilledContainer = "--flare-btn-filled-container";
+    /// <summary>Label and icon colour of a Filled button with no Color set.</summary>
+    public const string FilledContent = "--flare-btn-filled-content";
+    /// <summary>Fill of a Tonal button with no Color set.</summary>
+    public const string TonalContainer = "--flare-btn-tonal-container";
+    /// <summary>Label and icon colour of a Tonal button with no Color set.</summary>
+    public const string TonalContent = "--flare-btn-tonal-content";
+    /// <summary>Fill of an Elevated button with no Color set.</summary>
+    public const string ElevatedContainer = "--flare-btn-elevated-container";
+    /// <summary>Label and icon colour of an Elevated button with no Color set.</summary>
+    public const string ElevatedContent = "--flare-btn-elevated-content";
+
     /// <summary>Width of the container's border, per size. Reserved on every button whatever its variant
     /// so switching variant never shifts layout, and painted only by the ones that draw an outline.</summary>
     public static class OutlineWidth

@@ -14,8 +14,8 @@
     border-radius: var(--flare-fab-radius-md);
     /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
        Role -> flare-color-* class; custom -> inline --fc-container/--fc-on-container. */
-    --_flare-btn-container: var(--fc-container, var(--flare-color-primary-container));
-    --_flare-btn-content: var(--fc-on-container, var(--flare-color-on-primary-container));
+    --_flare-btn-container: var(--fc-container, var(--flare-fab-container));
+    --_flare-btn-content: var(--fc-on-container, var(--flare-fab-content));
     background-color: var(--_flare-btn-container);
     color: var(--_flare-btn-content);
     box-shadow: var(--flare-fab-shadow);
@@ -59,8 +59,8 @@
 
 /* Surface variant: used by the small action FABs inside a FAB menu. */
 .flare-fab--surface {
-    --_flare-btn-container: var(--flare-color-surface-container-high);
-    --_flare-btn-content: var(--flare-color-primary);
+    --_flare-btn-container: var(--flare-fab-surface-container);
+    --_flare-btn-content: var(--flare-fab-surface-content);
     background-color: var(--_flare-btn-container);
     color: var(--_flare-btn-content);
 }

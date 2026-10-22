@@ -130,8 +130,8 @@
 /* Each variant names its paint in three private properties and reads them back. The disabled rules below
    mix the theme's disabled colours into exactly those, so a variant never needs a disabled rule of its own. */
 .flare-btn--filled {
-    --_flare-btn-container: var(--fc-main, var(--flare-color-primary));
-    --_flare-btn-content: var(--fc-on, var(--flare-color-on-primary));
+    --_flare-btn-container: var(--fc-main, var(--flare-btn-filled-container));
+    --_flare-btn-content: var(--fc-on, var(--flare-btn-filled-content));
     background-color: var(--_flare-btn-container);
     color: var(--_flare-btn-content);
     box-shadow: var(--flare-elevation-0);
@@ -167,8 +167,8 @@
 }
 
 .flare-btn--elevated {
-    --_flare-btn-container: var(--flare-color-surface-container-low);
-    --_flare-btn-content: var(--fc-main, var(--flare-color-primary));
+    --_flare-btn-container: var(--flare-btn-elevated-container);
+    --_flare-btn-content: var(--fc-main, var(--flare-btn-elevated-content));
     background-color: var(--_flare-btn-container);
     color: var(--_flare-btn-content);
     box-shadow: var(--flare-elevation-1);
@@ -179,8 +179,8 @@
     }
 
 .flare-btn--tonal {
-    --_flare-btn-container: var(--fc-container, var(--flare-color-secondary-container));
-    --_flare-btn-content: var(--fc-on-container, var(--flare-color-on-secondary-container));
+    --_flare-btn-container: var(--fc-container, var(--flare-btn-tonal-container));
+    --_flare-btn-content: var(--fc-on-container, var(--flare-btn-tonal-content));
     background-color: var(--_flare-btn-container);
     color: var(--_flare-btn-content);
     box-shadow: var(--flare-elevation-0);

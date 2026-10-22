@@ -246,6 +246,19 @@ public sealed record ButtonTokens
     /// <summary>Outline colour of an Outlined button with no Color set.</summary>
     [CssVar(Button.OutlinedBorderColor)] public string OutlinedBorderColor { get; init; } = Var(Css.Tokens.Color.Outline);
 
+    /// <summary>Fill of a Filled button with no Color set. A Color on the button still wins.</summary>
+    [CssVar(Button.FilledContainer)] public string FilledContainer { get; init; } = Var(Css.Tokens.Color.Primary);
+    /// <summary>Label and icon colour of a Filled button with no Color set.</summary>
+    [CssVar(Button.FilledContent)] public string FilledContent { get; init; } = Var(Css.Tokens.Color.OnPrimary);
+    /// <summary>Fill of a Tonal button with no Color set.</summary>
+    [CssVar(Button.TonalContainer)] public string TonalContainer { get; init; } = Var(Css.Tokens.Color.SecondaryContainer);
+    /// <summary>Label and icon colour of a Tonal button with no Color set.</summary>
+    [CssVar(Button.TonalContent)] public string TonalContent { get; init; } = Var(Css.Tokens.Color.OnSecondaryContainer);
+    /// <summary>Fill of an Elevated button with no Color set.</summary>
+    [CssVar(Button.ElevatedContainer)] public string ElevatedContainer { get; init; } = Var(Css.Tokens.Color.SurfaceContainerLow);
+    /// <summary>Label and icon colour of an Elevated button with no Color set.</summary>
+    [CssVar(Button.ElevatedContent)] public string ElevatedContent { get; init; } = Var(Css.Tokens.Color.Primary);
+
     // (compound: each TypeStyle expands to several --flare-btn-label-* vars in CssVarMap.FlattenDesign)
     /// <summary>Label typography at the xs size. Each theme decides which step of its own type scale a
     /// button size maps to.</summary>

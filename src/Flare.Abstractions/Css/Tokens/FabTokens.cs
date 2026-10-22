@@ -40,6 +40,15 @@ public static class Fab
     /// <summary>CSS custom-property name for the distance between the FAB trigger and its menu.</summary>
     public const string MenuOffset = "--flare-fab-menu-offset";
 
+    /// <summary>Fill of a FAB with no Color set.</summary>
+    public const string Container = "--flare-fab-container";
+    /// <summary>Label and icon colour of a FAB with no Color set.</summary>
+    public const string Content = "--flare-fab-content";
+    /// <summary>Fill of a surface FAB (the small actions inside a FAB menu) with no Color set.</summary>
+    public const string SurfaceContainer = "--flare-fab-surface-container";
+    /// <summary>Label and icon colour of a surface FAB with no Color set.</summary>
+    public const string SurfaceContent = "--flare-fab-surface-content";
+
     /// <summary>Glyph size of the FAB's icon, one per size step. The icon grows with the container: a
     /// language that sizes the hero FAB up sizes its glyph up too.</summary>
     public static class IconSize

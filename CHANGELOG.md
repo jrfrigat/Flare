@@ -16,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 - The tab strip's scroll arrow, close control, badge and primary-indicator inset take their sizes from `TabsTokens` instead of literals in the core stylesheet.
 - The Gantt's scale rows, tree toggle, drag handles and legend samples take their sizes from the spacing scale, and its hairline legend rules from the border token; the scale height and connector weight remain the chart's own geometry.
 - `ProgressTokens.TrackColor` defaults to the secondary container role, so a theme no longer has to set the unfilled track.
+- Alert severities, the filled, tonal and elevated button variants and the FAB paint through their own tokens (`--flare-alert-{info,success,warning,error}-{bg,color,border}`, `--flare-btn-{filled,tonal,elevated}-*`, `--flare-fab-*`), whose defaults are the roles the core drew before; Fluent UI 2 paints alert severities on its status containers, like its snackbar.
 
 ### Fixed
 
