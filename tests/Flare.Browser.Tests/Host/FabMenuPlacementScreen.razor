@@ -42,6 +42,16 @@
             </FlareFloatingActionButton>
         </div>
 
+        <div id="top-edge" style="position:fixed;top:8px;left:50%;transform:translateX(-50%)">
+            <FlareFloatingActionButton id="top-fab" AriaLabel="Top actions" Position="FabPosition.Static">
+                <FlareFloatingActionMenu Placement="Placement.Top">
+                    <FlareFloatingActionMenuItem Label="One" />
+                    <FlareFloatingActionMenuItem Label="Two" />
+                    <FlareFloatingActionMenuItem Label="Three" />
+                </FlareFloatingActionMenu>
+            </FlareFloatingActionButton>
+        </div>
+
         <button id="enable-rtl" @onclick="EnableRtl">RTL</button>
     </main>
 </FlareThemeProvider>

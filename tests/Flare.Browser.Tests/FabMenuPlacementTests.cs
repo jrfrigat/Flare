@@ -117,6 +117,24 @@ public sealed class FabMenuPlacementTests(BrowserFixture fixture) : IClassFixtur
     }
 
     [Fact]
+    public async Task TheMenuOpensDownwardWhenThereIsNoRoomAbove()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await OpenAsync(context, 800);
+        var trigger = page.Locator("#top-fab");
+        var panel = await OpenMenuAsync(page, "top-edge", "top-fab");
+        await Expect(panel).ToHaveAttributeAsync("data-flare-side", "bottom");
+
+        var triggerBox = await trigger.BoundingBoxAsync();
+        var panelBox = await panel.BoundingBoxAsync();
+        Assert.NotNull(triggerBox);
+        Assert.NotNull(panelBox);
+        Assert.True(panelBox!.Y >= triggerBox!.Y + triggerBox.Height - 1.5,
+            "the list has to open below the FAB");
+        Assert.True(panelBox.Y + panelBox.Height <= 720.5);
+    }
+
+    [Fact]
     public async Task AClosedMenuDoesNotExpandThePage()
     {
         await using var context = await fixture.Browser.NewContextAsync();
