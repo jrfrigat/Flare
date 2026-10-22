@@ -1,4 +1,4 @@
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// A bool bound straight to an ARIA state renders as an HTML boolean attribute: true becomes

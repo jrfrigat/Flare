@@ -2,7 +2,7 @@ using Flare.Abstractions;
 using Flare.Components;
 using Flare.Abstractions.Tokens;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// A collapsed panel leaves only visual space behind: inert removes its descendants from the tab order

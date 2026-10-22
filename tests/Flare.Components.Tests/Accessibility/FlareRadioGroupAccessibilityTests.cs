@@ -3,7 +3,7 @@ using AngleSharp.Dom;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// TASK-468: a radio group's error is an alert with a stable id, each radio describes itself with it and

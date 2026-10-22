@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// A toggle group is one choice spread over several buttons, so it has to reach the accessibility tree

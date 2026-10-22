@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 public class CheckboxValidationAriaTests : FlareTestContext
 {

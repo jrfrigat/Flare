@@ -4,7 +4,7 @@ using Flare.Components;
 using Flare.Abstractions.Tokens;
 using Microsoft.AspNetCore.Components;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 public class FlareMultiSelectDisabledA11yTests : FlareTestContext
 {

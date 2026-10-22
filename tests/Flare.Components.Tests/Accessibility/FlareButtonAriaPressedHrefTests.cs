@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// The link branch of a button is still a button (role="button"), so it has to report the same toggle

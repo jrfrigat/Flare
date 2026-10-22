@@ -1,7 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 public class ChartAccessibilityTests : FlareTestContext
 {

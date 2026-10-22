@@ -1,4 +1,4 @@
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 public class SliderAriaTests : FlareTestContext
 {

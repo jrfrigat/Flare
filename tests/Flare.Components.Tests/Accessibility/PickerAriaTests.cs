@@ -1,4 +1,4 @@
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// TASK-106: the picker popup is a dialog, the day grid follows the ARIA grid pattern (rows, full-date

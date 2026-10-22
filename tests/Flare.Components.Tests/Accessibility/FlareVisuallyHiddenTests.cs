@@ -1,4 +1,4 @@
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 // The region is clipped from the page but not from the accessibility tree; role and live mode are what
 // make it announce, so both have to reach the element.

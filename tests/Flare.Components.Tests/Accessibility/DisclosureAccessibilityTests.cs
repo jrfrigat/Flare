@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// What a screen reader is told about the two disclosure components. Both defects here are of the same

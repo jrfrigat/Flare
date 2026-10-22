@@ -1,4 +1,4 @@
-namespace Flare.Components.Tests;
+namespace Flare.Components.Tests.Accessibility;
 
 /// <summary>
 /// TASK-594: five date/time fields used to put the placeholder on aria-label even when a rich
