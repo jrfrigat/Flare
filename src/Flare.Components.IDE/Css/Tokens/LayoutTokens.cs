@@ -8,14 +8,15 @@ namespace Flare.Css.Tokens.Ide;
 /// <summary><c>FlareIdeLayout</c> region-sizing variables (defaults live in <c>flare-ide.css</c>).</summary>
 public static class Layout
 {
-    private const string Prefix = "--flare-ide";
+    // Literal values, not interpolation: Flare.CssAudit reads these constants to prove every
+    // --flare-ide-* declaration in flare-ide.css has a registry entry.
 
     /// <summary>Docked left tool-panel width.</summary>
-    public const string LeftWidth = $"{Prefix}-left-width";
+    public const string LeftWidth = "--flare-ide-left-width";
     /// <summary>Docked right tool-panel width.</summary>
-    public const string RightWidth = $"{Prefix}-right-width";
+    public const string RightWidth = "--flare-ide-right-width";
     /// <summary>Docked bottom tool-panel height.</summary>
-    public const string BottomHeight = $"{Prefix}-bottom-height";
+    public const string BottomHeight = "--flare-ide-bottom-height";
     /// <summary>Collapsed-panel rail thickness.</summary>
-    public const string Rail = $"{Prefix}-rail";
+    public const string Rail = "--flare-ide-rail";
 }

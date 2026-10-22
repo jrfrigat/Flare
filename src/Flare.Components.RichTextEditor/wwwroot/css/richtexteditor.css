@@ -29,7 +29,7 @@
     width: 2rem;
     height: 2rem;
     /* .flare-icon declares its own font-size: the size must travel as the custom property. */
-    --_flare-icon-size: var(--flare-rte-tool-icon-size, 1rem);
+    --_flare-icon-size: var(--flare-spacing-8);
     border: none;
     background: transparent;
     border-radius: var(--flare-shape-extra-small);
