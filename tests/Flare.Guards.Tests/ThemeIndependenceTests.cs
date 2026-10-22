@@ -75,24 +75,37 @@ public sealed class ThemeIndependenceTests
     /// theme's concrete literal: a component token that a base token expresses defaults to it
     /// (<c>var(--flare-color-surface)</c>, or a <c>color-mix</c> of such references), and every other
     /// <c>string</c> member stays <c>required</c> so each theme supplies it. A default carrying a length,
-    /// time or colour literal ("16px", "200ms", "#fff") or a reference outside <c>--flare-*</c> fails here.
+    /// time or colour literal ("16px", "200ms", "#fff"), a fallback inside <c>var()</c> ("var(--flare-x, red)"),
+    /// a <c>deg</c> or <c>url()</c>, or a reference outside <c>--flare-*</c> fails here.
+    /// <para>
+    /// <c>calc()</c> is allowed only as arithmetic over token references, such as
+    /// <c>calc(var(--flare-spacing-2) * -1)</c>: a literal inside it is caught by the same scan.
+    /// </para>
     /// </summary>
     [Fact]
     public void AbstractionsTokenRecords_DefaultOnlyToFlareTokens()
     {
         var nullability = new NullabilityInfoContext();
-        var offenders = typeof(DesignTokens).Assembly.GetTypes()
+        var types = typeof(DesignTokens).Assembly.GetTypes()
             .Where(t => t is { IsClass: true, IsPublic: true, IsAbstract: false, Namespace: not null }
                         && t.Namespace.StartsWith("Flare.Abstractions.Tokens", StringComparison.Ordinal))
-            .SelectMany(t =>
+            .ToArray();
+
+        // Only the leaf, NON-NULLABLE string members can carry a default: nullable metadata
+        // (string? Source/StyleAsset) defaults to null, nested records are covered by their own
+        // members, and non-string members (the Extended extras map) are not values.
+        static bool IsOptional(PropertyInfo p, NullabilityInfoContext nullability) =>
+            p.PropertyType == typeof(string) && p.CanWrite
+            && nullability.Create(p).WriteState != NullabilityState.Nullable
+            && p.GetCustomAttribute<RequiredMemberAttribute>() is null;
+
+        var inspected = types.Sum(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Count(p => IsOptional(p, nullability)));
+
+        var offenders = types.SelectMany(t =>
             {
-                // Only the leaf, NON-NULLABLE string members can carry a default: nullable metadata
-                // (string? Source/StyleAsset) defaults to null, nested records are covered by their own
-                // members, and non-string members (the Extended extras map) are not values.
                 var optional = t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(p => p.PropertyType == typeof(string) && p.CanWrite)
-                    .Where(p => nullability.Create(p).WriteState != NullabilityState.Nullable)
-                    .Where(p => p.GetCustomAttribute<RequiredMemberAttribute>() is null)
+                    .Where(p => IsOptional(p, nullability))
                     .ToArray();
                 if (optional.Length == 0) return [];
                 // Reflection does not enforce 'required', and the initializers run: the defaults are real.
@@ -108,19 +121,93 @@ public sealed class ThemeIndependenceTests
             "Flare.Abstractions token member(s) default to something other than Flare tokens - a default " +
             "may only reference --flare-* variables (with percentages and keywords); make the member " +
             "'required' and move the value to the theme: " + string.Join(", ", offenders));
+        // A scan that stopped seeing the members would otherwise stay green after one bad edit.
+        Assert.True(inspected >= 400,
+            $"The guard inspected {inspected} optional token members; expected at least 400. " +
+            "A change that makes every token required, or breaks the selection, must not hide a broken scan.");
     }
 
-    // A default is made of Flare tokens when it references at least one --flare-* variable, references
-    // nothing else, and outside those references carries no length, time or colour literal.
+    // A default is made of Flare tokens when it references at least one --flare-* variable without a
+    // fallback, references nothing else, and outside those references carries no length, time, angle or
+    // colour literal.
+    private static readonly Regex VarReference = new(@"var\(\s*(--[a-zA-Z0-9_-]+)\s*(?:,\s*([^()]*))?\)", RegexOptions.Compiled);
+
     private static bool IsFlareTokenDefault(string? value)
     {
         if (string.IsNullOrWhiteSpace(value)) return false;
-        var references = Regex.Matches(value, @"var\(\s*(--[a-zA-Z0-9_-]+)");
-        if (references.Count == 0 || references.Any(m => !m.Groups[1].Value.StartsWith("--flare-", StringComparison.Ordinal)))
-            return false;
-        var rest = Regex.Replace(value, @"var\(\s*--flare-[a-z0-9-]+\s*\)", " ");
+        if (Regex.IsMatch(value, @"(?<![\w-])url\s*\(|\d(?:\.\d+)?\s*deg\b", RegexOptions.IgnoreCase)) return false;
+        var references = VarReference.Matches(value);
+        if (references.Count == 0) return false;
+        foreach (Match reference in references)
+        {
+            if (!reference.Groups[1].Value.StartsWith("--flare-", StringComparison.Ordinal)) return false;
+            // A fallback decides a look for every theme, exactly like a literal does.
+            if (reference.Groups[2].Success && !string.IsNullOrWhiteSpace(reference.Groups[2].Value)) return false;
+        }
+        var rest = VarReference.Replace(value, " ");
         return !Regex.IsMatch(rest,
-            @"\d(px|rem|em|vh|vw|ms|s)\b|#[0-9a-fA-F]{3,8}\b|\b(rgb|rgba|hsl|hsla)\(", RegexOptions.IgnoreCase);
+            @"\d(px|rem|em|vh|vw|vmin|vmax|dvh|dvw|svh|svw|lvh|lvw|ms|s|fr|ch|ex|lh|rlh)\b|#[0-9a-fA-F]{3,8}\b|\b(rgb|rgba|hsl|hsla|hwb|lab|lch|oklab|oklch|color)\(",
+            RegexOptions.IgnoreCase);
+    }
+
+    /// <summary>
+    /// A size grid (Xs/Sm/Md/Lg/Xl sharing a property prefix) is optional as a whole or required as a
+    /// whole. Half a grid means a theme that sets one step changes one size and leaves the rest on the
+    /// core's opinion, which is the mixed state the token mandate forbids.
+    /// </summary>
+    [Fact]
+    public void Token_size_grids_AreRequiredOrOptionalAsAWhole()
+    {
+        string[] sizes = ["Xs", "Sm", "Md", "Lg", "Xl"];
+        var offenders = new List<string>();
+        foreach (var type in typeof(DesignTokens).Assembly.GetTypes()
+                     .Where(t => t is { IsClass: true, IsPublic: true, IsAbstract: false, Namespace: not null }
+                                 && t.Namespace.StartsWith("Flare.Abstractions.Tokens", StringComparison.Ordinal)))
+        {
+            var groups = new Dictionary<string, List<PropertyInfo>>(StringComparer.Ordinal);
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                         .Where(p => p.PropertyType == typeof(string)))
+            {
+                var suffix = sizes.FirstOrDefault(s =>
+                    property.Name.Length > s.Length && property.Name.EndsWith(s, StringComparison.Ordinal));
+                if (suffix is null) continue;
+                var prefix = property.Name[..^suffix.Length];
+                if (!groups.TryGetValue(prefix, out var group)) groups[prefix] = group = [];
+                group.Add(property);
+            }
+            foreach (var (prefix, group) in groups.Where(g => g.Value.Count > 1))
+            {
+                var states = group.Select(p => p.GetCustomAttribute<RequiredMemberAttribute>() is not null)
+                    .Distinct()
+                    .ToArray();
+                if (states.Length > 1)
+                    offenders.Add($"{type.Name}.{prefix} ({string.Join(", ", group.Select(p => p.Name))})");
+            }
+        }
+
+        Assert.True(offenders.Count == 0,
+            "A size grid must be optional as a whole or required as a whole: " + string.Join("; ", offenders));
+    }
+
+    /// <summary>
+    /// A type role is whole: every facet of <see cref="TypeStyle"/> is required, and every role in
+    /// <see cref="TypographyTokens"/> is required. A role that supplied size but not weight would take
+    /// half its look from the core and half from the theme.
+    /// </summary>
+    [Fact]
+    public void Token_type_roles_AreWhole()
+    {
+        var facets = typeof(TypeStyle).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.PropertyType == typeof(string))
+            .ToArray();
+        Assert.Equal(5, facets.Length);
+        Assert.All(facets, p => Assert.NotNull(p.GetCustomAttribute<RequiredMemberAttribute>()));
+
+        var roles = typeof(TypographyTokens).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.PropertyType == typeof(TypeStyle))
+            .ToArray();
+        Assert.Equal(15, roles.Length);
+        Assert.All(roles, p => Assert.NotNull(p.GetCustomAttribute<RequiredMemberAttribute>()));
     }
 
     // Concrete theme identifiers (design-system product + font names) that must never appear in the

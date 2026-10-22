@@ -25,13 +25,13 @@ public class TokenParityTests
         Flat().Keys.ToHashSet(StringComparer.Ordinal);
 
     [Fact]
-    public void CssVarMap_Flatten_Should_Produce_AtLeast_200_Vars()
+    public void CssVarMap_Flatten_Should_Produce_AtLeast_400_Vars()
     {
         var flat = Flat();
 
-        // At least 200 CSS variables (colors + typography + shape + elevation + motion + state + components)
-        Assert.True(flat.Count >= 200,
-            $"Expected at least 200 CSS variables, got {flat.Count}");
+        // At least 400 CSS variables (colors + typography + shape + elevation + motion + state + components).
+        Assert.True(flat.Count >= 400,
+            $"Expected at least 400 CSS variables, got {flat.Count}");
     }
 
     [Fact]
