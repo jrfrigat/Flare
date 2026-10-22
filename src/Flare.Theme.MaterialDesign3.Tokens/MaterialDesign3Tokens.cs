@@ -712,7 +712,7 @@ public class MaterialDesign3Tokens
         CircularWidthXs = "3px",
         CircularWidthSm = "3px",
         CircularWidthMd = "4px",  // spec: circular active-indicator thickness
-        CircularWidthLg = "8px",  // spec: thick-active-indicator-thickness 8dp on the thick ring
+        CircularWidthLg = "4px",  // spec: same 4dp as the default ring
         CircularWidthXl = "5px",
         CircularCap = "round",
         CircularGap = "4px",
