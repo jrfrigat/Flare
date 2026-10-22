@@ -41,9 +41,13 @@ it('mirrors Start and End against the inline direction under RTL', () => {
 
 it('keeps the physical left and right SIDES physical in RTL', () => {
     const panel = place('right-start', 'rtl');
-    // Still to the right of the anchor; only the Start alignment follows the direction.
+    // Still to the right of the anchor. Start is the block start (top), which RTL never moves.
     expect(parseFloat(panel.style.left)).toBe(304);
-    expect(parseFloat(panel.style.top)).toBe(90);
+    expect(parseFloat(panel.style.top)).toBe(100);
+
+    const end = place('right-end', 'rtl');
+    expect(parseFloat(end.style.left)).toBe(304);
+    expect(parseFloat(end.style.top)).toBe(90);
 });
 
 it('publishes where the anchor centre lands inside the panel for the arrow', () => {

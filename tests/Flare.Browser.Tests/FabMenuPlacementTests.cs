@@ -97,6 +97,26 @@ public sealed class FabMenuPlacementTests(BrowserFixture fixture) : IClassFixtur
     }
 
     [Fact]
+    public async Task StartOnASideStaysTopAlignedInRtl()
+    {
+        await using var context = await fixture.Browser.NewContextAsync();
+        var page = await OpenAsync(context, 800);
+
+        await page.Locator("#enable-rtl").ClickAsync();
+        await Expect(page.Locator($".{Css.Classes.Theme.Root}")).ToHaveAttributeAsync("dir", "rtl");
+
+        var trigger = page.Locator("#rtl-side-fab");
+        var panel = await OpenMenuAsync(page, "side", "rtl-side-fab");
+        await Expect(panel).ToHaveAttributeAsync("data-flare-side", "right");
+
+        var triggerBox = await trigger.BoundingBoxAsync();
+        var panelBox = await panel.BoundingBoxAsync();
+        Assert.NotNull(triggerBox);
+        Assert.NotNull(panelBox);
+        Assert.InRange(panelBox!.Y, triggerBox!.Y - 1.5, triggerBox.Y + 1.5);
+    }
+
+    [Fact]
     public async Task AClosedMenuDoesNotExpandThePage()
     {
         await using var context = await fixture.Browser.NewContextAsync();

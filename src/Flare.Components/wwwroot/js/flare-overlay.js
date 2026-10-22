@@ -272,6 +272,8 @@ function demote(panel) {
 //   placement   'bottom-start' (default) | 'bottom' | 'bottom-end' | the same for top/left/right.
 //               The side flips when the panel does not fit and the opposite side has more room;
 //               the alignment does not flip, it is clamped to the viewport like everything else.
+//               Start/end follow the writing direction on the inline edges (top/bottom), and name the
+//               block edges (top/bottom) on the left/right sides, where RTL never moves them.
 //   gap         distance from the anchor in px (default 4).
 //   gapToken    name of a CSS custom property, read from the panel, holding the distance; wins over
 //               gap when it resolves to a length, so the theme decides it.
@@ -357,11 +359,16 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     const offset = opts.anchorOffset;
     const parts = String(opts.placement || 'bottom-start').split('-');
     const wantSide = SIDES.includes(parts[0]) ? parts[0] : 'bottom';
-    // Start/End name the INLINE edges, so RTL swaps the physical side they mean. Left/Right stay
-    // physical: a caller asking for the left side wants the left side in both writing directions.
+    // Start/End name the INLINE edges when the side is top or bottom, so RTL swaps the physical edge
+    // there. On a left/right side the alignment is the block axis (top/bottom), which writing direction
+    // never moves. Left/Right themselves stay physical: a caller asking for the left side wants the left
+    // side in both writing directions.
     const logical = parts[1] === 'start' || parts[1] === 'end' ? parts[1] : (parts.length > 1 ? 'start' : 'center');
+    const inlineAxis = wantSide === 'top' || wantSide === 'bottom';
     const rtl = getComputedStyle(panel).direction === 'rtl';
-    const align = rtl && logical === 'start' ? 'end' : rtl && logical === 'end' ? 'start' : logical;
+    const align = inlineAxis && rtl && logical === 'start' ? 'end'
+        : inlineAxis && rtl && logical === 'end' ? 'start'
+            : logical;
 
     const anchorBox = () => {
         if (fixedRect) {

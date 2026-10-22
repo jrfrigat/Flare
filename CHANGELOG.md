@@ -29,6 +29,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- On a right-to-left page, a panel placed at the `LeftStart`, `LeftEnd`, `RightStart` or `RightEnd` side lines up its top or bottom edge with the anchor instead of the opposite one: start and end follow the writing direction only on the top and bottom sides.
 - A virtualized `FlareGantt` follows a scrolling ancestor outside its own scroll box, including nested containers, instead of keeping a stale row window.
 - `FlareCalendar` exposes a real accessibility grid - weekly rows, full-name column headers and `aria-selected` cells - and announces the displayed month, without changing its layout.
 

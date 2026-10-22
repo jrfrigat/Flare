@@ -31,6 +31,17 @@
             </FlareFloatingActionButton>
         </div>
 
+        <div id="side" style="position:fixed;left:8px;top:300px">
+            <FlareFloatingActionButton id="rtl-side-fab" AriaLabel="Side actions" Position="FabPosition.Static">
+                <FlareFloatingActionMenu Placement="Placement.RightStart">
+                    <FlareFloatingActionMenuItem Label="One" />
+                    <FlareFloatingActionMenuItem Label="Two" />
+                    <FlareFloatingActionMenuItem Label="Three" />
+                    <FlareFloatingActionMenuItem Label="Four" />
+                </FlareFloatingActionMenu>
+            </FlareFloatingActionButton>
+        </div>
+
         <button id="enable-rtl" @onclick="EnableRtl">RTL</button>
     </main>
 </FlareThemeProvider>

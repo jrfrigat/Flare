@@ -8,24 +8,24 @@ Where something sits relative to what it hangs off: a side, and how it lines up 
 
 ## Remarks
 
-A bare side (Top) centres on the anchor. Start and End name the edge that lines up: on a top or bottom side, the left or right edges; on a left or right side, the top or bottom edges. These are the same values the anchored-panel engine uses (PanelPlacement), so a component that goes through the engine maps them one to one.
+A bare side (Top) centres on the anchor. On a top or bottom side, Start and End name the edge along the INLINE axis: the writing direction's start or end edge, which is the left/right edge in LTR and the right/left edge in RTL. On a left or right side they name the BLOCK edges - the top or bottom edge - which the writing direction never moves. Left and Right are physical sides and are never mirrored. These are the same values the anchored-panel engine uses (PanelPlacement), so a component that goes through the engine maps them one to one.
 
 ## Values
 
 | Name | Value | Description |
 | --- | --- | --- |
 | `Top` | `0` | Above, centred on the anchor. |
-| `TopStart` | `1` | Above, left edges aligned. |
-| `TopEnd` | `2` | Above, right edges aligned. |
+| `TopStart` | `1` | Above, aligned to the writing direction's start edge (left in LTR, right in RTL). |
+| `TopEnd` | `2` | Above, aligned to the writing direction's end edge (right in LTR, left in RTL). |
 | `Bottom` | `3` | Below, centred on the anchor. |
-| `BottomStart` | `4` | Below, left edges aligned. |
-| `BottomEnd` | `5` | Below, right edges aligned. |
+| `BottomStart` | `4` | Below, aligned to the writing direction's start edge (left in LTR, right in RTL). |
+| `BottomEnd` | `5` | Below, aligned to the writing direction's end edge (right in LTR, left in RTL). |
 | `Left` | `6` | To the left, centred on the anchor. |
-| `LeftStart` | `7` | To the left, top edges aligned. |
-| `LeftEnd` | `8` | To the left, bottom edges aligned. |
+| `LeftStart` | `7` | To the left, top edges aligned (the block start; the writing direction does not move it). |
+| `LeftEnd` | `8` | To the left, bottom edges aligned (the block end; the writing direction does not move it). |
 | `Right` | `9` | To the right, centred on the anchor. |
-| `RightStart` | `10` | To the right, top edges aligned. |
-| `RightEnd` | `11` | To the right, bottom edges aligned. |
+| `RightStart` | `10` | To the right, top edges aligned (the block start; the writing direction does not move it). |
+| `RightEnd` | `11` | To the right, bottom edges aligned (the block end; the writing direction does not move it). |
 
 ## Used by components
 

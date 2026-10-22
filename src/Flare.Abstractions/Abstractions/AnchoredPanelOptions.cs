@@ -2,22 +2,25 @@ namespace Flare.Components.Services;
 
 /// <summary>
 /// Where an anchored panel sits relative to its anchor. The side flips to the opposite one when the
-/// panel does not fit and the opposite side has more room; the alignment never flips, it is clamped
-/// to the viewport. A bare side (<see cref="Bottom"/>) centres the panel on the anchor.
+/// panel does not fit and the opposite side has more room; the alignment is clamped to the viewport and
+/// never flips to the other edge. A bare side (<see cref="Bottom"/>) centres the panel on the anchor.
+/// On a top or bottom side, <c>start</c>/<c>end</c> follow the panel's writing direction (left/right in
+/// LTR, right/left in RTL); on a left or right side they name the top/bottom (block) edges, which the
+/// writing direction never moves.
 /// </summary>
 public static class PanelPlacement
 {
-    /// <summary>Below the anchor, left edges aligned. The default.</summary>
+    /// <summary>Below the anchor, aligned to the writing direction's start edge (left in LTR, right in RTL). The default.</summary>
     public const string BottomStart = "bottom-start";
     /// <summary>Below the anchor, centred on it.</summary>
     public const string Bottom = "bottom";
-    /// <summary>Below the anchor, right edges aligned.</summary>
+    /// <summary>Below the anchor, aligned to the writing direction's end edge (right in LTR, left in RTL).</summary>
     public const string BottomEnd = "bottom-end";
-    /// <summary>Above the anchor, left edges aligned.</summary>
+    /// <summary>Above the anchor, aligned to the writing direction's start edge.</summary>
     public const string TopStart = "top-start";
     /// <summary>Above the anchor, centred on it.</summary>
     public const string Top = "top";
-    /// <summary>Above the anchor, right edges aligned.</summary>
+    /// <summary>Above the anchor, aligned to the writing direction's end edge.</summary>
     public const string TopEnd = "top-end";
     /// <summary>To the right of the anchor, top edges aligned.</summary>
     public const string RightStart = "right-start";
