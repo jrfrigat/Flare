@@ -15,6 +15,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://jrfrigat.github.io/Flare/)
 
+[![components tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-components.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![core tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-core.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![guards tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-guards.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![packages tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-packages.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+
+[![components coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-components.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![core coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-core.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![guards coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-guards.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![packages coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-packages.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+
 A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-first, also targeting **.NET 8 and .NET 9** - with **zero baked-in styling**. Build your own design system with semantic tokens, or start instantly with one of seven production-ready preset themes (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), all shipped as independent, optional packages. Runtime theme switching, no page reload, no flash of unstyled content.
 
 **Built by backend developers, for backend developers.** You should not need to know HTML or CSS to

@@ -17,8 +17,11 @@ permissions:
   contents: read
 
 jobs:
-  build-test:
-    name: Build, test & validate packaging
+
+  # Compile once. The four test suites and the gate all work from this artifact, so the solution is
+  # not rebuilt five times and the suites can run at the same time.
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -42,29 +45,116 @@ jobs:
       - name: Build (Release)
         run: dotnet build Flare.slnx -c Release --no-restore
 
-      # Every test project on every TFM except Flare.Browser.Tests: the browser suite drives a real Chromium
-      # against a live server, so a slow runner fails it without a defect. It stays in the repository and is run
-      # by hand. Every project runs even after one fails, so the report is complete, and the step fails at the end.
-      # MTP options, not VSTest ones: xunit.v3 4.0.0 test projects run on Microsoft.Testing.Platform
-      # (global.json picks the runner), where VSTest's --logger is accepted and then silently
-      # ignored - it would leave the upload below with nothing to collect. The report filename is
-      # deliberately left to MTP: it names each file after the project and TFM, so the runs
-      # land side by side instead of overwriting one shared file.
-      - name: Test (all TFMs, without the browser suite)
+      # Both bin and obj travel: --no-build in a test job still evaluates the project and reads the
+      # generated props, targets and project.assets.json under obj/Release.
+      - name: Upload build
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-output
+          path: |
+            **/bin/Release/**
+            **/obj/Release/**
+          if-no-files-found: error
+          retention-days: 1
+
+  # Four suites, in parallel. fail-fast is off on purpose: one red suite must not hide whether the
+  # others also broke. Every project runs even after one fails, and the job fails at the end so the
+  # TRX and coverage of the other projects still get published.
+  #
+  # The browser suite is deliberately absent: it drives a real Chromium against a live server, and a
+  # slow runner fails it without a defect. It stays in the repository and is run by hand.
+  test:
+    name: Test (${{ matrix.suite }})
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: components
+            projects: tests/Flare.Components.Tests/Flare.Components.Tests.csproj
+          - suite: core
+            projects: tests/Flare.Core.Tests/Flare.Core.Tests.csproj
+          - suite: guards
+            projects: tests/Flare.Guards.Tests/Flare.Guards.Tests.csproj
+          - suite: packages
+            projects: |
+              tests/Flare.ApiDocGen.Tests/Flare.ApiDocGen.Tests.csproj
+              tests/Flare.Components.Barcode.Tests/Flare.Components.Barcode.Tests.csproj
+              tests/Flare.Components.Carousel.Tests/Flare.Components.Carousel.Tests.csproj
+              tests/Flare.Components.Gantt.Tests/Flare.Components.Gantt.Tests.csproj
+              tests/Flare.Components.IDE.Tests/Flare.Components.IDE.Tests.csproj
+              tests/Flare.Components.Kanban.Tests/Flare.Components.Kanban.Tests.csproj
+              tests/Flare.Components.Media.Tests/Flare.Components.Media.Tests.csproj
+              tests/Flare.Components.QrCode.Tests/Flare.Components.QrCode.Tests.csproj
+              tests/Flare.Components.Query.Tests/Flare.Components.Query.Tests.csproj
+              tests/Flare.Components.RichTextEditor.Tests/Flare.Components.RichTextEditor.Tests.csproj
+              tests/Flare.Components.Transfer.Tests/Flare.Components.Transfer.Tests.csproj
+              tests/Flare.Integration.Tests/Flare.Integration.Tests.csproj
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET (8 / 9 / 10)
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Download build
+        uses: actions/download-artifact@v7
+        with:
+          name: build-output
+
+      # --no-build runs the compiled artifact; restore is still needed because the test host resolves
+      # the Microsoft.Testing.Platform extensions through the generated NuGet props in obj/.
+      - name: Restore
+        run: dotnet restore Flare.slnx
+
+      # MTP options, not VSTest ones: xunit.v3 4.0.0 runs on Microsoft.Testing.Platform (global.json
+      # picks the runner), where VSTest's --logger is accepted and silently ignored. --report-trx
+      # comes from Microsoft.Testing.Extensions.TrxReport and --coverlet from coverlet.MTP; both leave
+      # TestResults/ per project and TFM. Coverage files are moved under coverage/<project>/ so the
+      # badge script can attribute them to a suite.
+      - name: Test (${{ matrix.suite }})
+        shell: bash
         run: |
           status=0
-          for project in tests/*/*.Tests.csproj; do
-            case "$project" in */Flare.Browser.Tests/*) continue ;; esac
-            dotnet test --project "$project" -c Release --no-build --report-trx || status=1
-          done
+          while read -r project; do
+            [ -n "$project" ] || continue
+            name=$(basename "$project" .csproj)
+            dotnet test --project "$project" -c Release --no-build \
+              --report-trx --coverlet --coverlet-output-format cobertura || status=1
+            for file in TestResults/coverage.cobertura.*.xml; do
+              [ -e "$file" ] || continue
+              mkdir -p "TestResults/coverage/$name"
+              mv "$file" "TestResults/coverage/$name/$(basename "$file")"
+            done
+          done <<< "${{ matrix.projects }}"
           exit $status
 
-      # Isolated JavaScript unit tests run the browser scripts in jsdom. One piece of JS -
-      # the rich text editor's HTML filter - is a security boundary. Verifying it by hand proves it
-      # works today and does nothing about tomorrow, so it runs here.
-      #
-      # jsdom implements no Element.setHTML, so what CI covers is the DOMParser fallback: our own code.
-      # The platform path is the engine's and is exercised in a real browser, not here.
+      - name: Upload ${{ matrix.suite }} results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-results-${{ matrix.suite }}
+          path: TestResults
+          if-no-files-found: ignore
+
+  # JavaScript unit tests run the browser scripts in jsdom. One piece of JS - the rich text editor's
+  # HTML filter - is a security boundary, so it is a gate of its own rather than a manual step.
+  # jsdom implements no Element.setHTML, so what CI covers is the DOMParser fallback: our own code.
+  # The platform path is the engine's and is exercised in a real browser, not here.
+  js:
+    name: Test (JavaScript)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
@@ -78,14 +168,38 @@ jobs:
           npm ci
           npm test
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v7
+  # The check the main ruleset requires BY NAME. It keeps that name while the suites move into their
+  # own jobs, so branch protection stays valid. It runs even when a suite failed, reports the reason,
+  # and only then fails itself - which is what makes one required check represent all of them.
+  build-test:
+    name: Build, test & validate packaging
+    needs: [ build, test, js ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail when the build or a test suite failed
+        if: needs.build.result != 'success' || needs.test.result != 'success' || needs.js.result != 'success'
+        run: |
+          echo "build=${{ needs.build.result }} test=${{ needs.test.result }} js=${{ needs.js.result }}"
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          name: test-results
-          path: |
-            **/*.trx
-          if-no-files-found: ignore
+          fetch-depth: 0   # MinVer needs full history/tags to compute the version
+
+      - name: Setup .NET (10)
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Download build
+        uses: actions/download-artifact@v7
+        with:
+          name: build-output
+
+      - name: Restore
+        run: dotnet restore Flare.slnx
 
       # The API reference is a generated file that is COMMITTED, so it rots silently: a parameter added
       # without re-running the generator leaves the published reference describing the previous shape.
@@ -110,3 +224,42 @@ jobs:
         with:
           name: nuget-packages
           path: artifacts/*.nupkg
+
+  # Publishes the eight badge JSON files to the orphan `badges` branch. Runs even when a suite failed:
+  # a badge that only updates when everything passes is a badge that lies exactly when it matters.
+  # Only a push to main publishes; pull requests run against a read-only token and are not main's
+  # numbers anyway.
+  badges:
+    name: Publish badges
+    needs: test
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download test results
+        uses: actions/download-artifact@v7
+        with:
+          pattern: test-results-*
+          path: TestResults
+          merge-multiple: true
+
+      - name: Write badge JSON
+        shell: pwsh
+        run: ./scripts/ci-badges.ps1 -Results TestResults -Out badges
+
+      - name: Push to the badges branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd badges
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q --orphan badges
+          git add -A
+          git commit -q -m "Update CI badges"
+          git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges

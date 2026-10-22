@@ -15,6 +15,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://jrfrigat.github.io/Flare/)
 
+[![components tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-components.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![core tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-core.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![guards tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-guards.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![packages tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/tests-packages.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+
+[![components coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-components.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![core coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-core.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![guards coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-guards.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+[![packages coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jrfrigat/Flare/badges/coverage-packages.json)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
+
 Производственная, **не зависящая от тем** библиотека компонентов Blazor для **.NET 10** с **нулевым встроенным стилем**. Создавайте собственную дизайн-систему на семантических токенах или начните мгновенно с одной из семи готовых preset-тем (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026) - все поставляются как независимые, необязательные пакеты. Переключение тем во время выполнения без перезагрузки страницы и без мигания.
 
 **Библиотека backend-разработчиков для backend-разработчиков.** Чтобы собрать на Flare любой экран -
