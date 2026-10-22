@@ -5,6 +5,9 @@ public static class Accordion
 {
     /// <summary>The <c>flare-accordion</c> CSS class.</summary>
     public const string Root = "flare-accordion";
+    /// <summary>The <c>flare-accordion--fill</c> CSS class: the accordion spends the height it was
+    /// given and hands the remainder to its open panel.</summary>
+    public const string Fill = "flare-accordion--fill";
     /// <summary>The <c>flare-accordion-panel</c> CSS class.</summary>
     public const string Panel = "flare-accordion-panel";
     /// <summary>The <c>flare-accordion-panel--expanded</c> CSS class.</summary>

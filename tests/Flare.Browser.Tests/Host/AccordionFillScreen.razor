@@ -1,0 +1,15 @@
+@page "/accordion-fill"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <div id="frame" style="block-size:320px;inline-size:360px;display:flex">
+        <FlareAccordion id="acc" FillHeight="true" AllowMultiple="true">
+            <FlareAccordionPanel id="long-panel" Header="Long" Expanded="true">
+                @for (var i = 0; i < 60; i++)
+                {
+                    <div>Row @i</div>
+                }
+            </FlareAccordionPanel>
+            <FlareAccordionPanel id="other-panel" Header="Other">Other body</FlareAccordionPanel>
+        </FlareAccordion>
+    </div>
+</FlareThemeProvider>

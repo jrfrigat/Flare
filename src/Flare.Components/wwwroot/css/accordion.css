@@ -137,3 +137,39 @@
 .flare-accordion-panel--expanded .flare-accordion-panel__body {
   padding-block: var(--flare-accordion-body-padding-block);
 }
+
+/* ---- FillHeight: the accordion spends the height it was given ----
+   The root is the shared .flare-fill plus a flex column. A panel is a flex item sized by its header;
+   the expanded one grows into the free space, and its content keeps a definite height through
+   flex: 1 1 0, so the body scrolls inside instead of growing the page.
+
+   The reveal is the growth of the panel's flex-grow, which is animatable. The grid-track animation
+   is switched off here on purpose: two height animations on the same box fight, and on collapse the
+   track would start from the content's NATURAL height instead of the height on screen, which is a
+   visible jump for a long scrolling list. Child combinators throughout: a nested accordion inside a
+   panel decides its own fill. */
+.flare-accordion--fill {
+  display: flex;
+  flex-direction: column;
+}
+.flare-accordion--fill > .flare-accordion-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-block-size: 0;
+  transition: flex-grow var(--flare-motion-duration-enter-medium) var(--flare-motion-easing-standard);
+}
+.flare-accordion--fill > .flare-accordion-panel--expanded {
+  flex-grow: 1;
+}
+.flare-accordion--fill > .flare-accordion-panel > .flare-accordion-panel__content {
+  flex: 1 1 0;
+  min-block-size: 0;
+  grid-template-rows: 1fr;
+  transition: none;
+}
+.flare-accordion--fill > .flare-accordion-panel > .flare-accordion-panel__content > .flare-accordion-panel__body {
+  overflow: auto;
+  min-height: 0;
+  transition: none;
+}

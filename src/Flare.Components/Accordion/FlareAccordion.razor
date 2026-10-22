@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_fillClass)" style="@Style" @attributes="AdditionalAttributes">
     <CascadingValue Value="@this" IsFixed="true">
         @ChildContent
     </CascadingValue>
@@ -23,10 +23,23 @@
     /// </summary>
     [Parameter] public int HeadingLevel { get; set; } = DefaultHeadingLevel;
 
+    /// <summary>
+    /// Makes the accordion spend the height it was given instead of its content's, so the open panel
+    /// takes the remaining space and scrolls inside itself - a section list in a side panel. The
+    /// expansion animates by growing the panel's share of the height, while the closed panels keep
+    /// their header height. Needs an ancestor with a definite height, like every <c>FillHeight</c> in
+    /// the library.
+    /// </summary>
+    [Parameter] public bool FillHeight { get; set; }
+
     /// <summary>Heading level used when neither the accordion nor the panel names one.</summary>
     internal const int DefaultHeadingLevel = 3;
 
     protected override string ComponentCssClass => Css.Classes.Accordion.Root;
+
+    private string? _fillClass => FillHeight
+        ? $"{Css.Classes.Fill.Root} {Css.Classes.Accordion.Fill}"
+        : null;
 
     private FlareAccordionPanel? _expandedPanel;
     private readonly List<FlareAccordionPanel> _panels = [];

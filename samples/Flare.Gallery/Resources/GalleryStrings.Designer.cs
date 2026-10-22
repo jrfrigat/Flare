@@ -104,6 +104,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Accordion_Expanded", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Filling the height.
+        /// </summary>
+        public static string Accordion_Fill {
+            get {
+                return ResourceManager.GetString("Accordion_Fill", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Allow multiple open.

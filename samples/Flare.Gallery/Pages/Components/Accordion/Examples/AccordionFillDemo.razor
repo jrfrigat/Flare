@@ -1,0 +1,19 @@
+@inherits LocalizedPage
+
+@* The card gives the accordion a definite height; the open panel takes the rest of it and the list
+   scrolls inside the panel instead of growing the page. *@
+<FlareCard Height="20rem">
+    <FlareAccordion FillHeight="true">
+        <FlareAccordionPanel Header="@GalleryStrings.AccordionDemo_DefaultOpen" Expanded="true">
+            <FlareStack Gap="FlareSpacing.Small">
+                @for (var i = 0; i < 30; i++)
+                {
+                    <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.AccordionDemo_DefaultOpenBody</FlareText>
+                }
+            </FlareStack>
+        </FlareAccordionPanel>
+        <FlareAccordionPanel Header="@GalleryStrings.AccordionDemo_Bound">
+            @GalleryStrings.AccordionDemo_BoundBody
+        </FlareAccordionPanel>
+    </FlareAccordion>
+</FlareCard>

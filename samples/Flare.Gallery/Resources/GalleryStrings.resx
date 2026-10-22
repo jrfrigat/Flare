@@ -264,6 +264,9 @@
   <data name="Accordion_Expanded" xml:space="preserve">
     <value>Default expanded &amp; two-way binding</value>
   </data>
+  <data name="Accordion_Fill" xml:space="preserve">
+    <value>Filling the height</value>
+  </data>
   <data name="AccordionDemo_Q1" xml:space="preserve">
     <value>What is Flare?</value>
   </data>

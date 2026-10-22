@@ -264,6 +264,9 @@
   <data name="Accordion_Expanded" xml:space="preserve">
     <value>Раскрыт по умолчанию и двусторонняя привязка</value>
   </data>
+  <data name="Accordion_Fill" xml:space="preserve">
+    <value>Заполнение высоты</value>
+  </data>
   <data name="AccordionDemo_Q1" xml:space="preserve">
     <value>Что такое Flare?</value>
   </data>
