@@ -1,5 +1,13 @@
 .flare-btn--full { display: flex; width: 100%; }
 
+/* A labelled standalone button follows the theme's minimum width. Icon-only buttons and the buttons
+   inside composite controls keep their own width rules. */
+.flare-btn--labelled { min-width: var(--flare-btn-min-width); }
+.flare-btn-group .flare-btn--labelled,
+.flare-split-btn .flare-btn--labelled,
+.flare-toolbar .flare-btn--labelled,
+.flare-chart .flare-btn--labelled { min-width: 0; }
+
 .flare-btn {
     display: inline-flex;
     align-items: center;

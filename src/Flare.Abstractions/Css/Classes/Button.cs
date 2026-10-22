@@ -41,6 +41,8 @@ public static class Button
     public const string Loading = "flare-btn--loading";
     /// <summary>The <c>flare-btn--icon-only</c> CSS class.</summary>
     public const string IconOnly = "flare-btn--icon-only";
+    /// <summary>The <c>flare-btn--labelled</c> CSS class: a standalone button with text, which takes the themed minimum width.</summary>
+    public const string Labelled = "flare-btn--labelled";
     /// <summary>The <c>flare-btn__label</c> CSS class.</summary>
     public const string Label = "flare-btn__label";
     /// <summary>The <c>flare-btn__spinner</c> CSS class.</summary>

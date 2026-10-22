@@ -4,6 +4,24 @@ namespace Flare.Components.Tests;
 
 public class FlareButtonTests : FlareTestContext
 {
+    // The themed minimum width belongs to a button with words; an icon-only button is sized by its
+    // height, and the composite controls that compose buttons keep their own width rules.
+    [Fact]
+    public void LabelledButton_TakesTheMinimumWidthClass()
+    {
+        var cut = Render<FlareButton>(p => p.AddChildContent("Save"));
+
+        Assert.Contains(Css.Classes.Button.Labelled, cut.Find("button").ClassName);
+    }
+
+    [Fact]
+    public void IconOnlyButton_DoesNotTakeTheMinimumWidthClass()
+    {
+        var cut = Render<FlareButton>(p => p.Add(x => x.LeadingIcon, builder => builder.AddMarkupContent(0, "<span></span>")));
+
+        Assert.DoesNotContain(Css.Classes.Button.Labelled, cut.Find("button").ClassName);
+    }
+
     [Fact]
     public void Renders_WithDefaultVariant_FilledCssClass()
     {

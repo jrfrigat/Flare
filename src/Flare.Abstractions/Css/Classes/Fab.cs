@@ -14,6 +14,8 @@ public static class Fab
     public const string SizeLg = "flare-fab--lg";
     /// <summary>The <c>flare-fab--surface</c> CSS class.</summary>
     public const string Surface = "flare-fab--surface";
+    /// <summary>The <c>flare-fab--extended</c> CSS class: a FAB carrying a label.</summary>
+    public const string Extended = "flare-fab--extended";
     /// <summary>The <c>flare-fab__icon</c> CSS class.</summary>
     public const string Icon = "flare-fab__icon";
     /// <summary>The <c>flare-fab__label</c> CSS class.</summary>

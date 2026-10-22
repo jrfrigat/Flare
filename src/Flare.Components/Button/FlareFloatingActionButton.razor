@@ -244,7 +244,7 @@ else
     private RenderFragment RenderFab(bool isTrigger) => __builder =>
     {
         <button @ref="_element"
-                class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
+                class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, string.IsNullOrEmpty(Label) ? null : Css.Classes.Fab.Extended, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
                 style="@CombineStyle(isTrigger ? null : Style)"
                 id="@(isTrigger ? TriggerId : null)"
                 aria-label="@AriaLabel"

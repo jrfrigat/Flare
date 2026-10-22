@@ -218,6 +218,8 @@ internal static class MaterialDesign2Tokens
         // and the message box's). A pill here made those two the only capsule buttons in a theme
         // whose every other button is a 4dp rectangle.
         ContainerRadius = "var(--flare-shape-extra-small)",
+        // Redline: every contained/outlined/text button is at least 64dp wide.
+        MinWidth = "var(--flare-spacing-32)",
         // 8dp at M, not the 16dp the container variants take: the text button trades its container
         // for tighter padding (spec redline "Text button"). Half the contained ladder throughout.
         TextPaddingInlineXs = "0.25rem",
@@ -402,6 +404,9 @@ internal static class MaterialDesign2Tokens
         IconSizeSm = "1.5rem",
         IconSizeMd = "1.5rem",
         IconSizeLg = "1.5rem",
+        // Extended FAB redline: 12dp block and 20dp inline padding, so 12 + 24 + 12 = 48dp tall.
+        ExtendedPaddingBlock = "var(--flare-spacing-6)",
+        ExtendedPaddingInline = "var(--flare-spacing-10)",
         PaddingLg = "1.75rem",
         RadiusSm = "9999px",
         RadiusMd = "9999px",

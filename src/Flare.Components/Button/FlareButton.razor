@@ -44,7 +44,7 @@
 {
     @* Link button: rendered as <a>. Disabled/Loading removes href and marks aria-disabled. *@
     <a @ref="_element"
-       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass, _selectedClass)"
+       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _labelledClass, _fullWidthClass, _selectedClass)"
        style="@_buttonStyle"
        href="@(Disabled || Loading ? null : Href)"
        target="@Target"
@@ -62,7 +62,7 @@
 else
 {
     <button @ref="_element"
-            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass, _selectedClass)"
+            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _labelledClass, _fullWidthClass, _selectedClass)"
             style="@_buttonStyle"
             disabled="@(Disabled || Loading)"
             type="@_type"
@@ -220,6 +220,12 @@ else
         && (LeadingIcon is not null || TrailingIcon is not null);
 
     private string _iconOnlyClass => _iconOnly ? Css.Classes.Button.IconOnly : string.Empty;
+
+    // A standalone button with words follows the theme's minimum width. Icon-only buttons do not, and
+    // the composite controls that compose a button keep their own width rules.
+    private string _labelledClass => !_iconOnly && (ChildContent is not null || !string.IsNullOrEmpty(LoadingText))
+        ? Css.Classes.Button.Labelled
+        : string.Empty;
 
     private string _fullWidthClass => FullWidth ? Css.Classes.Button.Full : string.Empty;
 }

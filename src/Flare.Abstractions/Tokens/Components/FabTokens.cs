@@ -25,6 +25,12 @@ public sealed record FabTokens
     /// <summary>Space between the icon and the label on an extended FAB.</summary>
     [CssVar(Fab.Gap)] public string Gap { get; init; } = Var(Css.Tokens.Spacing.S6);
 
+    /// <summary>Space above and below an extended FAB's content. With the icon it sets the extended
+    /// height, which is why a theme whose redline states a different height moves this step.</summary>
+    [CssVar(Fab.ExtendedPaddingBlock)] public string ExtendedPaddingBlock { get; init; } = Var(Css.Tokens.Spacing.S8);
+    /// <summary>Space between an extended FAB's side edges and its icon/label.</summary>
+    [CssVar(Fab.ExtendedPaddingInline)] public string ExtendedPaddingInline { get; init; } = Var(Css.Tokens.Spacing.S8);
+
     /// <summary>Shadow that lifts the FAB above the content it floats over.</summary>
     [CssVar(Fab.Shadow)] public string Shadow { get; init; } = Var(Css.Tokens.Elevation.Level3);
     /// <summary>Shadow the FAB lifts to on hover. A theme with a flat FAB matches it to

@@ -16,6 +16,11 @@ All notable changes to Flare are documented here. This project adheres to
 
 - A virtualized `FlareGantt` follows a scrolling ancestor outside its own scroll box, including nested containers, instead of keeping a stale row window.
 
+### Changed
+
+- A `FlareButton` with a text label takes a themed minimum width from `ButtonTokens.MinWidth`; icon-only buttons and the buttons inside composite controls are exempt, and Material Design 2 sets the redline 64px.
+- An extended `FlareFloatingActionButton` with a label takes its own block and inline padding from `FabTokens`, so Material Design 2 draws it 48px tall instead of deriving 56px from the circular FAB's padding.
+
 ## [0.49.0] - 2026-10-21
 
 ### Added

@@ -27,6 +27,10 @@ public static class Fab
 
     /// <summary>CSS custom-property name for the gap token.</summary>
     public const string Gap = "--flare-fab-gap";
+    /// <summary>CSS custom-property name for the extended FAB's block padding.</summary>
+    public const string ExtendedPaddingBlock = "--flare-fab-extended-padding-block";
+    /// <summary>CSS custom-property name for the extended FAB's inline padding.</summary>
+    public const string ExtendedPaddingInline = "--flare-fab-extended-padding-inline";
     /// <summary>CSS custom-property name for the shadow token.</summary>
     public const string Shadow = "--flare-fab-shadow";
     /// <summary>CSS custom-property name for the hover shadow token.</summary>

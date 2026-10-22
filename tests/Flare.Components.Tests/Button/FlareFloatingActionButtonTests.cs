@@ -14,6 +14,22 @@ public class FlareFloatingActionButtonTests : FlareTestContext
     }
 
     [Fact]
+    public void LabelledFab_IsExtended()
+    {
+        var cut = Render<FlareFloatingActionButton>(p => p.Add(x => x.Label, "Create"));
+
+        Assert.Contains(Css.Classes.Fab.Extended, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
+    }
+
+    [Fact]
+    public void UnlabelledFab_IsNotExtended()
+    {
+        var cut = Render<FlareFloatingActionButton>();
+
+        Assert.DoesNotContain(Css.Classes.Fab.Extended, cut.Find($".{Css.Classes.Fab.Root}").ClassName);
+    }
+
+    [Fact]
     public void RendersSmall()
     {
         var cut = Render<FlareFloatingActionButton>(p => p

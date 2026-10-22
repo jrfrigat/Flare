@@ -16,6 +16,10 @@ public sealed record ButtonTokens
     [CssVar(Button.LoadingOpacity)] public required string LoadingOpacity { get; init; }
     /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
     [CssVar(Button.ContainerRadius)] public string ContainerRadius { get; init; } = Var(Css.Tokens.Shape.Full);
+    /// <summary>Minimum inline size of a labelled standalone button. Icon-only buttons and the buttons
+    /// inside composite controls are exempt, so the value never squeezes a pagination digit or a group
+    /// segment. The default leaves the button content-sized; a theme with a redline minimum sets it.</summary>
+    [CssVar(Button.MinWidth)] public string MinWidth { get; init; } = Var(Css.Tokens.Spacing.S0);
     // A text button has no container to sit inside, so a language usually hugs its label more tightly
     // than the contained variants do. It is a ladder rather than one value for the same reason
     // PaddingInline is: the tightening that reads right beside a small label is cramped beside a

@@ -50,6 +50,13 @@
     border-radius: var(--flare-fab-radius-lg);
 }
 
+/* An extended FAB takes its own padding: with the icon it sets the height the language's redline
+   states, independently of the circular step the size class chose. Placed after the size classes so
+   it wins without a more specific selector. */
+.flare-fab--extended {
+    padding: var(--flare-fab-extended-padding-block) var(--flare-fab-extended-padding-inline);
+}
+
 /* Surface variant: used by the small action FABs inside a FAB menu. */
 .flare-fab--surface {
     --_flare-btn-container: var(--flare-color-surface-container-high);

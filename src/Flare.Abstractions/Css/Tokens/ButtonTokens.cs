@@ -9,6 +9,8 @@ public static class Button
     public const string LoadingOpacity = "--flare-btn-loading-opacity";
     /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
     public const string ContainerRadius = "--flare-btn-radius";
+    /// <summary>Minimum inline size of a labelled standalone button; icon-only and composite controls ignore it.</summary>
+    public const string MinWidth = "--flare-btn-min-width";
     /// <summary>Inline padding of a text button, per size. Separate from <see cref="PaddingInline"/>
     /// because a text button has no container to balance, so a language usually sets it tighter.</summary>
     public static class TextPaddingInline
