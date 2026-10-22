@@ -79,10 +79,10 @@
        painting its state layer over the label - see the note on .flare-btn__label.
     */
     .flare-btn--text {
-        --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
-        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
+        --flare-state-hover-layer: var(--flare-fluent-subtle-hover);
+        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed);
         --flare-state-focus-layer: transparent;
-        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover);
     }
 
     /* Outlined: Fluent keeps the fill transparent and darkens only the stroke. A fill token cannot
@@ -92,8 +92,8 @@
         --flare-state-hover-layer: transparent;
         --flare-state-pressed-layer: transparent;
     }
-    .flare-btn--outlined:hover  { border-color: var(--flare-fluent-stroke-hover, #C7C7C7); }
-    .flare-btn--outlined:active { border-color: var(--flare-fluent-stroke-pressed, #B3B3B3); }
+    .flare-btn--outlined:hover  { border-color: var(--flare-fluent-stroke-hover); }
+    .flare-btn--outlined:active { border-color: var(--flare-fluent-stroke-pressed); }
 
     /* Disabled: Fluent's flat palette (colorNeutralBackgroundDisabled / ForegroundDisabled / StrokeDisabled)
        rather than a faded copy of the enabled look is entirely ButtonTokens now - DisabledOpacity 1 and a

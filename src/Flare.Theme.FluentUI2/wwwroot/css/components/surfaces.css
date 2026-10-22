@@ -11,9 +11,9 @@
        Focus keeps the theme's default layer, which is what it renders today; the pairing token settles
        focus-while-hovered as the hover fill, since focus here is carried by the item's own ring. */
     .flare-menu-item {
-        --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
-        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
-        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+        --flare-state-hover-layer: var(--flare-fluent-subtle-hover);
+        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed);
+        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover);
     }
 
     /* List rows and expandable headers carry a state layer now, so they take the discrete neutral fill
@@ -34,9 +34,9 @@
     .flare-datagrid__column-picker-item,
     .flare-datagrid__filter-trigger,
     .flare-datagrid__filter-menu-list > .flare-checkbox {
-        --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
-        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
-        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+        --flare-state-hover-layer: var(--flare-fluent-subtle-hover);
+        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed);
+        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover);
     }
 
     /* Staying opaque is a token for every one of these now, so all that is left here is the repaint -

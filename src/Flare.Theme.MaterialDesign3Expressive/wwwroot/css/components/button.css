@@ -49,6 +49,10 @@
        The values are per size (`md.comp.button.<size>.pressed.container.shape`) and apply to the round
        and square shapes alike, which the spec says in as many words: "Both round and square buttons
        should have the same pressed shape."
+
+       Deliberate literals, not an omission: the pressed shape is a per-size table of the specification,
+       not a step on Flare's Shape scale (Shape.Small, Shape.Medium and so on describe a resting corner).
+       There is no shared role to point at, and this theme is the only one that morphs on press.
        ====================================================================== */
     .flare-btn--xs:active { border-radius: 0.5rem; }   /* 8dp */
     .flare-btn--sm:active { border-radius: 0.5rem; }   /* 8dp */
