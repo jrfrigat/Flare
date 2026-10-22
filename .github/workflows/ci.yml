@@ -46,7 +46,9 @@ jobs:
         run: dotnet build Flare.slnx -c Release --no-restore
 
       # Both bin and obj travel: --no-build in a test job still evaluates the project and reads the
-      # generated props, targets and project.assets.json under obj/Release.
+      # generated props, targets and project.assets.json under obj/Release. The stylesheet bundles are
+      # generated into the SOURCE tree (not bin/), and ThemeStylesheetBundleTests reads them from there,
+      # so they travel too - without them the downloaded tree is not what the build produced.
       - name: Upload build
         uses: actions/upload-artifact@v7
         with:
@@ -54,6 +56,8 @@ jobs:
           path: |
             **/bin/Release/**
             **/obj/Release/**
+            src/Flare.Theme.*/wwwroot/css/components.css
+            src/Flare.Components/wwwroot/css/flare-components.css
           if-no-files-found: error
           retention-days: 1
 
