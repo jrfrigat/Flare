@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Query_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Query_Columns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Query_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Query_GroupFilter" xml:space="preserve"><value>Filter groups</value></data>
+  <data name="Query_Options" xml:space="preserve"><value>Options</value></data>
+  <data name="Query_Problems" xml:space="preserve"><value>Problems</value></data>
+  <data name="Query_AddJoin" xml:space="preserve"><value>Add join</value></data>
+  <data name="Query_AddColumn" xml:space="preserve"><value>Add column</value></data>
+  <data name="Query_Submit" xml:space="preserve"><value>Run</value></data>
+  <data name="Query_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Query_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="Query_Aggregate" xml:space="preserve"><value>Aggregate</value></data>
+  <data name="Query_Period" xml:space="preserve"><value>Period</value></data>
+  <data name="Query_OutputName" xml:space="preserve"><value>Name</value></data>
+  <data name="Query_Group" xml:space="preserve"><value>Group</value></data>
+  <data name="Query_Sort" xml:space="preserve"><value>Sort</value></data>
+  <data name="Query_Alias" xml:space="preserve"><value>Alias</value></data>
+  <data name="Query_Relation" xml:space="preserve"><value>Relation</value></data>
+  <data name="Query_JoinKind" xml:space="preserve"><value>Join</value></data>
+  <data name="Query_Distinct" xml:space="preserve"><value>Distinct</value></data>
+  <data name="Query_Limit" xml:space="preserve"><value>Limit</value></data>
+  <data name="Query_Offset" xml:space="preserve"><value>Offset</value></data>
+  <data name="Query_None" xml:space="preserve"><value>None</value></data>
+  <data name="Query_NoProblems" xml:space="preserve"><value>The query is valid.</value></data>
+  <data name="Query_AddCondition" xml:space="preserve"><value>Condition</value></data>
+  <data name="Query_AddGroup" xml:space="preserve"><value>Group</value></data>
+  <data name="Query_ValueHint" xml:space="preserve"><value>Value</value></data>
+  <data name="Query_ValuesHint" xml:space="preserve"><value>a, b, c</value></data>
+  <data name="Query_Relative" xml:space="preserve"><value>Relative</value></data>
+  <data name="Query_Ascending" xml:space="preserve"><value>Ascending</value></data>
+  <data name="Query_Descending" xml:space="preserve"><value>Descending</value></data>
+  <data name="Query_SchemaMissing" xml:space="preserve"><value>A schema is required.</value></data>
+</root>

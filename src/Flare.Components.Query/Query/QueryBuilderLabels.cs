@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Resources;
+
 namespace Flare.Components;
 
 /// <summary>
@@ -7,8 +10,61 @@ namespace Flare.Components;
 /// </summary>
 public sealed record QueryBuilderLabels
 {
-    /// <summary>The set used when a host supplies none.</summary>
-    public static QueryBuilderLabels Default { get; } = new();
+    // The connectors belong to the query language, not to the interface: a translated designer still
+    // writes the same AND/OR tokens into the spec, so no resource holds them.
+    private const string AndToken = "AND";
+    private const string OrToken = "OR";
+
+    private static readonly ResourceManager Resources =
+        new("Flare.Components.Resources.QueryStrings", typeof(QueryBuilderLabels).Assembly);
+
+    /// <summary>The set used when a host supplies none, worded in the current UI culture.</summary>
+    public static QueryBuilderLabels Default => For(CultureInfo.CurrentUICulture);
+
+    /// <summary>
+    /// Every caption from the package's resources in <paramref name="culture"/>. The AND and OR
+    /// connectors are syntax tokens and stay the same in every culture.
+    /// </summary>
+    public static QueryBuilderLabels For(CultureInfo culture) => new()
+    {
+        Source = Text("Query_Source", culture),
+        Columns = Text("Query_Columns", culture),
+        Filter = Text("Query_Filter", culture),
+        GroupFilter = Text("Query_GroupFilter", culture),
+        Options = Text("Query_Options", culture),
+        Problems = Text("Query_Problems", culture),
+        AddJoin = Text("Query_AddJoin", culture),
+        AddColumn = Text("Query_AddColumn", culture),
+        Submit = Text("Query_Submit", culture),
+        Remove = Text("Query_Remove", culture),
+        Value = Text("Query_Value", culture),
+        Aggregate = Text("Query_Aggregate", culture),
+        Period = Text("Query_Period", culture),
+        OutputName = Text("Query_OutputName", culture),
+        Group = Text("Query_Group", culture),
+        Sort = Text("Query_Sort", culture),
+        Alias = Text("Query_Alias", culture),
+        Relation = Text("Query_Relation", culture),
+        JoinKind = Text("Query_JoinKind", culture),
+        Distinct = Text("Query_Distinct", culture),
+        Limit = Text("Query_Limit", culture),
+        Offset = Text("Query_Offset", culture),
+        None = Text("Query_None", culture),
+        NoProblems = Text("Query_NoProblems", culture),
+        And = AndToken,
+        Or = OrToken,
+        AddCondition = Text("Query_AddCondition", culture),
+        AddGroup = Text("Query_AddGroup", culture),
+        ValueHint = Text("Query_ValueHint", culture),
+        ValuesHint = Text("Query_ValuesHint", culture),
+        Relative = Text("Query_Relative", culture),
+        Ascending = Text("Query_Ascending", culture),
+        Descending = Text("Query_Descending", culture),
+        SchemaMissing = Text("Query_SchemaMissing", culture),
+    };
+
+    private static string Text(string key, CultureInfo culture) =>
+        Resources.GetString(key, culture) ?? key;
 
     /// <summary>Heading of the section choosing what the query draws from.</summary>
     public string Source { get; init; } = "Source";
@@ -82,11 +138,11 @@ public sealed record QueryBuilderLabels
     /// <summary>Text shown when the query has no problems.</summary>
     public string NoProblems { get; init; } = "The query is valid.";
 
-    /// <summary>Caption for the AND connector in the condition tree.</summary>
-    public string And { get; init; } = "AND";
+    /// <summary>The AND connector in the condition tree. A query-language token, not a translated caption.</summary>
+    public string And { get; init; } = AndToken;
 
-    /// <summary>Caption for the OR connector in the condition tree.</summary>
-    public string Or { get; init; } = "OR";
+    /// <summary>The OR connector in the condition tree. A query-language token, not a translated caption.</summary>
+    public string Or { get; init; } = OrToken;
 
     /// <summary>Caption of the button adding a condition.</summary>
     public string AddCondition { get; init; } = "Condition";

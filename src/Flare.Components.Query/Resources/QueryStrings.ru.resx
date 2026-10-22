@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Query_Source" xml:space="preserve"><value>Источник</value></data>
+  <data name="Query_Columns" xml:space="preserve"><value>Колонки</value></data>
+  <data name="Query_Filter" xml:space="preserve"><value>Фильтр</value></data>
+  <data name="Query_GroupFilter" xml:space="preserve"><value>Группы фильтра</value></data>
+  <data name="Query_Options" xml:space="preserve"><value>Параметры</value></data>
+  <data name="Query_Problems" xml:space="preserve"><value>Проблемы</value></data>
+  <data name="Query_AddJoin" xml:space="preserve"><value>Добавить соединение</value></data>
+  <data name="Query_AddColumn" xml:space="preserve"><value>Добавить колонку</value></data>
+  <data name="Query_Submit" xml:space="preserve"><value>Выполнить</value></data>
+  <data name="Query_Remove" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Query_Value" xml:space="preserve"><value>Значение</value></data>
+  <data name="Query_Aggregate" xml:space="preserve"><value>Агрегат</value></data>
+  <data name="Query_Period" xml:space="preserve"><value>Период</value></data>
+  <data name="Query_OutputName" xml:space="preserve"><value>Имя</value></data>
+  <data name="Query_Group" xml:space="preserve"><value>Группировка</value></data>
+  <data name="Query_Sort" xml:space="preserve"><value>Сортировка</value></data>
+  <data name="Query_Alias" xml:space="preserve"><value>Псевдоним</value></data>
+  <data name="Query_Relation" xml:space="preserve"><value>Связь</value></data>
+  <data name="Query_JoinKind" xml:space="preserve"><value>Соединение</value></data>
+  <data name="Query_Distinct" xml:space="preserve"><value>Без повторов</value></data>
+  <data name="Query_Limit" xml:space="preserve"><value>Лимит</value></data>
+  <data name="Query_Offset" xml:space="preserve"><value>Смещение</value></data>
+  <data name="Query_None" xml:space="preserve"><value>Нет</value></data>
+  <data name="Query_NoProblems" xml:space="preserve"><value>Запрос корректен.</value></data>
+  <data name="Query_AddCondition" xml:space="preserve"><value>Условие</value></data>
+  <data name="Query_AddGroup" xml:space="preserve"><value>Группа</value></data>
+  <data name="Query_ValueHint" xml:space="preserve"><value>Значение</value></data>
+  <data name="Query_ValuesHint" xml:space="preserve"><value>a, b, c</value></data>
+  <data name="Query_Relative" xml:space="preserve"><value>Относительно</value></data>
+  <data name="Query_Ascending" xml:space="preserve"><value>По возрастанию</value></data>
+  <data name="Query_Descending" xml:space="preserve"><value>По убыванию</value></data>
+  <data name="Query_SchemaMissing" xml:space="preserve"><value>Требуется схема.</value></data>
+</root>

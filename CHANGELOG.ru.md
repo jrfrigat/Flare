@@ -9,6 +9,7 @@
 ### Изменено
 
 - `FlareCheckbox.Value` имеет тип `TValue`, а `ValueChanged` - `EventCallback<TValue>` вместо nullable-типов, поэтому двухсостоянийный флажок больше не читается в справочнике API как nullable; обработчик теперь явно называет `bool` или `bool?`.
+- Подписи конструктора запросов берутся из английских и русских ресурсов пакета и следуют текущей культуре UI через `QueryBuilderLabels.Default` и новый `QueryBuilderLabels.For(culture)`, а связки AND и OR остаются токенами языка запросов.
 
 ## [0.49.0] - 2026-10-21
 
