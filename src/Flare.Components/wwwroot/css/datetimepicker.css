@@ -95,6 +95,17 @@
   border-width: var(--flare-border-width-emphasis);
 }
 
+/* List time pane: the shared option list without the dropdown card around it. It keeps the listbox's own
+   max-height and scrolling, so the numbers come from the same place as every other list in the library. */
+.flare-datetimepicker__time-list {
+  min-width: var(--flare-datetimepicker-time-input-width);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  animation: none;
+}
+
 /* Footer layout is shared with DatePicker (datepicker.css); only the top margin is datetimepicker-specific. */
 .flare-datetimepicker__footer { margin-top: var(--flare-spacing-6); }
 

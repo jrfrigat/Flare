@@ -156,6 +156,9 @@ public static class DateTimePicker
     public const string Time = "flare-datetimepicker__time";
     /// <summary>The <c>flare-datetimepicker__time-input</c> CSS class.</summary>
     public const string TimeInput = "flare-datetimepicker__time-input";
+    /// <summary>The <c>flare-datetimepicker__time-list</c> CSS class: the shared option list drawn as the
+    /// Time pane rather than as a dropdown.</summary>
+    public const string TimeList = "flare-datetimepicker__time-list";
     /// <summary>The <c>flare-datetimepicker__footer</c> CSS class.</summary>
     public const string Footer = "flare-datetimepicker__footer";
     // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled.

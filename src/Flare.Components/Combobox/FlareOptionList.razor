@@ -16,6 +16,7 @@
      role="listbox"
      aria-multiselectable="@(Multiselectable ? "true" : null)"
      aria-labelledby="@AriaLabelledBy"
+     @attributes="AdditionalAttributes"
      @onmousedown:preventDefault="PreventMouseDownDefault">
     @HeaderContent
     @{ _optionCount = CountOptions(Rows); }

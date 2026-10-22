@@ -12,7 +12,7 @@ Visual style of the FlareTimePicker popup.
 | --- | --- | --- |
 | `Dial` | `0` | Analog clock dial, 12-hour with AM/PM or 24-hour with two rings: pick the hour, then the minute, by pointer or by typing digits. A button in the dialog switches to keyboard entry (an hour and a minute text field), see FlareTimePicker.ShowKeyboardToggle. |
 | `Dropdown` | `1` | Scrollable hour, minute and (with seconds) second columns, offered by every theme. |
-| `List` | `2` | A single list of times under the field, as in a combobox (the time picker of combobox-based design systems): the field keeps focus, the arrow keys move through the list and Enter picks a time. The list runs from Min to Max every MinuteStep minutes, so set a step such as 15 or 30 - the default of 1 lists all 1440 minutes. FlareDateTimePicker shows its number fields for this value, as for Dropdown. |
+| `List` | `2` | A single list of times under the field, as in a combobox (the time picker of combobox-based design systems): the field keeps focus, the arrow keys move through the list and Enter picks a time. The list runs from Min to Max every MinuteStep minutes, so set a step such as 15 or 30 - the default of 1 lists all 1440 minutes. FlareDateTimePicker draws the same list in its time pane, where a picked time edits the draft and OK commits it. |
 
 ## Used by components
 

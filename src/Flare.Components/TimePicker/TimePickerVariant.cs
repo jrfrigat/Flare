@@ -12,6 +12,7 @@ public enum TimePickerVariant
     /// <summary>A single list of times under the field, as in a combobox (the time picker of combobox-based design systems): the field
     /// keeps focus, the arrow keys move through the list and Enter picks a time. The list runs from Min to Max
     /// every <c>MinuteStep</c> minutes, so set a step such as 15 or 30 - the default of 1 lists all 1440 minutes.
-    /// <c>FlareDateTimePicker</c> shows its number fields for this value, as for <see cref="Dropdown"/>.</summary>
+    /// <c>FlareDateTimePicker</c> draws the same list in its time pane, where a picked time edits the draft and OK
+    /// commits it.</summary>
     List,
 }

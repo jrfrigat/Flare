@@ -139,6 +139,21 @@
                             Minute="_minute" MinuteChanged="m => _minute = m"
                             Is24Hour="_is24Hour" Culture="_culture" />
         }
+        else if (TimeVariant == TimePickerVariant.List)
+        {
+            @* The same option list the standalone time picker uses, drawn as a pane rather than a dropdown:
+               the shared listbox styles do the rows, and the host handles the keys because focus lives on
+               the listbox itself. *@
+            <FlareOptionList TItem="TimeOnly" Id="@TimeListId" Rows="TimeRows"
+                             HighlightedIndex="TimeActive" IsSelected="IsListTimeSelected"
+                             Label="ListTimeLabel" ShowCheck="true" Virtualize="true"
+                             OnSelect="SelectListTime"
+                             Class="@Css.Classes.DateTimePicker.TimeList"
+                             tabindex="0"
+                             aria-label="@FlareStrings.TimePicker_FieldLabel"
+                             aria-activedescendant="@TimeListActiveId"
+                             @onkeydown="HandleTimeListKeyDown" />
+        }
         else
         {
             <div class="@Css.Classes.DateTimePicker.Time">
