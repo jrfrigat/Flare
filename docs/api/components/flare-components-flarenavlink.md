@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Active` | `bool` | `false` | Parameter |  | Forces the active state regardless of current route. |
+| `BadgeColor` | `FlareColor` | `` | Parameter |  | Color of the badge. The default Error keeps the notification look; a role, custom or dynamic color recolors the badge and its text together. |
 | `BadgeContent` | `RenderFragment?` | `` | Parameter |  | Badge content rendered at the trailing edge. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Link label content. |
 | `Disabled` | `bool` | `false` | Parameter |  | Prevents navigation and interaction when true. |

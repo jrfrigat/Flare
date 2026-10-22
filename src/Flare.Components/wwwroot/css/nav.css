@@ -197,8 +197,8 @@
 /* __icon layout is shared with .flare-nav-group__icon above. */
 .flare-nav-link__text { flex: 1; min-width: 0; }
 .flare-nav-link__badge {
-  background: var(--flare-color-error);
-  color: var(--flare-color-on-error);
+  background: var(--fc-main, var(--flare-color-error));
+  color: var(--fc-on, var(--flare-color-on-error));
   border-radius: var(--flare-shape-full);
   font-size: 0.75rem;
   font-weight: var(--flare-nav-badge-weight);

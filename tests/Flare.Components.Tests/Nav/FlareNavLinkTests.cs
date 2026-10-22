@@ -122,4 +122,44 @@ public class FlareNavLinkTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Navigation.NavLinkIcon}"));
     }
+
+    [Fact]
+    public void Badge_DefaultColorKeepsTheErrorRole()
+    {
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Href, "/inbox")
+            .Add(x => x.BadgeContent, (RenderFragment)(b => b.AddContent(0, "3")))
+            .AddChildContent("Inbox"));
+
+        var badge = cut.Find($".{Css.Classes.Navigation.NavLinkBadge}");
+        Assert.Contains("flare-color-error", badge.ClassName);
+        Assert.Null(badge.GetAttribute("style"));
+    }
+
+    [Fact]
+    public void Badge_RoleColorAddsTheSharedColorClass()
+    {
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Href, "/inbox")
+            .Add(x => x.BadgeColor, FlareColor.Primary)
+            .Add(x => x.BadgeContent, (RenderFragment)(b => b.AddContent(0, "3")))
+            .AddChildContent("Inbox"));
+
+        var badge = cut.Find($".{Css.Classes.Navigation.NavLinkBadge}");
+        Assert.Contains("flare-color-primary", badge.ClassName);
+    }
+
+    [Fact]
+    public void Badge_CustomColorPublishesTheLocalPair()
+    {
+        var cut = Render<FlareNavLink>(p => p
+            .Add(x => x.Href, "/inbox")
+            .Add(x => x.BadgeColor, FlareColor.Custom("#123456"))
+            .Add(x => x.BadgeContent, (RenderFragment)(b => b.AddContent(0, "3")))
+            .AddChildContent("Inbox"));
+
+        var style = cut.Find($".{Css.Classes.Navigation.NavLinkBadge}").GetAttribute("style");
+        Assert.Contains("--fc-main:#123456", style);
+        Assert.Contains("--fc-on:", style);
+    }
 }

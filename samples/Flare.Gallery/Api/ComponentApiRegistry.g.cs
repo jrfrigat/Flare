@@ -4896,6 +4896,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Active", @"bool", @"false", @"Forces the active state regardless of current route.", null, false, false, false, @"FlareNavLink"),
+                new ApiParameterInfo(@"BadgeColor", @"FlareColor", null, @"Color of the badge. The default Error keeps the notification look; a role, custom or dynamic color recolors the badge and its text together.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"BadgeContent", @"RenderFragment?", null, @"Badge content rendered at the trailing edge.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Link label content.", null, false, false, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents navigation and interaction when true.", null, false, false, false, @"FlareNavLink"),

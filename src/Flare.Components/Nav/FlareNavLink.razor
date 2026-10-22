@@ -20,7 +20,7 @@
     <span class="@Css.Classes.Navigation.NavLinkText">@ChildContent</span>
     @if (BadgeContent is not null)
     {
-        <span class="@Css.Classes.Navigation.NavLinkBadge">@BadgeContent</span>
+        <span class="@Css.Classes.Navigation.NavLinkBadge @BadgeColor.CssClass" style="@BadgeColor.StyleMainOn()">@BadgeContent</span>
     }
 </a>
 
@@ -37,6 +37,9 @@
     [Parameter] public string? Tooltip { get; set; }
     /// <summary>Badge content rendered at the trailing edge.</summary>
     [Parameter] public RenderFragment? BadgeContent { get; set; }
+    /// <summary>Color of the badge. The default <see cref="FlareColor.Error"/> keeps the notification
+    /// look; a role, custom or dynamic color recolors the badge and its text together.</summary>
+    [Parameter] public FlareColor BadgeColor { get; set; } = FlareColor.Error;
     /// <summary>Route matching strategy - prefix or exact.</summary>
     [Parameter] public NavMatchMode Match { get; set; } = NavMatchMode.Prefix;
     /// <summary>Forces the active state regardless of current route.</summary>
