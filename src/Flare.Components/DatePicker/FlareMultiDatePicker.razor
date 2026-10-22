@@ -59,14 +59,8 @@
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@_views.HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
-            <div class="@Css.Classes.DatePicker.Header">
-                @PickerButtons.Icon(this, _views.Prev, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !_views.CanPrev)
-                <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
-                        type="button" aria-live="polite" title="@_views.SwitchHint" @onclick="_views.Cycle" @onclick:stopPropagation>
-                    @_views.HeaderLabel
-                </button>
-                @PickerButtons.Icon(this, _views.Next, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !_views.CanNext)
-            </div>
+            @PickerButtons.Header(this, _views.HeaderLabel, _views.SwitchHint, _views.Prev, _views.Next, _views.Cycle,
+                !(Disabled || !_views.CanPrev), !(Disabled || !_views.CanNext))
 
             @if (_views.View == PickerView.Day)
             {

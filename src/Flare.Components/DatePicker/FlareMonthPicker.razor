@@ -61,14 +61,8 @@
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
-            <div class="@Css.Classes.DatePicker.Header">
-                @PickerButtons.Icon(this, PrevPage, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !CanPrev)
-                <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
-                        type="button" aria-live="polite" title="@ViewSwitchHint" @onclick="SwitchView" @onclick:stopPropagation>
-                    @HeaderLabel
-                </button>
-                @PickerButtons.Icon(this, NextPage, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !CanNext)
-            </div>
+            @PickerButtons.Header(this, HeaderLabel, ViewSwitchHint, PrevPage, NextPage, SwitchView,
+                !(Disabled || !CanPrev), !(Disabled || !CanNext))
 
             <FlareMonthYearGrid @ref="_grid" View="_view" Year="_viewYear"
                                 SelectedMonth="@(_selected is { } s && s.Year == _viewYear ? s.Month : null)"

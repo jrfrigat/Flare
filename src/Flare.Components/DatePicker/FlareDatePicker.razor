@@ -65,14 +65,8 @@
              style="@(!_open && !Inline ? "display:none" : null)"
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
-            <div class="@Css.Classes.DatePicker.Header">
-                @PickerButtons.Icon(this, PrevView, FlareStrings.Picker_Previous, FlareIcons.ChevronLeft, Disabled || !CanPrev)
-                <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
-                        type="button" aria-live="polite" title="@ViewSwitchHint" @ref="_viewHeaderEl" @onclick="CycleCalendarView" @onclick:stopPropagation>
-                    @HeaderLabel
-                </button>
-                @PickerButtons.Icon(this, NextView, FlareStrings.Picker_Next, FlareIcons.ChevronRight, Disabled || !CanNext)
-            </div>
+            @PickerButtons.Header(this, HeaderLabel, ViewSwitchHint, PrevView, NextView, CycleCalendarView,
+                !(Disabled || !CanPrev), !(Disabled || !CanNext), r => _viewHeaderEl = r)
 
             @if (_calView == PickerView.Day)
             {
