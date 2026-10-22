@@ -7,7 +7,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record PickerTokens
 {
     /// <summary>Padding of a floating calendar panel; inline calendars keep their own flow spacing.</summary>
-    [CssVar(PickerField.CalendarPanelPadding)] public string CalendarPanelPadding { get; init; } = $"0 {Var(Css.Tokens.Spacing.S6)}";
+    [CssVar(PickerField.CalendarPanelPadding)] public string CalendarPanelPadding { get; init; } = $"{Var(Css.Tokens.Spacing.S0)} {Var(Css.Tokens.Spacing.S6)}";
     /// <summary>Gap below the month navigation header.</summary>
     [CssVar(PickerField.HeaderGap)] public required string HeaderGap { get; init; }
     /// <summary>Height of text actions in date and date-time picker footers.</summary>

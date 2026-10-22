@@ -15,8 +15,8 @@ public sealed record CardTokens
     /// <summary>Background color of the filled card variant.</summary>
     [CssVar(CardField.FilledBg)] public string FilledBg { get; init; } = Var(Css.Tokens.Color.SurfaceContainerHighest);
 
-    /// <summary>Border of the filled card variant. Defaults to <c>none</c> (a borderless filled panel);
-    /// set it to draw a delineating border around filled cards (e.g. the dense gray "1C" look).</summary>
+    /// <summary>Border of the filled card variant. The theme sets it: <c>none</c> for a borderless filled
+    /// panel, or a border to delineate filled cards (e.g. the dense gray "1C" look).</summary>
     [CssVar(CardField.FilledBorder)] public required string FilledBorder { get; init; }
 
     /// <summary>Background color of the outlined card variant.</summary>

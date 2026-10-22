@@ -7,7 +7,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record PageHeaderTokens
 {
     /// <summary>Padding around the header, as a CSS <c>padding</c> value.</summary>
-    [CssVar(PageHeaderField.Padding)] public string Padding { get; init; } = $"{Var(Css.Tokens.Spacing.S16)} 0";
+    [CssVar(PageHeaderField.Padding)] public string Padding { get; init; } = $"{Var(Css.Tokens.Spacing.S16)} {Var(Css.Tokens.Spacing.S0)}";
 
     /// <summary>Space between the eyebrow, the title and the description.</summary>
     [CssVar(PageHeaderField.Gap)] public string Gap { get; init; } = Var(Css.Tokens.Spacing.S4);

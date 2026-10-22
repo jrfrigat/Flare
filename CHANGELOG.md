@@ -15,6 +15,7 @@ All notable changes to Flare are documented here. This project adheres to
 - An extended `FlareFloatingActionButton` with a label takes its own block and inline padding from `FabTokens`, so Material Design 2 draws it 48px tall instead of deriving 56px from the circular FAB's padding.
 - The tab strip's scroll arrow, close control, badge and primary-indicator inset take their sizes from `TabsTokens` instead of literals in the core stylesheet.
 - The Gantt's scale rows, tree toggle, drag handles and legend samples take their sizes from the spacing scale, and its hairline legend rules from the border token; the scale height and connector weight remain the chart's own geometry.
+- `ProgressTokens.TrackColor` defaults to the secondary container role, so a theme no longer has to set the unfilled track.
 
 ### Fixed
 

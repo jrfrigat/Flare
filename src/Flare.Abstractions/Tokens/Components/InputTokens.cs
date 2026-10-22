@@ -21,7 +21,7 @@ public sealed record InputTokens
     [CssVar(InputField.BorderColor)] public required string BorderColor { get; init; }
 
     /// <summary>Border radius of the control well (rounded-top for the filled variant).</summary>
-    [CssVar(InputField.OutlinedRadius)] public string OutlinedRadius { get; init; } = $"{Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.ExtraSmall)} 0 0";
+    [CssVar(InputField.OutlinedRadius)] public string OutlinedRadius { get; init; } = $"{Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.None)} {Var(Css.Tokens.Shape.None)}";
 
     /// <summary>Resting bottom-border colour (the filled variant's active indicator). Overrides
     /// <see cref="BorderColor"/> on the bottom edge only.</summary>
@@ -151,7 +151,7 @@ public sealed record InputTokens
     /// <summary>Bottom-border colour (the active indicator) of a filled field.</summary>
     [CssVar(InputField.Filled.BorderBottomColor)] public string FilledVariantBorderBottomColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
     /// <summary>Corner radius of a filled field.</summary>
-    [CssVar(InputField.Filled.Radius)] public string FilledVariantRadius { get; init; } = $"{Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.ExtraSmall)} 0 0";
+    [CssVar(InputField.Filled.Radius)] public string FilledVariantRadius { get; init; } = $"{Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.ExtraSmall)} {Var(Css.Tokens.Shape.None)} {Var(Css.Tokens.Shape.None)}";
     /// <summary>Focus indicator (<c>box-shadow</c>) of a filled field.</summary>
     [CssVar(InputField.Filled.FocusRing)] public required string FilledVariantFocusRing { get; init; }
     /// <summary>Border colour (all four sides) of a focused filled field.</summary>

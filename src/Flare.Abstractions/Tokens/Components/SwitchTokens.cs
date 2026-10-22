@@ -147,11 +147,11 @@ public sealed record SwitchTokens
     /// <summary>Focus state layer around the handle while the switch is on.</summary>
     [CssVar(SwitchField.FocusShadowOn)] public required string FocusShadowOn { get; init; }
 
-    /// <summary>Track background on off-hover (default: unchanged from the off track).</summary>
-    [CssVar(SwitchField.TrackHoverOffBg)] public required string TrackHoverOffBg { get; init; }
+    /// <summary>Track background on off-hover; defaults to the off track.</summary>
+    [CssVar(SwitchField.TrackHoverOffBg)] public string TrackHoverOffBg { get; init; } = Var(Css.Tokens.SwitchField.TrackOffBg);
 
-    /// <summary>Track background on on-hover (default: unchanged from the on track).</summary>
-    [CssVar(SwitchField.TrackHoverOnBg)] public required string TrackHoverOnBg { get; init; }
+    /// <summary>Track background on on-hover; defaults to the on track.</summary>
+    [CssVar(SwitchField.TrackHoverOnBg)] public string TrackHoverOnBg { get; init; } = Var(Css.Tokens.SwitchField.TrackOnBg);
 
     /// <summary>Off-state hover state-layer shadow (set to <c>none</c> to disable).</summary>
     [CssVar(SwitchField.HoverShadowOff)] public required string HoverShadowOff { get; init; }

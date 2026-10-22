@@ -27,7 +27,7 @@ public sealed record FileUploadTokens
     /// <summary>Resting height of the drop zone.</summary>
     [CssVar(FileUploadField.ZoneMinHeight)] public required string ZoneMinHeight { get; init; }
 
-    /// <summary>Corner radius of the drop zone.</summary>
+    /// <summary>Corner radius of the drop zone; defaults to the card radius so a zone matches a card beside it.</summary>
     [CssVar(FileUploadField.ZoneRadius)] public string ZoneRadius { get; init; } = Var(Css.Tokens.CardField.Radius);
 
     /// <summary>Size of the per-file glyph in the selected-files list.</summary>
