@@ -4729,6 +4729,8 @@
   <data name="ChartsDemo_SizingWide" xml:space="preserve"><value>Пропорции 1200 x 220: широкий график при любой ширине</value></data>
   <data name="ChartsDemo_SizingSquare" xml:space="preserve"><value>Пропорции 400 x 400: те же данные в квадрате</value></data>
   <data name="ChartsDemo_Sparkline" xml:space="preserve"><value>Выручка: заливка, сглаживание и маркеры</value></data>
+  <data name="ChartsDemo_SparklineThroughput" xml:space="preserve"><value>Пропускная способность</value></data>
+  <data name="ChartsDemo_SparklineLatency" xml:space="preserve"><value>Задержка p50</value></data>
   <data name="ChartsDemo_Spike" xml:space="preserve"><value>Добавить скачок</value></data>
   <data name="ChartsDemo_ClickHint" xml:space="preserve"><value>Нажмите точку для деталировки или элемент легенды для переключения серии.</value></data>
   <data name="ChartsDemo_PointClicked" xml:space="preserve"><value>Выбрана точка №{0}</value></data>

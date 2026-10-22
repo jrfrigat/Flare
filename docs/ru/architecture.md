@@ -300,8 +300,8 @@ Flare загрузочный сплэш не рисует - его рисует 
 2. Реализуйте `ITheme` - задайте `Id`, `DisplayName`, `Design` (`DesignTokens`, обычно выведенный из
    reference-темы через `with`), `DefaultPaletteId`, `Palettes` и `StyleAssets`.
 3. Поставьте базовый CSS / CSS токенов, на который ссылается `StyleAssets`, в `wwwroot/`.
-4. Зарегистрируйте: `services.AddFlareTheme(new MyTheme());` (это также принудительно загружает сборку,
-   чего не делает простая ссылка в trimmed/WASM-приложении).
+4. Зарегистрируйте: `services.AddFlareTheme(new MyTheme());` (вызов `new Theme()` удерживает тип
+   в сборке, чего не делает одна ссылка на пакет в trimmed/WASM-приложении).
 
 Полное руководство: [theme-creation-guide.md](theme-creation-guide.md).
 

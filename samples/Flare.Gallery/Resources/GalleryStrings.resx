@@ -4729,6 +4729,8 @@ Read the card, check the tests, and report what is left.</value>
   <data name="ChartsDemo_SizingWide" xml:space="preserve"><value>Fixed 1200 x 220 ratio - wide and short at every container size</value></data>
   <data name="ChartsDemo_SizingSquare" xml:space="preserve"><value>Fixed 400 x 400 ratio - the same data, square</value></data>
   <data name="ChartsDemo_Sparkline" xml:space="preserve"><value>Revenue (area + smooth + markers)</value></data>
+  <data name="ChartsDemo_SparklineThroughput" xml:space="preserve"><value>Throughput</value></data>
+  <data name="ChartsDemo_SparklineLatency" xml:space="preserve"><value>Latency p50</value></data>
   <data name="ChartsDemo_Spike" xml:space="preserve"><value>Send a spike</value></data>
   <data name="ChartsDemo_ClickHint" xml:space="preserve"><value>Click a point above, or click a legend label to toggle a series.</value></data>
   <data name="ChartsDemo_PointClicked" xml:space="preserve"><value>Clicked point #{0}</value></data>

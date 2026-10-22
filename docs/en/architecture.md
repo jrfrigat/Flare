@@ -324,8 +324,8 @@ boot fails; set `ManageSplash="false"` to signal readiness (`window.hideFlareSpl
 2. Implement `ITheme` - provide `Id`, `DisplayName`, `Design` (a `DesignTokens`, typically derived
    from a reference theme with `with`), `DefaultPaletteId`, `Palettes`, and `StyleAssets`.
 3. Ship the baseline/token CSS referenced by `StyleAssets` under `wwwroot/`.
-4. Register it: `services.AddFlareTheme(new MyTheme());` (this also forces the assembly to load,
-   which a bare reference does not in a trimmed/WASM app).
+4. Register it: `services.AddFlareTheme(new MyTheme());` (the new `Theme()` call keeps the type
+   referenced, which a bare package reference does not in a trimmed/WASM app).
 
 See [theme-creation-guide.md](theme-creation-guide.md) for the full walkthrough.
 
@@ -352,8 +352,8 @@ via `AddFlareTheme` / `AddFlarePalette` and the configured `DefaultTheme`. Theme
 the `ThemeService` instance (not as separate DI services) so the correct selection is available from
 the first render.
 
-> Referencing a theme package does not register it. Use `DefaultTheme` or `AddFlareTheme`, which also forces
-> the theme assembly to load.
+> Referencing a theme package does not register it. Use `DefaultTheme` or `AddFlareTheme`; the theme
+> instance you construct keeps its type referenced in a trimmed/WASM build.
 
 ### Other services registered by `AddFlare` (all Scoped)
 

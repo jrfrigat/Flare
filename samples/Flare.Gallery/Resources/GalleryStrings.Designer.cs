@@ -14182,6 +14182,10 @@ namespace Flare.Gallery.Resources {
         public static string ChartsDemo_SizingSquare { get { return ResourceManager.GetString("ChartsDemo_SizingSquare", resourceCulture); } }
         /// <summary>Revenue (area + smooth + markers)</summary>
         public static string ChartsDemo_Sparkline { get { return ResourceManager.GetString("ChartsDemo_Sparkline", resourceCulture); } }
+
+        public static string ChartsDemo_SparklineThroughput { get { return ResourceManager.GetString("ChartsDemo_SparklineThroughput", resourceCulture); } }
+
+        public static string ChartsDemo_SparklineLatency { get { return ResourceManager.GetString("ChartsDemo_SparklineLatency", resourceCulture); } }
         /// <summary>Send a spike</summary>
         public static string ChartsDemo_Spike { get { return ResourceManager.GetString("ChartsDemo_Spike", resourceCulture); } }
         /// <summary>Click a point above, or click a legend label to toggle a series.</summary>

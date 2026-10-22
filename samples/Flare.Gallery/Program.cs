@@ -33,8 +33,8 @@ builder.Services.AddFlare(opts =>
 });
 
 // Themes are independent packages now -- the Gallery showcases all of them, so each is registered
-// explicitly (AddFlareTheme also forces the theme assembly to load, which mere references don't in a
-// trimmed/WASM app). Each theme brings its own palettes via ITheme.Palettes.
+// explicitly (mere package references do not register them; the new Theme() calls keep the types
+// referenced in a trimmed/WASM app). Each theme brings its own palettes via ITheme.Palettes.
 builder.Services.AddFlareTheme(new MaterialDesign3Theme());
 builder.Services.AddFlareTheme(new MaterialDesign2Theme());
 builder.Services.AddFlareTheme(new FluentUI2Theme());

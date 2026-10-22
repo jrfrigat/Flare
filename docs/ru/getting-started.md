@@ -52,7 +52,7 @@ builder.Services.AddFlare(opts =>
 });
 
 // Зарегистрируйте остальные темы, которые должны быть доступны в рантайме.
-// AddFlareTheme также принудительно загружает сборку темы (важно для trimmed/WASM).
+// Одна ссылка на пакет тему не регистрирует; new Theme() удерживает тип при trimming/WASM.
 builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 

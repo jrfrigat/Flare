@@ -80,10 +80,9 @@ builder.Services.AddFlare(opts =>
     opts.DefaultMode = ThemeMode.Auto;                         // Light / Dark / Auto
 });
 
-// Зарегистрируйте остальные темы, которые должны быть доступны в рантайме. AddFlareTheme также
-// принудительно загружает сборку темы (чего не делает простая ссылка в trimmed/WASM-приложении),
-// поэтому он предпочтительнее автодискавери FlareOptions.RegisterAllBuiltInThemes. Каждая тема
-// приносит свои палитры через ITheme.Palettes.
+// Зарегистрируйте каждую тему, которую хотите выбирать в рантайме.
+// Одна ссылка на пакет тему не регистрирует.
+// Каждая тема приносит свои палитры через ITheme.Palettes.
 builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 

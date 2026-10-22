@@ -52,7 +52,7 @@ builder.Services.AddFlare(opts =>
 });
 
 // Register the other themes that should be available at runtime.
-// AddFlareTheme also force-loads the theme assembly (important for trimmed/WASM builds).
+// Referencing a package alone does not register its theme; new Theme() keeps the type referenced.
 builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 
