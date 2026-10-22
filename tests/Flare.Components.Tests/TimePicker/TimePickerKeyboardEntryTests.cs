@@ -35,6 +35,18 @@ public class TimePickerKeyboardEntryTests : FlareTestContext
         cut.FindAll($".{Css.Classes.TimePicker.Actions} button").Last();
 
     [Fact]
+    public void TypedMinute_DropsToTheStepOnTheDialEntry()
+    {
+        TimeOnly? committed = null;
+        var cut = Open(p => p.Add(x => x.MinuteStep, 15), v => committed = v, value: new TimeOnly(14, 4));
+        SwitchToKeyboard(cut);
+        MinuteInput(cut).Input("37");
+        OkButton(cut).Click();
+
+        Assert.Equal(new TimeOnly(14, 30), committed);
+    }
+
+    [Fact]
     public void Toggle_SwitchesBetweenDialAndEntry()
     {
         var cut = Open();

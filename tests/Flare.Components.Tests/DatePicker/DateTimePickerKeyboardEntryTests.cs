@@ -47,6 +47,27 @@ public class DateTimePickerKeyboardEntryTests : FlareTestContext
     }
 
     [Fact]
+    public void TypedMinute_DropsToTheStepOnTheDialEntry()
+    {
+        DateTimeOffset? committed = null;
+        var initial = new DateTimeOffset(2026, 10, 15, 14, 4, 45, TimeSpan.FromHours(5));
+        var cut = Render<FlareDateTimePicker>(p => p
+            .Add(x => x.Culture, new CultureInfo("en-US"))
+            .Add(x => x.Mode, DateTimeVariant.Panels)
+            .Add(x => x.TimeVariant, TimePickerVariant.Dial)
+            .Add(x => x.Use24Hour, true)
+            .Add(x => x.MinuteStep, 15)
+            .Add(x => x.Value, initial)
+            .Add(x => x.ValueChanged, (DateTimeOffset? v) => committed = v));
+        cut.Find($".{Css.Classes.Input.Toggle}").Click();
+        Switch(cut);
+        cut.FindAll($".{Css.Classes.TimeEntry.Input}")[1].Input("37");
+        Ok(cut).Click();
+
+        Assert.Equal(new DateTimeOffset(2026, 10, 15, 14, 30, 45, TimeSpan.FromHours(5)), committed);
+    }
+
+    [Fact]
     public void InvalidEntry_BlocksConfirmAndSwitchingBackClearsIt()
     {
         var calls = 0;

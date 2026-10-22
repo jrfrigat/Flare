@@ -129,14 +129,14 @@
         @if (TimeVariant == TimePickerVariant.Dial && _keyboardEntry)
         {
             <FlareTimeEntry Hour="_hour" HourChanged="h => _hour = h"
-                            Minute="_minute" MinuteChanged="m => _minute = m"
+                            Minute="_minute" MinuteChanged="m => _minute = SnapMinute(m)"
                             Is24Hour="_is24Hour" Culture="_culture" Submitted="Confirm"
                             ValidityChanged="v => _entryInvalid = !v" />
         }
         else if (TimeVariant == TimePickerVariant.Dial)
         {
             <FlareClockDial Hour="_hour" HourChanged="h => _hour = h"
-                            Minute="_minute" MinuteChanged="m => _minute = m"
+                            Minute="_minute" MinuteChanged="m => _minute = SnapMinute(m)"
                             Is24Hour="_is24Hour" Culture="_culture" />
         }
         else if (TimeVariant == TimePickerVariant.List)

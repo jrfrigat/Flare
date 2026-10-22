@@ -27,7 +27,8 @@ public partial class FlareTimePicker
     [Parameter] public bool? Use24Hour { get; set; }
     /// <summary>Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
-    /// <summary>Minute increment shown in the Dropdown column. Values are clamped to 1-60. Default 1.</summary>
+    /// <summary>Minute increment (values clamped to 1-60): the Dropdown column runs in steps, and a minute typed
+    /// in the keyboard entry or picked on the dial drops to the step below it. Default 1.</summary>
     [Parameter] public int MinuteStep { get; set; } = 1;
     /// <summary>Headline shown at the top of the picker popup. When null, falls back to the localized default.</summary>
     [Parameter] public string? Headline { get; set; }
@@ -40,7 +41,9 @@ public partial class FlareTimePicker
     /// <summary>Adds a seconds column (Dropdown variant) and the seconds to the field: HH:mm:ss, or hh:mm:ss AM on a
     /// 12-hour clock. Default false.</summary>
     [Parameter] public bool ShowSeconds { get; set; }
-    /// <summary>Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1.</summary>
+    /// <summary>Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1. The dial and
+    /// typed entry keep their hour: a 12-hour dial's cells are discrete values 1-12, and a stepped grid there
+    /// would produce an hour of zero.</summary>
     [Parameter] public int HourStep { get; set; } = 1;
     /// <summary>Second increment shown in the Dropdown column. Values are clamped to 1-60. Default 1.</summary>
     [Parameter] public int SecondStep { get; set; } = 1;
@@ -123,6 +126,10 @@ public partial class FlareTimePicker
 
     private int _hourStep => Math.Clamp(HourStep, 1, 24);
     private int _secondStep => Math.Clamp(SecondStep, 1, 60);
+
+    // The minute step is one rule for every way a minute arrives - column, typed entry or dial - so the
+    // same popup cannot show two different minutes for the same input.
+    private int SnapMinute(int minute) => minute - minute % Math.Clamp(MinuteStep, 1, 60);
 
     /// <summary>Opens the picker popup.</summary>
     public Task OpenAsync() { if (!_open) return Toggle(); return Task.CompletedTask; }

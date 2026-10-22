@@ -21,11 +21,11 @@ Date and time field: a masked text input with a popup holding a calendar and a t
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number. |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week (null = use the culture's). |
 | `For` | `Expression<Func<DateTimeOffset?>>?` | `` | Parameter |  | Expression used to bind and validate the field inside an EditForm. |
-| `HourStep` | `int` | `1` | Parameter |  | Hour increment of the number-field time pane (default 1): a typed hour drops to the step below it. The dial and the text field are not stepped, as in FlareTimePicker. |
+| `HourStep` | `int` | `1` | Parameter |  | Hour increment of the number-field time pane (default 1): a typed hour drops to the step below it. The hour stays unstepped on the dial and in typed entry: a 12-hour dial's cells are discrete values 1-12, and a stepped grid there would produce an hour of zero. |
 | `IsDateDisabled` | `Func<DateOnly, bool>?` | `` | Parameter |  | Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed. |
 | `Max` | `DateTimeOffset?` | `` | Parameter |  | Latest value that may be committed; later days are disabled in the calendar. |
 | `Min` | `DateTimeOffset?` | `` | Parameter |  | Earliest value that may be committed; earlier days are disabled in the calendar. |
-| `MinuteStep` | `int` | `1` | Parameter |  | Minute increment of the number-field time pane (default 1): a typed minute drops to the step below it. The dial and the text field are not stepped, as in FlareTimePicker. |
+| `MinuteStep` | `int` | `1` | Parameter |  | Minute increment (default 1): a minute typed in the number fields, in the keyboard entry or picked on the dial drops to the step below it. |
 | `Mode` | `DateTimeVariant` | `DateTimeVariant.Auto` | Parameter |  | Popup layout: Auto (default, responsive), Tabs or Panels (side by side). |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the picker popup opens. |
 | `ParseInput` | `Func<string, DateTimeOffset?>?` | `` | Parameter |  | Reads typed text instead of the built-in parser: return the value - offset included - or null when the text is not one (the value is kept and the field shows it again). With a parser the field takes free text - no digit mask - and judges it on change (blur or Enter); Min/Max and IsDateDisabled still apply. |

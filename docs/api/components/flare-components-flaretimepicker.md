@@ -17,10 +17,10 @@ Time field with a masked text entry and a clock-dial or column popup, bound to a
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture. |
 | `For` | `Expression<Func<TimeOnly?>>?` | `` | Parameter |  | Expression used to bind and validate the field. |
 | `Headline` | `string?` | `` | Parameter |  | Headline shown at the top of the picker popup. When null, falls back to the localized default. |
-| `HourStep` | `int` | `1` | Parameter |  | Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1. |
+| `HourStep` | `int` | `1` | Parameter |  | Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1. The dial and typed entry keep their hour: a 12-hour dial's cells are discrete values 1-12, and a stepped grid there would produce an hour of zero. |
 | `Max` | `TimeOnly?` | `` | Parameter |  | Latest selectable time (inclusive); out-of-range cells are disabled. |
 | `Min` | `TimeOnly?` | `` | Parameter |  | Earliest selectable time (inclusive); out-of-range cells are disabled. |
-| `MinuteStep` | `int` | `1` | Parameter |  | Minute increment shown in the Dropdown column. Values are clamped to 1-60. Default 1. |
+| `MinuteStep` | `int` | `1` | Parameter |  | Minute increment (values clamped to 1-60): the Dropdown column runs in steps, and a minute typed in the keyboard entry or picked on the dial drops to the step below it. Default 1. |
 | `OkText` | `string?` | `` | Parameter |  | Confirm button text. When null, falls back to the localized "OK". |
 | `Opened` | `EventCallback` | `` | Callback |  | Raised when the picker popup opens. |
 | `PopupVariant` | `TimePickerVariant` | `TimePickerVariant.Dial` | Parameter |  | Popup style: an analog clock Dial (default) or Dropdown columns. Wheel and touch scrolling select a column's draft value, including short lists. Scrolling stops at the first/last enabled value and never auto-confirms; press OK or Enter to confirm. Both variants are offered by every theme; where a design system specifies something else (a keyboard-entry mode inside the dial dialog, a single combobox list of times), the variant's description says so. |

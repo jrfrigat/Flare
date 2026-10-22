@@ -46,10 +46,11 @@ public partial class FlareDateTimePicker
     /// as in <c>FlareTimePicker</c>.</summary>
     [Parameter] public bool ShowSeconds { get; set; }
     /// <summary>Hour increment of the number-field time pane (default 1): a typed hour drops to the step below
-    /// it. The dial and the text field are not stepped, as in <c>FlareTimePicker</c>.</summary>
+    /// it. The hour stays unstepped on the dial and in typed entry: a 12-hour dial's cells are discrete values
+    /// 1-12, and a stepped grid there would produce an hour of zero.</summary>
     [Parameter] public int HourStep { get; set; } = 1;
-    /// <summary>Minute increment of the number-field time pane (default 1): a typed minute drops to the step
-    /// below it. The dial and the text field are not stepped, as in <c>FlareTimePicker</c>.</summary>
+    /// <summary>Minute increment (default 1): a minute typed in the number fields, in the keyboard entry or
+    /// picked on the dial drops to the step below it.</summary>
     [Parameter] public int MinuteStep { get; set; } = 1;
     /// <summary>Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the
     /// calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed.</summary>
@@ -420,6 +421,10 @@ public partial class FlareDateTimePicker
         _second = int.TryParse(v, out var s) ? Math.Clamp(s, 0, 59) : _second;
 
     private static int Snap(int value, int step) => value - value % step;
+
+    // The minute step is one rule for every way a minute arrives - number field, typed entry or dial -
+    // so the same popup cannot show two different minutes for the same input.
+    private int SnapMinute(int minute) => Snap(minute, _minuteStep);
 
     // The value the popup would commit, or null when no day is picked. Keeps the value's offset and every tick
     // the popup cannot edit - below the minute, or below the second with ShowSeconds: re-confirming without
