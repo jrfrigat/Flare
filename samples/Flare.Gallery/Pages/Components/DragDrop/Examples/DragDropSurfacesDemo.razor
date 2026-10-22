@@ -1,5 +1,5 @@
-@* Three surfaces that look nothing alike, reordering through ONE model. A board is components inside
-   drop zones; a tree and a data grid render their own `li` and `tr` and cannot take a wrapper element
+@* Three surfaces that look nothing alike, reordering through ONE model. The board is composed from
+   the same draggable/drop-zone components; a tree and a data grid render their own `li` and `tr` and cannot take a wrapper element
    without producing markup the browser rearranges, so they join by attribute and answer
    FlareDragContext.ResolveItem instead. Nothing here keeps drag state of its own.
 
@@ -10,6 +10,11 @@
    A tree also refuses its own subtree - drag "Documents" and every branch inside it stops lighting up,
    because a node dropped into itself takes the branch out of the tree with nothing to put it back. *@
 <FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.DragDrop_Board</FlareText>
+        <DragDropBoardDemo />
+    </FlareStack>
+
     <FlareGrid Gap="FlareSpacing.Large">
         <FlareCol Xs="12" Md="5">
             <FlareStack Gap="FlareSpacing.Small">
