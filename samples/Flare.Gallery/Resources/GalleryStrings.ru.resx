@@ -4364,6 +4364,9 @@
   <data name="DtpDemo_PanelsFieldsLabel" xml:space="preserve">
     <value>Две карточки, числовые поля</value>
   </data>
+  <data name="DtpDemo_PanelsListLabel" xml:space="preserve">
+    <value>Две карточки, список времени</value>
+  </data>
   <data name="DtpDemo_Selected" xml:space="preserve">
     <value>Выбрано: {0}</value>
   </data>
