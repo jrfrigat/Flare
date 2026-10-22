@@ -59,10 +59,8 @@ public sealed class DialogStackTests(BrowserFixture fixture) : IClassFixture<Bro
         var field = editor.GetByLabel("Violation");
         await Expect(field).ToBeFocusedAsync();
 
-        // Autofocus lands before the dialog's keyboard handling is set up. The scroll lock is taken after the trap
-        // and Escape, so a locked page shows both are in place without moving focus.
-        await page.WaitForFunctionAsync("() => document.body.style.overflow === 'hidden'");
-
+        // Escape has to work from the first moment the autofocused field has it, before the dialog's JS
+        // registration has finished its round trip; no scroll-lock wait is allowed to hide that window.
         if (closeBy == "escape") await page.Keyboard.PressAsync("Escape");
         else await page.Locator($"#{closeBy}").PressAsync("Enter");
 

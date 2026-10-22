@@ -15,6 +15,7 @@
              aria-labelledby="@(string.IsNullOrEmpty(Title) ? null : _titleId)"
              aria-label="@(string.IsNullOrEmpty(Title) ? AriaLabel : null)"
              aria-describedby="@_contentId"
+             @onkeydown="HandleDialogKeyDown"
              @ref="_dialogEl">
             @if (ShowGrabber && Position == DialogPosition.Bottom)
             {
@@ -298,6 +299,12 @@
         if (CloseOnEsc)
             await TryCloseAsync(DialogCloseReason.EscapeKey);
     }
+
+    // A field with Autofocus focuses in its own OnAfterRender, which runs before this dialog's and therefore
+    // before the JS Escape registration reaches the browser. This in-tree handler covers that one round trip;
+    // once the registration is in place the shared popup/dialog stack owns Escape and this does nothing.
+    private Task HandleDialogKeyDown(KeyboardEventArgs e) =>
+        !_escRegistered && CloseOnEsc && e.Key == "Escape" ? CloseFromEsc() : Task.CompletedTask;
 
     private async Task HandleScrimClick()
     {
