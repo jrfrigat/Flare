@@ -13,6 +13,10 @@ public static class Chart
     public const string PlotZoomed = "flare-chart__plot--zoomed";
     /// <summary>The <c>flare-chart__toolbar</c> CSS class: the zoom buttons beside the title.</summary>
     public const string Toolbar = "flare-chart__toolbar";
+    /// <summary>The <c>flare-chart__zoom-layer</c> CSS class: the overlay that carries the selection rectangle
+    /// outside the chart's geometry render region.</summary>
+    public const string ZoomLayer = "flare-chart__zoom-layer";
+
     /// <summary>The <c>flare-chart__zoom-selection</c> CSS class: the drag-to-zoom selection rectangle.</summary>
     public const string ZoomSelection = "flare-chart__zoom-selection";
     /// <summary>The <c>flare-chart__legend</c> CSS class.</summary>

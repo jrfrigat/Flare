@@ -19,6 +19,14 @@
     cursor: grabbing;
 }
 
+.flare-chart__zoom-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
 .flare-chart__zoom-selection {
     fill: var(--flare-chart-zoom-selection-fill);
     stroke: var(--flare-chart-zoom-selection-stroke);

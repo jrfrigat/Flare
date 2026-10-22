@@ -154,14 +154,24 @@ public partial class FlareChart
     }
 
     // Never let a zoom collapse onto a single point: two category slots is the narrowest useful window.
-    private const double _minZoomSpan = 1.0;
+    // A scatter/bubble X range narrower than that cannot fit it, so it gets half its own range instead.
+    private double MinZoomSpan
+    {
+        get
+        {
+            var full = _domainTo - _domainFrom;
+            return _valueDomain && double.IsFinite(full) && full < 2
+                ? Math.Max(full / 2, 1e-9)
+                : 1.0;
+        }
+    }
 
     private ChartZoom? _internalZoom;
     private ChartZoom? _lastBoundZoom;
 
     /// <summary>The window actually drawn: the bound Zoom, else the user's own, else the full domain.</summary>
     private ChartZoom _view =>
-        (Zoom ?? _internalZoom ?? new ChartZoom(_domainFrom, _domainTo)).Clamp(_domainFrom, _domainTo, _minZoomSpan);
+        (Zoom ?? _internalZoom ?? new ChartZoom(_domainFrom, _domainTo)).Clamp(_domainFrom, _domainTo, MinZoomSpan);
 
     private bool _zoomed => _zoomActive
         && (_view.From > _domainFrom + 1e-9 || _view.To < _domainTo - 1e-9);
@@ -188,6 +198,9 @@ public partial class FlareChart
 
     private async Task SetZoomAsync(ChartZoom? window)
     {
+        // A detail is anchored to viewport coordinates of the old window; after a zoom it points at
+        // nothing the reader can still name.
+        DismissDetail();
         _internalZoom = window;
         _drawingRevision++;
         if (ZoomChanged.HasDelegate) await ZoomChanged.InvokeAsync(window);
@@ -208,7 +221,7 @@ public partial class FlareChart
         // to the pointer rather than to the middle of the chart.
         var t = _view.Span <= 0 ? 0.5 : (anchor - _view.From) / _view.Span;
         var from = anchor - t * span;
-        return SetZoomAsync(new ChartZoom(from, from + span).Clamp(_domainFrom, _domainTo, _minZoomSpan));
+        return SetZoomAsync(new ChartZoom(from, from + span).Clamp(_domainFrom, _domainTo, MinZoomSpan));
     }
 
     // Drag state. A drag that starts on the plot either selects a range (zoomed out) or pans (zoomed in),
@@ -266,15 +279,17 @@ public partial class FlareChart
             var delta = (x - start) / Math.Max(1, _plotW) * _dragStartView.Span;
             var from = _dragStartView.From - delta;
             if (phase == "end") _dragStartX = null;
-            await SetZoomAsync(new ChartZoom(from, from + _dragStartView.Span).Clamp(_domainFrom, _domainTo, _minZoomSpan));
+            await SetZoomAsync(new ChartZoom(from, from + _dragStartView.Span).Clamp(_domainFrom, _domainTo, MinZoomSpan));
             return;
         }
-        if (phase == "move") { _drawingRevision++; StateHasChanged(); return; }
+        // The selection rectangle is its own overlay, so a move repaints it without touching the SVG,
+        // the hit zones or the data table; only the end commits a new window and bumps the revision.
+        if (phase == "move") { StateHasChanged(); return; }
         _dragStartX = null;
-        if (Math.Abs(x - start) <= 2) { _drawingRevision++; StateHasChanged(); return; }
+        if (Math.Abs(x - start) <= 2) { StateHasChanged(); return; }
         var a = IndexOfX(Math.Min(start, x));
         var b = IndexOfX(Math.Max(start, x));
-        await SetZoomAsync(new ChartZoom(a, b).Clamp(_domainFrom, _domainTo, _minZoomSpan));
+        await SetZoomAsync(new ChartZoom(a, b).Clamp(_domainFrom, _domainTo, MinZoomSpan));
     });
 
     /// <summary>Moves visible details without rebuilding chart geometry. The input adapter coalesces pointer events.</summary>

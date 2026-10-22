@@ -289,7 +289,7 @@ public partial class FlareChart
     private bool _showY => !_spark && ShowYAxisLabels;
     private bool _showX => !_spark && ShowXAxisLabels;
     private bool _showLegend => !_spark && ShowLegend && LegendPosition != ChartLegendPosition.None
-        && Type != ChartType.HeatMap && Data?.Series is { Count: > 0 };
+        && Data?.Series is { Count: > 0 };
 
     // Tooltip position uses the pointer's viewport coordinates in CSS pixels.
     private bool _tooltipVisible;

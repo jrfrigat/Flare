@@ -7,7 +7,7 @@ const selector = '[data-flare-chart-hit]';
 
 export function observePlot(plot, receiver) {
     if (!plot) return;
-    let active = null, marks = [], byKey = new Map(), chosen = null, described = null;
+    let active = null, marks = [], byKey = new Map(), chosen = null, described = null, focusedKey = null;
     const hits = () => marks;
     const send = (method, ...args) => receiver.invokeMethodAsync(method, ...args).catch(() => { });
     const sync = () => {
@@ -32,6 +32,7 @@ export function observePlot(plot, receiver) {
         const mark = event.target.closest?.(selector);
         if (!mark || !plot.contains(mark)) return;
         active = mark.dataset.flareChartHit;
+        focusedKey = active;
         if (chosen !== mark) {
             if (chosen) chosen.tabIndex = -1;
             chosen = mark;
@@ -64,8 +65,14 @@ export function observePlot(plot, receiver) {
         marks[Math.max(0, Math.min(marks.length - 1, index))]?.focus({ preventScroll: true });
     };
     const observer = new MutationObserver(records => {
+        // A zoom can remove the mark that held focus and leave focus on the body; when that happened,
+        // hand it to the first mark that is still there instead of dropping the reader out of the chart.
+        const lostFocus = focusedKey !== null
+            && !plot.querySelector(`${selector}[data-flare-chart-hit="${CSS.escape(focusedKey)}"]`)
+            && document.activeElement === document.body;
         if (records.some(r => r.type === 'childList' &&
             (r.target.closest?.('svg') || [...r.addedNodes, ...r.removedNodes].some(n => n.nodeName === 'svg')))) sync();
+        if (lostFocus && marks.length) marks[0].focus({ preventScroll: true });
         detail();
     });
     observer.observe(plot, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-flare-chart-active'] });
@@ -73,7 +80,12 @@ export function observePlot(plot, receiver) {
         bindPointer(plot, send),
         bindZoom(plot, send),
         listen(plot, 'focusin', focus),
-        listen(plot, 'focusout', event => { if (!plot.contains(event.relatedTarget)) send('ChartDetailDismissed'); }),
+        listen(plot, 'focusout', event => {
+            if (plot.contains(event.relatedTarget)) return;
+            // A null relatedTarget means the focused mark was removed, not that the reader left the plot.
+            if (event.relatedTarget) focusedKey = null;
+            send('ChartDetailDismissed');
+        }),
         listen(plot, 'keydown', key),
         () => observer.disconnect()));
     sync();
@@ -129,6 +141,24 @@ function bindZoom(plot, send) {
         const point = position(event);
         send('ChartZoomGesture', point ? phase : 'cancel', point?.x ?? 0);
     };
+    // One move per frame: a pointer can report several times between paints, and each move now
+    // repaints only the selection overlay, so coalescing is what keeps the rate bounded.
+    let moveFrame = 0, moveEvent = null;
+    const flushMove = () => {
+        moveFrame = 0;
+        const event = moveEvent;
+        moveEvent = null;
+        if (event) gesture('move', event);
+    };
+    const queueMove = event => {
+        moveEvent = event;
+        if (!moveFrame) moveFrame = requestAnimationFrame(flushMove);
+    };
+    const cancelMove = () => {
+        moveEvent = null;
+        if (moveFrame) cancelAnimationFrame(moveFrame);
+        moveFrame = 0;
+    };
     const wheel = event => {
         if (!enabled() || !event.ctrlKey || event.deltaY === 0) return;
         const point = position(event);
@@ -146,9 +176,9 @@ function bindZoom(plot, send) {
                 return true;
             },
             onStart: event => gesture('start', event),
-            onMove: (_dx, _dy, event) => gesture('move', event),
-            onEnd: event => { suppressClick = true; gesture('end', event); },
-            onCancel: event => { suppressClick = false; gesture('cancel', event); }
+            onMove: (_dx, _dy, event) => queueMove(event),
+            onEnd: event => { cancelMove(); suppressClick = true; gesture('end', event); },
+            onCancel: event => { cancelMove(); suppressClick = false; gesture('cancel', event); }
         }),
         listen(plot, 'click', event => {
             if (!suppressClick) return;
@@ -156,5 +186,6 @@ function bindZoom(plot, send) {
             event.preventDefault();
             event.stopImmediatePropagation();
         }, true),
-        listen(plot, 'wheel', wheel, { passive: false }));
+        listen(plot, 'wheel', wheel, { passive: false }),
+        cancelMove);
 }

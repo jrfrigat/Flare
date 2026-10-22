@@ -363,7 +363,8 @@ public class FlareChartTests : FlareTestContext
             ], ["A", "B", "C"])));
 
         Assert.Equal(6, cut.FindAll($"rect.{Css.Classes.Chart.Cell}").Count); // 2 rows x 3 cols
-        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Legend}"));             // no legend for heat maps
+        // The legend is the only way to hide a row, so a heat map carries one like every other type.
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Chart.LegendItem}").Count);
     }
 
     [Fact]

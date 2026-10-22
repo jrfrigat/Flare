@@ -98,14 +98,19 @@
             }
             </g>
 
-            @if (_selecting)
-            {
+        </svg>
+        </text>)
+        @* The selection is painted over the SVG rather than inside it: a pointer move then repaints
+           this one rectangle instead of the chart's geometry, hit zones and accessible table. *@
+        @if (_selecting)
+        {
+            <svg class="@Css.Classes.Chart.ZoomLayer" viewBox="0 0 @_svgW @_svgH"
+                 preserveAspectRatio="@(_spark ? "none" : null)" aria-hidden="true">
                 <rect class="@Css.Classes.Chart.ZoomSelection"
                       x="@F(_selectionRect.X)" y="@F(_padT)"
                       width="@F(_selectionRect.Width)" height="@F(_plotH)" />
-            }
-        </svg>
-        </text>)
+            </svg>
+        }
         @* The shared placement engine owns the tooltip's viewport coordinates. *@
         @if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
         {

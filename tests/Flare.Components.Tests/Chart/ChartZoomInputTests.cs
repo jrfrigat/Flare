@@ -112,6 +112,50 @@ public class ChartZoomInputTests : FlareTestContext
     }
 
     [Fact]
+    public async Task AZoomOnNarrowPointDomainClampsToThatDomain()
+    {
+        ChartZoom? window = null;
+        var data = new ChartData([new ChartSeries("Points", []) { Points = [new(0.1, 1), new(0.2, 2), new(0.3, 3)] }]);
+        var cut = Render<FlareChart>(p => p.Add(x => x.Type, ChartType.Scatter).Add(x => x.Data, data)
+            .Add(x => x.Zoomable, true).Add(x => x.ZoomChanged, (ChartZoom? value) => window = value));
+        var plot = cut.Find($".{Css.Classes.Chart.Plot}");
+        double left = Number(plot, "data-plot-left"), width = Number(plot, "data-plot-width");
+
+        await cut.Instance.ChartZoomGesture("start", left + width * 0.25);
+        await cut.Instance.ChartZoomGesture("end", left + width * 0.75);
+
+        Assert.NotNull(window);
+        Assert.True(window.Value.Span > 0 && window.Value.Span < 0.2, $"span {window.Value.Span}");
+        Assert.True(window.Value.From >= 0.1 && window.Value.To <= 0.3, $"window {window.Value.From}..{window.Value.To}");
+    }
+
+    [Fact]
+    public async Task AMoveRepaintsOnlyTheSelectionOverlay()
+    {
+        var cut = Render<FlareChart>(p => p.Add(x => x.Data, Data).Add(x => x.Zoomable, true));
+        var plot = cut.Find($".{Css.Classes.Chart.Plot}");
+        double left = Number(plot, "data-plot-left"), width = Number(plot, "data-plot-width");
+
+        await cut.Instance.ChartZoomGesture("start", left + width / 4);
+        await cut.Instance.ChartZoomGesture("move", left + width / 2);
+
+        var layer = cut.Find($".{Css.Classes.Chart.ZoomLayer}");
+        Assert.Contains(Css.Classes.Chart.Plot, layer.ParentElement!.ClassList);
+        Assert.Empty(cut.Find($".{Css.Classes.Chart.Svg}").QuerySelectorAll($".{Css.Classes.Chart.ZoomSelection}"));
+        Assert.Single(layer.QuerySelectorAll($".{Css.Classes.Chart.ZoomSelection}"));
+    }
+
+    [Fact]
+    public void FiniteExtremesDoNotProduceNonfiniteAxisLabels()
+    {
+        var cut = Render<FlareChart>(p => p.Add(x => x.Data,
+            new ChartData([new ChartSeries("Values", [-1e308, 1e308])])).Add(x => x.Width, 400));
+
+        Assert.DoesNotContain(cut.FindAll("svg text"),
+            text => text.TextContent.Contains("NaN", StringComparison.Ordinal) || text.TextContent.Contains('∞'));
+    }
+
+    [Fact]
     public async Task WheelKeepsItsSvgAnchorAndRejectsNonfiniteInput()
     {
         ChartZoom? window = null;

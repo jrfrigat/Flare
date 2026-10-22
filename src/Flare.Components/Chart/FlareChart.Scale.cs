@@ -66,6 +66,8 @@ public partial class FlareChart
     {
         _stickyMin = double.NaN;
         _stickyMax = double.NaN;
+        // The axes and marks live behind ChartRenderRegion, which redraws only when the revision moves.
+        _drawingRevision++;
         StateHasChanged();
     }
 
@@ -126,7 +128,9 @@ public partial class FlareChart
                 if (max <= min) max = Math.BitIncrement(min);
             }
         }
-        if (!double.IsFinite(min) || !double.IsFinite(max) || max <= min)
+        // A span of two finite extremes can still overflow to infinity: -1e308..1e308 would make every
+        // label NaN. The axis cannot describe a range that has no finite width, so it falls back.
+        if (!double.IsFinite(min) || !double.IsFinite(max) || !double.IsFinite(max - min) || max <= min)
         {
             (min, max) = (0, 1);
             pinLo = pinHi = false;

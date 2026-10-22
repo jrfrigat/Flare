@@ -127,15 +127,15 @@ public sealed class ChartStickyDomainTests : FlareTestContext
     }
 
     [Fact]
-    public void ResetDomain_ForgetsWhatIsHeld()
+    public async Task ResetDomain_ForgetsWhatIsHeld()
     {
         var cut = RenderLive(Series(0, 1000), sticky: true);
 
         cut.Render(p => p.Add(x => x.Data, Series(0, 600)));
         var held = LinePath(cut);
 
-        cut.InvokeAsync(() => cut.Instance.ResetDomain());
-        cut.Render(p => p.Add(x => x.Data, Series(0, 600)));
+        // No extra Render: ResetDomain itself has to reach the axes and marks behind ChartRenderRegion.
+        await cut.InvokeAsync(() => cut.Instance.ResetDomain());
 
         Assert.NotEqual(held, LinePath(cut));
     }

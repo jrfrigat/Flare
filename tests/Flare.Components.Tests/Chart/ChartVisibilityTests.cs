@@ -67,25 +67,20 @@ public class ChartVisibilityTests : FlareTestContext
     }
 
     [Fact]
-    public void HeatMapRowsDisappearAndRestoreWithTheirSeries()
+    public void HeatMapRowsDisappearAndRestoreWithTheirSeriesFromItsOwnLegend()
     {
-        var cut = Chart(ChartType.Line);
-        cut.Render(p => p.Add(x => x.Type, ChartType.HeatMap));
+        // The heat map has a legend like every other type, so hiding a row is reachable without
+        // switching the chart to another type and back.
+        var cut = Chart(ChartType.HeatMap);
         var before = cut.FindAll($".{Css.Classes.Chart.Cell}").Select(x => x.OuterHtml).ToArray();
         Assert.Equal(6, before.Length);
-        cut.Render(p => p.Add(x => x.Type, ChartType.Line));
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.Chart.LegendItem}").Count);
+
         Toggle(cut, 1);
-        cut.Render(p => p.Add(x => x.Type, ChartType.HeatMap));
         Assert.Equal(3, cut.FindAll($".{Css.Classes.Chart.Cell}").Count);
         Assert.DoesNotContain(cut.FindAll("svg text"), x => x.TextContent == "Second");
-        cut.Render(p => p.Add(x => x.Type, ChartType.Line));
-        Toggle(cut, 0);
-        cut.Render(p => p.Add(x => x.Type, ChartType.HeatMap));
-        Assert.Empty(cut.FindAll($".{Css.Classes.Chart.Cell}"));
-        cut.Render(p => p.Add(x => x.Type, ChartType.Line));
-        Toggle(cut, 0);
+
         Toggle(cut, 1);
-        cut.Render(p => p.Add(x => x.Type, ChartType.HeatMap));
         Assert.Equal(before, cut.FindAll($".{Css.Classes.Chart.Cell}").Select(x => x.OuterHtml).ToArray());
     }
 }
