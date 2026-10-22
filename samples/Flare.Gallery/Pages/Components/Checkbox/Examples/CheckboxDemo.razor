@@ -2,6 +2,8 @@
     <FlareCheckbox @bind-Value="_a" Label="Option A" />
     <FlareCheckbox @bind-Value="_b" Label="Option B" />
     <FlareCheckbox @bind-Value="_c" Label="@($"Indeterminate (bool? = {(_c?.ToString() ?? "null")})")" />
+    <FlareCheckbox Label="@GalleryStrings.Checkbox_PairBool" Value="_g" ValueChanged="@((bool v) => _g = v)" />
+    <FlareCheckbox Label="@GalleryStrings.Checkbox_PairBoolNullable" Value="_h" ValueChanged="@((bool? v) => _h = v)" />
     <FlareCheckbox @bind-Value="_d" Label="Secondary color" Color="FlareColor.Secondary" />
     <FlareCheckbox @bind-Value="_e" Label="Label before (Start)" LabelPlacement="LabelPlacement.Start" />
     <FlareCheckbox @bind-Value="_f" Label="Custom icons (heart)">
@@ -25,6 +27,8 @@
     private bool _a = true;
     private bool _b;
     private bool? _c;          // null -> indeterminate; click resolves to true/false
+    private bool _g = true;    // explicit Value + ValueChanged, bool
+    private bool? _h;          // explicit Value + ValueChanged, bool? (null -> indeterminate)
     private bool _d = true;
     private bool _e = true;
     private bool _f = true;

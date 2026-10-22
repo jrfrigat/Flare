@@ -50,13 +50,20 @@
 
 @code {
     /// <summary>
-    /// Whether the box is checked. With <c>TValue="bool?"</c> the value is tri-state and <c>null</c> is
-    /// the indeterminate ("some of the below") state; with <c>TValue="bool"</c> there are two states and
-    /// the box can be validated against a plain <c>bool</c> on the model.
+    /// Whether the box is checked. <c>TValue</c> is <c>bool</c> for an ordinary two-state box or
+    /// <c>bool?</c> for a tri-state one; with <c>bool?</c> the value is tri-state and <c>null</c> is
+    /// the indeterminate ("some of the below") state. The type is the caller's choice, so the value
+    /// and <see cref="For"/> always describe the same model property.
     /// </summary>
-    [Parameter] public TValue? Value { get; set; }
-    /// <summary>Callback invoked when the checked state changes. A click always produces true or false - it resolves the indeterminate state rather than cycling back into it.</summary>
-    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    [Parameter] public TValue Value { get; set; }
+    /// <summary>
+    /// Callback invoked when the checked state changes. The callback carries <c>TValue</c>, so pass
+    /// the type to a method group (<c>ValueChanged="Handle"</c> with
+    /// <c>void Handle(bool value)</c>) or use a typed lambda; otherwise the compiler reports CS1503.
+    /// A click always produces true or false - it resolves the indeterminate state rather than
+    /// cycling back into it.
+    /// </summary>
+    [Parameter] public EventCallback<TValue> ValueChanged { get; set; }
     /// <summary>Label text displayed next to the checkbox. Ignored when <see cref="ChildContent"/> is
     /// set.</summary>
     [Parameter] public string? Label { get; set; }

@@ -1543,6 +1543,12 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Checkbox_Basic" xml:space="preserve">
     <value>Checked, indeterminate &amp; disabled</value>
   </data>
+  <data name="Checkbox_PairBool" xml:space="preserve">
+    <value>bool - Value + ValueChanged</value>
+  </data>
+  <data name="Checkbox_PairBoolNullable" xml:space="preserve">
+    <value>bool? - Value + ValueChanged</value>
+  </data>
   <data name="Switch_Title" xml:space="preserve">
     <value>Switch</value>
   </data>

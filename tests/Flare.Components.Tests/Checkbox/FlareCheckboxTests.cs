@@ -24,7 +24,7 @@ public class FlareCheckboxTests : FlareTestContext
     [Fact]
     public void ValueChanged_FiredOnChange_WithTrue()
     {
-        bool? captured = null;
+        bool captured = false;
         var cut = Render<FlareCheckbox<bool>>(p => p
             .Add(c => c.Value, false)
             .Add(c => c.ValueChanged, v => { captured = v; }));
@@ -37,7 +37,7 @@ public class FlareCheckboxTests : FlareTestContext
     [Fact]
     public void ValueChanged_FiredOnChange_WithFalse()
     {
-        bool? captured = null;
+        bool captured = true;
         var cut = Render<FlareCheckbox<bool>>(p => p
             .Add(c => c.Value, true)
             .Add(c => c.ValueChanged, v => { captured = v; }));

@@ -2181,7 +2181,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Checkbox_Basic", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to bool - Value + ValueChanged.
+        /// </summary>
+        public static string Checkbox_PairBool {
+            get {
+                return ResourceManager.GetString("Checkbox_PairBool", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to bool? - Value + ValueChanged.
+        /// </summary>
+        public static string Checkbox_PairBoolNullable {
+            get {
+                return ResourceManager.GetString("Checkbox_PairBoolNullable", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareCheckbox - tri-state checkbox (true/false/indeterminate)..
         /// </summary>

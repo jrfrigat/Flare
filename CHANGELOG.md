@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- `FlareCheckbox.Value` is `TValue` and `ValueChanged` is `EventCallback<TValue>` instead of nullable, so a two-state checkbox no longer reads as nullable in the API reference; a handler now names `bool` or `bool?` explicitly.
+
 ## [0.49.0] - 2026-10-21
 
 ### Added
