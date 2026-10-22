@@ -1,6 +1,36 @@
 .flare-resizable { position: relative; overflow: hidden; }
-.flare-resizable__handle { position: absolute; z-index: var(--flare-z-chrome); background: transparent; transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard); }
+.flare-resizable__handle { position: absolute; z-index: var(--flare-z-chrome); display: flex; align-items: center; justify-content: center; background: transparent; transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard); }
 .flare-resizable__handle:hover { background: var(--flare-color-primary-container); }
+/* The grip is always visible, like the splitter's: a transparent handle is no target at all on a
+   touch screen, where there is no hover to reveal it. Geometry and colour are the splitter's tokens. */
+.flare-resizable__handle::after {
+    content: "";
+    width: var(--flare-splitter-grip-thickness);
+    height: var(--flare-splitter-grip-length);
+    background: var(--flare-splitter-grip-color);
+    border-radius: var(--flare-splitter-grip-radius);
+    pointer-events: none;
+    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard),
+                width var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+                height var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard),
+                border-radius var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
+}
+.flare-resizable--top .flare-resizable__handle::after,
+.flare-resizable--bottom .flare-resizable__handle::after {
+    width: var(--flare-splitter-grip-length);
+    height: var(--flare-splitter-grip-thickness);
+}
+.flare-resizable__handle:active::after {
+    background: var(--flare-splitter-grip-pressed-color);
+    border-radius: var(--flare-splitter-grip-pressed-radius);
+    width: var(--flare-splitter-grip-pressed-thickness);
+    height: var(--flare-splitter-grip-pressed-length);
+}
+.flare-resizable--top .flare-resizable__handle:active::after,
+.flare-resizable--bottom .flare-resizable__handle:active::after {
+    width: var(--flare-splitter-grip-pressed-length);
+    height: var(--flare-splitter-grip-pressed-thickness);
+}
 .flare-resizable--right .flare-resizable__handle { top: 0; right: 0; width: var(--flare-splitter-gutter-size); height: 100%; cursor: col-resize; }
 .flare-resizable--left .flare-resizable__handle { top: 0; left: 0; width: var(--flare-splitter-gutter-size); height: 100%; cursor: col-resize; }
 .flare-resizable--bottom .flare-resizable__handle { bottom: 0; left: 0; height: var(--flare-splitter-gutter-size); width: 100%; cursor: row-resize; }
@@ -11,4 +41,7 @@
 .flare-resizable__control:disabled { opacity: var(--flare-state-disabled-opacity); cursor: not-allowed; }
 @media (pointer: coarse) {
     .flare-resizable__control { min-inline-size: var(--flare-touch-target-min); min-block-size: var(--flare-touch-target-min); }
+}
+@media (forced-colors: active) {
+    .flare-resizable__handle { background: ButtonFace; }
 }
