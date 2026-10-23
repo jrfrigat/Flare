@@ -62,11 +62,8 @@
   text-align: right;
 }
 
-/* Pagination - draw the navigation chevrons in the reading direction; the flex order is already
-   mirrored, so only the glyph itself is flipped. */
-[dir="rtl"] .flare-pagination__btn--nav {
-  transform: scaleX(-1);
-}
+/* Pagination needs no rule: its chevrons are the bidi-mirrored characters U+00AB, U+2039, U+203A and
+   U+00BB, which the browser already draws mirrored in RTL. A transform would turn them back. */
 
 /* ============================================
    Input Components

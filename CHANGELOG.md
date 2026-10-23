@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- On a right-to-left page, `FlarePagination`'s Previous, Next, First and Last chevrons point the way the page reads again: the 0.49.0 flip turned back the arrows the browser already mirrors.
+
 ## [0.50.0] - 2026-10-23
 
 ### Added
