@@ -5,8 +5,8 @@
    loads that cell; edit the formula and it writes back to the selected cell. *@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareCard Variant="CardVariant.Outlined" Overflow="hidden">
-        <FlareFormulaBar CellRef="_cellRef" CellRefChanged="OnCellRefChanged"
-                         Value="_formula" ValueChanged="OnFormulaChanged"
+        <FlareFormulaBar CellRef="@_cellRef" CellRefChanged="OnCellRefChanged"
+                         Value="@_formula" ValueChanged="OnFormulaChanged"
                          Placeholder="Enter a value or =formula" />
         <FlareGrid Columns="4" Gap="FlareSpacing.None">
             <FlareStack Block Background="@Surface" Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">
