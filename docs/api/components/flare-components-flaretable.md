@@ -11,7 +11,7 @@
 | `Bordered` | `bool` | `false` | Parameter |  | Adds borders around all cells. |
 | `Caption` | `string?` | `` | Parameter |  | Accessible caption rendered as a <caption> element inside the table. Provides a text summary of the table's purpose - not supported by MudBlazor or Blazorise. |
 | `ChildContent` | `RenderFragment?` | `` | Parameter |  | Raw table content for simple (non-typed) usage. |
-| `ColSpan` | `int` | `100` | Parameter |  | Number of columns (used for group-row colspan). |
+| `ColSpan` | `int` | `100` | Parameter |  | Number of columns a group row spans when the rows come from RowTemplate. With Columns the group row spans the column count instead. |
 | `Columns` | `IReadOnlyList<FlareTableColumn<TItem>>?` | `` | Parameter |  | Describes the table by columns instead of raw thead/tr/td markup. When set together with Items, the component renders the header and every body row itself; HeaderContent and RowTemplate are then ignored. This is the path a page uses when it has no business writing table markup. |
 | `Dense` | `bool` | `false` | Parameter |  | Reduces cell padding for a denser layout (consistent with other components' Dense). |
 | `FooterCells` | `Func<IEnumerable<TItem>, IReadOnlyList<RenderFragment>>?` | `` | Parameter |  | Footer cells for the column path, computed from all items - a total or a count under each column. Null falls back to FooterContent; the two are not combined. |
