@@ -23,6 +23,8 @@ public static class Table
     public const string GroupRow = "flare-table__group-row";
     /// <summary>The <c>flare-table__group-row--collapsed</c> CSS class.</summary>
     public const string GroupRowCollapsed = "flare-table__group-row--collapsed";
+    /// <summary>The <c>flare-table__group-toggle</c> CSS class: the button that expands or collapses a group.</summary>
+    public const string GroupToggle = "flare-table__group-toggle";
     /// <summary>The <c>flare-table__group-chevron</c> CSS class.</summary>
     public const string GroupChevron = "flare-table__group-chevron";
     /// <summary>The <c>flare-table-container</c> CSS class.</summary>

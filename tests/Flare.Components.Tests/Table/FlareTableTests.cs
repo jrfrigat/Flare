@@ -101,10 +101,13 @@ public class FlareTableTests : FlareTestContext
         var rowsBefore = cut.FindAll("tr[data-row]").Count;
         Assert.Equal(2, rowsBefore);
 
-        cut.Find($".{Css.Classes.Table.GroupRow}").Click();
+        Assert.Equal("true", cut.Find($".{Css.Classes.Table.GroupToggle}").GetAttribute("aria-expanded"));
+
+        cut.Find($"button.{Css.Classes.Table.GroupToggle}").Click();
 
         var rowsAfter = cut.FindAll("tr[data-row]").Count;
         Assert.Equal(0, rowsAfter);
+        Assert.Equal("false", cut.Find($".{Css.Classes.Table.GroupToggle}").GetAttribute("aria-expanded"));
     }
 
     [Fact]
@@ -139,6 +142,7 @@ public class FlareTableTests : FlareTestContext
             .Add(x => x.Columns, columns));
 
         Assert.Equal(new[] { "Name", "Score" }, cut.FindAll("th").Select(th => th.TextContent).ToArray());
+        Assert.All(cut.FindAll("th"), th => Assert.Equal("col", th.GetAttribute("scope")));
         Assert.Equal(new[] { "Alice", "92", "Bob", "78" }, cut.FindAll("td").Select(td => td.TextContent).ToArray());
     }
 
@@ -182,7 +186,7 @@ public class FlareTableTests : FlareTestContext
     }
 
     [Fact]
-    public void Columns_WithGroupBy_KeepsTheConfiguredColSpan()
+    public void Columns_WithGroupBy_SpansTheColumnCount()
     {
         var people = new[] { new Person("Alice", 92), new Person("Bob", 78) };
         FlareTableColumn<Person>[] columns =
@@ -195,7 +199,7 @@ public class FlareTableTests : FlareTestContext
             .Add(x => x.Items, people)
             .Add(x => x.Columns, columns)
             .Add(x => x.GroupBy, (Func<Person, string>)(_ => "G"))
-            .Add(x => x.ColSpan, 2));
+            .Add(x => x.ColSpan, 7));
 
         Assert.Equal("2", cut.Find($".{Css.Classes.Table.GroupRow} td").GetAttribute("colspan"));
         Assert.Equal(3, cut.FindAll("tbody tr").Count);

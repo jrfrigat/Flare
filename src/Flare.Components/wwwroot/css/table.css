@@ -81,7 +81,6 @@
     background: var(--flare-color-surface-container);
     color: var(--flare-color-on-surface-variant);
     padding: 0.4rem var(--flare-spacing-6);
-    cursor: pointer;
     user-select: none;
     border-bottom: var(--flare-border-divider);
 }
@@ -90,17 +89,33 @@
     background: var(--flare-color-surface-container-high);
 }
 
-.flare-table__group-chevron {
-    display: inline-block;
-    width: 1rem;
-    font-style: normal;
-    margin-right: var(--flare-spacing-2);
-    transition: transform var(--flare-motion-duration-small-move) var(--flare-motion-easing-standard);
+/* The whole group row is one native button, so it takes focus and answers Enter and Space. */
+.flare-table__group-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-2);
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
 }
 
-/* Collapsed group: rotate the chevron to point at the closed (right) state. */
-.flare-table__group-row--collapsed .flare-table__group-chevron {
-    transform: rotate(-90deg);
+.flare-table__group-toggle:focus-visible {
+    outline: var(--flare-focus-ring);
+    outline-offset: var(--flare-spacing-1);
+}
+
+.flare-table__group-chevron {
+    flex: none;
+}
+
+/* A collapsed group's chevron points along the reading direction. */
+.flare-table__group-row--collapsed .flare-table__group-chevron:dir(rtl) {
+    transform: scaleX(-1);
 }
 
 

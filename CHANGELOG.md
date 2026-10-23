@@ -16,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 - On a right-to-left page, `FlarePagination`'s Previous, Next, First and Last chevrons point the way the page reads again: the 0.49.0 flip turned back the arrows the browser already mirrors.
 - `TokensToCss.Minify` keeps the space before a pseudo-class, so a descendant selector such as `.a :hover` no longer turns into `.a:hover`.
+- A grouped `FlareTable` expands and collapses each group with a native button that takes focus, answers Enter and Space and reports `aria-expanded`; a collapsed group's chevron points along the reading direction instead of up. Its `Columns` header cells carry `scope="col"`, and a group row there spans the column count instead of `ColSpan`.
 
 ## [0.50.0] - 2026-10-23
 
