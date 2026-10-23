@@ -325,8 +325,7 @@ public sealed class QueryColumnDraft
             var matchesField = item.Field is not null && group.Field is not null
                 && string.Equals(group.Field.Alias, item.Field.Alias, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(group.Field.Field, item.Field.Field, StringComparison.OrdinalIgnoreCase);
-            var matchesCall = item.Call is not null && group.Call is not null
-                && string.Equals(group.Call.Function, item.Call.Function, StringComparison.OrdinalIgnoreCase);
+            var matchesCall = item.Call is not null && group.Call is not null && SameCall(group.Call, item.Call);
             if (!matchesField && !matchesCall) continue;
             column.Group = true;
             column.Truncate = group.Truncate;
@@ -340,11 +339,41 @@ public sealed class QueryColumnDraft
             var matchesField = sort.Field is not null && item.Field is not null
                 && string.Equals(sort.Field.Alias, item.Field.Alias, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(sort.Field.Field, item.Field.Field, StringComparison.OrdinalIgnoreCase);
-            if (!matchesAlias && !matchesField) continue;
+            var matchesCall = sort.Call is not null && item.Call is not null && SameCall(sort.Call, item.Call);
+            if (!matchesAlias && !matchesField && !matchesCall) continue;
             column.Sort = sort.Direction;
             break;
         }
 
         return column;
+    }
+
+    // Records hold their argument lists by reference, so two calls of the same shape are compared
+    // argument by argument: lower(r.route) and lower(r.method) are different grouping keys.
+    private static bool SameCall(QueryFunctionCall left, QueryFunctionCall right)
+    {
+        if (!string.Equals(left.Function, right.Function, StringComparison.OrdinalIgnoreCase)) return false;
+        if (left.Arguments.Count != right.Arguments.Count) return false;
+        for (var i = 0; i < left.Arguments.Count; i++)
+        {
+            if (!SameOperand(left.Arguments[i], right.Arguments[i])) return false;
+        }
+        return true;
+    }
+
+    private static bool SameOperand(QueryOperand left, QueryOperand right)
+    {
+        if (left.Kind != right.Kind) return false;
+        return left.Kind switch
+        {
+            QueryOperandKind.Literal => string.Equals(left.Value, right.Value, StringComparison.Ordinal),
+            QueryOperandKind.Field => left.Field is not null && right.Field is not null
+                && string.Equals(left.Field.Alias, right.Field.Alias, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(left.Field.Field, right.Field.Field, StringComparison.OrdinalIgnoreCase),
+            QueryOperandKind.Relative => Equals(left.Relative, right.Relative),
+            QueryOperandKind.Function => left.Call is not null && right.Call is not null && SameCall(left.Call, right.Call),
+            QueryOperandKind.List => (left.Values ?? []).SequenceEqual(right.Values ?? []),
+            _ => false,
+        };
     }
 }

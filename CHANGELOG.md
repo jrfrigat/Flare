@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.
+
 ## [0.51.0] - 2026-10-23
 
 ### Added
