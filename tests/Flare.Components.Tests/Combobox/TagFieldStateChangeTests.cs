@@ -35,7 +35,7 @@ public class TagFieldStateChangeTests : FlareTestContext
         cut.Find("input").Input("al");
         cut.Render(p => p.Add(x => x.ReadOnly, true));
         gate.SetResult(["alpha"]);
-        await Task.Delay(50);
+        await Task.Delay(50, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Empty(cut.FindAll(OptionSelector));
         Assert.Equal(0, changes);
@@ -55,7 +55,7 @@ public class TagFieldStateChangeTests : FlareTestContext
         cut.Find("input").Input("al");
         cut.Render(p => p.Add(x => x.Disabled, true));
         gate.SetResult(["alpha"]);
-        await Task.Delay(50);
+        await Task.Delay(50, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Empty(cut.FindAll(OptionSelector));
         Assert.Equal(0, changes);

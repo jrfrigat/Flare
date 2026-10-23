@@ -132,7 +132,7 @@ public class FlareNavLinkTests : FlareTestContext
             .AddChildContent("Inbox"));
 
         var badge = cut.Find($".{Css.Classes.Navigation.NavLinkBadge}");
-        Assert.Contains(FlareColor.Error.CssClass, badge.ClassName);
+        Assert.Contains(FlareColor.Error.CssClass!, badge.ClassName);
         Assert.Null(badge.GetAttribute("style"));
     }
 
@@ -146,7 +146,7 @@ public class FlareNavLinkTests : FlareTestContext
             .AddChildContent("Inbox"));
 
         var badge = cut.Find($".{Css.Classes.Navigation.NavLinkBadge}");
-        Assert.Contains(FlareColor.Primary.CssClass, badge.ClassName);
+        Assert.Contains(FlareColor.Primary.CssClass!, badge.ClassName);
     }
 
     [Fact]

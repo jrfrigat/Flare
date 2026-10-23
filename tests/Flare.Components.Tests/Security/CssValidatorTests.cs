@@ -26,10 +26,11 @@ public class CssValidatorTests
     [InlineData("1rem;background:url(javascript:alert(1))")]
     public void StripDangerous_NeutralizesJavascriptUrls(string css)
     {
-        var result = CssValidator.StripDangerous(css);
+        var result = CssValidator.StripDangerous(css)!;
         var open = result.IndexOf("url(", StringComparison.OrdinalIgnoreCase);
         Assert.True(open >= 0);
         var close = result.IndexOf(')', open);
+        Assert.True(close >= 0);
         Assert.Equal("url(about:blank)", result[open..(close + 1)]);
         // The scheme is consumed with the prefix; only the payload may stay after url(about:blank).
         Assert.DoesNotContain("javascript:", result, StringComparison.OrdinalIgnoreCase);

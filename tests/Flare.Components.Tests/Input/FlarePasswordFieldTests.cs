@@ -345,7 +345,7 @@ public class FlarePasswordFieldAccessibilityTests : FlareTestContext
 
         Assert.Contains(FlareStrings.Password_Weak, cut.Find($".{Css.Classes.Input.StrengthLabel}").TextContent);
         var segments = cut.FindAll($".{Css.Classes.Meter.Seg}");
-        Assert.Single(segments, s => s.ClassList.Contains(FlareColor.Error.CssClass));
+        Assert.Single(segments, s => s.ClassList.Contains(FlareColor.Error.CssClass!));
     }
 
     [Fact]

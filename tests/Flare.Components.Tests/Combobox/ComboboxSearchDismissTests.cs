@@ -19,7 +19,7 @@ public class ComboboxSearchDismissTests : FlareTestContext
         cut.Find("input").KeyDown("Escape");
 
         gate.SetResult(["alpha"]);
-        await Task.Delay(60);
+        await Task.Delay(60, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Empty(cut.FindAll(OptionSelector));
     }
@@ -34,7 +34,7 @@ public class ComboboxSearchDismissTests : FlareTestContext
         cut.Render(p => p.Add(x => x.ReadOnly, true));
 
         gate.SetResult(["alpha"]);
-        await Task.Delay(60);
+        await Task.Delay(60, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Empty(cut.FindAll(OptionSelector));
     }
@@ -49,7 +49,7 @@ public class ComboboxSearchDismissTests : FlareTestContext
         cut.Render(p => p.Add(x => x.Disabled, true));
 
         gate.SetResult(["alpha"]);
-        await Task.Delay(60);
+        await Task.Delay(60, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Empty(cut.FindAll(OptionSelector));
     }

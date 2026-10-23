@@ -43,9 +43,9 @@ public class ThemePaletteGeneratorsTests
     {
         var palette = generator.Generate("brand", "Brand", new PaletteSeed(Seed), "Generated");
 
-        Assert.Equal("brand", palette.Id);
-        Assert.Equal("Brand", palette.Name);
-        Assert.Equal("Generated", palette.Source);
+        Assert.True(
+            palette.Id == "brand" && palette.Name == "Brand" && palette.Source == "Generated",
+            $"{name}: the palette did not carry the id, name and source it was given");
     }
 
     [Theory]
@@ -55,7 +55,7 @@ public class ThemePaletteGeneratorsTests
         var first = generator.Generate("brand", "Brand", new PaletteSeed(Seed));
         var second = generator.Generate("brand", "Brand", new PaletteSeed(Seed));
 
-        Assert.Equal(first, second);
+        Assert.True(first.Equals(second), $"{name}: the same seed produced two different palettes");
     }
 
     [Theory]
@@ -65,7 +65,7 @@ public class ThemePaletteGeneratorsTests
         var first = generator.Generate("brand", "Brand", new PaletteSeed(Seed));
         var second = generator.Generate("brand", "Brand", new PaletteSeed("#C2185B"));
 
-        Assert.NotEqual(first, second);
+        Assert.True(!first.Equals(second), $"{name}: two different seeds produced the same palette");
     }
 
     [Theory]

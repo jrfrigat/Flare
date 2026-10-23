@@ -56,7 +56,7 @@ public class FlareCarouselIndexTests : FlareTestContext
         // cannot reach it because no Blazor keydown handler is bound to the root any more.
         await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowRight"));
         await cut.InvokeAsync(() => cut.Instance.OnCarouselKey("ArrowLeft"));
-        await Task.Delay(60);
+        await Task.Delay(60, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Empty(cut.FindAll(".flare-carousel__slide"));
         Assert.Contains("--_carousel-index:0", Track(cut));

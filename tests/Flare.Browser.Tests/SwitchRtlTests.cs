@@ -51,7 +51,7 @@ public sealed class SwitchRtlTests(BrowserFixture fixture) : IClassFixture<Brows
         var resting = await MeasureAsync(page, "#rtl");
         await page.Locator($"#rtl .{Css.Classes.Switch.Track}").HoverAsync();
         await page.Mouse.DownAsync();
-        await Task.Delay(50);
+        await Task.Delay(50, Xunit.TestContext.Current.CancellationToken);
         var pressed = await MeasureAsync(page, "#rtl");
         await page.Mouse.UpAsync();
 

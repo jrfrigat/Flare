@@ -35,7 +35,7 @@ public class FlareMenuRegistryTests : FlareTestContext
         SetItems(cut, new MenuEntry("a", "A"), new MenuEntry("c", "C"));
 
         cut.WaitForAssertion(() => Assert.Equal("C", FocusedLabel(cut)));
-        Assert.DoesNotContain(removedId, cut.Markup);
+        Assert.DoesNotContain(removedId!, cut.Markup);
         Assert.Equal(cut.Find(Focused).Id, cut.Find(Panel).GetAttribute("aria-activedescendant"));
 
         await PressAsync(cut, "ArrowDown");

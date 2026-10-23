@@ -376,7 +376,7 @@ public class VersionCheckServiceTests
                 case "check":
                     if (CheckError is not null) throw CheckError;
                     var value = Versions.Count > 0 ? Versions.Dequeue() : null;
-                    return ValueTask.FromResult((TValue)(object?)value);
+                    return ValueTask.FromResult((TValue)(object?)value!);
                 case "register":
                     if (RegisterError is not null) throw RegisterError;
                     return ValueTask.FromResult(default(TValue)!);

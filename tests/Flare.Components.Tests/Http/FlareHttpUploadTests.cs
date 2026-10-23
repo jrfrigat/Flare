@@ -82,7 +82,7 @@ public class FlareHttpUploadTests
         var upload = new FlareHttpUpload(new HttpClient(handler));
         var file = new FakeFile("report.txt", Bytes);
 
-        await upload.To("https://api.test/upload")(Context(file));
+        await upload.To("https://api.test/upload")(Context(file, token: Xunit.TestContext.Current.CancellationToken));
 
         var body = Encoding.UTF8.GetString(handler.Body!);
         Assert.Equal(HttpMethod.Post, handler.Request!.Method);
@@ -101,7 +101,7 @@ public class FlareHttpUploadTests
         var upload = new FlareHttpUpload(new HttpClient(handler));
         var file = new FakeFile("blob.bin", Bytes, contentType: "");
 
-        await upload.To("https://api.test/upload", "payload")(Context(file));
+        await upload.To("https://api.test/upload", "payload")(Context(file, token: Xunit.TestContext.Current.CancellationToken));
 
         var body = Encoding.UTF8.GetString(handler.Body!);
         Assert.Matches("name=\"?payload\"?", body);
@@ -118,7 +118,7 @@ public class FlareHttpUploadTests
         var transfer = upload.To("https://api.test/upload",
             headers: new Dictionary<string, string> { ["X-Request-Id"] = "abc" },
             fields: new Dictionary<string, string> { ["author"] = "Jane" });
-        await transfer(Context(file));
+        await transfer(Context(file, token: Xunit.TestContext.Current.CancellationToken));
 
         var body = Encoding.UTF8.GetString(handler.Body!);
         Assert.Matches("name=\"?author\"?", body);
@@ -134,7 +134,7 @@ public class FlareHttpUploadTests
         var progress = new Recording();
         var file = new FakeFile("report.txt", Bytes);
 
-        await upload.To("https://api.test/upload")(Context(file, progress));
+        await upload.To("https://api.test/upload")(Context(file, progress, Xunit.TestContext.Current.CancellationToken));
 
         Assert.True(progress.Values.Count > 1);
         for (var i = 1; i < progress.Values.Count; i++)
@@ -150,7 +150,7 @@ public class FlareHttpUploadTests
         var progress = new Recording();
         var file = new FakeFile("empty.txt", Array.Empty<byte>());
 
-        await upload.To("https://api.test/upload")(Context(file, progress));
+        await upload.To("https://api.test/upload")(Context(file, progress, Xunit.TestContext.Current.CancellationToken));
 
         Assert.Empty(progress.Values);
     }
@@ -176,7 +176,7 @@ public class FlareHttpUploadTests
         var upload = new FlareHttpUpload(new HttpClient(handler));
         var file = new FakeFile("report.txt", Bytes);
 
-        await upload.To("https://api.test/upload")(Context(file));
+        await upload.To("https://api.test/upload")(Context(file, token: Xunit.TestContext.Current.CancellationToken));
 
         Assert.True(file.Stream.Disposed);
     }
@@ -188,7 +188,7 @@ public class FlareHttpUploadTests
         var upload = new FlareHttpUpload(new HttpClient(handler));
         var file = new FakeFile("report.txt", Bytes);
 
-        await Assert.ThrowsAsync<HttpRequestException>(() => upload.To("https://api.test/upload")(Context(file)));
+        await Assert.ThrowsAsync<HttpRequestException>(() => upload.To("https://api.test/upload")(Context(file, token: Xunit.TestContext.Current.CancellationToken)));
 
         Assert.True(file.Stream.Disposed);
     }
