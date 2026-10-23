@@ -1,0 +1,14 @@
+{
+  "platformOptions": {
+    "Coverlet": {
+      "include": "[Flare*]*",
+      "exclude": "[*.Tests]*,[coverlet.*]*,[Microsoft.VisualStudio.TestPlatform.*]*,[testhost*]*",
+      "excludeByAttribute": "ExcludeFromCodeCoverage,ExcludeFromCodeCoverageAttribute,GeneratedCodeAttribute,CompilerGeneratedAttribute",
+      "format": "cobertura",
+      "includeTestAssembly": false,
+      "skipAutoProps": false,
+      "useSourceLink": false,
+      "excludeAssembliesWithoutSources": "None"
+    }
+  }
+}

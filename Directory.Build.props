@@ -47,4 +47,12 @@
     <None Include="$(RepoRoot)README.md" Pack="true" PackagePath="/" Condition="!Exists('$(MSBuildProjectDirectory)/README.md') And Exists('$(RepoRoot)README.md')" />
     <None Include="$(RepoRoot)icon.png" Pack="true" PackagePath="/" Condition="Exists('$(RepoRoot)icon.png')" />
   </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <!-- MTP reads testconfig.json next to the test assembly. The root file makes the coverlet
+         filters identical for every suite and authoritative: the default dynamic naming filter
+         silently dropped the assembly named exactly Flare, so the composition root was missing
+         from every coverage report. -->
+    <None Include="$(RepoRoot)testconfig.json" Link="testconfig.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
