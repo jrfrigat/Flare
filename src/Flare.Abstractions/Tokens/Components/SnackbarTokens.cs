@@ -61,15 +61,15 @@ public sealed record SnackbarTokens
     /// <summary>Text color of an error snackbar.</summary>
     [CssVar(SnackbarPanel.ErrorColor)] public string ErrorColor { get; init; } = Var(Css.Tokens.Color.OnError);
     /// <summary>Background of a success snackbar.</summary>
-    [CssVar(SnackbarPanel.SuccessBg)] public string SuccessBg { get; init; } = Var(Css.Tokens.Color.SecondaryContainer);
+    [CssVar(SnackbarPanel.SuccessBg)] public string SuccessBg { get; init; } = Var(Css.Tokens.Color.SuccessContainer);
     /// <summary>Text color of a success snackbar.</summary>
-    [CssVar(SnackbarPanel.SuccessColor)] public string SuccessColor { get; init; } = Var(Css.Tokens.Color.OnSecondaryContainer);
+    [CssVar(SnackbarPanel.SuccessColor)] public string SuccessColor { get; init; } = Var(Css.Tokens.Color.OnSuccessContainer);
     /// <summary>Background of a warning snackbar.</summary>
-    [CssVar(SnackbarPanel.WarningBg)] public string WarningBg { get; init; } = Var(Css.Tokens.Color.TertiaryContainer);
+    [CssVar(SnackbarPanel.WarningBg)] public string WarningBg { get; init; } = Var(Css.Tokens.Color.WarningContainer);
     /// <summary>Text color of a warning snackbar.</summary>
-    [CssVar(SnackbarPanel.WarningColor)] public string WarningColor { get; init; } = Var(Css.Tokens.Color.OnTertiaryContainer);
+    [CssVar(SnackbarPanel.WarningColor)] public string WarningColor { get; init; } = Var(Css.Tokens.Color.OnWarningContainer);
     /// <summary>Background of an info snackbar.</summary>
-    [CssVar(SnackbarPanel.InfoBg)] public string InfoBg { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
+    [CssVar(SnackbarPanel.InfoBg)] public string InfoBg { get; init; } = Var(Css.Tokens.Color.InfoContainer);
     /// <summary>Text color of an info snackbar.</summary>
-    [CssVar(SnackbarPanel.InfoColor)] public string InfoColor { get; init; } = Var(Css.Tokens.Color.OnPrimaryContainer);
+    [CssVar(SnackbarPanel.InfoColor)] public string InfoColor { get; init; } = Var(Css.Tokens.Color.OnInfoContainer);
 }

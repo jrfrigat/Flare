@@ -184,6 +184,21 @@ public class TokensToCssTests
         Assert.Contains($"{Css.Tokens.ProgressField.TrackColor}:var({Css.Tokens.Color.SecondaryContainer});", css);
     }
 
+    // A theme that leaves the alert and snackbar intents alone paints them on the status containers; the
+    // Material themes, which have no status roles, keep the accent containers they always drew.
+    [Fact]
+    public void ThemeCss_AlertAndSnackbarIntents_DefaultToStatusContainers()
+    {
+        var visualStudio = TokensToCss.ThemeCss(new Flare.Theme.VisualStudio.VisualStudioTheme());
+        Assert.Contains($"{Css.Tokens.Alert.SuccessBg}:var({Css.Tokens.Color.SuccessContainer});", visualStudio);
+        Assert.Contains($"{Css.Tokens.Alert.WarningBg}:var({Css.Tokens.Color.WarningContainer});", visualStudio);
+        Assert.Contains($"{Css.Tokens.Alert.InfoBg}:var({Css.Tokens.Color.InfoContainer});", visualStudio);
+
+        var material = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3.MaterialDesign3Theme());
+        Assert.Contains($"{Css.Tokens.Alert.SuccessBg}:var({Css.Tokens.Color.SecondaryContainer});", material);
+        Assert.Contains($"{Css.Tokens.SnackbarPanel.SuccessBg}:var({Css.Tokens.Color.SecondaryContainer});", material);
+    }
+
     [Theory]
     [InlineData(false, false, Css.Classes.Theme.ModeLight)]
     [InlineData(true, false, Css.Classes.Theme.ModeDark)]

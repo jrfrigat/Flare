@@ -217,6 +217,16 @@ public class MaterialDesign3Tokens
         BorderWidth = "0",
         Padding = "0.875rem 1rem",
         Gap = "0.75rem",
+        // Material has no status roles, so the intents use the accent containers.
+        InfoBg = "var(--flare-color-primary-container)",
+        InfoColor = "var(--flare-color-on-primary-container)",
+        InfoBorder = "var(--flare-color-primary-container)",
+        SuccessBg = "var(--flare-color-secondary-container)",
+        SuccessColor = "var(--flare-color-on-secondary-container)",
+        SuccessBorder = "var(--flare-color-secondary-container)",
+        WarningBg = "var(--flare-color-tertiary-container)",
+        WarningColor = "var(--flare-color-on-tertiary-container)",
+        WarningBorder = "var(--flare-color-tertiary-container)",
     };
 
     internal static readonly EmptyStateTokens EmptyState = new()
@@ -829,6 +839,13 @@ public class MaterialDesign3Tokens
         MinWidth = "20rem",
         MaxWidth = "36rem",
         ProviderOffset = "0px",
+        // Material has no status roles, so the intents use the accent containers.
+        SuccessBg = "var(--flare-color-secondary-container)",
+        SuccessColor = "var(--flare-color-on-secondary-container)",
+        WarningBg = "var(--flare-color-tertiary-container)",
+        WarningColor = "var(--flare-color-on-tertiary-container)",
+        InfoBg = "var(--flare-color-primary-container)",
+        InfoColor = "var(--flare-color-on-primary-container)",
     };
 
     // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip

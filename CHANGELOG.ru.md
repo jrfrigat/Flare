@@ -11,6 +11,7 @@
 - `FlareOverlay` по умолчанию стоит на ступени modal общей лестницы слоев (`--flare-z-modal`) и затемняет с прозрачностью scrim темы (`--flare-scrim-opacity`): снэкбары, подсказки и перетаскиваемый элемент остаются над ним, а все подложки темы затемняют одинаково. `--flare-overlay-scrim-layer` и `--flare-overlay-scrim-opacity` больше не обязательны для темы, явные `ZIndex` и `Opacity` по-прежнему побеждают.
 - `TabsTokens.PrimaryIndicatorInset` по умолчанию берет шаг общей шкалы отступов и больше не обязателен для темы.
 - Для авторов тем: в 0.49.0 и 0.50.0 тема, которая собирает `DesignTokens` с нуля, обязана задать новые члены, и компилятор сообщает о каждом пропущенном ошибкой CS9035. С 0.49.0: `EmptyState` (`IconOpacity`, `DescriptionMaxWidth`) и размеры и кегли аватара (`SizeXs`-`SizeXl`, `FontXs`-`FontXl`). С 0.50.0: `Carousel` (`ArrowBlur`), размеры частей вкладок (`ScrollIconSize`, `CloseSize`, `CloseIconSize`, `BadgeSize`) и `SpacingTokens.S20`. Тема, полученная из поставляемой через `with { ... }`, наследует их все; слой и прозрачность оверлея и отступ индикатора вкладок теперь имеют значения по умолчанию.
+- Намерения алерта и снэкбара по умолчанию рисуются на статусных контейнерах (`--flare-color-success-container`, `-warning-container`, `-info-container`) в теме, которая их не задает. Material Design 2 и 3, Aero и Liquid Glass сохраняют прежние акцентные контейнеры; алерты Visual Studio теперь совпадают с его снэкбаром.
 
 ### Исправлено
 

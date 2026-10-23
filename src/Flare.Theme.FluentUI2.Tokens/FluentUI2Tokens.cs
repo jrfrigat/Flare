@@ -1198,8 +1198,6 @@ public class FluentUI2Tokens
         Color = "var(--flare-color-on-surface)",
         ActionColor = "var(--flare-color-primary)",
         Shadow = "0 0 2px var(--flare-shadow-penumbra), 0 4px 8px var(--flare-shadow-umbra)",
-        // Severity surfaces, as the snackbar has always drawn them: error on the error role, the others on
-        // the secondary, tertiary and primary containers.
         ErrorBg = "var(--flare-color-error-container)",
         ErrorColor = "var(--flare-color-on-error-container)",
         SuccessBg = "var(--flare-color-success-container)",
