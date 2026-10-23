@@ -1,0 +1,39 @@
+#nullable enable
+Flare.Theme.VisualStudio.VisualStudio
+Flare.Theme.VisualStudio.VisualStudioCssVars
+Flare.Theme.VisualStudio.VisualStudioPalettes
+Flare.Theme.VisualStudio.VisualStudioRampGenerator
+Flare.Theme.VisualStudio.VisualStudioRampGenerator.Generate(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theme.VisualStudio.VisualStudioRampGenerator.VisualStudioRampGenerator() -> void
+Flare.Theme.VisualStudio.VisualStudioTheme
+Flare.Theme.VisualStudio.VisualStudioTheme.DefaultPaletteId.get -> string!
+Flare.Theme.VisualStudio.VisualStudioTheme.Design.get -> Flare.Abstractions.Tokens.DesignTokens!
+Flare.Theme.VisualStudio.VisualStudioTheme.DisplayName.get -> string!
+Flare.Theme.VisualStudio.VisualStudioTheme.ExtendedDarkOverride.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Flare.Theme.VisualStudio.VisualStudioTheme.Id.get -> string!
+Flare.Theme.VisualStudio.VisualStudioTheme.PaletteGenerator.get -> Flare.Abstractions.IPaletteGenerator?
+Flare.Theme.VisualStudio.VisualStudioTheme.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theme.VisualStudio.VisualStudioTheme.StyleAssets.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Flare.Theme.VisualStudio.VisualStudioTheme.VisualStudioTheme() -> void
+const Flare.Theme.VisualStudio.VisualStudioCssVars.Focus = "--flare-vs-focus" -> string!
+const Flare.Theme.VisualStudio.VisualStudioCssVars.TabActiveBg = "--flare-vs-tab-active-bg" -> string!
+const Flare.Theme.VisualStudio.VisualStudioCssVars.TabGap = "--flare-vs-tab-gap" -> string!
+const Flare.Theme.VisualStudio.VisualStudioCssVars.TabRadius = "--flare-vs-tab-radius" -> string!
+const Flare.Theme.VisualStudio.VisualStudioCssVars.TabStripBg = "--flare-vs-tab-strip-bg" -> string!
+const Flare.Theme.VisualStudio.VisualStudioPalettes.AmberId = "vs-amber" -> string!
+const Flare.Theme.VisualStudio.VisualStudioPalettes.BlueId = "vs-blue" -> string!
+const Flare.Theme.VisualStudio.VisualStudioPalettes.GreenId = "vs-green" -> string!
+const Flare.Theme.VisualStudio.VisualStudioPalettes.PurpleId = "vs-purple" -> string!
+const Flare.Theme.VisualStudio.VisualStudioPalettes.SourceName = "Visual Studio" -> string!
+const Flare.Theme.VisualStudio.VisualStudioPalettes.TealId = "vs-teal" -> string!
+const Flare.Theme.VisualStudio.VisualStudioTheme.ThemeId = "visualstudio" -> string!
+static Flare.Theme.VisualStudio.VisualStudio.DarkColors.get -> Flare.Abstractions.Tokens.ColorScheme!
+static Flare.Theme.VisualStudio.VisualStudio.DesignReference.get -> Flare.Abstractions.Tokens.DesignTokens!
+static Flare.Theme.VisualStudio.VisualStudio.LightColors.get -> Flare.Abstractions.Tokens.ColorScheme!
+static Flare.Theme.VisualStudio.VisualStudioPalettes.All.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+static readonly Flare.Theme.VisualStudio.VisualStudioPalettes.Amber -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.VisualStudio.VisualStudioPalettes.Blue -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.VisualStudio.VisualStudioPalettes.Green -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.VisualStudio.VisualStudioPalettes.Purple -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.VisualStudio.VisualStudioPalettes.Teal -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.VisualStudio.VisualStudioRampGenerator.Instance -> Flare.Theme.VisualStudio.VisualStudioRampGenerator!

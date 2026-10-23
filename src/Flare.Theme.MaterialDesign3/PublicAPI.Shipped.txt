@@ -1,0 +1,11 @@
+#nullable enable
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.DefaultPaletteId.get -> string!
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.Design.get -> Flare.Abstractions.Tokens.DesignTokens!
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.DisplayName.get -> string!
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.Id.get -> string!
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.MaterialDesign3Theme() -> void
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.PaletteGenerator.get -> Flare.Abstractions.IPaletteGenerator?
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theme.MaterialDesign3.MaterialDesign3Theme.StyleAssets.get -> System.Collections.Generic.IReadOnlyList<string!>!
+const Flare.Theme.MaterialDesign3.MaterialDesign3Theme.ThemeId = "md3" -> string!

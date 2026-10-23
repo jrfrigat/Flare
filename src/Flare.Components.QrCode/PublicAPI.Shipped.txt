@@ -1,0 +1,36 @@
+#nullable enable
+Flare.Components.FlareQrCode
+Flare.Components.FlareQrCode.AriaLabel.get -> string?
+Flare.Components.FlareQrCode.AriaLabel.set -> void
+Flare.Components.FlareQrCode.BackColor.get -> string!
+Flare.Components.FlareQrCode.BackColor.set -> void
+Flare.Components.FlareQrCode.CornerRadius.get -> double
+Flare.Components.FlareQrCode.CornerRadius.set -> void
+Flare.Components.FlareQrCode.ErrorCorrectionLevel.get -> Flare.Components.QrErrorCorrectionLevel
+Flare.Components.FlareQrCode.ErrorCorrectionLevel.set -> void
+Flare.Components.FlareQrCode.FlareQrCode() -> void
+Flare.Components.FlareQrCode.ForeColor.get -> string!
+Flare.Components.FlareQrCode.ForeColor.set -> void
+Flare.Components.FlareQrCode.IconContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.FlareQrCode.IconContent.set -> void
+Flare.Components.FlareQrCode.IconSize.get -> double
+Flare.Components.FlareQrCode.IconSize.set -> void
+Flare.Components.FlareQrCode.IconUrl.get -> string?
+Flare.Components.FlareQrCode.IconUrl.set -> void
+Flare.Components.FlareQrCode.Size.get -> int
+Flare.Components.FlareQrCode.Size.set -> void
+Flare.Components.FlareQrCode.Value.get -> string!
+Flare.Components.FlareQrCode.Value.set -> void
+Flare.Components.QrErrorCorrectionLevel
+Flare.Components.QrErrorCorrectionLevel.H = 3 -> Flare.Components.QrErrorCorrectionLevel
+Flare.Components.QrErrorCorrectionLevel.L = 0 -> Flare.Components.QrErrorCorrectionLevel
+Flare.Components.QrErrorCorrectionLevel.M = 1 -> Flare.Components.QrErrorCorrectionLevel
+Flare.Components.QrErrorCorrectionLevel.Q = 2 -> Flare.Components.QrErrorCorrectionLevel
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.QrCode
+const Flare.Css.Classes.QrCode.Root = "flare-qrcode" -> string!
+override Flare.Components.FlareQrCode.ComponentCssClass.get -> string!
+override Flare.Components.FlareQrCode.OnParametersSet() -> void
+~override Flare.Components.FlareQrCode.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

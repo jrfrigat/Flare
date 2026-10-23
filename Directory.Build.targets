@@ -173,4 +173,35 @@
                Condition="!@(Content->AnyHaveMetadataValue('Identity', 'wwwroot\css\$(FlareCssBundle).css'))" />
     </ItemGroup>
   </Target>
+
+  <!--
+    The public API of every shipped package is a contract the build checks. PublicAPI.Shipped.txt lists
+    what released versions carry, PublicAPI.Unshipped.txt what this version adds; a public symbol in
+    neither fails the build (RS0016), and a listed symbol that is gone fails it too (RS0017) - that is
+    the breaking change, caught where it is made instead of in review. Component parameters declared in
+    .razor files are part of it: the analyzer reads the Razor-generated code. Nullable annotations are
+    part of the contract as well (RS0036, RS0037).
+
+    EnablePackageValidation checks that the net8.0, net9.0 and net10.0 builds in one package expose the
+    same API. Setting FlareApiBaselineVersion (for example 1.0.0) also compares the package with that
+    published version on NuGet; it stays empty until 1.0, when breaking changes stop being allowed.
+  -->
+  <PropertyGroup>
+    <FlareTracksPublicApi Condition="'$(FlareTracksPublicApi)' == '' And '$(IsPackable)' != 'false' And $([MSBuild]::MakeRelative('$(RepoRoot)', '$(MSBuildProjectDirectory)').StartsWith('src'))">true</FlareTracksPublicApi>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(FlareTracksPublicApi)' == 'true'">
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+    <AdditionalFiles Include="PublicAPI.Shipped.txt;PublicAPI.Unshipped.txt" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(FlareTracksPublicApi)' == 'true'">
+    <WarningsAsErrors>$(WarningsAsErrors);RS0016;RS0017;RS0036;RS0037</WarningsAsErrors>
+    <!-- RS0026/RS0027 are design advice about optional-parameter overloads; following it now would
+         itself break the shipped API. RS0041 flags oblivious types in generated files without a
+         nullable context (icon catalogs, resource designers); their API lines carry "~" instead. -->
+    <NoWarn>$(NoWarn);RS0026;RS0027;RS0041</NoWarn>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion Condition="'$(FlareApiBaselineVersion)' != ''">$(FlareApiBaselineVersion)</PackageValidationBaselineVersion>
+  </PropertyGroup>
 </Project>

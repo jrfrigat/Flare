@@ -1,0 +1,26 @@
+#nullable enable
+Flare.Extensions.FlareOptions
+Flare.Extensions.FlareOptions.DefaultMode.get -> Flare.Abstractions.Tokens.ThemeMode
+Flare.Extensions.FlareOptions.DefaultMode.set -> void
+Flare.Extensions.FlareOptions.DefaultPalette.get -> Flare.Abstractions.Tokens.Palette?
+Flare.Extensions.FlareOptions.DefaultPalette.set -> void
+Flare.Extensions.FlareOptions.DefaultPaletteId.get -> string?
+Flare.Extensions.FlareOptions.DefaultPaletteId.set -> void
+Flare.Extensions.FlareOptions.DefaultTheme.get -> Flare.Abstractions.ITheme?
+Flare.Extensions.FlareOptions.DefaultTheme.set -> void
+Flare.Extensions.FlareOptions.DefaultThemeId.get -> string?
+Flare.Extensions.FlareOptions.DefaultThemeId.set -> void
+Flare.Extensions.FlareOptions.Delivery.get -> Flare.Abstractions.Tokens.ThemeDelivery
+Flare.Extensions.FlareOptions.Delivery.set -> void
+Flare.Extensions.FlareOptions.DynamicFallbackPalette.get -> Flare.Abstractions.Tokens.Palette?
+Flare.Extensions.FlareOptions.DynamicFallbackPalette.set -> void
+Flare.Extensions.FlareOptions.DynamicPaletteFallbackSeed.get -> string?
+Flare.Extensions.FlareOptions.DynamicPaletteFallbackSeed.set -> void
+Flare.Extensions.FlareOptions.FlareOptions() -> void
+Flare.Extensions.FlareOptions.UseDynamicPalette.get -> bool
+Flare.Extensions.FlareOptions.UseDynamicPalette.set -> void
+Flare.Extensions.ServiceCollectionExtensions
+static Flare.Extensions.ServiceCollectionExtensions.AddFlare(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Flare.Extensions.FlareOptions!>? configure = null) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Flare.Extensions.ServiceCollectionExtensions.AddFlarePalette(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, Flare.Abstractions.Tokens.Palette! palette) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Flare.Extensions.ServiceCollectionExtensions.AddFlareTheme(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, Flare.Abstractions.ITheme! theme) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Flare.Extensions.ServiceCollectionExtensions.AddFlareVersionCheck(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<Flare.Abstractions.FlareVersionCheckOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!

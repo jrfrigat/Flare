@@ -1,0 +1,199 @@
+#nullable enable
+Flare.Abstractions.Tokens.PaletteFactory
+Flare.Components.DynamicVariant
+Flare.Components.DynamicVariant.Expressive = 2 -> Flare.Components.DynamicVariant
+Flare.Components.DynamicVariant.Monochrome = 4 -> Flare.Components.DynamicVariant
+Flare.Components.DynamicVariant.Neutral = 3 -> Flare.Components.DynamicVariant
+Flare.Components.DynamicVariant.TonalSpot = 0 -> Flare.Components.DynamicVariant
+Flare.Components.DynamicVariant.Vibrant = 1 -> Flare.Components.DynamicVariant
+Flare.Components.FlareColor
+Flare.Components.FlareColor.CssClass.get -> string?
+Flare.Components.FlareColor.CssValue.get -> string?
+Flare.Components.FlareColor.Equals(Flare.Components.FlareColor other) -> bool
+Flare.Components.FlareColor.FlareColor() -> void
+Flare.Components.FlareColor.IsCustom.get -> bool
+Flare.Components.FlareColor.IsDefault.get -> bool
+Flare.Components.FlareColor.IsDynamic.get -> bool
+Flare.Components.FlareColor.IsRole.get -> bool
+Flare.Components.FlareColor.Next() -> Flare.Components.FlareColor
+Flare.Components.FlareColor.OnCssValue.get -> string?
+Flare.Components.FlareColor.RoleName.get -> string?
+Flare.Components.FlareColor.StyleContainer() -> string?
+Flare.Components.FlareColor.StyleContainerSolid() -> string?
+Flare.Components.FlareColor.StyleFull(string? onOverride = null) -> string?
+Flare.Components.FlareColor.StyleMain() -> string?
+Flare.Components.FlareColor.StyleMainOn(string? onOverride = null) -> string?
+Flare.Components.FlareColor.Value.get -> string?
+Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Default = 0 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Error = 6 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Info = 7 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.OnSurface = 8 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.OnSurfaceVariant = 9 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.OnSurfaceVariant2 = 10 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Primary = 1 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Secondary = 2 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Success = 4 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Tertiary = 3 -> Flare.Components.FlareColorRole
+Flare.Components.FlareColorRole.Warning = 5 -> Flare.Components.FlareColorRole
+Flare.Theming.ColorMath
+Flare.Theming.CssVarMap
+Flare.Theming.DefaultPaletteGenerator
+Flare.Theming.DefaultPaletteGenerator.DefaultPaletteGenerator() -> void
+Flare.Theming.DefaultPaletteGenerator.Generate(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theming.FlareBootstrap
+Flare.Theming.FlareThemeBuilder
+Flare.Theming.FlareThemeBuilder.Build() -> Flare.Abstractions.ITheme!
+Flare.Theming.FlareThemeBuilder.BuildUnsafe() -> Flare.Abstractions.ITheme!
+Flare.Theming.FlareThemeBuilder.FlareThemeBuilder(string! id, string! displayName, Flare.Abstractions.Tokens.DesignTokens! baseDesign) -> void
+Flare.Theming.FlareThemeBuilder.WithBase(Flare.Abstractions.ITheme! parent, bool inheritStyleAssets = true) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithButton(Flare.Abstractions.Tokens.Components.ButtonTokens! button) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithDefaultPalette(string! paletteId) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithDesign(Flare.Abstractions.Tokens.DesignTokens! design) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithDialog(Flare.Abstractions.Tokens.Components.DialogTokens! dialog) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithDrawer(Flare.Abstractions.Tokens.Components.DrawerTokens! drawer) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithElevation(Flare.Abstractions.Tokens.ElevationTokens! elevation) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithExtendedDarkOverride(System.Collections.Generic.IReadOnlyDictionary<string!, string!>! overrides) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithInput(Flare.Abstractions.Tokens.Components.InputTokens! input) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithMotion(Flare.Abstractions.Tokens.MotionTokens! motion) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithPaletteGenerator(Flare.Abstractions.IPaletteGenerator! generator) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithScriptAsset(string! src) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithScriptAssets(System.Collections.Generic.IEnumerable<string!>! sources) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithShape(Flare.Abstractions.Tokens.ShapeTokens! shape) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithSnackbar(Flare.Abstractions.Tokens.Components.SnackbarTokens! snackbar) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithState(Flare.Abstractions.Tokens.StateTokens! state) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithStyleAsset(string! href) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithStyleAssets(System.Collections.Generic.IEnumerable<string!>! hrefs) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.FlareThemeBuilder.WithTypography(Flare.Abstractions.Tokens.TypographyTokens! typography) -> Flare.Theming.FlareThemeBuilder!
+Flare.Theming.ScopedThemeService
+Flare.Theming.ScopedThemeService.ApplyDynamicPaletteAsync(Flare.Abstractions.PaletteSeed seed) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.ApplyDynamicPaletteAsync(Flare.Abstractions.Tokens.Palette! source) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.ClearAllCustomTokens() -> void
+Flare.Theming.ScopedThemeService.ClearCustomToken(string! tokenName) -> void
+Flare.Theming.ScopedThemeService.CurrentPalette.get -> Flare.Abstractions.Tokens.Palette!
+Flare.Theming.ScopedThemeService.CurrentTheme.get -> Flare.Abstractions.ITheme!
+Flare.Theming.ScopedThemeService.CustomizeColors(System.Func<Flare.Abstractions.Tokens.ColorScheme!, Flare.Abstractions.Tokens.ColorScheme!>! mutate) -> void
+Flare.Theming.ScopedThemeService.CustomizeDesign(System.Func<Flare.Abstractions.Tokens.DesignTokens!, Flare.Abstractions.Tokens.DesignTokens!>! mutate) -> void
+Flare.Theming.ScopedThemeService.Delivery.get -> Flare.Abstractions.Tokens.ThemeDelivery
+Flare.Theming.ScopedThemeService.DynamicFallbackPalette.get -> Flare.Abstractions.Tokens.Palette?
+Flare.Theming.ScopedThemeService.DynamicFallbackSeed.get -> string!
+Flare.Theming.ScopedThemeService.EnsureStaticCssAsync() -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.GeneratePalette(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theming.ScopedThemeService.GetCustomTokens() -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+Flare.Theming.ScopedThemeService.IsDark.get -> bool
+Flare.Theming.ScopedThemeService.IsDynamicPalette.get -> bool
+Flare.Theming.ScopedThemeService.IsHighContrast.get -> bool
+Flare.Theming.ScopedThemeService.IsRtl.get -> bool
+Flare.Theming.ScopedThemeService.Mode.get -> Flare.Abstractions.Tokens.ThemeMode
+Flare.Theming.ScopedThemeService.OnThemeChanged -> System.Func<System.Threading.Tasks.Task!>!
+Flare.Theming.ScopedThemeService.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theming.ScopedThemeService.RaiseAsync() -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.RegisterPalette(Flare.Abstractions.Tokens.Palette! palette) -> void
+Flare.Theming.ScopedThemeService.RegisterTheme(Flare.Abstractions.ITheme! theme) -> void
+Flare.Theming.ScopedThemeService.RequireThemeAssetsAsync(string? themeId, string? paletteId) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.ScopedThemeService(Flare.Abstractions.IThemeService! inner) -> void
+Flare.Theming.ScopedThemeService.Set(Flare.Abstractions.ITheme! theme, Flare.Abstractions.Tokens.Palette! palette, Flare.Abstractions.Tokens.ThemeMode mode, bool isDark, bool isHighContrast = false, bool isRtl = false) -> void
+Flare.Theming.ScopedThemeService.SetCustomToken(string! tokenName, string! value) -> void
+Flare.Theming.ScopedThemeService.SetCustomTokens(System.Collections.Generic.IReadOnlyDictionary<string!, string!>! tokens) -> void
+Flare.Theming.ScopedThemeService.SetModeAsync(Flare.Abstractions.Tokens.ThemeMode mode) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.SetPaletteAsync(string! paletteId) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.SetRtlAsync(bool isRtl) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.SetSystemDarkAsync(bool isDark) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.SetThemeAsync(string! themeId) -> System.Threading.Tasks.Task!
+Flare.Theming.ScopedThemeService.Themes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.ITheme!>!
+Flare.Theming.ThemeDerivation
+Flare.Theming.ThemeJsonSerializer
+Flare.Theming.ThemeLineage
+Flare.Theming.ThemeService
+Flare.Theming.ThemeService.ApplyDynamicPaletteAsync(Flare.Abstractions.PaletteSeed seed) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.ApplyDynamicPaletteAsync(Flare.Abstractions.Tokens.Palette! source) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.ClearAllCustomTokens() -> void
+Flare.Theming.ThemeService.ClearCustomToken(string! tokenName) -> void
+Flare.Theming.ThemeService.CurrentPalette.get -> Flare.Abstractions.Tokens.Palette!
+Flare.Theming.ThemeService.CurrentTheme.get -> Flare.Abstractions.ITheme!
+Flare.Theming.ThemeService.CustomizeColors(System.Func<Flare.Abstractions.Tokens.ColorScheme!, Flare.Abstractions.Tokens.ColorScheme!>! mutate) -> void
+Flare.Theming.ThemeService.CustomizeDesign(System.Func<Flare.Abstractions.Tokens.DesignTokens!, Flare.Abstractions.Tokens.DesignTokens!>! mutate) -> void
+Flare.Theming.ThemeService.Delivery.get -> Flare.Abstractions.Tokens.ThemeDelivery
+Flare.Theming.ThemeService.DynamicFallbackPalette.get -> Flare.Abstractions.Tokens.Palette?
+Flare.Theming.ThemeService.DynamicFallbackPalette.set -> void
+Flare.Theming.ThemeService.DynamicFallbackSeed.get -> string!
+Flare.Theming.ThemeService.DynamicFallbackSeed.set -> void
+Flare.Theming.ThemeService.EnsureStaticCssAsync() -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.GeneratePalette(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theming.ThemeService.GetCustomTokens() -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+Flare.Theming.ThemeService.IsDark.get -> bool
+Flare.Theming.ThemeService.IsDynamicPalette.get -> bool
+Flare.Theming.ThemeService.IsHighContrast.get -> bool
+Flare.Theming.ThemeService.IsRtl.get -> bool
+Flare.Theming.ThemeService.Mode.get -> Flare.Abstractions.Tokens.ThemeMode
+Flare.Theming.ThemeService.OnThemeChanged -> System.Func<System.Threading.Tasks.Task!>!
+Flare.Theming.ThemeService.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theming.ThemeService.RegisterPalette(Flare.Abstractions.Tokens.Palette! palette) -> void
+Flare.Theming.ThemeService.RegisterTheme(Flare.Abstractions.ITheme! theme) -> void
+Flare.Theming.ThemeService.RequireThemeAssetsAsync(string? themeId, string? paletteId) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.SetCustomToken(string! tokenName, string! value) -> void
+Flare.Theming.ThemeService.SetCustomTokens(System.Collections.Generic.IReadOnlyDictionary<string!, string!>! tokens) -> void
+Flare.Theming.ThemeService.SetModeAsync(Flare.Abstractions.Tokens.ThemeMode mode) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.SetPaletteAsync(string! paletteId) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.SetRtlAsync(bool isRtl) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.SetSystemDarkAsync(bool isDark) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.SetThemeAsync(string! themeId) -> System.Threading.Tasks.Task!
+Flare.Theming.ThemeService.ThemeService(Flare.Abstractions.ICssVariableInjector! injector, Flare.Abstractions.ITheme! defaultTheme, Flare.Abstractions.Tokens.Palette! defaultPalette, Flare.Abstractions.Tokens.ThemeMode defaultMode = Flare.Abstractions.Tokens.ThemeMode.Auto, Flare.Abstractions.Tokens.ThemeDelivery delivery = Flare.Abstractions.Tokens.ThemeDelivery.ClassToggle) -> void
+Flare.Theming.ThemeService.Themes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.ITheme!>!
+Flare.Theming.TokensToCss
+override Flare.Components.FlareColor.GetHashCode() -> int
+static Flare.Abstractions.Tokens.PaletteFactory.Brand(string! id, string! name, Flare.Abstractions.Tokens.ColorScheme! baseLight, Flare.Abstractions.Tokens.ColorScheme! baseDark, string! seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+static Flare.Abstractions.Tokens.PaletteFactory.FromColors(string! id, string! name, string! main, string? background = null, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+static Flare.Abstractions.Tokens.PaletteFactory.WithPrimaryFixedFromPrimary(this Flare.Abstractions.Tokens.Palette! palette) -> Flare.Abstractions.Tokens.Palette!
+static Flare.Abstractions.Tokens.PaletteFactory.WithTertiaryFixedFromTertiary(this Flare.Abstractions.Tokens.Palette! palette) -> Flare.Abstractions.Tokens.Palette!
+static Flare.Components.FlareColor.Custom(string? cssColor) -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Default.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Dynamic(string? source, Flare.Components.DynamicVariant variant = Flare.Components.DynamicVariant.TonalSpot, double contrast = 0) -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Error.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Info.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Next(Flare.Components.FlareColor color) -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.OnSurface.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.OnSurfaceVariant.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.OnSurfaceVariant2.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Primary.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Random() -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Secondary.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Success.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Tertiary.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.Warning.get -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.implicit operator Flare.Components.FlareColor(string? value) -> Flare.Components.FlareColor
+static Flare.Components.FlareColor.operator !=(Flare.Components.FlareColor left, Flare.Components.FlareColor right) -> bool
+static Flare.Components.FlareColor.operator ==(Flare.Components.FlareColor left, Flare.Components.FlareColor right) -> bool
+static Flare.Theming.ColorMath.ContrastRatio(string! a, string! b) -> double
+static Flare.Theming.ColorMath.Darken(string! hex, double t) -> string!
+static Flare.Theming.ColorMath.FromHsl(double h, double s, double l) -> string!
+static Flare.Theming.ColorMath.Hex(int r, int g, int b) -> string!
+static Flare.Theming.ColorMath.Lighten(string! hex, double t) -> string!
+static Flare.Theming.ColorMath.Luminance(string! hex) -> double
+static Flare.Theming.ColorMath.Mix(string! a, string! b, double t) -> string!
+static Flare.Theming.ColorMath.OnColor(string! hex) -> string!
+static Flare.Theming.ColorMath.Parse(string! hex) -> (int R, int G, int B)
+static Flare.Theming.ColorMath.RotateHue(string! hex, double degrees) -> string!
+static Flare.Theming.ColorMath.ToHsl(string! hex) -> (double H, double S, double L)
+static Flare.Theming.ColorMath.WcagLuminance(string! hex) -> double
+static Flare.Theming.ColorMath.WithLightness(string! hex, double l) -> string!
+static Flare.Theming.ColorMath.WithSaturation(string! hex, double s) -> string!
+static Flare.Theming.CssVarMap.Flatten(this Flare.Abstractions.Tokens.DesignTokens! design, Flare.Abstractions.Tokens.ColorScheme! colors) -> System.Collections.Generic.Dictionary<string!, string!>!
+static Flare.Theming.CssVarMap.FlattenColors(this Flare.Abstractions.Tokens.ColorScheme! c) -> System.Collections.Generic.Dictionary<string!, string!>!
+static Flare.Theming.CssVarMap.FlattenDesign(this Flare.Abstractions.Tokens.DesignTokens! t) -> System.Collections.Generic.Dictionary<string!, string!>!
+static Flare.Theming.FlareBootstrap.GenerateScript(System.Collections.Generic.IEnumerable<string!>! themeIds, System.Collections.Generic.IEnumerable<string!>! paletteIds, string! defaultTheme, string! defaultPalette, Flare.Abstractions.Tokens.ThemeMode defaultMode) -> string!
+static Flare.Theming.FlareBootstrap.GenerateScript(System.Collections.Generic.IEnumerable<string!>! themeIds, System.Collections.Generic.IEnumerable<string!>! paletteIds, string! defaultTheme, string! defaultPalette, Flare.Abstractions.Tokens.ThemeMode defaultMode, System.Collections.Generic.IReadOnlyDictionary<string!, System.Collections.Generic.IReadOnlyList<string!>!>? ancestors) -> string!
+static Flare.Theming.ThemeDerivation.Derive(this Flare.Abstractions.ITheme! baseTheme, string! id, string? displayName = null, System.Func<Flare.Abstractions.Tokens.DesignTokens!, Flare.Abstractions.Tokens.DesignTokens!>? design = null, System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>? palettes = null, string? defaultPaletteId = null, System.Collections.Generic.IReadOnlyList<string!>? styleAssets = null, Flare.Abstractions.IPaletteGenerator? paletteGenerator = null, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? extendedDarkOverride = null, System.Collections.Generic.IReadOnlyList<string!>? scriptAssets = null, bool inheritStyleAssets = true) -> Flare.Abstractions.ITheme!
+static Flare.Theming.ThemeJsonSerializer.ExportPalette(Flare.Abstractions.Tokens.Palette! palette) -> string!
+static Flare.Theming.ThemeJsonSerializer.ExportTheme(Flare.Abstractions.ITheme! theme) -> string!
+static Flare.Theming.ThemeJsonSerializer.ImportPalette(string! json) -> Flare.Abstractions.Tokens.Palette!
+static Flare.Theming.ThemeJsonSerializer.ImportTheme(string! json, System.Collections.Generic.IEnumerable<Flare.Abstractions.ITheme!>? knownThemes = null) -> Flare.Abstractions.ITheme!
+static Flare.Theming.ThemeLineage.Ids(Flare.Abstractions.ITheme! theme) -> System.Collections.Generic.IReadOnlyList<string!>!
+static Flare.Theming.ThemeLineage.RootClasses(Flare.Abstractions.ITheme! theme) -> string!
+static Flare.Theming.TokensToCss.Bundle(System.Collections.Generic.IEnumerable<Flare.Abstractions.ITheme!>! themes, System.Collections.Generic.IEnumerable<Flare.Abstractions.Tokens.Palette!>! palettes) -> string!
+static Flare.Theming.TokensToCss.Minify(string! css) -> string!
+static Flare.Theming.TokensToCss.PaletteCss(Flare.Abstractions.Tokens.Palette! palette) -> string!
+static Flare.Theming.TokensToCss.ThemeCss(Flare.Abstractions.ITheme! theme) -> string!
+static readonly Flare.Theming.DefaultPaletteGenerator.Instance -> Flare.Theming.DefaultPaletteGenerator!
+~override Flare.Components.FlareColor.Equals(object obj) -> bool
+~override Flare.Components.FlareColor.ToString() -> string

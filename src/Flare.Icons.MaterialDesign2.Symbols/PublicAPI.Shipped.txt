@@ -1,0 +1,21 @@
+#nullable enable
+Flare.Icons.FlareMaterialDesign2Icon
+Flare.Icons.FlareMaterialDesign2Icon.Equals(Flare.Icons.FlareMaterialDesign2Icon? other) -> bool
+Flare.Icons.FlareMaterialDesign2Icon.Family.get -> Flare.Icons.MaterialDesign2Family
+Flare.Icons.FlareMaterialDesign2Icon.Family.init -> void
+Flare.Icons.FlareMaterialDesign2Icon.FlareMaterialDesign2Icon() -> void
+Flare.Icons.FlareMaterialDesign2Icon.Name.get -> string!
+Flare.Icons.FlareMaterialDesign2Icon.Name.init -> void
+Flare.Icons.MaterialDesign2Family
+Flare.Icons.MaterialDesign2Family.Filled = 0 -> Flare.Icons.MaterialDesign2Family
+Flare.Icons.MaterialDesign2Family.Outlined = 1 -> Flare.Icons.MaterialDesign2Family
+Flare.Icons.MaterialDesign2Family.Round = 2 -> Flare.Icons.MaterialDesign2Family
+Flare.Icons.MaterialDesign2Family.Sharp = 3 -> Flare.Icons.MaterialDesign2Family
+Flare.Icons.MaterialDesign2Family.TwoTone = 4 -> Flare.Icons.MaterialDesign2Family
+override Flare.Icons.FlareMaterialDesign2Icon.<Clone>$() -> Flare.Icons.FlareMaterialDesign2Icon!
+override Flare.Icons.FlareMaterialDesign2Icon.Equals(object? obj) -> bool
+override Flare.Icons.FlareMaterialDesign2Icon.GetHashCode() -> int
+override Flare.Icons.FlareMaterialDesign2Icon.ToString() -> string!
+override sealed Flare.Icons.FlareMaterialDesign2Icon.Equals(Flare.Icons.FlareIcon? other) -> bool
+static Flare.Icons.FlareMaterialDesign2Icon.operator !=(Flare.Icons.FlareMaterialDesign2Icon? left, Flare.Icons.FlareMaterialDesign2Icon? right) -> bool
+static Flare.Icons.FlareMaterialDesign2Icon.operator ==(Flare.Icons.FlareMaterialDesign2Icon? left, Flare.Icons.FlareMaterialDesign2Icon? right) -> bool

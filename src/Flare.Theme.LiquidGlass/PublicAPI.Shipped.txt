@@ -1,0 +1,49 @@
+#nullable enable
+Flare.Theme.LiquidGlass.LiquidGlass
+Flare.Theme.LiquidGlass.LiquidGlassCssVars
+Flare.Theme.LiquidGlass.LiquidGlassPalettes
+Flare.Theme.LiquidGlass.LiquidGlassRampGenerator
+Flare.Theme.LiquidGlass.LiquidGlassRampGenerator.Generate(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theme.LiquidGlass.LiquidGlassRampGenerator.LiquidGlassRampGenerator() -> void
+Flare.Theme.LiquidGlass.LiquidGlassTheme
+Flare.Theme.LiquidGlass.LiquidGlassTheme.DefaultPaletteId.get -> string!
+Flare.Theme.LiquidGlass.LiquidGlassTheme.Design.get -> Flare.Abstractions.Tokens.DesignTokens!
+Flare.Theme.LiquidGlass.LiquidGlassTheme.DisplayName.get -> string!
+Flare.Theme.LiquidGlass.LiquidGlassTheme.ExtendedDarkOverride.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Flare.Theme.LiquidGlass.LiquidGlassTheme.Id.get -> string!
+Flare.Theme.LiquidGlass.LiquidGlassTheme.LiquidGlassTheme() -> void
+Flare.Theme.LiquidGlass.LiquidGlassTheme.PaletteGenerator.get -> Flare.Abstractions.IPaletteGenerator?
+Flare.Theme.LiquidGlass.LiquidGlassTheme.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theme.LiquidGlass.LiquidGlassTheme.StyleAssets.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Flare.Theme.LiquidGlass._Imports
+Flare.Theme.LiquidGlass._Imports.Execute() -> void
+Flare.Theme.LiquidGlass._Imports._Imports() -> void
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.ContentSheen = "--flare-liquid-content-sheen" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.ContentTint = "--flare-liquid-content-tint" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.Edge = "--flare-liquid-edge" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.Glow = "--flare-liquid-glow" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.Rim = "--flare-liquid-rim" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.RimLow = "--flare-liquid-rim-low" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.Shadow = "--flare-liquid-shadow" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.Sheen = "--flare-liquid-sheen" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.Tint = "--flare-liquid-tint" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassCssVars.TintStrong = "--flare-liquid-tint-strong" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.BlueId = "liquid-blue" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.GreenId = "liquid-green" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.OrangeId = "liquid-orange" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.PinkId = "liquid-pink" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.PurpleId = "liquid-purple" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.SourceName = "Liquid Glass" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassPalettes.TealId = "liquid-teal" -> string!
+const Flare.Theme.LiquidGlass.LiquidGlassTheme.ThemeId = "liquid-glass" -> string!
+static Flare.Theme.LiquidGlass.LiquidGlass.DarkColors.get -> Flare.Abstractions.Tokens.ColorScheme!
+static Flare.Theme.LiquidGlass.LiquidGlass.DesignReference.get -> Flare.Abstractions.Tokens.DesignTokens!
+static Flare.Theme.LiquidGlass.LiquidGlass.LightColors.get -> Flare.Abstractions.Tokens.ColorScheme!
+static Flare.Theme.LiquidGlass.LiquidGlassPalettes.All.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassPalettes.Blue -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassPalettes.Green -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassPalettes.Orange -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassPalettes.Pink -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassPalettes.Purple -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassPalettes.Teal -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.LiquidGlass.LiquidGlassRampGenerator.Instance -> Flare.Theme.LiquidGlass.LiquidGlassRampGenerator!

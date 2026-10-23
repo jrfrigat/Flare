@@ -1,0 +1,21 @@
+#nullable enable
+Flare.Theme.FluentUI2.Tokens.FluentCssVars
+Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens
+Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens.FluentUI2Tokens() -> void
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.DisabledBg = "--flare-fluent-disabled-bg" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.DisabledBorder = "--flare-fluent-disabled-border" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.DisabledFg = "--flare-fluent-disabled-fg" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.FocusStrokeColor = "--flare-fluent-focus-stroke-color" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.FocusStrokeOuter = "--flare-fluent-focus-stroke-outer" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.FocusStrokeWidth = "--flare-fluent-focus-stroke-width" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.StrokeHover = "--flare-fluent-stroke-hover" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.StrokePressed = "--flare-fluent-stroke-pressed" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.StrokeWidthThick = "--flare-fluent-stroke-width-thick" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.StrokeWidthThin = "--flare-fluent-stroke-width-thin" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.SubtleHover = "--flare-fluent-subtle-hover" -> string!
+const Flare.Theme.FluentUI2.Tokens.FluentCssVars.SubtlePressed = "--flare-fluent-subtle-pressed" -> string!
+static readonly Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens.DarkColors -> Flare.Abstractions.Tokens.ColorScheme!
+static readonly Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens.DarkExtended -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+static readonly Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens.Design -> Flare.Abstractions.Tokens.DesignTokens!
+static readonly Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens.Extended -> System.Collections.Generic.Dictionary<string!, string!>!
+static readonly Flare.Theme.FluentUI2.Tokens.FluentUI2Tokens.LightColors -> Flare.Abstractions.Tokens.ColorScheme!

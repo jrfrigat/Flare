@@ -1,0 +1,23 @@
+#nullable enable
+Flare.Css.Classes.Md3e.Progress
+Flare.Css.Tokens.Md3e.Progress
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.DefaultPaletteId.get -> string!
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.Design.get -> Flare.Abstractions.Tokens.DesignTokens!
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.DisplayName.get -> string!
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.Id.get -> string!
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.MaterialDesign3ExpressiveTheme() -> void
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.PaletteGenerator.get -> Flare.Abstractions.IPaletteGenerator?
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.StyleAssets.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Flare.Theme.MaterialDesign3Expressive._Imports
+Flare.Theme.MaterialDesign3Expressive._Imports.Execute() -> void
+Flare.Theme.MaterialDesign3Expressive._Imports._Imports() -> void
+const Flare.Css.Classes.Md3e.Progress.Wavy = "flare-progress--md3e-wavy" -> string!
+const Flare.Css.Tokens.Md3e.Progress.Amplitude = "--flare-progress-wave-amplitude" -> string!
+const Flare.Css.Tokens.Md3e.Progress.IndeterminateLength = "--flare-progress-indeterminate-wave-length" -> string!
+const Flare.Css.Tokens.Md3e.Progress.Length = "--flare-progress-wave-length" -> string!
+const Flare.Css.Tokens.Md3e.Progress.Mask = "--flare-progress-wave-mask" -> string!
+const Flare.Css.Tokens.Md3e.Progress.RingMask = "--flare-progress-ring-wave-mask" -> string!
+const Flare.Css.Tokens.Md3e.Progress.Speed = "--flare-progress-wave-speed" -> string!
+const Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme.ThemeId = "md3-expressive" -> string!

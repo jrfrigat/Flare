@@ -29,6 +29,7 @@
          global.json (10.0.400 -> 5.9.0); raising them means raising that floor first. -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" />
     <!-- Blazor / ASP.NET Core runtime.
          Microsoft.AspNetCore.Components.Web is deliberately absent: Flare.Abstractions is its only
          consumer and needs a different major per TFM, so it carries the whole version there via

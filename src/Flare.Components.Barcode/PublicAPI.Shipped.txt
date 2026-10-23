@@ -1,0 +1,66 @@
+#nullable enable
+Flare.Components.BarcodeEncoder
+Flare.Components.BarcodeEncoder.Symbol
+Flare.Components.BarcodeEncoder.Symbol.Deconstruct(out System.Collections.Generic.IReadOnlyList<int>! Modules, out string! Text) -> void
+Flare.Components.BarcodeEncoder.Symbol.Equals(Flare.Components.BarcodeEncoder.Symbol other) -> bool
+Flare.Components.BarcodeEncoder.Symbol.Modules.get -> System.Collections.Generic.IReadOnlyList<int>!
+Flare.Components.BarcodeEncoder.Symbol.Modules.init -> void
+Flare.Components.BarcodeEncoder.Symbol.Symbol() -> void
+Flare.Components.BarcodeEncoder.Symbol.Symbol(System.Collections.Generic.IReadOnlyList<int>! Modules, string! Text) -> void
+Flare.Components.BarcodeEncoder.Symbol.Text.get -> string!
+Flare.Components.BarcodeEncoder.Symbol.Text.init -> void
+Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.Codabar = 6 -> Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.Code128 = 0 -> Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.Code39 = 4 -> Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.Ean13 = 1 -> Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.Ean8 = 2 -> Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.Itf14 = 5 -> Flare.Components.BarcodeSymbology
+Flare.Components.BarcodeSymbology.UpcA = 3 -> Flare.Components.BarcodeSymbology
+Flare.Components.FlareBarcode
+Flare.Components.FlareBarcode.AriaLabel.get -> string?
+Flare.Components.FlareBarcode.AriaLabel.set -> void
+Flare.Components.FlareBarcode.FlareBarcode() -> void
+Flare.Components.FlareBarcode.Format.get -> string?
+Flare.Components.FlareBarcode.Format.set -> void
+Flare.Components.FlareBarcode.Height.get -> double
+Flare.Components.FlareBarcode.Height.set -> void
+Flare.Components.FlareBarcode.ModuleWidth.get -> double
+Flare.Components.FlareBarcode.ModuleWidth.set -> void
+Flare.Components.FlareBarcode.OnInvalid.get -> Microsoft.AspNetCore.Components.EventCallback<string!>
+Flare.Components.FlareBarcode.OnInvalid.set -> void
+Flare.Components.FlareBarcode.Quiet.get -> int
+Flare.Components.FlareBarcode.Quiet.set -> void
+Flare.Components.FlareBarcode.ShowText.get -> bool
+Flare.Components.FlareBarcode.ShowText.set -> void
+Flare.Components.FlareBarcode.Symbology.get -> Flare.Components.BarcodeSymbology
+Flare.Components.FlareBarcode.Symbology.set -> void
+Flare.Components.FlareBarcode.TextAbove.get -> bool
+Flare.Components.FlareBarcode.TextAbove.set -> void
+Flare.Components.FlareBarcode.Value.get -> string?
+Flare.Components.FlareBarcode.Value.set -> void
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.Barcode
+Flare.Css.Tokens.Barcode.Surface
+const Flare.Css.Classes.Barcode.Bar = "flare-barcode__bar" -> string!
+const Flare.Css.Classes.Barcode.Error = "flare-barcode__error" -> string!
+const Flare.Css.Classes.Barcode.Invalid = "flare-barcode--invalid" -> string!
+const Flare.Css.Classes.Barcode.Root = "flare-barcode" -> string!
+const Flare.Css.Classes.Barcode.Svg = "flare-barcode__svg" -> string!
+const Flare.Css.Classes.Barcode.Text = "flare-barcode__text" -> string!
+const Flare.Css.Classes.Barcode.TextAbove = "flare-barcode--text-above" -> string!
+const Flare.Css.Tokens.Barcode.Surface.Bar = "--flare-barcode-bar" -> string!
+const Flare.Css.Tokens.Barcode.Surface.Ground = "--flare-barcode-ground" -> string!
+override Flare.Components.BarcodeEncoder.Symbol.GetHashCode() -> int
+override Flare.Components.FlareBarcode.ComponentCssClass.get -> string!
+override Flare.Components.FlareBarcode.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+override Flare.Components.FlareBarcode.OnParametersSet() -> void
+static Flare.Components.BarcodeEncoder.CheckDigitMod10(string! body) -> char
+static Flare.Components.BarcodeEncoder.Symbol.operator !=(Flare.Components.BarcodeEncoder.Symbol left, Flare.Components.BarcodeEncoder.Symbol right) -> bool
+static Flare.Components.BarcodeEncoder.Symbol.operator ==(Flare.Components.BarcodeEncoder.Symbol left, Flare.Components.BarcodeEncoder.Symbol right) -> bool
+static Flare.Components.BarcodeEncoder.TryEncode(string? value, Flare.Components.BarcodeSymbology symbology, out string? error) -> Flare.Components.BarcodeEncoder.Symbol?
+~override Flare.Components.BarcodeEncoder.Symbol.Equals(object obj) -> bool
+~override Flare.Components.BarcodeEncoder.Symbol.ToString() -> string
+~override Flare.Components.FlareBarcode.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

@@ -1,0 +1,30 @@
+#nullable enable
+Flare.Theme.MaterialDesign2.MaterialDesign2RampGenerator
+Flare.Theme.MaterialDesign2.MaterialDesign2RampGenerator.Generate(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theme.MaterialDesign2.MaterialDesign2RampGenerator.MaterialDesign2RampGenerator() -> void
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.DefaultPaletteId.get -> string!
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.Design.get -> Flare.Abstractions.Tokens.DesignTokens!
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.DisplayName.get -> string!
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.Id.get -> string!
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.MaterialDesign2Theme() -> void
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.PaletteGenerator.get -> Flare.Abstractions.IPaletteGenerator?
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theme.MaterialDesign2.MaterialDesign2Theme.StyleAssets.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Flare.Theme.MaterialDesign2.Md2Palettes
+const Flare.Theme.MaterialDesign2.MaterialDesign2Theme.ThemeId = "md2" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.BlueId = "md2-blue" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.GreenId = "md2-green" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.IndigoId = "md2-indigo" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.PinkId = "md2-pink" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.PurpleId = "md2-purple" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.SourceName = "Material Design 2" -> string!
+const Flare.Theme.MaterialDesign2.Md2Palettes.TealId = "md2-teal" -> string!
+static Flare.Theme.MaterialDesign2.Md2Palettes.All.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+static readonly Flare.Theme.MaterialDesign2.MaterialDesign2RampGenerator.Instance -> Flare.Theme.MaterialDesign2.MaterialDesign2RampGenerator!
+static readonly Flare.Theme.MaterialDesign2.Md2Palettes.Blue -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign2.Md2Palettes.Green -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign2.Md2Palettes.Indigo -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign2.Md2Palettes.Pink -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign2.Md2Palettes.Purple -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign2.Md2Palettes.Teal -> Flare.Abstractions.Tokens.Palette!

@@ -1,0 +1,418 @@
+#nullable enable
+Flare.Components.IDE.FlareBackstage
+Flare.Components.IDE.FlareBackstage.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareBackstage.ChildContent.set -> void
+Flare.Components.IDE.FlareBackstage.CloseLabel.get -> string!
+Flare.Components.IDE.FlareBackstage.CloseLabel.set -> void
+Flare.Components.IDE.FlareBackstage.FlareBackstage() -> void
+Flare.Components.IDE.FlareBackstage.NavContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareBackstage.NavContent.set -> void
+Flare.Components.IDE.FlareBackstage.Open.get -> bool
+Flare.Components.IDE.FlareBackstage.Open.set -> void
+Flare.Components.IDE.FlareBackstage.OpenChanged.get -> Microsoft.AspNetCore.Components.EventCallback<bool>
+Flare.Components.IDE.FlareBackstage.OpenChanged.set -> void
+Flare.Components.IDE.FlareBackstageItem
+Flare.Components.IDE.FlareBackstageItem.Active.get -> bool
+Flare.Components.IDE.FlareBackstageItem.Active.set -> void
+Flare.Components.IDE.FlareBackstageItem.Disabled.get -> bool
+Flare.Components.IDE.FlareBackstageItem.Disabled.set -> void
+Flare.Components.IDE.FlareBackstageItem.FlareBackstageItem() -> void
+Flare.Components.IDE.FlareBackstageItem.Icon.get -> Flare.Icons.FlareIcon?
+Flare.Components.IDE.FlareBackstageItem.Icon.set -> void
+Flare.Components.IDE.FlareBackstageItem.Label.get -> string?
+Flare.Components.IDE.FlareBackstageItem.Label.set -> void
+Flare.Components.IDE.FlareBackstageItem.OnClick.get -> Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs!>
+Flare.Components.IDE.FlareBackstageItem.OnClick.set -> void
+Flare.Components.IDE.FlareDocumentTab
+Flare.Components.IDE.FlareDocumentTab.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareDocumentTab.ChildContent.set -> void
+Flare.Components.IDE.FlareDocumentTab.Closeable.get -> bool
+Flare.Components.IDE.FlareDocumentTab.Closeable.set -> void
+Flare.Components.IDE.FlareDocumentTab.Dispose() -> void
+Flare.Components.IDE.FlareDocumentTab.FlareDocumentTab() -> void
+Flare.Components.IDE.FlareDocumentTab.Icon.get -> Flare.Icons.FlareIcon?
+Flare.Components.IDE.FlareDocumentTab.Icon.set -> void
+Flare.Components.IDE.FlareDocumentTab.Modified.get -> bool
+Flare.Components.IDE.FlareDocumentTab.Modified.set -> void
+Flare.Components.IDE.FlareDocumentTab.Title.get -> string!
+Flare.Components.IDE.FlareDocumentTab.Title.set -> void
+Flare.Components.IDE.FlareDocumentTabs
+Flare.Components.IDE.FlareDocumentTabs.ActiveTabTitle.get -> string?
+Flare.Components.IDE.FlareDocumentTabs.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareDocumentTabs.ChildContent.set -> void
+Flare.Components.IDE.FlareDocumentTabs.FlareDocumentTabs() -> void
+Flare.Components.IDE.FlareDocumentTabs.OnTabChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string!>
+Flare.Components.IDE.FlareDocumentTabs.OnTabChanged.set -> void
+Flare.Components.IDE.FlareDocumentTabs.OnTabClose.get -> Microsoft.AspNetCore.Components.EventCallback<string!>
+Flare.Components.IDE.FlareDocumentTabs.OnTabClose.set -> void
+Flare.Components.IDE.FlareDocumentTabs.OverflowBehavior.get -> Flare.Components.IDE.TabOverflowBehavior
+Flare.Components.IDE.FlareDocumentTabs.OverflowBehavior.set -> void
+Flare.Components.IDE.FlareFormulaBar
+Flare.Components.IDE.FlareFormulaBar.CellRef.get -> string?
+Flare.Components.IDE.FlareFormulaBar.CellRef.set -> void
+Flare.Components.IDE.FlareFormulaBar.CellRefChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string?>
+Flare.Components.IDE.FlareFormulaBar.CellRefChanged.set -> void
+Flare.Components.IDE.FlareFormulaBar.FlareFormulaBar() -> void
+Flare.Components.IDE.FlareFormulaBar.FormulaLabel.get -> string!
+Flare.Components.IDE.FlareFormulaBar.FormulaLabel.set -> void
+Flare.Components.IDE.FlareFormulaBar.NameBoxLabel.get -> string!
+Flare.Components.IDE.FlareFormulaBar.NameBoxLabel.set -> void
+Flare.Components.IDE.FlareFormulaBar.Placeholder.get -> string?
+Flare.Components.IDE.FlareFormulaBar.Placeholder.set -> void
+Flare.Components.IDE.FlareFormulaBar.Value.get -> string?
+Flare.Components.IDE.FlareFormulaBar.Value.set -> void
+Flare.Components.IDE.FlareFormulaBar.ValueChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string?>
+Flare.Components.IDE.FlareFormulaBar.ValueChanged.set -> void
+Flare.Components.IDE.FlareIdeLayout
+Flare.Components.IDE.FlareIdeLayout.BottomCollapsed.get -> bool
+Flare.Components.IDE.FlareIdeLayout.BottomCollapsed.set -> void
+Flare.Components.IDE.FlareIdeLayout.BottomCollapsedChanged.get -> Microsoft.AspNetCore.Components.EventCallback<bool>
+Flare.Components.IDE.FlareIdeLayout.BottomCollapsedChanged.set -> void
+Flare.Components.IDE.FlareIdeLayout.BottomPanel.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.BottomPanel.set -> void
+Flare.Components.IDE.FlareIdeLayout.BottomPanelHeight.get -> string!
+Flare.Components.IDE.FlareIdeLayout.BottomPanelHeight.set -> void
+Flare.Components.IDE.FlareIdeLayout.BottomResizable.get -> bool
+Flare.Components.IDE.FlareIdeLayout.BottomResizable.set -> void
+Flare.Components.IDE.FlareIdeLayout.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.ChildContent.set -> void
+Flare.Components.IDE.FlareIdeLayout.FlareIdeLayout() -> void
+Flare.Components.IDE.FlareIdeLayout.Height.get -> string?
+Flare.Components.IDE.FlareIdeLayout.Height.set -> void
+Flare.Components.IDE.FlareIdeLayout.LeftCollapsed.get -> bool
+Flare.Components.IDE.FlareIdeLayout.LeftCollapsed.set -> void
+Flare.Components.IDE.FlareIdeLayout.LeftCollapsedChanged.get -> Microsoft.AspNetCore.Components.EventCallback<bool>
+Flare.Components.IDE.FlareIdeLayout.LeftCollapsedChanged.set -> void
+Flare.Components.IDE.FlareIdeLayout.LeftPanelWidth.get -> string!
+Flare.Components.IDE.FlareIdeLayout.LeftPanelWidth.set -> void
+Flare.Components.IDE.FlareIdeLayout.LeftResizable.get -> bool
+Flare.Components.IDE.FlareIdeLayout.LeftResizable.set -> void
+Flare.Components.IDE.FlareIdeLayout.LeftToolPanel.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.LeftToolPanel.set -> void
+Flare.Components.IDE.FlareIdeLayout.MenuBar.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.MenuBar.set -> void
+Flare.Components.IDE.FlareIdeLayout.MinPanelSize.get -> int
+Flare.Components.IDE.FlareIdeLayout.MinPanelSize.set -> void
+Flare.Components.IDE.FlareIdeLayout.RailSize.get -> string!
+Flare.Components.IDE.FlareIdeLayout.RailSize.set -> void
+Flare.Components.IDE.FlareIdeLayout.ResizePanel(string! position, int sizePx) -> void
+Flare.Components.IDE.FlareIdeLayout.Ribbon.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.Ribbon.set -> void
+Flare.Components.IDE.FlareIdeLayout.RightCollapsed.get -> bool
+Flare.Components.IDE.FlareIdeLayout.RightCollapsed.set -> void
+Flare.Components.IDE.FlareIdeLayout.RightCollapsedChanged.get -> Microsoft.AspNetCore.Components.EventCallback<bool>
+Flare.Components.IDE.FlareIdeLayout.RightCollapsedChanged.set -> void
+Flare.Components.IDE.FlareIdeLayout.RightPanelWidth.get -> string!
+Flare.Components.IDE.FlareIdeLayout.RightPanelWidth.set -> void
+Flare.Components.IDE.FlareIdeLayout.RightResizable.get -> bool
+Flare.Components.IDE.FlareIdeLayout.RightResizable.set -> void
+Flare.Components.IDE.FlareIdeLayout.RightToolPanel.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.RightToolPanel.set -> void
+Flare.Components.IDE.FlareIdeLayout.StatusBar.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareIdeLayout.StatusBar.set -> void
+Flare.Components.IDE.FlareMenuBar
+Flare.Components.IDE.FlareMenuBar.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareMenuBar.ChildContent.set -> void
+Flare.Components.IDE.FlareMenuBar.FlareMenuBar() -> void
+Flare.Components.IDE.FlarePropertyGrid
+Flare.Components.IDE.FlarePropertyGrid.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlarePropertyGrid.ChildContent.set -> void
+Flare.Components.IDE.FlarePropertyGrid.FlarePropertyGrid() -> void
+Flare.Components.IDE.FlarePropertyGrid.Title.get -> string?
+Flare.Components.IDE.FlarePropertyGrid.Title.set -> void
+Flare.Components.IDE.FlarePropertyGridItem
+Flare.Components.IDE.FlarePropertyGridItem.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlarePropertyGridItem.ChildContent.set -> void
+Flare.Components.IDE.FlarePropertyGridItem.FlarePropertyGridItem() -> void
+Flare.Components.IDE.FlarePropertyGridItem.Name.get -> string?
+Flare.Components.IDE.FlarePropertyGridItem.Name.set -> void
+Flare.Components.IDE.FlarePropertyGridItem.Value.get -> string?
+Flare.Components.IDE.FlarePropertyGridItem.Value.set -> void
+Flare.Components.IDE.FlareQuickAccessToolbar
+Flare.Components.IDE.FlareQuickAccessToolbar.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareQuickAccessToolbar.ChildContent.set -> void
+Flare.Components.IDE.FlareQuickAccessToolbar.FlareQuickAccessToolbar() -> void
+Flare.Components.IDE.FlareRibbon
+Flare.Components.IDE.FlareRibbon.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareRibbon.ChildContent.set -> void
+Flare.Components.IDE.FlareRibbon.FlareRibbon() -> void
+Flare.Components.IDE.FlareRibbon.OnTabChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string?>
+Flare.Components.IDE.FlareRibbon.OnTabChanged.set -> void
+Flare.Components.IDE.FlareRibbon.OnTabNavigation(string! key, bool rtl) -> System.Threading.Tasks.Task!
+Flare.Components.IDE.FlareRibbon.SizeMode.get -> Flare.Components.IDE.RibbonSizeMode
+Flare.Components.IDE.FlareRibbon.SizeMode.set -> void
+Flare.Components.IDE.FlareRibbonButton
+Flare.Components.IDE.FlareRibbonButton.Disabled.get -> bool
+Flare.Components.IDE.FlareRibbonButton.Disabled.set -> void
+Flare.Components.IDE.FlareRibbonButton.FlareRibbonButton() -> void
+Flare.Components.IDE.FlareRibbonButton.Icon.get -> Flare.Icons.FlareIcon?
+Flare.Components.IDE.FlareRibbonButton.Icon.set -> void
+Flare.Components.IDE.FlareRibbonButton.IsLarge.get -> bool
+Flare.Components.IDE.FlareRibbonButton.IsLarge.set -> void
+Flare.Components.IDE.FlareRibbonButton.Label.get -> string?
+Flare.Components.IDE.FlareRibbonButton.Label.set -> void
+Flare.Components.IDE.FlareRibbonButton.OnClick.get -> Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Web.MouseEventArgs!>
+Flare.Components.IDE.FlareRibbonButton.OnClick.set -> void
+Flare.Components.IDE.FlareRibbonButton.Tooltip.get -> string?
+Flare.Components.IDE.FlareRibbonButton.Tooltip.set -> void
+Flare.Components.IDE.FlareRibbonDropdown
+Flare.Components.IDE.FlareRibbonDropdown.Disabled.get -> bool
+Flare.Components.IDE.FlareRibbonDropdown.Disabled.set -> void
+Flare.Components.IDE.FlareRibbonDropdown.FlareRibbonDropdown() -> void
+Flare.Components.IDE.FlareRibbonDropdown.Icon.get -> Flare.Icons.FlareIcon?
+Flare.Components.IDE.FlareRibbonDropdown.Icon.set -> void
+Flare.Components.IDE.FlareRibbonDropdown.IsLarge.get -> bool
+Flare.Components.IDE.FlareRibbonDropdown.IsLarge.set -> void
+Flare.Components.IDE.FlareRibbonDropdown.Label.get -> string?
+Flare.Components.IDE.FlareRibbonDropdown.Label.set -> void
+Flare.Components.IDE.FlareRibbonDropdown.MenuContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareRibbonDropdown.MenuContent.set -> void
+Flare.Components.IDE.FlareRibbonDropdown.Tooltip.get -> string?
+Flare.Components.IDE.FlareRibbonDropdown.Tooltip.set -> void
+Flare.Components.IDE.FlareRibbonGroup
+Flare.Components.IDE.FlareRibbonGroup.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareRibbonGroup.ChildContent.set -> void
+Flare.Components.IDE.FlareRibbonGroup.FlareRibbonGroup() -> void
+Flare.Components.IDE.FlareRibbonGroup.Label.get -> string?
+Flare.Components.IDE.FlareRibbonGroup.Label.set -> void
+Flare.Components.IDE.FlareRibbonSeparator
+Flare.Components.IDE.FlareRibbonSeparator.FlareRibbonSeparator() -> void
+Flare.Components.IDE.FlareRibbonTab
+Flare.Components.IDE.FlareRibbonTab.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareRibbonTab.ChildContent.set -> void
+Flare.Components.IDE.FlareRibbonTab.Disabled.get -> bool
+Flare.Components.IDE.FlareRibbonTab.Disabled.set -> void
+Flare.Components.IDE.FlareRibbonTab.Dispose() -> void
+Flare.Components.IDE.FlareRibbonTab.FlareRibbonTab() -> void
+Flare.Components.IDE.FlareRibbonTab.Title.get -> string!
+Flare.Components.IDE.FlareRibbonTab.Title.set -> void
+Flare.Components.IDE.FlareSheetTabs
+Flare.Components.IDE.FlareSheetTabs.ActiveIndex.get -> int
+Flare.Components.IDE.FlareSheetTabs.ActiveIndex.set -> void
+Flare.Components.IDE.FlareSheetTabs.ActiveIndexChanged.get -> Microsoft.AspNetCore.Components.EventCallback<int>
+Flare.Components.IDE.FlareSheetTabs.ActiveIndexChanged.set -> void
+Flare.Components.IDE.FlareSheetTabs.AddLabel.get -> string!
+Flare.Components.IDE.FlareSheetTabs.AddLabel.set -> void
+Flare.Components.IDE.FlareSheetTabs.FlareSheetTabs() -> void
+Flare.Components.IDE.FlareSheetTabs.OnAddSheet.get -> Microsoft.AspNetCore.Components.EventCallback
+Flare.Components.IDE.FlareSheetTabs.OnAddSheet.set -> void
+Flare.Components.IDE.FlareSheetTabs.Sheets.get -> System.Collections.Generic.IReadOnlyList<string!>?
+Flare.Components.IDE.FlareSheetTabs.Sheets.set -> void
+Flare.Components.IDE.FlareSheetTabs.ShowAddButton.get -> bool
+Flare.Components.IDE.FlareSheetTabs.ShowAddButton.set -> void
+Flare.Components.IDE.FlareStatusBar
+Flare.Components.IDE.FlareStatusBar.CenterContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareStatusBar.CenterContent.set -> void
+Flare.Components.IDE.FlareStatusBar.FlareStatusBar() -> void
+Flare.Components.IDE.FlareStatusBar.LeftContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareStatusBar.LeftContent.set -> void
+Flare.Components.IDE.FlareStatusBar.RightContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareStatusBar.RightContent.set -> void
+Flare.Components.IDE.FlareToolPanel
+Flare.Components.IDE.FlareToolPanel.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareToolPanel.ChildContent.set -> void
+Flare.Components.IDE.FlareToolPanel.Collapsed.get -> bool
+Flare.Components.IDE.FlareToolPanel.Collapsed.set -> void
+Flare.Components.IDE.FlareToolPanel.CollapsedChanged.get -> Microsoft.AspNetCore.Components.EventCallback<bool>
+Flare.Components.IDE.FlareToolPanel.CollapsedChanged.set -> void
+Flare.Components.IDE.FlareToolPanel.FlareToolPanel() -> void
+Flare.Components.IDE.FlareToolPanel.Mode.get -> Flare.Components.IDE.IdePanelMode
+Flare.Components.IDE.FlareToolPanel.Mode.set -> void
+Flare.Components.IDE.FlareToolPanel.Position.get -> Flare.Components.IDE.ToolPanelPosition
+Flare.Components.IDE.FlareToolPanel.Position.set -> void
+Flare.Components.IDE.FlareToolPanel.ShowToolbar.get -> bool
+Flare.Components.IDE.FlareToolPanel.ShowToolbar.set -> void
+Flare.Components.IDE.FlareToolPanel.Title.get -> string?
+Flare.Components.IDE.FlareToolPanel.Title.set -> void
+Flare.Components.IDE.FlareToolPanel.ToolbarContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareToolPanel.ToolbarContent.set -> void
+Flare.Components.IDE.FlareToolbar
+Flare.Components.IDE.FlareToolbar.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.IDE.FlareToolbar.ChildContent.set -> void
+Flare.Components.IDE.FlareToolbar.Dense.get -> bool
+Flare.Components.IDE.FlareToolbar.Dense.set -> void
+Flare.Components.IDE.FlareToolbar.FlareToolbar() -> void
+Flare.Components.IDE.IdePanelMode
+Flare.Components.IDE.IdePanelMode.AutoHide = 1 -> Flare.Components.IDE.IdePanelMode
+Flare.Components.IDE.IdePanelMode.Docked = 0 -> Flare.Components.IDE.IdePanelMode
+Flare.Components.IDE.IdeStrings
+Flare.Components.IDE.RibbonSizeMode
+Flare.Components.IDE.RibbonSizeMode.Collapsed = 1 -> Flare.Components.IDE.RibbonSizeMode
+Flare.Components.IDE.RibbonSizeMode.Full = 0 -> Flare.Components.IDE.RibbonSizeMode
+Flare.Components.IDE.ServiceCollectionExtensions
+Flare.Components.IDE.Services.IIdeJsService
+Flare.Components.IDE.Services.IIdeJsService.StartPanelResizeAsync(Microsoft.JSInterop.DotNetObjectReference<Flare.Components.IDE.FlareIdeLayout!>! dotNetRef, Microsoft.AspNetCore.Components.ElementReference layout, string! position, int minPx) -> System.Threading.Tasks.ValueTask
+Flare.Components.IDE.Services.IdeJsService
+Flare.Components.IDE.Services.IdeJsService.IdeJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.IDE.Services.IdeJsService.StartPanelResizeAsync(Microsoft.JSInterop.DotNetObjectReference<Flare.Components.IDE.FlareIdeLayout!>! dotNetRef, Microsoft.AspNetCore.Components.ElementReference layout, string! position, int minPx) -> System.Threading.Tasks.ValueTask
+Flare.Components.IDE.TabOverflowBehavior
+Flare.Components.IDE.TabOverflowBehavior.Dropdown = 1 -> Flare.Components.IDE.TabOverflowBehavior
+Flare.Components.IDE.TabOverflowBehavior.Scroll = 0 -> Flare.Components.IDE.TabOverflowBehavior
+Flare.Components.IDE.ToolPanelPosition
+Flare.Components.IDE.ToolPanelPosition.Bottom = 2 -> Flare.Components.IDE.ToolPanelPosition
+Flare.Components.IDE.ToolPanelPosition.Left = 0 -> Flare.Components.IDE.ToolPanelPosition
+Flare.Components.IDE.ToolPanelPosition.Right = 1 -> Flare.Components.IDE.ToolPanelPosition
+Flare.Components.IDE._Imports
+Flare.Components.IDE._Imports.Execute() -> void
+Flare.Components.IDE._Imports._Imports() -> void
+Flare.Css.Classes.Ide.Backstage
+Flare.Css.Classes.Ide.DocTabs
+Flare.Css.Classes.Ide.FormulaBar
+Flare.Css.Classes.Ide.Layout
+Flare.Css.Classes.Ide.MenuBar
+Flare.Css.Classes.Ide.PropGrid
+Flare.Css.Classes.Ide.Qat
+Flare.Css.Classes.Ide.Ribbon
+Flare.Css.Classes.Ide.SheetTabs
+Flare.Css.Classes.Ide.StatusBar
+Flare.Css.Classes.Ide.ToolPanel
+Flare.Css.Classes.Ide.Toolbar
+Flare.Css.Tokens.Ide.Layout
+const Flare.Css.Classes.Ide.Backstage.Back = "flare-backstage__back" -> string!
+const Flare.Css.Classes.Ide.Backstage.Content = "flare-backstage__content" -> string!
+const Flare.Css.Classes.Ide.Backstage.Nav = "flare-backstage__nav" -> string!
+const Flare.Css.Classes.Ide.Backstage.NavItem = "flare-backstage__nav-item" -> string!
+const Flare.Css.Classes.Ide.Backstage.NavItemActive = "flare-backstage__nav-item--active" -> string!
+const Flare.Css.Classes.Ide.Backstage.NavLabel = "flare-backstage__nav-label" -> string!
+const Flare.Css.Classes.Ide.Backstage.Root = "flare-backstage" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Bar = "flare-doc-tabs__bar" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Close = "flare-doc-tabs__close" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Dropdown = "flare-doc-tabs__dropdown" -> string!
+const Flare.Css.Classes.Ide.DocTabs.DropdownItem = "flare-doc-tabs__dropdown-item" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Icon = "flare-doc-tabs__icon" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Label = "flare-doc-tabs__label" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Modified = "flare-doc-tabs__modified" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Panel = "flare-doc-tabs__panel" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Panels = "flare-doc-tabs__panels" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Root = "flare-doc-tabs" -> string!
+const Flare.Css.Classes.Ide.DocTabs.Tab = "flare-doc-tabs__tab" -> string!
+const Flare.Css.Classes.Ide.DocTabs.TabActive = "flare-doc-tabs__tab--active" -> string!
+const Flare.Css.Classes.Ide.FormulaBar.Fx = "flare-formula-bar__fx" -> string!
+const Flare.Css.Classes.Ide.FormulaBar.Input = "flare-formula-bar__input" -> string!
+const Flare.Css.Classes.Ide.FormulaBar.NameBox = "flare-formula-bar__namebox" -> string!
+const Flare.Css.Classes.Ide.FormulaBar.Root = "flare-formula-bar" -> string!
+const Flare.Css.Classes.Ide.Layout.Body = "flare-ide-layout__body" -> string!
+const Flare.Css.Classes.Ide.Layout.Bottom = "flare-ide-layout__bottom" -> string!
+const Flare.Css.Classes.Ide.Layout.Content = "flare-ide-layout__content" -> string!
+const Flare.Css.Classes.Ide.Layout.Main = "flare-ide-layout__main" -> string!
+const Flare.Css.Classes.Ide.Layout.MenuBar = "flare-ide-layout__menubar" -> string!
+const Flare.Css.Classes.Ide.Layout.Panel = "flare-ide-layout__panel" -> string!
+const Flare.Css.Classes.Ide.Layout.PanelBody = "flare-ide-layout__panel-body" -> string!
+const Flare.Css.Classes.Ide.Layout.PanelCollapsed = "flare-ide-layout__panel--collapsed" -> string!
+const Flare.Css.Classes.Ide.Layout.PanelFloating = "flare-ide-layout__panel--floating" -> string!
+const Flare.Css.Classes.Ide.Layout.PanelLeft = "flare-ide-layout__panel--left" -> string!
+const Flare.Css.Classes.Ide.Layout.PanelRight = "flare-ide-layout__panel--right" -> string!
+const Flare.Css.Classes.Ide.Layout.Rail = "flare-ide-layout__rail" -> string!
+const Flare.Css.Classes.Ide.Layout.RailTitle = "flare-ide-layout__rail-title" -> string!
+const Flare.Css.Classes.Ide.Layout.Resizer = "flare-ide-layout__resizer" -> string!
+const Flare.Css.Classes.Ide.Layout.ResizerCol = "flare-ide-layout__resizer--col" -> string!
+const Flare.Css.Classes.Ide.Layout.ResizerRow = "flare-ide-layout__resizer--row" -> string!
+const Flare.Css.Classes.Ide.Layout.Ribbon = "flare-ide-layout__ribbon" -> string!
+const Flare.Css.Classes.Ide.Layout.Root = "flare-ide-layout" -> string!
+const Flare.Css.Classes.Ide.Layout.StatusBar = "flare-ide-layout__statusbar" -> string!
+const Flare.Css.Classes.Ide.MenuBar.Root = "flare-menubar" -> string!
+const Flare.Css.Classes.Ide.PropGrid.Body = "flare-propgrid__body" -> string!
+const Flare.Css.Classes.Ide.PropGrid.Name = "flare-propgrid__name" -> string!
+const Flare.Css.Classes.Ide.PropGrid.Root = "flare-propgrid" -> string!
+const Flare.Css.Classes.Ide.PropGrid.Row = "flare-propgrid__row" -> string!
+const Flare.Css.Classes.Ide.PropGrid.Title = "flare-propgrid__title" -> string!
+const Flare.Css.Classes.Ide.PropGrid.Value = "flare-propgrid__value" -> string!
+const Flare.Css.Classes.Ide.Qat.Root = "flare-qat" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Button = "flare-ribbon__button" -> string!
+const Flare.Css.Classes.Ide.Ribbon.ButtonLabel = "flare-ribbon__button-label" -> string!
+const Flare.Css.Classes.Ide.Ribbon.ButtonLarge = "flare-ribbon__button--large" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Caret = "flare-ribbon__caret" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Collapsed = "flare-ribbon--collapsed" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Commands = "flare-ribbon__commands" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Group = "flare-ribbon__group" -> string!
+const Flare.Css.Classes.Ide.Ribbon.GroupContent = "flare-ribbon__group-content" -> string!
+const Flare.Css.Classes.Ide.Ribbon.GroupLabel = "flare-ribbon__group-label" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Root = "flare-ribbon" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Separator = "flare-ribbon__separator" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Tab = "flare-ribbon__tab" -> string!
+const Flare.Css.Classes.Ide.Ribbon.TabActive = "flare-ribbon__tab--active" -> string!
+const Flare.Css.Classes.Ide.Ribbon.TabPanel = "flare-ribbon__tabpanel" -> string!
+const Flare.Css.Classes.Ide.Ribbon.Tabs = "flare-ribbon__tabs" -> string!
+const Flare.Css.Classes.Ide.SheetTabs.Add = "flare-sheet-tabs__add" -> string!
+const Flare.Css.Classes.Ide.SheetTabs.Root = "flare-sheet-tabs" -> string!
+const Flare.Css.Classes.Ide.SheetTabs.Tab = "flare-sheet-tabs__tab" -> string!
+const Flare.Css.Classes.Ide.SheetTabs.TabActive = "flare-sheet-tabs__tab--active" -> string!
+const Flare.Css.Classes.Ide.StatusBar.Center = "flare-statusbar__center" -> string!
+const Flare.Css.Classes.Ide.StatusBar.Left = "flare-statusbar__left" -> string!
+const Flare.Css.Classes.Ide.StatusBar.Right = "flare-statusbar__right" -> string!
+const Flare.Css.Classes.Ide.StatusBar.Root = "flare-statusbar" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Bottom = "flare-toolpanel--bottom" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Collapsed = "flare-toolpanel--collapsed" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Content = "flare-toolpanel__content" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Header = "flare-toolpanel__header" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Left = "flare-toolpanel--left" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Right = "flare-toolpanel--right" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Root = "flare-toolpanel" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Title = "flare-toolpanel__title" -> string!
+const Flare.Css.Classes.Ide.ToolPanel.Toolbar = "flare-toolpanel__toolbar" -> string!
+const Flare.Css.Classes.Ide.Toolbar.Dense = "flare-toolbar--dense" -> string!
+const Flare.Css.Classes.Ide.Toolbar.Root = "flare-toolbar" -> string!
+const Flare.Css.Tokens.Ide.Layout.BottomHeight = "--flare-ide-bottom-height" -> string!
+const Flare.Css.Tokens.Ide.Layout.LeftWidth = "--flare-ide-left-width" -> string!
+const Flare.Css.Tokens.Ide.Layout.Rail = "--flare-ide-rail" -> string!
+const Flare.Css.Tokens.Ide.Layout.RightWidth = "--flare-ide-right-width" -> string!
+override Flare.Components.IDE.FlareBackstage.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareBackstageItem.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareDocumentTab.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareDocumentTab.OnInitialized() -> void
+override Flare.Components.IDE.FlareDocumentTabs.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareFormulaBar.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareIdeLayout.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareIdeLayout.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.IDE.FlareMenuBar.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlarePropertyGrid.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlarePropertyGridItem.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareQuickAccessToolbar.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbon.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbon.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.IDE.FlareRibbon.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+override Flare.Components.IDE.FlareRibbonButton.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbonDropdown.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbonGroup.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbonSeparator.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbonTab.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareRibbonTab.OnInitialized() -> void
+override Flare.Components.IDE.FlareRibbonTab.OnParametersSet() -> void
+override Flare.Components.IDE.FlareSheetTabs.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareStatusBar.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareToolPanel.ComponentCssClass.get -> string!
+override Flare.Components.IDE.FlareToolPanel.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.IDE.FlareToolPanel.OnParametersSet() -> void
+override Flare.Components.IDE.FlareToolbar.ComponentCssClass.get -> string!
+static Flare.Components.IDE.IdeStrings.BackstageClose.get -> string!
+static Flare.Components.IDE.IdeStrings.DocTabsClose.get -> string!
+static Flare.Components.IDE.IdeStrings.DocTabsHidden.get -> string!
+static Flare.Components.IDE.IdeStrings.DocTabsLabel.get -> string!
+static Flare.Components.IDE.IdeStrings.DocTabsModified.get -> string!
+static Flare.Components.IDE.IdeStrings.FormulaBarFormula.get -> string!
+static Flare.Components.IDE.IdeStrings.FormulaBarNameBox.get -> string!
+static Flare.Components.IDE.IdeStrings.LayoutExpandPanel.get -> string!
+static Flare.Components.IDE.IdeStrings.SheetTabsAdd.get -> string!
+static Flare.Components.IDE.IdeStrings.ToolPanelCollapse.get -> string!
+static Flare.Components.IDE.IdeStrings.ToolPanelExpand.get -> string!
+static Flare.Components.IDE.ServiceCollectionExtensions.AddFlareIde(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+~override Flare.Components.IDE.FlareBackstage.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareBackstageItem.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareDocumentTab.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareDocumentTabs.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareFormulaBar.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareIdeLayout.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareMenuBar.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlarePropertyGrid.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlarePropertyGridItem.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareQuickAccessToolbar.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareRibbon.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareRibbonButton.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareRibbonDropdown.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareRibbonGroup.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareRibbonSeparator.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareRibbonTab.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareSheetTabs.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareStatusBar.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareToolPanel.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.IDE.FlareToolbar.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

@@ -1,0 +1,327 @@
+#nullable enable
+Flare.Components.FlareClipboardService
+Flare.Components.FlareClipboardService.CopyAsync(string! text) -> System.Threading.Tasks.ValueTask
+Flare.Components.FlareClipboardService.FlareClipboardService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.FlareClipboardService.ReadAsync() -> System.Threading.Tasks.ValueTask<string!>
+Flare.Components.FlareColorExtractor
+Flare.Components.FlareColorExtractor.FlareColorExtractor(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.FlareColorExtractor.GetDominantColorAsync(string! imageUrl, int sampleSize = 32) -> System.Threading.Tasks.ValueTask<string?>
+Flare.Components.FlareColorExtractor.GetPaletteAsync(string! imageUrl, int count = 5, int sampleSize = 32) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<string!>!>
+Flare.Components.FlareDownloadService
+Flare.Components.FlareDownloadService.DownloadAsync(string! filename, string! content, string? mimeType = null, bool withBom = false) -> System.Threading.Tasks.ValueTask
+Flare.Components.FlareDownloadService.DownloadBytesAsync(string! filename, byte[]! bytes, string? mimeType = null) -> System.Threading.Tasks.ValueTask
+Flare.Components.FlareDownloadService.DownloadCsvAsync(string! filename, string! csv) -> System.Threading.Tasks.ValueTask
+Flare.Components.FlareDownloadService.FlareDownloadService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.FlareNotificationsService
+Flare.Components.FlareNotificationsService.FlareNotificationsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.FlareNotificationsService.GetPermissionAsync() -> System.Threading.Tasks.ValueTask<Flare.Components.NotificationPermission>
+Flare.Components.FlareNotificationsService.IsSupportedAsync() -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.FlareNotificationsService.RequestPermissionAsync() -> System.Threading.Tasks.ValueTask<Flare.Components.NotificationPermission>
+Flare.Components.FlareNotificationsService.ShowAsync(Flare.Components.BrowserNotification! notification) -> System.Threading.Tasks.ValueTask<Flare.Components.NotificationShowResult>
+Flare.Components.FlareWebPushService
+Flare.Components.FlareWebPushService.FlareWebPushService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.FlareWebPushService.GetPermissionAsync() -> System.Threading.Tasks.ValueTask<Flare.Components.NotificationPermission>
+Flare.Components.FlareWebPushService.GetSubscriptionAsync() -> System.Threading.Tasks.ValueTask<Flare.Components.WebPushSubscription?>
+Flare.Components.FlareWebPushService.IsSupportedAsync() -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.FlareWebPushService.RequestPermissionAsync() -> System.Threading.Tasks.ValueTask<Flare.Components.NotificationPermission>
+Flare.Components.FlareWebPushService.SubscribeAsync(string! applicationServerKey) -> System.Threading.Tasks.ValueTask<Flare.Components.WebPushSubscribeResult!>
+Flare.Components.FlareWebPushService.UnsubscribeAsync() -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.Services.BrowserViewportService
+Flare.Components.Services.BrowserViewportService.BrowserViewportService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto
+Flare.Components.Services.BrowserViewportService.ElementRectDto.<Clone>$() -> Flare.Components.Services.BrowserViewportService.ElementRectDto!
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Deconstruct(out double Top, out double Left, out double Width, out double Height, out double WindowWidth, out double WindowHeight, out double ScrollX, out double ScrollY) -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.ElementRectDto(double Top, double Left, double Width, double Height, double WindowWidth, double WindowHeight, double ScrollX, double ScrollY) -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Equals(Flare.Components.Services.BrowserViewportService.ElementRectDto? other) -> bool
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Height.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Height.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Left.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Left.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.ScrollX.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.ScrollX.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.ScrollY.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.ScrollY.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Top.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Top.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Width.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.Width.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.WindowHeight.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.WindowHeight.init -> void
+Flare.Components.Services.BrowserViewportService.ElementRectDto.WindowWidth.get -> double
+Flare.Components.Services.BrowserViewportService.ElementRectDto.WindowWidth.init -> void
+Flare.Components.Services.BrowserViewportService.GetBreakpointAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Flare.Components.Breakpoint>
+Flare.Components.Services.BrowserViewportService.GetViewportSizeAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Flare.Components.ViewportSize>
+Flare.Components.Services.BrowserViewportService.MatchesAsync(string! mediaQuery, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.Services.BrowserViewportService.ObserveElementAsync(Microsoft.AspNetCore.Components.ElementReference element, System.Action<Flare.Components.ElementBoundingRect>! handler, Flare.Components.ElementObserveOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.BrowserViewportService.ObserveElementAsync(Microsoft.AspNetCore.Components.ElementReference element, System.Func<Flare.Components.ElementBoundingRect, System.Threading.Tasks.Task!>! handler, Flare.Components.ElementObserveOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.BrowserViewportService.OnElementResized(string! id, Flare.Components.Services.BrowserViewportService.ElementRectDto! rect) -> System.Threading.Tasks.Task!
+Flare.Components.Services.BrowserViewportService.OnViewportResized(double width, double height) -> System.Threading.Tasks.Task!
+Flare.Components.Services.BrowserViewportService.SubscribeAsync(System.Action<Flare.Components.ViewportChange>! handler, Flare.Components.ViewportSubscribeOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.BrowserViewportService.SubscribeAsync(System.Func<Flare.Components.ViewportChange, System.Threading.Tasks.Task!>! handler, Flare.Components.ViewportSubscribeOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.BrowserViewportService.SubscribeBreakpointAsync(System.Action<Flare.Components.Breakpoint>! handler, bool fireImmediately = true, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.BrowserViewportService.SubscribeBreakpointAsync(System.Func<Flare.Components.Breakpoint, System.Threading.Tasks.Task!>! handler, bool fireImmediately = true, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.BrowserViewportService.WindowSizeDto
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.<Clone>$() -> Flare.Components.Services.BrowserViewportService.WindowSizeDto!
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.Deconstruct(out double Width, out double Height) -> void
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.Equals(Flare.Components.Services.BrowserViewportService.WindowSizeDto? other) -> bool
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.Height.get -> double
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.Height.init -> void
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.Width.get -> double
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.Width.init -> void
+Flare.Components.Services.BrowserViewportService.WindowSizeDto.WindowSizeDto(double Width, double Height) -> void
+Flare.Components.Services.ChartInputJsService
+Flare.Components.Services.ChartInputJsService.ChartInputJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ChartInputJsService.ObservePlotAsync<T>(Microsoft.AspNetCore.Components.ElementReference plot, Microsoft.JSInterop.DotNetObjectReference<T!>! receiver) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ChartInputJsService.UnobservePlotAsync(Microsoft.AspNetCore.Components.ElementReference plot) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ChartMotionJsService
+Flare.Components.Services.ChartMotionJsService.ChartMotionJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ChartMotionJsService.ObservePlotAsync(Microsoft.AspNetCore.Components.ElementReference plot, string! durationVar, string! easingVar) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ChartMotionJsService.UnobservePlotAsync(Microsoft.AspNetCore.Components.ElementReference plot) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.CollisionService
+Flare.Components.Services.CollisionService.CalculatePlacementAsync(Microsoft.AspNetCore.Components.ElementReference anchor, Microsoft.AspNetCore.Components.ElementReference floating, string! preferredPlacement, Flare.Abstractions.CollisionOptions? options = null, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Flare.Abstractions.CollisionResult!>
+Flare.Components.Services.CollisionService.CollisionService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ColorCanvasJsService
+Flare.Components.Services.ColorCanvasJsService.ColorCanvasJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ColorCanvasJsService.DestroyAsync(Microsoft.AspNetCore.Components.ElementReference canvas) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ColorCanvasJsService.InitAsync<T>(Microsoft.AspNetCore.Components.ElementReference canvas, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, double hue, double saturation, double lightness) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ColorCanvasJsService.SetHueAsync(Microsoft.AspNetCore.Components.ElementReference canvas, double hue) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ColorCanvasJsService.SetSatLAsync(Microsoft.AspNetCore.Components.ElementReference canvas, double saturation, double lightness) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.CssVariableInjector
+Flare.Components.Services.CssVariableInjector.ClearCustomTokensAsync(System.Collections.Generic.IEnumerable<string!>! tokenNames, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.CssVariableInjector.CssVariableInjector(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.CssVariableInjector.DisposeAsync() -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.CssVariableInjector.InjectAsync(Flare.Abstractions.Tokens.DesignTokens! design, Flare.Abstractions.Tokens.ColorScheme! colors, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.CssVariableInjector.SetCustomTokensAsync(System.Collections.Generic.IReadOnlyDictionary<string!, string!>! tokens, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.CssVariableInjector.SetStaticCssAsync(string! css, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DataGridJsService
+Flare.Components.Services.DataGridJsService.DataGridJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.DataGridJsService.DisposeInfiniteAsync(Microsoft.AspNetCore.Components.ElementReference sentinel) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DataGridJsService.InitInfiniteAsync<T>(Microsoft.AspNetCore.Components.ElementReference sentinel, Microsoft.AspNetCore.Components.ElementReference root, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, string! rootMargin) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DataGridJsService.InitResizeHandlesAsync(Microsoft.AspNetCore.Components.ElementReference table) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DataGridJsService.UpdateFrozenOffsetsAsync(Microsoft.AspNetCore.Components.ElementReference table) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DialogDragJsService
+Flare.Components.Services.DialogDragJsService.DialogDragJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.DialogDragJsService.RegisterDragAsync(Microsoft.AspNetCore.Components.ElementReference handle, Microsoft.AspNetCore.Components.ElementReference panel) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DialogDragJsService.RegisterResizeAsync(Microsoft.AspNetCore.Components.ElementReference handle, Microsoft.AspNetCore.Components.ElementReference panel, string? minWidth, string? minHeight) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DialogDragJsService.RemoveDragAsync(Microsoft.AspNetCore.Components.ElementReference handle) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DialogDragJsService.RemoveResizeAsync(Microsoft.AspNetCore.Components.ElementReference handle) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DragDropJsService
+Flare.Components.Services.DragDropJsService.DragDropJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.DragDropJsService.HideDropHintAsync(Microsoft.AspNetCore.Components.ElementReference root) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DragDropJsService.ItemOrderAsync(Microsoft.AspNetCore.Components.ElementReference root, string! group) -> System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<Flare.Components.Services.DragZoneOrder!>!>
+Flare.Components.Services.DragDropJsService.RegisterContextAsync<T>(Microsoft.AspNetCore.Components.ElementReference root, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DragDropJsService.RemoveContextAsync(Microsoft.AspNetCore.Components.ElementReference root) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.DragDropJsService.ShowDropHintAsync(Microsoft.AspNetCore.Components.ElementReference root, string! targetId, int index, string! sourceId) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService
+Flare.Components.Services.ElementJsService.BlurAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.ClickAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.ElementJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ElementJsService.FocusAndSelectAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.GetBoundsAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask<Flare.Components.Services.ElementBounds>
+Flare.Components.Services.ElementJsService.GetSelectionAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask<int[]?>
+Flare.Components.Services.ElementJsService.ReleaseTimeColumnsAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.SelectAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.SelectRangeAsync(Microsoft.AspNetCore.Components.ElementReference element, int start, int end) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.SetValueAndCaretAsync(Microsoft.AspNetCore.Components.ElementReference element, string! value, int start, int end) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ElementJsService.SyncTimeColumnsAsync(Microsoft.AspNetCore.Components.ElementReference element, object! receiver, int generation) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.FlareHttpUpload
+Flare.Components.Services.FlareHttpUpload.FlareHttpUpload(System.Net.Http.HttpClient! http) -> void
+Flare.Components.Services.FlareHttpUpload.To(string! url, string! fieldName = "file", System.Collections.Generic.IReadOnlyDictionary<string!, string!>? headers = null, System.Collections.Generic.IReadOnlyDictionary<string!, string!>? fields = null) -> System.Func<Flare.Components.FlareUploadContext, System.Threading.Tasks.Task!>!
+Flare.Components.Services.HighlightJsService
+Flare.Components.Services.HighlightJsService.AttachEditorSyncAsync(Microsoft.AspNetCore.Components.ElementReference textarea) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.HighlightJsService.DetachEditorSyncAsync(Microsoft.AspNetCore.Components.ElementReference textarea) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.HighlightJsService.DisableEditorKeysAsync(Microsoft.AspNetCore.Components.ElementReference textarea) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.HighlightJsService.EnableEditorKeysAsync(Microsoft.AspNetCore.Components.ElementReference textarea, int indentSize) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.HighlightJsService.GetCaretAsync(Microsoft.AspNetCore.Components.ElementReference textarea) -> System.Threading.Tasks.ValueTask<Flare.Components.Services.FlareCaretInfo?>
+Flare.Components.Services.HighlightJsService.HighlightAsync(string! code, string? language) -> System.Threading.Tasks.ValueTask<string?>
+Flare.Components.Services.HighlightJsService.HighlightJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.HighlightJsService.SetCaretAsync(Microsoft.AspNetCore.Components.ElementReference textarea, int offset) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.HighlightJsService.SetTextAsync(Microsoft.AspNetCore.Components.ElementReference textarea, string! text) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.HighlightJsService.SyncEditorScrollAsync(Microsoft.AspNetCore.Components.ElementReference textarea) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.InfiniteScrollJsService
+Flare.Components.Services.InfiniteScrollJsService.InfiniteScrollJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.InfiniteScrollJsService.InitAsync<T>(Microsoft.AspNetCore.Components.ElementReference sentinel, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, string! rootMargin) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.InfiniteScrollJsService.RemoveAsync(Microsoft.AspNetCore.Components.ElementReference sentinel) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.LazyJsService
+Flare.Components.Services.LazyJsService.InitAsync<T>(Microsoft.AspNetCore.Components.ElementReference element, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, string! rootMargin, bool keepRendered, string? rootSelector) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.LazyJsService.LazyJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.LazyJsService.RemoveAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService
+Flare.Components.Services.OverlayJsService.DropFromTopLayerAsync(Microsoft.AspNetCore.Components.ElementReference panel) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.FocusFirstAsync(Microsoft.AspNetCore.Components.ElementReference container) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.InitFloatingTooltipsAsync() -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.OverlayJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.OverlayJsService.PositionAnchoredPanelAsync(string! id, Microsoft.AspNetCore.Components.ElementReference anchor, Microsoft.AspNetCore.Components.ElementReference panel, Flare.Components.Services.AnchoredPanelOptions? options = null) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.PositionAnchoredPanelByIdAsync(string! id, string! anchorElementId, Microsoft.AspNetCore.Components.ElementReference panel, Flare.Components.Services.AnchoredPanelOptions? options = null) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.PrepareAsync() -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.PushPopupLayerAsync<T>(string! id, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, string! method) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RaiseToTopLayerAsync(Microsoft.AspNetCore.Components.ElementReference panel) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RegisterDialogEscAsync<T>(string! id, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RegisterDismissAsync<T>(string! id, Microsoft.AspNetCore.Components.ElementReference element, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, string! method) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.ReleaseFocusTrapAsync(string! id) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RemoveAnchoredPanelAsync(string! id) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RemoveDialogEscAsync(string! id) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RemoveDismissAsync(string! id) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RemovePopupLayerAsync(string! id) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RemoveTooltipPlacementAsync(Microsoft.AspNetCore.Components.ElementReference bubble) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.RestoreFocusOutsideAsync(Microsoft.AspNetCore.Components.ElementReference container) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.ScrollIntoViewAsync(string! optionId, string! block = "nearest") -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.SyncTooltipDescriptionAsync(Microsoft.AspNetCore.Components.ElementReference root, string! tooltipId, bool enabled) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.OverlayJsService.TrapFocusAsync(string! id, Microsoft.AspNetCore.Components.ElementReference container, bool background = false) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ProgressGeometryJsService
+Flare.Components.Services.ProgressGeometryJsService.ObserveAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ProgressGeometryJsService.ProgressGeometryJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ProgressGeometryJsService.UnobserveAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ResizeJsService
+Flare.Components.Services.ResizeJsService.RegisterAsync<T>(Microsoft.AspNetCore.Components.ElementReference container, Microsoft.AspNetCore.Components.ElementReference handle, string! edge, string? minSize, string? maxSize, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ResizeJsService.RemoveAsync(Microsoft.AspNetCore.Components.ElementReference handle) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ResizeJsService.ResizeJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ScrollService
+Flare.Components.Services.ScrollService.GetPositionAsync(Flare.Components.ScrollTarget target = default(Flare.Components.ScrollTarget), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<Flare.Components.ScrollPosition>
+Flare.Components.Services.ScrollService.LockAsync() -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.ScrollService.OnScrolled(string! id, Flare.Components.Services.ScrollService.ScrollPositionDto! position) -> System.Threading.Tasks.Task!
+Flare.Components.Services.ScrollService.ScrollIntoViewAsync(string! elementId, Flare.Components.ScrollAlign block = Flare.Components.ScrollAlign.Nearest, Flare.Components.ScrollBehavior behavior = Flare.Components.ScrollBehavior.Smooth) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ScrollService.ScrollPositionDto
+Flare.Components.Services.ScrollService.ScrollPositionDto.<Clone>$() -> Flare.Components.Services.ScrollService.ScrollPositionDto!
+Flare.Components.Services.ScrollService.ScrollPositionDto.ClientHeight.get -> double
+Flare.Components.Services.ScrollService.ScrollPositionDto.ClientHeight.init -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.ClientWidth.get -> double
+Flare.Components.Services.ScrollService.ScrollPositionDto.ClientWidth.init -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.Deconstruct(out double Top, out double Left, out double ScrollHeight, out double ClientHeight, out double ScrollWidth, out double ClientWidth) -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.Equals(Flare.Components.Services.ScrollService.ScrollPositionDto? other) -> bool
+Flare.Components.Services.ScrollService.ScrollPositionDto.Left.get -> double
+Flare.Components.Services.ScrollService.ScrollPositionDto.Left.init -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.ScrollHeight.get -> double
+Flare.Components.Services.ScrollService.ScrollPositionDto.ScrollHeight.init -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.ScrollPositionDto(double Top, double Left, double ScrollHeight, double ClientHeight, double ScrollWidth, double ClientWidth) -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.ScrollWidth.get -> double
+Flare.Components.Services.ScrollService.ScrollPositionDto.ScrollWidth.init -> void
+Flare.Components.Services.ScrollService.ScrollPositionDto.Top.get -> double
+Flare.Components.Services.ScrollService.ScrollPositionDto.Top.init -> void
+Flare.Components.Services.ScrollService.ScrollService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ScrollService.ScrollToAsync(double top, Flare.Components.ScrollTarget target = default(Flare.Components.ScrollTarget), Flare.Components.ScrollBehavior behavior = Flare.Components.ScrollBehavior.Smooth) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ScrollService.ScrollToEndAsync(Flare.Components.ScrollTarget target = default(Flare.Components.ScrollTarget), Flare.Components.ScrollBehavior behavior = Flare.Components.ScrollBehavior.Smooth) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ScrollService.ScrollToTopAsync(Flare.Components.ScrollTarget target = default(Flare.Components.ScrollTarget), Flare.Components.ScrollBehavior behavior = Flare.Components.ScrollBehavior.Smooth) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ScrollService.SubscribeAsync(System.Action<Flare.Components.ScrollChange>! handler, Flare.Components.ScrollTarget target = default(Flare.Components.ScrollTarget), Flare.Components.ScrollSubscribeOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.ScrollService.SubscribeAsync(System.Func<Flare.Components.ScrollChange, System.Threading.Tasks.Task!>! handler, Flare.Components.ScrollTarget target = default(Flare.Components.ScrollTarget), Flare.Components.ScrollSubscribeOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<System.IAsyncDisposable!>
+Flare.Components.Services.SplitterJsService
+Flare.Components.Services.SplitterJsService.NudgeAsync<T>(Microsoft.AspNetCore.Components.ElementReference gutter, string! axis, int deltaPx, string! keyAxis, string? minSize, string? maxSize, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.SplitterJsService.RegisterAsync<T>(Microsoft.AspNetCore.Components.ElementReference gutter, string! axis, string? minSize, string? maxSize, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.SplitterJsService.RemoveAsync(Microsoft.AspNetCore.Components.ElementReference gutter) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.SplitterJsService.SplitterJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ThemeJsService
+Flare.Components.Services.ThemeJsService.ClearCustomTokensAsync(System.Collections.Generic.IEnumerable<string!>! tokenNames, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.EnsureModuleAsync(string! src, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.EnsureStylesheetAsync(string! href, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.GetAccentColorAsync(System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<string?>
+Flare.Components.Services.ThemeJsService.PrefersColorSchemeDarkAsync(System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.Services.ThemeJsService.RevealAppAsync(System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SetCssVariablesAsync(System.Collections.Generic.IReadOnlyDictionary<string!, string!>! vars, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SetStaticCssAsync(string! css, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SetThemeClassesAsync(System.Collections.Generic.IReadOnlyList<string!>! themeLineage, string! paletteId, bool isDark, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SetThemeClassesAsync(System.Collections.Generic.IReadOnlyList<string!>! themeLineage, string! paletteId, bool isDark, bool isHighContrast, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SetThemeClassesAsync(string! themeId, string! paletteId, bool isDark, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SubscribeAccentAsync<T>(string! id, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.SubscribeColorSchemeAsync<T>(string! id, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.ThemeJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.ThemeJsService.UnsubscribeAccentAsync(string! id, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.UnsubscribeColorSchemeAsync(string! id, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.ThemeJsService.WhenFontsReadyAsync(int timeoutMs = 3000, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.TocJsService
+Flare.Components.Services.TocJsService.InitAsync<T>(string! handle, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef, string? rootSelector, string? headingSelector, string? scrollRootSelector) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.TocJsService.RemoveAsync(string! handle) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.TocJsService.TocJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.UiJsService
+Flare.Components.Services.UiJsService.ApplyButtonGroupOverflowAsync<T>(Microsoft.AspNetCore.Components.ElementReference root, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.FocusElementAsync(string! elementId) -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.Services.UiJsService.FocusTreeItemAsync(Microsoft.AspNetCore.Components.ElementReference root, int index) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.GetAnimationDurationMsAsync(Microsoft.AspNetCore.Components.ElementReference element) -> System.Threading.Tasks.ValueTask<double>
+Flare.Components.Services.UiJsService.OpenEyeDropperAsync() -> System.Threading.Tasks.ValueTask<string?>
+Flare.Components.Services.UiJsService.RegisterButtonGroupCollapseAsync<T>(Microsoft.AspNetCore.Components.ElementReference root, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RegisterFabMenuKeyboardAsync(Microsoft.AspNetCore.Components.ElementReference list) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RegisterShortcutsAsync<T>(Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RegisterTabKeyboardAsync<T>(Microsoft.AspNetCore.Components.ElementReference bar, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RegisterTabScrollerAsync<T>(Microsoft.AspNetCore.Components.ElementReference bar, Microsoft.JSInterop.DotNetObjectReference<T!>! dotNetRef) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RegisterTreeKeyboardAsync(Microsoft.AspNetCore.Components.ElementReference root) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RemoveButtonGroupCollapseAsync(Microsoft.AspNetCore.Components.ElementReference root) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RemoveFabMenuKeyboardAsync(Microsoft.AspNetCore.Components.ElementReference list) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RemoveShortcutsAsync() -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RemoveTabKeyboardAsync(Microsoft.AspNetCore.Components.ElementReference bar) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RemoveTabScrollerAsync(Microsoft.AspNetCore.Components.ElementReference bar) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RemoveTreeKeyboardAsync(Microsoft.AspNetCore.Components.ElementReference root) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RevealActiveLinkTabAsync(Microsoft.AspNetCore.Components.ElementReference bar) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.RevealFocusedTabAsync(Microsoft.AspNetCore.Components.ElementReference bar) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.ScrollTabsAsync(Microsoft.AspNetCore.Components.ElementReference bar, int direction) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.SetUnloadPromptAsync(bool enabled) -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.UiJsService.SupportsEyeDropperAsync() -> System.Threading.Tasks.ValueTask<bool>
+Flare.Components.Services.UiJsService.UiJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Services.VersionCheckService
+Flare.Components.Services.VersionCheckService.ApplyUpdateAsync() -> System.Threading.Tasks.Task!
+Flare.Components.Services.VersionCheckService.CheckNowAsync() -> System.Threading.Tasks.Task!
+Flare.Components.Services.VersionCheckService.CurrentVersion.get -> string?
+Flare.Components.Services.VersionCheckService.DisposeAsync() -> System.Threading.Tasks.ValueTask
+Flare.Components.Services.VersionCheckService.IsRunning.get -> bool
+Flare.Components.Services.VersionCheckService.LatestVersion.get -> string?
+Flare.Components.Services.VersionCheckService.NewVersionAvailable -> System.Func<Flare.Abstractions.VersionCheckInfo, System.Threading.Tasks.Task!>?
+Flare.Components.Services.VersionCheckService.Start() -> void
+Flare.Components.Services.VersionCheckService.Stop() -> void
+Flare.Components.Services.VersionCheckService.VersionCheckService(Flare.Abstractions.FlareVersionCheckOptions! options, Microsoft.JSInterop.IJSRuntime? js = null) -> void
+Flare.Infrastructure.BrowserStorage
+Flare.Infrastructure.BrowserStorage.BrowserStorage(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Infrastructure.BrowserStorage.ContainsKeyAsync(string! key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<bool>
+Flare.Infrastructure.BrowserStorage.GetAsync<T>(string! key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<T?>
+Flare.Infrastructure.BrowserStorage.RemoveAsync(string! key, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Infrastructure.BrowserStorage.SetAsync<T>(string! key, T value, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+Flare.Infrastructure.DialogService
+Flare.Infrastructure.DialogService.AlertAsync(string! title, string! message, string! closeLabel = "Close") -> System.Threading.Tasks.Task!
+Flare.Infrastructure.DialogService.ConfirmAsync(string! title, string! message, string! confirmLabel = "OK", string! cancelLabel = "Cancel") -> System.Threading.Tasks.Task<bool?>!
+Flare.Infrastructure.DialogService.Current.get -> Flare.Abstractions.DialogRequest?
+Flare.Infrastructure.DialogService.DialogService() -> void
+Flare.Infrastructure.DialogService.OnStateChanged -> System.Action?
+Flare.Infrastructure.DialogService.OpenDialogs.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.FlareDialogInstance!>!
+Flare.Infrastructure.DialogService.Respond(bool? confirmed) -> void
+Flare.Infrastructure.DialogService.Show<TComponent>(string? title = null, Flare.Abstractions.DialogParameters? parameters = null, Flare.Abstractions.DialogOptions? options = null) -> Flare.Abstractions.DialogReference!
+Flare.Infrastructure.DialogService.ShowAsync<TComponent>(string? title = null, Flare.Abstractions.DialogParameters? parameters = null, Flare.Abstractions.DialogOptions? options = null) -> System.Threading.Tasks.Task<Flare.Abstractions.DialogResult!>!
+Flare.Infrastructure.DialogService.ShowSheetAsync<TComponent>(string? title = null, Flare.Abstractions.DialogParameters? parameters = null, Flare.Abstractions.DialogOptions? options = null) -> System.Threading.Tasks.Task<Flare.Abstractions.DialogResult!>!
+Flare.Infrastructure.LocalStorageThemeStorage
+Flare.Infrastructure.LocalStorageThemeStorage.GetAsync() -> System.Threading.Tasks.Task<Flare.Abstractions.ThemeSelection?>!
+Flare.Infrastructure.LocalStorageThemeStorage.LocalStorageThemeStorage(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Infrastructure.LocalStorageThemeStorage.SaveAsync(Flare.Abstractions.ThemeSelection selection) -> System.Threading.Tasks.Task!
+Flare.Infrastructure.MessageBoxService
+Flare.Infrastructure.MessageBoxService.AlertAsync(string! title, string! message = "", string! confirmLabel = "OK") -> System.Threading.Tasks.Task!
+Flare.Infrastructure.MessageBoxService.ConfirmAsync(string! title, string! message = "", string! confirmLabel = "Yes", string! cancelLabel = "No") -> System.Threading.Tasks.Task<bool>!
+Flare.Infrastructure.MessageBoxService.Current.get -> Flare.Abstractions.MessageBoxRequest?
+Flare.Infrastructure.MessageBoxService.MessageBoxService() -> void
+Flare.Infrastructure.MessageBoxService.OnStateChanged -> System.Action?
+Flare.Infrastructure.MessageBoxService.PromptAsync(string! title, string! label = "", string! defaultValue = "", string! confirmLabel = "OK", string! cancelLabel = "Cancel") -> System.Threading.Tasks.Task<string?>!
+Flare.Infrastructure.MessageBoxService.Respond(string? value) -> void
+Flare.Infrastructure.SnackbarService
+Flare.Infrastructure.SnackbarService.Clear() -> void
+Flare.Infrastructure.SnackbarService.OnClear -> System.Action?
+Flare.Infrastructure.SnackbarService.OnRemove -> System.Action<System.Guid>?
+Flare.Infrastructure.SnackbarService.OnShow -> System.Action<Flare.Abstractions.SnackbarMessage!>?
+Flare.Infrastructure.SnackbarService.OnUpdate -> System.Action<Flare.Abstractions.SnackbarMessage!>?
+Flare.Infrastructure.SnackbarService.Remove(System.Guid id) -> void
+Flare.Infrastructure.SnackbarService.Show(Flare.Abstractions.SnackbarMessage! message) -> void
+Flare.Infrastructure.SnackbarService.Show(Microsoft.AspNetCore.Components.RenderFragment! content, Flare.Abstractions.SnackbarOptions? options = null) -> void
+Flare.Infrastructure.SnackbarService.Show(string! text, Flare.Abstractions.SnackbarOptions! options) -> void
+Flare.Infrastructure.SnackbarService.Show(string! text, Flare.Abstractions.SnackbarSeverity severity = Flare.Abstractions.SnackbarSeverity.Normal, int durationMs = 4000, string? actionText = null, System.Func<System.Threading.Tasks.Task!>? onAction = null, bool showClose = true) -> void
+Flare.Infrastructure.SnackbarService.SnackbarService() -> void
+Flare.Infrastructure.SnackbarService.Update(Flare.Abstractions.SnackbarMessage! message) -> void
+override Flare.Components.Services.BrowserViewportService.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.Services.BrowserViewportService.ElementRectDto.Equals(object? obj) -> bool
+override Flare.Components.Services.BrowserViewportService.ElementRectDto.GetHashCode() -> int
+override Flare.Components.Services.BrowserViewportService.ElementRectDto.ToString() -> string!
+override Flare.Components.Services.BrowserViewportService.WindowSizeDto.Equals(object? obj) -> bool
+override Flare.Components.Services.BrowserViewportService.WindowSizeDto.GetHashCode() -> int
+override Flare.Components.Services.BrowserViewportService.WindowSizeDto.ToString() -> string!
+override Flare.Components.Services.ScrollService.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.Services.ScrollService.ScrollPositionDto.Equals(object? obj) -> bool
+override Flare.Components.Services.ScrollService.ScrollPositionDto.GetHashCode() -> int
+override Flare.Components.Services.ScrollService.ScrollPositionDto.ToString() -> string!
+static Flare.Components.Services.BrowserViewportService.ElementRectDto.operator !=(Flare.Components.Services.BrowserViewportService.ElementRectDto? left, Flare.Components.Services.BrowserViewportService.ElementRectDto? right) -> bool
+static Flare.Components.Services.BrowserViewportService.ElementRectDto.operator ==(Flare.Components.Services.BrowserViewportService.ElementRectDto? left, Flare.Components.Services.BrowserViewportService.ElementRectDto? right) -> bool
+static Flare.Components.Services.BrowserViewportService.WindowSizeDto.operator !=(Flare.Components.Services.BrowserViewportService.WindowSizeDto? left, Flare.Components.Services.BrowserViewportService.WindowSizeDto? right) -> bool
+static Flare.Components.Services.BrowserViewportService.WindowSizeDto.operator ==(Flare.Components.Services.BrowserViewportService.WindowSizeDto? left, Flare.Components.Services.BrowserViewportService.WindowSizeDto? right) -> bool
+static Flare.Components.Services.ScrollService.ScrollPositionDto.operator !=(Flare.Components.Services.ScrollService.ScrollPositionDto? left, Flare.Components.Services.ScrollService.ScrollPositionDto? right) -> bool
+static Flare.Components.Services.ScrollService.ScrollPositionDto.operator ==(Flare.Components.Services.ScrollService.ScrollPositionDto? left, Flare.Components.Services.ScrollService.ScrollPositionDto? right) -> bool

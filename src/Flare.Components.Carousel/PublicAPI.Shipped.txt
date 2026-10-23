@@ -1,0 +1,37 @@
+#nullable enable
+Flare.Components.FlareCarousel<TItem>
+Flare.Components.FlareCarousel<TItem>.AutoPlay.get -> bool
+Flare.Components.FlareCarousel<TItem>.AutoPlay.set -> void
+Flare.Components.FlareCarousel<TItem>.AutoPlayIntervalMs.get -> int
+Flare.Components.FlareCarousel<TItem>.AutoPlayIntervalMs.set -> void
+Flare.Components.FlareCarousel<TItem>.FlareCarousel() -> void
+Flare.Components.FlareCarousel<TItem>.ItemTemplate.get -> Microsoft.AspNetCore.Components.RenderFragment<TItem>?
+Flare.Components.FlareCarousel<TItem>.ItemTemplate.set -> void
+Flare.Components.FlareCarousel<TItem>.Items.get -> System.Collections.Generic.IReadOnlyList<TItem>?
+Flare.Components.FlareCarousel<TItem>.Items.set -> void
+Flare.Components.FlareCarousel<TItem>.Loop.get -> bool
+Flare.Components.FlareCarousel<TItem>.Loop.set -> void
+Flare.Components.FlareCarousel<TItem>.OnCarouselKey(string! key) -> void
+Flare.Components.FlareCarousel<TItem>.ShowArrows.get -> bool
+Flare.Components.FlareCarousel<TItem>.ShowArrows.set -> void
+Flare.Components.FlareCarousel<TItem>.ShowDots.get -> bool
+Flare.Components.FlareCarousel<TItem>.ShowDots.set -> void
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.Carousel
+const Flare.Css.Classes.Carousel.Arrow = "flare-carousel__arrow" -> string!
+const Flare.Css.Classes.Carousel.ArrowNext = "flare-carousel__arrow--next" -> string!
+const Flare.Css.Classes.Carousel.ArrowPrev = "flare-carousel__arrow--prev" -> string!
+const Flare.Css.Classes.Carousel.Dot = "flare-carousel__dot" -> string!
+const Flare.Css.Classes.Carousel.DotActive = "flare-carousel__dot--active" -> string!
+const Flare.Css.Classes.Carousel.Dots = "flare-carousel__dots" -> string!
+const Flare.Css.Classes.Carousel.Root = "flare-carousel" -> string!
+const Flare.Css.Classes.Carousel.Slide = "flare-carousel__slide" -> string!
+const Flare.Css.Classes.Carousel.Track = "flare-carousel__track" -> string!
+const Flare.Css.Classes.Carousel.Viewport = "flare-carousel__viewport" -> string!
+override Flare.Components.FlareCarousel<TItem>.ComponentCssClass.get -> string!
+override Flare.Components.FlareCarousel<TItem>.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.FlareCarousel<TItem>.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+override Flare.Components.FlareCarousel<TItem>.OnParametersSet() -> void
+~override Flare.Components.FlareCarousel<TItem>.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

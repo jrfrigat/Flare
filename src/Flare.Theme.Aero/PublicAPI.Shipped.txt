@@ -1,0 +1,38 @@
+#nullable enable
+Flare.Theme.Aero.Aero
+Flare.Theme.Aero.AeroCssVars
+Flare.Theme.Aero.AeroPalettes
+Flare.Theme.Aero.AeroRampGenerator
+Flare.Theme.Aero.AeroRampGenerator.AeroRampGenerator() -> void
+Flare.Theme.Aero.AeroRampGenerator.Generate(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theme.Aero.AeroTheme
+Flare.Theme.Aero.AeroTheme.AeroTheme() -> void
+Flare.Theme.Aero.AeroTheme.DefaultPaletteId.get -> string!
+Flare.Theme.Aero.AeroTheme.Design.get -> Flare.Abstractions.Tokens.DesignTokens!
+Flare.Theme.Aero.AeroTheme.DisplayName.get -> string!
+Flare.Theme.Aero.AeroTheme.ExtendedDarkOverride.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>?
+Flare.Theme.Aero.AeroTheme.Id.get -> string!
+Flare.Theme.Aero.AeroTheme.PaletteGenerator.get -> Flare.Abstractions.IPaletteGenerator?
+Flare.Theme.Aero.AeroTheme.Palettes.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+Flare.Theme.Aero.AeroTheme.StyleAssets.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Flare.Theme.Aero._Imports
+Flare.Theme.Aero._Imports.Execute() -> void
+Flare.Theme.Aero._Imports._Imports() -> void
+const Flare.Theme.Aero.AeroCssVars.Glow = "--flare-aero-glow" -> string!
+const Flare.Theme.Aero.AeroPalettes.AmberId = "aero-amber" -> string!
+const Flare.Theme.Aero.AeroPalettes.BlueId = "aero-blue" -> string!
+const Flare.Theme.Aero.AeroPalettes.OliveId = "aero-olive" -> string!
+const Flare.Theme.Aero.AeroPalettes.SourceName = "Aero" -> string!
+const Flare.Theme.Aero.AeroPalettes.SteelId = "aero-steel" -> string!
+const Flare.Theme.Aero.AeroPalettes.TealId = "aero-teal" -> string!
+const Flare.Theme.Aero.AeroTheme.ThemeId = "aero" -> string!
+static Flare.Theme.Aero.Aero.DarkColors.get -> Flare.Abstractions.Tokens.ColorScheme!
+static Flare.Theme.Aero.Aero.DesignReference.get -> Flare.Abstractions.Tokens.DesignTokens!
+static Flare.Theme.Aero.Aero.LightColors.get -> Flare.Abstractions.Tokens.ColorScheme!
+static Flare.Theme.Aero.AeroPalettes.All.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+static readonly Flare.Theme.Aero.AeroPalettes.Amber -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.Aero.AeroPalettes.Blue -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.Aero.AeroPalettes.Olive -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.Aero.AeroPalettes.Steel -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.Aero.AeroPalettes.Teal -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.Aero.AeroRampGenerator.Instance -> Flare.Theme.Aero.AeroRampGenerator!

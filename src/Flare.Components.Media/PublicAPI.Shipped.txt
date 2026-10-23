@@ -1,0 +1,77 @@
+#nullable enable
+Flare.Components.FlareSignaturePad
+Flare.Components.FlareSignaturePad.AriaLabel.get -> string?
+Flare.Components.FlareSignaturePad.AriaLabel.set -> void
+Flare.Components.FlareSignaturePad.ClearAsync() -> System.Threading.Tasks.Task!
+Flare.Components.FlareSignaturePad.FlareSignaturePad() -> void
+Flare.Components.FlareSignaturePad.GetDataUrlAsync() -> System.Threading.Tasks.Task<string?>!
+Flare.Components.FlareSignaturePad.Height.get -> int
+Flare.Components.FlareSignaturePad.Height.set -> void
+Flare.Components.FlareSignaturePad.OnChanged.get -> Microsoft.AspNetCore.Components.EventCallback
+Flare.Components.FlareSignaturePad.OnChanged.set -> void
+Flare.Components.FlareSignaturePad.OnSignatureChanged() -> System.Threading.Tasks.Task!
+Flare.Components.FlareSignaturePad.PressureSensitive.get -> bool
+Flare.Components.FlareSignaturePad.PressureSensitive.set -> void
+Flare.Components.FlareSignaturePad.StrokeColor.get -> Flare.Components.FlareColor
+Flare.Components.FlareSignaturePad.StrokeColor.set -> void
+Flare.Components.FlareSignaturePad.StrokeWidth.get -> double
+Flare.Components.FlareSignaturePad.StrokeWidth.set -> void
+Flare.Components.FlareSignaturePad.Width.get -> int
+Flare.Components.FlareSignaturePad.Width.set -> void
+Flare.Components.FlareVideoPlayer
+Flare.Components.FlareVideoPlayer.AriaLabel.get -> string?
+Flare.Components.FlareVideoPlayer.AriaLabel.set -> void
+Flare.Components.FlareVideoPlayer.AutoPlay.get -> bool
+Flare.Components.FlareVideoPlayer.AutoPlay.set -> void
+Flare.Components.FlareVideoPlayer.Controls.get -> bool
+Flare.Components.FlareVideoPlayer.Controls.set -> void
+Flare.Components.FlareVideoPlayer.FlareVideoPlayer() -> void
+Flare.Components.FlareVideoPlayer.Loop.get -> bool
+Flare.Components.FlareVideoPlayer.Loop.set -> void
+Flare.Components.FlareVideoPlayer.Muted.get -> bool
+Flare.Components.FlareVideoPlayer.Muted.set -> void
+Flare.Components.FlareVideoPlayer.OnEnded() -> void
+Flare.Components.FlareVideoPlayer.OnFullscreenChanged(bool isFullscreen) -> void
+Flare.Components.FlareVideoPlayer.OnPlayStateChanged(bool isPlaying) -> void
+Flare.Components.FlareVideoPlayer.OnTimeUpdate(double current, double duration) -> void
+Flare.Components.FlareVideoPlayer.PlaybackRates.get -> System.Collections.Generic.IReadOnlyList<double>?
+Flare.Components.FlareVideoPlayer.PlaybackRates.set -> void
+Flare.Components.FlareVideoPlayer.Poster.get -> string?
+Flare.Components.FlareVideoPlayer.Poster.set -> void
+Flare.Components.FlareVideoPlayer.Src.get -> string?
+Flare.Components.FlareVideoPlayer.Src.set -> void
+Flare.Components.FlareVideoPlayer.SubtitleSrc.get -> string?
+Flare.Components.FlareVideoPlayer.SubtitleSrc.set -> void
+Flare.Components.Resources.VideoPlayerStrings
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.SignaturePad
+Flare.Css.Classes.VideoPlayer
+const Flare.Css.Classes.SignaturePad.Canvas = "flare-signature-pad__canvas" -> string!
+const Flare.Css.Classes.SignaturePad.Root = "flare-signature-pad" -> string!
+const Flare.Css.Classes.VideoPlayer.Button = "flare-video-player__btn" -> string!
+const Flare.Css.Classes.VideoPlayer.Controls = "flare-video-player__controls" -> string!
+const Flare.Css.Classes.VideoPlayer.Progress = "flare-video-player__progress" -> string!
+const Flare.Css.Classes.VideoPlayer.Rate = "flare-video-player__rate" -> string!
+const Flare.Css.Classes.VideoPlayer.Root = "flare-video-player" -> string!
+const Flare.Css.Classes.VideoPlayer.Time = "flare-video-player__time" -> string!
+const Flare.Css.Classes.VideoPlayer.Video = "flare-video-player__video" -> string!
+override Flare.Components.FlareSignaturePad.ComponentCssClass.get -> string!
+override Flare.Components.FlareSignaturePad.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.FlareSignaturePad.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+override Flare.Components.FlareVideoPlayer.ComponentCssClass.get -> string!
+override Flare.Components.FlareVideoPlayer.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.FlareVideoPlayer.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+~override Flare.Components.FlareSignaturePad.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.FlareVideoPlayer.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~static Flare.Components.Resources.VideoPlayerStrings.ExitFullscreen.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Fullscreen.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Label.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Mute.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Pause.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Play.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.PlaybackSpeed.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Seek.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Unmute.get -> string
+~static Flare.Components.Resources.VideoPlayerStrings.Volume.get -> string

@@ -1,0 +1,23 @@
+#nullable enable
+Flare.Icons.FaStyle
+Flare.Icons.FaStyle.Brands = 5 -> Flare.Icons.FaStyle
+Flare.Icons.FaStyle.Duotone = 4 -> Flare.Icons.FaStyle
+Flare.Icons.FaStyle.Light = 2 -> Flare.Icons.FaStyle
+Flare.Icons.FaStyle.Regular = 1 -> Flare.Icons.FaStyle
+Flare.Icons.FaStyle.Solid = 0 -> Flare.Icons.FaStyle
+Flare.Icons.FaStyle.Thin = 3 -> Flare.Icons.FaStyle
+Flare.Icons.FlareFontAwesomeIcon
+Flare.Icons.FlareFontAwesomeIcon.Equals(Flare.Icons.FlareFontAwesomeIcon? other) -> bool
+Flare.Icons.FlareFontAwesomeIcon.FlareFontAwesomeIcon() -> void
+Flare.Icons.FlareFontAwesomeIcon.Name.get -> string!
+Flare.Icons.FlareFontAwesomeIcon.Name.init -> void
+Flare.Icons.FlareFontAwesomeIcon.Variant.get -> Flare.Icons.FaStyle
+Flare.Icons.FlareFontAwesomeIcon.Variant.init -> void
+override Flare.Icons.FlareFontAwesomeIcon.<Clone>$() -> Flare.Icons.FlareFontAwesomeIcon!
+override Flare.Icons.FlareFontAwesomeIcon.Equals(object? obj) -> bool
+override Flare.Icons.FlareFontAwesomeIcon.GetHashCode() -> int
+override Flare.Icons.FlareFontAwesomeIcon.ToString() -> string!
+override sealed Flare.Icons.FlareFontAwesomeIcon.Equals(Flare.Icons.FlareIcon? other) -> bool
+static Flare.Icons.FlareFontAwesomeIcon.Brand(string! name) -> Flare.Icons.FlareFontAwesomeIcon!
+static Flare.Icons.FlareFontAwesomeIcon.operator !=(Flare.Icons.FlareFontAwesomeIcon? left, Flare.Icons.FlareFontAwesomeIcon? right) -> bool
+static Flare.Icons.FlareFontAwesomeIcon.operator ==(Flare.Icons.FlareFontAwesomeIcon? left, Flare.Icons.FlareFontAwesomeIcon? right) -> bool

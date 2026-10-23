@@ -1,0 +1,27 @@
+#nullable enable
+Flare.Icons.FlareMaterialDesign3Icon
+Flare.Icons.FlareMaterialDesign3Icon.Equals(Flare.Icons.FlareMaterialDesign3Icon? other) -> bool
+Flare.Icons.FlareMaterialDesign3Icon.Family.get -> Flare.Icons.MaterialDesign3Family
+Flare.Icons.FlareMaterialDesign3Icon.Family.init -> void
+Flare.Icons.FlareMaterialDesign3Icon.Fill.get -> bool
+Flare.Icons.FlareMaterialDesign3Icon.Fill.init -> void
+Flare.Icons.FlareMaterialDesign3Icon.FlareMaterialDesign3Icon() -> void
+Flare.Icons.FlareMaterialDesign3Icon.Grade.get -> int
+Flare.Icons.FlareMaterialDesign3Icon.Grade.init -> void
+Flare.Icons.FlareMaterialDesign3Icon.Name.get -> string!
+Flare.Icons.FlareMaterialDesign3Icon.Name.init -> void
+Flare.Icons.FlareMaterialDesign3Icon.OpticalSize.get -> int
+Flare.Icons.FlareMaterialDesign3Icon.OpticalSize.init -> void
+Flare.Icons.FlareMaterialDesign3Icon.Weight.get -> int
+Flare.Icons.FlareMaterialDesign3Icon.Weight.init -> void
+Flare.Icons.MaterialDesign3Family
+Flare.Icons.MaterialDesign3Family.Outlined = 1 -> Flare.Icons.MaterialDesign3Family
+Flare.Icons.MaterialDesign3Family.Rounded = 0 -> Flare.Icons.MaterialDesign3Family
+Flare.Icons.MaterialDesign3Family.Sharp = 2 -> Flare.Icons.MaterialDesign3Family
+override Flare.Icons.FlareMaterialDesign3Icon.<Clone>$() -> Flare.Icons.FlareMaterialDesign3Icon!
+override Flare.Icons.FlareMaterialDesign3Icon.Equals(object? obj) -> bool
+override Flare.Icons.FlareMaterialDesign3Icon.GetHashCode() -> int
+override Flare.Icons.FlareMaterialDesign3Icon.ToString() -> string!
+override sealed Flare.Icons.FlareMaterialDesign3Icon.Equals(Flare.Icons.FlareIcon? other) -> bool
+static Flare.Icons.FlareMaterialDesign3Icon.operator !=(Flare.Icons.FlareMaterialDesign3Icon? left, Flare.Icons.FlareMaterialDesign3Icon? right) -> bool
+static Flare.Icons.FlareMaterialDesign3Icon.operator ==(Flare.Icons.FlareMaterialDesign3Icon? left, Flare.Icons.FlareMaterialDesign3Icon? right) -> bool

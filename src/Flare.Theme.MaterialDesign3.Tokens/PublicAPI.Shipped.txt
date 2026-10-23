@@ -1,0 +1,24 @@
+#nullable enable
+Flare.Theme.MaterialDesign3.Tokens.MaterialDesign3Tokens
+Flare.Theme.MaterialDesign3.Tokens.MaterialDesign3Tokens.MaterialDesign3Tokens() -> void
+Flare.Theme.MaterialDesign3.Tokens.Md3Palettes
+Flare.Theme.MaterialDesign3.Tokens.Md3TonalGenerator
+Flare.Theme.MaterialDesign3.Tokens.Md3TonalGenerator.Generate(string! id, string! name, Flare.Abstractions.PaletteSeed seed, string? source = null) -> Flare.Abstractions.Tokens.Palette!
+Flare.Theme.MaterialDesign3.Tokens.Md3TonalGenerator.Md3TonalGenerator() -> void
+const Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.BlueId = "md3-blue" -> string!
+const Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.GreenId = "md3-green" -> string!
+const Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.OrangeId = "md3-orange" -> string!
+const Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.SourceName = "Material Design 3" -> string!
+const Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.TealId = "md3-teal" -> string!
+const Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.VioletId = "md3-violet" -> string!
+static Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.All.get -> System.Collections.Generic.IReadOnlyList<Flare.Abstractions.Tokens.Palette!>!
+static readonly Flare.Theme.MaterialDesign3.Tokens.MaterialDesign3Tokens.DarkColors -> Flare.Abstractions.Tokens.ColorScheme!
+static readonly Flare.Theme.MaterialDesign3.Tokens.MaterialDesign3Tokens.Design -> Flare.Abstractions.Tokens.DesignTokens!
+static readonly Flare.Theme.MaterialDesign3.Tokens.MaterialDesign3Tokens.Extended -> System.Collections.Generic.Dictionary<string!, string!>!
+static readonly Flare.Theme.MaterialDesign3.Tokens.MaterialDesign3Tokens.LightColors -> Flare.Abstractions.Tokens.ColorScheme!
+static readonly Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.Blue -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.Green -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.Orange -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.Teal -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign3.Tokens.Md3Palettes.Violet -> Flare.Abstractions.Tokens.Palette!
+static readonly Flare.Theme.MaterialDesign3.Tokens.Md3TonalGenerator.Instance -> Flare.Theme.MaterialDesign3.Tokens.Md3TonalGenerator!

@@ -1,0 +1,639 @@
+#nullable enable
+Flare.Components.FlareGantt
+Flare.Components.FlareGantt.AriaLabel.get -> string?
+Flare.Components.FlareGantt.AriaLabel.set -> void
+Flare.Components.FlareGantt.At(double x) -> System.DateTime
+Flare.Components.FlareGantt.Axis.get -> Flare.Components.Gantt.GanttAxis!
+Flare.Components.FlareGantt.BarDragged(string! panel, string! key, string! action, int units, string? rowKey) -> System.Threading.Tasks.Task!
+Flare.Components.FlareGantt.BarInset.get -> double
+Flare.Components.FlareGantt.BarInset.set -> void
+Flare.Components.FlareGantt.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.FlareGantt.ChildContent.set -> void
+Flare.Components.FlareGantt.Compact.get -> bool
+Flare.Components.FlareGantt.Compact.set -> void
+Flare.Components.FlareGantt.Corner.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.FlareGantt.Corner.set -> void
+Flare.Components.FlareGantt.Culture.get -> System.Globalization.CultureInfo?
+Flare.Components.FlareGantt.Culture.set -> void
+Flare.Components.FlareGantt.DefaultSideWidth.get -> string?
+Flare.Components.FlareGantt.DefaultSideWidth.set -> void
+Flare.Components.FlareGantt.EffectiveTexts.get -> Flare.Components.Gantt.GanttTexts!
+Flare.Components.FlareGantt.EffectiveUnitWidth.get -> double
+Flare.Components.FlareGantt.Endless.get -> bool
+Flare.Components.FlareGantt.Endless.set -> void
+Flare.Components.FlareGantt.FillWidth.get -> bool
+Flare.Components.FlareGantt.FillWidth.set -> void
+Flare.Components.FlareGantt.FlareGantt() -> void
+Flare.Components.FlareGantt.Horizontal(double left, double width) -> System.Threading.Tasks.Task!
+Flare.Components.FlareGantt.IsNonWorking(System.DateOnly day) -> bool
+Flare.Components.FlareGantt.LinkDragged(string! panel, string! fromKey, string! toKey) -> System.Threading.Tasks.Task!
+Flare.Components.FlareGantt.LinkGap.get -> double
+Flare.Components.FlareGantt.LinkGap.set -> void
+Flare.Components.FlareGantt.Markers.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttMarker!>?
+Flare.Components.FlareGantt.Markers.set -> void
+Flare.Components.FlareGantt.NonWorking.get -> System.Func<System.DateOnly, bool>?
+Flare.Components.FlareGantt.NonWorking.set -> void
+Flare.Components.FlareGantt.NonWorkingSpans.get -> System.Collections.Generic.IReadOnlyList<Flare.Components.Gantt.GanttSpan>!
+Flare.Components.FlareGantt.Range.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.FlareGantt.Range.set -> void
+Flare.Components.FlareGantt.RangeChanged.get -> Microsoft.AspNetCore.Components.EventCallback<Flare.Components.Gantt.GanttSpan>
+Flare.Components.FlareGantt.RangeChanged.set -> void
+Flare.Components.FlareGantt.Regions.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttRegion!>?
+Flare.Components.FlareGantt.Regions.set -> void
+Flare.Components.FlareGantt.ResizableSide.get -> bool
+Flare.Components.FlareGantt.ResizableSide.set -> void
+Flare.Components.FlareGantt.ResolveDrop(string? targetId) -> System.Threading.Tasks.Task<Flare.Components.Gantt.GanttDropTarget?>!
+Flare.Components.FlareGantt.RowHeight.get -> double
+Flare.Components.FlareGantt.RowHeight.set -> void
+Flare.Components.FlareGantt.Scale.get -> Flare.Components.Gantt.GanttScale
+Flare.Components.FlareGantt.Scale.set -> void
+Flare.Components.FlareGantt.ScrollTo(System.DateTime moment) -> System.Threading.Tasks.Task!
+Flare.Components.FlareGantt.Select(string? key) -> System.Threading.Tasks.Task!
+Flare.Components.FlareGantt.Selected.get -> string?
+Flare.Components.FlareGantt.SelectedKey.get -> string?
+Flare.Components.FlareGantt.SelectedKey.set -> void
+Flare.Components.FlareGantt.SelectedKeyChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string?>
+Flare.Components.FlareGantt.SelectedKeyChanged.set -> void
+Flare.Components.FlareGantt.SideWidth.get -> string!
+Flare.Components.FlareGantt.SideWidth.set -> void
+Flare.Components.FlareGantt.SideWidthChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string!>
+Flare.Components.FlareGantt.SideWidthChanged.set -> void
+Flare.Components.FlareGantt.Texts.get -> Flare.Components.Gantt.GanttTexts?
+Flare.Components.FlareGantt.Texts.set -> void
+Flare.Components.FlareGantt.UnitWidth.get -> double
+Flare.Components.FlareGantt.UnitWidth.set -> void
+Flare.Components.FlareGantt.Viewport(double width, double side) -> void
+Flare.Components.FlareGantt.Virtualize.get -> bool
+Flare.Components.FlareGantt.Virtualize.set -> void
+Flare.Components.FlareGantt.Visible(string![]! panels, double[]! from, double[]! to) -> void
+Flare.Components.FlareGantt.Width.get -> double
+Flare.Components.FlareGantt.X(System.DateTime moment) -> double
+Flare.Components.FlareGanttLegend
+Flare.Components.FlareGanttLegend.AriaLabel.get -> string?
+Flare.Components.FlareGanttLegend.AriaLabel.set -> void
+Flare.Components.FlareGanttLegend.ChildContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.FlareGanttLegend.ChildContent.set -> void
+Flare.Components.FlareGanttLegend.FlareGanttLegend() -> void
+Flare.Components.FlareGanttLegend.Items.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttLegendItem!>!
+Flare.Components.FlareGanttLegend.Items.set -> void
+Flare.Components.FlareGanttLegend.Leading.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.FlareGanttLegend.Leading.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>
+Flare.Components.FlareGanttPanel<TRow, TItem>.AllowRowChange.get -> bool
+Flare.Components.FlareGanttPanel<TRow, TItem>.AllowRowChange.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.AriaLabel.get -> string?
+Flare.Components.FlareGanttPanel<TRow, TItem>.AriaLabel.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.CellTemplate.get -> Microsoft.AspNetCore.Components.RenderFragment<Flare.Components.Gantt.GanttCell!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.CellTemplate.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Cells.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttCell!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Cells.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.CollapseAll() -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.DropAccepts.get -> System.Func<object?, bool>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.DropAccepts.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.DropGroup.get -> string?
+Flare.Components.FlareGanttPanel<TRow, TItem>.DropGroup.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Editable.get -> bool
+Flare.Components.FlareGanttPanel<TRow, TItem>.Editable.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ExpandAll() -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ExpandedByDefault.get -> bool
+Flare.Components.FlareGanttPanel<TRow, TItem>.ExpandedByDefault.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.FlareGanttPanel() -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Gantt.get -> Flare.Components.FlareGantt?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Gantt.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Header.get -> Microsoft.AspNetCore.Components.RenderFragment?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Header.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemCover.get -> System.Func<TItem, Flare.Components.Gantt.GanttSpan?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemCover.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemDropAccepts.get -> System.Func<object?, bool>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemDropAccepts.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemDropGroup.get -> string?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemDropGroup.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemKey.get -> System.Func<TItem, string!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemKey.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemKind.get -> System.Func<TItem, string?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemKind.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemLabel.get -> System.Func<TItem, string?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemLabel.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemProgress.get -> System.Func<TItem, double?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemProgress.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemRow.get -> System.Func<TItem, string!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemRow.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemSegments.get -> System.Func<TItem, System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttSegment!>?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemSegments.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemSpan.get -> System.Func<TItem, Flare.Components.Gantt.GanttSpan?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemSpan.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemTemplate.get -> Microsoft.AspNetCore.Components.RenderFragment<TItem>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemTemplate.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemTitle.get -> System.Func<TItem, string?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemTitle.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemTooltip.get -> Microsoft.AspNetCore.Components.RenderFragment<TItem>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.ItemTooltip.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Items.get -> System.Collections.Generic.IEnumerable<TItem>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Items.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.LinkTypes.get -> System.Collections.Generic.IReadOnlyCollection<Flare.Components.Gantt.GanttLinkType>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.LinkTypes.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Links.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttLink!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Links.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Markers.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttMarker!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Markers.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.NewLinkType.get -> Flare.Components.Gantt.GanttLinkType
+Flare.Components.FlareGanttPanel<TRow, TItem>.NewLinkType.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnChange.get -> Microsoft.AspNetCore.Components.EventCallback<Flare.Components.Gantt.GanttChangeEventArgs!>
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnChange.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnItemClick.get -> Microsoft.AspNetCore.Components.EventCallback<TItem>
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnItemClick.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnLinkCreate.get -> Microsoft.AspNetCore.Components.EventCallback<Flare.Components.Gantt.GanttLinkEventArgs!>
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnLinkCreate.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnLinkRejected.get -> Microsoft.AspNetCore.Components.EventCallback<Flare.Components.Gantt.GanttLinkRejectedEventArgs!>
+Flare.Components.FlareGanttPanel<TRow, TItem>.OnLinkRejected.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Regions.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttRegion!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Regions.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.RollupParents.get -> bool
+Flare.Components.FlareGanttPanel<TRow, TItem>.RollupParents.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowChildren.get -> System.Func<TRow, System.Collections.Generic.IEnumerable<TRow>?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowChildren.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowClass.get -> System.Func<TRow, string?>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowClass.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowHeader.get -> Microsoft.AspNetCore.Components.RenderFragment<TRow>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowHeader.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowKey.get -> System.Func<TRow, string!>!
+Flare.Components.FlareGanttPanel<TRow, TItem>.RowKey.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Rows.get -> System.Collections.Generic.IEnumerable<TRow>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Rows.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ScheduleMode.get -> Flare.Components.Gantt.GanttScheduleMode
+Flare.Components.FlareGanttPanel<TRow, TItem>.ScheduleMode.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.ShowCriticalPath.get -> bool
+Flare.Components.FlareGanttPanel<TRow, TItem>.ShowCriticalPath.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.Suggested.get -> System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttChange!>?
+Flare.Components.FlareGanttPanel<TRow, TItem>.Suggested.set -> void
+Flare.Components.FlareGanttPanel<TRow, TItem>.SummaryKind.get -> string!
+Flare.Components.FlareGanttPanel<TRow, TItem>.SummaryKind.set -> void
+Flare.Components.Gantt.GanttAxis
+Flare.Components.Gantt.GanttAxis.At(double offset) -> System.DateTime
+Flare.Components.Gantt.GanttAxis.Culture.get -> System.Globalization.CultureInfo!
+Flare.Components.Gantt.GanttAxis.GanttAxis(Flare.Components.Gantt.GanttSpan range, Flare.Components.Gantt.GanttScale scale, System.Globalization.CultureInfo? culture = null) -> void
+Flare.Components.Gantt.GanttAxis.MajorTicks() -> System.Collections.Generic.IReadOnlyList<Flare.Components.Gantt.GanttTick!>!
+Flare.Components.Gantt.GanttAxis.Offset(System.DateTime moment) -> double
+Flare.Components.Gantt.GanttAxis.Range.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttAxis.Scale.get -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttAxis.Snap(System.DateTime moment) -> System.DateTime
+Flare.Components.Gantt.GanttAxis.Ticks() -> System.Collections.Generic.IReadOnlyList<Flare.Components.Gantt.GanttTick!>!
+Flare.Components.Gantt.GanttAxis.UnitOf(System.DateTime moment) -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttAxis.Units.get -> double
+Flare.Components.Gantt.GanttBox
+Flare.Components.Gantt.GanttBox.Deconstruct(out double X, out double Y, out double Width, out double Height) -> void
+Flare.Components.Gantt.GanttBox.Equals(Flare.Components.Gantt.GanttBox other) -> bool
+Flare.Components.Gantt.GanttBox.GanttBox() -> void
+Flare.Components.Gantt.GanttBox.GanttBox(double X, double Y, double Width, double Height) -> void
+Flare.Components.Gantt.GanttBox.Height.get -> double
+Flare.Components.Gantt.GanttBox.Height.init -> void
+Flare.Components.Gantt.GanttBox.MiddleY.get -> double
+Flare.Components.Gantt.GanttBox.Right.get -> double
+Flare.Components.Gantt.GanttBox.Width.get -> double
+Flare.Components.Gantt.GanttBox.Width.init -> void
+Flare.Components.Gantt.GanttBox.X.get -> double
+Flare.Components.Gantt.GanttBox.X.init -> void
+Flare.Components.Gantt.GanttBox.Y.get -> double
+Flare.Components.Gantt.GanttBox.Y.init -> void
+Flare.Components.Gantt.GanttCell
+Flare.Components.Gantt.GanttCell.<Clone>$() -> Flare.Components.Gantt.GanttCell!
+Flare.Components.Gantt.GanttCell.Deconstruct(out string! RowKey, out Flare.Components.Gantt.GanttSpan Span, out string! Kind, out string? Text, out string? Title) -> void
+Flare.Components.Gantt.GanttCell.Equals(Flare.Components.Gantt.GanttCell? other) -> bool
+Flare.Components.Gantt.GanttCell.GanttCell(string! RowKey, Flare.Components.Gantt.GanttSpan Span, string! Kind, string? Text = null, string? Title = null) -> void
+Flare.Components.Gantt.GanttCell.Kind.get -> string!
+Flare.Components.Gantt.GanttCell.Kind.init -> void
+Flare.Components.Gantt.GanttCell.RowKey.get -> string!
+Flare.Components.Gantt.GanttCell.RowKey.init -> void
+Flare.Components.Gantt.GanttCell.Span.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttCell.Span.init -> void
+Flare.Components.Gantt.GanttCell.Text.get -> string?
+Flare.Components.Gantt.GanttCell.Text.init -> void
+Flare.Components.Gantt.GanttCell.Title.get -> string?
+Flare.Components.Gantt.GanttCell.Title.init -> void
+Flare.Components.Gantt.GanttChange
+Flare.Components.Gantt.GanttChange.<Clone>$() -> Flare.Components.Gantt.GanttChange!
+Flare.Components.Gantt.GanttChange.Deconstruct(out string! ItemKey, out Flare.Components.Gantt.GanttSpan Span, out string? RowKey) -> void
+Flare.Components.Gantt.GanttChange.Equals(Flare.Components.Gantt.GanttChange? other) -> bool
+Flare.Components.Gantt.GanttChange.GanttChange(string! ItemKey, Flare.Components.Gantt.GanttSpan Span, string? RowKey = null) -> void
+Flare.Components.Gantt.GanttChange.ItemKey.get -> string!
+Flare.Components.Gantt.GanttChange.ItemKey.init -> void
+Flare.Components.Gantt.GanttChange.RowKey.get -> string?
+Flare.Components.Gantt.GanttChange.RowKey.init -> void
+Flare.Components.Gantt.GanttChange.Span.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttChange.Span.init -> void
+Flare.Components.Gantt.GanttChangeEventArgs
+Flare.Components.Gantt.GanttChangeEventArgs.Action.get -> Flare.Components.Gantt.GanttEditAction
+Flare.Components.Gantt.GanttChangeEventArgs.Cancel.get -> bool
+Flare.Components.Gantt.GanttChangeEventArgs.Cancel.set -> void
+Flare.Components.Gantt.GanttChangeEventArgs.Changes.get -> System.Collections.Generic.IReadOnlyList<Flare.Components.Gantt.GanttChange!>!
+Flare.Components.Gantt.GanttChangeEventArgs.GanttChangeEventArgs(string! ItemKey, Flare.Components.Gantt.GanttEditAction Action, System.Collections.Generic.IReadOnlyList<Flare.Components.Gantt.GanttChange!>! Changes) -> void
+Flare.Components.Gantt.GanttChangeEventArgs.ItemKey.get -> string!
+Flare.Components.Gantt.GanttDropTarget
+Flare.Components.Gantt.GanttDropTarget.<Clone>$() -> Flare.Components.Gantt.GanttDropTarget!
+Flare.Components.Gantt.GanttDropTarget.Deconstruct(out string! RowKey, out Flare.Components.Gantt.GanttSpan Span) -> void
+Flare.Components.Gantt.GanttDropTarget.Equals(Flare.Components.Gantt.GanttDropTarget? other) -> bool
+Flare.Components.Gantt.GanttDropTarget.GanttDropTarget(string! RowKey, Flare.Components.Gantt.GanttSpan Span) -> void
+Flare.Components.Gantt.GanttDropTarget.RowKey.get -> string!
+Flare.Components.Gantt.GanttDropTarget.RowKey.init -> void
+Flare.Components.Gantt.GanttDropTarget.Span.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttDropTarget.Span.init -> void
+Flare.Components.Gantt.GanttEditAction
+Flare.Components.Gantt.GanttEditAction.Move = 0 -> Flare.Components.Gantt.GanttEditAction
+Flare.Components.Gantt.GanttEditAction.ResizeEnd = 2 -> Flare.Components.Gantt.GanttEditAction
+Flare.Components.Gantt.GanttEditAction.ResizeStart = 1 -> Flare.Components.Gantt.GanttEditAction
+Flare.Components.Gantt.GanttGraph
+Flare.Components.Gantt.GanttItemDropTarget
+Flare.Components.Gantt.GanttItemDropTarget.<Clone>$() -> Flare.Components.Gantt.GanttItemDropTarget!
+Flare.Components.Gantt.GanttItemDropTarget.Deconstruct(out string! ItemKey) -> void
+Flare.Components.Gantt.GanttItemDropTarget.Equals(Flare.Components.Gantt.GanttItemDropTarget? other) -> bool
+Flare.Components.Gantt.GanttItemDropTarget.GanttItemDropTarget(string! ItemKey) -> void
+Flare.Components.Gantt.GanttItemDropTarget.ItemKey.get -> string!
+Flare.Components.Gantt.GanttItemDropTarget.ItemKey.init -> void
+Flare.Components.Gantt.GanttLaneLayout<TKey>
+Flare.Components.Gantt.GanttLaneLayout<TKey>.<Clone>$() -> Flare.Components.Gantt.GanttLaneLayout<TKey>!
+Flare.Components.Gantt.GanttLaneLayout<TKey>.Count.get -> int
+Flare.Components.Gantt.GanttLaneLayout<TKey>.Count.init -> void
+Flare.Components.Gantt.GanttLaneLayout<TKey>.Deconstruct(out System.Collections.Generic.IReadOnlyDictionary<TKey, int>! Lanes, out int Count) -> void
+Flare.Components.Gantt.GanttLaneLayout<TKey>.Equals(Flare.Components.Gantt.GanttLaneLayout<TKey>? other) -> bool
+Flare.Components.Gantt.GanttLaneLayout<TKey>.GanttLaneLayout(System.Collections.Generic.IReadOnlyDictionary<TKey, int>! Lanes, int Count) -> void
+Flare.Components.Gantt.GanttLaneLayout<TKey>.Lanes.get -> System.Collections.Generic.IReadOnlyDictionary<TKey, int>!
+Flare.Components.Gantt.GanttLaneLayout<TKey>.Lanes.init -> void
+Flare.Components.Gantt.GanttLanes
+Flare.Components.Gantt.GanttLegendItem
+Flare.Components.Gantt.GanttLegendItem.<Clone>$() -> Flare.Components.Gantt.GanttLegendItem!
+Flare.Components.Gantt.GanttLegendItem.BarKind.get -> string?
+Flare.Components.Gantt.GanttLegendItem.BarKind.init -> void
+Flare.Components.Gantt.GanttLegendItem.Deconstruct(out string! Kind, out string! Label, out Flare.Components.Gantt.GanttLegendShape Shape, out string? Title, out string? BarKind) -> void
+Flare.Components.Gantt.GanttLegendItem.Equals(Flare.Components.Gantt.GanttLegendItem? other) -> bool
+Flare.Components.Gantt.GanttLegendItem.GanttLegendItem(string! Kind, string! Label, Flare.Components.Gantt.GanttLegendShape Shape = Flare.Components.Gantt.GanttLegendShape.Bar, string? Title = null, string? BarKind = null) -> void
+Flare.Components.Gantt.GanttLegendItem.Kind.get -> string!
+Flare.Components.Gantt.GanttLegendItem.Kind.init -> void
+Flare.Components.Gantt.GanttLegendItem.Label.get -> string!
+Flare.Components.Gantt.GanttLegendItem.Label.init -> void
+Flare.Components.Gantt.GanttLegendItem.Shape.get -> Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLegendItem.Shape.init -> void
+Flare.Components.Gantt.GanttLegendItem.Title.get -> string?
+Flare.Components.Gantt.GanttLegendItem.Title.init -> void
+Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLegendShape.Bar = 0 -> Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLegendShape.Cell = 4 -> Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLegendShape.Region = 3 -> Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLegendShape.Segment = 1 -> Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLegendShape.Suggested = 2 -> Flare.Components.Gantt.GanttLegendShape
+Flare.Components.Gantt.GanttLink
+Flare.Components.Gantt.GanttLink.<Clone>$() -> Flare.Components.Gantt.GanttLink!
+Flare.Components.Gantt.GanttLink.Deconstruct(out string! FromKey, out string! ToKey, out Flare.Components.Gantt.GanttLinkType Type, out System.TimeSpan Lag, out string? Kind) -> void
+Flare.Components.Gantt.GanttLink.Equals(Flare.Components.Gantt.GanttLink? other) -> bool
+Flare.Components.Gantt.GanttLink.FromKey.get -> string!
+Flare.Components.Gantt.GanttLink.FromKey.init -> void
+Flare.Components.Gantt.GanttLink.GanttLink(string! FromKey, string! ToKey, Flare.Components.Gantt.GanttLinkType Type = Flare.Components.Gantt.GanttLinkType.FinishToStart, System.TimeSpan Lag = default(System.TimeSpan), string? Kind = null) -> void
+Flare.Components.Gantt.GanttLink.Kind.get -> string?
+Flare.Components.Gantt.GanttLink.Kind.init -> void
+Flare.Components.Gantt.GanttLink.Lag.get -> System.TimeSpan
+Flare.Components.Gantt.GanttLink.Lag.init -> void
+Flare.Components.Gantt.GanttLink.ToKey.get -> string!
+Flare.Components.Gantt.GanttLink.ToKey.init -> void
+Flare.Components.Gantt.GanttLink.Type.get -> Flare.Components.Gantt.GanttLinkType
+Flare.Components.Gantt.GanttLink.Type.init -> void
+Flare.Components.Gantt.GanttLinkEventArgs
+Flare.Components.Gantt.GanttLinkEventArgs.Cancel.get -> bool
+Flare.Components.Gantt.GanttLinkEventArgs.Cancel.set -> void
+Flare.Components.Gantt.GanttLinkEventArgs.GanttLinkEventArgs(Flare.Components.Gantt.GanttLink! Link) -> void
+Flare.Components.Gantt.GanttLinkEventArgs.Link.get -> Flare.Components.Gantt.GanttLink!
+Flare.Components.Gantt.GanttLinkRejectedEventArgs
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.<Clone>$() -> Flare.Components.Gantt.GanttLinkRejectedEventArgs!
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Deconstruct(out Flare.Components.Gantt.GanttLink! Link, out Flare.Components.Gantt.GanttValidation! Validation, out string! Message) -> void
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Equals(Flare.Components.Gantt.GanttLinkRejectedEventArgs? other) -> bool
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.GanttLinkRejectedEventArgs(Flare.Components.Gantt.GanttLink! Link, Flare.Components.Gantt.GanttValidation! Validation, string! Message) -> void
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Link.get -> Flare.Components.Gantt.GanttLink!
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Link.init -> void
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Message.get -> string!
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Message.init -> void
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Validation.get -> Flare.Components.Gantt.GanttValidation!
+Flare.Components.Gantt.GanttLinkRejectedEventArgs.Validation.init -> void
+Flare.Components.Gantt.GanttLinkType
+Flare.Components.Gantt.GanttLinkType.FinishToFinish = 2 -> Flare.Components.Gantt.GanttLinkType
+Flare.Components.Gantt.GanttLinkType.FinishToStart = 0 -> Flare.Components.Gantt.GanttLinkType
+Flare.Components.Gantt.GanttLinkType.StartToFinish = 3 -> Flare.Components.Gantt.GanttLinkType
+Flare.Components.Gantt.GanttLinkType.StartToStart = 1 -> Flare.Components.Gantt.GanttLinkType
+Flare.Components.Gantt.GanttMarker
+Flare.Components.Gantt.GanttMarker.<Clone>$() -> Flare.Components.Gantt.GanttMarker!
+Flare.Components.Gantt.GanttMarker.At.get -> System.DateTime
+Flare.Components.Gantt.GanttMarker.At.init -> void
+Flare.Components.Gantt.GanttMarker.Deconstruct(out string! Kind, out System.DateTime At, out string? RowKey, out string? Label, out string? Key) -> void
+Flare.Components.Gantt.GanttMarker.Equals(Flare.Components.Gantt.GanttMarker? other) -> bool
+Flare.Components.Gantt.GanttMarker.GanttMarker(string! Kind, System.DateTime At, string? RowKey = null, string? Label = null, string? Key = null) -> void
+Flare.Components.Gantt.GanttMarker.Key.get -> string?
+Flare.Components.Gantt.GanttMarker.Key.init -> void
+Flare.Components.Gantt.GanttMarker.Kind.get -> string!
+Flare.Components.Gantt.GanttMarker.Kind.init -> void
+Flare.Components.Gantt.GanttMarker.Label.get -> string?
+Flare.Components.Gantt.GanttMarker.Label.init -> void
+Flare.Components.Gantt.GanttMarker.RowKey.get -> string?
+Flare.Components.Gantt.GanttMarker.RowKey.init -> void
+Flare.Components.Gantt.GanttRegion
+Flare.Components.Gantt.GanttRegion.<Clone>$() -> Flare.Components.Gantt.GanttRegion!
+Flare.Components.Gantt.GanttRegion.Deconstruct(out string! Kind, out Flare.Components.Gantt.GanttSpan Span, out string? RowKey, out string? Label) -> void
+Flare.Components.Gantt.GanttRegion.Equals(Flare.Components.Gantt.GanttRegion? other) -> bool
+Flare.Components.Gantt.GanttRegion.GanttRegion(string! Kind, Flare.Components.Gantt.GanttSpan Span, string? RowKey = null, string? Label = null) -> void
+Flare.Components.Gantt.GanttRegion.Kind.get -> string!
+Flare.Components.Gantt.GanttRegion.Kind.init -> void
+Flare.Components.Gantt.GanttRegion.Label.get -> string?
+Flare.Components.Gantt.GanttRegion.Label.init -> void
+Flare.Components.Gantt.GanttRegion.RowKey.get -> string?
+Flare.Components.Gantt.GanttRegion.RowKey.init -> void
+Flare.Components.Gantt.GanttRegion.Span.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttRegion.Span.init -> void
+Flare.Components.Gantt.GanttRollup
+Flare.Components.Gantt.GanttRouting
+Flare.Components.Gantt.GanttRowDropTarget
+Flare.Components.Gantt.GanttRowDropTarget.<Clone>$() -> Flare.Components.Gantt.GanttRowDropTarget!
+Flare.Components.Gantt.GanttRowDropTarget.Deconstruct(out string! RowKey) -> void
+Flare.Components.Gantt.GanttRowDropTarget.Equals(Flare.Components.Gantt.GanttRowDropTarget? other) -> bool
+Flare.Components.Gantt.GanttRowDropTarget.GanttRowDropTarget(string! RowKey) -> void
+Flare.Components.Gantt.GanttRowDropTarget.RowKey.get -> string!
+Flare.Components.Gantt.GanttRowDropTarget.RowKey.init -> void
+Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScale.Day = 1 -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScale.Hour = 0 -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScale.Month = 3 -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScale.Quarter = 4 -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScale.Week = 2 -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScale.Year = 5 -> Flare.Components.Gantt.GanttScale
+Flare.Components.Gantt.GanttScheduleMode
+Flare.Components.Gantt.GanttScheduleMode.None = 0 -> Flare.Components.Gantt.GanttScheduleMode
+Flare.Components.Gantt.GanttScheduleMode.Push = 1 -> Flare.Components.Gantt.GanttScheduleMode
+Flare.Components.Gantt.GanttSegment
+Flare.Components.Gantt.GanttSegment.<Clone>$() -> Flare.Components.Gantt.GanttSegment!
+Flare.Components.Gantt.GanttSegment.Deconstruct(out string! Kind, out Flare.Components.Gantt.GanttSpan Span, out string? Label) -> void
+Flare.Components.Gantt.GanttSegment.Equals(Flare.Components.Gantt.GanttSegment? other) -> bool
+Flare.Components.Gantt.GanttSegment.GanttSegment(string! Kind, Flare.Components.Gantt.GanttSpan Span, string? Label = null) -> void
+Flare.Components.Gantt.GanttSegment.Kind.get -> string!
+Flare.Components.Gantt.GanttSegment.Kind.init -> void
+Flare.Components.Gantt.GanttSegment.Label.get -> string?
+Flare.Components.Gantt.GanttSegment.Label.init -> void
+Flare.Components.Gantt.GanttSegment.Span.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttSegment.Span.init -> void
+Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttSpan.Deconstruct(out System.DateTime Start, out System.DateTime End) -> void
+Flare.Components.Gantt.GanttSpan.Duration.get -> System.TimeSpan
+Flare.Components.Gantt.GanttSpan.End.get -> System.DateTime
+Flare.Components.Gantt.GanttSpan.End.init -> void
+Flare.Components.Gantt.GanttSpan.Equals(Flare.Components.Gantt.GanttSpan other) -> bool
+Flare.Components.Gantt.GanttSpan.GanttSpan() -> void
+Flare.Components.Gantt.GanttSpan.GanttSpan(System.DateTime Start, System.DateTime End) -> void
+Flare.Components.Gantt.GanttSpan.Overlaps(Flare.Components.Gantt.GanttSpan other) -> bool
+Flare.Components.Gantt.GanttSpan.Shift(System.TimeSpan delta) -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttSpan.Start.get -> System.DateTime
+Flare.Components.Gantt.GanttSpan.Start.init -> void
+Flare.Components.Gantt.GanttTexts
+Flare.Components.Gantt.GanttTexts.<Clone>$() -> Flare.Components.Gantt.GanttTexts!
+Flare.Components.Gantt.GanttTexts.Collapse.get -> string?
+Flare.Components.Gantt.GanttTexts.Collapse.init -> void
+Flare.Components.Gantt.GanttTexts.Cycle.get -> string?
+Flare.Components.Gantt.GanttTexts.Cycle.init -> void
+Flare.Components.Gantt.GanttTexts.Describe(Flare.Components.Gantt.GanttValidation! validation, System.Func<string!, string!>? name = null, System.Globalization.CultureInfo? culture = null) -> string?
+Flare.Components.Gantt.GanttTexts.Duplicate.get -> string?
+Flare.Components.Gantt.GanttTexts.Duplicate.init -> void
+Flare.Components.Gantt.GanttTexts.Equals(Flare.Components.Gantt.GanttTexts? other) -> bool
+Flare.Components.Gantt.GanttTexts.Expand.get -> string?
+Flare.Components.Gantt.GanttTexts.Expand.init -> void
+Flare.Components.Gantt.GanttTexts.GanttTexts() -> void
+Flare.Components.Gantt.GanttTexts.LinkCreated.get -> string?
+Flare.Components.Gantt.GanttTexts.LinkCreated.init -> void
+Flare.Components.Gantt.GanttTexts.LinkStarted.get -> string?
+Flare.Components.Gantt.GanttTexts.LinkStarted.init -> void
+Flare.Components.Gantt.GanttTexts.Moved.get -> string?
+Flare.Components.Gantt.GanttTexts.Moved.init -> void
+Flare.Components.Gantt.GanttTexts.Over(System.Globalization.CultureInfo! culture) -> Flare.Components.Gantt.GanttTexts!
+Flare.Components.Gantt.GanttTexts.ResizeSide.get -> string?
+Flare.Components.Gantt.GanttTexts.ResizeSide.init -> void
+Flare.Components.Gantt.GanttTexts.SelfLink.get -> string?
+Flare.Components.Gantt.GanttTexts.SelfLink.init -> void
+Flare.Components.Gantt.GanttTick
+Flare.Components.Gantt.GanttTick.<Clone>$() -> Flare.Components.Gantt.GanttTick!
+Flare.Components.Gantt.GanttTick.Caption.get -> string?
+Flare.Components.Gantt.GanttTick.Caption.init -> void
+Flare.Components.Gantt.GanttTick.Deconstruct(out Flare.Components.Gantt.GanttSpan Span, out double Offset, out double Width, out string! Label, out string? Caption) -> void
+Flare.Components.Gantt.GanttTick.Equals(Flare.Components.Gantt.GanttTick? other) -> bool
+Flare.Components.Gantt.GanttTick.GanttTick(Flare.Components.Gantt.GanttSpan Span, double Offset, double Width, string! Label, string? Caption) -> void
+Flare.Components.Gantt.GanttTick.Label.get -> string!
+Flare.Components.Gantt.GanttTick.Label.init -> void
+Flare.Components.Gantt.GanttTick.Offset.get -> double
+Flare.Components.Gantt.GanttTick.Offset.init -> void
+Flare.Components.Gantt.GanttTick.Span.get -> Flare.Components.Gantt.GanttSpan
+Flare.Components.Gantt.GanttTick.Span.init -> void
+Flare.Components.Gantt.GanttTick.Width.get -> double
+Flare.Components.Gantt.GanttTick.Width.init -> void
+Flare.Components.Gantt.GanttValidation
+Flare.Components.Gantt.GanttValidation.<Clone>$() -> Flare.Components.Gantt.GanttValidation!
+Flare.Components.Gantt.GanttValidation.Code.get -> Flare.Components.Gantt.GanttValidationCode
+Flare.Components.Gantt.GanttValidation.Code.init -> void
+Flare.Components.Gantt.GanttValidation.Deconstruct(out Flare.Components.Gantt.GanttValidationCode Code, out System.Collections.Generic.IReadOnlyList<string!>! Path) -> void
+Flare.Components.Gantt.GanttValidation.Equals(Flare.Components.Gantt.GanttValidation? other) -> bool
+Flare.Components.Gantt.GanttValidation.GanttValidation(Flare.Components.Gantt.GanttValidationCode Code, System.Collections.Generic.IReadOnlyList<string!>! Path) -> void
+Flare.Components.Gantt.GanttValidation.IsValid.get -> bool
+Flare.Components.Gantt.GanttValidation.Path.get -> System.Collections.Generic.IReadOnlyList<string!>!
+Flare.Components.Gantt.GanttValidation.Path.init -> void
+Flare.Components.Gantt.GanttValidationCode
+Flare.Components.Gantt.GanttValidationCode.Cycle = 2 -> Flare.Components.Gantt.GanttValidationCode
+Flare.Components.Gantt.GanttValidationCode.Duplicate = 3 -> Flare.Components.Gantt.GanttValidationCode
+Flare.Components.Gantt.GanttValidationCode.SelfLink = 1 -> Flare.Components.Gantt.GanttValidationCode
+Flare.Components.Gantt.GanttValidationCode.Valid = 0 -> Flare.Components.Gantt.GanttValidationCode
+Flare.Components.Gantt.ServiceCollectionExtensions
+Flare.Components.Gantt.Services.GanttJsService
+Flare.Components.Gantt.Services.GanttJsService.AttachAsync(Microsoft.AspNetCore.Components.ElementReference root, Microsoft.JSInterop.DotNetObjectReference<Flare.Components.FlareGantt!>! dotNetRef, bool virtualize, bool endless) -> System.Threading.Tasks.ValueTask<Flare.Components.Gantt.Services.IGanttView?>
+Flare.Components.Gantt.Services.GanttJsService.GanttJsService(Microsoft.JSInterop.IJSRuntime! js) -> void
+Flare.Components.Gantt.Services.IGanttJsService
+Flare.Components.Gantt.Services.IGanttJsService.AttachAsync(Microsoft.AspNetCore.Components.ElementReference root, Microsoft.JSInterop.DotNetObjectReference<Flare.Components.FlareGantt!>! dotNetRef, bool virtualize, bool endless) -> System.Threading.Tasks.ValueTask<Flare.Components.Gantt.Services.IGanttView?>
+Flare.Components.Gantt.Services.IGanttView
+Flare.Components.Gantt.Services.IGanttView.FocusItemAsync(string! key) -> System.Threading.Tasks.ValueTask
+Flare.Components.Gantt.Services.IGanttView.PointerXAsync() -> System.Threading.Tasks.ValueTask<double?>
+Flare.Components.Gantt.Services.IGanttView.ScrollToAsync(double x) -> System.Threading.Tasks.ValueTask
+Flare.Components.Gantt.Services.IGanttView.ShiftAsync(double pixels) -> System.Threading.Tasks.ValueTask
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.Gantt
+const Flare.Css.Classes.Gantt.Announce = "flare-gantt__announce" -> string!
+const Flare.Css.Classes.Gantt.Arrow = "flare-gantt__arrow" -> string!
+const Flare.Css.Classes.Gantt.Bar = "flare-gantt__bar" -> string!
+const Flare.Css.Classes.Gantt.BarContent = "flare-gantt__bar-content" -> string!
+const Flare.Css.Classes.Gantt.BarCritical = "flare-gantt__bar--critical" -> string!
+const Flare.Css.Classes.Gantt.BarLinkSource = "flare-gantt__bar--link-source" -> string!
+const Flare.Css.Classes.Gantt.BarPreview = "flare-gantt__bar--preview" -> string!
+const Flare.Css.Classes.Gantt.BarSelected = "flare-gantt__bar--selected" -> string!
+const Flare.Css.Classes.Gantt.BarSlot = "flare-gantt__bar-slot" -> string!
+const Flare.Css.Classes.Gantt.BarSuggested = "flare-gantt__bar--suggested" -> string!
+const Flare.Css.Classes.Gantt.BarSummary = "flare-gantt__bar--summary" -> string!
+const Flare.Css.Classes.Gantt.Body = "flare-gantt__body" -> string!
+const Flare.Css.Classes.Gantt.Cell = "flare-gantt__cell" -> string!
+const Flare.Css.Classes.Gantt.Compact = "flare-gantt--compact" -> string!
+const Flare.Css.Classes.Gantt.Corner = "flare-gantt__corner" -> string!
+const Flare.Css.Classes.Gantt.Drop = "flare-gantt__drop" -> string!
+const Flare.Css.Classes.Gantt.DropUnit = "flare-gantt__drop-unit" -> string!
+const Flare.Css.Classes.Gantt.GridLine = "flare-gantt__gridline" -> string!
+const Flare.Css.Classes.Gantt.Handle = "flare-gantt__handle" -> string!
+const Flare.Css.Classes.Gantt.HandleEnd = "flare-gantt__handle--end" -> string!
+const Flare.Css.Classes.Gantt.HandleStart = "flare-gantt__handle--start" -> string!
+const Flare.Css.Classes.Gantt.Header = "flare-gantt__header" -> string!
+const Flare.Css.Classes.Gantt.ItemDrop = "flare-gantt__item-drop" -> string!
+const Flare.Css.Classes.Gantt.Legend = "flare-gantt-legend" -> string!
+const Flare.Css.Classes.Gantt.LegendItem = "flare-gantt-legend__item" -> string!
+const Flare.Css.Classes.Gantt.LegendSample = "flare-gantt-legend__sample" -> string!
+const Flare.Css.Classes.Gantt.Link = "flare-gantt__link" -> string!
+const Flare.Css.Classes.Gantt.LinkCritical = "flare-gantt__link--critical" -> string!
+const Flare.Css.Classes.Gantt.LinkDraft = "flare-gantt__link--draft" -> string!
+const Flare.Css.Classes.Gantt.LinkHandle = "flare-gantt__link-handle" -> string!
+const Flare.Css.Classes.Gantt.Links = "flare-gantt__links" -> string!
+const Flare.Css.Classes.Gantt.Marker = "flare-gantt__marker" -> string!
+const Flare.Css.Classes.Gantt.MarkerLabel = "flare-gantt__marker-label" -> string!
+const Flare.Css.Classes.Gantt.NonWorking = "flare-gantt__nonworking" -> string!
+const Flare.Css.Classes.Gantt.Overlay = "flare-gantt__overlay" -> string!
+const Flare.Css.Classes.Gantt.OverlayFront = "flare-gantt__overlay--front" -> string!
+const Flare.Css.Classes.Gantt.Panel = "flare-gantt__panel" -> string!
+const Flare.Css.Classes.Gantt.PanelHeader = "flare-gantt__panel-header" -> string!
+const Flare.Css.Classes.Gantt.Progress = "flare-gantt__progress" -> string!
+const Flare.Css.Classes.Gantt.Region = "flare-gantt__region" -> string!
+const Flare.Css.Classes.Gantt.RegionLabel = "flare-gantt__region-label" -> string!
+const Flare.Css.Classes.Gantt.Root = "flare-gantt" -> string!
+const Flare.Css.Classes.Gantt.Row = "flare-gantt__row" -> string!
+const Flare.Css.Classes.Gantt.RowParent = "flare-gantt__row--parent" -> string!
+const Flare.Css.Classes.Gantt.Scale = "flare-gantt__scale" -> string!
+const Flare.Css.Classes.Gantt.ScaleRow = "flare-gantt__scale-row" -> string!
+const Flare.Css.Classes.Gantt.ScaleRowMajor = "flare-gantt__scale-row--major" -> string!
+const Flare.Css.Classes.Gantt.Scroll = "flare-gantt__scroll" -> string!
+const Flare.Css.Classes.Gantt.Segment = "flare-gantt__segment" -> string!
+const Flare.Css.Classes.Gantt.Side = "flare-gantt__side" -> string!
+const Flare.Css.Classes.Gantt.SideContent = "flare-gantt__side-content" -> string!
+const Flare.Css.Classes.Gantt.SideSplitter = "flare-gantt__side-splitter" -> string!
+const Flare.Css.Classes.Gantt.Spacer = "flare-gantt__spacer" -> string!
+const Flare.Css.Classes.Gantt.Tick = "flare-gantt__tick" -> string!
+const Flare.Css.Classes.Gantt.TickCaption = "flare-gantt__tick-caption" -> string!
+const Flare.Css.Classes.Gantt.TickNonWorking = "flare-gantt__tick--nonworking" -> string!
+const Flare.Css.Classes.Gantt.Toggle = "flare-gantt__toggle" -> string!
+const Flare.Css.Classes.Gantt.ToggleExpanded = "flare-gantt__toggle--expanded" -> string!
+const Flare.Css.Classes.Gantt.ToggleSpace = "flare-gantt__toggle-space" -> string!
+const Flare.Css.Classes.Gantt.Track = "flare-gantt__track" -> string!
+override Flare.Components.FlareGantt.ComponentCssClass.get -> string!
+override Flare.Components.FlareGantt.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.FlareGantt.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+override Flare.Components.FlareGantt.OnParametersSet() -> void
+override Flare.Components.FlareGanttLegend.ComponentCssClass.get -> string!
+override Flare.Components.FlareGanttPanel<TRow, TItem>.ComponentCssClass.get -> string!
+override Flare.Components.FlareGanttPanel<TRow, TItem>.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.FlareGanttPanel<TRow, TItem>.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+override Flare.Components.FlareGanttPanel<TRow, TItem>.OnInitialized() -> void
+override Flare.Components.FlareGanttPanel<TRow, TItem>.OnParametersSet() -> void
+override Flare.Components.FlareGanttPanel<TRow, TItem>.ShouldRender() -> bool
+override Flare.Components.Gantt.GanttBox.GetHashCode() -> int
+override Flare.Components.Gantt.GanttCell.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttCell.GetHashCode() -> int
+override Flare.Components.Gantt.GanttCell.ToString() -> string!
+override Flare.Components.Gantt.GanttChange.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttChange.GetHashCode() -> int
+override Flare.Components.Gantt.GanttChange.ToString() -> string!
+override Flare.Components.Gantt.GanttDropTarget.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttDropTarget.GetHashCode() -> int
+override Flare.Components.Gantt.GanttDropTarget.ToString() -> string!
+override Flare.Components.Gantt.GanttItemDropTarget.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttItemDropTarget.GetHashCode() -> int
+override Flare.Components.Gantt.GanttItemDropTarget.ToString() -> string!
+override Flare.Components.Gantt.GanttLaneLayout<TKey>.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttLaneLayout<TKey>.GetHashCode() -> int
+override Flare.Components.Gantt.GanttLaneLayout<TKey>.ToString() -> string!
+override Flare.Components.Gantt.GanttLegendItem.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttLegendItem.GetHashCode() -> int
+override Flare.Components.Gantt.GanttLegendItem.ToString() -> string!
+override Flare.Components.Gantt.GanttLink.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttLink.GetHashCode() -> int
+override Flare.Components.Gantt.GanttLink.ToString() -> string!
+override Flare.Components.Gantt.GanttLinkRejectedEventArgs.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttLinkRejectedEventArgs.GetHashCode() -> int
+override Flare.Components.Gantt.GanttLinkRejectedEventArgs.ToString() -> string!
+override Flare.Components.Gantt.GanttMarker.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttMarker.GetHashCode() -> int
+override Flare.Components.Gantt.GanttMarker.ToString() -> string!
+override Flare.Components.Gantt.GanttRegion.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttRegion.GetHashCode() -> int
+override Flare.Components.Gantt.GanttRegion.ToString() -> string!
+override Flare.Components.Gantt.GanttRowDropTarget.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttRowDropTarget.GetHashCode() -> int
+override Flare.Components.Gantt.GanttRowDropTarget.ToString() -> string!
+override Flare.Components.Gantt.GanttSegment.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttSegment.GetHashCode() -> int
+override Flare.Components.Gantt.GanttSegment.ToString() -> string!
+override Flare.Components.Gantt.GanttSpan.GetHashCode() -> int
+override Flare.Components.Gantt.GanttTexts.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttTexts.GetHashCode() -> int
+override Flare.Components.Gantt.GanttTexts.ToString() -> string!
+override Flare.Components.Gantt.GanttTick.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttTick.GetHashCode() -> int
+override Flare.Components.Gantt.GanttTick.ToString() -> string!
+override Flare.Components.Gantt.GanttValidation.Equals(object? obj) -> bool
+override Flare.Components.Gantt.GanttValidation.GetHashCode() -> int
+override Flare.Components.Gantt.GanttValidation.ToString() -> string!
+static Flare.Components.Gantt.GanttAxis.Major(Flare.Components.Gantt.GanttScale scale) -> Flare.Components.Gantt.GanttScale?
+static Flare.Components.Gantt.GanttBox.operator !=(Flare.Components.Gantt.GanttBox left, Flare.Components.Gantt.GanttBox right) -> bool
+static Flare.Components.Gantt.GanttBox.operator ==(Flare.Components.Gantt.GanttBox left, Flare.Components.Gantt.GanttBox right) -> bool
+static Flare.Components.Gantt.GanttCell.operator !=(Flare.Components.Gantt.GanttCell? left, Flare.Components.Gantt.GanttCell? right) -> bool
+static Flare.Components.Gantt.GanttCell.operator ==(Flare.Components.Gantt.GanttCell? left, Flare.Components.Gantt.GanttCell? right) -> bool
+static Flare.Components.Gantt.GanttChange.operator !=(Flare.Components.Gantt.GanttChange? left, Flare.Components.Gantt.GanttChange? right) -> bool
+static Flare.Components.Gantt.GanttChange.operator ==(Flare.Components.Gantt.GanttChange? left, Flare.Components.Gantt.GanttChange? right) -> bool
+static Flare.Components.Gantt.GanttDropTarget.Format(string! rowKey, Flare.Components.Gantt.GanttSpan span) -> string!
+static Flare.Components.Gantt.GanttDropTarget.TryParse(string? targetId, out Flare.Components.Gantt.GanttDropTarget? target) -> bool
+static Flare.Components.Gantt.GanttDropTarget.operator !=(Flare.Components.Gantt.GanttDropTarget? left, Flare.Components.Gantt.GanttDropTarget? right) -> bool
+static Flare.Components.Gantt.GanttDropTarget.operator ==(Flare.Components.Gantt.GanttDropTarget? left, Flare.Components.Gantt.GanttDropTarget? right) -> bool
+static Flare.Components.Gantt.GanttGraph.Cascade(System.Collections.Generic.IReadOnlyDictionary<string!, Flare.Components.Gantt.GanttSpan>! spans, System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttLink!>! links, string! moved, Flare.Components.Gantt.GanttSpan newSpan, Flare.Components.Gantt.GanttScheduleMode mode = Flare.Components.Gantt.GanttScheduleMode.Push) -> System.Collections.Generic.IReadOnlyDictionary<string!, Flare.Components.Gantt.GanttSpan>!
+static Flare.Components.Gantt.GanttGraph.CriticalPath(System.Collections.Generic.IReadOnlyDictionary<string!, Flare.Components.Gantt.GanttSpan>! spans, System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttLink!>! links) -> System.Collections.Generic.IReadOnlySet<string!>!
+static Flare.Components.Gantt.GanttGraph.Required(Flare.Components.Gantt.GanttSpan predecessor, Flare.Components.Gantt.GanttSpan successor, Flare.Components.Gantt.GanttLink! link) -> System.TimeSpan
+static Flare.Components.Gantt.GanttGraph.Validate(System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttLink!>! links, Flare.Components.Gantt.GanttLink! candidate) -> Flare.Components.Gantt.GanttValidation!
+static Flare.Components.Gantt.GanttItemDropTarget.Format(string! itemKey) -> string!
+static Flare.Components.Gantt.GanttItemDropTarget.TryParse(string? targetId, out Flare.Components.Gantt.GanttItemDropTarget? target) -> bool
+static Flare.Components.Gantt.GanttItemDropTarget.operator !=(Flare.Components.Gantt.GanttItemDropTarget? left, Flare.Components.Gantt.GanttItemDropTarget? right) -> bool
+static Flare.Components.Gantt.GanttItemDropTarget.operator ==(Flare.Components.Gantt.GanttItemDropTarget? left, Flare.Components.Gantt.GanttItemDropTarget? right) -> bool
+static Flare.Components.Gantt.GanttLaneLayout<TKey>.operator !=(Flare.Components.Gantt.GanttLaneLayout<TKey>? left, Flare.Components.Gantt.GanttLaneLayout<TKey>? right) -> bool
+static Flare.Components.Gantt.GanttLaneLayout<TKey>.operator ==(Flare.Components.Gantt.GanttLaneLayout<TKey>? left, Flare.Components.Gantt.GanttLaneLayout<TKey>? right) -> bool
+static Flare.Components.Gantt.GanttLanes.Assign<TKey>(System.Collections.Generic.IEnumerable<(TKey Key, Flare.Components.Gantt.GanttSpan Span)>! intervals) -> Flare.Components.Gantt.GanttLaneLayout<TKey>!
+static Flare.Components.Gantt.GanttLegendItem.operator !=(Flare.Components.Gantt.GanttLegendItem? left, Flare.Components.Gantt.GanttLegendItem? right) -> bool
+static Flare.Components.Gantt.GanttLegendItem.operator ==(Flare.Components.Gantt.GanttLegendItem? left, Flare.Components.Gantt.GanttLegendItem? right) -> bool
+static Flare.Components.Gantt.GanttLink.operator !=(Flare.Components.Gantt.GanttLink? left, Flare.Components.Gantt.GanttLink? right) -> bool
+static Flare.Components.Gantt.GanttLink.operator ==(Flare.Components.Gantt.GanttLink? left, Flare.Components.Gantt.GanttLink? right) -> bool
+static Flare.Components.Gantt.GanttLinkRejectedEventArgs.operator !=(Flare.Components.Gantt.GanttLinkRejectedEventArgs? left, Flare.Components.Gantt.GanttLinkRejectedEventArgs? right) -> bool
+static Flare.Components.Gantt.GanttLinkRejectedEventArgs.operator ==(Flare.Components.Gantt.GanttLinkRejectedEventArgs? left, Flare.Components.Gantt.GanttLinkRejectedEventArgs? right) -> bool
+static Flare.Components.Gantt.GanttMarker.operator !=(Flare.Components.Gantt.GanttMarker? left, Flare.Components.Gantt.GanttMarker? right) -> bool
+static Flare.Components.Gantt.GanttMarker.operator ==(Flare.Components.Gantt.GanttMarker? left, Flare.Components.Gantt.GanttMarker? right) -> bool
+static Flare.Components.Gantt.GanttRegion.operator !=(Flare.Components.Gantt.GanttRegion? left, Flare.Components.Gantt.GanttRegion? right) -> bool
+static Flare.Components.Gantt.GanttRegion.operator ==(Flare.Components.Gantt.GanttRegion? left, Flare.Components.Gantt.GanttRegion? right) -> bool
+static Flare.Components.Gantt.GanttRollup.Progress(System.Collections.Generic.IEnumerable<(Flare.Components.Gantt.GanttSpan Span, double Progress)>! children) -> double
+static Flare.Components.Gantt.GanttRollup.Span(System.Collections.Generic.IEnumerable<Flare.Components.Gantt.GanttSpan>! children) -> Flare.Components.Gantt.GanttSpan?
+static Flare.Components.Gantt.GanttRouting.Path(Flare.Components.Gantt.GanttBox from, Flare.Components.Gantt.GanttBox to, Flare.Components.Gantt.GanttLinkType type, double gap) -> string!
+static Flare.Components.Gantt.GanttRowDropTarget.Format(string! rowKey) -> string!
+static Flare.Components.Gantt.GanttRowDropTarget.TryParse(string? targetId, out Flare.Components.Gantt.GanttRowDropTarget? target) -> bool
+static Flare.Components.Gantt.GanttRowDropTarget.operator !=(Flare.Components.Gantt.GanttRowDropTarget? left, Flare.Components.Gantt.GanttRowDropTarget? right) -> bool
+static Flare.Components.Gantt.GanttRowDropTarget.operator ==(Flare.Components.Gantt.GanttRowDropTarget? left, Flare.Components.Gantt.GanttRowDropTarget? right) -> bool
+static Flare.Components.Gantt.GanttSegment.operator !=(Flare.Components.Gantt.GanttSegment? left, Flare.Components.Gantt.GanttSegment? right) -> bool
+static Flare.Components.Gantt.GanttSegment.operator ==(Flare.Components.Gantt.GanttSegment? left, Flare.Components.Gantt.GanttSegment? right) -> bool
+static Flare.Components.Gantt.GanttSpan.Day(System.DateOnly day) -> Flare.Components.Gantt.GanttSpan
+static Flare.Components.Gantt.GanttSpan.FromDays(System.DateOnly first, System.DateOnly lastInclusive) -> Flare.Components.Gantt.GanttSpan
+static Flare.Components.Gantt.GanttSpan.FromOffsets(System.DateTimeOffset start, System.DateTimeOffset end, System.TimeZoneInfo! zone) -> Flare.Components.Gantt.GanttSpan
+static Flare.Components.Gantt.GanttSpan.operator !=(Flare.Components.Gantt.GanttSpan left, Flare.Components.Gantt.GanttSpan right) -> bool
+static Flare.Components.Gantt.GanttSpan.operator ==(Flare.Components.Gantt.GanttSpan left, Flare.Components.Gantt.GanttSpan right) -> bool
+static Flare.Components.Gantt.GanttTexts.For(System.Globalization.CultureInfo! culture) -> Flare.Components.Gantt.GanttTexts!
+static Flare.Components.Gantt.GanttTexts.operator !=(Flare.Components.Gantt.GanttTexts? left, Flare.Components.Gantt.GanttTexts? right) -> bool
+static Flare.Components.Gantt.GanttTexts.operator ==(Flare.Components.Gantt.GanttTexts? left, Flare.Components.Gantt.GanttTexts? right) -> bool
+static Flare.Components.Gantt.GanttTick.operator !=(Flare.Components.Gantt.GanttTick? left, Flare.Components.Gantt.GanttTick? right) -> bool
+static Flare.Components.Gantt.GanttTick.operator ==(Flare.Components.Gantt.GanttTick? left, Flare.Components.Gantt.GanttTick? right) -> bool
+static Flare.Components.Gantt.GanttValidation.Ok.get -> Flare.Components.Gantt.GanttValidation!
+static Flare.Components.Gantt.GanttValidation.operator !=(Flare.Components.Gantt.GanttValidation? left, Flare.Components.Gantt.GanttValidation? right) -> bool
+static Flare.Components.Gantt.GanttValidation.operator ==(Flare.Components.Gantt.GanttValidation? left, Flare.Components.Gantt.GanttValidation? right) -> bool
+static Flare.Components.Gantt.ServiceCollectionExtensions.AddFlareGantt(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Flare.Css.Classes.Gantt.Kind(string? kind) -> string!
+static Flare.Css.Classes.Gantt.LinkType(Flare.Components.Gantt.GanttLinkType type) -> string!
+~override Flare.Components.FlareGantt.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.FlareGanttLegend.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.FlareGanttPanel<TRow, TItem>.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.Gantt.GanttBox.Equals(object obj) -> bool
+~override Flare.Components.Gantt.GanttBox.ToString() -> string
+~override Flare.Components.Gantt.GanttSpan.Equals(object obj) -> bool
+~override Flare.Components.Gantt.GanttSpan.ToString() -> string

@@ -1,0 +1,290 @@
+#nullable enable
+Flare.Components.FlareQueryBuilder
+Flare.Components.FlareQueryBuilder.Capabilities.get -> Querio.IQueryCapabilities?
+Flare.Components.FlareQueryBuilder.Capabilities.set -> void
+Flare.Components.FlareQueryBuilder.FlareQueryBuilder() -> void
+Flare.Components.FlareQueryBuilder.Labels.get -> Flare.Components.QueryBuilderLabels!
+Flare.Components.FlareQueryBuilder.Labels.set -> void
+Flare.Components.FlareQueryBuilder.OnSubmit.get -> Microsoft.AspNetCore.Components.EventCallback<Querio.QuerySpec!>
+Flare.Components.FlareQueryBuilder.OnSubmit.set -> void
+Flare.Components.FlareQueryBuilder.Schema.get -> Querio.QuerySchema?
+Flare.Components.FlareQueryBuilder.Schema.set -> void
+Flare.Components.FlareQueryBuilder.ShowSubmit.get -> bool
+Flare.Components.FlareQueryBuilder.ShowSubmit.set -> void
+Flare.Components.FlareQueryBuilder.ShowValidation.get -> bool
+Flare.Components.FlareQueryBuilder.ShowValidation.set -> void
+Flare.Components.FlareQueryBuilder.Spec.get -> Querio.QuerySpec?
+Flare.Components.FlareQueryBuilder.Spec.set -> void
+Flare.Components.FlareQueryBuilder.SpecChanged.get -> Microsoft.AspNetCore.Components.EventCallback<Querio.QuerySpec!>
+Flare.Components.FlareQueryBuilder.SpecChanged.set -> void
+Flare.Components.FlareQueryEditor
+Flare.Components.FlareQueryEditor.FlareQueryEditor() -> void
+Flare.Components.FlareQueryEditor.LineNumbers.get -> bool
+Flare.Components.FlareQueryEditor.LineNumbers.set -> void
+Flare.Components.FlareQueryEditor.Rows.get -> int
+Flare.Components.FlareQueryEditor.Rows.set -> void
+Flare.Components.FlareQueryEditor.Schema.get -> Querio.QuerySchema?
+Flare.Components.FlareQueryEditor.Schema.set -> void
+Flare.Components.FlareQueryEditor.ShowProblems.get -> bool
+Flare.Components.FlareQueryEditor.ShowProblems.set -> void
+Flare.Components.FlareQueryEditor.Spec.get -> Querio.QuerySpec?
+Flare.Components.FlareQueryEditor.Spec.set -> void
+Flare.Components.FlareQueryEditor.SpecChanged.get -> Microsoft.AspNetCore.Components.EventCallback<Querio.QuerySpec?>
+Flare.Components.FlareQueryEditor.SpecChanged.set -> void
+Flare.Components.FlareQueryEditor.Text.get -> string?
+Flare.Components.FlareQueryEditor.Text.set -> void
+Flare.Components.FlareQueryEditor.TextChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string!>
+Flare.Components.FlareQueryEditor.TextChanged.set -> void
+Flare.Components.QueryArgumentDraft
+Flare.Components.QueryArgumentDraft.Alias.get -> string!
+Flare.Components.QueryArgumentDraft.Alias.set -> void
+Flare.Components.QueryArgumentDraft.Field.get -> string!
+Flare.Components.QueryArgumentDraft.Field.set -> void
+Flare.Components.QueryArgumentDraft.IsField.get -> bool
+Flare.Components.QueryArgumentDraft.IsField.set -> void
+Flare.Components.QueryArgumentDraft.QueryArgumentDraft() -> void
+Flare.Components.QueryArgumentDraft.ToOperand() -> Querio.QueryOperand!
+Flare.Components.QueryArgumentDraft.Value.get -> string?
+Flare.Components.QueryArgumentDraft.Value.set -> void
+Flare.Components.QueryBuilderLabels
+Flare.Components.QueryBuilderLabels.<Clone>$() -> Flare.Components.QueryBuilderLabels!
+Flare.Components.QueryBuilderLabels.AddColumn.get -> string!
+Flare.Components.QueryBuilderLabels.AddColumn.init -> void
+Flare.Components.QueryBuilderLabels.AddCondition.get -> string!
+Flare.Components.QueryBuilderLabels.AddCondition.init -> void
+Flare.Components.QueryBuilderLabels.AddGroup.get -> string!
+Flare.Components.QueryBuilderLabels.AddGroup.init -> void
+Flare.Components.QueryBuilderLabels.AddJoin.get -> string!
+Flare.Components.QueryBuilderLabels.AddJoin.init -> void
+Flare.Components.QueryBuilderLabels.Aggregate.get -> string!
+Flare.Components.QueryBuilderLabels.Aggregate.init -> void
+Flare.Components.QueryBuilderLabels.Alias.get -> string!
+Flare.Components.QueryBuilderLabels.Alias.init -> void
+Flare.Components.QueryBuilderLabels.And.get -> string!
+Flare.Components.QueryBuilderLabels.And.init -> void
+Flare.Components.QueryBuilderLabels.Ascending.get -> string!
+Flare.Components.QueryBuilderLabels.Ascending.init -> void
+Flare.Components.QueryBuilderLabels.Columns.get -> string!
+Flare.Components.QueryBuilderLabels.Columns.init -> void
+Flare.Components.QueryBuilderLabels.Descending.get -> string!
+Flare.Components.QueryBuilderLabels.Descending.init -> void
+Flare.Components.QueryBuilderLabels.Distinct.get -> string!
+Flare.Components.QueryBuilderLabels.Distinct.init -> void
+Flare.Components.QueryBuilderLabels.Equals(Flare.Components.QueryBuilderLabels? other) -> bool
+Flare.Components.QueryBuilderLabels.Filter.get -> string!
+Flare.Components.QueryBuilderLabels.Filter.init -> void
+Flare.Components.QueryBuilderLabels.Group.get -> string!
+Flare.Components.QueryBuilderLabels.Group.init -> void
+Flare.Components.QueryBuilderLabels.GroupFilter.get -> string!
+Flare.Components.QueryBuilderLabels.GroupFilter.init -> void
+Flare.Components.QueryBuilderLabels.JoinKind.get -> string!
+Flare.Components.QueryBuilderLabels.JoinKind.init -> void
+Flare.Components.QueryBuilderLabels.Limit.get -> string!
+Flare.Components.QueryBuilderLabels.Limit.init -> void
+Flare.Components.QueryBuilderLabels.NoProblems.get -> string!
+Flare.Components.QueryBuilderLabels.NoProblems.init -> void
+Flare.Components.QueryBuilderLabels.None.get -> string!
+Flare.Components.QueryBuilderLabels.None.init -> void
+Flare.Components.QueryBuilderLabels.Offset.get -> string!
+Flare.Components.QueryBuilderLabels.Offset.init -> void
+Flare.Components.QueryBuilderLabels.Options.get -> string!
+Flare.Components.QueryBuilderLabels.Options.init -> void
+Flare.Components.QueryBuilderLabels.Or.get -> string!
+Flare.Components.QueryBuilderLabels.Or.init -> void
+Flare.Components.QueryBuilderLabels.OutputName.get -> string!
+Flare.Components.QueryBuilderLabels.OutputName.init -> void
+Flare.Components.QueryBuilderLabels.Period.get -> string!
+Flare.Components.QueryBuilderLabels.Period.init -> void
+Flare.Components.QueryBuilderLabels.Problems.get -> string!
+Flare.Components.QueryBuilderLabels.Problems.init -> void
+Flare.Components.QueryBuilderLabels.QueryBuilderLabels() -> void
+Flare.Components.QueryBuilderLabels.Relation.get -> string!
+Flare.Components.QueryBuilderLabels.Relation.init -> void
+Flare.Components.QueryBuilderLabels.Relative.get -> string!
+Flare.Components.QueryBuilderLabels.Relative.init -> void
+Flare.Components.QueryBuilderLabels.Remove.get -> string!
+Flare.Components.QueryBuilderLabels.Remove.init -> void
+Flare.Components.QueryBuilderLabels.SchemaMissing.get -> string!
+Flare.Components.QueryBuilderLabels.SchemaMissing.init -> void
+Flare.Components.QueryBuilderLabels.Sort.get -> string!
+Flare.Components.QueryBuilderLabels.Sort.init -> void
+Flare.Components.QueryBuilderLabels.Source.get -> string!
+Flare.Components.QueryBuilderLabels.Source.init -> void
+Flare.Components.QueryBuilderLabels.Submit.get -> string!
+Flare.Components.QueryBuilderLabels.Submit.init -> void
+Flare.Components.QueryBuilderLabels.Value.get -> string!
+Flare.Components.QueryBuilderLabels.Value.init -> void
+Flare.Components.QueryBuilderLabels.ValueHint.get -> string!
+Flare.Components.QueryBuilderLabels.ValueHint.init -> void
+Flare.Components.QueryBuilderLabels.ValuesHint.get -> string!
+Flare.Components.QueryBuilderLabels.ValuesHint.init -> void
+Flare.Components.QueryColumnDraft
+Flare.Components.QueryColumnDraft.Aggregate.get -> Querio.QueryAggregate?
+Flare.Components.QueryColumnDraft.Aggregate.set -> void
+Flare.Components.QueryColumnDraft.Alias.get -> string!
+Flare.Components.QueryColumnDraft.Alias.set -> void
+Flare.Components.QueryColumnDraft.Arguments.get -> System.Collections.Generic.List<Flare.Components.QueryArgumentDraft!>!
+Flare.Components.QueryColumnDraft.Distinct.get -> bool
+Flare.Components.QueryColumnDraft.Distinct.set -> void
+Flare.Components.QueryColumnDraft.Field.get -> string!
+Flare.Components.QueryColumnDraft.Field.set -> void
+Flare.Components.QueryColumnDraft.Function.get -> string?
+Flare.Components.QueryColumnDraft.Function.set -> void
+Flare.Components.QueryColumnDraft.Group.get -> bool
+Flare.Components.QueryColumnDraft.Group.set -> void
+Flare.Components.QueryColumnDraft.OutputAlias.get -> string?
+Flare.Components.QueryColumnDraft.OutputAlias.set -> void
+Flare.Components.QueryColumnDraft.Percentile.get -> double?
+Flare.Components.QueryColumnDraft.Percentile.set -> void
+Flare.Components.QueryColumnDraft.QueryColumnDraft() -> void
+Flare.Components.QueryColumnDraft.Sort.get -> Querio.QuerySortDirection?
+Flare.Components.QueryColumnDraft.Sort.set -> void
+Flare.Components.QueryColumnDraft.ToCall() -> Querio.QueryFunctionCall?
+Flare.Components.QueryColumnDraft.ToFieldRef() -> Querio.QueryFieldRef?
+Flare.Components.QueryColumnDraft.Truncate.get -> Querio.QueryDateTruncation?
+Flare.Components.QueryColumnDraft.Truncate.set -> void
+Flare.Components.QueryConditionDraft
+Flare.Components.QueryConditionDraft.Alias.get -> string!
+Flare.Components.QueryConditionDraft.Alias.set -> void
+Flare.Components.QueryConditionDraft.Arguments.get -> System.Collections.Generic.List<Flare.Components.QueryArgumentDraft!>!
+Flare.Components.QueryConditionDraft.Field.get -> string!
+Flare.Components.QueryConditionDraft.Field.set -> void
+Flare.Components.QueryConditionDraft.Function.get -> string?
+Flare.Components.QueryConditionDraft.Function.set -> void
+Flare.Components.QueryConditionDraft.Operator.get -> Querio.QueryOperator
+Flare.Components.QueryConditionDraft.Operator.set -> void
+Flare.Components.QueryConditionDraft.QueryConditionDraft() -> void
+Flare.Components.QueryConditionDraft.Relative.get -> bool
+Flare.Components.QueryConditionDraft.Relative.set -> void
+Flare.Components.QueryConditionDraft.RelativeAmount.get -> int
+Flare.Components.QueryConditionDraft.RelativeAmount.set -> void
+Flare.Components.QueryConditionDraft.RelativePast.get -> bool
+Flare.Components.QueryConditionDraft.RelativePast.set -> void
+Flare.Components.QueryConditionDraft.RelativeUnit.get -> Querio.QueryTimeUnit
+Flare.Components.QueryConditionDraft.RelativeUnit.set -> void
+Flare.Components.QueryConditionDraft.SelectAlias.get -> string?
+Flare.Components.QueryConditionDraft.SelectAlias.set -> void
+Flare.Components.QueryConditionDraft.ToCondition() -> Querio.QueryCondition?
+Flare.Components.QueryConditionDraft.Value.get -> string?
+Flare.Components.QueryConditionDraft.Value.set -> void
+Flare.Components.QueryConditionDraft.Value2.get -> string?
+Flare.Components.QueryConditionDraft.Value2.set -> void
+Flare.Components.QueryConditionDraft.Values.get -> string?
+Flare.Components.QueryConditionDraft.Values.set -> void
+Flare.Components.QueryConditionEditor
+Flare.Components.QueryConditionEditor.AddConditionLabel.get -> string!
+Flare.Components.QueryConditionEditor.AddConditionLabel.set -> void
+Flare.Components.QueryConditionEditor.AddGroupLabel.get -> string!
+Flare.Components.QueryConditionEditor.AddGroupLabel.set -> void
+Flare.Components.QueryConditionEditor.AllowAggregates.get -> bool
+Flare.Components.QueryConditionEditor.AllowAggregates.set -> void
+Flare.Components.QueryConditionEditor.AndLabel.get -> string!
+Flare.Components.QueryConditionEditor.AndLabel.set -> void
+Flare.Components.QueryConditionEditor.Choices.get -> Querio.QueryChoices?
+Flare.Components.QueryConditionEditor.Choices.set -> void
+Flare.Components.QueryConditionEditor.Group.get -> Flare.Components.QueryConditionGroupDraft!
+Flare.Components.QueryConditionEditor.Group.set -> void
+Flare.Components.QueryConditionEditor.OnChanged.get -> Microsoft.AspNetCore.Components.EventCallback
+Flare.Components.QueryConditionEditor.OnChanged.set -> void
+Flare.Components.QueryConditionEditor.OrLabel.get -> string!
+Flare.Components.QueryConditionEditor.OrLabel.set -> void
+Flare.Components.QueryConditionEditor.Parent.get -> Flare.Components.QueryConditionGroupDraft?
+Flare.Components.QueryConditionEditor.Parent.set -> void
+Flare.Components.QueryConditionEditor.QueryConditionEditor() -> void
+Flare.Components.QueryConditionEditor.RelativeLabel.get -> string!
+Flare.Components.QueryConditionEditor.RelativeLabel.set -> void
+Flare.Components.QueryConditionEditor.RemoveLabel.get -> string!
+Flare.Components.QueryConditionEditor.RemoveLabel.set -> void
+Flare.Components.QueryConditionEditor.Schema.get -> Querio.QuerySchema?
+Flare.Components.QueryConditionEditor.Schema.set -> void
+Flare.Components.QueryConditionEditor.ValueHint.get -> string!
+Flare.Components.QueryConditionEditor.ValueHint.set -> void
+Flare.Components.QueryConditionEditor.ValuesHint.get -> string!
+Flare.Components.QueryConditionEditor.ValuesHint.set -> void
+Flare.Components.QueryConditionGroupDraft
+Flare.Components.QueryConditionGroupDraft.Conditions.get -> System.Collections.Generic.List<Flare.Components.QueryConditionDraft!>!
+Flare.Components.QueryConditionGroupDraft.Groups.get -> System.Collections.Generic.List<Flare.Components.QueryConditionGroupDraft!>!
+Flare.Components.QueryConditionGroupDraft.Or.get -> bool
+Flare.Components.QueryConditionGroupDraft.Or.set -> void
+Flare.Components.QueryConditionGroupDraft.QueryConditionGroupDraft() -> void
+Flare.Components.QueryConditionGroupDraft.ToGroup() -> Querio.QueryFilterGroup!
+Flare.Components.QueryDraft
+Flare.Components.QueryDraft.Columns.get -> System.Collections.Generic.List<Flare.Components.QueryColumnDraft!>!
+Flare.Components.QueryDraft.Distinct.get -> bool
+Flare.Components.QueryDraft.Distinct.set -> void
+Flare.Components.QueryDraft.Having.get -> Flare.Components.QueryConditionGroupDraft!
+Flare.Components.QueryDraft.Having.set -> void
+Flare.Components.QueryDraft.Joins.get -> System.Collections.Generic.List<Flare.Components.QueryJoinDraft!>!
+Flare.Components.QueryDraft.Limit.get -> int?
+Flare.Components.QueryDraft.Limit.set -> void
+Flare.Components.QueryDraft.Offset.get -> int?
+Flare.Components.QueryDraft.Offset.set -> void
+Flare.Components.QueryDraft.QueryDraft() -> void
+Flare.Components.QueryDraft.RootAlias.get -> string!
+Flare.Components.QueryDraft.RootAlias.set -> void
+Flare.Components.QueryDraft.RootArguments.get -> System.Collections.Generic.List<Flare.Components.QueryArgumentDraft!>!
+Flare.Components.QueryDraft.RootEntity.get -> string!
+Flare.Components.QueryDraft.RootEntity.set -> void
+Flare.Components.QueryDraft.RootFunction.get -> string?
+Flare.Components.QueryDraft.RootFunction.set -> void
+Flare.Components.QueryDraft.ToSpec() -> Querio.QuerySpec!
+Flare.Components.QueryDraft.Where.get -> Flare.Components.QueryConditionGroupDraft!
+Flare.Components.QueryDraft.Where.set -> void
+Flare.Components.QueryJoinDraft
+Flare.Components.QueryJoinDraft.Alias.get -> string!
+Flare.Components.QueryJoinDraft.Alias.set -> void
+Flare.Components.QueryJoinDraft.Entity.get -> string!
+Flare.Components.QueryJoinDraft.Entity.set -> void
+Flare.Components.QueryJoinDraft.From.get -> string?
+Flare.Components.QueryJoinDraft.From.set -> void
+Flare.Components.QueryJoinDraft.Kind.get -> Querio.QueryJoinKind
+Flare.Components.QueryJoinDraft.Kind.set -> void
+Flare.Components.QueryJoinDraft.QueryJoinDraft() -> void
+Flare.Components.QueryJoinDraft.Relation.get -> string?
+Flare.Components.QueryJoinDraft.Relation.set -> void
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.QueryBuilder
+Flare.Css.Classes.QueryEditor
+const Flare.Css.Classes.QueryBuilder.Cell = "flare-qb__cell" -> string!
+const Flare.Css.Classes.QueryBuilder.CellAlias = "flare-qb__cell--alias" -> string!
+const Flare.Css.Classes.QueryBuilder.CellFlag = "flare-qb__cell--flag" -> string!
+const Flare.Css.Classes.QueryBuilder.CellOp = "flare-qb__cell--op" -> string!
+const Flare.Css.Classes.QueryBuilder.CellRelation = "flare-qb__cell--relation" -> string!
+const Flare.Css.Classes.QueryBuilder.CellRelative = "flare-qb__cell--relative" -> string!
+const Flare.Css.Classes.QueryBuilder.CellTarget = "flare-qb__cell--target" -> string!
+const Flare.Css.Classes.QueryBuilder.CellUnit = "flare-qb__cell--unit" -> string!
+const Flare.Css.Classes.QueryBuilder.CellValue = "flare-qb__cell--value" -> string!
+const Flare.Css.Classes.QueryBuilder.Connector = "flare-qb__connector" -> string!
+const Flare.Css.Classes.QueryBuilder.Group = "flare-qb__group" -> string!
+const Flare.Css.Classes.QueryBuilder.GroupBody = "flare-qb__group-body" -> string!
+const Flare.Css.Classes.QueryBuilder.GroupHead = "flare-qb__group-head" -> string!
+const Flare.Css.Classes.QueryBuilder.Heading = "flare-qb__heading" -> string!
+const Flare.Css.Classes.QueryBuilder.Ok = "flare-qb__ok" -> string!
+const Flare.Css.Classes.QueryBuilder.Problems = "flare-qb__problems" -> string!
+const Flare.Css.Classes.QueryBuilder.Root = "flare-qb" -> string!
+const Flare.Css.Classes.QueryBuilder.Row = "flare-qb__row" -> string!
+const Flare.Css.Classes.QueryBuilder.Section = "flare-qb__section" -> string!
+const Flare.Css.Classes.QueryBuilder.SectionHead = "flare-qb__section-head" -> string!
+const Flare.Css.Classes.QueryEditor.Problems = "flare-qe__problems" -> string!
+const Flare.Css.Classes.QueryEditor.Root = "flare-qe" -> string!
+override Flare.Components.FlareQueryBuilder.ComponentCssClass.get -> string!
+override Flare.Components.FlareQueryBuilder.OnParametersSet() -> void
+override Flare.Components.FlareQueryEditor.ComponentCssClass.get -> string!
+override Flare.Components.FlareQueryEditor.OnParametersSetAsync() -> System.Threading.Tasks.Task!
+override Flare.Components.QueryBuilderLabels.Equals(object? obj) -> bool
+override Flare.Components.QueryBuilderLabels.GetHashCode() -> int
+override Flare.Components.QueryBuilderLabels.ToString() -> string!
+static Flare.Components.QueryArgumentDraft.FromOperand(Querio.QueryOperand! operand) -> Flare.Components.QueryArgumentDraft!
+static Flare.Components.QueryBuilderLabels.Default.get -> Flare.Components.QueryBuilderLabels!
+static Flare.Components.QueryBuilderLabels.For(System.Globalization.CultureInfo! culture) -> Flare.Components.QueryBuilderLabels!
+static Flare.Components.QueryBuilderLabels.operator !=(Flare.Components.QueryBuilderLabels? left, Flare.Components.QueryBuilderLabels? right) -> bool
+static Flare.Components.QueryBuilderLabels.operator ==(Flare.Components.QueryBuilderLabels? left, Flare.Components.QueryBuilderLabels? right) -> bool
+static Flare.Components.QueryColumnDraft.FromSelect(Querio.QuerySelect! item, Querio.QuerySpec! spec) -> Flare.Components.QueryColumnDraft!
+static Flare.Components.QueryConditionDraft.FromCondition(Querio.QueryCondition! condition) -> Flare.Components.QueryConditionDraft!
+static Flare.Components.QueryConditionGroupDraft.FromGroup(Querio.QueryFilterGroup? group) -> Flare.Components.QueryConditionGroupDraft!
+static Flare.Components.QueryDraft.FromSpec(Querio.QuerySpec? spec, Querio.QuerySchema! schema) -> Flare.Components.QueryDraft!
+~override Flare.Components.FlareQueryBuilder.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.FlareQueryEditor.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
+~override Flare.Components.QueryConditionEditor.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

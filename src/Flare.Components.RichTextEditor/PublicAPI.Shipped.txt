@@ -1,0 +1,38 @@
+#nullable enable
+Flare.Components.FlareRichTextEditor
+Flare.Components.FlareRichTextEditor.FlareRichTextEditor() -> void
+Flare.Components.FlareRichTextEditor.Label.get -> string?
+Flare.Components.FlareRichTextEditor.Label.set -> void
+Flare.Components.FlareRichTextEditor.MinHeight.get -> string!
+Flare.Components.FlareRichTextEditor.MinHeight.set -> void
+Flare.Components.FlareRichTextEditor.OnContentChanged(string! html) -> System.Threading.Tasks.Task!
+Flare.Components.FlareRichTextEditor.Placeholder.get -> string?
+Flare.Components.FlareRichTextEditor.Placeholder.set -> void
+Flare.Components.FlareRichTextEditor.ReadOnly.get -> bool
+Flare.Components.FlareRichTextEditor.ReadOnly.set -> void
+Flare.Components.FlareRichTextEditor.Sanitize.get -> bool
+Flare.Components.FlareRichTextEditor.Sanitize.set -> void
+Flare.Components.FlareRichTextEditor.ShowHeadings.get -> bool
+Flare.Components.FlareRichTextEditor.ShowHeadings.set -> void
+Flare.Components.FlareRichTextEditor.ShowLink.get -> bool
+Flare.Components.FlareRichTextEditor.ShowLink.set -> void
+Flare.Components.FlareRichTextEditor.Value.get -> string?
+Flare.Components.FlareRichTextEditor.Value.set -> void
+Flare.Components.FlareRichTextEditor.ValueChanged.get -> Microsoft.AspNetCore.Components.EventCallback<string!>
+Flare.Components.FlareRichTextEditor.ValueChanged.set -> void
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.Rte
+const Flare.Css.Classes.Rte.Content = "flare-rte__content" -> string!
+const Flare.Css.Classes.Rte.LinkInput = "flare-rte__link-input" -> string!
+const Flare.Css.Classes.Rte.LinkInputWrap = "flare-rte__link-input-wrap" -> string!
+const Flare.Css.Classes.Rte.Root = "flare-rte" -> string!
+const Flare.Css.Classes.Rte.Separator = "flare-rte__separator" -> string!
+const Flare.Css.Classes.Rte.Tool = "flare-rte__tool" -> string!
+const Flare.Css.Classes.Rte.ToolActive = "flare-rte__tool--active" -> string!
+const Flare.Css.Classes.Rte.Toolbar = "flare-rte__toolbar" -> string!
+override Flare.Components.FlareRichTextEditor.ComponentCssClass.get -> string!
+override Flare.Components.FlareRichTextEditor.DisposeAsync() -> System.Threading.Tasks.ValueTask
+override Flare.Components.FlareRichTextEditor.OnAfterRenderAsync(bool firstRender) -> System.Threading.Tasks.Task!
+~override Flare.Components.FlareRichTextEditor.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

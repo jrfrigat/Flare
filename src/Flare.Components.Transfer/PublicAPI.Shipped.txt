@@ -1,0 +1,30 @@
+#nullable enable
+Flare.Components.FlareTransfer<TItem>
+Flare.Components.FlareTransfer<TItem>.FlareTransfer() -> void
+Flare.Components.FlareTransfer<TItem>.ItemLabel.get -> System.Func<TItem, string!>?
+Flare.Components.FlareTransfer<TItem>.ItemLabel.set -> void
+Flare.Components.FlareTransfer<TItem>.SourceItems.get -> System.Collections.Generic.IReadOnlyList<TItem>?
+Flare.Components.FlareTransfer<TItem>.SourceItems.set -> void
+Flare.Components.FlareTransfer<TItem>.SourceTitle.get -> string?
+Flare.Components.FlareTransfer<TItem>.SourceTitle.set -> void
+Flare.Components.FlareTransfer<TItem>.TargetItems.get -> System.Collections.Generic.IReadOnlyList<TItem>?
+Flare.Components.FlareTransfer<TItem>.TargetItems.set -> void
+Flare.Components.FlareTransfer<TItem>.TargetItemsChanged.get -> Microsoft.AspNetCore.Components.EventCallback<System.Collections.Generic.IReadOnlyList<TItem>!>
+Flare.Components.FlareTransfer<TItem>.TargetItemsChanged.set -> void
+Flare.Components.FlareTransfer<TItem>.TargetTitle.get -> string?
+Flare.Components.FlareTransfer<TItem>.TargetTitle.set -> void
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.Transfer
+const Flare.Css.Classes.Transfer.Controls = "flare-transfer__controls" -> string!
+const Flare.Css.Classes.Transfer.Item = "flare-transfer__item" -> string!
+const Flare.Css.Classes.Transfer.ItemActive = "flare-transfer__item--active" -> string!
+const Flare.Css.Classes.Transfer.ItemSelected = "flare-transfer__item--selected" -> string!
+const Flare.Css.Classes.Transfer.List = "flare-transfer__list" -> string!
+const Flare.Css.Classes.Transfer.Panel = "flare-transfer__panel" -> string!
+const Flare.Css.Classes.Transfer.PanelHeader = "flare-transfer__panel-header" -> string!
+const Flare.Css.Classes.Transfer.Root = "flare-transfer" -> string!
+override Flare.Components.FlareTransfer<TItem>.ComponentCssClass.get -> string!
+override Flare.Components.FlareTransfer<TItem>.OnParametersSet() -> void
+~override Flare.Components.FlareTransfer<TItem>.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void

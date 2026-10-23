@@ -1,0 +1,88 @@
+#nullable enable
+Flare.Components.FlareKanban
+Flare.Components.FlareKanban.CardTemplate.get -> Microsoft.AspNetCore.Components.RenderFragment<Flare.Components.KanbanCard!>?
+Flare.Components.FlareKanban.CardTemplate.set -> void
+Flare.Components.FlareKanban.Cards.get -> System.Collections.Generic.IReadOnlyList<Flare.Components.KanbanCard!>?
+Flare.Components.FlareKanban.Cards.set -> void
+Flare.Components.FlareKanban.CardsChanged.get -> Microsoft.AspNetCore.Components.EventCallback<System.Collections.Generic.IReadOnlyList<Flare.Components.KanbanCard!>!>
+Flare.Components.FlareKanban.CardsChanged.set -> void
+Flare.Components.FlareKanban.ColumnTemplate.get -> Microsoft.AspNetCore.Components.RenderFragment<Flare.Components.KanbanColumnTemplateContext!>?
+Flare.Components.FlareKanban.ColumnTemplate.set -> void
+Flare.Components.FlareKanban.Columns.get -> System.Collections.Generic.IReadOnlyList<Flare.Components.KanbanColumn!>?
+Flare.Components.FlareKanban.Columns.set -> void
+Flare.Components.FlareKanban.FlareKanban() -> void
+Flare.Components.FlareKanban.OverscanCount.get -> int
+Flare.Components.FlareKanban.OverscanCount.set -> void
+Flare.Components.FlareKanban.ReadOnly.get -> bool
+Flare.Components.FlareKanban.ReadOnly.set -> void
+Flare.Components.FlareKanban.Virtual.get -> bool
+Flare.Components.FlareKanban.Virtual.set -> void
+Flare.Components.FlareKanban.VirtualItemSize.get -> float
+Flare.Components.FlareKanban.VirtualItemSize.set -> void
+Flare.Components.KanbanCard
+Flare.Components.KanbanCard.<Clone>$() -> Flare.Components.KanbanCard!
+Flare.Components.KanbanCard.ColumnId.get -> string!
+Flare.Components.KanbanCard.ColumnId.init -> void
+Flare.Components.KanbanCard.Deconstruct(out string! Id, out string! ColumnId, out string! Title, out string? Description, out string? Tag, out string? TagColor) -> void
+Flare.Components.KanbanCard.Description.get -> string?
+Flare.Components.KanbanCard.Description.init -> void
+Flare.Components.KanbanCard.Equals(Flare.Components.KanbanCard? other) -> bool
+Flare.Components.KanbanCard.Id.get -> string!
+Flare.Components.KanbanCard.Id.init -> void
+Flare.Components.KanbanCard.KanbanCard(string! Id, string! ColumnId, string! Title, string? Description = null, string? Tag = null, string? TagColor = null) -> void
+Flare.Components.KanbanCard.Tag.get -> string?
+Flare.Components.KanbanCard.Tag.init -> void
+Flare.Components.KanbanCard.TagColor.get -> string?
+Flare.Components.KanbanCard.TagColor.init -> void
+Flare.Components.KanbanCard.Title.get -> string!
+Flare.Components.KanbanCard.Title.init -> void
+Flare.Components.KanbanColumn
+Flare.Components.KanbanColumn.<Clone>$() -> Flare.Components.KanbanColumn!
+Flare.Components.KanbanColumn.Color.get -> string?
+Flare.Components.KanbanColumn.Color.init -> void
+Flare.Components.KanbanColumn.Deconstruct(out string! Id, out string! Title, out string? Color) -> void
+Flare.Components.KanbanColumn.Equals(Flare.Components.KanbanColumn? other) -> bool
+Flare.Components.KanbanColumn.Id.get -> string!
+Flare.Components.KanbanColumn.Id.init -> void
+Flare.Components.KanbanColumn.KanbanColumn(string! Id, string! Title, string? Color = null) -> void
+Flare.Components.KanbanColumn.Title.get -> string!
+Flare.Components.KanbanColumn.Title.init -> void
+Flare.Components.KanbanColumnTemplateContext
+Flare.Components.KanbanColumnTemplateContext.<Clone>$() -> Flare.Components.KanbanColumnTemplateContext!
+Flare.Components.KanbanColumnTemplateContext.Cards.get -> System.Collections.Generic.IReadOnlyList<Flare.Components.KanbanCard!>!
+Flare.Components.KanbanColumnTemplateContext.Cards.init -> void
+Flare.Components.KanbanColumnTemplateContext.Column.get -> Flare.Components.KanbanColumn!
+Flare.Components.KanbanColumnTemplateContext.Column.init -> void
+Flare.Components.KanbanColumnTemplateContext.Deconstruct(out Flare.Components.KanbanColumn! Column, out System.Collections.Generic.IReadOnlyList<Flare.Components.KanbanCard!>! Cards) -> void
+Flare.Components.KanbanColumnTemplateContext.Equals(Flare.Components.KanbanColumnTemplateContext? other) -> bool
+Flare.Components.KanbanColumnTemplateContext.KanbanColumnTemplateContext(Flare.Components.KanbanColumn! Column, System.Collections.Generic.IReadOnlyList<Flare.Components.KanbanCard!>! Cards) -> void
+Flare.Components._Imports
+Flare.Components._Imports.Execute() -> void
+Flare.Components._Imports._Imports() -> void
+Flare.Css.Classes.Kanban
+const Flare.Css.Classes.Kanban.Card = "flare-kanban__card" -> string!
+const Flare.Css.Classes.Kanban.Cards = "flare-kanban__cards" -> string!
+const Flare.Css.Classes.Kanban.Column = "flare-kanban__column" -> string!
+const Flare.Css.Classes.Kanban.ColumnHeader = "flare-kanban__col-header" -> string!
+const Flare.Css.Classes.Kanban.Count = "flare-kanban__count" -> string!
+const Flare.Css.Classes.Kanban.Root = "flare-kanban" -> string!
+const Flare.Css.Classes.Kanban.Tag = "flare-kanban__tag" -> string!
+const Flare.Css.Classes.Kanban.Virtual = "flare-kanban--virtual" -> string!
+override Flare.Components.FlareKanban.ComponentCssClass.get -> string!
+override Flare.Components.FlareKanban.OnParametersSet() -> void
+override Flare.Components.KanbanCard.Equals(object? obj) -> bool
+override Flare.Components.KanbanCard.GetHashCode() -> int
+override Flare.Components.KanbanCard.ToString() -> string!
+override Flare.Components.KanbanColumn.Equals(object? obj) -> bool
+override Flare.Components.KanbanColumn.GetHashCode() -> int
+override Flare.Components.KanbanColumn.ToString() -> string!
+override Flare.Components.KanbanColumnTemplateContext.Equals(object? obj) -> bool
+override Flare.Components.KanbanColumnTemplateContext.GetHashCode() -> int
+override Flare.Components.KanbanColumnTemplateContext.ToString() -> string!
+static Flare.Components.KanbanCard.operator !=(Flare.Components.KanbanCard? left, Flare.Components.KanbanCard? right) -> bool
+static Flare.Components.KanbanCard.operator ==(Flare.Components.KanbanCard? left, Flare.Components.KanbanCard? right) -> bool
+static Flare.Components.KanbanColumn.operator !=(Flare.Components.KanbanColumn? left, Flare.Components.KanbanColumn? right) -> bool
+static Flare.Components.KanbanColumn.operator ==(Flare.Components.KanbanColumn? left, Flare.Components.KanbanColumn? right) -> bool
+static Flare.Components.KanbanColumnTemplateContext.operator !=(Flare.Components.KanbanColumnTemplateContext? left, Flare.Components.KanbanColumnTemplateContext? right) -> bool
+static Flare.Components.KanbanColumnTemplateContext.operator ==(Flare.Components.KanbanColumnTemplateContext? left, Flare.Components.KanbanColumnTemplateContext? right) -> bool
+~override Flare.Components.FlareKanban.BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder) -> void
