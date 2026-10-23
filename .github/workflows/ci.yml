@@ -125,9 +125,13 @@ jobs:
 
       # MTP options, not VSTest ones: xunit.v3 4.0.0 runs on Microsoft.Testing.Platform (global.json
       # picks the runner), where VSTest's --logger is accepted and silently ignored. --report-trx
-      # comes from Microsoft.Testing.Extensions.TrxReport and --coverlet from coverlet.MTP; both leave
-      # TestResults/ per project and TFM. Coverage files are moved under coverage/<project>/ so the
-      # badge script can attribute them to a suite.
+      # comes from Microsoft.Testing.Extensions.TrxReport and --coverlet from coverlet.MTP.
+      #
+      # One run per project and target framework, each into its own directory. A multi-target project
+      # passed without -f used to run its TFMs into one shared TestResults and overwrite the coverage
+      # file, and the badge script then read only the last TFM. The directory also keeps the TFM
+      # visible: the shared assemblies are measured by every suite and TFM, so the badge needs the
+      # union per source line, and a report that lost its TFM cannot be unioned correctly.
       - name: Test (${{ matrix.suite }})
         shell: bash
         run: |
@@ -135,12 +139,15 @@ jobs:
           while read -r project; do
             [ -n "$project" ] || continue
             name=$(basename "$project" .csproj)
-            dotnet test --project "$project" -c Release --no-build \
-              --report-trx --coverlet --coverlet-output-format cobertura || status=1
-            for file in TestResults/coverage.cobertura.*.xml; do
-              [ -e "$file" ] || continue
-              mkdir -p "TestResults/coverage/$name"
-              mv "$file" "TestResults/coverage/$name/$(basename "$file")"
+            frameworks=$(dotnet msbuild "$project" -getProperty:TargetFrameworks | tr -d '\r')
+            if [ -z "$frameworks" ]; then
+              frameworks=$(dotnet msbuild "$project" -getProperty:TargetFramework | tr -d '\r')
+            fi
+            for framework in ${frameworks//;/ }; do
+              mkdir -p "TestResults/$name/$framework"
+              dotnet test --project "$project" -f "$framework" -c Release --no-build \
+                --report-trx --coverlet --coverlet-output-format cobertura \
+                --results-directory "TestResults/$name/$framework" || status=1
             done
           done <<< "${{ matrix.projects }}"
           exit $status
