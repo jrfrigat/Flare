@@ -95,9 +95,10 @@ public static class TokensToCss
             if (pendingSpace)
             {
                 pendingSpace = false;
+                // A space before ':' stays: in a selector it is the descendant combinator (".a :hover").
                 var previous = result[^1];
                 if (previous is not '{' and not '}' and not ':' and not ';' &&
-                    c is not '{' and not '}' and not ':' and not ';')
+                    c is not '{' and not '}' and not ';')
                     result.Append(' ');
             }
 

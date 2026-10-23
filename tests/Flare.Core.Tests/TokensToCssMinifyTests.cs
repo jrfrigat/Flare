@@ -17,6 +17,13 @@ public class TokensToCssMinifyTests
     }
 
     [Fact]
+    public void Minify_KeepsTheDescendantSpaceBeforeAPseudoClass()
+    {
+        Assert.Equal(".a :hover{color:red}", TokensToCss.Minify(".a :hover { color: red; }"));
+        Assert.Equal(".x :where(.y){color:red}", TokensToCss.Minify(".x :where(.y) {\n  color: red;\n}"));
+    }
+
+    [Fact]
     public void Minify_KeepsQuotedStrings()
     {
         var min = TokensToCss.Minify(".x { content: \"a  /*b*/ c\"; font-family: 'My  Font'; }");

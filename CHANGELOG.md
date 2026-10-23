@@ -15,6 +15,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Fixed
 
 - On a right-to-left page, `FlarePagination`'s Previous, Next, First and Last chevrons point the way the page reads again: the 0.49.0 flip turned back the arrows the browser already mirrors.
+- `TokensToCss.Minify` keeps the space before a pseudo-class, so a descendant selector such as `.a :hover` no longer turns into `.a:hover`.
 
 ## [0.50.0] - 2026-10-23
 
