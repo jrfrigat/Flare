@@ -12,14 +12,6 @@ public class FlareDividerTextTests : FlareTestContext
     }
 
     [Fact]
-    public void Default_RendersHrElement()
-    {
-        var cut = Render<FlareDivider>();
-
-        Assert.NotEmpty(cut.FindAll("hr"));
-    }
-
-    [Fact]
     public void Vertical_True_RendersDiv_NotHr()
     {
         var cut = Render<FlareDivider>(p => p

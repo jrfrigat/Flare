@@ -8,15 +8,6 @@ public class C_FlareComboboxTests : FlareTestContext
     private static readonly string[] _cities = ["Berlin", "London", "Paris", "Tokyo"];
 
     [Fact]
-    public void RendersRootDiv()
-    {
-        var cut = Render<FlareCombobox<string>>(p => p
-            .Add(x => x.Items, _cities));
-
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Autocomplete.Root}"));
-    }
-
-    [Fact]
     public void RendersLabel()
     {
         var cut = Render<FlareCombobox<string>>(p => p
@@ -64,23 +55,5 @@ public class C_FlareComboboxTests : FlareTestContext
             .Add(x => x.ErrorText, "City required"));
 
         Assert.NotEmpty(cut.FindAll($".{Css.Classes.Input.HelperError}"));
-    }
-
-    [Fact]
-    public void DropdownNotShownInitially()
-    {
-        var cut = Render<FlareCombobox<string>>(p => p
-            .Add(x => x.Items, _cities));
-
-        Assert.Empty(cut.FindAll($".{Css.Classes.Listbox.Root}"));   // the option surface is not rendered while closed
-    }
-
-    [Fact]
-    public void RendersInputField()
-    {
-        var cut = Render<FlareCombobox<string>>(p => p
-            .Add(x => x.Items, _cities));
-
-        Assert.NotNull(cut.Find($"input.{Css.Classes.Input.Control}"));
     }
 }

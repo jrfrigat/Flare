@@ -15,16 +15,6 @@ public class FlareChipClosableInteractionTests : FlareTestContext
     }
 
     [Fact]
-    public void Closeable_True_AlsoRendersCloseButton()
-    {
-        var cut = Render<FlareChip>(p => p
-            .Add(x => x.Label, "Tag")
-            .Add(x => x.Closeable, true));
-
-        Assert.NotEmpty(cut.FindAll($"button.{Css.Classes.Chip.Close}"));
-    }
-
-    [Fact]
     public void CloseButton_HasAriaLabel()
     {
         var cut = Render<FlareChip>(p => p

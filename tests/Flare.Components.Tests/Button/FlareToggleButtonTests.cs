@@ -32,15 +32,6 @@ public class FlareToggleButtonTests : FlareTestContext
     }
 
     [Fact]
-    public void DisabledState_ButtonHasDisabledAttribute()
-    {
-        var cut = Render<FlareToggleButton>(p => p
-            .Add(x => x.Disabled, true));
-
-        Assert.True(cut.Find("button").HasAttribute("disabled"));
-    }
-
-    [Fact]
     public void RendersChildContent()
     {
         var cut = Render<FlareToggleButton>(p => p

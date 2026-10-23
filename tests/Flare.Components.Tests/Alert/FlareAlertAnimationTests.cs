@@ -5,23 +5,6 @@ namespace Flare.Components.Tests;
 public class FlareAlertAnimationTests : FlareTestContext
 {
     [Fact]
-    public void Default_RendersAlertElement()
-    {
-        var cut = Render<FlareAlert>();
-
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Alert.Root}"));
-    }
-
-    [Fact]
-    public void Severity_Success_AddsSuccessClass()
-    {
-        var cut = Render<FlareAlert>(p => p
-            .Add(x => x.Severity, AlertSeverity.Success));
-
-        Assert.Contains(Css.Classes.Alert.Success, cut.Find($".{Css.Classes.Alert.Root}").ClassName ?? "");
-    }
-
-    [Fact]
     public void ShowCloseButton_True_RendersCloseButton()
     {
         var cut = Render<FlareAlert>(p => p

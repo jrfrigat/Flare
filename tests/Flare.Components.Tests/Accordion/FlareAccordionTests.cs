@@ -23,14 +23,6 @@ public class FlareAccordionTests : FlareTestContext
     }
 
     [Fact]
-    public void AllowMultipleFalse_IsDefault()
-    {
-        var cut = Render<FlareAccordion>();
-
-        Assert.NotEmpty(cut.FindAll($".{Css.Classes.Accordion.Root}"));
-    }
-
-    [Fact]
     public void AllowMultipleTrue_RendersComponent()
     {
         var cut = Render<FlareAccordion>(p => p

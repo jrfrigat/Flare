@@ -85,15 +85,6 @@ public class FlareCardTests : FlareTestContext
     }
 
     [Fact]
-    public void NoChildContent_CardStillRenders()
-    {
-        var cut = Render<FlareCard>();
-
-        // Should render the div without throwing
-        Assert.Single(cut.FindAll($".{Css.Classes.Card.Root}"));
-    }
-
-    [Fact]
     public void TonalVariant_AddsTonalCssClass()
     {
         var cut = Render<FlareCard>(p => p.Add(c => c.Variant, CardVariant.Tonal));

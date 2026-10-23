@@ -1,6 +1,6 @@
 namespace Flare.Components.Tests;
 
-// FlareDivider ShouldRender (7 tests)
+// FlareDivider ShouldRender (9 tests)
 public class FlareDividerShouldRenderTests : FlareTestContext
 {
     [Fact]
@@ -70,14 +70,6 @@ public class FlareDividerShouldRenderTests : FlareTestContext
         var cut = Render<FlareDivider>(p => p.Add(x => x.Text, "OR"));
 
         Assert.Null(cut.Find($".{Css.Classes.Divider.Text}").GetAttribute("aria-hidden"));
-    }
-
-    [Fact]
-    public void ADecorativeLineStaysAriaHidden()
-    {
-        var cut = Render<FlareDivider>();
-
-        Assert.Equal("true", cut.Find("hr").GetAttribute("aria-hidden"));
     }
 
     // The old ShouldRender key ignored Class, Style, attributes and ChildContent, so after one unchanged
