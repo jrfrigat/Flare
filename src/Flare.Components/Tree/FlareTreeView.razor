@@ -39,9 +39,9 @@
     /// Exposes aria-multiselectable="true" on the tree root for assistive technologies.</summary>
     [Parameter] public bool MultiSelect { get; set; }
     /// <summary>Enables reordering of tree items. Pointer drag-and-drop and a keyboard gesture both
-    /// raise <see cref="OnItemDrop"/>. The keyboard gesture is Alt+Space to pick the focused item up or
-    /// put it down, Alt+ArrowUp/Down to move it among its siblings, and Escape to stop; plain Space,
-    /// Enter and the arrow keys keep their select, expand and collapse meaning.</summary>
+    /// raise <see cref="OnItemDrop"/>. The keyboard gesture is Alt+ArrowUp/Down, which moves the focused
+    /// item one place among its siblings; plain Space, Enter and the arrow keys keep their select,
+    /// expand and collapse meaning.</summary>
     [Parameter] public bool Draggable { get; set; }
     /// <summary>Callback raised when an item is dropped on a valid target. Contains source item and target item.</summary>
     [Parameter] public EventCallback<TreeDropEventArgs> OnItemDrop { get; set; }

@@ -190,7 +190,6 @@
 
   <!-- Tree -->
   <data name="Drag_Picked" xml:space="preserve"><value>Picked up. Arrow keys move it, space drops it, escape cancels.</value></data>
-  <data name="Drag_PickedRow" xml:space="preserve"><value>Picked up. Alt with the arrow keys moves it, Alt with space drops it, escape cancels.</value></data>
   <data name="Drag_Position" xml:space="preserve"><value>Position {0} of {1}.</value></data>
   <data name="Drag_Dropped" xml:space="preserve"><value>Dropped at position {0}.</value></data>
   <data name="Drag_Cancelled" xml:space="preserve"><value>Move cancelled.</value></data>

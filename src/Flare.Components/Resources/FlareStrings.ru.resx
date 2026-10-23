@@ -190,7 +190,6 @@
 
   <!-- Tree -->
   <data name="Drag_Picked" xml:space="preserve"><value>Элемент поднят. Стрелки перемещают, пробел опускает, escape отменяет.</value></data>
-  <data name="Drag_PickedRow" xml:space="preserve"><value>Элемент поднят. Alt со стрелками перемещает, Alt с пробелом опускает, escape отменяет.</value></data>
   <data name="Drag_Position" xml:space="preserve"><value>Позиция {0} из {1}.</value></data>
   <data name="Drag_Dropped" xml:space="preserve"><value>Опущен на позицию {0}.</value></data>
   <data name="Drag_Cancelled" xml:space="preserve"><value>Перемещение отменено.</value></data>

@@ -5,8 +5,8 @@ namespace Flare.Components.Tests;
 
 /// <summary>
 /// A tree item's plain Space selects and Enter/Space toggle it, and the arrows expand and collapse, so
-/// its reorder gesture is the Alt chord: Alt+Space picks the item up and puts it down,
-/// Alt+ArrowUp/Down moves it among its siblings and raises the same OnItemDrop the pointer path uses.
+/// its reorder gesture is the Alt chord: Alt+ArrowUp/Down moves it one place among its siblings and
+/// raises the same OnItemDrop the pointer path uses. Alt+Space does nothing: Windows owns it.
 /// </summary>
 public class TreeKeyboardReorderTests : FlareTestContext
 {
@@ -28,21 +28,17 @@ public class TreeKeyboardReorderTests : FlareTestContext
             })));
 
     [Fact]
-    public void AltSpaceAndAltArrowMoveTheItemAmongItsSiblings()
+    public void AltArrowMovesTheItemAmongItsSiblings()
     {
         TreeDropEventArgs? dropped = null;
         var cut = RenderTreeView(args => dropped = args);
 
-        var item = cut.FindAll("li[role=treeitem]")[0];
-        item.KeyDown(Key(" ", alt: true));
         cut.FindAll("li[role=treeitem]")[0].KeyDown(Key("ArrowDown", alt: true));
 
         Assert.NotNull(dropped);
         Assert.Equal("Alpha", dropped!.SourceItem);
         Assert.Equal("Beta", dropped.TargetItem);
         Assert.Equal(TreeDropPosition.After, dropped.Position);
-
-        cut.FindAll("li[role=treeitem]")[0].KeyDown(Key(" ", alt: true));
     }
 
     [Fact]
@@ -57,15 +53,14 @@ public class TreeKeyboardReorderTests : FlareTestContext
     }
 
     [Fact]
-    public void EscapeStopsTheMove()
+    public void AltSpaceDoesNotStartAMove()
     {
         TreeDropEventArgs? dropped = null;
         var cut = RenderTreeView(args => dropped = args);
 
         cut.FindAll("li[role=treeitem]")[0].KeyDown(Key(" ", alt: true));
-        cut.FindAll("li[role=treeitem]")[0].KeyDown(Key("Escape"));
-        cut.FindAll("li[role=treeitem]")[0].KeyDown(Key("ArrowDown", alt: true));
 
         Assert.Null(dropped);
+        Assert.Null(cut.FindAll("li[role=treeitem]")[0].GetAttribute("aria-grabbed"));
     }
 }

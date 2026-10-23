@@ -10,9 +10,6 @@ public partial class FlareDataGrid<TItem>
     // Anchor of the current cell-range selection (the active cell is _focusRow/_focusCol). -1 = none.
     private int _anchorRow = -1;
     private int _anchorCol = -1;
-    // Row being moved from the keyboard, or -1. A grid row's plain Space/Enter and arrows already mean
-    // selection and navigation, so its reorder gesture adds Alt instead of taking those keys.
-    private int _keyboardRowMoveIndex = -1;
     // True while the mouse button is held to drag-select a cell range.
     private bool _dragSelecting;
 
@@ -139,63 +136,24 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
-    // Keyboard reorder for the rows the grid draws itself. Alt+Space starts and ends the move; while it
-    // is active Alt+ArrowUp/Down moves the row one position and raises OnRowReordered, and Escape ends
-    // it. None of these keys is used by cell navigation or selection.
+    // Keyboard reorder for the rows the grid draws itself. A row's plain Space/Enter and arrows already
+    // mean selection and navigation, so the move adds Alt: Alt+ArrowUp/Down moves the focused row one
+    // position and raises OnRowReordered, the convention editors use to move a line. Alt+Space is left
+    // alone - Windows opens the window menu on it before the page can refuse.
     private async Task<bool> HandleRowReorderKeyAsync(KeyboardEventArgs e, List<TItem> rows)
     {
         if (!RowReorderable || !OnRowReordered.HasDelegate || rows.Count == 0) return false;
+        if (!e.AltKey || e.Key is not ("ArrowUp" or "ArrowDown")) return false;
 
-        switch (e.Key)
-        {
-            case " " when e.AltKey:
-                if (_keyboardRowMoveIndex < 0)
-                {
-                    _keyboardRowMoveIndex = Math.Clamp(_focusRow, 0, rows.Count - 1);
-                    Announce(FlareStrings.Drag_PickedRow);
-                }
-                else
-                {
-                    await CommitKeyboardRowMoveAsync(rows);
-                    _keyboardRowMoveIndex = -1;
-                    Announce(string.Format(FlareStrings.Drag_Dropped, _focusRow + 1));
-                }
-                return true;
+        var from = Math.Clamp(_focusRow, 0, rows.Count - 1);
+        var to = Math.Clamp(from + (e.Key == "ArrowUp" ? -1 : 1), 0, rows.Count - 1);
+        if (to == from) return true;
 
-            case "ArrowUp" or "ArrowDown" when e.AltKey && _keyboardRowMoveIndex >= 0:
-            {
-                var next = Math.Clamp(_focusRow + (e.Key == "ArrowUp" ? -1 : 1), 0, rows.Count - 1);
-                if (next == _focusRow) return true;
-                var old = _keyboardRowMoveIndex;
-                var dragged = rows[Math.Clamp(old, 0, rows.Count - 1)];
-                await OnRowReordered.InvokeAsync(
-                    new DataGridRowReorder<TItem>(dragged, rows[next], old, next));
-                _keyboardRowMoveIndex = next;
-                _focusRow = next;
-                _anchorRow = next;
-                Announce(string.Format(FlareStrings.Drag_Position, next + 1, rows.Count));
-                return true;
-            }
-
-            case "Escape" when _keyboardRowMoveIndex >= 0:
-                _keyboardRowMoveIndex = -1;
-                Announce(FlareStrings.Drag_Cancelled);
-                return true;
-        }
-
-        return false;
-    }
-
-    // Ending the move where the focus was carried by plain arrows: report the remaining distance once.
-    private async Task CommitKeyboardRowMoveAsync(List<TItem> rows)
-    {
-        var old = _keyboardRowMoveIndex;
-        var next = Math.Clamp(_focusRow, 0, rows.Count - 1);
-        if (old < 0 || old == next || old >= rows.Count) return;
-        await OnRowReordered.InvokeAsync(
-            new DataGridRowReorder<TItem>(rows[old], rows[next], old, next));
-        _focusRow = next;
-        _anchorRow = next;
+        await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(rows[from], rows[to], from, to));
+        _focusRow = to;
+        _anchorRow = to;
+        Announce(string.Format(FlareStrings.Drag_Position, to + 1, rows.Count));
+        return true;
     }
 
     // Copies the current cell-range selection to the clipboard as tab-separated values (rows separated

@@ -5,10 +5,9 @@
    markup the browser rearranges. What went with the HTML5 handlers - dragstart, dragover, dragleave,
    drop, dragend - is a per-dragover interop round trip that had to be coalesced to stay usable, four
    fields of drag state, three drop-indicator classes, and the reason none of this worked on a phone. *@
-<li class="@BuildCssClass(_draggableClass, _keyboardPicked ? Css.Classes.Drag.ItemPicked : null)" role="treeitem"
+<li class="@BuildCssClass(_draggableClass)" role="treeitem"
     aria-expanded="@(HasChildren ? _expanded.ToString().ToLowerInvariant() : null)"
     aria-selected="@Selected.ToString().ToLowerInvariant()"
-    aria-grabbed="@(TreeContext is { KeyboardReorder: true } ? (_keyboardPicked ? "true" : "false") : null)"
     aria-level="@Level"
     tabindex="@(Selected ? 0 : -1)"
     style="@Style"
@@ -98,7 +97,6 @@
 
     private bool _expanded;
     private bool _expandedInitialized;
-    private bool _keyboardPicked;
     private readonly string _dragId = $"ft-{Guid.NewGuid():N}";
     private TreeDragRegistry? _registeredWith;
 
@@ -162,42 +160,25 @@
     }
 
     // A tree item's plain Space/Enter and the arrows already select, expand and collapse, so its
-    // reorder gesture adds Alt: Alt+Space picks the item up and puts it down, Alt+ArrowUp/Down moves
-    // it among its siblings and raises the same OnItemDrop the pointer path uses, Escape stops.
+    // reorder gesture adds Alt: Alt+ArrowUp/Down moves it one place among its siblings and raises the
+    // same OnItemDrop the pointer path uses. Alt+Space is left alone - Windows opens the window menu on it.
     private async Task<bool> HandleKeyboardReorderAsync(KeyboardEventArgs e)
     {
         if (TreeContext is not { KeyboardReorder: true } context) return false;
+        if (!e.AltKey || e.Key is not ("ArrowUp" or "ArrowDown")) return false;
 
-        switch (e.Key)
+        var direction = e.Key == "ArrowUp" ? -1 : 1;
+        if (!context.DragRegistry.TryGetSibling(_dragId, direction, out var sibling, out var position, out var count))
+            return true;
+
+        await context.OnItemDrop.InvokeAsync(new TreeDropEventArgs
         {
-            case " " when e.AltKey:
-                _keyboardPicked = !_keyboardPicked;
-                context.Announce(_keyboardPicked ? FlareStrings.Drag_PickedRow : FlareStrings.Drag_Cancelled);
-                return true;
-
-            case "ArrowUp" or "ArrowDown" when e.AltKey && _keyboardPicked:
-            {
-                var direction = e.Key == "ArrowUp" ? -1 : 1;
-                if (!context.DragRegistry.TryGetSibling(_dragId, direction, out var sibling, out var position, out var count))
-                    return true;
-
-                await context.OnItemDrop.InvokeAsync(new TreeDropEventArgs
-                {
-                    SourceItem = ItemData ?? this,
-                    TargetItem = sibling,
-                    Position = direction < 0 ? TreeDropPosition.Before : TreeDropPosition.After,
-                });
-                context.Announce(string.Format(FlareStrings.Drag_Position, position, count));
-                return true;
-            }
-
-            case "Escape" when _keyboardPicked:
-                _keyboardPicked = false;
-                context.Announce(FlareStrings.Drag_Cancelled);
-                return true;
-        }
-
-        return false;
+            SourceItem = ItemData ?? this,
+            TargetItem = sibling,
+            Position = direction < 0 ? TreeDropPosition.Before : TreeDropPosition.After,
+        });
+        context.Announce(string.Format(FlareStrings.Drag_Position, position, count));
+        return true;
     }
 
     /// <summary>Removes this item from its tree's drag registry.</summary>

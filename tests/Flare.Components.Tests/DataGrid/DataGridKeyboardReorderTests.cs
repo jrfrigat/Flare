@@ -5,7 +5,7 @@ namespace Flare.Components.Tests;
 
 /// <summary>
 /// A grid row's plain Space, Enter and arrows already select and navigate, so its reorder gesture is
-/// the Alt chord: Alt+Space picks the focused row up and puts it down, Alt+ArrowUp/Down moves it.
+/// the Alt chord: Alt+ArrowUp/Down moves the focused row one position.
 /// </summary>
 public class DataGridKeyboardReorderTests : FlareTestContext
 {
@@ -32,22 +32,30 @@ public class DataGridKeyboardReorderTests : FlareTestContext
         cut.Find("table").KeyDown(args);
 
     [Fact]
-    public void AltSpacePicksUpAndAltArrowMovesTheFocusedRow()
+    public void AltArrowMovesTheFocusedRow()
     {
-        DataGridRowReorder<Row>? moved = null;
-        var cut = RenderGrid(reorder => moved = reorder);
+        var moves = new List<DataGridRowReorder<Row>>();
+        var cut = RenderGrid(moves.Add);
 
         Press(cut, Key("ArrowDown")); // gives the grid an active row
-        Press(cut, Key(" ", alt: true)); // pick up Alpha
-        Press(cut, Key("ArrowDown", alt: true)); // move it below Beta
+        Press(cut, Key("ArrowDown", alt: true)); // Alpha below Beta
+        Press(cut, Key("ArrowDown", alt: true)); // and on below Gamma
 
-        Assert.NotNull(moved);
-        Assert.Equal("Alpha", moved!.Item.Name);
-        Assert.Equal("Beta", moved.Target.Name);
-        Assert.Equal(0, moved.OldIndex);
-        Assert.Equal(1, moved.NewIndex);
+        Assert.Equal(2, moves.Count);
+        Assert.Equal(("Alpha", "Beta", 0, 1), (moves[0].Item.Name, moves[0].Target.Name, moves[0].OldIndex, moves[0].NewIndex));
+        Assert.Equal((1, 2), (moves[1].OldIndex, moves[1].NewIndex));
+    }
 
-        Press(cut, Key(" ", alt: true)); // put it down
+    [Fact]
+    public void AltArrowAtTheEdgeDoesNotReorder()
+    {
+        var moves = 0;
+        var cut = RenderGrid(_ => moves++);
+
+        Press(cut, Key("ArrowDown"));
+        Press(cut, Key("ArrowUp", alt: true));
+
+        Assert.Equal(0, moves);
     }
 
     [Fact]
@@ -63,15 +71,14 @@ public class DataGridKeyboardReorderTests : FlareTestContext
     }
 
     [Fact]
-    public void EscapeStopsTheMoveWithoutFurtherCallbacks()
+    public void AltSpaceDoesNotStartAMove()
     {
         var moves = 0;
         var cut = RenderGrid(_ => moves++);
 
         Press(cut, Key("ArrowDown"));
         Press(cut, Key(" ", alt: true));
-        Press(cut, Key("Escape", alt: true));
-        Press(cut, Key("ArrowDown", alt: true));
+        Press(cut, Key("ArrowDown")); // plain navigation only
 
         Assert.Equal(0, moves);
     }
