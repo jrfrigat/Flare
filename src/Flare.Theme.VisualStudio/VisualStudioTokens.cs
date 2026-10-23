@@ -392,7 +392,6 @@ internal class VisualStudioTokens
         CloseSize = "1.25rem",
         CloseIconSize = "1rem",
         BadgeSize = "1.25rem",
-        PrimaryIndicatorInset = "1.25rem",
     };
 
     internal static readonly SliderTokens Slider = FluentUI2Tokens.Design.Slider with

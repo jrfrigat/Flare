@@ -94,6 +94,7 @@ public sealed record TabsTokens
     [CssVar(Tabs.CloseIconSize)] public required string CloseIconSize { get; init; }
     /// <summary>Minimum width and height of a count badge on a tab.</summary>
     [CssVar(Tabs.BadgeSize)] public required string BadgeSize { get; init; }
-    /// <summary>Inset of the primary tab's active indicator from the tab's inline edges.</summary>
-    [CssVar(Tabs.PrimaryIndicatorInset)] public required string PrimaryIndicatorInset { get; init; }
+    /// <summary>Inset of the primary tab's active indicator from the tab's inline edges. It defaults to a
+    /// step of the shared spacing scale, so the indicator follows the theme's spacing.</summary>
+    [CssVar(Tabs.PrimaryIndicatorInset)] public string PrimaryIndicatorInset { get; init; } = Var(Css.Tokens.Spacing.S10);
 }

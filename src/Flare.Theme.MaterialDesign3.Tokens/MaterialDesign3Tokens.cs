@@ -477,7 +477,6 @@ public class MaterialDesign3Tokens
         CloseSize = "1.25rem",
         CloseIconSize = "1rem",
         BadgeSize = "1.25rem",
-        PrimaryIndicatorInset = "1.25rem",
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,

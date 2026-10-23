@@ -8,6 +8,8 @@ All notable changes to Flare are documented here. This project adheres to
 ### Changed
 
 - A `FlareOverlay` stands on the shared layer ladder's modal rung (`--flare-z-modal`) and dims by the theme's scrim opacity (`--flare-scrim-opacity`) by default, so toasts, tooltips and a dragged item stay above it and every backdrop of a theme matches; `--flare-overlay-scrim-layer` and `--flare-overlay-scrim-opacity` are no longer required theme tokens, and an explicit `ZIndex` or `Opacity` still wins.
+- `TabsTokens.PrimaryIndicatorInset` defaults to a step of the shared spacing scale and is no longer a required theme token.
+- For theme authors: 0.49.0 and 0.50.0 made a theme that builds `DesignTokens` from scratch set new members, and the compiler reports each one missing as CS9035. Since 0.49.0: `EmptyState` (`IconOpacity`, `DescriptionMaxWidth`) and the avatar sizes and text sizes (`SizeXs`-`SizeXl`, `FontXs`-`FontXl`). Since 0.50.0: `Carousel` (`ArrowBlur`), the tab part sizes (`ScrollIconSize`, `CloseSize`, `CloseIconSize`, `BadgeSize`) and `SpacingTokens.S20`. A theme derived from a shipped one with `with { ... }` inherits all of them; the overlay layer and opacity and the tab indicator inset now have defaults.
 
 ### Fixed
 

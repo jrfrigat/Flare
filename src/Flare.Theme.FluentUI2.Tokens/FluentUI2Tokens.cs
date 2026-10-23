@@ -559,7 +559,6 @@ public class FluentUI2Tokens
         CloseSize = "1.25rem",
         CloseIconSize = "1rem",
         BadgeSize = "1.25rem",
-        PrimaryIndicatorInset = "1.25rem",
     };
 
     // On-this-page - Fluent: rail style (vertical line + brand bar on the left of the active item),

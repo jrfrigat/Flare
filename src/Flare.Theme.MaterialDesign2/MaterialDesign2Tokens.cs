@@ -473,7 +473,6 @@ internal static class MaterialDesign2Tokens
         CloseSize = "1.25rem",
         CloseIconSize = "1rem",
         BadgeSize = "1.25rem",
-        PrimaryIndicatorInset = "1.25rem",
     };
 
     /// <summary>List container and row tokens.</summary>
