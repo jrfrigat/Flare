@@ -1,0 +1,85 @@
+{
+  "group": "components",
+  "sourceLineUnion": {
+    "covered": 16996,
+    "valid": 20616,
+    "percent": 82.44
+  },
+  "perTfm": {
+    "net10.0": {
+      "covered": 16996,
+      "valid": 20616,
+      "percent": 82.44,
+      "branchCovered": 11140,
+      "branchValid": 15227
+    },
+    "net8.0": {
+      "covered": 16996,
+      "valid": 20616,
+      "percent": 82.44,
+      "branchCovered": 11140,
+      "branchValid": 15227
+    },
+    "net9.0": {
+      "covered": 16996,
+      "valid": 20616,
+      "percent": 82.44,
+      "branchCovered": 11140,
+      "branchValid": 15227
+    }
+  },
+  "categories": {
+    "authored": {
+      "Covered": 16996,
+      "Files": 395,
+      "Valid": 20616
+    },
+    "generated": {
+      "Covered": 6,
+      "Files": 5,
+      "Valid": 16329
+    }
+  },
+  "observedModules": [
+    "Flare.Abstractions",
+    "Flare.Components",
+    "Flare.Icons",
+    "Flare.Icons.FluentUI.Svg",
+    "Flare.Icons.FontAwesome.Symbols",
+    "Flare.Icons.MaterialDesign3.Svg",
+    "Flare.Icons.MaterialDesign3.Symbols",
+    "Flare.Infrastructure",
+    "Flare.Theming"
+  ],
+  "missingModules": [
+    "Flare",
+    "Flare.Components.Barcode",
+    "Flare.Components.Carousel",
+    "Flare.Components.Gantt",
+    "Flare.Components.IDE",
+    "Flare.Components.Kanban",
+    "Flare.Components.Media",
+    "Flare.Components.QrCode",
+    "Flare.Components.Query",
+    "Flare.Components.RichTextEditor",
+    "Flare.Components.Transfer",
+    "Flare.Icons.MaterialDesign2.Svg",
+    "Flare.Icons.MaterialDesign2.Symbols",
+    "Flare.Theme.Aero",
+    "Flare.Theme.FluentUI2",
+    "Flare.Theme.FluentUI2.Tokens",
+    "Flare.Theme.LiquidGlass",
+    "Flare.Theme.MaterialDesign2",
+    "Flare.Theme.MaterialDesign3",
+    "Flare.Theme.MaterialDesign3.Tokens",
+    "Flare.Theme.MaterialDesign3Expressive",
+    "Flare.Theme.VisualStudio"
+  ],
+  "missingProjects": [],
+  "missingTfms": [],
+  "partial": false,
+  "inputs": {
+    "files": 3,
+    "projects": 1
+  }
+}

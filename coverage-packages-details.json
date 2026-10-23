@@ -1,0 +1,91 @@
+{
+  "group": "packages",
+  "sourceLineUnion": {
+    "covered": 7046,
+    "valid": 25250,
+    "percent": 27.9
+  },
+  "perTfm": {
+    "net10.0": {
+      "covered": 7046,
+      "valid": 25250,
+      "percent": 27.9,
+      "branchCovered": 3390,
+      "branchValid": 17741
+    },
+    "net8.0": {
+      "covered": 3989,
+      "valid": 23756,
+      "percent": 16.79,
+      "branchCovered": 2401,
+      "branchValid": 17739
+    },
+    "net9.0": {
+      "covered": 3989,
+      "valid": 23756,
+      "percent": 16.79,
+      "branchCovered": 2401,
+      "branchValid": 17739
+    }
+  },
+  "categories": {
+    "authored": {
+      "Covered": 7046,
+      "Files": 459,
+      "Valid": 25250
+    },
+    "generated": {
+      "Covered": 13,
+      "Files": 4,
+      "Valid": 3478
+    },
+    "tool": {
+      "Covered": 80,
+      "Files": 8,
+      "Valid": 761
+    }
+  },
+  "observedModules": [
+    "Flare",
+    "Flare.Abstractions",
+    "Flare.ApiDocGen",
+    "Flare.Components",
+    "Flare.Components.Barcode",
+    "Flare.Components.Carousel",
+    "Flare.Components.Gantt",
+    "Flare.Components.IDE",
+    "Flare.Components.Kanban",
+    "Flare.Components.Media",
+    "Flare.Components.QrCode",
+    "Flare.Components.Query",
+    "Flare.Components.RichTextEditor",
+    "Flare.Components.Transfer",
+    "Flare.Icons",
+    "Flare.Infrastructure",
+    "Flare.Theme.MaterialDesign3",
+    "Flare.Theme.MaterialDesign3.Tokens",
+    "Flare.Theming"
+  ],
+  "missingModules": [
+    "Flare.Icons.FluentUI.Svg",
+    "Flare.Icons.FontAwesome.Symbols",
+    "Flare.Icons.MaterialDesign2.Svg",
+    "Flare.Icons.MaterialDesign2.Symbols",
+    "Flare.Icons.MaterialDesign3.Svg",
+    "Flare.Icons.MaterialDesign3.Symbols",
+    "Flare.Theme.Aero",
+    "Flare.Theme.FluentUI2",
+    "Flare.Theme.FluentUI2.Tokens",
+    "Flare.Theme.LiquidGlass",
+    "Flare.Theme.MaterialDesign2",
+    "Flare.Theme.MaterialDesign3Expressive",
+    "Flare.Theme.VisualStudio"
+  ],
+  "missingProjects": [],
+  "missingTfms": [],
+  "partial": false,
+  "inputs": {
+    "files": 32,
+    "projects": 12
+  }
+}

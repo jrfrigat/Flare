@@ -1,0 +1,71 @@
+{
+  "group": "guards",
+  "sourceLineUnion": {
+    "covered": 7155,
+    "valid": 27770,
+    "percent": 25.77
+  },
+  "perTfm": {
+    "net10.0": {
+      "covered": 7155,
+      "valid": 27770,
+      "percent": 25.77,
+      "branchCovered": 11,
+      "branchValid": 15207
+    }
+  },
+  "categories": {
+    "authored": {
+      "Covered": 7155,
+      "Files": 417,
+      "Valid": 27770
+    },
+    "generated": {
+      "Covered": 1155,
+      "Files": 1,
+      "Valid": 1155
+    }
+  },
+  "observedModules": [
+    "Flare.Abstractions",
+    "Flare.Components",
+    "Flare.Icons",
+    "Flare.Infrastructure",
+    "Flare.Theme.Aero",
+    "Flare.Theme.FluentUI2",
+    "Flare.Theme.FluentUI2.Tokens",
+    "Flare.Theme.LiquidGlass",
+    "Flare.Theme.MaterialDesign2",
+    "Flare.Theme.MaterialDesign3",
+    "Flare.Theme.MaterialDesign3.Tokens",
+    "Flare.Theme.MaterialDesign3Expressive",
+    "Flare.Theme.VisualStudio",
+    "Flare.Theming"
+  ],
+  "missingModules": [
+    "Flare",
+    "Flare.Components.Barcode",
+    "Flare.Components.Carousel",
+    "Flare.Components.Gantt",
+    "Flare.Components.IDE",
+    "Flare.Components.Kanban",
+    "Flare.Components.Media",
+    "Flare.Components.QrCode",
+    "Flare.Components.Query",
+    "Flare.Components.RichTextEditor",
+    "Flare.Components.Transfer",
+    "Flare.Icons.FluentUI.Svg",
+    "Flare.Icons.FontAwesome.Symbols",
+    "Flare.Icons.MaterialDesign2.Svg",
+    "Flare.Icons.MaterialDesign2.Symbols",
+    "Flare.Icons.MaterialDesign3.Svg",
+    "Flare.Icons.MaterialDesign3.Symbols"
+  ],
+  "missingProjects": [],
+  "missingTfms": [],
+  "partial": false,
+  "inputs": {
+    "files": 1,
+    "projects": 1
+  }
+}
