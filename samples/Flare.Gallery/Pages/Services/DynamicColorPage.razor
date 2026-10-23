@@ -63,7 +63,7 @@
 
                 @* Track info *@
                 <FlareStack Gap="FlareSpacing.None">
-                    <FlareText Typo="TypographyScale.LabelSmall" Foreground="@MainForeground">@GalleryStrings.Services_DynamicNowPlaying</FlareText>
+                    <FlareText Typo="TypographyScale.LabelSmall">@GalleryStrings.Services_DynamicNowPlaying</FlareText>
                     <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Services_DynamicTrack</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_DynamicArtist</FlareText>
                 </FlareStack>
@@ -113,7 +113,6 @@
 
     private static readonly FlareColor ContainerFill = FlareColor.Custom("var(--fc-container)");
     private static readonly FlareColor OnContainer = FlareColor.Custom("var(--fc-on-container)");
-    private static readonly FlareColor MainForeground = FlareColor.Custom("var(--fc-main)");
 
     private const long MaxFileSize = 50 * 1024 * 1024; // 50 MB
     private string? _fileError;

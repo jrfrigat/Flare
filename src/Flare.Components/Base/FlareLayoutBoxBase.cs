@@ -136,79 +136,54 @@ public abstract class FlareLayoutBoxBase : FlareContainerBase
     {
         get
         {
-            var padding = ResolveSpacing(Padding, PaddingValue);
-            var paddingStart = ResolveSpacing(PaddingBlockStart, PaddingBlockStartValue);
-            var paddingEnd = ResolveSpacing(PaddingBlockEnd, PaddingBlockEndValue);
-            var paddingInlineStart = ResolveSpacing(PaddingInlineStart, PaddingInlineStartValue);
-            var paddingInlineEnd = ResolveSpacing(PaddingInlineEnd, PaddingInlineEndValue);
-            var margin = ResolveSpacing(Margin, MarginValue);
-            var marginStart = ResolveSpacing(MarginBlockStart, MarginBlockStartValue);
-            var marginEnd = ResolveSpacing(MarginBlockEnd, MarginBlockEndValue);
-            var marginInlineStart = ResolveSpacing(MarginInlineStart, MarginInlineStartValue);
-            var marginInlineEnd = ResolveSpacing(MarginInlineEnd, MarginInlineEndValue);
-            var parts = new List<string>(14);
-            if (padding is not null) parts.Add($"padding:{padding}");
-            if (paddingStart is not null) parts.Add($"padding-block-start:{paddingStart}");
-            if (paddingEnd is not null) parts.Add($"padding-block-end:{paddingEnd}");
-            if (paddingInlineStart is not null) parts.Add($"padding-inline-start:{paddingInlineStart}");
-            if (paddingInlineEnd is not null) parts.Add($"padding-inline-end:{paddingInlineEnd}");
-            if (margin is not null) parts.Add($"margin:{margin}");
-            if (marginStart is not null) parts.Add($"margin-block-start:{marginStart}");
-            if (marginEnd is not null) parts.Add($"margin-block-end:{marginEnd}");
-            if (marginInlineStart is not null) parts.Add($"margin-inline-start:{marginInlineStart}");
-            if (marginInlineEnd is not null) parts.Add($"margin-inline-end:{marginInlineEnd}");
-            AddValue(parts, "max-width", MaxWidth);
-            AddValue(parts, "min-width", MinWidth);
-            AddValue(parts, "width", Width);
-            AddValue(parts, "height", Height);
-            AddValue(parts, "min-height", MinHeight);
-            AddValue(parts, "max-height", MaxHeight);
-            AddValue(parts, "overflow", Overflow);
-            if (Sticky) parts.Add("position:sticky");
-            if (Relative) parts.Add("position:relative");
-            AddValue(parts, "contain", Contain);
-            AddValue(parts, "top", StickyTop);
-            AddValue(parts, "flex-basis", FlexBasis);
-            AddPaint(parts, Background, Foreground);
-            if (FlexGrow is { } grow) parts.Add($"flex-grow:{grow.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
-            return parts.Count > 0 ? string.Join(';', parts) : null;
+            var style = new BoxStyleWriter();
+            style.Spacing("padding", Padding, PaddingValue);
+            style.Spacing("padding-block-start", PaddingBlockStart, PaddingBlockStartValue);
+            style.Spacing("padding-block-end", PaddingBlockEnd, PaddingBlockEndValue);
+            style.Spacing("padding-inline-start", PaddingInlineStart, PaddingInlineStartValue);
+            style.Spacing("padding-inline-end", PaddingInlineEnd, PaddingInlineEndValue);
+            style.Spacing("margin", Margin, MarginValue);
+            style.Spacing("margin-block-start", MarginBlockStart, MarginBlockStartValue);
+            style.Spacing("margin-block-end", MarginBlockEnd, MarginBlockEndValue);
+            style.Spacing("margin-inline-start", MarginInlineStart, MarginInlineStartValue);
+            style.Spacing("margin-inline-end", MarginInlineEnd, MarginInlineEndValue);
+            style.Value("max-width", MaxWidth);
+            style.Value("min-width", MinWidth);
+            style.Value("width", Width);
+            style.Value("height", Height);
+            style.Value("min-height", MinHeight);
+            style.Value("max-height", MaxHeight);
+            style.Value("overflow", Overflow);
+            if (Sticky) style.Write("position", "sticky");
+            if (Relative) style.Write("position", "relative");
+            style.Value("contain", Contain);
+            style.Value("top", StickyTop);
+            style.Value("flex-basis", FlexBasis);
+            WritePaint(ref style, Background, Foreground);
+            if (FlexGrow is { } grow)
+                style.Write("flex-grow", grow.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            return style.Build();
         }
     }
 
-    /// <summary>Joins the declarations a component builds, in order, skipping the empty ones.</summary>
-    protected static string? JoinStyle(params string?[] parts)
-    {
-        var kept = parts.Where(p => !string.IsNullOrWhiteSpace(p)).ToArray();
-        return kept.Length == 0 ? null : string.Join(';', kept);
-    }
+    /// <summary>Joins two declaration lists, skipping an empty one.</summary>
+    protected static string? JoinStyle(string? first, string? second) => BoxStyleWriter.Join(first, second);
 
-    private static void AddValue(List<string> parts, string name, string? value)
-    {
-        var safe = Flare.Components.Security.CssValidator.StripDangerous(value);
-        if (!string.IsNullOrWhiteSpace(safe)) parts.Add($"{name}:{safe}");
-    }
+    /// <summary>Joins the declarations a component builds, in order, skipping the empty ones.</summary>
+    protected static string? JoinStyle(params string?[] parts) => BoxStyleWriter.Join(parts);
 
     // A painted surface carries readable content: an accent role names its own on-color, and an
-    // explicit Foreground overrides it. The on-color exists only for primary..info, so the neutral
-    // roles paint themselves and leave the text alone.
-    private static void AddPaint(List<string> parts, FlareColor background, FlareColor foreground)
+    // explicit Foreground overrides it. Neutral roles and custom colors have no on-color and leave the
+    // text alone.
+    private static void WritePaint(ref BoxStyleWriter style, FlareColor background, FlareColor foreground)
     {
         if (!background.IsDefault && background.CssValue is { } fill)
         {
-            AddValue(parts, "background", fill);
-            if (background.RoleName is "primary" or "secondary" or "tertiary" or "success"
-                or "warning" or "error" or "info")
-                AddValue(parts, "color", $"var(--flare-color-on-{background.RoleName})");
+            style.Value("background", fill);
+            if (background.OnCssValue is { } on) style.Write("color", on);
         }
 
         if (!foreground.IsDefault && foreground.CssValue is { } ink)
-            AddValue(parts, "color", ink);
+            style.Value("color", ink);
     }
-
-    private static string? ResolveSpacing(FlareSpacing? spacing, string? raw) => spacing switch
-    {
-        null => null,
-        FlareSpacing.Custom => Flare.Components.Security.CssValidator.StripDangerous(raw),
-        _ => FlareSpacingVars.Var(spacing.Value),
-    };
 }

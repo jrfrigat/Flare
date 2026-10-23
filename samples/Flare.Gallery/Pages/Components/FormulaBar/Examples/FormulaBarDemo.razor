@@ -9,20 +9,20 @@
                          Value="_formula" ValueChanged="OnFormulaChanged"
                          Placeholder="Enter a value or =formula" />
         <FlareGrid Columns="4" Gap="FlareSpacing.None">
-            <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center"
-                       Background="@Surface" Foreground="FlareColor.OnSurfaceVariant"
-                       Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem"></FlareText>
+            <FlareStack Block Background="@Surface" Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">
+                <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant"></FlareText>
+            </FlareStack>
             @foreach (var col in _cols)
             {
-                <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center"
-                           Background="@Surface" Foreground="FlareColor.OnSurfaceVariant"
-                           Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">@col</FlareText>
+                <FlareStack Block Background="@Surface" Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">
+                    <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant">@col</FlareText>
+                </FlareStack>
             }
             @foreach (var row in _rows)
             {
-                <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center"
-                           Background="@Surface" Foreground="FlareColor.OnSurfaceVariant"
-                           Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">@row</FlareText>
+                <FlareStack Block Background="@Surface" Padding="FlareSpacing.Custom" PaddingValue="0.25rem 0.5rem">
+                    <FlareText Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant">@row</FlareText>
+                </FlareStack>
                 @foreach (var col in _cols)
                 {
                     var cell = $"{col}{row}";

@@ -130,6 +130,44 @@ public class FlareLayoutBoxTests : FlareTestContext
         Assert.Contains("position:relative", StyleOf(cut));
     }
 
+    // Text keeps the space inside and around itself and the measure of its lines; everything else
+    // about the box it sits in is the box's.
+    [Fact]
+    public void Text_TakesSpacingAndMeasure()
+    {
+        var plain = Render<FlareText>(p => p.AddChildContent("Body"));
+        Assert.Null(plain.Find($".{Css.Classes.Text.Root}").GetAttribute("style"));
+
+        var spaced = Render<FlareText>(p => p
+            .Add(x => x.MarginBlockEnd, FlareSpacing.Small)
+            .Add(x => x.PaddingInlineStart, FlareSpacing.Custom)
+            .Add(x => x.PaddingInlineStartValue, "0.5rem")
+            .Add(x => x.MaxWidth, "36rem")
+            .Add(x => x.Style, "color:red")
+            .AddChildContent("Body"));
+        Assert.Equal(
+            $"padding-inline-start:0.5rem;margin-block-end:var({Css.Tokens.Spacing.S6});max-width:36rem;color:red",
+            spaced.Find($".{Css.Classes.Text.Root}").GetAttribute("style"));
+    }
+
+    // One spacing vocabulary for text and boxes: the same names, the same types.
+    [Fact]
+    public void SpacingParameters_MatchBetweenTextAndBoxes()
+    {
+        static string[] Spacing(Type type) => type
+            .GetProperties()
+            .Where(p => p.IsDefined(typeof(Microsoft.AspNetCore.Components.ParameterAttribute), true)
+                        && (p.Name.StartsWith("Padding", StringComparison.Ordinal)
+                            || p.Name.StartsWith("Margin", StringComparison.Ordinal)))
+            .Select(p => $"{p.Name}:{p.PropertyType.Name}")
+            .Order(StringComparer.Ordinal)
+            .ToArray();
+
+        var text = Spacing(typeof(FlareSpacedBase));
+        Assert.Equal(20, text.Length);
+        Assert.Equal(text, Spacing(typeof(FlareLayoutBoxBase)));
+    }
+
     [Fact]
     public void GridAndColAndCard_AlsoTakeTheBoxParameters()
     {

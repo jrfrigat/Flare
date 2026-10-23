@@ -8,7 +8,7 @@ namespace Flare.Components;
 /// Renders a semantic HTML element (h1-h5, p) styled with the active theme's type scale.
 /// Uses BuildRenderTree to support dynamic element names - standard Razor cannot do this.
 /// </summary>
-public sealed class FlareText : FlareLayoutBoxBase
+public sealed class FlareText : FlareSpacedBase
 {
     /// <summary>Text content rendered inside the typography element.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -48,6 +48,10 @@ public sealed class FlareText : FlareLayoutBoxBase
     /// A paragraph or heading is already a block; this matters for an inherited run that should start
     /// on its own line.</summary>
     [Parameter] public bool Block { get; set; }
+
+    /// <summary>Longest line the text may run to, as a CSS length - the measure of a paragraph, such as
+    /// <c>36rem</c>. Null lets the text take the width its container gives it.</summary>
+    [Parameter] public string? MaxWidth { get; set; }
 
     /// <summary>
     /// Caps the text at this many lines and ends it with an ellipsis. <c>0</c> (the default) leaves it
@@ -126,11 +130,6 @@ public sealed class FlareText : FlareLayoutBoxBase
         _ => Css.Classes.Text.Clamp,
     };
 
-    // The line count is per instance, so it travels as a local channel rather than as a class per depth.
-    private string? _clampStyle => MaxLines >= 2
-        ? $"{Css.Tokens.LocalVars.TextMaxLines}:{MaxLines.ToString(System.Globalization.CultureInfo.InvariantCulture)};"
-        : null;
-
     private string _htmlElement => Inherit ? "span" : Typo switch
     {
         TypographyScale.DisplayLarge
@@ -151,17 +150,21 @@ public sealed class FlareText : FlareLayoutBoxBase
     private string _safeElement => Element is not null && AllowedElements.Contains(Element) ? Element : _htmlElement;
 
     // Custom color -> inline the shared --fc-main token; role/default need no inline. The clamp depth
-    // joins it as a second channel, so a clamped run with a custom colour carries both.
+    // joins it as a second channel, so a clamped run with a custom colour carries both. Nothing is
+    // allocated for the common run that sets none of these.
     private string? _inlineStyle
     {
         get
         {
-            var color = Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : null;
-            var clamp = _clampStyle;
-            var tracking = string.IsNullOrWhiteSpace(LetterSpacing)
-                ? null
-                : $"letter-spacing:{Flare.Components.Security.CssValidator.StripDangerous(LetterSpacing)}";
-            return JoinStyle(color, clamp, tracking, BoxStyle, Block ? "display:block" : null, Style);
+            var style = new BoxStyleWriter();
+            if (Color.IsCustom && Color.Value is { } custom) style.Write(Css.Tokens.LocalColor.Main, custom);
+            if (MaxLines >= 2)
+                style.Write(Css.Tokens.LocalVars.TextMaxLines, MaxLines.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            style.Value("letter-spacing", LetterSpacing);
+            WriteSpacing(ref style);
+            style.Value("max-width", MaxWidth);
+            if (Block) style.Write("display", "block");
+            return JoinStyle(style.Build(), Style);
         }
     }
 }

@@ -266,6 +266,15 @@ public readonly record struct FlareColor
     /// </summary>
     public string? CssValue => RoleName is { } r ? $"var(--flare-color-{r})" : _custom;
 
+    /// <summary>
+    /// The readable color drawn on top of this role, as a CSS expression - <c>var(--flare-color-on-primary)</c>
+    /// for <see cref="Primary"/>. Only the accent and status roles (primary through info) have one; the
+    /// on-surface roles, a custom color and the default return <c>null</c>.
+    /// </summary>
+    public string? OnCssValue => IsRole && _role is >= FlareColorRole.Primary and <= FlareColorRole.Info
+        ? $"var(--flare-color-on-{RoleToString(_role)})"
+        : null;
+
     /// <summary>True for a dynamic-color value (precomputed tonal set), a subset of <see cref="IsCustom"/>.</summary>
     public bool IsDynamic => _on is not null;
 

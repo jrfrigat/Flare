@@ -5,6 +5,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `FlareColor.OnCssValue` gives the readable color drawn on an accent or status role (`var(--flare-color-on-primary)` for `Primary`), and `null` for the other roles and custom colors.
+
 ### Changed
 
 - A `FlareOverlay` stands on the shared layer ladder's modal rung (`--flare-z-modal`) and dims by the theme's scrim opacity (`--flare-scrim-opacity`) by default, so toasts, tooltips and a dragged item stay above it and every backdrop of a theme matches; `--flare-overlay-scrim-layer` and `--flare-overlay-scrim-opacity` are no longer required theme tokens, and an explicit `ZIndex` or `Opacity` still wins.
@@ -12,6 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
 - For theme authors: 0.49.0 and 0.50.0 made a theme that builds `DesignTokens` from scratch set new members, and the compiler reports each one missing as CS9035. Since 0.49.0: `EmptyState` (`IconOpacity`, `DescriptionMaxWidth`) and the avatar sizes and text sizes (`SizeXs`-`SizeXl`, `FontXs`-`FontXl`). Since 0.50.0: `Carousel` (`ArrowBlur`), the tab part sizes (`ScrollIconSize`, `CloseSize`, `CloseIconSize`, `BadgeSize`) and `SpacingTokens.S20`. A theme derived from a shipped one with `with { ... }` inherits all of them; the overlay layer and opacity and the tab indicator inset now have defaults.
 - Alert and snackbar intents default to the status containers (`--flare-color-success-container`, `-warning-container`, `-info-container`) in a theme that does not set them. Material Design 2 and 3, Aero and Liquid Glass keep the accent containers they drew before; Visual Studio's alerts now match its snackbar.
 - Keyboard reordering in `FlareDataGrid` and `FlareTreeView` is `Alt+ArrowUp`/`Alt+ArrowDown`, which moves the focused row or item one place at once, the way editors move a line. The 0.49.0 pick-up step on `Alt+Space` is gone: Windows opens the window menu on that chord before the page can refuse it.
+- `FlareText` keeps only the spacing parameters (`Padding`, `Margin` and their per-side forms) and a `MaxWidth` for the measure of its lines. The size, flex, overflow, paint, position, containment and `FillHeight` parameters 0.49.0 gave it belong to the box around the text: wrap the text in a `FlareStack` that takes them. Razor passes an unknown parameter through as an HTML attribute instead of failing the build, so search for these names on `FlareText` when upgrading. A text run that sets none of these builds no style string any more.
 
 ### Fixed
 

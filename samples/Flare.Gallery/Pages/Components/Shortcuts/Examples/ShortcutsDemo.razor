@@ -6,15 +6,15 @@
 <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
     <FlareText Typo="TypographyScale.LabelMedium">Press a shortcut to activate it:</FlareText>
     <FlareStack Row Wrap Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
-        <FlareText Element="kbd" Mono="true" Inherit="true"
-                   Background="@(FlareColor.Custom("var(--flare-color-surface-container-high)"))"
-                   Padding="FlareSpacing.Custom" PaddingValue="0.2rem 0.5rem">Ctrl+S</FlareText>
+        <FlareStack Block Background="@KeyFill" Padding="FlareSpacing.Custom" PaddingValue="0.2rem 0.5rem">
+            <FlareText Element="kbd" Mono="true" Inherit="true">Ctrl+S</FlareText>
+        </FlareStack>
         <FlareText Typo="TypographyScale.BodySmall">Save</FlareText>
     </FlareStack>
     <FlareStack Row Wrap Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
-        <FlareText Element="kbd" Mono="true" Inherit="true"
-                   Background="@(FlareColor.Custom("var(--flare-color-surface-container-high)"))"
-                   Padding="FlareSpacing.Custom" PaddingValue="0.2rem 0.5rem">Ctrl+K</FlareText>
+        <FlareStack Block Background="@KeyFill" Padding="FlareSpacing.Custom" PaddingValue="0.2rem 0.5rem">
+            <FlareText Element="kbd" Mono="true" Inherit="true">Ctrl+K</FlareText>
+        </FlareStack>
         <FlareText Typo="TypographyScale.BodySmall">Open search</FlareText>
     </FlareStack>
     @if (!string.IsNullOrEmpty(_fired))
@@ -26,6 +26,7 @@
 </FlareStack>
 
 @code {
+    private static readonly FlareColor KeyFill = FlareColor.Custom("var(--flare-color-surface-container-high)");
     private string _fired = "";
     private void OnSave() { _fired = "Ctrl+S (Save)"; StateHasChanged(); }
     private void OnSearch() { _fired = "Ctrl+K (Open search)"; StateHasChanged(); }
