@@ -124,6 +124,13 @@ public class ThemeServiceTests
             new() { Id = id, Name = "FAKE", Source = source, Light = Colors("#ABCDEF"), Dark = Colors("#123456") };
     }
 
+    /// <summary>A generator whose output follows the seed, so a replacement is observable.</summary>
+    private sealed class SeedGen : IPaletteGenerator
+    {
+        public Palette Generate(string id, string name, PaletteSeed seed, string? source = null) =>
+            new() { Id = id, Name = name, Source = source, Light = Colors(seed.Main), Dark = Colors("#010203") };
+    }
+
     private sealed class FakeInjector : ICssVariableInjector
     {
         public DesignTokens? LastDesign { get; private set; }
@@ -357,5 +364,84 @@ public class ThemeServiceTests
         var themes2 = s.Themes;
         s.RegisterTheme(new FakeTheme("t2"));
         Assert.Same(themes2, s.Themes);
+    }
+
+    [Fact]
+    public async Task ApplyDynamicPalette_SeedInstallsOneActivePalette()
+    {
+        var injector = new FakeInjector();
+        var s = new ThemeService(injector, new FakeTheme("t1", new SeedGen()), Pal("p1"), ThemeMode.Light);
+        var fired = 0;
+        s.OnThemeChanged += () => { fired++; return Task.CompletedTask; };
+
+        await s.ApplyDynamicPaletteAsync(new PaletteSeed("#2B579A"));
+
+        Assert.True(s.IsDynamicPalette);
+        Assert.Equal(Palette.DynamicId, s.CurrentPalette.Id);
+        Assert.Equal("Dynamic", s.CurrentPalette.Source);
+        Assert.Equal("#2B579A", s.CurrentPalette.Light.Primary);
+        var dynamic = Assert.Single(s.Palettes, p => p.Id == Palette.DynamicId);
+        Assert.Equal("Dynamic", dynamic.Source);
+        Assert.Equal(1, fired);
+        Assert.Contains($".flare-palette-{Palette.DynamicId}{{", injector.LastStaticCss);
+    }
+
+    [Fact]
+    public async Task ApplyDynamicPalette_RepeatedCallReplacesInsteadOfAdding()
+    {
+        var injector = new FakeInjector();
+        var s = new ThemeService(injector, new FakeTheme("t1", new SeedGen()), Pal("p1"), ThemeMode.Light);
+
+        await s.ApplyDynamicPaletteAsync(new PaletteSeed("#2B579A"));
+        await s.ApplyDynamicPaletteAsync(new PaletteSeed("#C2185B"));
+
+        var dynamic = Assert.Single(s.Palettes, p => p.Id == Palette.DynamicId);
+        Assert.Equal("#C2185B", dynamic.Light.Primary);
+        Assert.Equal("#C2185B", s.CurrentPalette.Light.Primary);
+        Assert.Equal(2, s.Palettes.Count);   // the registered p1 and the one dynamic palette
+    }
+
+    [Fact]
+    public async Task ApplyDynamicPalette_CuratedPaletteKeepsItsColorsAndDropsTheAsset()
+    {
+        var injector = new FakeInjector();
+        var s = new ThemeService(injector, new FakeTheme("t1", new SeedGen()), Pal("p1"), ThemeMode.Light);
+        var curated = Pal("curated", light: "#123456", dark: "#654321") with { StyleAsset = "curated.css" };
+
+        await s.ApplyDynamicPaletteAsync(curated);
+
+        Assert.True(s.IsDynamicPalette);
+        Assert.Equal(Palette.DynamicId, s.CurrentPalette.Id);
+        Assert.Equal("Dynamic", s.CurrentPalette.Name);
+        Assert.Equal("Dynamic", s.CurrentPalette.Source);
+        Assert.Null(s.CurrentPalette.StyleAsset);
+        Assert.Equal("#123456", s.CurrentPalette.Light.Primary);
+        Assert.Single(s.Palettes, p => p.Id == Palette.DynamicId);
+    }
+
+    [Fact]
+    public async Task ApplyDynamicPalette_InDarkModeInjectsTheDarkScheme()
+    {
+        var injector = new FakeInjector();
+        var s = new ThemeService(injector, new FakeTheme("t1", new SeedGen()), Pal("p1"),
+            ThemeMode.Dark, ThemeDelivery.Inject);
+
+        await s.ApplyDynamicPaletteAsync(new PaletteSeed("#2B579A"));
+
+        Assert.True(s.IsDark);
+        Assert.Equal("#010203", injector.LastColors!.Primary);
+    }
+
+    [Fact]
+    public async Task LeavingTheDynamicPalette_ClearsTheFlag()
+    {
+        var injector = new FakeInjector();
+        var s = new ThemeService(injector, new FakeTheme("t1", new SeedGen()), Pal("p1"), ThemeMode.Light);
+        await s.ApplyDynamicPaletteAsync(new PaletteSeed("#2B579A"));
+
+        await s.SetPaletteAsync("p1");
+
+        Assert.False(s.IsDynamicPalette);
+        Assert.Equal("p1", s.CurrentPalette.Id);
     }
 }
