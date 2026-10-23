@@ -383,7 +383,7 @@ public class ThemeServiceTests
         var dynamic = Assert.Single(s.Palettes, p => p.Id == Palette.DynamicId);
         Assert.Equal("Dynamic", dynamic.Source);
         Assert.Equal(1, fired);
-        Assert.Contains($".flare-palette-{Palette.DynamicId}{{", injector.LastStaticCss);
+        Assert.Contains($".{Css.Classes.Theme.ForPalette(Palette.DynamicId)}{{", injector.LastStaticCss);
     }
 
     [Fact]
