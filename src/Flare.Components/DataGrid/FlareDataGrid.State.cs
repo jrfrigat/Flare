@@ -290,6 +290,22 @@ public partial class FlareDataGrid<TItem>
         StateHasChanged();
     }
 
+    /// <summary>Asks the mounted provider Virtualize for its window again; it calls the provider itself.</summary>
+    private async Task RefreshVirtualProviderAsync()
+    {
+        try
+        {
+            if (_virtualizeProviderRef is not null)
+                await _virtualizeProviderRef.RefreshDataAsync();
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        // RefreshDataAsync updates the window without rendering it; the parent render is what makes
+        // Virtualize show the rows it just loaded.
+        StateHasChanged();
+    }
+
     // One place to say "the data changed". There are two caches over the same source - the paged list
     // the provider path fills, and the sorted/filtered projection the client path works from - and they
     // are cleared together or not at all: one call, so no site can clear one and leave the other stale.

@@ -400,6 +400,14 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
     private async Task LoadFromProviderAsync()
     {
         if (_provider is null) return;
+        // Virtual + provider: the mounted Virtualize renders the rows and asks for the window itself.
+        // Calling the provider here as well would fill a cache nothing renders and leave the grid on
+        // the old window, which is what a page change used to show.
+        if (_virtualizeProviderRef is not null)
+        {
+            await RefreshVirtualProviderAsync();
+            return;
+        }
         // Infinite scroll: a (re)load resets the accumulation and fetches the first page.
         if (_infiniteMode)
         {
