@@ -950,8 +950,6 @@ internal static class MaterialDesign2Tokens
         ViewportInset = "3rem",
         ViewportInsetCompact = "2rem",
         PanelMaxBlockSize = "70dvh",
-        ScrimLayer = "1200",
-        ScrimOpacity = "0.5",
     };
 
     // Drag: MD3 gives a dragged object elevation 4 and leaves a dimmed silhouette behind it. The drop

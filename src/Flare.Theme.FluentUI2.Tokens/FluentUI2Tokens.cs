@@ -974,8 +974,6 @@ public class FluentUI2Tokens
         ViewportInset = "2rem",
         ViewportInsetCompact = "1.5rem",
         PanelMaxBlockSize = "75dvh",
-        ScrimLayer = "1200",
-        ScrimOpacity = "0.5",
     };
 
     // Drag: Fluent lifts a dragged object on shadow 16 (elevation 4 here) and shows it at reduced

@@ -19,8 +19,15 @@ public sealed class OverlayTokensTests(BrowserFixture fixture) : IClassFixture<B
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/overlay-tokens");
 
-        await Expect(page.Locator("#default")).ToHaveCSSAsync("z-index", "1200");
-        await Expect(ScrimOf(page, "#default")).ToHaveCSSAsync("opacity", "0.5");
+        // By default the overlay stands on the shared ladder's modal rung and dims like every other scrim.
+        await page.WaitForFunctionAsync(
+            $"() => getComputedStyle(document.documentElement).getPropertyValue('{Css.Tokens.Layer.Modal}').trim() !== ''");
+        var modal = await page.EvaluateAsync<string>(
+            $"() => getComputedStyle(document.documentElement).getPropertyValue('{Css.Tokens.Layer.Modal}').trim()");
+        var scrim = await page.EvaluateAsync<string>(
+            $"() => getComputedStyle(document.documentElement).getPropertyValue('{Css.Tokens.ScrimField.Opacity}').trim()");
+        await Expect(page.Locator("#default")).ToHaveCSSAsync("z-index", modal);
+        await Expect(ScrimOf(page, "#default")).ToHaveCSSAsync("opacity", scrim);
 
         await Expect(page.Locator("#themed")).ToHaveCSSAsync("z-index", "1600");
         await Expect(ScrimOf(page, "#themed")).ToHaveCSSAsync("opacity", "0.2");

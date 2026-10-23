@@ -5,6 +5,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Changed
+
+- A `FlareOverlay` stands on the shared layer ladder's modal rung (`--flare-z-modal`) and dims by the theme's scrim opacity (`--flare-scrim-opacity`) by default, so toasts, tooltips and a dragged item stay above it and every backdrop of a theme matches; `--flare-overlay-scrim-layer` and `--flare-overlay-scrim-opacity` are no longer required theme tokens, and an explicit `ZIndex` or `Opacity` still wins.
+
 ### Fixed
 
 - On a right-to-left page, `FlarePagination`'s Previous, Next, First and Last chevrons point the way the page reads again: the 0.49.0 flip turned back the arrows the browser already mirrors.
