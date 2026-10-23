@@ -23,6 +23,7 @@ public class CssValidatorTests
     [InlineData("background:url(javascript:alert(1))")]
     [InlineData("background:url( 'javascript:alert(1)' )")]
     [InlineData("background:URL(  \"JavaScript:alert(1)\")")]
+    [InlineData("1rem;background:url(javascript:alert(1))")]
     public void StripDangerous_NeutralizesJavascriptUrls(string css)
     {
         var result = CssValidator.StripDangerous(css);
@@ -30,6 +31,8 @@ public class CssValidatorTests
         Assert.True(open >= 0);
         var close = result.IndexOf(')', open);
         Assert.Equal("url(about:blank)", result[open..(close + 1)]);
+        // The scheme is consumed with the prefix; only the payload may stay after url(about:blank).
+        Assert.DoesNotContain("javascript:", result, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -37,7 +40,7 @@ public class CssValidatorTests
     {
         var result = CssValidator.StripDangerous("background:url(data:text/html;base64,PHNjcmlwdD4=)");
         Assert.Contains("url(about:blank)", result);
-        Assert.DoesNotContain("url(data:", result, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("data:", result, StringComparison.OrdinalIgnoreCase);
     }
 
     [Theory]

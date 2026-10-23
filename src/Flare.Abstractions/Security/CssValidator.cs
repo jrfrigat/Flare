@@ -188,9 +188,12 @@ internal static class CssValidator
                 while (p < css.Length && char.IsWhiteSpace(css[p])) p++;
             }
 
-            var dangerous = MatchesAt(css, p, "javascript:") ||
-                (MatchesAt(css, p, "data:") && !MatchesAt(css, p + 5, "image/"));
-            if (!dangerous)
+            // Consume the scheme together with the prefix, as the old "url(...javascript:" regex did:
+            // leaving it behind would put the literal "javascript:" into the sanitized style.
+            var schemeLength = MatchesAt(css, p, "javascript:")
+                ? "javascript:".Length
+                : MatchesAt(css, p, "data:") && !MatchesAt(css, p + 5, "image/") ? "data:".Length : 0;
+            if (schemeLength == 0)
             {
                 i++;
                 continue;
@@ -199,7 +202,7 @@ internal static class CssValidator
             result ??= new StringBuilder(css.Length);
             result.Append(css, copyFrom, i - copyFrom);
             result.Append("url(about:blank)");
-            i = p;
+            i = p + schemeLength;
             copyFrom = i;
         }
 
