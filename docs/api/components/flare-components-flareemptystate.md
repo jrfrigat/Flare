@@ -11,8 +11,9 @@
 | `ActionContent` | `RenderFragment?` | `` | Parameter |  | Action slot for buttons or links. |
 | `Compact` | `bool` | `false` | Parameter |  | Compact layout (smaller icon/title and tighter padding) for inline empty states inside cards or lists. |
 | `Description` | `string?` | `` | Parameter |  | Supporting description text. |
+| `HeadingLevel` | `int` | `3` | Parameter |  | Level of the title's heading element, 1 to 6; 3 by default. Set it to where the empty state sits in the page outline - 2 right under a page's h1 - so the headings skip no level. The level changes the document outline only; the title looks the same at every level. |
 | `IconContent` | `RenderFragment?` | `` | Parameter |  | Icon content displayed above the title. |
-| `Title` | `string?` | `` | Parameter |  | Main heading text. |
+| `Title` | `string?` | `` | Parameter |  | Main heading text, rendered as a heading of HeadingLevel. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

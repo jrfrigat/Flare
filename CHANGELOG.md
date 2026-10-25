@@ -5,6 +5,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `FlareEmptyState.HeadingLevel` sets the level of the title's heading, 1 to 6, so an empty state right under a page's `h1` can be an `h2` and the outline skips no level; the default stays 3 and the title looks the same at every level.
+
 ### Fixed
 
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.

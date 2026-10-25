@@ -110,4 +110,24 @@ public class FlareEmptyStateTests : FlareTestContext
         Assert.Equal("status", root.GetAttribute("role"));
         Assert.Equal("off", root.GetAttribute("aria-live"));
     }
+
+    // The title's level follows where the empty state sits in the page outline; its look does not.
+    [Theory]
+    [InlineData(null, "H3")]
+    [InlineData(2, "H2")]
+    [InlineData(1, "H1")]
+    [InlineData(0, "H1")]
+    [InlineData(9, "H6")]
+    public void HeadingLevel_SetsTheTitleElement_KeepingItsClass(int? level, string tag)
+    {
+        var cut = Render<FlareEmptyState>(p =>
+        {
+            p.Add(x => x.Title, "Nothing here");
+            if (level is { } l) p.Add(x => x.HeadingLevel, l);
+        });
+
+        var title = cut.Find($".{Css.Classes.Empty.StateTitle}");
+        Assert.Equal(tag, title.TagName);
+        Assert.Equal("Nothing here", title.TextContent);
+    }
 }

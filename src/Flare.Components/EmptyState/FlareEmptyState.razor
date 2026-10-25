@@ -9,7 +9,7 @@
     }
     @if (!string.IsNullOrEmpty(Title))
     {
-        <h3 class="@Css.Classes.Empty.StateTitle">@Title</h3>
+        @RenderTitle()
     }
     @if (!string.IsNullOrEmpty(Description))
     {
@@ -24,8 +24,12 @@
 @code {
     /// <summary>Icon content displayed above the title.</summary>
     [Parameter] public RenderFragment? IconContent { get; set; }
-    /// <summary>Main heading text.</summary>
+    /// <summary>Main heading text, rendered as a heading of <see cref="HeadingLevel"/>.</summary>
     [Parameter] public string? Title { get; set; }
+    /// <summary>Level of the title's heading element, 1 to 6; 3 by default. Set it to where the empty
+    /// state sits in the page outline - 2 right under a page's h1 - so the headings skip no level. The
+    /// level changes the document outline only; the title looks the same at every level.</summary>
+    [Parameter] public int HeadingLevel { get; set; } = 3;
     /// <summary>Supporting description text.</summary>
     [Parameter] public string? Description { get; set; }
     /// <summary>Action slot for buttons or links.</summary>
@@ -36,4 +40,12 @@
     protected override string ComponentCssClass => Css.Classes.Empty.State;
 
     private string _compactClass => Compact ? Css.Classes.Empty.StateCompact : string.Empty;
+
+    private RenderFragment RenderTitle() => builder =>
+    {
+        builder.OpenElement(0, $"h{Math.Clamp(HeadingLevel, 1, 6)}");
+        builder.AddAttribute(1, "class", Css.Classes.Empty.StateTitle);
+        builder.AddContent(2, Title);
+        builder.CloseElement();
+    };
 }
