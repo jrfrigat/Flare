@@ -9,6 +9,8 @@
     <Description>Flare Gantt timeline for the Flare Blazor component library: task trees, resource lanes and roadmaps on one time axis.</Description>
     <PackageTags>blazor;components;gantt;timeline;scheduler</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

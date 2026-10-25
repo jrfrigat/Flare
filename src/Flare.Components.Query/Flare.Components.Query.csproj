@@ -12,6 +12,8 @@
     <Description>A visual query designer for Flare, built on the Querio query model. Composes joins, aggregates, grouping, conditions and paging over a caller-supplied schema, and emits a serializable query spec that the consumer renders or executes however it likes.</Description>
     <PackageTags>blazor;components;query;query-builder;querio</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

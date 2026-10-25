@@ -8,6 +8,8 @@
     <Description>Flare media components - VideoPlayer and SignaturePad for the Flare Blazor component library.</Description>
     <PackageTags>blazor;components;media;video;signature</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

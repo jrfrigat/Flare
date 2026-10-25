@@ -11,6 +11,10 @@ All notable changes to Flare are documented here. This project adheres to
 - `TabsTokens.InactiveHoverColor` (`--flare-tabs-inactive-hover-color`) colors an inactive tab's label and icon under the pointer; it defaults to the resting inactive color, and Material Design 3 Expressive sets on-surface as its spec asks.
 - `ListTokens.ItemRadiusHover`, `ItemRadiusFocus`, `ItemRadiusPressed` and `ItemRadiusSelected` give a list row its shape per state; each defaults to the resting `ItemRadius`. Material Design 3 Expressive rows now rest at 4dp, round to 12dp under the pointer and to 16dp when focused, pressed or selected, as its spec asks.
 
+### Changed
+
+- The add-on packages (Barcode, Carousel, Gantt, IDE, Kanban, Media, QrCode, Query, RichTextEditor, Transfer) are marked trimmable, so a WebAssembly app publishing with trimming drops what it does not use from them as it already did from the core; in the Gallery, which uses all ten, they shrink from 166 KB to 156 KB compressed.
+
 ### Fixed
 
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.

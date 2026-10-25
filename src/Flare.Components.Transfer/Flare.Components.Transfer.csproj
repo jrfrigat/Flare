@@ -8,6 +8,8 @@
     <Description>Flare Transfer component for the Flare Blazor component library.</Description>
     <PackageTags>blazor;components;transfer</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

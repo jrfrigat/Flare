@@ -8,6 +8,8 @@
     <Description>IDE layout components for the Flare Blazor component library - ribbon, document tabs, tool panels, splitter, status bar</Description>
     <PackageTags>blazor;components;ide;ribbon;tabs;layout</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- An app publishing for WebAssembly trims what it does not use out of this assembly. -->
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>
