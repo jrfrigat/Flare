@@ -1,2 +1,0 @@
-#nullable enable
-const Flare.Css.Classes.Tabs.Strip = "flare-tabs__strip" -> string!
