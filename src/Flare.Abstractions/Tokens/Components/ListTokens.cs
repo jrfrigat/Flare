@@ -37,6 +37,19 @@ public sealed record ListTokens
     /// renders rows as separated pills raises it.</summary>
     [CssVar(ListField.ItemRadius)] public required string ItemRadius { get; init; }
 
+    // A language whose rows change shape with their state names each step; the defaults keep the resting
+    // radius, so a theme that draws one shape sets none of them.
+
+    /// <summary>Corner radius of a clickable item under the pointer. Defaults to <see cref="ItemRadius"/>.</summary>
+    [CssVar(ListField.ItemRadiusHover)] public string ItemRadiusHover { get; init; } = Var(ListField.ItemRadius);
+    /// <summary>Corner radius of an item whose action has keyboard focus. Defaults to <see cref="ItemRadius"/>.</summary>
+    [CssVar(ListField.ItemRadiusFocus)] public string ItemRadiusFocus { get; init; } = Var(ListField.ItemRadius);
+    /// <summary>Corner radius of a clickable item while it is pressed. Defaults to <see cref="ItemRadius"/>.</summary>
+    [CssVar(ListField.ItemRadiusPressed)] public string ItemRadiusPressed { get; init; } = Var(ListField.ItemRadius);
+    /// <summary>Corner radius of a selected item in every state, disabled included. Defaults to
+    /// <see cref="ItemRadius"/>.</summary>
+    [CssVar(ListField.ItemRadiusSelected)] public string ItemRadiusSelected { get; init; } = Var(ListField.ItemRadius);
+
     /// <summary>Font family of an item's label. Each theme decides which step of its own type scale a
     /// list row maps to.</summary>
     [CssVar(ListField.ItemLabelFont)] public string ItemLabelFont { get; init; } = Var(Css.Tokens.Typography.BodyLarge.Font);

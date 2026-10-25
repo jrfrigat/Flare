@@ -134,6 +134,18 @@
 
 .flare-list-item--selected .flare-list-item__primary { color: var(--flare-list-item-selected-color); }
 
+/* The row's shape may follow its state. Each step defaults to the resting radius, so only a theme whose
+   rows change shape sees a change; a selected row keeps its own shape in every state. */
+.flare-list-item {
+    transition: border-radius var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
+}
+.flare-list-item--clickable:not(.flare-list-item--selected):hover { border-radius: var(--flare-list-item-radius-hover); }
+.flare-list-item:not(.flare-list-item--selected):has(.flare-list-item__action:focus-visible) {
+    border-radius: var(--flare-list-item-radius-focus);
+}
+.flare-list-item--clickable:not(.flare-list-item--selected):active { border-radius: var(--flare-list-item-radius-pressed); }
+.flare-list-item--selected { border-radius: var(--flare-list-item-radius-selected); }
+
 .flare-list-item--disabled {
     opacity: var(--flare-list-item-disabled-opacity);
     pointer-events: none;

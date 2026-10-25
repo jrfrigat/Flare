@@ -29,6 +29,14 @@ public static class ListField
     public const string ItemContentGap = "--flare-list-item-content-gap";
     /// <summary>CSS custom-property name for the item corner radius token.</summary>
     public const string ItemRadius = "--flare-list-item-radius";
+    /// <summary>CSS custom-property name for the corner radius of an item under the pointer.</summary>
+    public const string ItemRadiusHover = "--flare-list-item-radius-hover";
+    /// <summary>CSS custom-property name for the corner radius of an item with keyboard focus.</summary>
+    public const string ItemRadiusFocus = "--flare-list-item-radius-focus";
+    /// <summary>CSS custom-property name for the corner radius of an item being pressed.</summary>
+    public const string ItemRadiusPressed = "--flare-list-item-radius-pressed";
+    /// <summary>CSS custom-property name for the corner radius of a selected item, in every state.</summary>
+    public const string ItemRadiusSelected = "--flare-list-item-radius-selected";
     /// <summary>CSS custom-property name for the item label font family token.</summary>
     public const string ItemLabelFont = "--flare-list-item-label-font";
     /// <summary>CSS custom-property name for the item label font size token.</summary>

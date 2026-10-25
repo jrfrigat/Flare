@@ -241,6 +241,16 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         {
             InactiveHoverColor = "var(--flare-color-on-surface)",
         },
+        // md.comp.list.list-item.*.container.expressive.shape: an Expressive row rests at 4dp, rounds to
+        // 12dp under the pointer and to 16dp when focused, pressed or selected. Baseline M3 keeps square rows.
+        List = MaterialDesign3Tokens.Design.List with
+        {
+            ItemRadius = "var(--flare-shape-extra-small)",  // 4dp
+            ItemRadiusHover = "var(--flare-shape-medium)",   // 12dp
+            ItemRadiusFocus = "var(--flare-shape-large)",    // 16dp
+            ItemRadiusPressed = "var(--flare-shape-large)",  // 16dp
+            ItemRadiusSelected = "var(--flare-shape-large)", // 16dp
+        },
         Extended = Extended,
     };
     public string DefaultPaletteId => Md3Palettes.Violet.Id;

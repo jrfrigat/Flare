@@ -211,6 +211,23 @@ public class TokensToCssTests
         Assert.Contains($"{Css.Tokens.Tabs.InactiveHoverColor}:var({Css.Tokens.Tabs.InactiveColor});", baseline);
     }
 
+    // MD3 Expressive rows rest at 4dp, round to 12dp under the pointer and to 16dp focused, pressed or
+    // selected; a theme with one shape leaves every step on its resting radius.
+    [Fact]
+    public void ThemeCss_ListItemShapes_FollowTheStateInExpressive_AndRestElsewhere()
+    {
+        var expressive = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme());
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadius}:var({Css.Tokens.Shape.ExtraSmall});", expressive);
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadiusHover}:var({Css.Tokens.Shape.Medium});", expressive);
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadiusFocus}:var({Css.Tokens.Shape.Large});", expressive);
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadiusPressed}:var({Css.Tokens.Shape.Large});", expressive);
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadiusSelected}:var({Css.Tokens.Shape.Large});", expressive);
+
+        var baseline = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3.MaterialDesign3Theme());
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadiusHover}:var({Css.Tokens.ListField.ItemRadius});", baseline);
+        Assert.Contains($"{Css.Tokens.ListField.ItemRadiusSelected}:var({Css.Tokens.ListField.ItemRadius});", baseline);
+    }
+
     [Theory]
     [InlineData(false, false, Css.Classes.Theme.ModeLight)]
     [InlineData(true, false, Css.Classes.Theme.ModeDark)]
