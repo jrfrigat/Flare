@@ -1,1 +1,4 @@
 #nullable enable
+Flare.Abstractions.Tokens.Components.TabsTokens.InactiveHoverColor.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.InactiveHoverColor.init -> void
+const Flare.Css.Tokens.Tabs.InactiveHoverColor = "--flare-tabs-inactive-hover-color" -> string!

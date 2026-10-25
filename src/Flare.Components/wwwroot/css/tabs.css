@@ -160,6 +160,11 @@
               border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
 }
 
+/* An inactive tab under the pointer may take its own label color; the active one keeps its own. */
+.flare-tabs__tab:hover:not(:disabled):not([aria-disabled="true"]):not(.flare-tabs__tab--active) {
+  color: var(--flare-tabs-inactive-hover-color);
+}
+
 .flare-tabs__tab:hover:not(:disabled)::before {
   background: var(--flare-state-hover-layer);
   opacity: 1;

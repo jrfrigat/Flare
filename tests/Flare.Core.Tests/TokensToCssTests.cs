@@ -199,6 +199,18 @@ public class TokensToCssTests
         Assert.Contains($"{Css.Tokens.SnackbarPanel.SuccessBg}:var({Css.Tokens.Color.SecondaryContainer});", material);
     }
 
+    // MD3 Expressive raises an inactive tab's label to on-surface under the pointer; a theme that does not
+    // set the hover color keeps the resting inactive one.
+    [Fact]
+    public void ThemeCss_InactiveTabHover_IsOnSurfaceInExpressive_AndTheRestingColorElsewhere()
+    {
+        var expressive = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3Expressive.MaterialDesign3ExpressiveTheme());
+        Assert.Contains($"{Css.Tokens.Tabs.InactiveHoverColor}:var({Css.Tokens.Color.OnSurface});", expressive);
+
+        var baseline = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3.MaterialDesign3Theme());
+        Assert.Contains($"{Css.Tokens.Tabs.InactiveHoverColor}:var({Css.Tokens.Tabs.InactiveColor});", baseline);
+    }
+
     [Theory]
     [InlineData(false, false, Css.Classes.Theme.ModeLight)]
     [InlineData(true, false, Css.Classes.Theme.ModeDark)]

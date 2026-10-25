@@ -40,6 +40,10 @@ public sealed record TabsTokens
     /// <summary>Inactive tab text color.</summary>
     [CssVar(Tabs.InactiveColor)] public string InactiveColor { get; init; } = Var(Css.Tokens.Color.OnSurfaceVariant);
 
+    /// <summary>Label and icon color of an inactive tab under the pointer. Defaults to the resting inactive
+    /// color, so only a theme whose hover changes the label sets it.</summary>
+    [CssVar(Tabs.InactiveHoverColor)] public string InactiveHoverColor { get; init; } = Var(Tabs.InactiveColor);
+
     /// <summary>Bar divider color.</summary>
     [CssVar(Tabs.DividerColor)] public string DividerColor { get; init; } = Var(Css.Tokens.Color.SurfaceVariant);
 

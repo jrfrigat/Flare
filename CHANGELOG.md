@@ -8,6 +8,7 @@ All notable changes to Flare are documented here. This project adheres to
 ### Added
 
 - `FlareEmptyState.HeadingLevel` sets the level of the title's heading, 1 to 6, so an empty state right under a page's `h1` can be an `h2` and the outline skips no level; the default stays 3 and the title looks the same at every level.
+- `TabsTokens.InactiveHoverColor` (`--flare-tabs-inactive-hover-color`) colors an inactive tab's label and icon under the pointer; it defaults to the resting inactive color, and Material Design 3 Expressive sets on-surface as its spec asks.
 
 ### Fixed
 

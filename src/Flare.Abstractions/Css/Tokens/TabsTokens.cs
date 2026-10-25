@@ -27,6 +27,8 @@ public static class Tabs
     public const string SecondaryActiveColor = "--flare-tabs-secondary-active-color";
     /// <summary>CSS custom-property name for the inactive color token.</summary>
     public const string InactiveColor = "--flare-tabs-inactive-color";
+    /// <summary>CSS custom-property name for the label color of an inactive tab under the pointer.</summary>
+    public const string InactiveHoverColor = "--flare-tabs-inactive-hover-color";
     /// <summary>CSS custom-property name for the divider color token.</summary>
     public const string DividerColor = "--flare-tabs-divider-color";
 

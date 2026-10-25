@@ -235,6 +235,12 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             DurationSpring = "350ms",
             DurationSpringSlow = "500ms",
         },
+        // md.comp.primary-navigation-tab.with-label-text.inactive.hover.label-text.color: an inactive tab's
+        // label rises from on-surface-variant to on-surface under the pointer, not only its state layer.
+        Tabs = MaterialDesign3Tokens.Design.Tabs with
+        {
+            InactiveHoverColor = "var(--flare-color-on-surface)",
+        },
         Extended = Extended,
     };
     public string DefaultPaletteId => Md3Palettes.Violet.Id;
