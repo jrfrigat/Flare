@@ -1922,6 +1922,14 @@ Flare.Abstractions.Tokens.Components.ListTokens.ItemPaddingInline.get -> string!
 Flare.Abstractions.Tokens.Components.ListTokens.ItemPaddingInline.init -> void
 Flare.Abstractions.Tokens.Components.ListTokens.ItemRadius.get -> string!
 Flare.Abstractions.Tokens.Components.ListTokens.ItemRadius.init -> void
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusFocus.get -> string!
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusFocus.init -> void
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusHover.get -> string!
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusHover.init -> void
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusPressed.get -> string!
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusPressed.init -> void
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusSelected.get -> string!
+Flare.Abstractions.Tokens.Components.ListTokens.ItemRadiusSelected.init -> void
 Flare.Abstractions.Tokens.Components.ListTokens.ItemSelectedBg.get -> string!
 Flare.Abstractions.Tokens.Components.ListTokens.ItemSelectedBg.init -> void
 Flare.Abstractions.Tokens.Components.ListTokens.ItemSelectedColor.get -> string!
@@ -2766,6 +2774,8 @@ Flare.Abstractions.Tokens.Components.TabsTokens.IconSize.get -> string!
 Flare.Abstractions.Tokens.Components.TabsTokens.IconSize.init -> void
 Flare.Abstractions.Tokens.Components.TabsTokens.InactiveColor.get -> string!
 Flare.Abstractions.Tokens.Components.TabsTokens.InactiveColor.init -> void
+Flare.Abstractions.Tokens.Components.TabsTokens.InactiveHoverColor.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.InactiveHoverColor.init -> void
 Flare.Abstractions.Tokens.Components.TabsTokens.IndicatorThickness.get -> string!
 Flare.Abstractions.Tokens.Components.TabsTokens.IndicatorThickness.init -> void
 Flare.Abstractions.Tokens.Components.TabsTokens.LabelFont.get -> string!
@@ -2776,6 +2786,16 @@ Flare.Abstractions.Tokens.Components.TabsTokens.LabelSpacing.get -> string!
 Flare.Abstractions.Tokens.Components.TabsTokens.LabelSpacing.init -> void
 Flare.Abstractions.Tokens.Components.TabsTokens.LabelWeight.get -> string!
 Flare.Abstractions.Tokens.Components.TabsTokens.LabelWeight.init -> void
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedActiveBg.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedActiveBg.init -> void
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedBorderColor.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedBorderColor.init -> void
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedIndicatorColor.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedIndicatorColor.init -> void
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedStripBg.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedStripBg.init -> void
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedTabRadius.get -> string!
+Flare.Abstractions.Tokens.Components.TabsTokens.OutlinedTabRadius.init -> void
 Flare.Abstractions.Tokens.Components.TabsTokens.PillRadius.get -> string!
 Flare.Abstractions.Tokens.Components.TabsTokens.PillRadius.init -> void
 Flare.Abstractions.Tokens.Components.TabsTokens.PrimaryIndicatorInset.get -> string!
@@ -6603,6 +6623,10 @@ const Flare.Css.Tokens.ListField.ItemPaddingBlock = "--flare-list-item-padding-b
 const Flare.Css.Tokens.ListField.ItemPaddingBlockDense = "--flare-list-item-padding-block-dense" -> string!
 const Flare.Css.Tokens.ListField.ItemPaddingInline = "--flare-list-item-padding-inline" -> string!
 const Flare.Css.Tokens.ListField.ItemRadius = "--flare-list-item-radius" -> string!
+const Flare.Css.Tokens.ListField.ItemRadiusFocus = "--flare-list-item-radius-focus" -> string!
+const Flare.Css.Tokens.ListField.ItemRadiusHover = "--flare-list-item-radius-hover" -> string!
+const Flare.Css.Tokens.ListField.ItemRadiusPressed = "--flare-list-item-radius-pressed" -> string!
+const Flare.Css.Tokens.ListField.ItemRadiusSelected = "--flare-list-item-radius-selected" -> string!
 const Flare.Css.Tokens.ListField.ItemSelectedBg = "--flare-list-item-selected-bg" -> string!
 const Flare.Css.Tokens.ListField.ItemSelectedColor = "--flare-list-item-selected-color" -> string!
 const Flare.Css.Tokens.ListField.ItemTrailingColor = "--flare-list-item-trailing-color" -> string!
@@ -7267,11 +7291,17 @@ const Flare.Css.Tokens.Tabs.FilledBg = "--flare-tabs-filled-bg" -> string!
 const Flare.Css.Tokens.Tabs.FilledFg = "--flare-tabs-filled-fg" -> string!
 const Flare.Css.Tokens.Tabs.IconSize = "--flare-tabs-icon-size" -> string!
 const Flare.Css.Tokens.Tabs.InactiveColor = "--flare-tabs-inactive-color" -> string!
+const Flare.Css.Tokens.Tabs.InactiveHoverColor = "--flare-tabs-inactive-hover-color" -> string!
 const Flare.Css.Tokens.Tabs.IndicatorThickness = "--flare-tabs-indicator-thickness" -> string!
 const Flare.Css.Tokens.Tabs.LabelFont = "--flare-tabs-label-font" -> string!
 const Flare.Css.Tokens.Tabs.LabelSize = "--flare-tabs-label-size" -> string!
 const Flare.Css.Tokens.Tabs.LabelSpacing = "--flare-tabs-label-spacing" -> string!
 const Flare.Css.Tokens.Tabs.LabelWeight = "--flare-tabs-label-weight" -> string!
+const Flare.Css.Tokens.Tabs.OutlinedActiveBg = "--flare-tabs-outlined-active-bg" -> string!
+const Flare.Css.Tokens.Tabs.OutlinedBorderColor = "--flare-tabs-outlined-border-color" -> string!
+const Flare.Css.Tokens.Tabs.OutlinedIndicatorColor = "--flare-tabs-outlined-indicator-color" -> string!
+const Flare.Css.Tokens.Tabs.OutlinedStripBg = "--flare-tabs-outlined-strip-bg" -> string!
+const Flare.Css.Tokens.Tabs.OutlinedTabRadius = "--flare-tabs-outlined-tab-radius" -> string!
 const Flare.Css.Tokens.Tabs.PillRadius = "--flare-tabs-pill-radius" -> string!
 const Flare.Css.Tokens.Tabs.PrimaryIndicatorInset = "--flare-tabs-primary-indicator-inset" -> string!
 const Flare.Css.Tokens.Tabs.ScrollDisabledOpacity = "--flare-tabs-scroll-disabled-opacity" -> string!

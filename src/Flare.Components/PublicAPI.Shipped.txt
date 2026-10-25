@@ -2610,6 +2610,8 @@ Flare.Components.FlareEmptyState.Compact.set -> void
 Flare.Components.FlareEmptyState.Description.get -> string?
 Flare.Components.FlareEmptyState.Description.set -> void
 Flare.Components.FlareEmptyState.FlareEmptyState() -> void
+Flare.Components.FlareEmptyState.HeadingLevel.get -> int
+Flare.Components.FlareEmptyState.HeadingLevel.set -> void
 Flare.Components.FlareEmptyState.IconContent.get -> Microsoft.AspNetCore.Components.RenderFragment?
 Flare.Components.FlareEmptyState.IconContent.set -> void
 Flare.Components.FlareEmptyState.Title.get -> string?

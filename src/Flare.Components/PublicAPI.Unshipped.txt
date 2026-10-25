@@ -1,3 +1,1 @@
 #nullable enable
-Flare.Components.FlareEmptyState.HeadingLevel.get -> int
-Flare.Components.FlareEmptyState.HeadingLevel.set -> void
