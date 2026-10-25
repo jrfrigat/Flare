@@ -281,7 +281,11 @@ public partial class FlareDataGrid<[DynamicallyAccessedMembers(DynamicallyAccess
         SyncContext();
         // Client (in-memory) mode recomputes on every parameter change; provider modes manage the
         // cache via their load methods (and infinite scroll accumulates across pages).
-        if (_provider is null) InvalidateData();
+        if (_provider is null)
+        {
+            InvalidateData();
+            FollowResultCount();
+        }
         _selection = SelectedItems ?? _selection;
         // Controlled column order: sync the internal overlay when the parameter differs.
         if (ColumnOrder is not null && !ColumnOrder.SequenceEqual(_columnOrder))

@@ -222,9 +222,24 @@ public partial class FlareDataGrid<TItem>
         NotifyContext(DataGridChange.Sort);
     }
 
+    // Row count the status region last reflected, or null before the first parameter set. A page that
+    // filters outside the grid hands it a new Items list, and the region follows that count the way it
+    // follows a column filter. The first set only records it, and an unchanged count leaves the region
+    // alone, so a list rebuilt on every parent render announces nothing new.
+    private int? _resultCountSeen;
+
+    private void FollowResultCount()
+    {
+        var count = CurrentResultCount();
+        if (_resultCountSeen is { } seen && seen != count)
+            _ariaAnnouncement = string.Format(FlareStrings.DataGrid_AnnounceFiltered, count);
+        _resultCountSeen = count;
+    }
+
     private async Task RaiseFilterChangedAsync()
     {
-        Announce(string.Format(FlareStrings.DataGrid_AnnounceFiltered, CurrentResultCount()));
+        _resultCountSeen = CurrentResultCount();
+        Announce(string.Format(FlareStrings.DataGrid_AnnounceFiltered, _resultCountSeen));
         if (OnFilterChanged.HasDelegate) await OnFilterChanged.InvokeAsync(BuildFilters());
         if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();
