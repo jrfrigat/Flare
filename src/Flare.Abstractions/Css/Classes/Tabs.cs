@@ -49,6 +49,8 @@ public static class Tabs
     public const string BadgeDot = "flare-tabs__badge--dot";
     /// <summary>The <c>flare-tabs__bar-wrap</c> CSS class.</summary>
     public const string BarWrap = "flare-tabs__bar-wrap";
+    /// <summary>The <c>flare-tabs__strip</c> CSS class: the tab bar together with its scroll arrows.</summary>
+    public const string Strip = "flare-tabs__strip";
     /// <summary>The <c>flare-tabs__header-start</c> CSS class.</summary>
     public const string HeaderStart = "flare-tabs__header-start";
     /// <summary>The <c>flare-tabs__header-end</c> CSS class.</summary>

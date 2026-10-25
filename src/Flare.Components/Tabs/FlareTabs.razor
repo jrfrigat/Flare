@@ -9,6 +9,7 @@
     {
         <div class="@Css.Classes.Tabs.HeaderStart">@HeaderStart</div>
     }
+    <div class="@Css.Classes.Tabs.Strip">
     @if (_showArrows)
     {
         <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollPrev"
@@ -68,6 +69,7 @@
             <FlareIconView Value="FlareIcons.ChevronRight" />
         </button>
     }
+    </div>
     @if (HeaderEnd is not null)
     {
         <div class="@Css.Classes.Tabs.HeaderEnd">@HeaderEnd</div>

@@ -20,6 +20,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.
 - `FlareDataGrid`'s status region states the new row count when the page hands it another `Items` list, as it does after a column filter, instead of keeping the count from before; the first render and an unchanged count announce nothing.
+- `FlareTabs` with `HeaderStart`/`HeaderEnd` no longer flips its end zone between lines on a narrow screen: the scroll arrows and the tab bar now share one item of the row, so showing the arrows only takes room from the bar instead of pushing the end zone onto the next line, which then made room, hid the arrows and pulled the zone back.
 
 ## [0.51.0] - 2026-10-23
 

@@ -1,0 +1,19 @@
+@page "/tabs-header-zones"
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <main id="host" style="inline-size:600px;">
+        <FlareTabs>
+            <HeaderStart><span id="title">Project</span></HeaderStart>
+            <HeaderEnd>
+                <button id="refresh" style="inline-size:96px;">Refresh</button>
+                <button id="new" style="inline-size:80px;">New</button>
+            </HeaderEnd>
+            <ChildContent>
+                <FlareTab Label="Overview" />
+                <FlareTab Label="Activity" />
+                <FlareTab Label="Settings" />
+            </ChildContent>
+        </FlareTabs>
+    </main>
+</FlareThemeProvider>
+
