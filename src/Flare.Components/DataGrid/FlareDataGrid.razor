@@ -597,7 +597,9 @@
             @* The trigger and its popup share one widget root. FlarePopup's dismissal treats a
                pointer-down inside it as inside the widget - so the trigger only toggles - and a click
                anywhere else, the page background included, closes the menu. stopPropagation keeps a
-               click in the widget from bubbling to the th and sorting the column. *@
+               click in the widget from bubbling to the th and sorting the column. The menu takes focus
+               (tabindex -1): a click on its text would otherwise hand focus to the focusable table
+               outside the widget, and that focus-out closed the menu. *@
             <span class="@Css.Classes.DataGrid.FilterWidget"
                   @ref="_filterWidgetRefs[col.Key]"
                   @onclick:stopPropagation="true">
@@ -618,6 +620,7 @@
                             Class="@Css.Classes.DataGrid.FilterMenu"
                             role="dialog"
                             aria-label="@FlareStrings.DataGrid_Filter"
+                            tabindex="-1"
                             OnDismiss="@(() => CloseFilterMenu(col.Key))">
                     <span class="@Css.Classes.DataGrid.FilterMenuLabel">@col.Title</span>
                     @* Excel-style value checklist: search + (Select all) + the distinct values. *@
