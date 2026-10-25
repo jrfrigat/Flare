@@ -269,19 +269,26 @@
   border-bottom-color: transparent;
 }
 
-/* Outlined: card / folder tabs that connect to the panel border below. */
+/* Outlined: card / folder tabs that connect to the panel border below. The strip, the frame, the fill
+   and an accent line inside the active tab are all tokens, so a theme can drop the frame and keep the
+   line, or set the strip in a recessed track. The line is an inset shadow because the tab's bottom
+   border is already the seam with the panel. */
+.flare-tabs--outlined .flare-tabs__bar-wrap {
+  background: var(--flare-tabs-outlined-strip-bg);
+  border-radius: var(--flare-tabs-outlined-tab-radius) var(--flare-tabs-outlined-tab-radius) 0 0;
+}
 .flare-tabs--outlined .flare-tabs__bar { gap: var(--flare-spacing-2); }
 .flare-tabs--outlined .flare-tabs__tab {
-  border: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
-  border-radius: var(--flare-shape-small) var(--flare-shape-small) 0 0;
+  border: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-outlined-border-color);
+  border-radius: var(--flare-tabs-outlined-tab-radius) var(--flare-tabs-outlined-tab-radius) 0 0;
   margin-bottom: -1px;
 }
 .flare-tabs--outlined .flare-tabs__tab--active {
-  border-color: var(--flare-tabs-divider-color);
-  border-bottom-color: var(--flare-color-surface);
-  background: var(--flare-color-surface);
+  border-color: var(--flare-tabs-outlined-border-color);
+  border-bottom-color: var(--flare-tabs-outlined-active-bg);
+  background: var(--flare-tabs-outlined-active-bg);
+  box-shadow: inset 0 calc(var(--flare-tabs-indicator-thickness) * -1) 0 0 var(--flare-tabs-outlined-indicator-color);
 }
-.flare-tabs--outlined .flare-tabs__tab--active::after { display: none; }
 
 /* Disabled: :disabled for the FlareTabs <button>, --disabled for the FlareLinkTab <a>
    (an anchor cannot be :disabled, so pointer-events:none also blocks its hover/click). */

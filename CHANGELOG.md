@@ -10,6 +10,7 @@ All notable changes to Flare are documented here. This project adheres to
 - `FlareEmptyState.HeadingLevel` sets the level of the title's heading, 1 to 6, so an empty state right under a page's `h1` can be an `h2` and the outline skips no level; the default stays 3 and the title looks the same at every level.
 - `TabsTokens.InactiveHoverColor` (`--flare-tabs-inactive-hover-color`) colors an inactive tab's label and icon under the pointer; it defaults to the resting inactive color, and Material Design 3 Expressive sets on-surface as its spec asks.
 - `ListTokens.ItemRadiusHover`, `ItemRadiusFocus`, `ItemRadiusPressed` and `ItemRadiusSelected` give a list row its shape per state; each defaults to the resting `ItemRadius`. Material Design 3 Expressive rows now rest at 4dp, round to 12dp under the pointer and to 16dp when focused, pressed or selected, as its spec asks.
+- `TabsTokens.OutlinedStripBg`, `OutlinedTabRadius`, `OutlinedBorderColor`, `OutlinedActiveBg` and `OutlinedIndicatorColor` let a theme reshape `Outlined` tabs: the plane behind the strip, the top corners, the frame, the fill of the active tab and an accent line inside it. The defaults keep today's folder tabs, so a recessed strip with frameless filled tabs and an accent line is now a theme choice rather than app CSS.
 
 ### Changed
 

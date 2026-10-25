@@ -67,4 +67,14 @@ public static class Tabs
     public const string BadgeSize = "--flare-tabs-badge-size";
     /// <summary>CSS custom-property name for the primary indicator's inset from the tab edges.</summary>
     public const string PrimaryIndicatorInset = "--flare-tabs-primary-indicator-inset";
+    /// <summary>CSS custom-property name for the plane behind an outlined tab strip.</summary>
+    public const string OutlinedStripBg = "--flare-tabs-outlined-strip-bg";
+    /// <summary>CSS custom-property name for the top-corner radius of outlined tabs and their strip.</summary>
+    public const string OutlinedTabRadius = "--flare-tabs-outlined-tab-radius";
+    /// <summary>CSS custom-property name for the border color of an outlined tab.</summary>
+    public const string OutlinedBorderColor = "--flare-tabs-outlined-border-color";
+    /// <summary>CSS custom-property name for the fill of the active outlined tab.</summary>
+    public const string OutlinedActiveBg = "--flare-tabs-outlined-active-bg";
+    /// <summary>CSS custom-property name for the accent line inside the active outlined tab.</summary>
+    public const string OutlinedIndicatorColor = "--flare-tabs-outlined-indicator-color";
 }

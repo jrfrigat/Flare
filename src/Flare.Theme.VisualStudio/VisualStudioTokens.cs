@@ -381,6 +381,8 @@ internal class VisualStudioTokens
         SelectedBg = "var(--flare-color-surface)",
         SelectedFg = "var(--flare-color-on-surface)",
         TrackBg = "var(--flare-color-surface-container)",
+        // The track belongs to the segmented variants; the folder tabs keep the page behind them.
+        OutlinedStripBg = "transparent",
         PillRadius = "var(--flare-shape-small)",
         TabDisabledOpacity = "1",
         ScrollDisabledOpacity = "1",

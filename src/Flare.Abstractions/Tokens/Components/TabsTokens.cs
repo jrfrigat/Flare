@@ -101,4 +101,24 @@ public sealed record TabsTokens
     /// <summary>Inset of the primary tab's active indicator from the tab's inline edges. It defaults to a
     /// step of the shared spacing scale, so the indicator follows the theme's spacing.</summary>
     [CssVar(Tabs.PrimaryIndicatorInset)] public string PrimaryIndicatorInset { get; init; } = Var(Css.Tokens.Spacing.S10);
+
+    /// <summary>Plane behind the <c>Outlined</c> strip. Defaults to the <see cref="TrackBg"/> of the
+    /// segmented variants, so a language with one recessed track for every tab strip names it once.</summary>
+    [CssVar(Tabs.OutlinedStripBg)] public string OutlinedStripBg { get; init; } = Var(Tabs.TrackBg);
+
+    /// <summary>Top-corner radius of an <c>Outlined</c> tab, and of the strip behind it.</summary>
+    [CssVar(Tabs.OutlinedTabRadius)] public string OutlinedTabRadius { get; init; } = Var(Css.Tokens.Shape.Small);
+
+    /// <summary>Border of an <c>Outlined</c> tab. Defaults to the bar divider, so the tabs join the line
+    /// beneath them; transparent gives folder tabs without a frame.</summary>
+    [CssVar(Tabs.OutlinedBorderColor)] public string OutlinedBorderColor { get; init; } = Var(Tabs.DividerColor);
+
+    /// <summary>Fill of the active <c>Outlined</c> tab - the panel it opens onto. Defaults to the theme's
+    /// surface.</summary>
+    [CssVar(Tabs.OutlinedActiveBg)] public string OutlinedActiveBg { get; init; } = Var(Css.Tokens.Color.Surface);
+
+    /// <summary>Accent line along the bottom edge inside the active <c>Outlined</c> tab, as thick as
+    /// <see cref="IndicatorThickness"/>. Defaults to the tab's own fill, which hides it, so the filled
+    /// tab alone marks the selection.</summary>
+    [CssVar(Tabs.OutlinedIndicatorColor)] public string OutlinedIndicatorColor { get; init; } = Var(Tabs.OutlinedActiveBg);
 }

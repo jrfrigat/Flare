@@ -211,6 +211,22 @@ public class TokensToCssTests
         Assert.Contains($"{Css.Tokens.Tabs.InactiveHoverColor}:var({Css.Tokens.Tabs.InactiveColor});", baseline);
     }
 
+    // Outlined tabs keep their look unless a theme opts in: the line inside the active tab takes the tab's
+    // own fill, and the strip shares the segmented track, which Visual Studio leaves to those variants.
+    [Fact]
+    public void ThemeCss_OutlinedTabs_DefaultToTheFolderLook()
+    {
+        var material = TokensToCss.ThemeCss(new Flare.Theme.MaterialDesign3.MaterialDesign3Theme());
+        Assert.Contains($"{Css.Tokens.Tabs.OutlinedActiveBg}:var({Css.Tokens.Color.Surface});", material);
+        Assert.Contains($"{Css.Tokens.Tabs.OutlinedIndicatorColor}:var({Css.Tokens.Tabs.OutlinedActiveBg});", material);
+        Assert.Contains($"{Css.Tokens.Tabs.OutlinedBorderColor}:var({Css.Tokens.Tabs.DividerColor});", material);
+        Assert.Contains($"{Css.Tokens.Tabs.OutlinedTabRadius}:var({Css.Tokens.Shape.Small});", material);
+        Assert.Contains($"{Css.Tokens.Tabs.OutlinedStripBg}:var({Css.Tokens.Tabs.TrackBg});", material);
+
+        var visualStudio = TokensToCss.ThemeCss(new Flare.Theme.VisualStudio.VisualStudioTheme());
+        Assert.Contains($"{Css.Tokens.Tabs.OutlinedStripBg}:transparent;", visualStudio);
+    }
+
     // MD3 Expressive rows rest at 4dp, round to 12dp under the pointer and to 16dp focused, pressed or
     // selected; a theme with one shape leaves every step on its resting radius.
     [Fact]
