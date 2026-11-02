@@ -7,7 +7,7 @@
 
 @if (MessageBoxService.Current is { } req)
 {
-    <div class="@Css.Classes.Msgbox.Scrim" @onclick="@(() => Respond(req, req.Kind == MessageBoxKind.Alert))">
+    <div data-flare-backdrop class="@Css.Classes.Msgbox.Scrim" @onclick="@(() => Respond(req, req.Kind == MessageBoxKind.Alert))">
         <div class="@Css.Classes.Msgbox.Root" @onclick:stopPropagation="true"
              @onkeydown="@(e => OnKeyDown(req, e))"
              role="@(req.Kind == MessageBoxKind.Alert ? "alertdialog" : "dialog")"

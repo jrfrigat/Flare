@@ -52,7 +52,7 @@
         {
             @if (!_popup.FromField)
             {
-                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+                <div data-flare-backdrop class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
             }
         }
         @if (_open || Inline)

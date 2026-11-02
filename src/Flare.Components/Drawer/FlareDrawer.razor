@@ -10,7 +10,7 @@
    nothing. *@
 @if (Open && Variant is DrawerVariant.Temporary or DrawerVariant.Responsive)
 {
-    <div class="@BuildScrimCssClass()" @onclick="CloseDrawer" aria-hidden="true" />
+    <div data-flare-backdrop class="@BuildScrimCssClass()" @onclick="CloseDrawer" aria-hidden="true" />
 }
 
 <div class="@BuildCssClass(_anchorClass, _openClass, _variantClass, _autoCloseClass, _contentPadClass)"

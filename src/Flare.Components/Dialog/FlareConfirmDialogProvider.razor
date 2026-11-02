@@ -8,7 +8,7 @@
     @ChildContent
     @if (_current is { } request)
     {
-        <div class="@Css.Classes.Confirmdialog.Backdrop" @onclick="@(() => Respond(request, false))">
+        <div data-flare-backdrop class="@Css.Classes.Confirmdialog.Backdrop" @onclick="@(() => Respond(request, false))">
             <div class="@Css.Classes.Confirmdialog.Root" @onclick:stopPropagation="true"
                  role="alertdialog" aria-modal="true"
                  aria-labelledby="@_titleId"

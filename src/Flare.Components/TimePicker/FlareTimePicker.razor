@@ -74,7 +74,7 @@
         {
         @if (!_popup.FromField)
             {
-                <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+                <div data-flare-backdrop class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
             }
         <div class="@($"{Css.Classes.Picker.Panel} {Css.Classes.TimePicker.Panel} {(PopupVariant == TimePickerVariant.Dial ? Css.Classes.TimePicker.PanelDial : Css.Classes.TimePicker.PanelDropdown)}")"
              @ref="_panelEl" role="dialog" aria-modal="@(_popup.FromField ? "false" : "true")" aria-label="@_headline"

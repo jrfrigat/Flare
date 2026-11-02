@@ -14,7 +14,7 @@
     </div>
     @if (_open)
     {
-        <div class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
+        <div data-flare-backdrop class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
         <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
              aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
              @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="_ownsKeyboard">

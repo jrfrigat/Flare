@@ -8,7 +8,7 @@
 
 @if (_showHelp)
 {
-    <div class="@Css.Classes.Shortcuts.HelpScrim" @onclick="ToggleHelp">
+    <div data-flare-backdrop class="@Css.Classes.Shortcuts.HelpScrim" @onclick="ToggleHelp">
         <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(FlareStrings.Shortcuts_Title)" @onclick:stopPropagation="true">
             <div class="@Css.Classes.Shortcuts.HelpHeader">
                 <span class="@Css.Classes.Shortcuts.HelpTitle">@(FlareStrings.Shortcuts_Title)</span>

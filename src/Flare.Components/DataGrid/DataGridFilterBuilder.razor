@@ -29,7 +29,7 @@
                 <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Apply">@FlareStrings.DataGrid_ApplyFilters</FlareButton>
             </div>
         </div>
-        <div class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
+        <div data-flare-backdrop class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
     }
 </div>
 
