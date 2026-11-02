@@ -6,7 +6,7 @@
     <FlareTextField @bind-Value="_name" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
     <FlareTextField @bind-Value="_email" Label="@GalleryStrings.Dialog_Email" Variant="InputVariant.Outlined" />
     <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
-        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => Dialog.Cancel())">
+        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => Dialog.CancelAsync())">
             @GalleryStrings.Dialog_BodyCancel
         </FlareButton>
         <FlareButton Variant="ButtonVariant.Filled" OnClick="Save">
@@ -36,7 +36,7 @@
         _email = Email;
     }
 
-    private void Save() => Dialog.Close(new Profile(_name, _email));
+    private Task Save() => Dialog.CloseAsync(new Profile(_name, _email));
 
     /// <summary>The typed payload this dialog returns via DialogResult on save.</summary>
     /// <param name="Name">The edited name.</param>

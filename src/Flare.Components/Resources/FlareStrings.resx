@@ -342,4 +342,8 @@
   <data name="Kanban_CardCount_Few" xml:space="preserve"><value>{0} cards</value></data>
   <data name="Kanban_CardCount_Many" xml:space="preserve"><value>{0} cards</value></data>
   <data name="QrCode_Label" xml:space="preserve"><value>QR code for: {0}</value></data>
+  <data name="DialogGuard_Title" xml:space="preserve"><value>Discard unsaved changes?</value></data>
+  <data name="DialogGuard_Message" xml:space="preserve"><value>Your changes have not been saved. Close this dialog and discard them?</value></data>
+  <data name="DialogGuard_Discard" xml:space="preserve"><value>Discard changes</value></data>
+  <data name="DialogGuard_KeepEditing" xml:space="preserve"><value>Keep editing</value></data>
 </root>

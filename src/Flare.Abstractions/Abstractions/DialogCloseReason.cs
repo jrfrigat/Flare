@@ -10,4 +10,8 @@ public enum DialogCloseReason
     EscapeKey,
     /// <summary>The user clicked the built-in header close button.</summary>
     CloseButton,
+    /// <summary>Application code requested a close or cancellation through the dialog or its handle.</summary>
+    Programmatic,
+    /// <summary>The application is navigating to another location within its client-side router.</summary>
+    Navigation,
 }

@@ -17,13 +17,13 @@ internal sealed class TestDialogBody : ComponentBase
     {
         builder.OpenElement(0, "button");
         builder.AddAttribute(1, "class", "test-ok");
-        builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(this, () => Dialog.Close(Payload)));
+        builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(this, () => Dialog.CloseAsync(Payload)));
         builder.AddContent(3, "OK");
         builder.CloseElement();
 
         builder.OpenElement(4, "button");
         builder.AddAttribute(5, "class", "test-cancel");
-        builder.AddAttribute(6, "onclick", EventCallback.Factory.Create(this, () => Dialog.Cancel()));
+        builder.AddAttribute(6, "onclick", EventCallback.Factory.Create(this, () => Dialog.CancelAsync()));
         builder.AddContent(7, "Cancel");
         builder.CloseElement();
     }

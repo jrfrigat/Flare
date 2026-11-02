@@ -48,6 +48,7 @@
                  Draggable="dialog.Options.Draggable"
                  Resizable="dialog.Options.Resizable"
                  BeforeClose="dialog.Options.BeforeClose"
+                 CloseContext="dialog.CloseContext"
                  PanelClass="@dialog.Options.PanelClass"
                  ScrimClass="@dialog.Options.ScrimClass"
                  Divider="dialog.Options.Divider"
@@ -87,7 +88,7 @@
     private void HandleDialogVisibleChanged(FlareDialogInstance dialog, bool visible)
     {
         if (!visible)
-            dialog.Cancel();
+            dialog.CompleteClose(DialogResult.Cancel());
     }
 
     public override async ValueTask DisposeAsync()

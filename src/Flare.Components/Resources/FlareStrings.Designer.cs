@@ -2237,5 +2237,17 @@ namespace Flare.Components.Resources {
             }
         }
 
+        /// <summary>Looks up the localized unsaved-changes confirmation title.</summary>
+        public static string DialogGuard_Title => ResourceManager.GetString("DialogGuard_Title", resourceCulture);
+
+        /// <summary>Looks up the localized unsaved-changes confirmation message.</summary>
+        public static string DialogGuard_Message => ResourceManager.GetString("DialogGuard_Message", resourceCulture);
+
+        /// <summary>Looks up the localized label for discarding changes.</summary>
+        public static string DialogGuard_Discard => ResourceManager.GetString("DialogGuard_Discard", resourceCulture);
+
+        /// <summary>Looks up the localized label for continuing to edit.</summary>
+        public static string DialogGuard_KeepEditing => ResourceManager.GetString("DialogGuard_KeepEditing", resourceCulture);
+
     }
 }

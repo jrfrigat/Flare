@@ -56,7 +56,7 @@
 
         @* The dialog body closes itself through a cascaded FlareDialogInstance: *@
         @* [CascadingParameter] FlareDialogInstance Dialog { get; set; }       *@
-        @* Dialog.Close(new Profile(name, email));  // or Dialog.Cancel();     *@
+        @* await Dialog.CloseAsync(new Profile(name, email)); // or await Dialog.CancelAsync(); *@
         """;
 
     private async Task ShowComponentDialog()

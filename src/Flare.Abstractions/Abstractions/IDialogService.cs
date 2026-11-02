@@ -39,8 +39,8 @@ public interface IDialogService
     /// <summary>
     /// Opens <typeparamref name="TComponent"/> as a modal dialog body and awaits its result. The
     /// component receives the supplied <paramref name="parameters"/> and a cascaded
-    /// <see cref="FlareDialogInstance"/> it uses to close itself (<c>Dialog.Close(value)</c> /
-    /// <c>Dialog.Cancel()</c>). A dismissed dialog (scrim/Escape) resolves as
+    /// <see cref="FlareDialogInstance"/> it uses to close itself (<c>await Dialog.CloseAsync(value)</c> /
+    /// <c>await Dialog.CancelAsync()</c>). A dismissed dialog (scrim/Escape) resolves as
     /// <see cref="DialogResult.Cancel"/>.
     /// </summary>
     /// <typeparam name="TComponent">The Blazor component rendered as the dialog body.</typeparam>

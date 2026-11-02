@@ -6,8 +6,8 @@
     <option value="major">Major</option>
 </FlareSelect>
 <button id="delete" @onclick="Delete">Delete</button>
-<button id="save" @onclick="() => Dialog.Close(_text)">Save</button>
-<button id="cancel" @onclick="() => Dialog.Cancel()">Cancel</button>
+<button id="save" @onclick="() => Dialog.CloseAsync(_text)">Save</button>
+<button id="cancel" @onclick="() => Dialog.CancelAsync()">Cancel</button>
 
 @code {
     [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
@@ -17,6 +17,6 @@
     private async Task Delete()
     {
         if (await Dialogs.ConfirmAsync("Delete?", "Delete this fine?", "Delete", "Keep") == true)
-            Dialog.Close("deleted");
+            await Dialog.CloseAsync("deleted");
     }
 }
