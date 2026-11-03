@@ -89,6 +89,47 @@ base style when it finishes and holds nothing. Held by `SettledTransformTests`.
 > `CssVarMap.FlattenDesign`. Compound tokens that expand to several variables (per-corner radii,
 > typography) stay mapped only in the flatten.
 
+### Independent component packages
+
+A component package can own its token record without adding it to the core `DesignTokens` graph.
+Use the same `[CssVar]` attribute and semantic defaults, then pass `FlattenTokens()` to the existing
+theme service or merge its map into `DesignTokens.Extended`:
+
+```csharp
+using Flare.Css;
+using Flare.Theming;
+using static Flare.Css.Tokens.Vars;
+
+public static class WidgetCss
+{
+    public const string Surface = "--widget-surface";
+}
+
+public sealed record WidgetTokens
+{
+    [CssVar(WidgetCss.Surface)]
+    public string Surface { get; init; } = Var(Css.Tokens.Color.Surface);
+}
+
+// Apply through the same runtime path as other theme overrides.
+themeService.SetCustomTokens(new WidgetTokens
+{
+    Surface = Var(Css.Tokens.Color.SecondaryContainer)
+}.FlattenTokens());
+```
+
+The stylesheet uses the base token as a fallback:
+
+```css
+.widget { background: var(--widget-surface, var(--flare-color-surface)); }
+```
+
+This works with a base-only theme before any widget-specific values are configured. Do not declare
+the component's default variable on `.widget`: a local declaration would hide an inherited theme
+override even at zero selector specificity. `FlattenTokens()` reads public attributed string
+properties, omits null values and rejects duplicate variable names. It also supports inherited
+properties and trimmed applications. Core tokens continue to use their generated mapping.
+
 ### Token rules
 - Rely on semantic tokens: `--flare-color-*`, `--flare-shape-*`, `--flare-typescale-*`,
   `--flare-state-*`, `--flare-elevation-*`, `--flare-motion-*`.

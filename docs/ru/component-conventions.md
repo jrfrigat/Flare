@@ -89,6 +89,46 @@ select внутри нее рисовался на 896px правее окна �
 > была декларативной; drift-тест `CssVarAttributeTests` падает, если помеченное имя не эмитится
 > `CssVarMap.FlattenDesign`. Составные токены (поугловые радиусы, типографика) остаются только во flatten.
 
+### Независимые пакеты компонентов
+
+Пакет может хранить собственную запись токенов без добавления ее в граф `DesignTokens` ядра.
+Используйте тот же `[CssVar]` и значения по умолчанию через базовые токены. Результат
+`FlattenTokens()` передается существующему сервису темы или объединяется с `DesignTokens.Extended`:
+
+```csharp
+using Flare.Css;
+using Flare.Theming;
+using static Flare.Css.Tokens.Vars;
+
+public static class WidgetCss
+{
+    public const string Surface = "--widget-surface";
+}
+
+public sealed record WidgetTokens
+{
+    [CssVar(WidgetCss.Surface)]
+    public string Surface { get; init; } = Var(Css.Tokens.Color.Surface);
+}
+
+themeService.SetCustomTokens(new WidgetTokens
+{
+    Surface = Var(Css.Tokens.Color.SecondaryContainer)
+}.FlattenTokens());
+```
+
+В CSS базовый токен задается как резервное значение:
+
+```css
+.widget { background: var(--widget-surface, var(--flare-color-surface)); }
+```
+
+Компонент работает с темой, которая задает только базовые токены. Не объявляйте переменную
+со значением по умолчанию на `.widget`: локальное объявление перекрывает унаследованное значение
+темы даже при нулевой специфичности селектора. `FlattenTokens()` читает публичные строковые
+свойства с атрибутом, пропускает null и отклоняет дубли имен. Поддерживаются унаследованные
+свойства и приложения с trimming. Токены ядра продолжают использовать сгенерированную карту.
+
 ### Правила токенов
 - Опирайся на семантические токены: `--flare-color-*`, `--flare-shape-*`, `--flare-typescale-*`,
   `--flare-state-*`, `--flare-elevation-*`, `--flare-motion-*`.
