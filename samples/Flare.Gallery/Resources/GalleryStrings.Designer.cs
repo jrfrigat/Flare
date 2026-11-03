@@ -4474,6 +4474,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("FileUpload_DropZoneCustom", resourceCulture);
             }
         }
+
+        /// <summary>Localized avatar upload title.</summary>
+        public static string FileUpload_AvatarTitle => ResourceManager.GetString("FileUpload_AvatarTitle", resourceCulture);
+
+        /// <summary>Localized formats, exact size limit and rejection feedback hint.</summary>
+        public static string FileUpload_AvatarHint => ResourceManager.GetString("FileUpload_AvatarHint", resourceCulture);
+
+        /// <summary>Localized selected avatar file name format.</summary>
+        public static string FileUpload_AvatarSelected => ResourceManager.GetString("FileUpload_AvatarSelected", resourceCulture);
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Multiple.

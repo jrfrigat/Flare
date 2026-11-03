@@ -1332,6 +1332,15 @@
   <data name="FileUpload_DropZoneCustom" xml:space="preserve">
     <value>Зона перетаскивания - свое содержимое</value>
   </data>
+  <data name="FileUpload_AvatarTitle" xml:space="preserve">
+    <value>Загрузить аватар</value>
+  </data>
+  <data name="FileUpload_AvatarHint" xml:space="preserve">
+    <value>JPG, PNG, GIF или WebP до 5 МБ (5 242 880 байт). Для файлов большего размера ниже появится сообщение об отказе.</value>
+  </data>
+  <data name="FileUpload_AvatarSelected" xml:space="preserve">
+    <value>Выбран файл: {0}</value>
+  </data>
   <data name="FileUpload_Multiple" xml:space="preserve">
     <value>Множественный выбор</value>
   </data>
