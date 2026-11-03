@@ -93,6 +93,7 @@ public partial class FlareGanttPanel<TRow, TItem>
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        await SyncRowKeyboardAsync();
         // A bar moved to another row from the keyboard is a new element there: give it the focus back.
         if (_refocus is { } key)
         {

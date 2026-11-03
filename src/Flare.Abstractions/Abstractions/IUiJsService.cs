@@ -80,7 +80,16 @@ public interface IUiJsService : IAsyncDisposable
     /// <param name="root">The tree's root element (its scroll container).</param>
     ValueTask RegisterTreeKeyboardAsync(ElementReference root) => ValueTask.CompletedTask;
 
-    /// <summary>Removes the listener added by <see cref="RegisterTreeKeyboardAsync"/>.</summary>
+    /// <summary>
+    /// Handles keys sent directly to a treegrid row through the same tree keyboard module. Calls
+    /// <c>HandleTreeKeyAsync(index, key)</c> on the reference; controls inside a row keep their own keys.
+    /// Existing adapters retain their ordinary tree keyboard behavior.
+    /// </summary>
+    ValueTask RegisterTreeKeyboardAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(
+        ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => RegisterTreeKeyboardAsync(root);
+
+    /// <summary>Removes the listener added by <see cref="RegisterTreeKeyboardAsync(ElementReference)"/>.</summary>
     /// <param name="root">The tree's root element.</param>
     ValueTask RemoveTreeKeyboardAsync(ElementReference root) => ValueTask.CompletedTask;
 

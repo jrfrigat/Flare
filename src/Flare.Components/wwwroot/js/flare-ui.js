@@ -46,11 +46,16 @@ export function removeTabKeyboard(bar) {
 const _treeKeyboards = registry();
 const TREE_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', ' ']);
 
-export function registerTreeKeyboard(root) {
+export function registerTreeKeyboard(root, dotNetRef) {
     if (!root) return;
     const keydown = e => {
         if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || !TREE_KEYS.has(e.key)) return;
-        if (e.target.matches?.('[role="treeitem"]') && root.contains(e.target)) e.preventDefault();
+        const treeItem = e.target.matches?.('[role="treeitem"]');
+        const gridRow = dotNetRef && e.target.matches?.('[role="row"][data-flare-tree-index]')
+            && e.target.closest('[role="treegrid"], [role="grid"]') === root;
+        if (!(treeItem || gridRow) || !root.contains(e.target)) return;
+        e.preventDefault();
+        if (gridRow) dotNetRef.invokeMethodAsync('HandleTreeKeyAsync', Number(e.target.dataset.flareTreeIndex), e.key).catch(() => { });
     };
     _treeKeyboards.keep(root, listen(root, 'keydown', keydown));
 }
@@ -95,7 +100,15 @@ export function focusTreeItem(root, index, timeoutMs = 1000) {
     if (found) return Promise.resolve(focus(found));
     const row = root.querySelector('[data-flare-tree-index]');
     const height = row?.getBoundingClientRect().height || 0;
-    if (height > 0) root.scrollTop = Math.max(0, index * height - root.clientHeight / 2);
+    if (root.hasAttribute('data-flare-tree-offset')) {
+        // A variable-height treegrid supplies its model offset; its scroll container may surround the panel.
+        const offset = Number(root.dataset.flareTreeOffset);
+        let scroll = root.parentElement;
+        while (scroll && !(['auto', 'scroll'].includes(getComputedStyle(scroll).overflowY)
+            && scroll.scrollHeight > scroll.clientHeight)) scroll = scroll.parentElement;
+        if (scroll) scroll.scrollTop += root.getBoundingClientRect().top - scroll.getBoundingClientRect().top + offset - scroll.clientHeight / 2;
+        else window.scrollTo({ top: window.scrollY + root.getBoundingClientRect().top + offset - window.innerHeight / 2 });
+    } else if (height > 0) root.scrollTop = Math.max(0, index * height - root.clientHeight / 2);
     return new Promise(resolve => {
         const observer = new MutationObserver(() => {
             const el = find();

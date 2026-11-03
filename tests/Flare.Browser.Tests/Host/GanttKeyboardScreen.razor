@@ -1,0 +1,16 @@
+@page "/gantt-keyboard"
+@using Flare.Components.Gantt
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareGantt Range="_range" RowHeight="40" AriaLabel="Tree plan">
+        <FlareGanttPanel TRow="Node" TItem="string" Rows="_rows" RowKey="r => r.Key" RowChildren="r => r.Children">
+            <RowHeader Context="row">@row.Key <input aria-label="@($"Edit {row.Key}")" /></RowHeader>
+        </FlareGanttPanel>
+    </FlareGantt>
+</FlareThemeProvider>
+
+@code {
+    private sealed record Node(string Key, params Node[] Children);
+    private readonly Node[] _rows = [new("a", new Node("a1"), new Node("a2", new Node("a21"))), new("b")];
+    private readonly GanttSpan _range = GanttSpan.FromDays(new(2026, 10, 12), new(2026, 10, 25));
+}

@@ -57,6 +57,13 @@ public abstract class GanttTestBase : FlareTestContext
 public sealed class GanttRenderTests : GanttTestBase
 {
     [Fact]
+    public void OneRowIsInTheTabOrder()
+    {
+        var cut = Chart(p => p.Add(x => x.Rows, new[] { new Node("a"), new Node("b") }));
+        Assert.Single(cut.FindAll("[role=row][tabindex='0']"));
+    }
+
+    [Fact]
     public void Bars_are_placed_by_the_axis()
     {
         var cut = Chart(p => p

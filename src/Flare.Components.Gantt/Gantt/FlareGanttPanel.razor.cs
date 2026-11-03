@@ -197,8 +197,9 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
             if (ancestors.Count > 0) _isTree = true;
             foreach (var ancestor in ancestors) descendants[RowKey(ancestor)].Add(key);
         });
-        var rows = visible.Select(n => new GanttRowLayout<TRow, TItem>
+        var rows = visible.Select((n, index) => new GanttRowLayout<TRow, TItem>
         {
+            Index = index,
             Key = RowKey(n.Item), Row = n.Item, Depth = n.Depth, HasChildren = n.HasChildren, Expanded = n.HasChildren && n.IsExpanded,
         }).ToList();
 
@@ -278,6 +279,8 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
         // The visible window is decided once per render: the markup draws these rows, and only the links whose two
         // ends sit in them are routed. A link to a row outside the window would not be visible anyway.
         _drawnRows = DrawnRows();
+        if (_rowFocusKey is null && !_drawnRows.Any(row => row.Key == _activeRowKey))
+            _activeRowKey = _drawnRows.FirstOrDefault()?.Key;
         var drawnKeys = gantt.Virtualize ? _drawnRows.Select(r => r.Key).ToHashSet() : null;
 
         var links = (Links ?? []).Where(l => LinkTypes is null || LinkTypes.Contains(l.Type)).ToList();
@@ -348,9 +351,10 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
     }
 
     /// <inheritdoc />
-    public override ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         Gantt?.Unregister(this);
-        return base.DisposeAsync();
+        await DisposeRowKeyboardAsync();
+        await base.DisposeAsync();
     }
 }

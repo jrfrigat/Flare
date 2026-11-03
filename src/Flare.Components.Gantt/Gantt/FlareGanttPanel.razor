@@ -10,7 +10,8 @@
         <div class="@Css.Classes.Gantt.PanelHeader">@Header</div>
     }
     <div class="@Css.Classes.Gantt.Body" role="@(_isTree ? "treegrid" : "grid")" aria-label="@AriaLabel" data-panel="@_id" style="height:@GanttFormat.Px(_height)"
-         data-editable="@(CanEdit ? "true" : null)" data-row-change="@(CanEdit && AllowRowChange ? "true" : null)">
+         data-editable="@(CanEdit ? "true" : null)" data-row-change="@(CanEdit && AllowRowChange ? "true" : null)"
+         @ref="_rowKeyboardRoot" aria-rowcount="@_rows.Count" data-flare-tree-offset="@RowFocusOffset">
         @* Behind the rows: unit grid, non-working time and panel-wide regions. *@
         <div class="@Css.Classes.Gantt.Overlay" style="width:@width" aria-hidden="true">
             @foreach (var span in gantt.NonWorkingSpans.Where(gantt.InView))
@@ -41,7 +42,9 @@
         {
             var rowClass = string.Join(' ', new[] { Css.Classes.Gantt.Row, row.HasChildren ? Css.Classes.Gantt.RowParent : "", RowClass?.Invoke(row.Row) ?? "" }.Where(c => c.Length > 0));
             <div @key="row.Key" class="@rowClass" role="row" data-row="@row.Key" aria-level="@(_isTree ? (int?)(row.Depth + 1) : null)"
-                 aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)">
+                 aria-expanded="@(row.HasChildren ? (row.Expanded ? "true" : "false") : null)" style="height:@GanttFormat.Px(row.Height)"
+                 data-flare-tree-index="@row.Index" aria-rowindex="@(row.Index + 1)" tabindex="@(row.Key == _activeRowKey ? 0 : -1)"
+                 @onfocus="() => _activeRowKey = row.Key">
                 @if (!gantt.Compact)
                 {
                     <div class="@Css.Classes.Gantt.Side" role="rowheader" style="--_depth:@row.Depth">
@@ -49,7 +52,7 @@
                         {
                             var key = row.Key;
                             <button type="button" class="@(row.Expanded ? $"{Css.Classes.Gantt.Toggle} {Css.Classes.Gantt.ToggleExpanded}" : Css.Classes.Gantt.Toggle)"
-                                    aria-label="@(row.Expanded ? gantt.EffectiveTexts.Collapse : gantt.EffectiveTexts.Expand)" @onclick="() => Toggle(key)"></button>
+                                    tabindex="-1" aria-label="@(row.Expanded ? gantt.EffectiveTexts.Collapse : gantt.EffectiveTexts.Expand)" @onclick="() => Toggle(key)"></button>
                         }
                         else if (_isTree)
                         {

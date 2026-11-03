@@ -25,6 +25,7 @@ internal sealed class GanttBarLayout<TItem>
 /// <summary>A visible row of a panel with everything drawn on it.</summary>
 internal sealed class GanttRowLayout<TRow, TItem>
 {
+    public int Index { get; init; }
     public required string Key { get; init; }
     public required TRow Row { get; init; }
     public int Depth { get; init; }

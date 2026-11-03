@@ -74,6 +74,11 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask RegisterTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("registerTreeKeyboard", root);
 
     /// <inheritdoc />
+    public ValueTask RegisterTreeKeyboardAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(
+        ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("registerTreeKeyboard", root, dotNetRef);
+
+    /// <inheritdoc />
     public ValueTask RemoveTreeKeyboardAsync(ElementReference root) => InvokeVoidAsync("removeTreeKeyboard", root);
 
     /// <inheritdoc />
