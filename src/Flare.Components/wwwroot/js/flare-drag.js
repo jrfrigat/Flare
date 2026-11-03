@@ -453,19 +453,23 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
     _flareSplitterReflect(gutter, horiz);
     // Re-read on every use: Orientation, the parent flex direction and RTL can all change after mount.
     const axis = () => (horiz = _flareSplitterHoriz(gutter, orientation));
-    const sign = () => _flareVisualSign(gutter, horiz);
+    const sign = () => _flareVisualSign(gutter, horiz) * (gutter.dataset.flareSplitterReverse === 'true' ? -1 : 1);
     const d = gutter.dataset;
     const scope = () => (d.flareSplitterScope && gutter.closest(d.flareSplitterScope)) || gutter.parentElement;
     const min = () => _flareParsePx(d.flareSplitterMin);
-    const max = () => _flareParsePx(d.flareSplitterMax) || Infinity;
-    const current = () => Number(d.flareSplitterValue) || 0;
+    const max = () => d.flareSplitterMax?.endsWith('%')
+        ? (scope()?.getBoundingClientRect()[horiz ? 'width' : 'height'] || 0) * parseFloat(d.flareSplitterMax) / 100
+        : _flareParsePx(d.flareSplitterMax) || Infinity;
+    const current = () => (d.flareSplitterTarget && scope()?.querySelector(d.flareSplitterTarget)?.getBoundingClientRect()[horiz ? 'width' : 'height'])
+        || Number(d.flareSplitterValue) || 0;
     const clamp = v => Math.round(Math.max(min(), Math.min(v, max())));
-    const step = () => Math.max(1, Number(d.flareSplitterKeyboardStep) || 16);
+    const step = large => Math.max(1, Number(large ? d.flareSplitterLargeStep || d.flareSplitterKeyboardStep : d.flareSplitterKeyboardStep) || 16);
     const show = v => {
         // ValueVariable is optional: without it the size still changes and is reported, the consumer
         // just applies it itself instead of reading a live CSS variable.
         if (d.flareSplitterVariable) scope()?.style.setProperty(d.flareSplitterVariable, v + 'px');
         gutter.setAttribute('aria-valuenow', String(v));
+        gutter.setAttribute('aria-valuetext', v + ' px');
     };
     const commit = v => {
         show(v);
@@ -478,8 +482,8 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
         axis();
         if (e.key === 'Home') reset();
         else if (e.key === 'End') commit(clamp(max() === Infinity ? current() : max()));
-        else if (e.key === (horiz ? 'ArrowRight' : 'ArrowDown')) commit(clamp(current() + sign() * step()));
-        else if (e.key === (horiz ? 'ArrowLeft' : 'ArrowUp')) commit(clamp(current() - sign() * step()));
+        else if (e.key === (horiz ? 'ArrowRight' : 'ArrowDown')) commit(clamp(current() + sign() * step(e.shiftKey)));
+        else if (e.key === (horiz ? 'ArrowLeft' : 'ArrowUp')) commit(clamp(current() - sign() * step(e.shiftKey)));
         else return;
         e.preventDefault();
     };
@@ -493,6 +497,9 @@ function registerValueSplitter(gutter, orientation, dotNetRef) {
     gutter.addEventListener('keydown', keyboard);
     gutter.addEventListener('click', click);
     gutter.addEventListener('dblclick', dblclick);
+    gutter.setAttribute('aria-valuenow', String(Math.round(current())));
+    gutter.setAttribute('aria-valuemin', String(min()));
+    if (max() !== Infinity) gutter.setAttribute('aria-valuemax', String(Math.round(max())));
     let start = 0, last = null;
     const off = startDrag(gutter, {
         filter: e => !e.target.closest('[data-flare-splitter-step]'),
