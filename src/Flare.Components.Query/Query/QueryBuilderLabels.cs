@@ -61,6 +61,15 @@ public sealed record QueryBuilderLabels
         Ascending = Text("Query_Ascending", culture),
         Descending = Text("Query_Descending", culture),
         SchemaMissing = Text("Query_SchemaMissing", culture),
+        OperatorContains = Text("Query_OperatorContains", culture),
+        OperatorStartsWith = Text("Query_OperatorStartsWith", culture),
+        OperatorEndsWith = Text("Query_OperatorEndsWith", culture),
+        OperatorBetween = Text("Query_OperatorBetween", culture),
+        OperatorNotBetween = Text("Query_OperatorNotBetween", culture),
+        OperatorIn = Text("Query_OperatorIn", culture),
+        OperatorNotIn = Text("Query_OperatorNotIn", culture),
+        OperatorIsNull = Text("Query_OperatorIsNull", culture),
+        OperatorIsNotNull = Text("Query_OperatorIsNotNull", culture),
     };
 
     private static string Text(string key, CultureInfo culture) =>
@@ -167,4 +176,31 @@ public sealed record QueryBuilderLabels
 
     /// <summary>Shown in place of the designer when no schema was supplied.</summary>
     public string SchemaMissing { get; init; } = "A schema is required.";
+
+    /// <summary>Caption for the contains condition operator.</summary>
+    public string OperatorContains { get; init; } = "contains";
+
+    /// <summary>Caption for the starts with condition operator.</summary>
+    public string OperatorStartsWith { get; init; } = "starts with";
+
+    /// <summary>Caption for the ends with condition operator.</summary>
+    public string OperatorEndsWith { get; init; } = "ends with";
+
+    /// <summary>Caption for the between condition operator.</summary>
+    public string OperatorBetween { get; init; } = "between";
+
+    /// <summary>Caption for the not between condition operator.</summary>
+    public string OperatorNotBetween { get; init; } = "not between";
+
+    /// <summary>Caption for the in condition operator.</summary>
+    public string OperatorIn { get; init; } = "in";
+
+    /// <summary>Caption for the not in condition operator.</summary>
+    public string OperatorNotIn { get; init; } = "not in";
+
+    /// <summary>Caption for the is empty condition operator.</summary>
+    public string OperatorIsNull { get; init; } = "is empty";
+
+    /// <summary>Caption for the is not empty condition operator.</summary>
+    public string OperatorIsNotNull { get; init; } = "is not empty";
 }

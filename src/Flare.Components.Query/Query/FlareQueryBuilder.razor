@@ -118,7 +118,7 @@
 
         <section class="@Css.Classes.QueryBuilder.Section">
             <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Filter</h3>
-            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Choices="_choices"
+            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Choices="_choices" Labels="Labels"
                                   AndLabel="@Labels.And" OrLabel="@Labels.Or"
                                   AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
                                   RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
@@ -131,7 +131,7 @@
         {
             <section class="@Css.Classes.QueryBuilder.Section">
                 <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.GroupFilter</h3>
-                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Choices="_choices" AllowAggregates="true"
+                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Choices="_choices" Labels="Labels" AllowAggregates="true"
                                       AndLabel="@Labels.And" OrLabel="@Labels.Or"
                                       AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
                                       RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"

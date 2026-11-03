@@ -36,4 +36,13 @@
   <data name="Query_Ascending" xml:space="preserve"><value>По возрастанию</value></data>
   <data name="Query_Descending" xml:space="preserve"><value>По убыванию</value></data>
   <data name="Query_SchemaMissing" xml:space="preserve"><value>Требуется схема.</value></data>
+  <data name="Query_OperatorContains" xml:space="preserve"><value>содержит</value></data>
+  <data name="Query_OperatorStartsWith" xml:space="preserve"><value>начинается с</value></data>
+  <data name="Query_OperatorEndsWith" xml:space="preserve"><value>заканчивается на</value></data>
+  <data name="Query_OperatorBetween" xml:space="preserve"><value>между</value></data>
+  <data name="Query_OperatorNotBetween" xml:space="preserve"><value>не между</value></data>
+  <data name="Query_OperatorIn" xml:space="preserve"><value>в списке</value></data>
+  <data name="Query_OperatorNotIn" xml:space="preserve"><value>не в списке</value></data>
+  <data name="Query_OperatorIsNull" xml:space="preserve"><value>пусто</value></data>
+  <data name="Query_OperatorIsNotNull" xml:space="preserve"><value>не пусто</value></data>
 </root>

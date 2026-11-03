@@ -98,7 +98,7 @@
         @foreach (var nested in Group.Groups)
         {
             <QueryConditionEditor Group="nested" Parent="Group" Schema="Schema" Choices="Choices"
-                                  AllowAggregates="AllowAggregates" OnChanged="OnChanged" />
+                                  AllowAggregates="AllowAggregates" Labels="Labels" OnChanged="OnChanged" />
         }
     </div>
 </div>
@@ -123,6 +123,9 @@
 
     /// <summary>Whether conditions may test a computed aggregate, which is true only in a HAVING clause.</summary>
     [Parameter] public bool AllowAggregates { get; set; }
+
+    /// <summary>Captions for the condition operators, including caller-provided translations.</summary>
+    [Parameter] public QueryBuilderLabels Labels { get; set; } = QueryBuilderLabels.Default;
 
     /// <summary>Raised whenever the node changes, so the host can rebuild the query.</summary>
     [Parameter] public EventCallback OnChanged { get; set; }
@@ -259,23 +262,23 @@
 
     private bool IsTimestamp(QueryConditionDraft condition) => TypeOf(condition) == QueryFieldType.DateTime;
 
-    private static string OperatorLabel(QueryOperator op) => op switch
+    private string OperatorLabel(QueryOperator op) => op switch
     {
-        QueryOperator.Contains => "contains",
+        QueryOperator.Contains => Labels.OperatorContains,
         QueryOperator.Equals => "=",
         QueryOperator.NotEquals => "<>",
-        QueryOperator.StartsWith => "starts with",
-        QueryOperator.EndsWith => "ends with",
+        QueryOperator.StartsWith => Labels.OperatorStartsWith,
+        QueryOperator.EndsWith => Labels.OperatorEndsWith,
         QueryOperator.GreaterThan => ">",
         QueryOperator.GreaterThanOrEqual => ">=",
         QueryOperator.LessThan => "<",
         QueryOperator.LessThanOrEqual => "<=",
-        QueryOperator.Between => "between",
-        QueryOperator.NotBetween => "not between",
-        QueryOperator.In => "in",
-        QueryOperator.NotIn => "not in",
-        QueryOperator.IsNull => "is empty",
-        QueryOperator.IsNotNull => "is not empty",
+        QueryOperator.Between => Labels.OperatorBetween,
+        QueryOperator.NotBetween => Labels.OperatorNotBetween,
+        QueryOperator.In => Labels.OperatorIn,
+        QueryOperator.NotIn => Labels.OperatorNotIn,
+        QueryOperator.IsNull => Labels.OperatorIsNull,
+        QueryOperator.IsNotNull => Labels.OperatorIsNotNull,
         _ => op.ToString(),
     };
 
