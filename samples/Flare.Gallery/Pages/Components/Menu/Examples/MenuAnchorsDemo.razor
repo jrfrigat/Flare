@@ -1,41 +1,41 @@
 @* Четыре положения панели относительно активатора (MenuAnchor) *@
 <FlareStack Row Gap="FlareSpacing.Large" Wrap Padding="FlareSpacing.Custom" PaddingValue="4rem 0">
-    <FlareMenu Anchor="MenuAnchor.BottomLeft">
+    <FlareMenu Anchor="MenuAnchor.BottomStart">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Bottom-left ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">BottomStart ▾</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NorthWest">Bottom-left</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NorthWest">BottomStart</FlareMenuItem>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Check">Option</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 
-    <FlareMenu Anchor="MenuAnchor.BottomRight">
+    <FlareMenu Anchor="MenuAnchor.BottomEnd">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Bottom-right ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">BottomEnd ▾</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NorthEast">Bottom-right</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NorthEast">BottomEnd</FlareMenuItem>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Check">Option</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 
-    <FlareMenu Anchor="MenuAnchor.TopLeft">
+    <FlareMenu Anchor="MenuAnchor.TopStart">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Top-left ▴</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">TopStart ▴</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SouthWest">Top-left</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SouthWest">TopStart</FlareMenuItem>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Check">Option</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 
-    <FlareMenu Anchor="MenuAnchor.TopRight">
+    <FlareMenu Anchor="MenuAnchor.TopEnd">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Top-right ▴</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">TopEnd ▴</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SouthEast">Top-right</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.SouthEast">TopEnd</FlareMenuItem>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Check">Option</FlareMenuItem>
         </ChildContent>
     </FlareMenu>

@@ -1,7 +1,7 @@
 @inject ISnackbarService Snackbar
 
 <FlareStack Row Wrap Gap="FlareSpacing.Small">
-    <FlareMenu Anchor="MenuAnchor.BottomLeft">
+    <FlareMenu Anchor="MenuAnchor.BottomStart">
         <Activator>
             <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Actions ▾</FlareButton>
         </Activator>
@@ -14,9 +14,9 @@
         </ChildContent>
     </FlareMenu>
 
-    <FlareMenu Anchor="MenuAnchor.BottomRight">
+    <FlareMenu Anchor="MenuAnchor.BottomEnd">
         <Activator>
-            <FlareButton Variant="ButtonVariant.Filled" @attributes="context.Attributes">Right-aligned ▾</FlareButton>
+            <FlareButton Variant="ButtonVariant.Filled" @attributes="context.Attributes">BottomEnd ▾</FlareButton>
         </Activator>
         <ChildContent>
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Settings" OnClick="@(() => Snackbar.Show("Settings"))">Settings</FlareMenuItem>
@@ -25,7 +25,7 @@
         </ChildContent>
     </FlareMenu>
 
-    <FlareMenu Anchor="MenuAnchor.BottomLeft" Dense="true">
+    <FlareMenu Anchor="MenuAnchor.BottomStart" Dense="true">
         <Activator>
             <FlareButton Variant="ButtonVariant.Outlined" @attributes="context.Attributes">Dense ▾</FlareButton>
         </Activator>

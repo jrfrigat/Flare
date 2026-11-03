@@ -42,8 +42,8 @@
     /// arrow keys keep the previous sequence. Render the list in its final order before opening it.
     /// </summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Corner of the activator the panel aligns to.</summary>
-    [Parameter] public MenuAnchor Anchor { get; set; } = MenuAnchor.BottomLeft;
+    /// <summary>Logical activator edge the panel aligns to. Start is right in RTL and left in LTR.</summary>
+    [Parameter] public MenuAnchor Anchor { get; set; } = MenuAnchor.BottomStart;
     /// <summary>Accessible label for the menu panel (role="menu").</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Callback triggered whenever the menu open state changes.</summary>
@@ -201,18 +201,18 @@
     // window flips above the button whatever the parameter says).
     private string _anchorClass => _cursorX is not null ? Css.Classes.Menu.AtCursor : Anchor switch
     {
-        MenuAnchor.BottomRight => Css.Classes.Menu.BottomRight,
-        MenuAnchor.TopLeft     => Css.Classes.Menu.TopLeft,
-        MenuAnchor.TopRight    => Css.Classes.Menu.TopRight,
-        MenuAnchor.BottomLeft  => Css.Classes.Menu.BottomLeft,
+        MenuAnchor.BottomEnd   => Css.Classes.Menu.BottomRight,
+        MenuAnchor.TopStart    => Css.Classes.Menu.TopLeft,
+        MenuAnchor.TopEnd      => Css.Classes.Menu.TopRight,
+        MenuAnchor.BottomStart => Css.Classes.Menu.BottomLeft,
         _                      => Css.Classes.Menu.BottomLeft,
     };
 
     private string _placement => Anchor switch
     {
-        MenuAnchor.BottomRight => PanelPlacement.BottomEnd,
-        MenuAnchor.TopLeft     => PanelPlacement.TopStart,
-        MenuAnchor.TopRight    => PanelPlacement.TopEnd,
+        MenuAnchor.BottomEnd   => PanelPlacement.BottomEnd,
+        MenuAnchor.TopStart    => PanelPlacement.TopStart,
+        MenuAnchor.TopEnd      => PanelPlacement.TopEnd,
         _                      => PanelPlacement.BottomStart,
     };
 
