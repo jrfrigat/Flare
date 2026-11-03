@@ -9,7 +9,8 @@
         @if (KeyboardReorder)
         {
             @* A keyboard move has no preview to watch, so the position has to be spoken. *@
-            <span role="status" aria-live="polite" class="@Css.Classes.Visually.Hidden">@_announcement</span>
+            <span role="status" aria-live="polite" tabindex="@(ItemOrder is null ? null : "-1")"
+                  data-flare-keyboard-focus="@(ItemOrder is null ? null : "")" class="@Css.Classes.Visually.Hidden">@_announcement</span>
         }
     </div>
 </CascadingValue>
@@ -69,6 +70,13 @@
     /// component to have been declared inside a zone.
     /// </summary>
     [Parameter] public DragItemResolver<TPayload>? ResolveItem { get; set; }
+
+    /// <summary>
+    /// Full item order per zone for a group, including virtualized items absent from the DOM.
+    /// When omitted, keyboard reordering uses the rendered DOM order. The host must also resolve
+    /// unrendered payloads through <see cref="ResolveItem"/>.
+    /// </summary>
+    [Parameter] public Func<string, IReadOnlyList<DragZoneOrder>>? ItemOrder { get; set; }
 
     /// <summary>
     /// Whether <see cref="FlareDraggable"/> items can be reordered from the keyboard: space picks one
@@ -236,8 +244,15 @@
 
     private FlareDraggable? _picked;
     private readonly List<KeyboardSlot> _slots = [];
+    private readonly Dictionary<string, int> _slotCounts = new(StringComparer.Ordinal);
     private int _slot;
     private string? _announcement;
+
+    /// <summary>Handles a keyboard move while virtualization has removed the original focused item.</summary>
+    /// <param name="key">The pressed key; only reorder keys are handled.</param>
+    [JSInvokable]
+    public Task OnKeyboardReorderAsync(string key) => _picked is { } item
+        ? HandleItemKeyAsync(item, new KeyboardEventArgs { Key = key }) : Task.CompletedTask;
 
     private async Task HandleItemKeyAsync(FlareDraggable item, KeyboardEventArgs e)
     {
@@ -267,18 +282,20 @@
         if (!TryResolve(item.ItemId, out var payload, out _)) return;
 
         IReadOnlyList<DragZoneOrder> order;
-        try { order = await DragDrop.ItemOrderAsync(_root, item.GroupName); }
+        try { order = ItemOrder?.Invoke(item.GroupName) ?? await DragDrop.ItemOrderAsync(_root, item.GroupName); }
         catch (InvalidOperationException) { return; }
         catch (JSDisconnectedException) { return; }
         catch (JSException) { return; }
 
         var allowed = AllowedTargets(payload);
         _slots.Clear();
+        _slotCounts.Clear();
 
         foreach (var zone in order)
         {
             if (allowed is not null && !allowed.Permits(zone.Target)) continue;
             var others = zone.Items.Where(i => !string.Equals(i, item.ItemId, StringComparison.Ordinal)).ToList();
+            _slotCounts[zone.Target] = others.Count + 1;
             for (var i = 0; i <= others.Count; i++)
                 _slots.Add(new KeyboardSlot(zone.Target, i, i < others.Count ? others[i] : null));
         }
@@ -310,7 +327,9 @@
 
         _slot = next;
         _announcement = string.Format(
-            System.Globalization.CultureInfo.CurrentCulture, FlareStrings.Drag_Position, _slot + 1, _slots.Count);
+            System.Globalization.CultureInfo.CurrentCulture, FlareStrings.Drag_Position,
+            ItemOrder is null ? _slot + 1 : _slots[_slot].Index + 1,
+            ItemOrder is null ? _slots.Count : _slotCounts[_slots[_slot].Target]);
         await ShowHintAsync();
         StateHasChanged();
     }
@@ -321,7 +340,7 @@
         if (item is null || _slots.Count == 0) return;
 
         var slot = _slots[_slot];
-        var position = _slot + 1;
+        var position = ItemOrder is null ? _slot + 1 : slot.Index + 1;
 
         if (OnDrop.HasDelegate && TryResolve(item.ItemId, out var payload, out var sourceZone))
         {
@@ -347,6 +366,7 @@
         _picked?.SetPicked(false);
         _picked = null;
         _slots.Clear();
+        _slotCounts.Clear();
         _announcement = announcement;
 
         try { await DragDrop.HideDropHintAsync(_root); }
@@ -362,7 +382,11 @@
     {
         if (_picked is null) return;
         var slot = _slots[_slot];
-        try { await DragDrop.ShowDropHintAsync(_root, slot.Target, slot.Index, _picked.ItemId); }
+        try
+        {
+            if (ItemOrder is null) await DragDrop.ShowDropHintAsync(_root, slot.Target, slot.Index, _picked.ItemId);
+            else await DragDrop.ShowDropHintAsync(_root, slot.Target, slot.Index, _picked.ItemId, slot.OverId);
+        }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         catch (JSException) { }

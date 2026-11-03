@@ -1,13 +1,14 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Flare.Components.Services
 
 @* The board no longer owns a drag. It declares one - a context, a zone per column, a draggable per
    card - and the shared model does the rest. What went with it: an HTML5 dragstart/drop pair that fired
    on nothing but a mouse, a hand-written ontouchstart/ontouchend pair to make up for that, a JS
    hit-test helper only this component used, a module import, and a `_dragging` field. *@
 <FlareDragContext TPayload="KanbanCard" Group="kanban" OnDrop="MoveCard" KeyboardReorder="@(!ReadOnly)"
-                  ResolveItem="ResolveCard">
+                  ResolveItem="ResolveCard" ItemOrder="KeyboardOrder">
     <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="group">
         @if (Columns != null)
         {
@@ -31,7 +32,7 @@
                             <span class="@Css.Classes.Kanban.Count" aria-label="@CardCountLabel(colCards.Count)">@colCards.Count</span>
                         }
                     </div>
-                    <div class="@Css.Classes.Kanban.Cards" role="list">
+                    <div class="@Css.Classes.Kanban.Cards" role="list" data-flare-virtual-count="@(Virtual ? colCards.Count : (int?)null)">
                         @if (Virtual)
                         {
                             <Virtualize Items="colCards" Context="card" ItemSize="VirtualItemSize"
@@ -72,8 +73,8 @@
     /// card list becomes its own scroll container and the columns stretch to the board's height, so the
     /// board needs a bounded height (for example <c>Style="height:70vh"</c>); without one every card is
     /// visible and nothing is saved. Dragging with a pointer, the drop highlight and auto-scroll work as
-    /// without it. Keyboard reordering reaches the cards currently rendered in each column - the visible
-    /// ones plus <see cref="OverscanCount"/> on each side - and the end of a column.
+    /// without it. Keyboard reordering reaches every position in each column, revealing the destination
+    /// as it moves beyond the rendered window.
     /// </summary>
     [Parameter] public bool Virtual { get; set; }
 
@@ -89,6 +90,11 @@
 
     private List<KanbanCard> _cards = [];
     private IReadOnlyList<KanbanCard>? _cardsSource;
+    private Func<string, IReadOnlyList<DragZoneOrder>>? KeyboardOrder => Virtual ? FullCardOrder : null;
+
+    private IReadOnlyList<DragZoneOrder> FullCardOrder(string group) => group != "kanban" ? []
+        : Columns?.Select(column => new DragZoneOrder(column.Id,
+            CardsForColumn(column.Id).Select(card => card.Id).ToArray())).ToArray() ?? [];
     private bool _cardsDirty;
     private Dictionary<string, List<KanbanCard>>? _cardsByColumn;
 

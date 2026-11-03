@@ -5,6 +5,7 @@
         <FlareKanban id="board" Virtual="true" Style="height:400px;"
                      Columns="_columns" Cards="_cards" CardsChanged="OnChanged" />
         <p id="result">@_result</p>
+        <output id="first-index">@_cards.Where(c => c.ColumnId == "todo").ToList().FindIndex(c => c.Id == "t0")</output>
     </main>
 </FlareThemeProvider>
 
