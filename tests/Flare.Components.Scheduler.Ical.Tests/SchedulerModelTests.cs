@@ -1,7 +1,7 @@
 using System.Globalization;
 using Flare.Components.Scheduler;
 
-namespace Flare.Components.Scheduler.Tests;
+namespace Flare.Components.Scheduler.Ical.Tests;
 
 public sealed class SchedulerModelTests
 {
@@ -20,7 +20,7 @@ public sealed class SchedulerModelTests
     private static SchedulerEventData Event(DateTimeOffset at, string? rule = null) => new()
     { Key = "series", Title = "Meeting", Start = at, End = at.AddHours(1), TimeZoneId = NewYork.Id, RecurrenceRule = rule };
     private static IReadOnlyList<SchedulerOccurrence<SchedulerEventData>> Expand(IEnumerable<SchedulerEventData> events,
-        SchedulerWindow window, int maximum = 10000) => SchedulerOccurrences.Expand(events, Mapping, window, maximum, Xunit.TestContext.Current.CancellationToken);
+        SchedulerWindow window, int maximum = 10000) => SchedulerOccurrences.Resolve(events, Mapping, window, maximum, Xunit.TestContext.Current.CancellationToken, recurrenceExpander: IcalSchedulerRecurrenceExpander.Default);
 
     [Fact]
     public void RecurrenceSkipsTheNonexistentSpringTime()
@@ -95,8 +95,8 @@ public sealed class SchedulerModelTests
         Assert.Throws<InvalidOperationException>(() => Expand([data],
             Window(new(2026, 11, 1), new(2026, 12, 1)), maximum: 2));
         using var cancellation = new CancellationTokenSource(); cancellation.Cancel();
-        Assert.Throws<OperationCanceledException>(() => SchedulerOccurrences.Expand([data], Mapping,
-            Window(new(2026, 11, 1), new(2026, 12, 1)), cancellationToken: cancellation.Token));
+        Assert.Throws<OperationCanceledException>(() => SchedulerOccurrences.Resolve([data], Mapping,
+            Window(new(2026, 11, 1), new(2026, 12, 1)), cancellationToken: cancellation.Token, recurrenceExpander: IcalSchedulerRecurrenceExpander.Default));
     }
 
     [Fact]

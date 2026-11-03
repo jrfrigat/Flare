@@ -16,6 +16,7 @@
     <Project Path="src/Flare.Components.Kanban/Flare.Components.Kanban.csproj" />
     <Project Path="src/Flare.Components.Gantt/Flare.Components.Gantt.csproj" />
     <Project Path="src/Flare.Components.Scheduler/Flare.Components.Scheduler.csproj" />
+    <Project Path="src/Flare.Components.Scheduler.Ical/Flare.Components.Scheduler.Ical.csproj" />
     <Project Path="src/Flare.Components.Media/Flare.Components.Media.csproj" />
     <Project Path="src/Flare.Components.Barcode/Flare.Components.Barcode.csproj" />
     <Project Path="src/Flare.Components.QrCode/Flare.Components.QrCode.csproj" />
@@ -53,6 +54,7 @@
     <Project Path="tests/Flare.Components.Kanban.Tests/Flare.Components.Kanban.Tests.csproj" />
     <Project Path="tests/Flare.Components.Gantt.Tests/Flare.Components.Gantt.Tests.csproj" />
     <Project Path="tests/Flare.Components.Scheduler.Tests/Flare.Components.Scheduler.Tests.csproj" />
+    <Project Path="tests/Flare.Components.Scheduler.Ical.Tests/Flare.Components.Scheduler.Ical.Tests.csproj" />
     <Project Path="tests/Flare.Components.Media.Tests/Flare.Components.Media.Tests.csproj" />
     <Project Path="tests/Flare.Components.QrCode.Tests/Flare.Components.QrCode.Tests.csproj" />
     <Project Path="tests/Flare.Components.Query.Tests/Flare.Components.Query.Tests.csproj" />

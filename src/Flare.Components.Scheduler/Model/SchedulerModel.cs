@@ -36,9 +36,9 @@ public sealed record SchedulerEventData
     public IReadOnlyList<DateTimeOffset> RecurrenceDates { get; init; } = [];
     /// <summary>Additional RDATE dates for an all-day series.</summary>
     public IReadOnlyList<DateOnly> RecurrenceDays { get; init; } = [];
-    /// <summary>Master key when this item overrides one occurrence; null for a master or standalone event.</summary>
+    /// <summary>Master key of a ready provider occurrence or a local override; null for a standalone event or master.</summary>
     public string? SeriesKey { get; init; }
-    /// <summary>Opaque occurrence identity copied from SchedulerOccurrence.Identity when creating an override.</summary>
+    /// <summary>Stable backend occurrence identity, or SchedulerOccurrence.Identity copied when creating a local override.</summary>
     public string? RecurrenceId { get; init; }
 }
 
@@ -47,7 +47,7 @@ public sealed record SchedulerEventData
 /// <param name="Item">Original item; an override item when one is present.</param>
 /// <param name="Data">Projected occurrence dates and presentation.</param>
 /// <param name="Identity">Stable series key plus original UTC start or all-day date.</param>
-/// <param name="Series">Original master projection, used to describe edits.</param>
+/// <param name="Series">Series metadata used to describe edits; a ready provider occurrence may supply only the master key.</param>
 public sealed record SchedulerOccurrence<TItem>(TItem Item, SchedulerEventData Data, string Identity, SchedulerEventData Series);
 
 /// <summary>Visible half-open instant window plus its date-only bounds in the display zone.</summary>
