@@ -1,5 +1,7 @@
 # Protecting unsaved changes in dialogs
 
+This guide describes the dialog changes in 0.52.0.
+
 Place `FlareDialogCloseGuard` inside a dialog's `FlareForm` or `EditForm`. It reads the surrounding
 `EditContext.IsModified()` and asks before discarding edits. Unchanged forms close immediately.
 The default confirmation uses localized Flare strings and requires a `FlareDialogProvider` in your

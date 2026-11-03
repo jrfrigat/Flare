@@ -3,24 +3,11 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
-
-### Added
-
-- `FlareDialogCloseGuard` confirms discarding unsaved changes, using the surrounding `EditContext` or an explicit flag, localized default text, and optional custom labels or confirmation handler. `DialogCloseContext` lets content register its own guards. Gallery examples and the EN/RU dialog guide cover editing, saving, cancelling and navigation.
-
-### Changed
-
-- **Breaking:** replace `FlareDialogInstance` and `DialogReference` `Close`/`Cancel` calls with awaited `CloseAsync`/`CancelAsync`. They now consult `BeforeClose` and registered guards, return whether closure was accepted, and retain the first accepted result. Inline dialogs expose `CloseAsync`; internal navigation uses the same guards through the new `Programmatic` and `Navigation` close reasons.
-
-### Fixed
-
-- Dialogs, sheets, confirm/alert/prompt windows, drawers, overlays and other backdrop surfaces require both press and release on the same backdrop before dismissing. Selecting text or dragging from content onto the backdrop no longer closes the surface.
-
 ## [0.52.0] - 2026-10-25
 
 ### Added
 
+- `FlareDialogCloseGuard` confirms discarding unsaved changes, using the surrounding `EditContext` or an explicit flag, localized default text, and optional custom labels or confirmation handler. `DialogCloseContext` lets content register its own guards. Gallery examples and the EN/RU dialog guide cover editing, saving, cancelling and navigation.
 - `FlareEmptyState.HeadingLevel` sets the level of the title's heading, 1 to 6, so an empty state right under a page's `h1` can be an `h2` and the outline skips no level; the default stays 3 and the title looks the same at every level.
 - `TabsTokens.InactiveHoverColor` (`--flare-tabs-inactive-hover-color`) colors an inactive tab's label and icon under the pointer; it defaults to the resting inactive color, and Material Design 3 Expressive sets on-surface as its spec asks.
 - `ListTokens.ItemRadiusHover`, `ItemRadiusFocus`, `ItemRadiusPressed` and `ItemRadiusSelected` give a list row its shape per state; each defaults to the resting `ItemRadius`. Material Design 3 Expressive rows now rest at 4dp, round to 12dp under the pointer and to 16dp when focused, pressed or selected, as its spec asks.
@@ -28,10 +15,12 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Breaking:** replace `FlareDialogInstance` and `DialogReference` `Close`/`Cancel` calls with awaited `CloseAsync`/`CancelAsync`. They now consult `BeforeClose` and registered guards, return whether closure was accepted, and retain the first accepted result. Inline dialogs expose `CloseAsync`; internal navigation uses the same guards through the new `Programmatic` and `Navigation` close reasons.
 - The add-on packages (Barcode, Carousel, Gantt, IDE, Kanban, Media, QrCode, Query, RichTextEditor, Transfer) are marked trimmable, so a WebAssembly app publishing with trimming drops what it does not use from them as it already did from the core; in the Gallery, which uses all ten, they shrink from 166 KB to 156 KB compressed.
 
 ### Fixed
 
+- Dialogs, sheets, confirm/alert/prompt windows, drawers, overlays and other backdrop surfaces require both press and release on the same backdrop before dismissing. Selecting text or dragging from content onto the backdrop no longer closes the surface.
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.
 - `FlareDataGrid`'s status region states the new row count when the page hands it another `Items` list, as it does after a column filter, instead of keeping the count from before; the first render and an unchanged count announce nothing.
 - `FlareTabs` with `HeaderStart`/`HeaderEnd` no longer flips its end zone between lines on a narrow screen: the scroll arrows and the tab bar now share one item of the row, so showing the arrows only takes room from the bar instead of pushing the end zone onto the next line, which then made room, hid the arrows and pulled the zone back.
