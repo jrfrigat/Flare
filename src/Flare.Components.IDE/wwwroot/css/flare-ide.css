@@ -1,7 +1,4 @@
-/* Flare.Components.IDE - structural layout styles.
-   Sizing uses local --flare-ide-* layout variables (geometry, not theme tokens).
-   All visual theming comes from the base Flare design tokens (--flare-color-*, --flare-shape-*,
-   --flare-elevation-*, --flare-state-*); this package defines no theme tokens of its own. */
+/* Layout geometry stays with the component; design overrides inherit from the theme. */
 
 .flare-ide-layout {
     display: flex;
@@ -66,19 +63,19 @@
 
 .flare-ide-layout__panel--left {
     width: var(--flare-ide-left-width);
-    border-right: 1px solid var(--flare-color-outline-variant);
+    border-right: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-ide-layout__panel--right {
     width: var(--flare-ide-right-width);
-    border-left: 1px solid var(--flare-color-outline-variant);
+    border-left: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-ide-layout__bottom {
     position: relative;
     flex-shrink: 0;
     height: var(--flare-ide-bottom-height);
-    border-top: 1px solid var(--flare-color-outline-variant);
+    border-top: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-ide-layout__bottom .flare-ide-layout__panel-body {
@@ -110,8 +107,8 @@
     top: 0;
     bottom: 0;
     z-index: 30;
-    background: var(--flare-color-surface);
-    box-shadow: var(--flare-elevation-3);
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    box-shadow: var(--flare-ide-elevation-3, var(--flare-elevation-3));
 }
 
 .flare-ide-layout__panel--left.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
@@ -135,15 +132,15 @@
 .flare-ide-layout__rail {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-3, 6px);
+    gap: var(--flare-ide-spacing-3, var(--flare-spacing-3));
     width: 100%;
     height: 100%;
-    padding: var(--flare-spacing-3, 6px) 0;
+    padding: var(--flare-ide-spacing-3, var(--flare-spacing-3)) 0;
     border: none;
     background: none;
     color: inherit;
     cursor: pointer;
-    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
 }
 
 .flare-ide-layout__panel--left .flare-ide-layout__rail,
@@ -155,17 +152,21 @@
 .flare-ide-layout__bottom .flare-ide-layout__rail {
     flex-direction: row;
     justify-content: flex-start;
-    padding: 0 var(--flare-spacing-4, 8px);
+    padding: 0 var(--flare-ide-spacing-4, var(--flare-spacing-4));
 }
 
 .flare-ide-layout__rail:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-ide-layout__rail-title {
     writing-mode: vertical-rl;
-    font-size: 0.75rem;
-    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
+    font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-ide-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-ide-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
 }
 
 .flare-ide-layout__bottom .flare-ide-layout__rail-title {
@@ -188,33 +189,37 @@
 
 .flare-ribbon__tabs {
     display: flex;
-    gap: var(--flare-spacing-1, 2px);
-    padding: 0 var(--flare-spacing-2, 4px);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    padding: 0 var(--flare-ide-spacing-2, var(--flare-spacing-2));
 }
 
 .flare-ribbon__tab {
-    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-8, 16px);
+    padding: var(--flare-ide-spacing-3, var(--flare-spacing-3)) var(--flare-ide-spacing-8, var(--flare-spacing-8));
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 0.8125rem;
-    border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small)) var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small)) 0 0;
     color: inherit;
-    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-ribbon__tab:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-ribbon__tab--active {
-    background: var(--flare-color-surface);
-    font-weight: 500;
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    font-weight: var(--flare-ide-typescale-label-large-weight, var(--flare-typescale-label-large-weight));
 }
 
 /* A disabled tab stays focusable (it is announced as unavailable) but looks and reacts like nothing. */
 .flare-ribbon__tab[aria-disabled="true"] {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-ide-state-disabled-opacity, var(--flare-state-disabled-opacity));
     cursor: default;
 }
 
@@ -224,7 +229,7 @@
 
 .flare-ribbon__commands {
     display: flex;
-    padding: var(--flare-spacing-2, 4px);
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2));
     gap: 0;
     min-height: 74px;
     align-items: stretch;
@@ -242,8 +247,8 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
-    border-right: 1px solid var(--flare-color-outline-variant);
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    border-right: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-ribbon__group:last-child {
@@ -252,7 +257,7 @@
 
 .flare-ribbon__group-content {
     display: flex;
-    gap: var(--flare-spacing-1, 2px);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
     align-items: stretch;
     flex: 1;
     min-height: 0;
@@ -275,10 +280,14 @@
 }
 
 .flare-ribbon__group-label {
-    font-size: 0.6875rem;
-    color: var(--flare-color-on-surface-variant);
-    margin-top: var(--flare-spacing-2, 4px);
+    font-size: var(--flare-ide-typescale-label-small-size, var(--flare-typescale-label-small-size));
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
+    margin-top: var(--flare-ide-spacing-2, var(--flare-spacing-2));
     text-align: center;
+    font-family: var(--flare-ide-typescale-label-small-font, var(--flare-typescale-label-small-font));
+    font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
+    line-height: var(--flare-ide-typescale-label-small-height, var(--flare-typescale-label-small-height));
+    letter-spacing: var(--flare-ide-typescale-label-small-spacing, var(--flare-typescale-label-small-spacing));
 }
 
 .flare-ribbon__button {
@@ -294,15 +303,15 @@
     min-width: 0;
     min-height: 0;
     height: 100%;
-    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-3, 6px);
-    gap: var(--flare-spacing-1, 2px);
-    border-radius: var(--flare-shape-extra-small);
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-3, var(--flare-spacing-3));
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));
 }
 
 .flare-ribbon__commands .flare-ribbon__button--large {
     min-width: 60px;
     height: 100%;
-    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-4, 8px);
+    padding: var(--flare-ide-spacing-3, var(--flare-spacing-3)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
 }
 
 .flare-ribbon__button .flare-icon {
@@ -326,14 +335,17 @@
    icon size (which would inflate the label line and make a dropdown row taller than its neighbours). */
 .flare-ribbon__button .flare-ribbon__caret,
 .flare-ribbon__button--large .flare-ribbon__caret {
-    font-size: 0.75rem;
+    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
 }
 
 .flare-ribbon__button-label {
-    font-size: 0.6875rem;
-    margin-top: var(--flare-spacing-1, 2px);
+    font-size: var(--flare-ide-typescale-label-small-size, var(--flare-typescale-label-small-size));
+    margin-top: var(--flare-ide-spacing-1, var(--flare-spacing-1));
     line-height: 1.1;
     white-space: nowrap;
+    font-family: var(--flare-ide-typescale-label-small-font, var(--flare-typescale-label-small-font));
+    font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
+    letter-spacing: var(--flare-ide-typescale-label-small-spacing, var(--flare-typescale-label-small-spacing));
 }
 
 .flare-ribbon--collapsed .flare-ribbon__commands {
@@ -343,8 +355,8 @@
 .flare-ribbon__separator {
     align-self: stretch;
     width: 1px;
-    margin: var(--flare-spacing-2, 4px) var(--flare-spacing-3, 6px);
-    background: var(--flare-color-outline-variant);
+    margin: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-3, var(--flare-spacing-3));
+    background: var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-ribbon__caret {
@@ -361,7 +373,7 @@
     display: flex;
     overflow-x: auto;
     gap: 1px;
-    background: var(--flare-color-surface-variant);
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
     scrollbar-width: thin;
 }
 
@@ -372,26 +384,30 @@
 .flare-doc-tabs__tab {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-3, 6px);
-    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-6, 12px);
+    gap: var(--flare-ide-spacing-3, var(--flare-spacing-3));
+    padding: var(--flare-ide-spacing-3, var(--flare-spacing-3)) var(--flare-ide-spacing-6, var(--flare-spacing-6));
     cursor: pointer;
-    font-size: 0.8125rem;
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
     border: none;
     background: none;
     color: inherit;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
-    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease),
-                border-color var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard)),
+                border-color var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-doc-tabs__tab:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-doc-tabs__tab--active {
-    background: var(--flare-color-surface);
-    border-bottom-color: var(--flare-color-primary);
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    border-bottom-color: var(--flare-ide-primary, var(--flare-color-primary));
 }
 
 .flare-doc-tabs__icon {
@@ -399,7 +415,7 @@
 }
 
 .flare-doc-tabs__modified {
-    color: var(--flare-color-primary);
+    color: var(--flare-ide-primary, var(--flare-color-primary));
     font-weight: bold;
 }
 
@@ -411,10 +427,10 @@
     height: 18px;
     border: none;
     background: none;
-    border-radius: var(--flare-shape-extra-small);
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));
     cursor: pointer;
-    transition: opacity var(--flare-motion-duration-enter-small) var(--flare-motion-easing-standard, ease),
-                background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
+    transition: opacity var(--flare-ide-motion-duration-enter-small, var(--flare-motion-duration-enter-small)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard)),
+                background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
 }
 
 /* Fading in on hover is the editor convention, and it is only available where a pointer can hover. A
@@ -431,7 +447,7 @@
 }
 
 .flare-doc-tabs__close:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-pressed-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-pressed-opacity, var(--flare-state-pressed-opacity)) * 100%), transparent);
 }
 
 /* 18px is a mouse target. The button cannot grow - it would grow the tab strip with it - so the hit
@@ -447,8 +463,8 @@
         inset-block-start: 50%;
         inset-inline-start: 50%;
         translate: -50% -50%;
-        inline-size: var(--flare-touch-target-min);
-        block-size: var(--flare-touch-target-min);
+        inline-size: var(--flare-ide-touch-target-min, var(--flare-touch-target-min));
+        block-size: var(--flare-ide-touch-target-min, var(--flare-touch-target-min));
     }
 }
 
@@ -464,11 +480,11 @@
 .flare-doc-tabs__dropdown {
     position: absolute;
     z-index: 1000;
-    background: var(--flare-color-surface);
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-small);
-    box-shadow: var(--flare-elevation-2);
-    padding: var(--flare-spacing-2, 4px) 0;
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    border: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-ide-shape-small, var(--flare-shape-small));
+    box-shadow: var(--flare-ide-elevation-2, var(--flare-elevation-2));
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) 0;
     max-height: 200px;
     overflow-y: auto;
 }
@@ -476,17 +492,21 @@
 .flare-doc-tabs__dropdown-item {
     display: block;
     width: 100%;
-    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-6, 12px);
+    padding: var(--flare-ide-spacing-3, var(--flare-spacing-3)) var(--flare-ide-spacing-6, var(--flare-spacing-6));
     border: none;
     background: none;
     text-align: left;
     cursor: pointer;
-    font-size: 0.8125rem;
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
     color: inherit;
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-doc-tabs__dropdown-item:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-toolpanel {
@@ -499,28 +519,30 @@
 .flare-toolpanel__header {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-2, 4px);
-    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
+    gap: var(--flare-ide-spacing-2, var(--flare-spacing-2));
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
     min-height: 28px;
 }
 
 .flare-toolpanel__title {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
     text-transform: uppercase;
     letter-spacing: 0.02em;
     flex: 1;
+    font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
 }
 
 .flare-toolpanel__toolbar {
     display: flex;
-    gap: var(--flare-spacing-1, 2px);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
 }
 
 .flare-toolpanel__content {
     flex: 1;
     overflow: auto;
-    padding: var(--flare-spacing-2, 4px);
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2));
 }
 
 .flare-toolpanel--collapsed .flare-toolpanel__content {
@@ -538,9 +560,13 @@
 .flare-statusbar {
     display: flex;
     align-items: center;
-    padding: 0 var(--flare-spacing-6, 12px);
-    font-size: 0.75rem;
+    padding: 0 var(--flare-ide-spacing-6, var(--flare-spacing-6));
+    font-size: var(--flare-ide-typescale-body-small-size, var(--flare-typescale-body-small-size));
     min-height: 24px;
+    font-family: var(--flare-ide-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-ide-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-ide-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-ide-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
 }
 
 .flare-statusbar__left,
@@ -548,7 +574,7 @@
 .flare-statusbar__right {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 8px);
+    gap: var(--flare-ide-spacing-4, var(--flare-spacing-4));
 }
 
 .flare-statusbar__left {
@@ -567,30 +593,30 @@
 .flare-menubar {
     display: flex;
     align-items: center;
-    padding: 0 var(--flare-spacing-2, 4px);
+    padding: 0 var(--flare-ide-spacing-2, var(--flare-spacing-2));
     min-height: 28px;
 }
 
 .flare-qat {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-1, 2px);
-    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-3, 6px);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-3, var(--flare-spacing-3));
 }
 
 .flare-toolbar {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-2, 4px);
-    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
+    gap: var(--flare-ide-spacing-2, var(--flare-spacing-2));
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
     min-height: 36px;
     flex-wrap: wrap;
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-toolbar--dense {
-    gap: var(--flare-spacing-1, 2px);
-    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-2, 4px);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-2, var(--flare-spacing-2));
     min-height: 28px;
 }
 
@@ -599,8 +625,8 @@
     inset: 0;
     z-index: 50;
     display: flex;
-    background: var(--flare-color-surface);
-    color: var(--flare-color-on-surface);
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    color: var(--flare-ide-on-surface, var(--flare-color-on-surface));
 }
 
 .flare-backstage__nav {
@@ -608,9 +634,9 @@
     width: 220px;
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-1, 2px);
-    padding: var(--flare-spacing-4, 8px);
-    background: var(--flare-color-surface-variant);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    padding: var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
     overflow-y: auto;
 }
 
@@ -620,92 +646,100 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    margin-bottom: var(--flare-spacing-4, 8px);
+    margin-bottom: var(--flare-ide-spacing-4, var(--flare-spacing-4));
     border: none;
-    background: var(--flare-color-primary);
-    color: var(--flare-color-on-primary);
-    border-radius: var(--flare-shape-extra-small);
+    background: var(--flare-ide-primary, var(--flare-color-primary));
+    color: var(--flare-ide-on-primary, var(--flare-color-on-primary));
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));
     cursor: pointer;
 }
 
 .flare-backstage__nav-item {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-5, 10px);
+    gap: var(--flare-ide-spacing-5, var(--flare-spacing-5));
     width: 100%;
-    padding: var(--flare-spacing-4, 8px) var(--flare-spacing-6, 12px);
+    padding: var(--flare-ide-spacing-4, var(--flare-spacing-4)) var(--flare-ide-spacing-6, var(--flare-spacing-6));
     border: none;
     background: none;
     color: inherit;
     text-align: left;
-    font-size: 0.875rem;
-    border-radius: var(--flare-shape-extra-small);
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));
     cursor: pointer;
-    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-backstage__nav-item:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-backstage__nav-item--active {
-    background: var(--flare-color-primary);
-    color: var(--flare-color-on-primary);
+    background: var(--flare-ide-primary, var(--flare-color-primary));
+    color: var(--flare-ide-on-primary, var(--flare-color-on-primary));
 }
 
 .flare-backstage__nav-item:disabled {
-    opacity: 0.5;
+    opacity: var(--flare-ide-state-disabled-opacity, var(--flare-state-disabled-opacity));
     cursor: default;
 }
 
 .flare-backstage__content {
     flex: 1;
     min-width: 0;
-    padding: var(--flare-spacing-12, 24px) var(--flare-spacing-16, 32px);
+    padding: var(--flare-ide-spacing-12, var(--flare-spacing-12)) var(--flare-ide-spacing-16, var(--flare-spacing-16));
     overflow: auto;
 }
 
 .flare-propgrid {
     display: flex;
     flex-direction: column;
-    font-size: 0.8125rem;
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-propgrid__title {
-    font-weight: 600;
-    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
-    background: var(--flare-color-surface-variant);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
+    padding: var(--flare-ide-spacing-2, var(--flare-spacing-2)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-propgrid__row {
     display: grid;
     grid-template-columns: 40% 1fr;
     align-items: center;
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
     min-height: 26px;
 }
 
 .flare-propgrid__name {
-    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-4, 8px);
-    color: var(--flare-color-on-surface-variant);
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border-right: 1px solid var(--flare-color-outline-variant);
+    border-right: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-propgrid__value {
-    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-4, 8px);
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-4, var(--flare-spacing-4));
     min-width: 0;
 }
 
 .flare-formula-bar {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-3, 6px);
-    padding: 3px var(--flare-spacing-3, 6px);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    gap: var(--flare-ide-spacing-3, var(--flare-spacing-3));
+    padding: 3px var(--flare-ide-spacing-3, var(--flare-spacing-3));
+    border-bottom: var(--flare-ide-border-width, var(--flare-border-width)) var(--flare-ide-border-style, var(--flare-border-style)) var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
 }
 
 .flare-formula-bar__namebox {
@@ -716,7 +750,7 @@
 .flare-formula-bar__fx {
     flex-shrink: 0;
     font-style: italic;
-    color: var(--flare-color-on-surface-variant);
+    color: var(--flare-ide-on-surface-variant, var(--flare-color-on-surface-variant));
 }
 
 .flare-formula-bar__input {
@@ -727,10 +761,10 @@
 .flare-sheet-tabs {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-1, 2px);
-    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-3, 6px);
+    gap: var(--flare-ide-spacing-1, var(--flare-spacing-1));
+    padding: var(--flare-ide-spacing-1, var(--flare-spacing-1)) var(--flare-ide-spacing-3, var(--flare-spacing-3));
     overflow-x: auto;
-    background: var(--flare-color-surface-variant);
+    background: var(--flare-ide-surface-variant, var(--flare-color-surface-variant));
     scrollbar-width: thin;
 }
 
@@ -742,19 +776,23 @@
     background: none;
     color: inherit;
     cursor: pointer;
-    font-size: 0.8125rem;
-    border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
-    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard, ease);
+    font-size: var(--flare-ide-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small)) var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small)) 0 0;
+    transition: background var(--flare-ide-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-ide-motion-easing-standard, var(--flare-motion-easing-standard));
+    font-family: var(--flare-ide-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-weight: var(--flare-ide-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-ide-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-ide-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-sheet-tabs__tab:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-sheet-tabs__tab--active {
-    background: var(--flare-color-surface);
-    border-color: var(--flare-color-outline-variant);
-    font-weight: 600;
+    background: var(--flare-ide-surface, var(--flare-color-surface));
+    border-color: var(--flare-ide-outline-variant, var(--flare-color-outline-variant));
+    font-weight: var(--flare-ide-typescale-label-small-weight, var(--flare-typescale-label-small-weight));
 }
 
 .flare-sheet-tabs__add {
@@ -766,12 +804,12 @@
     border: none;
     background: none;
     color: inherit;
-    border-radius: var(--flare-shape-extra-small);
+    border-radius: var(--flare-ide-shape-extra-small, var(--flare-shape-extra-small));
     cursor: pointer;
 }
 
 .flare-sheet-tabs__add:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-ide-on-surface, var(--flare-color-on-surface)) calc(var(--flare-ide-state-hover-opacity, var(--flare-state-hover-opacity)) * 100%), transparent);
 }
 
 .flare-sheet-tabs__add .flare-icon {

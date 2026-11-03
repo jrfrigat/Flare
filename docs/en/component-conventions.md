@@ -91,6 +91,15 @@ base style when it finishes and holds nothing. Held by `SettledTransformTests`.
 
 ### Independent component packages
 
+The satellite packages expose `GanttTokens`, `KanbanTokens`, `IdeTokens`, `MediaTokens`,
+`QueryTokens`, `RichTextEditorTokens`, `TransferTokens`, `BarcodeTokens` and `SchedulerTokens`
+from their own `Flare.Components.<Package>` namespaces. Carousel keeps its existing
+`Flare.Abstractions.Tokens.Components.CarouselTokens`. Each uses the common `[CssVar]` mapping.
+Their styles work from base theme roles alone; supplying a component record is optional.
+Barcode bar/ground colors and QR code colors keep scan-safe black/white defaults, independent of
+the page's light or dark mode. QR colors are also configurable through `ForeColor`/`BackColor`.
+IDE panel widths remain component geometry controlled by its sizing parameters.
+
 A component package can own its token record without adding it to the core `DesignTokens` graph.
 Use the same `[CssVar]` attribute and semantic defaults, then pass `FlattenTokens()` to the existing
 theme service or merge its map into `DesignTokens.Extended`:

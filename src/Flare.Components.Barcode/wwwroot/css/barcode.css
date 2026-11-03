@@ -1,25 +1,14 @@
-/* FlareBarcode.
-
-   Deliberately almost untokenized, and that is the design decision rather than an omission: a barcode
-   has to SCAN. Bars want maximum contrast against a plain light ground, and a theme that tinted them to
-   match its palette would produce a symbol a reader rejects. So the bars are painted from the two
-   surface roles at their strongest, on an explicitly white ground, and a caller who genuinely wants
-   something else overrides these two custom properties rather than the theme deciding for every label.
-
-   The human-readable line is a different matter - it is text a person reads, not a symbol a machine
-   reads - so it follows the theme's typography and its muted foreground role. */
+/* Scan-safe bars keep maximum contrast; inherited overrides remain available. */
 
 .flare-barcode {
-  --flare-barcode-bar: #000;
-  --flare-barcode-ground: #fff;
 
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--flare-spacing-2);
-  padding: var(--flare-spacing-4);
-  background: var(--flare-barcode-ground);
-  border-radius: var(--flare-shape-small);
+  gap: var(--flare-barcode-spacing-2, var(--flare-spacing-2));
+  padding: var(--flare-barcode-spacing-4, var(--flare-spacing-4));
+  background: var(--flare-barcode-ground, #fff);
+  border-radius: var(--flare-barcode-shape-small, var(--flare-shape-small));
   line-height: 1;
 }
 
@@ -36,29 +25,34 @@
 }
 
 .flare-barcode__bar {
-  fill: var(--flare-barcode-bar);
+  fill: var(--flare-barcode-bar, #000);
 }
 
 .flare-barcode__text {
-  font-family: var(--flare-typescale-label-medium-font);
-  font-size: var(--flare-typescale-label-medium-size);
+  font-family: var(--flare-barcode-typescale-label-medium-font, var(--flare-typescale-label-medium-font));
+  font-size: var(--flare-barcode-typescale-label-medium-size, var(--flare-typescale-label-medium-size));
   letter-spacing: .12em;
-  color: var(--flare-barcode-bar);
+  color: var(--flare-barcode-bar, #000);
   font-variant-numeric: tabular-nums;
+    font-weight: var(--flare-barcode-typescale-label-medium-weight, var(--flare-typescale-label-medium-weight));
+    line-height: var(--flare-barcode-typescale-label-medium-height, var(--flare-typescale-label-medium-height));
 }
 
 /* An unencodable value is a normal state, not an error condition of the page: the field is mid-edit far
    more often than it is wrong. It reads as a quiet placeholder the size of the symbol it will become. */
 .flare-barcode--invalid {
-  background: var(--flare-color-surface-container);
+  background: var(--flare-barcode-surface-container, var(--flare-color-surface-container));
   min-height: 4rem;
   min-width: 12rem;
   justify-content: center;
 }
 
 .flare-barcode__error {
-  font-family: var(--flare-typescale-body-small-font);
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-on-surface-variant);
+  font-family: var(--flare-barcode-typescale-body-small-font, var(--flare-typescale-body-small-font));
+  font-size: var(--flare-barcode-typescale-body-small-size, var(--flare-typescale-body-small-size));
+  color: var(--flare-barcode-on-surface-variant, var(--flare-color-on-surface-variant));
   text-align: center;
+    font-weight: var(--flare-barcode-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-barcode-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-barcode-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
 }

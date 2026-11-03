@@ -1,8 +1,8 @@
 .flare-video-player {
     display: flex;
     flex-direction: column;
-    background-color: var(--flare-color-inverse-surface, #1c1b1f);
-    border-radius: var(--flare-shape-medium);
+    background-color: var(--flare-media-inverse-surface, var(--flare-color-inverse-surface));
+    border-radius: var(--flare-media-shape-medium, var(--flare-shape-medium));
     overflow: hidden;
     position: relative;
 }
@@ -15,45 +15,53 @@
 .flare-video-player__controls {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
-    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
-    background-color: color-mix(in srgb, var(--flare-color-inverse-surface) 92%, transparent);
-    color: var(--flare-color-inverse-on-surface, #f5eff7);
+    gap: var(--flare-media-spacing-4, var(--flare-spacing-4));
+    padding: var(--flare-media-spacing-4, var(--flare-spacing-4)) var(--flare-media-spacing-6, var(--flare-spacing-6));
+    background-color: color-mix(in srgb, var(--flare-media-inverse-surface, var(--flare-color-inverse-surface)) 92%, transparent);
+    color: var(--flare-media-inverse-on-surface, var(--flare-color-inverse-on-surface));
 }
 
 .flare-video-player__progress {
     flex: 1;
-    accent-color: var(--flare-color-primary);
+    accent-color: var(--flare-media-primary, var(--flare-color-primary));
 }
 
 .flare-video-player__time {
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-media-typescale-body-small-size, var(--flare-typescale-body-small-size));
     white-space: nowrap;
-    color: var(--flare-color-inverse-on-surface, #f5eff7);
+    color: var(--flare-media-inverse-on-surface, var(--flare-color-inverse-on-surface));
+    font-family: var(--flare-media-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-media-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-media-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-media-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
 }
 
 .flare-video-player__btn {
     background: none;
     border: none;
-    color: var(--flare-color-inverse-on-surface, #f5eff7);
+    color: var(--flare-media-inverse-on-surface, var(--flare-color-inverse-on-surface));
     cursor: pointer;
-    padding: var(--flare-spacing-2, 0.25rem);
+    padding: var(--flare-media-spacing-2, var(--flare-spacing-2));
     display: inline-flex;
     align-items: center;
-    border-radius: var(--flare-shape-extra-small);
-    transition: background var(--flare-motion-duration-state-change);
+    border-radius: var(--flare-media-shape-extra-small, var(--flare-shape-extra-small));
+    transition: background var(--flare-media-motion-duration-state-change, var(--flare-motion-duration-state-change));
 }
 
 .flare-video-player__btn:hover {
-    background: color-mix(in srgb, var(--flare-color-inverse-on-surface, #f5eff7) 12%, transparent);
+    background: color-mix(in srgb, var(--flare-media-inverse-on-surface, var(--flare-color-inverse-on-surface)) 12%, transparent);
 }
 
 .flare-video-player__rate {
-    background: var(--flare-color-surface-container);
-    color: var(--flare-color-on-surface);
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-extra-small);
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
-    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-2, 0.25rem);
+    background: var(--flare-media-surface-container, var(--flare-color-surface-container));
+    color: var(--flare-media-on-surface, var(--flare-color-on-surface));
+    border: var(--flare-media-border-width, var(--flare-border-width)) var(--flare-media-border-style, var(--flare-border-style)) var(--flare-media-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-media-shape-extra-small, var(--flare-shape-extra-small));
+    font-size: var(--flare-media-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    padding: var(--flare-media-spacing-1, var(--flare-spacing-1)) var(--flare-media-spacing-2, var(--flare-spacing-2));
     cursor: pointer;
+    font-family: var(--flare-media-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-media-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-media-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-media-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
 }

@@ -6,10 +6,10 @@
 .flare-qb {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-6);
-    color: var(--flare-color-on-surface);
-    font-family: var(--flare-typescale-body-medium-font);
-    font-size: var(--flare-typescale-body-medium-size);
+    gap: var(--flare-query-spacing-6, var(--flare-spacing-6));
+    color: var(--flare-query-on-surface, var(--flare-color-on-surface));
+    font-family: var(--flare-query-typescale-body-medium-font, var(--flare-typescale-body-medium-font));
+    font-size: var(--flare-query-typescale-body-medium-size, var(--flare-typescale-body-medium-size));
 
     /*
        One width per kind of field, shared by every row in every section. Kept here rather than
@@ -27,31 +27,36 @@
     --_col-op: 10rem;
     --_col-alias: 10rem;
     --_col-unit: 9rem;
+    font-weight: var(--flare-query-typescale-body-medium-weight, var(--flare-typescale-body-medium-weight));
+    line-height: var(--flare-query-typescale-body-medium-height, var(--flare-typescale-body-medium-height));
+    letter-spacing: var(--flare-query-typescale-body-medium-spacing, var(--flare-typescale-body-medium-spacing));
 }
 
 .flare-qb__section {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-4);
-    padding: var(--flare-spacing-6);
-    background: var(--flare-color-surface-container-low);
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-medium);
+    gap: var(--flare-query-spacing-4, var(--flare-spacing-4));
+    padding: var(--flare-query-spacing-6, var(--flare-spacing-6));
+    background: var(--flare-query-surface-container-low, var(--flare-color-surface-container-low));
+    border: var(--flare-query-border-width, var(--flare-border-width)) var(--flare-query-border-style, var(--flare-border-style)) var(--flare-query-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-query-shape-medium, var(--flare-shape-medium));
 }
 
 .flare-qb__section-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--flare-spacing-4);
+    gap: var(--flare-query-spacing-4, var(--flare-spacing-4));
 }
 
 .flare-qb__heading {
     margin: 0;
-    font-family: var(--flare-typescale-title-small-font);
-    font-size: var(--flare-typescale-title-small-size);
-    font-weight: var(--flare-typescale-title-small-weight);
-    color: var(--flare-color-on-surface-variant);
+    font-family: var(--flare-query-typescale-title-small-font, var(--flare-typescale-title-small-font));
+    font-size: var(--flare-query-typescale-title-small-size, var(--flare-typescale-title-small-size));
+    font-weight: var(--flare-query-typescale-title-small-weight, var(--flare-typescale-title-small-weight));
+    color: var(--flare-query-on-surface-variant, var(--flare-color-on-surface-variant));
+    line-height: var(--flare-query-typescale-title-small-height, var(--flare-typescale-title-small-height));
+    letter-spacing: var(--flare-query-typescale-title-small-spacing, var(--flare-typescale-title-small-spacing));
 }
 
 /* Rows wrap rather than scroll: a designer is often placed in a narrow panel, and a wrapped row
@@ -60,7 +65,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--flare-spacing-4);
+    gap: var(--flare-query-spacing-4, var(--flare-spacing-4));
 }
 
 /*
@@ -127,67 +132,71 @@
 .flare-qb__group {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-3);
-    padding: var(--flare-spacing-4);
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-small);
-    background: var(--flare-color-surface);
+    gap: var(--flare-query-spacing-3, var(--flare-spacing-3));
+    padding: var(--flare-query-spacing-4, var(--flare-spacing-4));
+    border: var(--flare-query-border-width, var(--flare-border-width)) var(--flare-query-border-style, var(--flare-border-style)) var(--flare-query-outline-variant, var(--flare-color-outline-variant));
+    border-radius: var(--flare-query-shape-small, var(--flare-shape-small));
+    background: var(--flare-query-surface, var(--flare-color-surface));
 }
 
 .flare-qb__group .flare-qb__group {
-    margin-inline-start: var(--flare-spacing-6);
-    background: var(--flare-color-surface-container);
+    margin-inline-start: var(--flare-query-spacing-6, var(--flare-spacing-6));
+    background: var(--flare-query-surface-container, var(--flare-color-surface-container));
 }
 
 .flare-qb__group-head {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-3);
+    gap: var(--flare-query-spacing-3, var(--flare-spacing-3));
 }
 
 .flare-qb__group-body {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-3);
+    gap: var(--flare-query-spacing-3, var(--flare-spacing-3));
 }
 
 .flare-qb__connector {
-    padding: var(--flare-spacing-2) var(--flare-spacing-4);
-    border: 1px solid var(--flare-color-outline);
-    border-radius: var(--flare-shape-full);
-    background: var(--flare-color-surface-container-high);
-    color: var(--flare-color-primary);
+    padding: var(--flare-query-spacing-2, var(--flare-spacing-2)) var(--flare-query-spacing-4, var(--flare-spacing-4));
+    border: var(--flare-query-border-width, var(--flare-border-width)) var(--flare-query-border-style, var(--flare-border-style)) var(--flare-query-outline, var(--flare-color-outline));
+    border-radius: var(--flare-query-shape-full, var(--flare-shape-full));
+    background: var(--flare-query-surface-container-high, var(--flare-color-surface-container-high));
+    color: var(--flare-query-primary, var(--flare-color-primary));
     font: inherit;
-    font-weight: var(--flare-typescale-label-large-weight);
+    font-weight: var(--flare-query-typescale-label-large-weight, var(--flare-typescale-label-large-weight));
     cursor: pointer;
-    transition: background var(--flare-motion-duration-state-change) var(--flare-motion-easing-standard);
+    transition: background var(--flare-query-motion-duration-state-change, var(--flare-motion-duration-state-change)) var(--flare-query-motion-easing-standard, var(--flare-motion-easing-standard));
 }
 
 .flare-qb__connector:hover {
-    background: var(--flare-color-surface-container-highest);
+    background: var(--flare-query-surface-container-highest, var(--flare-color-surface-container-highest));
 }
 
 .flare-qb__problems {
     margin: 0;
-    padding-inline-start: var(--flare-spacing-6);
-    color: var(--flare-color-error);
+    padding-inline-start: var(--flare-query-spacing-6, var(--flare-spacing-6));
+    color: var(--flare-query-error, var(--flare-color-error));
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-2);
+    gap: var(--flare-query-spacing-2, var(--flare-spacing-2));
 }
 
 .flare-qb__problems code {
-    color: var(--flare-color-on-surface-variant);
+    color: var(--flare-query-on-surface-variant, var(--flare-color-on-surface-variant));
 }
 
 .flare-qb__ok {
     margin: 0;
-    color: var(--flare-color-on-surface-variant);
+    color: var(--flare-query-on-surface-variant, var(--flare-color-on-surface-variant));
 }
 
 .flare-qe__problems {
-    margin: var(--flare-spacing-8) 0 0;
-    padding-inline-start: var(--flare-spacing-16);
-    color: var(--flare-color-error);
-    font-size: var(--flare-typescale-body-small-size);
+    margin: var(--flare-query-spacing-8, var(--flare-spacing-8)) 0 0;
+    padding-inline-start: var(--flare-query-spacing-16, var(--flare-spacing-16));
+    color: var(--flare-query-error, var(--flare-color-error));
+    font-size: var(--flare-query-typescale-body-small-size, var(--flare-typescale-body-small-size));
+    font-family: var(--flare-query-typescale-body-small-font, var(--flare-typescale-body-small-font));
+    font-weight: var(--flare-query-typescale-body-small-weight, var(--flare-typescale-body-small-weight));
+    line-height: var(--flare-query-typescale-body-small-height, var(--flare-typescale-body-small-height));
+    letter-spacing: var(--flare-query-typescale-body-small-spacing, var(--flare-typescale-body-small-spacing));
 }

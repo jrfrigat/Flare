@@ -1,0 +1,31 @@
+@page "/component-tokens"
+@using Flare.Components.Gantt
+@using Flare.Components.Kanban
+@using Flare.Theming
+@inject IThemeService Theme
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <button id="customize" @onclick="Customize">Customize</button>
+    <button id="base" @onclick="BaseOnly">Base roles</button>
+    <FlareGantt id="chart" Range="_range" Scale="GanttScale.Day">
+        <FlareGanttPanel TRow="string" TItem="string" Rows="_rows" RowKey="r => r" Items="_rows"
+                         ItemKey="r => r" ItemRow="r => r" ItemSpan="r => _range" />
+    </FlareGantt>
+    <FlareKanban id="board" Columns="_columns" Cards="_cards" />
+</FlareThemeProvider>
+
+@code {
+    private readonly GanttSpan _range = GanttSpan.FromDays(new(2026, 11, 1), new(2026, 11, 3));
+    private readonly string[] _rows = ["one"];
+    private readonly KanbanColumn[] _columns = [new("todo", "To do")];
+    private readonly KanbanCard[] _cards = [new("one", "todo", "One")];
+    private void BaseOnly() => Theme.SetCustomTokens(new Dictionary<string, string>
+    {
+        [Css.Tokens.Color.Primary] = "rgb(12, 34, 56)",
+        [Css.Tokens.Color.Surface] = "rgb(56, 34, 12)"
+    });
+    private void Customize() => Theme.SetCustomTokens(
+        new GanttTokens { BarBg = "rgb(18, 52, 86)" }.FlattenTokens()
+            .Concat(new KanbanTokens { Surface = "rgb(86, 52, 18)" }.FlattenTokens())
+            .ToDictionary(p => p.Key, p => p.Value));
+}

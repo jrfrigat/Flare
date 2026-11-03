@@ -1,13 +1,13 @@
 .flare-signature-pad {
     display: inline-flex;
     flex-direction: column;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-media-spacing-4, var(--flare-spacing-4));
 }
 
 .flare-signature-pad__canvas {
-    border: 1px solid var(--flare-color-outline);
-    border-radius: var(--flare-shape-small);
-    background-color: var(--flare-color-surface);
+    border: var(--flare-media-border-width, var(--flare-border-width)) var(--flare-media-border-style, var(--flare-border-style)) var(--flare-media-outline, var(--flare-color-outline));
+    border-radius: var(--flare-media-shape-small, var(--flare-shape-small));
+    background-color: var(--flare-media-surface, var(--flare-color-surface));
     touch-action: none;
     cursor: crosshair;
 }
