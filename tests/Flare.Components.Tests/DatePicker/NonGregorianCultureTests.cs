@@ -52,20 +52,38 @@ public class NonGregorianCultureTests : FlareTestContext
         Assert.Equal(new DateOnly(2026, 10, 23).ToString("MMMM yyyy", Fa), Header(cut));
     }
 
-    [Fact]
-    public void UmAlQura_StopsAtTheEndOfItsRange()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void UmAlQura_StopsAtTheEndOfItsRange(bool gregorianDefault)
     {
-        var cut = Inline(Ar, new DateOnly(2077, 11, 10));
+        var culture = ArabicCulture(gregorianDefault);
+        var calendar = new UmAlQuraCalendar();
+        var last = DateOnly.FromDateTime(calendar.MaxSupportedDateTime);
+        var cut = Inline(culture, last, calendar);
         var next = cut.FindAll($".{Css.Classes.DatePicker.Header} button[aria-label]").Last();
         Assert.True(next.HasAttribute("disabled"));
     }
 
-    [Fact]
-    public void UmAlQura_ValueOutsideItsRange_StillRenders()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void UmAlQura_ValueOutsideItsRange_StillRenders(bool gregorianDefault)
     {
-        var cut = Inline(Ar, new DateOnly(1800, 1, 1));
+        var culture = ArabicCulture(gregorianDefault);
+        var calendar = new UmAlQuraCalendar();
+        var cut = Inline(culture, new DateOnly(1800, 1, 1), calendar);
         Assert.False(string.IsNullOrEmpty(cut.Find("input").GetAttribute("value")));
         Assert.NotEmpty(cut.FindAll("button[role=gridcell]"));
+        var previous = cut.FindAll($".{Css.Classes.DatePicker.Header} button[aria-label]").First();
+        Assert.True(previous.HasAttribute("disabled"));
+    }
+
+    private static CultureInfo ArabicCulture(bool gregorianDefault)
+    {
+        var culture = (CultureInfo)Ar.Clone();
+        culture.DateTimeFormat.Calendar = gregorianDefault ? new GregorianCalendar() : new UmAlQuraCalendar();
+        return culture;
     }
 
     [Fact]
