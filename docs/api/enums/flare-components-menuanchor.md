@@ -4,20 +4,20 @@
 
 `Flare.Components.MenuAnchor`
 
-Corner of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Logical (RTL-aware) aliases are also provided.
+Logical edge of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Start is left in LTR and right in RTL; end is the opposite. Prefer the Start/End names. The Left/Right names are retained for compatibility and also follow text direction.
 
 ## Values
 
 | Name | Value | Description |
 | --- | --- | --- |
-| `BottomLeft` | `0` | Panel opens below the activator, aligned to the left / start edge. |
-| `BottomStart` | `0` | Alias for BottomLeft - panel opens below, start-aligned. |
-| `BottomRight` | `1` | Panel opens below the activator, aligned to the right / end edge. |
-| `BottomEnd` | `1` | Alias for BottomRight - panel opens below, end-aligned. |
-| `TopLeft` | `2` | Panel opens above the activator, aligned to the left / start edge. |
-| `TopStart` | `2` | Alias for TopLeft - panel opens above, start-aligned. |
-| `TopRight` | `3` | Panel opens above the activator, aligned to the right / end edge. |
-| `TopEnd` | `3` | Alias for TopRight - panel opens above, end-aligned. |
+| `BottomLeft` | `0` | Compatibility name for BottomStart. Opens below at logical start: left in LTR, right in RTL. |
+| `BottomStart` | `0` | Opens below at logical start: left in LTR, right in RTL. |
+| `BottomRight` | `1` | Compatibility name for BottomEnd. Opens below at logical end: right in LTR, left in RTL. |
+| `BottomEnd` | `1` | Opens below at logical end: right in LTR, left in RTL. |
+| `TopLeft` | `2` | Compatibility name for TopStart. Opens above at logical start: left in LTR, right in RTL. |
+| `TopStart` | `2` | Opens above at logical start: left in LTR, right in RTL. |
+| `TopRight` | `3` | Compatibility name for TopEnd. Opens above at logical end: right in LTR, left in RTL. |
+| `TopEnd` | `3` | Opens above at logical end: right in LTR, left in RTL. |
 
 ## Used by components
 

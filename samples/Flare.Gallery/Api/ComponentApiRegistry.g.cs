@@ -2729,6 +2729,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"CanDrop", @"Func<TPayload, string, bool>?", null, @"Whether a payload may be dropped in a given target, asked once per drag for every zone declared as a FlareDropZone. A zone that says no never lights up and cannot receive the drop. Use it for what only the caller knows: a column is full, a card is locked. Accepts says the same thing per zone; both must agree. Zones a component declares as markup are NOT asked - the context cannot enumerate them, only the browser can. Refuse those by naming them in RefusedTargets.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The content that declares the draggables and drop zones.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"Group", @"string?", null, @"Default group for the draggables and zones beneath this context. Items only see zones of their own group, so one context can hold two unrelated sets of things.", null, false, false, false, @"FlareDragContext"),
+                new ApiParameterInfo(@"ItemOrder", @"Func<string, IReadOnlyList<DragZoneOrder>>?", null, @"Full item order per zone for a group, including virtualized items absent from the DOM. When omitted, keyboard reordering uses the rendered DOM order. The host must also resolve unrendered payloads through ResolveItem.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"KeyboardReorder", @"bool", @"true", @"Whether FlareDraggable items can be reordered from the keyboard: space picks one up, the arrows move it, space drops it, escape cancels. On by default - an item that only a pointer can move is a control half the readers cannot use. It makes every item a tab stop, which is right for a board and wrong for a list of a thousand; turn it off there and give the list its own roving focus. Items a host component renders itself (a data grid's rows, a tree's nodes) are not covered - their keys already mean something.", null, false, false, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"OnDragEnd", @"EventCallback", null, @"Raised when a drag finishes, whether it landed or not - after OnDrop when it did. This is where a hint put up in OnDragStart comes down.", null, false, true, false, @"FlareDragContext"),
                 new ApiParameterInfo(@"OnDragStart", @"EventCallback<TPayload>", null, @"Raised when an item is picked up, before it has moved anywhere. Free: the browser already asks which targets accept the item, and this rides on that call.", null, false, true, false, @"FlareDragContext"),
@@ -2758,6 +2759,11 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"index", @"int", @"The position the item takes, counted without the dragged item; -1 when the drop was into a zone or onto an item rather than between items."),
                         new ApiMethodParameter(@"edge", @"string", @"Where the drop landed relative to the item under the pointer."),
                         new ApiMethodParameter(@"overId", @"string", @"The id of the item under the pointer, when there was one."),
+                    }),
+                new ApiMethodInfo(@"OnKeyboardReorderAsync", @"OnKeyboardReorderAsync(string key)", @"Task", null, @"Handles a keyboard move while virtualization has removed the original focused item.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"key", @"string", @"The pressed key; only reorder keys are handled."),
                     }),
             },
             new string[]
@@ -3568,6 +3574,12 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ExpandAll", @"ExpandAll()", @"void", null, @"Expands every tree row.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"HandleTreeKeyAsync", @"HandleTreeKeyAsync(int index, string key)", @"Task", null, @"Navigates a panel's visible rows without taking keys from controls inside a row.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"index", @"int", @"Index in the flattened visible row list."),
+                        new ApiMethodParameter(@"key", @"string", @"An arrow, Home, End or Space key."),
+                    }),
             },
             new string[]
             {
@@ -3953,7 +3965,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Columns", @"IReadOnlyList<KanbanColumn>?", null, @"Column definitions that structure the Kanban board.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"OverscanCount", @"int", @"3", @"Number of cards rendered above and below the visible ones when Virtual is on.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Disables pointer and keyboard card movement while preserving readable, focusable card content.", null, false, false, false, @"FlareKanban"),
-                new ApiParameterInfo(@"Virtual", @"bool", @"false", @"Renders only the cards visible in each column, for columns of hundreds of cards. Each column's card list becomes its own scroll container and the columns stretch to the board's height, so the board needs a bounded height (for example Style=""height:70vh""); without one every card is visible and nothing is saved. Dragging with a pointer, the drop highlight and auto-scroll work as without it. Keyboard reordering reaches the cards currently rendered in each column - the visible ones plus OverscanCount on each side - and the end of a column.", null, false, false, false, @"FlareKanban"),
+                new ApiParameterInfo(@"Virtual", @"bool", @"false", @"Renders only the cards visible in each column, for columns of hundreds of cards. Each column's card list becomes its own scroll container and the columns stretch to the board's height, so the board needs a bounded height (for example Style=""height:70vh""); without one every card is visible and nothing is saved. Dragging with a pointer, the drop highlight and auto-scroll work as without it. Keyboard reordering reaches every position in each column, revealing the destination as it moves beyond the rendered window.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"VirtualItemSize", @"float", @"72", @"Estimated height of one card in pixels, gap included, used by Virtual to size the scroll area before the cards have been measured.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -4424,7 +4436,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Activation", @"MenuActivation", @"MenuActivation.LeftClick", @"How the menu opens from its activator. RightClick turns it into a context menu (and suppresses the browser's own menu).", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Activator", @"RenderFragment<FlareMenuActivatorContext>?", null, @"Element that opens the menu when clicked. The slot receives a FlareMenuActivatorContext, whose Attributes belong on the focusable element inside it - <FlareButton @attributes=""context.Attributes""> - so that the button a screen reader lands on is the one announcing the menu and whether it is open.", null, false, false, false, @"FlareMenu"),
-                new ApiParameterInfo(@"Anchor", @"MenuAnchor", @"MenuAnchor.BottomLeft", @"Corner of the activator the panel aligns to.", null, false, false, false, @"FlareMenu"),
+                new ApiParameterInfo(@"Anchor", @"MenuAnchor", @"MenuAnchor.BottomLeft", @"Logical activator edge the panel aligns to. Start is right in RTL and left in LTR.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the menu panel (role=""menu"").", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the dropdown panel. Keyboard order follows the order the items mount. Reordering them with @key while the menu is OPEN is not supported: Blazor moves the existing components without re-registering them, so the rendered order changes and the arrow keys keep the previous sequence. Render the list in its final order before opening it.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Reduces item height/padding for a denser menu (consistent with other components' Dense).", null, false, false, false, @"FlareMenu"),
@@ -8396,7 +8408,7 @@ public static class ComponentApiRegistry
             @"Breakpoint",
             @"Flare.Components.Breakpoint",
             @"Flare.Components",
-            @"A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). The bounds are configurable per subscription and via FlareOptions.",
+            @"A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). Custom bounds apply only to an individual SubscribeAsync subscription through Breakpoints. The breakpoint-only subscriptions, CSS Hidden/Col utilities and MediaQuery helpers keep the default tiers; there is no global breakpoint-bound setting.",
             null,
             new ApiEnumMember[]
             {
@@ -9885,18 +9897,18 @@ public static class ComponentApiRegistry
             @"MenuAnchor",
             @"Flare.Components.MenuAnchor",
             @"Flare.Components",
-            @"Corner of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Logical (RTL-aware) aliases are also provided.",
+            @"Logical edge of the activator that the FlareMenu dropdown panel aligns to, and the direction in which it opens. Start is left in LTR and right in RTL; end is the opposite. Prefer the Start/End names. The Left/Right names are retained for compatibility and also follow text direction.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"BottomLeft", @"0", @"Panel opens below the activator, aligned to the left / start edge."),
-                new ApiEnumMember(@"BottomStart", @"0", @"Alias for BottomLeft - panel opens below, start-aligned."),
-                new ApiEnumMember(@"BottomRight", @"1", @"Panel opens below the activator, aligned to the right / end edge."),
-                new ApiEnumMember(@"BottomEnd", @"1", @"Alias for BottomRight - panel opens below, end-aligned."),
-                new ApiEnumMember(@"TopLeft", @"2", @"Panel opens above the activator, aligned to the left / start edge."),
-                new ApiEnumMember(@"TopStart", @"2", @"Alias for TopLeft - panel opens above, start-aligned."),
-                new ApiEnumMember(@"TopRight", @"3", @"Panel opens above the activator, aligned to the right / end edge."),
-                new ApiEnumMember(@"TopEnd", @"3", @"Alias for TopRight - panel opens above, end-aligned."),
+                new ApiEnumMember(@"BottomLeft", @"0", @"Compatibility name for BottomStart. Opens below at logical start: left in LTR, right in RTL."),
+                new ApiEnumMember(@"BottomStart", @"0", @"Opens below at logical start: left in LTR, right in RTL."),
+                new ApiEnumMember(@"BottomRight", @"1", @"Compatibility name for BottomEnd. Opens below at logical end: right in LTR, left in RTL."),
+                new ApiEnumMember(@"BottomEnd", @"1", @"Opens below at logical end: right in LTR, left in RTL."),
+                new ApiEnumMember(@"TopLeft", @"2", @"Compatibility name for TopStart. Opens above at logical start: left in LTR, right in RTL."),
+                new ApiEnumMember(@"TopStart", @"2", @"Opens above at logical start: left in LTR, right in RTL."),
+                new ApiEnumMember(@"TopRight", @"3", @"Compatibility name for TopEnd. Opens above at logical end: right in LTR, left in RTL."),
+                new ApiEnumMember(@"TopEnd", @"3", @"Opens above at logical end: right in LTR, left in RTL."),
             },
             new string[]
             {

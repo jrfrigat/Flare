@@ -74,6 +74,16 @@ Returns: `ValueTask`.
 Expands every tree row.
 Returns: `void`.
 
+### `HandleTreeKeyAsync(int index, string key)`
+
+Navigates a panel's visible rows without taking keys from controls inside a row.
+Returns: `Task`.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `index` | `int` | Index in the flattened visible row list. |
+| `key` | `string` | An arrow, Home, End or Space key. |
+
 
 ## Inheritance
 
