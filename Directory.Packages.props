@@ -17,6 +17,7 @@
        PackageReferences that used to be injected via Directory.Build.props and then re-pinned in
        each csproj). GlobalPackageReference implies PrivateAssets="all". -->
   <ItemGroup>
+    <PackageVersion Include="Ical.Net" Version="5.2.4" />
     <GlobalPackageReference Include="MinVer" Version="8.0.0" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.402" />
   </ItemGroup>

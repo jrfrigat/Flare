@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Components.Scheduler</PackageId>
+    <RootNamespace>Flare.Components</RootNamespace>
+    <Description>Generic calendar scheduling with time zones, RFC 5545 recurrence and resource timelines composed from Flare components.</Description>
+    <PackageTags>blazor;components;scheduler;calendar;recurrence;timeline</PackageTags>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+    <ProjectReference Include="../Flare.Components.Gantt/Flare.Components.Gantt.csproj" />
+    <PackageReference Include="Ical.Net" />
+  </ItemGroup>
+</Project>
