@@ -30,6 +30,7 @@ public sealed class GanttInteractionTests : GanttTestBase
     [Fact]
     public void Ctrl_arrow_moves_one_unit_and_pushes_successors()
     {
+        using var ui = new GanttUiCulture("ru-RU");
         var seen = new List<GanttChangeEventArgs>();
         var cut = Editable(seen);
 
@@ -154,6 +155,7 @@ public sealed class GanttInteractionTests : GanttTestBase
     [Fact]
     public void Links_are_created_from_the_keyboard_and_cycles_are_refused()
     {
+        using var ui = new GanttUiCulture("ru-RU");
         var created = new List<GanttLink>();
         var rejected = new List<GanttLinkRejectedEventArgs>();
         var items = new[] { new Work("a", "r1", Day(0), Day(1)), new Work("b", "r1", Day(2), Day(3)), new Work("c", "r2", Day(4), Day(5)) };
@@ -169,7 +171,7 @@ public sealed class GanttInteractionTests : GanttTestBase
         var refusal = Assert.Single(rejected);
         Assert.Equal(GanttValidationCode.Cycle, refusal.Validation.Code);
         Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: c \u2192 a \u2192 b \u2192 c.", refusal.Message);
-        Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: C \u2192 A \u2192 B \u2192 C.", new GanttTexts().Describe(refusal.Validation, key => key.ToUpperInvariant(), new System.Globalization.CultureInfo("ru-RU")));
+        Assert.Equal("\u0421\u0432\u044F\u0437\u044C \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u0446\u0438\u043A\u043B: C \u2192 A \u2192 B \u2192 C.", GanttStrings.Describe(refusal.Validation, key => key.ToUpperInvariant()));
         Assert.Equal(refusal.Message, cut.Find("[role=status]").TextContent);
 
         Bar(cut, "a").KeyDown(new KeyboardEventArgs { Key = "L" });
@@ -182,6 +184,7 @@ public sealed class GanttInteractionTests : GanttTestBase
     [Fact]
     public void A_link_the_handler_refuses_is_not_announced()
     {
+        using var ui = new GanttUiCulture("ru-RU");
         var created = new List<GanttLink>();
         var cut = Chart(p => p.Add(x => x.Rows, TwoRows)
             .Add(x => x.Items, new[] { new Work("a", "r1", Day(0), Day(1)), new Work("c", "r2", Day(4), Day(5)) })

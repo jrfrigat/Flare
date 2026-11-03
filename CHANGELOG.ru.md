@@ -16,6 +16,8 @@
 
 ### Изменено
 
+- **Несовместимое изменение:** подписи и объявления Gantt теперь используют `CultureInfo.CurrentUICulture` через `GanttStrings`, как остальные компоненты Flare. Удалите обращения к `FlareGantt.Texts`, `EffectiveTexts` и `GanttTexts`; сообщения о зависимостях дает `GanttStrings.Describe(validation, name)`. `FlareGantt.Culture` по-прежнему форматирует даты и шкалу.
+
 - **Несовместимое изменение:** замените `Close`/`Cancel` у `FlareDialogInstance` и `DialogReference` на ожидаемые через `await` методы `CloseAsync`/`CancelAsync`. Они учитывают `BeforeClose` и зарегистрированные защиты, возвращают признак принятого закрытия и сохраняют первый принятый результат. Встроенные диалоги предоставляют `CloseAsync`; внутренняя навигация использует те же защиты с новыми причинами закрытия `Programmatic` и `Navigation`.
 - Пакеты-дополнения (Barcode, Carousel, Gantt, IDE, Kanban, Media, QrCode, Query, RichTextEditor, Transfer) помечены как обрезаемые: WebAssembly-приложение с триммингом выбрасывает из них неиспользуемое так же, как из ядра; в Gallery, где используются все десять, они уменьшились с 166 до 156 КБ в сжатом виде.
 

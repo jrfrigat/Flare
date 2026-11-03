@@ -15,6 +15,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- **Breaking:** Gantt captions and announcements now follow `CultureInfo.CurrentUICulture` through `GanttStrings`, like the other Flare components. Remove `FlareGantt.Texts`, `EffectiveTexts` and `GanttTexts` usages; use `GanttStrings.Describe(validation, name)` for dependency messages. `FlareGantt.Culture` continues to format dates and the axis.
+
 - **Breaking:** replace `FlareDialogInstance` and `DialogReference` `Close`/`Cancel` calls with awaited `CloseAsync`/`CancelAsync`. They now consult `BeforeClose` and registered guards, return whether closure was accepted, and retain the first accepted result. Inline dialogs expose `CloseAsync`; internal navigation uses the same guards through the new `Programmatic` and `Navigation` close reasons.
 - The add-on packages (Barcode, Carousel, Gantt, IDE, Kanban, Media, QrCode, Query, RichTextEditor, Transfer) are marked trimmable, so a WebAssembly app publishing with trimming drops what it does not use from them as it already did from the core; in the Gallery, which uses all ten, they shrink from 166 KB to 156 KB compressed.
 

@@ -116,7 +116,7 @@ public partial class FlareGanttPanel<TRow, TItem>
                 return;
             case "l" or "L" or "\u0434" or "\u0414" when CanEdit && !e.CtrlKey && !bar.IsSummary:
                 _linkFrom = bar.Key;
-                _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkStarted!, bar.Label ?? bar.Key);
+                _announcement = string.Format(Gantt!.Axis.Culture, GanttStrings.LinkStarted!, bar.Label ?? bar.Key);
                 return;
         }
 
@@ -157,7 +157,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         var validation = GanttGraph.Validate(Links ?? [], link);
         if (!validation.IsValid)
         {
-            var message = Gantt!.EffectiveTexts.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key, Gantt.Axis.Culture) ?? "";
+            var message = GanttStrings.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key) ?? "";
             _announcement = message;
             await OnLinkRejected.InvokeAsync(new GanttLinkRejectedEventArgs(link, validation, message));
             return false;
@@ -166,7 +166,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         await OnLinkCreate.InvokeAsync(args);
         if (args.Cancel) return false;
         // The consumer owns the link data; this is the component's only post-action, and Cancel suppresses it.
-        _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.LinkCreated!,
+        _announcement = string.Format(Gantt!.Axis.Culture, GanttStrings.LinkCreated!,
             _bars.TryGetValue(link.FromKey, out var from) ? from.Label ?? link.FromKey : link.FromKey,
             _bars.TryGetValue(link.ToKey, out var to) ? to.Label ?? link.ToKey : link.ToKey);
         return true;
@@ -219,7 +219,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         if (!args.Cancel)
         {
             var label = _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key;
-            _announcement = string.Format(Gantt!.Axis.Culture, Gantt.EffectiveTexts.Moved!, label, Describe(span));
+            _announcement = string.Format(Gantt!.Axis.Culture, GanttStrings.Moved!, label, Describe(span));
         }
     }
 

@@ -52,7 +52,7 @@
                        Value="@SideEffectivePixels" DefaultValue="@(ParseLength(_sideDefault ?? DefaultSideWidth ?? SideWidth))"
                        ValueVariable="--_gantt-side" ValueScope="@($".{Css.Classes.Gantt.Root}")"
                        MinSize="@Pixels(MinSidePixels)" MaxSize="@Pixels(MaxSidePixels)"
-                       AriaLabel="@EffectiveTexts.ResizeSide" OnSizeChanged="SideChanged" />
+                       AriaLabel="@GanttStrings.ResizeSide" OnSizeChanged="SideChanged" />
     }
 </div>
 
@@ -154,9 +154,6 @@
     /// <summary>The panels.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    /// <summary>Texts to replace in announcements, refusals and labels; every text not set here comes from the package resources in <see cref="Culture"/>.</summary>
-    [Parameter] public GanttTexts? Texts { get; set; }
-
     /// <summary>Accessible name of the whole timeline.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
@@ -200,12 +197,6 @@
 
     /// <summary>Width of the time area in pixels.</summary>
     public double Width => Axis.Units * EffectiveUnitWidth;
-
-    /// <summary>The texts in use.</summary>
-    public GanttTexts EffectiveTexts => _texts ??= (Texts ?? new GanttTexts()).Over(Axis.Culture);
-
-    // Resolved once per parameter change: a tree row reads its toggle label on every render.
-    private GanttTexts? _texts;
 
     /// <summary>The selected item key.</summary>
     public string? Selected => _selected;
@@ -446,7 +437,6 @@
         // double click, instead of the value the chart happened to mount with.
         _sideDefault = DefaultSideWidth ?? SideWidth;
         var before = Axis;
-        _texts = null;
         Axis = new GanttAxis(Range, Scale, Culture);
         if (_lastRange is { } last && last != Range)
         {

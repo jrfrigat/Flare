@@ -84,13 +84,15 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 }
 ```
 
-- Texts come from the package resources (English and Russian) in the chart's `Culture`. Replace any of them with
-  `Texts="new GanttTexts { Moved = ... }"`; the rest stay.
+- Labels, dependency messages and announcements come from EN/RU resources through `GanttStrings` and
+  `CultureInfo.CurrentUICulture`, like other Flare components. Unsupported UI languages fall back to English.
+  The chart's `Culture` controls dates and axis formatting independently. `GanttStrings.Describe` formats
+  dependency validation messages. The former `Texts`, `EffectiveTexts` and `GanttTexts` API is removed.
 
 ## Coming from the Alva incubator
 
 The package grew in the Alva repository. Differences from that copy:
-`AddFlareGantt()` is required; `GanttTexts` holds optional overrides instead of whole `English`/`Russian` sets;
+`AddFlareGantt()` is required; UI texts use the application's current UI culture;
 the row-header column is resized with `FlareSplitter` (the narrower/wider/reset buttons are gone, Home or a double
 click resets, and `SideWidthChanged` reports pixels); leaving the chart no longer cancels a drag (Escape does);
 design overrides inherit from the theme and have semantic base-token fallbacks at each use.
