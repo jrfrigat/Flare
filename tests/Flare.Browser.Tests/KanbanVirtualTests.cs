@@ -18,7 +18,7 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
         var source = page.Locator("[data-flare-drag='t0']");
         await source.FocusAsync();
         await page.Keyboard.PressAsync("Space");
-        var status = page.Locator(".flare-drag-context [role=status]");
+        var status = page.Locator($".{Css.Classes.Drag.Context} [role=status]");
         await Expect(status).ToHaveTextAsync("Picked up. Arrow keys move it, space drops it, escape cancels.");
         for (var i = 0; i < 299; i++) await page.Keyboard.PressAsync("ArrowDown");
         await Expect(status).ToHaveTextAsync("Position 300 of 500.");
@@ -38,9 +38,9 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
         var source = page.Locator("[data-flare-drag='t0']");
         await source.FocusAsync();
         await page.Keyboard.PressAsync("Space");
-        await Expect(page.Locator(".flare-drag-context [role=status]")).ToContainTextAsync("Picked up.");
+        await Expect(page.Locator($".{Css.Classes.Drag.Context} [role=status]")).ToContainTextAsync("Picked up.");
         for (var i = 0; i < 100; i++) await page.Keyboard.PressAsync("ArrowDown");
-        await Expect(page.Locator(".flare-drag-context [role=status]")).ToHaveTextAsync("Position 101 of 500.");
+        await Expect(page.Locator($".{Css.Classes.Drag.Context} [role=status]")).ToHaveTextAsync("Position 101 of 500.");
         await page.Keyboard.PressAsync("Escape");
         await Expect(page.Locator("#first-index")).ToHaveTextAsync("0");
         await Expect(source).ToBeFocusedAsync();

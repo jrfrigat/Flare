@@ -9,6 +9,7 @@ function stopFocusWait(root) {
     if (!pending) return;
     pending.observer.disconnect();
     clearTimeout(pending.timer);
+    pending.cleanup();
     focusWaiters.delete(root);
 }
 
@@ -87,10 +88,21 @@ export function endKeyboardHint(root, restoreFocus = true) {
         source.focus({ preventScroll: true });
         return true;
     };
-    if (focus()) return;
-    // The drop or restored origin may need one virtualizer render before its item exists again.
-    const observer = new MutationObserver(() => { if (focus()) stopFocusWait(root); });
-    const timer = setTimeout(() => stopFocusWait(root), 5000);
-    focusWaiters.set(root, { observer, timer });
+    if (focus() && !session.origin) return;
+    // A virtualizer can replace its first restored window once more after measuring card heights.
+    // Keep focus on the source through those renders, but release it as soon as the user moves on.
+    const stop = () => stopFocusWait(root);
+    const onFocus = e => { if (e.target !== root.querySelector(itemSelector(session.sourceId))) stop(); };
+    const observer = new MutationObserver(() => { if (root.isConnected) focus(); else stop(); });
+    const timer = setTimeout(stop, 5000);
+    const cleanup = () => {
+        document.removeEventListener('keydown', stop, true);
+        document.removeEventListener('pointerdown', stop, true);
+        document.removeEventListener('focusin', onFocus, true);
+    };
+    focusWaiters.set(root, { observer, timer, cleanup });
+    document.addEventListener('keydown', stop, true);
+    document.addEventListener('pointerdown', stop, true);
+    document.addEventListener('focusin', onFocus, true);
     observer.observe(root, { childList: true, subtree: true });
 }

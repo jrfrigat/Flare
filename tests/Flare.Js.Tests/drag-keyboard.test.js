@@ -56,3 +56,24 @@ it('restores the original window and focus after cancellation', async () => {
     await Promise.resolve();
     expect(document.activeElement).toBe(source);
 });
+
+it('keeps restored focus through a second virtual window render, then stops on user input', async () => {
+    const { root, list } = board();
+    showKeyboardHint(root, 'todo', 299, 'source', 'remote', vi.fn(), vi.fn());
+    list.replaceChildren();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    endKeyboardHint(root);
+    const source = document.createElement('button');
+    source.dataset.flareDrag = 'source';
+    list.append(source);
+    await Promise.resolve();
+    expect(document.activeElement).toBe(source);
+    const replacement = source.cloneNode(true);
+    source.replaceWith(replacement);
+    await Promise.resolve();
+    expect(document.activeElement).toBe(replacement);
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    replacement.replaceWith(source);
+    await Promise.resolve();
+    expect(document.activeElement).not.toBe(source);
+});
