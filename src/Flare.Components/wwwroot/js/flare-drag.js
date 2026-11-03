@@ -8,6 +8,7 @@
 // flare-dragdrop.js.
 
 import { registry } from './flare-dom.js';
+import { cssLengthResolver } from './flare-css-length.js';
 
 // Attach a drag gesture to `handle`. On press it captures the pointer (so tracking continues even
 // when the cursor leaves the element and works for mouse/pen/touch alike) and reports the delta from
@@ -134,35 +135,9 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
         const rect = container.getBoundingClientRect();
         return horiz ? rect.width : rect.height;
     };
-    // A limit is a CSS length, not a number. parseFloat turned "10rem" into 10px and "50%" into 50px;
-    // % is resolved against the parent box - the space the container can actually occupy - and the
-    // font-relative and viewport units against what the browser computes for them. Anything that is
-    // not a supported unit is ignored instead of being read as pixels.
-    const lengthPx = (raw, fallback) => {
-        if (raw == null || raw === '') return fallback;
-        const text = String(raw).trim();
-        if (!text) return fallback;
-        const n = parseFloat(text);
-        if (!Number.isFinite(n) || n < 0) return fallback;
-        if (text.endsWith('%')) {
-            const parent = container.parentElement?.getBoundingClientRect();
-            const basis = parent ? (horiz ? parent.width : parent.height) : NaN;
-            return Number.isFinite(basis) ? basis * n / 100 : fallback;
-        }
-        // 'rem' has to be tested before 'em', which it also ends with.
-        const units = [
-            ['px', 1],
-            ['rem', parseFloat(getComputedStyle(document.documentElement).fontSize)],
-            ['em', parseFloat(getComputedStyle(container).fontSize)],
-            ['vw', window.innerWidth / 100],
-            ['vh', window.innerHeight / 100],
-        ];
-        for (const [unit, base] of units) {
-            if (!text.endsWith(unit)) continue;
-            return Number.isFinite(base) ? n * base : fallback;
-        }
-        return fallback;
-    };
+    const lengths = cssLengthResolver(container, horiz);
+    const lengthPx = lengths.resolve;
+    const step = () => Math.max(1, lengthPx(handle.dataset.flareResizeStepSize, 16));
     const bounds = () => {
         const parent = container.parentElement?.getBoundingClientRect();
         const available = parent ? (horiz ? parent.width : parent.height) : size();
@@ -195,20 +170,22 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
     };
     const keyboard = e => {
         if (e.target !== handle) return;
+        lengths.refresh();
         const positive = horiz ? 'ArrowRight' : 'ArrowDown';
         const negative = horiz ? 'ArrowLeft' : 'ArrowUp';
         const sign = edge === 'left' || edge === 'top' ? -1 : 1;
         if (e.key === 'Home') apply(bounds().min);
         else if (e.key === 'End') apply(bounds().max);
-        else if (e.key === positive) apply(size() + sign * 16);
-        else if (e.key === negative) apply(size() - sign * 16);
+        else if (e.key === positive) apply(size() + sign * step());
+        else if (e.key === negative) apply(size() - sign * step());
         else return;
         e.preventDefault();
         notify();
     };
     const click = e => {
+        lengths.refresh();
         const button = e.currentTarget;
-        apply(size() + Number(button.dataset.flareResizeStep) * 16);
+        apply(size() + Number(button.dataset.flareResizeStep) * step());
         e.preventDefault();
         notify();
     };
@@ -217,6 +194,7 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
     reflect(size());
     const off = startDrag(handle, {
         onStart() {
+            lengths.refresh();
             startSize = size();
         },
         onMove(dx, dy) {

@@ -6,6 +6,7 @@ import { listen, registry } from './flare-dom.js';
 // page-wide link-button Space handler a guaranteed installation.
 import './flare-link-button.js';
 import './flare-backdrop.js';
+import './flare-focus-proxy.js';
 
 export function setCssVariables(vars) {
     const root = document.documentElement;

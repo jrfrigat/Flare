@@ -26,7 +26,7 @@ public sealed record SchedulerEventData
     public string? Description { get; init; }
     /// <summary>Theme role or custom event accent.</summary>
     public FlareColor Color { get; init; }
-    /// <summary>RFC 5545 RRULE value, without the RRULE: prefix; null for one event.</summary>
+    /// <summary>Optional recurrence metadata. The RFC adapter interprets this as RRULE without its prefix; the core does not parse it.</summary>
     public string? RecurrenceRule { get; init; }
     /// <summary>EXDATE instants, compared by UTC instant.</summary>
     public IReadOnlyList<DateTimeOffset> ExceptionDates { get; init; } = [];
@@ -46,7 +46,7 @@ public sealed record SchedulerEventData
 /// <typeparam name="TItem">Application model.</typeparam>
 /// <param name="Item">Original item; an override item when one is present.</param>
 /// <param name="Data">Projected occurrence dates and presentation.</param>
-/// <param name="Identity">Stable series key plus original UTC start or all-day date.</param>
+/// <param name="Identity">Stable application key, backend occurrence id, or locally expanded series key plus original start.</param>
 /// <param name="Series">Series metadata used to describe edits; a ready provider occurrence may supply only the master key.</param>
 public sealed record SchedulerOccurrence<TItem>(TItem Item, SchedulerEventData Data, string Identity, SchedulerEventData Series);
 

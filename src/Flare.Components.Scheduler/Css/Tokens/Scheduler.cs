@@ -27,8 +27,6 @@ public static class Scheduler
     public const string SlotHeight = "--flare-scheduler-slot-height";
     /// <summary>Custom-property name for DayMinWidth.</summary>
     public const string DayMinWidth = "--flare-scheduler-day-min-width";
-    /// <summary>Custom-property name for TimeWidth.</summary>
-    public const string TimeWidth = "--flare-scheduler-time-width";
     /// <summary>Custom-property name for SlotLine.</summary>
     public const string SlotLine = "--flare-scheduler-slot-line";
     /// <summary>Custom-property name for MajorLine.</summary>
@@ -71,7 +69,5 @@ public static class Scheduler
     public const string ResourceHeaderSurface = "--flare-scheduler-resource-header-surface";
     /// <summary>Custom-property name for ResizeWidth.</summary>
     public const string ResizeWidth = "--flare-scheduler-resize-width";
-    /// <summary>Custom-property name for MoreColor.</summary>
-    public const string MoreColor = "--flare-scheduler-more-color";
 }
 

@@ -1,11 +1,14 @@
 using Flare.Components.Scheduler;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Flare.Components;
 
 public partial class FlareScheduler<TItem>
 {
     [Inject] private TimeProvider Clock { get; set; } = default!;
+    [Inject] private Services.IUiJsService Ui { get; set; } = default!;
+    private ElementReference _root;
     private DateOnly _date, _dateParameter;
     private SchedulerView _view, _viewParameter;
     private bool _initialized, _loading, _disposed;
@@ -21,6 +24,11 @@ public partial class FlareScheduler<TItem>
     private string Caption => _view == SchedulerView.Year ? _date.Year.ToString(EffectiveCulture)
         : _view == SchedulerView.Day ? _date.ToString("D", EffectiveCulture)
         : _date.ToString("Y", EffectiveCulture);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root);
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -58,14 +66,15 @@ public partial class FlareScheduler<TItem>
         _occurrences = [];
         _loading = true;
         _error = null;
-        StateHasChanged();
         try
         {
-            var events = EventsProvider is { } provider
-                ? await provider(new(window, cancellation.Token)) : Events ?? [];
+            var pending = EventsProvider?.Invoke(new(window, cancellation.Token));
+            if (pending is { IsCompleted: false }) StateHasChanged();
+            var events = pending is not null ? await pending : Events ?? [];
             if (cancellation.IsCancellationRequested || generation != _generation || _disposed) return;
             _occurrences = SchedulerOccurrences.Resolve(events, Mapping, window, MaximumOccurrences,
                 cancellation.Token, MaximumEvaluationSteps, RecurrenceExpander);
+            if (SelectedEvent is { } selected) SelectedEvent = _occurrences.FirstOrDefault(o => o.Identity == selected.Identity);
             _version++;
         }
         catch (OperationCanceledException) when (cancellation.IsCancellationRequested) { }
@@ -118,6 +127,7 @@ public partial class FlareScheduler<TItem>
     {
         SelectedEvent = null;
         await OnSlotSelected.InvokeAsync(slot);
+        if (Editable) await CreateEventAsync(slot);
     }
     /// <summary>Cancels pending provider work before disposing component services.</summary>
     public override async ValueTask DisposeAsync()
@@ -127,6 +137,9 @@ public partial class FlareScheduler<TItem>
         _generation++;
         _load?.Cancel();
         _load?.Dispose();
+        if (_editorReference is { } editor) await editor.CancelAsync();
+        try { await Ui.RemoveTreeKeyboardAsync(_root); }
+        catch (JSDisconnectedException) { }
         await base.DisposeAsync();
     }
 }

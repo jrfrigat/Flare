@@ -7,13 +7,30 @@ namespace Flare.Components.Scheduler.Tests;
 
 public sealed class SchedulerViewTests : FlareTestContext
 {
+    [Fact]
+    public void FallBackGridDisplaysBothOffsetsAndPositiveCrossFoldDuration()
+    {
+        var item = Event with { Start = new(2026, 11, 1, 1, 30, 0, TimeSpan.FromHours(-4)),
+            End = new(2026, 11, 1, 1, 15, 0, TimeSpan.FromHours(-5)) };
+        var cut = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Events, new[] { item }).Add(x => x.Date, new DateOnly(2026, 11, 1))
+            .Add(x => x.View, SchedulerView.Day).Add(x => x.TimeZone, TimeZoneInfo.FindSystemTimeZoneById("America/New_York")));
+        Assert.Equal(50, cut.FindAll(".flare-scheduler__slot").Count);
+        Assert.Contains("-04:00", cut.Markup);
+        Assert.Contains("-05:00", cut.Markup);
+        Assert.Contains("*1.5)", cut.Find(".flare-scheduler__event").GetAttribute("style"));
+    }
     private static readonly DateOnly Date = new(2026, 11, 4);
     private static readonly SchedulerEventData Event = new()
     {
         Key = "one", Title = "Planning", Start = new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero),
         End = new(2026, 11, 4, 10, 0, 0, TimeSpan.Zero)
     };
-    public SchedulerViewTests() => Services.AddFlareScheduler();
+    public SchedulerViewTests()
+    {
+        Services.AddFlareScheduler();
+        Services.AddSingleton<Flare.Abstractions.IDialogService, Flare.Infrastructure.DialogService>();
+    }
 
     [Theory]
     [InlineData(SchedulerView.Day, 1)]
@@ -65,6 +82,7 @@ public sealed class SchedulerViewTests : FlareTestContext
             .Add(x => x.TimeZone, TimeZoneInfo.Utc));
         Task? pending = null;
         await cut.InvokeAsync(() => { pending = cut.Instance.ReloadAsync(); });
+        cut.WaitForAssertion(() => Assert.Contains("Loading", cut.Markup));
         await cut.InvokeAsync(() => cut.Instance.ReloadAsync());
         Assert.True(requests[1].CancellationToken.IsCancellationRequested);
         old.SetResult([]);

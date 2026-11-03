@@ -1,0 +1,37 @@
+@page "/scheduler"
+@using Flare.Components.Scheduler
+@using Flare.Components.Gantt
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareDialogProvider />
+    <button id="reject" @onclick="() => _reject = !_reject">Reject @_reject</button>
+    <button id="series" @onclick="AddSeries">Recurring</button>
+    <button id="timeline" @onclick="() => _view = SchedulerView.Timeline">Timeline</button>
+    <FlareScheduler TItem="SchedulerEventData" id="scheduler" Mapping="SchedulerMappings.EventData"
+                    Events="_events" Date="_date" View="_view" TimeZone="TimeZoneInfo.Utc"
+                    Culture="@(CultureInfo.GetCultureInfo("en-GB"))" Editable="true" OnChange="Change"
+                    Style="height:700px;--flare-scheduler-slot-height:40px;" />
+    <output id="change">@_change</output>
+</FlareThemeProvider>
+
+@code {
+    private readonly DateOnly _date = new(2026, 11, 4);
+    private SchedulerView _view = SchedulerView.Day;
+    private bool _reject;
+    private string _change = "";
+    private List<SchedulerEventData> _events =
+    [new() { Key = "one", Title = "Planning", Start = new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero), End = new(2026, 11, 4, 10, 0, 0, TimeSpan.Zero) }];
+    private void AddSeries() => _events = [_events[0] with { SeriesKey = "master", RecurrenceId = "provider-instance" }];
+    private void Change(SchedulerChangeEventArgs<SchedulerEventData> args)
+    {
+        args.Cancel = _reject;
+        _change = $"{args.Action}:{args.Data.Start:HH:mm}-{args.Data.End:HH:mm}:{args.Scope}:{args.Cancel}";
+        if (args.Cancel) return;
+        _events = args.Action switch
+        {
+            SchedulerEditAction.Create => [.. _events, args.Data],
+            SchedulerEditAction.Delete => _events.Where(e => e.Key != args.Data.Key).ToList(),
+            _ => _events.Select(e => e.Key == args.Data.Key ? args.Data : e).ToList()
+        };
+    }
+}

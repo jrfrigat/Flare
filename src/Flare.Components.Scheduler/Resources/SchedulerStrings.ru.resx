@@ -25,15 +25,19 @@
   <data name="End" xml:space="preserve"><value>Окончание (не включается)</value></data>
   <data name="Description" xml:space="preserve"><value>Описание</value></data>
   <data name="Resource" xml:space="preserve"><value>Ресурс</value></data>
-  <data name="Recurrence" xml:space="preserve"><value>Повтор (RFC 5545 RRULE)</value></data>
-  <data name="RecurrenceHint" xml:space="preserve"><value>Например: FREQ=WEEKLY;BYDAY=MO,WE. Пустое поле означает одно событие.</value></data>
+  <data name="Recurrence" xml:space="preserve"><value>Повтор</value></data>
+  <data name="RecurrenceHint" xml:space="preserve"><value>Повторение задается приложением. Выберите область изменения событий.</value></data>
   <data name="Scope" xml:space="preserve"><value>Применить к</value></data>
   <data name="Occurrence" xml:space="preserve"><value>Этот экземпляр</value></data>
   <data name="Following" xml:space="preserve"><value>Этот и последующие</value></data>
   <data name="Series" xml:space="preserve"><value>Вся серия</value></data>
   <data name="Changed" xml:space="preserve"><value>Изменение события запрошено.</value></data>
   <data name="Cancelled" xml:space="preserve"><value>Изменение отменено.</value></data>
-  <data name="Invalid" xml:space="preserve"><value>Проверьте даты и правило повторения.</value></data>
+  <data name="Invalid" xml:space="preserve"><value>Введите название и проверьте даты события.</value></data>
   <data name="Unassigned" xml:space="preserve"><value>Без ресурса</value></data>
+  <data name="Delete" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Move" xml:space="preserve"><value>Перенести событие</value></data>
+  <data name="Resize" xml:space="preserve"><value>Изменить длительность</value></data>
+  <data name="Schedule" xml:space="preserve"><value>Расписание</value></data>
 </root>
 

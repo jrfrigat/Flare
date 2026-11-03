@@ -19,3 +19,7 @@ public partial class FlareSchedulerTimeline<TItem> { }
 /// <summary>Shared event selection control that preserves application templates.</summary>
 /// <typeparam name="TItem">Application event type.</typeparam>
 public partial class FlareSchedulerEvent<TItem> { }
+
+/// <summary>Standard dialog body over a scheduler working copy, replaceable through EditorTemplate.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+public partial class FlareSchedulerEditor<TItem> { }

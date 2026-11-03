@@ -49,6 +49,12 @@ const TREE_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'H
 export function registerTreeKeyboard(root, dotNetRef) {
     if (!root) return;
     const keydown = e => {
+        if (e.ctrlKey && !e.altKey && !e.metaKey && !e.isComposing
+            && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)
+            && e.target.matches?.('[data-flare-edit-keys]') && root.contains(e.target)) {
+            e.preventDefault();
+            return;
+        }
         if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || !TREE_KEYS.has(e.key)) return;
         const treeItem = e.target.matches?.('[role="treeitem"]');
         const slotGrid = root.hasAttribute('data-flare-keyboard-grid');

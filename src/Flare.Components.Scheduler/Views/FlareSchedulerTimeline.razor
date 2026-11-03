@@ -8,6 +8,7 @@
     <FlareGanttPanel TRow="SchedulerResource" TItem="SchedulerOccurrence<TItem>" Rows="_rows"
                      RowKey="r => r.Key" Items="Context.Occurrences" ItemKey="o => o.Identity"
                      ItemRow="o => o.Data.ResourceKey ?? string.Empty" ItemSpan="o => SchedulerClock.Span(o.Data, Context.Owner.TimeZone)"
+                     Editable="Context.Owner.CanEdit" ScheduleMode="GanttScheduleMode.None" OnChange="ChangeAsync"
                      ItemLabel="o => o.Data.Title" OnItemClick="o => Context.Owner.SelectEventAsync(o)">
         <RowHeader Context="resource">@resource.Title</RowHeader>
         <ItemTemplate Context="occurrence">
@@ -37,5 +38,24 @@
             _scrolledDate = Context.Date;
             await _timeline.ScrollTo(Context.Date.ToDateTime(TimeOnly.MinValue));
         }
+    }
+    private async Task ChangeAsync(GanttChangeEventArgs args)
+    {
+        args.Cancel = true;
+        var occurrence = Context.Occurrences.FirstOrDefault(o => o.Identity == args.ItemKey);
+        var proposed = args.Changes.FirstOrDefault(c => c.ItemKey == args.ItemKey);
+        if (occurrence is null || proposed is null) return;
+        var data = occurrence.Data;
+        if (data.AllDay is not null)
+            data = data with { AllDay = new(DateOnly.FromDateTime(proposed.Span.Start), DateOnly.FromDateTime(proposed.Span.End)) };
+        else
+        {
+            if (Context.Owner.TimeZone.IsInvalidTime(proposed.Span.Start) || Context.Owner.TimeZone.IsInvalidTime(proposed.Span.End)) return;
+            DateTimeOffset At(DateTime wall, TimeSpan offset) => SchedulerClock.At(DateOnly.FromDateTime(wall), TimeOnly.FromDateTime(wall), Context.Owner.TimeZone, offset);
+            data = data with { Start = At(proposed.Span.Start, data.Start.Offset), End = At(proposed.Span.End, data.End.Offset) };
+        }
+        data = data with { ResourceKey = proposed.RowKey is { } row ? row.Length == 0 ? null : row : data.ResourceKey };
+        await Context.Owner.RequestChangeAsync(occurrence, data,
+            args.Action == GanttEditAction.Move ? SchedulerEditAction.Move : SchedulerEditAction.Resize);
     }
 }

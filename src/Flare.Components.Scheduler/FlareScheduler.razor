@@ -1,7 +1,8 @@
 @typeparam TItem
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass()" style="@Style" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+<div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style" aria-label="@(AriaLabel ?? SchedulerStrings.Schedule)"
+     data-flare-focus-target="@(_focusEvent is not null ? "[data-scheduler-focus-entry]" : null)" @attributes="AdditionalAttributes">
     @if (ShowToolbar)
     {
         <div class="@Css.Classes.Scheduler.Toolbar">
@@ -13,6 +14,15 @@
                     <FlareButton OnClick="TodayAsync">@SchedulerStrings.Today</FlareButton>
                     <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerStrings.Next" Icon="FlareIcons.ChevronRight" />
                     <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@Caption</FlareText>
+                    @if (Editable && OnChange.HasDelegate)
+                    {
+                        <FlareButton OnClick="() => CreateEventAsync(new(_window.Start, _window.Start + SlotDuration))">@SchedulerStrings.Create</FlareButton>
+                        @if (SelectedEvent is { } selected)
+                        {
+                            <FlareButton OnClick="() => EditEventAsync(selected)">@SchedulerStrings.Edit</FlareButton>
+                            <FlareButton OnClick="() => RequestChangeAsync(selected, selected.Data, SchedulerEditAction.Delete)">@SchedulerStrings.Delete</FlareButton>
+                        }
+                    }
                     @foreach (var view in Views)
                     {
                         var target = view;
@@ -22,7 +32,7 @@
             }
         </div>
     }
-    <div class="@Css.Classes.Scheduler.Viewport" aria-busy="@(_loading ? "true" : "false")">
+    <div class="@Css.Classes.Scheduler.Viewport" data-flare-focus-target="[data-scheduler-focus-entry]" aria-busy="@(_loading ? "true" : "false")">
         @if (_loading) { <div role="status" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.Loading</div> }
         else if (_error is not null) { <div role="alert" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.LoadError</div> }
         else if (ViewTemplate is not null) { @ViewTemplate(Snapshot) }

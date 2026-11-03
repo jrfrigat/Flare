@@ -40,7 +40,7 @@ public static class SchedulerOccurrences
             if (recurrenceExpander is null || (string.IsNullOrWhiteSpace(data.RecurrenceRule) && data.RecurrenceDates.Count == 0 && data.RecurrenceDays.Count == 0
                 && data.ExceptionDates.Count == 0 && data.ExceptionDays.Count == 0))
             {
-                var identity = data.RecurrenceId ?? Identity(data.Key, data.Start, data.AllDay?.Start);
+                var identity = data.RecurrenceId ?? data.Key;
                 if (!identities.Contains(identity)) Add(item, data, identity, data with { Key = data.SeriesKey ?? data.Key });
                 continue;
             }

@@ -35,4 +35,13 @@
 .flare-scheduler__status { padding: var(--flare-scheduler-padding, var(--flare-spacing-4)); }
 .flare-scheduler__month { min-width: 0; }
 .flare-scheduler__timeline .flare-gantt__scroll { max-height: var(--flare-scheduler-timeline-height, var(--flare-gantt-max-height, calc(var(--flare-spacing-32) * 6))); }
+.flare-scheduler__timeline .flare-gantt__side { background: var(--flare-scheduler-resource-header-surface, var(--flare-color-surface-container-low)); }
+.flare-scheduler__event-drag { height: 100%; position: relative; }
+.flare-scheduler__event-drag > .flare-drag-handle { position: absolute; inset-block-start: 0; inset-inline-end: 0; z-index: 4; color: var(--flare-scheduler-event-color, var(--flare-color-on-primary-container)); }
+.flare-scheduler__resize-frame, .flare-scheduler__resize-frame > .flare-resizable { height: 100%; }
+.flare-scheduler__event-body { height: 100%; }
+.flare-scheduler__resize-frame > .flare-resizable > .flare-resizable__handle { height: var(--flare-scheduler-resize-width, var(--flare-spacing-4)); }
+.flare-scheduler__slot[data-scheduler-major] { border-block-start-color: var(--flare-scheduler-major-line, var(--flare-color-outline)); }
+.flare-scheduler__viewport { scroll-padding-block-start: calc(1lh + var(--flare-scheduler-padding, var(--flare-spacing-4)) * 2); }
+.flare-scheduler__event-body { scroll-margin-block-start: calc(1lh + var(--flare-scheduler-padding, var(--flare-spacing-4)) * 2); }
 

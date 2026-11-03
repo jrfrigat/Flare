@@ -2,7 +2,8 @@
 @namespace Flare.Components
 @inherits FlareSchedulerViewBase<TItem>
 
-<div class="@BuildCssClass(Css.Classes.Scheduler.Agenda)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(Css.Classes.Scheduler.Agenda)" style="@Style" role="group" aria-label="@SchedulerStrings.Agenda"
+     data-flare-focus-target="@($".{Css.Classes.Scheduler.EventBody}")" @attributes="AdditionalAttributes">
     @if (Context.Occurrences.Count == 0) { <FlareText>@SchedulerStrings.Empty</FlareText> }
     @foreach (var occurrence in Context.Occurrences.OrderBy(e => SchedulerClock.Span(e.Data, Context.Owner.TimeZone).Start))
     {

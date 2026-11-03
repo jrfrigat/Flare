@@ -3,6 +3,15 @@ import { registerResizeHandle, removeResizeHandle, registerSiblingSplitter, remo
 
 const handles = [];
 const splitters = [];
+
+it('uses a configurable step for arrows and buttons without changing the default behavior', () => {
+    const r = resizable();
+    r.handle.dataset.flareResizeStepSize = '40px';
+    key(r.handle, 'ArrowRight');
+    expect(r.container.style.width).toBe('280px');
+    r.controls.children[1].click();
+    expect(r.container.style.width).toBe('320px');
+});
 function resizable(edge = 'right', min = '120px', max = '480px') {
     const parent = document.createElement('div');
     const container = document.createElement('div');

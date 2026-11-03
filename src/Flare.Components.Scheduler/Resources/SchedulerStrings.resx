@@ -25,15 +25,19 @@
   <data name="End" xml:space="preserve"><value>End (exclusive)</value></data>
   <data name="Description" xml:space="preserve"><value>Description</value></data>
   <data name="Resource" xml:space="preserve"><value>Resource</value></data>
-  <data name="Recurrence" xml:space="preserve"><value>Repeat (RFC 5545 RRULE)</value></data>
-  <data name="RecurrenceHint" xml:space="preserve"><value>For example: FREQ=WEEKLY;BYDAY=MO,WE. Leave empty for one event.</value></data>
+  <data name="Recurrence" xml:space="preserve"><value>Repeat</value></data>
+  <data name="RecurrenceHint" xml:space="preserve"><value>The application defines recurrence. Choose which events to change.</value></data>
   <data name="Scope" xml:space="preserve"><value>Apply to</value></data>
   <data name="Occurrence" xml:space="preserve"><value>This occurrence</value></data>
   <data name="Following" xml:space="preserve"><value>This and following</value></data>
   <data name="Series" xml:space="preserve"><value>Whole series</value></data>
   <data name="Changed" xml:space="preserve"><value>Event change requested.</value></data>
   <data name="Cancelled" xml:space="preserve"><value>Change canceled.</value></data>
-  <data name="Invalid" xml:space="preserve"><value>Check the dates and recurrence rule.</value></data>
+  <data name="Invalid" xml:space="preserve"><value>Enter a title and check the event dates.</value></data>
   <data name="Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Move" xml:space="preserve"><value>Move event</value></data>
+  <data name="Resize" xml:space="preserve"><value>Resize event</value></data>
+  <data name="Schedule" xml:space="preserve"><value>Schedule</value></data>
 </root>
 

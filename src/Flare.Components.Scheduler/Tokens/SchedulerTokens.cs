@@ -32,8 +32,6 @@ public sealed record SchedulerTokens
     [CssVar(Names.SlotHeight)] public string SlotHeight { get; init; } = Var(Css.Tokens.Spacing.S16);
     /// <summary>Design value for DayMinWidth; defaults to the corresponding base theme role.</summary>
     [CssVar(Names.DayMinWidth)] public string DayMinWidth { get; init; } = Var(Css.Tokens.Spacing.S32);
-    /// <summary>Design value for TimeWidth; defaults to the corresponding base theme role.</summary>
-    [CssVar(Names.TimeWidth)] public string TimeWidth { get; init; } = Var(Css.Tokens.Spacing.S32);
     /// <summary>Design value for SlotLine; defaults to the corresponding base theme role.</summary>
     [CssVar(Names.SlotLine)] public string SlotLine { get; init; } = Var(Css.Tokens.Color.OutlineVariant);
     /// <summary>Design value for MajorLine; defaults to the corresponding base theme role.</summary>
@@ -76,7 +74,5 @@ public sealed record SchedulerTokens
     [CssVar(Names.ResourceHeaderSurface)] public string ResourceHeaderSurface { get; init; } = Var(Css.Tokens.Color.SurfaceContainerLow);
     /// <summary>Design value for ResizeWidth; defaults to the corresponding base theme role.</summary>
     [CssVar(Names.ResizeWidth)] public string ResizeWidth { get; init; } = Var(Css.Tokens.Spacing.S4);
-    /// <summary>Design value for MoreColor; defaults to the corresponding base theme role.</summary>
-    [CssVar(Names.MoreColor)] public string MoreColor { get; init; } = Var(Css.Tokens.Color.Primary);
 }
 

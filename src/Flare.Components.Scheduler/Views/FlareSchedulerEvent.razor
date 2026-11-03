@@ -2,16 +2,109 @@
 @namespace Flare.Components
 @inherits FlareSchedulerViewBase<TItem>
 
-<button type="button" class="@BuildCssClass(Occurrence.Data.Color.CssClass)"
-        style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description"
-        aria-pressed="@(Context.Owner.SelectedEvent?.Identity == Occurrence.Identity ? "true" : "false")"
-        @onclick="() => Context.Owner.SelectEventAsync(Occurrence)" @attributes="AdditionalAttributes">
-    @if (Context.Owner.EventTemplate is { } template) { @template(Occurrence) }
-    else { @Occurrence.Data.Title }
-</button>
+@if (Draggable && Context.Owner.CanEdit)
+{
+    <FlareDraggable Class="@BuildCssClass()" Style="@Style" Payload="Occurrence" tabindex="-1"
+                    data-scheduler-focus-entry="@(Context.Owner.HasEventFocus(Occurrence.Identity) ? "" : null)"
+                    data-flare-focus-target="@FocusTarget" @attributes="AdditionalAttributes">
+        <FlareDragHandle title="@SchedulerStrings.Move" />
+        @if (Resizable && MeasureSlot is not null && Occurrence.Data.AllDay is null)
+        {
+            <div class="@Css.Classes.Scheduler.ResizeFrame" data-flare-focus-target="@FocusTarget">
+            <FlareResizable @ref="_resizable" @key="Context.Version" InitialSize="100%" Edge="ResizableEdge.Bottom" ShowControls="Context.Owner.ShowResizeControls" MaxSize="@MaximumSize"
+                            MinSize="var(--flare-scheduler-slot-height,var(--flare-spacing-16))"
+                            Step="var(--flare-scheduler-slot-height,var(--flare-spacing-16))" OnResized="ResizeAsync">
+                @Body
+            </FlareResizable>
+            </div>
+        }
+        else { @Body }
+    </FlareDraggable>
+}
+else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler-focus-entry="@(Context.Owner.HasEventFocus(Occurrence.Identity) ? "" : null)" data-flare-focus-target="@($".{Css.Classes.Scheduler.EventBody}")" @attributes="AdditionalAttributes">@Body</div> }
 
 @code {
     /// <summary>Occurrence shown by this event control.</summary>
     [Parameter, EditorRequired] public SchedulerOccurrence<TItem> Occurrence { get; set; } = default!;
-    protected override string ComponentCssClass => Css.Classes.Scheduler.EventBody;
+    /// <summary>Enables shared drag behavior inside a scheduling drag context.</summary>
+    [Parameter] public bool Draggable { get; set; }
+    /// <summary>Enables shared resizing of this visible timed segment when MeasureSlot is supplied.</summary>
+    [Parameter] public bool Resizable { get; set; }
+    /// <summary>Visible segment's inclusive instant.</summary>
+    [Parameter] public DateTimeOffset SegmentStart { get; set; }
+    /// <summary>Measures one slot after a resize, honoring custom CSS sizes and zoom.</summary>
+    [Parameter] public Func<ValueTask<double>>? MeasureSlot { get; set; }
+    protected override string ComponentCssClass => Css.Classes.Scheduler.EventDrag;
+    private ElementReference _button;
+    private FlareResizable? _resizable;
+    private string FocusTarget => "." + (Context.Owner.HasResizeFocus(Occurrence.Identity) ? Css.Classes.Resizable.Handle : Css.Classes.Scheduler.EventBody);
+    private string MaximumSize => FormattableString.Invariant($"calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{(SchedulerClock.Window(new(DateOnly.FromDateTime(SegmentStart.Date), DateOnly.FromDateTime(SegmentStart.Date).AddDays(1)), Context.Owner.TimeZone).End - SegmentStart).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes})");
+    private RenderFragment Body => @<button @ref="_button" type="button" data-flare-edit-keys="@(Context.Owner.CanEdit ? "" : null)" data-scheduler-event="@Occurrence.Identity" class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
+        style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description"
+        aria-pressed="@(Context.Owner.SelectedEvent?.Identity == Occurrence.Identity ? "true" : "false")"
+        @onclick="SelectAsync" @ondblclick="EditAsync"
+        @onkeydown="EventKeyAsync">
+        @if (Context.Owner.EventTemplate is { } template) { @template(Occurrence) }
+        else { @Occurrence.Data.Title }
+    </button>;
+
+    private Task SelectAsync() => Context.Owner.SelectEventAsync(Occurrence);
+    private Task EditAsync() => Context.Owner.EditEventAsync(Occurrence);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Context.Owner.TakeEventFocus(Occurrence.Identity, out var resize))
+        {
+            if (resize && Context.Owner.CanEdit && _resizable is not null) await _resizable.FocusAsync();
+            else await _button.FocusAsync();
+        }
+    }
+    private async Task ResizeAsync(string value)
+    {
+        if (MeasureSlot is null || !double.TryParse(value.TrimEnd('p', 'x'), NumberStyles.Float, CultureInfo.InvariantCulture, out var pixels)) return;
+        var height = await MeasureSlot();
+        if (height <= 0) return;
+        var units = Math.Max(1, Math.Round(pixels / height, MidpointRounding.AwayFromZero));
+        var end = TimeZoneInfo.ConvertTime(SegmentStart.AddTicks((long)(units * Context.Owner.SlotDuration.Ticks)), Context.Owner.TimeZone);
+        if (end <= Occurrence.Data.Start) { Context.Owner.RejectChange(); return; }
+        Context.Owner.ReturnFocusTo(Occurrence.Identity, resize: true);
+        await Context.Owner.RequestChangeAsync(Occurrence, Occurrence.Data with { End = end }, SchedulerEditAction.Resize);
+    }
+    private async Task EventKeyAsync(KeyboardEventArgs e)
+    {
+        if (!Context.Owner.CanEdit) return;
+        if (e.Key == "F2") { await Context.Owner.EditEventAsync(Occurrence); return; }
+        if (e.Key == "Delete") { await Context.Owner.RequestChangeAsync(Occurrence, Occurrence.Data, SchedulerEditAction.Delete); return; }
+        if (!e.CtrlKey || e.Key is not ("ArrowUp" or "ArrowDown" or "ArrowLeft" or "ArrowRight")) return;
+        var direction = e.Key is "ArrowUp" or "ArrowLeft" ? -1 : 1;
+        var data = Occurrence.Data;
+        if (data.AllDay is { } days)
+        {
+            data = data with { AllDay = e.ShiftKey ? days with { End = days.End.AddDays(direction) }
+                : new(days.Start.AddDays(direction), days.End.AddDays(direction)) };
+        }
+        else
+        {
+            var delta = e.Key is "ArrowLeft" or "ArrowRight" ? TimeSpan.FromDays(direction) : Context.Owner.SlotDuration * direction;
+            if (e.Key is "ArrowUp" or "ArrowDown")
+            {
+                data = data with
+                {
+                    Start = e.ShiftKey ? data.Start : TimeZoneInfo.ConvertTime(data.Start + delta, Context.Owner.TimeZone),
+                    End = TimeZoneInfo.ConvertTime(data.End + delta, Context.Owner.TimeZone)
+                };
+                Context.Owner.ReturnFocusTo(Occurrence.Identity);
+                await Context.Owner.RequestChangeAsync(Occurrence, data, e.ShiftKey ? SchedulerEditAction.Resize : SchedulerEditAction.Move);
+                return;
+            }
+            var wall = TimeZoneInfo.ConvertTime(data.Start, Context.Owner.TimeZone).DateTime.Add(delta);
+            var endWall = TimeZoneInfo.ConvertTime(data.End, Context.Owner.TimeZone).DateTime.Add(delta);
+            if (Context.Owner.TimeZone.IsInvalidTime(wall) || Context.Owner.TimeZone.IsInvalidTime(endWall)) return;
+            DateTimeOffset At(DateTime time, TimeSpan offset) => SchedulerClock.At(DateOnly.FromDateTime(time), TimeOnly.FromDateTime(time), Context.Owner.TimeZone, offset);
+            data = e.ShiftKey ? data with { End = At(endWall, data.End.Offset) }
+                : data with { Start = At(wall, data.Start.Offset), End = At(endWall, data.End.Offset) };
+        }
+        Context.Owner.ReturnFocusTo(Occurrence.Identity);
+        await Context.Owner.RequestChangeAsync(Occurrence, data, e.ShiftKey ? SchedulerEditAction.Resize : SchedulerEditAction.Move);
+    }
 }

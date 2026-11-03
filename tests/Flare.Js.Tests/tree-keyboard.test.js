@@ -4,6 +4,20 @@ import { registerTreeKeyboard, removeTreeKeyboard, focusTreeItem } from '../../s
 let root;
 afterEach(() => { if (root) removeTreeKeyboard(root); document.body.replaceChildren(); root = undefined; });
 
+it('suppresses browser scrolling for explicit edit shortcuts without dispatching navigation twice', () => {
+    root = document.createElement('div');
+    const button = document.createElement('button');
+    button.dataset.flareEditKeys = '';
+    root.append(button); document.body.append(root);
+    const dotNet = { invokeMethodAsync: vi.fn() };
+    registerTreeKeyboard(root, dotNet);
+    const edit = new KeyboardEvent('keydown', { key: 'ArrowDown', ctrlKey: true, bubbles: true, cancelable: true });
+    button.dispatchEvent(edit);
+    expect(edit.defaultPrevented).toBe(true);
+    expect(dotNet.invokeMethodAsync).not.toHaveBeenCalled();
+    expect(press('Tab', button)).toBe(false);
+});
+
 function tree(count) {
     root = document.createElement('div');
     root.setAttribute('role', 'tree');

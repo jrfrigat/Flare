@@ -3,140 +3,209 @@
 @inherits FlareSchedulerViewBase<TItem>
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IUiJsService Ui
+@inject Flare.Components.Services.IElementJsService Elements
+@inject TimeProvider Clock
 
+<FlareDragContext TPayload="SchedulerOccurrence<TItem>" KeyboardReorder="false" OnDrop="DropAsync">
 <div @ref="_root" data-flare-keyboard-grid class="@BuildCssClass(Css.Classes.Scheduler.TimeGrid)" style="@Style" @attributes="AdditionalAttributes" role="group">
     @foreach (var date in _dates)
     {
         var day = date;
         var events = EventsOn(day);
-        var lanes = SchedulerClock.Lanes(events, Context.Owner.TimeZone);
+        var lanes = GanttLanes.Assign(events.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
         <section class="@Css.Classes.Scheduler.Day" @key="day">
             <header class="@Css.Classes.Scheduler.DayHeader">@day.ToString("ddd d", Context.Culture)</header>
-            <div class="@Css.Classes.Scheduler.AllDay" aria-label="@SchedulerStrings.AllDay">
+            <FlareDropZone Target="@($"a:{day.DayNumber}")" Class="@Css.Classes.Scheduler.AllDay" data-flare-focus-target="button" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is not null" aria-label="@SchedulerStrings.AllDay">
+                <FlareButton OnClick="() => SelectAllDayAsync(day)">@SchedulerStrings.AllDay</FlareButton>
                 @foreach (var occurrence in AllDayOn(day))
                 {
-                    <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" @key="occurrence.Identity" />
+                    <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" Draggable="true" @key="occurrence.Identity" />
                 }
-            </div>
-            <div class="@Css.Classes.Scheduler.Slots">
-                @for (var i = 0; i < _slotCount; i++)
+            </FlareDropZone>
+            <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
+                @foreach (var entry in _slots.Where(s => s.Slot.Date == day))
                 {
-                    var slot = i;
-                    var index = _dates.IndexOf(day) * _slotCount + slot;
-                    var time = TimeOnly.FromTimeSpan(Context.Owner.SlotDuration * slot);
-                    var invalid = Context.Owner.TimeZone.IsInvalidTime(day.ToDateTime(time));
-                    <button type="button" class="@SlotClass(day, time)" disabled="@invalid"
-                            tabindex="@(index == _focusedSlot ? "0" : "-1")"
-                            data-flare-tree-index="@index" aria-label="@day.ToDateTime(time).ToString("f", Context.Culture)"
-                            @onfocus="() => _focusedSlot = index"
-                            @onclick="() => SelectAsync(day, slot)">
-                        @time.ToString("t", Context.Culture)
-                    </button>
+                    var slot = entry.Slot;
+                    var index = entry.Index;
+                    <FlareDropZone @key="slot.Start.UtcDateTime.Ticks" Target="@Target(slot)" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is null">
+                        <button @ref="_slotElements[slot.Start.UtcDateTime.Ticks]" type="button" class="@SlotClass(slot)"
+                                style="@SlotStyle(slot)" tabindex="@(index == _focusedSlot ? "0" : "-1")"
+                                data-flare-tree-index="@index" aria-label="@Label(slot, true)"
+                                data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
+                                @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)">
+                            @Label(slot, false)
+                        </button>
+                    </FlareDropZone>
                 }
                 @foreach (var occurrence in events)
                 {
                     <div class="@Css.Classes.Scheduler.Event" style="@EventStyle(occurrence, day, lanes)" @key="occurrence.Identity">
-                        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" />
+                        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" Draggable="true"
+                                             Resizable="true" SegmentStart="SegmentStart(occurrence, day)" MeasureSlot="MeasureSlotAsync" />
                     </div>
                 }
-                @if (day == _today)
+                @if (day == DateOnly.FromDateTime(_now.Date))
                 {
-                    <div class="@Css.Classes.Scheduler.Now" style="@NowStyle" aria-hidden="true"></div>
+                    <div class="@Css.Classes.Scheduler.Now" style="@NowStyle(day)" aria-hidden="true"></div>
                 }
             </div>
         </section>
     }
 </div>
+</FlareDragContext>
 
 @code {
-    [Inject] private TimeProvider Clock { get; set; } = default!;
     private List<DateOnly> _dates = [];
-    private int _slotCount, _focusedSlot;
-    private DateOnly _today;
-    private TimeOnly _now;
+    private List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
+    private Dictionary<string, SchedulerTimeSlot> _targets = [];
+    private readonly Dictionary<long, ElementReference> _slotElements = [];
+    private int _focusedSlot;
+    private DateTimeOffset _now;
     private ElementReference _root;
     private DotNetObjectReference<FlareSchedulerTimeGrid<TItem>>? _self;
+    private readonly CancellationTokenSource _clockStop = new();
+    private Task? _clockTask;
+
+    protected override void OnInitialized() => _clockTask = TickAsync();
     protected override void OnParametersSet()
     {
         _dates = Enumerable.Range(0, Context.Window.Dates.End.DayNumber - Context.Window.Dates.Start.DayNumber)
             .Select(i => Context.Window.Dates.Start.AddDays(i))
             .Where(day => Context.Owner.CurrentView != SchedulerView.WorkWeek || Context.Owner.WorkDays.Contains(day.DayOfWeek)).ToList();
-        _slotCount = (int)(TimeSpan.TicksPerDay / Context.Owner.SlotDuration.Ticks);
-        _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _dates.Count * _slotCount - 1));
-        var now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.Owner.TimeZone);
-        _today = DateOnly.FromDateTime(now.DateTime);
-        _now = TimeOnly.FromDateTime(now.DateTime);
+        _slots = _dates.SelectMany(day => SchedulerSlots.ForDate(day, Context.Owner.TimeZone, Context.Owner.SlotDuration))
+            .Select((slot, index) => (slot, index)).ToList();
+        _targets = _slots.ToDictionary(s => Target(s.Slot), s => s.Slot, StringComparer.Ordinal);
+        var keys = _slots.Select(s => s.Slot.Start.UtcDateTime.Ticks).ToHashSet();
+        foreach (var key in _slotElements.Keys.Where(key => !keys.Contains(key)).ToArray()) _slotElements.Remove(key);
+        _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _slots.Count - 1));
+        _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.Owner.TimeZone);
     }
-    private IReadOnlyList<SchedulerOccurrence<TItem>> EventsOn(DateOnly day) => Context.Occurrences.Where(o =>
+    private async Task TickAsync()
     {
-        if (o.Data.AllDay is not null) return false;
-        var span = SchedulerClock.Span(o.Data, Context.Owner.TimeZone);
-        var start = day.ToDateTime(TimeOnly.MinValue);
-        return span.Start < start.AddDays(1) && (span.End > start || span.Start == span.End && span.Start == start);
-    }).ToArray();
+        using var timer = new PeriodicTimer(TimeSpan.FromMinutes(1), Clock);
+        try
+        {
+            while (await timer.WaitForNextTickAsync(_clockStop.Token))
+                await InvokeAsync(() => { _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.Owner.TimeZone); StateHasChanged(); });
+        }
+        catch (OperationCanceledException) when (_clockStop.IsCancellationRequested) { }
+    }
+    private SchedulerWindow DayWindow(DateOnly date) => SchedulerClock.Window(new(date, date.AddDays(1)), Context.Owner.TimeZone);
+    private IReadOnlyList<SchedulerOccurrence<TItem>> EventsOn(DateOnly day)
+    {
+        var window = DayWindow(day);
+        return Context.Occurrences.Where(o => o.Data.AllDay is null && o.Data.Start < window.End
+            && (o.Data.End > window.Start || o.Data.Start == o.Data.End && o.Data.Start == window.Start)).ToArray();
+    }
     private IEnumerable<SchedulerOccurrence<TItem>> AllDayOn(DateOnly day) => Context.Occurrences.Where(o =>
         o.Data.AllDay is { } range && range.Start <= day && range.End > day);
-    private string SlotClass(DateOnly day, TimeOnly time) => string.Join(" ", new[]
+    private string SlotClass(SchedulerTimeSlot slot)
     {
-        Css.Classes.Scheduler.Slot,
-        !Context.Owner.WorkDays.Contains(day.DayOfWeek) ? Css.Classes.Scheduler.SlotWeekend : null,
-        time < Context.Owner.WorkStart || time >= Context.Owner.WorkEnd ? Css.Classes.Scheduler.SlotOutside : null,
-        day == _today ? Css.Classes.Scheduler.SlotToday : null
-    }.Where(s => s is not null));
+        var time = TimeOnly.FromDateTime(slot.Start.DateTime);
+        return string.Join(" ", new[]
+        {
+            Css.Classes.Scheduler.Slot,
+            !Context.Owner.WorkDays.Contains(slot.Date.DayOfWeek) ? Css.Classes.Scheduler.SlotWeekend : null,
+            time < Context.Owner.WorkStart || time >= Context.Owner.WorkEnd ? Css.Classes.Scheduler.SlotOutside : null,
+            slot.Date == DateOnly.FromDateTime(_now.Date) ? Css.Classes.Scheduler.SlotToday : null
+        }.Where(s => s is not null));
+    }
+    private string Label(SchedulerTimeSlot slot, bool full)
+    {
+        var label = slot.Start.ToString(full ? "f" : "t", Context.Culture);
+        return Context.Owner.TimeZone.IsAmbiguousTime(slot.Start.DateTime)
+            ? label + " " + slot.Start.ToString("zzz", CultureInfo.InvariantCulture) : label;
+    }
+    private string? SlotStyle(SchedulerTimeSlot slot)
+    {
+        var units = (slot.End - slot.Start).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes;
+        return units == 1 ? null : FormattableString.Invariant($"height:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{units});");
+    }
     private string EventStyle(SchedulerOccurrence<TItem> occurrence, DateOnly day, GanttLaneLayout<string> lanes)
     {
-        var start = day.ToDateTime(TimeOnly.MinValue);
-        var span = SchedulerClock.Span(occurrence.Data, Context.Owner.TimeZone);
-        var axis = new GanttAxis(new(start, start.AddDays(1)), GanttScale.Hour, Context.Culture);
-        var from = Math.Max(0, axis.Offset(span.Start) * 60 / Context.Owner.SlotDuration.TotalMinutes);
-        var to = Math.Min(_slotCount, axis.Offset(span.End) * 60 / Context.Owner.SlotDuration.TotalMinutes);
+        var window = DayWindow(day);
+        var axis = new GanttAxis(new(window.Start.UtcDateTime, window.End.UtcDateTime), GanttScale.Hour, Context.Culture);
+        var from = Math.Max(0, axis.Offset(occurrence.Data.Start.UtcDateTime) * 60 / Context.Owner.SlotDuration.TotalMinutes);
+        var to = Math.Min(axis.Units, axis.Offset(occurrence.Data.End.UtcDateTime)) * 60 / Context.Owner.SlotDuration.TotalMinutes;
         return FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{from});height:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{Math.Max(0.5,to-from)});inset-inline-start:{100d*lanes.Lanes[occurrence.Identity]/lanes.Count}%;width:{100d/lanes.Count}%;");
     }
-    private string NowStyle => FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{_now.ToTimeSpan().TotalMinutes / Context.Owner.SlotDuration.TotalMinutes});");
-    private Task SelectAsync(DateOnly day, int slot)
+    private string NowStyle(DateOnly day) => FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{(_now - DayWindow(day).Start).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes});");
+    private DateTimeOffset SegmentStart(SchedulerOccurrence<TItem> occurrence, DateOnly day)
     {
-        var time = day.ToDateTime(TimeOnly.MinValue).AddTicks(Context.Owner.SlotDuration.Ticks * slot);
-        var start = SchedulerClock.At(day, TimeOnly.FromDateTime(time), Context.Owner.TimeZone);
-        return Context.Owner.SelectSlotAsync(new(start, start + Context.Owner.SlotDuration));
+        var midnight = DayWindow(day).Start;
+        return occurrence.Data.Start > midnight ? TimeZoneInfo.ConvertTime(occurrence.Data.Start, Context.Owner.TimeZone) : midnight;
+    }
+    private async ValueTask<double> MeasureSlotAsync()
+    {
+        if (_slots.Count == 0 || !_slotElements.TryGetValue(_slots[0].Slot.Start.UtcDateTime.Ticks, out var element)) return 0;
+        var bounds = await Elements.GetBoundsAsync(element);
+        var units = (_slots[0].Slot.End - _slots[0].Slot.Start).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes;
+        return (bounds.Bottom - bounds.Top) / units;
+    }
+    private Task SelectAllDayAsync(DateOnly day)
+    {
+        var range = new SchedulerDateRange(day, day.AddDays(1));
+        var window = SchedulerClock.Window(range, Context.Owner.TimeZone);
+        return Context.Owner.SelectSlotAsync(new(window.Start, window.End, range));
+    }
+    private static string Target(SchedulerTimeSlot slot) => "t:" + slot.Start.UtcDateTime.Ticks.ToString(CultureInfo.InvariantCulture);
+    private Task SelectAsync(SchedulerTimeSlot slot) => Context.Owner.SelectSlotAsync(new(slot.Start, slot.End));
+    private async Task DropAsync(FlareDropEventArgs<SchedulerOccurrence<TItem>> args)
+    {
+        var data = args.Payload.Data;
+        if (args.TargetId.StartsWith("a:", StringComparison.Ordinal) && int.TryParse(args.TargetId.AsSpan(2), out var number)
+            && data.AllDay is { } days && _dates.Any(d => d.DayNumber == number))
+        {
+            var day = DateOnly.FromDayNumber(number);
+            data = data with { AllDay = new(day, day.AddDays(days.End.DayNumber - days.Start.DayNumber)) };
+        }
+        else if (_targets.TryGetValue(args.TargetId, out var slot) && data.AllDay is null)
+            data = data with { Start = slot.Start, End = TimeZoneInfo.ConvertTime(slot.Start + (data.End - data.Start), Context.Owner.TimeZone) };
+        else return;
+        await Context.Owner.RequestChangeAsync(args.Payload, data, SchedulerEditAction.Move);
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
     }
-    /// <summary>Handles navigation delegated by the shared keyboard listener; native controls keep Tab and Enter.</summary>
+    /// <summary>Handles slot keys delegated by the shared listener, including repeated clock times.</summary>
     /// <param name="index">Focused flat slot index.</param>
     /// <param name="key">Navigation key after browser-default suppression.</param>
     [JSInvokable]
     public async Task HandleTreeKeyAsync(int index, string key)
     {
-        if (index < 0 || index >= _dates.Count * _slotCount) return;
-        if (key == " ") { await SelectAsync(_dates[index / _slotCount], index % _slotCount); return; }
+        if (index < 0 || index >= _slots.Count) return;
+        var current = _slots[index].Slot;
+        if (key == " ") { await SelectAsync(current); return; }
+        var column = _slots.Where(s => s.Slot.Date == current.Date).ToArray();
         var next = key switch
         {
-            "ArrowDown" => index + 1, "ArrowUp" => index - 1,
-            "ArrowRight" => index + _slotCount, "ArrowLeft" => index - _slotCount,
-            "Home" => index / _slotCount * _slotCount,
-            "End" => (index / _slotCount + 1) * _slotCount - 1,
-            _ => index
+            "ArrowDown" => Math.Min(index + 1, column[^1].Index),
+            "ArrowUp" => Math.Max(index - 1, column[0].Index),
+            "Home" => column[0].Index, "End" => column[^1].Index, _ => index
         };
-        if (next == index) return;
-        next = Math.Clamp(next, 0, _dates.Count * _slotCount - 1);
-        var direction = Math.Sign(next - index);
-        while (next >= 0 && next < _dates.Count * _slotCount && direction != 0)
+        if (key is "ArrowLeft" or "ArrowRight")
         {
-            var date = _dates[next / _slotCount];
-            var time = date.ToDateTime(TimeOnly.MinValue).AddTicks(Context.Owner.SlotDuration.Ticks * (next % _slotCount));
-            if (!Context.Owner.TimeZone.IsInvalidTime(time)) break;
-            next += direction;
+            var dayIndex = _dates.IndexOf(current.Date) + (key == "ArrowRight" ? 1 : -1);
+            if (dayIndex >= 0 && dayIndex < _dates.Count)
+            {
+                var candidates = _slots.Where(s => s.Slot.Date == _dates[dayIndex]).ToArray();
+                if (candidates.Length > 0)
+                    next = candidates.OrderBy(s => Math.Abs((s.Slot.Start.TimeOfDay - current.Start.TimeOfDay).TotalMinutes))
+                        .ThenBy(s => s.Slot.Start.Offset == current.Start.Offset ? 0 : 1).First().Index;
+            }
         }
-        if (next < 0 || next >= _dates.Count * _slotCount) return;
+        if (next == index) return;
         _focusedSlot = next;
         await Ui.FocusTreeItemAsync(_root, next);
         StateHasChanged();
     }
-    /// <summary>Removes the shared keyboard registration.</summary>
+    /// <summary>Cancels the clock and releases the shared keyboard registration.</summary>
     public override async ValueTask DisposeAsync()
     {
+        _clockStop.Cancel();
+        if (_clockTask is not null) await _clockTask;
+        _clockStop.Dispose();
         try { await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
         _self?.Dispose();

@@ -3,6 +3,12 @@ namespace Flare.Css.Classes;
 /// <summary>Scheduler projection classes; override these or the scheduler tokens to supply a design system.</summary>
 public static class Scheduler
 {
+    /// <summary>Focus boundary around the shared resize widget.</summary>
+    public const string ResizeFrame = "flare-scheduler__resize-frame";
+    /// <summary>Standard event editor.</summary>
+    public const string Editor = "flare-scheduler__editor";
+    /// <summary>Event drag wrapper that composes the shared handle and resizable.</summary>
+    public const string EventDrag = "flare-scheduler__event-drag";
     /// <summary>Resource timeline projection boundary.</summary>
     public const string Timeline = "flare-scheduler__timeline";
     /// <summary>The Root scheduler element.</summary>
