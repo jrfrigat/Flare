@@ -1,0 +1,145 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareSchedulerViewBase<TItem>
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
+
+<div @ref="_root" data-flare-keyboard-grid class="@BuildCssClass(Css.Classes.Scheduler.TimeGrid)" style="@Style" @attributes="AdditionalAttributes" role="group">
+    @foreach (var date in _dates)
+    {
+        var day = date;
+        var events = EventsOn(day);
+        var lanes = SchedulerClock.Lanes(events, Context.Owner.TimeZone);
+        <section class="@Css.Classes.Scheduler.Day" @key="day">
+            <header class="@Css.Classes.Scheduler.DayHeader">@day.ToString("ddd d", Context.Culture)</header>
+            <div class="@Css.Classes.Scheduler.AllDay" aria-label="@SchedulerStrings.AllDay">
+                @foreach (var occurrence in AllDayOn(day))
+                {
+                    <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" @key="occurrence.Identity" />
+                }
+            </div>
+            <div class="@Css.Classes.Scheduler.Slots">
+                @for (var i = 0; i < _slotCount; i++)
+                {
+                    var slot = i;
+                    var index = _dates.IndexOf(day) * _slotCount + slot;
+                    var time = TimeOnly.FromTimeSpan(Context.Owner.SlotDuration * slot);
+                    var invalid = Context.Owner.TimeZone.IsInvalidTime(day.ToDateTime(time));
+                    <button type="button" class="@SlotClass(day, time)" disabled="@invalid"
+                            tabindex="@(index == _focusedSlot ? "0" : "-1")"
+                            data-flare-tree-index="@index" aria-label="@day.ToDateTime(time).ToString("f", Context.Culture)"
+                            @onfocus="() => _focusedSlot = index"
+                            @onclick="() => SelectAsync(day, slot)">
+                        @time.ToString("t", Context.Culture)
+                    </button>
+                }
+                @foreach (var occurrence in events)
+                {
+                    <div class="@Css.Classes.Scheduler.Event" style="@EventStyle(occurrence, day, lanes)" @key="occurrence.Identity">
+                        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" />
+                    </div>
+                }
+                @if (day == _today)
+                {
+                    <div class="@Css.Classes.Scheduler.Now" style="@NowStyle" aria-hidden="true"></div>
+                }
+            </div>
+        </section>
+    }
+</div>
+
+@code {
+    [Inject] private TimeProvider Clock { get; set; } = default!;
+    private List<DateOnly> _dates = [];
+    private int _slotCount, _focusedSlot;
+    private DateOnly _today;
+    private TimeOnly _now;
+    private ElementReference _root;
+    private DotNetObjectReference<FlareSchedulerTimeGrid<TItem>>? _self;
+    protected override void OnParametersSet()
+    {
+        _dates = Enumerable.Range(0, Context.Window.Dates.End.DayNumber - Context.Window.Dates.Start.DayNumber)
+            .Select(i => Context.Window.Dates.Start.AddDays(i))
+            .Where(day => Context.Owner.CurrentView != SchedulerView.WorkWeek || Context.Owner.WorkDays.Contains(day.DayOfWeek)).ToList();
+        _slotCount = (int)(TimeSpan.TicksPerDay / Context.Owner.SlotDuration.Ticks);
+        _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _dates.Count * _slotCount - 1));
+        var now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.Owner.TimeZone);
+        _today = DateOnly.FromDateTime(now.DateTime);
+        _now = TimeOnly.FromDateTime(now.DateTime);
+    }
+    private IReadOnlyList<SchedulerOccurrence<TItem>> EventsOn(DateOnly day) => Context.Occurrences.Where(o =>
+    {
+        if (o.Data.AllDay is not null) return false;
+        var span = SchedulerClock.Span(o.Data, Context.Owner.TimeZone);
+        var start = day.ToDateTime(TimeOnly.MinValue);
+        return span.Start < start.AddDays(1) && (span.End > start || span.Start == span.End && span.Start == start);
+    }).ToArray();
+    private IEnumerable<SchedulerOccurrence<TItem>> AllDayOn(DateOnly day) => Context.Occurrences.Where(o =>
+        o.Data.AllDay is { } range && range.Start <= day && range.End > day);
+    private string SlotClass(DateOnly day, TimeOnly time) => string.Join(" ", new[]
+    {
+        Css.Classes.Scheduler.Slot,
+        !Context.Owner.WorkDays.Contains(day.DayOfWeek) ? Css.Classes.Scheduler.SlotWeekend : null,
+        time < Context.Owner.WorkStart || time >= Context.Owner.WorkEnd ? Css.Classes.Scheduler.SlotOutside : null,
+        day == _today ? Css.Classes.Scheduler.SlotToday : null
+    }.Where(s => s is not null));
+    private string EventStyle(SchedulerOccurrence<TItem> occurrence, DateOnly day, GanttLaneLayout<string> lanes)
+    {
+        var start = day.ToDateTime(TimeOnly.MinValue);
+        var span = SchedulerClock.Span(occurrence.Data, Context.Owner.TimeZone);
+        var axis = new GanttAxis(new(start, start.AddDays(1)), GanttScale.Hour, Context.Culture);
+        var from = Math.Max(0, axis.Offset(span.Start) * 60 / Context.Owner.SlotDuration.TotalMinutes);
+        var to = Math.Min(_slotCount, axis.Offset(span.End) * 60 / Context.Owner.SlotDuration.TotalMinutes);
+        return FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{from});height:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{Math.Max(0.5,to-from)});inset-inline-start:{100d*lanes.Lanes[occurrence.Identity]/lanes.Count}%;width:{100d/lanes.Count}%;");
+    }
+    private string NowStyle => FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{_now.ToTimeSpan().TotalMinutes / Context.Owner.SlotDuration.TotalMinutes});");
+    private Task SelectAsync(DateOnly day, int slot)
+    {
+        var time = day.ToDateTime(TimeOnly.MinValue).AddTicks(Context.Owner.SlotDuration.Ticks * slot);
+        var start = SchedulerClock.At(day, TimeOnly.FromDateTime(time), Context.Owner.TimeZone);
+        return Context.Owner.SelectSlotAsync(new(start, start + Context.Owner.SlotDuration));
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
+    }
+    /// <summary>Handles navigation delegated by the shared keyboard listener; native controls keep Tab and Enter.</summary>
+    /// <param name="index">Focused flat slot index.</param>
+    /// <param name="key">Navigation key after browser-default suppression.</param>
+    [JSInvokable]
+    public async Task HandleTreeKeyAsync(int index, string key)
+    {
+        if (index < 0 || index >= _dates.Count * _slotCount) return;
+        if (key == " ") { await SelectAsync(_dates[index / _slotCount], index % _slotCount); return; }
+        var next = key switch
+        {
+            "ArrowDown" => index + 1, "ArrowUp" => index - 1,
+            "ArrowRight" => index + _slotCount, "ArrowLeft" => index - _slotCount,
+            "Home" => index / _slotCount * _slotCount,
+            "End" => (index / _slotCount + 1) * _slotCount - 1,
+            _ => index
+        };
+        if (next == index) return;
+        next = Math.Clamp(next, 0, _dates.Count * _slotCount - 1);
+        var direction = Math.Sign(next - index);
+        while (next >= 0 && next < _dates.Count * _slotCount && direction != 0)
+        {
+            var date = _dates[next / _slotCount];
+            var time = date.ToDateTime(TimeOnly.MinValue).AddTicks(Context.Owner.SlotDuration.Ticks * (next % _slotCount));
+            if (!Context.Owner.TimeZone.IsInvalidTime(time)) break;
+            next += direction;
+        }
+        if (next < 0 || next >= _dates.Count * _slotCount) return;
+        _focusedSlot = next;
+        await Ui.FocusTreeItemAsync(_root, next);
+        StateHasChanged();
+    }
+    /// <summary>Removes the shared keyboard registration.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        try { await Ui.RemoveTreeKeyboardAsync(_root); }
+        catch (JSDisconnectedException) { }
+        _self?.Dispose();
+        await base.DisposeAsync();
+    }
+}

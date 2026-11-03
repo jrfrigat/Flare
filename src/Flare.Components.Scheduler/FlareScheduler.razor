@@ -1,0 +1,50 @@
+@typeparam TItem
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    @if (ShowToolbar)
+    {
+        <div class="@Css.Classes.Scheduler.Toolbar">
+            @if (ToolbarTemplate is not null) { @ToolbarTemplate(Snapshot) }
+            else
+            {
+                <FlareStack Row="true" Wrap="true">
+                    <FlareButton OnClick="() => NavigateAsync(-1)" AriaLabel="@SchedulerStrings.Previous" Icon="FlareIcons.ChevronLeft" />
+                    <FlareButton OnClick="TodayAsync">@SchedulerStrings.Today</FlareButton>
+                    <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerStrings.Next" Icon="FlareIcons.ChevronRight" />
+                    <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@Caption</FlareText>
+                    @foreach (var view in Views)
+                    {
+                        var target = view;
+                        <FlareButton OnClick="() => ShowViewAsync(target)" aria-pressed="@(_view == target ? "true" : "false")">@SchedulerStrings.ViewName(target)</FlareButton>
+                    }
+                </FlareStack>
+            }
+        </div>
+    }
+    <div class="@Css.Classes.Scheduler.Viewport" aria-busy="@(_loading ? "true" : "false")">
+        @if (_loading) { <div role="status" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.Loading</div> }
+        else if (_error is not null) { <div role="alert" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.LoadError</div> }
+        else if (ViewTemplate is not null) { @ViewTemplate(Snapshot) }
+        else
+        {
+            @switch (_view)
+            {
+                case SchedulerView.Month:
+                case SchedulerView.Year:
+                    <FlareSchedulerCalendar TItem="TItem" Context="Snapshot" />
+                    break;
+                case SchedulerView.Agenda:
+                    <FlareSchedulerAgenda TItem="TItem" Context="Snapshot" />
+                    break;
+                case SchedulerView.Timeline:
+                    <FlareSchedulerTimeline TItem="TItem" Context="Snapshot" />
+                    break;
+                default:
+                    <FlareSchedulerTimeGrid TItem="TItem" Context="Snapshot" />
+                    break;
+            }
+        }
+    </div>
+    <div class="@Css.Classes.Visually.Hidden" role="status" aria-live="polite">@_announcement</div>
+</div>

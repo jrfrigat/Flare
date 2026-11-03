@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <data name="Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Day" xml:space="preserve"><value>Day</value></data>
+  <data name="Week" xml:space="preserve"><value>Week</value></data>
+  <data name="WorkWeek" xml:space="preserve"><value>Work week</value></data>
+  <data name="Month" xml:space="preserve"><value>Month</value></data>
+  <data name="Agenda" xml:space="preserve"><value>Agenda</value></data>
+  <data name="Timeline" xml:space="preserve"><value>Timeline</value></data>
+  <data name="Year" xml:space="preserve"><value>Year</value></data>
+  <data name="Loading" xml:space="preserve"><value>Loading events</value></data>
+  <data name="LoadError" xml:space="preserve"><value>Events could not be loaded.</value></data>
+  <data name="Empty" xml:space="preserve"><value>No events</value></data>
+  <data name="AllDay" xml:space="preserve"><value>All day</value></data>
+  <data name="Create" xml:space="preserve"><value>Create event</value></data>
+  <data name="Edit" xml:space="preserve"><value>Edit event</value></data>
+  <data name="Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Start" xml:space="preserve"><value>Start</value></data>
+  <data name="End" xml:space="preserve"><value>End (exclusive)</value></data>
+  <data name="Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Resource" xml:space="preserve"><value>Resource</value></data>
+  <data name="Recurrence" xml:space="preserve"><value>Repeat (RFC 5545 RRULE)</value></data>
+  <data name="RecurrenceHint" xml:space="preserve"><value>For example: FREQ=WEEKLY;BYDAY=MO,WE. Leave empty for one event.</value></data>
+  <data name="Scope" xml:space="preserve"><value>Apply to</value></data>
+  <data name="Occurrence" xml:space="preserve"><value>This occurrence</value></data>
+  <data name="Following" xml:space="preserve"><value>This and following</value></data>
+  <data name="Series" xml:space="preserve"><value>Whole series</value></data>
+  <data name="Changed" xml:space="preserve"><value>Event change requested.</value></data>
+  <data name="Cancelled" xml:space="preserve"><value>Change canceled.</value></data>
+  <data name="Invalid" xml:space="preserve"><value>Check the dates and recurrence rule.</value></data>
+  <data name="Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+</root>
+

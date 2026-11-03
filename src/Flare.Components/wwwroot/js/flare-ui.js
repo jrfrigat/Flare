@@ -51,11 +51,17 @@ export function registerTreeKeyboard(root, dotNetRef) {
     const keydown = e => {
         if (e.altKey || e.ctrlKey || e.metaKey || e.isComposing || !TREE_KEYS.has(e.key)) return;
         const treeItem = e.target.matches?.('[role="treeitem"]');
-        const gridRow = dotNetRef && e.target.matches?.('[role="row"][data-flare-tree-index]')
-            && e.target.closest('[role="treegrid"], [role="grid"]') === root;
+        const slotGrid = root.hasAttribute('data-flare-keyboard-grid');
+        const gridRow = dotNetRef && e.target.matches?.('[role="row"][data-flare-tree-index], button[data-flare-tree-index]')
+            && e.target.closest('[role="treegrid"], [role="grid"], [data-flare-keyboard-grid]') === root;
         if (!(treeItem || gridRow) || !root.contains(e.target)) return;
         e.preventDefault();
-        if (gridRow) dotNetRef.invokeMethodAsync('HandleTreeKeyAsync', Number(e.target.dataset.flareTreeIndex), e.key).catch(() => { });
+        let key = e.key;
+        if (slotGrid && getComputedStyle(root).direction === 'rtl') {
+            if (key === 'ArrowLeft') key = 'ArrowRight';
+            else if (key === 'ArrowRight') key = 'ArrowLeft';
+        }
+        if (gridRow) dotNetRef.invokeMethodAsync('HandleTreeKeyAsync', Number(e.target.dataset.flareTreeIndex), key).catch(() => { });
     };
     _treeKeyboards.keep(root, listen(root, 'keydown', keydown));
 }

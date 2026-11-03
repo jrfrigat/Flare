@@ -1,0 +1,17 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareSchedulerViewBase<TItem>
+
+<button type="button" class="@BuildCssClass(Occurrence.Data.Color.CssClass)"
+        style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description"
+        aria-pressed="@(Context.Owner.SelectedEvent?.Identity == Occurrence.Identity ? "true" : "false")"
+        @onclick="() => Context.Owner.SelectEventAsync(Occurrence)" @attributes="AdditionalAttributes">
+    @if (Context.Owner.EventTemplate is { } template) { @template(Occurrence) }
+    else { @Occurrence.Data.Title }
+</button>
+
+@code {
+    /// <summary>Occurrence shown by this event control.</summary>
+    [Parameter, EditorRequired] public SchedulerOccurrence<TItem> Occurrence { get; set; } = default!;
+    protected override string ComponentCssClass => Css.Classes.Scheduler.EventBody;
+}
