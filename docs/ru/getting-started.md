@@ -348,10 +348,14 @@ Flare полностью интегрируется со стандартным 
     [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
     [Parameter] public Person Person { get; set; } = default!;
 
-    private void Save()   => Dialog.Close(_edited); // подтвердить с типизированным результатом
-    private void Cancel() => Dialog.Cancel();        // отклонить
+    private Task Save()   => Dialog.CloseAsync(_edited); // подтвердить с типизированным результатом
+    private Task Cancel() => Dialog.CancelAsync();       // отклонить
 }
 ```
+
+Для форм добавьте `FlareDialogCloseGuard`, чтобы подтверждать отмену изменений. В руководстве
+[Защита несохраненных изменений в диалогах](dialog-close-guards.md) описаны сохранение и сброс,
+свое подтверждение, навигация и миграция с синхронного API закрытия.
 
 ---
 

@@ -4825,4 +4825,13 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Dialog_OpenTextOnly" xml:space="preserve"><value>Open a text-only dialog</value></data>
   <data name="Dialog_OpenEmpty" xml:space="preserve"><value>Open an empty dialog</value></data>
   <data name="Dialog_EmptyFocusHint" xml:space="preserve"><value>Open with Enter. Tab and Shift+Tab keep focus inside the panel, even without buttons. Escape closes it and returns focus to the opener.</value></data>
+  <data name="Dialog_CloseGuard" xml:space="preserve">
+    <value>Protect unsaved changes</value>
+  </data>
+  <data name="Dialog_CloseGuardOpen" xml:space="preserve">
+    <value>Edit with close protection</value>
+  </data>
+  <data name="Dialog_CloseGuardHint" xml:space="preserve">
+    <value>Edit the name, then press Escape, click the backdrop, close button or Cancel. Keep editing preserves your input; Discard changes closes without saving. Save updates the name and closes immediately. An unchanged form closes without a prompt.</value>
+  </data>
 </root>

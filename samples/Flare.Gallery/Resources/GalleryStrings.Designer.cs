@@ -14371,5 +14371,11 @@ namespace Flare.Gallery.Resources {
         public static string StepDemo_LongLabel { get { return ResourceManager.GetString("StepDemo_LongLabel", resourceCulture); } }
         /// <summary>LongUnbrokenStepLabelForNarrowContainers</summary>
         public static string StepDemo_LongWord { get { return ResourceManager.GetString("StepDemo_LongWord", resourceCulture); } }
+        /// <summary>Protect unsaved changes</summary>
+        public static string Dialog_CloseGuard { get { return ResourceManager.GetString("Dialog_CloseGuard", resourceCulture); } }
+        /// <summary>Edit with close protection</summary>
+        public static string Dialog_CloseGuardOpen { get { return ResourceManager.GetString("Dialog_CloseGuardOpen", resourceCulture); } }
+        /// <summary>Instructions for editing, saving and discarding changes in the protected dialog.</summary>
+        public static string Dialog_CloseGuardHint { get { return ResourceManager.GetString("Dialog_CloseGuardHint", resourceCulture); } }
     }
 }

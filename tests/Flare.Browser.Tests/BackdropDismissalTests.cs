@@ -8,10 +8,10 @@ public sealed class BackdropDismissalTests(BrowserFixture fixture) : IClassFixtu
     [Theory]
     [InlineData("dialog", "#editor")]
     [InlineData("sheet", "#editor")]
-    [InlineData("confirm", ".flare-dialog__content")]
-    [InlineData("alert", ".flare-msgbox__content")]
-    [InlineData("prompt", ".flare-msgbox input")]
-    [InlineData("provider", ".flare-confirmdialog__body")]
+    [InlineData("confirm", "." + Css.Classes.Dialog.Content)]
+    [InlineData("alert", "." + Css.Classes.Msgbox.Content)]
+    [InlineData("prompt", "." + Css.Classes.Msgbox.Root + " input")]
+    [InlineData("provider", "." + Css.Classes.Confirmdialog.Body)]
     [InlineData("drawer", "#drawer-editor")]
     [InlineData("overlay", "#overlay-editor")]
     public async Task DragFromContentDoesNotDismiss_ButBackdropClickDoes(string kind, string content)
@@ -39,7 +39,8 @@ public sealed class BackdropDismissalTests(BrowserFixture fixture) : IClassFixtu
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context, "dialog");
         if (capture)
-            await page.EvaluateAsync("() => document.querySelector('.flare-dialog-scrim').addEventListener('pointerdown', e => e.currentTarget.setPointerCapture(e.pointerId))");
+            await page.EvaluateAsync("selector => document.querySelector(selector).addEventListener('pointerdown', e => e.currentTarget.setPointerCapture(e.pointerId))",
+                "." + Css.Classes.Dialog.Scrim);
         var box = await page.Locator("#editor").BoundingBoxAsync();
         Assert.NotNull(box);
         await page.Mouse.MoveAsync(890, 10);

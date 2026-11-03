@@ -1,0 +1,48 @@
+@using Microsoft.AspNetCore.Components.Forms
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareText Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Dialog_CloseGuardHint</FlareText>
+    <FlareButton OnClick="Open">@GalleryStrings.Dialog_CloseGuardOpen</FlareButton>
+    <FlareText>@GalleryStrings.Dialog_Name: @_savedName</FlareText>
+</FlareStack>
+
+<FlareDialog @ref="_dialog" @bind-Visible="_visible" Title="@GalleryStrings.Dialog_CloseGuard" ShowCloseButton="true">
+    <FlareForm Model="_model" OnValidSubmit="Save">
+        <FlareDialogCloseGuard />
+        <FlareStack Gap="FlareSpacing.Medium">
+            <FlareTextField @bind-Value="_model.Name" For="@(() => _model.Name)" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
+            <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
+                <FlareButton Variant="ButtonVariant.Text" OnClick="Close">@GalleryStrings.Dialog_BodyCancel</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled" Type="ButtonType.Submit">@GalleryStrings.Dialog_Save</FlareButton>
+            </FlareStack>
+        </FlareStack>
+    </FlareForm>
+</FlareDialog>
+
+@code {
+    private FlareDialog _dialog = default!;
+    private bool _visible;
+    private string _savedName = "Alice";
+    private Profile _model = new();
+
+    private void Open()
+    {
+        _model = new Profile { Name = _savedName };
+        _visible = true;
+    }
+
+    private Task Close() => _dialog.CloseAsync();
+
+    private async Task Save(EditContext context)
+    {
+        _savedName = _model.Name;
+        context.MarkAsUnmodified();
+        await _dialog.CloseAsync();
+    }
+
+    private sealed class Profile
+    {
+        public string Name { get; set; } = "";
+    }
+}

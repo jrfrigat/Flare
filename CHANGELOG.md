@@ -3,6 +3,20 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `FlareDialogCloseGuard` confirms discarding unsaved changes, using the surrounding `EditContext` or an explicit flag, localized default text, and optional custom labels or confirmation handler. `DialogCloseContext` lets content register its own guards. Gallery examples and the EN/RU dialog guide cover editing, saving, cancelling and navigation.
+
+### Changed
+
+- **Breaking:** replace `FlareDialogInstance` and `DialogReference` `Close`/`Cancel` calls with awaited `CloseAsync`/`CancelAsync`. They now consult `BeforeClose` and registered guards, return whether closure was accepted, and retain the first accepted result. Inline dialogs expose `CloseAsync`; internal navigation uses the same guards through the new `Programmatic` and `Navigation` close reasons.
+
+### Fixed
+
+- Dialogs, sheets, confirm/alert/prompt windows, drawers, overlays and other backdrop surfaces require both press and release on the same backdrop before dismissing. Selecting text or dragging from content onto the backdrop no longer closes the surface.
+
 ## [0.52.0] - 2026-10-25
 
 ### Added

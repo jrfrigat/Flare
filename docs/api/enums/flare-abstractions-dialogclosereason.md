@@ -13,7 +13,10 @@ Why a dialog is being dismissed - passed to a BeforeClose guard so it can decide
 | `ScrimClick` | `0` | The user clicked the scrim/backdrop behind the dialog. |
 | `EscapeKey` | `1` | The user pressed the Escape key. |
 | `CloseButton` | `2` | The user clicked the built-in header close button. |
+| `Programmatic` | `3` | Application code requested a close or cancellation through the dialog or its handle. |
+| `Navigation` | `4` | The application is navigating to another location within its client-side router. |
 
 ## Used by components
 
 - `FlareDialog`
+- `FlareDialogCloseGuard`

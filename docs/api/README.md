@@ -67,6 +67,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareDescriptionItem`](components/flare-components-flaredescriptionitem.md)
 - [`FlareDescriptionList`](components/flare-components-flaredescriptionlist.md)
 - [`FlareDialog`](components/flare-components-flaredialog.md)
+- [`FlareDialogCloseGuard`](components/flare-components-flaredialogcloseguard.md) — Confirms closing a dialog with unsaved changes. Place inside a dialog, and inside its EditForm to use EditContext.IsModified automatically. After saving, clear HasUnsavedChanges or call EditContext.MarkAsUnmodified before closing. Requires a FlareDialogProvider for the default prompt.
 - [`FlareDialogProvider`](components/flare-components-flaredialogprovider.md)
 - [`FlareDivider`](components/flare-components-flaredivider.md)
 - [`FlareDocumentTab`](components/flare-components-ide-flaredocumenttab.md)

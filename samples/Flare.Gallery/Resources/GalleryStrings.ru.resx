@@ -4825,4 +4825,13 @@
   <data name="Dialog_OpenTextOnly" xml:space="preserve"><value>Открыть текстовый диалог</value></data>
   <data name="Dialog_OpenEmpty" xml:space="preserve"><value>Открыть пустой диалог</value></data>
   <data name="Dialog_EmptyFocusHint" xml:space="preserve"><value>Откройте клавишей Enter. Tab и Shift+Tab удерживают фокус внутри панели, даже без кнопок. Escape закрывает ее и возвращает фокус к кнопке открытия.</value></data>
+  <data name="Dialog_CloseGuard" xml:space="preserve">
+    <value>Защита несохраненных изменений</value>
+  </data>
+  <data name="Dialog_CloseGuardOpen" xml:space="preserve">
+    <value>Редактировать с защитой закрытия</value>
+  </data>
+  <data name="Dialog_CloseGuardHint" xml:space="preserve">
+    <value>Измените имя, затем нажмите Escape, фон, крестик или «Отмена». «Продолжить редактирование» сохраняет ввод, «Отменить изменения» закрывает окно без сохранения. «Сохранить» обновляет имя и сразу закрывает окно. Неизмененная форма закрывается без вопроса.</value>
+  </data>
 </root>

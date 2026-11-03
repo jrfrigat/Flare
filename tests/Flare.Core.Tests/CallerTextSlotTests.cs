@@ -46,6 +46,7 @@ public sealed class CallerTextSlotTests
         ["DataGridFilterBuilder"] = "Label belongs to the generated per-rule rows.",
         ["FlareChart"] = "Title and Description are two strings; a single ChildContent could not say which.",
         ["FlareNavigationGuard"] = "Renders nothing; Title and Message are handed to IDialogService.ConfirmAsync, which takes strings.",
+        ["FlareDialogCloseGuard"] = "Renders nothing; Title and Message configure a separate service confirmation. ConfirmClose replaces that UI when custom markup is needed.",
     };
 
 

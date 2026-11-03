@@ -2535,8 +2535,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ActionsContent", @"RenderFragment?", null, @"Action buttons rendered in the dialog footer.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name for a header-less dialog (rendered as aria-label when Title is empty). Ignored when a title is present, since the title labels the dialog.", null, false, false, false, @"FlareDialog"),
-                new ApiParameterInfo(@"BeforeClose", @"Func<DialogCloseReason, ValueTask<bool>>?", null, @"Optional guard consulted before a scrim / Escape / close-button dismissal. Return true to allow the close or false to veto it (e.g. to keep the dialog open while there are unsaved changes).", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"BeforeClose", @"Func<DialogCloseReason, ValueTask<bool>>?", null, @"Optional guard consulted before UI, programmatic or internal-navigation closure. Return true to allow the close or false to veto it (e.g. to keep the dialog open while there are unsaved changes).", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main body content rendered inside the dialog.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"CloseContext", @"DialogCloseContext?", null, @"Shares registered close guards with a service handle. Null creates a context owned by this dialog. Descendants receive the active context as a cascading value.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"CloseOnEsc", @"bool", @"true", @"Closes the dialog when the Escape key is pressed.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"CloseOnNavigation", @"bool", @"true", @"Dismisses the dialog automatically when the app navigates to a new route. Default true.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"CloseOnScrimClick", @"bool", @"true", @"Closes the dialog when the scrim backdrop is clicked.", null, false, false, false, @"FlareDialog"),
@@ -2560,6 +2561,8 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task<bool>", null, @"Checks the close guards before requesting visibility false. Returns false when hidden, disposed, vetoed, or another close request is pending. Changing Visible directly bypasses the guards because the parent owns that state.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
@@ -2569,6 +2572,36 @@ public static class ComponentApiRegistry
             {
                 @"FlareContainerBase",
                 @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareDialogCloseGuard"] = new ApiComponentInfo(
+            @"FlareDialogCloseGuard",
+            @"Flare.Components.FlareDialogCloseGuard",
+            @"Flare.Components",
+            @"Confirms closing a dialog with unsaved changes. Place inside a dialog, and inside its EditForm to use EditContext.IsModified automatically. After saving, clear HasUnsavedChanges or call EditContext.MarkAsUnmodified before closing. Requires a FlareDialogProvider for the default prompt.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"CancelLabel", @"string?", null, @"Label for continuing to edit. Null uses the localized default.", null, false, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"ConfirmClose", @"Func<DialogCloseReason, ValueTask<bool>>?", null, @"Replaces the default prompt for a dirty form. Return true to permit closing or false to keep editing. Clean forms do not call this handler.", null, false, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"ConfirmLabel", @"string?", null, @"Label for discarding changes. Null uses the localized default.", null, false, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"DialogContext", @"DialogCloseContext?", null, @"The surrounding dialog's shared close context.", null, true, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"EditContext", @"EditContext?", null, @"The surrounding form whose modification state is used when HasUnsavedChanges is null.", null, true, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"HasUnsavedChanges", @"bool?", null, @"Explicit dirty state. Null reads the surrounding EditContext; false disables this guard.", null, false, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"Message", @"string?", null, @"Confirmation message. Null uses the localized default.", null, false, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"Title", @"string?", null, @"Confirmation title. Null uses the localized default.", null, false, false, false, @"FlareDialogCloseGuard"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Unregisters the guard and dismisses only the confirmation owned by this guard.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
                 @"ComponentBase",
                 @"object",
             },
@@ -9029,10 +9062,13 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"ScrimClick", @"0", @"The user clicked the scrim/backdrop behind the dialog."),
                 new ApiEnumMember(@"EscapeKey", @"1", @"The user pressed the Escape key."),
                 new ApiEnumMember(@"CloseButton", @"2", @"The user clicked the built-in header close button."),
+                new ApiEnumMember(@"Programmatic", @"3", @"Application code requested a close or cancellation through the dialog or its handle."),
+                new ApiEnumMember(@"Navigation", @"4", @"The application is navigating to another location within its client-side router."),
             },
             new string[]
             {
                 @"FlareDialog",
+                @"FlareDialogCloseGuard",
             });
 
         e[@"DialogPosition"] = new ApiEnumInfo(
