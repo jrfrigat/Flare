@@ -28,6 +28,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- BottomNav wrap mode shares width according to caption content so five destinations remain readable at 200% text. `BottomNavTokens.LabelLineHeight` defaults to the base label-medium typography and controls the label, expanded bar and pinned spacer together.
+- Link buttons prevent Space from scrolling the page even when disabled or when the key repeats, without activating a disabled button or dispatching duplicate clicks.
+- After a Select popup closes inside a dialog or drawer, the next Escape reaches its parent immediately, including the Server interval before popup-layer cleanup completes.
 - The API reference includes inherited component commands, including FileUpload upload/cancel/retry/remove and field focus methods. Generic signatures and inherited XML comments resolve correctly, overridden/hidden methods appear once, and framework/lifecycle methods stay out of the command list.
 - Gallery's missing-route page follows the selected language and provides a localized page title.
 - Shortcuts dispatch only to their owning component, isolating Server circuits. Multiple and nested scopes keep working when another scope is removed or its keys change. Custom `IUiJsService` adapters must now accept the owner id in shortcut registration/removal; the static `FlareShortcutEntry.HandleKeyDown` entry point has been removed.

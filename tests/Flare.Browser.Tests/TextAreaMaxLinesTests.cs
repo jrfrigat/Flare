@@ -36,6 +36,7 @@ public sealed class TextAreaMaxLinesTests(BrowserFixture fixture) : IClassFixtur
         await page.WaitForFunctionAsync(
             "sel => { const el = document.querySelector(sel); return !!el && getComputedStyle(el).paddingTop !== '0px'; }",
             "#cap-Md textarea");
+        await BrowserFonts.WaitAsync(page.Locator("main"));
         return page;
     }
 

@@ -1,5 +1,6 @@
 @page "/text-scale-bottomnav"
 @using Flare.Icons
+@inject IThemeService Themes
 
 <FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
     <div id="bottomnav-shell" style="inline-size:360px">
@@ -27,3 +28,8 @@
         </FlareBottomNav>
     </div>
 </FlareThemeProvider>
+
+@code {
+    [SupplyParameterFromQuery(Name = "theme")] public string? ThemeId { get; set; }
+    protected override Task OnParametersSetAsync() => Themes.SetThemeAsync(ThemeId ?? "md3-expressive");
+}

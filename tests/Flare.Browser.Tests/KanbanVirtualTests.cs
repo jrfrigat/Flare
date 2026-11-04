@@ -71,6 +71,9 @@ public sealed class KanbanVirtualTests(BrowserFixture fixture) : IClassFixture<B
         var page = await context.NewPageAsync();
         await page.GotoAsync($"{fixture.BaseUrl}/kanban-virtual");
         await Expect(page.Locator("[data-flare-drag=\"d0\"]")).ToBeVisibleAsync();
+        await page.WaitForFunctionAsync(
+            "() => parseFloat(getComputedStyle(document.querySelector('[data-flare-drag=d0]')).paddingTop) > 0");
+        await BrowserFonts.WaitAsync(page.Locator("#board"));
 
         await page.EvaluateAsync(@"() => {
             const list = document.querySelector('[data-flare-drop=""todo""] .flare-kanban__cards');

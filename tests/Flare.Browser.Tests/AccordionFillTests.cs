@@ -13,6 +13,7 @@ public sealed class AccordionFillTests(BrowserFixture fixture) : IClassFixture<B
         await page.SetViewportSizeAsync(800, 720);
         await page.GotoAsync($"{fixture.BaseUrl}/accordion-fill");
         await Expect(page.Locator("#acc")).ToBeVisibleAsync();
+        await BrowserFonts.WaitAsync(page.Locator("#acc"));
         return page;
     }
 
@@ -47,13 +48,14 @@ public sealed class AccordionFillTests(BrowserFixture fixture) : IClassFixture<B
         await Expect(panel).Not.ToHaveClassAsync(new Regex("expanded"));
 
         // The collapse animates flex-grow, so wait for that transition rather than a fixed delay.
-        await page.EvaluateAsync<bool>(@"() => new Promise(resolve => {
-            const el = document.querySelector('#long-panel');
-            let done = false;
-            const finish = () => { if (done) return; done = true; el.removeEventListener('transitionend', finish); resolve(true); };
-            el.addEventListener('transitionend', finish);
-            setTimeout(finish, 900);
-        })");
+        await panel.EvaluateAsync("""
+            async el => {
+                getComputedStyle(el).flexGrow;
+                await Promise.all(el.getAnimations()
+                    .filter(a => a.effect?.target === el && a.transitionProperty === 'flex-grow')
+                    .map(a => a.finished));
+            }
+            """);
 
         var collapsed = await panel.BoundingBoxAsync();
         Assert.NotNull(expanded);

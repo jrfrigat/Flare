@@ -86,6 +86,9 @@ public sealed class DrawerSelectEscapeTests(BrowserFixture fixture) : IClassFixt
         var combo = page.GetByRole(AriaRole.Combobox);
 
         await combo.ClickAsync();
+        // ClickAsync confirms native input, not the Server render. Wait for the opening state on the
+        // trigger, without waiting for the popup's asynchronous layer registration.
+        await Expect(combo).ToHaveAttributeAsync("aria-expanded", "true");
         await page.Keyboard.PressAsync("Escape");
 
         await Expect(page.Locator("#drawer-state")).ToHaveTextAsync("open");

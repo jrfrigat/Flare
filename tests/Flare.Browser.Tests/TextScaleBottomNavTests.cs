@@ -14,19 +14,28 @@ public sealed class TextScaleBottomNavTests(BrowserFixture fixture) : IClassFixt
     private static string BarSelector => $"nav.{Css.Classes.BottomNav.Root}";
 
     [Theory]
-    [InlineData(100)]
-    [InlineData(200)]
-    public async Task WrappedLabelsStayReadable(int textScale)
+    [InlineData(100, "md3-expressive", null)]
+    [InlineData(200, "md3-expressive", null)]
+    [InlineData(100, "fluent2", null)]
+    [InlineData(200, "fluent2", null)]
+    [InlineData(200, "md3-expressive", "2rem")]
+    [InlineData(200, "fluent2", "2rem")]
+    public async Task WrappedLabelsStayReadable(int textScale, string theme, string? lineHeight)
     {
         await using var context = await fixture.Browser.NewContextAsync(new()
         {
             ViewportSize = new() { Width = 360, Height = 800 }
         });
         var page = await context.NewPageAsync();
-        await page.GotoAsync($"{fixture.BaseUrl}/text-scale-bottomnav");
+        await page.GotoAsync($"{fixture.BaseUrl}/text-scale-bottomnav?theme={theme}");
         await Expect(page.Locator(BarSelector)).ToBeVisibleAsync();
+        await Expect(page.Locator($".{Css.Classes.Theme.Root}")).ToHaveAttributeAsync("data-flare-theme", theme);
 
         await page.EvaluateAsync($"document.documentElement.style.fontSize = '{textScale}%'");
+        if (lineHeight is not null)
+            await page.Locator($".{Css.Classes.Theme.Root}").EvaluateAsync(
+                "(el, args) => el.style.setProperty(args.token, args.value)",
+                new { token = Css.Tokens.BottomNavField.LabelLineHeight, value = lineHeight });
         // The theme's tokens land after the first paint; until then the bar is measured unstyled.
         await page.WaitForFunctionAsync(
             "args => { const bar = document.querySelector(args.sel); if (!bar || document.fonts.status !== 'loaded') return false; "
@@ -35,6 +44,10 @@ public sealed class TextScaleBottomNavTests(BrowserFixture fixture) : IClassFixt
             new { sel = BarSelector, token = Css.Tokens.BottomNavField.BarHeight });
 
         var bar = page.Locator(BarSelector);
+        await BrowserFonts.WaitAsync(bar);
+        if (lineHeight is not null)
+            Assert.Equal("64px", await page.Locator($".{Css.Classes.BottomNav.ItemLabel}").First
+                .EvaluateAsync<string>("el => getComputedStyle(el).lineHeight"));
         var barHeight = await bar.EvaluateAsync<double>("el => el.getBoundingClientRect().height");
         var barOverflow = await bar.EvaluateAsync<double>("el => el.scrollWidth - el.clientWidth");
         Assert.True(barOverflow <= 1, $"the bar overflows by {barOverflow:0.#}px at {textScale}% text");

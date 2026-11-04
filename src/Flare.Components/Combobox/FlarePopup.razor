@@ -8,7 +8,8 @@
 
 @if (Open)
 {
-    <div class="@Class" style="@Style" data-flare-popup-pending="@(!_ready ? "" : null)" @attributes="AdditionalAttributes" @ref="_panel">
+    <div class="@Class" style="@Style" data-flare-popup-pending="@(!_ready ? "" : null)"
+         data-flare-popup-layer="@_id" @attributes="AdditionalAttributes" @ref="_panel">
         @ChildContent
     </div>
 }

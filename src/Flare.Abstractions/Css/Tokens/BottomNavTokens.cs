@@ -19,6 +19,8 @@ public static class BottomNavField
     public const string IconSize = "--flare-bottom-nav-icon-size";
     /// <summary>CSS custom-property name for the label font size token.</summary>
     public const string LabelFontSize = "--flare-bottom-nav-label-font-size";
+    /// <summary>Label line-box height, shared with the wrap-mode height budget.</summary>
+    public const string LabelLineHeight = "--flare-bottom-nav-label-line-height";
     /// <summary>CSS custom-property name for the label font weight token.</summary>
     public const string LabelFontWeight = "--flare-bottom-nav-label-font-weight";
     /// <summary>CSS custom-property name for the active label font weight token.</summary>

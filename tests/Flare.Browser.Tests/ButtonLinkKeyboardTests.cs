@@ -22,6 +22,7 @@ public sealed class ButtonLinkKeyboardTests(BrowserFixture fixture) : IClassFixt
 
         var act = page.GetByRole(AriaRole.Button, new() { Name = "Act", Exact = true });
         await Expect(act).ToBeVisibleAsync();
+        await BrowserFonts.WaitAsync(page.Locator("body"));
         await act.FocusAsync();
         await Expect(page.Locator("#clicks")).ToHaveTextAsync("0");
         var scrollBefore = await page.EvaluateAsync<double>("window.scrollY");
@@ -35,9 +36,17 @@ public sealed class ButtonLinkKeyboardTests(BrowserFixture fixture) : IClassFixt
 
         var blocked = page.Locator("a[aria-disabled='true']");
         await blocked.FocusAsync();
+        await blocked.EvaluateAsync("""
+            el => document.addEventListener('keydown', e => {
+                if (e.target === el && e.key === ' ')
+                    window.disabledSpaceProof = [e.isTrusted, e.defaultPrevented];
+            })
+            """);
         var scrollBeforeBlocked = await page.EvaluateAsync<double>("window.scrollY");
         await page.Keyboard.PressAsync("Space");
         await Expect(page.Locator("#disabled-clicks")).ToHaveTextAsync("0");
+        Assert.Equal(new[] { true, true }, await page.EvaluateAsync<bool[]>("window.disabledSpaceProof"));
+        await BrowserFonts.WaitAsync(page.Locator("body"));
         Assert.Equal(scrollBeforeBlocked, await page.EvaluateAsync<double>("window.scrollY"));
         Assert.Equal("none", await blocked.EvaluateAsync<string>("el => getComputedStyle(el).pointerEvents"));
         var opacity = await blocked.EvaluateAsync<double>("el => parseFloat(getComputedStyle(el).opacity)");

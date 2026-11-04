@@ -14,6 +14,10 @@ public sealed class CheckboxIndeterminateColorTests(BrowserFixture fixture) : IC
         await page.GotoAsync($"{fixture.BaseUrl}/checkbox");
         var indicator = $".{Css.Classes.Checkbox.Indicator}";
         await Expect(page.Locator($"#role {indicator}")).ToBeVisibleAsync();
+        await page.WaitForFunctionAsync(
+            "token => getComputedStyle(document.querySelector('main')).getPropertyValue(token).trim() !== ''",
+            Css.Tokens.Color.Secondary);
+        await BrowserFonts.WaitAsync(page.Locator("main"));
 
         var role = await BackgroundAsync(page, $"#role {indicator}");
         var checkedRole = await BackgroundAsync(page, $"#role-checked {indicator}");
