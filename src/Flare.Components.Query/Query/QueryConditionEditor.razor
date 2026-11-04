@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 
 @* One node of the condition tree, rendering itself for nested nodes. Keeping the whole tree in one
    recursive component is what lets AND and OR mix to any depth without a second editor. *@
@@ -98,7 +99,7 @@
         @foreach (var nested in Group.Groups)
         {
             <QueryConditionEditor Group="nested" Parent="Group" Schema="Schema" Choices="Choices"
-                                  AllowAggregates="AllowAggregates" Labels="Labels" OnChanged="OnChanged" />
+                                  AllowAggregates="AllowAggregates" Labels="EffectiveLabels" OnChanged="OnChanged" />
         }
     </div>
 </div>
@@ -125,7 +126,12 @@
     [Parameter] public bool AllowAggregates { get; set; }
 
     /// <summary>Captions for the condition operators, including caller-provided translations.</summary>
-    [Parameter] public QueryBuilderLabels Labels { get; set; } = QueryBuilderLabels.Default;
+    [Parameter] public QueryBuilderLabels? Labels { get; set; }
+    private readonly QueryLabelsCache _labelCache = new();
+    private QueryBuilderLabels EffectiveLabels => _labelCache.Resolve(Labels, LocalizationState,
+        InterfaceCulture, Localizer<Flare.Components.Resources.QueryStrings>());
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.QueryBuilder.Group;
 
     /// <summary>Raised whenever the node changes, so the host can rebuild the query.</summary>
     [Parameter] public EventCallback OnChanged { get; set; }
@@ -264,21 +270,21 @@
 
     private string OperatorLabel(QueryOperator op) => op switch
     {
-        QueryOperator.Contains => Labels.OperatorContains,
+        QueryOperator.Contains => EffectiveLabels.OperatorContains,
         QueryOperator.Equals => "=",
         QueryOperator.NotEquals => "<>",
-        QueryOperator.StartsWith => Labels.OperatorStartsWith,
-        QueryOperator.EndsWith => Labels.OperatorEndsWith,
+        QueryOperator.StartsWith => EffectiveLabels.OperatorStartsWith,
+        QueryOperator.EndsWith => EffectiveLabels.OperatorEndsWith,
         QueryOperator.GreaterThan => ">",
         QueryOperator.GreaterThanOrEqual => ">=",
         QueryOperator.LessThan => "<",
         QueryOperator.LessThanOrEqual => "<=",
-        QueryOperator.Between => Labels.OperatorBetween,
-        QueryOperator.NotBetween => Labels.OperatorNotBetween,
-        QueryOperator.In => Labels.OperatorIn,
-        QueryOperator.NotIn => Labels.OperatorNotIn,
-        QueryOperator.IsNull => Labels.OperatorIsNull,
-        QueryOperator.IsNotNull => Labels.OperatorIsNotNull,
+        QueryOperator.Between => EffectiveLabels.OperatorBetween,
+        QueryOperator.NotBetween => EffectiveLabels.OperatorNotBetween,
+        QueryOperator.In => EffectiveLabels.OperatorIn,
+        QueryOperator.NotIn => EffectiveLabels.OperatorNotIn,
+        QueryOperator.IsNull => EffectiveLabels.OperatorIsNull,
+        QueryOperator.IsNotNull => EffectiveLabels.OperatorIsNotNull,
         _ => op.ToString(),
     };
 

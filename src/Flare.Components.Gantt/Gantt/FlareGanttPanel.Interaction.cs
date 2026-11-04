@@ -57,7 +57,8 @@ public partial class FlareGanttPanel<TRow, TItem>
     private string? _refocus;
     private bool _skipRender;
     private string? _linkFrom;
-    private string? _announcement;
+    private Func<string>? _announcementText;
+    private string? _announcement => _announcementText?.Invoke();
 
     private bool CanEdit => Editable && Gantt is { Compact: false };
 
@@ -116,7 +117,7 @@ public partial class FlareGanttPanel<TRow, TItem>
                 return;
             case "l" or "L" or "\u0434" or "\u0414" when CanEdit && !e.CtrlKey && !bar.IsSummary:
                 _linkFrom = bar.Key;
-                _announcement = string.Format(Gantt!.Axis.Culture, GanttStrings.LinkStarted!, bar.Label ?? bar.Key);
+                _announcementText = () => string.Format(Gantt!.Axis.Culture, GanttText["Gantt_LinkStarted"].Value, bar.Label ?? bar.Key);
                 return;
         }
 
@@ -157,8 +158,9 @@ public partial class FlareGanttPanel<TRow, TItem>
         var validation = GanttGraph.Validate(Links ?? [], link);
         if (!validation.IsValid)
         {
-            var message = GanttStrings.Describe(validation, key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key) ?? "";
-            _announcement = message;
+            _announcementText = () => GanttStrings.Describe(validation,
+                key => _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key, GanttText) ?? "";
+            var message = _announcement ?? "";
             await OnLinkRejected.InvokeAsync(new GanttLinkRejectedEventArgs(link, validation, message));
             return false;
         }
@@ -166,7 +168,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         await OnLinkCreate.InvokeAsync(args);
         if (args.Cancel) return false;
         // The consumer owns the link data; this is the component's only post-action, and Cancel suppresses it.
-        _announcement = string.Format(Gantt!.Axis.Culture, GanttStrings.LinkCreated!,
+        _announcementText = () => string.Format(Gantt!.Axis.Culture, GanttText["Gantt_LinkCreated"].Value,
             _bars.TryGetValue(link.FromKey, out var from) ? from.Label ?? link.FromKey : link.FromKey,
             _bars.TryGetValue(link.ToKey, out var to) ? to.Label ?? link.ToKey : link.ToKey);
         return true;
@@ -219,7 +221,7 @@ public partial class FlareGanttPanel<TRow, TItem>
         if (!args.Cancel)
         {
             var label = _bars.TryGetValue(key, out var bar) ? bar.Label ?? key : key;
-            _announcement = string.Format(Gantt!.Axis.Culture, GanttStrings.Moved!, label, Describe(span));
+            _announcementText = () => string.Format(Gantt!.Axis.Culture, GanttText["Gantt_Moved"].Value, label, Describe(span));
         }
     }
 

@@ -73,7 +73,7 @@ public partial class FlareScheduler<TItem>
     /// <summary>Current projection after controlled/uncontrolled resolution.</summary>
     public SchedulerView CurrentView => _view;
     /// <summary>Resolved date-formatting culture.</summary>
-    public CultureInfo EffectiveCulture => Culture ?? CultureInfo.CurrentCulture;
+    public CultureInfo EffectiveCulture => Culture ?? FormattingCulture;
     /// <summary>Selected occurrence, or null after selecting a slot.</summary>
     public SchedulerOccurrence<TItem>? SelectedEvent { get; private set; }
 }

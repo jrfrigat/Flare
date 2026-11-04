@@ -4,8 +4,9 @@ using System.Resources;
 namespace Flare.Components.Scheduler;
 
 /// <summary>Localized default labels and accessible names, using the current UI culture like the base Flare components.</summary>
-public static class SchedulerStrings
+public sealed class SchedulerStrings
 {
+    private SchedulerStrings() { }
     /// <summary>Default accessible name of the scheduling region.</summary>
     public static string Schedule => Get("Schedule");
     /// <summary>Delete action.</summary>
@@ -14,7 +15,7 @@ public static class SchedulerStrings
     public static string Move => Get("Move");
     /// <summary>Resize action.</summary>
     public static string Resize => Get("Resize");
-    private static readonly ResourceManager Resources = new("Flare.Components.Resources.SchedulerStrings", typeof(SchedulerStrings).Assembly);
+    private static readonly ResourceManager Resources = new("Flare.Components.Scheduler.SchedulerStrings", typeof(SchedulerStrings).Assembly);
     private static string Get(string key) => Resources.GetString(key, CultureInfo.CurrentUICulture) ?? key;
     /// <summary>Previous</summary>
     public static string Previous => Get("Previous");

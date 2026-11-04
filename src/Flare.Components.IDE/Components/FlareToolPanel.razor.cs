@@ -10,8 +10,9 @@ namespace Flare.Components.IDE;
 /// When placed inside a <see cref="FlareIdeLayout"/> region the layout owns the collapsed state and
 /// the thin rail / auto-hide flyout, so collapsing frees the docked space.
 /// </summary>
-public partial class FlareToolPanel : FlareComponentBase
+public partial class FlareToolPanel : FlareLocalizedComponentBase
 {
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     /// <summary>The enclosing IDE layout, when this panel is used in one of its regions.</summary>
     [CascadingParameter] internal FlareIdeLayout? Layout { get; set; }
 

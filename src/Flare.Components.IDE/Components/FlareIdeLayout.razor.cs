@@ -10,7 +10,7 @@ namespace Flare.Components.IDE;
 /// The layout owns each region's collapsed state so a collapsed panel frees its docked space
 /// (shrinking to a thin rail), and supports per-region auto-hide (flyout) panels.
 /// </summary>
-public partial class FlareIdeLayout : FlareComponentBase
+public partial class FlareIdeLayout : FlareLocalizedComponentBase
 {
     /// <summary>Top ribbon area rendered above the menu bar.</summary>
     [Parameter] public RenderFragment? Ribbon { get; set; }

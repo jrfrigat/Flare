@@ -1,5 +1,5 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 
 @* The layout cascades itself so hosted FlareToolPanel components can route their collapse to it.
@@ -87,6 +87,7 @@
 </CascadingValue>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     private RenderFragment RenderResizer(ToolPanelPosition position) =>@<FlareSplitter
         Class="@Css.Classes.Ide.Layout.Resizer"
         Orientation="@(position == ToolPanelPosition.Bottom ? FlareSplitter.SplitterOrientation.Vertical : FlareSplitter.SplitterOrientation.Horizontal)"
@@ -96,7 +97,7 @@
         OnSizeChanged="@(size => ResizePanel(position.ToString(), ParsePx(size, MinPanelSize)))" />;
 
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@Css.Classes.Ide.Layout.Rail"
-            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeStrings.LayoutExpandPanel">
+            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="@IdeText["Layout_ExpandPanel"].Value">
         <FlareIconView Value="RailIcon(position)" />
         @foreach (var title in TitlesOf(position))
         {

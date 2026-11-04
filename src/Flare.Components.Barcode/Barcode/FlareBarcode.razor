@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 
 @* A 1D barcode as SVG rects - one rect per BAR, not per module, because a symbology is specified as
@@ -43,7 +43,8 @@
     }
     else
     {
-        <span class="@Css.Classes.Barcode.Error" role="status">@(_error ?? FlareStrings.Barcode_Invalid)</span>
+        <span class="@Css.Classes.Barcode.Error" role="status">@(_failure is { } reason
+            ? CoreText["Barcode_Error_" + reason.Code, reason.Arguments].Value : CoreText["Barcode_Invalid"].Value)</span>
     }
 </div>
 
@@ -82,7 +83,7 @@
     [Parameter] public string? Format { get; set; }
 
     /// <summary>Raised once per distinct failure when the value cannot be encoded. The component renders
-    /// the fallback either way.</summary>
+    /// the fallback either way. Receives a neutral diagnostic; the visible reason follows the localizer.</summary>
     [Parameter] public EventCallback<string> OnInvalid { get; set; }
 
     /// <summary>Accessible name. Defaults to the symbology and the encoded text.</summary>
@@ -93,18 +94,27 @@
 
     private BarcodeEncoder.Symbol? _symbol;
     private string? _error;
+    private BarcodeEncodingError? _failure;
+    private string? _encodedValue;
+    private BarcodeSymbology? _encodedSymbology;
     private string? _reported;
     private double _totalWidth;
 
     private string _readable(string text) =>
-        Format is null ? text : string.Format(CultureInfo.CurrentCulture, Format, text);
+        Format is null ? text : string.Format(FormattingCulture, Format, text);
 
     /// <inheritdoc />
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        _symbol = BarcodeEncoder.TryEncode(Value, Symbology, out _error);
+        if (_encodedSymbology != Symbology || _encodedValue != Value)
+        {
+            _encodedValue = Value;
+            _encodedSymbology = Symbology;
+            _symbol = BarcodeEncoder.TryEncodeDetailed(Value, Symbology, out _failure);
+            _error = _failure?.InvariantMessage;
+        }
         _totalWidth = _symbol is { } s ? (s.Modules.Sum() + 2 * Quiet) * ModuleWidth : 0;
     }
 

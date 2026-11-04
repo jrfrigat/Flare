@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 
 <div class="@BuildCssClass()" style="@Style; position:relative; display:inline-block; line-height:0;"
@@ -93,7 +93,7 @@
             <rect x="0" y="0" width="@Size" height="@Size" stroke="none"
                   style="fill:@BackColor" />
             <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
-                  style="fill:@ForeColor" font-size="12">@FlareStrings.QrCode_ValueTooLong</text>
+                  style="fill:@ForeColor" font-size="12">@CoreText["QrCode_ValueTooLong"].Value</text>
         </svg>
     }
 </div>
@@ -143,13 +143,13 @@
     // A caller-set name wins; otherwise the name says what the symbol encodes, in the interface language.
     private string _label => !string.IsNullOrEmpty(AriaLabel)
         ? AriaLabel
-        : string.Format(FlareStrings.QrCode_Label, Value);
+        : string.Format(CoreText["QrCode_Label"].Value, Value);
 
     // The notice stands in for the symbol, so it is still an image with a name - the same custom name
     // when one was given, otherwise the localized reason.
     private string _fallbackLabel => !string.IsNullOrEmpty(AriaLabel)
         ? AriaLabel
-        : FlareStrings.QrCode_ValueTooLong;
+        : CoreText["QrCode_ValueTooLong"].Value;
 
     protected override void OnParametersSet()
     {

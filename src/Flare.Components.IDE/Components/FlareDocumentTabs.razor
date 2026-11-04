@@ -1,8 +1,8 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <div class="@Css.Classes.Ide.DocTabs.Root" style="@Style" @attributes="AdditionalAttributes">
-    <div class="@Css.Classes.Ide.DocTabs.Bar" @ref="_barRef" role="tablist" aria-label="@IdeStrings.DocTabsLabel">
+    <div class="@Css.Classes.Ide.DocTabs.Bar" @ref="_barRef" role="tablist" aria-label="@IdeText["DocTabs_Label"].Value">
         @foreach (var tab in _tabs)
         {
             var isActive = tab == _activeTab;
@@ -22,14 +22,14 @@
                 <span class="@Css.Classes.Ide.DocTabs.Label">@tab.Title</span>
                 @if (tab.Modified)
                 {
-                    <span class="@Css.Classes.Ide.DocTabs.Modified" aria-label="@IdeStrings.DocTabsModified">*</span>
+                    <span class="@Css.Classes.Ide.DocTabs.Modified" aria-label="@IdeText["DocTabs_Modified"].Value">*</span>
                 }
                 @if (tab.Closeable)
                 {
                     <button type="button" class="@Css.Classes.Ide.DocTabs.Close"
                             @onclick="@(() => CloseTab(tab))"
                             @onclick:stopPropagation="true"
-                            aria-label="@IdeStrings.DocTabsClose">
+                            aria-label="@IdeText["DocTabs_Close"].Value">
                         <FlareIconView Value="FlareIcons.Close" Size="0.875rem" />
                     </button>
                 }
@@ -40,7 +40,7 @@
     {
         <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
                      OnClick="@ToggleDropdown"
-                     AriaLabel="@IdeStrings.DocTabsHidden">
+                     AriaLabel="@IdeText["DocTabs_Hidden"].Value">
             <FlareIconView Value="FlareIcons.ExpandMore" Size="1rem" />
         </FlareButton>
         @if (_dropdownOpen)
@@ -65,6 +65,7 @@
 </div>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public TabOverflowBehavior OverflowBehavior { get; set; } = TabOverflowBehavior.Scroll;
     [Parameter] public EventCallback<string> OnTabClose { get; set; }

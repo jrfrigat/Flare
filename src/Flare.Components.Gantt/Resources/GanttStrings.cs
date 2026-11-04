@@ -1,13 +1,15 @@
 using System.Globalization;
 using System.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace Flare.Components.Gantt;
 
 /// <summary>Accessible names, validation messages and announcements in the current UI culture.</summary>
-public static class GanttStrings
+public sealed class GanttStrings
 {
+    private GanttStrings() { }
     private static readonly ResourceManager Resources =
-        new("Flare.Components.Resources.GanttStrings", typeof(GanttStrings).Assembly);
+        new("Flare.Components.Gantt.GanttStrings", typeof(GanttStrings).Assembly);
 
     private static string Get(string key) => Resources.GetString(key, CultureInfo.CurrentUICulture) ?? key;
 
@@ -33,13 +35,15 @@ public static class GanttStrings
     /// <summary>Describes a refused dependency using the current UI culture; returns null for valid links.</summary>
     /// <param name="validation">Dependency validation result.</param>
     /// <param name="name">Optional mapping from item keys to display names.</param>
+    /// <param name="localizer">Application context; omitted to use ambient built-in resources.</param>
     /// <returns>Localized refusal or null.</returns>
-    public static string? Describe(GanttValidation validation, Func<string, string>? name = null) => validation.Code switch
+    public static string? Describe(GanttValidation validation, Func<string, string>? name = null,
+        IStringLocalizer<GanttStrings>? localizer = null) => validation.Code switch
     {
-        GanttValidationCode.SelfLink => SelfLink,
-        GanttValidationCode.Cycle => string.Format(CultureInfo.CurrentUICulture, Cycle,
+        GanttValidationCode.SelfLink => localizer?["Gantt_SelfLink"].Value ?? SelfLink,
+        GanttValidationCode.Cycle => string.Format(CultureInfo.CurrentCulture, localizer?["Gantt_Cycle"].Value ?? Cycle,
             string.Join(" \u2192 ", validation.Path.Select(name ?? (key => key)))),
-        GanttValidationCode.Duplicate => Duplicate,
+        GanttValidationCode.Duplicate => localizer?["Gantt_Duplicate"].Value ?? Duplicate,
         _ => null
     };
 }

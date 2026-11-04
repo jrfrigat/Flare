@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @typeparam TRow
 @typeparam TItem
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @{ Layout(); var gantt = Gantt!; var width = GanttFormat.Px(gantt.Width); }
 
 <section class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
@@ -52,7 +52,7 @@
                         {
                             var key = row.Key;
                             <button type="button" class="@(row.Expanded ? $"{Css.Classes.Gantt.Toggle} {Css.Classes.Gantt.ToggleExpanded}" : Css.Classes.Gantt.Toggle)"
-                                    tabindex="-1" aria-label="@(row.Expanded ? GanttStrings.Collapse : GanttStrings.Expand)" @onclick="() => Toggle(key)"></button>
+                                    tabindex="-1" aria-label="@(row.Expanded ? GanttText["Gantt_Collapse"].Value : GanttText["Gantt_Expand"].Value)" @onclick="() => Toggle(key)"></button>
                         }
                         else if (_isTree)
                         {
@@ -158,6 +158,7 @@
 </section>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<GanttStrings> GanttText => Localizer<GanttStrings>();
     // A bar with its tooltip when the consumer gave one.
     private RenderFragment RenderSlot(GanttBarLayout<TItem> bar) => __builder =>
     {

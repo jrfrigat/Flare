@@ -20,6 +20,7 @@
 </div>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     private IReadOnlyList<SchedulerResource> _rows = [];
     private FlareGantt? _timeline;
     private DateOnly? _scrolledDate;
@@ -28,7 +29,7 @@
     {
         var rows = Context.Owner.Resources.ToDictionary(r => r.Key, StringComparer.Ordinal);
         foreach (var key in Context.Occurrences.Select(o => o.Data.ResourceKey ?? string.Empty).Distinct(StringComparer.Ordinal))
-            rows.TryAdd(key, new(key, key.Length == 0 ? SchedulerStrings.Unassigned : key));
+            rows.TryAdd(key, new(key, key.Length == 0 ? SchedulerText["Unassigned"].Value : key));
         _rows = rows.Values.ToArray();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)

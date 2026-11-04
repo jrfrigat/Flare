@@ -4,7 +4,7 @@ namespace Flare.Components.Scheduler;
 
 /// <summary>Shared context boundary for custom scheduler projections. It contains no layout or gesture engine.</summary>
 /// <typeparam name="TItem">Application event type.</typeparam>
-public abstract class FlareSchedulerViewBase<TItem> : FlareComponentBase
+public abstract class FlareSchedulerViewBase<TItem> : FlareLocalizedComponentBase
 {
     /// <inheritdoc />
     protected override string ComponentCssClass => string.Empty;

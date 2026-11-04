@@ -1,5 +1,5 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* The spreadsheet sheet-tab strip shown at the bottom of Excel: one pill per sheet plus an optional
    add button. Controlled - bind Sheets / ActiveIndex and handle OnAddSheet. *@
@@ -20,13 +20,14 @@
     }
     @if (ShowAddButton)
     {
-        <button type="button" class="@Css.Classes.Ide.SheetTabs.Add" aria-label="@AddLabel" @onclick="AddAsync">
+        <button type="button" class="@Css.Classes.Ide.SheetTabs.Add" aria-label="@EffectiveAddLabel" @onclick="AddAsync">
             <FlareIconView Value="FlareIcons.Add" />
         </button>
     }
 </div>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     /// <summary>The sheet names rendered as tabs, in order.</summary>
     [Parameter] public IReadOnlyList<string>? Sheets { get; set; }
 
@@ -43,7 +44,8 @@
     [Parameter] public EventCallback OnAddSheet { get; set; }
 
     /// <summary>Accessible label for the add button; defaults to the package's localized text.</summary>
-    [Parameter] public string AddLabel { get; set; } = IdeStrings.SheetTabsAdd;
+    [Parameter] public string? AddLabel { get; set; }
+    private string EffectiveAddLabel => AddLabel ?? IdeText["SheetTabs_Add"].Value;
 
     private async Task SelectAsync(int index)
     {

@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @typeparam TItem
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <!-- Source list -->
@@ -36,19 +36,19 @@
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToTarget"
                      Disabled="@(_srcSelected.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveToTarget)">›</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveToTarget"].Value)">›</FlareButton>
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveAllToTarget"
                      Disabled="@(_source.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveAllToTarget)">»</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveAllToTarget"].Value)">»</FlareButton>
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveToSource"
                      Disabled="@(_tgtSelected.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveToSource)">‹</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveToSource"].Value)">‹</FlareButton>
         <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
                      OnClick="MoveAllToSource"
                      Disabled="@(_target.Count == 0)"
-                     aria-label="@(FlareStrings.Transfer_MoveAllToSource)">«</FlareButton>
+                     aria-label="@(CoreText["Transfer_MoveAllToSource"].Value)">«</FlareButton>
     </div>
 
     <!-- Target list -->
@@ -118,8 +118,8 @@
         if (_tgtActive >= _target.Count) _tgtActive = _target.Count - 1;
     }
 
-    private string ResolvedSourceTitle => SourceTitle ?? FlareStrings.Transfer_SourceTitle;
-    private string ResolvedTargetTitle => TargetTitle ?? FlareStrings.Transfer_TargetTitle;
+    private string ResolvedSourceTitle => SourceTitle ?? CoreText["Transfer_SourceTitle"].Value;
+    private string ResolvedTargetTitle => TargetTitle ?? CoreText["Transfer_TargetTitle"].Value;
 
     private string ItemText(TItem item) => ItemLabel?.Invoke(item) ?? item?.ToString() ?? "";
 

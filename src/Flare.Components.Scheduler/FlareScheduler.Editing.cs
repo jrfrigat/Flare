@@ -13,7 +13,7 @@ public partial class FlareScheduler<TItem>
     private bool _focusResize;
     internal void RejectChange()
     {
-        _announcement = SchedulerStrings.Invalid;
+        _announcementKey = "Invalid";
         _version++;
         StateHasChanged();
     }
@@ -82,12 +82,12 @@ public partial class FlareScheduler<TItem>
         if (context.Original is { } original) ReturnFocusTo(original.Identity, context.ScopeOnly && context.Action == SchedulerEditAction.Resize);
         try
         {
-            _editorReference = Dialogs.Show<FlareSchedulerEditor<TItem>>(
-                context.Action == SchedulerEditAction.Create ? SchedulerStrings.Create
-                    : context.Action == SchedulerEditAction.Delete ? SchedulerStrings.Delete : SchedulerStrings.Edit,
-                new DialogParameters().Add(nameof(FlareSchedulerEditor<TItem>.Context), context));
+            _editorReference = Dialogs.Show<FlareSchedulerEditor<TItem>>(null,
+                new DialogParameters().Add(nameof(FlareSchedulerEditor<TItem>.Context), context),
+                new DialogOptions { TitleProvider = () => SchedulerText[context.Action == SchedulerEditAction.Create
+                    ? "Create" : context.Action == SchedulerEditAction.Delete ? "Delete" : "Edit"].Value });
             var result = await _editorReference.Result;
-            if (result.Cancelled && !_disposed) { _announcement = SchedulerStrings.Cancelled; _version++; StateHasChanged(); }
+            if (result.Cancelled && !_disposed) { _announcementKey = "Cancelled"; _version++; StateHasChanged(); }
         }
         finally { _editorReference = null; _editorOpen = false; if (!_disposed) StateHasChanged(); }
     }
@@ -114,7 +114,7 @@ public partial class FlareScheduler<TItem>
             var change = new SchedulerChangeEventArgs<TItem> { Action = action, Original = original, Data = data, Scope = scope };
             await OnChange.InvokeAsync(change);
             if (_disposed) return false;
-            _announcement = change.Cancel ? SchedulerStrings.Cancelled : SchedulerStrings.Changed;
+            _announcementKey = change.Cancel ? "Cancelled" : "Changed";
             if (!change.Cancel && action == SchedulerEditAction.Delete) _focusEvent = null;
             if (!change.Cancel) await ReloadAsync();
             else { _version++; StateHasChanged(); }

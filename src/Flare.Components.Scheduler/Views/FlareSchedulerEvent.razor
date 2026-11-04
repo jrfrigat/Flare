@@ -7,7 +7,7 @@
     <FlareDraggable Class="@BuildCssClass()" Style="@Style" Payload="Occurrence" tabindex="-1"
                     data-scheduler-focus-entry="@(Context.Owner.HasEventFocus(Occurrence.Identity) ? "" : null)"
                     data-flare-focus-target="@FocusTarget" @attributes="AdditionalAttributes">
-        <FlareDragHandle title="@SchedulerStrings.Move" />
+        <FlareDragHandle title="@SchedulerText["Move"].Value" />
         @if (Resizable && MeasureSlot is not null && Occurrence.Data.AllDay is null)
         {
             <div class="@Css.Classes.Scheduler.ResizeFrame" data-flare-focus-target="@FocusTarget">
@@ -24,6 +24,7 @@
 else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler-focus-entry="@(Context.Owner.HasEventFocus(Occurrence.Identity) ? "" : null)" data-flare-focus-target="@($".{Css.Classes.Scheduler.EventBody}")" @attributes="AdditionalAttributes">@Body</div> }
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     /// <summary>Occurrence shown by this event control.</summary>
     [Parameter, EditorRequired] public SchedulerOccurrence<TItem> Occurrence { get; set; } = default!;
     /// <summary>Enables shared drag behavior inside a scheduling drag context.</summary>

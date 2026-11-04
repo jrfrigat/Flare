@@ -1,8 +1,8 @@
 @typeparam TItem
 @using Flare.Icons
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
-<div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style" aria-label="@(AriaLabel ?? SchedulerStrings.Schedule)"
+<div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style" aria-label="@(AriaLabel ?? SchedulerText["Schedule"].Value)"
      data-flare-focus-target="@(_focusEvent is not null ? "[data-scheduler-focus-entry]" : null)" @attributes="AdditionalAttributes">
     @if (ShowToolbar)
     {
@@ -11,35 +11,35 @@
             else
             {
                 <FlareStack Row="true" Wrap="true">
-                    <FlareButton OnClick="() => NavigateAsync(-1)" AriaLabel="@SchedulerStrings.Previous">
+                    <FlareButton OnClick="() => NavigateAsync(-1)" AriaLabel="@SchedulerText["Previous"].Value">
                         <FlareIconView Value="FlareIcons.ChevronLeft" />
                     </FlareButton>
-                    <FlareButton OnClick="TodayAsync">@SchedulerStrings.Today</FlareButton>
-                    <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerStrings.Next">
+                    <FlareButton OnClick="TodayAsync">@SchedulerText["Today"].Value</FlareButton>
+                    <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerText["Next"].Value">
                         <FlareIconView Value="FlareIcons.ChevronRight" />
                     </FlareButton>
                     <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@Caption</FlareText>
                     @if (Editable && OnChange.HasDelegate)
                     {
-                        <FlareButton OnClick="() => CreateEventAsync(new(_window.Start, _window.Start + SlotDuration))">@SchedulerStrings.Create</FlareButton>
+                        <FlareButton OnClick="() => CreateEventAsync(new(_window.Start, _window.Start + SlotDuration))">@SchedulerText["Create"].Value</FlareButton>
                         @if (SelectedEvent is { } selected)
                         {
-                            <FlareButton OnClick="() => EditEventAsync(selected)">@SchedulerStrings.Edit</FlareButton>
-                            <FlareButton OnClick="() => RequestChangeAsync(selected, selected.Data, SchedulerEditAction.Delete)">@SchedulerStrings.Delete</FlareButton>
+                            <FlareButton OnClick="() => EditEventAsync(selected)">@SchedulerText["Edit"].Value</FlareButton>
+                            <FlareButton OnClick="() => RequestChangeAsync(selected, selected.Data, SchedulerEditAction.Delete)">@SchedulerText["Delete"].Value</FlareButton>
                         }
                     }
                     @foreach (var view in Views)
                     {
                         var target = view;
-                        <FlareButton OnClick="() => ShowViewAsync(target)" aria-pressed="@(_view == target ? "true" : "false")">@SchedulerStrings.ViewName(target)</FlareButton>
+                        <FlareButton OnClick="() => ShowViewAsync(target)" aria-pressed="@(_view == target ? "true" : "false")">@SchedulerText[target.ToString()].Value</FlareButton>
                     }
                 </FlareStack>
             }
         </div>
     }
     <div @ref="_viewport" class="@Css.Classes.Scheduler.Viewport" data-flare-focus-target="[data-scheduler-focus-entry]" aria-busy="@(_loading ? "true" : "false")">
-        @if (_loading) { <div role="status" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.Loading</div> }
-        else if (_error is not null) { <div role="alert" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.LoadError</div> }
+        @if (_loading) { <div role="status" class="@Css.Classes.Scheduler.Status">@SchedulerText["Loading"].Value</div> }
+        else if (_error is not null) { <div role="alert" class="@Css.Classes.Scheduler.Status">@SchedulerText["LoadError"].Value</div> }
         else if (ViewTemplate is not null) { @ViewTemplate(Snapshot) }
         else
         {

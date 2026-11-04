@@ -6,6 +6,7 @@ namespace Flare.Components;
 
 public partial class FlareScheduler<TItem>
 {
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     [Inject] private TimeProvider Clock { get; set; } = default!;
     [Inject] private Services.IUiJsService Ui { get; set; } = default!;
     private ElementReference _root;
@@ -18,7 +19,8 @@ public partial class FlareScheduler<TItem>
     private CancellationTokenSource? _load;
     private SchedulerWindow _window = default!;
     private IReadOnlyList<SchedulerOccurrence<TItem>> _occurrences = [];
-    private string _announcement = "";
+    private string? _announcementKey;
+    private string _announcement => _announcementKey is null ? "" : SchedulerText[_announcementKey].Value;
     private object? _loadKey;
     protected override string ComponentCssClass => Css.Classes.Scheduler.Root;
 

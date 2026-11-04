@@ -1,5 +1,5 @@
 @namespace Flare.Components.IDE
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* The Office "File" backstage: a full-surface overlay with a left navigation rail (FlareBackstageItem
    entries) and a content area. Toggle with Open; the back arrow raises OpenChanged(false). *@
@@ -7,7 +7,7 @@
 {
     <div class="@Css.Classes.Ide.Backstage.Root" role="dialog" aria-modal="true" style="@Style" @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Ide.Backstage.Nav">
-            <button type="button" class="@Css.Classes.Ide.Backstage.Back" aria-label="@CloseLabel" @onclick="CloseAsync">
+            <button type="button" class="@Css.Classes.Ide.Backstage.Back" aria-label="@EffectiveCloseLabel" @onclick="CloseAsync">
                 <FlareIconView Value="FlareIcons.ArrowBack" />
             </button>
             @NavContent
@@ -19,6 +19,7 @@
 }
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<IdeStrings> IdeText => Localizer<IdeStrings>();
     /// <summary>Whether the backstage is shown.</summary>
     [Parameter] public bool Open { get; set; }
 
@@ -32,7 +33,8 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     /// <summary>Accessible label for the back/close button; defaults to the package's localized text.</summary>
-    [Parameter] public string CloseLabel { get; set; } = IdeStrings.BackstageClose;
+    [Parameter] public string? CloseLabel { get; set; }
+    private string EffectiveCloseLabel => CloseLabel ?? IdeText["Backstage_Close"].Value;
 
     private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
 

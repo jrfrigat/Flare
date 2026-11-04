@@ -16,8 +16,8 @@
         var lanes = GanttLanes.Assign(events.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
         <section class="@Css.Classes.Scheduler.Day" @key="day">
             <header class="@Css.Classes.Scheduler.DayHeader">@day.ToString("ddd d", Context.Culture)</header>
-            <FlareDropZone Target="@($"a:{day.DayNumber}")" Class="@Css.Classes.Scheduler.AllDay" data-flare-focus-target="button" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is not null" aria-label="@SchedulerStrings.AllDay">
-                <FlareButton OnClick="() => SelectAllDayAsync(day)">@SchedulerStrings.AllDay</FlareButton>
+            <FlareDropZone Target="@($"a:{day.DayNumber}")" Class="@Css.Classes.Scheduler.AllDay" data-flare-focus-target="button" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is not null" aria-label="@SchedulerText["AllDay"].Value">
+                <FlareButton OnClick="() => SelectAllDayAsync(day)">@SchedulerText["AllDay"].Value</FlareButton>
                 @foreach (var occurrence in AllDayOn(day))
                 {
                     <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" Draggable="true" @key="occurrence.Identity" />
@@ -56,6 +56,7 @@
 </FlareDragContext>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     private List<DateOnly> _dates = [];
     private List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
     private Dictionary<string, SchedulerTimeSlot> _targets = [];

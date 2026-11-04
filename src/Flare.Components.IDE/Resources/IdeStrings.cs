@@ -8,8 +8,9 @@ namespace Flare.Components.IDE;
 /// <see cref="CultureInfo.CurrentUICulture"/>. The strings ship with the IDE package rather than with
 /// the core library, so an IDE keeps its own wording however the application names things.
 /// </summary>
-public static class IdeStrings
+public sealed class IdeStrings
 {
+    private IdeStrings() { }
     private static readonly ResourceManager ResourceManager =
         new("Flare.Components.IDE.IdeStrings", typeof(IdeStrings).Assembly);
 

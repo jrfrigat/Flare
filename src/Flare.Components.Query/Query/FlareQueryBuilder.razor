@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* Builds a query; never runs one. Everything here edits a QueryDraft, and the immutable QuerySpec is
    rebuilt and raised whenever something changes - so a host binds to the spec and stays out of the
@@ -8,25 +8,25 @@
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     @if (Schema is null)
     {
-        <p class="@Css.Classes.QueryBuilder.Ok">@Labels.SchemaMissing</p>
+        <p class="@Css.Classes.QueryBuilder.Ok">@EffectiveLabels.SchemaMissing</p>
     }
     else
     {
         <section class="@Css.Classes.QueryBuilder.Section">
-            <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Source</h3>
+            <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Source</h3>
             <div class="@Css.Classes.QueryBuilder.Row">
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellTarget">
                     <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Sources" ItemLabel="SourceLabel"
                                  Value="@RootToken" ValueChanged="SetRoot" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
-                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Alias"
+                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Alias"
                                 Value="@_draft.RootAlias"
                                 ValueChanged="@(value => { _draft.RootAlias = value ?? string.Empty; Rebuild(); })" />
                 </div>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddJoin">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
-                    <ChildContent>@Labels.AddJoin</ChildContent>
+                    <ChildContent>@EffectiveLabels.AddJoin</ChildContent>
                 </FlareButton>
             </div>
 
@@ -40,7 +40,7 @@
                                      ValueChanged="@(value => SetJoinEntity(row, value))" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
-                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Alias"
+                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Alias"
                                     Value="@row.Alias"
                                     ValueChanged="@(value => { row.Alias = value ?? string.Empty; Rebuild(); })" />
                     </div>
@@ -55,7 +55,7 @@
                                      ValueChanged="@(value => { row.Kind = value; Rebuild(); })" />
                     </div>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
-                                 OnClick="@(() => { _draft.Joins.Remove(row); Rebuild(); })" AriaLabel="@Labels.Remove">
+                                 OnClick="@(() => { _draft.Joins.Remove(row); Rebuild(); })" AriaLabel="@EffectiveLabels.Remove">
                         <FlareIconView Value="FlareIcons.Close" />
                     </FlareButton>
                 </div>
@@ -64,10 +64,10 @@
 
         <section class="@Css.Classes.QueryBuilder.Section">
             <div class="@Css.Classes.QueryBuilder.SectionHead">
-                <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Columns</h3>
+                <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Columns</h3>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddColumn">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
-                    <ChildContent>@Labels.AddColumn</ChildContent>
+                    <ChildContent>@EffectiveLabels.AddColumn</ChildContent>
                 </FlareButton>
             </div>
 
@@ -95,12 +95,12 @@
                                      ValueChanged="@(value => SetPeriod(row, value))" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellAlias">
-                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.OutputName"
+                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.OutputName"
                                     Value="@row.OutputAlias"
                                     ValueChanged="@(value => { row.OutputAlias = value; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
-                        <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Group" Value="@row.Group"
+                        <FlareCheckbox Size="FieldSize.Xs" Label="@EffectiveLabels.Group" Value="@row.Group"
                                        ValueChanged="@((bool value) => { row.Group = value; Rebuild(); })" />
                     </div>
                     <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellOp">
@@ -109,7 +109,7 @@
                                      ValueChanged="@(value => SetSort(row, value))" />
                     </div>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
-                                 OnClick="@(() => { _draft.Columns.Remove(row); Rebuild(); })" AriaLabel="@Labels.Remove">
+                                 OnClick="@(() => { _draft.Columns.Remove(row); Rebuild(); })" AriaLabel="@EffectiveLabels.Remove">
                         <FlareIconView Value="FlareIcons.Close" />
                     </FlareButton>
                 </div>
@@ -117,12 +117,12 @@
         </section>
 
         <section class="@Css.Classes.QueryBuilder.Section">
-            <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Filter</h3>
-            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Choices="_choices" Labels="Labels"
-                                  AndLabel="@Labels.And" OrLabel="@Labels.Or"
-                                  AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
-                                  RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
-                                  ValuesHint="@Labels.ValuesHint" RelativeLabel="@Labels.Relative"
+            <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Filter</h3>
+            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Choices="_choices" Labels="EffectiveLabels"
+                                  AndLabel="@EffectiveLabels.And" OrLabel="@EffectiveLabels.Or"
+                                  AddConditionLabel="@EffectiveLabels.AddCondition" AddGroupLabel="@EffectiveLabels.AddGroup"
+                                  RemoveLabel="@EffectiveLabels.Remove" ValueHint="@EffectiveLabels.ValueHint"
+                                  ValuesHint="@EffectiveLabels.ValuesHint" RelativeLabel="@EffectiveLabels.Relative"
                                   OnChanged="Rebuild" />
         </section>
 
@@ -130,30 +130,30 @@
              || _draft.Columns.Any(column => column.Aggregate is not null))
         {
             <section class="@Css.Classes.QueryBuilder.Section">
-                <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.GroupFilter</h3>
-                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Choices="_choices" Labels="Labels" AllowAggregates="true"
-                                      AndLabel="@Labels.And" OrLabel="@Labels.Or"
-                                      AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
-                                      RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
-                                      ValuesHint="@Labels.ValuesHint" RelativeLabel="@Labels.Relative"
+                <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.GroupFilter</h3>
+                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Choices="_choices" Labels="EffectiveLabels" AllowAggregates="true"
+                                      AndLabel="@EffectiveLabels.And" OrLabel="@EffectiveLabels.Or"
+                                      AddConditionLabel="@EffectiveLabels.AddCondition" AddGroupLabel="@EffectiveLabels.AddGroup"
+                                      RemoveLabel="@EffectiveLabels.Remove" ValueHint="@EffectiveLabels.ValueHint"
+                                      ValuesHint="@EffectiveLabels.ValuesHint" RelativeLabel="@EffectiveLabels.Relative"
                                       OnChanged="Rebuild" />
             </section>
         }
 
         <section class="@Css.Classes.QueryBuilder.Section">
-            <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Options</h3>
+            <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Options</h3>
             <div class="@Css.Classes.QueryBuilder.Row">
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellFlag">
-                    <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Distinct" Value="@_draft.Distinct"
+                    <FlareCheckbox Size="FieldSize.Xs" Label="@EffectiveLabels.Distinct" Value="@_draft.Distinct"
                                    ValueChanged="@((bool value) => { _draft.Distinct = value; Rebuild(); })" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Limit"
+                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Limit"
                                 Value="@(_draft.Limit?.ToString(Culture))"
                                 ValueChanged="@(value => { _draft.Limit = ParseCount(value); Rebuild(); })" />
                 </div>
                 <div class="@Css.Classes.QueryBuilder.Cell @Css.Classes.QueryBuilder.CellValue">
-                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Offset"
+                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@EffectiveLabels.Offset"
                                 Value="@(_draft.Offset?.ToString(Culture))"
                                 ValueChanged="@(value => { _draft.Offset = ParseCount(value); Rebuild(); })" />
                 </div>
@@ -161,7 +161,7 @@
                 {
                     <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Submit"
                                  Disabled="@(!_validation.IsValid)">
-                        @Labels.Submit
+                        @EffectiveLabels.Submit
                     </FlareButton>
                 }
             </div>
@@ -170,10 +170,10 @@
         @if (ShowValidation)
         {
             <section class="@Css.Classes.QueryBuilder.Section">
-                <h3 class="@Css.Classes.QueryBuilder.Heading">@Labels.Problems</h3>
+                <h3 class="@Css.Classes.QueryBuilder.Heading">@EffectiveLabels.Problems</h3>
                 @if (_validation.IsValid)
                 {
-                    <p class="@Css.Classes.QueryBuilder.Ok">@Labels.NoProblems</p>
+                    <p class="@Css.Classes.QueryBuilder.Ok">@EffectiveLabels.NoProblems</p>
                 }
                 else
                 {
@@ -195,6 +195,7 @@
     private QueryDraft _draft = new();
     private QueryValidationResult _validation = new([]);
     private QuerySpec? _emitted;
+    private QuerySpec? _specParameter;
     private QuerySchema? _boundSchema;
     private QueryChoices? _choices;
 
@@ -228,7 +229,10 @@
     [Parameter] public bool ShowValidation { get; set; } = true;
 
     /// <summary>Every caption the designer shows.</summary>
-    [Parameter] public QueryBuilderLabels Labels { get; set; } = QueryBuilderLabels.Default;
+    [Parameter] public QueryBuilderLabels? Labels { get; set; }
+    private readonly QueryLabelsCache _labelCache = new();
+    private QueryBuilderLabels EffectiveLabels => _labelCache.Resolve(Labels, LocalizationState,
+        InterfaceCulture, Localizer<Flare.Components.Resources.QueryStrings>());
 
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.QueryBuilder.Root;
@@ -239,7 +243,9 @@
 
         // Reopen the draft when the host swaps the schema, or hands in a spec this component did not
         // itself emit - otherwise every keystroke would be undone by the round trip.
-        if (!ReferenceEquals(_boundSchema, Schema) || !ReferenceEquals(Spec, _emitted))
+        var externalSpecChanged = !ReferenceEquals(Spec, _specParameter) && !ReferenceEquals(Spec, _emitted);
+        _specParameter = Spec;
+        if (!ReferenceEquals(_boundSchema, Schema) || externalSpecChanged)
         {
             _boundSchema = Schema;
             _draft = QueryDraft.FromSpec(Spec, Schema);
@@ -457,7 +463,7 @@
         return options;
     }
 
-    private string AggregateLabel(string value) => string.IsNullOrEmpty(value) ? Labels.None : value;
+    private string AggregateLabel(string value) => string.IsNullOrEmpty(value) ? EffectiveLabels.None : value;
 
     private void SetAggregate(QueryColumnDraft column, string? value)
     {
@@ -473,7 +479,7 @@
             .Concat((_choices?.Periods ?? []).Select(period => period.ToString()))
             .ToList();
 
-    private string PeriodLabel(string value) => string.IsNullOrEmpty(value) ? Labels.None : value;
+    private string PeriodLabel(string value) => string.IsNullOrEmpty(value) ? EffectiveLabels.None : value;
 
     private void SetPeriod(QueryColumnDraft column, string? value)
     {
@@ -488,9 +494,9 @@
 
     private string SortLabel(string value) => value switch
     {
-        nameof(QuerySortDirection.Ascending) => Labels.Ascending,
-        nameof(QuerySortDirection.Descending) => Labels.Descending,
-        _ => Labels.None,
+        nameof(QuerySortDirection.Ascending) => EffectiveLabels.Ascending,
+        nameof(QuerySortDirection.Descending) => EffectiveLabels.Descending,
+        _ => EffectiveLabels.None,
     };
 
     private void SetSort(QueryColumnDraft column, string? value)

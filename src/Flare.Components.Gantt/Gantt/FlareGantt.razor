@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 @using Microsoft.JSInterop
 @using Flare.Components.Gantt.Services
@@ -52,11 +52,12 @@
                        Value="@SideEffectivePixels" DefaultValue="@(ParseLength(_sideDefault ?? DefaultSideWidth ?? SideWidth))"
                        ValueVariable="--_gantt-side" ValueScope="@($".{Css.Classes.Gantt.Root}")"
                        MinSize="@Pixels(MinSidePixels)" MaxSize="@Pixels(MaxSidePixels)"
-                       AriaLabel="@GanttStrings.ResizeSide" OnSizeChanged="SideChanged" />
+                       AriaLabel="@GanttText["Gantt_ResizeSide"].Value" OnSizeChanged="SideChanged" />
     }
 </div>
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<GanttStrings> GanttText => Localizer<GanttStrings>();
     /// <summary>Visible time.</summary>
     [Parameter, EditorRequired] public GanttSpan Range { get; set; }
 
@@ -220,7 +221,7 @@
         if (Endless && (moment < Range.Start || moment >= Range.End))
         {
             var reach = Math.Max(1, Math.Ceiling(2 * (_view?.Width ?? _available) / EffectiveUnitWidth));
-            var probe = new GanttAxis(new GanttSpan(Min(Range.Start, moment), Max(Range.End, moment.AddTicks(1))), Scale, Culture);
+            var probe = new GanttAxis(new GanttSpan(Min(Range.Start, moment), Max(Range.End, moment.AddTicks(1))), Scale, Culture ?? FormattingCulture);
             _pendingScroll = moment;
             await Request(new GanttSpan(Min(Range.Start, probe.UnitOf(moment).Start), Max(Range.End, probe.UnitOf(probe.At(probe.Offset(moment) + reach)).End)));
             return;
@@ -437,7 +438,7 @@
         // double click, instead of the value the chart happened to mount with.
         _sideDefault = DefaultSideWidth ?? SideWidth;
         var before = Axis;
-        Axis = new GanttAxis(Range, Scale, Culture);
+        Axis = new GanttAxis(Range, Scale, Culture ?? FormattingCulture);
         if (_lastRange is { } last && last != Range)
         {
             // The axis grew on the left: everything moved right by the added width; the scroll follows after rendering.

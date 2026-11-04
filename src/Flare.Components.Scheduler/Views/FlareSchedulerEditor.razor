@@ -1,6 +1,6 @@
 @typeparam TItem
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @if (Context.Owner.EditorTemplate is { } template) { @template(Context) }
 else
@@ -8,43 +8,44 @@ else
     <FlareStack Class="@BuildCssClass()" Style="@Style" @attributes="AdditionalAttributes">
         @if (!Context.ScopeOnly)
         {
-            <FlareTextField Label="@SchedulerStrings.Title" Value="Context.Draft.Title" ValueChanged="v => Context.Draft = Context.Draft with { Title = v ?? string.Empty }" />
-            <FlareCheckbox TValue="bool" Label="@SchedulerStrings.AllDay" @bind-Value="_allDay" />
+            <FlareTextField Label="@SchedulerText["Title"].Value" Value="Context.Draft.Title" ValueChanged="v => Context.Draft = Context.Draft with { Title = v ?? string.Empty }" />
+            <FlareCheckbox TValue="bool" Label="@SchedulerText["AllDay"].Value" @bind-Value="_allDay" />
             @if (_allDay)
             {
-                <FlareDatePicker Label="@SchedulerStrings.Start" @bind-Value="_firstDay" Culture="Context.Owner.EffectiveCulture" />
-                <FlareDatePicker Label="@SchedulerStrings.End" @bind-Value="_endDay" Culture="Context.Owner.EffectiveCulture" />
+                <FlareDatePicker Label="@SchedulerText["Start"].Value" @bind-Value="_firstDay" Culture="Context.Owner.EffectiveCulture" />
+                <FlareDatePicker Label="@SchedulerText["End"].Value" @bind-Value="_endDay" Culture="Context.Owner.EffectiveCulture" />
             }
             else
             {
-                <FlareDateTimePicker Label="@SchedulerStrings.Start" @bind-Value="_start" Culture="Context.Owner.EffectiveCulture" />
-                <FlareDateTimePicker Label="@SchedulerStrings.End" @bind-Value="_end" Culture="Context.Owner.EffectiveCulture" />
+                <FlareDateTimePicker Label="@SchedulerText["Start"].Value" @bind-Value="_start" Culture="Context.Owner.EffectiveCulture" />
+                <FlareDateTimePicker Label="@SchedulerText["End"].Value" @bind-Value="_end" Culture="Context.Owner.EffectiveCulture" />
             }
-            <FlareTextField Label="@SchedulerStrings.Description" Value="Context.Draft.Description" ValueChanged="v => Context.Draft = Context.Draft with { Description = v }" />
+            <FlareTextField Label="@SchedulerText["Description"].Value" Value="Context.Draft.Description" ValueChanged="v => Context.Draft = Context.Draft with { Description = v }" />
             @if (Context.Owner.Resources.Count > 0)
             {
-                <FlareSelect TValue="string" Label="@SchedulerStrings.Resource" Items="Context.Owner.Resources.Select(r => r.Key)"
-                             NullOption="@SchedulerStrings.Unassigned" Value="Context.Draft.ResourceKey"
+                <FlareSelect TValue="string" Label="@SchedulerText["Resource"].Value" Items="Context.Owner.Resources.Select(r => r.Key)"
+                             NullOption="@SchedulerText["Unassigned"].Value" Value="Context.Draft.ResourceKey"
                              ValueChanged="v => Context.Draft = Context.Draft with { ResourceKey = v }"
                              ItemLabel="key => Context.Owner.Resources.FirstOrDefault(r => r.Key == key)?.Title ?? key" />
             }
         }
         @if (Context.IsRecurring)
         {
-            <FlareSelect TValue="SchedulerEditScope" Label="@SchedulerStrings.Scope" @bind-Value="Context.Scope"
+            <FlareSelect TValue="SchedulerEditScope" Label="@SchedulerText["Scope"].Value" @bind-Value="Context.Scope"
                          Items="Enum.GetValues<SchedulerEditScope>()" ItemLabel="ScopeLabel" />
         }
         @if (_message is not null) { <FlareText role="alert">@_message</FlareText> }
         <FlareStack Row="true" Justify="FlareJustifyContent.End">
-            <FlareButton OnClick="Context.CancelAsync" Disabled="_saving">@SchedulerStrings.Cancel</FlareButton>
+            <FlareButton OnClick="Context.CancelAsync" Disabled="_saving">@SchedulerText["Cancel"].Value</FlareButton>
             <FlareButton OnClick="() => Context.SaveAsync()" Disabled="_saving" Variant="ButtonVariant.Filled">
-                @(Context.Action == SchedulerEditAction.Delete ? SchedulerStrings.Delete : SchedulerStrings.Save)
+                @(Context.Action == SchedulerEditAction.Delete ? SchedulerText["Delete"].Value : SchedulerText["Save"].Value)
             </FlareButton>
         </FlareStack>
     </FlareStack>
 }
 
 @code {
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     /// <summary>Editor working copy and persistence commands.</summary>
     [Parameter, EditorRequired] public SchedulerEditContext<TItem> Context { get; set; } = default!;
     /// <summary>Dialog handle supplied by the standard Flare dialog provider.</summary>
@@ -52,7 +53,8 @@ else
     private bool _allDay, _saving;
     private DateOnly? _firstDay, _endDay;
     private DateTimeOffset? _start, _end;
-    private string? _message;
+    private string? _messageKey;
+    private string? _message => _messageKey is null ? null : SchedulerText[_messageKey].Value;
     protected override string ComponentCssClass => Css.Classes.Scheduler.Editor;
     protected override void OnInitialized()
     {
@@ -66,16 +68,16 @@ else
         Context.SaveHandler = SaveAsync;
         Context.CancelHandler = async () => { await Dialog.CancelAsync(); };
     }
-    private static string ScopeLabel(SchedulerEditScope scope) => scope switch
+    private string ScopeLabel(SchedulerEditScope scope) => scope switch
     {
-        SchedulerEditScope.Following => SchedulerStrings.Following,
-        SchedulerEditScope.Series => SchedulerStrings.Series,
-        _ => SchedulerStrings.Occurrence
+        SchedulerEditScope.Following => SchedulerText["Following"].Value,
+        SchedulerEditScope.Series => SchedulerText["Series"].Value,
+        _ => SchedulerText["Occurrence"].Value
     };
     private async Task<bool> SaveAsync()
     {
         if (_saving) return false;
-        _message = null;
+        _messageKey = null;
         if (!Context.ScopeOnly && Context.Owner.EditorTemplate is null)
         {
             try
@@ -93,17 +95,17 @@ else
                     Context.Draft = Context.Draft with { AllDay = null, Start = Resolve(start), End = Resolve(end) };
                 }
             }
-            catch (ArgumentException) { _message = SchedulerStrings.Invalid; StateHasChanged(); return false; }
+            catch (ArgumentException) { _messageKey = "Invalid"; StateHasChanged(); return false; }
         }
         var data = Context.Draft;
         if (string.IsNullOrWhiteSpace(data.Title) || (data.AllDay is { } dates ? dates.End <= dates.Start : data.End < data.Start))
-        { _message = SchedulerStrings.Invalid; StateHasChanged(); return false; }
+        { _messageKey = "Invalid"; StateHasChanged(); return false; }
         _saving = true;
         try
         {
             var accepted = await Context.Owner.ApplyChangeAsync(Context.Action, Context.Original, data, Context.Scope);
             if (accepted) await Dialog.CloseAsync(data);
-            else { _message = SchedulerStrings.Cancelled; StateHasChanged(); }
+            else { _messageKey = "Cancelled"; StateHasChanged(); }
             return accepted;
         }
         finally { _saving = false; }
