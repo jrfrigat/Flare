@@ -1,0 +1,35 @@
+@namespace Flare.Components
+@using Flare.Abstractions
+@implements IDisposable
+@inject IFlareLocalization Localization
+
+<CascadingValue Value="_state">@ChildContent</CascadingValue>
+
+@code {
+    /// <summary>Content whose localized components follow this scope's culture.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private FlareLocalizationState _state = null!;
+    private bool _disposed;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        _state = new(Localization);
+        Localization.Changed += Refresh;
+    }
+
+    private void Refresh() => _ = InvokeAsync(() =>
+    {
+        if (_disposed) return;
+        _state = new(Localization);
+        StateHasChanged();
+    });
+
+    /// <summary>Releases the culture subscription.</summary>
+    public void Dispose()
+    {
+        _disposed = true;
+        Localization.Changed -= Refresh;
+    }
+}

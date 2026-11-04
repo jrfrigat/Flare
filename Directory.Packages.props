@@ -37,6 +37,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.13" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.13" />
     <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
          its text language are needed by the designer; the Gallery adds two renderers to demo one

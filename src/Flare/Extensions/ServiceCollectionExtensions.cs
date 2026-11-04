@@ -25,6 +25,9 @@ public static class ServiceCollectionExtensions
         var opts = new FlareOptions();
         configure?.Invoke(opts);
 
+        services.AddLocalization();
+        services.TryAddScoped<IFlareLocalization>(sp => new FlareLocalization(sp));
+
         // Themes/palettes added via AddFlareTheme/AddFlarePalette accumulate here; the ThemeService
         // factory reads this registry lazily at resolve time, so those calls may come before or
         // after AddFlare.
