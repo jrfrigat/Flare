@@ -95,8 +95,6 @@ public sealed class GallerySearchService
         AddKeyed(list, "getting-started", "Nav_GettingStarted", SearchKind.Page, "rocket_launch");
         AddKeyed(list, "theming", "Nav_Theming", SearchKind.Page, "palette");
         AddKeyed(list, "color", "Nav_Color", SearchKind.Page, "format_color_fill");
-        // Custom Theme has no localized nav label (English-only literal in the menu).
-        AddLiteral(list, "custom-theme", "Custom Theme", SearchKind.Page, "tune");
 
         // Names come from the catalog, titles from the resource files.
         foreach (var c in ComponentCatalog.All)
@@ -120,9 +118,6 @@ public sealed class GallerySearchService
         var nameRu = Loc(key, _ru);
         list.Add(new Entry(href, key, string.IsNullOrEmpty(nameEn) ? key : nameEn, kind, icon, Hay(nameEn, nameEn, nameRu, href)));
     }
-
-    private static void AddLiteral(List<Entry> list, string href, string name, SearchKind kind, string icon) =>
-        list.Add(new Entry(href, null, name, kind, icon, Hay(name, null, null, href)));
 
     // Lower-cased " name en ru href " with leading/trailing spaces so " " + q can detect word starts.
     private static string Hay(string name, string? en, string? ru, string href) =>
