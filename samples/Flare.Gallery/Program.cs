@@ -1,4 +1,6 @@
 using Flare.Abstractions.Tokens;
+using Flare.Components.Resources;
+using Microsoft.Extensions.Localization;
 using Flare.Components.IDE;
 using Flare.Components.Gantt;
 using Flare.Components.Scheduler;
@@ -59,6 +61,9 @@ builder.Services.AddFlareVersionCheck(opts =>
 
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services.AddLocalization();
+builder.Services.AddSingleton<IStringLocalizer<FlareStrings>>(sp => new GalleryTranslations<FlareStrings>(sp.GetRequiredService<IStringLocalizerFactory>()));
+builder.Services.AddSingleton<IStringLocalizer<GanttStrings>>(sp => new GalleryTranslations<GanttStrings>(sp.GetRequiredService<IStringLocalizerFactory>()));
+builder.Services.AddSingleton<IStringLocalizer<SchedulerStrings>>(sp => new GalleryTranslations<SchedulerStrings>(sp.GetRequiredService<IStringLocalizerFactory>()));
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<RailLabelService>();
 builder.Services.AddSingleton<GallerySearchService>();
@@ -72,7 +77,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 var host = builder.Build();
 
-// КРИТИЧНО ДЛЯ PWA: Считываем сохраненный язык ИЗ LOCALSTORAGE перед стартом UI
+// Restore the host's saved cultures before the first application render.
 var languageService = host.Services.GetRequiredService<LanguageService>();
 await languageService.InitializeCultureAsync();
 

@@ -15,7 +15,7 @@ Date and time field: a masked text input with a popup holding a calendar and a t
 | `Autofocus` | `bool` | `false` | Parameter |  | Requests focus on the input after the first render (best-effort). Only one field per page should set this. |
 | `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (dates written in letters - the field then takes free text instead of a digit mask). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the picker popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar and for writing and reading the value. Default = CurrentUICulture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar and for writing and reading the value. Default = the current formatting culture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years. |
 | `DateTimeFormat` | `string?` | `` | Parameter |  | Display/parse format. Null (default) uses the culture short date + time pattern. Typed text changes the wall date and time; the value keeps its offset and the seconds or fractions the format does not show, and a new value takes the local zone's offset. A format with an offset specifier (z, K) lets the user type the offset instead. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays). |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number. |
@@ -87,6 +87,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

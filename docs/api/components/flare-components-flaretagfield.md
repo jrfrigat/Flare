@@ -53,6 +53,7 @@ Returns: `ValueTask`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

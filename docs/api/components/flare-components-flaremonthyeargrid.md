@@ -21,6 +21,9 @@
 | `Today` | `DateOnly?` | `` | Parameter |  | The day that is today: its month and year are marked current (aria-current="date") and take keyboard focus when nothing is selected. Null marks none. |
 | `View` | `MonthYearGridView` | `MonthYearGridView.Months` | Parameter |  | Whether the grid shows the months of Year or the years of its decade. |
 | `Year` | `int` | `0` | Parameter | Yes | The year shown, numbered on the grid's calendar (1405 on the Persian one). In the year view the grid shows the twelve years from the multiple of 12 at or below it. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -32,5 +35,7 @@ Returns: `Task`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

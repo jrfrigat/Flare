@@ -8,7 +8,7 @@
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for day headers, month names and the first day of week. Default = CurrentUICulture. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for day headers, month names and the first day of week. Default = the current formatting culture. |
 | `EventTemplate` | `RenderFragment<CalendarEvent>?` | `` | Parameter |  | Custom event content inside the calendar's existing selection control. |
 | `Events` | `IReadOnlyList<CalendarEvent>?` | `` | Parameter |  | Events to display on the calendar grid cells. |
 | `InitialDate` | `DateOnly?` | `` | Parameter |  | Date used to determine the initial calendar view month. |
@@ -31,6 +31,7 @@ This component exposes no documented public methods.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

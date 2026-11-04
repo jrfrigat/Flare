@@ -12,7 +12,7 @@
 		<PublishTrimmed>true</PublishTrimmed>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 		<!--
-			The Gallery only ships English + Russian. We keep the full ICU dataset (it includes the
+			The Gallery ships English/Russian and partial French consumer overrides. We keep the full ICU dataset (it includes the
 			ru-RU calendar/number formats the DataGrid/date components rely on) but drop the legacy
 			BlazorWebAssemblyI18NMode=All code-page tables, which are only needed for non-Unicode
 			encodings and add weight for nothing here.

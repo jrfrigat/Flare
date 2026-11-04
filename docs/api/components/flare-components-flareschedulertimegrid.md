@@ -36,6 +36,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareSchedulerViewBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

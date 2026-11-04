@@ -17,7 +17,7 @@ Date field with a masked text entry and a calendar popup (or an inline calendar)
 | `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (13 months in a leap year, dates written in letters - the field then takes free text instead of a digit mask). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar. The value stays a DateOnly. |
 | `ClearText` | `string?` | `` | Parameter |  | Override text for the Clear button. When null, falls back to the localizer key Picker_Clear. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the calendar popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture used for the calendar (day headers, month names, first day of week) and for writing and reading the date. Default = CurrentUICulture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture used for the calendar (day headers, month names, first day of week) and for writing and reading the date. Default = the current formatting culture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years. |
 | `DateFormat` | `string?` | `` | Parameter |  | Display/parse format. Null (default) uses the culture short date pattern; can be a long format like "dd MMMM yyyy". |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays or highlight days). |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number. |
@@ -89,6 +89,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

@@ -43,6 +43,7 @@ This component exposes no documented public methods.
 ## Inheritance
 
 - `FlareFileUploadBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

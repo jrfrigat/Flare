@@ -6,6 +6,9 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 
 ## Components
 
+- [`DataGridColumnPicker`](components/flare-components-datagridcolumnpicker.md) — A button with a menu of the grid's columns, where each column is shown or hidden with a check.
+- [`DataGridExport`](components/flare-components-datagridexport.md) — Toolbar buttons that export the grid's filtered and sorted rows, one per exporter, or a split button with the first exporter as its main action.
+- [`DataGridFilterBuilder`](components/flare-components-datagridfilterbuilder.md) — An editor for the grid's advanced filter: a tree of conditions joined by And or Or, applied to the grid.
 - [`FlareAccordion`](components/flare-components-flareaccordion.md)
 - [`FlareAccordionPanel`](components/flare-components-flareaccordionpanel.md)
 - [`FlareAlert`](components/flare-components-flarealert.md)
@@ -112,6 +115,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareLinkTabs`](components/flare-components-flarelinktabs.md)
 - [`FlareList`](components/flare-components-flarelist.md)
 - [`FlareListItem`](components/flare-components-flarelistitem.md)
+- [`FlareLocalizationProvider`](components/flare-components-flarelocalizationprovider.md)
 - [`FlareMarkdown`](components/flare-components-flaremarkdown.md)
 - [`FlareMaskedField`](components/flare-components-flaremaskedfield.md)
 - [`FlareMediaQuery`](components/flare-components-flaremediaquery.md)
@@ -222,6 +226,7 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareVisuallyHidden`](components/flare-components-flarevisuallyhidden.md)
 - [`FlareWeekPicker`](components/flare-components-flareweekpicker.md) — Week field bound to a DateOnly: the first day of the chosen week. A click or Enter on any day picks its week; the field writes the week by the culture's week rule ("Week 41, 2026") or by ISO 8601 ("2026-W41") and takes a week or a date typed in.
 - [`FlareZone`](components/flare-components-flarezone.md) — A coloured band drawn across part of a slider's or progress bar's track, marking a region of the host's own scale - "danger starts at 90". The range is absolute, so each zone reads as a pair of boundaries and is independent of the others. It registers with the host and renders nothing itself.
+- [`QueryConditionEditor`](components/flare-components-queryconditioneditor.md)
 
 ## Supporting types
 

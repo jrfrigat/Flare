@@ -303,6 +303,7 @@ CI запускается при пушах и pull request в `main`: сбор�
 | [getting-started](docs/ru/getting-started.md) - [en](docs/en/getting-started.md) | RU - EN | Установка, DI, стили, первый компонент |
 | [icons](docs/ru/icons.md) - [en](docs/en/icons.md) | RU - EN | Система FlareIcon, встроенный набор, пакеты провайдеров, тримминг |
 | [architecture](docs/ru/architecture.md) - [en](docs/en/architecture.md) | RU - EN | Карта модулей, паттерны компонентов, архитектура тем |
+| [localization](docs/ru/localization.md) - [en](docs/en/localization.md) | RU - EN | Смена языка, отдельное форматирование, переводы приложения |
 | [theme-creation-guide](docs/ru/theme-creation-guide.md) - [en](docs/en/theme-creation-guide.md) | RU - EN | Создание тем: дизайн-токены, палитры, кастомные темы |
 | [component-conventions](docs/ru/component-conventions.md) - [en](docs/en/component-conventions.md) | RU - EN | Конвенции кода компонентов (CSS-токены, единый цвет, XML-доки) |
 | [scheduler](docs/ru/scheduler.md) - [en](docs/en/scheduler.md) | RU - EN | Планирование, оконная загрузка, редактирование, необязательные повторы и токены |

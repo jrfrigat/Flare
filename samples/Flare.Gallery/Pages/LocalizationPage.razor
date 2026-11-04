@@ -1,0 +1,83 @@
+@page "/localization"
+@inherits LocalizedPage
+@inject IFlareLocalization Locale
+@using System.Globalization
+
+<PageTitle>@GalleryStrings.Localization_Title - Flare</PageTitle>
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Localization_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Localization_Description</FlareText>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+            @foreach (var language in LanguageService.SupportedCultures)
+            {
+                var languageCode = language.Code;
+                <FlareButton data-locale="@languageCode" OnClick="() => Lang.SetCultureAsync(languageCode)"
+                             Variant="@(Lang.CurrentCulture == languageCode ? ButtonVariant.Filled : ButtonVariant.Outlined)">@language.DisplayName</FlareButton>
+            }
+        </FlareStack>
+        <FlareSelect TValue="string" Label="@GalleryStrings.Localization_Format" Items="@Formats"
+                     ItemLabel="@(name => CultureInfo.GetCultureInfo(name).NativeName)"
+                     Value="@Lang.FormattingCulture.Name" ValueChanged="SetFormat" />
+        <FlareText id="localization-cultures">@string.Format(GalleryStrings.Localization_Cultures, Locale.UICulture.Name, Locale.Culture.Name)</FlareText>
+        <FlareText>@GalleryStrings.Localization_Overrides</FlareText>
+    </FlareStack>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium">
+        <FlareNumericField id="localization-number" TValue="decimal" Value="1234.5m" Format="N2" Label="@GalleryStrings.Localization_Number" />
+        <FlareNumericField id="localization-explicit" TValue="decimal" Value="1234.5m" Format="N2" Culture="@English" Label="@GalleryStrings.Localization_Explicit" />
+    </FlareStack>
+
+    <FlareDatePicker id="localization-date" Label="@GalleryStrings.Localization_Date" @bind-Value="_date" />
+    <FlareStack Row Gap="FlareSpacing.Small">
+        <FlareButton id="localization-open-editor" OnClick="() => _editor = true">@GalleryStrings.Localization_OpenEditor</FlareButton>
+        <FlarePopover Trigger="PopoverTrigger.Click" @bind-Open="_popup">
+            <AnchorContent><FlareText id="localization-open-popup">@GalleryStrings.Localization_OpenPopup</FlareText></AnchorContent>
+            <ChildContent>
+                <FlareStack Gap="FlareSpacing.Small">
+                    <FlareCalendar ViewDate="_month" ViewDateChanged="date => _month = date" SelectedDate="_selected" SelectedDateChanged="date => _selected = date" />
+                    <FlareButton data-locale-cycle OnClick="CycleLanguage">@GalleryStrings.Localization_Cycle</FlareButton>
+                </FlareStack>
+            </ChildContent>
+        </FlarePopover>
+    </FlareStack>
+
+    <FlareDialog @bind-Visible="_editor" Title="@GalleryStrings.Localization_Editor">
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.Medium" @onkeydown="OnLocaleKey">
+                <FlareText>@GalleryStrings.Localization_Shortcut</FlareText>
+                <FlareField id="localization-draft" TValue="string" Label="@GalleryStrings.Localization_Draft" @bind-Value="_draft" Immediate />
+                <FlareButton data-locale-cycle OnClick="CycleLanguage">@GalleryStrings.Localization_Cycle</FlareButton>
+            </FlareStack>
+        </ChildContent>
+        <ActionsContent>
+            <FlareButton OnClick="() => _editor = false">@(Locale.GetLocalizer<FlareStrings>()["Dialog_Close"].Value)</FlareButton>
+        </ActionsContent>
+    </FlareDialog>
+
+    <FlareCodeBlock Language="csharp" Value="@SetupCode" />
+</FlareStack>
+
+@code {
+    private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
+    private IReadOnlyList<string> Formats => new[] { "en-US", "en-GB", "ru-RU", "de-DE", "fr-FR", Locale.Culture.Name }.Distinct().ToArray();
+    private DateOnly? _date = new(2026, 11, 4), _selected;
+    private DateOnly _month = new(2026, 11, 1);
+    private string? _draft;
+    private bool _editor, _popup;
+    private Task SetFormat(string? code) => code is null ? Task.CompletedTask : Lang.SetFormattingCultureAsync(code);
+    private Task CycleLanguage() => Lang.SetCultureAsync(Lang.CurrentCulture == "en" ? "ru" : Lang.CurrentCulture == "ru" ? "fr" : "en");
+    private Task OnLocaleKey(KeyboardEventArgs e) => e.CtrlKey && e.AltKey && e.Key.Equals("l", StringComparison.OrdinalIgnoreCase)
+        ? CycleLanguage() : Task.CompletedTask;
+    private const string SetupCode = """
+        // Keep the application's existing AddFlare/theme registration.
+        // Wrap the app in FlareLocalizationProvider.
+        var locale = services.GetRequiredService<IFlareLocalization>();
+        locale.SetCulture(CultureInfo.GetCultureInfo("de-DE"),
+                          CultureInfo.GetCultureInfo("ru-RU"));
+        // Optional: register IStringLocalizer<FlareStrings> for partial app translations.
+        """;
+}

@@ -58,6 +58,7 @@ Returns: `ValueTask`.
 
 - `FlareEditableFieldBase`
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

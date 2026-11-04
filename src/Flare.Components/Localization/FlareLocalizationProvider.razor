@@ -3,7 +3,7 @@
 @implements IDisposable
 @inject IFlareLocalization Localization
 
-<CascadingValue Value="_state">@ChildContent</CascadingValue>
+<CascadingValue Value="_state">@StableContent</CascadingValue>
 
 @code {
     /// <summary>Content whose localized components follow this scope's culture.</summary>
@@ -11,6 +11,17 @@
 
     private FlareLocalizationState _state = null!;
     private bool _disposed;
+    private long _contentRevision;
+    private RenderFragment StableContent => builder =>
+    {
+        builder.OpenComponent<FlareLocalizationContent>(0);
+        builder.AddAttribute(1, nameof(FlareLocalizationContent.ChildContent), ChildContent);
+        builder.AddAttribute(2, nameof(FlareLocalizationContent.Revision), _contentRevision);
+        builder.CloseComponent();
+    };
+
+    /// <inheritdoc />
+    protected override void OnParametersSet() => _contentRevision++;
 
     /// <inheritdoc />
     protected override void OnInitialized()

@@ -27,6 +27,7 @@ Returns: `ValueTask`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

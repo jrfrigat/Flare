@@ -10,7 +10,7 @@ public enum GallerySection
     None,
     /// <summary>Guide / meta pages grouped together: getting started, changelog and about.</summary>
     Guide,
-    /// <summary>Theming pages (overview, color, custom theme).</summary>
+    /// <summary>Theming pages (overview and color).</summary>
     Themes,
     /// <summary>Component demo pages, grouped by category.</summary>
     Components,
@@ -31,7 +31,7 @@ public static class GallerySections
         if (p.StartsWith("/components")) return GallerySection.Components;
         if (p.StartsWith("/services")) return GallerySection.Services;
         if (p == "/api" || p.StartsWith("/api/")) return GallerySection.Api;
-        if (p is "/getting-started" or "/changelog" or "/mobile-shells") return GallerySection.Guide;
+        if (p is "/getting-started" or "/changelog" or "/mobile-shells" or "/localization") return GallerySection.Guide;
         if (p.StartsWith("/themes/", StringComparison.Ordinal)) return GallerySection.Themes;
         return p is "/theming" or "/color" ? GallerySection.Themes : GallerySection.None;
     }

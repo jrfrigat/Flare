@@ -73,7 +73,7 @@ public sealed class GallerySearchService
     // Resolved in the current UI language (GalleryStrings.Culture); falls back to the English name.
     private static string Display(Entry e) =>
         e.TitleKey is not null
-            ? GalleryStrings.ResourceManager.GetString(e.TitleKey) ?? e.Name
+            ? GalleryStrings.ResourceManager.GetString(e.TitleKey, GalleryStrings.Culture ?? CultureInfo.CurrentUICulture) ?? e.Name
             : e.Name;
 
     private static string KindLabel(SearchKind kind) => kind switch
@@ -93,6 +93,7 @@ public sealed class GallerySearchService
         // The nav resource key doubles as the English name (there is no separate literal).
         AddKeyed(list, "", "Nav_Overview", SearchKind.Page, "home");
         AddKeyed(list, "getting-started", "Nav_GettingStarted", SearchKind.Page, "rocket_launch");
+        AddKeyed(list, "localization", "Localization_Title", SearchKind.Page, "translate");
         AddKeyed(list, "theming", "Nav_Theming", SearchKind.Page, "palette");
         AddKeyed(list, "color", "Nav_Color", SearchKind.Page, "format_color_fill");
 

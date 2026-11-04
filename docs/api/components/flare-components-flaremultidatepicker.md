@@ -16,7 +16,7 @@ Field for several dates, bound to a sorted list of DateOnly without repeats: day
 | `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL. Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null uses the culture's calendar. |
 | `ClearText` | `string?` | `` | Parameter |  | Override text for the Clear button. When null, falls back to the localizer key Picker_Clear. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the calendar popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar and for writing and reading the dates. Default = CurrentUICulture. The calendar follows the culture's own (Persian for fa-IR, Um al-Qura for ar-SA). |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar and for writing and reading the dates. Default = the current formatting culture. The calendar follows the culture's own (Persian for fa-IR, Um al-Qura for ar-SA). |
 | `DateFormat` | `string?` | `` | Parameter |  | Format of each date in the field. Null (default) uses the culture's short date pattern. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays). |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell; the picker keeps the cell itself - the button, its label, focus, disabled state and selection. Null shows the day number. |
@@ -82,6 +82,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

@@ -44,6 +44,7 @@ This component exposes no documented public methods.
 
 - `FlareEditableFieldBase`
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

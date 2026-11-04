@@ -17,7 +17,7 @@ Month field bound to a DateOnly: the first day of the chosen month on the calend
 | `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to number months on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (13 months in a leap year, written in letters - the field then takes free text). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar. |
 | `ClearText` | `string?` | `` | Parameter |  | Override text for the Clear button. When null, falls back to the localizer key Picker_Clear. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the month names, the month mask and the calendar. Default = CurrentUICulture. The months follow the culture's calendar (Persian for fa-IR, Um al-Qura for ar-SA). |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the month names, the month mask and the calendar. Default = the current formatting culture. The months follow the culture's calendar (Persian for fa-IR, Um al-Qura for ar-SA). |
 | `For` | `Expression<Func<DateOnly?>>?` | `` | Parameter |  | Model field bound inside an EditForm: changes reach the edit context and its validation message is shown. |
 | `HasError` | `bool` | `false` | Parameter |  | Forces the error visual state without an error message (e.g. driven by external validation). |
 | `Inline` | `bool` | `false` | Parameter |  | Renders the month view inline (always visible under the field) rather than in a popup. |
@@ -78,6 +78,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

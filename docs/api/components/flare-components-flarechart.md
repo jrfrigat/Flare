@@ -118,6 +118,7 @@ Returns: `void`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

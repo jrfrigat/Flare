@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
+using Flare.Components.Resources;
 using Microsoft.Playwright;
 
 namespace Flare.Browser.Tests;
@@ -44,6 +46,7 @@ public sealed class BrowserFixture : IAsyncLifetime
         builder.WebHost.UseStaticWebAssets();
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         builder.Services.AddFlare(o => o.DefaultTheme = new MaterialDesign3ExpressiveTheme());
+        builder.Services.AddSingleton<IStringLocalizer<FlareStrings>>(_ => new BrowserTranslations());
         builder.Services.AddFlareTheme(new MaterialDesign3Theme());
         builder.Services.AddFlareTheme(new MaterialDesign2Theme());
         builder.Services.AddFlareTheme(new FluentUI2Theme());

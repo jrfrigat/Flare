@@ -4867,4 +4867,18 @@
   <data name="Gantt_CustomTokens" xml:space="preserve"><value>Переопределить токены Gantt</value></data>
   <data name="Kanban_Tokens" xml:space="preserve"><value>Переопределение токенов темы</value></data>
   <data name="Kanban_CustomTokens" xml:space="preserve"><value>Переопределить токены Kanban</value></data>
+  <data name="Localization_Title" xml:space="preserve"><value>Локализация</value></data>
+  <data name="Localization_Description" xml:space="preserve"><value>Меняйте язык интерфейса без перезагрузки. Даты и числа используют отдельную культуру форматирования; открытые редакторы сохраняют данные.</value></data>
+  <data name="Localization_Format" xml:space="preserve"><value>Культура форматирования</value></data>
+  <data name="Localization_Cultures" xml:space="preserve"><value>Интерфейс: {0}; форматирование: {1}</value></data>
+  <data name="Localization_Overrides" xml:space="preserve"><value>Приложение добавляет частичный французский перевод и переопределяет русскую подпись очистки. Остальные ключи сохраняют встроенные переводы.</value></data>
+  <data name="Localization_Number" xml:space="preserve"><value>Форматирование по контексту</value></data>
+  <data name="Localization_Explicit" xml:space="preserve"><value>Явная культура en-US</value></data>
+  <data name="Localization_Date" xml:space="preserve"><value>Дата</value></data>
+  <data name="Localization_OpenEditor" xml:space="preserve"><value>Открыть редактор</value></data>
+  <data name="Localization_OpenPopup" xml:space="preserve"><value>Открыть календарь в popup</value></data>
+  <data name="Localization_Cycle" xml:space="preserve"><value>Сменить язык интерфейса</value></data>
+  <data name="Localization_Editor" xml:space="preserve"><value>Несохраненный редактор</value></data>
+  <data name="Localization_Draft" xml:space="preserve"><value>Черновик</value></data>
+  <data name="Localization_Shortcut" xml:space="preserve"><value>Введите черновик и нажмите Ctrl+Alt+L, чтобы сменить язык, сохранив положение курсора.</value></data>
 </root>

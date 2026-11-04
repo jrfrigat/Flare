@@ -29,6 +29,9 @@ The month calendar shared by the date, date-time and range pickers: the weekday 
 | `Today` | `DateOnly` | `01/01/0001` | Parameter |  | Today's date, marked with the today indicator. |
 | `ViewMonth` | `int` | `0` | Parameter | Yes | The month displayed, numbered on the grid's calendar (1-12, or 1-13 in a Hebrew leap year). |
 | `ViewYear` | `int` | `0` | Parameter | Yes | The year of the displayed month, numbered on the grid's calendar: 1405 on the Persian calendar, the Gregorian year for Gregorian, Thai Buddhist and Japanese cultures. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -48,5 +51,7 @@ Returns: `Task`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

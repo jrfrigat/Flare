@@ -304,6 +304,7 @@ Full docs live in **[docs/](docs/README.md)** (English + Russian).
 | [getting-started](docs/en/getting-started.md) - [ru](docs/ru/getting-started.md) | EN - RU | Install, DI, styles, first component |
 | [icons](docs/en/icons.md) - [ru](docs/ru/icons.md) | EN - RU | FlareIcon system, built-in set, provider packages, trimming |
 | [architecture](docs/en/architecture.md) - [ru](docs/ru/architecture.md) | EN - RU | Module map, component patterns, theming deep-dive |
+| [localization](docs/en/localization.md) - [ru](docs/ru/localization.md) | EN - RU | Live language switching, separate formatting cultures, application overrides |
 | [theme-creation-guide](docs/en/theme-creation-guide.md) - [ru](docs/ru/theme-creation-guide.md) | EN - RU | Theme creation: design tokens, palettes, custom themes |
 | [component-conventions](docs/en/component-conventions.md) - [ru](docs/ru/component-conventions.md) | EN - RU | Component code conventions (CSS tokens, unified color, XML docs) |
 | [scheduler](docs/en/scheduler.md) - [ru](docs/ru/scheduler.md) | EN - RU | Calendar planning, providers, editing, optional recurrence and theme overrides |

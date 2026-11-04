@@ -30,6 +30,107 @@ public static class ComponentApiRegistry
     {
         var c = new Dictionary<string, ApiComponentInfo>(System.StringComparer.Ordinal);
 
+        c[@"DataGridColumnPicker"] = new ApiComponentInfo(
+            @"DataGridColumnPicker",
+            @"Flare.Components.DataGridColumnPicker",
+            @"Flare.Components",
+            @"A button with a menu of the grid's columns, where each column is shown or hidden with a check.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Columns", @"IReadOnlyList<ValueTuple<string, string>>?", null, @"Optional explicit pickable columns as (Key, Title) pairs. When null, the bound grid's non-composite columns are used.", null, false, false, false, @"DataGridColumnPicker"),
+                new ApiParameterInfo(@"Hidden", @"IReadOnlyCollection<string>?", null, @"Optional explicit set of hidden column keys. When null, the bound grid's HiddenColumnKeys are used.", null, false, false, false, @"DataGridColumnPicker"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label shown on the picker button. Defaults to a localized ""Columns"".", null, false, false, false, @"DataGridColumnPicker"),
+                new ApiParameterInfo(@"OnToggle", @"EventCallback<string>", null, @"Optional notification raised with a column key when its visibility is toggled. The bound grid is updated automatically; use this only to observe the change.", null, false, true, false, @"DataGridColumnPicker"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the picker when the overlay layer receives Escape.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", @"A task that completes when the layer has been released.", @"Releases the panel's placement listeners and the Escape layer.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareDataGridControl",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"DataGridExport"] = new ApiComponentInfo(
+            @"DataGridExport",
+            @"Flare.Components.DataGridExport",
+            @"Flare.Components",
+            @"Toolbar buttons that export the grid's filtered and sorted rows, one per exporter, or a split button with the first exporter as its main action.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"DataProvider", @"Func<Task<DataGridExportData<TItem>>>?", null, @"Advanced override: supply the export data directly instead of reading it from the bound grid. When set it takes precedence.", null, false, false, false, @"DataGridExport"),
+                new ApiParameterInfo(@"Exporters", @"IReadOnlyList<IDataGridExporter<TItem>>?", null, @"List of pluggable exporters rendered as toolbar buttons.", null, false, false, false, @"DataGridExport"),
+                new ApiParameterInfo(@"FileName", @"string", @"""export""", @"File name used when exporting data (without extension).", null, false, false, false, @"DataGridExport"),
+                new ApiParameterInfo(@"OnExported", @"EventCallback<string>", null, @"Callback raised when an export is completed. The parameter is the exporter ID.", null, false, true, false, @"DataGridExport"),
+                new ApiParameterInfo(@"Split", @"bool", @"false", @"When true (and there is more than one exporter), renders a split button: the first exporter is the primary action and the remaining exporters open in the dropdown menu. When false (the default) every exporter is rendered as its own button.", null, false, false, false, @"DataGridExport"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareDataGridControl",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"DataGridFilterBuilder"] = new ApiComponentInfo(
+            @"DataGridFilterBuilder",
+            @"Flare.Components.DataGridFilterBuilder",
+            @"Flare.Components",
+            @"An editor for the grid's advanced filter: a tree of conditions joined by And or Or, applied to the grid.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AvailableColumns", @"IReadOnlyList<string>?", null, @"Optional explicit filter fields (column keys). When null, the bound grid's FilterableColumns are offered.", null, false, false, false, @"DataGridFilterBuilder"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label shown on the builder button. Defaults to a localized ""Configure filters"".", null, false, false, false, @"DataGridFilterBuilder"),
+                new ApiParameterInfo(@"OnApply", @"EventCallback<DataGridFilterGroup>", null, @"Optional notification raised with the built filter tree when the user applies. The bound grid is updated automatically; use this only to observe the change.", null, false, true, false, @"DataGridFilterBuilder"),
+                new ApiParameterInfo(@"OnCleared", @"EventCallback", null, @"Optional notification raised when the user clears the filter. The bound grid is updated automatically; use this only to observe the change.", null, false, true, false, @"DataGridFilterBuilder"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", @"A task that completes when the layer has been released.", @"Releases the panel's placement listeners.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareDataGridControl",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareAccordion"] = new ApiComponentInfo(
             @"FlareAccordion",
             @"Flare.Components.FlareAccordion",
@@ -120,6 +221,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -207,6 +309,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -223,7 +326,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The content shown for the selected navigation entry.", null, false, false, false, @"FlareBackstage"),
-                new ApiParameterInfo(@"CloseLabel", @"string", @"""Close""", @"Accessible label for the back/close button; defaults to the package's localized text.", null, false, false, false, @"FlareBackstage"),
+                new ApiParameterInfo(@"CloseLabel", @"string?", null, @"Accessible label for the back/close button; defaults to the package's localized text.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"NavContent", @"RenderFragment?", null, @"Left navigation entries, typically FlareBackstageItem components.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Whether the backstage is shown.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Raised when the open state changes (e.g. the back arrow closes it). Supports two-way binding.", null, false, true, false, @"FlareBackstage"),
@@ -234,6 +337,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -312,7 +416,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Format", @"string?", null, @"Composite format applied to the human-readable line, with the encoded text as {0}. Null prints the text as encoded.", null, false, false, false, @"FlareBarcode"),
                 new ApiParameterInfo(@"Height", @"double", @"60", @"Bar height in pixels. Default 60.", null, false, false, false, @"FlareBarcode"),
                 new ApiParameterInfo(@"ModuleWidth", @"double", @"2", @"Width of one module in pixels - the narrowest bar. Default 2. Below 1 most scanners stop reading, so a label meant to be printed wants 2 or more.", null, false, false, false, @"FlareBarcode"),
-                new ApiParameterInfo(@"OnInvalid", @"EventCallback<string>", null, @"Raised once per distinct failure when the value cannot be encoded. The component renders the fallback either way.", null, false, true, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"OnInvalid", @"EventCallback<string>", null, @"Raised once per distinct failure when the value cannot be encoded. The component renders the fallback either way. Receives a neutral diagnostic; the visible reason follows the localizer.", null, false, true, false, @"FlareBarcode"),
                 new ApiParameterInfo(@"Quiet", @"int", @"10", @"Blank margin on each side, in modules. Default 10, which is the minimum the symbologies specify: without it a scanner cannot tell where the symbol begins.", null, false, false, false, @"FlareBarcode"),
                 new ApiParameterInfo(@"ShowText", @"bool", @"true", @"Prints the human-readable line under the bars, including any computed check digit. Default true.", null, false, false, false, @"FlareBarcode"),
                 new ApiParameterInfo(@"Symbology", @"BarcodeSymbology", @"BarcodeSymbology.Code128", @"Which symbology to encode in. Default Code128.", null, false, false, false, @"FlareBarcode"),
@@ -325,6 +429,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -368,6 +473,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -432,6 +538,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -554,6 +661,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -569,7 +677,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for day headers, month names and the first day of week. Default = CurrentUICulture.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for day headers, month names and the first day of week. Default = the current formatting culture.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"EventTemplate", @"RenderFragment<CalendarEvent>?", null, @"Custom event content inside the calendar's existing selection control.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"Events", @"IReadOnlyList<CalendarEvent>?", null, @"Events to display on the calendar grid cells.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"InitialDate", @"DateOnly?", null, @"Date used to determine the initial calendar view month.", null, false, false, false, @"FlareCalendar"),
@@ -589,6 +697,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -831,6 +940,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -929,6 +1039,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1009,6 +1120,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1056,7 +1168,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Label", @"Func<TItem, string>", null, @"Resolves a chip's display text when no Template is supplied.", null, false, false, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"OnRemove", @"EventCallback<TItem>", null, @"Invoked with the item whose chip remove button was activated.", null, false, true, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Hides the remove buttons (disabled/read-only field).", null, false, false, false, @"FlareChipStrip"),
-                new ApiParameterInfo(@"RemoveLabel", @"string", @"""Clear""", @"Accessible label for the remove button.", null, false, false, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"RemoveLabel", @"string?", null, @"Accessible label for the remove button.", null, false, false, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"Template", @"RenderFragment<TItem>?", null, @"Custom render template for a chip's content. Overrides the Label text.", null, false, false, false, @"FlareChipStrip"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -1065,6 +1177,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1153,6 +1266,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1168,7 +1282,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour dial. Default = CurrentUICulture.", null, false, false, false, @"FlareClockDial"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour dial. Default = the current formatting culture.", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"FocusOnOpen", @"bool", @"true", @"Moves keyboard focus onto the dial when it first renders. Default true; a host that keeps focus elsewhere - a field the user goes on typing in - sets it false and calls FocusAsync later.", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Hour", @"int", @"0", @"Hour of day (0-23).", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when the hour changes.", null, false, true, false, @"FlareClockDial"),
@@ -1187,6 +1301,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1377,6 +1492,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1402,6 +1518,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1445,6 +1562,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1678,6 +1796,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1705,6 +1824,9 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"DataGridColumnPicker",
+                @"DataGridExport",
+                @"DataGridFilterBuilder",
                 @"FlareAccordion",
                 @"FlareAccordionPanel",
                 @"FlareAlert",
@@ -1747,8 +1869,12 @@ public static class ComponentApiRegistry
                 @"FlareColorPicker",
                 @"FlareColorScope",
                 @"FlareCombobox",
+                @"FlareConfirmDialogProvider",
                 @"FlareContainer",
                 @"FlareDataGrid",
+                @"FlareDataGridFilterPresets",
+                @"FlareDataGridPager",
+                @"FlareDataGridQuickFilter",
                 @"FlareDataTree",
                 @"FlareDatePicker",
                 @"FlareDateRangePicker",
@@ -1756,6 +1882,7 @@ public static class ComponentApiRegistry
                 @"FlareDescriptionItem",
                 @"FlareDescriptionList",
                 @"FlareDialog",
+                @"FlareDialogCloseGuard",
                 @"FlareDialogProvider",
                 @"FlareDivider",
                 @"FlareDocumentTab",
@@ -1807,8 +1934,11 @@ public static class ComponentApiRegistry
                 @"FlareMenuBar",
                 @"FlareMenuGroup",
                 @"FlareMenuItem",
+                @"FlareMessageBoxProvider",
                 @"FlareMeter",
+                @"FlareMonthGrid",
                 @"FlareMonthPicker",
+                @"FlareMonthYearGrid",
                 @"FlareMultiDatePicker",
                 @"FlareMultiSelect",
                 @"FlareNavGroup",
@@ -1857,6 +1987,7 @@ public static class ComponentApiRegistry
                 @"FlareSection",
                 @"FlareSelect",
                 @"FlareSheetTabs",
+                @"FlareShortcuts",
                 @"FlareSignaturePad",
                 @"FlareSkeleton",
                 @"FlareSlider",
@@ -1899,6 +2030,7 @@ public static class ComponentApiRegistry
                 @"FlareVirtualList",
                 @"FlareVisuallyHidden",
                 @"FlareWeekPicker",
+                @"QueryConditionEditor",
             }
             );
 
@@ -1911,6 +2043,9 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Application content that can access the confirm dialog via cascading value.", null, false, false, false, @"FlareConfirmDialogProvider"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -1929,6 +2064,8 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -2168,13 +2305,18 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Presets", @"IReadOnlyList<DataGridFilterPreset>?", null, @"The named filter presets to offer. Each preset's Filter is an advanced filter tree.", null, false, false, false, @"FlareDataGridFilterPresets"),
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Sm", @"Field size of the select.", null, false, false, false, @"FlareDataGridFilterPresets"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Context", @"DataGridContext<TItem>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareDataGridControl",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -2195,13 +2337,18 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowFirstLast", @"bool", @"false", @"Shows first/last jump buttons in addition to prev/next.", null, false, false, false, @"FlareDataGridPager"),
                 new ApiParameterInfo(@"SiblingCount", @"int", @"2", @"How many page buttons to show on each side of the current page (passed to the pagination control).", null, false, false, false, @"FlareDataGridPager"),
                 new ApiParameterInfo(@"Size", @"PaginationSize", @"PaginationSize.Md", @"Visual size of the pagination control.", null, false, false, false, @"FlareDataGridPager"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Context", @"DataGridContext<TItem>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareDataGridControl",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -2219,8 +2366,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"DebounceMs", @"int", @"250", @"Debounce delay in milliseconds before the filter is applied (default 250).", null, false, false, false, @"FlareDataGridQuickFilter"),
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text for the search box (defaults to the localized ""Search"").", null, false, false, false, @"FlareDataGridQuickFilter"),
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Sm", @"Field size of the search box.", null, false, false, false, @"FlareDataGridQuickFilter"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Context", @"DataGridContext<TItem>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2230,6 +2380,8 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareDataGridControl",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -2264,6 +2416,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2286,7 +2439,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (13 months in a leap year, dates written in letters - the field then takes free text instead of a digit mask). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar. The value stays a DateOnly.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the calendar popup closes.", null, false, true, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture used for the calendar (day headers, month names, first day of week) and for writing and reading the date. Default = CurrentUICulture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years.", null, false, false, false, @"FlareDatePicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture used for the calendar (day headers, month names, first day of week) and for writing and reading the date. Default = the current formatting culture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"DateFormat", @"string?", null, @"Display/parse format. Null (default) uses the culture short date pattern; can be a long format like ""dd MMMM yyyy"".", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays or highlight days).", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"DayTemplate", @"RenderFragment<DateOnly>?", null, @"Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number.", null, false, false, false, @"FlareDatePicker"),
@@ -2341,6 +2494,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2358,7 +2512,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AllowDisabledDatesInRange", @"bool", @"true", @"Whether a day IsDateDisabled rejects may lie between the two ends (default true, e.g. weekends inside a holiday). When false, the pick stops at the first disabled day.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL. Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar.", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the first day of week and the fields' format. Default = CurrentUICulture, as for FlareDatePicker. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the first day of week and the fields' format. Default = the current formatting culture, as for FlareDatePicker. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"DayTemplate", @"RenderFragment<DateOnly>?", null, @"Content of a day cell in the calendar and in the fields' calendars. The picker keeps the cell itself - button, full-date label, focus, disabled state and range highlight. Null shows the day number.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the picker when true.", null, false, false, false, @"FlareDateRangePicker"),
@@ -2403,6 +2557,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2423,7 +2578,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the input after the first render (best-effort). Only one field per page should set this.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (dates written in letters - the field then takes free text instead of a digit mask). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the picker popup closes.", null, false, true, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar and for writing and reading the value. Default = CurrentUICulture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years.", null, false, false, false, @"FlareDateTimePicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar and for writing and reading the value. Default = the current formatting culture. The calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist and Japanese cultures keep the Gregorian months and write their own years.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"DateTimeFormat", @"string?", null, @"Display/parse format. Null (default) uses the culture short date + time pattern. Typed text changes the wall date and time; the value keeps its offset and the seconds or fractions the format does not show, and a new value takes the local zone's offset. A format with an offset specifier (z, K) lets the user type the offset instead.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays).", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"DayTemplate", @"RenderFragment<DateOnly>?", null, @"Content of a day cell (e.g. the number with an event dot). The picker keeps the cell itself - the button, its full-date label, focus, disabled state and selection - so a template cannot break them. Null shows the day number.", null, false, false, false, @"FlareDateTimePicker"),
@@ -2478,6 +2633,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2605,6 +2761,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"HasUnsavedChanges", @"bool?", null, @"Explicit dirty state. Null reads the surrounding EditContext; false disables this guard.", null, false, false, false, @"FlareDialogCloseGuard"),
                 new ApiParameterInfo(@"Message", @"string?", null, @"Confirmation message. Null uses the localized default.", null, false, false, false, @"FlareDialogCloseGuard"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Confirmation title. Null uses the localized default.", null, false, false, false, @"FlareDialogCloseGuard"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2613,6 +2772,8 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -2638,6 +2799,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2722,6 +2884,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2779,6 +2942,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2833,6 +2997,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2875,6 +3040,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2934,6 +3100,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3017,6 +3184,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3118,6 +3286,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFileUploadBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3164,6 +3333,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFileUploadBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3317,6 +3487,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3361,8 +3532,8 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"CellRef", @"string?", null, @"The active cell reference shown in the name box (e.g. ""A1"").", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"CellRefChanged", @"EventCallback<string?>", null, @"Raised when the name box text changes. Supports two-way binding.", null, false, true, false, @"FlareFormulaBar"),
-                new ApiParameterInfo(@"FormulaLabel", @"string", @"""Formula""", @"Accessible label for the formula editor; defaults to the package's localized text.", null, false, false, false, @"FlareFormulaBar"),
-                new ApiParameterInfo(@"NameBoxLabel", @"string", @"""Name box""", @"Accessible label for the name box; defaults to the package's localized text.", null, false, false, false, @"FlareFormulaBar"),
+                new ApiParameterInfo(@"FormulaLabel", @"string?", null, @"Accessible label for the formula editor; defaults to the package's localized text.", null, false, false, false, @"FlareFormulaBar"),
+                new ApiParameterInfo(@"NameBoxLabel", @"string?", null, @"Accessible label for the name box; defaults to the package's localized text.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder for the formula editor.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The current cell content / formula.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Raised when the formula text changes. Supports two-way binding.", null, false, true, false, @"FlareFormulaBar"),
@@ -3373,6 +3544,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3488,6 +3660,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3593,6 +3766,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3636,6 +3810,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3886,6 +4061,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3984,6 +4160,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4039,6 +4216,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4326,6 +4504,29 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareLocalizationProvider"] = new ApiComponentInfo(
+            @"FlareLocalizationProvider",
+            @"Flare.Components.FlareLocalizationProvider",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content whose localized components follow this scope's culture.", null, false, false, false, @"FlareLocalizationProvider"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Releases the culture subscription.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareMarkdown"] = new ApiComponentInfo(
             @"FlareMarkdown",
             @"Flare.Components.FlareMarkdown",
@@ -4400,6 +4601,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4566,7 +4768,12 @@ public static class ComponentApiRegistry
             @"Flare.Components",
             @"Host for the message boxes raised through IMessageBoxService. Placed once in the layout, it renders whichever alert, confirmation or prompt is currently open, so calling code awaits an answer instead of managing a dialog.",
             null,
-            System.Array.Empty<ApiParameterInfo>(),
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
@@ -4574,6 +4781,8 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -4600,6 +4809,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4656,6 +4866,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Today", @"DateOnly", @"01/01/0001", @"Today's date, marked with the today indicator.", null, false, false, false, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"ViewMonth", @"int", @"0", @"The month displayed, numbered on the grid's calendar (1-12, or 1-13 in a Hebrew leap year).", null, false, false, true, @"FlareMonthGrid"),
                 new ApiParameterInfo(@"ViewYear", @"int", @"0", @"The year of the displayed month, numbered on the grid's calendar: 1405 on the Persian calendar, the Gregorian year for Gregorian, Thai Buddhist and Japanese cultures.", null, false, false, true, @"FlareMonthGrid"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4669,6 +4882,8 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -4690,7 +4905,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to number months on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL (13 months in a leap year, written in letters - the field then takes free text). Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null (the default) uses the culture's calendar.", null, false, false, false, @"FlareMonthPicker"),
                 new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareMonthPicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the popup closes.", null, false, true, false, @"FlareMonthPicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the month mask and the calendar. Default = CurrentUICulture. The months follow the culture's calendar (Persian for fa-IR, Um al-Qura for ar-SA).", null, false, false, false, @"FlareMonthPicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the month names, the month mask and the calendar. Default = the current formatting culture. The months follow the culture's calendar (Persian for fa-IR, Um al-Qura for ar-SA).", null, false, false, false, @"FlareMonthPicker"),
                 new ApiParameterInfo(@"For", @"Expression<Func<DateOnly?>>?", null, @"Model field bound inside an EditForm: changes reach the edit context and its validation message is shown.", null, false, false, false, @"FlareMonthPicker"),
                 new ApiParameterInfo(@"HasError", @"bool", @"false", @"Forces the error visual state without an error message (e.g. driven by external validation).", null, false, false, false, @"FlareMonthPicker"),
                 new ApiParameterInfo(@"Inline", @"bool", @"false", @"Renders the month view inline (always visible under the field) rather than in a popup.", null, false, false, false, @"FlareMonthPicker"),
@@ -4737,6 +4952,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4765,6 +4981,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Today", @"DateOnly?", null, @"The day that is today: its month and year are marked current (aria-current=""date"") and take keyboard focus when nothing is selected. Null marks none.", null, false, false, false, @"FlareMonthYearGrid"),
                 new ApiParameterInfo(@"View", @"MonthYearGridView", @"MonthYearGridView.Months", @"Whether the grid shows the months of Year or the years of its decade.", null, false, false, false, @"FlareMonthYearGrid"),
                 new ApiParameterInfo(@"Year", @"int", @"0", @"The year shown, numbered on the grid's calendar (1405 on the Persian one). In the year view the grid shows the twelve years from the multiple of 12 at or below it.", null, false, false, true, @"FlareMonthYearGrid"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4773,6 +4992,8 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -4793,7 +5014,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to show and write dates on instead of the culture's own, for example a GregorianCalendar for fa-IR or a HebrewCalendar for he-IL. Only a calendar the culture offers among its optional calendars is used; any other is ignored. Null uses the culture's calendar.", null, false, false, false, @"FlareMultiDatePicker"),
                 new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareMultiDatePicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the calendar popup closes.", null, false, true, false, @"FlareMultiDatePicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar and for writing and reading the dates. Default = CurrentUICulture. The calendar follows the culture's own (Persian for fa-IR, Um al-Qura for ar-SA).", null, false, false, false, @"FlareMultiDatePicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar and for writing and reading the dates. Default = the current formatting culture. The calendar follows the culture's own (Persian for fa-IR, Um al-Qura for ar-SA).", null, false, false, false, @"FlareMultiDatePicker"),
                 new ApiParameterInfo(@"DateFormat", @"string?", null, @"Format of each date in the field. Null (default) uses the culture's short date pattern.", null, false, false, false, @"FlareMultiDatePicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays).", null, false, false, false, @"FlareMultiDatePicker"),
                 new ApiParameterInfo(@"DayTemplate", @"RenderFragment<DateOnly>?", null, @"Content of a day cell; the picker keeps the cell itself - the button, its label, focus, disabled state and selection. Null shows the day number.", null, false, false, false, @"FlareMultiDatePicker"),
@@ -4845,6 +5066,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4906,6 +5128,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5003,6 +5226,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5037,6 +5261,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5106,6 +5331,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5281,6 +5507,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5377,6 +5604,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5466,6 +5694,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5719,6 +5948,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5735,7 +5965,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Capabilities", @"IQueryCapabilities?", null, @"What the query is ultimately going to run on. Setting it narrows every list the designer offers to what that target can actually express - a backend with no set operators stops offering ""is one of"", one that cannot keep unmatched rows stops offering an outer join. Null offers everything the schema allows.", null, false, false, false, @"FlareQueryBuilder"),
-                new ApiParameterInfo(@"Labels", @"QueryBuilderLabels", null, @"Every caption the designer shows.", null, false, false, false, @"FlareQueryBuilder"),
+                new ApiParameterInfo(@"Labels", @"QueryBuilderLabels?", null, @"Every caption the designer shows.", null, false, false, false, @"FlareQueryBuilder"),
                 new ApiParameterInfo(@"OnSubmit", @"EventCallback<QuerySpec>", null, @"Raised when the query is submitted. Never fires while the query has problems.", null, false, true, false, @"FlareQueryBuilder"),
                 new ApiParameterInfo(@"Schema", @"QuerySchema?", null, @"The entities, relations and functions a query may use. Required.", null, false, false, true, @"FlareQueryBuilder"),
                 new ApiParameterInfo(@"ShowSubmit", @"bool", @"true", @"Whether the submit button is shown.", null, false, false, false, @"FlareQueryBuilder"),
@@ -5749,6 +5979,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5899,6 +6130,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5940,6 +6172,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6146,6 +6379,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6257,6 +6491,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6281,6 +6516,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6305,6 +6541,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6329,6 +6566,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6358,6 +6596,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6392,6 +6631,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6416,6 +6656,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6445,6 +6686,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6532,6 +6774,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6549,7 +6792,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ActiveIndex", @"int", @"0", @"Zero-based index of the active sheet.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"ActiveIndexChanged", @"EventCallback<int>", null, @"Raised when the active sheet changes. Supports two-way binding.", null, false, true, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"AddLabel", @"string", @"""Add sheet""", @"Accessible label for the add button; defaults to the package's localized text.", null, false, false, false, @"FlareSheetTabs"),
+                new ApiParameterInfo(@"AddLabel", @"string?", null, @"Accessible label for the add button; defaults to the package's localized text.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"OnAddSheet", @"EventCallback", null, @"Raised when the add button is clicked.", null, false, true, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"Sheets", @"IReadOnlyList<string>?", null, @"The sheet names rendered as tabs, in order.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"ShowAddButton", @"bool", @"true", @"Whether the trailing ""add sheet"" button is shown (default true).", null, false, false, false, @"FlareSheetTabs"),
@@ -6560,6 +6803,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6602,10 +6846,13 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content the registered keyboard shortcuts apply to.", null, false, false, false, @"FlareShortcuts"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"HandleKeyDown", @"HandleKeyDown(string keys)", @"Task", null, null,
                     new ApiMethodParameter[]
@@ -6617,6 +6864,8 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },
@@ -6682,6 +6931,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6740,6 +6990,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6768,6 +7019,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6840,6 +7092,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6890,6 +7143,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7105,6 +7359,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7295,6 +7550,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7406,6 +7662,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7524,6 +7781,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7596,6 +7854,7 @@ public static class ComponentApiRegistry
                 @"FlareField",
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7741,7 +8000,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour entry. Default = CurrentUICulture.", null, false, false, false, @"FlareTimeEntry"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the AM/PM designators of the 12-hour entry. Default = the current formatting culture.", null, false, false, false, @"FlareTimeEntry"),
                 new ApiParameterInfo(@"Hour", @"int", @"0", @"Hour of day (0-23).", null, false, false, false, @"FlareTimeEntry"),
                 new ApiParameterInfo(@"HourChanged", @"EventCallback<int>", null, @"Raised when a valid hour is typed or the period changes.", null, false, true, false, @"FlareTimeEntry"),
                 new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour entry (hours 0-23) when true; 12-hour entry (hours 1-12) with AM/PM when false.", null, false, false, false, @"FlareTimeEntry"),
@@ -7756,6 +8015,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7775,7 +8035,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the time input after the first render (best-effort). Only one field per page should set this.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"CancelText", @"string?", null, @"Cancel button text. When null, falls back to the localized ""Cancel"".", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the picker popup closes.", null, false, true, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the 12/24-hour default and the AM/PM designators. Default = the current formatting culture.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TimeOnly?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Headline", @"string?", null, @"Headline shown at the top of the picker popup. When null, falls back to the localized default.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"HourStep", @"int", @"1", @"Hour increment shown in the Dropdown column. Values are clamped to 1-24. Default 1. The dial and typed entry keep their hour: a 12-hour dial's cells are discrete values 1-12, and a stepped grid there would produce an hour of zero.", null, false, false, false, @"FlareTimePicker"),
@@ -7825,6 +8085,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -7873,6 +8134,7 @@ public static class ComponentApiRegistry
             {
                 @"FlareEditableFieldBase",
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8076,6 +8338,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8167,6 +8430,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8202,6 +8466,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8231,6 +8496,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8262,6 +8528,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8342,6 +8609,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8415,7 +8683,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Calendar", @"Calendar?", null, @"The calendar to show dates on instead of the culture's own; only one the culture offers among its optional calendars is used. Null uses the culture's calendar.", null, false, false, false, @"FlareWeekPicker"),
                 new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareWeekPicker"),
                 new ApiParameterInfo(@"Closed", @"EventCallback", null, @"Raised when the calendar popup closes.", null, false, true, false, @"FlareWeekPicker"),
-                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar, the week rule and the field. Default = CurrentUICulture. The calendar follows the culture's own (Persian for fa-IR); ISO weeks are always Gregorian.", null, false, false, false, @"FlareWeekPicker"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar, the week rule and the field. Default = the current formatting culture. The calendar follows the culture's own (Persian for fa-IR); ISO weeks are always Gregorian.", null, false, false, false, @"FlareWeekPicker"),
                 new ApiParameterInfo(@"DayClassFunc", @"Func<DateOnly, string>?", null, @"Returns extra CSS class(es) for a given day cell (e.g. to mark holidays).", null, false, false, false, @"FlareWeekPicker"),
                 new ApiParameterInfo(@"DayTemplate", @"RenderFragment<DateOnly>?", null, @"Content of a day cell; the picker keeps the cell itself. Null shows the day number.", null, false, false, false, @"FlareWeekPicker"),
                 new ApiParameterInfo(@"FirstDayOfWeek", @"DayOfWeek?", null, @"Overrides the culture's first day of week (null = use the culture's). Ignored with IsoWeeks, where weeks start on Monday.", null, false, false, false, @"FlareWeekPicker"),
@@ -8466,6 +8734,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFieldBase",
+                @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -8490,6 +8759,44 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareZoneBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"QueryConditionEditor"] = new ApiComponentInfo(
+            @"QueryConditionEditor",
+            @"Flare.Components.QueryConditionEditor",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AddConditionLabel", @"string", @"""Condition""", @"Caption for the button adding a condition.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"AddGroupLabel", @"string", @"""Group""", @"Caption for the button adding a nested node.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"AllowAggregates", @"bool", @"false", @"Whether conditions may test a computed aggregate, which is true only in a HAVING clause.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"AndLabel", @"string", @"""AND""", @"Caption for the AND connector.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"Choices", @"QueryChoices?", null, @"What the query may be offered, read from the core. It supplies the fields a condition may test, the operators each one allows and the output names an aggregate can be named by.", null, false, false, true, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"Group", @"QueryConditionGroupDraft", null, @"The node being edited.", null, false, false, true, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"Labels", @"QueryBuilderLabels?", null, @"Captions for the condition operators, including caller-provided translations.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"OnChanged", @"EventCallback", null, @"Raised whenever the node changes, so the host can rebuild the query.", null, false, true, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"OrLabel", @"string", @"""OR""", @"Caption for the OR connector.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"Parent", @"QueryConditionGroupDraft?", null, @"The node this one is nested in, or null at the root. Only a nested node can be removed.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"RelativeLabel", @"string", @"""Relative""", @"Caption for the toggle that makes a timestamp comparison relative to now.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"RemoveLabel", @"string", @"""Remove""", @"Accessible label for the remove buttons.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"Schema", @"QuerySchema?", null, @"The schema the query is built against.", null, false, false, true, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"ValueHint", @"string", @"""Value""", @"Placeholder for a single value.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"ValuesHint", @"string", @"""a, b, c""", @"Placeholder for a comma-separated set of values.", null, false, false, false, @"QueryConditionEditor"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
             },

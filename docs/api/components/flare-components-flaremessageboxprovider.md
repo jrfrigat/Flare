@@ -8,7 +8,11 @@ Host for the message boxes raised through IMessageBoxService. Placed once in the
 
 ## Parameters
 
-This component has no public parameters.
+| Name | Type | Default | Kind | Required | Description |
+| --- | --- | --- | --- | --- | --- |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -19,5 +23,7 @@ Returns: `void`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

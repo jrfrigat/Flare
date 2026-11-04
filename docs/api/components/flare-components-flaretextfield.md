@@ -70,6 +70,7 @@ This component exposes no documented public methods.
 - `FlareField`
 - `FlareEditableFieldBase`
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

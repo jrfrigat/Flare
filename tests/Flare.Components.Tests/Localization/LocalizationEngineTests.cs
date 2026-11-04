@@ -39,10 +39,24 @@ public sealed class LocalizationEngineTests : BunitContext
         Assert.False(text["Picker_Ok"].ResourceNotFound);
         Assert.Equal("Cancel", text["Picker_Cancel"].Value);
         Assert.Equal("1.234,50", text["Number", 1234.5m].Value);
+        Assert.Equal("two custom items", text["Count", 2].Value);
         Assert.Contains(text.GetAllStrings(true), x => x.Name == "Picker_Next" && x.Value == "Suivant");
         context.SetCulture(CultureInfo.GetCultureInfo("ru-RU"));
         Assert.Equal("\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439", text["Picker_Next"].Value);
         Assert.Same(text, context.GetLocalizer<FlareStrings>());
+    }
+
+    [Fact]
+    public void MutableCultureIsSnapshottedAndCanBeAppliedAgainAfterEditing()
+    {
+        var source = (CultureInfo)CultureInfo.GetCultureInfo("de-DE").Clone();
+        var context = new FlareLocalization();
+        context.SetCulture(source);
+        source.NumberFormat.NumberDecimalSeparator = "!";
+        Assert.Equal(",", context.Culture.NumberFormat.NumberDecimalSeparator);
+        context.SetCulture(source);
+        Assert.Equal("!", context.Culture.NumberFormat.NumberDecimalSeparator);
+        Assert.True(context.Culture.IsReadOnly);
     }
 
     [Fact]
@@ -123,6 +137,29 @@ public sealed class LocalizationEngineTests : BunitContext
         Assert.Equal(1, instance.Initializations);
     }
 
+    [Fact]
+    public async Task CultureRefreshSkipsPlainTextButParentUpdatesStillRenderCachedContent()
+    {
+        var context = new FlareLocalization();
+        context.SetCulture(CultureInfo.GetCultureInfo("en"));
+        Services.AddSingleton<IFlareLocalization>(context);
+        var value = "First";
+        RenderFragment fragment = b =>
+        {
+            b.OpenComponent<FlareText>(0);
+            b.AddAttribute(1, nameof(FlareText.ChildContent), (RenderFragment)(x => x.AddContent(0, value)));
+            b.CloseComponent();
+        };
+        var cut = Render<FlareLocalizationProvider>(p => p.Add(x => x.ChildContent, fragment));
+        var plain = cut.FindComponent<FlareText>();
+        var initialRenders = plain.RenderCount;
+        await cut.InvokeAsync(() => context.SetCulture(CultureInfo.GetCultureInfo("ru")));
+        Assert.Equal(initialRenders, plain.RenderCount);
+        value = "Second";
+        cut.Render(p => p.Add(x => x.ChildContent, fragment));
+        Assert.Equal("Second", plain.Find("p").TextContent);
+    }
+
     private sealed class ApplicationText : IStringLocalizer<FlareStrings>
     {
         public LocalizedString this[string name] => name switch
@@ -130,9 +167,12 @@ public sealed class LocalizationEngineTests : BunitContext
             "Picker_Next" when CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fr" => new(name, "Suivant"),
             "Picker_Ok" => new(name, ""),
             "Number" => new(name, "{0:N2}"),
+            "Count" => new(name, "raw template"),
             _ => new(name, name, true)
         };
-        public LocalizedString this[string name, params object[] arguments] => new(name, string.Format(this[name], arguments));
+        public LocalizedString this[string name, params object[] arguments] => name == "Count"
+            ? new(name, arguments[0] is 1 ? "one custom item" : "two custom items")
+            : new(name, string.Format(this[name], arguments), this[name].ResourceNotFound);
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) => new[] { this["Picker_Next"], this["Picker_Ok"] };
     }
 

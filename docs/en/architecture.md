@@ -74,7 +74,8 @@ design-system model. No host or JS dependency.
 - `Security/` - pure `HtmlSanitizer` / `CssValidator` utilities (internal).
 - No static web assets of its own.
 
-**NuGet:** `Flare.Abstractions` - depends only on `Microsoft.AspNetCore.Components.Web`.
+**NuGet:** `Flare.Abstractions` - depends on `Microsoft.AspNetCore.Components.Web` and
+`Microsoft.Extensions.Localization.Abstractions` for the standard localizer contract.
 
 ### Flare.Theming  (Ring 1 - engine)
 **Purpose.** The theming engine - the application services that turn the token model into a rendered
@@ -84,6 +85,9 @@ theme. Depends only on `Flare.Abstractions`.
 - `Palettes/` - `DefaultPaletteGenerator`, `PaletteFactory`.
 - `Color/` - `ColorMath`, `FlareColor`, `FlareColorResolver`.
 - `Builders/`, `Serialization/` - `FlareThemeBuilder`, `ThemeJsonSerializer`.
+- `Localization/` - scoped `FlareLocalization`: standard application localizers over package resources,
+  separate formatting/UI cultures, no JS or process-wide user state. The core knows no satellite keys.
+  See [Localization](localization.md) for provider composition and host policy.
 
 **NuGet:** `Flare.Theming` - depends on `Flare.Abstractions`.
 

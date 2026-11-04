@@ -4867,4 +4867,18 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Gantt_CustomTokens" xml:space="preserve"><value>Use custom Gantt tokens</value></data>
   <data name="Kanban_Tokens" xml:space="preserve"><value>Theme token overrides</value></data>
   <data name="Kanban_CustomTokens" xml:space="preserve"><value>Use custom Kanban tokens</value></data>
+  <data name="Localization_Title" xml:space="preserve"><value>Localization</value></data>
+  <data name="Localization_Description" xml:space="preserve"><value>Change interface language without reloading. Dates and numbers follow a separate formatting culture; open editors keep their data.</value></data>
+  <data name="Localization_Format" xml:space="preserve"><value>Formatting culture</value></data>
+  <data name="Localization_Cultures" xml:space="preserve"><value>UI: {0}; formatting: {1}</value></data>
+  <data name="Localization_Overrides" xml:space="preserve"><value>The application supplies partial French resources and overrides the Russian Clear caption. Missing keys keep the built-in translations.</value></data>
+  <data name="Localization_Number" xml:space="preserve"><value>Context formatting</value></data>
+  <data name="Localization_Explicit" xml:space="preserve"><value>Explicit en-US culture</value></data>
+  <data name="Localization_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Localization_OpenEditor" xml:space="preserve"><value>Open editor</value></data>
+  <data name="Localization_OpenPopup" xml:space="preserve"><value>Open calendar popup</value></data>
+  <data name="Localization_Cycle" xml:space="preserve"><value>Switch UI language</value></data>
+  <data name="Localization_Editor" xml:space="preserve"><value>Unsaved editor</value></data>
+  <data name="Localization_Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Localization_Shortcut" xml:space="preserve"><value>Type a draft, then press Ctrl+Alt+L to change language while keeping the caret.</value></data>
 </root>

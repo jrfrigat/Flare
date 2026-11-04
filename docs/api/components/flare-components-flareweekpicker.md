@@ -17,7 +17,7 @@ Week field bound to a DateOnly: the first day of the chosen week. A click or Ent
 | `Calendar` | `Calendar?` | `` | Parameter |  | The calendar to show dates on instead of the culture's own; only one the culture offers among its optional calendars is used. Null uses the culture's calendar. |
 | `ClearText` | `string?` | `` | Parameter |  | Override text for the Clear button. When null, falls back to the localizer key Picker_Clear. |
 | `Closed` | `EventCallback` | `` | Callback |  | Raised when the calendar popup closes. |
-| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar, the week rule and the field. Default = CurrentUICulture. The calendar follows the culture's own (Persian for fa-IR); ISO weeks are always Gregorian. |
+| `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for the calendar, the week rule and the field. Default = the current formatting culture. The calendar follows the culture's own (Persian for fa-IR); ISO weeks are always Gregorian. |
 | `DayClassFunc` | `Func<DateOnly, string>?` | `` | Parameter |  | Returns extra CSS class(es) for a given day cell (e.g. to mark holidays). |
 | `DayTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Content of a day cell; the picker keeps the cell itself. Null shows the day number. |
 | `FirstDayOfWeek` | `DayOfWeek?` | `` | Parameter |  | Overrides the culture's first day of week (null = use the culture's). Ignored with IsoWeeks, where weeks start on Monday. |
@@ -82,6 +82,7 @@ Returns: `Task`.
 ## Inheritance
 
 - `FlareFieldBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

@@ -18,6 +18,9 @@ Confirms closing a dialog with unsaved changes. Place inside a dialog, and insid
 | `HasUnsavedChanges` | `bool?` | `` | Parameter |  | Explicit dirty state. Null reads the surrounding EditContext; false disables this guard. |
 | `Message` | `string?` | `` | Parameter |  | Confirmation message. Null uses the localized default. |
 | `Title` | `string?` | `` | Parameter |  | Confirmation title. Null uses the localized default. |
+| `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
+| `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
+| `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods
 
@@ -29,5 +32,7 @@ Returns: `void`.
 
 ## Inheritance
 
+- `FlareLocalizedComponentBase`
+- `FlareComponentBase`
 - `ComponentBase`
 - `object`

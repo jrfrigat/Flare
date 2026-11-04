@@ -22,6 +22,7 @@ This component exposes no documented public methods.
 ## Inheritance
 
 - `FlareSchedulerViewBase`
+- `FlareLocalizedComponentBase`
 - `FlareComponentBase`
 - `ComponentBase`
 - `object`

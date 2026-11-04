@@ -14434,5 +14434,33 @@ namespace Flare.Gallery.Resources {
         public static string Kanban_Tokens { get { return ResourceManager.GetString("Kanban_Tokens", resourceCulture); } }
         /// <summary>Localized scheduler or satellite token preview text.</summary>
         public static string Kanban_CustomTokens { get { return ResourceManager.GetString("Kanban_CustomTokens", resourceCulture); } }
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Title => ResourceManager.GetString("Localization_Title", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Description => ResourceManager.GetString("Localization_Description", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Format => ResourceManager.GetString("Localization_Format", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Cultures => ResourceManager.GetString("Localization_Cultures", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Overrides => ResourceManager.GetString("Localization_Overrides", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Number => ResourceManager.GetString("Localization_Number", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Explicit => ResourceManager.GetString("Localization_Explicit", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Date => ResourceManager.GetString("Localization_Date", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_OpenEditor => ResourceManager.GetString("Localization_OpenEditor", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_OpenPopup => ResourceManager.GetString("Localization_OpenPopup", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Cycle => ResourceManager.GetString("Localization_Cycle", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Editor => ResourceManager.GetString("Localization_Editor", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Draft => ResourceManager.GetString("Localization_Draft", resourceCulture);
+        /// <summary>Localized caption for the language and formatting demonstration.</summary>
+        public static string Localization_Shortcut => ResourceManager.GetString("Localization_Shortcut", resourceCulture);
     }
 }

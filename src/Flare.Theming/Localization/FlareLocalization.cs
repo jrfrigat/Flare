@@ -28,11 +28,12 @@ public sealed class FlareLocalization(IServiceProvider? services = null) : IFlar
     {
         ArgumentNullException.ThrowIfNull(culture);
         uiCulture ??= culture;
-        if (ReferenceEquals(_requestedCulture, culture) && ReferenceEquals(_requestedUI, uiCulture)) return;
+        if (culture.IsReadOnly && uiCulture.IsReadOnly
+            && ReferenceEquals(_requestedCulture, culture) && ReferenceEquals(_requestedUI, uiCulture)) return;
         _requestedCulture = culture;
         _requestedUI = uiCulture;
-        _culture = CultureInfo.ReadOnly((CultureInfo)culture.Clone());
-        _uiCulture = CultureInfo.ReadOnly((CultureInfo)uiCulture.Clone());
+        _culture = culture.IsReadOnly ? culture : CultureInfo.ReadOnly((CultureInfo)culture.Clone());
+        _uiCulture = uiCulture.IsReadOnly ? uiCulture : CultureInfo.ReadOnly((CultureInfo)uiCulture.Clone());
         Changed?.Invoke();
     }
 
@@ -57,17 +58,18 @@ public sealed class FlareLocalization(IServiceProvider? services = null) : IFlar
             var ui = CultureInfo.CurrentUICulture;
             try
             {
-                CultureInfo.CurrentCulture = context.Culture;
-                CultureInfo.CurrentUICulture = context.UICulture;
-                var text = application?[name];
-                if (text is null || text.ResourceNotFound) text = builtIn[name];
-                return arguments is null ? text : new LocalizedString(name,
-                    string.Format(context.Culture, text.Value, arguments), text.ResourceNotFound, text.SearchedLocation);
+                if (!ReferenceEquals(culture, context.Culture)) CultureInfo.CurrentCulture = context.Culture;
+                if (!ReferenceEquals(ui, context.UICulture)) CultureInfo.CurrentUICulture = context.UICulture;
+                var text = application is null ? null
+                    : arguments is null ? application[name] : application[name, arguments];
+                if (text is null || text.ResourceNotFound)
+                    text = arguments is null ? builtIn[name] : builtIn[name, arguments];
+                return text;
             }
             finally
             {
-                CultureInfo.CurrentCulture = culture;
-                CultureInfo.CurrentUICulture = ui;
+                if (!ReferenceEquals(CultureInfo.CurrentCulture, culture)) CultureInfo.CurrentCulture = culture;
+                if (!ReferenceEquals(CultureInfo.CurrentUICulture, ui)) CultureInfo.CurrentUICulture = ui;
             }
         }
 
@@ -77,8 +79,8 @@ public sealed class FlareLocalization(IServiceProvider? services = null) : IFlar
             var ui = CultureInfo.CurrentUICulture;
             try
             {
-                CultureInfo.CurrentCulture = context.Culture;
-                CultureInfo.CurrentUICulture = context.UICulture;
+                if (!ReferenceEquals(culture, context.Culture)) CultureInfo.CurrentCulture = context.Culture;
+                if (!ReferenceEquals(ui, context.UICulture)) CultureInfo.CurrentUICulture = context.UICulture;
                 var strings = builtIn.GetAllStrings(includeParentCultures).ToDictionary(x => x.Name);
                 if (application is not null)
                     foreach (var text in application.GetAllStrings(includeParentCultures))
@@ -87,8 +89,8 @@ public sealed class FlareLocalization(IServiceProvider? services = null) : IFlar
             }
             finally
             {
-                CultureInfo.CurrentCulture = culture;
-                CultureInfo.CurrentUICulture = ui;
+                if (!ReferenceEquals(CultureInfo.CurrentCulture, culture)) CultureInfo.CurrentCulture = culture;
+                if (!ReferenceEquals(CultureInfo.CurrentUICulture, ui)) CultureInfo.CurrentUICulture = ui;
             }
         }
     }

@@ -130,10 +130,12 @@ public class RangeRenderTests : FlareTestContext
     [Fact]
     public void AmbientCultureChange_RefreshesTheCalendar()
     {
-        var previous = CultureInfo.CurrentUICulture;
+        var previous = CultureInfo.CurrentCulture;
+        var previousUI = CultureInfo.CurrentUICulture;
         try
         {
             CultureInfo.CurrentUICulture = Culture;
+            CultureInfo.CurrentCulture = Culture;
             var cut = Render<FlareDateRangePicker>(p => p.Add(x => x.Mode, DateRangePickerMode.Calendar)
                 .Add(x => x.StartDate, Start).Add(x => x.EndDate, End));
             void Push() => cut.Render(p => p.Add(x => x.Mode, DateRangePickerMode.Calendar)
@@ -141,8 +143,11 @@ public class RangeRenderTests : FlareTestContext
             Push();
             CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
             Push();
+            Assert.Equal("October 2026", cut.Find($".{Css.Classes.DatePicker.MonthLabel}").TextContent);
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+            Push();
             Assert.Equal("octobre 2026", cut.Find($".{Css.Classes.DatePicker.MonthLabel}").TextContent);
         }
-        finally { CultureInfo.CurrentUICulture = previous; }
+        finally { CultureInfo.CurrentCulture = previous; CultureInfo.CurrentUICulture = previousUI; }
     }
 }
