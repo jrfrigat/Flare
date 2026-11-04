@@ -108,7 +108,7 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     protected readonly List<string> Rejections = [];
 
     private readonly Dictionary<string, CancellationTokenSource> _cancels = [];
-    private bool _running;
+    private bool _running, _runRequested, _disposed;
 
     /// <summary>Id linking the trigger's <c>&lt;label for&gt;</c> to the hidden input.</summary>
     protected readonly string InputId = $"flare-fu-{Guid.NewGuid():N}";
@@ -168,30 +168,36 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// Runs the queue: every file still queued is sent through <see cref="Uploader"/>, at most
     /// <see cref="Concurrency"/> at a time. Returns when nothing is left in flight. Safe to call again
     /// after a failure - it picks up whatever is still queued and skips what already finished.
+    /// Requests made during a run are drained before the all-completed callback.
     /// </summary>
     public async Task UploadAsync()
     {
-        if (Uploader is null || _running) return;
+        if (Uploader is null || _disposed) return;
+        _runRequested = true;
+        if (_running) return;
         _running = true;
         try
         {
             var lanes = Math.Max(1, Concurrency);
             using var gate = new SemaphoreSlim(lanes, lanes);
-            var pending = Queue.Where(q => q.State == FlareUploadState.Queued).ToList();
-
-            await Task.WhenAll(pending.Select(async item =>
+            while (_runRequested && !_disposed)
             {
-                await gate.WaitAsync();
-                try { await SendAsync(item); }
-                finally { gate.Release(); }
-            }));
+                _runRequested = false;
+                var pending = Queue.Where(q => q.State == FlareUploadState.Queued).ToList();
+                await Task.WhenAll(pending.Select(async item =>
+                {
+                    await gate.WaitAsync();
+                    try { await SendAsync(item); }
+                    finally { gate.Release(); }
+                }));
+            }
         }
         finally
         {
             _running = false;
         }
 
-        await OnAllCompleted.InvokeAsync();
+        if (!_disposed) await OnAllCompleted.InvokeAsync();
     }
 
     /// <summary>Cancels one file by its <see cref="FlareUploadFile.Id"/>. A file that already finished is
@@ -236,7 +242,7 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     private async Task SendAsync(FlareUploadFile item)
     {
         // Cancelled while it waited its turn in the queue.
-        if (item.State != FlareUploadState.Queued) return;
+        if (_disposed || item.State != FlareUploadState.Queued || !Queue.Contains(item)) return;
 
         var cts = new CancellationTokenSource();
         _cancels[item.Id] = cts;
@@ -248,9 +254,11 @@ public abstract class FlareFileUploadBase : FlareComponentBase
         // render state goes back through the dispatcher.
         var progress = new Progress<long>(sent =>
         {
+            if (_disposed) return;
             item.BytesSent = sent;
             _ = InvokeAsync(async () =>
             {
+                if (_disposed) return;
                 await OnUploadProgress.InvokeAsync(item);
                 StateHasChanged();
             });
@@ -261,7 +269,7 @@ public abstract class FlareFileUploadBase : FlareComponentBase
             await Uploader!(new FlareUploadContext(item.File, progress, cts.Token));
             item.State = FlareUploadState.Completed;
             item.BytesSent = item.File.Size;
-            await OnUploadCompleted.InvokeAsync(item);
+            if (!_disposed) await OnUploadCompleted.InvokeAsync(item);
         }
         catch (OperationCanceledException)
         {
@@ -272,13 +280,13 @@ public abstract class FlareFileUploadBase : FlareComponentBase
             // One file failing must not take the queue down with it.
             item.State = FlareUploadState.Failed;
             item.Error = ex.Message;
-            await OnUploadFailed.InvokeAsync(item);
+            if (!_disposed) await OnUploadFailed.InvokeAsync(item);
         }
         finally
         {
             _cancels.Remove(item.Id);
             cts.Dispose();
-            await InvokeAsync(StateHasChanged);
+            if (!_disposed) await InvokeAsync(StateHasChanged);
         }
     }
 
@@ -291,7 +299,11 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// <inheritdoc />
     public override ValueTask DisposeAsync()
     {
+        if (_disposed) return ValueTask.CompletedTask;
+        _disposed = true;
+        _runRequested = false;
         CancelAll();
+        foreach (var item in Queue.Where(item => item.IsActive)) item.State = FlareUploadState.Cancelled;
         return base.DisposeAsync();
     }
 

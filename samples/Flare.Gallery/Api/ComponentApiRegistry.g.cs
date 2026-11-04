@@ -3048,8 +3048,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field when there is no error.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"Invalid", @"bool", @"false", @"Invalid/error state; emits the shared flare-input--error modifier.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"The field label text; omitted when null/empty or when FloatingLabel (the field renders its own floating label inside the well). Ignored when LabelContent is set.", null, false, false, false, @"FlareFieldChrome"),
-                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Markup rendered in the label element instead of Label.", null, false, false, false, @"FlareFieldChrome"),
-                new ApiParameterInfo(@"LabelFor", @"string?", null, @"The for target of the label (the input id), for real-input fields; null for div triggers.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Markup rendered in the caption instead of Label.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"LabelFor", @"string?", null, @"The native control id for a label's for. When absent, renders a span caption; non-native controls reference its LabelId through aria-labelledby.", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"LabelId", @"string?", null, @"The label element id (for aria-labelledby from a div trigger).", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Read-only state; forwarded by fields to their control (the frame draws no read-only chrome).", null, false, false, false, @"FlareFieldChrome"),
                 new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), emitted as the shared size modifier class.", null, false, false, false, @"FlareFieldChrome"),
@@ -3333,7 +3333,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Field content (input, select, etc.).", null, false, false, false, @"FlareFormField"),
-                new ApiParameterInfo(@"For", @"string?", null, @"ID of the input element this label targets (HTML for attribute).", null, false, false, false, @"FlareFormField"),
+                new ApiParameterInfo(@"For", @"string?", null, @"ID of the native control targeted by the label. Without it, names the content as a group.", null, false, false, false, @"FlareFormField"),
                 new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field control.", null, false, false, false, @"FlareFormField"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown above the field control.", null, false, false, false, @"FlareFormField"),
                 new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required, adding a visual indicator.", null, false, false, false, @"FlareFormField"),

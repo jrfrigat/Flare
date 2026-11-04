@@ -7,6 +7,7 @@ import { listen, registry } from './flare-dom.js';
 import './flare-link-button.js';
 import './flare-backdrop.js';
 import './flare-focus-proxy.js';
+import './flare-file-upload.js';
 
 export function setCssVariables(vars) {
     const root = document.documentElement;

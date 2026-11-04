@@ -156,7 +156,7 @@ public class FieldFamilyAuditTests : FlareTestContext
             .Add(c => c.Length, 4)
             .Add(c => c.Label, "Verification code"));
 
-        var label = cut.Find("label");
+        var label = cut.Find($"span.{Css.Classes.Input.Label}");
         Assert.Equal("Verification code", label.TextContent);
         // A group control is labelled by aria-labelledby (not a single for=/input id).
         Assert.Equal(label.Id, cut.Find($".{Css.Classes.Otp.Root}").GetAttribute("aria-labelledby"));

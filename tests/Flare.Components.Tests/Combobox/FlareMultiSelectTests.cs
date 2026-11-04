@@ -14,8 +14,9 @@ public class FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Label, "Fruits")
             .Add(x => x.Items, _fruits));
 
-        var label = cut.Find($"label.{Css.Classes.Input.Label}");
+        var label = cut.Find($"span.{Css.Classes.Input.Label}");
         Assert.Equal("Fruits", label.TextContent);
+        Assert.Equal(label.Id, cut.Find("[role=combobox]").GetAttribute("aria-labelledby"));
     }
 
     [Fact]

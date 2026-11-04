@@ -6,12 +6,9 @@
    rows are name + size, exactly what they were before; with one, each row also carries its state class, a
    progress bar and the cancel/retry affordances. The state lives in the parent - this only paints it. *@
 
-@* The list refuses the browser's own drop, wherever it is used. The zone's hidden input covers the drop
-   area and takes a dropped file as that event's DEFAULT ACTION, so the zone cannot cancel `drop` at its
-   root without cancelling the very thing it exists to receive - it used to, and drag-and-drop had never
-   worked. The list is the part of the zone with no input beneath it, and there the browser default is to
-   navigate away to the dropped file, so the cancel belongs here instead. *@
+@* The list refuses both native file navigation and forwarding into an enclosing drop zone. *@
 <ul class="@BuildCssClass()"
+    data-flare-file-drop-ignore
     style="@Style"
     @ondragover:preventDefault="true"
     @ondrop:preventDefault="true"
@@ -35,10 +32,9 @@
                 {
                     @* Size rather than a height token of our own: the progress indicator already owns
                        that scale, and a second one here would be two answers to one question. *@
+                    @* A queued file has no progress to report; null keeps the bar indeterminate. *@
                     <FlareProgressLinear Class="@Css.Classes.FileUpload.Progress"
                                    Size="TrackSize.Xs"
-                                   @* A queued file has no progress to report yet, and a null Value is
-                                      what makes the bar indeterminate. *@
                                    Value="@(item.State == FlareUploadState.Queued ? null : item.Progress * 100)" />
                 }
                 else if (item.State == FlareUploadState.Failed)

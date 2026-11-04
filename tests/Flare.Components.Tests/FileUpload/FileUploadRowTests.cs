@@ -23,6 +23,17 @@ public class FileUploadRowTests : FlareTestContext
     private static FlareUploadFile Row(FlareUploadState state = FlareUploadState.Queued) =>
         new(new FakeFile("a.txt", 100)) { State = state };
 
+    [Theory]
+    [InlineData(FlareUploadState.Queued)]
+    [InlineData(FlareUploadState.Uploading)]
+    public void ProgressDoesNotReceiveUnmatchedMarkupAttributes(FlareUploadState state)
+    {
+        var cut = Render<FlareUploadFileList>(p => p.Add(x => x.Items, new[] { Row(state) }).Add(x => x.Interactive, true));
+        var progress = cut.FindComponent<FlareProgressLinear>().Instance;
+        Assert.True(progress.AdditionalAttributes is null || progress.AdditionalAttributes.Count == 0);
+        Assert.Equal(state == FlareUploadState.Queued ? null : (double?)0, progress.Value);
+    }
+
     [Fact]
     public void RemoveReportsTheRowId()
     {

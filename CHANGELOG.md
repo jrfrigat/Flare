@@ -17,6 +17,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- Gallery's obsolete custom-theme editor and its navigation/search entries have been removed. The library's theme APIs and customization examples remain available.
 - Add-on component tokens now fall back to semantic base tokens where used, and inherit `DesignTokens.Extended` or theme-service overrides. Themes need no add-on-specific values. QR and barcode scan colors retain their scan-safe defaults.
 - **Breaking:** IDE resizing uses `FlareSplitter`; remove direct `IIdeJsService`/`IdeJsService` and `flare-ide.js` usages. `AddFlareIde` remains compatible; shared interaction services come from `AddFlare`. Theme customizations targeting the removed private IDE resizer classes should use Splitter tokens.
 - **Breaking:** Gantt captions and announcements now follow `CultureInfo.CurrentUICulture` through `GanttStrings`, like the other Flare components. Remove `FlareGantt.Texts`, `EffectiveTexts` and `GanttTexts` usages; use `GanttStrings.Describe(validation, name)` for dependency messages. `FlareGantt.Culture` continues to format dates and the axis.
@@ -26,6 +27,9 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Field captions now use native label associations or appropriate ARIA/group names. Select, MultiSelect, TagField, Slider and DateRangePicker no longer emit unassociated labels; native field labels can be clicked to focus their controls.
+- FileUpload prevents file-drop navigation and forwards dropped files through the regular InputFile pipeline. Queued progress no longer renders an invalid attribute, selecting the same file again works, retries requested during an active queue run are processed, and removed/disposed queued work is not uploaded.
+- Gallery no longer requests the nonexistent scoped stylesheet `Flare.Gallery.styles.css`.
 - Calendar indexes its events once per parameter update, including the twelve-month view. SignaturePad resolves semantic stroke colors against the current theme for every new stroke and applies changed stroke parameters after rendering.
 - Dialogs, sheets, confirm/alert/prompt windows, drawers, overlays and other backdrop surfaces require both press and release on the same backdrop before dismissing. Selecting text or dragging from content onto the backdrop no longer closes the surface.
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.
