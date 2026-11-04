@@ -32,11 +32,6 @@
 
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 
 ## Inheritance
 

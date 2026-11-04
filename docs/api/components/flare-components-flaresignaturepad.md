@@ -26,11 +26,6 @@
 Clears all drawn strokes from the canvas.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `GetDataUrlAsync()`
 
 Returns the current canvas content as a base-64-encoded PNG data URL, or null when unavailable.

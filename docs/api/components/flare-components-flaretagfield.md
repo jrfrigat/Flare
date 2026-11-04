@@ -45,10 +45,7 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

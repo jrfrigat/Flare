@@ -52,8 +52,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the picker when the overlay layer receives Escape.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", @"A task that completes when the layer has been released.", @"Releases the panel's placement listeners and the Escape layer.",
-                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -115,11 +113,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", @"A task that completes when the layer has been released.", @"Releases the panel's placement listeners.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareDataGridControl",
@@ -177,11 +171,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -214,11 +204,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Marks the component gone so a pending exit delay cannot call back into a removed parent.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -502,11 +488,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -564,11 +546,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -651,8 +629,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnOverflowChanged", @"OnOverflowChanged(int hidden)", @"Task", null, @"Invoked from script with the number of segments currently folded away.",
                     new ApiMethodParameter[]
                     {
@@ -930,8 +906,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnCarouselKey", @"OnCarouselKey(string key)", @"void", null, null,
                     new ApiMethodParameter[]
                     {
@@ -1032,8 +1006,6 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"delta", @"double", @"The wheel's vertical delta."),
                         new ApiMethodParameter(@"x", @"double", @"The anchor's horizontal position in SVG viewBox units."),
                     }),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ResetDomain", @"ResetDomain()", @"void", null, @"Forgets the range StickyDomain is holding, so the next update sizes the value axis from the data alone. For when the caller knows the scale has changed for good.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -1073,11 +1045,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -1357,11 +1325,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -1551,8 +1515,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromOutside", @"CloseFromOutside()", @"Task", null, @"Closes the panel; invoked from JS when a pointer-down lands outside the picker.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnCanvasPick", @"OnCanvasPick(double saturation, double lightness)", @"Task", null, null,
                     new ApiMethodParameter[]
                     {
@@ -1634,11 +1596,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width of the column. It is exact when every visible column declares a plain length such as 96px or 6rem: the header and the cells keep it, a label wider than its column is cut with an ellipsis, and cell content that does not wrap can overflow instead of widening the column. Columns without a Width share the rest of the grid width; when every visible column has one, the table keeps exactly their sum and the remaining grid width stays empty, so leave one column without a Width to fill the grid. A percentage or a CSS function is a share of the table rather than an exact width, and the grid keeps filling its container. Without a Width a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareColumnBase",
@@ -1665,11 +1623,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width of the column. It is exact when every visible column declares a plain length such as 96px or 6rem: the header and the cells keep it, a label wider than its column is cut with an ellipsis, and cell content that does not wrap can overflow instead of widening the column. Columns without a Width share the rest of the grid width; when every visible column has one, the table keeps exactly their sum and the remaining grid width stays empty, so leave one column without a Width to fill the grid. A percentage or a CSS function is a share of the table rather than an exact width, and the grid keeps filling its container. Without a Width a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareColumnBase",
@@ -1726,11 +1680,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Markup painted in the heading instead of Title - a unit, an icon, a help affordance. Display only; Title keeps carrying the column's name.", null, false, false, false, @"FlareColumnBase"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"Fixed CSS width of the column. It is exact when every visible column declares a plain length such as 96px or 6rem: the header and the cells keep it, a label wider than its column is cut with an ellipsis, and cell content that does not wrap can overflow instead of widening the column. Columns without a Width share the rest of the grid width; when every visible column has one, the table keeps exactly their sum and the remaining grid width stays empty, so leave one column without a Width to fill the grid. A percentage or a CSS function is a share of the table rather than an exact width, and the grid keeps filling its container. Without a Width a column is never narrower than the narrowest its content can be: a header label (one line), a value without spaces, or a row of controls that does not wrap. When those minimums add up to more than the grid's width, the grid scrolls horizontally instead of cutting content off. To fit a narrow screen, let wide cell content wrap (for example a FlareStack with Wrap for a row of action buttons) or give such columns a Width.", null, false, false, false, @"FlareColumnBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareColumnBase",
@@ -1788,11 +1738,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareFieldBase",
@@ -2059,8 +2005,6 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"confirmLabel", @"string", null),
                         new ApiMethodParameter(@"cancelLabel", @"string", null),
                     }),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Releases modal resources and resolves an unanswered confirmation as dismissed.",
-                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -2193,8 +2137,6 @@ public static class ComponentApiRegistry
                 new ApiMethodInfo(@"ClearAdvancedFilter", @"ClearAdvancedFilter()", @"Task", null, @"Clears all advanced filters.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ClearAllFiltersAsync", @"ClearAllFiltersAsync()", @"Task", null, @"Clears all filters.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Tears down JS interop and observers.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FilterByAsync", @"FilterByAsync(string columnKey, string value)", @"Task", null, @"Applies a filter command to the grid.",
                     new ApiMethodParameter[]
@@ -2372,11 +2314,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Unsubscribes from the bound context.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareDataGridControl",
@@ -2409,11 +2347,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -2482,8 +2416,6 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the calendar popup.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the date input.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the calendar popup.",
@@ -2545,16 +2477,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"SetParametersAsync", @"SetParametersAsync(ParameterView parameters)", @"Task", @"The component's parameter lifecycle task.", @"Applies parameters and skips rendering when their visible output cannot change.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"parameters", @"ParameterView", @"The parameters supplied by the parent."),
-                    }),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -2620,8 +2543,6 @@ public static class ComponentApiRegistry
                 new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected value and closes the popup. Does nothing while the field is disabled or read-only.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the picker popup.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the input.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -2732,8 +2653,6 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -2765,11 +2684,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Unregisters the guard and dismisses only the confirmation owned by this guard.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -2792,11 +2707,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -2851,11 +2762,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -2916,8 +2823,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Detaches the context's pointer gesture.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnDragEndAsync", @"OnDragEndAsync()", @"Task", null, @"Reports that a drag finished. Called by the browser once per drag, landed or not.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnDragStartAsync", @"OnDragStartAsync(string sourceId)", @"Task<DragTargetRuling>", null, @"Which zones will take the item that has just been picked up. Called by the browser once per drag; null means every zone in the item's group, which is the common case and saves marshalling a list that says the same thing.",
@@ -2990,11 +2895,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Removes this item from its drag context.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -3035,8 +2936,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -3065,11 +2964,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Removes this zone from its drag context.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -3170,6 +3065,8 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"BlurAsync", @"BlurAsync()", @"ValueTask", null, @"Removes keyboard focus from the field.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SelectAsync", @"SelectAsync()", @"ValueTask", null, @"Selects (highlights) all the text in the field.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -3282,7 +3179,26 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Uploader", @"Func<FlareUploadContext, Task>?", null, @"The transfer itself. Given a FlareUploadContext - the file, a progress sink and a cancellation token - send the bytes however the application sends bytes, and report the running total to Progress.", @"A delegate rather than a URL on purpose. A URL plus headers cannot express a token that refreshes mid-upload, a presigned PUT, a resumable protocol or an application's own retry policy - and an upload component that gets those wrong is one an application has to wrap. Flare owns the queue, the concurrency, the cancellation and the whole visual state; the application owns the wire. Leave it null and the component is exactly what it was before: a file picker.", false, false, false, @"FlareFileUploadBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CancelAsync", @"CancelAsync(string id)", @"Task", null, @"Cancels one file by its Id. A file that already finished is left alone.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"id", @"string", @"The queue entry to cancel."),
+                    }),
+                new ApiMethodInfo(@"RemoveAsync", @"RemoveAsync(string id)", @"Task", null, @"Drops a file from the list. A transfer still in flight is cancelled first: the row is going away, so leaving its request running would spend the user's bandwidth on bytes nothing will report.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"id", @"string", @"The queue entry to remove."),
+                    }),
+                new ApiMethodInfo(@"RetryAsync", @"RetryAsync(string id)", @"Task", null, @"Puts a failed or cancelled file back in the queue and runs it again.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"id", @"string", @"The queue entry to retry."),
+                    }),
+                new ApiMethodInfo(@"UploadAsync", @"UploadAsync()", @"Task", null, @"Runs the queue: every file still queued is sent through Uploader, at most Concurrency at a time. Returns when nothing is left in flight. Safe to call again after a failure - it picks up whatever is still queued and skips what already finished. Requests made during a run are drained before the all-completed callback.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareFileUploadBase",
@@ -3329,7 +3245,26 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Uploader", @"Func<FlareUploadContext, Task>?", null, @"The transfer itself. Given a FlareUploadContext - the file, a progress sink and a cancellation token - send the bytes however the application sends bytes, and report the running total to Progress.", @"A delegate rather than a URL on purpose. A URL plus headers cannot express a token that refreshes mid-upload, a presigned PUT, a resumable protocol or an application's own retry policy - and an upload component that gets those wrong is one an application has to wrap. Flare owns the queue, the concurrency, the cancellation and the whole visual state; the application owns the wire. Leave it null and the component is exactly what it was before: a file picker.", false, false, false, @"FlareFileUploadBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CancelAsync", @"CancelAsync(string id)", @"Task", null, @"Cancels one file by its Id. A file that already finished is left alone.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"id", @"string", @"The queue entry to cancel."),
+                    }),
+                new ApiMethodInfo(@"RemoveAsync", @"RemoveAsync(string id)", @"Task", null, @"Drops a file from the list. A transfer still in flight is cancelled first: the row is going away, so leaving its request running would spend the user's bandwidth on bytes nothing will report.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"id", @"string", @"The queue entry to remove."),
+                    }),
+                new ApiMethodInfo(@"RetryAsync", @"RetryAsync(string id)", @"Task", null, @"Puts a failed or cancelled file back in the queue and runs it again.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"id", @"string", @"The queue entry to retry."),
+                    }),
+                new ApiMethodInfo(@"UploadAsync", @"UploadAsync()", @"Task", null, @"Runs the queue: every file still queued is sent through Uploader, at most Concurrency at a time. Returns when nothing is left in flight. Safe to call again after a failure - it picks up whatever is still queued and skips what already finished. Requests made during a run are drained before the all-completed callback.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareFileUploadBase",
@@ -3366,8 +3301,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the speed-dial menu when the overlay layer receives Escape.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the FAB element.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -3394,11 +3327,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -3424,11 +3353,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -3604,8 +3529,6 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"units", @"int", @"Whole axis units the start, the end or both moved by."),
                         new ApiMethodParameter(@"rowKey", @"string", @"Row the pointer was over at the end of a move, or null."),
                     }),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"Horizontal", @"Horizontal(double left, double width)", @"Task", null, @"The visible part of the time area, in pixels from its start, reported while the axis scrolls. A virtualized chart draws columns one screen either side of it and redraws only when the view leaves the inner half of that margin; an endless axis grows when the view comes within a screen of an edge.",
                     new ApiMethodParameter[]
                     {
@@ -3752,8 +3675,6 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"CollapseAll", @"CollapseAll()", @"void", null, @"Collapses every tree row.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ExpandAll", @"ExpandAll()", @"void", null, @"Expands every tree row.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -4050,8 +3971,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ResizePanel", @"ResizePanel(string position, int sizePx)", @"void", null, @"Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.",
                     new ApiMethodParameter[]
                     {
@@ -4122,8 +4041,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"TriggerLoad", @"TriggerLoad()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -4182,11 +4099,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -4278,8 +4191,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, @"Invoked by the shared Escape handler while the drawer is an open modal overlay; closes it.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"IsOverlayOpen", @"IsOverlayOpen(bool isMobile)", @"bool", null, @"True when the drawer is currently a floating overlay that is open (so the scrim shows).",
                     new ApiMethodParameter[]
                     {
@@ -4333,8 +4244,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnVisibilityChanged", @"OnVisibilityChanged(bool visible)", @"Task", null, @"Invoked by the IntersectionObserver when the wrapper enters or leaves the viewport.",
                     new ApiMethodParameter[]
                     {
@@ -4400,11 +4309,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -4429,11 +4334,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -4514,11 +4415,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content whose localized components follow this scope's culture.", null, false, false, false, @"FlareLocalizationProvider"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Releases the culture subscription.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"ComponentBase",
@@ -4594,6 +4491,8 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"BlurAsync", @"BlurAsync()", @"ValueTask", null, @"Removes keyboard focus from the field.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SelectAsync", @"SelectAsync()", @"ValueTask", null, @"Selects (highlights) all the text in the field.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -4624,11 +4523,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -4665,8 +4560,6 @@ public static class ComponentApiRegistry
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the menu (also callable programmatically), clears registered items and keyboard focus, and raises OnToggle.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the menu when the overlay layer receives Escape.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the menu programmatically (no-op if already open) and raises OnToggle.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -4748,11 +4641,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -4774,11 +4663,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -4874,11 +4759,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"FocusCursorAsync", @"FocusCursorAsync()", @"Task", null, @"Moves keyboard focus onto the day carrying the roving tabindex=""0"" (best-effort; does nothing before the grid is rendered or when no day of the month is available).",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"SetParametersAsync", @"SetParametersAsync(ParameterView parameters)", @"Task", null, null,
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"parameters", @"ParameterView", null),
-                    }),
             },
             new string[]
             {
@@ -4941,8 +4821,6 @@ public static class ComponentApiRegistry
                 new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected month.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the month popup.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the month input.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -5056,8 +4934,6 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the calendar popup.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the input.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the calendar popup.",
@@ -5120,11 +4996,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareFieldBase",
@@ -5190,11 +5062,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -5254,11 +5122,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -5320,7 +5184,7 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"Decrement", @"Decrement()", @"Task", null, @"Decreases the value by Step (default 1), clamped to Min/Max.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"Increment", @"Increment()", @"Task", null, @"Increases the value by Step (default 1), clamped to Min/Max.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -5395,8 +5259,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"RefreshAsync", @"RefreshAsync()", @"Task", null, @"Re-scans the content root for headings whose content appeared or changed after the first render - an article loaded asynchronously, another tab or a language switch. Call it after the new headings are in the DOM; the scan replaces both the list and the scroll listeners. Does nothing before the component has rendered.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SetActive", @"SetActive(string[] ids)", @"Task", null, @"Invoked by JS with the ids of every heading currently visible on screen.",
@@ -5687,6 +5549,8 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"BlurAsync", @"BlurAsync()", @"ValueTask", null, @"Removes keyboard focus from the field.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SelectAsync", @"SelectAsync()", @"ValueTask", null, @"Selects (highlights) all the text in the field.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -5732,8 +5596,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes the popover when the shared overlay Escape layer selects it.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -5765,8 +5627,6 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"DismissFromJs", @"DismissFromJs()", @"Task", null, @"Invoked from JS when a pointer-down outside the widget or a focus-out escaping it occurs.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ScrollOptionIntoViewAsync", @"ScrollOptionIntoViewAsync(string optionId)", @"ValueTask", null, @"Scrolls the option element with optionId into view within the panel.",
                     new ApiMethodParameter[]
@@ -5800,11 +5660,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode. A non-finite value (NaN, positive or negative infinity) is treated as not given, so ARIA and the geometry agree on an indeterminate indicator instead of emitting NaN.", null, false, false, false, @"FlareProgressBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareProgressBase",
@@ -6090,11 +5946,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -6160,8 +6012,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Moves keyboard focus to the resize handle.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnResizedCallback", @"OnResizedCallback(string newSize)", @"Task", null, null,
@@ -6197,8 +6047,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Moves to the next or previous enabled tab (Left/Right, mirrored in right-to-left text), or the first or last one (Home/End), opens it and focuses its tab. Called by the shared tab-keyboard script, which has already kept the browser from scrolling.",
                     new ApiMethodParameter[]
                     {
@@ -6332,11 +6180,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -6369,8 +6213,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnContentChanged", @"OnContentChanged(string html)", @"Task", null, null,
                     new ApiMethodParameter[]
                     {
@@ -6445,8 +6287,6 @@ public static class ComponentApiRegistry
                     {
                         new ApiMethodParameter(@"slot", @"SchedulerSlot", @"Initial dates and resource."),
                     }),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Cancels pending provider work before disposing component services.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"EditEventAsync", @"EditEventAsync(SchedulerOccurrence<TItem> occurrence)", @"Task", null, @"Opens the event-details editor without mutating the original item.",
                     new ApiMethodParameter[]
                     {
@@ -6619,8 +6459,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Cancels the clock and releases the shared keyboard registration.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"HandleTreeKeyAsync", @"HandleTreeKeyAsync(int index, string key)", @"Task", null, @"Handles slot keys delegated by the shared listener, including repeated clock times.",
                     new ApiMethodParameter[]
                     {
@@ -6679,11 +6517,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -6766,11 +6600,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareFieldBase",
@@ -6824,11 +6654,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnActivated", @"EventCallback", null, null, null, false, true, true, @"FlareShortcutEntry"),
                 new ApiParameterInfo(@"Shortcuts", @"FlareShortcuts?", null, null, null, true, false, false, @"FlareShortcutEntry"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"ComponentBase",
@@ -6852,8 +6678,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"HandleKeyDown", @"HandleKeyDown(string keys)", @"Task", null, null,
                     new ApiMethodParameter[]
                     {
@@ -6894,8 +6718,6 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears all drawn strokes from the canvas.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"GetDataUrlAsync", @"GetDataUrlAsync()", @"Task<string>", null, @"Returns the current canvas content as a base-64-encoded PNG data URL, or null when unavailable.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -6983,11 +6805,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -7012,11 +6830,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -7133,8 +6947,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnSplitChanged", @"OnSplitChanged(string newSize)", @"Task", null, null,
                     new ApiMethodParameter[]
                     {
@@ -7302,11 +7114,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OptionalText", @"string?", null, @"Caption shown for an optional step. Null uses the localized default.", null, false, false, false, @"FlareStep"),
                 new ApiParameterInfo(@"Skippable", @"bool", @"false", @"Allows jumping past this step in a linear stepper. When true, forward navigation (a step-indicator click or GoTo) may move beyond this step without it being completed. Has no effect in a non-linear stepper, where every step is already reachable.", null, false, false, false, @"FlareStep"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"ComponentBase",
@@ -7340,8 +7148,6 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"Back", @"Back()", @"Task", null, @"Returns to the previous step. No-op on the first step. Runs the OnStepChanging guard.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"GoTo", @"GoTo(int index)", @"Task", null, @"Navigates to index (clamped to range) when allowed by the linear/skippable rules. Runs the OnStepChanging guard.",
                     new ApiMethodParameter[]
@@ -7408,8 +7214,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"CloseFromEscape", @"CloseFromEscape()", @"Task", null, @"Closes this submenu when the overlay layer receives Escape.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
@@ -7445,11 +7249,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -7481,11 +7281,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -7585,8 +7381,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnTabNavigation", @"OnTabNavigation(string key, bool rtl)", @"Task", null, @"Activates and focuses the available tab addressed by an orientation-aware navigation key.",
                     new ApiMethodParameter[]
                     {
@@ -7654,11 +7448,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareFieldBase",
@@ -7774,6 +7564,8 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"BlurAsync", @"BlurAsync()", @"ValueTask", null, @"Removes keyboard focus from the textarea.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SelectAsync", @"SelectAsync()", @"ValueTask", null, @"Selects (highlights) all the text in the textarea.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
@@ -7848,7 +7640,21 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the value changes.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"BlurAsync", @"BlurAsync()", @"ValueTask", null, @"Removes keyboard focus from the field.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SelectAsync", @"SelectAsync()", @"ValueTask", null, @"Selects (highlights) all the text in the field.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SelectRangeAsync", @"SelectRangeAsync(int start, int end)", @"ValueTask", null, @"Focuses the field and selects the character range [start, end).",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"start", @"int", null),
+                        new ApiMethodParameter(@"end", @"int", null),
+                    }),
+            },
             new string[]
             {
                 @"FlareField",
@@ -7905,8 +7711,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"BlurAsync", @"BlurAsync()", @"ValueTask", null, @"Removes focus from the underlying control.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync(bool preventScroll)", @"ValueTask", null, @"Sets keyboard focus to the underlying control.",
                     new ApiMethodParameter[]
                     {
@@ -7946,8 +7750,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnAccentColorChanged", @"OnAccentColorChanged()", @"Task", null, @"Invoked from JS when the window regains focus, in case the OS accent color changed.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnSystemColorSchemeChanged", @"OnSystemColorSchemeChanged(bool isDark)", @"Task", null, null,
@@ -7979,11 +7781,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style for the wrapper element.", null, false, false, false, @"FlareThemeScope"),
                 new ApiParameterInfo(@"Theme", @"string?", null, @"Design-system theme id to apply to the subtree. Unset inherits the outer theme.", null, false, false, false, @"FlareThemeScope"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"ComponentBase",
@@ -8073,8 +7871,6 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the picker popup.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the time input.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the picker popup.",
@@ -8129,7 +7925,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined/Bare) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to this field's control.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareEditableFieldBase",
@@ -8331,11 +8131,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -8395,11 +8191,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -8459,11 +8251,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Removes this item from its tree's drag registry.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareLocalizedComponentBase",
@@ -8549,11 +8337,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -8586,8 +8370,6 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnEnded", @"OnEnded()", @"void", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnFullscreenChanged", @"OnFullscreenChanged(bool isFullscreen)", @"void", null, null,
@@ -8723,8 +8505,6 @@ public static class ComponentApiRegistry
                 new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears the selected week.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the calendar popup.",
-                    System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the input.",
                     System.Array.Empty<ApiMethodParameter>()),

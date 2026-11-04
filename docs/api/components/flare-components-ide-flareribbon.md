@@ -19,11 +19,6 @@ Ribbon component with tabbed command groups. Each FlareRibbonTab child defines a
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OnTabNavigation(string key, bool rtl)`
 
 Moves to the next or previous enabled tab (Left/Right, mirrored in right-to-left text), or the first or last one (Home/End), opens it and focuses its tab. Called by the shared tab-keyboard script, which has already kept the browser from scrolling.

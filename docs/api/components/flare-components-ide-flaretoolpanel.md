@@ -24,11 +24,7 @@ A collapsible tool panel for the IDE sidebar. Wraps content with a header bar co
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

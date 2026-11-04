@@ -47,20 +47,7 @@ Selects a date range using two fields or an inline calendar.
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
-### `SetParametersAsync(ParameterView parameters)`
-
-Applies parameters and skips rendering when their visible output cannot change.
-Returns: `Task` — The component's parameter lifecycle task.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `parameters` | `ParameterView` | The parameters supplied by the parent. |
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

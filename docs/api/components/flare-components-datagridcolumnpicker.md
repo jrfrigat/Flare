@@ -27,11 +27,6 @@ A button with a menu of the grid's columns, where each column is shown or hidden
 Closes the picker when the overlay layer receives Escape.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Releases the panel's placement listeners and the Escape layer.
-Returns: `ValueTask` — A task that completes when the layer has been released.
-
 
 ## Inheritance
 

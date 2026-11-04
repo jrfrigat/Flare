@@ -21,10 +21,7 @@ One visual line inside a composite column - the way several fields of a record a
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

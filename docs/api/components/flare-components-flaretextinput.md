@@ -46,11 +46,6 @@
 Removes focus from the underlying control.
 Returns: `ValueTask`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `FocusAsync(bool preventScroll)`
 
 Sets keyboard focus to the underlying control.

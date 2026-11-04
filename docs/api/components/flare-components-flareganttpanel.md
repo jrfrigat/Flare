@@ -64,11 +64,6 @@ One projection on the shared axis of a FlareGantt: rows (a list or a tree) and t
 Collapses every tree row.
 Returns: `void`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `ExpandAll()`
 
 Expands every tree row.

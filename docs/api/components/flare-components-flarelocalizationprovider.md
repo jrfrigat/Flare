@@ -12,11 +12,7 @@
 
 ## Methods
 
-### `Dispose()`
-
-Releases the culture subscription.
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

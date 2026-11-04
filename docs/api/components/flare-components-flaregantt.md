@@ -60,11 +60,6 @@ Returns: `Task`.
 | `units` | `int` | Whole axis units the start, the end or both moved by. |
 | `rowKey` | `string` | Row the pointer was over at the end of a move, or null. |
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `Horizontal(double left, double width)`
 
 The visible part of the time area, in pixels from its start, reported while the axis scrolls. A virtualized chart draws columns one screen either side of it and redraws only when the view leaves the inner half of that margin; an endless axis grows when the view comes within a screen of an edge.

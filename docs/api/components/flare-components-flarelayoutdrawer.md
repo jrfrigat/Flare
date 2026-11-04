@@ -30,11 +30,6 @@
 Invoked by the shared Escape handler while the drawer is an open modal overlay; closes it.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `IsOverlayOpen(bool isMobile)`
 
 True when the drawer is currently a floating overlay that is open (so the scrim shows).

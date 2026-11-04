@@ -17,11 +17,6 @@ Day, week and working-week projection using the shared Gantt axis and lane calcu
 
 ## Methods
 
-### `DisposeAsync()`
-
-Cancels the clock and releases the shared keyboard registration.
-Returns: `ValueTask`.
-
 ### `HandleTreeKeyAsync(int index, string key)`
 
 Handles slot keys delegated by the shared listener, including repeated clock times.

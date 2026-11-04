@@ -22,11 +22,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `FocusAsync()`
 
 Moves keyboard focus to the resize handle.

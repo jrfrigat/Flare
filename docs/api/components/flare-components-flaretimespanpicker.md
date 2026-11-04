@@ -38,7 +38,11 @@
 
 ## Methods
 
-This component exposes no documented public methods.
+### `FocusAsync()`
+
+Sets keyboard focus to this field's control.
+Returns: `ValueTask`.
+
 
 ## Inheritance
 

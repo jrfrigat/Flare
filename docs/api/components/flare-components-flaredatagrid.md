@@ -121,11 +121,6 @@ Returns: `Task`.
 Clears all filters.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Tears down JS interop and observers.
-Returns: `ValueTask`.
-
 ### `FilterByAsync(string columnKey, string value)`
 
 Applies a filter command to the grid.

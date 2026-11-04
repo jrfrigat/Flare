@@ -24,11 +24,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Detaches the context's pointer gesture.
-Returns: `ValueTask`.
-
 ### `OnDragEndAsync()`
 
 Reports that a drag finished. Called by the browser once per drag, landed or not.

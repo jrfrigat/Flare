@@ -25,9 +25,18 @@ internal static class DocId
     /// <summary>Full "M:" id for a method, including generic arity and encoded parameter list.</summary>
     public static string ForMethod(MethodInfo method)
     {
-        var sb = new StringBuilder("M:");
-        sb.Append(DeclaringName(method.DeclaringType!));
-        sb.Append('.');
+        if (method.IsGenericMethod && !method.IsGenericMethodDefinition) method = method.GetGenericMethodDefinition();
+        if (method.DeclaringType is { IsConstructedGenericType: true } owner)
+            method = owner.GetGenericTypeDefinition().GetMethods(BindingFlags.Public | BindingFlags.NonPublic
+                | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                .Single(candidate => candidate.MetadataToken == method.MetadataToken);
+        return "M:" + DeclaringName(method.DeclaringType!) + "." + MethodSignature(method);
+    }
+
+    /// <summary>Method name, generic arity and parameter types, without owner or parameter names.</summary>
+    public static string MethodSignature(MethodInfo method)
+    {
+        var sb = new StringBuilder();
         sb.Append(method.Name);
 
         if (method.IsGenericMethodDefinition || method.IsGenericMethod)

@@ -16,10 +16,7 @@ Host for the message boxes raised through IMessageBoxService. Placed once in the
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

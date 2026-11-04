@@ -17,10 +17,7 @@
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

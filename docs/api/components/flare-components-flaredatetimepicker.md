@@ -64,10 +64,6 @@ Returns: `Task`.
 Closes the picker popup.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
 ### `FocusAsync()`
 
 Sets keyboard focus to the input.

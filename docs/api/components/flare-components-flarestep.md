@@ -22,10 +22,7 @@ One stage of a FlareStepper: its label, its optional description, and the conten
 
 ## Methods
 
-### `Dispose()`
-
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

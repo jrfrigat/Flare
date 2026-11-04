@@ -17,11 +17,6 @@ Keyboard-shortcut scope: the entries declared inside it register their key combi
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `HandleKeyDown(string keys)`
 
 Returns: `Task`.

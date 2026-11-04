@@ -21,11 +21,7 @@ A debounced search box that narrows a FlareDataGrid to the rows where any visibl
 
 ## Methods
 
-### `Dispose()`
-
-Unsubscribes from the bound context.
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

@@ -24,11 +24,6 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OnOverflowChanged(int hidden)`
 
 Invoked from script with the number of segments currently folded away.

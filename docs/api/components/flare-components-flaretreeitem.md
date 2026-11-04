@@ -23,11 +23,7 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Removes this item from its tree's drag registry.
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

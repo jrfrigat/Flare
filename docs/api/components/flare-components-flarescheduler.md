@@ -68,11 +68,6 @@ Returns: `Task`.
 | --- | --- | --- |
 | `slot` | `SchedulerSlot` | Initial dates and resource. |
 
-### `DisposeAsync()`
-
-Cancels pending provider work before disposing component services.
-Returns: `ValueTask`.
-
 ### `EditEventAsync(SchedulerOccurrence<TItem> occurrence)`
 
 Opens the event-details editor without mutating the original item.

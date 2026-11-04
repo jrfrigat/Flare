@@ -28,11 +28,6 @@
 Closes the panel; invoked from JS when a pointer-down lands outside the picker.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OnCanvasPick(double saturation, double lightness)`
 
 Returns: `Task`.

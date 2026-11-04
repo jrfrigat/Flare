@@ -66,10 +66,6 @@ Returns: `Task`.
 Closes the calendar popup.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
 ### `FocusAsync()`
 
 Sets keyboard focus to the date input.

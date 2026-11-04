@@ -24,11 +24,7 @@ Confirms closing a dialog with unsaved changes. Place inside a dialog, and insid
 
 ## Methods
 
-### `Dispose()`
-
-Unregisters the guard and dismisses only the confirmation owned by this guard.
-Returns: `void`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

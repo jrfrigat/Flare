@@ -109,11 +109,9 @@ internal sealed class XmlDocReader
     {
         for (var b = method.DeclaringType?.BaseType; b is not null && b != typeof(object); b = b.BaseType)
         {
-            var candidate = b.GetMethod(method.Name,
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                binder: null,
-                types: Array.ConvertAll(method.GetParameters(), p => p.ParameterType),
-                modifiers: null);
+            var signature = DocId.MethodSignature(method);
+            var candidate = b.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                .FirstOrDefault(m => DocId.MethodSignature(m) == signature);
             if (candidate is not null)
                 yield return DocId.ForMethod(candidate);
         }

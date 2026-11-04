@@ -28,6 +28,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- The API reference includes inherited component commands, including FileUpload upload/cancel/retry/remove and field focus methods. Generic signatures and inherited XML comments resolve correctly, overridden/hidden methods appear once, and framework/lifecycle methods stay out of the command list.
+- Gallery's missing-route page follows the selected language and provides a localized page title.
 - Shortcuts dispatch only to their owning component, isolating Server circuits. Multiple and nested scopes keep working when another scope is removed or its keys change. Custom `IUiJsService` adapters must now accept the owner id in shortcut registration/removal; the static `FlareShortcutEntry.HandleKeyDown` entry point has been removed.
 - Field captions now use native label associations or appropriate ARIA/group names. Select, MultiSelect, TagField, Slider and DateRangePicker no longer emit unassociated labels; native field labels can be clicked to focus their controls.
 - FileUpload prevents file-drop navigation and forwards dropped files through the regular InputFile pipeline. Queued progress no longer renders an invalid attribute, selecting the same file again works, retries requested during an active queue run are processed, and removed/disposed queued work is not uploaded.

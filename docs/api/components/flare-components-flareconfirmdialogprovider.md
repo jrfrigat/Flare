@@ -33,11 +33,6 @@ Returns: `Task<bool?>`.
 | `confirmLabel` | `string` | — |
 | `cancelLabel` | `string` | — |
 
-### `DisposeAsync()`
-
-Releases modal resources and resolves an unanswered confirmation as dismissed.
-Returns: `ValueTask`.
-
 
 ## Inheritance
 

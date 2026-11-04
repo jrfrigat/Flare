@@ -19,11 +19,7 @@
 
 ## Methods
 
-### `DisposeAsync()`
-
-Removes this zone from its drag context.
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

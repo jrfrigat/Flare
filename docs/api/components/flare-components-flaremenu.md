@@ -34,11 +34,6 @@ Returns: `Task`.
 Closes the menu when the overlay layer receives Escape.
 Returns: `Task`.
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
 ### `OpenAsync()`
 
 Opens the menu programmatically (no-op if already open) and raises OnToggle.

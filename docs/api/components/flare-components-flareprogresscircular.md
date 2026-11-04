@@ -21,11 +21,7 @@ The ring is the half of progress that needs measuring: its radius is the box les
 
 ## Methods
 
-### `DisposeAsync()`
-
-Disposes the component; override to release JS interop or subscriptions.
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

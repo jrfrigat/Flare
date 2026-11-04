@@ -48,10 +48,7 @@ Single-value dropdown over a list of items: a select-only combobox by default, o
 
 ## Methods
 
-### `DisposeAsync()`
-
-Returns: `ValueTask`.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 

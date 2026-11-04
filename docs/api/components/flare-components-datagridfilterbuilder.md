@@ -22,11 +22,7 @@ An editor for the grid's advanced filter: a tree of conditions joined by And or 
 
 ## Methods
 
-### `DisposeAsync()`
-
-Releases the panel's placement listeners.
-Returns: `ValueTask` — A task that completes when the layer has been released.
-
+This component exposes no documented public methods.
 
 ## Inheritance
 
