@@ -14462,5 +14462,9 @@ namespace Flare.Gallery.Resources {
         public static string Localization_Draft => ResourceManager.GetString("Localization_Draft", resourceCulture);
         /// <summary>Localized caption for the language and formatting demonstration.</summary>
         public static string Localization_Shortcut => ResourceManager.GetString("Localization_Shortcut", resourceCulture);
+        /// <summary>Localized heading and page title for a missing route.</summary>
+        public static string NotFound_Title => ResourceManager.GetString("NotFound_Title", resourceCulture);
+        /// <summary>Localized explanation for a missing route.</summary>
+        public static string NotFound_Message => ResourceManager.GetString("NotFound_Message", resourceCulture);
     }
 }
