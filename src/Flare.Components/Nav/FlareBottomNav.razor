@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* A fixed/sticky bar covers whatever is under it, so it also emits a same-height spacer in the flow.
    That is what stops the last row of content sitting behind the bar, and it costs one empty div rather
@@ -11,7 +11,7 @@
     <div class="@_spacerClass" aria-hidden="true"></div>
 }
 <nav class="@BuildCssClass(_positionClass, _labelsClass)" style="@Style"
-     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? FlareStrings.Nav_BottomNavigation : AriaLabel)"
+     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? CoreText["Nav_BottomNavigation"] : AriaLabel)"
      @attributes="AdditionalAttributes">
     @ChildContent
 </nav>

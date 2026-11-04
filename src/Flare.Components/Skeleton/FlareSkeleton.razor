@@ -1,11 +1,11 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <span class="@BuildCssClass(_variantClass, _animClass)"
       style="@_sizeStyle @Style"
       role="@(Announce ? "status" : null)"
       aria-busy="@(Announce ? "true" : null)"
-      aria-label="@(Announce ? FlareStrings.Aria_Loading : null)"
+      aria-label="@(Announce ? CoreText["Aria_Loading"].Value : null)"
       aria-hidden="@(Announce ? null : "true")"
       @attributes="AdditionalAttributes">
 </span>

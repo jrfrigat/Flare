@@ -102,8 +102,8 @@ public partial class FlareChart
                 if (point.Value.X < _view.From || point.Value.X > _view.To
                     || point.Y < _padT || point.Y > _padT + _plotH) continue;
                 var text = string.Create(_inv,
-                    $"{Data.Series[point.Series].Label}\n{FlareStrings.Chart_TablePoint}: {point.Index + 1}\n{FlareStrings.Chart_TableX}: {point.Value.X:G4}\n{FlareStrings.Chart_TableY}: {point.Value.Y:G4}");
-                if (_bubble) text += $"\n{FlareStrings.Chart_TableWeight}: {TableNumber(point.Value.R)}";
+                    $"{Data.Series[point.Series].Label}\n{CoreText["Chart_TablePoint"]}: {point.Index + 1}\n{CoreText["Chart_TableX"]}: {point.Value.X:G4}\n{CoreText["Chart_TableY"]}: {point.Value.Y:G4}");
+                if (_bubble) text += $"\n{CoreText["Chart_TableWeight"]}: {TableNumber(point.Value.R)}";
                 hits.Add(new($"point:{point.Series}:{point.Index}", point.Index, text, HitShape.Circle,
                     point.X, point.Y, Radius: point.Radius));
             }

@@ -13,7 +13,7 @@
     @if (_showArrows)
     {
         <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollPrev"
-                disabled="@_atStart" aria-label="@(FlareStrings.Tabs_ScrollBack)"
+                disabled="@_atStart" aria-label="@(CoreText["Tabs_ScrollBack"])"
                 tabindex="-1" @onclick="ScrollPrev">
             <FlareIconView Value="FlareIcons.ChevronLeft" />
         </button>
@@ -54,7 +54,7 @@
                 @if (tab.Closeable)
                 {
                     <button type="button" class="@Css.Classes.Tabs.TabClose" tabindex="-1" disabled="@tab.Disabled"
-                            @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@($"{FlareStrings.Aria_CloseTab}: {tab.Label}")">
+                            @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@($"{CoreText["Aria_CloseTab"]}: {tab.Label}")">
                         <FlareIconView Value="FlareIcons.Close" />
                     </button>
                 }
@@ -64,7 +64,7 @@
     @if (_showArrows)
     {
         <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollNext"
-                disabled="@_atEnd" aria-label="@(FlareStrings.Tabs_ScrollForward)"
+                disabled="@_atEnd" aria-label="@(CoreText["Tabs_ScrollForward"])"
                 tabindex="-1" @onclick="ScrollNext">
             <FlareIconView Value="FlareIcons.ChevronRight" />
         </button>
@@ -83,6 +83,9 @@
 </div>
 
 @code {
+    [CascadingParameter] private FlareLocalizationState? Localization { get; set; }
+    private Microsoft.Extensions.Localization.IStringLocalizer<FlareStrings> CoreText =>
+        (Localization?.Context ?? FlareLocalizationState.Ambient).GetLocalizer<FlareStrings>();
     /// <summary>FlareTab panels rendered inside the tab container.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Custom content rendered at the start (left/top) of the tab header, before the tabs - e.g. a title or action buttons.</summary>

@@ -226,7 +226,7 @@ public partial class FlareChart
     protected override string ComponentCssClass => Css.Classes.Chart.Root;
 
     private bool _bubble => Type == ChartType.Bubble;
-    private string AccessibleName => string.IsNullOrWhiteSpace(Title) ? FlareStrings.Chart_AccessibleName : Title;
+    private string AccessibleName => string.IsNullOrWhiteSpace(Title) ? CoreText["Chart_AccessibleName"] : Title;
     private string DescriptionId => $"{_uid}-description";
     private string TooltipId => $"{_uid}-tooltip";
 

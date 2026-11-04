@@ -18,12 +18,12 @@ public sealed class MessageBoxService : IMessageBoxService
 
     /// <summary>Shows a prompt dialog with a text input; resolves to the entered text or null when cancelled.</summary>
     public Task<string?> PromptAsync(string title, string label = "", string defaultValue = "",
-        string confirmLabel = "OK", string cancelLabel = "Cancel")
+        string? confirmLabel = null, string? cancelLabel = null)
         => Show(new(title, label, defaultValue, confirmLabel, cancelLabel, MessageBoxKind.Prompt));
 
     /// <summary>Shows a confirmation dialog; resolves true when confirmed, false when cancelled.</summary>
     public async Task<bool> ConfirmAsync(string title, string message = "",
-        string confirmLabel = "Yes", string cancelLabel = "No")
+        string? confirmLabel = null, string? cancelLabel = null)
     {
         var result = await Show(
             new(title, message, string.Empty, confirmLabel, cancelLabel, MessageBoxKind.Confirm));
@@ -31,7 +31,7 @@ public sealed class MessageBoxService : IMessageBoxService
     }
 
     /// <summary>Shows an information alert; resolves when dismissed.</summary>
-    public async Task AlertAsync(string title, string message = "", string confirmLabel = "OK")
+    public async Task AlertAsync(string title, string message = "", string? confirmLabel = null)
         => await Show(new(title, message, string.Empty, confirmLabel, string.Empty, MessageBoxKind.Alert));
 
     /// <summary>

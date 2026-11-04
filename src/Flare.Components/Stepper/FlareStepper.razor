@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject IUiJsService Ui
 
 <div class="@BuildCssClass(_orientClass)" style="@Style" @attributes="AdditionalAttributes">
@@ -9,7 +9,7 @@
     </CascadingValue>
 
     @* Step indicators *@
-    <div @ref="_headerRef" class="@Css.Classes.Stepper.Header" role="tablist" aria-orientation="@(Orientation == StepperOrientation.Vertical ? "vertical" : "horizontal")" aria-label="@(AriaLabel ?? FlareStrings.Stepper_ProgressLabel)">
+    <div @ref="_headerRef" class="@Css.Classes.Stepper.Header" role="tablist" aria-orientation="@(Orientation == StepperOrientation.Vertical ? "vertical" : "horizontal")" aria-label="@(AriaLabel ?? CoreText["Stepper_ProgressLabel"])">
         @for (int i = 0; i < _steps.Count; i++)
         {
             var step = _steps[i];
@@ -31,29 +31,29 @@
                     @if (step.HasError)
                     {
                         <span aria-hidden="true">!</span>
-                        <span class="@Css.Classes.Visually.Hidden">@(FlareStrings.Stepper_Error)</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(CoreText["Stepper_Error"])</span>
                     }
                     else if (state == StepState.Completed)
                     {
                         <span aria-hidden="true">✓</span>
-                        <span class="@Css.Classes.Visually.Hidden">@(FlareStrings.Stepper_Completed)</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(CoreText["Stepper_Completed"])</span>
                     }
                     else if (step.IconContent is not null)
                     {
                         @step.IconContent
-                        <span class="@Css.Classes.Visually.Hidden">@(string.Format(FlareStrings.Stepper_Step, i + 1))</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(string.Format(CoreText["Stepper_Step"], i + 1))</span>
                     }
                     else
                     {
                         <span aria-hidden="true">@(i + 1)</span>
-                        <span class="@Css.Classes.Visually.Hidden">@(string.Format(FlareStrings.Stepper_Step, i + 1))</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(string.Format(CoreText["Stepper_Step"], i + 1))</span>
                     }
                 </span>
                 <span class="@Css.Classes.Stepper.Labels">
                     <span class="@Css.Classes.Stepper.Label">@step.Label</span>
                     @if (step.Optional)
                     {
-                        <span class="@Css.Classes.Stepper.Optional">@(step.OptionalText ?? FlareStrings.Stepper_Optional)</span>
+                        <span class="@Css.Classes.Stepper.Optional">@(step.OptionalText ?? CoreText["Stepper_Optional"])</span>
                     }
                     @if (step.HasError && !string.IsNullOrEmpty(step.ErrorText))
                     {
@@ -98,11 +98,11 @@
             <div class="@Css.Classes.Stepper.Nav">
                 @if (!IsFirst)
                 {
-                    <button type="button" class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(FlareStrings.Stepper_Back)</button>
+                    <button type="button" class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(CoreText["Stepper_Back"])</button>
                 }
                 @if (!IsLast)
                 {
-                    <button type="button" class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(FlareStrings.Stepper_Next)</button>
+                    <button type="button" class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(CoreText["Stepper_Next"])</button>
                 }
             </div>
             }

@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.ISplitterJsService SplitterJs
 
@@ -10,7 +10,7 @@
      role="separator"
      tabindex="0"
      aria-orientation="@_ariaOrientation"
-     aria-label="@(AriaLabel ?? FlareStrings.Splitter_Resize)"
+     aria-label="@(AriaLabel ?? CoreText["Splitter_Resize"])"
      style="@_rootStyle"
      @ref="_gutter"
      data-flare-splitter-keyboard-step="@KeyboardStep"
@@ -40,9 +40,9 @@
         <span class="@Css.Classes.Splitter.GutterBar" aria-hidden="true"></span>
     }
     <span class="@Css.Classes.Splitter.StepDecrease" data-flare-splitter-step="-1" aria-hidden="true"
-          title="@FlareStrings.Resize_Decrease">-</span>
+          title="@CoreText["Resize_Decrease"]">-</span>
     <span class="@Css.Classes.Splitter.StepIncrease" data-flare-splitter-step="1" aria-hidden="true"
-          title="@FlareStrings.Resize_Increase">+</span>
+          title="@CoreText["Resize_Increase"]">+</span>
 </div>
 
 @code {

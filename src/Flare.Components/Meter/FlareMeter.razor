@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 
 @* Segmented "meter" bar: shows how a whole divides into proportional colored parts - a latency
@@ -149,7 +149,7 @@
             // tooltip or aria-label reads like a defect. ∞ is the infinity sign.
             var display = double.IsPositiveInfinity(value)
                 ? "∞"
-                : value.ToString(Format ?? DefaultFormat, CultureInfo.CurrentCulture);
+                : value.ToString(Format ?? DefaultFormat, FormattingCulture);
             var colorStyle = s.Color.StyleMain();
             var title = s.Label is { Length: > 0 } lbl
                 ? (ShowValues ? $"{lbl}: {display}" : lbl)

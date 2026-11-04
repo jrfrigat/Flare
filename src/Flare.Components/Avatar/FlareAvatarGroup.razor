@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 <div class="@BuildCssClass()"
      style="@_groupStyle"
@@ -55,7 +55,7 @@
     }
 
     private string _overflowLabel =>
-        string.Format(FlareStrings.Avatar_OverflowMore, _overflow);
+        string.Format(CoreText["Avatar_OverflowMore"], _overflow);
 
     private string _sizeClass => FlareAvatar.SizeClass(Size);
 

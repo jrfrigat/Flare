@@ -89,7 +89,7 @@ public sealed class DialogCloseGuardTests : FlareTestContext
         Task<bool> pending = null!;
         await cut.InvokeAsync(() => { pending = cut.Instance.CloseAsync(); });
         provider.WaitForState(() => provider.FindAll("button").Count == 2);
-        Assert.Equal(FlareStrings.DialogGuard_Title, Assert.Single(_dialogs.OpenDialogs).Title);
+        Assert.Equal(FlareStrings.DialogGuard_Title, Assert.Single(_dialogs.OpenDialogs).Options.TitleProvider?.Invoke());
         Assert.Contains(FlareStrings.DialogGuard_Message, provider.Markup);
 
         provider.FindAll("button").Single(b => b.TextContent == (accept
@@ -228,7 +228,7 @@ public sealed class DialogCloseGuardTests : FlareTestContext
         Task<bool> pending = null!;
         await cut.InvokeAsync(() => { pending = cut.Instance.CloseAsync(); });
         provider.WaitForState(() => provider.FindAll("button").Count == 2);
-        Assert.Equal("Leave draft?", Assert.Single(_dialogs.OpenDialogs).Title);
+        Assert.Equal("Leave draft?", Assert.Single(_dialogs.OpenDialogs).Options.TitleProvider?.Invoke());
         Assert.Contains("Discard this draft.", provider.Markup);
         provider.FindAll("button").Single(b => b.TextContent == "Stay").Click();
         Assert.False(await pending);

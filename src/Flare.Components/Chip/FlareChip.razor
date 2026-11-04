@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 
 @* A span, not a div: a chip is an inline run - a tag beside prose, a label in a table cell - and a div
    inside a <p> is invalid. It has always painted as inline-flex, so nothing moves.
@@ -29,7 +29,7 @@
     }
     @if (Closeable || Closable)
     {
-        <button class="@Css.Classes.Chip.Close" type="button" disabled="@Disabled" @onclick="HandleClose" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Chip_Delete)">
+        <button class="@Css.Classes.Chip.Close" type="button" disabled="@Disabled" @onclick="HandleClose" @onclick:stopPropagation="true" aria-label="@(CoreText["Chip_Delete"])">
             &#x2715;
         </button>
     }

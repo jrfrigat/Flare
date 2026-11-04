@@ -76,6 +76,8 @@
   <data name="DataGrid_RowsLabel" xml:space="preserve"><value>Строки:</value></data>
 
   <!-- Dialog / ConfirmDialog -->
+  <data name="Dialog_Yes" xml:space="preserve"><value>Да</value></data>
+  <data name="Dialog_No" xml:space="preserve"><value>Нет</value></data>
   <data name="Dialog_Confirm" xml:space="preserve"><value>Подтвердить</value></data>
   <data name="Dialog_Cancel" xml:space="preserve"><value>Отмена</value></data>
   <data name="Dialog_Ok" xml:space="preserve"><value>ОК</value></data>

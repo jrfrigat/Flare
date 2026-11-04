@@ -36,11 +36,11 @@ public sealed class DialogService : IDialogService
     /// Escape or navigation).
     /// </summary>
     public Task<bool?> ConfirmAsync(string title, string message,
-        string confirmLabel = "OK", string cancelLabel = "Cancel")
+        string? confirmLabel = null, string? cancelLabel = null)
         => Show(new(title, message, confirmLabel, cancelLabel, ShowCancel: true));
 
     /// <summary>Shows an alert dialog with a single close button.</summary>
-    public async Task AlertAsync(string title, string message, string closeLabel = "Close")
+    public async Task AlertAsync(string title, string message, string? closeLabel = null)
         => await Show(new(title, message, closeLabel, string.Empty, ShowCancel: false));
 
     /// <summary>Opens a component dialog and awaits its result.</summary>
@@ -92,6 +92,7 @@ public sealed class DialogService : IDialogService
                 ShowCloseButton = options.ShowCloseButton,
                 CloseOnNavigation = options.CloseOnNavigation,
                 BeforeClose = options.BeforeClose,
+                TitleProvider = options.TitleProvider,
                 ShowGrabber = true,
                 Position = DialogPosition.Bottom,
             };

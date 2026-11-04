@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @typeparam TPayload
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject Flare.Components.Services.IDragDropJsService DragDrop
 
 <CascadingValue Value="_coordinator" IsFixed="true">
@@ -246,7 +246,9 @@
     private readonly List<KeyboardSlot> _slots = [];
     private readonly Dictionary<string, int> _slotCounts = new(StringComparer.Ordinal);
     private int _slot;
-    private string? _announcement;
+    private string? _announcementKey;
+    private object[] _announcementArguments = [];
+    private string? _announcement => _announcementKey is null ? null : CoreText[_announcementKey, _announcementArguments].Value;
 
     /// <summary>Handles a keyboard move while virtualization has removed the original focused item.</summary>
     /// <param name="key">The pressed key; only reorder keys are handled.</param>
@@ -266,7 +268,7 @@
                 else if (held) await CommitAsync();
                 break;
             case "Escape" when held:
-                await ReleaseAsync(FlareStrings.Drag_Cancelled);
+                await ReleaseAsync("Drag_Cancelled");
                 break;
             case "ArrowUp" or "ArrowLeft" when held:
                 await StepAsync(-1);
@@ -314,7 +316,8 @@
 
         _picked = item;
         item.SetPicked(true);
-        _announcement = FlareStrings.Drag_Picked;
+        _announcementKey = "Drag_Picked";
+        _announcementArguments = [];
         if (OnDragStart.HasDelegate) await OnDragStart.InvokeAsync(payload);
         await ShowHintAsync();
         StateHasChanged();
@@ -326,10 +329,10 @@
         if (next == _slot) return;
 
         _slot = next;
-        _announcement = string.Format(
-            System.Globalization.CultureInfo.CurrentCulture, FlareStrings.Drag_Position,
+        _announcementKey = "Drag_Position";
+        _announcementArguments = [
             ItemOrder is null ? _slot + 1 : _slots[_slot].Index + 1,
-            ItemOrder is null ? _slots.Count : _slotCounts[_slots[_slot].Target]);
+            ItemOrder is null ? _slots.Count : _slotCounts[_slots[_slot].Target]];
         await ShowHintAsync();
         StateHasChanged();
     }
@@ -357,17 +360,17 @@
             });
         }
 
-        await ReleaseAsync(string.Format(
-            System.Globalization.CultureInfo.CurrentCulture, FlareStrings.Drag_Dropped, position));
+        await ReleaseAsync("Drag_Dropped", position);
     }
 
-    private async Task ReleaseAsync(string announcement)
+    private async Task ReleaseAsync(string key, params object[] arguments)
     {
         _picked?.SetPicked(false);
         _picked = null;
         _slots.Clear();
         _slotCounts.Clear();
-        _announcement = announcement;
+        _announcementKey = key;
+        _announcementArguments = arguments;
 
         try { await DragDrop.HideDropHintAsync(_root); }
         catch (InvalidOperationException) { }

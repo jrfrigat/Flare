@@ -11,7 +11,7 @@ public partial class FlareDataGrid<TItem>
     {
         if (col.Value is null) return string.Empty;
         var type = ResolveColumnDataType(col.Key, col.Type);
-        return DataGridValueFormatter.FormatText(col.Value(item), type, col.Format, col.NullText, CultureInfo.CurrentCulture);
+        return DataGridValueFormatter.FormatText(col.Value(item), type, col.Format, col.NullText, FormattingCulture);
     }
 
     /// <summary>

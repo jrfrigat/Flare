@@ -1,9 +1,9 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using Flare.Abstractions.Tokens
 
 <button type="button" class="@BuildCssClass()" @onclick="ToggleAsync"
-        aria-label="@(_isDark ? (FlareStrings.Theme_ToggleLight) : (FlareStrings.Theme_ToggleDark))">
+        aria-label="@(_isDark ? (CoreText["Theme_ToggleLight"]) : (CoreText["Theme_ToggleDark"]))">
     <FlareIconView Value="@(_isDark ? FlareIcons.LightMode : FlareIcons.DarkMode)" />
     @if (ShowLabel)
     {
@@ -24,8 +24,8 @@
     /// <summary>Label text when clicking switches to dark mode. Null uses the localized default.</summary>
     [Parameter] public string? DarkLabel { get; set; }
 
-    private string _lightLabel => LightLabel ?? FlareStrings.Theme_Light;
-    private string _darkLabel => DarkLabel ?? FlareStrings.Theme_Dark;
+    private string _lightLabel => LightLabel ?? CoreText["Theme_Light"];
+    private string _darkLabel => DarkLabel ?? CoreText["Theme_Dark"];
 
     protected override string ComponentCssClass => Css.Classes.Color.ModeToggle;
 

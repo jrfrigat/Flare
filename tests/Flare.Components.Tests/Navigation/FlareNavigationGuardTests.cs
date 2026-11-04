@@ -109,9 +109,12 @@ public class FlareNavigationGuardTests : FlareTestContext
         Nav.NavigateTo("/next");
 
         Assert.Equal(FlareStrings.NavGuard_Title, _dialogs.Title);
-        Assert.Equal(FlareStrings.NavGuard_Message, _dialogs.Message);
-        Assert.Equal(FlareStrings.NavGuard_Leave, _dialogs.ConfirmLabel);
-        Assert.Equal(FlareStrings.NavGuard_Stay, _dialogs.CancelLabel);
+        Assert.Null(_dialogs.Message);
+        Assert.Null(_dialogs.ConfirmLabel);
+        Assert.Null(_dialogs.CancelLabel);
+        Assert.Equal("NavGuard_Message", _dialogs.Parameters!["MessageKey"]);
+        Assert.Equal("NavGuard_Leave", _dialogs.Parameters["ConfirmKey"]);
+        Assert.Equal("NavGuard_Stay", _dialogs.Parameters["CancelKey"]);
     }
 
     [Fact]
@@ -181,9 +184,10 @@ public class FlareNavigationGuardTests : FlareTestContext
         public string? Message { get; private set; }
         public string? ConfirmLabel { get; private set; }
         public string? CancelLabel { get; private set; }
+        public DialogParameters? Parameters { get; private set; }
 
         public Task<bool?> ConfirmAsync(string title, string message,
-            string confirmLabel = "OK", string cancelLabel = "Cancel")
+            string? confirmLabel = null, string? cancelLabel = null)
         {
             ConfirmCalls++;
             Title = title;
@@ -193,10 +197,19 @@ public class FlareNavigationGuardTests : FlareTestContext
             return Task.FromResult(Result);
         }
 
-        public Task AlertAsync(string title, string message, string closeLabel = "Close") => Task.CompletedTask;
+        public Task AlertAsync(string title, string message, string? closeLabel = null) => Task.CompletedTask;
 
         public Task<DialogResult> ShowAsync<T>(string? title = null, DialogParameters? parameters = null,
-            DialogOptions? options = null) where T : IComponent => throw new NotSupportedException();
+            DialogOptions? options = null) where T : IComponent
+        {
+            ConfirmCalls++;
+            Title = options?.TitleProvider?.Invoke() ?? title;
+            Parameters = parameters;
+            Message = parameters?["Message"] as string;
+            ConfirmLabel = parameters?["ConfirmLabel"] as string;
+            CancelLabel = parameters?["CancelLabel"] as string;
+            return Task.FromResult(Result == true ? DialogResult.Ok() : DialogResult.Cancel());
+        }
 
         public DialogReference Show<T>(string? title = null, DialogParameters? parameters = null,
             DialogOptions? options = null) where T : IComponent => throw new NotSupportedException();

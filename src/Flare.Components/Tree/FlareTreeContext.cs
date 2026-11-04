@@ -22,7 +22,7 @@ internal sealed class FlareTreeContext
     /// <summary>The drop callback the pointer path raises; the keyboard path raises the same one.</summary>
     public required EventCallback<TreeDropEventArgs> OnItemDrop { get; init; }
     /// <summary>Writes into the view's live region, so a keyboard move with no preview is spoken.</summary>
-    public required Action<string> Announce { get; init; }
+    public required Action<string, object[]> Announce { get; init; }
 
     /// <summary>Whether items offer the keyboard gesture: the tree is draggable and an owner listens
     /// for the move.</summary>

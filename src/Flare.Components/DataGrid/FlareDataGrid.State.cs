@@ -195,11 +195,14 @@ public partial class FlareDataGrid<TItem>
 
     // Screen-reader live-region text. Updated on sort/filter/page changes; rendered into an
     // aria-live="polite" status region so assistive tech announces what changed.
-    private string _ariaAnnouncement = "";
+    private string? _announcementKey;
+    private object[] _announcementArguments = [];
+    private string _ariaAnnouncement => _announcementKey is null ? "" : CoreText[_announcementKey, _announcementArguments].Value;
 
-    private void Announce(string text)
+    private void Announce(string key, params object[] arguments)
     {
-        _ariaAnnouncement = text;
+        _announcementKey = key;
+        _announcementArguments = arguments;
         StateHasChanged();
     }
 
@@ -209,11 +212,9 @@ public partial class FlareDataGrid<TItem>
 
     private async Task RaiseSortChangedAsync()
     {
-        Announce(_sortStack.Count == 0
-            ? FlareStrings.DataGrid_AnnounceSortCleared
-            : string.Format(_sortStack[0].Direction == SortDirection.Ascending
-                ? FlareStrings.DataGrid_AnnounceSortAsc
-                : FlareStrings.DataGrid_AnnounceSortDesc, _sortStack[0].Column.Title));
+        if (_sortStack.Count == 0) Announce("DataGrid_AnnounceSortCleared");
+        else Announce(_sortStack[0].Direction == SortDirection.Ascending
+            ? "DataGrid_AnnounceSortAsc" : "DataGrid_AnnounceSortDesc", _sortStack[0].Column.Title ?? "");
         // Both payloads are built from scratch, so building them for a callback nobody set would spend
         // a list (and, for the state, seven collections) on every keystroke of a filter box.
         if (OnSortChanged.HasDelegate) await OnSortChanged.InvokeAsync(BuildSorts());
@@ -232,14 +233,17 @@ public partial class FlareDataGrid<TItem>
     {
         var count = CurrentResultCount();
         if (_resultCountSeen is { } seen && seen != count)
-            _ariaAnnouncement = string.Format(FlareStrings.DataGrid_AnnounceFiltered, count);
+        {
+            _announcementKey = "DataGrid_AnnounceFiltered";
+            _announcementArguments = [count];
+        }
         _resultCountSeen = count;
     }
 
     private async Task RaiseFilterChangedAsync()
     {
         _resultCountSeen = CurrentResultCount();
-        Announce(string.Format(FlareStrings.DataGrid_AnnounceFiltered, _resultCountSeen));
+        Announce("DataGrid_AnnounceFiltered", _resultCountSeen);
         if (OnFilterChanged.HasDelegate) await OnFilterChanged.InvokeAsync(BuildFilters());
         if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();
@@ -276,7 +280,7 @@ public partial class FlareDataGrid<TItem>
 
     private async Task RaisePageChangedAsync()
     {
-        Announce(string.Format(FlareStrings.DataGrid_AnnouncePage, _page + 1, Math.Max(1, _totalPages)));
+        Announce("DataGrid_AnnouncePage", _page + 1, Math.Max(1, _totalPages));
         await OnPageChanged.InvokeAsync(_page);
         if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();

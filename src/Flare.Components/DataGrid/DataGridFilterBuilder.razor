@@ -9,7 +9,7 @@
                  Color="@(_advancedCount > 0 ? FlareColor.Primary : FlareColor.Default)">
         <LeadingIcon><FlareIconView Value="FlareIcons.FilterAlt" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
         <ChildContent>
-            @(Label ?? FlareStrings.DataGrid_ConfigureFilters)
+            @(Label ?? CoreText["DataGrid_ConfigureFilters"])
             @if (_advancedCount > 0)
             {
                 <span class="@Css.Classes.DataGrid.FilterBuilderCount">@_advancedCount</span>
@@ -25,8 +25,8 @@
             </div>
             <div class="@Css.Classes.DataGrid.FilterBuilderActions">
                 <span class="@Css.Classes.DataGrid.Spacer"></span>
-                <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Clear">@FlareStrings.DataGrid_ClearFilters</FlareButton>
-                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Apply">@FlareStrings.DataGrid_ApplyFilters</FlareButton>
+                <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Clear">@CoreText["DataGrid_ClearFilters"]</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Apply">@CoreText["DataGrid_ApplyFilters"]</FlareButton>
             </div>
         </div>
         <div data-flare-backdrop class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
@@ -71,7 +71,11 @@
 
     /// <summary>Releases the panel's placement listeners.</summary>
     /// <returns>A task that completes when the layer has been released.</returns>
-    public ValueTask DisposeAsync() => _layer.ReleaseAsync(Overlay);
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();
+        await _layer.ReleaseAsync(Overlay);
+    }
 
     // Filter fields as (Key, Title): explicit AvailableColumns (Key == Title), else the grid's columns.
     private IReadOnlyList<(string Key, string Title)> _columns =>
@@ -143,14 +147,14 @@
 
     private string OperatorLabel(FilterOperator op) => op switch
     {
-        FilterOperator.Contains => FlareStrings.DataGrid_OpContains, FilterOperator.Equals => FlareStrings.DataGrid_OpEquals,
-        FilterOperator.NotEquals => FlareStrings.DataGrid_OpNotEquals, FilterOperator.StartsWith => FlareStrings.DataGrid_OpStartsWith,
-        FilterOperator.EndsWith => FlareStrings.DataGrid_OpEndsWith, FilterOperator.GreaterThan => FlareStrings.DataGrid_OpGreaterThan,
-        FilterOperator.GreaterThanOrEqual => FlareStrings.DataGrid_OpGreaterOrEqual, FilterOperator.LessThan => FlareStrings.DataGrid_OpLessThan,
-        FilterOperator.LessThanOrEqual => FlareStrings.DataGrid_OpLessOrEqual, FilterOperator.Between => FlareStrings.DataGrid_OpBetween,
-        FilterOperator.NotBetween => FlareStrings.DataGrid_OpNotBetween, FilterOperator.In => FlareStrings.DataGrid_OpIn,
-        FilterOperator.NotIn => FlareStrings.DataGrid_OpNotIn, FilterOperator.IsNull => FlareStrings.DataGrid_OpIsNull,
-        FilterOperator.IsNotNull => FlareStrings.DataGrid_OpIsNotNull, _ => op.ToString(),
+        FilterOperator.Contains => CoreText["DataGrid_OpContains"], FilterOperator.Equals => CoreText["DataGrid_OpEquals"],
+        FilterOperator.NotEquals => CoreText["DataGrid_OpNotEquals"], FilterOperator.StartsWith => CoreText["DataGrid_OpStartsWith"],
+        FilterOperator.EndsWith => CoreText["DataGrid_OpEndsWith"], FilterOperator.GreaterThan => CoreText["DataGrid_OpGreaterThan"],
+        FilterOperator.GreaterThanOrEqual => CoreText["DataGrid_OpGreaterOrEqual"], FilterOperator.LessThan => CoreText["DataGrid_OpLessThan"],
+        FilterOperator.LessThanOrEqual => CoreText["DataGrid_OpLessOrEqual"], FilterOperator.Between => CoreText["DataGrid_OpBetween"],
+        FilterOperator.NotBetween => CoreText["DataGrid_OpNotBetween"], FilterOperator.In => CoreText["DataGrid_OpIn"],
+        FilterOperator.NotIn => CoreText["DataGrid_OpNotIn"], FilterOperator.IsNull => CoreText["DataGrid_OpIsNull"],
+        FilterOperator.IsNotNull => CoreText["DataGrid_OpIsNotNull"], _ => op.ToString(),
     };
 
     private bool OpHasNoValue(FilterOperator op) => op is FilterOperator.IsNull or FilterOperator.IsNotNull;
@@ -164,21 +168,21 @@
                 <div class="@Css.Classes.DataGrid.FilterBuilderGroupHead">
                     <button type="button" class="@Css.Classes.DataGrid.FilterBuilderConnector"
                             @onclick="@(() => { ctx.Node.Or = !ctx.Node.Or; StateHasChanged(); })">
-                        @(ctx.Node.Or ? FlareStrings.DataGrid_Or : FlareStrings.DataGrid_And)
+                        @(ctx.Node.Or ? CoreText["DataGrid_Or"] : CoreText["DataGrid_And"])
                     </button>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddCondition(ctx.Node); StateHasChanged(); })">
                         <LeadingIcon><FlareIconView Value="FlareIcons.Add" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
-                        <ChildContent>@FlareStrings.DataGrid_AddCondition</ChildContent>
+                        <ChildContent>@CoreText["DataGrid_AddCondition"]</ChildContent>
                     </FlareButton>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddGroup(ctx.Node); StateHasChanged(); })">
                         <LeadingIcon><FlareIconView Value="FlareIcons.CreateNewFolder" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
-                        <ChildContent>@FlareStrings.DataGrid_AddGroup</ChildContent>
+                        <ChildContent>@CoreText["DataGrid_AddGroup"]</ChildContent>
                     </FlareButton>
                     @if (ctx.Parent is not null)
                     {
                         <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                                      OnClick="@(() => { RemoveGroup(ctx.Parent!, ctx.Node); StateHasChanged(); })"
-                                     AriaLabel="@FlareStrings.DataGrid_RemoveGroup">
+                                     AriaLabel="@CoreText["DataGrid_RemoveGroup"]">
                             <FlareIconView Value="FlareIcons.Close" Class="@Css.Classes.DataGrid.CloseIcon" />
                         </FlareButton>
                     }
@@ -202,13 +206,13 @@
                             {
                                 <div class="@Css.Classes.DataGrid.FilterBuilderValue">
                                     <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true"
-                                                Placeholder="@FlareStrings.DataGrid_FilterValue" Value="@c.Value"
+                                                Placeholder="@CoreText["DataGrid_FilterValue"]" Value="@c.Value"
                                                 ValueChanged="@(v => { c.Value = v; StateHasChanged(); })" />
                                 </div>
                             }
                             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                                          OnClick="@(() => { RemoveCondition(ctx.Node, c); StateHasChanged(); })"
-                                         AriaLabel="@FlareStrings.DataGrid_RemoveCondition">
+                                         AriaLabel="@CoreText["DataGrid_RemoveCondition"]">
                                 <FlareIconView Value="FlareIcons.Close" Class="@Css.Classes.DataGrid.CloseIcon" />
                             </FlareButton>
                         </div>

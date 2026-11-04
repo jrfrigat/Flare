@@ -18,7 +18,7 @@ namespace Flare.Components;
 /// No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness
 /// is a token read by the stylesheet.
 /// </remarks>
-public partial class FlareGauge : FlareComponentBase
+public partial class FlareGauge : FlareLocalizedComponentBase
 {
     /// <summary>Zones drawn as coloured bands behind the fill, declared as <see cref="FlareZone"/> children.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -123,7 +123,7 @@ public partial class FlareGauge : FlareComponentBase
         _ => Css.Classes.Gauge.Arc,
     };
 
-    private string Display(double value) => value.ToString(Format, CultureInfo.CurrentCulture);
+    private string Display(double value) => value.ToString(Format, FormattingCulture);
 
     // The bands, ordered and clipped to the scale. A zone with a missing bound collapses and is dropped by
     // the shared collection, which is why the ordering is on the pair rather than on Start alone.

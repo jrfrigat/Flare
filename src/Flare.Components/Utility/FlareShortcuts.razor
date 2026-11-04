@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.IUiJsService Ui
 
@@ -9,10 +10,10 @@
 @if (_showHelp)
 {
     <div data-flare-backdrop class="@Css.Classes.Shortcuts.HelpScrim" @onclick="ToggleHelp">
-        <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(FlareStrings.Shortcuts_Title)" @onclick:stopPropagation="true">
+        <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(CoreText["Shortcuts_Title"])" @onclick:stopPropagation="true">
             <div class="@Css.Classes.Shortcuts.HelpHeader">
-                <span class="@Css.Classes.Shortcuts.HelpTitle">@(FlareStrings.Shortcuts_Title)</span>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="@(FlareStrings.Dialog_Close)" OnClick="ToggleHelp">
+                <span class="@Css.Classes.Shortcuts.HelpTitle">@(CoreText["Shortcuts_Title"])</span>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="@(CoreText["Dialog_Close"])" OnClick="ToggleHelp">
                     <LeadingIcon><FlareIconView Value="FlareIcons.Close" /></LeadingIcon>
                 </FlareButton>
             </div>
@@ -30,6 +31,8 @@
 }
 
 @code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Shortcuts.Help;
     /// <summary>Content the registered keyboard shortcuts apply to.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -61,7 +64,7 @@
     [JSInvokable]
     public Task HandleKeyDown(string keys) => FlareShortcutEntry.HandleKeyDown(keys);
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         try { await Ui.RemoveShortcutsAsync(); }
         catch { }

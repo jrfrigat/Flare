@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject IDialogService DialogService
 @using System.Diagnostics.CodeAnalysis
 @* The dialog body type reaches DynamicComponent from FlareDialogInstance.ContentType, which keeps the whole type. *@
@@ -22,11 +22,11 @@
             @if (req.ShowCancel)
             {
                 <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => DialogService.Respond(false))">
-                    @req.CancelLabel
+                    @(req.CancelLabel ?? CoreText["Dialog_Cancel"].Value)
                 </FlareButton>
             }
             <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => DialogService.Respond(true))">
-                @req.ConfirmLabel
+                @(req.ConfirmLabel ?? CoreText[req.ShowCancel ? "Dialog_Ok" : "Dialog_Close"].Value)
             </FlareButton>
         </ActionsContent>
     </FlareDialog>
@@ -39,7 +39,7 @@
 {
     <FlareDialog @key="dialog.Id"
                  Visible="true"
-                 Title="@dialog.Title"
+                 Title="@(dialog.Options.TitleProvider is { } title ? title() : dialog.Title)"
                  AriaLabel="@dialog.Options.AriaLabel"
                  Size="dialog.Options.Size"
                  Position="dialog.Options.Position"

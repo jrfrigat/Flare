@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @implements IAsyncDisposable
 @inject Flare.Components.Services.IResizeJsService Resize
 
@@ -12,15 +12,15 @@
     @ChildContent
     <div class="@Css.Classes.Resizable.Handle" @ref="_handle" role="separator" tabindex="0"
          data-flare-resize-step-size="@Step"
-         aria-label="@FlareStrings.Splitter_Resize"
+         aria-label="@CoreText["Splitter_Resize"]"
          aria-orientation="@(Edge is ResizableEdge.Left or ResizableEdge.Right ? "vertical" : "horizontal")"></div>
     @if (ShowControls)
     {
     <div class="@Css.Classes.Resizable.Controls" data-flare-resize-controls>
         <button type="button" class="@Css.Classes.Resizable.Control" data-flare-resize-step="-1"
-                aria-label="@FlareStrings.Resize_Decrease">-</button>
+                aria-label="@CoreText["Resize_Decrease"]">-</button>
         <button type="button" class="@Css.Classes.Resizable.Control" data-flare-resize-step="1"
-                aria-label="@FlareStrings.Resize_Increase">+</button>
+                aria-label="@CoreText["Resize_Increase"]">+</button>
     </div>
     }
 </div>

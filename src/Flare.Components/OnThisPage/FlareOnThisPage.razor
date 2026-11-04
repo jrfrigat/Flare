@@ -20,6 +20,9 @@
 }
 
 @code {
+    [CascadingParameter] private FlareLocalizationState? Localization { get; set; }
+    private Microsoft.Extensions.Localization.IStringLocalizer<FlareStrings> CoreText =>
+        (Localization?.Context ?? FlareLocalizationState.Ambient).GetLocalizer<FlareStrings>();
     /// <summary>Heading shown above the list. Defaults to a localized "On this page".</summary>
     [Parameter] public string? Title { get; set; }
 
@@ -47,7 +50,7 @@
     // Pure collector: it owns no presentation. All styling/tokens live in FlareTableOfContents.
     protected override string ComponentCssClass => "";
 
-    private string _title => Title ?? FlareStrings.OnThisPage_Title;
+    private string _title => Title ?? CoreText["OnThisPage_Title"];
     // Anchor links target the current page path (not a bare "#id", which Blazor would resolve
     // against the base href and treat as a navigation to the site root).
     private string _basePath

@@ -6,6 +6,9 @@ namespace Flare.Abstractions;
 /// </summary>
 public sealed class DialogOptions
 {
+    /// <summary>Resolves the header on each render, for example from a live localizer. Overrides the
+    /// title passed to Show. Return null for a header-less dialog; no network work should run here.</summary>
+    public Func<string?>? TitleProvider { get; set; }
     /// <summary>The maximum-width preset. Defaults to <see cref="DialogSize.Md"/>.</summary>
     public DialogSize Size { get; set; } = DialogSize.Md;
 

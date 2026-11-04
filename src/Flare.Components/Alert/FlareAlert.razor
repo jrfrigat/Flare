@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @using Microsoft.JSInterop
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject Flare.Components.Services.IUiJsService Ui
 @implements IDisposable
 
@@ -21,7 +21,7 @@
         </div>
         @if (ShowCloseButton || Dismissible)
         {
-            <button class="@Css.Classes.Alert.Close" type="button" aria-label="@(FlareStrings.Alert_Close)"
+            <button class="@Css.Classes.Alert.Close" type="button" aria-label="@(CoreText["Alert_Close"])"
                     disabled="@_dismissing" @onclick="HandleClose">✕</button>
         }
     </div>

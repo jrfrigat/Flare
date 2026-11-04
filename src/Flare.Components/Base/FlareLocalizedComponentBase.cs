@@ -9,7 +9,6 @@ namespace Flare.Components;
 /// <summary>Opt-in culture cascade for components that supply localized interface text or formatting.</summary>
 public abstract class FlareLocalizedComponentBase : FlareComponentBase
 {
-    private static readonly FlareLocalization Ambient = new();
     /// <summary>Changes only when the localization provider signals a real update.</summary>
     [CascadingParameter] protected FlareLocalizationState? LocalizationState { get; set; }
     /// <summary>Formatting culture unless the component has an explicit Culture parameter.</summary>
@@ -21,5 +20,5 @@ public abstract class FlareLocalizedComponentBase : FlareComponentBase
     /// <summary>Translations from the component package's own resource marker.</summary>
     /// <typeparam name="TResource">Package resource marker.</typeparam>
     protected IStringLocalizer<TResource> Localizer<TResource>() =>
-        (LocalizationState?.Context ?? Ambient).GetLocalizer<TResource>();
+        (LocalizationState?.Context ?? FlareLocalizationState.Ambient).GetLocalizer<TResource>();
 }

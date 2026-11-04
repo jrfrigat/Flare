@@ -24,7 +24,7 @@
             }
             @if (ShowCloseButton)
             {
-                <button type="button" class="@Css.Classes.Dialog.CloseButton" aria-label="@FlareStrings.Dialog_Close"
+                <button type="button" class="@Css.Classes.Dialog.CloseButton" aria-label="@CoreText["Dialog_Close"]"
                         @onclick="HandleCloseButton">
                     <FlareIconView Value="FlareIcons.Close" />
                 </button>
@@ -39,7 +39,7 @@
                      @ref="_headerEl"
                      tabindex="@(Draggable ? "0" : null)"
                      role="@(Draggable ? "group" : null)"
-                     aria-label="@(Draggable ? FlareStrings.Dialog_Move : null)">
+                     aria-label="@(Draggable ? CoreText["Dialog_Move"].Value : null)">
                     @if (!string.IsNullOrEmpty(Title))
                     {
                         <h2 class="@Css.Classes.Dialog.Title" id="@_titleId">@Title</h2>
@@ -64,7 +64,7 @@
                 @* Focusable and named: the pointer gesture has a keyboard twin (arrow keys resize), so a
                    user without a pointer is not locked out of the feature. *@
                 <div class="@Css.Classes.Dialog.Resizer" @ref="_resizerEl" role="separator"
-                     tabindex="0" aria-label="@FlareStrings.Dialog_Resize"></div>
+                     tabindex="0" aria-label="@CoreText["Dialog_Resize"]"></div>
             }
         </div>
     </div>
@@ -72,6 +72,9 @@
 }
 
 @code {
+    [CascadingParameter] private FlareLocalizationState? Localization { get; set; }
+    private Microsoft.Extensions.Localization.IStringLocalizer<FlareStrings> CoreText =>
+        (Localization?.Context ?? FlareLocalizationState.Ambient).GetLocalizer<FlareStrings>();
     /// <summary>Controls whether the dialog is shown.</summary>
     [Parameter] public bool Visible { get; set; }
     /// <summary>Callback raised when visibility should change.</summary>

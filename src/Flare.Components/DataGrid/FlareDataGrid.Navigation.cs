@@ -152,7 +152,7 @@ public partial class FlareDataGrid<TItem>
         await OnRowReordered.InvokeAsync(new DataGridRowReorder<TItem>(rows[from], rows[to], from, to));
         _focusRow = to;
         _anchorRow = to;
-        Announce(string.Format(FlareStrings.Drag_Position, to + 1, rows.Count));
+        Announce("Drag_Position", to + 1, rows.Count);
         return true;
     }
 

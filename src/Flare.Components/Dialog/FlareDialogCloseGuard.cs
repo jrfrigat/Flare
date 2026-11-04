@@ -8,8 +8,10 @@ namespace Flare.Components;
 /// <summary>Confirms closing a dialog with unsaved changes. Place inside a dialog, and inside its
 /// EditForm to use EditContext.IsModified automatically. After saving, clear HasUnsavedChanges or
 /// call EditContext.MarkAsUnmodified before closing. Requires a FlareDialogProvider for the default prompt.</summary>
-public sealed class FlareDialogCloseGuard : ComponentBase, IDisposable
+public sealed class FlareDialogCloseGuard : FlareLocalizedComponentBase, IDisposable
 {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
     /// <summary>Explicit dirty state. Null reads the surrounding EditContext; false disables this guard.</summary>
     [Parameter] public bool? HasUnsavedChanges { get; set; }
     /// <summary>Confirmation title. Null uses the localized default.</summary>
@@ -64,11 +66,12 @@ public sealed class FlareDialogCloseGuard : ComponentBase, IDisposable
                 else
                 {
                     var parameters = new DialogParameters()
-                        .Add(nameof(DialogCloseConfirmation.Message), Message ?? FlareStrings.DialogGuard_Message)
-                        .Add(nameof(DialogCloseConfirmation.ConfirmLabel), ConfirmLabel ?? FlareStrings.DialogGuard_Discard)
-                        .Add(nameof(DialogCloseConfirmation.CancelLabel), CancelLabel ?? FlareStrings.DialogGuard_KeepEditing);
-                    _confirmation = Dialogs.Show<DialogCloseConfirmation>(Title ?? FlareStrings.DialogGuard_Title,
-                        parameters, new DialogOptions { Size = DialogSize.Sm, CloseOnNavigation = false });
+                        .Add(nameof(DialogCloseConfirmation.Message), Message!)
+                        .Add(nameof(DialogCloseConfirmation.ConfirmLabel), ConfirmLabel!)
+                        .Add(nameof(DialogCloseConfirmation.CancelLabel), CancelLabel!);
+                    _confirmation = Dialogs.Show<DialogCloseConfirmation>(null,
+                        parameters, new DialogOptions { Size = DialogSize.Sm, CloseOnNavigation = false,
+                            TitleProvider = () => Title ?? CoreText["DialogGuard_Title"].Value });
                     var result = await _confirmation.Result.WaitAsync(_lifetime.Token);
                     allowed = !result.Cancelled;
                 }

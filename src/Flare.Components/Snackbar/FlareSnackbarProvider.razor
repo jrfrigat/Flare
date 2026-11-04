@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject ISnackbarService SnackbarService
 @inject NavigationManager Navigation
 
@@ -41,7 +41,7 @@
                 @if (m.ShowClose)
                 {
                     <button class="@Css.Classes.Snackbar.CloseBtn" type="button"
-                            aria-label="@(FlareStrings.Snackbar_Close)"
+                            aria-label="@(CoreText["Snackbar_Close"])"
                             @onclick="@(() => Dismiss(m.Id))">✕</button>
                 }
             </div>

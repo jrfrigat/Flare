@@ -22,8 +22,10 @@ namespace Flare.Components;
 /// </para>
 /// </remarks>
 /// <typeparam name="TItem">Row type of the grid this control drives.</typeparam>
-public abstract class FlareDataGridControl<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem> : ComponentBase, IDisposable
+public abstract class FlareDataGridControl<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields)] TItem> : FlareLocalizedComponentBase, IDisposable
 {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
     private DataGridContext<TItem>? _subscribed;
 
     [CascadingParameter] private DataGridContext<TItem>? CascadedContext { get; set; }

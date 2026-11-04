@@ -36,7 +36,7 @@ public partial class FlareDataGrid<TItem>
             return;
         }
         builder.AddContent(0, DataGridValueFormatter.FormatText(
-            value, resolved, format, nullText, System.Globalization.CultureInfo.CurrentCulture));
+            value, resolved, format, nullText, FormattingCulture));
     }
 
     // Renders a composite host column's cell as a CSS grid of labelled, stacked fields.
@@ -199,12 +199,12 @@ public partial class FlareDataGrid<TItem>
         var isEditing = _editingItem is not null && EqualityComparer<TItem>.Default.Equals(_editingItem, item);
         if (isEditing)
         {
-            BuildIconButton(builder, 0, FlareIcons.Check, FlareStrings.DataGrid_Save, () => SaveRowAsync(item));
-            BuildIconButton(builder, 10, FlareIcons.Close, FlareStrings.DataGrid_Cancel, () => CancelRowAsync(item));
+            BuildIconButton(builder, 0, FlareIcons.Check, CoreText["DataGrid_Save"], () => SaveRowAsync(item));
+            BuildIconButton(builder, 10, FlareIcons.Close, CoreText["DataGrid_Cancel"], () => CancelRowAsync(item));
         }
         else
         {
-            BuildIconButton(builder, 0, FlareIcons.Edit, FlareStrings.DataGrid_Edit, () => { BeginEdit(item); return Task.CompletedTask; });
+            BuildIconButton(builder, 0, FlareIcons.Edit, CoreText["DataGrid_Edit"], () => { BeginEdit(item); return Task.CompletedTask; });
         }
     };
 

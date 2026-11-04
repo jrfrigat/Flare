@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject IBrowserViewportService Viewport
 @inject IScrollService Scroll
@@ -18,7 +18,7 @@
      role="@_role"
      tabindex="@(_dialogLike ? "-1" : null)"
      aria-modal="@(_dialogLike ? "true" : null)"
-     aria-label="@(AriaLabel ?? FlareStrings.Drawer_Label)"
+     aria-label="@(AriaLabel ?? CoreText["Drawer_Label"])"
      inert="@_closedOverlay"
      @onfocusin="HandleFocusIn"
      @onfocusout="HandleFocusOut"
