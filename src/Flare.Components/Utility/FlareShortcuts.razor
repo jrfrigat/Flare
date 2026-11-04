@@ -39,6 +39,8 @@
     internal readonly List<FlareShortcutEntry> _entries = new();
 
     private bool _showHelp;
+    private readonly string _id = Guid.NewGuid().ToString("N");
+    private bool _disposed;
     private DotNetObjectReference<FlareShortcuts>? _dotNetRef;
 
     internal void Register(FlareShortcutEntry entry) => _entries.Add(entry);
@@ -54,7 +56,7 @@
             try
             {
                 _dotNetRef = DotNetObjectReference.Create(this);
-                await Ui.RegisterShortcutsAsync(_dotNetRef);
+                await Ui.RegisterShortcutsAsync(_id, _dotNetRef);
             }
             catch (InvalidOperationException) { }
             catch (JSException) { }
@@ -62,12 +64,20 @@
     }
 
     [JSInvokable]
-    public Task HandleKeyDown(string keys) => FlareShortcutEntry.HandleKeyDown(keys);
+    public Task HandleKeyDown(string keys) => InvokeAsync(async () =>
+    {
+        if (_disposed) return;
+        foreach (var entry in _entries.ToArray())
+            if (!_disposed && _entries.Contains(entry) && string.Equals(entry.Keys, keys, StringComparison.OrdinalIgnoreCase))
+                await entry.OnActivated.InvokeAsync();
+    });
 
     public override async ValueTask DisposeAsync()
     {
-        try { await Ui.RemoveShortcutsAsync(); }
+        _disposed = true;
+        try { await Ui.RemoveShortcutsAsync(_id); }
         catch { }
         _dotNetRef?.Dispose();
+        await base.DisposeAsync();
     }
 }

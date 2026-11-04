@@ -1,0 +1,29 @@
+@page "/shortcuts-test"
+
+<FlareThemeProvider>
+    <FlareShortcuts>
+        <FlareShortcutEntry Keys="@_keys" OnActivated="() => _main++" Description="Main" />
+        @if (_nestedVisible)
+        {
+            <FlareShortcuts>
+                <FlareShortcutEntry Keys="ctrl+alt+k" OnActivated="() => _nested++" Description="Nested" />
+            </FlareShortcuts>
+        }
+    </FlareShortcuts>
+    @if (_siblingVisible)
+    {
+        <FlareShortcuts>
+            <FlareShortcutEntry Keys="ctrl+alt+i" OnActivated="() => _sibling++" Description="Sibling" />
+        </FlareShortcuts>
+    }
+    <output id="main">@_main</output><output id="nested">@_nested</output><output id="sibling">@_sibling</output>
+    <button id="remove-nested" @onclick="() => _nestedVisible = false">Remove nested</button>
+    <button id="remove-sibling" @onclick="() => _siblingVisible = false">Remove sibling</button>
+    <button id="change" @onclick='() => _keys = "ctrl+alt+m"'>Change keys</button>
+</FlareThemeProvider>
+
+@code {
+    private int _main, _nested, _sibling;
+    private bool _nestedVisible = true, _siblingVisible = true;
+    private string _keys = "ctrl+alt+j";
+}

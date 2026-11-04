@@ -255,10 +255,10 @@ public class FlareNavigationGuardTests : FlareTestContext
 
         public ValueTask RemoveButtonGroupCollapseAsync(ElementReference root) => ValueTask.CompletedTask;
 
-        public ValueTask RegisterShortcutsAsync<T>(DotNetObjectReference<T> dotNetRef) where T : class
+        public ValueTask RegisterShortcutsAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
             => ValueTask.CompletedTask;
 
-        public ValueTask RemoveShortcutsAsync() => ValueTask.CompletedTask;
+        public ValueTask RemoveShortcutsAsync(string id) => ValueTask.CompletedTask;
 
         public ValueTask<bool> SupportsEyeDropperAsync() => ValueTask.FromResult(false);
 

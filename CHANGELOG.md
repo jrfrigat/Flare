@@ -28,6 +28,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Shortcuts dispatch only to their owning component, isolating Server circuits. Multiple and nested scopes keep working when another scope is removed or its keys change. Custom `IUiJsService` adapters must now accept the owner id in shortcut registration/removal; the static `FlareShortcutEntry.HandleKeyDown` entry point has been removed.
 - Field captions now use native label associations or appropriate ARIA/group names. Select, MultiSelect, TagField, Slider and DateRangePicker no longer emit unassociated labels; native field labels can be clicked to focus their controls.
 - FileUpload prevents file-drop navigation and forwards dropped files through the regular InputFile pipeline. Queued progress no longer renders an invalid attribute, selecting the same file again works, retries requested during an active queue run are processed, and removed/disposed queued work is not uploaded.
 - Gallery no longer requests the nonexistent scoped stylesheet `Flare.Gallery.styles.css`.

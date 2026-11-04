@@ -54,11 +54,13 @@ public interface IUiJsService : IAsyncDisposable
     ValueTask RemoveButtonGroupCollapseAsync(ElementReference root);
 
     /// <summary>Registers a global keydown listener that invokes <c>HandleKeyDown</c> with the combo string.</summary>
+    /// <param name="id">Unique owner id; registering another owner does not replace this one.</param>
     /// <param name="dotNetRef">The component reference whose <c>HandleKeyDown(string)</c> is invoked.</param>
-    ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(DotNetObjectReference<T> dotNetRef) where T : class;
+    ValueTask RegisterShortcutsAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] T>(string id, DotNetObjectReference<T> dotNetRef) where T : class;
 
-    /// <summary>Removes the global keyboard-shortcut listener.</summary>
-    ValueTask RemoveShortcutsAsync();
+    /// <summary>Removes one owner; the document listener remains while other owners are registered.</summary>
+    /// <param name="id">The id passed when registering this owner.</param>
+    ValueTask RemoveShortcutsAsync(string id);
 
     /// <summary>Returns true when the browser supports the EyeDropper API.</summary>
     ValueTask<bool> SupportsEyeDropperAsync();

@@ -332,20 +332,20 @@ export function removeButtonGroupCollapse(root) {
     _groupCollapsers.drop(root);
 }
 
-let _shortcutDotNetRef = null;
+const _shortcutOwners = new Map();
 
-export function registerShortcutListener(dotNetRef) {
-    _shortcutDotNetRef = dotNetRef;
+export function registerShortcutListener(id, dotNetRef) {
+    _shortcutOwners.set(id, dotNetRef);
     document.addEventListener('keydown', _handleShortcutKeyDown);
 }
 
-export function removeShortcutListener() {
-    document.removeEventListener('keydown', _handleShortcutKeyDown);
-    _shortcutDotNetRef = null;
+export function removeShortcutListener(id) {
+    _shortcutOwners.delete(id);
+    if (!_shortcutOwners.size) document.removeEventListener('keydown', _handleShortcutKeyDown);
 }
 
 function _handleShortcutKeyDown(e) {
-    if (!_shortcutDotNetRef) return;
+    if (!_shortcutOwners.size) return;
     const parts = [];
     if (e.ctrlKey || e.metaKey) parts.push('ctrl');
     if (e.altKey) parts.push('alt');
@@ -353,7 +353,8 @@ function _handleShortcutKeyDown(e) {
     const key = e.key.toLowerCase();
     if (key !== 'control' && key !== 'alt' && key !== 'shift' && key !== 'meta') parts.push(key);
     const combo = parts.join('+');
-    _shortcutDotNetRef.invokeMethodAsync('HandleKeyDown', combo).catch(() => {});
+    for (const dotNetRef of _shortcutOwners.values())
+        dotNetRef.invokeMethodAsync('HandleKeyDown', combo).catch(() => {});
 }
 
 // One listener, toggled, rather than add/remove per call: a page may have several guarded forms and the
