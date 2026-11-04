@@ -1,16 +1,16 @@
 @namespace Flare.Components
 @using System.Globalization
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @inject TimeProvider TimeProvider
 
 <div class="@BuildCssClass(_multiClass)" style="@Style" @attributes="AdditionalAttributes">
     @if (ShowNavigation)
     {
     <div class="@Css.Classes.Calendar.Nav">
-        <button type="button" class="@Css.Classes.Calendar.NavBtn" @onclick="PrevMonth" aria-label="@(FlareStrings.Calendar_PrevMonth)">
+        <button type="button" class="@Css.Classes.Calendar.NavBtn" @onclick="PrevMonth" aria-label="@(CoreText["Calendar_PrevMonth"])">
             <FlareIconView Value="FlareIcons.ChevronLeft" />
         </button>
-        <button type="button" class="@Css.Classes.Calendar.NavBtn" @onclick="NextMonth" aria-label="@(FlareStrings.Calendar_NextMonth)">
+        <button type="button" class="@Css.Classes.Calendar.NavBtn" @onclick="NextMonth" aria-label="@(CoreText["Calendar_NextMonth"])">
             <FlareIconView Value="FlareIcons.ChevronRight" />
         </button>
     </div>
@@ -95,7 +95,7 @@
     /// <summary>Forces the week to start on Monday. When false (default), the first day of week
     /// is taken from <see cref="Culture"/> (e.g. Sunday for en-US, Monday for most of Europe/RU).</summary>
     [Parameter] public bool MondayFirst { get; set; }
-    /// <summary>Culture for day headers, month names and the first day of week. Default = CurrentUICulture.</summary>
+    /// <summary>Culture for day headers, month names and the first day of week. Default = the current formatting culture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Number of consecutive months to display side by side. Default: 1.</summary>
     [Parameter] public int MonthCount { get; set; } = 1;
@@ -110,7 +110,7 @@
 
     private DateOnly _viewDate;
     private DateOnly? _viewDateParameter;
-    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    private CultureInfo _culture => Culture ?? FormattingCulture;
 
     // Week starts on Monday when forced, otherwise on the culture's first day of week.
     private DayOfWeek _firstDayOfWeek => MondayFirst ? DayOfWeek.Monday : _culture.DateTimeFormat.FirstDayOfWeek;

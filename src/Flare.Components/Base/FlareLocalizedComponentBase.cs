@@ -17,7 +17,7 @@ public abstract class FlareLocalizedComponentBase : FlareComponentBase
     /// <summary>Culture selecting interface translations.</summary>
     protected CultureInfo InterfaceCulture => LocalizationState?.Context.UICulture ?? CultureInfo.CurrentUICulture;
     /// <summary>Core component translations, including partial application overrides.</summary>
-    protected IStringLocalizer<FlareStrings> Text => Localizer<FlareStrings>();
+    protected IStringLocalizer<FlareStrings> CoreText => Localizer<FlareStrings>();
     /// <summary>Translations from the component package's own resource marker.</summary>
     /// <typeparam name="TResource">Package resource marker.</typeparam>
     protected IStringLocalizer<TResource> Localizer<TResource>() =>

@@ -30,7 +30,7 @@
                             Template="ChipTemplate"
                             ChipStyle="ChipStyleOf"
                             ReadOnly="@(Disabled || ReadOnly)"
-                            RemoveLabel="@FlareStrings.TagInput_Remove"
+                            RemoveLabel="@CoreText["TagInput_Remove"]"
                             OnRemove="RemoveTagAsync" />
             @if (!Disabled && !ReadOnly && (MaxTags <= 0 || _tags.Count < MaxTags))
             {
@@ -76,7 +76,7 @@
                     <EmptyContent>
                         @if (!_loading && !string.IsNullOrEmpty(_state.Input))
                         {
-                            <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                            <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? CoreText["Field_NoResults"])</div>
                         }
                     </EmptyContent>
                 </FlareOptionList>

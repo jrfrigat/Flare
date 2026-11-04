@@ -6,7 +6,7 @@ namespace Flare.Components;
 // culture's designators. The separators are literal colons, as the digit mask writes them.
 public partial class FlareTimePicker
 {
-    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    private CultureInfo _culture => Culture ?? FormattingCulture;
     private string _am => Nz(_culture.DateTimeFormat.AMDesignator, "AM");
     private string _pm => Nz(_culture.DateTimeFormat.PMDesignator, "PM");
 

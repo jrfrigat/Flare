@@ -22,7 +22,7 @@ public partial class FlareMonthPicker
     [Parameter] public DateOnly? Min { get; set; }
     /// <summary>Latest day that can be picked: a month wholly after it is disabled and not committed when typed.</summary>
     [Parameter] public DateOnly? Max { get; set; }
-    /// <summary>Culture for the month names, the month mask and the calendar. Default = CurrentUICulture. The months
+    /// <summary>Culture for the month names, the month mask and the calendar. Default = the current formatting culture. The months
     /// follow the culture's calendar (Persian for fa-IR, Um al-Qura for ar-SA).</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>The calendar to number months on instead of the culture's own, for example a
@@ -101,7 +101,7 @@ public partial class FlareMonthPicker
     private int _editGeneration;
     private int _pendingCaret = -1;
 
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
     private (int First, int Last) _years => CalendarMonth.Years(_gridCalendar);
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
@@ -120,7 +120,7 @@ public partial class FlareMonthPicker
         : $"{CalendarMath.YearLabel(Math.Max(_viewYear / 12 * 12, _years.First), _culture)}-" +
           $"{CalendarMath.YearLabel(Math.Min(_viewYear / 12 * 12 + 11, _years.Last), _culture)}";
 
-    private string ViewSwitchHint => _view == MonthYearGridView.Months ? FlareStrings.Picker_ChooseYear : FlareStrings.Picker_ChooseMonth;
+    private string ViewSwitchHint => _view == MonthYearGridView.Months ? CoreText["Picker_ChooseYear"] : CoreText["Picker_ChooseMonth"];
 
     private bool CanPrev => _view == MonthYearGridView.Months ? _viewYear > _years.First : _viewYear / 12 * 12 > _years.First;
     private bool CanNext => _view == MonthYearGridView.Months ? _viewYear < _years.Last : _viewYear / 12 * 12 + 12 <= _years.Last;

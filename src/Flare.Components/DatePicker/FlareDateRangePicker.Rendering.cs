@@ -16,7 +16,7 @@ public partial class FlareDateRangePicker
     /// <returns>The component's parameter lifecycle task.</returns>
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        var uiCulture = CultureInfo.CurrentUICulture;
+        var uiCulture = FormattingCulture;
         var today = Today;
         _skipParameterRender = _renderParameters.Matches(parameters, delegatesRender: true)
             && ReferenceEquals(_renderUiCulture, uiCulture) && uiCulture.IsReadOnly && _renderToday == today

@@ -19,7 +19,7 @@
         <div class="@BuildCssClass(_disabledClass)"
              role="group"
              aria-labelledby="@(string.IsNullOrEmpty(Label) ? null : _labelId)"
-             aria-label="@(string.IsNullOrEmpty(Label) ? (AriaLabel ?? FlareStrings.OtpInput_GroupLabel) : null)"
+             aria-label="@(string.IsNullOrEmpty(Label) ? (AriaLabel ?? CoreText["OtpInput_GroupLabel"]) : null)"
              aria-describedby="@SupportDescribedBy"
              aria-invalid="@(_invalid ? "true" : null)">
             @for (var i = 0; i < Length; i++)
@@ -33,7 +33,7 @@
                        disabled="@Disabled"
                        readonly="@ReadOnly"
                        autocomplete="@AutoComplete"
-                       aria-label="@(string.Format(FlareStrings.OtpInput_CellLabel, idx + 1, Length))"
+                       aria-label="@(string.Format(CoreText["OtpInput_CellLabel"], idx + 1, Length))"
                        @ref="_refs[idx]"
                        @oninput="@(e => OnInput(e, idx))"
                        @onkeydown="@(e => OnKeyDown(e, idx))"

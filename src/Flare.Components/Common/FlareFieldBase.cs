@@ -15,7 +15,7 @@ namespace Flare.Components;
 /// to the shared <see cref="FlareFieldChrome"/> frame, so they live here once rather than being
 /// re-declared per component.
 /// </summary>
-public abstract class FlareFieldBase : FlareComponentBase, IFlareField
+public abstract class FlareFieldBase : FlareLocalizedComponentBase, IFlareField
 {
     /// <summary>Label text shown for the field. Ignored when <see cref="LabelContent"/> is set.</summary>
     [Parameter] public string? Label { get; set; }

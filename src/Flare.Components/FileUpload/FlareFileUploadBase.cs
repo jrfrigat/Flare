@@ -10,7 +10,7 @@ namespace Flare.Components;
 /// input, the accept/multiple/limit rules, the selected-file list and the change callback. Only the trigger
 /// - a drop region or a button in a row - differs, and each subclass owns just that.
 /// </summary>
-public abstract class FlareFileUploadBase : FlareComponentBase
+public abstract class FlareFileUploadBase : FlareLocalizedComponentBase
 {
     /// <summary>Callback invoked with the list of selected files.</summary>
     [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> OnFilesChanged { get; set; }
@@ -105,7 +105,9 @@ public abstract class FlareFileUploadBase : FlareComponentBase
 
     /// <summary>Why files from the latest selection were not added, one localized message per rejected
     /// file. Empty when every file was accepted.</summary>
-    protected readonly List<string> Rejections = [];
+    protected IReadOnlyList<string> Rejections => _rejections.Select(x =>
+        CoreText[x.Key, x.Name, x.Size ? FormatSize(x.Limit) : (object)x.Limit].Value).ToArray();
+    private readonly List<(string Key, string Name, long Limit, bool Size)> _rejections = [];
 
     private readonly Dictionary<string, CancellationTokenSource> _cancels = [];
     private bool _running, _runRequested, _disposed;
@@ -130,20 +132,18 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     {
         if (Disabled) return;
 
-        Rejections.Clear();
+        _rejections.Clear();
         var accepted = new List<IBrowserFile>(Math.Max(0, Math.Min(e.FileCount, MaxFiles)));
         foreach (var file in e.GetMultipleFiles(int.MaxValue))
         {
             if (accepted.Count >= MaxFiles)
             {
-                Rejections.Add(string.Format(CultureInfo.CurrentUICulture,
-                    FlareStrings.FileUpload_FileLimitReached, file.Name, MaxFiles));
+                _rejections.Add(("FileUpload_FileLimitReached", file.Name, MaxFiles, false));
                 continue;
             }
             if (file.Size > MaxFileSize)
             {
-                Rejections.Add(string.Format(CultureInfo.CurrentUICulture,
-                    FlareStrings.FileUpload_FileTooLarge, file.Name, FormatSize(MaxFileSize)));
+                _rejections.Add(("FileUpload_FileTooLarge", file.Name, MaxFileSize, true));
                 continue;
             }
             accepted.Add(file);
@@ -308,10 +308,10 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     }
 
     /// <summary>Renders a byte count as a short human-readable size (B / KB / MB).</summary>
-    protected static string FormatSize(long bytes) => bytes switch
+    protected string FormatSize(long bytes) => bytes switch
     {
-        < 1024 => $"{bytes} B",
-        < 1024 * 1024 => $"{bytes / 1024.0:F1} KB",
-        _ => $"{bytes / (1024.0 * 1024):F1} MB",
+        < 1024 => bytes.ToString(FormattingCulture) + " B",
+        < 1024 * 1024 => (bytes / 1024.0).ToString("F1", FormattingCulture) + " KB",
+        _ => (bytes / (1024.0 * 1024)).ToString("F1", FormattingCulture) + " MB",
     };
 }

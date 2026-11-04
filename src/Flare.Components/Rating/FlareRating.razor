@@ -1,12 +1,12 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareLocalizedComponentBase
 @using System.Linq.Expressions
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
 <div class="@BuildCssClass(_disabledClass, _readonlyClass, _colorClass, _sizeClass)"
      role="group"
-     aria-label="@(Label ?? FlareStrings.Rating_Group)"
+     aria-label="@(Label ?? CoreText["Rating_Group"])"
      style="@_inlineStyle"
      @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
@@ -21,7 +21,7 @@
             <span class="@Css.Classes.Rating.StarWrap">
                 <button type="button"
                         class="@Css.Classes.Rating.Star @(_starClass(fill))"
-                        aria-label="@(string.Format(FlareStrings.Rating_Star, star, Max))"
+                        aria-label="@(string.Format(CoreText["Rating_Star"], star, Max))"
                         disabled="@(Disabled || ReadOnly)"
                         @onclick="@(() => SetValue(star))"
                         @onmouseenter="@(() => SetHover(star))"

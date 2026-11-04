@@ -29,7 +29,7 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
     [Parameter] public DateOnly? Max { get; set; }
     /// <summary>Predicate that disables specific dates (return true to disable). Applied on top of Min/Max.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture for the calendar and for writing and reading the dates. Default = CurrentUICulture. The
+    /// <summary>Culture for the calendar and for writing and reading the dates. Default = the current formatting culture. The
     /// calendar follows the culture's own (Persian for fa-IR, Um al-Qura for ar-SA).</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>The calendar to show and write dates on instead of the culture's own, for example a
@@ -91,7 +91,7 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
     private PickerPopup? _popupState;
     private PickerPopup _popup => _popupState ??= new PickerPopup(Overlay, $"flare-multidatepicker-{Guid.NewGuid():N}");
     private PickerViews? _viewState;
-    private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled);
+    private PickerViews _views => _viewState ??= new PickerViews(() => _culture, () => Min, () => Max, () => Disabled, () => CoreText);
     private bool _open;
 
     // A closed picker shows only its field: a parent re-render that passes the same values (and new callback
@@ -107,7 +107,7 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
     private string? _syncedText;
     private DateOnly? _focusedDate;
 
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
     private IReadOnlyList<DateOnly> _dates => Values ?? [];
@@ -117,7 +117,7 @@ public partial class FlareMultiDatePicker : IFlareMultiField<DateOnly>
 
     // Up to MaxShownDates dates written out, more as their count.
     private string DisplayValue => _dates.Count == 0 ? string.Empty
-        : _dates.Count > MaxShownDates ? string.Format(_culture, FlareStrings.MultiDatePicker_Count, _dates.Count)
+        : _dates.Count > MaxShownDates ? string.Format(_culture, CoreText["MultiDatePicker_Count"], _dates.Count)
         : EditText;
 
     // Every date written out, as the field edits them.

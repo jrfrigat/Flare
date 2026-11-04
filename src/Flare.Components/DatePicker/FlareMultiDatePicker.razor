@@ -41,7 +41,7 @@
             {
                 <button type="button" class="@Css.Classes.Input.Toggle @Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@(_open ? "true" : "false")"
-                        aria-label="@FlareStrings.MultiDatePicker_Open" @ref="_toggleEl" @onclick="Toggle">
+                        aria-label="@CoreText["MultiDatePicker_Open"]" @ref="_toggleEl" @onclick="Toggle">
                     <FlareIconView Value="@FlareIcons.CalendarMonth" />
                 </button>
             }
@@ -59,7 +59,7 @@
         <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel"
              role="@(Inline ? null : "dialog")" aria-modal="@(Inline ? null : _popup.FromField ? "false" : "true")" aria-label="@_views.HeaderLabel" @ref="_panelEl"
              @onkeydown="HandlePanelKeyDown" @onkeydown:stopPropagation="@(!Inline)">
-            @PickerButtons.Header(this, _views.HeaderLabel, _views.SwitchHint, _views.Prev, _views.Next, _views.Cycle,
+            @PickerButtons.Header(this, CoreText, _views.HeaderLabel, _views.SwitchHint, _views.Prev, _views.Next, _views.Cycle,
                 !(Disabled || !_views.CanPrev), !(Disabled || !_views.CanNext))
 
             @if (_views.View == PickerView.Day)
@@ -86,11 +86,11 @@
             <div class="@Css.Classes.DatePicker.Footer">
                 @if (ShowClearButton)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly || _dates.Count == 0)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" disabled="@(Disabled || ReadOnly || _dates.Count == 0)" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? CoreText["Picker_Clear"])</button>
                 }
                 @if (!Inline)
                 {
-                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Close" @onclick:stopPropagation>@(DoneText ?? FlareStrings.Picker_Done)</button>
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Close" @onclick:stopPropagation>@(DoneText ?? CoreText["Picker_Done"])</button>
                 }
             </div>
         </div>

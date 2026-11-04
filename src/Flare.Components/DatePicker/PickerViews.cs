@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Localization;
 using System.Globalization;
 using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components.Web;
@@ -13,7 +14,7 @@ internal enum PickerView { Day, Month, Year }
 /// the header label, the paging bounds and the month and year picks that respect Min/Max. Shared by
 /// the date, multi-date and week pickers, so each keeps only its own value.
 /// </summary>
-internal sealed class PickerViews(Func<CultureInfo> culture, Func<DateOnly?> min, Func<DateOnly?> max, Func<bool> disabled)
+internal sealed class PickerViews(Func<CultureInfo> culture, Func<DateOnly?> min, Func<DateOnly?> max, Func<bool> disabled, Func<IStringLocalizer<FlareStrings>> text)
 {
     /// <summary>The view shown.</summary>
     public PickerView View { get; set; } = PickerView.Day;
@@ -44,9 +45,9 @@ internal sealed class PickerViews(Func<CultureInfo> culture, Func<DateOnly?> min
     /// <summary>What the header button switches to next: day -> month -> year -> day.</summary>
     public string SwitchHint => View switch
     {
-        PickerView.Day => FlareStrings.Picker_ChooseMonth,
-        PickerView.Month => FlareStrings.Picker_ChooseYear,
-        _ => FlareStrings.Picker_ShowDays,
+        PickerView.Day => text()["Picker_ChooseMonth"],
+        PickerView.Month => text()["Picker_ChooseYear"],
+        _ => text()["Picker_ShowDays"],
     };
 
     /// <summary>The header: the month and year, the year, or the decade.</summary>

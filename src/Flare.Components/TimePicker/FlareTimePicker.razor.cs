@@ -25,7 +25,7 @@ public partial class FlareTimePicker
     /// <summary>Forces a 12-hour (AM/PM) or 24-hour clock, for the field as well as the popup: on a 12-hour clock the field
     /// shows and takes "hh:mm AM". Null (default) follows the <see cref="Culture"/> short time pattern.</summary>
     [Parameter] public bool? Use24Hour { get; set; }
-    /// <summary>Culture for the 12/24-hour default and the AM/PM designators. Default = CurrentUICulture.</summary>
+    /// <summary>Culture for the 12/24-hour default and the AM/PM designators. Default = the current formatting culture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Minute increment (values clamped to 1-60): the Dropdown column runs in steps, and a minute typed
     /// in the keyboard entry or picked on the dial drops to the step below it. Default 1.</summary>
@@ -199,7 +199,7 @@ public partial class FlareTimePicker
         await base.DisposeAsync();
     }
 
-    private string _headline => Headline ?? (_keyboardEntry ? FlareStrings.TimePicker_EnterTime : FlareStrings.TimePicker_Headline);
+    private string _headline => Headline ?? (_keyboardEntry ? CoreText["TimePicker_EnterTime"] : CoreText["TimePicker_Headline"]);
     private bool _showKeyboardToggle => ShowKeyboardToggle && PopupVariant == TimePickerVariant.Dial;
 
     // The view that mounts takes focus itself: the dial its root, the entry its hour field.

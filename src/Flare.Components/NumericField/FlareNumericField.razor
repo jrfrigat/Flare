@@ -56,7 +56,7 @@
             {
                 <button type="button"
                         class="@Css.Classes.Input.Clear"
-                        aria-label="@(FlareStrings.Input_Clear)"
+                        aria-label="@(CoreText["Input_Clear"])"
                         tabindex="-1"
                         @onclick="HandleClear">
                     <span aria-hidden="true">&#x2715;</span>
@@ -67,11 +67,11 @@
                 <span class="@Css.Classes.Numericfield.Stepper">
                     <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepUp"
                             tabindex="-1" disabled="@(Disabled || ReadOnly)"
-                            aria-label="@(FlareStrings.NumericField_Increment)"
+                            aria-label="@(CoreText["NumericField_Increment"])"
                             @onclick="@(() => StepBy(Step ?? 1))">▲</button>
                     <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepDown"
                             tabindex="-1" disabled="@(Disabled || ReadOnly)"
-                            aria-label="@(FlareStrings.NumericField_Decrement)"
+                            aria-label="@(CoreText["NumericField_Decrement"])"
                             @onclick="@(() => StepBy(-(Step ?? 1)))">▼</button>
                 </span>
             }
@@ -195,7 +195,7 @@
     private string _text = string.Empty;
     private TValue? _lastValue;
     private bool _hasLastValue;
-    private CultureInfo _fmtCulture => Culture ?? CultureInfo.CurrentCulture;
+    private CultureInfo _fmtCulture => Culture ?? FormattingCulture;
 
     // What the input element shows. Number mode: raw invariant value. Text mode: the live edit
     // buffer while focused, the formatted value when blurred.

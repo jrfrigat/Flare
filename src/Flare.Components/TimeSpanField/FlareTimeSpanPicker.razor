@@ -23,13 +23,13 @@
            background, no padding and no height from the family ramp - beside any other field it did not
            read as a field at all. *@
         <div class="@Css.Classes.Input.Field">
-        <div class="@Css.Classes.TimeSpanField.Segments" role="group" aria-label="@(Label ?? FlareStrings.TimeSpan_Duration)">
+        <div class="@Css.Classes.TimeSpanField.Segments" role="group" aria-label="@(Label ?? CoreText["TimeSpan_Duration"])">
             @if (Negatable)
             {
                 <button type="button"
                         class="@Css.Classes.TimeSpanField.Sign"
                         disabled="@(Disabled || ReadOnly)"
-                        aria-label="@FlareStrings.TimeSpan_ToggleSign"
+                        aria-label="@CoreText["TimeSpan_ToggleSign"]"
                         aria-pressed="@(_negative ? "true" : "false")"
                         @onclick="ToggleSignAsync">@(_negative ? "-" : "+")</button>
             }
@@ -182,19 +182,19 @@
         await ValueChanged.InvokeAsync(value);
     }
 
-    private static string UnitSuffix(TimeSpanUnits unit) => unit switch
+    private string UnitSuffix(TimeSpanUnits unit) => unit switch
     {
-        TimeSpanUnits.Days => FlareStrings.TimeSpan_DaysShort,
-        TimeSpanUnits.Hours => FlareStrings.TimeSpan_HoursShort,
-        TimeSpanUnits.Minutes => FlareStrings.TimeSpan_MinutesShort,
-        _ => FlareStrings.TimeSpan_SecondsShort,
+        TimeSpanUnits.Days => CoreText["TimeSpan_DaysShort"],
+        TimeSpanUnits.Hours => CoreText["TimeSpan_HoursShort"],
+        TimeSpanUnits.Minutes => CoreText["TimeSpan_MinutesShort"],
+        _ => CoreText["TimeSpan_SecondsShort"],
     };
 
-    private static string UnitLabel(TimeSpanUnits unit) => unit switch
+    private string UnitLabel(TimeSpanUnits unit) => unit switch
     {
-        TimeSpanUnits.Days => FlareStrings.TimeSpan_Days,
-        TimeSpanUnits.Hours => FlareStrings.TimeSpan_Hours,
-        TimeSpanUnits.Minutes => FlareStrings.TimeSpan_Minutes,
-        _ => FlareStrings.TimeSpan_Seconds,
+        TimeSpanUnits.Days => CoreText["TimeSpan_Days"],
+        TimeSpanUnits.Hours => CoreText["TimeSpan_Hours"],
+        TimeSpanUnits.Minutes => CoreText["TimeSpan_Minutes"],
+        _ => CoreText["TimeSpan_Seconds"],
     };
 }

@@ -15,7 +15,7 @@ public sealed class LocalizationEngineTests : BunitContext
 {
     [Theory]
     [InlineData("en", "Cancel")]
-    [InlineData("ru-RU", "Отмена")]
+    [InlineData("ru-RU", "\u041e\u0442\u043c\u0435\u043d\u0430")]
     [InlineData("de-DE", "Cancel")]
     public void BuiltInsFollowCultureFallback(string culture, string expected)
     {
@@ -41,7 +41,7 @@ public sealed class LocalizationEngineTests : BunitContext
         Assert.Equal("1.234,50", text["Number", 1234.5m].Value);
         Assert.Contains(text.GetAllStrings(true), x => x.Name == "Picker_Next" && x.Value == "Suivant");
         context.SetCulture(CultureInfo.GetCultureInfo("ru-RU"));
-        Assert.Equal("Следующий", text["Picker_Next"].Value);
+        Assert.Equal("\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439", text["Picker_Next"].Value);
         Assert.Same(text, context.GetLocalizer<FlareStrings>());
     }
 
@@ -55,7 +55,7 @@ public sealed class LocalizationEngineTests : BunitContext
         var english = new FlareLocalization();
         russian.SetCulture(CultureInfo.GetCultureInfo("ru"));
         english.SetCulture(CultureInfo.GetCultureInfo("en"));
-        await Task.WhenAll(Task.Run(() => Check(russian, "Отмена"), Xunit.TestContext.Current.CancellationToken),
+        await Task.WhenAll(Task.Run(() => Check(russian, "\u041e\u0442\u043c\u0435\u043d\u0430"), Xunit.TestContext.Current.CancellationToken),
             Task.Run(() => Check(english, "Cancel"), Xunit.TestContext.Current.CancellationToken));
         Assert.Same(before, CultureInfo.CurrentCulture);
         Assert.Same(beforeUI, CultureInfo.CurrentUICulture);
@@ -79,7 +79,7 @@ public sealed class LocalizationEngineTests : BunitContext
         first.ServiceProvider.GetRequiredService<IFlareLocalization>().SetCulture(CultureInfo.GetCultureInfo("ru"));
         second.ServiceProvider.GetRequiredService<IFlareLocalization>().SetCulture(CultureInfo.GetCultureInfo("en"));
         Assert.NotSame(first.ServiceProvider.GetRequiredService<IFlareLocalization>(), second.ServiceProvider.GetRequiredService<IFlareLocalization>());
-        foreach (var (scope, expected) in new[] { (first, "Отмена"), (second, "Cancel") })
+        foreach (var (scope, expected) in new[] { (first, "\u041e\u0442\u043c\u0435\u043d\u0430"), (second, "Cancel") })
         {
             await using var renderer = new HtmlRenderer(scope.ServiceProvider, NullLoggerFactory.Instance);
             var html = await renderer.Dispatcher.InvokeAsync(async () =>
@@ -115,7 +115,7 @@ public sealed class LocalizationEngineTests : BunitContext
         var instance = cut.FindComponent<Probe>().Instance;
         Assert.Equal("Cancel", cut.Find("span").TextContent);
         await cut.InvokeAsync(() => context.SetCulture(CultureInfo.GetCultureInfo("ru")));
-        cut.WaitForAssertion(() => Assert.Equal("Отмена", cut.Find("span").TextContent));
+        cut.WaitForAssertion(() => Assert.Equal("\u041e\u0442\u043c\u0435\u043d\u0430", cut.Find("span").TextContent));
         Assert.Same(instance, cut.FindComponent<Probe>().Instance);
         Assert.Equal(1, instance.Initializations);
         cut.Dispose();
@@ -144,7 +144,7 @@ public sealed class LocalizationEngineTests : BunitContext
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             builder.OpenElement(0, "span");
-            builder.AddContent(1, Text["Picker_Cancel"].Value);
+            builder.AddContent(1, CoreText["Picker_Cancel"].Value);
             builder.CloseElement();
         }
     }

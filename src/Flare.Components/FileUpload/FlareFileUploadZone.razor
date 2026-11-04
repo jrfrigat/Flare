@@ -14,7 +14,7 @@
 <div class="@BuildCssClass(_draggingClass, _disabledClass)"
      data-flare-file-drop="@InputId"
      style="@Style"
-     aria-label="@(AriaLabel ?? FlareStrings.DropZone_Label)"
+     aria-label="@(AriaLabel ?? CoreText["DropZone_Label"])"
      @ondragover:preventDefault="true"
      @ondragenter:preventDefault="true"
      @ondrop:preventDefault="true"
@@ -38,10 +38,10 @@
                 {
                     <FlareIconView Value="FlareIcons.UploadFile" Class="@Css.Classes.FileUpload.Icon" />
                 }
-                <span class="@Css.Classes.FileUpload.Primary">@(_isDragging ? FlareStrings.DropZone_DropFiles : (DropText ?? FlareStrings.FileUpload_DropText))</span>
+                <span class="@Css.Classes.FileUpload.Primary">@(_isDragging ? CoreText["DropZone_DropFiles"] : (DropText ?? CoreText["FileUpload_DropText"]))</span>
                 @if (!string.IsNullOrEmpty(Accept))
                 {
-                    <span class="@Css.Classes.FileUpload.Hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+                    <span class="@Css.Classes.FileUpload.Hint">@(CoreText["FileUpload_Accepted"]) @Accept</span>
                 }
             }
         </label>

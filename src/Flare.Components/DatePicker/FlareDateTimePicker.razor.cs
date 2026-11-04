@@ -59,7 +59,7 @@ public partial class FlareDateTimePicker
     /// <summary>Returns true for a day that cannot be picked (holidays, weekends): it is disabled in the
     /// calendar, skipped by the arrow keys, and a typed or confirmed value on it is not committed.</summary>
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
-    /// <summary>Culture for the calendar and for writing and reading the value. Default = CurrentUICulture. The
+    /// <summary>Culture for the calendar and for writing and reading the value. Default = the current formatting culture. The
     /// calendar follows the culture's own: Persian months and years for fa-IR, Um al-Qura for ar-SA; Thai Buddhist
     /// and Japanese cultures keep the Gregorian months and write their own years.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
@@ -185,7 +185,7 @@ public partial class FlareDateTimePicker
 
     // A calendar whose months are not the Gregorian grid's is swapped for Gregorian.
     // The culture on the calendar the picker shows and writes dates on.
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private System.Globalization.Calendar _gridCalendar => CalendarMath.GridCalendar(_culture);
     // The month the date pane shows, on the grid's calendar.
     private CalendarMonth _viewMonth => CalendarMonth.Of(_viewDate, _gridCalendar);

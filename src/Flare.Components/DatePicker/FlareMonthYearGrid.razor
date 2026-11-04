@@ -1,4 +1,5 @@
 @namespace Flare.Components
+@inherits FlareLocalizedComponentBase
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
@@ -33,6 +34,8 @@
 </div>
 
 @code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
     /// <summary>Whether the grid shows the months of <see cref="Year"/> or the years of its decade.</summary>
     [Parameter] public MonthYearGridView View { get; set; }
     /// <summary>The year shown, numbered on the grid's calendar (1405 on the Persian one). In the year view the
@@ -65,7 +68,7 @@
     /// page the year or the decade.</summary>
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
-    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? CultureInfo.CurrentUICulture, Calendar);
+    private CultureInfo _culture => CalendarMath.PickerCulture(Culture ?? FormattingCulture, Calendar);
     private System.Globalization.Calendar _grid => CalendarMath.GridCalendar(_culture);
     private readonly ElementReference[] _cells = new ElementReference[13];
     // The cell the keyboard moved to. Paging keeps it: the same month in the next year, the same place in the next
