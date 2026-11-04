@@ -17,6 +17,7 @@
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
                   Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
+                  LabelFor="@(Searchable ? ComboboxInputAttributes.Id(InputAttributes, _controlId) : null)"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">
@@ -66,6 +67,7 @@
             @if (Searchable)
             {
                 <input class="@Css.Classes.Select.Search"
+                       id="@_controlId"
                        @ref="_inputRef"
                        value="@_state.Input"
                        placeholder="@(_selected.Count == 0 ? Placeholder : null)"

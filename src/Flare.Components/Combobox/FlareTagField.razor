@@ -18,6 +18,7 @@
                   Invalid="@(!string.IsNullOrEmpty(_displayedError))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
+                  LabelFor="@(!Disabled && !ReadOnly && (MaxTags <= 0 || _tags.Count < MaxTags) ? ComboboxInputAttributes.Id(InputAttributes, _controlId) : null)"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes">

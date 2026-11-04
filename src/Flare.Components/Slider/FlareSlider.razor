@@ -8,7 +8,7 @@
     @if (LabelContent is not null || !string.IsNullOrEmpty(Label) || (ShowValue && Range))
     {
         <div class="@Css.Classes.Slider.LabelRow">
-            <label id="@_labelId" class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
+            <span id="@_labelId" class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</span>
             @if (ShowValue)
             {
                 <span class="@Css.Classes.Slider.Value">@_displayText</span>

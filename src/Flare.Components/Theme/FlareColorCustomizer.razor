@@ -1,8 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass()">
-    <label class="@Css.Classes.Input.Label">@_label</label>
+<div class="@BuildCssClass()" role="group" aria-labelledby="@_labelId">
+    <span class="@Css.Classes.Input.Label" id="@_labelId">@_label</span>
     <div class="@Css.Classes.Color.CustomizerSwatches">
         @foreach (var preset in Presets)
         {
@@ -16,8 +16,9 @@
     @if (ShowColorPicker)
     {
         <div class="@Css.Classes.Color.CustomizerCustom">
-            <label class="@Css.Classes.Input.Label">@_customLabel</label>
+            <label class="@Css.Classes.Input.Label" for="@_pickerId">@_customLabel</label>
             <input type="color" class="@Css.Classes.Color.CustomizerPicker"
+                   id="@_pickerId"
                    value="@_currentPrimary"
                    @onchange="OnColorChange" />
         </div>
@@ -67,6 +68,8 @@
     private string _resetLabel  => ResetLabel  ?? FlareStrings.ColorCustomizer_Reset;
 
     private string _currentPrimary = "";
+    private readonly string _labelId = $"flare-color-customizer-{Guid.NewGuid():N}-label";
+    private readonly string _pickerId = $"flare-color-customizer-{Guid.NewGuid():N}-picker";
     protected override string ComponentCssClass => Css.Classes.Color.Customizer;
 
     private static string SafeColor(string? color) =>

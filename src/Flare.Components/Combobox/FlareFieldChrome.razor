@@ -14,7 +14,14 @@
      @attributes="Attributes">
     @if ((LabelContent is not null || !string.IsNullOrEmpty(Label)) && !FloatingLabel)
     {
-        <label class="@Css.Classes.Input.Label" id="@LabelId" for="@LabelFor">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
+        @if (!string.IsNullOrEmpty(LabelFor))
+        {
+            <label class="@Css.Classes.Input.Label" id="@LabelId" for="@LabelFor">@Caption</label>
+        }
+        else
+        {
+            <span class="@Css.Classes.Input.Label" id="@LabelId">@Caption</span>
+        }
     }
     @Field
     @if (HasSupport)
@@ -60,7 +67,7 @@
     /// renders its own floating label inside the well). Ignored when <see cref="LabelContent"/> is set.</summary>
     [Parameter] public string? Label { get; set; }
 
-    /// <summary>Markup rendered in the label element instead of <see cref="Label"/>.</summary>
+    /// <summary>Markup rendered in the caption instead of <see cref="Label"/>.</summary>
     [Parameter] public RenderFragment? LabelContent { get; set; }
 
     /// <summary>The field renders its own floating label inside the well; the frame suppresses the top label.</summary>
@@ -69,7 +76,8 @@
     /// <summary>The label element id (for <c>aria-labelledby</c> from a div trigger).</summary>
     [Parameter] public string? LabelId { get; set; }
 
-    /// <summary>The <c>for</c> target of the label (the input id), for real-input fields; null for div triggers.</summary>
+    /// <summary>The native control id for a label's <c>for</c>. When absent, renders a span caption;
+    /// non-native controls reference its <see cref="LabelId"/> through <c>aria-labelledby</c>.</summary>
     [Parameter] public string? LabelFor { get; set; }
 
     /// <summary>Helper text shown below the field when there is no error.</summary>
@@ -96,6 +104,7 @@
     [Parameter] public RenderFragment? CounterContent { get; set; }
 
     private ElementReference _root;
+    private RenderFragment Caption => LabelContent ?? (builder => builder.AddContent(0, Label));
 
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.Input.Root;

@@ -1,10 +1,18 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(Required ? Css.Classes.Input.Required : null)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(Required ? Css.Classes.Input.Required : null)" style="@Style"
+     role="@(IsGroup ? "group" : null)" aria-labelledby="@(IsGroup ? _labelId : null)" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Input.Label" for="@For">@Label</label>
+        @if (!string.IsNullOrEmpty(For))
+        {
+            <label class="@Css.Classes.Input.Label" for="@For">@Label</label>
+        }
+        else
+        {
+            <span class="@Css.Classes.Input.Label" id="@_labelId">@Label</span>
+        }
     }
     <div class="@Css.Classes.Input.ControlSlot">
         @ChildContent
@@ -16,9 +24,11 @@
 </div>
 
 @code {
+    private readonly string _labelId = $"flare-form-field-{Guid.NewGuid():N}-label";
+    private bool IsGroup => !string.IsNullOrEmpty(Label) && string.IsNullOrEmpty(For);
     /// <summary>Label text shown above the field control.</summary>
     [Parameter] public string? Label { get; set; }
-    /// <summary>ID of the input element this label targets (HTML for attribute).</summary>
+    /// <summary>ID of the native control targeted by the label. Without it, names the content as a group.</summary>
     [Parameter] public string? For { get; set; }
     /// <summary>Helper text shown below the field control.</summary>
     [Parameter] public string? HelperText { get; set; }

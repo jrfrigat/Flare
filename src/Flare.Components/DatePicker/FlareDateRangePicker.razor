@@ -6,10 +6,10 @@
 @using Microsoft.AspNetCore.Components.Web
 @inject TimeProvider TimeProvider
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass()" style="@Style" role="group" aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Input.Label">@Label</label>
+        <span class="@Css.Classes.Input.Label" id="@_labelId">@Label</span>
     }
     @if (ShowPresets)
     {
@@ -101,6 +101,7 @@
 </div>
 
 @code {
+    private readonly string _labelId = $"flare-date-range-{Guid.NewGuid():N}-label";
     /// <summary>Start date of the selected range.</summary>
     [Parameter] public DateOnly? StartDate { get; set; }
     /// <summary>Callback invoked when the start date changes. A range picked in the calendar is published in
