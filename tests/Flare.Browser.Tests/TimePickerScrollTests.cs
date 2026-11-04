@@ -166,9 +166,10 @@ public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : ICla
             {
                 ["type"] = "touchStart", ["touchPoints"] = new[] { new { x, y } }
             });
+            // Each native move already waits for Chromium's input acknowledgement. Adding a host
+            // timer between acknowledgements slowed the swipe into a drag with no release velocity.
             for (var i = 1; i <= 5; i++)
             {
-                await Task.Delay(16, TestContext.Current.CancellationToken);
                 await cdp.SendAsync("Input.dispatchTouchEvent", new()
                 {
                     ["type"] = "touchMove",
@@ -199,6 +200,14 @@ public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : ICla
             // longer moves the proof out of its window. performance.now() in the handler measured the
             // delay instead of the gesture and made the inertia proof flaky.
             window.inputProof = { wheel: 0, touch: 0, afterRelease: 0, afterReleaseDistance: 0, motions: [], released: null, moves: [], gestureMs: 0 };
+            const recordMotion = (release, motion) => {
+                if (motion.column !== release.col.dataset.timeColumn || motion.at < release.at || motion.at - release.at >= 160) return;
+                const distance = Math.abs(release.top - motion.top);
+                if (distance <= 1) return;
+                window.inputProof.afterRelease++;
+                window.inputProof.afterReleaseDistance = Math.max(window.inputProof.afterReleaseDistance, distance);
+                window.inputProof.motions.push({ ...motion, type: 'motion', elapsed: motion.at - release.at });
+            };
             document.addEventListener('wheel', e => { if (e.isTrusted) window.inputProof.wheel++; }, true);
             document.addEventListener('touchstart', e => {
                 if (e.isTrusted) {
@@ -218,21 +227,25 @@ public sealed partial class TimePickerScrollTests(BrowserFixture fixture) : ICla
                     window.inputProof.gestureMs = moves.length > 1
                         ? Math.round(moves[moves.length - 1] - moves[0])
                         : 0;
-                    window.inputProof.released = { col, top: col.scrollTop, current: col.dataset.timeCurrent, at: e.timeStamp };
-                    window.inputProof.motions.push({ type: 'release', at: e.timeStamp, column: col.dataset.timeColumn, top: col.scrollTop, current: col.dataset.timeCurrent });
+                    // Scroll and touch events can be delivered out of timestamp order. The live
+                    // scrollTop may already include release motion; use the last pre-release sample.
+                    const history = window.inputProof.motions.filter(m => m.type === 'scroll' && m.column === col.dataset.timeColumn);
+                    const before = history.filter(m => m.at <= e.timeStamp).sort((a, b) => b.at - a.at)[0];
+                    const release = { col, top: before?.top ?? col.scrollTop, current: col.dataset.timeCurrent, at: e.timeStamp };
+                    window.inputProof.released = release;
+                    window.inputProof.motions.push({ type: 'release', at: e.timeStamp, column: col.dataset.timeColumn, top: release.top, observedTop: col.scrollTop, current: col.dataset.timeCurrent });
+                    for (const motion of history) recordMotion(release, motion);
                 }
             }, true);
             document.addEventListener('scroll', e => {
                 const r = window.inputProof.released;
-                if (e.target.matches?.('[data-time-column]')) window.inputProof.motions.push({ type: 'scroll', at: e.timeStamp, column: e.target.dataset.timeColumn, top: e.target.scrollTop, current: e.target.dataset.timeCurrent });
+                if (!e.target.matches?.('[data-time-column]')) return;
+                const motion = { type: 'scroll', at: e.timeStamp, column: e.target.dataset.timeColumn, top: e.target.scrollTop, current: e.target.dataset.timeCurrent };
+                window.inputProof.motions.push(motion);
                 // The component settles after 160 ms idle, so movement created earlier is native.
                 // The selection may legitimately change during the coast; the time bound, not the
                 // value, is what separates this from the component's programmatic centering.
-                if (r && e.target === r.col && e.timeStamp >= r.at && e.timeStamp - r.at < 160 && Math.abs(r.top - r.col.scrollTop) > 1) {
-                    window.inputProof.afterRelease++;
-                    window.inputProof.afterReleaseDistance = Math.max(window.inputProof.afterReleaseDistance, Math.abs(r.top - r.col.scrollTop));
-                    window.inputProof.motions.push({ type: 'motion', at: e.timeStamp, column: r.col.dataset.timeColumn, top: r.col.scrollTop, current: r.col.dataset.timeCurrent, elapsed: e.timeStamp - r.at });
-                }
+                if (r && e.target === r.col) recordMotion(r, motion);
             }, true);
             """);
         var page = await context.NewPageAsync();
