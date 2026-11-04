@@ -9,6 +9,7 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for day headers, month names and the first day of week. Default = CurrentUICulture. |
+| `EventTemplate` | `RenderFragment<CalendarEvent>?` | `` | Parameter |  | Custom event content inside the calendar's existing selection control. |
 | `Events` | `IReadOnlyList<CalendarEvent>?` | `` | Parameter |  | Events to display on the calendar grid cells. |
 | `InitialDate` | `DateOnly?` | `` | Parameter |  | Date used to determine the initial calendar view month. |
 | `MaxVisibleEvents` | `int` | `3` | Parameter |  | Maximum events shown per day cell. Prevents rendering DoS from large event lists. |
@@ -17,6 +18,9 @@
 | `OnEventClick` | `EventCallback<CalendarEvent>` | `` | Callback |  | Callback raised when the user clicks on a calendar event. |
 | `SelectedDate` | `DateOnly?` | `` | Parameter |  | Currently selected date value. |
 | `SelectedDateChanged` | `EventCallback<DateOnly>` | `` | Callback |  | Callback raised when the selected date changes. |
+| `ShowNavigation` | `bool` | `true` | Parameter |  | Shows the built-in month navigation. Turn off when a parent supplies a shared toolbar. |
+| `ViewDate` | `DateOnly?` | `` | Parameter |  | Controlled visible month. Null preserves the InitialDate-based, internally navigated view. |
+| `ViewDateChanged` | `EventCallback<DateOnly>` | `` | Callback |  | Raised when the visible month changes through the calendar navigation. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

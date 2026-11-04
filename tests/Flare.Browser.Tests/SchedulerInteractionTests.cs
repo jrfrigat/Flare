@@ -31,7 +31,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
     {
         await using var context = await fixture.Browser.NewContextAsync(new() { HasTouch = true });
         var page = await OpenAsync(context);
-        var from = (await page.Locator(".flare-drag-handle").BoundingBoxAsync())!;
+        var from = (await page.Locator($".{Css.Classes.Drag.Handle}").BoundingBoxAsync())!;
         var to = (await page.Locator("[data-flare-tree-index='22']").BoundingBoxAsync())!;
         var x = from.X + from.Width / 2;
         var y = from.Y + from.Height / 2;
@@ -42,9 +42,9 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchMove", ["touchPoints"] = new[] { new { x = to.X + to.Width / 2, y = to.Y + to.Height / 2 } } });
         await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchEnd", ["touchPoints"] = Array.Empty<object>() });
         await Expect(page.Locator("#change")).ToHaveTextAsync("Move:11:00-12:00:Occurrence:False");
-        await page.Locator(".flare-resizable__handle").ScrollIntoViewIfNeededAsync();
-        await ListenerWait.ForAsync(page, ".flare-resizable__handle", "pointerdown");
-        var grip = (await page.Locator(".flare-resizable__handle").BoundingBoxAsync())!;
+        await page.Locator($".{Css.Classes.Resizable.Handle}").ScrollIntoViewIfNeededAsync();
+        await ListenerWait.ForAsync(page, $".{Css.Classes.Resizable.Handle}", "pointerdown");
+        var grip = (await page.Locator($".{Css.Classes.Resizable.Handle}").BoundingBoxAsync())!;
         var gx = grip.X + grip.Width / 2;
         var gy = grip.Y + grip.Height / 2;
         await cdp.SendAsync("Input.dispatchTouchEvent", new() { ["type"] = "touchStart", ["touchPoints"] = new[] { new { x = gx, y = gy } } });
@@ -60,7 +60,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context);
         await page.Locator("#timeline").ClickAsync();
-        var bar = page.Locator(".flare-gantt__bar[data-key='one']");
+        var bar = page.Locator($".{Css.Classes.Gantt.Bar}[data-key='one']");
         await Expect(bar).ToBeVisibleAsync();
         await bar.PressAsync("Control+ArrowRight");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Move:10:00-11:00:Occurrence:False");
@@ -71,10 +71,10 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         page.Console += (_, message) => { if (message.Type == "error") output.WriteLine(message.Text); };
         page.PageError += (_, error) => output.WriteLine(error);
         await page.GotoAsync($"{fixture.BaseUrl}/scheduler");
-        await Expect(page.Locator(".flare-scheduler__event-body")).ToHaveTextAsync("Planning");
+        await Expect(page.Locator($".{Css.Classes.Scheduler.EventBody}")).ToHaveTextAsync("Planning");
         await Expect(page.Locator("[data-flare-tree-index='0']")).ToHaveCSSAsync("height", "40px");
-        await ListenerWait.ForAsync(page, ".flare-drag-context", "pointerdown");
-        await page.Locator(".flare-scheduler__viewport").EvaluateAsync("e => e.scrollTop = 600");
+        await ListenerWait.ForAsync(page, $".{Css.Classes.Drag.Context}", "pointerdown");
+        await page.Locator($".{Css.Classes.Scheduler.Viewport}").EvaluateAsync("e => e.scrollTop = 600");
         return page;
     }
     private static async Task DragAsync(IPage page, string from, string to)
@@ -96,11 +96,11 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
     {
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context);
-        await DragAsync(page, ".flare-drag-handle", "[data-flare-tree-index='22']");
+        await DragAsync(page, $".{Css.Classes.Drag.Handle}", "[data-flare-tree-index='22']");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Move:11:00-12:00:Occurrence:False");
-        var handle = page.Locator(".flare-resizable__handle");
+        var handle = page.Locator($".{Css.Classes.Resizable.Handle}");
         await handle.ScrollIntoViewIfNeededAsync();
-        await ListenerWait.ForAsync(page, ".flare-resizable__handle", "pointerdown");
+        await ListenerWait.ForAsync(page, $".{Css.Classes.Resizable.Handle}", "pointerdown");
         var box = (await handle.BoundingBoxAsync())!;
         await page.Mouse.MoveAsync(box.X + box.Width / 2, box.Y + box.Height / 2);
         await page.Mouse.DownAsync();
@@ -111,12 +111,12 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await handle.PressAsync("ArrowDown");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Resize:11:00-13:00:Occurrence:False");
         await Expect(handle).ToBeFocusedAsync();
-        await ListenerWait.ForAsync(page, ".flare-resizable__handle", "keydown");
+        await ListenerWait.ForAsync(page, $".{Css.Classes.Resizable.Handle}", "keydown");
         await handle.PressAsync("ArrowDown");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Resize:11:00-13:30:Occurrence:False");
         await Expect(handle).ToBeFocusedAsync();
         await page.Locator("#reject").ClickAsync();
-        var button = page.Locator(".flare-scheduler__event-body");
+        var button = page.Locator($".{Css.Classes.Scheduler.EventBody}");
         await button.PressAsync("Control+ArrowDown");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Move:11:30-14:00:Occurrence:True");
         await Expect(button).ToBeFocusedAsync();
@@ -128,7 +128,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context);
         await page.Locator("#series").ClickAsync();
-        var button = page.Locator(".flare-scheduler__event-body");
+        var button = page.Locator($".{Css.Classes.Scheduler.EventBody}");
         await Expect(button).ToHaveAttributeAsync("data-scheduler-event", "provider-instance");
         await button.PressAsync("Control+ArrowDown");
         var dialog = page.GetByRole(AriaRole.Dialog);

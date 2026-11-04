@@ -14386,5 +14386,53 @@ namespace Flare.Gallery.Resources {
         public static string Dialog_CloseGuardOpen { get { return ResourceManager.GetString("Dialog_CloseGuardOpen", resourceCulture); } }
         /// <summary>Instructions for editing, saving and discarding changes in the protected dialog.</summary>
         public static string Dialog_CloseGuardHint { get { return ResourceManager.GetString("Dialog_CloseGuardHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Title { get { return ResourceManager.GetString("Scheduler_Title", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Subtitle { get { return ResourceManager.GetString("Scheduler_Subtitle", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Interactive { get { return ResourceManager.GetString("Scheduler_Interactive", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_InteractiveHint { get { return ResourceManager.GetString("Scheduler_InteractiveHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_CustomView { get { return ResourceManager.GetString("Scheduler_CustomView", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_CustomViewHint { get { return ResourceManager.GetString("Scheduler_CustomViewHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_CustomTokens { get { return ResourceManager.GetString("Scheduler_CustomTokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Provider { get { return ResourceManager.GetString("Scheduler_Provider", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_ProviderHint { get { return ResourceManager.GetString("Scheduler_ProviderHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_ProviderStatus { get { return ResourceManager.GetString("Scheduler_ProviderStatus", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Recurrence { get { return ResourceManager.GetString("Scheduler_Recurrence", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_RecurrenceHint { get { return ResourceManager.GetString("Scheduler_RecurrenceHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Planning { get { return ResourceManager.GetString("Scheduler_Planning", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Review { get { return ResourceManager.GetString("Scheduler_Review", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Conference { get { return ResourceManager.GetString("Scheduler_Conference", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Standup { get { return ResourceManager.GetString("Scheduler_Standup", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_RoomA { get { return ResourceManager.GetString("Scheduler_RoomA", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_RoomB { get { return ResourceManager.GetString("Scheduler_RoomB", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Scheduler_Saved { get { return ResourceManager.GetString("Scheduler_Saved", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Gantt_Tokens { get { return ResourceManager.GetString("Gantt_Tokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Gantt_TokensHint { get { return ResourceManager.GetString("Gantt_TokensHint", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Gantt_CustomTokens { get { return ResourceManager.GetString("Gantt_CustomTokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Kanban_Tokens { get { return ResourceManager.GetString("Kanban_Tokens", resourceCulture); } }
+        /// <summary>Localized scheduler or satellite token preview text.</summary>
+        public static string Kanban_CustomTokens { get { return ResourceManager.GetString("Kanban_CustomTokens", resourceCulture); } }
     }
 }

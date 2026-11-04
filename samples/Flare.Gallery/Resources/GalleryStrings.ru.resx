@@ -4843,4 +4843,28 @@
   <data name="Dialog_CloseGuardHint" xml:space="preserve">
     <value>Измените имя, затем нажмите Escape, фон, крестик или «Отмена». «Продолжить редактирование» сохраняет ввод, «Отменить изменения» закрывает окно без сохранения. «Сохранить» обновляет имя и сразу закрывает окно. Неизмененная форма закрывается без вопроса.</value>
   </data>
+  <data name="Scheduler_Title" xml:space="preserve"><value>Планировщик</value></data>
+  <data name="Scheduler_Subtitle" xml:space="preserve"><value>Календарное планирование с вашей моделью событий, загрузкой видимого диапазона и переиспользуемыми видами.</value></data>
+  <data name="Scheduler_Interactive" xml:space="preserve"><value>Виды и редактирование</value></data>
+  <data name="Scheduler_InteractiveHint" xml:space="preserve"><value>Выберите интервал для создания события. Переносите его за ручку, меняйте длительность нижним краем или используйте F2, Delete и Ctrl+стрелки. Приложение применяет предложенные изменения.</value></data>
+  <data name="Scheduler_CustomView" xml:space="preserve"><value>Использовать свой вид</value></data>
+  <data name="Scheduler_CustomViewHint" xml:space="preserve"><value>Свой вид объединяет готовую повестку с содержимым приложения.</value></data>
+  <data name="Scheduler_CustomTokens" xml:space="preserve"><value>Переопределить токены планировщика</value></data>
+  <data name="Scheduler_Provider" xml:space="preserve"><value>Загрузка видимого диапазона</value></data>
+  <data name="Scheduler_ProviderHint" xml:space="preserve"><value>Источник представляет 50 000 событий и возвращает только видимый диапазон. Экземпляры повторяющихся событий уже подготовлены сервером.</value></data>
+  <data name="Scheduler_ProviderStatus" xml:space="preserve"><value>В источнике {0:N0} событий; получено {1:N0} за {2:d} - {3:d}.</value></data>
+  <data name="Scheduler_Recurrence" xml:space="preserve"><value>Необязательное локальное повторение</value></data>
+  <data name="Scheduler_RecurrenceHint" xml:space="preserve"><value>Этот пример явно подключает адаптер Ical. Обычный планировщик может получать готовые экземпляры от сервера.</value></data>
+  <data name="Scheduler_Planning" xml:space="preserve"><value>Планирование</value></data>
+  <data name="Scheduler_Review" xml:space="preserve"><value>Обсуждение дизайна</value></data>
+  <data name="Scheduler_Conference" xml:space="preserve"><value>Конференция</value></data>
+  <data name="Scheduler_Standup" xml:space="preserve"><value>Ежедневная встреча</value></data>
+  <data name="Scheduler_RoomA" xml:space="preserve"><value>Студия</value></data>
+  <data name="Scheduler_RoomB" xml:space="preserve"><value>Переговорная</value></data>
+  <data name="Scheduler_Saved" xml:space="preserve"><value>Изменение применено: {0}.</value></data>
+  <data name="Gantt_Tokens" xml:space="preserve"><value>Переопределение токенов темы</value></data>
+  <data name="Gantt_TokensHint" xml:space="preserve"><value>По умолчанию график использует базовые токены темы. Переключатель применяет независимую запись токенов через стандартный сервис темы.</value></data>
+  <data name="Gantt_CustomTokens" xml:space="preserve"><value>Переопределить токены Gantt</value></data>
+  <data name="Kanban_Tokens" xml:space="preserve"><value>Переопределение токенов темы</value></data>
+  <data name="Kanban_CustomTokens" xml:space="preserve"><value>Переопределить токены Kanban</value></data>
 </root>

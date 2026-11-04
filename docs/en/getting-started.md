@@ -428,4 +428,5 @@ every row must be in the DOM for the browser's own find or for printing.
 
 - [Architecture](architecture.md) - modules, tokens and services in detail
 - [Theme creation](theme-creation-guide.md) - design tokens, palettes, custom themes
+- [Scheduler](scheduler.md) - event models, windowed loading, editing and optional recurrence
 - [Gallery](https://jrfrigat.github.io/Flare/) - live examples of every component

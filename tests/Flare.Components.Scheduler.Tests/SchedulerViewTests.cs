@@ -8,6 +8,22 @@ namespace Flare.Components.Scheduler.Tests;
 public sealed class SchedulerViewTests : FlareTestContext
 {
     [Fact]
+    public void CalendarIndexesEventsOnceWhenRenderingTwelveMonths()
+    {
+        var events = new CountingEvents([new("One", new(2026, 11, 4))]);
+        Render<FlareCalendar>(p => p.Add(x => x.ViewDate, new DateOnly(2026, 1, 1))
+            .Add(x => x.MonthCount, 12).Add(x => x.Events, events));
+        Assert.Equal(1, events.Enumerations);
+    }
+    private sealed class CountingEvents(CalendarEvent[] events) : IReadOnlyList<CalendarEvent>
+    {
+        public int Enumerations { get; private set; }
+        public int Count => events.Length;
+        public CalendarEvent this[int index] => events[index];
+        public IEnumerator<CalendarEvent> GetEnumerator() { Enumerations++; return ((IEnumerable<CalendarEvent>)events).GetEnumerator(); }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+    [Fact]
     public void FallBackGridDisplaysBothOffsetsAndPositiveCrossFoldDuration()
     {
         var item = Event with { Start = new(2026, 11, 1, 1, 30, 0, TimeSpan.FromHours(-4)),
@@ -15,10 +31,10 @@ public sealed class SchedulerViewTests : FlareTestContext
         var cut = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
             .Add(x => x.Events, new[] { item }).Add(x => x.Date, new DateOnly(2026, 11, 1))
             .Add(x => x.View, SchedulerView.Day).Add(x => x.TimeZone, TimeZoneInfo.FindSystemTimeZoneById("America/New_York")));
-        Assert.Equal(50, cut.FindAll(".flare-scheduler__slot").Count);
+        Assert.Equal(50, cut.FindAll($".{Css.Classes.Scheduler.Slot}").Count);
         Assert.Contains("-04:00", cut.Markup);
         Assert.Contains("-05:00", cut.Markup);
-        Assert.Contains("*1.5)", cut.Find(".flare-scheduler__event").GetAttribute("style"));
+        Assert.Contains("*1.5)", cut.Find($".{Css.Classes.Scheduler.Event}").GetAttribute("style"));
     }
     private static readonly DateOnly Date = new(2026, 11, 4);
     private static readonly SchedulerEventData Event = new()
@@ -47,9 +63,9 @@ public sealed class SchedulerViewTests : FlareTestContext
             .Add(x => x.TimeZone, TimeZoneInfo.Utc).Add(x => x.Culture, CultureInfo.GetCultureInfo("en-GB")));
         if (view != SchedulerView.Timeline) Assert.Contains("Planning", cut.Markup);
         Assert.Same(Event, Assert.Single(cut.Instance.Snapshot.Occurrences).Item);
-        Assert.Equal(columns, cut.FindAll(".flare-scheduler__day").Count);
+        Assert.Equal(columns, cut.FindAll($".{Css.Classes.Scheduler.Day}").Count);
         if (view is SchedulerView.Month or SchedulerView.Year)
-            Assert.Equal(view == SchedulerView.Year ? 12 : 1, cut.FindAll(".flare-calendar__month").Count);
+            Assert.Equal(view == SchedulerView.Year ? 12 : 1, cut.FindAll($".{Css.Classes.Calendar.Month}").Count);
         if (view == SchedulerView.Timeline) Assert.Single(cut.FindComponents<FlareGantt>());
     }
 
@@ -100,7 +116,7 @@ public sealed class SchedulerViewTests : FlareTestContext
         var cut = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
             .Add(x => x.Events, all).Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Day)
             .Add(x => x.TimeZone, TimeZoneInfo.Utc));
-        Assert.Single(cut.FindAll(".flare-scheduler__event-body"));
+        Assert.Single(cut.FindAll($".{Css.Classes.Scheduler.EventBody}"));
         Assert.Single(cut.Instance.Snapshot.Occurrences);
     }
 
@@ -113,9 +129,9 @@ public sealed class SchedulerViewTests : FlareTestContext
             .Add(x => x.ShowNavigation, false).Add(x => x.OnEventClick, (CalendarEvent value) => selected = value)
             .Add(x => x.EventTemplate, value => builder => builder.AddContent(0, "Custom " + value.Title)));
         Assert.Contains("Custom Task", cut.Markup);
-        cut.Find(".flare-calendar__event").KeyDown("Enter");
+        cut.Find($".{Css.Classes.Calendar.Event}").KeyDown("Enter");
         Assert.Same(item, selected);
         cut.Render(p => p.Add(x => x.ViewDate, Date.AddMonths(1)));
-        Assert.Empty(cut.FindAll(".flare-calendar__event"));
+        Assert.Empty(cut.FindAll($".{Css.Classes.Calendar.Event}"));
     }
 }

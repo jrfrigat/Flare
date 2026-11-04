@@ -48,23 +48,30 @@
     // side resolves the var()/light-dark() against the live theme before applying it as strokeStyle.
     private string StrokeCssColor =>
         StrokeColor.Value
-        ?? (StrokeColor.RoleName is { } r ? $"var(--flare-color-{r})" : "var(--flare-color-on-surface)");
+        ?? (StrokeColor.RoleName is { } r && r != "on-surface" ? $"var(--flare-color-{r})"
+            : $"var({Css.Tokens.Media.Vars.OnSurface}, var({Css.Tokens.Color.OnSurface}))");
 
     private readonly string _padId = Guid.NewGuid().ToString("N");
     private ElementReference _canvas;
     private IJSObjectReference? _module;
     private DotNetObjectReference<FlareSignaturePad>? _dotNetRef;
+    private (FlareColor Color, double Width, bool Pressure)? _appliedStyle;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
         try
         {
-            _module = await JS.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components.Media/js/signature.js");
-            _dotNetRef = DotNetObjectReference.Create(this);
-            await _module.InvokeVoidAsync("init", _padId, _canvas, _dotNetRef);
+            if (_module is null)
+            {
+                _module = await JS.InvokeAsync<IJSObjectReference>(
+                    "import", "./_content/Flare.Components.Media/js/signature.js");
+                _dotNetRef = DotNetObjectReference.Create(this);
+                await _module.InvokeVoidAsync("init", _padId, _canvas, _dotNetRef);
+            }
+            var style = (StrokeColor, StrokeWidth, PressureSensitive);
+            if (_appliedStyle is { } applied && applied.Equals(style)) return;
             await _module.InvokeVoidAsync("setStrokeStyle", _padId, StrokeCssColor, StrokeWidth, PressureSensitive);
+            _appliedStyle = style;
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }

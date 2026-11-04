@@ -12,9 +12,12 @@
                          ItemKey="r => r" ItemRow="r => r" ItemSpan="r => _range" />
     </FlareGantt>
     <FlareKanban id="board" Columns="_columns" Cards="_cards" />
+    <button id="ink" @onclick="Ink">Ink</button>
+    <FlareSignaturePad id="signature" Width="200" Height="100" />
 </FlareThemeProvider>
 
 @code {
+    private void Ink() => Theme.SetCustomToken(Css.Tokens.Color.OnSurface, "rgb(1, 128, 192)");
     private readonly GanttSpan _range = GanttSpan.FromDays(new(2026, 11, 1), new(2026, 11, 3));
     private readonly string[] _rows = ["one"];
     private readonly KanbanColumn[] _columns = [new("todo", "To do")];

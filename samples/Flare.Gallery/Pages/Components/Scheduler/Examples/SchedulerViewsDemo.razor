@@ -1,0 +1,76 @@
+@using Flare.Components.Scheduler
+@using Flare.Theming
+@using static global::Flare.Css.Tokens.Vars
+@inject IThemeService Theme
+@implements IDisposable
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText>@GalleryStrings.Scheduler_InteractiveHint</FlareText>
+    <FlareSwitch Label="@GalleryStrings.Scheduler_CustomView" @bind-Value="_customView" />
+    <FlareSwitch Label="@GalleryStrings.Scheduler_CustomTokens" Value="_customTokens" ValueChanged="SetTokens" />
+    <FlareStack Height="36rem">
+        <FlareScheduler TItem="Booking" Mapping="Mapping" Events="_bookings" Date="Today"
+                        Resources="_rooms" Editable OnChange="Save" ViewTemplate="@(_customView ? CustomView : null)">
+            <EventTemplate Context="occurrence">
+                <FlareText Element="span" Inherit="true">@occurrence.Item.Caption</FlareText>
+            </EventTemplate>
+        </FlareScheduler>
+    </FlareStack>
+    <FlareText role="status">@_status</FlareText>
+</FlareStack>
+
+@code {
+    private sealed record Booking(string Id, string Caption, DateTimeOffset From, DateTimeOffset Until,
+        string? Room, SchedulerDateRange? Days = null);
+    private static DateOnly Today => DateOnly.FromDateTime(DateTime.Now);
+    private static readonly SchedulerMapping<Booking> Mapping = new()
+    {
+        Key = b => b.Id, Title = b => b.Caption, Start = b => b.From, End = b => b.Until,
+        ResourceKey = b => b.Room, AllDay = b => b.Days
+    };
+    private readonly SchedulerResource[] _rooms =
+        [new("a", GalleryStrings.Scheduler_RoomA), new("b", GalleryStrings.Scheduler_RoomB)];
+    private readonly List<Booking> _bookings =
+    [
+        new("planning", GalleryStrings.Scheduler_Planning, At(9), At(11), "a"),
+        new("review", GalleryStrings.Scheduler_Review, At(10), At(12), "a"),
+        new("standup", GalleryStrings.Scheduler_Standup, At(13), At(14), "b"),
+        new("conference", GalleryStrings.Scheduler_Conference, default, default, "b", new(Today, Today.AddDays(2)))
+    ];
+    private static DateTimeOffset At(int hour) => SchedulerClock.At(Today, new TimeOnly(hour, 0), TimeZoneInfo.Local);
+    private bool _customView, _customTokens;
+    private string? _status;
+    private ThemeTokenPreview? _preview;
+    private RenderFragment<SchedulerViewContext<Booking>> CustomView => context => @<FlareStack Gap="FlareSpacing.Small">
+        <FlareText>@GalleryStrings.Scheduler_CustomViewHint</FlareText>
+        <FlareSchedulerAgenda TItem="Booking" Context="context" />
+    </FlareStack>;
+    private void Save(SchedulerChangeEventArgs<Booking> change)
+    {
+        if (change.Original is { } original) _bookings.Remove(original.Item);
+        if (change.Action != SchedulerEditAction.Delete)
+        {
+            var d = change.Data;
+            _bookings.Add(new(d.Key, d.Title, d.Start, d.End, d.ResourceKey, d.AllDay));
+        }
+        _status = string.Format(GalleryStrings.Scheduler_Saved, change.Data.Title);
+    }
+    private void SetTokens(bool enabled)
+    {
+        _customTokens = enabled;
+        _preview?.Dispose();
+        _preview = null;
+        if (!enabled) return;
+        var record = new SchedulerTokens
+        {
+            EventSurface = Var(global::Flare.Css.Tokens.Color.TertiaryContainer),
+            EventColor = Var(global::Flare.Css.Tokens.Color.OnTertiaryContainer),
+            SlotHeight = Var(global::Flare.Css.Tokens.Spacing.S20)
+        };
+        var keys = new[] { global::Flare.Css.Tokens.Scheduler.EventSurface, global::Flare.Css.Tokens.Scheduler.EventColor,
+            global::Flare.Css.Tokens.Scheduler.SlotHeight };
+        _preview = new(Theme);
+        _preview.Apply(CssVarMap.FlattenTokens(record).Where(p => keys.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value));
+    }
+    public void Dispose() => _preview?.Dispose();
+}

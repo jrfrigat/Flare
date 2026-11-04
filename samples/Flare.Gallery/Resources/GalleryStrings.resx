@@ -4843,4 +4843,28 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Dialog_CloseGuardHint" xml:space="preserve">
     <value>Edit the name, then press Escape, click the backdrop, close button or Cancel. Keep editing preserves your input; Discard changes closes without saving. Save updates the name and closes immediately. An unchanged form closes without a prompt.</value>
   </data>
+  <data name="Scheduler_Title" xml:space="preserve"><value>Scheduler</value></data>
+  <data name="Scheduler_Subtitle" xml:space="preserve"><value>Calendar planning with your own event model, windowed providers and reusable views.</value></data>
+  <data name="Scheduler_Interactive" xml:space="preserve"><value>Views and editing</value></data>
+  <data name="Scheduler_InteractiveHint" xml:space="preserve"><value>Select a slot to create an event. Drag its handle to move it, resize the bottom edge, or use F2, Delete and Ctrl+arrows. The application applies the proposed changes.</value></data>
+  <data name="Scheduler_CustomView" xml:space="preserve"><value>Use a custom view</value></data>
+  <data name="Scheduler_CustomViewHint" xml:space="preserve"><value>A custom projection composes the shared agenda with application content.</value></data>
+  <data name="Scheduler_CustomTokens" xml:space="preserve"><value>Customize scheduler tokens</value></data>
+  <data name="Scheduler_Provider" xml:space="preserve"><value>Windowed provider</value></data>
+  <data name="Scheduler_ProviderHint" xml:space="preserve"><value>The source represents 50,000 events and returns only the visible window. Recurring occurrences arrive ready from the backend.</value></data>
+  <data name="Scheduler_ProviderStatus" xml:space="preserve"><value>{0:N0} events in the source; {1:N0} returned for {2:d} - {3:d}.</value></data>
+  <data name="Scheduler_Recurrence" xml:space="preserve"><value>Optional local recurrence</value></data>
+  <data name="Scheduler_RecurrenceHint" xml:space="preserve"><value>This example opts into the Ical adapter. A backend can supply ready occurrences to the ordinary scheduler.</value></data>
+  <data name="Scheduler_Planning" xml:space="preserve"><value>Planning session</value></data>
+  <data name="Scheduler_Review" xml:space="preserve"><value>Design review</value></data>
+  <data name="Scheduler_Conference" xml:space="preserve"><value>Conference</value></data>
+  <data name="Scheduler_Standup" xml:space="preserve"><value>Daily stand-up</value></data>
+  <data name="Scheduler_RoomA" xml:space="preserve"><value>Studio</value></data>
+  <data name="Scheduler_RoomB" xml:space="preserve"><value>Meeting room</value></data>
+  <data name="Scheduler_Saved" xml:space="preserve"><value>Change applied: {0}.</value></data>
+  <data name="Gantt_Tokens" xml:space="preserve"><value>Theme token overrides</value></data>
+  <data name="Gantt_TokensHint" xml:space="preserve"><value>The chart uses base theme tokens by default. This switch applies an independent token record through the standard theme service.</value></data>
+  <data name="Gantt_CustomTokens" xml:space="preserve"><value>Use custom Gantt tokens</value></data>
+  <data name="Kanban_Tokens" xml:space="preserve"><value>Theme token overrides</value></data>
+  <data name="Kanban_CustomTokens" xml:space="preserve"><value>Use custom Kanban tokens</value></data>
 </root>

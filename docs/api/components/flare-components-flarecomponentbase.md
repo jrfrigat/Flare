@@ -166,6 +166,13 @@ This component exposes no documented public methods.
 - `FlareRibbonSeparator`
 - `FlareRibbonTab`
 - `FlareRichTextEditor`
+- `FlareScheduler`
+- `FlareSchedulerAgenda`
+- `FlareSchedulerCalendar`
+- `FlareSchedulerEditor`
+- `FlareSchedulerEvent`
+- `FlareSchedulerTimeGrid`
+- `FlareSchedulerTimeline`
 - `FlareScrollTop`
 - `FlareSection`
 - `FlareSelect`

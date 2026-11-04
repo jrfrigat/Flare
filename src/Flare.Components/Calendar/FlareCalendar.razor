@@ -146,7 +146,6 @@
     protected override void OnInitialized()
     {
         _viewDate = ViewDate ?? InitialDate ?? Today;
-        RebuildCells();
     }
 
     protected override void OnParametersSet()
@@ -159,17 +158,18 @@
     private void RebuildCells()
     {
         _allCells = [];
+        var events = Events?.ToLookup(item => item.Date);
         var count = Math.Max(1, MonthCount);
         for (int mi = 0; mi < count; mi++)
-            _allCells.Add(BuildMonthCells(_viewDate.AddMonths(mi)));
+            _allCells.Add(BuildMonthCells(_viewDate.AddMonths(mi), events));
     }
 
-    private List<CalendarCell> BuildMonthCells(DateOnly monthDate)
+    private List<CalendarCell> BuildMonthCells(DateOnly monthDate, ILookup<DateOnly, CalendarEvent>? byDate)
     {
         return CalendarGrid.Days(monthDate, _firstDayOfWeek).Select(date =>
         {
             var other = date.Year != monthDate.Year || date.Month != monthDate.Month;
-            var events = other ? new List<CalendarEvent>() : Events?.Where(e => e.Date == date).ToList() ?? [];
+            var events = other ? new List<CalendarEvent>() : byDate?[date].ToList() ?? [];
             return new CalendarCell(date, events, other);
         }).ToList();
     }

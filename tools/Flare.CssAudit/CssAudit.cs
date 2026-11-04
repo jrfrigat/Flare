@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Flare.Tools.CssAudit;
 
@@ -251,8 +252,10 @@ public static class CssAudit
             var css = Program.CollectCssClasses(Path.Combine(dir, "wwwroot", "css"));
             var classesDir = Path.Combine(dir, "Css", "Classes");
             var constants = Directory.Exists(classesDir) ? Program.CollectConstants(classesDir) : new ConstSet();
+            var dependencyClasses = DependencyClasses(dir);
 
-            foreach (var cls in css.Keys.Where(c => !constants.Values.Contains(c) && !coreConstants.Values.Contains(c)))
+            foreach (var cls in css.Keys.Where(c => !constants.Values.Contains(c) && !coreConstants.Values.Contains(c)
+                         && !dependencyClasses.Contains(c)))
                 plus.Add($"[+] {name}: {cls}  (in {string.Join(", ", css[cls])}, no constant)");
 
             // A constant with no rule is only dead if nothing emits it either; while a component puts it
@@ -281,6 +284,29 @@ public static class CssAudit
             NamesSpelledOut = spelledOut,
             StylingHooks = hooks,
         };
+    }
+
+    private static HashSet<string> DependencyClasses(string directory)
+    {
+        var classes = new HashSet<string>(StringComparer.Ordinal);
+        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { Path.GetFullPath(directory) };
+        void Visit(string dir)
+        {
+            foreach (var project in Directory.EnumerateFiles(dir, "*.csproj"))
+            foreach (var reference in XDocument.Load(project).Descendants("ProjectReference"))
+            {
+                var include = (string?)reference.Attribute("Include");
+                if (string.IsNullOrEmpty(include) || include.Contains('$')) continue;
+                var target = Path.GetFullPath(Path.Combine(dir, include.Replace('\\', Path.DirectorySeparatorChar)));
+                var dependency = Path.GetDirectoryName(target)!;
+                if (!File.Exists(target) || !visited.Add(dependency)) continue;
+                var registry = Path.Combine(dependency, "Css", "Classes");
+                if (Directory.Exists(registry)) classes.UnionWith(Program.CollectConstants(registry).Values);
+                Visit(dependency);
+            }
+        }
+        Visit(directory);
+        return classes;
     }
 
     // Matches a var() on an always-emitted SEMANTIC token family (color/shape/spacing/typescale/

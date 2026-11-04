@@ -37,6 +37,9 @@ public partial class FlareScheduler<TItem>
         { DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday };
     /// <summary>Start of working hours; earlier slots stay selectable but are shaded.</summary>
     [Parameter] public TimeOnly WorkStart { get; set; } = new(9, 0);
+    /// <summary>Initial time-grid scroll target. Null uses WorkStart; midnight keeps the top. Existing user scroll is preserved.</summary>
+    [Parameter] public TimeOnly? InitialScrollTime { get; set; }
+    internal ElementReference ViewportElement => _viewport;
     /// <summary>End of working hours, exclusive.</summary>
     [Parameter] public TimeOnly WorkEnd { get; set; } = new(18, 0);
     /// <summary>Resource rows. Unknown resource keys are retained as additional rows.</summary>

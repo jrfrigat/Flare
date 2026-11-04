@@ -9,6 +9,7 @@ public partial class FlareScheduler<TItem>
     [Inject] private TimeProvider Clock { get; set; } = default!;
     [Inject] private Services.IUiJsService Ui { get; set; } = default!;
     private ElementReference _root;
+    private ElementReference _viewport;
     private DateOnly _date, _dateParameter;
     private SchedulerView _view, _viewParameter;
     private bool _initialized, _loading, _disposed;
@@ -140,6 +141,7 @@ public partial class FlareScheduler<TItem>
         if (_editorReference is { } editor) await editor.CancelAsync();
         try { await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         await base.DisposeAsync();
     }
 }

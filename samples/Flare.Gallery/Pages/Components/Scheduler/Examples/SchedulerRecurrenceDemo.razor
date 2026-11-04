@@ -1,0 +1,23 @@
+@using Flare.Components.Scheduler
+@using Flare.Components.Scheduler.Ical
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText>@GalleryStrings.Scheduler_RecurrenceHint</FlareText>
+    <FlareStack Height="32rem">
+        <FlareScheduler TItem="SchedulerEventData" Mapping="SchedulerMappings.EventData" Events="_series"
+                        RecurrenceExpander="IcalSchedulerRecurrenceExpander.Default" TimeZone="TimeZoneInfo.Utc"
+                        OnLoadError="@(error => Console.Error.WriteLine(error))" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private readonly SchedulerEventData[] _series =
+    [
+        new()
+        {
+            Key = "daily", Title = GalleryStrings.Scheduler_Standup,
+            Start = DateTimeOffset.UtcNow.Date.AddHours(9), End = DateTimeOffset.UtcNow.Date.AddHours(9.5),
+            TimeZoneId = "UTC", RecurrenceRule = "FREQ=DAILY;COUNT=14"
+        }
+    ];
+}

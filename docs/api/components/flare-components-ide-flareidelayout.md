@@ -45,7 +45,7 @@ Returns: `ValueTask`.
 
 ### `ResizePanel(string position, int sizePx)`
 
-Invoked from JS during a divider drag with the new region size in pixels.
+Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.
 Returns: `void`.
 
 | Parameter | Type | Description |

@@ -7,6 +7,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- `Flare.Components.Scheduler` provides seven calendar views, windowed providers over application models, resources, templates and cancellable editing. It composes Calendar, Gantt and the shared drag/resize controls. Backend occurrences work without an RFC dependency; `Flare.Components.Scheduler.Ical` adds optional bounded local recurrence. See the EN/RU Scheduler guide and Gallery examples.
+- `CssVarMap.FlattenTokens` maps independent `[CssVar]` records into the normal theme token map, without a core dependency on component packages. Gantt and the other add-ons expose typed override records.
 - `FlareDialogCloseGuard` confirms discarding unsaved changes, using the surrounding `EditContext` or an explicit flag, localized default text, and optional custom labels or confirmation handler. `DialogCloseContext` lets content register its own guards. Gallery examples and the EN/RU dialog guide cover editing, saving, cancelling and navigation.
 - `FlareEmptyState.HeadingLevel` sets the level of the title's heading, 1 to 6, so an empty state right under a page's `h1` can be an `h2` and the outline skips no level; the default stays 3 and the title looks the same at every level.
 - `TabsTokens.InactiveHoverColor` (`--flare-tabs-inactive-hover-color`) colors an inactive tab's label and icon under the pointer; it defaults to the resting inactive color, and Material Design 3 Expressive sets on-surface as its spec asks.
@@ -15,6 +17,8 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Changed
 
+- Add-on component tokens now fall back to semantic base tokens where used, and inherit `DesignTokens.Extended` or theme-service overrides. Themes need no add-on-specific values. QR and barcode scan colors retain their scan-safe defaults.
+- **Breaking:** IDE resizing uses `FlareSplitter`; remove direct `IIdeJsService`/`IdeJsService` and `flare-ide.js` usages. `AddFlareIde` remains compatible; shared interaction services come from `AddFlare`. Theme customizations targeting the removed private IDE resizer classes should use Splitter tokens.
 - **Breaking:** Gantt captions and announcements now follow `CultureInfo.CurrentUICulture` through `GanttStrings`, like the other Flare components. Remove `FlareGantt.Texts`, `EffectiveTexts` and `GanttTexts` usages; use `GanttStrings.Describe(validation, name)` for dependency messages. `FlareGantt.Culture` continues to format dates and the axis.
 
 - **Breaking:** replace `FlareDialogInstance` and `DialogReference` `Close`/`Cancel` calls with awaited `CloseAsync`/`CancelAsync`. They now consult `BeforeClose` and registered guards, return whether closure was accepted, and retain the first accepted result. Inline dialogs expose `CloseAsync`; internal navigation uses the same guards through the new `Programmatic` and `Navigation` close reasons.
@@ -22,6 +26,7 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Fixed
 
+- Calendar indexes its events once per parameter update, including the twelve-month view. SignaturePad resolves semantic stroke colors against the current theme for every new stroke and applies changed stroke parameters after rendering.
 - Dialogs, sheets, confirm/alert/prompt windows, drawers, overlays and other backdrop surfaces require both press and release on the same backdrop before dismissing. Selecting text or dragging from content onto the backdrop no longer closes the surface.
 - A query opened in `FlareQueryBuilder` keeps the grouping and ordering of each function-call column: two calls of the same function on different fields (`lower(r.route)`, `lower(r.method)`) are no longer both grouped, and an ordering by a call without an output name is no longer dropped.
 - `FlareDataGrid`'s status region states the new row count when the page hands it another `Items` list, as it does after a column filter, instead of keeping the count from before; the first render and an unchanged count announce nothing.

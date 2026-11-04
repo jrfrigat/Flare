@@ -49,7 +49,7 @@ Rows and items are **your own types** with selectors - no wrappers. A **Kind** i
 ## Components
 
 - `FlareGantt` - the shared axis: `Range`, `Scale`, `UnitWidth`, `RowHeight`, `BarInset`, `SideWidth`, `Culture`,
-  `NonWorking`, chart-wide `Markers` and `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`, `Texts`,
+  `NonWorking`, chart-wide `Markers` and `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`,
   `FillWidth`, `Virtualize` (draws only the rows and columns near the view), `Endless` + `@bind-Range`,
   `ResizableSide` + `SideWidthChanged` (the column edge is a `FlareSplitter`), `ScrollTo(moment)`.
 - `FlareGanttPanel<TRow, TItem>` - one projection. Any number of panels share the axis, the scroll and the

@@ -1,4 +1,5 @@
 @typeparam TItem
+@using Flare.Icons
 @inherits FlareComponentBase
 
 <div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style" aria-label="@(AriaLabel ?? SchedulerStrings.Schedule)"
@@ -10,9 +11,13 @@
             else
             {
                 <FlareStack Row="true" Wrap="true">
-                    <FlareButton OnClick="() => NavigateAsync(-1)" AriaLabel="@SchedulerStrings.Previous" Icon="FlareIcons.ChevronLeft" />
+                    <FlareButton OnClick="() => NavigateAsync(-1)" AriaLabel="@SchedulerStrings.Previous">
+                        <FlareIconView Value="FlareIcons.ChevronLeft" />
+                    </FlareButton>
                     <FlareButton OnClick="TodayAsync">@SchedulerStrings.Today</FlareButton>
-                    <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerStrings.Next" Icon="FlareIcons.ChevronRight" />
+                    <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerStrings.Next">
+                        <FlareIconView Value="FlareIcons.ChevronRight" />
+                    </FlareButton>
                     <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@Caption</FlareText>
                     @if (Editable && OnChange.HasDelegate)
                     {
@@ -32,7 +37,7 @@
             }
         </div>
     }
-    <div class="@Css.Classes.Scheduler.Viewport" data-flare-focus-target="[data-scheduler-focus-entry]" aria-busy="@(_loading ? "true" : "false")">
+    <div @ref="_viewport" class="@Css.Classes.Scheduler.Viewport" data-flare-focus-target="[data-scheduler-focus-entry]" aria-busy="@(_loading ? "true" : "false")">
         @if (_loading) { <div role="status" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.Loading</div> }
         else if (_error is not null) { <div role="alert" class="@Css.Classes.Scheduler.Status">@SchedulerStrings.LoadError</div> }
         else if (ViewTemplate is not null) { @ViewTemplate(Snapshot) }

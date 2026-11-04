@@ -570,6 +570,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for day headers, month names and the first day of week. Default = CurrentUICulture.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<CalendarEvent>?", null, @"Custom event content inside the calendar's existing selection control.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"Events", @"IReadOnlyList<CalendarEvent>?", null, @"Events to display on the calendar grid cells.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"InitialDate", @"DateOnly?", null, @"Date used to determine the initial calendar view month.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"MaxVisibleEvents", @"int", @"3", @"Maximum events shown per day cell. Prevents rendering DoS from large event lists.", null, false, false, false, @"FlareCalendar"),
@@ -578,6 +579,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnEventClick", @"EventCallback<CalendarEvent>", null, @"Callback raised when the user clicks on a calendar event.", null, false, true, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"SelectedDate", @"DateOnly?", null, @"Currently selected date value.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"SelectedDateChanged", @"EventCallback<DateOnly>", null, @"Callback raised when the selected date changes.", null, false, true, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"ShowNavigation", @"bool", @"true", @"Shows the built-in month navigation. Turn off when a parent supplies a shared toolbar.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"ViewDate", @"DateOnly?", null, @"Controlled visible month. Null preserves the InitialDate-based, internally navigated view.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"ViewDateChanged", @"EventCallback<DateOnly>", null, @"Raised when the visible month changes through the calendar navigation.", null, false, true, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -1842,6 +1846,13 @@ public static class ComponentApiRegistry
                 @"FlareRibbonSeparator",
                 @"FlareRibbonTab",
                 @"FlareRichTextEditor",
+                @"FlareScheduler",
+                @"FlareSchedulerAgenda",
+                @"FlareSchedulerCalendar",
+                @"FlareSchedulerEditor",
+                @"FlareSchedulerEvent",
+                @"FlareSchedulerTimeGrid",
+                @"FlareSchedulerTimeline",
                 @"FlareScrollTop",
                 @"FlareSection",
                 @"FlareSelect",
@@ -3399,7 +3410,6 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"SelectedKeyChanged", @"EventCallback<string?>", null, @"Raised when the selection changes.", null, false, true, false, @"FlareGantt"),
                 new ApiParameterInfo(@"SideWidth", @"string", @"""16rem""", @"Width of the row-header column as a CSS length.", null, false, false, false, @"FlareGantt"),
                 new ApiParameterInfo(@"SideWidthChanged", @"EventCallback<string>", null, @"Raised with the new row-header width as a CSS length in pixels when the user has dragged the edge, used a key on it or a step.", null, false, true, false, @"FlareGantt"),
-                new ApiParameterInfo(@"Texts", @"GanttTexts?", null, @"Texts to replace in announcements, refusals and labels; every text not set here comes from the package resources in Culture.", null, false, false, false, @"FlareGantt"),
                 new ApiParameterInfo(@"UnitWidth", @"double", @"40", @"Width of one axis unit in pixels.", null, false, false, false, @"FlareGantt"),
                 new ApiParameterInfo(@"Virtualize", @"bool", @"false", @"Renders only the rows near the visible part of each panel (plus a margin): a chart of hundreds of rows then costs as much as one screen of them. Needs the browser to report what is visible; until it does, the first screen is drawn. The window is cut from the chart's own layout rather than by Blazor's Virtualize: rows have different heights (one lane per overlapping bar) and the connectors are drawn at the rows' exact positions, while Virtualize places rows by an estimated size. The browser reports the vertical and horizontal view in one call per scroll, so a scroll costs one round trip on Blazor Server.", null, false, false, false, @"FlareGantt"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -3867,7 +3877,7 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"ResizePanel", @"ResizePanel(string position, int sizePx)", @"void", null, @"Invoked from JS during a divider drag with the new region size in pixels.",
+                new ApiMethodInfo(@"ResizePanel", @"ResizePanel(string position, int sizePx)", @"void", null, @"Sets a docked region size in pixels. Pointer and keyboard interaction are handled by FlareSplitter.",
                     new ApiMethodParameter[]
                     {
                         new ApiMethodParameter(@"position", @"string", @"The region being resized."),
@@ -5908,8 +5918,10 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Edge", @"ResizableEdge", @"ResizableEdge.Right", @"Which edge carries the drag handle. Default Right (width).", null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"InitialSize", @"string?", null, @"Initial size as a CSS length (for example 300px or 20rem), applied along the edge's axis: width for left/right, height for top/bottom.", null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"MaxSize", @"string?", null, @"Maximum size, with the same units and resolution as MinSize. A value below the resolved minimum is raised to it, so the range is never inverted.", null, false, false, false, @"FlareResizable"),
-                new ApiParameterInfo(@"MinSize", @"string?", null, @"Minimum size as a CSS length. px, rem, em, %, vw and vh are resolved against the parent box (percentages) or the viewport; an unsupported value is ignored rather than treated as pixels. The handle's own footprint is always a floor.", null, false, false, false, @"FlareResizable"),
+                new ApiParameterInfo(@"MinSize", @"string?", null, @"Minimum size as a CSS length. px, rem, em, %, vw and vh are resolved against the parent box (percentages) or the viewport. CSS var(), calc(), min(), max() and clamp() resolve in the element's CSS context; an unsupported value is ignored rather than treated as pixels. The handle's own footprint is always a floor.", null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"OnResized", @"EventCallback<string>", null, @"Invoked with the resulting size in pixels (for example 256px) after a drag, a step button, or Home/End.", null, false, true, false, @"FlareResizable"),
+                new ApiParameterInfo(@"ShowControls", @"bool", @"true", @"Shows single-click size buttons. A compact composition can hide them while retaining the keyboard-accessible handle.", null, false, false, false, @"FlareResizable"),
+                new ApiParameterInfo(@"Step", @"string?", null, @"CSS length added by arrow keys and single-click controls. Null keeps the 16px step; supports token expressions.", null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -5917,6 +5929,8 @@ public static class ComponentApiRegistry
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Moves keyboard focus to the resize handle.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnResizedCallback", @"OnResizedCallback(string newSize)", @"Task", null, null,
                     new ApiMethodParameter[]
@@ -6132,6 +6146,276 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareScheduler"] = new ApiComponentInfo(
+            @"FlareScheduler",
+            @"Flare.Components.FlareScheduler",
+            @"Flare.Components",
+            @"Calendar scheduling over application-owned events, composed from Calendar and Gantt projections.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of this scheduling surface.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for dates and the first weekday. Interface strings use CurrentUICulture independently.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Date", @"DateOnly", @"01/01/0001", @"Navigation date; default uses today's date in the display zone.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"DateChanged", @"EventCallback<DateOnly>", null, @"Reports navigation. With a delegate, Date remains authoritative.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Editable", @"bool", @"false", @"Enables creation, editor, move, resize and delete. The application must handle OnChange.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"EditorTemplate", @"RenderFragment<SchedulerEditContext<TItem>>?", null, @"Replaces the dialog body. Use its working copy and SaveAsync/CancelAsync commands.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerOccurrence<TItem>>?", null, @"Custom event content, retaining the surrounding interaction control.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Events", @"IEnumerable<TItem>?", null, @"Ready events, or series when a recurrence adapter is supplied. Ignored when EventsProvider is set.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"EventsProvider", @"Func<SchedulerDataRequest, Task<IEnumerable<TItem>>>?", null, @"Loads only the visible window; obsolete results are ignored even if the provider ignores cancellation.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"InitialScrollTime", @"TimeOnly?", null, @"Initial time-grid scroll target. Null uses WorkStart; midnight keeps the top. Existing user scroll is preserved.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Mapping", @"SchedulerMapping<TItem>", null, @"Selectors for the application's event model.", null, false, false, true, @"FlareScheduler"),
+                new ApiParameterInfo(@"MaximumEvaluationSteps", @"int", @"100000", @"Explicit local recurrence evaluation limit.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"MaximumOccurrences", @"int", @"10000", @"Explicit occurrence safety limit, applied after window filtering.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnChange", @"EventCallback<SchedulerChangeEventArgs<TItem>>", null, @"Receives accepted UI intents. Persist in the application or backend; set Cancel to refuse.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnEventSelected", @"EventCallback<SchedulerOccurrence<TItem>>", null, @"Reports event selection without mutating the item.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnLoadError", @"EventCallback<Exception>", null, @"Reports a provider/projection error; the built-in surface displays a localized failure.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnSlotSelected", @"EventCallback<SchedulerSlot>", null, @"Reports slot selection.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"RecurrenceExpander", @"ISchedulerRecurrenceExpander?", null, @"Optional client recurrence expansion. The default displays provider-owned occurrences unchanged.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Resources", @"IReadOnlyList<SchedulerResource>", null, @"Resource rows. Unknown resource keys are retained as additional rows.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ShowResizeControls", @"bool", @"false", @"Shows the shared resizable's single-click buttons in addition to its keyboard-accessible handle.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ShowToolbar", @"bool", @"true", @"Shows the default or templated navigation toolbar.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"SlotDuration", @"TimeSpan", @"00:30:00", @"Duration of a time-grid slot; must divide one day and be at least five minutes.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"TimeZone", @"TimeZoneInfo", null, @"Display zone. Timed events keep their instants; all-day dates do not move.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ToolbarTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Custom navigation content.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"View", @"SchedulerView", @"SchedulerView.Week", @"Initial or controlled projection.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ViewChanged", @"EventCallback<SchedulerView>", null, @"Reports view changes. With a delegate, View remains authoritative.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ViewTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Replaces a built-in projection using the same loaded snapshot and owner callbacks.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Views", @"IReadOnlyList<SchedulerView>", null, @"Views available in the default toolbar.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"WorkDays", @"IReadOnlySet<DayOfWeek>", null, @"Weekdays shown by WorkWeek and used to shade nonworking slots.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"WorkEnd", @"TimeOnly", @"18:00", @"End of working hours, exclusive.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"WorkStart", @"TimeOnly", @"09:00", @"Start of working hours; earlier slots stay selectable but are shaded.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"ApplyChangeAsync", @"ApplyChangeAsync(SchedulerEditAction action, SchedulerOccurrence<TItem> original, SchedulerEventData data, SchedulerEditScope scope)", @"Task<bool>", @"Whether the application accepted the intent.", @"Validates and submits an explicit change; false means read-only, invalid, busy or refused.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"action", @"SchedulerEditAction", @"Requested action."),
+                        new ApiMethodParameter(@"original", @"SchedulerOccurrence<TItem>", @"Original occurrence; null only for creation."),
+                        new ApiMethodParameter(@"data", @"SchedulerEventData", @"Proposed values, retaining the original key for updates."),
+                        new ApiMethodParameter(@"scope", @"SchedulerEditScope", @"Application persistence scope."),
+                    }),
+                new ApiMethodInfo(@"CreateEventAsync", @"CreateEventAsync(SchedulerSlot slot)", @"Task", null, @"Opens a new-event editor for a selected timed or all-day slot.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"slot", @"SchedulerSlot", @"Initial dates and resource."),
+                    }),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Cancels pending provider work before disposing component services.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"EditEventAsync", @"EditEventAsync(SchedulerOccurrence<TItem> occurrence)", @"Task", null, @"Opens the event-details editor without mutating the original item.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", @"Occurrence to edit."),
+                    }),
+                new ApiMethodInfo(@"GoToAsync", @"GoToAsync(DateOnly date)", @"Task", null, @"Requests a date and reloads the accepted navigation window.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"date", @"DateOnly", @"Requested navigation date."),
+                    }),
+                new ApiMethodInfo(@"NavigateAsync", @"NavigateAsync(int direction)", @"Task", null, @"Navigates by one projection window in either direction.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"direction", @"int", @"Negative for previous, positive for next; zero keeps the date."),
+                    }),
+                new ApiMethodInfo(@"ReloadAsync", @"ReloadAsync()", @"Task", null, @"Reloads the current window, for example after application persistence completes.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"RequestChangeAsync", @"RequestChangeAsync(SchedulerOccurrence<TItem> occurrence, SchedulerEventData data, SchedulerEditAction action)", @"Task", null, @"Requests a gesture change, asking for series scope when needed.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", @"Original occurrence."),
+                        new ApiMethodParameter(@"data", @"SchedulerEventData", @"Proposed dates or resource."),
+                        new ApiMethodParameter(@"action", @"SchedulerEditAction", @"Move, resize or delete."),
+                    }),
+                new ApiMethodInfo(@"SelectEventAsync", @"SelectEventAsync(SchedulerOccurrence<TItem> occurrence)", @"Task", null, @"Selects an event through the shared callback boundary.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", @"Visible occurrence."),
+                    }),
+                new ApiMethodInfo(@"SelectSlotAsync", @"SelectSlotAsync(SchedulerSlot slot)", @"Task", null, @"Selects a timed or all-day slot through the shared callback boundary.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"slot", @"SchedulerSlot", @"Selected half-open span."),
+                    }),
+                new ApiMethodInfo(@"ShowViewAsync", @"ShowViewAsync(SchedulerView view)", @"Task", null, @"Requests a projection and reloads its window.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"view", @"SchedulerView", @"Requested built-in or templated projection."),
+                    }),
+                new ApiMethodInfo(@"TodayAsync", @"TodayAsync()", @"Task", null, @"Navigates to today's date in the display zone.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerAgenda"] = new ApiComponentInfo(
+            @"FlareSchedulerAgenda",
+            @"Flare.Components.FlareSchedulerAgenda",
+            @"Flare.Components",
+            @"Chronological list of the loaded event occurrences.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerCalendar"] = new ApiComponentInfo(
+            @"FlareSchedulerCalendar",
+            @"Flare.Components.FlareSchedulerCalendar",
+            @"Flare.Components",
+            @"Month or year projection composed from the existing calendar.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerEditor"] = new ApiComponentInfo(
+            @"FlareSchedulerEditor",
+            @"Flare.Components.FlareSchedulerEditor",
+            @"Flare.Components",
+            @"Standard dialog body over a scheduler working copy, replaceable through EditorTemplate.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Context", @"SchedulerEditContext<TItem>", null, @"Editor working copy and persistence commands.", null, false, false, true, @"FlareSchedulerEditor"),
+                new ApiParameterInfo(@"Dialog", @"FlareDialogInstance", null, @"Dialog handle supplied by the standard Flare dialog provider.", null, true, false, false, @"FlareSchedulerEditor"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerEvent"] = new ApiComponentInfo(
+            @"FlareSchedulerEvent",
+            @"Flare.Components.FlareSchedulerEvent",
+            @"Flare.Components",
+            @"Shared event selection control that preserves application templates.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Draggable", @"bool", @"false", @"Enables shared drag behavior inside a scheduling drag context.", null, false, false, false, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"MeasureSlot", @"Func<ValueTask<double>>?", null, @"Measures one slot after a resize, honoring custom CSS sizes and zoom.", null, false, false, false, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"Occurrence", @"SchedulerOccurrence<TItem>", null, @"Occurrence shown by this event control.", null, false, false, true, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"Resizable", @"bool", @"false", @"Enables shared resizing of this visible timed segment when MeasureSlot is supplied.", null, false, false, false, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"SegmentStart", @"DateTimeOffset", @"01/01/0001 00:00:00 +00:00", @"Visible segment's inclusive instant.", null, false, false, false, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerTimeGrid"] = new ApiComponentInfo(
+            @"FlareSchedulerTimeGrid",
+            @"Flare.Components.FlareSchedulerTimeGrid",
+            @"Flare.Components",
+            @"Day, week and working-week projection using the shared Gantt axis and lane calculations.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Cancels the clock and releases the shared keyboard registration.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"HandleTreeKeyAsync", @"HandleTreeKeyAsync(int index, string key)", @"Task", null, @"Handles slot keys delegated by the shared listener, including repeated clock times.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"index", @"int", @"Focused flat slot index."),
+                        new ApiMethodParameter(@"key", @"string", @"Navigation key after browser-default suppression."),
+                    }),
+            },
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerTimeline"] = new ApiComponentInfo(
+            @"FlareSchedulerTimeline",
+            @"Flare.Components.FlareSchedulerTimeline",
+            @"Flare.Components",
+            @"Virtual resource projection composed from the existing Gantt timeline.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -6578,14 +6862,17 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"HoverColor", @"string?", null, @"Handle color (CSS color) shown on hover/focus. Null uses the theme's hover color (the --flare-splitter-hover-color token).", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"HoverIcon", @"FlareIcon?", null, @"Icon swapped in on hover/focus (only when Icon is set) - any provider.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Icon", @"FlareIcon?", null, @"Icon shown in the centre of the handle, replacing the default grip bar - any provider.", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"KeyboardLargeStep", @"int?", null, @"Step in pixels for Shift+arrow in value mode. Null uses KeyboardStep.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"KeyboardStep", @"int", @"16", @"Keyboard step (px) applied when the handle is focused and arrowed. Default 16.", null, false, false, false, @"FlareSplitter"),
-                new ApiParameterInfo(@"MaxSize", @"string?", null, @"Maximum size in pixels (e.g. ""600px"") for the previous (left/top) neighbour. Optional.", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"MaxSize", @"string?", null, @"Maximum size in pixels (e.g. ""600px"") for the previous (left/top) neighbour. In value mode, a percentage is relative to the width or height of ValueScope. Optional.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"MinSize", @"string?", null, @"Minimum size in pixels (e.g. ""120px"") that either neighbour may be dragged to. Optional.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"OnSizeChanged", @"EventCallback<string>", null, @"Invoked with the previous neighbour's new pixel size (e.g. ""240px"") after a resize; with Value set, with the new value once a drag, a key or a step has ended.", null, false, true, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Orientation", @"SplitterOrientation", @"SplitterOrientation.Auto", @"Resize axis. Default Auto: the splitter reads the parent flex container's direction, so you usually do not need to set this. Provide an explicit value only to override (e.g. a non-flex parent).", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"Reverse", @"bool", @"false", @"Reverses value-mode drag and arrow direction, for a trailing or bottom region.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Size", @"string?", null, @"Thickness of the handle as a CSS length (e.g. ""8px"", ""0.75rem""). Null uses the theme's gutter size (the --flare-splitter-gutter-size token).", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Value", @"double?", null, @"Turns the separator into the control of ONE length instead of the split between its two neighbours: the current size in pixels. A drag, the arrow keys and the steps change it between MinSize and MaxSize, the browser writes it to ValueVariable while the pointer moves, and OnSizeChanged reports it once at the end. Use it for a column whose width many elements read, such as a sticky header column. Null (the default) resizes the neighbours.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"ValueScope", @"string?", null, @"Selector of the ancestor that carries ValueVariable; the separator's parent when null.", null, false, false, false, @"FlareSplitter"),
+                new ApiParameterInfo(@"ValueTarget", @"string?", null, @"Selector of an element within ValueScope whose measured length supplies the current value. Enables value mode even without Value, so initial sizes in rem or percent remain valid. The browser writes ValueVariable; the host applies the final size from OnSizeChanged.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"ValueVariable", @"string?", null, @"CSS custom property (for example --side-width) the browser sets to the size while a Value separator is dragged, so the layout follows the pointer without a round trip. Null keeps the value mode but skips the live write: the size still changes and is reported through OnSizeChanged, and the consumer applies it itself.", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -10161,6 +10448,63 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareRibbon",
+            });
+
+        e[@"SchedulerEditAction"] = new ApiEnumInfo(
+            @"SchedulerEditAction",
+            @"Flare.Components.Scheduler.SchedulerEditAction",
+            @"Flare.Components.Scheduler",
+            @"Kind of application-owned event change requested by a scheduler interaction.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Create", @"0", @"Create an event from a slot."),
+                new ApiEnumMember(@"Update", @"1", @"Update event details."),
+                new ApiEnumMember(@"Move", @"2", @"Move an event in time or to a different resource."),
+                new ApiEnumMember(@"Resize", @"3", @"Change event duration."),
+                new ApiEnumMember(@"Delete", @"4", @"Delete an event or a chosen part of a series."),
+            },
+            new string[]
+            {
+                @"FlareScheduler",
+            });
+
+        e[@"SchedulerEditScope"] = new ApiEnumInfo(
+            @"SchedulerEditScope",
+            @"Flare.Components.Scheduler.SchedulerEditScope",
+            @"Flare.Components.Scheduler",
+            @"Persistence scope of a recurring-event change; the application owns series splitting and storage.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Occurrence", @"0", @"Only the identified occurrence."),
+                new ApiEnumMember(@"Following", @"1", @"This occurrence and the following occurrences."),
+                new ApiEnumMember(@"Series", @"2", @"The entire identified series."),
+            },
+            new string[]
+            {
+                @"FlareScheduler",
+            });
+
+        e[@"SchedulerView"] = new ApiEnumInfo(
+            @"SchedulerView",
+            @"Flare.Components.Scheduler.SchedulerView",
+            @"Flare.Components.Scheduler",
+            @"Built-in scheduling projections. ViewTemplate can replace any projection.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Day", @"0", @"One date with timed slots."),
+                new ApiEnumMember(@"Week", @"1", @"Seven dates starting on the culture's first weekday."),
+                new ApiEnumMember(@"WorkWeek", @"2", @"The selected working weekdays within the current week."),
+                new ApiEnumMember(@"Month", @"3", @"Month grid composed from FlareCalendar."),
+                new ApiEnumMember(@"Agenda", @"4", @"Chronological event list."),
+                new ApiEnumMember(@"Timeline", @"5", @"Virtual resource rows on the existing FlareGantt timeline."),
+                new ApiEnumMember(@"Year", @"6", @"Twelve calendar months."),
+            },
+            new string[]
+            {
+                @"FlareScheduler",
             });
 
         e[@"ScrollAlign"] = new ApiEnumInfo(

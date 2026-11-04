@@ -10,6 +10,7 @@
     <FlareScheduler TItem="SchedulerEventData" id="scheduler" Mapping="SchedulerMappings.EventData"
                     Events="_events" Date="_date" View="_view" TimeZone="TimeZoneInfo.Utc"
                     Culture="@(CultureInfo.GetCultureInfo("en-GB"))" Editable="true" OnChange="Change"
+                    InitialScrollTime="TimeOnly.MinValue"
                     Style="height:700px;--flare-scheduler-slot-height:40px;" />
     <output id="change">@_change</output>
 </FlareThemeProvider>

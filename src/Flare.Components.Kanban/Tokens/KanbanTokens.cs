@@ -57,8 +57,6 @@ public sealed record KanbanTokens
     [CssVar(Names.ShapeSmall)] public string ShapeSmall { get; init; } = Var(Css.Tokens.Shape.Small);
     /// <summary>Design override for <c>--flare-kanban-motion-duration-state-change</c>.</summary>
     [CssVar(Names.MotionDurationStateChange)] public string MotionDurationStateChange { get; init; } = Var(Css.Tokens.Motion.DurationStateChange);
-    /// <summary>Design override for <c>--flare-kanban-primary</c>.</summary>
-    [CssVar(Names.Primary)] public string Primary { get; init; } = Var(Css.Tokens.Color.Primary);
     /// <summary>Design override for <c>--flare-kanban-spacing-1</c>.</summary>
     [CssVar(Names.Spacing1)] public string Spacing1 { get; init; } = Var(Css.Tokens.Spacing.S1);
     /// <summary>Design override for <c>--flare-kanban-spacing-3</c>.</summary>

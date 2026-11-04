@@ -5,6 +5,7 @@
 @inject Flare.Components.Services.IUiJsService Ui
 @inject Flare.Components.Services.IElementJsService Elements
 @inject TimeProvider Clock
+@inject IScrollService Scroll
 
 <FlareDragContext TPayload="SchedulerOccurrence<TItem>" KeyboardReorder="false" OnDrop="DropAsync">
 <div @ref="_root" data-flare-keyboard-grid class="@BuildCssClass(Css.Classes.Scheduler.TimeGrid)" style="@Style" @attributes="AdditionalAttributes" role="group">
@@ -65,6 +66,7 @@
     private DotNetObjectReference<FlareSchedulerTimeGrid<TItem>>? _self;
     private readonly CancellationTokenSource _clockStop = new();
     private Task? _clockTask;
+    private SchedulerDateRange? _scrolledDates;
 
     protected override void OnInitialized() => _clockTask = TickAsync();
     protected override void OnParametersSet()
@@ -167,6 +169,21 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
+        if (_scrolledDates == Context.Window.Dates || _slots.Count == 0) return;
+        var time = Context.Owner.InitialScrollTime ?? Context.Owner.WorkStart;
+        if (time == TimeOnly.MinValue) { _scrolledDates = Context.Window.Dates; return; }
+        var firstDay = _slots[0].Slot.Date;
+        var entry = _slots.FirstOrDefault(s => s.Slot.Date == firstDay && TimeOnly.FromDateTime(s.Slot.Start.DateTime) >= time);
+        if (entry.Slot is null || !_slotElements.TryGetValue(entry.Slot.Start.UtcDateTime.Ticks, out var element)) return;
+        var height = await MeasureSlotAsync();
+        if (height <= 0) return;
+        var position = await Scroll.GetPositionAsync(Context.Owner.ViewportElement);
+        _scrolledDates = Context.Window.Dates;
+        if (position.Top > 0) return;
+        var slotBounds = await Elements.GetBoundsAsync(element);
+        var viewport = await Elements.GetBoundsAsync(Context.Owner.ViewportElement);
+        await Scroll.ScrollToAsync(Math.Max(0, slotBounds.Top - viewport.Top - height * 2),
+            Context.Owner.ViewportElement, ScrollBehavior.Instant);
     }
     /// <summary>Handles slot keys delegated by the shared listener, including repeated clock times.</summary>
     /// <param name="index">Focused flat slot index.</param>
@@ -208,6 +225,7 @@
         _clockStop.Dispose();
         try { await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _self?.Dispose();
         await base.DisposeAsync();
     }

@@ -53,8 +53,6 @@ public static class Vars
     public const string ShapeSmall = "--flare-kanban-shape-small";
     /// <summary>CSS custom property <c>--flare-kanban-motion-duration-state-change</c>.</summary>
     public const string MotionDurationStateChange = "--flare-kanban-motion-duration-state-change";
-    /// <summary>CSS custom property <c>--flare-kanban-primary</c>.</summary>
-    public const string Primary = "--flare-kanban-primary";
     /// <summary>CSS custom property <c>--flare-kanban-spacing-1</c>.</summary>
     public const string Spacing1 = "--flare-kanban-spacing-1";
     /// <summary>CSS custom property <c>--flare-kanban-spacing-3</c>.</summary>

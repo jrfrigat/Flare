@@ -1,6 +1,7 @@
 using Flare.Abstractions.Tokens;
 using Flare.Components.IDE;
 using Flare.Components.Gantt;
+using Flare.Components.Scheduler;
 using Flare.Extensions;
 using Flare.Gallery;
 using Flare.Gallery.Services;
@@ -44,6 +45,7 @@ builder.Services.AddFlareTheme(new VisualStudioTheme());
 
 builder.Services.AddFlareIde();
 builder.Services.AddFlareGantt();
+builder.Services.AddFlareScheduler();
 
 // Version-check service: every 10s it reads the deployed app version via the service worker and
 // raises NewVersionAvailable when a newer build is published; MainLayout shows an actionable toast.

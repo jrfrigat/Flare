@@ -7,13 +7,13 @@ public sealed class CssVarRecordTests
 {
     private record PluginTokens
     {
-        [CssVar("--example-surface")] public string Surface { get; init; } = "var(--flare-color-surface)";
-        [CssVar("--example-size")] public string? Size { get; init; } = "var(--flare-spacing-16)";
+        [CssVar("--example-surface")] public string Surface { get; init; } = Css.Tokens.Vars.Var(Css.Tokens.Color.Surface);
+        [CssVar("--example-size")] public string? Size { get; init; } = Css.Tokens.Vars.Var(Css.Tokens.Spacing.S16);
         public string Unmapped { get; init; } = "Not a CSS variable";
     }
     private sealed record ExtendedPluginTokens : PluginTokens
     {
-        [CssVar("--example-accent")] public string Accent { get; init; } = "var(--flare-color-primary)";
+        [CssVar("--example-accent")] public string Accent { get; init; } = Css.Tokens.Vars.Var(Css.Tokens.Color.Primary);
     }
     private sealed record DuplicateTokens
     {
@@ -25,8 +25,8 @@ public sealed class CssVarRecordTests
     public void DefaultsReferenceBaseTokensAndValuesComeFromEachInstance()
     {
         var defaults = new PluginTokens();
-        Assert.Equal("var(--flare-color-surface)", defaults.FlattenTokens()["--example-surface"]);
-        var custom = defaults with { Surface = "var(--flare-color-secondary-container)", Size = null };
+        Assert.Equal(Css.Tokens.Vars.Var(Css.Tokens.Color.Surface), defaults.FlattenTokens()["--example-surface"]);
+        var custom = defaults with { Surface = Css.Tokens.Vars.Var(Css.Tokens.Color.SecondaryContainer), Size = null };
         var map = custom.FlattenTokens();
         Assert.Single(map);
         Assert.Equal(custom.Surface, map["--example-surface"]);
@@ -52,7 +52,7 @@ public sealed class CssVarRecordTests
     [Fact]
     public void IndependentRecordsUseTheExistingThemeExtensionPipeline()
     {
-        var plugin = new PluginTokens { Surface = "var(--flare-color-secondary-container)" };
+        var plugin = new PluginTokens { Surface = Css.Tokens.Vars.Var(Css.Tokens.Color.SecondaryContainer) };
         var design = TokenParityTests.CreateDefaultDesignTokens() with { Extended = plugin.FlattenTokens() };
         var result = design.FlattenDesign();
         Assert.Equal(plugin.Surface, result["--example-surface"]);

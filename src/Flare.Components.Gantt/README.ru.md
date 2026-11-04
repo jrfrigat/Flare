@@ -49,7 +49,7 @@ builder.Services.AddFlareGantt();
 ## Компоненты
 
 - `FlareGantt` - общая ось: `Range`, `Scale`, `UnitWidth`, `RowHeight`, `BarInset`, `SideWidth`, `Culture`,
-  `NonWorking`, общие `Markers` и `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`, `Texts`,
+  `NonWorking`, общие `Markers` и `Regions`, `SelectedKey`/`SelectedKeyChanged`, `Compact`, `Corner`,
   `FillWidth`, `Virtualize` (рисует только строки и колонки рядом с видимой частью), `Endless` + `@bind-Range`,
   `ResizableSide` + `SideWidthChanged` (край колонки - `FlareSplitter`), `ScrollTo(момент)`.
 - `FlareGanttPanel<TRow, TItem>` - одна проекция. Панели на одной оси делят шкалу, прокрутку и выбор по ключу
