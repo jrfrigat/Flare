@@ -4,18 +4,21 @@
 
 <div class="@BuildCssClass(Css.Classes.Scheduler.Agenda)" style="@Style" role="group" aria-label="@SchedulerText["Agenda"].Value"
      data-flare-focus-target="@($".{Css.Classes.Scheduler.EventBody}")" @attributes="AdditionalAttributes">
-    @if (Context.Occurrences.Count == 0) { <FlareText>@SchedulerText["Empty"].Value</FlareText> }
+    @if (Context.Occurrences.Count == 0) { @if (EmptyTemplate is not null) { @EmptyTemplate(Context) }
+        else { <FlareText>@SchedulerText["Empty"].Value</FlareText> } }
     @foreach (var occurrence in Context.Occurrences.OrderBy(e => SchedulerClock.Span(e.Data, Context.TimeZone).Start))
     {
         <div class="@Css.Classes.Scheduler.AgendaItem" @key="occurrence.Identity">
             <FlareText>@Label(occurrence.Data)</FlareText>
-            <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" />
+            <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" />
         </div>
     }
 </div>
 
 @code {
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
+    /// <summary>Content when there are no occurrences.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? EmptyTemplate { get; set; }
     private string Label(SchedulerEventData data) => data.AllDay is { } days
         ? $"{days.Start.ToString("d", Context.Culture)} {SchedulerText["AllDay"].Value}"
         : TimeZoneInfo.ConvertTime(data.Start, Context.TimeZone).ToString("g", Context.Culture);

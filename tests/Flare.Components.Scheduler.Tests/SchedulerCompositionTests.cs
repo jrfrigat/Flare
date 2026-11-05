@@ -1,6 +1,7 @@
 using Flare.Components.Scheduler;
 using Flare.Components.Tests;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components.Scheduler.Tests;
 
@@ -51,5 +52,42 @@ public sealed class SchedulerCompositionTests : FlareTestContext
         Assert.Null(second.Instance.Snapshot.SelectedSlot);
         Assert.Equal(Date, second.Instance.Snapshot.Date);
         Assert.NotSame(first.Instance.Snapshot.Commands, second.Instance.Snapshot.Commands);
+    }
+
+    [Theory]
+    [InlineData(SchedulerView.Day)]
+    [InlineData(SchedulerView.Agenda)]
+    [InlineData(SchedulerView.Month)]
+    [InlineData(SchedulerView.Year)]
+    public async Task InteractiveEventTemplateOwnsItsActionWithoutAnAncestorButton(SchedulerView view)
+    {
+        var item = new SchedulerEventData { Key = "one", Title = "One",
+            Start = new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero), End = new(2026, 11, 4, 10, 0, 0, TimeSpan.Zero) };
+        var edits = 0;
+        var selects = 0;
+        var cut = Render<FlareScheduler<SchedulerEventData>>(p => p
+            .Add(x => x.Mapping, SchedulerMappings.EventData).Add(x => x.Events, new[] { item })
+            .Add(x => x.Date, Date).Add(x => x.View, view).Add(x => x.TimeZone, TimeZoneInfo.Utc)
+            .Add(x => x.Editable, true).Add(x => x.OnChange, _ => { })
+            .Add(x => x.OnEditRequested, _ => edits++).Add(x => x.OnEventSelected, _ => selects++)
+            .Add(x => x.ChildContent, context => b =>
+            {
+                b.OpenComponent<FlareSchedulerSurface<SchedulerEventData>>(0);
+                b.AddAttribute(1, "Context", context);
+                b.AddAttribute(2, "EventTemplate", (RenderFragment<SchedulerEventContext<SchedulerEventData>>)(e => child =>
+                {
+                    child.OpenComponent<FlareButton>(0);
+                    child.AddAttribute(1, "OnClick", EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, e.EditAsync));
+                    child.AddAttribute(2, "ChildContent", (RenderFragment)(text => text.AddContent(0, "Custom edit")));
+                    child.CloseComponent();
+                }));
+                b.CloseComponent();
+            }));
+        var button = cut.FindAll("button").Single(b => b.TextContent == "Custom edit");
+        Assert.Null(button.ParentElement?.Closest("button,[role='button']"));
+        await button.ClickAsync();
+        Assert.Equal(1, edits);
+        Assert.Equal(0, selects);
+        Assert.Empty(cut.FindComponents<FlareSchedulerDialog<SchedulerEventData>>());
     }
 }

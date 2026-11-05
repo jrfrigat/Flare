@@ -27,3 +27,11 @@ public partial class FlareSchedulerEditor<TItem> { }
 /// <summary>Optional dialog presenter for an independent scheduler editing session.</summary>
 /// <typeparam name="TItem">Application event type.</typeparam>
 public partial class FlareSchedulerDialog<TItem> { }
+
+/// <summary>Optional scheduling frame, state presentations and active projection switch.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+public partial class FlareSchedulerSurface<TItem> { }
+
+/// <summary>Optional standard navigation and event commands, composable anywhere in a scheduling scope.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+public partial class FlareSchedulerToolbar<TItem> { }

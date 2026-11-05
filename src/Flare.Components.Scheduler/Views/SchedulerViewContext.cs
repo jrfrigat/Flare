@@ -39,8 +39,11 @@ public sealed record SchedulerViewContext<TItem>
     public bool IsLoading { get; init; }
     /// <summary>Latest provider or projection error.</summary>
     public Exception? Error { get; init; }
-    /// <summary>Optional event caption content.</summary>
-    public Microsoft.AspNetCore.Components.RenderFragment<SchedulerOccurrence<TItem>>? EventTemplate { get; init; }
+    /// <summary>Localized change announcement from the scheduling scope.</summary>
+    public string? Announcement { get; init; }
+    /// <summary>Formatted active-period caption, suitable for an application toolbar.</summary>
+    public string Caption => View == SchedulerView.Year ? Date.Year.ToString(Culture)
+        : View == SchedulerView.Day ? Date.ToString("D", Culture) : Date.ToString("Y", Culture);
     /// <summary>Current editing session, if any. A presenter can render it anywhere.</summary>
     public SchedulerEditContext<TItem>? Edit { get; init; }
     internal SchedulerFocus Focus { get; init; } = new();

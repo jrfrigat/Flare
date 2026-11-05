@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
+    flex: 1 1 auto;
     color: var(--flare-scheduler-color, var(--flare-color-on-surface));
     background: var(--flare-scheduler-surface, var(--flare-color-surface));
     border: var(--flare-scheduler-border, var(--flare-border-divider));
@@ -14,7 +15,7 @@
     min-width: 0;
 }
 .flare-scheduler__toolbar { padding: var(--flare-scheduler-padding, var(--flare-spacing-4)); background: var(--flare-scheduler-header-surface, var(--flare-color-surface-container-low)); }
-.flare-scheduler__viewport { overflow: auto; min-height: 0; flex: 1 1 auto; position: relative; }
+.flare-scheduler__viewport { display: flex; flex-direction: column; overflow: auto; min-height: 0; flex: 1 1 auto; position: relative; }
 .flare-scheduler__time-grid { display: flex; min-width: 100%; align-items: stretch; }
 .flare-scheduler__day { flex: 1 0 var(--flare-scheduler-day-min-width, var(--flare-spacing-32)); min-width: var(--flare-scheduler-day-min-width, var(--flare-spacing-32)); border-inline-end: var(--flare-scheduler-border, var(--flare-border-divider)); }
 .flare-scheduler__day-header { position: sticky; top: 0; z-index: 3; padding: var(--flare-scheduler-padding, var(--flare-spacing-4)); text-align: center; background: var(--flare-scheduler-header-surface, var(--flare-color-surface-container-low)); }

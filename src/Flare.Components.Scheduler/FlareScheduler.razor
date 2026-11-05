@@ -1,75 +1,11 @@
 @typeparam TItem
-@using Flare.Icons
 @inherits FlareLocalizedComponentBase
 
 @if (ChildContent is not null) { @ChildContent(Snapshot) }
 else
 {
-<div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style" aria-label="@(AriaLabel ?? SchedulerText["Schedule"].Value)"
-     data-flare-focus-target="@(_focusEvent is not null ? "[data-scheduler-focus-entry]" : null)" @attributes="AdditionalAttributes">
-    @if (ShowToolbar)
-    {
-        <div class="@Css.Classes.Scheduler.Toolbar">
-            @if (ToolbarTemplate is not null) { @ToolbarTemplate(Snapshot) }
-            else
-            {
-                <FlareStack Row="true" Wrap="true">
-                    <FlareButton OnClick="() => NavigateAsync(-1)" AriaLabel="@SchedulerText["Previous"].Value">
-                        <FlareIconView Value="FlareIcons.ChevronLeft" />
-                    </FlareButton>
-                    <FlareButton OnClick="TodayAsync">@SchedulerText["Today"].Value</FlareButton>
-                    <FlareButton OnClick="() => NavigateAsync(1)" AriaLabel="@SchedulerText["Next"].Value">
-                        <FlareIconView Value="FlareIcons.ChevronRight" />
-                    </FlareButton>
-                    <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@Caption</FlareText>
-                    @if (Editable && OnChange.HasDelegate)
-                    {
-                        <FlareButton OnClick="() => CreateEventAsync(new(_window.Start, _window.Start + SlotDuration))">@SchedulerText["Create"].Value</FlareButton>
-                        @if (SelectedEvent is { } selected)
-                        {
-                            <FlareButton OnClick="() => EditEventAsync(selected)">@SchedulerText["Edit"].Value</FlareButton>
-                            <FlareButton OnClick="() => RequestChangeAsync(selected, selected.Data, SchedulerEditAction.Delete)">@SchedulerText["Delete"].Value</FlareButton>
-                        }
-                    }
-                    @foreach (var view in Views)
-                    {
-                        var target = view;
-                        <FlareButton OnClick="() => ShowViewAsync(target)" aria-pressed="@(_view == target ? "true" : "false")">@SchedulerText[target.ToString()].Value</FlareButton>
-                    }
-                </FlareStack>
-            }
-        </div>
-    }
-    <div @ref="_viewport" class="@Css.Classes.Scheduler.Viewport" data-flare-focus-target="[data-scheduler-focus-entry]" aria-busy="@(_loading ? "true" : "false")">
-        @if (_loading) { <div role="status" class="@Css.Classes.Scheduler.Status">@SchedulerText["Loading"].Value</div> }
-        else if (_error is not null) { <div role="alert" class="@Css.Classes.Scheduler.Status">@SchedulerText["LoadError"].Value</div> }
-        else if (ViewTemplate is not null) { @ViewTemplate(Snapshot) }
-        else
-        {
-            @switch (_view)
-            {
-                case SchedulerView.Month:
-                case SchedulerView.Year:
-                    <FlareSchedulerCalendar TItem="TItem" Context="Snapshot" />
-                    break;
-                case SchedulerView.Agenda:
-                    <FlareSchedulerAgenda TItem="TItem" Context="Snapshot" />
-                    break;
-                case SchedulerView.Timeline:
-                    <FlareSchedulerTimeline TItem="TItem" Context="Snapshot" />
-                    break;
-                default:
-                    <FlareSchedulerTimeGrid TItem="TItem" Context="Snapshot" />
-                    break;
-            }
-        }
-    </div>
-    <div class="@Css.Classes.Visually.Hidden" role="status" aria-live="polite">@_announcement</div>
-</div>
-
-}
-
-@if (!OnEditRequested.HasDelegate && ChildContent is null)
-{
-    <FlareSchedulerDialog TItem="TItem" Context="ActiveEdit" />
+    <FlareSchedulerSurface TItem="TItem" Context="Snapshot" Class="@Class" Style="@Style" @attributes="AdditionalAttributes">
+        <Header Context="context"><FlareSchedulerToolbar TItem="TItem" Context="context" /></Header>
+    </FlareSchedulerSurface>
+    @if (!OnEditRequested.HasDelegate) { <FlareSchedulerDialog TItem="TItem" Context="ActiveEdit" /> }
 }

@@ -1,6 +1,6 @@
 namespace Flare.Components.Scheduler;
 
-/// <summary>Built-in scheduling projections. ViewTemplate can replace any projection.</summary>
+/// <summary>Built-in scheduling projections. Compose independent views or replace the surface's view content.</summary>
 public enum SchedulerView
 {
     /// <summary>One date with timed slots.</summary>

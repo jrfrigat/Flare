@@ -40,14 +40,24 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
     private FlareResizable? _resizable;
     private string FocusTarget => "." + (Context.Focus.HasResizeFocus(Occurrence.Identity) ? Css.Classes.Resizable.Handle : Css.Classes.Scheduler.EventBody);
     private string MaximumSize => FormattableString.Invariant($"calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{(SchedulerClock.Window(new(DateOnly.FromDateTime(SegmentStart.Date), DateOnly.FromDateTime(SegmentStart.Date).AddDays(1)), Context.TimeZone).End - SegmentStart).TotalMinutes / Context.SlotDuration.TotalMinutes})");
-    private RenderFragment Body => @<button @ref="_button" type="button" data-flare-edit-keys="@(Context.CanEdit ? "" : null)" data-scheduler-event="@Occurrence.Identity" class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
-        style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description"
-        aria-pressed="@(Context.SelectedEvent?.Identity == Occurrence.Identity ? "true" : "false")"
-        @onclick="SelectAsync" @ondblclick="EditAsync"
-        @onkeydown="EventKeyAsync">
-        @if (Context.EventTemplate is { } template) { @template(Occurrence) }
-        else { @Occurrence.Data.Title }
-    </button>;
+    private RenderFragment Body => @<text>
+        @if (EventTemplate is { } template)
+        {
+            <div @ref="_button" tabindex="-1" role="group" data-scheduler-event="@Occurrence.Identity"
+                 class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
+                 style="@Occurrence.Data.Color.StyleContainerSolid()" aria-label="@Occurrence.Data.Title">
+                @template(new(Context, Occurrence) { KeyHandler = EventKeyAsync })
+            </div>
+        }
+        else
+        {
+            <button @ref="_button" type="button" data-flare-edit-keys="@(Context.CanEdit ? "" : null)"
+                data-scheduler-event="@Occurrence.Identity" class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
+                style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description"
+                aria-pressed="@(Context.SelectedEvent?.Identity == Occurrence.Identity ? "true" : "false")"
+                @onclick="SelectAsync" @ondblclick="EditAsync" @onkeydown="EventKeyAsync">@Occurrence.Data.Title</button>
+        }
+    </text>;
 
     private Task SelectAsync() => Context.Commands.SelectEventAsync(Occurrence);
     private Task EditAsync() => Context.Commands.EditEventAsync(Occurrence);

@@ -59,6 +59,8 @@ public partial class FlareGanttPanel<TRow, TItem> : IGanttPanel
 
     /// <summary>Content inside a bar; the label when null.</summary>
     [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+    /// <summary>Replaces item interaction content inside the geometry and gesture boundary. Own selection and keyboard actions; the bar becomes a group instead of a button.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemInteractionTemplate { get; set; }
 
     /// <summary>Rich tooltip of a bar, shown in a popover on hover and focus.</summary>
     [Parameter] public RenderFragment<TItem>? ItemTooltip { get; set; }

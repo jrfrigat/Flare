@@ -16,12 +16,15 @@
         var events = EventsOn(day);
         var lanes = GanttLanes.Assign(events.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
         <section class="@Css.Classes.Scheduler.Day" @key="day">
-            <header class="@Css.Classes.Scheduler.DayHeader">@day.ToString("ddd d", Context.Culture)</header>
+            <header class="@Css.Classes.Scheduler.DayHeader">
+                @if (DayHeaderTemplate is not null) { @DayHeaderTemplate(day) }
+                else { @day.ToString("ddd d", Context.Culture) }
+            </header>
             <FlareDropZone Target="@($"a:{day.DayNumber}")" Class="@Css.Classes.Scheduler.AllDay" data-flare-focus-target="button" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is not null" aria-label="@SchedulerText["AllDay"].Value">
                 <FlareButton OnClick="() => SelectAllDayAsync(day)">@SchedulerText["AllDay"].Value</FlareButton>
                 @foreach (var occurrence in AllDayOn(day))
                 {
-                    <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" Draggable="true" @key="occurrence.Identity" />
+                    <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" Draggable="true" @key="occurrence.Identity" />
                 }
             </FlareDropZone>
             <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
@@ -35,14 +38,15 @@
                                 data-flare-tree-index="@index" aria-label="@Label(slot, true)"
                                 data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
                                 @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)" @ondblclick="() => CreateAsync(slot)" @onkeydown="e => SlotKeyAsync(slot, e)">
-                            @Label(slot, false)
+                            @if (SlotTemplate is not null) { @SlotTemplate(slot) }
+                            else { @Label(slot, false) }
                         </button>
                     </FlareDropZone>
                 }
                 @foreach (var occurrence in events)
                 {
                     <div class="@Css.Classes.Scheduler.Event" style="@EventStyle(occurrence, day, lanes)" @key="occurrence.Identity">
-                        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" Draggable="true"
+                        <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" Draggable="true"
                                              Resizable="true" SegmentStart="SegmentStart(occurrence, day)" MeasureSlot="MeasureSlotAsync" />
                     </div>
                 }
@@ -59,6 +63,10 @@
 
 @code {
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
+    /// <summary>Day heading content; layout and column geometry are retained.</summary>
+    [Parameter] public RenderFragment<DateOnly>? DayHeaderTemplate { get; set; }
+    /// <summary>Content of a selectable time slot. Use noninteractive content inside its button.</summary>
+    [Parameter] public RenderFragment<SchedulerTimeSlot>? SlotTemplate { get; set; }
     private List<DateOnly> _dates = [];
     private List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
     private Dictionary<string, SchedulerTimeSlot> _targets = [];

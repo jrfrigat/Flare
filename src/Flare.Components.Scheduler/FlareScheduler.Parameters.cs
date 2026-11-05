@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components;
 
-/// <summary>Calendar scheduling over application-owned events, composed from Calendar and Gantt projections.</summary>
+/// <summary>Per-instance scheduling data and interaction scope, with optional ready-made composition.</summary>
 /// <typeparam name="TItem">Application event type, projected without mutation or inheritance.</typeparam>
 public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
 {
@@ -24,8 +24,6 @@ public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
     [Parameter] public SchedulerView View { get; set; } = SchedulerView.Week;
     /// <summary>Reports view changes. With a delegate, View remains authoritative.</summary>
     [Parameter] public EventCallback<SchedulerView> ViewChanged { get; set; }
-    /// <summary>Views available in the default toolbar.</summary>
-    [Parameter] public IReadOnlyList<SchedulerView> Views { get; set; } = Enum.GetValues<SchedulerView>();
     /// <summary>Culture for dates and the first weekday. Interface strings use CurrentUICulture independently.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
     /// <summary>Display zone. Timed events keep their instants; all-day dates do not move.</summary>
@@ -47,16 +45,8 @@ public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
     [Parameter] public int MaximumOccurrences { get; set; } = 10000;
     /// <summary>Explicit local recurrence evaluation limit.</summary>
     [Parameter] public int MaximumEvaluationSteps { get; set; } = 100000;
-    /// <summary>Shows the default or templated navigation toolbar.</summary>
-    [Parameter] public bool ShowToolbar { get; set; } = true;
     /// <summary>Accessible name of this scheduling surface.</summary>
     [Parameter] public string? AriaLabel { get; set; }
-    /// <summary>Custom event content, retaining the surrounding interaction control.</summary>
-    [Parameter] public RenderFragment<SchedulerOccurrence<TItem>>? EventTemplate { get; set; }
-    /// <summary>Replaces a built-in projection using the same loaded snapshot and owner callbacks.</summary>
-    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? ViewTemplate { get; set; }
-    /// <summary>Custom navigation content.</summary>
-    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? ToolbarTemplate { get; set; }
     /// <summary>Reports event selection without mutating the item.</summary>
     [Parameter] public EventCallback<SchedulerOccurrence<TItem>> OnEventSelected { get; set; }
     /// <summary>Reports slot selection.</summary>
@@ -76,7 +66,7 @@ public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
         WorkEnd = WorkEnd, InitialScrollTime = InitialScrollTime, Resources = Resources,
         CanEdit = CanEdit, ShowResizeControls = ShowResizeControls, AriaLabel = AriaLabel,
         SelectedEvent = SelectedEvent, SelectedSlot = SelectedSlot, IsLoading = _loading, Error = _error,
-        EventTemplate = EventTemplate, Focus = _focus, Edit = ActiveEdit
+        Focus = _focus, Edit = ActiveEdit, Announcement = _announcement
     };
     /// <summary>Current projection after controlled/uncontrolled resolution.</summary>
     public SchedulerView CurrentView => _view;

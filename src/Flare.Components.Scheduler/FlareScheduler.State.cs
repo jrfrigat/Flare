@@ -1,6 +1,5 @@
 using Flare.Components.Scheduler;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace Flare.Components;
 
@@ -8,9 +7,6 @@ public partial class FlareScheduler<TItem>
 {
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     [Inject] private TimeProvider Clock { get; set; } = default!;
-    [Inject] private Services.IUiJsService Ui { get; set; } = default!;
-    private ElementReference _root;
-    private ElementReference _viewport;
     private DateOnly _date, _dateParameter;
     private SchedulerView _view, _viewParameter;
     private bool _initialized, _loading, _disposed;
@@ -22,16 +18,7 @@ public partial class FlareScheduler<TItem>
     private string? _announcementKey;
     private string _announcement => _announcementKey is null ? "" : SchedulerText[_announcementKey].Value;
     private object? _loadKey;
-    protected override string ComponentCssClass => Css.Classes.Scheduler.Root;
-
-    private string Caption => _view == SchedulerView.Year ? _date.Year.ToString(EffectiveCulture)
-        : _view == SchedulerView.Day ? _date.ToString("D", EffectiveCulture)
-        : _date.ToString("Y", EffectiveCulture);
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && ChildContent is null) await Ui.RegisterTreeKeyboardAsync(_root);
-    }
+    protected override string ComponentCssClass => string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -146,9 +133,6 @@ public partial class FlareScheduler<TItem>
         _load?.Cancel();
         _load?.Dispose();
         if (ActiveEdit is { } editor) await editor.CloseAsync();
-        try { await Ui.RemoveTreeKeyboardAsync(_root); }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
         await base.DisposeAsync();
     }
 }

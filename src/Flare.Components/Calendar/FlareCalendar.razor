@@ -24,14 +24,18 @@
             var monthCells = _allCells[mi];
             <div class="@Css.Classes.Calendar.Month">
                 <div class="@Css.Classes.Calendar.Header">
-                    <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@_culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", _culture))</FlareText>
+                    @if (MonthHeaderTemplate is not null) { @MonthHeaderTemplate(monthDate) }
+                    else { <FlareText Typo="TypographyScale.TitleMedium" aria-live="polite">@_culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", _culture))</FlareText> }
                 </div>
                 <div class="@Css.Classes.Calendar.Grid" role="grid">
                     @{ var headers = DayHeaders.ToArray(); var fullNames = DayHeaderLabels.ToArray(); }
                     <div class="@Css.Classes.Calendar.Row" role="row">
                         @for (var hi = 0; hi < headers.Length; hi++)
                         {
-                            <div class="@Css.Classes.Calendar.DayLabel" role="columnheader" aria-label="@fullNames[hi]">@headers[hi]</div>
+                            <div class="@Css.Classes.Calendar.DayLabel" role="columnheader" aria-label="@fullNames[hi]">
+                                @if (DayHeaderTemplate is not null) { @DayHeaderTemplate((DayOfWeek)(((int)_firstDayOfWeek + hi) % 7)) }
+                                else { @headers[hi] }
+                            </div>
                         }
                     </div>
                     @for (var start = 0; start < monthCells.Count; start += 7)
@@ -48,10 +52,20 @@
                                      aria-label="@c.Date.ToString("D", _culture)"
                                      aria-selected="@(SelectedDate == c.Date ? "true" : "false")"
                                      aria-current="@(c.Date == Today ? "date" : null)">
-                                    <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span>
+                                    @if (DateTemplate is not null) { @DateTemplate(c.Date) }
+                                    else { <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span> }
                                     @foreach (var ev in c.Events.Take(MaxVisibleEvents))
                                     {
                                         var calEv = ev;
+                                        @if (EventContainerTemplate is not null)
+                                        {
+                                            <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
+                                                 style="@EventColorStyle(calEv.Color)" @onclick:stopPropagation="true" @onkeydown:stopPropagation="true">
+                                                @EventContainerTemplate(calEv)
+                                            </div>
+                                        }
+                                        else
+                                        {
                                         <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
                                              style="@EventColorStyle(calEv.Color)"
                                              role="button" tabindex="0"
@@ -62,6 +76,7 @@
                                             @if (EventTemplate is not null) { @EventTemplate(calEv) }
                                             else { @calEv.Title }
                                         </div>
+                                        }
                                     }
                                 </div>
                             }
@@ -92,6 +107,14 @@
     [Parameter] public EventCallback<CalendarEvent> OnEventClick { get; set; }
     /// <summary>Custom event content inside the calendar's existing selection control.</summary>
     [Parameter] public RenderFragment<CalendarEvent>? EventTemplate { get; set; }
+    /// <summary>Replaces the event interaction control inside the retained cell boundary. Own selection and keyboard actions; interactive children are supported.</summary>
+    [Parameter] public RenderFragment<CalendarEvent>? EventContainerTemplate { get; set; }
+    /// <summary>Replaces a month's title content.</summary>
+    [Parameter] public RenderFragment<DateOnly>? MonthHeaderTemplate { get; set; }
+    /// <summary>Replaces the date heading inside a day cell.</summary>
+    [Parameter] public RenderFragment<DateOnly>? DateTemplate { get; set; }
+    /// <summary>Replaces a weekday's heading content while retaining its accessible name.</summary>
+    [Parameter] public RenderFragment<DayOfWeek>? DayHeaderTemplate { get; set; }
     /// <summary>Forces the week to start on Monday. When false (default), the first day of week
     /// is taken from <see cref="Culture"/> (e.g. Sunday for en-US, Monday for most of Europe/RU).</summary>
     [Parameter] public bool MondayFirst { get; set; }

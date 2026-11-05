@@ -11,10 +11,9 @@
                      Editable="Context.CanEdit" ScheduleMode="GanttScheduleMode.None" OnChange="ChangeAsync"
                      ItemLabel="o => o.Data.Title" OnItemClick="o => Context.Commands.SelectEventAsync(o)">
         <RowHeader Context="resource">@resource.Title</RowHeader>
-        <ItemTemplate Context="occurrence">
-            @if (Context.EventTemplate is { } template) { @template(occurrence) }
-            else { @occurrence.Data.Title }
-        </ItemTemplate>
+        <ItemInteractionTemplate Context="occurrence">
+            <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" EventTemplate="EventTemplate" />
+        </ItemInteractionTemplate>
     </FlareGanttPanel>
 </FlareGantt>
 </div>

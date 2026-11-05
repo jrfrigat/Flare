@@ -4,15 +4,21 @@
 
 <FlareCalendar Class="@BuildCssClass(Css.Classes.Scheduler.Month)" Style="@Style" @attributes="AdditionalAttributes" ViewDate="Anchor" ShowNavigation="false"
                MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
+               MaxVisibleEvents="int.MaxValue" MonthHeaderTemplate="MonthHeaderTemplate" DateTemplate="DateTemplate" DayHeaderTemplate="DayHeaderTemplate"
                Culture="Context.Culture" Events="_events" SelectedDateChanged="SelectDayAsync"
                OnEventClick="SelectEventAsync">
-    <EventTemplate Context="item">
-        @if (Context.EventTemplate is { } template) { @template(_source[item]) }
-        else { @item.Title }
-    </EventTemplate>
+    <EventContainerTemplate Context="item">
+        <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="_source[item]" EventTemplate="EventTemplate" />
+    </EventContainerTemplate>
 </FlareCalendar>
 
 @code {
+    /// <summary>Optional month title content.</summary>
+    [Parameter] public RenderFragment<DateOnly>? MonthHeaderTemplate { get; set; }
+    /// <summary>Optional date heading inside each day cell.</summary>
+    [Parameter] public RenderFragment<DateOnly>? DateTemplate { get; set; }
+    /// <summary>Optional weekday heading content.</summary>
+    [Parameter] public RenderFragment<DayOfWeek>? DayHeaderTemplate { get; set; }
     private readonly Dictionary<CalendarEvent, SchedulerOccurrence<TItem>> _source = new(ReferenceEqualityComparer.Instance);
     private IReadOnlyList<CalendarEvent> _events = [];
     private DateOnly Anchor => Context.View == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;

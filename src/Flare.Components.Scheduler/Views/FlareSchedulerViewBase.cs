@@ -8,6 +8,8 @@ public abstract class FlareSchedulerViewBase<TItem> : FlareLocalizedComponentBas
 {
     /// <inheritdoc />
     protected override string ComponentCssClass => string.Empty;
-    /// <summary>Snapshot supplied by the scheduler or by its ViewTemplate.</summary>
+    /// <summary>Loaded snapshot supplied by any scheduling scope or custom composition.</summary>
     [Parameter, EditorRequired] public SchedulerViewContext<TItem> Context { get; set; } = default!;
+    /// <summary>Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.</summary>
+    [Parameter] public RenderFragment<SchedulerEventContext<TItem>>? EventTemplate { get; set; }
 }
