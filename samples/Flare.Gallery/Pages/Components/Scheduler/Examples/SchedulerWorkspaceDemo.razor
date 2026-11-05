@@ -1,0 +1,160 @@
+@using Flare.Components.Scheduler
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareText>@GalleryStrings.Scheduler_WorkspaceHint</FlareText>
+    <FlareScheduler @ref="_scheduler" TItem="Booking" Mapping="Mapping" Events="_visible" Date="Today"
+                    Editable OnChange="Save" OnEditRequested="Prepare" OnEventSelected="OpenEvent">
+        <ChildContent Context="schedule">
+            <FlareStack Row Wrap Gap="FlareSpacing.Large" Align="FlareAlignItems.Stretch">
+                <FlareStack Width="18rem" Gap="FlareSpacing.Medium">
+                    <FlareButton Variant="ButtonVariant.Filled" OnClick="() => Create(schedule)">@GalleryStrings.Scheduler_NewEvent</FlareButton>
+                    <FlareCalendar ViewDate="schedule.Date" ViewDateChanged="schedule.Commands.GoToAsync"
+                                   SelectedDate="schedule.Date" SelectedDateChanged="schedule.Commands.GoToAsync" Culture="schedule.Culture" />
+                    <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Scheduler_Calendars</FlareText>
+                    <FlareCheckbox TValue="bool" Label="@GalleryStrings.Scheduler_WorkCalendar" Value="_work" ValueChanged="WorkChanged" />
+                    <FlareCheckbox TValue="bool" Label="@GalleryStrings.Scheduler_PersonalCalendar" Value="_personal" ValueChanged="PersonalChanged" />
+                    @if (schedule.SelectedEvent is { } selected)
+                    {
+                        <FlareCard>
+                            <FlareStack Padding="FlareSpacing.Medium">
+                                <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Scheduler_Preview</FlareText>
+                                <FlareText>@selected.Data.Title</FlareText>
+                                <FlareText>@CalendarLabel(selected.Item.Calendar)</FlareText>
+                                <FlareText>@selected.Item.Code</FlareText>
+                            </FlareStack>
+                        </FlareCard>
+                    }
+                </FlareStack>
+                <FlareStack FlexGrow="1" MinWidth="18rem" Height="40rem">
+                    <FlareSchedulerSurface TItem="Booking" Context="schedule" EventTemplate="EventBody">
+                        <Header Context="navigation">
+                            <FlareStack Row Wrap Padding="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+                                <FlareButton OnClick="() => navigation.Commands.NavigateAsync(-1)" AriaLabel="@GalleryStrings.Scheduler_Previous"><FlareIconView Value="FlareIcons.ChevronLeft" /></FlareButton>
+                                <FlareButton OnClick="navigation.Commands.TodayAsync">@GalleryStrings.Scheduler_Today</FlareButton>
+                                <FlareButton OnClick="() => navigation.Commands.NavigateAsync(1)" AriaLabel="@GalleryStrings.Scheduler_Next"><FlareIconView Value="FlareIcons.ChevronRight" /></FlareButton>
+                                <FlareText Typo="TypographyScale.TitleMedium">@navigation.Caption</FlareText>
+                                <FlareSelect TValue="SchedulerView" Label="@GalleryStrings.Scheduler_View" Items="_views"
+                                             ItemLabel="ViewLabel" Value="navigation.View" ValueChanged="navigation.Commands.ShowViewAsync" />
+                            </FlareStack>
+                        </Header>
+                        <ChildContent Context="view">
+                            @if (view.View == SchedulerView.Month) { <FlareSchedulerCalendar TItem="Booking" Context="view" EventTemplate="EventBody" /> }
+                            else if (view.View == SchedulerView.Agenda) { <FlareSchedulerAgenda TItem="Booking" Context="view" EventTemplate="EventBody" /> }
+                            else
+                            {
+                                <FlareSchedulerTimeGrid TItem="Booking" Context="view" EventTemplate="EventBody">
+                                    <AllDayTemplate Context="band">
+                                        <FlareSchedulerAllDay TItem="Booking" Context="band" Dates="Dates(band)" MaxRows="2" OnOverflow="ShowMore" EventTemplate="EventBody" />
+                                    </AllDayTemplate>
+                                </FlareSchedulerTimeGrid>
+                            }
+                        </ChildContent>
+                    </FlareSchedulerSurface>
+                </FlareStack>
+            </FlareStack>
+            @if (schedule.Edit is { } edit)
+            {
+                <FlareDrawer Open="true" OpenChanged="open => CloseEditor(open, edit)" Anchor="DrawerAnchor.Right" Width="min(32rem, 100vw)"
+                             ContentPadding="FlareSpacing.Large" CloseOnEsc="@(!edit.IsSaving)" CloseOnScrimClick="@(!edit.IsSaving)" AriaLabel="@GalleryStrings.Scheduler_EventDetails">
+                    <HeaderContent><FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Scheduler_EventDetails</FlareText></HeaderContent>
+                    <ChildContent>
+                        <FlareStack Gap="FlareSpacing.Medium">
+                            <FlareSelect TValue="string" Label="@GalleryStrings.Scheduler_Calendar" Items="_calendars" ItemLabel="CalendarLabel" @bind-Value="_editingCalendar" Disabled="edit.IsSaving" />
+                            <FlareTextField Label="@GalleryStrings.Scheduler_BusinessCode" @bind-Value="_editingCode" Disabled="edit.IsSaving" />
+                            <FlareSchedulerEditor TItem="Booking" Context="edit" />
+                        </FlareStack>
+                    </ChildContent>
+                </FlareDrawer>
+            }
+            else if (_overflow is { } more)
+            {
+                <FlareDrawer Open="true" OpenChanged="open => { if (!open) _overflow = null; }" Anchor="DrawerAnchor.Right" Width="min(28rem, 100vw)"
+                             ContentPadding="FlareSpacing.Large" AriaLabel="@GalleryStrings.Scheduler_MoreEvents">
+                    <HeaderContent><FlareText Typo="TypographyScale.TitleLarge">@more.Date.ToString("D", schedule.Culture)</FlareText></HeaderContent>
+                    <ChildContent>
+                        <FlareStack Gap="FlareSpacing.Medium">
+                            @foreach (var occurrence in more.Occurrences)
+                            {
+                                <FlareButton OnClick="() => OpenEvent(occurrence)">@occurrence.Data.Title</FlareButton>
+                            }
+                            <FlareButton OnClick="() => _overflow = null">@GalleryStrings.Scheduler_Close</FlareButton>
+                        </FlareStack>
+                    </ChildContent>
+                </FlareDrawer>
+            }
+        </ChildContent>
+    </FlareScheduler>
+    <FlareText role="status">@_status</FlareText>
+</FlareStack>
+
+@code {
+    private sealed record Booking(SchedulerEventData Data, string Calendar, string? Code);
+    private static DateOnly Today => DateOnly.FromDateTime(DateTime.Now);
+    private static readonly SchedulerMapping<Booking> Mapping = new()
+    {
+        Key = b => b.Data.Key, Title = b => b.Data.Title, Start = b => b.Data.Start, End = b => b.Data.End,
+        AllDay = b => b.Data.AllDay, Color = b => b.Data.Color, Description = b => b.Data.Description
+    };
+    private readonly string[] _calendars = ["work", "personal"];
+    private readonly SchedulerView[] _views = [SchedulerView.Day, SchedulerView.Week, SchedulerView.Month, SchedulerView.Agenda];
+    private List<Booking> _items = [];
+    private IReadOnlyList<Booking> _visible = [];
+    private FlareScheduler<Booking>? _scheduler;
+    private bool _work = true, _personal = true;
+    private SchedulerAllDayOverflow<Booking>? _overflow;
+    private string? _editingCalendar = "work", _editingCode, _status;
+    protected override void OnInitialized()
+    {
+        DateTimeOffset At(int hour) => SchedulerClock.At(Today, new(hour, 0), TimeZoneInfo.Local);
+        _items =
+        [
+            new(new() { Key = "work", Title = GalleryStrings.Scheduler_Planning, Start = At(9), End = At(11) }, "work", "PROJECT-42"),
+            new(new() { Key = "personal", Title = GalleryStrings.Scheduler_PersonalEvent, Start = At(12), End = At(13), Color = FlareColor.Secondary }, "personal", null),
+            new(new() { Key = "conference", Title = GalleryStrings.Scheduler_Conference, AllDay = new(Today, Today.AddDays(3)) }, "work", "CONF-26")
+        ];
+        for (var i = 1; i <= 4; i++)
+            _items.Add(new(new() { Key = $"all-day-{i}", Title = GalleryStrings.Scheduler_Conference + " " + i,
+                AllDay = new(Today, Today.AddDays(i % 2 + 1)) }, "work", null));
+        Filter();
+    }
+    private void WorkChanged(bool value) { _work = value; Filter(); }
+    private void PersonalChanged(bool value) { _personal = value; Filter(); }
+    private void Filter() => _visible = _items.Where(i => i.Calendar == "work" ? _work : _personal).ToArray();
+    private static string CalendarLabel(string? key) => key == "personal" ? GalleryStrings.Scheduler_PersonalCalendar : GalleryStrings.Scheduler_WorkCalendar;
+    private static string ViewLabel(SchedulerView view) => view switch
+    {
+        SchedulerView.Day => GalleryStrings.Scheduler_Day, SchedulerView.Month => GalleryStrings.Scheduler_Month,
+        SchedulerView.Agenda => GalleryStrings.Scheduler_Agenda, _ => GalleryStrings.Scheduler_Week
+    };
+    private static Task Create(SchedulerViewContext<Booking> context)
+    {
+        var start = SchedulerClock.At(context.Date, new(9, 0), context.TimeZone);
+        return context.Commands.CreateEventAsync(new(start, start.AddHours(1)));
+    }
+    private Task OpenEvent(SchedulerOccurrence<Booking> occurrence) => _scheduler!.EditEventAsync(occurrence);
+    private static IReadOnlyList<DateOnly> Dates(SchedulerViewContext<Booking> context) =>
+        Enumerable.Range(0, context.Window.Dates.End.DayNumber - context.Window.Dates.Start.DayNumber)
+            .Select(context.Window.Dates.Start.AddDays).ToArray();
+    private void ShowMore(SchedulerAllDayOverflow<Booking> overflow) => _overflow = overflow;
+    private RenderFragment<SchedulerEventContext<Booking>> EventBody => item => @<FlareStack Gap="FlareSpacing.None">
+        <FlareButton OnClick="item.SelectAsync" @onkeydown="item.HandleKeyAsync" data-flare-edit-keys aria-pressed="@(item.IsSelected ? "true" : "false")">@item.Occurrence.Data.Title</FlareButton>
+        <FlareText Inherit>@CalendarLabel(item.Occurrence.Item.Calendar)</FlareText>
+    </FlareStack>;
+    private void Prepare(SchedulerEditContext<Booking> edit)
+    {
+        _overflow = null;
+        _editingCalendar = edit.Original?.Item.Calendar ?? "work";
+        _editingCode = edit.Original?.Item.Code;
+    }
+    private static Task CloseEditor(bool open, SchedulerEditContext<Booking> edit) => open ? Task.CompletedTask : edit.CancelAsync();
+    private void Save(SchedulerChangeEventArgs<Booking> change)
+    {
+        var original = change.Original?.Item;
+        var details = change.Action is SchedulerEditAction.Create or SchedulerEditAction.Update;
+        if (original is not null) _items.Remove(original);
+        if (change.Action != SchedulerEditAction.Delete)
+            _items.Add(new(change.Data, details ? _editingCalendar ?? "work" : original?.Calendar ?? "work", details ? _editingCode : original?.Code));
+        Filter();
+        _status = string.Format(GalleryStrings.Scheduler_Saved, change.Data.Title);
+    }
+}

@@ -4883,4 +4883,35 @@ Read the card, check the tests, and report what is left.</value>
   <data name="Localization_Shortcut" xml:space="preserve"><value>Type a draft, then press Ctrl+Alt+L to change language while keeping the caret.</value></data>
   <data name="NotFound_Title" xml:space="preserve"><value>Not Found</value></data>
   <data name="NotFound_Message" xml:space="preserve"><value>Sorry, the content you are looking for does not exist.</value></data>
+  <data name="Scheduler_Workspace" xml:space="preserve"><value>Calendar workspace and right drawer</value></data>
+  <data name="Scheduler_WorkspaceHint" xml:space="preserve"><value>Build the page from a mini-calendar, calendar filters, a custom header and an event drawer. Calendar identity is application data, separate from resources.</value></data>
+  <data name="Scheduler_Inline" xml:space="preserve"><value>Quick create and a full inline form</value></data>
+  <data name="Scheduler_InlineHint" xml:space="preserve"><value>Start with a compact form and expand it without replacing the draft. The form lives on this page; business fields and persistence belong to the application.</value></data>
+  <data name="Scheduler_NewEvent" xml:space="preserve"><value>New event</value></data>
+  <data name="Scheduler_Calendars" xml:space="preserve"><value>My calendars</value></data>
+  <data name="Scheduler_WorkCalendar" xml:space="preserve"><value>Work</value></data>
+  <data name="Scheduler_PersonalCalendar" xml:space="preserve"><value>Personal</value></data>
+  <data name="Scheduler_PersonalEvent" xml:space="preserve"><value>Personal appointment</value></data>
+  <data name="Scheduler_Preview" xml:space="preserve"><value>Selected event</value></data>
+  <data name="Scheduler_Calendar" xml:space="preserve"><value>Calendar</value></data>
+  <data name="Scheduler_BusinessCode" xml:space="preserve"><value>Request or project code</value></data>
+  <data name="Scheduler_Previous" xml:space="preserve"><value>Previous period</value></data>
+  <data name="Scheduler_Next" xml:space="preserve"><value>Next period</value></data>
+  <data name="Scheduler_Today" xml:space="preserve"><value>Today</value></data>
+  <data name="Scheduler_View" xml:space="preserve"><value>View</value></data>
+  <data name="Scheduler_Day" xml:space="preserve"><value>Day</value></data>
+  <data name="Scheduler_Week" xml:space="preserve"><value>Week</value></data>
+  <data name="Scheduler_Month" xml:space="preserve"><value>Month</value></data>
+  <data name="Scheduler_Agenda" xml:space="preserve"><value>Agenda</value></data>
+  <data name="Scheduler_EventDetails" xml:space="preserve"><value>Event details</value></data>
+  <data name="Scheduler_QuickCreate" xml:space="preserve"><value>Quick create</value></data>
+  <data name="Scheduler_FullForm" xml:space="preserve"><value>Full form</value></data>
+  <data name="Scheduler_EventTitle" xml:space="preserve"><value>Title</value></data>
+  <data name="Scheduler_AllDay" xml:space="preserve"><value>All day</value></data>
+  <data name="Scheduler_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Scheduler_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Scheduler_RefuseSave" xml:space="preserve"><value>Refuse save to keep the draft</value></data>
+  <data name="Scheduler_SaveRetained" xml:space="preserve"><value>The event was not saved. Check the values or allow saving, then try again. Your draft is retained.</value></data>
+  <data name="Scheduler_MoreEvents" xml:space="preserve"><value>More events</value></data>
+  <data name="Scheduler_Close" xml:space="preserve"><value>Close</value></data>
 </root>

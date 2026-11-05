@@ -14466,5 +14466,67 @@ namespace Flare.Gallery.Resources {
         public static string NotFound_Title => ResourceManager.GetString("NotFound_Title", resourceCulture);
         /// <summary>Localized explanation for a missing route.</summary>
         public static string NotFound_Message => ResourceManager.GetString("NotFound_Message", resourceCulture);
+        /// <summary>Calendar workspace and right drawer</summary>
+        public static string Scheduler_Workspace { get { return ResourceManager.GetString("Scheduler_Workspace", resourceCulture); } }
+        /// <summary>Build the page from a mini-calendar, calendar filters, a custom header and an event drawer. Calendar identity is application data, separate from resources.</summary>
+        public static string Scheduler_WorkspaceHint { get { return ResourceManager.GetString("Scheduler_WorkspaceHint", resourceCulture); } }
+        /// <summary>Quick create and a full inline form</summary>
+        public static string Scheduler_Inline { get { return ResourceManager.GetString("Scheduler_Inline", resourceCulture); } }
+        /// <summary>Start with a compact form and expand it without replacing the draft. The form lives on this page; business fields and persistence belong to the application.</summary>
+        public static string Scheduler_InlineHint { get { return ResourceManager.GetString("Scheduler_InlineHint", resourceCulture); } }
+        /// <summary>New event</summary>
+        public static string Scheduler_NewEvent { get { return ResourceManager.GetString("Scheduler_NewEvent", resourceCulture); } }
+        /// <summary>My calendars</summary>
+        public static string Scheduler_Calendars { get { return ResourceManager.GetString("Scheduler_Calendars", resourceCulture); } }
+        /// <summary>Work</summary>
+        public static string Scheduler_WorkCalendar { get { return ResourceManager.GetString("Scheduler_WorkCalendar", resourceCulture); } }
+        /// <summary>Personal</summary>
+        public static string Scheduler_PersonalCalendar { get { return ResourceManager.GetString("Scheduler_PersonalCalendar", resourceCulture); } }
+        /// <summary>Personal appointment</summary>
+        public static string Scheduler_PersonalEvent { get { return ResourceManager.GetString("Scheduler_PersonalEvent", resourceCulture); } }
+        /// <summary>Selected event</summary>
+        public static string Scheduler_Preview { get { return ResourceManager.GetString("Scheduler_Preview", resourceCulture); } }
+        /// <summary>Calendar</summary>
+        public static string Scheduler_Calendar { get { return ResourceManager.GetString("Scheduler_Calendar", resourceCulture); } }
+        /// <summary>Request or project code</summary>
+        public static string Scheduler_BusinessCode { get { return ResourceManager.GetString("Scheduler_BusinessCode", resourceCulture); } }
+        /// <summary>Previous period</summary>
+        public static string Scheduler_Previous { get { return ResourceManager.GetString("Scheduler_Previous", resourceCulture); } }
+        /// <summary>Next period</summary>
+        public static string Scheduler_Next { get { return ResourceManager.GetString("Scheduler_Next", resourceCulture); } }
+        /// <summary>Today</summary>
+        public static string Scheduler_Today { get { return ResourceManager.GetString("Scheduler_Today", resourceCulture); } }
+        /// <summary>View</summary>
+        public static string Scheduler_View { get { return ResourceManager.GetString("Scheduler_View", resourceCulture); } }
+        /// <summary>Day</summary>
+        public static string Scheduler_Day { get { return ResourceManager.GetString("Scheduler_Day", resourceCulture); } }
+        /// <summary>Week</summary>
+        public static string Scheduler_Week { get { return ResourceManager.GetString("Scheduler_Week", resourceCulture); } }
+        /// <summary>Month</summary>
+        public static string Scheduler_Month { get { return ResourceManager.GetString("Scheduler_Month", resourceCulture); } }
+        /// <summary>Agenda</summary>
+        public static string Scheduler_Agenda { get { return ResourceManager.GetString("Scheduler_Agenda", resourceCulture); } }
+        /// <summary>Event details</summary>
+        public static string Scheduler_EventDetails { get { return ResourceManager.GetString("Scheduler_EventDetails", resourceCulture); } }
+        /// <summary>Quick create</summary>
+        public static string Scheduler_QuickCreate { get { return ResourceManager.GetString("Scheduler_QuickCreate", resourceCulture); } }
+        /// <summary>Full form</summary>
+        public static string Scheduler_FullForm { get { return ResourceManager.GetString("Scheduler_FullForm", resourceCulture); } }
+        /// <summary>Title</summary>
+        public static string Scheduler_EventTitle { get { return ResourceManager.GetString("Scheduler_EventTitle", resourceCulture); } }
+        /// <summary>All day</summary>
+        public static string Scheduler_AllDay { get { return ResourceManager.GetString("Scheduler_AllDay", resourceCulture); } }
+        /// <summary>Save</summary>
+        public static string Scheduler_Save { get { return ResourceManager.GetString("Scheduler_Save", resourceCulture); } }
+        /// <summary>Cancel</summary>
+        public static string Scheduler_Cancel { get { return ResourceManager.GetString("Scheduler_Cancel", resourceCulture); } }
+        /// <summary>Refuse save to keep the draft</summary>
+        public static string Scheduler_RefuseSave { get { return ResourceManager.GetString("Scheduler_RefuseSave", resourceCulture); } }
+        /// <summary>The event was not saved. Check the values or allow saving, then try again. Your draft is retained.</summary>
+        public static string Scheduler_SaveRetained { get { return ResourceManager.GetString("Scheduler_SaveRetained", resourceCulture); } }
+        /// <summary>More events</summary>
+        public static string Scheduler_MoreEvents { get { return ResourceManager.GetString("Scheduler_MoreEvents", resourceCulture); } }
+        /// <summary>Close</summary>
+        public static string Scheduler_Close { get { return ResourceManager.GetString("Scheduler_Close", resourceCulture); } }
     }
 }

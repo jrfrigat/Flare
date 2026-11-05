@@ -10,11 +10,7 @@
     <FlareSwitch Label="@GalleryStrings.Scheduler_CustomTokens" Value="_customTokens" ValueChanged="SetTokens" />
     <FlareStack Height="36rem">
         <FlareScheduler TItem="Booking" Mapping="Mapping" Events="_bookings" Date="Today"
-                        Resources="_rooms" Editable OnChange="Save" ViewTemplate="@(_customView ? CustomView : null)">
-            <EventTemplate Context="occurrence">
-                <FlareText Element="span" Inherit="true">@occurrence.Item.Caption</FlareText>
-            </EventTemplate>
-        </FlareScheduler>
+                        Resources="_rooms" Editable OnChange="Save" ChildContent="@(_customView ? CustomView : null)" />
     </FlareStack>
     <FlareText role="status">@_status</FlareText>
 </FlareStack>
@@ -43,7 +39,11 @@
     private ThemeTokenPreview? _preview;
     private RenderFragment<SchedulerViewContext<Booking>> CustomView => context => @<FlareStack Gap="FlareSpacing.Small">
         <FlareText>@GalleryStrings.Scheduler_CustomViewHint</FlareText>
-        <FlareSchedulerAgenda TItem="Booking" Context="context" />
+        <FlareSchedulerSurface TItem="Booking" Context="context">
+            <Header Context="navigation"><FlareSchedulerToolbar TItem="Booking" Context="navigation" /></Header>
+            <ChildContent Context="view"><FlareSchedulerAgenda TItem="Booking" Context="view" /></ChildContent>
+        </FlareSchedulerSurface>
+        <FlareSchedulerDialog TItem="Booking" Context="context.Edit" />
     </FlareStack>;
     private void Save(SchedulerChangeEventArgs<Booking> change)
     {

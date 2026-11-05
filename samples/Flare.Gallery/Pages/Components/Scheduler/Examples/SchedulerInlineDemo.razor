@@ -1,0 +1,103 @@
+@using Flare.Components.Scheduler
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareText>@GalleryStrings.Scheduler_InlineHint</FlareText>
+    <FlareSwitch Label="@GalleryStrings.Scheduler_RefuseSave" @bind-Value="_refuse" />
+    <FlareScheduler TItem="Booking" Mapping="Mapping" Events="_items" Date="Today" View="SchedulerView.Agenda"
+                    Editable OnChange="Save" OnEditRequested="Prepare">
+        <ChildContent Context="schedule">
+            <FlareStack Row Wrap Align="FlareAlignItems.Start" Gap="FlareSpacing.Large">
+                <FlareStack FlexGrow="1" MinWidth="18rem" Gap="FlareSpacing.Medium">
+                    <FlareStack Row Wrap>
+                        <FlareText Typo="TypographyScale.TitleMedium">@schedule.Caption</FlareText>
+                        <FlareButton OnClick="() => Create(schedule)" Variant="ButtonVariant.Filled">@GalleryStrings.Scheduler_QuickCreate</FlareButton>
+                    </FlareStack>
+                    <FlareSchedulerAgenda TItem="Booking" Context="schedule">
+                        <EventTemplate Context="item">
+                            <FlareStack Row Wrap>
+                                <FlareButton OnClick="item.SelectAsync">@item.Occurrence.Data.Title</FlareButton>
+                                <FlareButton OnClick="item.EditAsync">@GalleryStrings.Scheduler_FullForm</FlareButton>
+                                <FlareText>@item.Occurrence.Item.Code</FlareText>
+                            </FlareStack>
+                        </EventTemplate>
+                    </FlareSchedulerAgenda>
+                    @if (schedule.SelectedEvent is { } selected) { <FlareText>@selected.Data.Title</FlareText> }
+                </FlareStack>
+                @if (schedule.Edit is { } edit)
+                {
+                    <FlareStack Width="min(28rem, 100%)" Gap="FlareSpacing.Medium">
+                        <FlareCard>
+                            <FlareStack Padding="FlareSpacing.Medium" Gap="FlareSpacing.Medium">
+                                <FlareText Typo="TypographyScale.TitleMedium">@(_full || edit.ScopeOnly ? GalleryStrings.Scheduler_FullForm : GalleryStrings.Scheduler_QuickCreate)</FlareText>
+                                <FlareTextField Label="@GalleryStrings.Scheduler_BusinessCode" @bind-Value="_code" Disabled="edit.IsSaving" />
+                                @if (_full || edit.ScopeOnly)
+                                {
+                                    <FlareSchedulerEditor TItem="Booking" Context="edit" />
+                                }
+                                else
+                                {
+                                    <FlareTextField Label="@GalleryStrings.Scheduler_EventTitle" Value="edit.Draft.Title" ValueChanged="v => edit.Draft = edit.Draft with { Title = v ?? string.Empty }" Disabled="edit.IsSaving" />
+                                    <FlareCheckbox TValue="bool" Label="@GalleryStrings.Scheduler_AllDay" Value="@(edit.Draft.AllDay is not null)" ValueChanged="value => SetAllDay(edit, value)" Disabled="edit.IsSaving" />
+                                    @if (edit.Status != SchedulerEditStatus.None)
+                                    {
+                                        <FlareText role="alert">@GalleryStrings.Scheduler_SaveRetained</FlareText>
+                                    }
+                                    <FlareStack Row Wrap>
+                                        <FlareButton OnClick="() => edit.SaveAsync()" Disabled="edit.IsSaving" Variant="ButtonVariant.Filled">@GalleryStrings.Scheduler_Save</FlareButton>
+                                        <FlareButton OnClick="() => _full = true" Disabled="edit.IsSaving">@GalleryStrings.Scheduler_FullForm</FlareButton>
+                                        <FlareButton OnClick="edit.CancelAsync" Disabled="edit.IsSaving">@GalleryStrings.Scheduler_Cancel</FlareButton>
+                                    </FlareStack>
+                                }
+                            </FlareStack>
+                        </FlareCard>
+                    </FlareStack>
+                }
+            </FlareStack>
+        </ChildContent>
+    </FlareScheduler>
+    <FlareText role="status">@_status</FlareText>
+</FlareStack>
+
+@code {
+    private sealed record Booking(SchedulerEventData Data, string? Code);
+    private static DateOnly Today => DateOnly.FromDateTime(DateTime.Now);
+    private static readonly SchedulerMapping<Booking> Mapping = new()
+    {
+        Key = b => b.Data.Key, Title = b => b.Data.Title, Start = b => b.Data.Start, End = b => b.Data.End,
+        AllDay = b => b.Data.AllDay, Description = b => b.Data.Description
+    };
+    private List<Booking> _items = [];
+    private bool _full, _refuse;
+    private string? _code, _status;
+    protected override void OnInitialized()
+    {
+        var start = SchedulerClock.At(Today, new(10, 0), TimeZoneInfo.Local);
+        _items = [new(new() { Key = "review", Title = GalleryStrings.Scheduler_Review, Start = start, End = start.AddHours(1) }, "REQUEST-17")];
+    }
+    private static Task Create(SchedulerViewContext<Booking> context)
+    {
+        var start = SchedulerClock.At(context.Date, new(9, 0), context.TimeZone);
+        return context.Commands.CreateEventAsync(new(start, start.AddHours(1)));
+    }
+    private void Prepare(SchedulerEditContext<Booking> context)
+    {
+        _full = context.Action != SchedulerEditAction.Create;
+        _code = context.Original?.Item.Code;
+    }
+    private static void SetAllDay(SchedulerEditContext<Booking> edit, bool value)
+    {
+        var day = edit.Draft.AllDay?.Start ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(edit.Draft.Start, edit.TimeZone).DateTime);
+        var start = SchedulerClock.At(day, new(9, 0), edit.TimeZone);
+        edit.Draft = edit.Draft with { AllDay = value ? new(day, day.AddDays(1)) : null, Start = start, End = start.AddHours(1) };
+    }
+    private async Task Save(SchedulerChangeEventArgs<Booking> change)
+    {
+        await Task.Delay(300);
+        if (_refuse) { change.Cancel = true; return; }
+        var original = change.Original?.Item;
+        if (original is not null) _items.Remove(original);
+        if (change.Action != SchedulerEditAction.Delete)
+            _items.Add(new(change.Data, change.Action is SchedulerEditAction.Create or SchedulerEditAction.Update ? _code : original?.Code));
+        _status = string.Format(GalleryStrings.Scheduler_Saved, change.Data.Title);
+    }
+}

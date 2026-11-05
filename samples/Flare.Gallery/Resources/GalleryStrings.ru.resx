@@ -4883,4 +4883,35 @@
   <data name="Localization_Shortcut" xml:space="preserve"><value>Введите черновик и нажмите Ctrl+Alt+L, чтобы сменить язык, сохранив положение курсора.</value></data>
   <data name="NotFound_Title" xml:space="preserve"><value>Страница не найдена</value></data>
   <data name="NotFound_Message" xml:space="preserve"><value>К сожалению, запрошенная страница не существует.</value></data>
+  <data name="Scheduler_Workspace" xml:space="preserve"><value>Календари и правая панель</value></data>
+  <data name="Scheduler_WorkspaceHint" xml:space="preserve"><value>Соберите страницу из мини-календаря, фильтров, своей шапки и панели события. Календарь хранится в модели приложения отдельно от ресурсов.</value></data>
+  <data name="Scheduler_Inline" xml:space="preserve"><value>Быстрое создание и полная inline-форма</value></data>
+  <data name="Scheduler_InlineHint" xml:space="preserve"><value>Начните с короткой формы и раскройте ее без замены черновика. Форма остается на странице; бизнес-поля и сохранение принадлежат приложению.</value></data>
+  <data name="Scheduler_NewEvent" xml:space="preserve"><value>Новое событие</value></data>
+  <data name="Scheduler_Calendars" xml:space="preserve"><value>Мои календари</value></data>
+  <data name="Scheduler_WorkCalendar" xml:space="preserve"><value>Рабочий</value></data>
+  <data name="Scheduler_PersonalCalendar" xml:space="preserve"><value>Личный</value></data>
+  <data name="Scheduler_PersonalEvent" xml:space="preserve"><value>Личная встреча</value></data>
+  <data name="Scheduler_Preview" xml:space="preserve"><value>Выбранное событие</value></data>
+  <data name="Scheduler_Calendar" xml:space="preserve"><value>Календарь</value></data>
+  <data name="Scheduler_BusinessCode" xml:space="preserve"><value>Код заявки или проекта</value></data>
+  <data name="Scheduler_Previous" xml:space="preserve"><value>Предыдущий период</value></data>
+  <data name="Scheduler_Next" xml:space="preserve"><value>Следующий период</value></data>
+  <data name="Scheduler_Today" xml:space="preserve"><value>Сегодня</value></data>
+  <data name="Scheduler_View" xml:space="preserve"><value>Вид</value></data>
+  <data name="Scheduler_Day" xml:space="preserve"><value>День</value></data>
+  <data name="Scheduler_Week" xml:space="preserve"><value>Неделя</value></data>
+  <data name="Scheduler_Month" xml:space="preserve"><value>Месяц</value></data>
+  <data name="Scheduler_Agenda" xml:space="preserve"><value>Повестка</value></data>
+  <data name="Scheduler_EventDetails" xml:space="preserve"><value>Параметры события</value></data>
+  <data name="Scheduler_QuickCreate" xml:space="preserve"><value>Быстрое создание</value></data>
+  <data name="Scheduler_FullForm" xml:space="preserve"><value>Полная форма</value></data>
+  <data name="Scheduler_EventTitle" xml:space="preserve"><value>Название</value></data>
+  <data name="Scheduler_AllDay" xml:space="preserve"><value>Весь день</value></data>
+  <data name="Scheduler_Save" xml:space="preserve"><value>Сохранить</value></data>
+  <data name="Scheduler_Cancel" xml:space="preserve"><value>Отмена</value></data>
+  <data name="Scheduler_RefuseSave" xml:space="preserve"><value>Отклонить сохранение и оставить черновик</value></data>
+  <data name="Scheduler_SaveRetained" xml:space="preserve"><value>Событие не сохранено. Проверьте поля или разрешите сохранение и повторите попытку. Черновик сохранен.</value></data>
+  <data name="Scheduler_MoreEvents" xml:space="preserve"><value>Остальные события</value></data>
+  <data name="Scheduler_Close" xml:space="preserve"><value>Закрыть</value></data>
 </root>
