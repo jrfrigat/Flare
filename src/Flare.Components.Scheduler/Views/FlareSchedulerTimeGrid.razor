@@ -7,6 +7,7 @@
 @inject TimeProvider Clock
 @inject IScrollService Scroll
 
+<div @ref="_viewport" class="@Css.Classes.Scheduler.Viewport">
 <FlareDragContext TPayload="SchedulerOccurrence<TItem>" KeyboardReorder="false" OnDrop="DropAsync">
 <div @ref="_root" data-flare-keyboard-grid class="@BuildCssClass(Css.Classes.Scheduler.TimeGrid)" style="@Style" @attributes="AdditionalAttributes" role="group">
     @foreach (var date in _dates)
@@ -54,6 +55,7 @@
     }
 </div>
 </FlareDragContext>
+</div>
 
 @code {
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
@@ -63,7 +65,7 @@
     private readonly Dictionary<long, ElementReference> _slotElements = [];
     private int _focusedSlot;
     private DateTimeOffset _now;
-    private ElementReference _root;
+    private ElementReference _root, _viewport;
     private DotNetObjectReference<FlareSchedulerTimeGrid<TItem>>? _self;
     private readonly CancellationTokenSource _clockStop = new();
     private Task? _clockTask;
@@ -74,14 +76,14 @@
     {
         _dates = Enumerable.Range(0, Context.Window.Dates.End.DayNumber - Context.Window.Dates.Start.DayNumber)
             .Select(i => Context.Window.Dates.Start.AddDays(i))
-            .Where(day => Context.Owner.CurrentView != SchedulerView.WorkWeek || Context.Owner.WorkDays.Contains(day.DayOfWeek)).ToList();
-        _slots = _dates.SelectMany(day => SchedulerSlots.ForDate(day, Context.Owner.TimeZone, Context.Owner.SlotDuration))
+            .Where(day => Context.View != SchedulerView.WorkWeek || Context.WorkDays.Contains(day.DayOfWeek)).ToList();
+        _slots = _dates.SelectMany(day => SchedulerSlots.ForDate(day, Context.TimeZone, Context.SlotDuration))
             .Select((slot, index) => (slot, index)).ToList();
         _targets = _slots.ToDictionary(s => Target(s.Slot), s => s.Slot, StringComparer.Ordinal);
         var keys = _slots.Select(s => s.Slot.Start.UtcDateTime.Ticks).ToHashSet();
         foreach (var key in _slotElements.Keys.Where(key => !keys.Contains(key)).ToArray()) _slotElements.Remove(key);
         _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _slots.Count - 1));
-        _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.Owner.TimeZone);
+        _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.TimeZone);
     }
     private async Task TickAsync()
     {
@@ -89,11 +91,11 @@
         try
         {
             while (await timer.WaitForNextTickAsync(_clockStop.Token))
-                await InvokeAsync(() => { _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.Owner.TimeZone); StateHasChanged(); });
+                await InvokeAsync(() => { _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.TimeZone); StateHasChanged(); });
         }
         catch (OperationCanceledException) when (_clockStop.IsCancellationRequested) { }
     }
-    private SchedulerWindow DayWindow(DateOnly date) => SchedulerClock.Window(new(date, date.AddDays(1)), Context.Owner.TimeZone);
+    private SchedulerWindow DayWindow(DateOnly date) => SchedulerClock.Window(new(date, date.AddDays(1)), Context.TimeZone);
     private IReadOnlyList<SchedulerOccurrence<TItem>> EventsOn(DateOnly day)
     {
         var window = DayWindow(day);
@@ -108,51 +110,51 @@
         return string.Join(" ", new[]
         {
             Css.Classes.Scheduler.Slot,
-            !Context.Owner.WorkDays.Contains(slot.Date.DayOfWeek) ? Css.Classes.Scheduler.SlotWeekend : null,
-            time < Context.Owner.WorkStart || time >= Context.Owner.WorkEnd ? Css.Classes.Scheduler.SlotOutside : null,
+            !Context.WorkDays.Contains(slot.Date.DayOfWeek) ? Css.Classes.Scheduler.SlotWeekend : null,
+            time < Context.WorkStart || time >= Context.WorkEnd ? Css.Classes.Scheduler.SlotOutside : null,
             slot.Date == DateOnly.FromDateTime(_now.Date) ? Css.Classes.Scheduler.SlotToday : null
         }.Where(s => s is not null));
     }
     private string Label(SchedulerTimeSlot slot, bool full)
     {
         var label = slot.Start.ToString(full ? "f" : "t", Context.Culture);
-        return Context.Owner.TimeZone.IsAmbiguousTime(slot.Start.DateTime)
+        return Context.TimeZone.IsAmbiguousTime(slot.Start.DateTime)
             ? label + " " + slot.Start.ToString("zzz", CultureInfo.InvariantCulture) : label;
     }
     private string? SlotStyle(SchedulerTimeSlot slot)
     {
-        var units = (slot.End - slot.Start).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes;
+        var units = (slot.End - slot.Start).TotalMinutes / Context.SlotDuration.TotalMinutes;
         return units == 1 ? null : FormattableString.Invariant($"height:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{units});");
     }
     private string EventStyle(SchedulerOccurrence<TItem> occurrence, DateOnly day, GanttLaneLayout<string> lanes)
     {
         var window = DayWindow(day);
         var axis = new GanttAxis(new(window.Start.UtcDateTime, window.End.UtcDateTime), GanttScale.Hour, Context.Culture);
-        var from = Math.Max(0, axis.Offset(occurrence.Data.Start.UtcDateTime) * 60 / Context.Owner.SlotDuration.TotalMinutes);
-        var to = Math.Min(axis.Units, axis.Offset(occurrence.Data.End.UtcDateTime)) * 60 / Context.Owner.SlotDuration.TotalMinutes;
+        var from = Math.Max(0, axis.Offset(occurrence.Data.Start.UtcDateTime) * 60 / Context.SlotDuration.TotalMinutes);
+        var to = Math.Min(axis.Units, axis.Offset(occurrence.Data.End.UtcDateTime)) * 60 / Context.SlotDuration.TotalMinutes;
         return FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{from});height:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{Math.Max(0.5,to-from)});inset-inline-start:{100d*lanes.Lanes[occurrence.Identity]/lanes.Count}%;width:{100d/lanes.Count}%;");
     }
-    private string NowStyle(DateOnly day) => FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{(_now - DayWindow(day).Start).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes});");
+    private string NowStyle(DateOnly day) => FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{(_now - DayWindow(day).Start).TotalMinutes / Context.SlotDuration.TotalMinutes});");
     private DateTimeOffset SegmentStart(SchedulerOccurrence<TItem> occurrence, DateOnly day)
     {
         var midnight = DayWindow(day).Start;
-        return occurrence.Data.Start > midnight ? TimeZoneInfo.ConvertTime(occurrence.Data.Start, Context.Owner.TimeZone) : midnight;
+        return occurrence.Data.Start > midnight ? TimeZoneInfo.ConvertTime(occurrence.Data.Start, Context.TimeZone) : midnight;
     }
     private async ValueTask<double> MeasureSlotAsync()
     {
         if (_slots.Count == 0 || !_slotElements.TryGetValue(_slots[0].Slot.Start.UtcDateTime.Ticks, out var element)) return 0;
         var bounds = await Elements.GetBoundsAsync(element);
-        var units = (_slots[0].Slot.End - _slots[0].Slot.Start).TotalMinutes / Context.Owner.SlotDuration.TotalMinutes;
+        var units = (_slots[0].Slot.End - _slots[0].Slot.Start).TotalMinutes / Context.SlotDuration.TotalMinutes;
         return (bounds.Bottom - bounds.Top) / units;
     }
     private Task SelectAllDayAsync(DateOnly day)
     {
         var range = new SchedulerDateRange(day, day.AddDays(1));
-        var window = SchedulerClock.Window(range, Context.Owner.TimeZone);
-        return Context.Owner.SelectSlotAsync(new(window.Start, window.End, range));
+        var window = SchedulerClock.Window(range, Context.TimeZone);
+        return Context.Commands.SelectSlotAsync(new(window.Start, window.End, range));
     }
     private static string Target(SchedulerTimeSlot slot) => "t:" + slot.Start.UtcDateTime.Ticks.ToString(CultureInfo.InvariantCulture);
-    private Task SelectAsync(SchedulerTimeSlot slot) => Context.Owner.SelectSlotAsync(new(slot.Start, slot.End));
+    private Task SelectAsync(SchedulerTimeSlot slot) => Context.Commands.SelectSlotAsync(new(slot.Start, slot.End));
     private async Task DropAsync(FlareDropEventArgs<SchedulerOccurrence<TItem>> args)
     {
         var data = args.Payload.Data;
@@ -163,28 +165,28 @@
             data = data with { AllDay = new(day, day.AddDays(days.End.DayNumber - days.Start.DayNumber)) };
         }
         else if (_targets.TryGetValue(args.TargetId, out var slot) && data.AllDay is null)
-            data = data with { Start = slot.Start, End = TimeZoneInfo.ConvertTime(slot.Start + (data.End - data.Start), Context.Owner.TimeZone) };
+            data = data with { Start = slot.Start, End = TimeZoneInfo.ConvertTime(slot.Start + (data.End - data.Start), Context.TimeZone) };
         else return;
-        await Context.Owner.RequestChangeAsync(args.Payload, data, SchedulerEditAction.Move);
+        await Context.Commands.RequestChangeAsync(args.Payload, data, SchedulerEditAction.Move);
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
         if (_scrolledDates == Context.Window.Dates || _slots.Count == 0) return;
-        var time = Context.Owner.InitialScrollTime ?? Context.Owner.WorkStart;
+        var time = Context.InitialScrollTime ?? Context.WorkStart;
         if (time == TimeOnly.MinValue) { _scrolledDates = Context.Window.Dates; return; }
         var firstDay = _slots[0].Slot.Date;
         var entry = _slots.FirstOrDefault(s => s.Slot.Date == firstDay && TimeOnly.FromDateTime(s.Slot.Start.DateTime) >= time);
         if (entry.Slot is null || !_slotElements.TryGetValue(entry.Slot.Start.UtcDateTime.Ticks, out var element)) return;
         var height = await MeasureSlotAsync();
         if (height <= 0) return;
-        var position = await Scroll.GetPositionAsync(Context.Owner.ViewportElement);
+        var position = await Scroll.GetPositionAsync(_viewport);
         _scrolledDates = Context.Window.Dates;
         if (position.Top > 0) return;
         var slotBounds = await Elements.GetBoundsAsync(element);
-        var viewport = await Elements.GetBoundsAsync(Context.Owner.ViewportElement);
+        var viewport = await Elements.GetBoundsAsync(_viewport);
         await Scroll.ScrollToAsync(Math.Max(0, slotBounds.Top - viewport.Top - height * 2),
-            Context.Owner.ViewportElement, ScrollBehavior.Instant);
+            _viewport, ScrollBehavior.Instant);
     }
     /// <summary>Handles slot keys delegated by the shared listener, including repeated clock times.</summary>
     /// <param name="index">Focused flat slot index.</param>

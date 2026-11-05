@@ -6,7 +6,7 @@ namespace Flare.Components;
 
 /// <summary>Calendar scheduling over application-owned events, composed from Calendar and Gantt projections.</summary>
 /// <typeparam name="TItem">Application event type, projected without mutation or inheritance.</typeparam>
-public partial class FlareScheduler<TItem>
+public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
 {
     /// <summary>Selectors for the application's event model.</summary>
     [Parameter, EditorRequired] public SchedulerMapping<TItem> Mapping { get; set; } = default!;
@@ -39,7 +39,6 @@ public partial class FlareScheduler<TItem>
     [Parameter] public TimeOnly WorkStart { get; set; } = new(9, 0);
     /// <summary>Initial time-grid scroll target. Null uses WorkStart; midnight keeps the top. Existing user scroll is preserved.</summary>
     [Parameter] public TimeOnly? InitialScrollTime { get; set; }
-    internal ElementReference ViewportElement => _viewport;
     /// <summary>End of working hours, exclusive.</summary>
     [Parameter] public TimeOnly WorkEnd { get; set; } = new(18, 0);
     /// <summary>Resource rows. Unknown resource keys are retained as additional rows.</summary>
@@ -64,11 +63,20 @@ public partial class FlareScheduler<TItem>
     [Parameter] public EventCallback<SchedulerSlot> OnSlotSelected { get; set; }
     /// <summary>Reports a provider/projection error; the built-in surface displays a localized failure.</summary>
     [Parameter] public EventCallback<Exception> OnLoadError { get; set; }
+    /// <summary>Replaces the entire composition, receiving the same context as independent projections.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? ChildContent { get; set; }
+    /// <summary>Selected interval; selecting an event clears it.</summary>
+    public SchedulerSlot? SelectedSlot { get; private set; }
     /// <summary>Current immutable loaded snapshot, also available to custom projections.</summary>
     public SchedulerViewContext<TItem> Snapshot => new()
     {
-        Owner = this, Window = _window, Occurrences = _occurrences,
-        Date = _date, Culture = EffectiveCulture, Version = _version
+        Commands = this, Window = _window, Occurrences = _occurrences,
+        Date = _date, Culture = EffectiveCulture, Version = _version, View = _view,
+        TimeZone = TimeZone, SlotDuration = SlotDuration, WorkDays = WorkDays, WorkStart = WorkStart,
+        WorkEnd = WorkEnd, InitialScrollTime = InitialScrollTime, Resources = Resources,
+        CanEdit = CanEdit, ShowResizeControls = ShowResizeControls, AriaLabel = AriaLabel,
+        SelectedEvent = SelectedEvent, SelectedSlot = SelectedSlot, IsLoading = _loading, Error = _error,
+        EventTemplate = EventTemplate, Focus = _focus
     };
     /// <summary>Current projection after controlled/uncontrolled resolution.</summary>
     public SchedulerView CurrentView => _view;

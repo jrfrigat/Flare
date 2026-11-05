@@ -2,6 +2,9 @@
 @using Flare.Icons
 @inherits FlareLocalizedComponentBase
 
+@if (ChildContent is not null) { @ChildContent(Snapshot) }
+else
+{
 <div @ref="_root" tabindex="-1" role="region" class="@BuildCssClass()" style="@Style" aria-label="@(AriaLabel ?? SchedulerText["Schedule"].Value)"
      data-flare-focus-target="@(_focusEvent is not null ? "[data-scheduler-focus-entry]" : null)" @attributes="AdditionalAttributes">
     @if (ShowToolbar)
@@ -63,3 +66,5 @@
     </div>
     <div class="@Css.Classes.Visually.Hidden" role="status" aria-live="polite">@_announcement</div>
 </div>
+
+}

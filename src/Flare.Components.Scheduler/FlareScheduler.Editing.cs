@@ -9,24 +9,15 @@ public partial class FlareScheduler<TItem>
     [Inject] private IDialogService Dialogs { get; set; } = default!;
     private bool _editorOpen, _submitting;
     private DialogReference? _editorReference;
-    private string? _focusEvent;
-    private bool _focusResize;
+    private readonly SchedulerFocus _focus = new();
+    private string? _focusEvent { get => _focus.Identity; set => _focus.Identity = value; }
     internal void RejectChange()
     {
         _announcementKey = "Invalid";
         _version++;
         StateHasChanged();
     }
-    internal void ReturnFocusTo(string identity, bool resize = false) { _focusEvent = identity; _focusResize = resize; }
-    internal bool HasEventFocus(string identity) => _focusEvent == identity;
-    internal bool HasResizeFocus(string identity) => _focusEvent == identity && _focusResize;
-    internal bool TakeEventFocus(string identity, out bool resize)
-    {
-        resize = _focusResize;
-        if (_editorOpen || _focusEvent != identity) return false;
-        _focusEvent = null;
-        return true;
-    }
+    internal void ReturnFocusTo(string identity, bool resize = false) => _focus.ReturnFocusTo(identity, resize);
 
     /// <summary>Enables creation, editor, move, resize and delete. The application must handle OnChange.</summary>
     [Parameter] public bool Editable { get; set; }
@@ -79,6 +70,7 @@ public partial class FlareScheduler<TItem>
     {
         if (!Editable || !OnChange.HasDelegate || _editorOpen || _disposed) return;
         _editorOpen = true;
+        _focus.Editing = true;
         if (context.Original is { } original) ReturnFocusTo(original.Identity, context.ScopeOnly && context.Action == SchedulerEditAction.Resize);
         try
         {
@@ -89,7 +81,7 @@ public partial class FlareScheduler<TItem>
             var result = await _editorReference.Result;
             if (result.Cancelled && !_disposed) { _announcementKey = "Cancelled"; _version++; StateHasChanged(); }
         }
-        finally { _editorReference = null; _editorOpen = false; if (!_disposed) StateHasChanged(); }
+        finally { _editorReference = null; _editorOpen = false; _focus.Editing = false; if (!_disposed) StateHasChanged(); }
     }
 
     /// <summary>Validates and submits an explicit change; false means read-only, invalid, busy or refused.</summary>

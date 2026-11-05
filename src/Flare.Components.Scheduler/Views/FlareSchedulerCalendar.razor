@@ -3,11 +3,11 @@
 @inherits FlareSchedulerViewBase<TItem>
 
 <FlareCalendar Class="@BuildCssClass(Css.Classes.Scheduler.Month)" Style="@Style" @attributes="AdditionalAttributes" ViewDate="Anchor" ShowNavigation="false"
-               MonthCount="@(Context.Owner.CurrentView == SchedulerView.Year ? 12 : 1)"
+               MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
                Culture="Context.Culture" Events="_events" SelectedDateChanged="SelectDayAsync"
                OnEventClick="SelectEventAsync">
     <EventTemplate Context="item">
-        @if (Context.Owner.EventTemplate is { } template) { @template(_source[item]) }
+        @if (Context.EventTemplate is { } template) { @template(_source[item]) }
         else { @item.Title }
     </EventTemplate>
 </FlareCalendar>
@@ -15,14 +15,14 @@
 @code {
     private readonly Dictionary<CalendarEvent, SchedulerOccurrence<TItem>> _source = new(ReferenceEqualityComparer.Instance);
     private IReadOnlyList<CalendarEvent> _events = [];
-    private DateOnly Anchor => Context.Owner.CurrentView == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;
+    private DateOnly Anchor => Context.View == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;
     protected override void OnParametersSet()
     {
         _source.Clear();
         var result = new List<CalendarEvent>();
         foreach (var occurrence in Context.Occurrences)
         {
-            var span = SchedulerClock.Span(occurrence.Data, Context.Owner.TimeZone);
+            var span = SchedulerClock.Span(occurrence.Data, Context.TimeZone);
             var start = DateOnly.FromDateTime(span.Start);
             var last = DateOnly.FromDateTime(span.End > span.Start ? span.End.AddTicks(-1) : span.End);
             start = start < Context.Window.Dates.Start ? Context.Window.Dates.Start : start;
@@ -36,11 +36,11 @@
         }
         _events = result;
     }
-    private Task SelectEventAsync(CalendarEvent item) => Context.Owner.SelectEventAsync(_source[item]);
+    private Task SelectEventAsync(CalendarEvent item) => Context.Commands.SelectEventAsync(_source[item]);
     private Task SelectDayAsync(DateOnly date)
     {
         var dates = new SchedulerDateRange(date, date.AddDays(1));
-        var window = SchedulerClock.Window(dates, Context.Owner.TimeZone);
-        return Context.Owner.SelectSlotAsync(new(window.Start, window.End, dates));
+        var window = SchedulerClock.Window(dates, Context.TimeZone);
+        return Context.Commands.SelectSlotAsync(new(window.Start, window.End, dates));
     }
 }

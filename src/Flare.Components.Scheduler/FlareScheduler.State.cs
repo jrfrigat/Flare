@@ -30,11 +30,12 @@ public partial class FlareScheduler<TItem>
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root);
+        if (firstRender && ChildContent is null) await Ui.RegisterTreeKeyboardAsync(_root);
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        _focus.Reject = RejectChange;
         ArgumentNullException.ThrowIfNull(Mapping);
         ArgumentNullException.ThrowIfNull(TimeZone);
         if (SlotDuration < TimeSpan.FromMinutes(5) || SlotDuration > TimeSpan.FromDays(1)
@@ -122,14 +123,18 @@ public partial class FlareScheduler<TItem>
     public async Task SelectEventAsync(SchedulerOccurrence<TItem> occurrence)
     {
         SelectedEvent = occurrence;
+        SelectedSlot = null;
         await OnEventSelected.InvokeAsync(occurrence);
+        StateHasChanged();
     }
     /// <summary>Selects a timed or all-day slot through the shared callback boundary.</summary>
     /// <param name="slot">Selected half-open span.</param>
     public async Task SelectSlotAsync(SchedulerSlot slot)
     {
         SelectedEvent = null;
+        SelectedSlot = slot;
         await OnSlotSelected.InvokeAsync(slot);
+        StateHasChanged();
         if (Editable) await CreateEventAsync(slot);
     }
     /// <summary>Cancels pending provider work before disposing component services.</summary>
