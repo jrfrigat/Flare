@@ -99,4 +99,25 @@ public sealed class SchedulerEditingTests : FlareTestContext
         Assert.Equal("Room", Item.Title);
         Assert.Empty(Services.GetRequiredService<IDialogService>().OpenDialogs);
     }
+
+    [Fact]
+    public async Task DefaultPresenterVetoesDismissalDuringPersistenceWithoutReplacingTheForm()
+    {
+        var pending = new TaskCompletionSource();
+        var cut = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Date, new DateOnly(2026, 11, 4)).Add(x => x.Editable, true)
+            .Add(x => x.OnChange, _ => pending.Task));
+        var provider = Render<FlareDialogProvider>();
+        await cut.InvokeAsync(() => cut.Instance.CreateEventAsync(new(Item.Start, Item.End)));
+        var editor = provider.FindComponent<FlareSchedulerEditor<SchedulerEventData>>();
+        editor.Instance.Context.Draft = Item;
+        Task<bool>? saving = null;
+        await cut.InvokeAsync(() => { saving = editor.Instance.Context.SaveAsync(); });
+        var dialog = Assert.Single(Services.GetRequiredService<IDialogService>().OpenDialogs);
+        Assert.False(await cut.InvokeAsync(dialog.CancelAsync));
+        Assert.Same(editor.Instance, provider.FindComponent<FlareSchedulerEditor<SchedulerEventData>>().Instance);
+        pending.SetResult();
+        Assert.True(await saving!);
+        Assert.Empty(Services.GetRequiredService<IDialogService>().OpenDialogs);
+    }
 }

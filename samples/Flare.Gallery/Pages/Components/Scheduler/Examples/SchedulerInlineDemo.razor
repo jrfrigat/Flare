@@ -36,7 +36,7 @@
                                 }
                                 else
                                 {
-                                    <FlareTextField Label="@GalleryStrings.Scheduler_EventTitle" Value="edit.Draft.Title" ValueChanged="v => edit.Draft = edit.Draft with { Title = v ?? string.Empty }" Disabled="edit.IsSaving" />
+                                    <FlareTextField Label="@GalleryStrings.Scheduler_EventTitle" Value="@edit.Draft.Title" ValueChanged="v => edit.Draft = edit.Draft with { Title = v ?? string.Empty }" Disabled="edit.IsSaving" />
                                     <FlareCheckbox TValue="bool" Label="@GalleryStrings.Scheduler_AllDay" Value="@(edit.Draft.AllDay is not null)" ValueChanged="value => SetAllDay(edit, value)" Disabled="edit.IsSaving" />
                                     @if (edit.Status != SchedulerEditStatus.None)
                                     {

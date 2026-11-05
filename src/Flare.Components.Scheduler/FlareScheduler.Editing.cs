@@ -26,6 +26,8 @@ public partial class FlareScheduler<TItem>
     [Parameter] public EventCallback<SchedulerChangeEventArgs<TItem>> OnChange { get; set; }
     /// <summary>Owns presentation of an editing session when supplied. No built-in dialog is opened.</summary>
     [Parameter] public EventCallback<SchedulerEditContext<TItem>> OnEditRequested { get; set; }
+    /// <summary>Reports a failed gesture submission. Editor failures remain available on the editing session.</summary>
+    [Parameter] public EventCallback<Exception> OnChangeError { get; set; }
     /// <summary>Current editing session, independent of any form or surface.</summary>
     public SchedulerEditContext<TItem>? ActiveEdit { get; private set; }
 
@@ -51,7 +53,7 @@ public partial class FlareScheduler<TItem>
     /// <summary>Requests a gesture change, asking for recurrence scope or delete confirmation when needed.</summary>
     public async Task RequestChangeAsync(SchedulerOccurrence<TItem> occurrence, SchedulerEventData data, SchedulerEditAction action)
     {
-        if (!CanEdit || ActiveEdit is not null || _disposed) return;
+        if (!CanEdit || ActiveEdit is not null || _submitting || _disposed) return;
         if (action is not (SchedulerEditAction.Move or SchedulerEditAction.Resize or SchedulerEditAction.Delete))
             throw new ArgumentOutOfRangeException(nameof(action));
         if (action is SchedulerEditAction.Move or SchedulerEditAction.Resize && data == occurrence.Data)
@@ -61,7 +63,13 @@ public partial class FlareScheduler<TItem>
         else if (!await session.SaveAsync())
         {
             if (session.Status == SchedulerEditStatus.Invalid) RejectChange();
-            else await OpenEditorAsync(session);
+            else if (session.Status == SchedulerEditStatus.Failed)
+            {
+                _announcementKey = "SaveError";
+                _version++;
+                StateHasChanged();
+                if (session.Error is { } error) await OnChangeError.InvokeAsync(error);
+            }
         }
     }
 

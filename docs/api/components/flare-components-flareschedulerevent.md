@@ -13,11 +13,13 @@ Shared event selection control that preserves application templates.
 | `Draggable` | `bool` | `false` | Parameter |  | Enables shared drag behavior inside a scheduling drag context. |
 | `MeasureSlot` | `Func<ValueTask<double>>?` | `` | Parameter |  | Measures one slot after a resize, honoring custom CSS sizes and zoom. |
 | `Occurrence` | `SchedulerOccurrence<TItem>` | `` | Parameter | Yes | Occurrence shown by this event control. |
+| `OnNavigateKey` | `EventCallback<KeyboardEventArgs>` | `` | Callback |  | Replaces modified-arrow navigation, for example with the containing timeline's axis commands. |
 | `Resizable` | `bool` | `false` | Parameter |  | Enables shared resizing of this visible timed segment when MeasureSlot is supplied. |
 | `SegmentStart` | `DateTimeOffset` | `01/01/0001 00:00:00 +00:00` | Parameter |  | Visible segment's inclusive instant. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
-| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Snapshot supplied by the scheduler or by its ViewTemplate. Inherited from `FlareSchedulerViewBase`. |
+| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Loaded snapshot supplied by any scheduling scope or custom composition. Inherited from `FlareSchedulerViewBase`. |
+| `EventTemplate` | `RenderFragment<SchedulerEventContext<TItem>>?` | `` | Parameter |  | Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button. Inherited from `FlareSchedulerViewBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods

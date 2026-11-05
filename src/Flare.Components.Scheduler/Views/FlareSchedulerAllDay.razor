@@ -85,6 +85,7 @@
     private object? _layoutKey;
     private bool _expanded, _expandedParameter, _initialized;
     private int _rows, _focused;
+    private bool _keyboardRegistered;
     private ElementReference _root;
     private DotNetObjectReference<FlareSchedulerAllDay<TItem>>? _self;
     protected override string ComponentCssClass => Css.Classes.Scheduler.AllDay;
@@ -143,7 +144,7 @@
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
+        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this)); _keyboardRegistered = true; }
     }
     /// <summary>Navigates background date targets using the shared keyboard listener.</summary>
     [JSInvokable]
@@ -159,7 +160,7 @@
     /// <summary>Releases the shared keyboard listener.</summary>
     public override async ValueTask DisposeAsync()
     {
-        try { await Ui.RemoveTreeKeyboardAsync(_root); }
+        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
         _self?.Dispose();

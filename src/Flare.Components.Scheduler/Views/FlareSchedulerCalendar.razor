@@ -1,16 +1,20 @@
 @typeparam TItem
 @namespace Flare.Components
 @inherits FlareSchedulerViewBase<TItem>
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
 
-<FlareCalendar Class="@BuildCssClass(Css.Classes.Scheduler.Month)" Style="@Style" @attributes="AdditionalAttributes" ViewDate="Anchor" ShowNavigation="false"
+<div @ref="_root" class="@BuildCssClass(Css.Classes.Scheduler.Month)" style="@Style" @attributes="AdditionalAttributes">
+<FlareCalendar ViewDate="Anchor" ShowNavigation="false"
                MonthCount="@(Context.View == SchedulerView.Year ? 12 : 1)"
                MaxVisibleEvents="int.MaxValue" MonthHeaderTemplate="MonthHeaderTemplate" DateTemplate="DateTemplate" DayHeaderTemplate="DayHeaderTemplate"
-               Culture="Context.Culture" Events="_events" SelectedDateChanged="SelectDayAsync"
+               Culture="Context.Culture" Events="_events" SelectedDate="SelectedDate" SelectedDateChanged="SelectDayAsync"
                OnEventClick="SelectEventAsync">
     <EventContainerTemplate Context="item">
         <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="_source[item]" EventTemplate="EventTemplate" />
     </EventContainerTemplate>
 </FlareCalendar>
+</div>
 
 @code {
     /// <summary>Optional month title content.</summary>
@@ -19,11 +23,19 @@
     [Parameter] public RenderFragment<DateOnly>? DateTemplate { get; set; }
     /// <summary>Optional weekday heading content.</summary>
     [Parameter] public RenderFragment<DayOfWeek>? DayHeaderTemplate { get; set; }
+    private object? _projectionKey;
+    private bool _keyboardRegistered;
+    private ElementReference _root;
     private readonly Dictionary<CalendarEvent, SchedulerOccurrence<TItem>> _source = new(ReferenceEqualityComparer.Instance);
     private IReadOnlyList<CalendarEvent> _events = [];
     private DateOnly Anchor => Context.View == SchedulerView.Year ? new(Context.Date.Year, 1, 1) : Context.Date;
+    private DateOnly? SelectedDate => Context.SelectedSlot is not { } slot ? null : slot.AllDay?.Start
+        ?? DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(slot.Start, Context.TimeZone).DateTime);
     protected override void OnParametersSet()
     {
+        var key = (Context.Occurrences, Context.Window, Context.TimeZone);
+        if (Equals(key, _projectionKey)) return;
+        _projectionKey = key;
         _source.Clear();
         var result = new List<CalendarEvent>();
         foreach (var occurrence in Context.Occurrences)
@@ -48,5 +60,17 @@
         var dates = new SchedulerDateRange(date, date.AddDays(1));
         var window = SchedulerClock.Window(dates, Context.TimeZone);
         return Context.Commands.SelectSlotAsync(new(window.Start, window.End, dates));
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root); _keyboardRegistered = true; }
+    }
+    /// <summary>Releases the independent view's native keyboard listener.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        await base.DisposeAsync();
     }
 }

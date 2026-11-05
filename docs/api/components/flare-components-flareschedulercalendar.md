@@ -10,9 +10,13 @@ Month or year projection composed from the existing calendar.
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `DateTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Optional date heading inside each day cell. |
+| `DayHeaderTemplate` | `RenderFragment<DayOfWeek>?` | `` | Parameter |  | Optional weekday heading content. |
+| `MonthHeaderTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Optional month title content. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
-| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Snapshot supplied by the scheduler or by its ViewTemplate. Inherited from `FlareSchedulerViewBase`. |
+| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Loaded snapshot supplied by any scheduling scope or custom composition. Inherited from `FlareSchedulerViewBase`. |
+| `EventTemplate` | `RenderFragment<SchedulerEventContext<TItem>>?` | `` | Parameter |  | Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button. Inherited from `FlareSchedulerViewBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods

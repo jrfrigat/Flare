@@ -24,7 +24,8 @@
         _reference = Dialogs.Show<FlareSchedulerEditor<TItem>>(null,
             new DialogParameters().Add(nameof(FlareSchedulerEditor<TItem>.Context), session)
                 .Add(nameof(FlareSchedulerEditor<TItem>.ChildContent), ChildContent),
-            new DialogOptions { TitleProvider = () => Text[session.Action == SchedulerEditAction.Create
+            new DialogOptions { BeforeClose = _ => ValueTask.FromResult(!session.IsSaving || session.IsClosed),
+                TitleProvider = () => Text[session.Action == SchedulerEditAction.Create
                 ? "Create" : session.Action == SchedulerEditAction.Delete ? "Delete" : "Edit"].Value });
         session.Changed += SessionChanged;
         _ = ObserveAsync(_reference, session);

@@ -29,9 +29,9 @@
                     <FlareSchedulerSurface TItem="Booking" Context="schedule" EventTemplate="EventBody">
                         <Header Context="navigation">
                             <FlareStack Row Wrap Padding="FlareSpacing.Medium" Align="FlareAlignItems.Center">
-                                <FlareButton OnClick="() => navigation.Commands.NavigateAsync(-1)" AriaLabel="@GalleryStrings.Scheduler_Previous"><FlareIconView Value="FlareIcons.ChevronLeft" /></FlareButton>
-                                <FlareButton OnClick="navigation.Commands.TodayAsync">@GalleryStrings.Scheduler_Today</FlareButton>
-                                <FlareButton OnClick="() => navigation.Commands.NavigateAsync(1)" AriaLabel="@GalleryStrings.Scheduler_Next"><FlareIconView Value="FlareIcons.ChevronRight" /></FlareButton>
+                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="() => navigation.Commands.NavigateAsync(-1)" AriaLabel="@GalleryStrings.Scheduler_Previous"><FlareIconView Value="FlareIcons.ChevronLeft" /></FlareButton>
+                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="navigation.Commands.TodayAsync">@GalleryStrings.Scheduler_Today</FlareButton>
+                                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="() => navigation.Commands.NavigateAsync(1)" AriaLabel="@GalleryStrings.Scheduler_Next"><FlareIconView Value="FlareIcons.ChevronRight" /></FlareButton>
                                 <FlareText Typo="TypographyScale.TitleMedium">@navigation.Caption</FlareText>
                                 <FlareSelect TValue="SchedulerView" Label="@GalleryStrings.Scheduler_View" Items="_views"
                                              ItemLabel="ViewLabel" Value="navigation.View" ValueChanged="navigation.Commands.ShowViewAsync" />
@@ -44,7 +44,7 @@
                             {
                                 <FlareSchedulerTimeGrid TItem="Booking" Context="view" EventTemplate="EventBody">
                                     <AllDayTemplate Context="band">
-                                        <FlareSchedulerAllDay TItem="Booking" Context="band" Dates="Dates(band)" MaxRows="2" OnOverflow="ShowMore" EventTemplate="EventBody" />
+                                        <FlareSchedulerAllDay TItem="Booking" Context="band.View" Dates="band.Dates" MaxRows="2" OnOverflow="ShowMore" EventTemplate="EventBody" />
                                     </AllDayTemplate>
                                 </FlareSchedulerTimeGrid>
                             }
@@ -132,12 +132,9 @@
         return context.Commands.CreateEventAsync(new(start, start.AddHours(1)));
     }
     private Task OpenEvent(SchedulerOccurrence<Booking> occurrence) => _scheduler!.EditEventAsync(occurrence);
-    private static IReadOnlyList<DateOnly> Dates(SchedulerViewContext<Booking> context) =>
-        Enumerable.Range(0, context.Window.Dates.End.DayNumber - context.Window.Dates.Start.DayNumber)
-            .Select(context.Window.Dates.Start.AddDays).ToArray();
     private void ShowMore(SchedulerAllDayOverflow<Booking> overflow) => _overflow = overflow;
     private RenderFragment<SchedulerEventContext<Booking>> EventBody => item => @<FlareStack Gap="FlareSpacing.None">
-        <FlareButton OnClick="item.SelectAsync" @onkeydown="item.HandleKeyAsync" data-flare-edit-keys aria-pressed="@(item.IsSelected ? "true" : "false")">@item.Occurrence.Data.Title</FlareButton>
+        <FlareSchedulerEventAction TItem="Booking" Context="item" />
         <FlareText Inherit>@CalendarLabel(item.Occurrence.Item.Calendar)</FlareText>
     </FlareStack>;
     private void Prepare(SchedulerEditContext<Booking> edit)

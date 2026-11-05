@@ -7,6 +7,21 @@ namespace Flare.Components.Gantt.Tests;
 public sealed class GanttCompositionTests : GanttTestBase
 {
     [Fact]
+    public async Task InteractiveItemCanReuseTheStandardAxisKeyboardCommands()
+    {
+        Flare.Components.Gantt.GanttItemContext<Work>? item = null;
+        Flare.Components.Gantt.GanttChangeEventArgs? change = null;
+        var cut = Chart(p => p.Add(x => x.Rows, new[] { new Node("r") })
+            .Add(x => x.Items, new[] { new Work("w", "r", Day(2), Day(4)) })
+            .Add(x => x.Editable, true).Add(x => x.OnChange, value => change = value)
+            .Add(x => x.ItemInteractionTemplate, value => b => { item = value; b.AddContent(0, value.Item.Key); }));
+        await cut.InvokeAsync(() => item!.HandleKeyAsync(new() { Key = "ArrowRight", CtrlKey = true }));
+        Assert.NotNull(change);
+        Assert.Equal(Flare.Components.Gantt.GanttEditAction.Move, change.Action);
+        Assert.Equal(Day(3).ToDateTime(TimeOnly.MinValue), Assert.Single(change.Changes).Span.Start);
+    }
+
+    [Fact]
     public void InteractiveItemOwnsActivationAndRetainsTheBarGeometry()
     {
         var selected = 0;

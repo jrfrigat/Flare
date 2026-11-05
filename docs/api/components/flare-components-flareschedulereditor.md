@@ -4,14 +4,14 @@
 
 `Flare.Components.FlareSchedulerEditor`
 
-Standard dialog body over a scheduler working copy, replaceable through EditorTemplate.
+Independent event form over a scheduler editing session; usable inside any presentation.
 
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `ChildContent` | `RenderFragment<SchedulerEditContext<TItem>>?` | `` | Parameter |  | Replaces the standard fields and actions while retaining the independent session. |
 | `Context` | `SchedulerEditContext<TItem>` | `` | Parameter | Yes | Editor working copy and persistence commands. |
-| `Dialog` | `FlareDialogInstance` | `` | Cascading |  | Dialog handle supplied by the standard Flare dialog provider. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |

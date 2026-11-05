@@ -654,12 +654,16 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for day headers, month names and the first day of week. Default = the current formatting culture.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"DateTemplate", @"RenderFragment<DateOnly>?", null, @"Replaces the date heading inside a day cell.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"DayHeaderTemplate", @"RenderFragment<DayOfWeek>?", null, @"Replaces a weekday's heading content while retaining its accessible name.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"EventContainerTemplate", @"RenderFragment<CalendarEvent>?", null, @"Replaces the event interaction control inside the retained cell boundary. Own selection and keyboard actions; interactive children are supported.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"EventTemplate", @"RenderFragment<CalendarEvent>?", null, @"Custom event content inside the calendar's existing selection control.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"Events", @"IReadOnlyList<CalendarEvent>?", null, @"Events to display on the calendar grid cells.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"InitialDate", @"DateOnly?", null, @"Date used to determine the initial calendar view month.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"MaxVisibleEvents", @"int", @"3", @"Maximum events shown per day cell. Prevents rendering DoS from large event lists.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"MondayFirst", @"bool", @"false", @"Forces the week to start on Monday. When false (default), the first day of week is taken from Culture (e.g. Sunday for en-US, Monday for most of Europe/RU).", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"MonthCount", @"int", @"1", @"Number of consecutive months to display side by side. Default: 1.", null, false, false, false, @"FlareCalendar"),
+                new ApiParameterInfo(@"MonthHeaderTemplate", @"RenderFragment<DateOnly>?", null, @"Replaces a month's title content.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"OnEventClick", @"EventCallback<CalendarEvent>", null, @"Callback raised when the user clicks on a calendar event.", null, false, true, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"SelectedDate", @"DateOnly?", null, @"Currently selected date value.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"SelectedDateChanged", @"EventCallback<DateOnly>", null, @"Callback raised when the selected date changes.", null, false, true, false, @"FlareCalendar"),
@@ -1924,11 +1928,16 @@ public static class ComponentApiRegistry
                 @"FlareRichTextEditor",
                 @"FlareScheduler",
                 @"FlareSchedulerAgenda",
+                @"FlareSchedulerAllDay",
                 @"FlareSchedulerCalendar",
+                @"FlareSchedulerDialog",
                 @"FlareSchedulerEditor",
                 @"FlareSchedulerEvent",
+                @"FlareSchedulerEventAction",
+                @"FlareSchedulerSurface",
                 @"FlareSchedulerTimeGrid",
                 @"FlareSchedulerTimeline",
+                @"FlareSchedulerToolbar",
                 @"FlareScrollTop",
                 @"FlareSection",
                 @"FlareSelect",
@@ -3638,6 +3647,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ItemCover", @"Func<TItem, GanttSpan?>?", null, @"The span an item must keep covering, such as the work of a parent's children: resizing stops at its edges. Null, or a null result, leaves the item free.", null, false, false, false, @"FlareGanttPanel"),
                 new ApiParameterInfo(@"ItemDropAccepts", @"Func<object?, bool>?", null, @"Which payloads the bar zones of ItemDropGroup take; null takes every payload of the group.", null, false, false, false, @"FlareGanttPanel"),
                 new ApiParameterInfo(@"ItemDropGroup", @"string?", null, @"Drag group of an outside FlareDragContext whose payloads can be dropped onto an item itself. When set, every bar that is neither a summary nor a suggestion becomes a drop zone whose target is Format. While a drag is on, whatever in a track does not take the payload lets the pointer through to the zones beneath it, so a payload only the units take still lands on a unit covered by a bar.", null, false, false, false, @"FlareGanttPanel"),
+                new ApiParameterInfo(@"ItemInteractionTemplate", @"RenderFragment<GanttItemContext<TItem>>?", null, @"Replaces item interaction content inside the geometry and gesture boundary. Own activation or use its standard commands; the item bar becomes a group. Mark secondary actions with data-gantt-no-drag to exclude them from pointer gestures.", null, false, false, false, @"FlareGanttPanel"),
                 new ApiParameterInfo(@"ItemKey", @"Func<TItem, string>?", null, @"Unique key of an item; shared across panels so that selection links projections.", null, false, false, false, @"FlareGanttPanel"),
                 new ApiParameterInfo(@"ItemKind", @"Func<TItem, string?>?", null, @"Kind key of an item, rendered as a CSS modifier and data-kind.", null, false, false, false, @"FlareGanttPanel"),
                 new ApiParameterInfo(@"ItemLabel", @"Func<TItem, string?>?", null, @"Accessible name and default text of an item; the key when null.", null, false, false, false, @"FlareGanttPanel"),
@@ -6233,38 +6243,35 @@ public static class ComponentApiRegistry
             @"FlareScheduler",
             @"Flare.Components.FlareScheduler",
             @"Flare.Components",
-            @"Calendar scheduling over application-owned events, composed from Calendar and Gantt projections.",
+            @"Per-instance scheduling data and interaction scope, with optional ready-made composition.",
             null,
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name of this scheduling surface.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Replaces the entire composition, receiving the same context as independent projections.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for dates and the first weekday. Interface strings use CurrentUICulture independently.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"Date", @"DateOnly", @"01/01/0001", @"Navigation date; default uses today's date in the display zone.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"DateChanged", @"EventCallback<DateOnly>", null, @"Reports navigation. With a delegate, Date remains authoritative.", null, false, true, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"Editable", @"bool", @"false", @"Enables creation, editor, move, resize and delete. The application must handle OnChange.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"EditorTemplate", @"RenderFragment<SchedulerEditContext<TItem>>?", null, @"Replaces the dialog body. Use its working copy and SaveAsync/CancelAsync commands.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerOccurrence<TItem>>?", null, @"Custom event content, retaining the surrounding interaction control.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"Editable", @"bool", @"false", @"Enables event changes when an application persistence callback is supplied.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"Events", @"IEnumerable<TItem>?", null, @"Ready events, or series when a recurrence adapter is supplied. Ignored when EventsProvider is set.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"EventsProvider", @"Func<SchedulerDataRequest, Task<IEnumerable<TItem>>>?", null, @"Loads only the visible window; obsolete results are ignored even if the provider ignores cancellation.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"InitialScrollTime", @"TimeOnly?", null, @"Initial time-grid scroll target. Null uses WorkStart; midnight keeps the top. Existing user scroll is preserved.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"Mapping", @"SchedulerMapping<TItem>", null, @"Selectors for the application's event model.", null, false, false, true, @"FlareScheduler"),
                 new ApiParameterInfo(@"MaximumEvaluationSteps", @"int", @"100000", @"Explicit local recurrence evaluation limit.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"MaximumOccurrences", @"int", @"10000", @"Explicit occurrence safety limit, applied after window filtering.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"OnChange", @"EventCallback<SchedulerChangeEventArgs<TItem>>", null, @"Receives accepted UI intents. Persist in the application or backend; set Cancel to refuse.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnChange", @"EventCallback<SchedulerChangeEventArgs<TItem>>", null, @"Receives validated proposals. Persist in the application; set Cancel to refuse.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnChangeError", @"EventCallback<Exception>", null, @"Reports a failed gesture submission. Editor failures remain available on the editing session.", null, false, true, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"OnEditRequested", @"EventCallback<SchedulerEditContext<TItem>>", null, @"Owns presentation of an editing session when supplied. No built-in dialog is opened.", null, false, true, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"OnEventSelected", @"EventCallback<SchedulerOccurrence<TItem>>", null, @"Reports event selection without mutating the item.", null, false, true, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"OnLoadError", @"EventCallback<Exception>", null, @"Reports a provider/projection error; the built-in surface displays a localized failure.", null, false, true, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"OnSlotSelected", @"EventCallback<SchedulerSlot>", null, @"Reports slot selection.", null, false, true, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"RecurrenceExpander", @"ISchedulerRecurrenceExpander?", null, @"Optional client recurrence expansion. The default displays provider-owned occurrences unchanged.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"Resources", @"IReadOnlyList<SchedulerResource>", null, @"Resource rows. Unknown resource keys are retained as additional rows.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"ShowResizeControls", @"bool", @"false", @"Shows the shared resizable's single-click buttons in addition to its keyboard-accessible handle.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"ShowToolbar", @"bool", @"true", @"Shows the default or templated navigation toolbar.", null, false, false, false, @"FlareScheduler"),
+                new ApiParameterInfo(@"ShowResizeControls", @"bool", @"false", @"Shows the shared resizable's single-click controls in addition to its keyboard handle.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"SlotDuration", @"TimeSpan", @"00:30:00", @"Duration of a time-grid slot; must divide one day and be at least five minutes.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"TimeZone", @"TimeZoneInfo", null, @"Display zone. Timed events keep their instants; all-day dates do not move.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"ToolbarTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Custom navigation content.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"View", @"SchedulerView", @"SchedulerView.Week", @"Initial or controlled projection.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"ViewChanged", @"EventCallback<SchedulerView>", null, @"Reports view changes. With a delegate, View remains authoritative.", null, false, true, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"ViewTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Replaces a built-in projection using the same loaded snapshot and owner callbacks.", null, false, false, false, @"FlareScheduler"),
-                new ApiParameterInfo(@"Views", @"IReadOnlyList<SchedulerView>", null, @"Views available in the default toolbar.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"WorkDays", @"IReadOnlySet<DayOfWeek>", null, @"Weekdays shown by WorkWeek and used to shade nonworking slots.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"WorkEnd", @"TimeOnly", @"18:00", @"End of working hours, exclusive.", null, false, false, false, @"FlareScheduler"),
                 new ApiParameterInfo(@"WorkStart", @"TimeOnly", @"09:00", @"Start of working hours; earlier slots stay selectable but are shaded.", null, false, false, false, @"FlareScheduler"),
@@ -6274,23 +6281,23 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"ApplyChangeAsync", @"ApplyChangeAsync(SchedulerEditAction action, SchedulerOccurrence<TItem> original, SchedulerEventData data, SchedulerEditScope scope)", @"Task<bool>", @"Whether the application accepted the intent.", @"Validates and submits an explicit change; false means read-only, invalid, busy or refused.",
+                new ApiMethodInfo(@"ApplyChangeAsync", @"ApplyChangeAsync(SchedulerEditAction action, SchedulerOccurrence<TItem> original, SchedulerEventData data, SchedulerEditScope scope)", @"Task<bool>", @"Whether the application accepted the change.", @"Validates and submits a change; false means read-only, invalid, busy or refused.",
                     new ApiMethodParameter[]
                     {
                         new ApiMethodParameter(@"action", @"SchedulerEditAction", @"Requested action."),
                         new ApiMethodParameter(@"original", @"SchedulerOccurrence<TItem>", @"Original occurrence; null only for creation."),
-                        new ApiMethodParameter(@"data", @"SchedulerEventData", @"Proposed values, retaining the original key for updates."),
+                        new ApiMethodParameter(@"data", @"SchedulerEventData", @"Proposed immutable values."),
                         new ApiMethodParameter(@"scope", @"SchedulerEditScope", @"Application persistence scope."),
                     }),
-                new ApiMethodInfo(@"CreateEventAsync", @"CreateEventAsync(SchedulerSlot slot)", @"Task", null, @"Opens a new-event editor for a selected timed or all-day slot.",
+                new ApiMethodInfo(@"CreateEventAsync", @"CreateEventAsync(SchedulerSlot slot)", @"Task", null, @"Requests a new-event session for a selected timed or all-day interval.",
                     new ApiMethodParameter[]
                     {
-                        new ApiMethodParameter(@"slot", @"SchedulerSlot", @"Initial dates and resource."),
+                        new ApiMethodParameter(@"slot", @"SchedulerSlot", null),
                     }),
-                new ApiMethodInfo(@"EditEventAsync", @"EditEventAsync(SchedulerOccurrence<TItem> occurrence)", @"Task", null, @"Opens the event-details editor without mutating the original item.",
+                new ApiMethodInfo(@"EditEventAsync", @"EditEventAsync(SchedulerOccurrence<TItem> occurrence)", @"Task", null, @"Requests an event-details session without mutating the application item.",
                     new ApiMethodParameter[]
                     {
-                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", @"Occurrence to edit."),
+                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", null),
                     }),
                 new ApiMethodInfo(@"GoToAsync", @"GoToAsync(DateOnly date)", @"Task", null, @"Requests a date and reloads the accepted navigation window.",
                     new ApiMethodParameter[]
@@ -6304,12 +6311,12 @@ public static class ComponentApiRegistry
                     }),
                 new ApiMethodInfo(@"ReloadAsync", @"ReloadAsync()", @"Task", null, @"Reloads the current window, for example after application persistence completes.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"RequestChangeAsync", @"RequestChangeAsync(SchedulerOccurrence<TItem> occurrence, SchedulerEventData data, SchedulerEditAction action)", @"Task", null, @"Requests a gesture change, asking for series scope when needed.",
+                new ApiMethodInfo(@"RequestChangeAsync", @"RequestChangeAsync(SchedulerOccurrence<TItem> occurrence, SchedulerEventData data, SchedulerEditAction action)", @"Task", null, @"Requests a gesture change, asking for recurrence scope or delete confirmation when needed.",
                     new ApiMethodParameter[]
                     {
-                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", @"Original occurrence."),
-                        new ApiMethodParameter(@"data", @"SchedulerEventData", @"Proposed dates or resource."),
-                        new ApiMethodParameter(@"action", @"SchedulerEditAction", @"Move, resize or delete."),
+                        new ApiMethodParameter(@"occurrence", @"SchedulerOccurrence<TItem>", null),
+                        new ApiMethodParameter(@"data", @"SchedulerEventData", null),
+                        new ApiMethodParameter(@"action", @"SchedulerEditAction", null),
                     }),
                 new ApiMethodInfo(@"SelectEventAsync", @"SelectEventAsync(SchedulerOccurrence<TItem> occurrence)", @"Task", null, @"Selects an event through the shared callback boundary.",
                     new ApiMethodParameter[]
@@ -6347,12 +6354,59 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"EmptyTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Content when there are no occurrences.", null, false, false, false, @"FlareSchedulerAgenda"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerAllDay"] = new ApiComponentInfo(
+            @"FlareSchedulerAllDay",
+            @"Flare.Components.FlareSchedulerAllDay",
+            @"Flare.Components",
+            @"Independent date-only event band with shared collision lanes and configurable overflow actions.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Dates", @"IReadOnlyList<DateOnly>", null, @"Sorted unique dates aligned with the neighboring time grid.", null, false, false, true, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"Expanded", @"bool", @"false", @"Controlled or initial expansion beyond MaxRows.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"ExpandedChanged", @"EventCallback<bool>", null, @"Reports expansion. With a delegate, Expanded remains authoritative.", null, false, true, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"HeaderTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Replaces the band heading.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"MaxHeight", @"string?", null, @"CSS maximum height used only when ScrollOverflow is enabled. Null uses the available parent size.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"MaxRows", @"int?", null, @"Visible collision rows before +N actions. Null grows to show every event.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"OnOverflow", @"EventCallback<SchedulerAllDayOverflow<TItem>>", null, @"Replaces expansion with an application-owned popover, drawer or agenda.", null, false, true, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"OverflowTemplate", @"RenderFragment<SchedulerAllDayOverflow<TItem>>?", null, @"Replaces the +N control; use its ShowAsync action.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"ScrollOverflow", @"bool", @"false", @"Opts into one scroll area for the whole band. Default grows without an internal scrollbar.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"SegmentTemplate", @"RenderFragment<SchedulerAllDaySegment<TItem>>?", null, @"Replaces event rendering inside a positioned date segment. Own interaction, drag and keyboard actions.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"SlotTemplate", @"RenderFragment<DateOnly>?", null, @"Noninteractive content of the background date-selection target.", null, false, false, false, @"FlareSchedulerAllDay"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"HandleTreeKeyAsync", @"HandleTreeKeyAsync(int index, string key)", @"Task", null, @"Navigates background date targets using the shared keyboard listener.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"index", @"int", null),
+                        new ApiMethodParameter(@"key", @"string", null),
+                    }),
+            },
             new string[]
             {
                 @"FlareSchedulerViewBase",
@@ -6372,9 +6426,13 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"DateTemplate", @"RenderFragment<DateOnly>?", null, @"Optional date heading inside each day cell.", null, false, false, false, @"FlareSchedulerCalendar"),
+                new ApiParameterInfo(@"DayHeaderTemplate", @"RenderFragment<DayOfWeek>?", null, @"Optional weekday heading content.", null, false, false, false, @"FlareSchedulerCalendar"),
+                new ApiParameterInfo(@"MonthHeaderTemplate", @"RenderFragment<DateOnly>?", null, @"Optional month title content.", null, false, false, false, @"FlareSchedulerCalendar"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
@@ -6389,16 +6447,41 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareSchedulerDialog"] = new ApiComponentInfo(
+            @"FlareSchedulerDialog",
+            @"Flare.Components.FlareSchedulerDialog",
+            @"Flare.Components",
+            @"Optional dialog presenter for an independent scheduler editing session.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment<SchedulerEditContext<TItem>>?", null, @"Optional form content, independent of the dialog presentation.", null, false, false, false, @"FlareSchedulerDialog"),
+                new ApiParameterInfo(@"Context", @"SchedulerEditContext<TItem>?", null, @"Session to present; null closes the current presentation.", null, false, false, false, @"FlareSchedulerDialog"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareSchedulerEditor"] = new ApiComponentInfo(
             @"FlareSchedulerEditor",
             @"Flare.Components.FlareSchedulerEditor",
             @"Flare.Components",
-            @"Standard dialog body over a scheduler working copy, replaceable through EditorTemplate.",
+            @"Independent event form over a scheduler editing session; usable inside any presentation.",
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment<SchedulerEditContext<TItem>>?", null, @"Replaces the standard fields and actions while retaining the independent session.", null, false, false, false, @"FlareSchedulerEditor"),
                 new ApiParameterInfo(@"Context", @"SchedulerEditContext<TItem>", null, @"Editor working copy and persistence commands.", null, false, false, true, @"FlareSchedulerEditor"),
-                new ApiParameterInfo(@"Dialog", @"FlareDialogInstance", null, @"Dialog handle supplied by the standard Flare dialog provider.", null, true, false, false, @"FlareSchedulerEditor"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -6425,11 +6508,74 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Draggable", @"bool", @"false", @"Enables shared drag behavior inside a scheduling drag context.", null, false, false, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"MeasureSlot", @"Func<ValueTask<double>>?", null, @"Measures one slot after a resize, honoring custom CSS sizes and zoom.", null, false, false, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"Occurrence", @"SchedulerOccurrence<TItem>", null, @"Occurrence shown by this event control.", null, false, false, true, @"FlareSchedulerEvent"),
+                new ApiParameterInfo(@"OnNavigateKey", @"EventCallback<KeyboardEventArgs>", null, @"Replaces modified-arrow navigation, for example with the containing timeline's axis commands.", null, false, true, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"Resizable", @"bool", @"false", @"Enables shared resizing of this visible timed segment when MeasureSlot is supplied.", null, false, false, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"SegmentStart", @"DateTimeOffset", @"01/01/0001 00:00:00 +00:00", @"Visible segment's inclusive instant.", null, false, false, false, @"FlareSchedulerEvent"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerEventAction"] = new ApiComponentInfo(
+            @"FlareSchedulerEventAction",
+            @"Flare.Components.FlareSchedulerEventAction",
+            @"Flare.Components",
+            @"Primary event activation control with standard selection and keyboard actions, composable beside custom controls.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name; null uses the event title, including for an icon-only caption.", null, false, false, false, @"FlareSchedulerEventAction"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Noninteractive caption content. Place secondary actions alongside this component.", null, false, false, false, @"FlareSchedulerEventAction"),
+                new ApiParameterInfo(@"Context", @"SchedulerEventContext<TItem>", null, @"Occurrence, selection and standard scheduler commands for this primary action.", null, false, false, true, @"FlareSchedulerEventAction"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Restores native focus to the primary event action.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerSurface"] = new ApiComponentInfo(
+            @"FlareSchedulerSurface",
+            @"Flare.Components.FlareSchedulerSurface",
+            @"Flare.Components",
+            @"Optional scheduling frame, state presentations and active projection switch.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Replaces the view switch; mount any independent projection or custom layout.", null, false, false, false, @"FlareSchedulerSurface"),
+                new ApiParameterInfo(@"EmptyTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Optional replacement for an empty window. Null keeps the empty view selectable.", null, false, false, false, @"FlareSchedulerSurface"),
+                new ApiParameterInfo(@"ErrorTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Presentation of a failed load, including access to the exception and reload command.", null, false, false, false, @"FlareSchedulerSurface"),
+                new ApiParameterInfo(@"Footer", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Optional content after the active view.", null, false, false, false, @"FlareSchedulerSurface"),
+                new ApiParameterInfo(@"Header", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Optional navigation or other content before the active view. No toolbar is imposed.", null, false, false, false, @"FlareSchedulerSurface"),
+                new ApiParameterInfo(@"LoadingTemplate", @"RenderFragment<SchedulerViewContext<TItem>>?", null, @"Presentation while the window is being loaded.", null, false, false, false, @"FlareSchedulerSurface"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
@@ -6452,9 +6598,14 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"AllDayTemplate", @"RenderFragment<SchedulerTimeGridContext<TItem>>?", null, @"Replaces the standard all-day band using the same snapshot and visible dates.", null, false, false, false, @"FlareSchedulerTimeGrid"),
+                new ApiParameterInfo(@"DayHeaderTemplate", @"RenderFragment<DateOnly>?", null, @"Day heading content; layout and column geometry are retained.", null, false, false, false, @"FlareSchedulerTimeGrid"),
+                new ApiParameterInfo(@"ShowAllDay", @"bool", @"true", @"Includes the standard all-day band. Disable when composing it elsewhere.", null, false, false, false, @"FlareSchedulerTimeGrid"),
+                new ApiParameterInfo(@"SlotTemplate", @"RenderFragment<SchedulerTimeSlot>?", null, @"Content of a selectable time slot. Use noninteractive content inside its button.", null, false, false, false, @"FlareSchedulerTimeGrid"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
@@ -6485,15 +6636,46 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"RowHeaderTemplate", @"RenderFragment<SchedulerResource>?", null, @"Replaces resource headings without copying the timeline engine.", null, false, false, false, @"FlareSchedulerTimeline"),
+                new ApiParameterInfo(@"RowHeight", @"double?", null, @"Resource-row height in pixels; null preserves the Gantt default.", null, false, false, false, @"FlareSchedulerTimeline"),
+                new ApiParameterInfo(@"Scale", @"GanttScale", @"GanttScale.Hour", @"Axis scale of the reused Gantt projection.", null, false, false, false, @"FlareSchedulerTimeline"),
+                new ApiParameterInfo(@"UnitWidth", @"double?", null, @"Axis unit width in pixels; null preserves the Gantt default.", null, false, false, false, @"FlareSchedulerTimeline"),
+                new ApiParameterInfo(@"Virtualize", @"bool", @"true", @"Virtualizes rows and columns. Disable for a small static server-rendered timeline.", null, false, false, false, @"FlareSchedulerTimeline"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Snapshot supplied by the scheduler or by its ViewTemplate.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Loaded snapshot supplied by any scheduling scope or custom composition.", null, false, false, true, @"FlareSchedulerViewBase"),
+                new ApiParameterInfo(@"EventTemplate", @"RenderFragment<SchedulerEventContext<TItem>>?", null, @"Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button.", null, false, false, false, @"FlareSchedulerViewBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareSchedulerViewBase",
+                @"FlareLocalizedComponentBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareSchedulerToolbar"] = new ApiComponentInfo(
+            @"FlareSchedulerToolbar",
+            @"Flare.Components.FlareSchedulerToolbar",
+            @"Flare.Components",
+            @"Optional standard navigation and event commands, composable anywhere in a scheduling scope.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Context", @"SchedulerViewContext<TItem>", null, @"Scheduling snapshot and navigation commands.", null, false, false, true, @"FlareSchedulerToolbar"),
+                new ApiParameterInfo(@"Views", @"IReadOnlyList<SchedulerView>", null, @"Projections offered by this optional toolbar.", null, false, false, false, @"FlareSchedulerToolbar"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
                 @"FlareLocalizedComponentBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
@@ -10022,6 +10204,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareGantt",
+                @"FlareSchedulerTimeline",
             });
 
         e[@"GanttScheduleMode"] = new ApiEnumInfo(
@@ -10573,11 +10756,26 @@ public static class ComponentApiRegistry
                 @"FlareScheduler",
             });
 
+        e[@"SchedulerEditStatus"] = new ApiEnumInfo(
+            @"SchedulerEditStatus",
+            @"Flare.Components.Scheduler.SchedulerEditStatus",
+            @"Flare.Components.Scheduler",
+            @"Outcome of the latest attempt to save an editing session.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No failure is being shown."),
+                new ApiEnumMember(@"Invalid", @"1", @"The proposed values are invalid."),
+                new ApiEnumMember(@"Refused", @"2", @"The application refused the change."),
+                new ApiEnumMember(@"Failed", @"3", @"Persistence threw an exception; the draft is retained for retry."),
+            },
+            System.Array.Empty<string>());
+
         e[@"SchedulerView"] = new ApiEnumInfo(
             @"SchedulerView",
             @"Flare.Components.Scheduler.SchedulerView",
             @"Flare.Components.Scheduler",
-            @"Built-in scheduling projections. ViewTemplate can replace any projection.",
+            @"Built-in scheduling projections. Compose independent views or replace the surface's view content.",
             null,
             new ApiEnumMember[]
             {
@@ -10592,6 +10790,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareScheduler",
+                @"FlareSchedulerToolbar",
             });
 
         e[@"ScrollAlign"] = new ApiEnumInfo(

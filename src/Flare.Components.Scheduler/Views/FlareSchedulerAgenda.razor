@@ -1,12 +1,14 @@
 @typeparam TItem
 @namespace Flare.Components
 @inherits FlareSchedulerViewBase<TItem>
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
 
-<div class="@BuildCssClass(Css.Classes.Scheduler.Agenda)" style="@Style" role="group" aria-label="@SchedulerText["Agenda"].Value"
+<div @ref="_root" class="@BuildCssClass(Css.Classes.Scheduler.Agenda)" style="@Style" role="group" aria-label="@SchedulerText["Agenda"].Value"
      data-flare-focus-target="@($".{Css.Classes.Scheduler.EventBody}")" @attributes="AdditionalAttributes">
     @if (Context.Occurrences.Count == 0) { @if (EmptyTemplate is not null) { @EmptyTemplate(Context) }
         else { <FlareText>@SchedulerText["Empty"].Value</FlareText> } }
-    @foreach (var occurrence in Context.Occurrences.OrderBy(e => SchedulerClock.Span(e.Data, Context.TimeZone).Start))
+    @foreach (var occurrence in _ordered)
     {
         <div class="@Css.Classes.Scheduler.AgendaItem" @key="occurrence.Identity">
             <FlareText>@Label(occurrence.Data)</FlareText>
@@ -19,7 +21,30 @@
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
     /// <summary>Content when there are no occurrences.</summary>
     [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? EmptyTemplate { get; set; }
+    private object? _orderKey;
+    private bool _keyboardRegistered;
+    private ElementReference _root;
+    private IReadOnlyList<SchedulerOccurrence<TItem>> _ordered = [];
+    protected override void OnParametersSet()
+    {
+        var key = (Context.Occurrences, Context.TimeZone);
+        if (Equals(key, _orderKey)) return;
+        _ordered = Context.Occurrences.OrderBy(e => SchedulerClock.Span(e.Data, Context.TimeZone).Start).ToArray();
+        _orderKey = key;
+    }
     private string Label(SchedulerEventData data) => data.AllDay is { } days
         ? $"{days.Start.ToString("d", Context.Culture)} {SchedulerText["AllDay"].Value}"
         : TimeZoneInfo.ConvertTime(data.Start, Context.TimeZone).ToString("g", Context.Culture);
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root); _keyboardRegistered = true; }
+    }
+    /// <summary>Releases the independent view's native keyboard listener.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        await base.DisposeAsync();
+    }
 }

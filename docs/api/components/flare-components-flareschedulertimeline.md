@@ -10,9 +10,15 @@ Virtual resource projection composed from the existing Gantt timeline.
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `RowHeaderTemplate` | `RenderFragment<SchedulerResource>?` | `` | Parameter |  | Replaces resource headings without copying the timeline engine. |
+| `RowHeight` | `double?` | `` | Parameter |  | Resource-row height in pixels; null preserves the Gantt default. |
+| `Scale` | `GanttScale` | `GanttScale.Hour` | Parameter |  | Axis scale of the reused Gantt projection. |
+| `UnitWidth` | `double?` | `` | Parameter |  | Axis unit width in pixels; null preserves the Gantt default. |
+| `Virtualize` | `bool` | `true` | Parameter |  | Virtualizes rows and columns. Disable for a small static server-rendered timeline. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
-| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Snapshot supplied by the scheduler or by its ViewTemplate. Inherited from `FlareSchedulerViewBase`. |
+| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Loaded snapshot supplied by any scheduling scope or custom composition. Inherited from `FlareSchedulerViewBase`. |
+| `EventTemplate` | `RenderFragment<SchedulerEventContext<TItem>>?` | `` | Parameter |  | Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button. Inherited from `FlareSchedulerViewBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods

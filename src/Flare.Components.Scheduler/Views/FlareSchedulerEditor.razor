@@ -8,7 +8,7 @@ else
     <FlareStack Class="@BuildCssClass()" Style="@Style" @attributes="AdditionalAttributes">
         @if (!Context.ScopeOnly)
         {
-            <FlareTextField Disabled="_saving" Label="@SchedulerText["Title"].Value" Value="Context.Draft.Title" ValueChanged="v => Context.Draft = Context.Draft with { Title = v ?? string.Empty }" />
+            <FlareTextField Disabled="_saving" Label="@SchedulerText["Title"].Value" Value="@Context.Draft.Title" ValueChanged="v => Context.Draft = Context.Draft with { Title = v ?? string.Empty }" />
             <FlareCheckbox Disabled="_saving" TValue="bool" Label="@SchedulerText["AllDay"].Value" @bind-Value="_allDay" />
             @if (_allDay)
             {
@@ -20,11 +20,11 @@ else
                 <FlareDateTimePicker Disabled="_saving" Label="@SchedulerText["Start"].Value" @bind-Value="_start" Culture="Context.Culture" />
                 <FlareDateTimePicker Disabled="_saving" Label="@SchedulerText["End"].Value" @bind-Value="_end" Culture="Context.Culture" />
             }
-            <FlareTextField Disabled="_saving" Label="@SchedulerText["Description"].Value" Value="Context.Draft.Description" ValueChanged="v => Context.Draft = Context.Draft with { Description = v }" />
+            <FlareTextField Disabled="_saving" Label="@SchedulerText["Description"].Value" Value="@Context.Draft.Description" ValueChanged="v => Context.Draft = Context.Draft with { Description = v }" />
             @if (Context.Resources.Count > 0)
             {
                 <FlareSelect Disabled="_saving" TValue="string" Label="@SchedulerText["Resource"].Value" Items="Context.Resources.Select(r => r.Key)"
-                             NullOption="@SchedulerText["Unassigned"].Value" Value="Context.Draft.ResourceKey"
+                             NullOption="@SchedulerText["Unassigned"].Value" Value="@Context.Draft.ResourceKey"
                              ValueChanged="v => Context.Draft = Context.Draft with { ResourceKey = v }"
                              ItemLabel="key => Context.Resources.FirstOrDefault(r => r.Key == key)?.Title ?? key" />
             }

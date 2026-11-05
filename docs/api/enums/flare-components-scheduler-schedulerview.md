@@ -4,7 +4,7 @@
 
 `Flare.Components.Scheduler.SchedulerView`
 
-Built-in scheduling projections. ViewTemplate can replace any projection.
+Built-in scheduling projections. Compose independent views or replace the surface's view content.
 
 ## Values
 
@@ -21,3 +21,4 @@ Built-in scheduling projections. ViewTemplate can replace any projection.
 ## Used by components
 
 - `FlareScheduler`
+- `FlareSchedulerToolbar`

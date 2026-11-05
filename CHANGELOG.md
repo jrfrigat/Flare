@@ -3,6 +3,12 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Scheduler is now a component builder: a headless data/command scope, optional Surface/Toolbar/Dialog, independent edit sessions/forms, interactive event templates and a shared multi-day all-day band with configurable +N overflow. Slot selection is separate from creation. Root ViewTemplate/ToolbarTemplate/EditorTemplate/ShowToolbar/Views move to explicit component composition; event templates receive SchedulerEventContext on views; AllDayHeight becomes AllDayRowHeight. Calendar/Gantt expose reusable interaction-template hooks. Gallery and EN/RU guides show calendar filters, preview/right-drawer editing and quick/full inline business forms.
+
 ## [0.52.0] - 2026-11-05
 
 ### Added

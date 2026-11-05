@@ -1,0 +1,34 @@
+@page "/gantt-composition"
+@using Flare.Components.Gantt
+
+<FlareThemeProvider ManageSplash="false" RespectSystemColorScheme="false">
+    <FlareGantt Range="@(GanttSpan.FromDays(_monday, _monday.AddDays(6)))" Scale="GanttScale.Day" UnitWidth="120d" RowHeight="100d" BarInset="4d">
+        <FlareGanttPanel TRow="string" TItem="Work" Rows="@(new[] { "row", "next" })" RowKey="r => r"
+                         Items="_items" ItemKey="i => i.Key" ItemRow="RowOf" ItemSpan="i => i.Span"
+                         Editable AllowRowChange="true" OnChange="Change" OnItemClick="_ => _selected++">
+            <ItemInteractionTemplate Context="item">
+                <button id="primary" data-flare-edit-keys @onclick="item.SelectAsync" @onkeydown="item.HandleKeyAsync">Task</button>
+                <input id="note" aria-label="Task note" value="abcdef" style="width:6rem" />
+                <button id="secondary" data-gantt-no-drag @onclick="() => _secondary++">Action</button>
+            </ItemInteractionTemplate>
+        </FlareGanttPanel>
+    </FlareGantt>
+    <output id="change">@_change</output><output id="selected">@_selected</output><output id="actions">@_secondary</output><output id="row">@_row</output>
+</FlareThemeProvider>
+
+@code {
+    private sealed record Work(string Key, GanttSpan Span);
+    private readonly DateOnly _monday = new(2026, 11, 2);
+    private List<Work> _items = [new("one", GanttSpan.FromDays(new(2026, 11, 4), new(2026, 11, 6)))];
+    private int _selected, _secondary;
+    private string _change = "";
+    private string _row = "row";
+    private string RowOf(Work _) => _row;
+    private void Change(GanttChangeEventArgs change)
+    {
+        _change = change.Action.ToString();
+        var span = change.Changes.First().Span;
+        _row = change.Changes.First().RowKey ?? _row;
+        _items = [new("one", span)];
+    }
+}

@@ -105,7 +105,7 @@ public partial class FlareGanttPanel<TRow, TItem>
 
     private async Task KeyDown(KeyboardEventArgs e, GanttBarLayout<TItem> bar)
     {
-        if (bar.IsSuggested) return;
+        if (bar.IsSuggested || e.AltKey || e.MetaKey) return;
         switch (e.Key)
         {
             case "Enter" or " ":

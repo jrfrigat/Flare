@@ -179,11 +179,16 @@ This component exposes no documented public methods.
 - `FlareRichTextEditor`
 - `FlareScheduler`
 - `FlareSchedulerAgenda`
+- `FlareSchedulerAllDay`
 - `FlareSchedulerCalendar`
+- `FlareSchedulerDialog`
 - `FlareSchedulerEditor`
 - `FlareSchedulerEvent`
+- `FlareSchedulerEventAction`
+- `FlareSchedulerSurface`
 - `FlareSchedulerTimeGrid`
 - `FlareSchedulerTimeline`
+- `FlareSchedulerToolbar`
 - `FlareScrollTop`
 - `FlareSection`
 - `FlareSelect`

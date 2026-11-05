@@ -1,22 +1,22 @@
 # Flare.Components.Scheduler
 
-Календарное планирование для [Flare](https://github.com/jrfrigat/Flare), .NET 8, 9 и 10.
+Конструктор календарного UI для [Flare](https://github.com/jrfrigat/Flare), .NET 8, 9 и 10.
 
 ```sh
 dotnet add package Flare.Components.Scheduler
 ```
 
-После `AddFlare` вызовите `AddFlareScheduler()` из `Flare.Components.Scheduler`. Подключите стили
-`_content/Flare.Components.Gantt/css/gantt.css` и `_content/Flare.Components.Scheduler/css/scheduler.css`.
-Нужны стандартные providers темы и диалогов.
+После AddFlare вызовите AddFlareScheduler() из Flare.Components.Scheduler. После основного CSS подключите
+_content/Flare.Components.Gantt/css/gantt.css и _content/Flare.Components.Scheduler/css/scheduler.css.
+Используйте FlareThemeProvider; FlareDialogProvider нужен только необязательному диалоговому presenter.
 
-- Day, Week, WorkWeek, Month, Year, Agenda и ресурсный Timeline.
-- Собственный `TItem` через `SchedulerMapping<TItem>`, оконный `EventsProvider` с отменой.
-- Проекции существующих Calendar/Gantt, общие drag/drop/resize-компоненты.
-- Хранение в приложении через отменяемый `OnChange`, включая область изменения серии.
-- Базовые токены темы по умолчанию, необязательные записи `SchedulerTokens` с `[CssVar]`.
-- Готовые вхождения с backend по умолчанию. Локальное раскрытие RFC подключается отдельным
-  пакетом `Flare.Components.Scheduler.Ical`, зависимости от него здесь нет.
+- Готовый Scheduler или headless scope с независимыми видами, Surface и Toolbar.
+- Day, Week, WorkWeek, Month, Year, Agenda и ресурсный Timeline; движки существующих Calendar/Gantt.
+- Собственная модель/Mapping, оконная загрузка с отменой, фильтры календарей и хранение в приложении.
+- Независимые сессия и форма: Drawer, Dialog, Popover, inline или страница приложения.
+- Интерактивные шаблоны событий, общие drag/resize, date-only уровни и настраиваемый +N.
+- Scoped-переключение языка и культура; базовые токены с типизированными CssVar overrides.
+- Готовые вхождения backend; локальное раскрытие RFC отдельно в Flare.Components.Scheduler.Ical.
 
-[Руководство](https://github.com/jrfrigat/Flare/blob/main/docs/ru/scheduler.md) ·
+[Руководство и примеры](https://github.com/jrfrigat/Flare/blob/main/docs/ru/scheduler.md) ·
 [Gallery](https://jrfrigat.github.io/Flare/components/scheduler) · [English](README.md)

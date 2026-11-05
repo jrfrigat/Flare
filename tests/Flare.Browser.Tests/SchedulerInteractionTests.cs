@@ -10,13 +10,14 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
     {
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context);
-        await page.Locator("[data-flare-tree-index='20']").ClickAsync();
+        await page.Locator(".flare-scheduler__slot[data-flare-tree-index='20']").DblClickAsync();
         var dialog = page.GetByRole(AriaRole.Dialog);
         await dialog.GetByRole(AriaRole.Textbox, new() { Name = "Title", Exact = true }).FillAsync("New appointment");
         await dialog.GetByRole(AriaRole.Button, new() { Name = "Save", Exact = true }).ClickAsync();
         await Expect(page.Locator("#change")).ToHaveTextAsync("Create:10:00-10:30:Occurrence:False");
         var item = page.GetByRole(AriaRole.Button, new() { Name = "New appointment", Exact = true });
         await item.DblClickAsync();
+        await Expect(dialog.GetByRole(AriaRole.Textbox, new() { Name = "Title", Exact = true })).ToHaveValueAsync("New appointment");
         await dialog.GetByRole(AriaRole.Textbox, new() { Name = "Title", Exact = true }).FillAsync("Updated appointment");
         await dialog.GetByRole(AriaRole.Button, new() { Name = "Save", Exact = true }).ClickAsync();
         await Expect(page.Locator("#change")).ToHaveTextAsync("Update:10:00-10:30:Occurrence:False");
@@ -24,7 +25,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await updated.PressAsync("Delete");
         await dialog.GetByRole(AriaRole.Button, new() { Name = "Delete", Exact = true }).ClickAsync();
         await Expect(updated).ToHaveCountAsync(0);
-        await Expect(page.Locator("[data-flare-tree-index='20']")).ToBeFocusedAsync();
+        await Expect(page.Locator(".flare-scheduler__slot[data-flare-tree-index='20']")).ToBeFocusedAsync();
     }
     [Fact]
     public async Task TrustedTouchMovesAnEventThroughTheSharedDragContext()
@@ -32,7 +33,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await using var context = await fixture.Browser.NewContextAsync(new() { HasTouch = true });
         var page = await OpenAsync(context);
         var from = (await page.Locator($".{Css.Classes.Drag.Handle}").BoundingBoxAsync())!;
-        var to = (await page.Locator("[data-flare-tree-index='22']").BoundingBoxAsync())!;
+        var to = (await page.Locator(".flare-scheduler__slot[data-flare-tree-index='22']").BoundingBoxAsync())!;
         var x = from.X + from.Width / 2;
         var y = from.Y + from.Height / 2;
         var cdp = await context.NewCDPSessionAsync(page);
@@ -62,7 +63,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         await page.Locator("#timeline").ClickAsync();
         var bar = page.Locator($".{Css.Classes.Gantt.Bar}[data-key='one']");
         await Expect(bar).ToBeVisibleAsync();
-        await bar.PressAsync("Control+ArrowRight");
+        await bar.Locator("button[data-scheduler-event]").PressAsync("Control+ArrowRight");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Move:10:00-11:00:Occurrence:False");
     }
     private async Task<IPage> OpenAsync(IBrowserContext context)
@@ -72,7 +73,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
         page.PageError += (_, error) => output.WriteLine(error);
         await page.GotoAsync($"{fixture.BaseUrl}/scheduler");
         await Expect(page.Locator($".{Css.Classes.Scheduler.EventBody}")).ToHaveTextAsync("Planning");
-        await Expect(page.Locator("[data-flare-tree-index='0']")).ToHaveCSSAsync("height", "40px");
+        await Expect(page.Locator(".flare-scheduler__slot[data-flare-tree-index='0']")).ToHaveCSSAsync("height", "40px");
         await ListenerWait.ForAsync(page, $".{Css.Classes.Drag.Context}", "pointerdown");
         await page.Locator($".{Css.Classes.Scheduler.Viewport}").EvaluateAsync("e => e.scrollTop = 600");
         return page;
@@ -96,7 +97,7 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
     {
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context);
-        await DragAsync(page, $".{Css.Classes.Drag.Handle}", "[data-flare-tree-index='22']");
+        await DragAsync(page, $".{Css.Classes.Drag.Handle}", ".flare-scheduler__slot[data-flare-tree-index='22']");
         await Expect(page.Locator("#change")).ToHaveTextAsync("Move:11:00-12:00:Occurrence:False");
         var handle = page.Locator($".{Css.Classes.Resizable.Handle}");
         await handle.ScrollIntoViewIfNeededAsync();
@@ -153,14 +154,16 @@ public sealed class SchedulerInteractionTests(BrowserFixture fixture, ITestOutpu
     {
         await using var context = await fixture.Browser.NewContextAsync();
         var page = await OpenAsync(context);
-        await ListenerWait.ForAsync(page, "[data-flare-keyboard-grid]", "keydown");
-        var slot = page.Locator("[data-flare-tree-index='20']");
+        await ListenerWait.ForAsync(page, ".flare-scheduler__time-grid", "keydown");
+        var slot = page.Locator(".flare-scheduler__slot[data-flare-tree-index='20']");
         await slot.FocusAsync();
         await slot.PressAsync("ArrowDown");
-        await Expect(page.Locator("[data-flare-tree-index='21']")).ToBeFocusedAsync();
+        await Expect(page.Locator(".flare-scheduler__slot[data-flare-tree-index='21']")).ToBeFocusedAsync();
         await page.Keyboard.PressAsync("Space");
+        await Expect(page.GetByRole(AriaRole.Dialog)).ToHaveCountAsync(0);
+        await page.Keyboard.PressAsync("F2");
         await Expect(page.GetByRole(AriaRole.Dialog)).ToBeVisibleAsync();
         await page.GetByRole(AriaRole.Dialog).GetByRole(AriaRole.Button, new() { Name = "Cancel", Exact = true }).ClickAsync();
-        await Expect(page.Locator("[data-flare-tree-index][tabindex='0']")).ToHaveCountAsync(1);
+        await Expect(page.Locator(".flare-scheduler__slot[data-flare-tree-index][tabindex='0']")).ToHaveCountAsync(1);
     }
 }

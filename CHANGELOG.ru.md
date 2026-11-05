@@ -4,6 +4,12 @@
 [семантическому версионированию](https://semver.org/). Записи, отсутствующие в этом файле,
 показываются на английском из `CHANGELOG.md`.
 
+## [Unreleased]
+
+### Изменено
+
+- Scheduler стал конструктором: headless scope данных/команд, необязательные Surface/Toolbar/Dialog, независимые сессия и форма, интерактивные шаблоны событий и общая multi-day полоса на весь день с настраиваемым +N. Выделение слота отделено от создания. Корневые ViewTemplate/ToolbarTemplate/EditorTemplate/ShowToolbar/Views заменены явной композицией компонентов; шаблоны событий у видов получают SchedulerEventContext; AllDayHeight заменен на AllDayRowHeight. Calendar/Gantt получили переиспользуемые interaction-template hooks. Gallery и EN/RU руководства показывают фильтры календарей, preview/правый Drawer и быстрые/полные inline-формы с бизнес-полями.
+
 ## [0.52.0] - 2026-11-05
 
 ### Добавлено

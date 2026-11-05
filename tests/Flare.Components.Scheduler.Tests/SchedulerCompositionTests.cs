@@ -90,4 +90,64 @@ public sealed class SchedulerCompositionTests : FlareTestContext
         Assert.Equal(0, selects);
         Assert.Empty(cut.FindComponents<FlareSchedulerDialog<SchedulerEventData>>());
     }
+
+    [Fact]
+    public void IndependentPrimaryActionReusesSelectionAndKeyboardWithoutAVisualOwner()
+    {
+        var item = new SchedulerEventData { Key = "one", Title = "One",
+            Start = new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero), End = new(2026, 11, 4, 10, 0, 0, TimeSpan.Zero) };
+        SchedulerChangeEventArgs<SchedulerEventData>? proposal = null;
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Events, new[] { item }).Add(x => x.Date, Date).Add(x => x.TimeZone, TimeZoneInfo.Utc)
+            .Add(x => x.Editable, true).Add(x => x.OnChange, value => proposal = value)
+            .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Scope")));
+        var view = source.Instance.Snapshot;
+        var occurrence = Assert.Single(view.Occurrences);
+        var action = Render<FlareSchedulerEventAction<SchedulerEventData>>(p => p
+            .Add(x => x.Context, new SchedulerEventContext<SchedulerEventData>(view, occurrence)));
+        action.Find("button").Click();
+        Assert.Same(occurrence, source.Instance.SelectedEvent);
+        action.Find("button").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "ArrowDown", CtrlKey = true });
+        action.WaitForAssertion(() => Assert.NotNull(proposal));
+        Assert.Equal(item.Start.AddMinutes(30), proposal!.Data.Start);
+        Assert.Equal(9, item.Start.Hour);
+        Assert.Empty(source.FindComponents<FlareSchedulerSurface<SchedulerEventData>>());
+    }
+
+    [Fact]
+    public async Task RefreshRetainsAnIntervalAndNavigationClearsAnIntervalOutsideTheAcceptedWindow()
+    {
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Day).Add(x => x.TimeZone, TimeZoneInfo.Utc)
+            .Add(x => x.ChildContent, _ => b => b.AddContent(0, "Scope")));
+        var slot = new SchedulerSlot(new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero), new(2026, 11, 4, 10, 0, 0, TimeSpan.Zero));
+        await source.InvokeAsync(() => source.Instance.SelectSlotAsync(slot));
+        await source.InvokeAsync(source.Instance.ReloadAsync);
+        Assert.Equal(slot, source.Instance.SelectedSlot);
+        await source.InvokeAsync(() => source.Instance.NavigateAsync(1));
+        Assert.Null(source.Instance.SelectedSlot);
+    }
+
+    [Fact]
+    public async Task CalendarAndTimelineReflectTheSharedExternalSelection()
+    {
+        var item = new SchedulerEventData { Key = "one", Title = "One",
+            Start = new(2026, 11, 4, 9, 0, 0, TimeSpan.Zero), End = new(2026, 11, 4, 10, 0, 0, TimeSpan.Zero) };
+        var source = Render<FlareScheduler<SchedulerEventData>>(p => p.Add(x => x.Mapping, SchedulerMappings.EventData)
+            .Add(x => x.Events, new[] { item }).Add(x => x.Date, Date).Add(x => x.View, SchedulerView.Month)
+            .Add(x => x.TimeZone, TimeZoneInfo.Utc).Add(x => x.ChildContent, _ => b => b.AddContent(0, "Scope")));
+        await source.InvokeAsync(() => source.Instance.SelectSlotAsync(new(item.Start, item.End)));
+        var calendar = Render<FlareSchedulerCalendar<SchedulerEventData>>(p => p.Add(x => x.Context, source.Instance.Snapshot));
+        Assert.Contains("4", Assert.Single(calendar.FindAll("[role=gridcell][aria-selected=true]")).TextContent);
+        await source.InvokeAsync(() => source.Instance.SelectEventAsync(source.Instance.Snapshot.Occurrences[0]));
+        calendar.Render(p => p.Add(x => x.Context, source.Instance.Snapshot));
+        Assert.Empty(calendar.FindAll("[role=gridcell][aria-selected=true]"));
+        var timeline = Render<FlareSchedulerTimeline<SchedulerEventData>>(p => p.Add(x => x.Context, source.Instance.Snapshot)
+            .Add(x => x.Virtualize, false).Add(x => x.Scale, Flare.Components.Gantt.GanttScale.Day)
+            .Add(x => x.RowHeight, 48d).Add(x => x.UnitWidth, 72d));
+        var gantt = timeline.FindComponent<FlareGantt>().Instance;
+        Assert.Equal("one", gantt.Selected);
+        Assert.Equal(48, gantt.RowHeight);
+        Assert.Equal(72, gantt.UnitWidth);
+    }
 }

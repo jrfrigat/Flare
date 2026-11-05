@@ -178,10 +178,13 @@
     private RenderFragment RenderBar(GanttBarLayout<TItem> bar) => __builder =>
     {
         var progress = bar.Progress is { } p ? Math.Clamp(p, 0, 1) : (double?)null;
+        var interactive = ItemInteractionTemplate is not null && bar.Item is not null && !bar.IsSummary && !bar.IsSuggested;
         <div class="@BarClass(bar)" data-kind="@bar.Kind" data-key="@bar.Key"
-             role="@(bar.IsSuggested ? null : ItemInteractionTemplate is not null ? "group" : "button")" tabindex="@(bar.IsSuggested || ItemInteractionTemplate is not null ? null : "0")"
-             aria-label="@AriaFor(bar)" aria-pressed="@(bar.IsSuggested || ItemInteractionTemplate is not null ? null : (Gantt!.Selected == bar.Key ? "true" : "false"))"
-             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="async () => { if (ItemInteractionTemplate is null) await Activate(bar); }" @onkeydown="async e => { if (ItemInteractionTemplate is null) await KeyDown(e, bar); }">
+             role="@(bar.IsSuggested ? null : interactive ? "group" : "button")" tabindex="@(bar.IsSuggested ? null : interactive ? "-1" : "0")"
+             aria-label="@AriaFor(bar)" aria-pressed="@(bar.IsSuggested || interactive ? null : (Gantt!.Selected == bar.Key ? "true" : "false"))"
+             data-gantt-own-interaction="@(interactive ? "" : null)"
+             data-flare-focus-target="@(interactive ? "button:not(:disabled),[href],input:not(:disabled),[tabindex='0']" : null)"
+             title="@(ItemTooltip is null ? TitleOf(bar) : null)" @onclick="async () => { if (!interactive) await Activate(bar); }" @onkeydown="async e => { if (!interactive) await KeyDown(e, bar); }">
             @if (CanEdit && !bar.IsSummary && !bar.IsSuggested)
             {
                 @* The gesture itself is the browser's (gantt.js): these only mark where a press starts it. *@
@@ -205,7 +208,7 @@
             <div class="@Css.Classes.Gantt.BarContent">
                 @if (ItemInteractionTemplate is not null && bar.Item is { } interactiveItem && !bar.IsSummary)
                 {
-                    @ItemInteractionTemplate(interactiveItem)
+                    @ItemInteractionTemplate(new(interactiveItem, () => Activate(bar), e => KeyDown(e, bar)))
                 }
                 else if (ItemTemplate is not null && bar.Item is { } item && !bar.IsSummary)
                 {

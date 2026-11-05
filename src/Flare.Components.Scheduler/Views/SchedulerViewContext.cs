@@ -76,3 +76,9 @@ internal sealed class SchedulerFocus
         return true;
     }
 }
+
+/// <summary>Time-grid composition snapshot with the exact visible columns.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+/// <param name="View">Scheduling data and commands.</param>
+/// <param name="Dates">Sorted dates actually rendered, including work-week filtering.</param>
+public sealed record SchedulerTimeGridContext<TItem>(SchedulerViewContext<TItem> View, IReadOnlyList<DateOnly> Dates);

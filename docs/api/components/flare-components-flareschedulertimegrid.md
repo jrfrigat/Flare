@@ -10,9 +10,14 @@ Day, week and working-week projection using the shared Gantt axis and lane calcu
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
+| `AllDayTemplate` | `RenderFragment<SchedulerTimeGridContext<TItem>>?` | `` | Parameter |  | Replaces the standard all-day band using the same snapshot and visible dates. |
+| `DayHeaderTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Day heading content; layout and column geometry are retained. |
+| `ShowAllDay` | `bool` | `true` | Parameter |  | Includes the standard all-day band. Disable when composing it elsewhere. |
+| `SlotTemplate` | `RenderFragment<SchedulerTimeSlot>?` | `` | Parameter |  | Content of a selectable time slot. Use noninteractive content inside its button. |
 | `AdditionalAttributes` | `IReadOnlyDictionary<string, object>?` | `` | Parameter |  | Additional attributes. Inherited from `FlareComponentBase`. |
 | `Class` | `string?` | `` | Parameter |  | Additional CSS class(es) appended to the component's root element. Inherited from `FlareComponentBase`. |
-| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Snapshot supplied by the scheduler or by its ViewTemplate. Inherited from `FlareSchedulerViewBase`. |
+| `Context` | `SchedulerViewContext<TItem>` | `` | Parameter | Yes | Loaded snapshot supplied by any scheduling scope or custom composition. Inherited from `FlareSchedulerViewBase`. |
+| `EventTemplate` | `RenderFragment<SchedulerEventContext<TItem>>?` | `` | Parameter |  | Replaces event visuals inside the retained geometry and gesture boundary. Own child activation and keyboard actions; interactive children are not nested in a button. Inherited from `FlareSchedulerViewBase`. |
 | `Style` | `string?` | `` | Parameter |  | Inline style string appended to the component's root element. Inherited from `FlareComponentBase`. |
 
 ## Methods

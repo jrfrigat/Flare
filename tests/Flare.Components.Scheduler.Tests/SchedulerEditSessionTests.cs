@@ -113,4 +113,21 @@ public sealed class SchedulerEditSessionTests : FlareTestContext
         await session.CancelAsync();
         Assert.Equal("Original", Item.Title);
     }
+
+    [Fact]
+    public void IndependentFormDisplaysTheActualStringFieldsAndResource()
+    {
+        Services.AddFlareScheduler();
+        var session = new SchedulerEditContext<SchedulerEventData>
+        {
+            Action = SchedulerEditAction.Create, Draft = Item with { Description = "Details", ResourceKey = "room" },
+            Resources = [new("room", "Meeting room")], Submit = _ => Task.FromResult(true)
+        };
+        var cut = Render<FlareSchedulerEditor<SchedulerEventData>>(p => p.Add(x => x.Context, session));
+        var inputs = cut.FindAll("input[type=text]");
+        Assert.Contains(inputs, input => input.GetAttribute("value") == "Original");
+        Assert.Contains(inputs, input => input.GetAttribute("value") == "Details");
+        Assert.Contains("Meeting room", cut.Find("[role=combobox]").TextContent);
+        Assert.DoesNotContain("Context.Draft.", cut.Markup);
+    }
 }

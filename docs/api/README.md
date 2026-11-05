@@ -166,13 +166,18 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`FlareRibbonSeparator`](components/flare-components-ide-flareribbonseparator.md)
 - [`FlareRibbonTab`](components/flare-components-ide-flareribbontab.md)
 - [`FlareRichTextEditor`](components/flare-components-flarerichtexteditor.md)
-- [`FlareScheduler`](components/flare-components-flarescheduler.md) — Calendar scheduling over application-owned events, composed from Calendar and Gantt projections.
+- [`FlareScheduler`](components/flare-components-flarescheduler.md) — Per-instance scheduling data and interaction scope, with optional ready-made composition.
 - [`FlareSchedulerAgenda`](components/flare-components-flarescheduleragenda.md) — Chronological list of the loaded event occurrences.
+- [`FlareSchedulerAllDay`](components/flare-components-flareschedulerallday.md) — Independent date-only event band with shared collision lanes and configurable overflow actions.
 - [`FlareSchedulerCalendar`](components/flare-components-flareschedulercalendar.md) — Month or year projection composed from the existing calendar.
-- [`FlareSchedulerEditor`](components/flare-components-flareschedulereditor.md) — Standard dialog body over a scheduler working copy, replaceable through EditorTemplate.
+- [`FlareSchedulerDialog`](components/flare-components-flareschedulerdialog.md) — Optional dialog presenter for an independent scheduler editing session.
+- [`FlareSchedulerEditor`](components/flare-components-flareschedulereditor.md) — Independent event form over a scheduler editing session; usable inside any presentation.
 - [`FlareSchedulerEvent`](components/flare-components-flareschedulerevent.md) — Shared event selection control that preserves application templates.
+- [`FlareSchedulerEventAction`](components/flare-components-flareschedulereventaction.md) — Primary event activation control with standard selection and keyboard actions, composable beside custom controls.
+- [`FlareSchedulerSurface`](components/flare-components-flareschedulersurface.md) — Optional scheduling frame, state presentations and active projection switch.
 - [`FlareSchedulerTimeGrid`](components/flare-components-flareschedulertimegrid.md) — Day, week and working-week projection using the shared Gantt axis and lane calculations.
 - [`FlareSchedulerTimeline`](components/flare-components-flareschedulertimeline.md) — Virtual resource projection composed from the existing Gantt timeline.
+- [`FlareSchedulerToolbar`](components/flare-components-flareschedulertoolbar.md) — Optional standard navigation and event commands, composable anywhere in a scheduling scope.
 - [`FlareScrollTop`](components/flare-components-flarescrolltop.md)
 - [`FlareSection`](components/flare-components-flaresection.md)
 - [`FlareSelect`](components/flare-components-flareselect.md) — Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned "no value" row, so a filter select expresses "all" without a sentinel value.
@@ -342,7 +347,8 @@ Generated from the public Flare assemblies and XML documentation. Do not edit by
 - [`Flare.Components.IDE.RibbonSizeMode`](enums/flare-components-ide-ribbonsizemode.md) — Size mode for the ribbon - collapsed shows only tabs, full shows tabs + commands.
 - [`Flare.Components.Scheduler.SchedulerEditAction`](enums/flare-components-scheduler-schedulereditaction.md) — Kind of application-owned event change requested by a scheduler interaction.
 - [`Flare.Components.Scheduler.SchedulerEditScope`](enums/flare-components-scheduler-schedulereditscope.md) — Persistence scope of a recurring-event change; the application owns series splitting and storage.
-- [`Flare.Components.Scheduler.SchedulerView`](enums/flare-components-scheduler-schedulerview.md) — Built-in scheduling projections. ViewTemplate can replace any projection.
+- [`Flare.Components.Scheduler.SchedulerEditStatus`](enums/flare-components-scheduler-schedulereditstatus.md) — Outcome of the latest attempt to save an editing session.
+- [`Flare.Components.Scheduler.SchedulerView`](enums/flare-components-scheduler-schedulerview.md) — Built-in scheduling projections. Compose independent views or replace the surface's view content.
 - [`Flare.Components.ScrollAlign`](enums/flare-components-scrollalign.md) — Where a scrolled-to element should come to rest in the visible area.
 - [`Flare.Components.ScrollAxis`](enums/flare-components-scrollaxis.md) — Which axis a direction filter reacts to.
 - [`Flare.Components.ScrollBehavior`](enums/flare-components-scrollbehavior.md) — How the browser should animate a programmatic scroll.

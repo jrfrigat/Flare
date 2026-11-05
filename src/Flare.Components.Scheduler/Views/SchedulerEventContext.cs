@@ -8,7 +8,7 @@ public sealed record SchedulerEventContext<TItem>(SchedulerViewContext<TItem> Vi
 {
     internal Func<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs, Task>? KeyHandler { get; init; }
     /// <summary>Handles F2, Delete and modified arrow shortcuts. Bind only to the primary event action, not to nested fields or menus.</summary>
-    public Task HandleKeyAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args) => KeyHandler?.Invoke(args) ?? Task.CompletedTask;
+    public Task HandleKeyAsync(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs args) => KeyHandler?.Invoke(args) ?? SchedulerEventKeys.HandleAsync(this, args);
     /// <summary>Whether this occurrence is selected.</summary>
     public bool IsSelected => View.SelectedEvent?.Identity == Occurrence.Identity;
     /// <summary>Selects this occurrence, for example to show an application preview.</summary>

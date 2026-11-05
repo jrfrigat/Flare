@@ -3,6 +3,10 @@ namespace Flare.Css.Classes;
 /// <summary>Scheduler projection classes; override these or the scheduler tokens to supply a design system.</summary>
 public static class Scheduler
 {
+    /// <summary>Primary event activation with standard scheduler keyboard semantics.</summary>
+    public const string EventAction = "flare-scheduler__event-action";
+    /// <summary>Active projection and loading-state boundary.</summary>
+    public const string Body = "flare-scheduler__body";
     /// <summary>Shared width boundary of headers, all-day band and timed columns.</summary>
     public const string TimeGridFrame = "flare-scheduler__time-grid-frame";
     /// <summary>Sticky common header and all-day band.</summary>

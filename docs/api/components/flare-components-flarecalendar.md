@@ -9,12 +9,16 @@
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for day headers, month names and the first day of week. Default = the current formatting culture. |
+| `DateTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Replaces the date heading inside a day cell. |
+| `DayHeaderTemplate` | `RenderFragment<DayOfWeek>?` | `` | Parameter |  | Replaces a weekday's heading content while retaining its accessible name. |
+| `EventContainerTemplate` | `RenderFragment<CalendarEvent>?` | `` | Parameter |  | Replaces the event interaction control inside the retained cell boundary. Own selection and keyboard actions; interactive children are supported. |
 | `EventTemplate` | `RenderFragment<CalendarEvent>?` | `` | Parameter |  | Custom event content inside the calendar's existing selection control. |
 | `Events` | `IReadOnlyList<CalendarEvent>?` | `` | Parameter |  | Events to display on the calendar grid cells. |
 | `InitialDate` | `DateOnly?` | `` | Parameter |  | Date used to determine the initial calendar view month. |
 | `MaxVisibleEvents` | `int` | `3` | Parameter |  | Maximum events shown per day cell. Prevents rendering DoS from large event lists. |
 | `MondayFirst` | `bool` | `false` | Parameter |  | Forces the week to start on Monday. When false (default), the first day of week is taken from Culture (e.g. Sunday for en-US, Monday for most of Europe/RU). |
 | `MonthCount` | `int` | `1` | Parameter |  | Number of consecutive months to display side by side. Default: 1. |
+| `MonthHeaderTemplate` | `RenderFragment<DateOnly>?` | `` | Parameter |  | Replaces a month's title content. |
 | `OnEventClick` | `EventCallback<CalendarEvent>` | `` | Callback |  | Callback raised when the user clicks on a calendar event. |
 | `SelectedDate` | `DateOnly?` | `` | Parameter |  | Currently selected date value. |
 | `SelectedDateChanged` | `EventCallback<DateOnly>` | `` | Callback |  | Callback raised when the selected date changes. |

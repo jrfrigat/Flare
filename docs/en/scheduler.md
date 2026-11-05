@@ -1,116 +1,244 @@
 # Scheduler
 
-`FlareScheduler<TItem>` adds calendar planning to an application's own event model. Month and Year
-compose `FlareCalendar`; the resource Timeline composes `FlareGantt`. Day, Week, WorkWeek and Agenda
-share the same window, event projection and editing contract. Calendar and Gantt remain usable independently.
+Scheduler is a set of calendar UI building blocks over application-owned events. Use the ready-made
+composition or arrange independent views, navigation, event actions and editing surfaces yourself.
+Month/Year reuse FlareCalendar; Timeline reuses FlareGantt; time-grid gestures reuse the shared
+Draggable, DropZone and Resizable. Calendar and Gantt remain independent components.
 
-## Setup
+## Setup and ready-made composition
 
-```sh
-dotnet add package Flare.Components.Scheduler
-```
-
-After the ordinary Flare setup and a theme, register the shared timeline services:
+Install Flare.Components.Scheduler, perform the ordinary Flare/theme setup and register:
 
 ```csharp
 using Flare.Components.Scheduler;
 builder.Services.AddFlareScheduler();
 ```
 
-Add both stylesheets after the core Flare stylesheet:
+Load these stylesheets after the core Flare stylesheet:
 
 ```html
 <link rel="stylesheet" href="_content/Flare.Components.Gantt/css/gantt.css" />
 <link rel="stylesheet" href="_content/Flare.Components.Scheduler/css/scheduler.css" />
 ```
 
-Use the normal `FlareThemeProvider` and `FlareDialogProvider`. The latter hosts the default event editor.
-Scheduler needs interactive rendering. Give its parent a bounded height for a scrolling time grid.
-
-## Your model
+Use FlareThemeProvider and, for the optional dialog presenter, FlareDialogProvider. Interactive
+rendering enables commands and gestures; static server rendering can display data without JS.
+Give the active view a bounded parent height when its time grid should scroll.
 
 ```razor
 @using Flare.Components.Scheduler
 
 <FlareStack Height="36rem">
-    <FlareScheduler TItem="Meeting" Mapping="Mapping" Events="meetings" />
+    <FlareScheduler TItem="SchedulerEventData" Mapping="SchedulerMappings.EventData"
+                    Events="events" Editable OnChange="Persist" />
 </FlareStack>
 
 @code {
-    private sealed record Meeting(string Id, string Name, DateTimeOffset From, DateTimeOffset Until);
-    private readonly List<Meeting> meetings = [];
-    private static readonly SchedulerMapping<Meeting> Mapping = new()
+    private List<SchedulerEventData> events = [];
+    private void Persist(SchedulerChangeEventArgs<SchedulerEventData> change)
     {
-        Key = m => m.Id, Title = m => m.Name, Start = m => m.From, End = m => m.Until
-    };
+        if (change.Original is { } original) events.Remove(original.Item);
+        if (change.Action != SchedulerEditAction.Delete) events.Add(change.Data);
+    }
 }
 ```
 
-No inheritance or mutable wrapper is required. `SchedulerMappings.EventData` is a ready mapping for
-`SchedulerEventData`. Keys must be unique and stable. Timed intervals use inclusive Start and exclusive End;
-all-day events use `SchedulerDateRange` with independent `DateOnly` bounds and an exclusive End.
+FlareScheduler is a per-instance data/interaction scope. Without ChildContent it composes the public
+Surface, Toolbar and Dialog components for convenience. With ChildContent it renders exactly that
+composition. Pass visual Class/Style/attributes to the chosen surface in a custom composition.
+The scope itself has no dependency on IDialogService.
 
-`Date`/`DateChanged` and `View`/`ViewChanged` support controlled state. Without callbacks the component
-owns navigation. `Views` limits the toolbar choices. `Culture` controls date formatting and the first weekday;
-interface strings follow `CultureInfo.CurrentUICulture` with English fallback. `TimeZone` changes the display
-of instants, never the dates of an all-day event. Missing DST slots are omitted; repeated times retain their
-distinct offsets. Working hours shade the grid; `InitialScrollTime` defaults to `WorkStart`.
+## Choose the parts
 
-## Windowed data and recurrence
+| Part | Responsibility |
+| --- | --- |
+| FlareScheduler | Windowed data, navigation, selection, edit requests and persistence boundary |
+| SchedulerViewContext / ISchedulerCommands | Loaded snapshot and commands; no concrete visual owner |
+| FlareSchedulerSurface | Optional frame, Header/Footer, state templates and one active view |
+| FlareSchedulerToolbar | Optional standard commands; Views belongs to this toolbar |
+| FlareSchedulerTimeGrid | Day/Week/WorkWeek columns, slots, now line and gestures |
+| FlareSchedulerAllDay | Independent date-only lanes and overflow actions |
+| FlareSchedulerCalendar | Month/Year using Calendar's grid and headings |
+| FlareSchedulerAgenda | Chronological list |
+| FlareSchedulerEvent | Shared event interaction, drag and resize wrapper |
+| FlareSchedulerEventAction | Primary event selection and keyboard control for custom templates |
+| FlareSchedulerTimeline | Virtual resource rows using Gantt's axis and editing |
+| SchedulerEditContext | Independent draft, validation and Save/Cancel lifecycle |
+| FlareSchedulerEditor | Optional reusable form; no dialog instance required |
+| FlareSchedulerDialog | Optional dialog presenter for that same session |
 
-Instead of `Events`, supply `EventsProvider`. Its `SchedulerDataRequest` contains a half-open `Window`
-and cancellation token. Return every event intersecting that window, including events beginning earlier.
-Obsolete provider results are ignored even if the provider ignores cancellation. Call `ReloadAsync` after
-external changes. `OnLoadError` reports failures.
+Each view takes Context. A custom host can provide the snapshot and implement ISchedulerCommands;
+views do not require a FlareScheduler owner. Surface.ChildContent replaces the view switch.
+Header/Footer and LoadingTemplate/ErrorTemplate/EmptyTemplate customize the frame. An empty view
+remains selectable unless EmptyTemplate deliberately replaces it. Inactive views are not mounted.
 
-The default path accepts ready backend occurrences. Supply stable `SeriesKey` and `RecurrenceId` when the
-application needs recurring-event edits. The UI neither parses recurrence rules nor contacts a backend.
-For a standalone client, install `Flare.Components.Scheduler.Ical` and explicitly set
-`RecurrenceExpander="IcalSchedulerRecurrenceExpander.Default"` (namespace
-`Flare.Components.Scheduler.Ical`). That optional adapter uses Ical.Net for RRULE/RDATE/EXDATE and overrides.
-Only that package introduces the RFC dependency. Limits and cancellation bound local expansion; the
-application still owns persistence, recurrence rules and splitting a series.
+## Own the editing surface
 
-## Editing and composition
+This complete composition puts the same standard form in a right drawer. There is no built-in
+editor presenter in a headless composition. Add a sidebar, mini-calendar, application filters,
+preview or custom fields alongside these components as needed.
 
-Enable `Editable` and handle `OnChange`. Each `SchedulerChangeEventArgs<TItem>` carries the original item,
-stable occurrence identity, immutable proposed `Data`, `Action` and recurring `Scope` (Occurrence, Following,
-Series). Validate and persist in the callback, update your collection, or set `Cancel = true` to refuse.
-The component never mutates the original `TItem`. Cancellation of the editor discards its working copy.
-`EditorTemplate` can replace the standard fields via `SchedulerEditContext<TItem>` and its Save/Cancel methods.
+```razor
+@using Flare.Components.Scheduler
 
-The grid reuses shared drag, drop and resize controls. Timeline gestures use Gantt's engine. F2 edits,
-Delete deletes, Ctrl+arrows moves and Ctrl+Shift+arrows resizes. Arrow keys, Home/End and Space navigate and
-select slots. Recurring changes ask for their scope before submission. Focus is restored after edits.
+<FlareScheduler TItem="SchedulerEventData" Mapping="SchedulerMappings.EventData"
+                @ref="scheduler" Events="events" Editable OnChange="Persist" OnEventSelected="OpenEvent">
+    <ChildContent Context="schedule">
+        <FlareStack Height="36rem">
+            <FlareSchedulerSurface TItem="SchedulerEventData" Context="schedule">
+                <Header Context="navigation">
+                    <FlareButton OnClick="navigation.Commands.TodayAsync">Today</FlareButton>
+                    <FlareButton OnClick="() => Create(navigation)">New event</FlareButton>
+                    <FlareText>@navigation.Caption</FlareText>
+                </Header>
+            </FlareSchedulerSurface>
+        </FlareStack>
+        @if (schedule.Edit is { } edit)
+        {
+            <FlareDrawer Open="true" OpenChanged="open => open ? Task.CompletedTask : edit.CancelAsync()"
+                         Anchor="DrawerAnchor.Right" Width="min(30rem,100vw)"
+                         CloseOnEsc="@(!edit.IsSaving)" CloseOnScrimClick="@(!edit.IsSaving)"
+                         ContentPadding="FlareSpacing.Medium" AriaLabel="Event details">
+                <FlareSchedulerEditor TItem="SchedulerEventData" Context="edit" />
+            </FlareDrawer>
+        }
+    </ChildContent>
+</FlareScheduler>
 
-`EventTemplate` receives the original item and projected occurrence. Keep its content noninteractive because
-the surrounding control owns selection. `ViewTemplate` and `ToolbarTemplate` receive a
-`SchedulerViewContext<TItem>` with the loaded snapshot and owner callbacks. Compose the public Calendar,
-TimeGrid, Agenda and Timeline projections instead of duplicating loading or editing. `Resources` labels
-Timeline rows; unknown resource keys remain visible.
+@code {
+    private FlareScheduler<SchedulerEventData>? scheduler;
+    private Task OpenEvent(SchedulerOccurrence<SchedulerEventData> occurrence) => scheduler!.EditEventAsync(occurrence);
+    private static Task Create(SchedulerViewContext<SchedulerEventData> context)
+    {
+        var start = SchedulerClock.At(context.Date, new(9, 0), context.TimeZone);
+        return context.Commands.CreateEventAsync(context.SelectedSlot ?? new(start, start.AddHours(1)));
+    }
+    private List<SchedulerEventData> events = [];
+    private void Persist(SchedulerChangeEventArgs<SchedulerEventData> change)
+    {
+        if (change.Original is { } original) events.Remove(original.Item);
+        if (change.Action != SchedulerEditAction.Delete) events.Add(change.Data);
+    }
+}
+```
 
-## Themes and overrides
+The built-in labels are localized; the application captions in these small examples are yours to
+localize. In a ready-made composition, OnEditRequested transfers presentation to your handler and
+suppresses the default Dialog. Keep that session in your own Drawer, Popover, inline form or page.
+Commands return after requesting the session, rather than waiting for the user to close it.
 
-Every component token falls back to base semantic tokens at its point of use. Any theme that supplies the
-base contract therefore works without Scheduler-specific settings. Optional overrides use the same
-`[CssVar]` mapper as Gantt, Kanban and other independent packages:
+Selection does not imply editing. OnEventSelected can open a preview or explicitly call
+EditEventAsync. Clicking or pressing Space on a slot only selects it. Double-click/F2 requests
+creation; the standard Create button uses the selected interval. Touch users can select and use a
+create action. All-day is a property in the common form, not a mandatory per-column create button.
+
+A session holds an immutable Draft record, Original, Action and recurrence Scope. Replace Draft
+with a with-expression for custom fields. SaveAsync returns false for invalid/refused/failed/busy
+submissions and retains the working copy for retry. Status classifies the failure; Error exposes a
+persistence exception. Changed notifies independent presentations. CancelAsync discards the session
+without changing the original item. While IsSaving, repeated saves and cancellation are ignored;
+keep dismissal disabled until persistence finishes. The default dialog presenter vetoes dismissal
+while saving. Accepted saves close the session. Forms can render directly without any presenter.
+Editor.ChildContent replaces its fields/actions; using the session directly requires no Editor.
+
+OnChange receives proposed immutable Data, Original/occurrence identity, Action and Scope. Persist
+and update the supplied collection or set Cancel to refuse. The library never mutates TItem.
+Recurrence moves/resizes and delete requests can ask for scope/confirmation through the same
+session. Ordinary moves/resizes submit directly and retain the chosen custom editor workflow.
+A refused gesture restores its geometry/focus without opening an editor; OnChangeError reports a
+failed gesture. Editor failures stay on their session.
+
+## Event and view composition
+
+EventTemplate on a view/Surface replaces event visuals inside the geometry/drag/resize boundary.
+It receives SchedulerEventContext: Occurrence, View, IsSelected, SelectAsync/EditAsync/DeleteAsync
+and HandleKeyAsync. Interactive children are supported; no mandatory button surrounds them.
+Compose FlareSchedulerEventAction with the template context for the standard primary control and place secondary actions beside it. It uses event typography and caption wrapping; its ChildContent customizes the noninteractive caption.
+For other primary controls, bind HandleKeyAsync and data-flare-edit-keys to retain
+F2/Delete/modified-arrow shortcuts and native scroll suppression. Do not bind those shortcuts to
+nested fields or secondary menus. Focus restoration uses the first enabled interactive child.
+
+The default event button supports F2, Delete, Ctrl+arrows (move) and Ctrl+Shift+arrows (resize).
+Timeline navigation reuses Gantt's axis step and resource commands. Time slots use arrows,
+Home/End and Space, including RTL direction and repeated DST times. Custom visuals must fit the
+allocated timed geometry; keep large details in a separate presentation.
+
+TimeGrid exposes DayHeaderTemplate, noninteractive SlotTemplate, ShowAllDay and AllDayTemplate.
+The latter receives SchedulerTimeGridContext with View and the exact visible Dates, including
+work-week filtering. Calendar exposes month, weekday and date headings. Its Scheduler events use
+Calendar.EventContainerTemplate rather than placing nested actions in Calendar's default control.
+Timeline uses Gantt.ItemInteractionTemplate, whose context preserves the standard item/axis commands.
+Timeline also exposes Scale, UnitWidth, RowHeight and RowHeaderTemplate. Its default virtualized mode needs viewport measurement; set Virtualize=false for a small static server-rendered projection.
+Mark secondary bar actions with data-gantt-no-drag; input fields retain native editing behavior.
+
+## All-day lanes and overflow
+
+```razor
+<FlareSchedulerTimeGrid TItem="SchedulerEventData" Context="schedule">
+    <AllDayTemplate Context="band">
+        <FlareSchedulerAllDay TItem="SchedulerEventData" Context="band.View" Dates="band.Dates"
+                             MaxRows="3" />
+    </AllDayTemplate>
+</FlareSchedulerTimeGrid>
+```
+
+The shared band aligns to the timed columns and draws a multi-day event as one clipped segment.
+Touching exclusive ends share a lane. By default it grows without an internal scrollbar. MaxRows
+adds +N controls; default actions expand/collapse the band. Expanded/ExpandedChanged support
+controlled expansion. OnOverflow receives the date and hidden occurrences for your Drawer,
+Popover or Agenda; its ShowAsync can still expand the band. OverflowTemplate replaces the action.
+HeaderTemplate/SlotTemplate/SegmentTemplate customize the independent band. A complete custom
+segment owns interaction/drag/keyboard behavior; EventTemplate retains the standard wrappers.
+ScrollOverflow plus MaxHeight opts into one scroll area for the whole band. Disable TimeGrid's
+ShowAllDay to place an independent band elsewhere. AllDayRowHeight is a minimum, not a fixed
+height that clips larger text.
+
+## Data, culture and themes
+
+Map your own model through SchedulerMapping<TItem>; no inheritance is required. Stable keys
+identify events. Timed intervals use instant Start/End; all-day SchedulerDateRange uses independent
+DateOnly bounds. Every End is exclusive. Resources identify timeline rows, not calendars. Keep
+CalendarId, permissions and business fields in your application model and filter Events/provider
+requests there. Preserve those fields when applying move/resize proposals.
+
+Date/DateChanged and View/ViewChanged support controlled state; without callbacks navigation is
+internal. Culture controls formatting and the first weekday. UI text uses the scoped
+[localization](localization.md) contract and standard IStringLocalizer<SchedulerStrings> overrides.
+Browser language switching preserves the session, draft and focus. An explicit Culture remains
+authoritative. TimeZone changes instant display, never all-day dates. Missing DST slots are omitted;
+repeated wall times retain their distinct offsets. InitialScrollTime defaults to WorkStart.
+
+EventsProvider receives the half-open Window and a cancellation token. Include intersecting events,
+including those beginning earlier. Stale results are ignored even if cancellation is ignored.
+ReloadAsync refreshes external changes; OnLoadError and Surface.ErrorTemplate handle load errors.
+Windowed snapshots and cached day/slot/lane indexes avoid rescanning source data on clock/selection
+renders. Set MaximumOccurrences/MaximumEvaluationSteps to bound local work.
+
+Ready backend occurrences work without an RFC dependency. Stable SeriesKey/RecurrenceId retain
+series identity. Flare.Components.Scheduler.Ical is an optional local RRULE/RDATE/EXDATE adapter;
+explicitly set RecurrenceExpander to IcalSchedulerRecurrenceExpander.Default. Storage, recurrence
+rules, series splitting, invitations and application workflows remain application/backend concerns.
+
+Scheduler tokens default to semantic base tokens. Override SchedulerTokens with [CssVar] and the
+common mapper, just like other independent packages:
 
 ```csharp
 using Flare.Theming;
 using Flare.Components.Scheduler;
+using static Flare.Css.Tokens.Vars;
 
-var overrides = new SchedulerTokens
+var values = new SchedulerTokens
 {
-    EventSurface = "var(--flare-color-tertiary-container)",
-    EventColor = "var(--flare-color-on-tertiary-container)"
+    EventSurface = Var(Flare.Css.Tokens.Color.TertiaryContainer),
+    EventColor = Var(Flare.Css.Tokens.Color.OnTertiaryContainer)
 }.FlattenTokens();
-themeService.SetCustomTokens(overrides);
+themeService.SetCustomTokens(values);
 ```
 
-`FlattenTokens` returns the complete record, including its base defaults. Filter the map when applying only
-a few keys over existing customizations. A custom theme can put the same map in `DesignTokens.Extended`.
-Overrides inherit normally and can be scoped to a parent in consumer CSS. `ClearCustomToken` restores the
-fallback for a service override. There is no Scheduler-specific inline-style conversion API.
+FlattenTokens includes the record's defaults: filter keys when applying a partial override over
+existing customizations. Themes can use DesignTokens.Extended. CSS inheritance scopes consumer
+styles; ClearCustomToken removes a service override. Public CSS class constants identify the parts.
 
-The [Gallery](https://jrfrigat.github.io/Flare/components/scheduler) demonstrates editing, templates,
-resources, a windowed 50,000-event source and optional recurrence.
+The [Gallery](https://jrfrigat.github.io/Flare/components/scheduler) shows the ready composition,
+calendar sidebar/filters/preview/right drawer, quick/full inline forms with business fields,
+external all-day overflow, windowed data and optional recurrence.

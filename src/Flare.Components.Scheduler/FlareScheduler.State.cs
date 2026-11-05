@@ -53,6 +53,10 @@ public partial class FlareScheduler<TItem>
         var cancellation = _load = new CancellationTokenSource();
         var generation = ++_generation;
         _window = window;
+        if (SelectedSlot is { } slot && (slot.AllDay is { } dates
+            ? dates.End <= window.Dates.Start || dates.Start >= window.Dates.End
+            : slot.Start >= window.End || (slot.End == slot.Start ? slot.Start < window.Start : slot.End <= window.Start)))
+            SelectedSlot = null;
         _loadKey = (window, Events, EventsProvider, Mapping, RecurrenceExpander, MaximumOccurrences, MaximumEvaluationSteps);
         _occurrences = [];
         _loading = true;

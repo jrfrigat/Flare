@@ -35,8 +35,11 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
     [Parameter] public DateTimeOffset SegmentStart { get; set; }
     /// <summary>Measures one slot after a resize, honoring custom CSS sizes and zoom.</summary>
     [Parameter] public Func<ValueTask<double>>? MeasureSlot { get; set; }
+    /// <summary>Replaces modified-arrow navigation, for example with the containing timeline's axis commands.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnNavigateKey { get; set; }
     protected override string ComponentCssClass => Css.Classes.Scheduler.EventDrag;
     private ElementReference _button;
+    private FlareSchedulerEventAction<TItem>? _action;
     private FlareResizable? _resizable;
     private string FocusTarget => "." + (Context.Focus.HasResizeFocus(Occurrence.Identity) ? Css.Classes.Resizable.Handle : Css.Classes.Scheduler.EventBody);
     private string MaximumSize => FormattableString.Invariant($"calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{(SchedulerClock.Window(new(DateOnly.FromDateTime(SegmentStart.Date), DateOnly.FromDateTime(SegmentStart.Date).AddDays(1)), Context.TimeZone).End - SegmentStart).TotalMinutes / Context.SlotDuration.TotalMinutes})");
@@ -44,6 +47,7 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
         @if (EventTemplate is { } template)
         {
             <div @ref="_button" tabindex="-1" role="group" data-scheduler-event="@Occurrence.Identity"
+                 data-flare-focus-target="button:not(:disabled),[href],input:not(:disabled),[tabindex='0']"
                  class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
                  style="@Occurrence.Data.Color.StyleContainerSolid()" aria-label="@Occurrence.Data.Title">
                 @template(new(Context, Occurrence) { KeyHandler = EventKeyAsync })
@@ -51,11 +55,9 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
         }
         else
         {
-            <button @ref="_button" type="button" data-flare-edit-keys="@(Context.CanEdit ? "" : null)"
-                data-scheduler-event="@Occurrence.Identity" class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
-                style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description"
-                aria-pressed="@(Context.SelectedEvent?.Identity == Occurrence.Identity ? "true" : "false")"
-                @onclick="SelectAsync" @ondblclick="EditAsync" @onkeydown="EventKeyAsync">@Occurrence.Data.Title</button>
+            <FlareSchedulerEventAction @ref="_action" TItem="TItem" Context="@(new SchedulerEventContext<TItem>(Context, Occurrence) { KeyHandler = EventKeyAsync })"
+                Class="@($"{Css.Classes.Scheduler.EventBody} {Occurrence.Data.Color.CssClass}")"
+                Style="@Occurrence.Data.Color.StyleContainerSolid()" title="@Occurrence.Data.Description" />
         }
     </text>;
 
@@ -67,6 +69,7 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
         if (Context.Focus.TakeEventFocus(Occurrence.Identity, out var resize))
         {
             if (resize && Context.CanEdit && _resizable is not null) await _resizable.FocusAsync();
+            else if (EventTemplate is null && _action is not null) await _action.FocusAsync();
             else await _button.FocusAsync();
         }
     }
@@ -81,41 +84,5 @@ else { <div tabindex="-1" class="@BuildCssClass()" style="@Style" data-scheduler
         Context.Focus.ReturnFocusTo(Occurrence.Identity, resize: true);
         await Context.Commands.RequestChangeAsync(Occurrence, Occurrence.Data with { End = end }, SchedulerEditAction.Resize);
     }
-    private async Task EventKeyAsync(KeyboardEventArgs e)
-    {
-        if (!Context.CanEdit) return;
-        if (e.Key == "F2") { await Context.Commands.EditEventAsync(Occurrence); return; }
-        if (e.Key == "Delete") { await Context.Commands.RequestChangeAsync(Occurrence, Occurrence.Data, SchedulerEditAction.Delete); return; }
-        if (!e.CtrlKey || e.Key is not ("ArrowUp" or "ArrowDown" or "ArrowLeft" or "ArrowRight")) return;
-        var direction = e.Key is "ArrowUp" or "ArrowLeft" ? -1 : 1;
-        var data = Occurrence.Data;
-        if (data.AllDay is { } days)
-        {
-            data = data with { AllDay = e.ShiftKey ? days with { End = days.End.AddDays(direction) }
-                : new(days.Start.AddDays(direction), days.End.AddDays(direction)) };
-        }
-        else
-        {
-            var delta = e.Key is "ArrowLeft" or "ArrowRight" ? TimeSpan.FromDays(direction) : Context.SlotDuration * direction;
-            if (e.Key is "ArrowUp" or "ArrowDown")
-            {
-                data = data with
-                {
-                    Start = e.ShiftKey ? data.Start : TimeZoneInfo.ConvertTime(data.Start + delta, Context.TimeZone),
-                    End = TimeZoneInfo.ConvertTime(data.End + delta, Context.TimeZone)
-                };
-                Context.Focus.ReturnFocusTo(Occurrence.Identity);
-                await Context.Commands.RequestChangeAsync(Occurrence, data, e.ShiftKey ? SchedulerEditAction.Resize : SchedulerEditAction.Move);
-                return;
-            }
-            var wall = TimeZoneInfo.ConvertTime(data.Start, Context.TimeZone).DateTime.Add(delta);
-            var endWall = TimeZoneInfo.ConvertTime(data.End, Context.TimeZone).DateTime.Add(delta);
-            if (Context.TimeZone.IsInvalidTime(wall) || Context.TimeZone.IsInvalidTime(endWall)) return;
-            DateTimeOffset At(DateTime time, TimeSpan offset) => SchedulerClock.At(DateOnly.FromDateTime(time), TimeOnly.FromDateTime(time), Context.TimeZone, offset);
-            data = e.ShiftKey ? data with { End = At(endWall, data.End.Offset) }
-                : data with { Start = At(wall, data.Start.Offset), End = At(endWall, data.End.Offset) };
-        }
-        Context.Focus.ReturnFocusTo(Occurrence.Identity);
-        await Context.Commands.RequestChangeAsync(Occurrence, data, e.ShiftKey ? SchedulerEditAction.Resize : SchedulerEditAction.Move);
-    }
+    private Task EventKeyAsync(KeyboardEventArgs e) => SchedulerEventKeys.HandleAsync<TItem>(new(Context, Occurrence), e, OnNavigateKey);
 }

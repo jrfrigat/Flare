@@ -4,40 +4,37 @@
 
 `Flare.Components.FlareScheduler`
 
-Calendar scheduling over application-owned events, composed from Calendar and Gantt projections.
+Per-instance scheduling data and interaction scope, with optional ready-made composition.
 
 ## Parameters
 
 | Name | Type | Default | Kind | Required | Description |
 | --- | --- | --- | --- | --- | --- |
 | `AriaLabel` | `string?` | `` | Parameter |  | Accessible name of this scheduling surface. |
+| `ChildContent` | `RenderFragment<SchedulerViewContext<TItem>>?` | `` | Parameter |  | Replaces the entire composition, receiving the same context as independent projections. |
 | `Culture` | `CultureInfo?` | `` | Parameter |  | Culture for dates and the first weekday. Interface strings use CurrentUICulture independently. |
 | `Date` | `DateOnly` | `01/01/0001` | Parameter |  | Navigation date; default uses today's date in the display zone. |
 | `DateChanged` | `EventCallback<DateOnly>` | `` | Callback |  | Reports navigation. With a delegate, Date remains authoritative. |
-| `Editable` | `bool` | `false` | Parameter |  | Enables creation, editor, move, resize and delete. The application must handle OnChange. |
-| `EditorTemplate` | `RenderFragment<SchedulerEditContext<TItem>>?` | `` | Parameter |  | Replaces the dialog body. Use its working copy and SaveAsync/CancelAsync commands. |
-| `EventTemplate` | `RenderFragment<SchedulerOccurrence<TItem>>?` | `` | Parameter |  | Custom event content, retaining the surrounding interaction control. |
+| `Editable` | `bool` | `false` | Parameter |  | Enables event changes when an application persistence callback is supplied. |
 | `Events` | `IEnumerable<TItem>?` | `` | Parameter |  | Ready events, or series when a recurrence adapter is supplied. Ignored when EventsProvider is set. |
 | `EventsProvider` | `Func<SchedulerDataRequest, Task<IEnumerable<TItem>>>?` | `` | Parameter |  | Loads only the visible window; obsolete results are ignored even if the provider ignores cancellation. |
 | `InitialScrollTime` | `TimeOnly?` | `` | Parameter |  | Initial time-grid scroll target. Null uses WorkStart; midnight keeps the top. Existing user scroll is preserved. |
 | `Mapping` | `SchedulerMapping<TItem>` | `` | Parameter | Yes | Selectors for the application's event model. |
 | `MaximumEvaluationSteps` | `int` | `100000` | Parameter |  | Explicit local recurrence evaluation limit. |
 | `MaximumOccurrences` | `int` | `10000` | Parameter |  | Explicit occurrence safety limit, applied after window filtering. |
-| `OnChange` | `EventCallback<SchedulerChangeEventArgs<TItem>>` | `` | Callback |  | Receives accepted UI intents. Persist in the application or backend; set Cancel to refuse. |
+| `OnChange` | `EventCallback<SchedulerChangeEventArgs<TItem>>` | `` | Callback |  | Receives validated proposals. Persist in the application; set Cancel to refuse. |
+| `OnChangeError` | `EventCallback<Exception>` | `` | Callback |  | Reports a failed gesture submission. Editor failures remain available on the editing session. |
+| `OnEditRequested` | `EventCallback<SchedulerEditContext<TItem>>` | `` | Callback |  | Owns presentation of an editing session when supplied. No built-in dialog is opened. |
 | `OnEventSelected` | `EventCallback<SchedulerOccurrence<TItem>>` | `` | Callback |  | Reports event selection without mutating the item. |
 | `OnLoadError` | `EventCallback<Exception>` | `` | Callback |  | Reports a provider/projection error; the built-in surface displays a localized failure. |
 | `OnSlotSelected` | `EventCallback<SchedulerSlot>` | `` | Callback |  | Reports slot selection. |
 | `RecurrenceExpander` | `ISchedulerRecurrenceExpander?` | `` | Parameter |  | Optional client recurrence expansion. The default displays provider-owned occurrences unchanged. |
 | `Resources` | `IReadOnlyList<SchedulerResource>` | `` | Parameter |  | Resource rows. Unknown resource keys are retained as additional rows. |
-| `ShowResizeControls` | `bool` | `false` | Parameter |  | Shows the shared resizable's single-click buttons in addition to its keyboard-accessible handle. |
-| `ShowToolbar` | `bool` | `true` | Parameter |  | Shows the default or templated navigation toolbar. |
+| `ShowResizeControls` | `bool` | `false` | Parameter |  | Shows the shared resizable's single-click controls in addition to its keyboard handle. |
 | `SlotDuration` | `TimeSpan` | `00:30:00` | Parameter |  | Duration of a time-grid slot; must divide one day and be at least five minutes. |
 | `TimeZone` | `TimeZoneInfo` | `` | Parameter |  | Display zone. Timed events keep their instants; all-day dates do not move. |
-| `ToolbarTemplate` | `RenderFragment<SchedulerViewContext<TItem>>?` | `` | Parameter |  | Custom navigation content. |
 | `View` | `SchedulerView` | `SchedulerView.Week` | Parameter |  | Initial or controlled projection. |
 | `ViewChanged` | `EventCallback<SchedulerView>` | `` | Callback |  | Reports view changes. With a delegate, View remains authoritative. |
-| `ViewTemplate` | `RenderFragment<SchedulerViewContext<TItem>>?` | `` | Parameter |  | Replaces a built-in projection using the same loaded snapshot and owner callbacks. |
-| `Views` | `IReadOnlyList<SchedulerView>` | `` | Parameter |  | Views available in the default toolbar. |
 | `WorkDays` | `IReadOnlySet<DayOfWeek>` | `` | Parameter |  | Weekdays shown by WorkWeek and used to shade nonworking slots. |
 | `WorkEnd` | `TimeOnly` | `18:00` | Parameter |  | End of working hours, exclusive. |
 | `WorkStart` | `TimeOnly` | `09:00` | Parameter |  | Start of working hours; earlier slots stay selectable but are shaded. |
@@ -49,33 +46,33 @@ Calendar scheduling over application-owned events, composed from Calendar and Ga
 
 ### `ApplyChangeAsync(SchedulerEditAction action, SchedulerOccurrence<TItem> original, SchedulerEventData data, SchedulerEditScope scope)`
 
-Validates and submits an explicit change; false means read-only, invalid, busy or refused.
-Returns: `Task<bool>` — Whether the application accepted the intent.
+Validates and submits a change; false means read-only, invalid, busy or refused.
+Returns: `Task<bool>` — Whether the application accepted the change.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `action` | `SchedulerEditAction` | Requested action. |
 | `original` | `SchedulerOccurrence<TItem>` | Original occurrence; null only for creation. |
-| `data` | `SchedulerEventData` | Proposed values, retaining the original key for updates. |
+| `data` | `SchedulerEventData` | Proposed immutable values. |
 | `scope` | `SchedulerEditScope` | Application persistence scope. |
 
 ### `CreateEventAsync(SchedulerSlot slot)`
 
-Opens a new-event editor for a selected timed or all-day slot.
+Requests a new-event session for a selected timed or all-day interval.
 Returns: `Task`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `slot` | `SchedulerSlot` | Initial dates and resource. |
+| `slot` | `SchedulerSlot` | — |
 
 ### `EditEventAsync(SchedulerOccurrence<TItem> occurrence)`
 
-Opens the event-details editor without mutating the original item.
+Requests an event-details session without mutating the application item.
 Returns: `Task`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `occurrence` | `SchedulerOccurrence<TItem>` | Occurrence to edit. |
+| `occurrence` | `SchedulerOccurrence<TItem>` | — |
 
 ### `GoToAsync(DateOnly date)`
 
@@ -102,14 +99,14 @@ Returns: `Task`.
 
 ### `RequestChangeAsync(SchedulerOccurrence<TItem> occurrence, SchedulerEventData data, SchedulerEditAction action)`
 
-Requests a gesture change, asking for series scope when needed.
+Requests a gesture change, asking for recurrence scope or delete confirmation when needed.
 Returns: `Task`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `occurrence` | `SchedulerOccurrence<TItem>` | Original occurrence. |
-| `data` | `SchedulerEventData` | Proposed dates or resource. |
-| `action` | `SchedulerEditAction` | Move, resize or delete. |
+| `occurrence` | `SchedulerOccurrence<TItem>` | — |
+| `data` | `SchedulerEventData` | — |
+| `action` | `SchedulerEditAction` | — |
 
 ### `SelectEventAsync(SchedulerOccurrence<TItem> occurrence)`
 

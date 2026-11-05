@@ -3,29 +3,58 @@
 @inherits FlareSchedulerViewBase<TItem>
 
 <div class="@BuildCssClass(Css.Classes.Scheduler.Timeline)" style="@Style" @attributes="AdditionalAttributes">
-<FlareGantt @ref="_timeline" Range="Range" Scale="GanttScale.Hour" Culture="Context.Culture" Virtualize="true"
-            AriaLabel="@Context.AriaLabel">
+<FlareGantt @ref="_timeline" Range="Range" Scale="Scale" Culture="Context.Culture" Virtualize="Virtualize"
+            @attributes="AxisParameters"
+            AriaLabel="@Context.AriaLabel" SelectedKey="@Context.SelectedEvent?.Identity">
     <FlareGanttPanel TRow="SchedulerResource" TItem="SchedulerOccurrence<TItem>" Rows="_rows"
                      RowKey="r => r.Key" Items="Context.Occurrences" ItemKey="o => o.Identity"
                      ItemRow="o => o.Data.ResourceKey ?? string.Empty" ItemSpan="o => SchedulerClock.Span(o.Data, Context.TimeZone)"
                      Editable="Context.CanEdit" ScheduleMode="GanttScheduleMode.None" OnChange="ChangeAsync"
                      ItemLabel="o => o.Data.Title" OnItemClick="o => Context.Commands.SelectEventAsync(o)">
-        <RowHeader Context="resource">@resource.Title</RowHeader>
-        <ItemInteractionTemplate Context="occurrence">
-            <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="occurrence" EventTemplate="EventTemplate" />
+        <RowHeader Context="resource">
+            @if (RowHeaderTemplate is not null) { @RowHeaderTemplate(resource) }
+            else { @resource.Title }
+        </RowHeader>
+        <ItemInteractionTemplate Context="bar">
+            <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="bar.Item" EventTemplate="EventTemplate" OnNavigateKey="bar.HandleKeyAsync" />
         </ItemInteractionTemplate>
     </FlareGanttPanel>
 </FlareGantt>
 </div>
 
 @code {
+    /// <summary>Axis scale of the reused Gantt projection.</summary>
+    [Parameter] public GanttScale Scale { get; set; } = GanttScale.Hour;
+    /// <summary>Virtualizes rows and columns. Disable for a small static server-rendered timeline.</summary>
+    [Parameter] public bool Virtualize { get; set; } = true;
+    /// <summary>Axis unit width in pixels; null preserves the Gantt default.</summary>
+    [Parameter] public double? UnitWidth { get; set; }
+    /// <summary>Resource-row height in pixels; null preserves the Gantt default.</summary>
+    [Parameter] public double? RowHeight { get; set; }
+    /// <summary>Replaces resource headings without copying the timeline engine.</summary>
+    [Parameter] public RenderFragment<SchedulerResource>? RowHeaderTemplate { get; set; }
+    private IReadOnlyDictionary<string, object>? AxisParameters
+    {
+        get
+        {
+            if (UnitWidth is null && RowHeight is null) return null;
+            var values = new Dictionary<string, object>();
+            if (UnitWidth is { } width) values[nameof(FlareGantt.UnitWidth)] = width;
+            if (RowHeight is { } height) values[nameof(FlareGantt.RowHeight)] = height;
+            return values;
+        }
+    }
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> SchedulerText => Localizer<SchedulerStrings>();
+    private object? _rowsKey;
     private IReadOnlyList<SchedulerResource> _rows = [];
     private FlareGantt? _timeline;
     private DateOnly? _scrolledDate;
     private GanttSpan Range => new(Context.Window.Dates.Start.ToDateTime(TimeOnly.MinValue), Context.Window.Dates.End.ToDateTime(TimeOnly.MinValue));
     protected override void OnParametersSet()
     {
+        var rowsKey = (Context.Resources, Context.Occurrences, SchedulerText["Unassigned"].Value);
+        if (Equals(rowsKey, _rowsKey)) return;
+        _rowsKey = rowsKey;
         var rows = Context.Resources.ToDictionary(r => r.Key, StringComparer.Ordinal);
         foreach (var key in Context.Occurrences.Select(o => o.Data.ResourceKey ?? string.Empty).Distinct(StringComparer.Ordinal))
             rows.TryAdd(key, new(key, key.Length == 0 ? SchedulerText["Unassigned"].Value : key));

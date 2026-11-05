@@ -39,3 +39,7 @@ public partial class FlareSchedulerToolbar<TItem> { }
 /// <summary>Independent date-only event band with shared collision lanes and configurable overflow actions.</summary>
 /// <typeparam name="TItem">Application event type.</typeparam>
 public partial class FlareSchedulerAllDay<TItem> { }
+
+/// <summary>Primary event activation control with standard selection and keyboard actions, composable beside custom controls.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+public partial class FlareSchedulerEventAction<TItem> { }

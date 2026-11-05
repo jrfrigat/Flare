@@ -8,7 +8,7 @@
      aria-label="@(Context.AriaLabel ?? Text["Schedule"].Value)" @attributes="AdditionalAttributes"
      data-flare-focus-target="@(Context.Focus.Identity is not null ? "[data-scheduler-focus-entry]" : null)">
     @if (Header is not null) { @Header(Context) }
-    <div class="@Css.Classes.Scheduler.Viewport" aria-busy="@(Context.IsLoading ? "true" : "false")"
+    <div class="@Css.Classes.Scheduler.Body" aria-busy="@(Context.IsLoading ? "true" : "false")"
          data-flare-focus-target="[data-scheduler-focus-entry]">
         @if (Context.IsLoading)
         {
@@ -59,15 +59,18 @@
     [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? ErrorTemplate { get; set; }
     /// <summary>Optional replacement for an empty window. Null keeps the empty view selectable.</summary>
     [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? EmptyTemplate { get; set; }
+    private bool _keyboardRegistered;
     private ElementReference _root;
     protected override string ComponentCssClass => Css.Classes.Scheduler.Root;
     private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> Text => Localizer<SchedulerStrings>();
-    protected override Task OnAfterRenderAsync(bool firstRender) => firstRender
-        ? Ui.RegisterTreeKeyboardAsync(_root).AsTask() : Task.CompletedTask;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root); _keyboardRegistered = true; }
+    }
     /// <summary>Releases the shared focus-boundary listener.</summary>
     public override async ValueTask DisposeAsync()
     {
-        try { await Ui.RemoveTreeKeyboardAsync(_root); }
+        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
         await base.DisposeAsync();

@@ -22,7 +22,7 @@
         </div>
         @if (ShowAllDay)
         {
-            @if (AllDayTemplate is not null) { @AllDayTemplate(Context) }
+            @if (AllDayTemplate is not null) { @AllDayTemplate(new(Context, _dates)) }
             else { <FlareSchedulerAllDay TItem="TItem" Context="Context" Dates="_dates" EventTemplate="EventTemplate" /> }
         }
     </div>
@@ -30,11 +30,11 @@
         @foreach (var date in _dates)
         {
             var day = date;
-            var events = EventsOn(day);
-            var lanes = GanttLanes.Assign(events.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
+            var events = _eventsByDate[day];
+            var lanes = _lanesByDate[day];
             <section class="@Css.Classes.Scheduler.Day" @key="day" aria-label="@day.ToString("D", Context.Culture)">
                 <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
-                    @foreach (var entry in _slots.Where(s => s.Slot.Date == day))
+                    @foreach (var entry in _slotsByDate[day])
                     {
                         var slot = entry.Slot;
                         var index = entry.Index;
@@ -77,7 +77,7 @@
     /// <summary>Includes the standard all-day band. Disable when composing it elsewhere.</summary>
     [Parameter] public bool ShowAllDay { get; set; } = true;
     /// <summary>Replaces the standard all-day band using the same snapshot and visible dates.</summary>
-    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? AllDayTemplate { get; set; }
+    [Parameter] public RenderFragment<SchedulerTimeGridContext<TItem>>? AllDayTemplate { get; set; }
     /// <summary>Actual dates rendered as columns, including work-week filtering.</summary>
     public IReadOnlyList<DateOnly> VisibleDates => _dates;
     private string FrameStyle => FormattableString.Invariant($"min-width:calc(var(--flare-scheduler-day-min-width,var(--flare-spacing-32))*{_dates.Count});");
@@ -86,8 +86,15 @@
     private List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
     private Dictionary<string, SchedulerTimeSlot> _targets = [];
     private readonly Dictionary<long, ElementReference> _slotElements = [];
+    private object? _columnKey, _eventKey;
+    private readonly Dictionary<DateOnly, (SchedulerTimeSlot Slot, int Index)[]> _slotsByDate = [];
+    private readonly Dictionary<DateOnly, SchedulerWindow> _dayWindows = [];
+    private readonly Dictionary<DateOnly, GanttAxis> _axes = [];
+    private readonly Dictionary<DateOnly, IReadOnlyList<SchedulerOccurrence<TItem>>> _eventsByDate = [];
+    private readonly Dictionary<DateOnly, GanttLaneLayout<string>> _lanesByDate = [];
     private int _focusedSlot;
     private DateTimeOffset _now;
+    private bool _keyboardRegistered;
     private ElementReference _root, _viewport, _headers;
     private DotNetObjectReference<FlareSchedulerTimeGrid<TItem>>? _self;
     private readonly CancellationTokenSource _clockStop = new();
@@ -97,15 +104,45 @@
     protected override void OnInitialized() => _clockTask = TickAsync();
     protected override void OnParametersSet()
     {
-        _dates = Enumerable.Range(0, Context.Window.Dates.End.DayNumber - Context.Window.Dates.Start.DayNumber)
-            .Select(i => Context.Window.Dates.Start.AddDays(i))
-            .Where(day => Context.View != SchedulerView.WorkWeek || Context.WorkDays.Contains(day.DayOfWeek)).ToList();
-        _slots = _dates.SelectMany(day => SchedulerSlots.ForDate(day, Context.TimeZone, Context.SlotDuration))
-            .Select((slot, index) => (slot, index)).ToList();
-        _targets = _slots.ToDictionary(s => Target(s.Slot), s => s.Slot, StringComparer.Ordinal);
-        var keys = _slots.Select(s => s.Slot.Start.UtcDateTime.Ticks).ToHashSet();
-        foreach (var key in _slotElements.Keys.Where(key => !keys.Contains(key)).ToArray()) _slotElements.Remove(key);
-        _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _slots.Count - 1));
+        var workMask = Context.WorkDays.Aggregate(0, (mask, day) => mask | (1 << (int)day));
+        var columns = (Context.Window, Context.View, Context.TimeZone, Context.SlotDuration, workMask);
+        if (!Equals(columns, _columnKey))
+        {
+            _dates = Enumerable.Range(0, Context.Window.Dates.End.DayNumber - Context.Window.Dates.Start.DayNumber)
+                .Select(i => Context.Window.Dates.Start.AddDays(i))
+                .Where(day => Context.View != SchedulerView.WorkWeek || Context.WorkDays.Contains(day.DayOfWeek)).ToList();
+            _slots = _dates.SelectMany(day => SchedulerSlots.ForDate(day, Context.TimeZone, Context.SlotDuration))
+                .Select((slot, index) => (slot, index)).ToList();
+            _targets = _slots.ToDictionary(s => Target(s.Slot), s => s.Slot, StringComparer.Ordinal);
+            _slotsByDate.Clear();
+            _dayWindows.Clear();
+            _axes.Clear();
+            foreach (var day in _dates)
+            {
+                _slotsByDate[day] = _slots.Where(s => s.Slot.Date == day).ToArray();
+                var window = _dayWindows[day] = SchedulerClock.Window(new(day, day.AddDays(1)), Context.TimeZone);
+                _axes[day] = new(new(window.Start.UtcDateTime, window.End.UtcDateTime), GanttScale.Hour, CultureInfo.InvariantCulture);
+            }
+            var keys = _slots.Select(s => s.Slot.Start.UtcDateTime.Ticks).ToHashSet();
+            foreach (var key in _slotElements.Keys.Where(key => !keys.Contains(key)).ToArray()) _slotElements.Remove(key);
+            _focusedSlot = Math.Clamp(_focusedSlot, 0, Math.Max(0, _slots.Count - 1));
+            _columnKey = columns;
+        }
+        var events = (Context.Occurrences, columns);
+        if (!Equals(events, _eventKey))
+        {
+            _eventsByDate.Clear();
+            _lanesByDate.Clear();
+            foreach (var day in _dates)
+            {
+                var window = _dayWindows[day];
+                var items = Context.Occurrences.Where(o => o.Data.AllDay is null && o.Data.Start < window.End
+                    && (o.Data.End > window.Start || o.Data.Start == o.Data.End && o.Data.Start == window.Start)).ToArray();
+                _eventsByDate[day] = items;
+                _lanesByDate[day] = GanttLanes.Assign(items.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
+            }
+            _eventKey = events;
+        }
         _now = TimeZoneInfo.ConvertTime(Clock.GetUtcNow(), Context.TimeZone);
     }
     private async Task TickAsync()
@@ -118,13 +155,7 @@
         }
         catch (OperationCanceledException) when (_clockStop.IsCancellationRequested) { }
     }
-    private SchedulerWindow DayWindow(DateOnly date) => SchedulerClock.Window(new(date, date.AddDays(1)), Context.TimeZone);
-    private IReadOnlyList<SchedulerOccurrence<TItem>> EventsOn(DateOnly day)
-    {
-        var window = DayWindow(day);
-        return Context.Occurrences.Where(o => o.Data.AllDay is null && o.Data.Start < window.End
-            && (o.Data.End > window.Start || o.Data.Start == o.Data.End && o.Data.Start == window.Start)).ToArray();
-    }
+    private SchedulerWindow DayWindow(DateOnly date) => _dayWindows[date];
     private string SlotClass(SchedulerTimeSlot slot)
     {
         var time = TimeOnly.FromDateTime(slot.Start.DateTime);
@@ -149,8 +180,7 @@
     }
     private string EventStyle(SchedulerOccurrence<TItem> occurrence, DateOnly day, GanttLaneLayout<string> lanes)
     {
-        var window = DayWindow(day);
-        var axis = new GanttAxis(new(window.Start.UtcDateTime, window.End.UtcDateTime), GanttScale.Hour, Context.Culture);
+        var axis = _axes[day];
         var from = Math.Max(0, axis.Offset(occurrence.Data.Start.UtcDateTime) * 60 / Context.SlotDuration.TotalMinutes);
         var to = Math.Min(axis.Units, axis.Offset(occurrence.Data.End.UtcDateTime)) * 60 / Context.SlotDuration.TotalMinutes;
         return FormattableString.Invariant($"top:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{from});height:calc(var(--flare-scheduler-slot-height,var(--flare-spacing-16))*{Math.Max(0.5,to-from)});inset-inline-start:{100d*lanes.Lanes[occurrence.Identity]/lanes.Count}%;width:{100d/lanes.Count}%;");
@@ -181,7 +211,7 @@
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
+        if (firstRender) { await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this)); _keyboardRegistered = true; }
         if (_scrolledDates == Context.Window.Dates || _slots.Count == 0) return;
         var time = Context.InitialScrollTime ?? Context.WorkStart;
         if (time == TimeOnly.MinValue) { _scrolledDates = Context.Window.Dates; return; }
@@ -208,7 +238,7 @@
         if (index < 0 || index >= _slots.Count) return;
         var current = _slots[index].Slot;
         if (key == " ") { await SelectAsync(current); return; }
-        var column = _slots.Where(s => s.Slot.Date == current.Date).ToArray();
+        var column = _slotsByDate[current.Date];
         var next = key switch
         {
             "ArrowDown" => Math.Min(index + 1, column[^1].Index),
@@ -220,7 +250,7 @@
             var dayIndex = _dates.IndexOf(current.Date) + (key == "ArrowRight" ? 1 : -1);
             if (dayIndex >= 0 && dayIndex < _dates.Count)
             {
-                var candidates = _slots.Where(s => s.Slot.Date == _dates[dayIndex]).ToArray();
+                var candidates = _slotsByDate[_dates[dayIndex]];
                 if (candidates.Length > 0)
                     next = candidates.OrderBy(s => Math.Abs((s.Slot.Start.TimeOfDay - current.Start.TimeOfDay).TotalMinutes))
                         .ThenBy(s => s.Slot.Start.Offset == current.Start.Offset ? 0 : 1).First().Index;
@@ -237,7 +267,7 @@
         _clockStop.Cancel();
         if (_clockTask is not null) await _clockTask;
         _clockStop.Dispose();
-        try { await Ui.RemoveTreeKeyboardAsync(_root); }
+        try { if (_keyboardRegistered) await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }
         _self?.Dispose();
