@@ -1,0 +1,168 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareSchedulerViewBase<TItem>
+@using Microsoft.JSInterop
+@inject Flare.Components.Services.IUiJsService Ui
+
+<FlareDragContext TPayload="SchedulerOccurrence<TItem>" KeyboardReorder="false" OnDrop="DropAsync">
+    <div @ref="_root" class="@BuildCssClass()" style="@RootStyle" role="group" data-flare-keyboard-grid
+         aria-label="@Text["AllDay"].Value" @attributes="AdditionalAttributes">
+        @if (HeaderTemplate is not null) { @HeaderTemplate(Context) }
+        else { <div class="@Css.Classes.Scheduler.AllDayCaption">@Text["AllDay"].Value</div> }
+        <div class="@Css.Classes.Scheduler.AllDayGrid" style="@GridStyle">
+            @for (var i = 0; i < Dates.Count; i++)
+            {
+                var column = i;
+                var day = Dates[i];
+                <FlareDropZone Target="@day.DayNumber.ToString(CultureInfo.InvariantCulture)" Class="@Css.Classes.Scheduler.AllDayTarget"
+                               Style="@TargetStyle(column)" Accepts="p => Context.CanEdit && p is SchedulerOccurrence<TItem> o && o.Data.AllDay is not null">
+                    <button type="button" class="@Css.Classes.Scheduler.AllDaySlot" data-flare-tree-index="@column"
+                            tabindex="@(column == _focused ? "0" : "-1")" aria-label="@(day.ToString("D", Context.Culture) + ": " + Text["AllDay"].Value)"
+                            aria-pressed="@(Context.SelectedSlot?.AllDay?.Start == day ? "true" : "false")"
+                            @onfocus="() => _focused = column" @onclick="() => SelectAsync(day)" @ondblclick="() => CreateAsync(day)"
+                            @onkeydown="e => SlotKeyAsync(day, e)">
+                        @if (SlotTemplate is not null) { @SlotTemplate(day) }
+                    </button>
+                </FlareDropZone>
+            }
+            @foreach (var segment in _segments.Where(s => s.Lane < VisibleRows))
+            {
+                <div class="@Css.Classes.Scheduler.AllDayEvent" style="@SegmentStyle(segment)" @key="segment.Occurrence.Identity"
+                     data-scheduler-column="@segment.Column" data-scheduler-span="@segment.ColumnCount" data-scheduler-lane="@segment.Lane">
+                    @if (SegmentTemplate is not null) { @SegmentTemplate(segment) }
+                    else { <FlareSchedulerEvent TItem="TItem" Context="Context" Occurrence="segment.Occurrence" EventTemplate="EventTemplate" Draggable="true" /> }
+                </div>
+            }
+            @if (!_expanded && MaxRows is not null)
+            {
+                @for (var i = 0; i < Dates.Count; i++)
+                {
+                    var column = i;
+                    var day = Dates[i];
+                    var hidden = HiddenOn(column);
+                    @if (hidden.Count > 0)
+                    {
+                        var overflow = new SchedulerAllDayOverflow<TItem>(day, hidden, () => RevealAsync(column));
+                        <div class="@Css.Classes.Scheduler.AllDayMore" style="@MoreStyle(column)">
+                            @if (OverflowTemplate is not null) { @OverflowTemplate(overflow) }
+                            else { <FlareButton OnClick="overflow.ShowAsync" AriaLabel="@(day.ToString("D", Context.Culture) + ": " + Text["MoreEvents", hidden.Count].Value)">@Text["MoreEvents", hidden.Count].Value</FlareButton> }
+                        </div>
+                    }
+                }
+            }
+        </div>
+        @if (_expanded && MaxRows is { } limit && _rows > limit)
+        {
+            <FlareButton OnClick="() => SetExpandedAsync(false)">@Text["ShowLess"].Value</FlareButton>
+        }
+    </div>
+</FlareDragContext>
+
+@code {
+    /// <summary>Sorted unique dates aligned with the neighboring time grid.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<DateOnly> Dates { get; set; } = [];
+    /// <summary>Visible collision rows before +N actions. Null grows to show every event.</summary>
+    [Parameter] public int? MaxRows { get; set; }
+    /// <summary>Controlled or initial expansion beyond MaxRows.</summary>
+    [Parameter] public bool Expanded { get; set; }
+    /// <summary>Reports expansion. With a delegate, Expanded remains authoritative.</summary>
+    [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+    /// <summary>Replaces expansion with an application-owned popover, drawer or agenda.</summary>
+    [Parameter] public EventCallback<SchedulerAllDayOverflow<TItem>> OnOverflow { get; set; }
+    /// <summary>Replaces the +N control; use its ShowAsync action.</summary>
+    [Parameter] public RenderFragment<SchedulerAllDayOverflow<TItem>>? OverflowTemplate { get; set; }
+    /// <summary>Replaces the band heading.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? HeaderTemplate { get; set; }
+    /// <summary>Noninteractive content of the background date-selection target.</summary>
+    [Parameter] public RenderFragment<DateOnly>? SlotTemplate { get; set; }
+    /// <summary>Replaces event rendering inside a positioned date segment. Own interaction, drag and keyboard actions.</summary>
+    [Parameter] public RenderFragment<SchedulerAllDaySegment<TItem>>? SegmentTemplate { get; set; }
+    /// <summary>Opts into one scroll area for the whole band. Default grows without an internal scrollbar.</summary>
+    [Parameter] public bool ScrollOverflow { get; set; }
+    /// <summary>CSS maximum height used only when ScrollOverflow is enabled. Null uses the available parent size.</summary>
+    [Parameter] public string? MaxHeight { get; set; }
+    private IReadOnlyList<SchedulerAllDaySegment<TItem>> _segments = [];
+    private object? _layoutKey;
+    private bool _expanded, _expandedParameter, _initialized;
+    private int _rows, _focused;
+    private ElementReference _root;
+    private DotNetObjectReference<FlareSchedulerAllDay<TItem>>? _self;
+    protected override string ComponentCssClass => Css.Classes.Scheduler.AllDay;
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> Text => Localizer<SchedulerStrings>();
+    private int VisibleRows => _expanded || MaxRows is null ? _rows : Math.Min(_rows, MaxRows.Value);
+    private string RootStyle => (ScrollOverflow ? $"overflow:auto;max-height:{MaxHeight ?? "100%"};" : "") + Style;
+    private string GridStyle => FormattableString.Invariant($"grid-template-columns:repeat({Math.Max(1, Dates.Count)},minmax(var(--flare-scheduler-day-min-width,var(--flare-spacing-32)),1fr));grid-template-rows:repeat({Math.Max(1, VisibleRows)},minmax(var(--flare-scheduler-all-day-row-height,var(--flare-spacing-8)),auto));");
+    protected override void OnParametersSet()
+    {
+        if (MaxRows is < 0) throw new ArgumentOutOfRangeException(nameof(MaxRows));
+        if (!_initialized || ExpandedChanged.HasDelegate || Expanded != _expandedParameter) _expanded = Expanded;
+        _expandedParameter = Expanded;
+        _initialized = true;
+        var key = (Context.Occurrences, Dates);
+        if (!Equals(key, _layoutKey))
+        {
+            _segments = SchedulerAllDayLayout.Arrange(Context.Occurrences, Dates);
+            _rows = _segments.Count == 0 ? 0 : _segments.Max(s => s.Lane) + 1;
+            _layoutKey = key;
+        }
+        _focused = Math.Clamp(_focused, 0, Math.Max(0, Dates.Count - 1));
+    }
+    private string TargetStyle(int column) => FormattableString.Invariant($"grid-column:{column + 1};grid-row:1 / span {Math.Max(1, VisibleRows)};");
+    private static string SegmentStyle(SchedulerAllDaySegment<TItem> s) => FormattableString.Invariant($"grid-column:{s.Column + 1} / span {s.ColumnCount};grid-row:{s.Lane + 1};");
+    private string MoreStyle(int column) => FormattableString.Invariant($"grid-column:{column + 1};grid-row:{VisibleRows + 1};");
+    private IReadOnlyList<SchedulerOccurrence<TItem>> HiddenOn(int column) => _segments.Where(s => s.Lane >= VisibleRows
+        && s.Column <= column && s.Column + s.ColumnCount > column).Select(s => s.Occurrence).ToArray();
+    private async Task RevealAsync(int column)
+    {
+        if (OnOverflow.HasDelegate) await OnOverflow.InvokeAsync(new(Dates[column], HiddenOn(column), () => SetExpandedAsync(true)));
+        else await SetExpandedAsync(true);
+    }
+    private async Task SetExpandedAsync(bool value)
+    {
+        _expanded = value;
+        await ExpandedChanged.InvokeAsync(value);
+        if (ExpandedChanged.HasDelegate) _expanded = Expanded;
+        StateHasChanged();
+    }
+    private SchedulerSlot Slot(DateOnly day)
+    {
+        var dates = new SchedulerDateRange(day, day.AddDays(1));
+        var window = SchedulerClock.Window(dates, Context.TimeZone);
+        return new(window.Start, window.End, dates);
+    }
+    private Task SelectAsync(DateOnly day) => Context.Commands.SelectSlotAsync(Slot(day));
+    private Task CreateAsync(DateOnly day) => Context.Commands.CreateEventAsync(Slot(day));
+    private Task SlotKeyAsync(DateOnly day, KeyboardEventArgs e) => e.Key == "F2" ? CreateAsync(day) : Task.CompletedTask;
+    private Task DropAsync(FlareDropEventArgs<SchedulerOccurrence<TItem>> args)
+    {
+        if (!int.TryParse(args.TargetId, NumberStyles.None, CultureInfo.InvariantCulture, out var number)
+            || args.Payload.Data.AllDay is not { } days || !Dates.Any(d => d.DayNumber == number)) return Task.CompletedTask;
+        var day = DateOnly.FromDayNumber(number);
+        return Context.Commands.RequestChangeAsync(args.Payload, args.Payload.Data with
+        { AllDay = new(day, day.AddDays(days.End.DayNumber - days.Start.DayNumber)) }, SchedulerEditAction.Move);
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await Ui.RegisterTreeKeyboardAsync(_root, _self = DotNetObjectReference.Create(this));
+    }
+    /// <summary>Navigates background date targets using the shared keyboard listener.</summary>
+    [JSInvokable]
+    public async Task HandleTreeKeyAsync(int index, string key)
+    {
+        if (index < 0 || index >= Dates.Count) return;
+        if (key == " ") { await SelectAsync(Dates[index]); return; }
+        var next = key switch { "ArrowLeft" => index - 1, "ArrowRight" => index + 1, "Home" => 0, "End" => Dates.Count - 1, _ => index };
+        _focused = Math.Clamp(next, 0, Dates.Count - 1);
+        await Ui.FocusTreeItemAsync(_root, _focused);
+        StateHasChanged();
+    }
+    /// <summary>Releases the shared keyboard listener.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        try { await Ui.RemoveTreeKeyboardAsync(_root); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        _self?.Dispose();
+        await base.DisposeAsync();
+    }
+}

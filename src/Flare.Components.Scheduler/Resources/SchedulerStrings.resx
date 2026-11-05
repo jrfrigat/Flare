@@ -40,5 +40,7 @@
   <data name="Resize" xml:space="preserve"><value>Resize event</value></data>
   <data name="Schedule" xml:space="preserve"><value>Schedule</value></data>
   <data name="SaveError" xml:space="preserve"><value>The event could not be saved. Please try again.</value></data>
+  <data name="MoreEvents" xml:space="preserve"><value>+{0} more</value></data>
+  <data name="ShowLess" xml:space="preserve"><value>Show less</value></data>
 </root>
 

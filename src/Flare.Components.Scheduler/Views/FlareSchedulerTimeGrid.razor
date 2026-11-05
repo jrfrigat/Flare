@@ -9,54 +9,61 @@
 
 <div @ref="_viewport" class="@Css.Classes.Scheduler.Viewport">
 <FlareDragContext TPayload="SchedulerOccurrence<TItem>" KeyboardReorder="false" OnDrop="DropAsync">
-<div @ref="_root" data-flare-keyboard-grid class="@BuildCssClass(Css.Classes.Scheduler.TimeGrid)" style="@Style" @attributes="AdditionalAttributes" role="group">
-    @foreach (var date in _dates)
-    {
-        var day = date;
-        var events = EventsOn(day);
-        var lanes = GanttLanes.Assign(events.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
-        <section class="@Css.Classes.Scheduler.Day" @key="day">
-            <header class="@Css.Classes.Scheduler.DayHeader">
-                @if (DayHeaderTemplate is not null) { @DayHeaderTemplate(day) }
-                else { @day.ToString("ddd d", Context.Culture) }
-            </header>
-            <FlareDropZone Target="@($"a:{day.DayNumber}")" Class="@Css.Classes.Scheduler.AllDay" data-flare-focus-target="button" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is not null" aria-label="@SchedulerText["AllDay"].Value">
-                <FlareButton OnClick="() => SelectAllDayAsync(day)">@SchedulerText["AllDay"].Value</FlareButton>
-                @foreach (var occurrence in AllDayOn(day))
-                {
-                    <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" Draggable="true" @key="occurrence.Identity" />
-                }
-            </FlareDropZone>
-            <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
-                @foreach (var entry in _slots.Where(s => s.Slot.Date == day))
-                {
-                    var slot = entry.Slot;
-                    var index = entry.Index;
-                    <FlareDropZone @key="slot.Start.UtcDateTime.Ticks" Target="@Target(slot)" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is null">
-                        <button @ref="_slotElements[slot.Start.UtcDateTime.Ticks]" type="button" class="@SlotClass(slot)"
-                                style="@SlotStyle(slot)" tabindex="@(index == _focusedSlot ? "0" : "-1")"
-                                data-flare-tree-index="@index" aria-label="@Label(slot, true)"
-                                data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
-                                @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)" @ondblclick="() => CreateAsync(slot)" @onkeydown="e => SlotKeyAsync(slot, e)">
-                            @if (SlotTemplate is not null) { @SlotTemplate(slot) }
-                            else { @Label(slot, false) }
-                        </button>
-                    </FlareDropZone>
-                }
-                @foreach (var occurrence in events)
-                {
-                    <div class="@Css.Classes.Scheduler.Event" style="@EventStyle(occurrence, day, lanes)" @key="occurrence.Identity">
-                        <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" Draggable="true"
-                                             Resizable="true" SegmentStart="SegmentStart(occurrence, day)" MeasureSlot="MeasureSlotAsync" />
-                    </div>
-                }
-                @if (day == DateOnly.FromDateTime(_now.Date))
-                {
-                    <div class="@Css.Classes.Scheduler.Now" style="@NowStyle(day)" aria-hidden="true"></div>
-                }
-            </div>
-        </section>
-    }
+<div class="@Css.Classes.Scheduler.TimeGridFrame" style="@FrameStyle">
+    <div @ref="_headers" class="@Css.Classes.Scheduler.HeaderBand">
+        <div class="@Css.Classes.Scheduler.DayHeaders" style="@HeaderStyle">
+            @foreach (var day in _dates)
+            {
+                <header class="@Css.Classes.Scheduler.DayHeader">
+                    @if (DayHeaderTemplate is not null) { @DayHeaderTemplate(day) }
+                    else { @day.ToString("ddd d", Context.Culture) }
+                </header>
+            }
+        </div>
+        @if (ShowAllDay)
+        {
+            @if (AllDayTemplate is not null) { @AllDayTemplate(Context) }
+            else { <FlareSchedulerAllDay TItem="TItem" Context="Context" Dates="_dates" EventTemplate="EventTemplate" /> }
+        }
+    </div>
+    <div @ref="_root" data-flare-keyboard-grid class="@BuildCssClass(Css.Classes.Scheduler.TimeGrid)" style="@Style" @attributes="AdditionalAttributes" role="group">
+        @foreach (var date in _dates)
+        {
+            var day = date;
+            var events = EventsOn(day);
+            var lanes = GanttLanes.Assign(events.Select(o => (o.Identity, new GanttSpan(o.Data.Start.UtcDateTime, o.Data.End.UtcDateTime))));
+            <section class="@Css.Classes.Scheduler.Day" @key="day" aria-label="@day.ToString("D", Context.Culture)">
+                <div class="@Css.Classes.Scheduler.Slots" data-flare-focus-target="[data-flare-tree-index][tabindex='0']">
+                    @foreach (var entry in _slots.Where(s => s.Slot.Date == day))
+                    {
+                        var slot = entry.Slot;
+                        var index = entry.Index;
+                        <FlareDropZone @key="slot.Start.UtcDateTime.Ticks" Target="@Target(slot)" Accepts="p => p is SchedulerOccurrence<TItem> o && o.Data.AllDay is null">
+                            <button @ref="_slotElements[slot.Start.UtcDateTime.Ticks]" type="button" class="@SlotClass(slot)"
+                                    style="@SlotStyle(slot)" tabindex="@(index == _focusedSlot ? "0" : "-1")"
+                                    data-flare-tree-index="@index" aria-label="@Label(slot, true)"
+                                    data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
+                                    @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)" @ondblclick="() => CreateAsync(slot)" @onkeydown="e => SlotKeyAsync(slot, e)">
+                                @if (SlotTemplate is not null) { @SlotTemplate(slot) }
+                                else { @Label(slot, false) }
+                            </button>
+                        </FlareDropZone>
+                    }
+                    @foreach (var occurrence in events)
+                    {
+                        <div class="@Css.Classes.Scheduler.Event" style="@EventStyle(occurrence, day, lanes)" @key="occurrence.Identity">
+                            <FlareSchedulerEvent TItem="TItem" Context="Context" EventTemplate="EventTemplate" Occurrence="occurrence" Draggable="true"
+                                                 Resizable="true" SegmentStart="SegmentStart(occurrence, day)" MeasureSlot="MeasureSlotAsync" />
+                        </div>
+                    }
+                    @if (day == DateOnly.FromDateTime(_now.Date))
+                    {
+                        <div class="@Css.Classes.Scheduler.Now" style="@NowStyle(day)" aria-hidden="true"></div>
+                    }
+                </div>
+            </section>
+        }
+    </div>
 </div>
 </FlareDragContext>
 </div>
@@ -67,13 +74,21 @@
     [Parameter] public RenderFragment<DateOnly>? DayHeaderTemplate { get; set; }
     /// <summary>Content of a selectable time slot. Use noninteractive content inside its button.</summary>
     [Parameter] public RenderFragment<SchedulerTimeSlot>? SlotTemplate { get; set; }
+    /// <summary>Includes the standard all-day band. Disable when composing it elsewhere.</summary>
+    [Parameter] public bool ShowAllDay { get; set; } = true;
+    /// <summary>Replaces the standard all-day band using the same snapshot and visible dates.</summary>
+    [Parameter] public RenderFragment<SchedulerViewContext<TItem>>? AllDayTemplate { get; set; }
+    /// <summary>Actual dates rendered as columns, including work-week filtering.</summary>
+    public IReadOnlyList<DateOnly> VisibleDates => _dates;
+    private string FrameStyle => FormattableString.Invariant($"min-width:calc(var(--flare-scheduler-day-min-width,var(--flare-spacing-32))*{_dates.Count});");
+    private string HeaderStyle => FormattableString.Invariant($"grid-template-columns:repeat({_dates.Count},minmax(0,1fr));");
     private List<DateOnly> _dates = [];
     private List<(SchedulerTimeSlot Slot, int Index)> _slots = [];
     private Dictionary<string, SchedulerTimeSlot> _targets = [];
     private readonly Dictionary<long, ElementReference> _slotElements = [];
     private int _focusedSlot;
     private DateTimeOffset _now;
-    private ElementReference _root, _viewport;
+    private ElementReference _root, _viewport, _headers;
     private DotNetObjectReference<FlareSchedulerTimeGrid<TItem>>? _self;
     private readonly CancellationTokenSource _clockStop = new();
     private Task? _clockTask;
@@ -110,8 +125,6 @@
         return Context.Occurrences.Where(o => o.Data.AllDay is null && o.Data.Start < window.End
             && (o.Data.End > window.Start || o.Data.Start == o.Data.End && o.Data.Start == window.Start)).ToArray();
     }
-    private IEnumerable<SchedulerOccurrence<TItem>> AllDayOn(DateOnly day) => Context.Occurrences.Where(o =>
-        o.Data.AllDay is { } range && range.Start <= day && range.End > day);
     private string SlotClass(SchedulerTimeSlot slot)
     {
         var time = TimeOnly.FromDateTime(slot.Start.DateTime);
@@ -155,12 +168,6 @@
         var units = (_slots[0].Slot.End - _slots[0].Slot.Start).TotalMinutes / Context.SlotDuration.TotalMinutes;
         return (bounds.Bottom - bounds.Top) / units;
     }
-    private Task SelectAllDayAsync(DateOnly day)
-    {
-        var range = new SchedulerDateRange(day, day.AddDays(1));
-        var window = SchedulerClock.Window(range, Context.TimeZone);
-        return Context.Commands.SelectSlotAsync(new(window.Start, window.End, range));
-    }
     private static string Target(SchedulerTimeSlot slot) => "t:" + slot.Start.UtcDateTime.Ticks.ToString(CultureInfo.InvariantCulture);
     private Task CreateAsync(SchedulerTimeSlot slot) => Context.Commands.CreateEventAsync(new(slot.Start, slot.End));
     private Task SlotKeyAsync(SchedulerTimeSlot slot, KeyboardEventArgs e) => e.Key == "F2" ? CreateAsync(slot) : Task.CompletedTask;
@@ -168,15 +175,8 @@
     private async Task DropAsync(FlareDropEventArgs<SchedulerOccurrence<TItem>> args)
     {
         var data = args.Payload.Data;
-        if (args.TargetId.StartsWith("a:", StringComparison.Ordinal) && int.TryParse(args.TargetId.AsSpan(2), out var number)
-            && data.AllDay is { } days && _dates.Any(d => d.DayNumber == number))
-        {
-            var day = DateOnly.FromDayNumber(number);
-            data = data with { AllDay = new(day, day.AddDays(days.End.DayNumber - days.Start.DayNumber)) };
-        }
-        else if (_targets.TryGetValue(args.TargetId, out var slot) && data.AllDay is null)
-            data = data with { Start = slot.Start, End = TimeZoneInfo.ConvertTime(slot.Start + (data.End - data.Start), Context.TimeZone) };
-        else return;
+        if (!_targets.TryGetValue(args.TargetId, out var slot) || data.AllDay is not null) return;
+        data = data with { Start = slot.Start, End = TimeZoneInfo.ConvertTime(slot.Start + (data.End - data.Start), Context.TimeZone) };
         await Context.Commands.RequestChangeAsync(args.Payload, data, SchedulerEditAction.Move);
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -195,7 +195,8 @@
         if (position.Top > 0) return;
         var slotBounds = await Elements.GetBoundsAsync(element);
         var viewport = await Elements.GetBoundsAsync(_viewport);
-        await Scroll.ScrollToAsync(Math.Max(0, slotBounds.Top - viewport.Top - height * 2),
+        var headers = await Elements.GetBoundsAsync(_headers);
+        await Scroll.ScrollToAsync(Math.Max(0, slotBounds.Top - viewport.Top - (headers.Bottom - headers.Top) - height * 2),
             _viewport, ScrollBehavior.Instant);
     }
     /// <summary>Handles slot keys delegated by the shared listener, including repeated clock times.</summary>

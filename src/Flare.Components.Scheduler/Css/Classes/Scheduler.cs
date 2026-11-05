@@ -3,6 +3,24 @@ namespace Flare.Css.Classes;
 /// <summary>Scheduler projection classes; override these or the scheduler tokens to supply a design system.</summary>
 public static class Scheduler
 {
+    /// <summary>Shared width boundary of headers, all-day band and timed columns.</summary>
+    public const string TimeGridFrame = "flare-scheduler__time-grid-frame";
+    /// <summary>Sticky common header and all-day band.</summary>
+    public const string HeaderBand = "flare-scheduler__header-band";
+    /// <summary>Aligned date headings.</summary>
+    public const string DayHeaders = "flare-scheduler__day-headers";
+    /// <summary>Shared all-day lane grid.</summary>
+    public const string AllDayGrid = "flare-scheduler__all-day-grid";
+    /// <summary>All-day band heading.</summary>
+    public const string AllDayCaption = "flare-scheduler__all-day-caption";
+    /// <summary>All-day date drop boundary.</summary>
+    public const string AllDayTarget = "flare-scheduler__all-day-target";
+    /// <summary>Background date-selection control.</summary>
+    public const string AllDaySlot = "flare-scheduler__all-day-slot";
+    /// <summary>Positioned date-only segment.</summary>
+    public const string AllDayEvent = "flare-scheduler__all-day-event";
+    /// <summary>Overflow action for a date.</summary>
+    public const string AllDayMore = "flare-scheduler__all-day-more";
     /// <summary>Focus boundary around the shared resize widget.</summary>
     public const string ResizeFrame = "flare-scheduler__resize-frame";
     /// <summary>Standard event editor.</summary>

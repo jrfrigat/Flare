@@ -35,8 +35,8 @@ public static class Scheduler
     public const string HeaderSurface = "--flare-scheduler-header-surface";
     /// <summary>Custom-property name for AllDaySurface.</summary>
     public const string AllDaySurface = "--flare-scheduler-all-day-surface";
-    /// <summary>Custom-property name for AllDayHeight.</summary>
-    public const string AllDayHeight = "--flare-scheduler-all-day-height";
+    /// <summary>Custom-property name for AllDayRowHeight.</summary>
+    public const string AllDayRowHeight = "--flare-scheduler-all-day-row-height";
     /// <summary>Custom-property name for EventSurface.</summary>
     public const string EventSurface = "--flare-scheduler-event-surface";
     /// <summary>Custom-property name for EventColor.</summary>

@@ -35,3 +35,7 @@ public partial class FlareSchedulerSurface<TItem> { }
 /// <summary>Optional standard navigation and event commands, composable anywhere in a scheduling scope.</summary>
 /// <typeparam name="TItem">Application event type.</typeparam>
 public partial class FlareSchedulerToolbar<TItem> { }
+
+/// <summary>Independent date-only event band with shared collision lanes and configurable overflow actions.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+public partial class FlareSchedulerAllDay<TItem> { }

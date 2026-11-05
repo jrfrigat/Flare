@@ -40,8 +40,8 @@ public sealed record SchedulerTokens
     [CssVar(Names.HeaderSurface)] public string HeaderSurface { get; init; } = Var(Css.Tokens.Color.SurfaceContainerLow);
     /// <summary>Design value for AllDaySurface; defaults to the corresponding base theme role.</summary>
     [CssVar(Names.AllDaySurface)] public string AllDaySurface { get; init; } = Var(Css.Tokens.Color.SurfaceContainer);
-    /// <summary>Design value for AllDayHeight; defaults to the corresponding base theme role.</summary>
-    [CssVar(Names.AllDayHeight)] public string AllDayHeight { get; init; } = Var(Css.Tokens.Spacing.S24);
+    /// <summary>Minimum height of one all-day collision lane; content can grow at larger text sizes.</summary>
+    [CssVar(Names.AllDayRowHeight)] public string AllDayRowHeight { get; init; } = Var(Css.Tokens.Spacing.S8);
     /// <summary>Design value for EventSurface; defaults to the corresponding base theme role.</summary>
     [CssVar(Names.EventSurface)] public string EventSurface { get; init; } = Var(Css.Tokens.Color.PrimaryContainer);
     /// <summary>Design value for EventColor; defaults to the corresponding base theme role.</summary>
