@@ -5,6 +5,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Flare packages no longer raise the minimum .NET 10 patch to the version available when Flare is built. Blazor and localization dependencies accept 10.0.0 and newer patches, so applications can keep their chosen 10.0.x version.
+
 ### Changed
 
 - Scheduler is now a component builder: a headless data/command scope, optional Surface/Toolbar/Dialog, independent edit sessions/forms, interactive event templates and a shared multi-day all-day band with configurable +N overflow. Slot selection is separate from creation. Root ViewTemplate/ToolbarTemplate/EditorTemplate/ShowToolbar/Views move to explicit component composition; event templates receive SchedulerEventContext on views; AllDayHeight becomes AllDayRowHeight. Calendar/Gantt expose reusable interaction-template hooks. Gallery and EN/RU guides show calendar filters, preview/right-drawer editing and quick/full inline business forms.

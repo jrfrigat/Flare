@@ -7,8 +7,7 @@
 
     - GlobalPackageReference: injected into EVERY project automatically (build/pack tooling).
     - PackageVersion: the version a project gets when it lists the package via <PackageReference>.
-    - Per-target-framework needs (e.g. Flare.Abstractions' ASP.NET Core version) use VersionOverride
-      in the csproj, keeping the TFM-conditional logic local.
+    - Per-target-framework versions are selected here with TargetFramework conditions.
   -->
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
@@ -30,14 +29,16 @@
          global.json (10.0.400 -> 5.9.0); raising them means raising that floor first. -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
-    <!-- Blazor / ASP.NET Core runtime.
-         Microsoft.AspNetCore.Components.Web is deliberately absent: Flare.Abstractions is its only
-         consumer and needs a different major per TFM, so it carries the whole version there via
-         VersionOverride. A central pin would be dead weight that reads like the real one. -->
+    <!-- Library dependencies use a stable minimum, so pack does not turn the newest installed
+         patch into a requirement for every consumer. Applications can select newer patches. -->
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" Condition="'$(TargetFramework)' == 'net10.0'" />
+    <!-- Gallery-only dependencies do not flow into the published libraries. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.13" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.13" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.13" />
-    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Localization.Abstractions" Version="10.0.0" />
     <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
          its text language are needed by the designer; the Gallery adds two renderers to demo one
