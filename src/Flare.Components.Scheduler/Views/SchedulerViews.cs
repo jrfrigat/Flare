@@ -20,6 +20,10 @@ public partial class FlareSchedulerTimeline<TItem> { }
 /// <typeparam name="TItem">Application event type.</typeparam>
 public partial class FlareSchedulerEvent<TItem> { }
 
-/// <summary>Standard dialog body over a scheduler working copy, replaceable through EditorTemplate.</summary>
+/// <summary>Independent event form over a scheduler editing session; usable inside any presentation.</summary>
 /// <typeparam name="TItem">Application event type.</typeparam>
 public partial class FlareSchedulerEditor<TItem> { }
+
+/// <summary>Optional dialog presenter for an independent scheduler editing session.</summary>
+/// <typeparam name="TItem">Application event type.</typeparam>
+public partial class FlareSchedulerDialog<TItem> { }

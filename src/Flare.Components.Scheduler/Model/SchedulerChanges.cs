@@ -41,31 +41,3 @@ public sealed class SchedulerChangeEventArgs<TItem>
     /// <summary>Set by the application to refuse this intent.</summary>
     public bool Cancel { get; set; }
 }
-
-/// <summary>Working copy supplied to the default or custom editor; cancelling never mutates an application item.</summary>
-/// <typeparam name="TItem">Application event type.</typeparam>
-public sealed class SchedulerEditContext<TItem>
-{
-    /// <summary>Scheduler owning the persistence callback.</summary>
-    public required FlareScheduler<TItem> Owner { get; init; }
-    /// <summary>Original occurrence, or null for creation.</summary>
-    public SchedulerOccurrence<TItem>? Original { get; init; }
-    /// <summary>Action proposed by the editor or gesture.</summary>
-    public required SchedulerEditAction Action { get; init; }
-    /// <summary>Editable immutable draft. Replace using a with-expression when binding individual fields.</summary>
-    public required SchedulerEventData Draft { get; set; }
-    /// <summary>Selected recurring-event scope.</summary>
-    public SchedulerEditScope Scope { get; set; }
-    /// <summary>A gesture has already proposed the values and only needs a scope choice.</summary>
-    public bool ScopeOnly { get; init; }
-    /// <summary>Whether a series scope must be offered.</summary>
-    public bool IsRecurring => Original is { } original && (original.Data.SeriesKey is not null
-        || !string.IsNullOrEmpty(original.Series.RecurrenceRule) || original.Series.RecurrenceDates.Count > 0
-        || original.Series.RecurrenceDays.Count > 0);
-    internal Func<Task<bool>>? SaveHandler { get; set; }
-    internal Func<Task>? CancelHandler { get; set; }
-    /// <summary>Validates, submits once and closes the editor on acceptance; false leaves the working copy open.</summary>
-    public Task<bool> SaveAsync() => SaveHandler?.Invoke() ?? Task.FromResult(false);
-    /// <summary>Discards the working copy and dismisses the editor.</summary>
-    public Task CancelAsync() => CancelHandler?.Invoke() ?? Task.CompletedTask;
-}

@@ -68,3 +68,8 @@ else
 </div>
 
 }
+
+@if (!OnEditRequested.HasDelegate && ChildContent is null)
+{
+    <FlareSchedulerDialog TItem="TItem" Context="ActiveEdit" />
+}

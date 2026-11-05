@@ -135,7 +135,7 @@ public partial class FlareScheduler<TItem>
         SelectedSlot = slot;
         await OnSlotSelected.InvokeAsync(slot);
         StateHasChanged();
-        if (Editable) await CreateEventAsync(slot);
+
     }
     /// <summary>Cancels pending provider work before disposing component services.</summary>
     public override async ValueTask DisposeAsync()
@@ -145,7 +145,7 @@ public partial class FlareScheduler<TItem>
         _generation++;
         _load?.Cancel();
         _load?.Dispose();
-        if (_editorReference is { } editor) await editor.CancelAsync();
+        if (ActiveEdit is { } editor) await editor.CloseAsync();
         try { await Ui.RemoveTreeKeyboardAsync(_root); }
         catch (JSDisconnectedException) { }
         catch (JSException) { }

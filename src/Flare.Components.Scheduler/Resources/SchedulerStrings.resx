@@ -39,5 +39,6 @@
   <data name="Move" xml:space="preserve"><value>Move event</value></data>
   <data name="Resize" xml:space="preserve"><value>Resize event</value></data>
   <data name="Schedule" xml:space="preserve"><value>Schedule</value></data>
+  <data name="SaveError" xml:space="preserve"><value>The event could not be saved. Please try again.</value></data>
 </root>
 

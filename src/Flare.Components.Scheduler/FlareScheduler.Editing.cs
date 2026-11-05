@@ -1,4 +1,3 @@
-using Flare.Abstractions;
 using Flare.Components.Scheduler;
 using Microsoft.AspNetCore.Components;
 
@@ -6,9 +5,7 @@ namespace Flare.Components;
 
 public partial class FlareScheduler<TItem>
 {
-    [Inject] private IDialogService Dialogs { get; set; } = default!;
-    private bool _editorOpen, _submitting;
-    private DialogReference? _editorReference;
+    private bool _submitting;
     private readonly SchedulerFocus _focus = new();
     private string? _focusEvent { get => _focus.Identity; set => _focus.Identity = value; }
     internal void RejectChange()
@@ -19,87 +16,88 @@ public partial class FlareScheduler<TItem>
     }
     internal void ReturnFocusTo(string identity, bool resize = false) => _focus.ReturnFocusTo(identity, resize);
 
-    /// <summary>Enables creation, editor, move, resize and delete. The application must handle OnChange.</summary>
+    /// <summary>Enables event changes when an application persistence callback is supplied.</summary>
     [Parameter] public bool Editable { get; set; }
-    /// <summary>Shows the shared resizable's single-click buttons in addition to its keyboard-accessible handle.</summary>
+    /// <summary>Shows the shared resizable's single-click controls in addition to its keyboard handle.</summary>
     [Parameter] public bool ShowResizeControls { get; set; }
-    /// <summary>Whether UI editing is enabled and has an application persistence callback.</summary>
+    /// <summary>Whether changes are enabled and have an application persistence callback.</summary>
     public bool CanEdit => Editable && OnChange.HasDelegate;
-    /// <summary>Receives accepted UI intents. Persist in the application or backend; set Cancel to refuse.</summary>
+    /// <summary>Receives validated proposals. Persist in the application; set Cancel to refuse.</summary>
     [Parameter] public EventCallback<SchedulerChangeEventArgs<TItem>> OnChange { get; set; }
-    /// <summary>Replaces the dialog body. Use its working copy and SaveAsync/CancelAsync commands.</summary>
-    [Parameter] public RenderFragment<SchedulerEditContext<TItem>>? EditorTemplate { get; set; }
+    /// <summary>Owns presentation of an editing session when supplied. No built-in dialog is opened.</summary>
+    [Parameter] public EventCallback<SchedulerEditContext<TItem>> OnEditRequested { get; set; }
+    /// <summary>Current editing session, independent of any form or surface.</summary>
+    public SchedulerEditContext<TItem>? ActiveEdit { get; private set; }
 
-    /// <summary>Opens the event-details editor without mutating the original item.</summary>
-    /// <param name="occurrence">Occurrence to edit.</param>
-    public Task EditEventAsync(SchedulerOccurrence<TItem> occurrence) => OpenEditorAsync(new()
+    /// <summary>Requests an event-details session without mutating the application item.</summary>
+    public Task EditEventAsync(SchedulerOccurrence<TItem> occurrence) => OpenEditorAsync(
+        NewSession(SchedulerEditAction.Update, occurrence.Data, occurrence));
+
+    /// <summary>Requests a new-event session for a selected timed or all-day interval.</summary>
+    public Task CreateEventAsync(SchedulerSlot slot) => OpenEditorAsync(NewSession(SchedulerEditAction.Create, new()
     {
-        Owner = this, Original = occurrence, Draft = occurrence.Data, Action = SchedulerEditAction.Update
-    });
+        Key = Guid.NewGuid().ToString("N"), Title = "", Start = slot.Start, End = slot.End,
+        AllDay = slot.AllDay, ResourceKey = slot.ResourceKey, TimeZoneId = TimeZone.Id
+    }));
 
-    /// <summary>Opens a new-event editor for a selected timed or all-day slot.</summary>
-    /// <param name="slot">Initial dates and resource.</param>
-    public Task CreateEventAsync(SchedulerSlot slot) => OpenEditorAsync(new()
+    private SchedulerEditContext<TItem> NewSession(SchedulerEditAction action, SchedulerEventData data,
+        SchedulerOccurrence<TItem>? original = null, bool scopeOnly = false) => new()
     {
-        Owner = this, Action = SchedulerEditAction.Create,
-        Draft = new()
-        {
-            Key = Guid.NewGuid().ToString("N"), Title = "", Start = slot.Start, End = slot.End,
-            AllDay = slot.AllDay, ResourceKey = slot.ResourceKey, TimeZoneId = TimeZone.Id
-        }
-    });
+        Action = action, Draft = data, Original = original, ScopeOnly = scopeOnly,
+        TimeZone = TimeZone, Culture = Culture, Resources = Resources,
+        Submit = change => ApplyChangeAsync(change.Action, change.Original, change.Data, change.Scope)
+    };
 
-    /// <summary>Requests a gesture change, asking for series scope when needed.</summary>
-    /// <param name="occurrence">Original occurrence.</param>
-    /// <param name="data">Proposed dates or resource.</param>
-    /// <param name="action">Move, resize or delete.</param>
+    /// <summary>Requests a gesture change, asking for recurrence scope or delete confirmation when needed.</summary>
     public async Task RequestChangeAsync(SchedulerOccurrence<TItem> occurrence, SchedulerEventData data, SchedulerEditAction action)
     {
-        if (!Editable || !OnChange.HasDelegate || _editorOpen || _disposed) return;
+        if (!CanEdit || ActiveEdit is not null || _disposed) return;
+        if (action is not (SchedulerEditAction.Move or SchedulerEditAction.Resize or SchedulerEditAction.Delete))
+            throw new ArgumentOutOfRangeException(nameof(action));
         if (action is SchedulerEditAction.Move or SchedulerEditAction.Resize && data == occurrence.Data)
         { _version++; StateHasChanged(); return; }
-        var context = new SchedulerEditContext<TItem>
+        var session = NewSession(action, data, occurrence, scopeOnly: true);
+        if (session.IsRecurring || action == SchedulerEditAction.Delete) await OpenEditorAsync(session);
+        else if (!await session.SaveAsync())
         {
-            Owner = this, Original = occurrence, Draft = data, Action = action, ScopeOnly = true
-        };
-        if (context.IsRecurring || action == SchedulerEditAction.Delete) await OpenEditorAsync(context);
-        else await ApplyChangeAsync(action, occurrence, data);
-    }
-
-    private async Task OpenEditorAsync(SchedulerEditContext<TItem> context)
-    {
-        if (!Editable || !OnChange.HasDelegate || _editorOpen || _disposed) return;
-        _editorOpen = true;
-        _focus.Editing = true;
-        if (context.Original is { } original) ReturnFocusTo(original.Identity, context.ScopeOnly && context.Action == SchedulerEditAction.Resize);
-        try
-        {
-            _editorReference = Dialogs.Show<FlareSchedulerEditor<TItem>>(null,
-                new DialogParameters().Add(nameof(FlareSchedulerEditor<TItem>.Context), context),
-                new DialogOptions { TitleProvider = () => SchedulerText[context.Action == SchedulerEditAction.Create
-                    ? "Create" : context.Action == SchedulerEditAction.Delete ? "Delete" : "Edit"].Value });
-            var result = await _editorReference.Result;
-            if (result.Cancelled && !_disposed) { _announcementKey = "Cancelled"; _version++; StateHasChanged(); }
+            if (session.Status == SchedulerEditStatus.Invalid) RejectChange();
+            else await OpenEditorAsync(session);
         }
-        finally { _editorReference = null; _editorOpen = false; _focus.Editing = false; if (!_disposed) StateHasChanged(); }
     }
 
-    /// <summary>Validates and submits an explicit change; false means read-only, invalid, busy or refused.</summary>
+    private async Task OpenEditorAsync(SchedulerEditContext<TItem> session)
+    {
+        if (!CanEdit || ActiveEdit is not null || _disposed) return;
+        ActiveEdit = session;
+        _focus.Editing = true;
+        if (session.Original is { } original) ReturnFocusTo(original.Identity, session.Action == SchedulerEditAction.Resize);
+        session.CloseHandler = async () =>
+        {
+            if (ActiveEdit != session) return;
+            ActiveEdit = null;
+            _focus.Editing = false;
+            if (!_disposed)
+            {
+                _announcementKey = session.IsSaved ? "Changed" : "Cancelled";
+                _version++;
+                await InvokeAsync(StateHasChanged);
+            }
+        };
+        StateHasChanged();
+        await OnEditRequested.InvokeAsync(session);
+    }
+
+    /// <summary>Validates and submits a change; false means read-only, invalid, busy or refused.</summary>
     /// <param name="action">Requested action.</param>
     /// <param name="original">Original occurrence; null only for creation.</param>
-    /// <param name="data">Proposed values, retaining the original key for updates.</param>
+    /// <param name="data">Proposed immutable values.</param>
     /// <param name="scope">Application persistence scope.</param>
-    /// <returns>Whether the application accepted the intent.</returns>
+    /// <returns>Whether the application accepted the change.</returns>
     public async Task<bool> ApplyChangeAsync(SchedulerEditAction action, SchedulerOccurrence<TItem>? original,
         SchedulerEventData data, SchedulerEditScope scope = SchedulerEditScope.Occurrence)
     {
-        if (!Editable || !OnChange.HasDelegate || _submitting || _disposed) return false;
-        if (!Enum.IsDefined(action) || !Enum.IsDefined(scope)) throw new ArgumentOutOfRangeException(nameof(action));
-        if ((action == SchedulerEditAction.Create) != (original is null)) throw new ArgumentException("Creation requires no original; other changes require one.", nameof(original));
-        if (original is not null && original.Data.Key != data.Key) throw new ArgumentException("An update must retain its event key.", nameof(data));
-        if (string.IsNullOrWhiteSpace(data.Title) || string.IsNullOrWhiteSpace(data.Key)
-            || (data.AllDay is { } days ? days.End <= days.Start : data.End < data.Start))
-        { RejectChange(); return false; }
+        if (!CanEdit || _submitting || _disposed) return false;
+        if (!SchedulerChangeValidation.IsValid(action, original, data, scope)) { RejectChange(); return false; }
         _submitting = true;
         try
         {

@@ -44,7 +44,8 @@ public sealed class SchedulerLiveLocalizationTests : FlareTestContext
         Assert.Same(editor, cut.FindComponent<FlareSchedulerEditor<SchedulerEventData>>().Instance);
         Assert.Equal("Unsaved event", editor.Context.Draft.Title);
         Assert.Equal("en-US", scheduler.EffectiveCulture.Name);
-        Assert.False(pending.IsCompleted);
+        Assert.False(editor.Context.IsClosed);
+        Assert.Same(editor.Context, scheduler.ActiveEdit);
         cut.FindAll("button").Single(x => x.TextContent == text["Cancel"].Value).Click();
         await pending;
     }

@@ -76,7 +76,7 @@ public partial class FlareScheduler<TItem> : ISchedulerCommands<TItem>
         WorkEnd = WorkEnd, InitialScrollTime = InitialScrollTime, Resources = Resources,
         CanEdit = CanEdit, ShowResizeControls = ShowResizeControls, AriaLabel = AriaLabel,
         SelectedEvent = SelectedEvent, SelectedSlot = SelectedSlot, IsLoading = _loading, Error = _error,
-        EventTemplate = EventTemplate, Focus = _focus
+        EventTemplate = EventTemplate, Focus = _focus, Edit = ActiveEdit
     };
     /// <summary>Current projection after controlled/uncontrolled resolution.</summary>
     public SchedulerView CurrentView => _view;

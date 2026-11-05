@@ -11,7 +11,6 @@ public sealed class SchedulerCompositionTests : FlareTestContext
     public SchedulerCompositionTests()
     {
         Services.AddFlareScheduler();
-        Services.AddSingleton<Flare.Abstractions.IDialogService, Flare.Infrastructure.DialogService>();
     }
 
     [Fact]

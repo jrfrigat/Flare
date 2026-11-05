@@ -34,7 +34,7 @@
                                 style="@SlotStyle(slot)" tabindex="@(index == _focusedSlot ? "0" : "-1")"
                                 data-flare-tree-index="@index" aria-label="@Label(slot, true)"
                                 data-scheduler-major="@(slot.Start.Minute == 0 ? "" : null)"
-                                @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)">
+                                @onfocus="() => _focusedSlot = index" @onclick="() => SelectAsync(slot)" @ondblclick="() => CreateAsync(slot)" @onkeydown="e => SlotKeyAsync(slot, e)">
                             @Label(slot, false)
                         </button>
                     </FlareDropZone>
@@ -154,6 +154,8 @@
         return Context.Commands.SelectSlotAsync(new(window.Start, window.End, range));
     }
     private static string Target(SchedulerTimeSlot slot) => "t:" + slot.Start.UtcDateTime.Ticks.ToString(CultureInfo.InvariantCulture);
+    private Task CreateAsync(SchedulerTimeSlot slot) => Context.Commands.CreateEventAsync(new(slot.Start, slot.End));
+    private Task SlotKeyAsync(SchedulerTimeSlot slot, KeyboardEventArgs e) => e.Key == "F2" ? CreateAsync(slot) : Task.CompletedTask;
     private Task SelectAsync(SchedulerTimeSlot slot) => Context.Commands.SelectSlotAsync(new(slot.Start, slot.End));
     private async Task DropAsync(FlareDropEventArgs<SchedulerOccurrence<TItem>> args)
     {

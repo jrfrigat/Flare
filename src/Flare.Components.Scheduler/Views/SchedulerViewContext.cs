@@ -41,6 +41,8 @@ public sealed record SchedulerViewContext<TItem>
     public Exception? Error { get; init; }
     /// <summary>Optional event caption content.</summary>
     public Microsoft.AspNetCore.Components.RenderFragment<SchedulerOccurrence<TItem>>? EventTemplate { get; init; }
+    /// <summary>Current editing session, if any. A presenter can render it anywhere.</summary>
+    public SchedulerEditContext<TItem>? Edit { get; init; }
     internal SchedulerFocus Focus { get; init; } = new();
     /// <summary>Visible instant/date window.</summary>
     public required SchedulerWindow Window { get; init; }

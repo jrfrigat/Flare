@@ -1,0 +1,63 @@
+@typeparam TItem
+@namespace Flare.Components
+@inherits FlareLocalizedComponentBase
+@inject IDialogService Dialogs
+
+@code {
+    /// <summary>Session to present; null closes the current presentation.</summary>
+    [Parameter] public SchedulerEditContext<TItem>? Context { get; set; }
+    /// <summary>Optional form content, independent of the dialog presentation.</summary>
+    [Parameter] public RenderFragment<SchedulerEditContext<TItem>>? ChildContent { get; set; }
+    private SchedulerEditContext<TItem>? _session;
+    private DialogReference? _reference;
+    private bool _disposed;
+    protected override string ComponentCssClass => string.Empty;
+    private Microsoft.Extensions.Localization.IStringLocalizer<SchedulerStrings> Text => Localizer<SchedulerStrings>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_session == Context) return;
+        if (_reference is { } previous) await previous.CancelAsync();
+        _session = Context;
+        _reference = null;
+        if (Context is not { IsClosed: false } session) return;
+        _reference = Dialogs.Show<FlareSchedulerEditor<TItem>>(null,
+            new DialogParameters().Add(nameof(FlareSchedulerEditor<TItem>.Context), session)
+                .Add(nameof(FlareSchedulerEditor<TItem>.ChildContent), ChildContent),
+            new DialogOptions { TitleProvider = () => Text[session.Action == SchedulerEditAction.Create
+                ? "Create" : session.Action == SchedulerEditAction.Delete ? "Delete" : "Edit"].Value });
+        session.Changed += SessionChanged;
+        _ = ObserveAsync(_reference, session);
+    }
+    private void SessionChanged() => _ = InvokeAsync(async () =>
+    {
+        if (_session is { IsClosed: true } && _reference is { } reference)
+        {
+            _reference = null;
+            await reference.CloseAsync(DialogResult.Ok(_session.Draft));
+        }
+    });
+    private async Task ObserveAsync(DialogReference reference, SchedulerEditContext<TItem> session)
+    {
+        await reference.Result;
+        session.Changed -= SessionChanged;
+        if (_disposed || session.IsClosed) return;
+        await InvokeAsync(async () =>
+        {
+            await session.CancelAsync();
+            if (!session.IsClosed && _session == session)
+            {
+                _session = null;
+                await OnParametersSetAsync();
+            }
+        });
+    }
+    /// <summary>Releases this presenter without submitting a draft.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        if (_session is { } session) session.Changed -= SessionChanged;
+        if (_reference is { } reference) await reference.CancelAsync();
+        await base.DisposeAsync();
+    }
+}
