@@ -178,6 +178,33 @@ public class ThemeServiceTests
     }
 
     [Fact]
+    public void CustomTokenReadsReuseSnapshotsAndKeepOldValues()
+    {
+        var service = Make(out var injector);
+        const string token = "--flare-test";
+        var empty = service.GetCustomTokens();
+
+        service.SetCustomToken(token, "one");
+        var one = service.GetCustomTokens();
+        Assert.Same(one, service.GetCustomTokens());
+        Assert.Empty(empty);
+
+        service.SetCustomTokens(new Dictionary<string, string> { [token] = "two" });
+        Assert.Equal("one", one[token]);
+        Assert.Equal("two", service.GetCustomTokens()[token]);
+        Assert.Equal("two", injector.Custom[token]);
+
+        service.ClearCustomToken(token);
+        Assert.Same(empty, service.GetCustomTokens());
+
+        service.CustomizeColors(colors => colors with { Primary = "#123456" });
+        Assert.Equal("#123456", service.GetCustomTokens()[Css.Tokens.Color.Primary]);
+        service.ClearAllCustomTokens();
+        Assert.Same(empty, service.GetCustomTokens());
+        Assert.Empty(injector.Custom);
+    }
+
+    [Fact]
     public void CustomizeColors_PushesOnlyChangedRoles()
     {
         var injector = new FakeInjector();

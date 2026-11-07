@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
 
@@ -11,6 +12,9 @@ public sealed class ThemeService : IThemeService
     private readonly List<ITheme> _themes = [];
     private readonly List<Palette> _palettes = [];
     private readonly Dictionary<string, string> _customTokens = new();
+    private static readonly IReadOnlyDictionary<string, string> EmptyCustomTokens =
+        new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+    private IReadOnlyDictionary<string, string>? _customTokensSnapshot;
 
     // Cached read-only snapshots of the registered theme/palette lists, rebuilt only when membership
     // changes. Avoids allocating a fresh copy on every Themes/Palettes read -- these are enumerated on
@@ -260,12 +264,7 @@ public sealed class ThemeService : IThemeService
             await _injector.InjectAsync(design, ResolveColors());
         }
 
-        Dictionary<string, string> customCopy;
-        lock (_lock)
-        {
-            customCopy = new Dictionary<string, string>(_customTokens);
-        }
-
+        var customCopy = GetCustomTokens();
         if (customCopy.Count > 0)
             await _injector.SetCustomTokensAsync(customCopy);
         await OnThemeChanged();
@@ -327,6 +326,7 @@ public sealed class ThemeService : IThemeService
         {
             foreach (var (k, val) in delta)
                 _customTokens[k] = val;
+            _customTokensSnapshot = null;
         }
         _ = _injector.SetCustomTokensAsync(delta);
     }
@@ -337,6 +337,7 @@ public sealed class ThemeService : IThemeService
         lock (_lock)
         {
             _customTokens[tokenName] = value;
+            _customTokensSnapshot = null;
         }
         _ = _injector.SetCustomTokensAsync(new Dictionary<string, string> { [tokenName] = value });
     }
@@ -344,12 +345,15 @@ public sealed class ThemeService : IThemeService
     /// <summary>Overrides multiple CSS variables at runtime.</summary>
     public void SetCustomTokens(IReadOnlyDictionary<string, string> tokens)
     {
+        IReadOnlyDictionary<string, string> snapshot;
         lock (_lock)
         {
+            _customTokensSnapshot = null;
             foreach (var (k, v) in tokens)
                 _customTokens[k] = v;
+            snapshot = GetCustomTokensSnapshot();
         }
-        _ = _injector.SetCustomTokensAsync(new Dictionary<string, string>(_customTokens));
+        _ = _injector.SetCustomTokensAsync(snapshot);
     }
 
     /// <summary>Removes a previously set custom token override.</summary>
@@ -357,7 +361,8 @@ public sealed class ThemeService : IThemeService
     {
         lock (_lock)
         {
-            _customTokens.Remove(tokenName);
+            if (_customTokens.Remove(tokenName))
+                _customTokensSnapshot = null;
         }
         _ = _injector.ClearCustomTokensAsync([tokenName]);
     }
@@ -370,6 +375,7 @@ public sealed class ThemeService : IThemeService
         {
             names = _customTokens.Keys.ToArray();
             _customTokens.Clear();
+            _customTokensSnapshot = null;
         }
         _ = _injector.ClearCustomTokensAsync(names);
     }
@@ -377,9 +383,11 @@ public sealed class ThemeService : IThemeService
     /// <summary>Returns all currently active custom token overrides.</summary>
     public IReadOnlyDictionary<string, string> GetCustomTokens()
     {
-        lock (_lock)
-        {
-            return new Dictionary<string, string>(_customTokens);
-        }
+        lock (_lock) return GetCustomTokensSnapshot();
     }
+
+    private IReadOnlyDictionary<string, string> GetCustomTokensSnapshot() =>
+        _customTokensSnapshot ??= _customTokens.Count == 0
+            ? EmptyCustomTokens
+            : new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(_customTokens));
 }
